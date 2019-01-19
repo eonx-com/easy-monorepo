@@ -1,0 +1,21 @@
+{
+    "name": "stepthefkup/stepthefkup",
+    "type": "library",
+    "description": "The packages to step the f*k up in your projects",
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "symplify/monorepo-builder": "^4.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "StepTheFkUp\\Pagination\\": "packages/Pagination/src"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "stepthefkup/pagination",
+  "description": "Provides a generic way to handle pagination data from clients",
+  "require": {
+    "php": "^7.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "StepTheFkUp\\Pagination\\": "src"
+    }
+  }
+}
