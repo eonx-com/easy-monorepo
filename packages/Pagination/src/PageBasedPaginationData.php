@@ -5,7 +5,7 @@ namespace StepTheFkUp\Pagination;
 
 use StepTheFkUp\Pagination\Interfaces\PageBasedPaginationDataInterface;
 
-class PageBasedPaginationData implements PageBasedPaginationDataInterface
+final class PageBasedPaginationData implements PageBasedPaginationDataInterface
 {
     /**
      * @var int
