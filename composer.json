@@ -19,6 +19,11 @@
             "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests"
         }
     },
+    "scripts": {
+        "merge": "vendor/bin/monorepo-builder merge",
+        "propagate": "vendor/bin/monorepo-builder propagate",
+        "split": "vendor/bin/monorepo-builder split"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
