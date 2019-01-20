@@ -4,9 +4,17 @@
   "require": {
     "php": "^7.1"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^7.5"
+  },
   "autoload": {
     "psr-4": {
       "StepTheFkUp\\Pagination\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "StepTheFkUp\\Pagination\\Tests\\": "tests"
     }
   }
 }

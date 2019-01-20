@@ -6,11 +6,17 @@
         "php": "^7.1"
     },
     "require-dev": {
-        "symplify/monorepo-builder": "^4.7"
+        "phpunit/phpunit": "^7.5",
+        "symplify/monorepo-builder": "^5.3"
     },
     "autoload": {
         "psr-4": {
             "StepTheFkUp\\Pagination\\": "packages/Pagination/src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests"
         }
     },
     "extra": {
