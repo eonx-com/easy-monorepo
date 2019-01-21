@@ -1,6 +1,6 @@
 {
   "name": "stepthefkup/psr7-factory",
-  "description": "Provides a generic way to handle pagination data from clients",
+  "description": "Provides an easy way to create PSR7 Request/Response from Symfony Request/Response",
   "require": {
     "php": "^7.1",
     "symfony/psr-http-message-bridge": "^1.1",
