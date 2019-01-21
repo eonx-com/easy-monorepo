@@ -18,5 +18,10 @@
     "psr-4": {
       "StepTheFkUp\\Psr7Factory\\Tests\\": "tests"
     }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
   }
 }
