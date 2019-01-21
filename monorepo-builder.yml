@@ -7,3 +7,4 @@ parameters:
     # for "split" command
     directories_to_repositories:
         packages/Pagination: 'git@github.com:StepTheFkUp/Pagination.git'
+        packages/Psr7Factory: 'git@github.com:StepTheFkUp/Psr7Factory.git'
