@@ -5,6 +5,7 @@ namespace StepTheFkUp\Pagination\Tests\Bridge\Laravel;
 
 use Illuminate\Pagination\LengthAwarePaginator as IlluminateLengthAwarePaginator;
 use StepTheFkUp\Pagination\Bridge\Laravel\LengthAwarePaginator;
+use StepTheFkUp\Pagination\Interfaces\PaginationConstants;
 use StepTheFkUp\Pagination\Tests\AbstractTestCase;
 
 class LengthAwarePaginatorTest extends AbstractTestCase
@@ -17,8 +18,8 @@ class LengthAwarePaginatorTest extends AbstractTestCase
     public function testGetters(): void
     {
         $items = [];
-        $page = 1;
-        $perPage = 10;
+        $page = PaginationConstants::DEFAULT_PAGE;
+        $perPage = PaginationConstants::DEFAULT_PER_PAGE;
         $total = 100;
 
         $paginator = new LengthAwarePaginator(new IlluminateLengthAwarePaginator($items, $total, $perPage, $page));
