@@ -3,7 +3,9 @@
     "type": "library",
     "description": "The packages to step the f*k up in your projects",
     "require": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "symfony/psr-http-message-bridge": "^1.1",
+        "zendframework/zend-diactoros": "^1.8"
     },
     "require-dev": {
         "illuminate/pagination": "^5.7",
@@ -12,12 +14,14 @@
     },
     "autoload": {
         "psr-4": {
-            "StepTheFkUp\\Pagination\\": "packages/Pagination/src"
+            "StepTheFkUp\\Pagination\\": "packages/Pagination/src",
+            "StepTheFkUp\\Psr7Factory\\": "packages/Psr7Factory/src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests"
+            "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests",
+            "StepTheFkUp\\Psr7Factory\\Tests\\": "packages/Psr7Factory/tests"
         }
     },
     "scripts": {
