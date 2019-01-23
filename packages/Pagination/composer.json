@@ -1,6 +1,8 @@
 {
   "name": "stepthefkup/pagination",
   "description": "Provides a generic way to handle pagination data from clients",
+  "type": "library",
+  "license": "MIT",
   "require": {
     "php": "^7.1"
   },

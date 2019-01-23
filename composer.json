@@ -1,7 +1,8 @@
 {
     "name": "stepthefkup/stepthefkup",
-    "type": "library",
     "description": "The packages to step the f*k up in your projects",
+    "type": "library",
+    "license": "MIT",
     "require": {
         "php": "^7.1",
         "symfony/psr-http-message-bridge": "^1.1",
