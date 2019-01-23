@@ -52,6 +52,28 @@ class PageBasedPaginationProviderTest extends AbstractTestCase
     }
 
     /**
+     * Provider should register the expected interface into the services container.
+     *
+     * @return void
+     */
+    public function testProviderRegisterExpectedClasses(): void
+    {
+        /** @var \Illuminate\Contracts\Foundation\Application $app */
+        $app = $this->mock(Application::class, function (MockInterface $app): void {
+            $app->shouldReceive('singleton')
+                ->once()
+                ->withArgs(function ($abstract, $concrete): bool {
+                    self::assertEquals(PageBasedPaginationDataInterface::class, $abstract);
+
+                    return is_string($abstract) && $concrete instanceof \Closure;
+                })
+                ->andReturnNull();
+        });
+
+        (new PageBasedPaginationProvider($app))->register();
+    }
+
+    /**
      * Get the result from the closure to create the pagination data.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
