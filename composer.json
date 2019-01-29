@@ -1,7 +1,7 @@
 {
     "name": "stepthefkup/stepthefkup",
-    "description": "The packages to step the f*k up in your projects",
     "type": "library",
+    "description": "The packages to step the f*k up in your projects",
     "license": "MIT",
     "require": {
         "php": "^7.1",
@@ -9,20 +9,23 @@
         "zendframework/zend-diactoros": "^1.8"
     },
     "require-dev": {
-        "illuminate/pagination": "^5.7",
-        "phpunit/phpunit": "^7.5",
-        "symplify/monorepo-builder": "^5.3",
+        "doctrine/orm": "^2.6",
         "illuminate/http": "^5.7",
-        "mockery/mockery": "^1.2"
+        "illuminate/pagination": "^5.7",
+        "mockery/mockery": "^1.2",
+        "phpunit/phpunit": "^7.5",
+        "symplify/monorepo-builder": "^5.3"
     },
     "autoload": {
         "psr-4": {
+            "StepTheFkUp\\EasyRepository\\": "packages/EasyRepository/src",
             "StepTheFkUp\\Pagination\\": "packages/Pagination/src",
             "StepTheFkUp\\Psr7Factory\\": "packages/Psr7Factory/src"
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "StepTheFkUp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests",
             "StepTheFkUp\\Psr7Factory\\Tests\\": "packages/Psr7Factory/tests"
         }
@@ -30,7 +33,11 @@
     "scripts": {
         "merge": "vendor/bin/monorepo-builder merge",
         "propagate": "vendor/bin/monorepo-builder propagate",
-        "split": "vendor/bin/monorepo-builder split"
+        "split": "vendor/bin/monorepo-builder split",
+        "validate-repo": "vendor/bin/monorepo-builder validate"
+    },
+    "suggest": {
+        "doctrine/orm": "To use the Doctrine implementation"
     },
     "extra": {
         "branch-alias": {
