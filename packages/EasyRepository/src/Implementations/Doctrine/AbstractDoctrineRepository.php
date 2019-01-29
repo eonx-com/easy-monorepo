@@ -67,7 +67,7 @@ abstract class AbstractDoctrineRepository implements ObjectRepositoryInterface
      *
      * @return null|object
      */
-    public function find($identifier): ?object
+    public function find($identifier)
     {
         return $this->repository->find($identifier);
     }

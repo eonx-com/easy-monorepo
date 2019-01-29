@@ -28,7 +28,7 @@ interface ObjectRepositoryInterface
      *
      * @return null|object
      */
-    public function find($identifier): ?object;
+    public function find($identifier);
 
     /**
      * Save given object(s).
