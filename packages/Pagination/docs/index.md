@@ -5,6 +5,4 @@
 
 ---
 
-## Documentation
-
 Coming soon...
