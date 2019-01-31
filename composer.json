@@ -14,7 +14,8 @@
         "illuminate/pagination": "^5.7",
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^7.5",
-        "symplify/monorepo-builder": "^5.3"
+        "symplify/monorepo-builder": "^5.3",
+        "symplify/changelog-linker": "^5.4"
     },
     "autoload": {
         "psr-4": {
