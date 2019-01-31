@@ -27,7 +27,7 @@ abstract class AbstractDoctrineRepository implements ObjectRepositoryInterface
     {
         $entityClass = $this->getEntityClass();
 
-        $this->manager = $registry->getManager($entityClass);
+        $this->manager = $registry->getManagerForClass($entityClass);
         $this->repository = $this->manager->getRepository($entityClass);
     }
 
