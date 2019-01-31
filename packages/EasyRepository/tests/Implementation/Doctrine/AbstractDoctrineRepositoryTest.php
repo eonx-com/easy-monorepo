@@ -123,7 +123,7 @@ final class AbstractDoctrineRepositoryTest extends AbstractTestCase
                 $repository = $this->mock(ObjectRepository::class, $repositoryExpectations);
 
                 $manager->shouldReceive('getRepository')->once()->with('my-entity-class')->andReturn($repository);
-                $registry->shouldReceive('getManager')->once()->with('my-entity-class')->andReturn($manager);
+                $registry->shouldReceive('getManagerForClass')->once()->with('my-entity-class')->andReturn($manager);
             });
 
         return $registry;
