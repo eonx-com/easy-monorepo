@@ -1,32 +1,32 @@
 {
-  "name": "stepthefkup/easy-repository",
-  "description": "Provides an easy way to implement the Repository Design Pattern in your applications",
-  "type": "library",
-  "license": "MIT",
-  "require": {
-    "php": "^7.1"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^7.5",
-    "mockery/mockery": "^1.2",
-    "doctrine/orm": "^2.6"
-  },
-  "autoload": {
-    "psr-4": {
-      "StepTheFkUp\\EasyRepository\\": "src"
+    "name": "stepthefkup/easy-repository",
+    "description": "Provides an easy way to implement the Repository Design Pattern in your applications",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5",
+        "mockery/mockery": "^1.2",
+        "doctrine/orm": "^2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "StepTheFkUp\\EasyRepository\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "StepTheFkUp\\EasyRepository\\Tests\\": "tests"
+        }
+    },
+    "suggest": {
+        "doctrine/orm": "To use the Doctrine implementation"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "StepTheFkUp\\EasyRepository\\Tests\\": "tests"
-    }
-  },
-  "suggest": {
-    "doctrine/orm": "To use the Doctrine implementation"
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "1.0-dev"
-    }
-  }
 }
