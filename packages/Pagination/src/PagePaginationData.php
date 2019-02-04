@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\Pagination;
 
-use StepTheFkUp\Pagination\Interfaces\PageBasedPaginationDataInterface;
+use StepTheFkUp\Pagination\Interfaces\PagePaginationDataInterface;
 
-final class PageBasedPaginationData implements PageBasedPaginationDataInterface
+final class PagePaginationData implements PagePaginationDataInterface
 {
     /**
      * @var int
@@ -18,7 +18,7 @@ final class PageBasedPaginationData implements PageBasedPaginationDataInterface
     private $perPage;
 
     /**
-     * PageBasedPaginationData constructor.
+     * PagePaginationData constructor.
      *
      * @param int $page
      * @param int $perPage
