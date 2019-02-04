@@ -7,7 +7,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
 use Mockery\MockInterface;
 use StepTheFkUp\Pagination\Bridge\Laravel\PageBasedPaginationProvider;
-use StepTheFkUp\Pagination\Interfaces\PageBasedPaginationDataInterface;
+use StepTheFkUp\Pagination\Interfaces\PagePaginationDataInterface;
 use StepTheFkUp\Pagination\Tests\AbstractTestCase;
 
 class PageBasedPaginationProviderTest extends AbstractTestCase
@@ -25,7 +25,7 @@ class PageBasedPaginationProviderTest extends AbstractTestCase
         $app = $this->mockApp();
         $paginationData = $this->getCreatePaginationDataClosureResult($app);
 
-        /** @var \StepTheFkUp\Pagination\Interfaces\PageBasedPaginationDataInterface $paginationData */
+        /** @var \StepTheFkUp\Pagination\Interfaces\PagePaginationDataInterface $paginationData */
         self::assertEquals(1, $paginationData->getPage());
         self::assertEquals(10, $paginationData->getPerPage());
     }
@@ -46,7 +46,7 @@ class PageBasedPaginationProviderTest extends AbstractTestCase
         $app = $this->mockApp($query, $config);
         $paginationData = $this->getCreatePaginationDataClosureResult($app);
 
-        /** @var \StepTheFkUp\Pagination\Interfaces\PageBasedPaginationDataInterface $paginationData */
+        /** @var \StepTheFkUp\Pagination\Interfaces\PagePaginationDataInterface $paginationData */
         self::assertEquals(5, $paginationData->getPage());
         self::assertEquals(100, $paginationData->getPerPage());
     }
@@ -63,7 +63,7 @@ class PageBasedPaginationProviderTest extends AbstractTestCase
             $app->shouldReceive('singleton')
                 ->once()
                 ->withArgs(function ($abstract, $concrete): bool {
-                    self::assertEquals(PageBasedPaginationDataInterface::class, $abstract);
+                    self::assertEquals(PagePaginationDataInterface::class, $abstract);
 
                     return is_string($abstract) && $concrete instanceof \Closure;
                 })
@@ -77,11 +77,12 @@ class PageBasedPaginationProviderTest extends AbstractTestCase
      * Get the result from the closure to create the pagination data.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
-     * @return \StepTheFkUp\Pagination\Interfaces\PageBasedPaginationDataInterface
+     *
+     * @return \StepTheFkUp\Pagination\Interfaces\PagePaginationDataInterface
      *
      * @throws \ReflectionException
      */
-    private function getCreatePaginationDataClosureResult(Application $app): PageBasedPaginationDataInterface
+    private function getCreatePaginationDataClosureResult(Application $app): PagePaginationDataInterface
     {
         $getClosure = $this->getMethodAsPublic(PageBasedPaginationProvider::class, 'getPageBasedPaginationDataClosure');
         $closure = $getClosure->invoke(new PageBasedPaginationProvider($app));

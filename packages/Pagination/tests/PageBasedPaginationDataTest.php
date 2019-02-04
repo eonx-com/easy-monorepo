@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\Pagination\Tests;
 
-use StepTheFkUp\Pagination\PageBasedPaginationData;
+use StepTheFkUp\Pagination\PagePaginationData;
 
 class PageBasedPaginationDataTest extends AbstractTestCase
 {
@@ -17,7 +17,7 @@ class PageBasedPaginationDataTest extends AbstractTestCase
         $page = 1;
         $perPage = 15;
 
-        $paginationData = new PageBasedPaginationData($page, $perPage);
+        $paginationData = new PagePaginationData($page, $perPage);
 
         self::assertEquals($page, $paginationData->getPage());
         self::assertEquals($perPage, $paginationData->getPerPage());

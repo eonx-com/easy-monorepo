@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\Pagination\Interfaces;
 
-interface PageBasedPaginationDataInterface
+interface PagePaginationDataInterface
 {
     /**
      * Get page number.

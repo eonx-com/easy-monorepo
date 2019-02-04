@@ -5,9 +5,9 @@ namespace StepTheFkUp\Pagination\Bridge\Laravel;
 
 use Closure;
 use Illuminate\Support\ServiceProvider;
-use StepTheFkUp\Pagination\Interfaces\PageBasedPaginationDataInterface;
+use StepTheFkUp\Pagination\Interfaces\PagePaginationDataInterface;
 use StepTheFkUp\Pagination\Interfaces\PaginationConstants;
-use StepTheFkUp\Pagination\PageBasedPaginationData;
+use StepTheFkUp\Pagination\PagePaginationData;
 
 class PageBasedPaginationProvider extends ServiceProvider
 {
@@ -18,7 +18,7 @@ class PageBasedPaginationProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(PageBasedPaginationDataInterface::class, $this->getPageBasedPaginationDataClosure());
+        $this->app->singleton(PagePaginationDataInterface::class, $this->getPageBasedPaginationDataClosure());
     }
 
     /**
@@ -28,7 +28,7 @@ class PageBasedPaginationProvider extends ServiceProvider
      */
     private function getPageBasedPaginationDataClosure(): Closure
     {
-        return function (): PageBasedPaginationDataInterface {
+        return function (): PagePaginationDataInterface {
             $config = $this->app->get('config')->get('pagination');
             /** @var \Illuminate\Http\Request $request */
             $request = $this->app->get('request');
@@ -38,7 +38,7 @@ class PageBasedPaginationProvider extends ServiceProvider
             $defaultPage = $config['default_page'] ?? PaginationConstants::DEFAULT_PAGE;
             $defaultPerPage = $config['default_per_page'] ?? PaginationConstants::DEFAULT_PER_PAGE;
 
-            return new PageBasedPaginationData(
+            return new PagePaginationData(
                 $request->get($attrPage, $defaultPage),
                 $request->get($attrPerPage, $defaultPerPage)
             );
