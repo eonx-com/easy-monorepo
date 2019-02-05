@@ -4,18 +4,19 @@
     "description": "The packages to step the f*k up in your projects",
     "license": "MIT",
     "require": {
-        "php": "^7.1",
         "eoneopay/utils": "dev-master",
+        "php": "^7.1",
         "symfony/psr-http-message-bridge": "^1.1",
         "zendframework/zend-diactoros": "^1.8"
     },
     "require-dev": {
         "doctrine/orm": "^2.6",
+        "firebase/php-jwt": "^5.0",
         "illuminate/http": "^5.7",
         "illuminate/pagination": "^5.7",
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^7.5",
-        "symplify/monorepo-builder": "^5.3",
+        "symplify/monorepo-builder": "^5.4",
         "symplify/changelog-linker": "^5.4"
     },
     "autoload": {
