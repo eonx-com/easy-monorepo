@@ -7,6 +7,7 @@
 
 ## Packages
 
+- [ApiToken](https://github.com/StepTheFkUp/ApiToken): Tools to handle API tokens like a pro.
 - [EasyRepository](https://github.com/StepTheFkUp/EasyRepository): An easy way to implement the Repository Design Pattern in your applications.
 - [Pagination](https://github.com/StepTheFkUp/Pagination): A generic way to handle pagination data from clients.
 - [Psr7Factory](https://github.com/StepTheFkUp/Psr7Factory): An easy way to create PSR7 Request/Response from Symfony Request/Response.
