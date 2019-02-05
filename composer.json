@@ -5,6 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
+        "eoneopay/utils": "dev-master",
         "symfony/psr-http-message-bridge": "^1.1",
         "zendframework/zend-diactoros": "^1.8"
     },
@@ -19,6 +20,7 @@
     },
     "autoload": {
         "psr-4": {
+            "StepTheFkUp\\ApiToken\\": "packages/ApiToken/src",
             "StepTheFkUp\\EasyRepository\\": "packages/EasyRepository/src",
             "StepTheFkUp\\Pagination\\": "packages/Pagination/src",
             "StepTheFkUp\\Psr7Factory\\": "packages/Psr7Factory/src"
@@ -26,6 +28,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "StepTheFkUp\\ApiToken\\Tests\\": "packages/ApiToken/tests",
             "StepTheFkUp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests",
             "StepTheFkUp\\Psr7Factory\\Tests\\": "packages/Psr7Factory/tests"
