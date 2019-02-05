@@ -17,7 +17,8 @@
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^7.5",
         "symplify/monorepo-builder": "^5.4",
-        "symplify/changelog-linker": "^5.4"
+        "symplify/changelog-linker": "^5.4",
+        "ext-openssl": "^7.1"
     },
     "autoload": {
         "psr-4": {

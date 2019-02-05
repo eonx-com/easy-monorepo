@@ -11,11 +11,4 @@ interface ApiTokenInterface
      * @return mixed[]
      */
     public function getPayload(): array;
-
-    /**
-     * Get token strategy.
-     *
-     * @return string
-     */
-    public function getStrategy(): string;
 }

@@ -1,26 +1,26 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\ApiToken\Resolvers;
+namespace StepTheFkUp\ApiToken\Decoders;
 
 use Psr\Http\Message\ServerRequestInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface;
-use StepTheFkUp\ApiToken\Interfaces\ApiTokenResolverInterface;
+use StepTheFkUp\ApiToken\Interfaces\ApiTokenDecoderInterface;
 use StepTheFkUp\ApiToken\Tokens\BasicAuthApiToken;
-use StepTheFkUp\ApiToken\Traits\ApiTokenResolverTrait;
+use StepTheFkUp\ApiToken\Traits\ApiTokenDecoderTrait;
 
-final class BasicAuthResolver implements ApiTokenResolverInterface
+final class BasicAuthDecoder implements ApiTokenDecoderInterface
 {
-    use ApiTokenResolverTrait;
+    use ApiTokenDecoderTrait;
 
     /**
-     * Resolve API token for given request.
+     * Decode API token for given request.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
      * @return null|\StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface
      */
-    public function resolve(ServerRequestInterface $request): ?ApiTokenInterface
+    public function decode(ServerRequestInterface $request): ?ApiTokenInterface
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Basic', $request);
 

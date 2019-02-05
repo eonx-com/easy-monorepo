@@ -6,7 +6,7 @@ namespace StepTheFkUp\ApiToken\Traits;
 use EoneoPay\Utils\Str;
 use Psr\Http\Message\ServerRequestInterface;
 
-trait ApiTokenResolverTrait
+trait ApiTokenDecoderTrait
 {
     /**
      * Check if given header starts with given prefix.

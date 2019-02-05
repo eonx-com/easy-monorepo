@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\ApiToken\Exceptions;
 
-final class EmptyRequiredPayloadException extends AbstractApiTokenException
+final class InvalidApiTokenFromRequestException extends AbstractApiTokenException
 {
     // No body needed.
 }

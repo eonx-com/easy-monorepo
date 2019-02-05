@@ -4,12 +4,9 @@ declare(strict_types=1);
 namespace StepTheFkUp\ApiToken\Tokens;
 
 use StepTheFkUp\ApiToken\Interfaces\Tokens\BasicAuthApiTokenInterface;
-use StepTheFkUp\ApiToken\Traits\ApiTokenTrait;
 
-final class BasicAuthApiToken extends AbstractClassAsStrategyApiToken implements BasicAuthApiTokenInterface
+final class BasicAuthApiToken extends AbstractApiToken implements BasicAuthApiTokenInterface
 {
-    use ApiTokenTrait;
-
     /**
      * Get password from payload.
      *
@@ -19,7 +16,7 @@ final class BasicAuthApiToken extends AbstractClassAsStrategyApiToken implements
      */
     public function getPassword(): string
     {
-        return $this->getRequiredPayload('password', $this->getPayload());
+        return $this->getRequiredPayload('password');
     }
 
     /**
@@ -31,6 +28,6 @@ final class BasicAuthApiToken extends AbstractClassAsStrategyApiToken implements
      */
     public function getUsername(): string
     {
-        return $this->getRequiredPayload('username', $this->getPayload());
+        return $this->getRequiredPayload('username');
     }
 }

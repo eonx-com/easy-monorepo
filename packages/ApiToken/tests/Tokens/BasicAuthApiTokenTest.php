@@ -79,14 +79,4 @@ final class BasicAuthApiTokenTest extends AbstractTestCase
 
         (new BasicAuthApiToken([]))->getUsername();
     }
-
-    /**
-     * BasicAuthToken should return expected strategy.
-     *
-     * @return void
-     */
-    public function testGetStrategy(): void
-    {
-        self::assertEquals(BasicAuthApiToken::class, (new BasicAuthApiToken([]))->getStrategy());
-    }
 }

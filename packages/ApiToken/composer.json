@@ -21,6 +21,9 @@
             "StepTheFkUp\\ApiToken\\Tests\\": "tests"
         }
     },
+    "suggest": {
+        "firebase/php-jwt": "To use the JWT token resolver"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.2-dev"

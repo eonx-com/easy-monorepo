@@ -5,14 +5,14 @@ namespace StepTheFkUp\ApiToken\Interfaces;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-interface ApiTokenResolverInterface
+interface ApiTokenDecoderInterface
 {
     /**
-     * Resolve API token for given request.
+     * Decode API token for given request.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
      * @return null|\StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface
      */
-    public function resolve(ServerRequestInterface $request): ?ApiTokenInterface;
+    public function decode(ServerRequestInterface $request): ?ApiTokenInterface;
 }

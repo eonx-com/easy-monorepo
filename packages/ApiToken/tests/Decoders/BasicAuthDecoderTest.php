@@ -1,39 +1,38 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\ApiToken\Tests\Resolvers;
+namespace StepTheFkUp\ApiToken\Tests\Decoders;
 
 use StepTheFkUp\ApiToken\Interfaces\Tokens\BasicAuthApiTokenInterface;
-use StepTheFkUp\ApiToken\Resolvers\BasicAuthResolver;
+use StepTheFkUp\ApiToken\Decoders\BasicAuthDecoder;
 use StepTheFkUp\ApiToken\Tests\AbstractTestCase;
-use StepTheFkUp\ApiToken\Tokens\BasicAuthApiToken;
 
-final class BasicAuthResolverTest extends AbstractTestCase
+final class BasicAuthDecoderTest extends AbstractTestCase
 {
     /**
-     * BasicAuthResolver should return null if Authorization header not set.
+     * BasicAuthDecoder should return null if Authorization header not set.
      *
      * @return void
      */
     public function testBasicAuthNullIfAuthorizationHeaderNotSet(): void
     {
-        self::assertNull((new BasicAuthResolver())->resolve($this->createServerRequest()));
+        self::assertNull((new BasicAuthDecoder())->decode($this->createServerRequest()));
     }
 
     /**
-     * BasicAuthResolver should return null if Authorization header doesn't start with "Basic ".
+     * BasicAuthDecoder should return null if Authorization header doesn't start with "Basic ".
      *
      * @return void
      */
     public function testBasicAuthNullIfDoesntStartWithBasic(): void
     {
-        self::assertNull((new BasicAuthResolver())->resolve($this->createServerRequest([
+        self::assertNull((new BasicAuthDecoder())->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'SomethingElse'
         ])));
     }
 
     /**
-     * BasicAuthResolver should return null if Authorization header doesn't contain any username.
+     * BasicAuthDecoder should return null if Authorization header doesn't contain any username.
      *
      * @return void
      */
@@ -48,14 +47,14 @@ final class BasicAuthResolverTest extends AbstractTestCase
         ];
 
         foreach ($tests as $test) {
-            self::assertNull((new BasicAuthResolver())->resolve($this->createServerRequest([
+            self::assertNull((new BasicAuthDecoder())->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode($test)
             ])));
         }
     }
 
     /**
-     * BasicAuthResolver should return BasicAuthToken and expected username and password.
+     * BasicAuthDecoder should return BasicAuthToken and expected username and password.
      *
      * @return void
      */
@@ -69,12 +68,11 @@ final class BasicAuthResolverTest extends AbstractTestCase
         ];
 
         foreach ($tests as $test => $expected) {
-            $token = (new BasicAuthResolver())->resolve($this->createServerRequest([
+            $token = (new BasicAuthDecoder())->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test))
             ]));
 
             self::assertInstanceOf(BasicAuthApiTokenInterface::class, $token);
-            self::assertEquals(BasicAuthApiToken::class, $token->getStrategy());
             self::assertEquals($expected[0], $token->getPayload()['username']);
             self::assertEquals($expected[1], $token->getPayload()['password']);
         }
