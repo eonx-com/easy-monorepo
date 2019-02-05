@@ -32,7 +32,7 @@ final class BasicAuthDecoderTest extends AbstractTestCase
     }
 
     /**
-     * BasicAuthDecoder should return null if Authorization header doesn't contain any username.
+     * BasicAuthDecoder should return null if Authorization header doesn't contain any username or password.
      *
      * @return void
      */
@@ -41,6 +41,7 @@ final class BasicAuthDecoderTest extends AbstractTestCase
         $tests = [
             '',
             ':',
+            ' : ',
             'username',
             'username:',
             ':password'

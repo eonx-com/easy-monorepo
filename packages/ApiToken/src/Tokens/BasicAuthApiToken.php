@@ -5,29 +5,60 @@ namespace StepTheFkUp\ApiToken\Tokens;
 
 use StepTheFkUp\ApiToken\Interfaces\Tokens\BasicAuthApiTokenInterface;
 
-final class BasicAuthApiToken extends AbstractApiToken implements BasicAuthApiTokenInterface
+final class BasicAuthApiToken implements BasicAuthApiTokenInterface
 {
+    /**
+     * @var string
+     */
+    private $password;
+
+    /**
+     * @var string
+     */
+    private $username;
+
+    /**
+     * BasicAuthApiToken constructor.
+     *
+     * @param string $username
+     * @param string $password
+     */
+    public function __construct(string $username, string $password)
+    {
+        $this->password = $password;
+        $this->username = $username;
+    }
+
+    /**
+     * Get token payload.
+     *
+     * @return mixed[]
+     */
+    public function getPayload(): array
+    {
+        return [
+            'password' => $this->password,
+            'username' => $this->username
+        ];
+    }
+
     /**
      * Get password from payload.
      *
      * @return string
-     *
-     * @throws \StepTheFkUp\ApiToken\Exceptions\EmptyRequiredPayloadException
      */
     public function getPassword(): string
     {
-        return $this->getRequiredPayload('password');
+        return $this->password;
     }
 
     /**
      * Get username from payload.
      *
      * @return string
-     *
-     * @throws \StepTheFkUp\ApiToken\Exceptions\EmptyRequiredPayloadException
      */
     public function getUsername(): string
     {
-        return $this->getRequiredPayload('username');
+        return $this->username;
     }
 }
