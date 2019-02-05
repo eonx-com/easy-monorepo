@@ -11,6 +11,9 @@ interface ApiTokenEncoderInterface
      * @param \StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface $apiToken
      *
      * @return string
+     *
+     * @throws \StepTheFkUp\ApiToken\Exceptions\InvalidArgumentException If encoder doesn't support given apiToken
+     * @throws \StepTheFkUp\ApiToken\Exceptions\UnableToEncodeApiTokenException If encoder fails to encode apiToken
      */
     public function encode(ApiTokenInterface $apiToken): string;
 }

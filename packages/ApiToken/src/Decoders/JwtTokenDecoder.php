@@ -7,8 +7,8 @@ use Exception;
 use Firebase\JWT\JWT;
 use Psr\Http\Message\ServerRequestInterface;
 use StepTheFkUp\ApiToken\Exceptions\InvalidApiTokenFromRequestException;
-use StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenDecoderInterface;
+use StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface;
 use StepTheFkUp\ApiToken\Tokens\JwtApiToken;
 use StepTheFkUp\ApiToken\Traits\ApiTokenDecoderTrait;
 
@@ -22,26 +22,26 @@ final class JwtTokenDecoder implements ApiTokenDecoderInterface
     private $allowedAlgos;
 
     /**
-     * @var string|array
-     */
-    private $key;
-
-    /**
      * @var null|int
      */
     private $leeway;
 
     /**
+     * @var string|array
+     */
+    private $publicKey;
+
+    /**
      * JwtTokenDecoder constructor.
      *
      * @param string[] $allowedAlgos
-     * @param string|string[] $key
+     * @param string|string[] $publicKey
      * @param null|int $leeway
      */
-    public function __construct(array $allowedAlgos, $key, ?int $leeway = null)
+    public function __construct(array $allowedAlgos, $publicKey, ?int $leeway = null)
     {
         $this->allowedAlgos = $allowedAlgos;
-        $this->key = $key;
+        $this->publicKey = $publicKey;
         $this->leeway = $leeway;
     }
 
@@ -74,7 +74,7 @@ final class JwtTokenDecoder implements ApiTokenDecoderInterface
         }
 
         try {
-            return new JwtApiToken((array)JWT::decode(\trim($authorization), $this->key, $this->allowedAlgos));
+            return new JwtApiToken((array)JWT::decode(\trim($authorization), $this->publicKey, $this->allowedAlgos));
         } catch (Exception $exception) {
             throw new InvalidApiTokenFromRequestException(
                 \sprintf(
