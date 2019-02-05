@@ -11,10 +11,12 @@ parameters:
     # for "merge" command
     data_to_append:
         require-dev:
-            symplify/monorepo-builder: '^5.3'
+            symplify/monorepo-builder: '^5.4'
+            symplify/changelog-linker: '^5.4'
 
     # for "split" command
     directories_to_repositories:
+        packages/ApiToken: 'git@github.com:StepTheFkUp/ApiToken.git'
         packages/EasyRepository: 'git@github.com:StepTheFkUp/EasyRepository.git'
         packages/Pagination: 'git@github.com:StepTheFkUp/Pagination.git'
         packages/Psr7Factory: 'git@github.com:StepTheFkUp/Psr7Factory.git'
