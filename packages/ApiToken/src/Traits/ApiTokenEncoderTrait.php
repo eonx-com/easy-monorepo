@@ -20,7 +20,7 @@ trait ApiTokenEncoderTrait
      */
     private function validateToken(string $class, ApiTokenInterface $apiToken): void
     {
-        if ($class === \get_class($apiToken)) {
+        if ($class === \get_class($apiToken) || \is_subclass_of($apiToken, $class)) {
             return;
         }
 
