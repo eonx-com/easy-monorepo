@@ -10,12 +10,12 @@ interface PagePaginationDataInterface
      *
      * @return int
      */
-    public function getPage(): int;
+    public function getPageNumber(): int;
 
     /**
      * Get number of items per page.
      *
      * @return int
      */
-    public function getPerPage(): int;
+    public function getPageSize(): int;
 }

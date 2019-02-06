@@ -10,7 +10,8 @@
         "phpunit/phpunit": "^7.5",
         "mockery/mockery": "^1.2",
         "illuminate/pagination": "^5.7",
-        "illuminate/http": "^5.7"
+        "illuminate/http": "^5.7",
+        "stepthefkup/psr7-factory": "self.version"
     },
     "autoload": {
         "psr-4": {

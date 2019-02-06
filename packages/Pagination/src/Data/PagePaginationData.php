@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\Pagination;
+namespace StepTheFkUp\Pagination\Data;
 
 use StepTheFkUp\Pagination\Interfaces\PagePaginationDataInterface;
 
@@ -10,23 +10,23 @@ final class PagePaginationData implements PagePaginationDataInterface
     /**
      * @var int
      */
-    private $page;
+    private $pageNumber;
 
     /**
      * @var int
      */
-    private $perPage;
+    private $pageSize;
 
     /**
      * PagePaginationData constructor.
      *
-     * @param int $page
-     * @param int $perPage
+     * @param int $pageNumber
+     * @param int $pageSize
      */
-    public function __construct(int $page, int $perPage)
+    public function __construct(int $pageNumber, int $pageSize)
     {
-        $this->page = $page;
-        $this->perPage = $perPage;
+        $this->pageNumber = $pageNumber;
+        $this->pageSize = $pageSize;
     }
 
     /**
@@ -34,9 +34,9 @@ final class PagePaginationData implements PagePaginationDataInterface
      *
      * @return int
      */
-    public function getPage(): int
+    public function getPageNumber(): int
     {
-        return $this->page;
+        return $this->pageNumber;
     }
 
     /**
@@ -44,8 +44,8 @@ final class PagePaginationData implements PagePaginationDataInterface
      *
      * @return int
      */
-    public function getPerPage(): int
+    public function getPageSize(): int
     {
-        return $this->perPage;
+        return $this->pageSize;
     }
 }
