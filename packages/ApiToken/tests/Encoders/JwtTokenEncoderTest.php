@@ -32,7 +32,9 @@ final class JwtTokenEncoderTest extends AbstractJwtTokenTestCase
                 $publicKey = $this->getOpenSslPublicKey();
             }
 
-            $tokenString = (new JwtTokenEncoder($algo, $privateKey))->encode(new JwtApiToken(static::$tokenPayload));
+            $jwtDriver = $this->createFirebaseJwtDriver($algo, null, $privateKey);
+
+            $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtApiToken(static::$tokenPayload));
             $token = $this->createJwtTokenDecoder($algo, $publicKey)->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
             ]));
@@ -60,7 +62,7 @@ final class JwtTokenEncoderTest extends AbstractJwtTokenTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new JwtTokenEncoder('', ''))->encode(new BasicAuthApiToken('', ''));
+        (new JwtTokenEncoder($this->createFirebaseJwtDriver()))->encode(new BasicAuthApiToken('', ''));
     }
 
     /**
@@ -75,7 +77,9 @@ final class JwtTokenEncoderTest extends AbstractJwtTokenTestCase
     {
         $this->expectException(UnableToEncodeApiTokenException::class);
 
-        (new JwtTokenEncoder('RS256', 'wrong-key'))->encode(new JwtApiToken([]));
+        $jwtDriver = $this->createFirebaseJwtDriver('RS256', null, 'different-key');
+
+        (new JwtTokenEncoder($jwtDriver))->encode(new JwtApiToken([]));
     }
 
     /**
@@ -88,6 +92,6 @@ final class JwtTokenEncoderTest extends AbstractJwtTokenTestCase
      */
     private function createJwtTokenDecoder(string $algo, $key): JwtTokenDecoder
     {
-        return new JwtTokenDecoder([$algo], $key);
+        return new JwtTokenDecoder($this->createFirebaseJwtDriver(null, $key, null, [$algo]));
     }
 }

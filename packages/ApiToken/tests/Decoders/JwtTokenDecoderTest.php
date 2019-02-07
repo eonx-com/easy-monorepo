@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\ApiToken\Tests\Decoders;
 
-use Firebase\JWT\JWT;
 use StepTheFkUp\ApiToken\Exceptions\InvalidApiTokenFromRequestException;
 use StepTheFkUp\ApiToken\Decoders\JwtTokenDecoder;
 use StepTheFkUp\ApiToken\Tests\AbstractJwtTokenTestCase;
@@ -20,7 +19,7 @@ final class JwtTokenDecoderTest extends AbstractJwtTokenTestCase
      */
     public function testJwtTokenNullIfAuthorizationHeaderNotSet(): void
     {
-        self::assertNull((new JwtTokenDecoder([], static::$key))->decode($this->createServerRequest()));
+        self::assertNull((new JwtTokenDecoder($this->createFirebaseJwtDriver()))->decode($this->createServerRequest()));
     }
 
     /**
@@ -32,7 +31,7 @@ final class JwtTokenDecoderTest extends AbstractJwtTokenTestCase
      */
     public function testJwtTokenNullIfDoesntStartWithBearer(): void
     {
-        self::assertNull((new JwtTokenDecoder([], static::$key))->decode($this->createServerRequest([
+        self::assertNull((new JwtTokenDecoder($this->createFirebaseJwtDriver()))->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'SomethingElse'
         ])));
     }
@@ -48,7 +47,9 @@ final class JwtTokenDecoderTest extends AbstractJwtTokenTestCase
     {
         $this->expectException(InvalidApiTokenFromRequestException::class);
 
-        (new JwtTokenDecoder(['HS256'], 'different-key', 2))->decode($this->createServerRequest([
+        $jwtDriver = $this->createFirebaseJwtDriver(null, 'different-key', null, ['HS256'], 2);
+
+        (new JwtTokenDecoder($jwtDriver))->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken()
         ]));
     }
@@ -65,7 +66,9 @@ final class JwtTokenDecoderTest extends AbstractJwtTokenTestCase
                 $key = $this->getOpenSslPublicKey();
             }
 
-            $token = (new JwtTokenDecoder([$algo], $key))->decode($this->createServerRequest([
+            $jwtDriver = $this->createFirebaseJwtDriver(null, $key, null, [$algo]);
+
+            $token = (new JwtTokenDecoder($jwtDriver))->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken($algo)
             ]));
 
@@ -95,6 +98,6 @@ final class JwtTokenDecoderTest extends AbstractJwtTokenTestCase
             $key = $this->getOpenSslPrivateKey();
         }
 
-        return JWT::encode(static::$tokenPayload, $key, $algo ?? static::$defaultAlgo);
+        return $this->createFirebaseJwtDriver($algo, null, $key)->encode(static::$tokenPayload);
     }
 }
