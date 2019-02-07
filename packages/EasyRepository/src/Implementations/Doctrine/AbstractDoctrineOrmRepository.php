@@ -4,22 +4,23 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyRepository\Implementations\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 use StepTheFkUp\EasyRepository\Interfaces\ObjectRepositoryInterface;
 
-abstract class AbstractDoctrineRepository implements ObjectRepositoryInterface
+abstract class AbstractDoctrineOrmRepository implements ObjectRepositoryInterface
 {
+    /**
+     * @var \Doctrine\ORM\EntityRepository
+     */
+    protected $repository;
+
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
     private $manager;
 
     /**
-     * @var \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected $repository;
-
-    /**
-     * AbstractDoctrineRepository constructor.
+     * AbstractDoctrineOrmRepository constructor.
      *
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
      */
@@ -30,13 +31,6 @@ abstract class AbstractDoctrineRepository implements ObjectRepositoryInterface
         $this->manager = $registry->getManagerForClass($entityClass);
         $this->repository = $this->manager->getRepository($entityClass);
     }
-
-    /**
-     * Get entity class managed by the repository.
-     *
-     * @return string
-     */
-    abstract protected function getEntityClass(): string;
 
     /**
      * Get all the objects managed by the repository.
@@ -82,6 +76,26 @@ abstract class AbstractDoctrineRepository implements ObjectRepositoryInterface
     public function save($object): void
     {
         $this->callManagerMethodForObjects('persist', $object);
+    }
+
+    /**
+     * Get entity class managed by the repository.
+     *
+     * @return string
+     */
+    abstract protected function getEntityClass(): string;
+
+    /**
+     * Create query builder from ORM repository.
+     *
+     * @param string $alias
+     * @param null|string $indexBy
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function createQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilder
+    {
+        return $this->repository->createQueryBuilder($alias, $indexBy);
     }
 
     /**
