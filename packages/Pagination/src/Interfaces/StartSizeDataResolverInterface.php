@@ -5,14 +5,14 @@ namespace StepTheFkUp\Pagination\Interfaces;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-interface PagePaginationDataResolverInterface
+interface StartSizeDataResolverInterface
 {
     /**
      * Resolve page pagination data for given request.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return \StepTheFkUp\Pagination\Interfaces\PagePaginationDataInterface
+     * @return \StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface
      */
-    public function resolve(ServerRequestInterface $request): PagePaginationDataInterface;
+    public function resolve(ServerRequestInterface $request): StartSizeDataInterface;
 }
