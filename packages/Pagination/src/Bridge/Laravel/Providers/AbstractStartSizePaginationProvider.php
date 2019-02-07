@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface;
 use StepTheFkUp\Pagination\Interfaces\StartSizeDataResolverInterface;
 use StepTheFkUp\Pagination\Resolvers\Config\StartSizeConfig;
+use StepTheFkUp\Psr7Factory\Interfaces\Psr7FactoryInterface;
 use StepTheFkUp\Psr7Factory\Psr7Factory;
 
 abstract class AbstractStartSizePaginationProvider extends ServiceProvider
@@ -67,7 +68,7 @@ abstract class AbstractStartSizePaginationProvider extends ServiceProvider
      */
     protected function createServerRequest(): ServerRequestInterface
     {
-        return (new Psr7Factory())->createRequest($this->app->get('request'));
+        return $this->app->get(Psr7FactoryInterface::class)->createRequest($this->app->get('request'));
     }
 
     /**
