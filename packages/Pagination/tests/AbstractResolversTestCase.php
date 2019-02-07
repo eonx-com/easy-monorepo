@@ -4,28 +4,28 @@ declare(strict_types=1);
 namespace StepTheFkUp\Pagination\Tests;
 
 use Psr\Http\Message\ServerRequestInterface;
-use StepTheFkUp\Pagination\Resolvers\Config\PagePaginationConfig;
+use StepTheFkUp\Pagination\Resolvers\Config\StartSizeConfig;
 use Zend\Diactoros\ServerRequestFactory;
 
 abstract class AbstractResolversTestCase extends AbstractTestCase
 {
     /**
-     * Create PagePaginationConfig.
+     * Create StartSizeConfig.
      *
      * @param null|string $numberAttr
      * @param null|int $numberDefault
      * @param null|string $sizeAttr
      * @param null|int $sizeDefault
      *
-     * @return \StepTheFkUp\Pagination\Resolvers\Config\PagePaginationConfig
+     * @return \StepTheFkUp\Pagination\Resolvers\Config\StartSizeConfig
      */
-    protected function createPagePaginationConfig(
+    protected function createConfig(
         ?string $numberAttr = null,
         ?int $numberDefault = null,
         ?string $sizeAttr = null,
         ?int $sizeDefault = null
-    ): PagePaginationConfig {
-        return new PagePaginationConfig(
+    ): StartSizeConfig {
+        return new StartSizeConfig(
             $numberAttr ?? 'number',
             $numberDefault ?? 1,
             $sizeAttr ?? 'size',

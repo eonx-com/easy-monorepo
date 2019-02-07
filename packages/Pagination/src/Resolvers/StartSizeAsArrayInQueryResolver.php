@@ -4,17 +4,17 @@ declare(strict_types=1);
 namespace StepTheFkUp\Pagination\Resolvers;
 
 use Psr\Http\Message\ServerRequestInterface;
-use StepTheFkUp\Pagination\Interfaces\PagePaginationDataInterface;
-use StepTheFkUp\Pagination\Interfaces\PagePaginationDataResolverInterface;
-use StepTheFkUp\Pagination\Resolvers\Config\PagePaginationConfig;
+use StepTheFkUp\Pagination\Interfaces\StartSizeConfigInterface;
+use StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface;
+use StepTheFkUp\Pagination\Interfaces\StartSizeDataResolverInterface;
 use StepTheFkUp\Pagination\Traits\PagePaginationDataResolverTrait;
 
-final class PageAsArrayInQueryResolver implements PagePaginationDataResolverInterface
+final class StartSizeAsArrayInQueryResolver implements StartSizeDataResolverInterface
 {
     use PagePaginationDataResolverTrait;
 
     /**
-     * @var \StepTheFkUp\Pagination\Resolvers\Config\PagePaginationConfig
+     * @var \StepTheFkUp\Pagination\Interfaces\StartSizeConfigInterface
      */
     private $config;
 
@@ -26,12 +26,12 @@ final class PageAsArrayInQueryResolver implements PagePaginationDataResolverInte
     private $queryAttr;
 
     /**
-     * PageAsArrayInQueryResolver constructor.
+     * StartSizeAsArrayInQueryResolver constructor.
      *
-     * @param \StepTheFkUp\Pagination\Resolvers\Config\PagePaginationConfig $config
+     * @param \StepTheFkUp\Pagination\Interfaces\StartSizeConfigInterface $config
      * @param string $queryAttr
      */
-    public function __construct(PagePaginationConfig $config, string $queryAttr)
+    public function __construct(StartSizeConfigInterface $config, string $queryAttr)
     {
         $this->config = $config;
         $this->queryAttr = $queryAttr;
@@ -42,9 +42,9 @@ final class PageAsArrayInQueryResolver implements PagePaginationDataResolverInte
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return \StepTheFkUp\Pagination\Interfaces\PagePaginationDataInterface
+     * @return \StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface
      */
-    public function resolve(ServerRequestInterface $request): PagePaginationDataInterface
+    public function resolve(ServerRequestInterface $request): StartSizeDataInterface
     {
         $query = $request->getQueryParams();
 

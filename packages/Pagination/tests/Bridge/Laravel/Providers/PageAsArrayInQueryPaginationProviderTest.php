@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\Pagination\Tests\Bridge\Laravel\Providers;
 
-use StepTheFkUp\Pagination\Bridge\Laravel\Providers\PageAsArrayInQueryPaginationProvider;
-use StepTheFkUp\Pagination\Resolvers\PageAsArrayInQueryResolver;
+use StepTheFkUp\Pagination\Bridge\Laravel\Providers\StartSizeAsArrayInQueryPaginationProvider;
+use StepTheFkUp\Pagination\Resolvers\StartSizeAsArrayInQueryResolver;
 use StepTheFkUp\Pagination\Tests\AbstractLaravelProvidersTestCase;
 
 final class PageAsArrayInQueryPaginationProviderTest extends AbstractLaravelProvidersTestCase
 {
     /**
-     * PageAsArrayInQueryPaginationProvider should return an instantiate of PageAsArrayInQueryResolver as resolver.
+     * StartSizeAsArrayInQueryPaginationProvider should return an instantiate of StartSizeAsArrayInQueryResolver as resolver.
      *
      * @return void
      *
@@ -21,13 +21,13 @@ final class PageAsArrayInQueryPaginationProviderTest extends AbstractLaravelProv
         $app = $this->mockApp();
 
         $getClosure = $this->getMethodAsPublic(
-            PageAsArrayInQueryPaginationProvider::class,
-            'getPagePaginationResolverClosure'
+            StartSizeAsArrayInQueryPaginationProvider::class,
+            'getResolverClosure'
         );
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */
-        $closure = $getClosure->invoke(new PageAsArrayInQueryPaginationProvider($app));
+        $closure = $getClosure->invoke(new StartSizeAsArrayInQueryPaginationProvider($app));
 
-        self::assertInstanceOf(PageAsArrayInQueryResolver::class, $closure());
+        self::assertInstanceOf(StartSizeAsArrayInQueryResolver::class, $closure());
     }
 }
