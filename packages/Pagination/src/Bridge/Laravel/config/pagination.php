@@ -20,18 +20,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Page Pagination
+    | StartSize Pagination
     |--------------------------------------------------------------------------
     |
     | This config contains the names of the attributes to use to resolve the
-    | page based pagination data, and also their default values if not set
+    | start_size pagination data, and also their default values if not set
     | on the given request.
     |
     */
-    'page' => [
-        'number_attr' => \env('PAGINATION_PAGE_NUMBER_ATTR', 'page'),
-        'number_default' => \env('PAGINATION_PAGE_NUMBER_DEFAULT', 1),
-        'size_attr' => \env('PAGINATION_PAGE_SIZE_ATTR', 'perPage'),
+    'start_size' => [
+        'start_attribute' => \env('PAGINATION_PAGE_START_ATTRIBUTE', 'page'),
+        'start_default' => \env('PAGINATION_PAGE_START_DEFAULT', 1),
+        'size_attribute' => \env('PAGINATION_PAGE_SIZE_ATTRIBUTE', 'perPage'),
         'size_default' => \env('PAGINATION_PAGE_SIZE_DEFAULT', 15)
     ]
 ];

@@ -5,9 +5,9 @@
 
 ---
 
-## Documentation
+# Documentation
 
-### Laravel / Lumen
+## Laravel / Lumen
 
 - [Installation](docs/laravel_install.md)
 - [Installation with Doctrine ORM](docs/laravel_doctrine_install.md)

@@ -8,12 +8,12 @@
 This document describes the steps to use this package into a [Laravel][1] and/or [Lumen][2] application with the
 [Doctrine ORM][3] implementation.
 
-## Install With Doctrine ORM
+# Install With Doctrine ORM
 
 For this package install please refer to the related [documentation](laravel_install.md). Regarding Doctrine ORM, we
 strongly recommend you to use the [Laravel Doctrine ORM package][4], please refer to its documentation for its install.
 
-## Usage
+# Usage
 
 This package provides you with `StepTheFkUp\EasyRepository\Implementations\Doctrine\AbstractDoctrineRepository` which
 has everything setup for you to implement the generic `ObjectRepositoryInterface` using Doctrine ORM, and take advantage
