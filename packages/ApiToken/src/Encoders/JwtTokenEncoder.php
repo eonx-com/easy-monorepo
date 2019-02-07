@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\ApiToken\Encoders;
 
-use Firebase\JWT\JWT;
 use StepTheFkUp\ApiToken\Exceptions\UnableToEncodeApiTokenException;
+use StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenEncoderInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface;
 use StepTheFkUp\ApiToken\Tokens\JwtApiToken;
@@ -15,25 +15,18 @@ final class JwtTokenEncoder implements ApiTokenEncoderInterface
     use ApiTokenEncoderTrait;
 
     /**
-     * @var string
+     * @var \StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface
      */
-    private $algo;
-
-    /**
-     * @var string|resource
-     */
-    private $privateKey;
+    private $jwtDriver;
 
     /**
      * JwtTokenEncoder constructor.
      *
-     * @param string $algo
-     * @param string|resource $privateKey
+     * @param \StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
      */
-    public function __construct(string $algo, $privateKey)
+    public function __construct(JwtDriverInterface $jwtDriver)
     {
-        $this->algo = $algo;
-        $this->privateKey = $privateKey;
+        $this->jwtDriver = $jwtDriver;
     }
 
     /**
@@ -51,7 +44,7 @@ final class JwtTokenEncoder implements ApiTokenEncoderInterface
         $this->validateToken(JwtApiToken::class, $apiToken);
 
         try {
-            return JWT::encode($apiToken->getPayload(), $this->privateKey, $this->algo);
+            return $this->jwtDriver->encode($apiToken->getPayload());
         } catch (\Exception $exception) {
             throw new UnableToEncodeApiTokenException(
                 \sprintf(

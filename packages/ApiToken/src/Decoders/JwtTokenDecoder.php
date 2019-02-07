@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace StepTheFkUp\ApiToken\Decoders;
 
 use Exception;
-use Firebase\JWT\JWT;
 use Psr\Http\Message\ServerRequestInterface;
 use StepTheFkUp\ApiToken\Exceptions\InvalidApiTokenFromRequestException;
+use StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenDecoderInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface;
 use StepTheFkUp\ApiToken\Tokens\JwtApiToken;
@@ -17,32 +17,18 @@ final class JwtTokenDecoder implements ApiTokenDecoderInterface
     use ApiTokenDecoderTrait;
 
     /**
-     * @var string[]
+     * @var \StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface
      */
-    private $allowedAlgos;
-
-    /**
-     * @var null|int
-     */
-    private $leeway;
-
-    /**
-     * @var string|array
-     */
-    private $publicKey;
+    private $jwtDriver;
 
     /**
      * JwtTokenDecoder constructor.
      *
-     * @param string[] $allowedAlgos
-     * @param string|string[] $publicKey
-     * @param null|int $leeway
+     * @param \StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
      */
-    public function __construct(array $allowedAlgos, $publicKey, ?int $leeway = null)
+    public function __construct(JwtDriverInterface $jwtDriver)
     {
-        $this->allowedAlgos = $allowedAlgos;
-        $this->publicKey = $publicKey;
-        $this->leeway = $leeway;
+        $this->jwtDriver = $jwtDriver;
     }
 
     /**
@@ -62,19 +48,8 @@ final class JwtTokenDecoder implements ApiTokenDecoderInterface
             return null; // If Authorization doesn't start with Basic, return null
         }
 
-        /**
-         * You can add a leeway to account for when there is a clock skew times between
-         * the signing and verifying servers. It is recommended that this leeway should
-         * not be bigger than a few minutes.
-         *
-         * Source: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
-         */
-        if ($this->leeway !== null) {
-            JWT::$leeway = $this->leeway;
-        }
-
         try {
-            return new JwtApiToken((array)JWT::decode(\trim($authorization), $this->publicKey, $this->allowedAlgos));
+            return new JwtApiToken((array)$this->jwtDriver->decode(\trim($authorization)));
         } catch (Exception $exception) {
             throw new InvalidApiTokenFromRequestException(
                 \sprintf(
