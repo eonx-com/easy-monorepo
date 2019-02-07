@@ -6,6 +6,8 @@ namespace StepTheFkUp\Pagination\Tests;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
 use Mockery\MockInterface;
+use StepTheFkUp\Psr7Factory\Interfaces\Psr7FactoryInterface;
+use StepTheFkUp\Psr7Factory\Psr7Factory;
 
 abstract class AbstractLaravelProvidersTestCase extends AbstractTestCase
 {
@@ -28,6 +30,7 @@ abstract class AbstractLaravelProvidersTestCase extends AbstractTestCase
             };
 
             $app->shouldReceive('get')->twice()->with('config')->andReturn($config);
+            $app->shouldReceive('get')->once()->with(Psr7FactoryInterface::class)->andReturn(new Psr7Factory());
             $app->shouldReceive('get')
                 ->once()
                 ->with('request')
