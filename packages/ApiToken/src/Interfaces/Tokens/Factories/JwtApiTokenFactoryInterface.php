@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\ApiToken\Interfaces\Tokens\Factories;
 
-use StepTheFkUp\ApiToken\Tokens\JwtApiToken;
+use StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface;
 
 interface JwtApiTokenFactoryInterface
 {
@@ -12,9 +12,9 @@ interface JwtApiTokenFactoryInterface
      *
      * @param string $token
      *
-     * @return \StepTheFkUp\ApiToken\Tokens\JwtApiToken
+     * @return \StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface
      *
      * @throws \StepTheFkUp\ApiToken\Exceptions\InvalidApiTokenFromRequestException
      */
-    public function createFromString(string $token): JwtApiToken;
+    public function createFromString(string $token): JwtApiTokenInterface;
 }
