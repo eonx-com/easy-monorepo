@@ -17,11 +17,12 @@ abstract class AbstractTestCase extends TestCase
      * Create PSR ServerRequest for given server array.
      *
      * @param null|mixed[] $server
+     * @param null|mixed[] $query
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    protected function createServerRequest(?array $server = null): ServerRequestInterface
+    protected function createServerRequest(?array $server = null, ?array $query = null): ServerRequestInterface
     {
-        return ServerRequestFactory::fromGlobals($server ?? []);
+        return ServerRequestFactory::fromGlobals($server ?? [], $query ?? []);
     }
 }
