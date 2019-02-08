@@ -7,6 +7,7 @@ use Exception;
 use StepTheFkUp\ApiToken\Exceptions\InvalidApiTokenFromRequestException;
 use StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface;
 use StepTheFkUp\ApiToken\Interfaces\Tokens\Factories\JwtApiTokenFactoryInterface;
+use StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface;
 use StepTheFkUp\ApiToken\Tokens\JwtApiToken;
 
 final class JwtApiTokenFactory implements JwtApiTokenFactoryInterface
@@ -31,11 +32,11 @@ final class JwtApiTokenFactory implements JwtApiTokenFactoryInterface
      *
      * @param string $token
      *
-     * @return \StepTheFkUp\ApiToken\Tokens\JwtApiToken
+     * @return \StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface
      *
      * @throws \StepTheFkUp\ApiToken\Exceptions\InvalidApiTokenFromRequestException
      */
-    public function createFromString(string $token): JwtApiToken
+    public function createFromString(string $token): JwtApiTokenInterface
     {
         try {
             return new JwtApiToken((array)$this->jwtDriver->decode(\trim($token)));
