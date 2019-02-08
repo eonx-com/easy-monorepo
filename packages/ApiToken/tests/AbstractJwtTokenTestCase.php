@@ -97,6 +97,24 @@ abstract class AbstractJwtTokenTestCase extends AbstractTestCase
     }
 
     /**
+     * Create JWT token for given algo.
+     *
+     * @param null|string $algo
+     *
+     * @return string
+     */
+    protected function createToken(?string $algo = null): string
+    {
+        $key = static::$key;
+
+        if ($algo !== null && $this->isAlgoRs($algo)) {
+            $key = $this->getOpenSslPrivateKey();
+        }
+
+        return $this->createFirebaseJwtDriver($algo, null, $key)->encode(static::$tokenPayload);
+    }
+
+    /**
      * Get the openssl private key for algorithms using it.
      *
      * @return bool|resource

@@ -55,6 +55,10 @@ final class JwtTokenDecoderTest extends AbstractJwtTokenTestCase
     }
 
     /**
+     * JwtTokenDecoder should decode token successfully for each algorithms.
+     *
+     * @return void
+     *
      * @throws \StepTheFkUp\ApiToken\Exceptions\InvalidApiTokenFromRequestException
      */
     public function testJwtTokenDecodeSuccessfully(): void
@@ -81,23 +85,5 @@ final class JwtTokenDecoderTest extends AbstractJwtTokenTestCase
                 self::assertEquals($value, $payload[$key]);
             }
         }
-    }
-
-    /**
-     * Create JWT token for given algo.
-     *
-     * @param null|string $algo
-     *
-     * @return string
-     */
-    private function createToken(?string $algo = null): string
-    {
-        $key = static::$key;
-
-        if ($algo !== null && $this->isAlgoRs($algo)) {
-            $key = $this->getOpenSslPrivateKey();
-        }
-
-        return $this->createFirebaseJwtDriver($algo, null, $key)->encode(static::$tokenPayload);
     }
 }

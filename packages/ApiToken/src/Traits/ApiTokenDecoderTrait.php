@@ -9,20 +9,6 @@ use Psr\Http\Message\ServerRequestInterface;
 trait ApiTokenDecoderTrait
 {
     /**
-     * Check if given header starts with given prefix.
-     *
-     * @param string $header
-     * @param string $prefix
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     *
-     * @return bool
-     */
-    private function headerStartsWith(string $header, string $prefix, ServerRequestInterface $request): bool
-    {
-        return (new Str())->startsWith($this->getFirstHeaderValue($header, $request) ?? '', $prefix);
-    }
-
-    /**
      * Get first value for given header and request, return null if not found.
      *
      * @param string $header
@@ -51,5 +37,32 @@ trait ApiTokenDecoderTrait
         }
 
         return \substr($this->getFirstHeaderValue($header, $request), \strlen($prefix));
+    }
+
+    /**
+     * Get given query param from given request.
+     *
+     * @param string $param
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     *
+     * @return null|mixed
+     */
+    private function getQueryParam(string $param, ServerRequestInterface $request)
+    {
+        return $request->getQueryParams()[$param] ?? null;
+    }
+
+    /**
+     * Check if given header starts with given prefix.
+     *
+     * @param string $header
+     * @param string $prefix
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     *
+     * @return bool
+     */
+    private function headerStartsWith(string $header, string $prefix, ServerRequestInterface $request): bool
+    {
+        return (new Str())->startsWith($this->getFirstHeaderValue($header, $request) ?? '', $prefix);
     }
 }
