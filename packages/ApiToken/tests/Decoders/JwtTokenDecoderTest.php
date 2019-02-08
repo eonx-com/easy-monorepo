@@ -19,7 +19,7 @@ final class JwtTokenDecoderTest extends AbstractJwtTokenTestCase
      */
     public function testJwtTokenNullIfAuthorizationHeaderNotSet(): void
     {
-        self::assertNull((new JwtTokenDecoder($this->createFirebaseJwtDriver()))->decode($this->createServerRequest()));
+        self::assertNull((new JwtTokenDecoder($this->createJwtApiTokenFactory()))->decode($this->createServerRequest()));
     }
 
     /**
@@ -31,7 +31,7 @@ final class JwtTokenDecoderTest extends AbstractJwtTokenTestCase
      */
     public function testJwtTokenNullIfDoesntStartWithBearer(): void
     {
-        self::assertNull((new JwtTokenDecoder($this->createFirebaseJwtDriver()))->decode($this->createServerRequest([
+        self::assertNull((new JwtTokenDecoder($this->createJwtApiTokenFactory()))->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'SomethingElse'
         ])));
     }
@@ -47,9 +47,9 @@ final class JwtTokenDecoderTest extends AbstractJwtTokenTestCase
     {
         $this->expectException(InvalidApiTokenFromRequestException::class);
 
-        $jwtDriver = $this->createFirebaseJwtDriver(null, 'different-key', null, ['HS256'], 2);
+        $jwtApiTokenFactory = $this->createJwtApiTokenFactory(null, 'different-key', null, ['HS256'], 2);
 
-        (new JwtTokenDecoder($jwtDriver))->decode($this->createServerRequest([
+        (new JwtTokenDecoder($jwtApiTokenFactory))->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken()
         ]));
     }
@@ -66,9 +66,9 @@ final class JwtTokenDecoderTest extends AbstractJwtTokenTestCase
                 $key = $this->getOpenSslPublicKey();
             }
 
-            $jwtDriver = $this->createFirebaseJwtDriver(null, $key, null, [$algo]);
+            $jwtApiTokenFactory = $this->createJwtApiTokenFactory(null, $key, null, [$algo]);
 
-            $token = (new JwtTokenDecoder($jwtDriver))->decode($this->createServerRequest([
+            $token = (new JwtTokenDecoder($jwtApiTokenFactory))->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken($algo)
             ]));
 

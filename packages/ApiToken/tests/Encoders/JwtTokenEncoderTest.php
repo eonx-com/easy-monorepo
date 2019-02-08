@@ -92,6 +92,6 @@ final class JwtTokenEncoderTest extends AbstractJwtTokenTestCase
      */
     private function createJwtTokenDecoder(string $algo, $key): JwtTokenDecoder
     {
-        return new JwtTokenDecoder($this->createFirebaseJwtDriver(null, $key, null, [$algo]));
+        return new JwtTokenDecoder($this->createJwtApiTokenFactory(null, $key, null, [$algo]));
     }
 }

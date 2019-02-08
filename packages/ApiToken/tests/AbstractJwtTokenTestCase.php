@@ -6,6 +6,7 @@ namespace StepTheFkUp\ApiToken\Tests;
 use EoneoPay\Utils\Str;
 use StepTheFkUp\ApiToken\External\FirebaseJwtDriver;
 use StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface;
+use StepTheFkUp\ApiToken\Tokens\Factories\JwtApiTokenFactory;
 
 abstract class AbstractJwtTokenTestCase extends AbstractTestCase
 {
@@ -66,6 +67,33 @@ abstract class AbstractJwtTokenTestCase extends AbstractTestCase
             $allowedAlgos,
             $leeway
         );
+    }
+
+    /**
+     * Create JwtApiTokenFactory using Firebase JWT driver.
+     *
+     * @param null|string $algo
+     * @param null|string|resource $publicKey
+     * @param null|string|resource $privateKey
+     * @param null|string[] $allowedAlgos
+     * @param null|int $leeway
+     *
+     * @return \StepTheFkUp\ApiToken\Tokens\Factories\JwtApiTokenFactory
+     */
+    protected function createJwtApiTokenFactory(
+        ?string $algo = null,
+        $publicKey = null,
+        $privateKey = null,
+        ?array $allowedAlgos = null,
+        ?int $leeway = null
+    ): JwtApiTokenFactory {
+        return new JwtApiTokenFactory($this->createFirebaseJwtDriver(
+            $algo,
+            $publicKey,
+            $privateKey,
+            $allowedAlgos,
+            $leeway
+        ));
     }
 
     /**
