@@ -3,13 +3,10 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\ApiToken\Decoders;
 
-use Exception;
 use Psr\Http\Message\ServerRequestInterface;
-use StepTheFkUp\ApiToken\Exceptions\InvalidApiTokenFromRequestException;
-use StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenDecoderInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface;
-use StepTheFkUp\ApiToken\Tokens\JwtApiToken;
+use StepTheFkUp\ApiToken\Interfaces\Tokens\Factories\JwtApiTokenFactoryInterface;
 use StepTheFkUp\ApiToken\Traits\ApiTokenDecoderTrait;
 
 final class JwtTokenDecoder implements ApiTokenDecoderInterface
@@ -17,18 +14,18 @@ final class JwtTokenDecoder implements ApiTokenDecoderInterface
     use ApiTokenDecoderTrait;
 
     /**
-     * @var \StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface
+     * @var \StepTheFkUp\ApiToken\Interfaces\Tokens\Factories\JwtApiTokenFactoryInterface
      */
-    private $jwtDriver;
+    private $jwtApiTokenFactory;
 
     /**
      * JwtTokenDecoder constructor.
      *
-     * @param \StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
+     * @param \StepTheFkUp\ApiToken\Interfaces\Tokens\Factories\JwtApiTokenFactoryInterface $jwtApiTokenFactory
      */
-    public function __construct(JwtDriverInterface $jwtDriver)
+    public function __construct(JwtApiTokenFactoryInterface $jwtApiTokenFactory)
     {
-        $this->jwtDriver = $jwtDriver;
+        $this->jwtApiTokenFactory = $jwtApiTokenFactory;
     }
 
     /**
@@ -48,18 +45,6 @@ final class JwtTokenDecoder implements ApiTokenDecoderInterface
             return null; // If Authorization doesn't start with Basic, return null
         }
 
-        try {
-            return new JwtApiToken((array)$this->jwtDriver->decode(\trim($authorization)));
-        } catch (Exception $exception) {
-            throw new InvalidApiTokenFromRequestException(
-                \sprintf(
-                    'Decoder "%s" unable to decode token. Message: %s',
-                    \get_class($this),
-                    $exception->getMessage()
-                ),
-                $exception->getCode(),
-                $exception
-            );
-        }
+        return $this->jwtApiTokenFactory->createFromString($authorization);
     }
 }
