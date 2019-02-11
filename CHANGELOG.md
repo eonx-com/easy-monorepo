@@ -4,7 +4,17 @@
 
 <!-- dumped content start -->
 
-## v0.2.0 - 2019-02-11
+## Unreleased
+
+### Pagination
+
+- [#4] Refactor PagePaginationDataResolverTrait according to new StartSizeData, Thanks to [@AlbertLabarento]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.2.0] - 2019-02-11
 
 ### EasyRepository
 
@@ -31,3 +41,6 @@
 [@natepage]: https://github.com/natepage
 [@maxquebral]: https://github.com/maxquebral
 [#3]: https://github.com/StepTheFkUp/StepTheFkUp/pull/3
+[#4]: https://github.com/StepTheFkUp/StepTheFkUp/pull/4
+[@AlbertLabarento]: https://github.com/AlbertLabarento
+[v0.2.0]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.1.1...v0.2.0
