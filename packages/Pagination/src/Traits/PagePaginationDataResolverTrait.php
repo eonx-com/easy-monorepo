@@ -24,8 +24,8 @@ trait PagePaginationDataResolverTrait
         }
 
         return new StartSizeData(
-            empty($data[$config->getStartAttribute()]) ? $config->getStartDefault() : $data[$config->getStartAttribute()],
-            empty($data[$config->getSizeAttribute()]) ? $config->getSizeDefault() : $data[$config->getSizeAttribute()]
+            empty($data[$config->getStartAttribute()]) ? $config->getStartDefault() : (int)$data[$config->getStartAttribute()],
+            empty($data[$config->getSizeAttribute()]) ? $config->getSizeDefault() : (int)$data[$config->getSizeAttribute()]
         );
     }
 }
