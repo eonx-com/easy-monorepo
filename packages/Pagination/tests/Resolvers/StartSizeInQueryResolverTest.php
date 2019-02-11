@@ -26,6 +26,23 @@ final class StartSizeInQueryResolverTest extends AbstractResolversTestCase
     }
 
     /**
+     * StartSizeInQueryResolver should resolve pagination data successfully with string values.
+     *
+     * @return void
+     */
+    public function testCustomConfigResolveWithStringAsValuesSuccessfully(): void
+    {
+        $config = $this->createConfig('page', null, 'perPage');
+        $data = (new StartSizeInQueryResolver($config))->resolve($this->createServerRequest([
+            'page' => '10',
+            'perPage' => '50'
+        ]));
+
+        self::assertEquals(10, $data->getStart());
+        self::assertEquals(50, $data->getSize());
+    }
+
+    /**
      * StartSizeInQueryResolver should return data with defaults if query attribute not set.
      *
      * @return void
