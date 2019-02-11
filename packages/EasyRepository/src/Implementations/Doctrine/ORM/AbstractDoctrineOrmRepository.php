@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Implementations\Doctrine;
+namespace StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
@@ -88,14 +88,26 @@ abstract class AbstractDoctrineOrmRepository implements ObjectRepositoryInterfac
     /**
      * Create query builder from ORM repository.
      *
-     * @param string $alias
+     * @param null|string $alias
      * @param null|string $indexBy
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function createQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilder
+    protected function createQueryBuilder(?string $alias = null, ?string $indexBy = null): QueryBuilder
     {
-        return $this->repository->createQueryBuilder($alias, $indexBy);
+        return $this->repository->createQueryBuilder($alias ?? $this->getEntityAlias(), $indexBy);
+    }
+
+    /**
+     * Get entity alias.
+     *
+     * @return string
+     */
+    protected function getEntityAlias(): string
+    {
+        $exploded = \explode('\\', $this->getEntityClass());
+
+        return \strtolower(\substr($exploded[\count($exploded) - 1], 0, 1));
     }
 
     /**

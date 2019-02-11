@@ -10,7 +10,8 @@
         "phpunit/phpunit": "^7.5",
         "mockery/mockery": "^1.2",
         "doctrine/orm": "^2.6",
-        "illuminate/support": "^5.7"
+        "illuminate/support": "^5.7",
+        "stepthefkup/pagination": "self.version"
     },
     "autoload": {
         "psr-4": {
@@ -23,7 +24,8 @@
         }
     },
     "suggest": {
-        "doctrine/orm": "To use the Doctrine implementation"
+        "doctrine/orm": "To use the Doctrine ORM implementation",
+        "stepthefkup/pagination": "To use pagination within your repositories"
     },
     "extra": {
         "branch-alias": {
