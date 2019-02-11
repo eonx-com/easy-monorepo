@@ -6,6 +6,14 @@
 
 ## Unreleased
 
+### EasyRepository
+
+- [#3] Add Doctrine ORM abstract repository with pagination, Thanks to [@natepage]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
 ### ApiToken
 
 - [#2] Add api token package, Thanks to [@natepage]
@@ -22,3 +30,4 @@
 [#1]: https://github.com/StepTheFkUp/StepTheFkUp/pull/1
 [@natepage]: https://github.com/natepage
 [@maxquebral]: https://github.com/maxquebral
+[#3]: https://github.com/StepTheFkUp/StepTheFkUp/pull/3
