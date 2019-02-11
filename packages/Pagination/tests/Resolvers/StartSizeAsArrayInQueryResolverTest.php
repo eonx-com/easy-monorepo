@@ -35,7 +35,7 @@ final class StartSizeAsArrayInQueryResolverTest extends AbstractResolversTestCas
     public function testCustomConfigResolveWithStringAsValuesSuccessfully(): void
     {
         $config = $this->createConfig('page', null, 'perPage');
-        $data = $data = (new StartSizeAsArrayInQueryResolver($config, 'page'))->resolve($this->createServerRequest([
+        $data = (new StartSizeAsArrayInQueryResolver($config, 'page'))->resolve($this->createServerRequest([
             'page' => [
                 'page' => '10',
                 'perPage' => '50'
