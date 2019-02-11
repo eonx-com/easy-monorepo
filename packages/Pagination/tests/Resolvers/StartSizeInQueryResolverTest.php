@@ -17,8 +17,8 @@ final class StartSizeInQueryResolverTest extends AbstractResolversTestCase
     {
         $config = $this->createConfig('page', null, 'perPage');
         $data = (new StartSizeInQueryResolver($config))->resolve($this->createServerRequest([
-            'page' => 5,
-            'perPage' => 100
+            'page' => '5',
+            'perPage' => '100'
         ]));
 
         self::assertEquals(5, $data->getStart());
