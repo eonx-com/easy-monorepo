@@ -39,7 +39,7 @@ interface PostRepositoryInterface
 // app/Repositories/PostRepository.php
 
 use App\Database\Entities\Post;
-use StepTheFkUp\EasyRepository\Implementations\Doctrine\AbstractDoctrineRepository;
+use StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\AbstractDoctrineRepository;
 
 final class PostRepository extends AbstractDoctrineRepository implements PostRepositoryInterface
 {
