@@ -7,7 +7,7 @@ use StepTheFkUp\Pagination\Data\StartSizeData;
 use StepTheFkUp\Pagination\Interfaces\StartSizeConfigInterface;
 use StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface;
 
-trait PagePaginationDataResolverTrait
+trait DataResolverTrait
 {
     /**
      * Create page pagination data for given data and configuration.
@@ -17,7 +17,7 @@ trait PagePaginationDataResolverTrait
      *
      * @return \StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface
      */
-    private function createPagePaginationData(StartSizeConfigInterface $config, $data): StartSizeDataInterface
+    private function createStartSizeData(StartSizeConfigInterface $config, $data): StartSizeDataInterface
     {
         if (\is_array($data) === false) {
             return new StartSizeData($config->getStartDefault(), $config->getSizeDefault());
