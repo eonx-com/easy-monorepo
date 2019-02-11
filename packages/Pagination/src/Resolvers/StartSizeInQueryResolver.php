@@ -7,11 +7,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use StepTheFkUp\Pagination\Interfaces\StartSizeConfigInterface;
 use StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface;
 use StepTheFkUp\Pagination\Interfaces\StartSizeDataResolverInterface;
-use StepTheFkUp\Pagination\Traits\PagePaginationDataResolverTrait;
+use StepTheFkUp\Pagination\Traits\DataResolverTrait;
 
 final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
 {
-    use PagePaginationDataResolverTrait;
+    use DataResolverTrait;
 
     /**
      * @var \StepTheFkUp\Pagination\Interfaces\StartSizeConfigInterface
@@ -37,6 +37,6 @@ final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
      */
     public function resolve(ServerRequestInterface $request): StartSizeDataInterface
     {
-        return $this->createPagePaginationData($this->config, $request->getQueryParams());
+        return $this->createStartSizeData($this->config, $request->getQueryParams());
     }
 }
