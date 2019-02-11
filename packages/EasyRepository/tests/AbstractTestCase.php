@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyRepository\Tests;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
@@ -37,12 +40,12 @@ abstract class AbstractTestCase extends TestCase
     /**
      * Create mock for given class and apply expectations if given.
      *
-     * @param string $class
+     * @param string|object $class
      * @param null|callable $expectations
      *
      * @return \Mockery\MockInterface
      */
-    protected function mock(string $class, ?callable $expectations = null): MockInterface
+    protected function mock($class, ?callable $expectations = null): MockInterface
     {
         $mock = Mockery::mock($class);
 
@@ -51,5 +54,30 @@ abstract class AbstractTestCase extends TestCase
         }
 
         return $mock;
+    }
+
+    /**
+     * Mock Doctrine manager registry for given manager and repository expectations.
+     *
+     * @param callable|null $managerExpectations
+     * @param callable|null $repositoryExpectations
+     *
+     * @return \Mockery\MockInterface
+     */
+    protected function mockRegistry(
+        ?callable $managerExpectations = null,
+        ?callable $repositoryExpectations = null
+    ): MockInterface {
+        $registry = $this->mock(
+            ManagerRegistry::class,
+            function (MockInterface $registry) use ($managerExpectations, $repositoryExpectations): void {
+                $manager = $this->mock(ObjectManager::class, $managerExpectations);
+                $repository = $this->mock(ObjectRepository::class, $repositoryExpectations);
+
+                $manager->shouldReceive('getRepository')->once()->with('my-entity-class')->andReturn($repository);
+                $registry->shouldReceive('getManagerForClass')->once()->with('my-entity-class')->andReturn($manager);
+            });
+
+        return $registry;
     }
 }

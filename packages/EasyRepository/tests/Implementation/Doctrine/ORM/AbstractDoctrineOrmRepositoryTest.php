@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine;
+namespace StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine\ORM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -127,30 +127,5 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
             });
             $manager->shouldReceive('flush')->once()->withNoArgs();
         };
-    }
-
-    /**
-     * Mock Doctrine manager registry for given manager and repository expectations.
-     *
-     * @param callable|null $managerExpectations
-     * @param callable|null $repositoryExpectations
-     *
-     * @return \Mockery\MockInterface
-     */
-    private function mockRegistry(
-        ?callable $managerExpectations = null,
-        ?callable $repositoryExpectations = null
-    ): MockInterface {
-        $registry = $this->mock(
-            ManagerRegistry::class,
-            function (MockInterface $registry) use ($managerExpectations, $repositoryExpectations): void {
-                $manager = $this->mock(ObjectManager::class, $managerExpectations);
-                $repository = $this->mock(ObjectRepository::class, $repositoryExpectations);
-
-                $manager->shouldReceive('getRepository')->once()->with('my-entity-class')->andReturn($repository);
-                $registry->shouldReceive('getManagerForClass')->once()->with('my-entity-class')->andReturn($manager);
-            });
-
-        return $registry;
     }
 }
