@@ -43,7 +43,7 @@
         "validate-repo": "vendor/bin/monorepo-builder validate"
     },
     "suggest": {
-        "doctrine/orm": "To use the Doctrine implementation",
+        "doctrine/orm": "To use the Doctrine ORM repository implementation",
         "firebase/php-jwt": "To use the JWT token resolver"
     },
     "extra": {
