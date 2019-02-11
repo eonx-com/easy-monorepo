@@ -4,7 +4,7 @@
 
 <!-- dumped content start -->
 
-## Unreleased
+## v0.2.0 - 2019-02-11
 
 ### EasyRepository
 
