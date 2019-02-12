@@ -16,6 +16,7 @@ parameters:
 
     # for "split" command
     directories_to_repositories:
+        packages/ApiFilters: 'git@github.com:StepTheFkUp/ApiFilters.git'
         packages/ApiToken: 'git@github.com:StepTheFkUp/ApiToken.git'
         packages/EasyRepository: 'git@github.com:StepTheFkUp/EasyRepository.git'
         packages/Pagination: 'git@github.com:StepTheFkUp/Pagination.git'

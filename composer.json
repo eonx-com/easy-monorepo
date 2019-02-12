@@ -22,6 +22,7 @@
     },
     "autoload": {
         "psr-4": {
+            "StepTheFkUp\\ApiFilters\\": "packages/ApiFilters/src",
             "StepTheFkUp\\ApiToken\\": "packages/ApiToken/src",
             "StepTheFkUp\\EasyRepository\\": "packages/EasyRepository/src",
             "StepTheFkUp\\Pagination\\": "packages/Pagination/src",
@@ -30,6 +31,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "StepTheFkUp\\ApiFilters\\Tests\\": "packages/ApiFilters/tests",
             "StepTheFkUp\\ApiToken\\Tests\\": "packages/ApiToken/tests",
             "StepTheFkUp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests",

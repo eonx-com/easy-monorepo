@@ -1,0 +1,27 @@
+{
+    "name": "stepthefkup/api-filters",
+    "description": "Tools to handle API filters like a pro",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "StepTheFkUp\\ApiFilters\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "StepTheFkUp\\ApiFilters\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.3-dev"
+        }
+    }
+}
