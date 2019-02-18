@@ -1,0 +1,22 @@
+{
+  "name": "stepthefkup/mock-builder",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "StepTheFkUp\\MockBuilder\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "StepTheFkUp\\MockBuilder\\Tests\\": "tests"
+    }
+  },
+  "require-dev": {
+    "php": "^7.1",
+    "phpunit/phpunit": "^7.5",
+    "mockery/mockery": "^1.2",
+    "doctrine/orm": "^2.6"
+  }
+}
