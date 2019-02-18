@@ -21,22 +21,24 @@
         "symplify/changelog-linker": "^5.4"
     },
     "autoload": {
-        "psr-4": {
-            "StepTheFkUp\\ApiFilters\\": "packages/ApiFilters/src",
-            "StepTheFkUp\\ApiToken\\": "packages/ApiToken/src",
-            "StepTheFkUp\\EasyRepository\\": "packages/EasyRepository/src",
-            "StepTheFkUp\\Pagination\\": "packages/Pagination/src",
-            "StepTheFkUp\\Psr7Factory\\": "packages/Psr7Factory/src"
-        }
+      "psr-4": {
+        "StepTheFkUp\\ApiFilters\\": "packages/ApiFilters/src",
+        "StepTheFkUp\\ApiToken\\": "packages/ApiToken/src",
+        "StepTheFkUp\\EasyRepository\\": "packages/EasyRepository/src",
+        "StepTheFkUp\\MockBuilder\\": "packages/MockBuilder/src",
+        "StepTheFkUp\\Pagination\\": "packages/Pagination/src",
+        "StepTheFkUp\\Psr7Factory\\": "packages/Psr7Factory/src"
+      }
     },
     "autoload-dev": {
-        "psr-4": {
-            "StepTheFkUp\\ApiFilters\\Tests\\": "packages/ApiFilters/tests",
-            "StepTheFkUp\\ApiToken\\Tests\\": "packages/ApiToken/tests",
-            "StepTheFkUp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
-            "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests",
-            "StepTheFkUp\\Psr7Factory\\Tests\\": "packages/Psr7Factory/tests"
-        }
+      "psr-4": {
+        "StepTheFkUp\\ApiFilters\\Tests\\": "packages/ApiFilters/tests",
+        "StepTheFkUp\\ApiToken\\Tests\\": "packages/ApiToken/tests",
+        "StepTheFkUp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
+        "StepTheFkUp\\MockBuilder\\Tests\\": "packages/MockBuilder/tests",
+        "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests",
+        "StepTheFkUp\\Psr7Factory\\Tests\\": "packages/Psr7Factory/tests"
+      }
     },
     "scripts": {
         "merge": "vendor/bin/monorepo-builder merge",
