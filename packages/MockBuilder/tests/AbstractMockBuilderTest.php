@@ -14,6 +14,8 @@ use StepTheFkUp\MockBuilder\Tests\Stubs\ClassStub;
  * @covers \StepTheFkUp\MockBuilder\AbstractMockBuilder
  * @covers \StepTheFkUp\MockBuilder\Returns\ReturnSelf
  * @covers \StepTheFkUp\MockBuilder\Returns\ReturnValue
+ *
+ * @runTestsInSeparateProcesses
  */
 final class AbstractMockBuilderTest extends AbstractTestCase
 {
