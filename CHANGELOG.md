@@ -4,7 +4,15 @@
 
 <!-- dumped content start -->
 
-## Unreleased
+## v0.2.1 - 2019-02-26
+
+### EasyRepository
+
+- [#6] Add Illuminate Eloquent abstract repository, Thanks to [@natepage]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
 
 ### Pagination
 
@@ -44,3 +52,4 @@
 [#4]: https://github.com/StepTheFkUp/StepTheFkUp/pull/4
 [@AlbertLabarento]: https://github.com/AlbertLabarento
 [v0.2.0]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.1.1...v0.2.0
+[#6]: https://github.com/StepTheFkUp/StepTheFkUp/pull/6
