@@ -84,7 +84,7 @@ final class EasyRepositoryProviderTest extends AbstractTestCase
                 }
             };
 
-            $app->shouldReceive('get')->once()->with('config')->andReturn($config);
+            $app->shouldReceive('make')->once()->with('config')->andReturn($config);
         });
     }
 }
