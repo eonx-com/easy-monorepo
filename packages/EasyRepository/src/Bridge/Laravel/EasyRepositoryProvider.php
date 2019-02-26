@@ -17,7 +17,7 @@ final class EasyRepositoryProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $config = $this->app->get('config')->get('easy-repository');
+        $config = $this->app->make('config')->get('easy-repository');
         $repositories = $config['repositories'] ?? [];
 
         if (empty($repositories)) {
