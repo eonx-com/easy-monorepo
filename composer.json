@@ -13,8 +13,10 @@
         "doctrine/orm": "^2.6",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
+        "illuminate/database": "^5.7",
         "illuminate/http": "^5.7",
         "illuminate/pagination": "^5.7",
+        "illuminate/support": "^5.7",
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^7.5",
         "symplify/monorepo-builder": "^5.4",
@@ -38,6 +40,13 @@
             "StepTheFkUp\\Psr7Factory\\Tests\\": "packages/Psr7Factory/tests"
         }
     },
+    "replace": {
+        "stepthefkup/api-filters": "self.version",
+        "stepthefkup/api-token": "self.version",
+        "stepthefkup/easy-repository": "self.version",
+        "stepthefkup/pagination": "self.version",
+        "stepthefkup/psr7-factory": "self.version"
+    },
     "scripts": {
         "merge": "vendor/bin/monorepo-builder merge",
         "propagate": "vendor/bin/monorepo-builder propagate",
@@ -45,9 +54,13 @@
         "validate-repo": "vendor/bin/monorepo-builder validate"
     },
     "suggest": {
-        "doctrine/orm": "To use the Doctrine ORM repository implementation",
-        "firebase/php-jwt": "To use the JWT token resolver"
+        "doctrine/orm": "To use the Doctrine ORM implementation",
+        "firebase/php-jwt": "To use the Firebase JWT driver to decode/encode tokens",
+        "illuminate/database": "To use the Illuminate Eloquent implementation",
+        "stepthefkup/pagination": "To use pagination within your repositories"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
