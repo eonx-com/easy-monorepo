@@ -13,10 +13,11 @@
         "doctrine/orm": "^2.6",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
-        "illuminate/database": "^5.7",
-        "illuminate/http": "^5.7",
-        "illuminate/pagination": "^5.7",
-        "illuminate/support": "^5.7",
+        "illuminate/database": "^5.5",
+        "illuminate/http": "^5.5",
+        "illuminate/pagination": "^5.5",
+        "illuminate/pipeline": "^5.5",
+        "illuminate/support": "^5.5",
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^7.5",
         "symplify/monorepo-builder": "^5.4",
@@ -26,6 +27,7 @@
         "psr-4": {
             "StepTheFkUp\\ApiFilters\\": "packages/ApiFilters/src",
             "StepTheFkUp\\ApiToken\\": "packages/ApiToken/src",
+            "StepTheFkUp\\EasyPipeline\\": "packages/EasyPipeline/src",
             "StepTheFkUp\\EasyRepository\\": "packages/EasyRepository/src",
             "StepTheFkUp\\Pagination\\": "packages/Pagination/src",
             "StepTheFkUp\\Psr7Factory\\": "packages/Psr7Factory/src"
@@ -35,6 +37,7 @@
         "psr-4": {
             "StepTheFkUp\\ApiFilters\\Tests\\": "packages/ApiFilters/tests",
             "StepTheFkUp\\ApiToken\\Tests\\": "packages/ApiToken/tests",
+            "StepTheFkUp\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
             "StepTheFkUp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests",
             "StepTheFkUp\\Psr7Factory\\Tests\\": "packages/Psr7Factory/tests"
@@ -45,7 +48,8 @@
         "stepthefkup/api-token": "self.version",
         "stepthefkup/easy-repository": "self.version",
         "stepthefkup/pagination": "self.version",
-        "stepthefkup/psr7-factory": "self.version"
+        "stepthefkup/psr7-factory": "self.version",
+        "stepthefkup/easy-pipeline": "self.version"
     },
     "scripts": {
         "merge": "vendor/bin/monorepo-builder merge",
