@@ -6,7 +6,7 @@ namespace StepTheFkUp\EasyPipeline\Exceptions;
 use InvalidArgumentException;
 use StepTheFkUp\EasyPipeline\Interfaces\EasyPipelineExceptionInterface as ExceptionInterface;
 
-final class EmptyMiddlewareProvidersListException extends InvalidArgumentException implements ExceptionInterface
+final class EmptyPipelinesListException extends InvalidArgumentException implements ExceptionInterface
 {
     // No body needed.
 }

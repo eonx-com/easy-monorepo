@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyPipeline\Tests\Bridge\Laravel;
 
 use StepTheFkUp\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider;
-use StepTheFkUp\EasyPipeline\Exceptions\EmptyMiddlewareProvidersListException;
+use StepTheFkUp\EasyPipeline\Exceptions\EmptyPipelinesListException;
 use StepTheFkUp\EasyPipeline\Interfaces\PipelineFactoryInterface;
 use StepTheFkUp\EasyPipeline\Tests\AbstractLumenTestCase;
 use StepTheFkUp\EasyPipeline\Tests\Bridge\Laravel\Stubs\MiddlewareProviderStub;
@@ -16,12 +16,12 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyPipeline\Exceptions\EmptyMiddlewareProvidersListException
+     * @throws \StepTheFkUp\EasyPipeline\Exceptions\EmptyPipelinesListException
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testEmptyProvidersListException(): void
     {
-        $this->expectException(EmptyMiddlewareProvidersListException::class);
+        $this->expectException(EmptyPipelinesListException::class);
 
         $app = $this->getApplication();
 
@@ -39,7 +39,7 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
     public function testRegisterPipelineFactorySuccess(): void
     {
         $app = $this->getApplication();
-        \config()->set('easy-pipeline.providers', ['pipeline-1' => 'provider-1']);
+        \config()->set('easy-pipeline.pipelines', ['pipeline-1' => 'provider-1']);
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */
         (new EasyIlluminatePipelineServiceProvider($app))->register();
@@ -57,14 +57,14 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
     public function testRegisterProviderSuccess(): void
     {
         $app = $this->getApplication();
-        \config()->set('easy-pipeline.providers', ['pipeline-1' => MiddlewareProviderStub::class]);
+        \config()->set('easy-pipeline.pipelines', ['pipeline-1' => MiddlewareProviderStub::class]);
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */
         (new EasyIlluminatePipelineServiceProvider($app))->register();
 
         self::assertInstanceOf(
             MiddlewareProviderStub::class,
-            $app->get(EasyIlluminatePipelineServiceProvider::PROVIDERS_PREFIX . 'pipeline-1')
+            $app->get(EasyIlluminatePipelineServiceProvider::PIPELINES_PREFIX . 'pipeline-1')
         );
     }
 }

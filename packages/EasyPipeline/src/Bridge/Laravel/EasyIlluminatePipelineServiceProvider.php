@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyPipeline\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use StepTheFkUp\EasyPipeline\Exceptions\EmptyMiddlewareProvidersListException;
+use StepTheFkUp\EasyPipeline\Exceptions\EmptyPipelinesListException;
 use StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory;
 use StepTheFkUp\EasyPipeline\Interfaces\PipelineFactoryInterface;
 
@@ -13,7 +13,7 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
     /**
      * @var string
      */
-    public const PROVIDERS_PREFIX = 'middleware_provider.';
+    public const PIPELINES_PREFIX = 'pipeline.';
 
     /**
      * Register EasyPipeline services for IlluminatePipeline implementation.
@@ -24,30 +24,8 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->registerMiddlewareProviders();
+        $this->registerPipelines();
         $this->registerPipelineFactory();
-    }
-
-    /**
-     * Register middleware providers into the container.
-     *
-     * @return void
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    private function registerMiddlewareProviders(): void
-    {
-        $providers = \config('easy-pipeline.providers', []);
-
-        if (empty($providers)) {
-            throw new EmptyMiddlewareProvidersListException(
-                'No providers to register. Please make sure your application has the expected configuration'
-            );
-        }
-
-        foreach ($providers as $pipeline => $provider) {
-            $this->app->bind(self::PROVIDERS_PREFIX . $pipeline, $provider);
-        }
     }
 
     /**
@@ -62,10 +40,32 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
             function (): IlluminatePipelineFactory {
                 return new IlluminatePipelineFactory(
                     $this->app,
-                    \array_keys(\config('easy-pipeline.providers', [])),
-                    self::PROVIDERS_PREFIX
+                    \array_keys(\config('easy-pipeline.pipelines', [])),
+                    self::PIPELINES_PREFIX
                 );
             }
         );
+    }
+
+    /**
+     * Register middleware providers into the container.
+     *
+     * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    private function registerPipelines(): void
+    {
+        $pipelines = \config('easy-pipeline.pipelines', []);
+
+        if (empty($pipelines)) {
+            throw new EmptyPipelinesListException(
+                'No pipelines to register. Please make sure your application has the expected configuration'
+            );
+        }
+
+        foreach ($pipelines as $pipeline => $provider) {
+            $this->app->bind(self::PIPELINES_PREFIX . $pipeline, $provider);
+        }
     }
 }

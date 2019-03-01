@@ -4,13 +4,13 @@ declare(strict_types=1);
 return [
     /*
     |--------------------------------------------------------------------------
-    | Middleware Providers List
+    | Pipelines and Middleware Providers List
     |--------------------------------------------------------------------------
     |
-    | Here you will define all your application's middleware providers to be registered
+    | Here you will define all your application pipelines and associated middleware providers to be registered
     | as services in the container.
-    | Providers list must be an associative array where the keys are the
-    | name of the pipeline the middleware list belongs to. Each middleware provider must implement
+    | Pipelines list must be an associative array where the keys are the
+    | name of the pipeline the middleware provider belongs to. Each middleware provider must implement
     | the StepTheFkUp\EasyPipeline\Interfaces\MiddlewareProviderInterface.
     |
     | Example:
@@ -18,7 +18,7 @@ return [
     | 'pipeline-2' => \App\Pipelines\Providers\Pipeline2MiddlewareProvider::class,
     |
     */
-    'providers' => [
+    'pipelines' => [
         // Define your repositories here...
     ]
 ];

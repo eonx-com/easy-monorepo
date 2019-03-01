@@ -20,7 +20,7 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
      */
     public function testCreatePipelineSuccessfullyWithPrefixAndCacheResolved(): void
     {
-        $prefix = EasyIlluminatePipelineServiceProvider::PROVIDERS_PREFIX;
+        $prefix = EasyIlluminatePipelineServiceProvider::PIPELINES_PREFIX;
 
         $app = $this->getApplication();
         $app->instance($prefix . 'pipeline', new ValidMiddlewareProviderStub());
