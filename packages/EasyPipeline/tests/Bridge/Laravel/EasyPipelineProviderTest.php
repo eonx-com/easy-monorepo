@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyPipeline\Tests\Bridge\Laravel;
 
-use Illuminate\Contracts\Foundation\Application;
-use Mockery\MockInterface;
 use StepTheFkUp\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider;
 use StepTheFkUp\EasyPipeline\Exceptions\EmptyMiddlewareProvidersListException;
 use StepTheFkUp\EasyPipeline\Interfaces\PipelineFactoryInterface;
-use StepTheFkUp\EasyPipeline\Tests\AbstractTestCase;
+use StepTheFkUp\EasyPipeline\Tests\AbstractLumenTestCase;
+use StepTheFkUp\EasyPipeline\Tests\Bridge\Laravel\Stubs\MiddlewareProviderStub;
 
-final class EasyPipelineProviderTest extends AbstractTestCase
+final class EasyPipelineProviderTest extends AbstractLumenTestCase
 {
     /**
      * Provider should throw exception when no repositories to register.
@@ -24,76 +23,48 @@ final class EasyPipelineProviderTest extends AbstractTestCase
     {
         $this->expectException(EmptyMiddlewareProvidersListException::class);
 
-        /** @var \Illuminate\Contracts\Foundation\Application $app */
-        $app = $this->mockApp();
+        $app = $this->getApplication();
 
+        /** @var \Illuminate\Contracts\Foundation\Application $app */
         (new EasyIlluminatePipelineServiceProvider($app))->register();
     }
 
     /**
-     * Provider should call the application to bind all the repositories with their interfaces.
+     * Provider should register the pipeline factory into the container.
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyPipeline\Exceptions\EmptyMiddlewareProvidersListException
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function testRegisterProvidersSuccessfully(): void
+    public function testRegisterPipelineFactorySuccess(): void
     {
-        $config = [
-            'providers' => [
-                'pipeline-1' => 'provider-1',
-                'pipeline-2' => 'provider-2',
-                'pipeline-3' => 'provider-3'
-            ]
-        ];
-
-        $prefixedKeys = [];
-        foreach (\array_keys($config['providers']) as $key) {
-            $prefixedKeys[] = EasyIlluminatePipelineServiceProvider::PROVIDERS_PREFIX . $key;
-        }
-
-        $app = $this->mockApp($config);
-        $app->shouldReceive('bind')
-            ->times(\count($config['providers']))
-            ->withArgs(function ($interface, $provider) use ($config, $prefixedKeys): bool {
-                $providers = $config['providers'];
-                $return = \in_array($interface, $prefixedKeys, true) && \in_array($provider, $providers, true);
-
-                self::assertTrue($return);
-
-                return $return;
-            });
+        $app = $this->getApplication();
+        \config()->set('easy-pipeline.providers', ['pipeline-1' => 'provider-1']);
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */
         (new EasyIlluminatePipelineServiceProvider($app))->register();
+
+        self::assertInstanceOf(PipelineFactoryInterface::class, $app->get(PipelineFactoryInterface::class));
     }
 
     /**
-     * Mock Illuminate application for given config.
+     * Provider should register middleware providers for pipelines and prefix them to avoid names clashes.
      *
-     * @param mixed[]|null $config
+     * @return void
      *
-     * @return \Mockery\MockInterface
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    private function mockApp(?array $config = null): MockInterface
+    public function testRegisterProviderSuccess(): void
     {
-        return $this->mock(Application::class, function (MockInterface $app) use ($config): void {
-            $config = new class($config ?? []) {
-                private $config;
+        $app = $this->getApplication();
+        \config()->set('easy-pipeline.providers', ['pipeline-1' => MiddlewareProviderStub::class]);
 
-                public function __construct(array $config)
-                {
-                    $this->config = $config;
-                }
+        /** @var \Illuminate\Contracts\Foundation\Application $app */
+        (new EasyIlluminatePipelineServiceProvider($app))->register();
 
-                public function get(string $key) {
-                    return $this->config;
-                }
-            };
-
-            $app->shouldReceive('make')->once()->with('config')->andReturn($config);
-            $app->shouldReceive('singleton')->once()->with(PipelineFactoryInterface::class, \Mockery::type(\Closure::class));
-        });
+        self::assertInstanceOf(
+            MiddlewareProviderStub::class,
+            $app->get(EasyIlluminatePipelineServiceProvider::PROVIDERS_PREFIX . 'pipeline-1')
+        );
     }
 }

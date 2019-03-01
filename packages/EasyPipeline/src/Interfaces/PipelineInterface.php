@@ -8,27 +8,11 @@ interface PipelineInterface
     /**
      * Process set input through set middleware list and return processed input.
      *
+     * @param mixed $input The input to be processed
+     *
      * @return mixed
      */
-    public function process();
-
-    /**
-     * Set input to be processed.
-     *
-     * @param mixed $input
-     *
-     * @return \StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface
-     */
-    public function setInput($input): self;
-
-    /**
-     * Set middleware list to process input with.
-     *
-     * @param mixed[] $middlewareList
-     *
-     * @return \StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface
-     */
-    public function setMiddlewareList(array $middlewareList): self;
+    public function process($input);
 
     /**
      * Return logs created by each middleware during process.

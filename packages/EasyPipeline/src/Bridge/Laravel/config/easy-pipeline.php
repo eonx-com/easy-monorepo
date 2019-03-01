@@ -20,6 +20,5 @@ return [
     */
     'providers' => [
         // Define your repositories here...
-        'my-pipeline' => \StepTheFkUp\EasyPipeline\Tests\Implementations\Stubs\MiddlewareProviderStub::class
     ]
 ];

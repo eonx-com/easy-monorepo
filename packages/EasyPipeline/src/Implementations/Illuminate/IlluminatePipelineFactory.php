@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyPipeline\Implementations\Illuminate;
 
-use Illuminate\Pipeline\Pipeline;
 use Illuminate\Contracts\Container\Container as ContainerInterface;
+use Illuminate\Pipeline\Pipeline;
 use StepTheFkUp\EasyPipeline\Exceptions\InvalidMiddlewareProviderException;
 use StepTheFkUp\EasyPipeline\Exceptions\PipelineNotFoundException;
 use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareProviderInterface;
@@ -21,7 +21,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
     /**
      * @var string[]
      */
-    private $mapping;
+    private $pipelines;
 
     /**
      * @var null|string
@@ -37,13 +37,13 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
      * IlluminatePipelineFactory constructor.
      *
      * @param \Illuminate\Contracts\Container\Container $container
-     * @param array $mapping
+     * @param string[] $pipelines
      * @param null|string $prefix
      */
-    public function __construct(ContainerInterface $container, array $mapping, ?string $prefix = null)
+    public function __construct(ContainerInterface $container, array $pipelines, ?string $prefix = null)
     {
         $this->container = $container;
-        $this->mapping = $mapping;
+        $this->pipelines = $pipelines;
         $this->prefix = $prefix;
     }
 
@@ -51,23 +51,21 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
      * Create pipeline for given name and input.
      *
      * @param string $pipeline The pipeline name
-     * @param mixed $input The input to process
      *
      * @return \StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface
      *
      * @throws \StepTheFkUp\EasyPipeline\Exceptions\PipelineNotFoundException If given pipeline not found
      */
-    public function create(string $pipeline, $input): PipelineInterface
+    public function create(string $pipeline): PipelineInterface
     {
         if (isset($this->resolved[$pipeline])) {
-            $pipeline = $this->resolved[$pipeline];
-
-            return $pipeline->setInput($input);
+            return $this->resolved[$pipeline];
         }
 
-        return $this->resolved[$pipeline] = (new IlluminatePipeline(new Pipeline($this->container)))
-            ->setInput($input)
-            ->setMiddlewareList($this->createMiddlewareProvider($pipeline)->getMiddlewareList());
+        return $this->resolved[$pipeline] = new IlluminatePipeline(
+            new Pipeline($this->container),
+            $this->createMiddlewareProvider($pipeline)->getMiddlewareList()
+        );
     }
 
     /**
@@ -79,9 +77,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
      */
     private function createMiddlewareProvider(string $pipeline): MiddlewareProviderInterface
     {
-        $pipelineName = $this->getPipelineName($pipeline);
-
-        if (isset($this->mapping[$pipeline]) === false) {
+        if (\in_array($pipeline, $this->pipelines, true) === false) {
             throw new PipelineNotFoundException(\sprintf(
                 'In %s, no middleware provider configured for pipeline "%s"',
                 \get_class($this),
@@ -89,7 +85,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
             ));
         }
 
-        $provider = $this->container->get($this->mapping[$pipelineName]);
+        $provider = $this->container->get($this->getPipelineName($pipeline));
 
         if ($provider instanceof MiddlewareProviderInterface) {
             return $provider;

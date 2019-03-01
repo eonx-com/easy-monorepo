@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyPipeline\Implementations\Illuminate;
 
-use StepTheFkUp\EasyPipeline\Exceptions\PipelineDidntRunException;
+use Illuminate\Contracts\Pipeline\Pipeline as IlluminatePipelineContract;
+use StepTheFkUp\EasyPipeline\Exceptions\EmptyMiddlewareListException;
 use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
 use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerInterface;
 use StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface;
-use Illuminate\Contracts\Pipeline\Pipeline as IlluminatePipelineContract;
 
 final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInterface
 {
@@ -15,11 +15,6 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
      * @var \Illuminate\Contracts\Pipeline\Pipeline
      */
     private $illuminatePipeline;
-
-    /**
-     * @var mixed
-     */
-    private $input;
 
     /**
      * @var mixed[]
@@ -32,18 +27,24 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
     private $middlewareList;
 
     /**
-     * @var bool
-     */
-    private $ran = false;
-
-    /**
      * IlluminatePipeline constructor.
      *
      * @param \Illuminate\Contracts\Pipeline\Pipeline $illuminatePipeline
+     * @param mixed[] $middlewareList
+     *
+     * @throws \StepTheFkUp\EasyPipeline\Exceptions\EmptyMiddlewareListException
      */
-    public function __construct(IlluminatePipelineContract $illuminatePipeline)
+    public function __construct(IlluminatePipelineContract $illuminatePipeline, array $middlewareList)
     {
+        if (empty($middlewareList)) {
+            throw new EmptyMiddlewareListException(\sprintf(
+                'In %s, given middleware list is empty',
+                \get_class($this)
+            ));
+        }
+
         $this->illuminatePipeline = $illuminatePipeline;
+        $this->middlewareList = $middlewareList;
     }
 
     /**
@@ -55,10 +56,6 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
      */
     public function getLogs(): array
     {
-        if ($this->ran === false) {
-            throw new PipelineDidntRunException('getLogs() cannot be called on a pipeline which did not run');
-        }
-
         return $this->logs;
     }
 
@@ -82,10 +79,14 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
     /**
      * Process set input through set middleware list and return processed input.
      *
+     * @param mixed $input The input to be processed
+     *
      * @return mixed
      */
-    public function process()
+    public function process($input)
     {
+        $this->logs = []; // Reset logs to allow same pipeline to process multiple inputs
+
         // Handle middleware logger aware
         foreach ($this->middlewareList as $middleware) {
             if ($middleware instanceof MiddlewareLoggerAwareInterface) {
@@ -93,56 +94,12 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
             }
         }
 
-        $processed = $this->illuminatePipeline
-            ->send($this->input)
+        return $this->illuminatePipeline
+            ->send($input)
             ->through($this->middlewareList)
             ->via('handle')
-            ->then($this->getPassClosure());
-
-        $this->ran = true;
-
-        return $processed;
-    }
-
-    /**
-     * Set input to be processed.
-     *
-     * @param mixed $input
-     *
-     * @return \StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface
-     */
-    public function setInput($input): PipelineInterface
-    {
-        $this->ran = false;
-        $this->input = $input;
-
-        return $this;
-    }
-
-    /**
-     * Set middleware list to process input with.
-     *
-     * @param mixed[] $middlewareList
-     *
-     * @return \StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface
-     */
-    public function setMiddlewareList(array $middlewareList): PipelineInterface
-    {
-        $this->ran = false;
-        $this->middlewareList = $middlewareList;
-
-        return $this;
-    }
-
-    /**
-     * Get closure to simply return given input.
-     *
-     * @return \Closure
-     */
-    private function getPassClosure(): \Closure
-    {
-        return function ($input) {
-            return $input;
-        };
+            ->then(function ($input) {
+                return $input;
+            });
     }
 }

@@ -25,25 +25,7 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerMiddlewareProviders();
-
-        $this->app->singleton(
-            PipelineFactoryInterface::class,
-            $this->getIlluminatePipelineFactoryClosure(self::PROVIDERS_PREFIX)
-        );
-    }
-
-    /**
-     * Get closure to instantiate the illuminate pipeline factory.
-     *
-     * @param string $prefix
-     *
-     * @return \Closure
-     */
-    private function getIlluminatePipelineFactoryClosure(string $prefix): \Closure
-    {
-        return function () use ($prefix): IlluminatePipelineFactory {
-            return new IlluminatePipelineFactory($this->app, $this->app->make('config')->get('easy-pipeline.providers', []), $prefix);
-        };
+        $this->registerPipelineFactory();
     }
 
     /**
@@ -55,8 +37,7 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
      */
     private function registerMiddlewareProviders(): void
     {
-        $config = $this->app->make('config')->get('easy-pipeline');
-        $providers = $config['providers'] ?? [];
+        $providers = \config('easy-pipeline.providers', []);
 
         if (empty($providers)) {
             throw new EmptyMiddlewareProvidersListException(
@@ -67,5 +48,24 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
         foreach ($providers as $pipeline => $provider) {
             $this->app->bind(self::PROVIDERS_PREFIX . $pipeline, $provider);
         }
+    }
+
+    /**
+     * Register pipeline factory.
+     *
+     * @return void
+     */
+    private function registerPipelineFactory(): void
+    {
+        $this->app->singleton(
+            PipelineFactoryInterface::class,
+            function (): IlluminatePipelineFactory {
+                return new IlluminatePipelineFactory(
+                    $this->app,
+                    \array_keys(\config('easy-pipeline.providers', [])),
+                    self::PROVIDERS_PREFIX
+                );
+            }
+        );
     }
 }
