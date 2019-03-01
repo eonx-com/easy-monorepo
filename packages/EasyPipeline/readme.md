@@ -7,12 +7,11 @@
 
 # Documentation
 
-## Installation
+## Middleware and MiddlewareProviders
 
-The recommended way to install this package is to use [Composer][1].
+- [Middleware](docs/middlewares.md)
+- [MiddlewareProviders](docs/middleware_providers.md)
 
-```bash
-$ composer require stepthefkup/easy-pipeline
-```
+## Laravel / Lumen
 
-[1]: https://getcomposer.org/
+- [Installation](docs/laravel_install.md)

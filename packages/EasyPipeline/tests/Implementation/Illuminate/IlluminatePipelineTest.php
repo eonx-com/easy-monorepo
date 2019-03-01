@@ -14,6 +14,20 @@ use StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\LoggerChangeN
 final class IlluminatePipelineTest extends AbstractLumenTestCase
 {
     /**
+     * For callable in pipeline tests purposes.
+     *
+     * @param mixed $input
+     * @param \Closure $next
+     *
+     * @return mixed
+     */
+    public function actAsMiddleware($input, \Closure $next)
+    {
+        // Just pass input to next
+        return $next($input);
+    }
+
+    /**
      * Pipeline should throw an exception when given middleware list is empty.
      *
      * @return void
@@ -35,7 +49,15 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
         $middlewareList = [
             new ChangeNameMiddleware('bob'),
             new LoggerChangeNameMiddleware(new ChangeNameMiddleware('harry')),
-            new LoggerChangeNameMiddleware(new ChangeNameMiddleware('nathan'))
+            new LoggerChangeNameMiddleware(new ChangeNameMiddleware('brandon')),
+            function ($input, $next) {
+                if ($input instanceof InputStub) {
+                    $input->setName('nathan');
+                }
+
+                return $next($input);
+            },
+            [$this, 'actAsMiddleware']
         ];
 
         $pipeline = new IlluminatePipeline(new Pipeline(), $middlewareList);
@@ -64,7 +86,7 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
         self::assertEquals([
             LoggerChangeNameMiddleware::class => [
                 'Changed name "bob" to "harry"',
-                'Changed name "harry" to "nathan"'
+                'Changed name "harry" to "brandon"'
             ]
         ], $logs);
     }
