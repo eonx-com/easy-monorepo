@@ -11,7 +11,7 @@
         "phpunit/phpunit": "^7.5",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
-        "illuminate/support": "^5.7"
+        "zendframework/zend-diactoros": "^1.8"
     },
     "autoload": {
         "psr-4": {
