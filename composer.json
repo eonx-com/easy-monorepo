@@ -53,6 +53,11 @@
         "stepthefkup/easy-pipeline": "self.version"
     },
     "scripts": {
+        "changelog": [
+            "vendor/bin/changelog-linker dump-merges --in-packages",
+            "vendor/bin/changelog-linker link",
+            "vendor/bin/changelog-linker cleanup"
+        ],
         "merge": "vendor/bin/monorepo-builder merge",
         "propagate": "vendor/bin/monorepo-builder propagate",
         "split": "vendor/bin/monorepo-builder split",
