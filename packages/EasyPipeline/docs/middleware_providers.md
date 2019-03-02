@@ -55,7 +55,7 @@ final class MyPipeline1MiddlewareProvider implements MiddlewareProviderInterface
     /**
      * @var App\Validator\MyValidatorInterface
      */
-    private $validtor;
+    private $validator;
     
     public function __construct(MyValidatorInterface $validator)
     {
