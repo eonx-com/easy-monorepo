@@ -17,8 +17,10 @@
         "illuminate/http": "^5.7",
         "illuminate/pagination": "^5.7",
         "illuminate/support": "^5.7",
+        "laravel/lumen-framework": "^5.5",
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^7.5",
+        "vlucas/phpdotenv": "^3.3",
         "symplify/monorepo-builder": "^5.4",
         "symplify/changelog-linker": "^5.4"
     },
@@ -26,6 +28,7 @@
         "psr-4": {
             "StepTheFkUp\\ApiFilters\\": "packages/ApiFilters/src",
             "StepTheFkUp\\ApiToken\\": "packages/ApiToken/src",
+            "StepTheFkUp\\EasyPipeline\\": "packages/EasyPipeline/src",
             "StepTheFkUp\\EasyRepository\\": "packages/EasyRepository/src",
             "StepTheFkUp\\Pagination\\": "packages/Pagination/src",
             "StepTheFkUp\\Psr7Factory\\": "packages/Psr7Factory/src"
@@ -35,6 +38,7 @@
         "psr-4": {
             "StepTheFkUp\\ApiFilters\\Tests\\": "packages/ApiFilters/tests",
             "StepTheFkUp\\ApiToken\\Tests\\": "packages/ApiToken/tests",
+            "StepTheFkUp\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
             "StepTheFkUp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests",
             "StepTheFkUp\\Psr7Factory\\Tests\\": "packages/Psr7Factory/tests"
@@ -45,7 +49,8 @@
         "stepthefkup/api-token": "self.version",
         "stepthefkup/easy-repository": "self.version",
         "stepthefkup/pagination": "self.version",
-        "stepthefkup/psr7-factory": "self.version"
+        "stepthefkup/psr7-factory": "self.version",
+        "stepthefkup/easy-pipeline": "self.version"
     },
     "scripts": {
         "merge": "vendor/bin/monorepo-builder merge",
@@ -57,6 +62,7 @@
         "doctrine/orm": "To use the Doctrine ORM implementation",
         "firebase/php-jwt": "To use the Firebase JWT driver to decode/encode tokens",
         "illuminate/database": "To use the Illuminate Eloquent implementation",
+        "illuminate/pipeline": "To use the Illuminate Pipeline implementation",
         "stepthefkup/pagination": "To use pagination within your repositories"
     },
     "minimum-stability": "dev",
