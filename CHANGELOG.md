@@ -4,7 +4,7 @@
 
 <!-- dumped content start -->
 
-## Unreleased
+## v0.3.0 - 2019-03-02
 
 ### EasyPipeline
 
