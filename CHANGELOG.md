@@ -4,6 +4,17 @@
 
 <!-- dumped content start -->
 
+## Unreleased
+
+### EasyPipeline
+
+- [#8] Create package, Thanks to [@natepage]
+- [#7] Fix typo, Thanks to [@ttam]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
 ## [v0.2.1] - 2019-02-26
 
 ### EasyRepository
@@ -54,3 +65,6 @@
 [v0.2.0]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.1.1...v0.2.0
 [#6]: https://github.com/StepTheFkUp/StepTheFkUp/pull/6
 [v0.2.1]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.2.0...v0.2.1
+[#8]: https://github.com/StepTheFkUp/StepTheFkUp/pull/8
+[#7]: https://github.com/StepTheFkUp/StepTheFkUp/pull/7
+[@ttam]: https://github.com/ttam
