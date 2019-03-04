@@ -15,9 +15,9 @@ abstract class AbstractDoctrineOrmRepository implements ObjectRepositoryInterfac
     protected $repository;
 
     /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
-    private $manager;
+    protected $manager;
 
     /**
      * AbstractDoctrineOrmRepository constructor.
