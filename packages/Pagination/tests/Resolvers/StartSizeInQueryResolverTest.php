@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace StepTheFkUp\Pagination\Tests\Resolvers;
 
 use StepTheFkUp\Pagination\Resolvers\StartSizeInQueryResolver;
-use StepTheFkUp\Pagination\Tests\AbstractResolversTestCase;
+use StepTheFkUp\Pagination\Tests\AbstractTestCase;
 
-final class StartSizeInQueryResolverTest extends AbstractResolversTestCase
+final class StartSizeInQueryResolverTest extends AbstractTestCase
 {
     /**
      * StartSizeInQueryResolver should resolve pagination data successfully with custom config.

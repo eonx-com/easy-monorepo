@@ -9,8 +9,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface;
 use StepTheFkUp\Pagination\Interfaces\StartSizeDataResolverInterface;
 use StepTheFkUp\Pagination\Resolvers\Config\StartSizeConfig;
-use StepTheFkUp\Psr7Factory\Interfaces\Psr7FactoryInterface;
-use StepTheFkUp\Psr7Factory\Psr7Factory;
 
 abstract class AbstractStartSizePaginationProvider extends ServiceProvider
 {
@@ -27,12 +25,26 @@ abstract class AbstractStartSizePaginationProvider extends ServiceProvider
     ];
 
     /**
+     * Publish configuration file.
+     *
+     * @return void
+     */
+    public function boot(): void
+    {
+        $this->publishes([
+            __DIR__ . '/../config/pagination.php' => \base_path('config/pagination.php')
+        ]);
+    }
+
+    /**
      * Register start_size pagination services.
      *
      * @return void
      */
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__ . '/../config/pagination.php', 'pagination');
+
         $this->app->bind(StartSizeDataResolverInterface::class, $this->getResolverClosure());
         $this->app->bind(StartSizeDataInterface::class, $this->getDataClosure());
     }
@@ -48,10 +60,12 @@ abstract class AbstractStartSizePaginationProvider extends ServiceProvider
      * Create start_size pagination config from app config.
      *
      * @return \StepTheFkUp\Pagination\Resolvers\Config\StartSizeConfig
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function createConfig(): StartSizeConfig
     {
-        $config = $this->app->get('config')->get('pagination.start_size', []);
+        $config = $this->app->make('config')->get('pagination.start_size', []);
 
         return new StartSizeConfig(
             $config['start_attribute'] ?? static::$defaultConfig['start_attribute'],
@@ -65,10 +79,12 @@ abstract class AbstractStartSizePaginationProvider extends ServiceProvider
      * Get server request created from application request.
      *
      * @return \Psr\Http\Message\ServerRequestInterface
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function createServerRequest(): ServerRequestInterface
     {
-        return $this->app->get(Psr7FactoryInterface::class)->createRequest($this->app->get('request'));
+        return $this->app->make(ServerRequestInterface::class);
     }
 
     /**

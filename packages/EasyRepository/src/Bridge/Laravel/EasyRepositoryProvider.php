@@ -9,6 +9,18 @@ use StepTheFkUp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListEx
 final class EasyRepositoryProvider extends ServiceProvider
 {
     /**
+     * Publish configuration file.
+     *
+     * @return void
+     */
+    public function boot(): void
+    {
+        $this->publishes([
+            __DIR__ . '/config/easy-repository.php' => \base_path('config/easy-repository.php')
+        ]);
+    }
+
+    /**
      * Register repositories into the services container.
      *
      * @return void
@@ -17,9 +29,9 @@ final class EasyRepositoryProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $config = $this->app->make('config')->get('easy-repository');
-        $repositories = $config['repositories'] ?? [];
+        $this->mergeConfigFrom(__DIR__ . '/config/easy-repository.php', 'easy-repository');
 
+        $repositories = \config('easy-repository.repositories', []);
         if (empty($repositories)) {
             throw new EmptyRepositoriesListException(
                 'No repositories to register. Please make sure your application has the expected configuration'

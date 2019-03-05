@@ -22,7 +22,7 @@ final class StartSizeAsArrayInQueryPaginationProvider extends AbstractStartSizeP
     protected function getResolverClosure(): \Closure
     {
         return function (): StartSizeAsArrayInQueryResolver {
-            $queryAttr = $this->app->get('config')->get('pagination.array_in_query_attr', static::$defaultQueryAttr);
+            $queryAttr = $this->app->make('config')->get('pagination.array_in_query_attr', static::$defaultQueryAttr);
 
             return new StartSizeAsArrayInQueryResolver($this->createConfig(), $queryAttr);
         };
