@@ -16,6 +16,18 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
     public const PIPELINES_PREFIX = 'pipeline.';
 
     /**
+     * Publish configuration file.
+     *
+     * @return void
+     */
+    public function boot(): void
+    {
+        $this->publishes([
+            __DIR__ . '/config/easy-pipeline.php' => \base_path('config/easy-pipeline.php')
+        ]);
+    }
+
+    /**
      * Register EasyPipeline services for IlluminatePipeline implementation.
      *
      * @return void
@@ -24,6 +36,8 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__ . '/config/easy-pipeline.php', 'easy-pipeline');
+
         $this->registerPipelines();
         $this->registerPipelineFactory();
     }
