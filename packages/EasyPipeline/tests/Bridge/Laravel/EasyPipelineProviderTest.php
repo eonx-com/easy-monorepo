@@ -26,7 +26,10 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
         $app = $this->getApplication();
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */
-        (new EasyIlluminatePipelineServiceProvider($app))->register();
+        $serviceProvider = new EasyIlluminatePipelineServiceProvider($app);
+
+        $serviceProvider->boot();
+        $serviceProvider->register();
     }
 
     /**
