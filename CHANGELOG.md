@@ -1,6 +1,6 @@
 <!-- dumped content start -->
 
-## Unreleased
+## v0.3.1 - 2019-03-05
 
 - [#11] Improve Laravel service providers for DX, Thanks to [@natepage]
 
