@@ -9,6 +9,7 @@ use StepTheFkUp\EasyPipeline\Exceptions\PipelineNotFoundException;
 use StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory;
 use StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface;
 use StepTheFkUp\EasyPipeline\Tests\AbstractLumenTestCase;
+use StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\PipelineNameAwareMiddlewareProviderStub;
 use StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ValidMiddlewareProviderStub;
 
 final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
@@ -45,6 +46,21 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
         $app->instance('pipeline', new \stdClass());
 
         (new IlluminatePipelineFactory($app, ['pipeline']))->create('pipeline');
+    }
+
+    /**
+     * Factory should set the name of the pipeline on PipelineNameAware providers.
+     *
+     * @return void
+     */
+    public function testPipelineNameAwareMiddlewareSetsName(): void
+    {
+        $app = $this->getApplication();
+        $app->instance('pipeline', new PipelineNameAwareMiddlewareProviderStub());
+
+        $pipeline = (new IlluminatePipelineFactory($app, ['pipeline']))->create('pipeline');
+
+        self::assertEquals('test-pipeline', $pipeline->process('test-'));
     }
 
     /**

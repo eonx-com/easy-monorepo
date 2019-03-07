@@ -39,6 +39,13 @@ The [Illuminate Pipeline][3] knows how to resolve middleware using the PSR Servi
 that it also allows you to define your middleware using `callable`. So if you're a using the `IlluminatePipeline` 
 implementation of this package your MiddlewareProviders can return closures and any kind of `callable` as well.
 
+#### Accessing the Pipeline name 
+
+If you're using the IlluminatePipelineFactory, a MiddlewareProvider can access the name it was registered under by implementing the `StepTheFkUp\EasyPipeline\Interfaces\PipelineNameAwareInterface`.
+The factory will call `setPipelineName()` on any MiddlewareProviders implementing this.
+
+To save time, the `StepTheFkUp\EasyPipeline\Traits\PipelineNameAwareTrait` is available, providing an implementation of this function and the private property `$pipelineName`.
+
 # Dependency Injection
 
 This package is using the PSR Service Container to instantiate your MiddlewareProviders which means you can use 
