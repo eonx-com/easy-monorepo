@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyRepository\Tests\Bridge\Laravel;
 
-use Illuminate\Contracts\Foundation\Application;
-use Mockery\MockInterface;
 use StepTheFkUp\EasyRepository\Bridge\Laravel\EasyRepositoryProvider;
 use StepTheFkUp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException;
-use StepTheFkUp\EasyRepository\Tests\AbstractTestCase;
+use StepTheFkUp\EasyRepository\Tests\AbstractLumenTestCase;
+use StepTheFkUp\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository1Stub;
+use StepTheFkUp\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository2Stub;
 
-final class EasyRepositoryProviderTest extends AbstractTestCase
+final class EasyRepositoryProviderTest extends AbstractLumenTestCase
 {
     /**
      * Provider should throw exception when no repositories to register.
@@ -23,7 +23,7 @@ final class EasyRepositoryProviderTest extends AbstractTestCase
         $this->expectException(EmptyRepositoriesListException::class);
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */
-        $app = $this->mockApp();
+        $app = $this->getApplication();
 
         (new EasyRepositoryProvider($app))->register();
     }
@@ -37,54 +37,18 @@ final class EasyRepositoryProviderTest extends AbstractTestCase
      */
     public function testRegisterRepositoriesSuccessfully(): void
     {
-        $config = [
-            'repositories' => [
-                'interface-1' => 'repository-1',
-                'interface-2' => 'repository-2',
-                'interface-3' => 'repository-3'
-            ]
-        ];
-
-        $app = $this->mockApp($config);
-        $app->shouldReceive('bind')
-            ->times(\count($config['repositories']))
-            ->withArgs(function ($interface, $repository) use ($config): bool {
-                $repositories = $config['repositories'];
-                $return = \array_key_exists($interface, $repositories) && \in_array($repository, $repositories);
-
-                self::assertTrue($return);
-
-                return $return;
-            });
+        $app = $this->getApplication();
+        \config()->set('easy-repository.repositories', [
+            'interface-1' => Repository1Stub::class,
+            'interface-2' => Repository2Stub::class
+        ]);
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */
-        (new EasyRepositoryProvider($app))->register();
-    }
+        $provider = new EasyRepositoryProvider($app);
+        $provider->boot();
+        $provider->register();
 
-    /**
-     * Mock Illuminate application for given config.
-     *
-     * @param mixed[]|null $config
-     *
-     * @return \Mockery\MockInterface
-     */
-    private function mockApp(?array $config = null): MockInterface
-    {
-        return $this->mock(Application::class, function (MockInterface $app) use ($config): void {
-            $config = new class($config ?? []) {
-                private $config;
-
-                public function __construct(array $config)
-                {
-                    $this->config = $config;
-                }
-
-                public function get(string $key) {
-                    return $this->config;
-                }
-            };
-
-            $app->shouldReceive('make')->once()->with('config')->andReturn($config);
-        });
+        $this->assertInstanceInApp(Repository1Stub::class, 'interface-1');
+        $this->assertInstanceInApp(Repository2Stub::class, 'interface-2');
     }
 }
