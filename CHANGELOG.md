@@ -1,6 +1,18 @@
+<!-- changelog-linker -->
+
 <!-- dumped content start -->
 
-## v0.3.1 - 2019-03-05
+## v0.3.2 - 2019-03-12
+
+### EasyPipeline
+
+- [#12] Pipeline name aware, Thanks to [@ttam]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.3.1] - 2019-03-05
 
 - [#11] Improve Laravel service providers for DX, Thanks to [@natepage]
 
@@ -84,3 +96,5 @@
 [#10]: https://github.com/StepTheFkUp/StepTheFkUp/pull/10
 [#9]: https://github.com/StepTheFkUp/StepTheFkUp/pull/9
 [v0.3.0]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.2.1...v0.3.0
+[#12]: https://github.com/StepTheFkUp/StepTheFkUp/pull/12
+[v0.3.1]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.0...v0.3.1
