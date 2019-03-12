@@ -10,6 +10,7 @@ use StepTheFkUp\EasyPipeline\Exceptions\PipelineNotFoundException;
 use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareProviderInterface;
 use StepTheFkUp\EasyPipeline\Interfaces\PipelineFactoryInterface;
 use StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface;
+use StepTheFkUp\EasyPipeline\Interfaces\PipelineNameAwareInterface;
 
 final class IlluminatePipelineFactory implements PipelineFactoryInterface
 {
@@ -62,9 +63,15 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
             return $this->resolved[$pipeline];
         }
 
+        $provider = $this->createMiddlewareProvider($pipeline);
+
+        if ($provider instanceof PipelineNameAwareInterface) {
+            $provider->setPipelineName($pipeline);
+        }
+
         return $this->resolved[$pipeline] = new IlluminatePipeline(
             new Pipeline($this->container),
-            $this->createMiddlewareProvider($pipeline)->getMiddlewareList()
+            $provider->getMiddlewareList()
         );
     }
 
