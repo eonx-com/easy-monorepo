@@ -16,8 +16,9 @@ final class AbstractEloquentRepositoryTest extends AbstractTestCase
      */
     public function testAllUsesModelAndReturnArray(): void
     {
-        $repo = $this->createEloquentRepository(function (MockInterface $model): void {
-            $model->shouldReceive('all')->once()->withNoArgs()->andReturn([]);
+        $repo = $this->createEloquentRepository(function (MockInterface $model, MockInterface $collection): void {
+            $collection->shouldReceive('getDictionary')->once()->withNoArgs()->andReturn([]);
+            $model->shouldReceive('all')->once()->withNoArgs()->andReturn($collection);
         });
 
         self::assertEquals([], $repo->all());
