@@ -26,20 +26,20 @@ interface IdentityServiceInterface
     /**
      * Delete user for given id.
      *
-     * @param string $userId
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
      *
      * @return void
      */
-    public function deleteUser(string $userId): void;
+    public function deleteUser(IdentityUserIdResolverInterface $userIdResolver): void;
 
     /**
      * Get user information for given id.
      *
-     * @param string $userId
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
      *
      * @return mixed[]
      */
-    public function getUser(string $userId): array;
+    public function getUser(IdentityUserIdResolverInterface $userIdResolver): array;
 
     /**
      * Login user for given data.
@@ -64,10 +64,10 @@ interface IdentityServiceInterface
     /**
      * Update user for given id with given data.
      *
-     * @param string $userId
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
      * @param mixed[] $data
      *
      * @return mixed[]
      */
-    public function updateUser(string $userId, array $data): array;
+    public function updateUser(IdentityUserIdResolverInterface $userIdResolver, array $data): array;
 }

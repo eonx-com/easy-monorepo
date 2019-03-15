@@ -19,6 +19,7 @@ use StepTheFkUp\EasyIdentity\Implementations\Auth0\Config;
 use StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
 use StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory;
 use StepTheFkUp\EasyIdentity\Tests\AbstractTestCase;
+use StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserIdResolverStub;
 
 class Auth0IdentityServiceTest extends AbstractTestCase
 {
@@ -33,6 +34,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      * @return void
      *
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testCreateUser(): void
     {
@@ -107,7 +109,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             })->andReturnNull();
         });
 
-        $this->getServiceForUsersMethod($management)->deleteUser('identity-id');
+        $this->getServiceForUsersMethod($management)->deleteUser(new IdentityUserIdResolverStub('identity-id'));
     }
 
     /**
@@ -132,7 +134,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             })->andReturn([]);
         });
 
-        $this->getServiceForUsersMethod($management)->getUser('identity-id');
+        $this->getServiceForUsersMethod($management)->getUser(new IdentityUserIdResolverStub('identity-id'));
     }
 
     /**
@@ -280,9 +282,12 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                 ->andReturn(['expected']);
         });
 
-        self::assertEquals(['expected'], $this->getServiceForUsersMethod($management)->updateUser('identity-id', [
+        $actual = $this->getServiceForUsersMethod($management)->updateUser(new IdentityUserIdResolverStub(
+            'identity-id'), [
             'email' => 'email@email.com'
-        ]));
+        ]);
+
+        self::assertEquals(['expected'], $actual);
     }
 
     /**
@@ -311,7 +316,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      *
      * @return \StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService
      */
-    private function getServiceForUsersMethod(ManagementApiClientFactory $management): Auth0IdentityService {
+    private function getServiceForUsersMethod(ManagementApiClientFactory $management): Auth0IdentityService
+    {
         return new Auth0IdentityService(
             new AuthenticationApiClientFactory($this->getConfig()),
             $this->getConfig(),
@@ -327,7 +333,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      *
      * @return \Mockery\MockInterface
      */
-    private function mockManagementForUsersClient(Closure $closure): MockInterface {
+    private function mockManagementForUsersClient(Closure $closure): MockInterface
+    {
         $users = $this->mock(Users::class, $closure);
 
         return $this->mock(

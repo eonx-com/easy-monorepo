@@ -6,6 +6,7 @@ namespace StepTheFkUp\EasyIdentity\Implementations\Auth0;
 use GuzzleHttp\Exception\RequestException;
 use StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException;
 use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceInterface;
+use StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Suppress due to dependency
@@ -88,7 +89,7 @@ class Auth0IdentityService implements IdentityServiceInterface
     /**
      * Delete user for given id.
      *
-     * @param string $userId
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
      *
      * @return void
      *
@@ -96,15 +97,15 @@ class Auth0IdentityService implements IdentityServiceInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
-    public function deleteUser(string $userId): void
+    public function deleteUser(IdentityUserIdResolverInterface $userIdResolver): void
     {
-        $this->managementFactory->create()->users->delete($userId);
+        $this->managementFactory->create()->users->delete($userIdResolver->getUserId());
     }
 
     /**
      * Get user information for given id.
      *
-     * @param string $userId
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
      *
      * @return mixed[]
      *
@@ -112,9 +113,9 @@ class Auth0IdentityService implements IdentityServiceInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
-    public function getUser(string $userId): array
+    public function getUser(IdentityUserIdResolverInterface $userIdResolver): array
     {
-        return $this->managementFactory->create()->users->get($userId);
+        return $this->managementFactory->create()->users->get($userIdResolver->getUserId());
     }
 
     /**
@@ -167,7 +168,7 @@ class Auth0IdentityService implements IdentityServiceInterface
     /**
      * Update user for given id with given data.
      *
-     * @param string $userId
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
      * @param mixed[] $data
      *
      * @return mixed[]
@@ -176,12 +177,12 @@ class Auth0IdentityService implements IdentityServiceInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
-    public function updateUser(string $userId, array $data): array
+    public function updateUser(IdentityUserIdResolverInterface $userIdResolver, array $data): array
     {
         $data['client_id'] = $this->config->getClientId();
         $data['connection'] = $this->config->getConnection();
 
-        return $this->managementFactory->create()->users->update($userId, $data);
+        return $this->managementFactory->create()->users->update($userIdResolver->getUserId(), $data);
     }
 
     /**
