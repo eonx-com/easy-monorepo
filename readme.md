@@ -8,6 +8,7 @@
 ## Packages
 
 - [ApiToken](https://github.com/StepTheFkUp/ApiToken): Tools to handle API tokens like a pro.
+- [EasyIdentity](https://github.com/StepTheFkUp/EasyIdentity): Tools to handle authentication like a pro.
 - [EasyPipeline](https://github.com/StepTheFkUp/EasyPipeline): An easy way to implement the Pipeline Design Pattern in your applications.
 - [EasyRepository](https://github.com/StepTheFkUp/EasyRepository): An easy way to implement the Repository Design Pattern in your applications.
 - [Pagination](https://github.com/StepTheFkUp/Pagination): A generic way to handle pagination data from clients.

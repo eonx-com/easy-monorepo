@@ -10,10 +10,11 @@
         "zendframework/zend-diactoros": "^1.8"
     },
     "require-dev": {
+        "auth0/auth0-php": "^5.4",
         "doctrine/orm": "^2.6",
+        "ext-json": "*",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
-        "illuminate/support": "^5.7",
         "laravel/lumen-framework": "^5.5",
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^7.5",
@@ -25,6 +26,7 @@
         "psr-4": {
             "StepTheFkUp\\ApiFilters\\": "packages/ApiFilters/src",
             "StepTheFkUp\\ApiToken\\": "packages/ApiToken/src",
+            "StepTheFkUp\\EasyIdentity\\": "packages/EasyIdentity/src",
             "StepTheFkUp\\EasyPipeline\\": "packages/EasyPipeline/src",
             "StepTheFkUp\\EasyRepository\\": "packages/EasyRepository/src",
             "StepTheFkUp\\Pagination\\": "packages/Pagination/src",
@@ -35,6 +37,7 @@
         "psr-4": {
             "StepTheFkUp\\ApiFilters\\Tests\\": "packages/ApiFilters/tests",
             "StepTheFkUp\\ApiToken\\Tests\\": "packages/ApiToken/tests",
+            "StepTheFkUp\\EasyIdentity\\Tests\\": "packages/EasyIdentity/tests",
             "StepTheFkUp\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
             "StepTheFkUp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "StepTheFkUp\\Pagination\\Tests\\": "packages/Pagination/tests",
@@ -47,7 +50,8 @@
         "stepthefkup/easy-repository": "self.version",
         "stepthefkup/pagination": "self.version",
         "stepthefkup/psr7-factory": "self.version",
-        "stepthefkup/easy-pipeline": "self.version"
+        "stepthefkup/easy-pipeline": "self.version",
+        "stepthefkup/easy-identity": "self.version"
     },
     "scripts": {
         "changelog": [
@@ -61,6 +65,7 @@
         "validate-repo": "vendor/bin/monorepo-builder validate"
     },
     "suggest": {
+        "auth0/auth0-php": "To use the Auth0 implementation to handle your users identity",
         "doctrine/orm": "To use the Doctrine ORM implementation",
         "firebase/php-jwt": "To use the Firebase JWT driver to decode/encode tokens",
         "illuminate/database": "To use the Illuminate Eloquent implementation",

@@ -1,0 +1,34 @@
+{
+    "name": "stepthefkup/easy-identity",
+    "description": "Tools to handle authentication like a pro",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5",
+        "mockery/mockery": "^1.2",
+        "ext-json": "*",
+        "laravel/lumen-framework": "^5.5",
+        "auth0/auth0-php": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "StepTheFkUp\\EasyIdentity\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "StepTheFkUp\\EasyIdentity\\Tests\\": "tests"
+        }
+    },
+    "suggest": {
+        "auth0/auth0-php": "To use the Auth0 implementation to handle your users identity"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.4-dev"
+        }
+    }
+}
