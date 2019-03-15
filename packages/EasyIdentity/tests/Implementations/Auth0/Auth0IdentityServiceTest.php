@@ -12,6 +12,7 @@ use GuzzleHttp\Exception\RequestException;
 use Mockery\MockInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
 use StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException;
 use StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService;
 use StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory;
@@ -19,7 +20,7 @@ use StepTheFkUp\EasyIdentity\Implementations\Auth0\Config;
 use StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
 use StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory;
 use StepTheFkUp\EasyIdentity\Tests\AbstractTestCase;
-use StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserIdResolverStub;
+use StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserIdHolderStub;
 
 class Auth0IdentityServiceTest extends AbstractTestCase
 {
@@ -29,6 +30,24 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     private $config;
 
     /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function testCreateUserInvalidResponseException(): void
+    {
+        $this->expectException(InvalidResponseFromIdentityException::class);
+
+        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
+        $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
+            $mock
+                ->shouldReceive('create')
+                ->once()
+                ->with(['connection' => $this->getConfig()->getConnection()])
+                ->andReturn(['expected']);
+        });
+
+        $this->getServiceForUsersMethod($management)->createUser(new IdentityUserIdHolderStub('initial'), []);
+    }
+    /**
      * Service should call Auth0 to create user for given data.
      *
      * @return void
@@ -36,7 +55,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testCreateUser(): void
+    public function testCreateUserSuccessfully(): void
     {
         /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
@@ -49,10 +68,15 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                             && \array_shift($connection) === $this->getConfig()->getConnection();
                     }
                 )
-                ->andReturn(['expected']);
+                ->andReturn(['user_id' => 'identity-id', 'expected']);
         });
 
-        self::assertEquals(['expected'], $this->getServiceForUsersMethod($management)->createUser([]));
+        $identityUserIdHolder = new IdentityUserIdHolderStub('initial');
+
+        $actual = $this->getServiceForUsersMethod($management)->createUser($identityUserIdHolder, []);
+
+        self::assertEquals(['user_id' => 'identity-id', 'expected'], $actual);
+        self::assertEquals('identity-id', $identityUserIdHolder->getIdentityUserId());
     }
 
     /**
@@ -109,7 +133,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             })->andReturnNull();
         });
 
-        $this->getServiceForUsersMethod($management)->deleteUser(new IdentityUserIdResolverStub('identity-id'));
+        $this->getServiceForUsersMethod($management)->deleteUser(new IdentityUserIdHolderStub('identity-id'));
     }
 
     /**
@@ -134,7 +158,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             })->andReturn([]);
         });
 
-        $this->getServiceForUsersMethod($management)->getUser(new IdentityUserIdResolverStub('identity-id'));
+        $this->getServiceForUsersMethod($management)->getUser(new IdentityUserIdHolderStub('identity-id'));
     }
 
     /**
@@ -282,7 +306,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                 ->andReturn(['expected']);
         });
 
-        $actual = $this->getServiceForUsersMethod($management)->updateUser(new IdentityUserIdResolverStub(
+        $actual = $this->getServiceForUsersMethod($management)->updateUser(new IdentityUserIdHolderStub(
             'identity-id'), [
             'email' => 'email@email.com'
         ]);

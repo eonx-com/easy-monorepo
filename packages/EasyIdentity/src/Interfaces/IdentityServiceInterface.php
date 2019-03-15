@@ -8,11 +8,14 @@ interface IdentityServiceInterface
     /**
      * Create user for given data.
      *
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
      * @param mixed[] $data
      *
      * @return mixed[]
+     *
+     * @throws \StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
      */
-    public function createUser(array $data): array;
+    public function createUser(IdentityUserIdHolderInterface $userIdHolder, array $data): array;
 
     /**
      * Validate and decode given token and return decoded version.
@@ -26,20 +29,20 @@ interface IdentityServiceInterface
     /**
      * Delete user for given id.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
      *
      * @return void
      */
-    public function deleteUser(IdentityUserIdResolverInterface $userIdResolver): void;
+    public function deleteUser(IdentityUserIdHolderInterface $userIdHolder): void;
 
     /**
      * Get user information for given id.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
      *
      * @return mixed[]
      */
-    public function getUser(IdentityUserIdResolverInterface $userIdResolver): array;
+    public function getUser(IdentityUserIdHolderInterface $userIdHolder): array;
 
     /**
      * Login user for given data.
@@ -64,10 +67,10 @@ interface IdentityServiceInterface
     /**
      * Update user for given id with given data.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
      * @param mixed[] $data
      *
      * @return mixed[]
      */
-    public function updateUser(IdentityUserIdResolverInterface $userIdResolver, array $data): array;
+    public function updateUser(IdentityUserIdHolderInterface $userIdHolder, array $data): array;
 }
