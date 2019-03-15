@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v0.3.2 - 2019-03-12
+## v0.3.3 - 2019-03-15
+
+### EasyIdentity
+
+- [#15] Create package
+
+### EasyRepository
+
+- [#14] Return an array from EloquentRepository, Thanks to [@ttam]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.3.2] - 2019-03-12
 
 ### EasyPipeline
 
@@ -98,3 +112,6 @@
 [v0.3.0]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.2.1...v0.3.0
 [#12]: https://github.com/StepTheFkUp/StepTheFkUp/pull/12
 [v0.3.1]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.0...v0.3.1
+[#15]: https://github.com/StepTheFkUp/StepTheFkUp/pull/15
+[#14]: https://github.com/StepTheFkUp/StepTheFkUp/pull/14
+[v0.3.2]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.1...v0.3.2
