@@ -7,4 +7,6 @@
 
 ## Documentation
 
-Coming soon...
+## Laravel / Lumen
+
+- [Installation](docs/laravel_install.md)
