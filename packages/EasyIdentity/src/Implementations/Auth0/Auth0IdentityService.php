@@ -60,6 +60,7 @@ class Auth0IdentityService implements IdentityServiceInterface
      * @return mixed[]
      *
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function createUser(array $data): array
     {
