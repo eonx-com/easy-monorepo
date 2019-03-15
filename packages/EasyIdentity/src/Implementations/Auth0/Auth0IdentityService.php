@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyIdentity\Implementations\Auth0;
 
 use GuzzleHttp\Exception\RequestException;
+use StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
 use StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException;
 use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceInterface;
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface;
+use StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Suppress due to dependency
@@ -56,18 +57,28 @@ class Auth0IdentityService implements IdentityServiceInterface
     /**
      * Create user for given email and password.
      *
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
      * @param mixed[] $data
      *
      * @return mixed[]
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
      */
-    public function createUser(array $data): array
+    public function createUser(IdentityUserIdHolderInterface $userIdHolder, array $data): array
     {
         $data['connection'] = $this->config->getConnection();
 
-        return $this->managementFactory->create()->users->create($data);
+        $response = $this->managementFactory->create()->users->create($data);
+
+        if (empty($response['user_id']) === false) {
+            $userIdHolder->setIdentityUserId($response['user_id']);
+
+            return $response;
+        }
+
+        throw new InvalidResponseFromIdentityException('Missing "user_id" from identity response');
     }
 
     /**
@@ -89,7 +100,7 @@ class Auth0IdentityService implements IdentityServiceInterface
     /**
      * Delete user for given id.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
      *
      * @return void
      *
@@ -97,15 +108,15 @@ class Auth0IdentityService implements IdentityServiceInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
-    public function deleteUser(IdentityUserIdResolverInterface $userIdResolver): void
+    public function deleteUser(IdentityUserIdHolderInterface $userIdHolder): void
     {
-        $this->managementFactory->create()->users->delete($userIdResolver->getUserId());
+        $this->managementFactory->create()->users->delete($userIdHolder->getIdentityUserId());
     }
 
     /**
      * Get user information for given id.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
      *
      * @return mixed[]
      *
@@ -113,9 +124,9 @@ class Auth0IdentityService implements IdentityServiceInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
-    public function getUser(IdentityUserIdResolverInterface $userIdResolver): array
+    public function getUser(IdentityUserIdHolderInterface $userIdHolder): array
     {
-        return $this->managementFactory->create()->users->get($userIdResolver->getUserId());
+        return $this->managementFactory->create()->users->get($userIdHolder->getIdentityUserId());
     }
 
     /**
@@ -168,7 +179,7 @@ class Auth0IdentityService implements IdentityServiceInterface
     /**
      * Update user for given id with given data.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdResolverInterface $userIdResolver
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
      * @param mixed[] $data
      *
      * @return mixed[]
@@ -177,12 +188,12 @@ class Auth0IdentityService implements IdentityServiceInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
-    public function updateUser(IdentityUserIdResolverInterface $userIdResolver, array $data): array
+    public function updateUser(IdentityUserIdHolderInterface $userIdHolder, array $data): array
     {
         $data['client_id'] = $this->config->getClientId();
         $data['connection'] = $this->config->getConnection();
 
-        return $this->managementFactory->create()->users->update($userIdResolver->getUserId(), $data);
+        return $this->managementFactory->create()->users->update($userIdHolder->getIdentityUserId(), $data);
     }
 
     /**
