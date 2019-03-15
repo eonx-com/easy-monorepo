@@ -7,12 +7,12 @@
         "eoneopay/utils": "dev-master",
         "php": "^7.1",
         "symfony/psr-http-message-bridge": "^1.1",
-        "zendframework/zend-diactoros": "^1.8",
-        "ext-json": "^7.1"
+        "zendframework/zend-diactoros": "^1.8"
     },
     "require-dev": {
         "auth0/auth0-php": "^5.4",
         "doctrine/orm": "^2.6",
+        "ext-json": "^7.1",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
         "laravel/lumen-framework": "^5.5",
@@ -65,6 +65,7 @@
         "validate-repo": "vendor/bin/monorepo-builder validate"
     },
     "suggest": {
+        "auth0/auth0-php": "To use the Auth0 implementation to handle your users identity",
         "doctrine/orm": "To use the Doctrine ORM implementation",
         "firebase/php-jwt": "To use the Firebase JWT driver to decode/encode tokens",
         "illuminate/database": "To use the Illuminate Eloquent implementation",
