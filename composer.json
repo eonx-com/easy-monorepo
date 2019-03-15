@@ -12,7 +12,7 @@
     "require-dev": {
         "auth0/auth0-php": "^5.4",
         "doctrine/orm": "^2.6",
-        "ext-json": "^7.1",
+        "ext-json": "*",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
         "laravel/lumen-framework": "^5.5",
