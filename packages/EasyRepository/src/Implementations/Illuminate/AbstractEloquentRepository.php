@@ -29,7 +29,7 @@ abstract class AbstractEloquentRepository implements ObjectRepositoryInterface
      */
     public function all(): array
     {
-        return $this->model->all();
+        return \array_values($this->model->all()->getDictionary());
     }
 
     /**

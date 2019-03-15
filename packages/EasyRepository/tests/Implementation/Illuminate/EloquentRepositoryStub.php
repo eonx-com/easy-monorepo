@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyRepository\Tests\Implementation\Illuminate;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use StepTheFkUp\EasyRepository\Implementations\Illuminate\AbstractEloquentRepository;
 
 final class EloquentRepositoryStub extends AbstractEloquentRepository
@@ -33,9 +34,10 @@ final class EloquentRepositoryStub extends AbstractEloquentRepository
     protected function getModel(): Model
     {
         $mock = \Mockery::mock(Model::class);
+        $collection = \Mockery::mock(Collection::class);
 
         if ($this->modelExpectations !== null) {
-            \call_user_func($this->modelExpectations, $mock);
+            \call_user_func($this->modelExpectations, $mock, $collection);
         }
 
         return $mock;
