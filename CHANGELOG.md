@@ -2,7 +2,13 @@
 
 <!-- dumped content start -->
 
-## v0.3.3 - 2019-03-15
+## v0.3.4 - 2019-03-15
+
+### EasyIdentity
+
+- Improve concept of identity user id holder
+
+## [v0.3.3] - 2019-03-15
 
 ### EasyIdentity
 
@@ -115,3 +121,4 @@
 [#15]: https://github.com/StepTheFkUp/StepTheFkUp/pull/15
 [#14]: https://github.com/StepTheFkUp/StepTheFkUp/pull/14
 [v0.3.2]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.1...v0.3.2
+[v0.3.3]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.2...v0.3.3
