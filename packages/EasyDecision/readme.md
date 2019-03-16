@@ -12,9 +12,9 @@
 - [ ] Specific functions per decision type
 - [ ] Common functions to all decision types
 - [ ] Yes/No decision have different strategies:
--- [ ] affirmative: Yes as soon as first rule says yes
--- [ ] consensus: Yes if more yes than no
--- [ ] unanimous: Yes if everybody says yes
+- [ ] affirmative: Yes as soon as first rule says yes
+- [ ] consensus: Yes if more yes than no
+- [ ] unanimous: Yes if everybody says yes
 - [ ] Priority on rules: Run first the rules with biggest priority
 - [ ] Rules can say if they support the given input
 - [ ] After run users can get which rules ran, their body and output
