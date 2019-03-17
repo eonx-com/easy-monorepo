@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Expression;
+namespace StepTheFkUp\EasyDecision\Expressions;
 
 use StepTheFkUp\EasyDecision\Interfaces\ExpressionFunctionInterface;
 

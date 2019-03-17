@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyDecision\Interfaces\Expression;
 
-use StepTheFkUp\EasyDecision\Expression\ExpressionLanguage;
+use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguage;
 
 interface ExpressionLanguageFactoryInterface
 {
@@ -12,7 +12,7 @@ interface ExpressionLanguageFactoryInterface
      *
      * @param \StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageConfigInterface $config
      *
-     * @return \StepTheFkUp\EasyDecision\Expression\ExpressionLanguage
+     * @return \StepTheFkUp\EasyDecision\Expressions\ExpressionLanguage
      */
     public function create(ExpressionLanguageConfigInterface $config): ExpressionLanguage;
 }

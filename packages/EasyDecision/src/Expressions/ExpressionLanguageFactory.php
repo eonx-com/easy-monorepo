@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Expression;
+namespace StepTheFkUp\EasyDecision\Expressions;
 
 use StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionFunctionFactoryInterface;
 use StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageConfigInterface;
@@ -30,7 +30,7 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
      *
      * @param \StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageConfigInterface $config
      *
-     * @return \StepTheFkUp\EasyDecision\Expression\ExpressionLanguage
+     * @return \StepTheFkUp\EasyDecision\Expressions\ExpressionLanguage
      */
     public function create(ExpressionLanguageConfigInterface $config): ExpressionLanguage
     {
