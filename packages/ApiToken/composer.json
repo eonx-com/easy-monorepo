@@ -11,7 +11,8 @@
         "phpunit/phpunit": "^7.5",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
-        "zendframework/zend-diactoros": "^1.8"
+        "zendframework/zend-diactoros": "^1.8",
+        "auth0/auth0-php": "^5.4"
     },
     "autoload": {
         "psr-4": {
@@ -24,6 +25,7 @@
         }
     },
     "suggest": {
+        "auth0/auth0-php": "To use the Auth0 JWT driver to decode/encode tokens",
         "firebase/php-jwt": "To use the Firebase JWT driver to decode/encode tokens"
     },
     "extra": {

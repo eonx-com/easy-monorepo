@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace StepTheFkUp\ApiToken\Tests\Decoders;
 
 use StepTheFkUp\ApiToken\Decoders\JwtTokenInQueryDecoder;
-use StepTheFkUp\ApiToken\Tests\AbstractJwtTokenTestCase;
+use StepTheFkUp\ApiToken\Tests\AbstractFirebaseJwtTokenTestCase;
 use StepTheFkUp\ApiToken\Tokens\JwtApiToken;
 
-final class JwtTokenInQueryDecoderTest extends AbstractJwtTokenTestCase
+final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenTestCase
 {
     /**
      * JwtTokenDecoder should decode token successfully for each algorithms.
@@ -25,7 +25,12 @@ final class JwtTokenInQueryDecoderTest extends AbstractJwtTokenTestCase
                 $key = $this->getOpenSslPublicKey();
             }
 
-            $jwtApiTokenFactory = $this->createJwtApiTokenFactory(null, $key, null, [$algo]);
+            $jwtApiTokenFactory = $this->createJwtApiTokenFactory($this->createFirebaseJwtDriver(
+                null,
+                $key,
+                null,
+                [$algo]
+            ));
             $decoder = new JwtTokenInQueryDecoder($jwtApiTokenFactory, 'param');
             $request = $this->createServerRequest(null, [
                 'param' => $this->createToken($algo)
@@ -53,7 +58,10 @@ final class JwtTokenInQueryDecoderTest extends AbstractJwtTokenTestCase
      */
     public function testNullWhenQueryParamNotSet(): void
     {
-        $decoder = new JwtTokenInQueryDecoder($this->createJwtApiTokenFactory(), 'param');
+        $decoder = new JwtTokenInQueryDecoder($this->createJwtApiTokenFactory(
+            $this->createFirebaseJwtDriver()),
+            'param'
+        );
 
         self::assertNull($decoder->decode($this->createServerRequest()));
     }
