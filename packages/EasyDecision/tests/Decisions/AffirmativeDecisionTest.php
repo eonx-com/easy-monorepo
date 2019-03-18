@@ -79,4 +79,25 @@ final class AffirmativeDecisionTest extends AbstractTestCase
         self::assertTrue($decision->make([]));
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
+
+    /**
+     * Decision should return true and run highest priority first.
+     *
+     * @return void
+     */
+    public function testReturnTrueWithPriorities(): void
+    {
+        $decision = new AffirmativeDecision([
+            $this->createFalseRule('false-1'),
+            $this->createTrueRule('true-1', 100)
+        ]);
+
+        $expected = [
+            'true-1' => true,
+            'false-1' => RuleInterface::OUTPUT_SKIPPED
+        ];
+
+        self::assertTrue($decision->make([]));
+        self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
+    }
 }

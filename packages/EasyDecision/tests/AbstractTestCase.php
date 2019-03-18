@@ -17,35 +17,38 @@ abstract class AbstractTestCase extends TestCase
      * Create rule which returns false.
      *
      * @param string $name
+     * @param null|int $priority
      *
      * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
      */
-    protected function createFalseRule(string $name): RuleInterface
+    protected function createFalseRule(string $name, ?int $priority = null): RuleInterface
     {
-        return new RuleStub($name, false);
+        return new RuleStub($name, false, null, $priority);
     }
 
     /**
      * Create rule which returns true.
      *
      * @param string $name
+     * @param null|int $priority
      *
      * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
      */
-    protected function createTrueRule(string $name): RuleInterface
+    protected function createTrueRule(string $name, ?int $priority = null): RuleInterface
     {
-        return new RuleStub($name, true);
+        return new RuleStub($name, true, null, $priority);
     }
 
     /**
      * Create rule which will be unsupported.
      *
      * @param string $name
+     * @param null|int $priority
      *
      * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
      */
-    protected function createUnsupportedRule(string $name): RuleInterface
+    protected function createUnsupportedRule(string $name, ?int $priority = null): RuleInterface
     {
-        return new RuleStub($name, null, false);
+        return new RuleStub($name, null, false, $priority);
     }
 }
