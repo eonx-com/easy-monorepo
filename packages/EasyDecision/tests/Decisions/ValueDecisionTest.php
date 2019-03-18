@@ -9,6 +9,8 @@ use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
 use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
 use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
+use StepTheFkUp\EasyDecision\Tests\Stubs\AssertContextAwareInputRule;
+use StepTheFkUp\EasyDecision\Tests\Stubs\ValueContextAwareInputStub;
 
 final class ValueDecisionTest extends AbstractTestCase
 {
@@ -37,6 +39,20 @@ final class ValueDecisionTest extends AbstractTestCase
     }
 
     /**
+     * Decision should throw an exception when given input is an array and contains the reserved "context" index.
+     *
+     * @return void
+     */
+    public function testReservedContextInInputArrayException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $decision = new ValueDecision([$this->getModifyValueRuleInArray()]);
+
+        $decision->make(['context' => 'I know it is bad...']);
+    }
+
+    /**
      * Decision should return modified array input.
      *
      * @return void
@@ -61,6 +77,21 @@ final class ValueDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->make($original));
         self::assertEquals($expectedRuleOutput, $decision->getContext()->getRuleOutputs());
         self::assertEquals($original, $decision->getContext()->getOriginalInput());
+    }
+
+    /**
+     * Decision should inject context in input if ContextAwareInterface.
+     *
+     * @return void
+     */
+    public function testReturnModifiedObjectInputContextAwareSuccessfully(): void
+    {
+        // Assertion done in AssertContextAwareInputRule
+        $decision = new ValueDecision([new AssertContextAwareInputRule()]);
+
+        $input = new ValueContextAwareInputStub(10);
+
+        $decision->make($input);
     }
 
     /**

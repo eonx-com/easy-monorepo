@@ -8,18 +8,19 @@ use StepTheFkUp\EasyDecision\Context;
 use StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException;
 use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
 use StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException;
-use StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface;
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
 use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
 use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
-use StepTheFkUp\EasyDecision\Interfaces\ValueDecisionInterface;
 use StepTheFkUp\EasyDecision\Middleware\ValueMiddleware;
 use StepTheFkUp\EasyDecision\Middleware\YesNoMiddleware;
+use StepTheFkUp\EasyDecision\Traits\DealsWithContextTrait;
 use StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline;
 use StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface;
 
 abstract class AbstractDecision implements DecisionInterface
 {
+    use DealsWithContextTrait;
+
     /**
      * @var \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
      */
@@ -77,10 +78,7 @@ abstract class AbstractDecision implements DecisionInterface
     {
         $this->context = new Context($this->getDecisionType(), $input);
 
-        // Give context to input to be able to stop propagation from expression rules
-        if ($input instanceof ContextAwareInterface) {
-            $input->setContext($this->context);
-        }
+        $this->handleContextAwareInputs($this->context);
 
         try {
             $this->createPipeline()->process($this->context);
@@ -88,6 +86,8 @@ abstract class AbstractDecision implements DecisionInterface
         } catch (\Exception $exception) {
             throw new UnableToMakeDecisionException($exception->getMessage(), $exception->getCode(), $exception);
         }
+
+        $this->removeContextFromInput($this->context);
 
         return $this->context->getInput();
     }
