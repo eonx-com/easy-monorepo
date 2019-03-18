@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyDecision\Expressions;
 
 use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
-use StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionFunctionFactoryInterface;
-use StepTheFkUp\EasyDecision\Interfaces\ExpressionFunctionInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
 
 final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterface
 {
@@ -14,7 +14,7 @@ final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterf
      *
      * @param mixed $expressionFunction
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ExpressionFunctionInterface
+     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      */
     public function create($expressionFunction): ExpressionFunctionInterface
     {

@@ -65,11 +65,4 @@ interface ContextInterface
      * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
      */
     public function stopPropagation(): self;
-
-    /**
-     * Get array representation.
-     *
-     * @return mixed[]
-     */
-    public function toArray(): array;
 }

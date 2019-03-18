@@ -3,22 +3,22 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyDecision\Expressions;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionFunctionFactoryInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageConfigInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageFactoryInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 
 final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterface
 {
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionFunctionFactoryInterface
+     * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
      */
     private $functionFactory;
 
     /**
      * ExpressionLanguageFactory constructor.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionFunctionFactoryInterface $functionFactory
+     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface $functionFactory
      */
     public function __construct(ExpressionFunctionFactoryInterface $functionFactory)
     {
@@ -28,7 +28,7 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
     /**
      * Create expression language for given config.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageConfigInterface $config
+     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      *
      * @return \StepTheFkUp\EasyDecision\Expressions\ExpressionLanguage
      */

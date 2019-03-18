@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision;
+namespace StepTheFkUp\EasyDecision\Middleware;
 
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
 use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;

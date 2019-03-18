@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyDecision\Interfaces;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 
 interface ExpressionLanguageAwareInterface
 {
     /**
      * Set expression language.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageInterface $expressionLanguage
+     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
      *
      * @return void
      */

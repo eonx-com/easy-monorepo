@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyDecision\Expressions;
 
-use StepTheFkUp\EasyDecision\Interfaces\ExpressionFunctionInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
 
 final class ExpressionFunction implements ExpressionFunctionInterface
 {

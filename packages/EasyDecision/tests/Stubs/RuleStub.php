@@ -1,21 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Rules;
+namespace StepTheFkUp\EasyDecision\Tests\Stubs;
 
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
-use StepTheFkUp\EasyDecision\Traits\ExpressionLanguageAwareTrait;
 
-final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageAwareInterface
+final class RuleStub implements RuleInterface
 {
-    use ExpressionLanguageAwareTrait;
-
     /**
      * @var string
      */
-    private $expression;
+    private $name;
+
+    /**
+     * @var mixed
+     */
+    private $output;
 
     /**
      * @var int
@@ -23,14 +24,23 @@ final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageA
     private $priority;
 
     /**
-     * ExpressionLanguageRule constructor.
+     * @var bool
+     */
+    private $supports;
+
+    /**
+     * RuleStub constructor.
      *
-     * @param string $expression
+     * @param string $name
+     * @param mixed $output
+     * @param null|bool $supports
      * @param null|int $priority
      */
-    public function __construct(string $expression, ?int $priority = null)
+    public function __construct(string $name, $output, ?bool $supports = null, ?int $priority = null)
     {
-        $this->expression = $expression;
+        $this->name = $name;
+        $this->output = $output;
+        $this->supports = $supports ?? true;
         $this->priority = $priority ?? 0;
     }
 
@@ -53,7 +63,7 @@ final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageA
      */
     public function proceed(ContextInterface $context)
     {
-        return $this->expressionLanguage->evaluate($this->expression, $context->getInput());
+        return $this->output;
     }
 
     /**
@@ -65,7 +75,7 @@ final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageA
      */
     public function supports(ContextInterface $context): bool
     {
-        return true;
+        return $this->supports;
     }
 
     /**
@@ -75,6 +85,6 @@ final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageA
      */
     public function toString(): string
     {
-        return $this->expression;
+        return $this->name;
     }
 }

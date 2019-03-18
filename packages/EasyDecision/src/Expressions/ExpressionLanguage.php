@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyDecision\Expressions;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionFunctionProviderInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageInterface;
-use StepTheFkUp\EasyDecision\Interfaces\ExpressionFunctionInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 
 final class ExpressionLanguage implements ExpressionLanguageInterface

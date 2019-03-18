@@ -3,19 +3,19 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyDecision\Traits;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 
 trait ExpressionLanguageAwareTrait
 {
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageInterface
+     * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     private $expressionLanguage;
 
     /**
      * Set expression language.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageInterface $expressionLanguage
+     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
      *
      * @return void
      */

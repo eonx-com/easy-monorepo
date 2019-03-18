@@ -9,6 +9,13 @@ interface RuleInterface
     public const OUTPUT_UNSUPPORTED = 'unsupported';
 
     /**
+     * Get priority.
+     *
+     * @return int
+     */
+    public function getPriority(): int;
+
+    /**
      * Proceed with input.
      *
      * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context

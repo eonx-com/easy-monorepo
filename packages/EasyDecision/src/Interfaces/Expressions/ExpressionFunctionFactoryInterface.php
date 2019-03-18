@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces\Expression;
-
-use StepTheFkUp\EasyDecision\Interfaces\ExpressionFunctionInterface;
+namespace StepTheFkUp\EasyDecision\Interfaces\Expressions;
 
 interface ExpressionFunctionFactoryInterface
 {
@@ -12,7 +10,7 @@ interface ExpressionFunctionFactoryInterface
      *
      * @param mixed $expressionFunction
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ExpressionFunctionInterface
+     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      *
      * @throws \StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException
      */
