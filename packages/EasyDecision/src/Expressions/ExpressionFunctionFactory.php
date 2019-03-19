@@ -6,6 +6,7 @@ namespace StepTheFkUp\EasyDecision\Expressions;
 use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
 use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
 use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
+use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
 final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterface
 {
@@ -20,6 +21,10 @@ final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterf
     {
         if ($expressionFunction instanceof ExpressionFunctionInterface) {
             return $expressionFunction;
+        }
+
+        if ($expressionFunction instanceof BaseExpressionFunction) {
+            return new ExpressionFunction($expressionFunction->getName(), $expressionFunction->getEvaluator());
         }
 
         if (\is_array($expressionFunction) === false) {

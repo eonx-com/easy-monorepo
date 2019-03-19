@@ -9,7 +9,7 @@ use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
 use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
 use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
-use StepTheFkUp\EasyDecision\Tests\Stubs\AssertContextAwareInputRule;
+use StepTheFkUp\EasyDecision\Tests\Stubs\AssertContextAwareInputRuleStub;
 use StepTheFkUp\EasyDecision\Tests\Stubs\ValueContextAwareInputStub;
 
 final class ValueDecisionTest extends AbstractTestCase
@@ -39,6 +39,20 @@ final class ValueDecisionTest extends AbstractTestCase
     }
 
     /**
+     * Decision should throw an exception when given input is an array and "value" index isn't set.
+     *
+     * @return void
+     */
+    public function testNotSetValueInInputArrayException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $decision = new ValueDecision([$this->getModifyValueRuleInArray()]);
+
+        $decision->make([]);
+    }
+
+    /**
      * Decision should throw an exception when given input is an array and contains the reserved "context" index.
      *
      * @return void
@@ -49,7 +63,7 @@ final class ValueDecisionTest extends AbstractTestCase
 
         $decision = new ValueDecision([$this->getModifyValueRuleInArray()]);
 
-        $decision->make(['context' => 'I know it is bad...']);
+        $decision->make(['context' => 'I know it is bad...', 'value' => 'value']);
     }
 
     /**
@@ -86,8 +100,8 @@ final class ValueDecisionTest extends AbstractTestCase
      */
     public function testReturnModifiedObjectInputContextAwareSuccessfully(): void
     {
-        // Assertion done in AssertContextAwareInputRule
-        $decision = new ValueDecision([new AssertContextAwareInputRule()]);
+        // Assertion done in AssertContextAwareInputRuleStub
+        $decision = new ValueDecision([new AssertContextAwareInputRuleStub()]);
 
         $input = new ValueContextAwareInputStub(10);
 

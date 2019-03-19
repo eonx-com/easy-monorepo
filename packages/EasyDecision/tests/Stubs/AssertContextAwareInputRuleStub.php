@@ -8,7 +8,7 @@ use StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface;
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
 use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
 
-final class AssertContextAwareInputRule implements RuleInterface
+final class AssertContextAwareInputRuleStub implements RuleInterface
 {
     /**
      * Get priority.
