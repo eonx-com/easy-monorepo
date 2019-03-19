@@ -7,6 +7,7 @@ use Illuminate\Pipeline\Pipeline as BaseIlluminatePipeline;
 use StepTheFkUp\EasyDecision\Context;
 use StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException;
 use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
+use StepTheFkUp\EasyDecision\Exceptions\ReservedContextIndexException;
 use StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface;
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
@@ -129,7 +130,7 @@ abstract class AbstractDecision implements DecisionInterface
         if (\is_array($input)) {
             // Index context cannot be used by users to avoid unexpected behaviours
             if (isset($input['context'])) {
-                throw new InvalidArgumentException(
+                throw new ReservedContextIndexException(
                     'When giving an array input to a decision, "context" is a reserved index it cannot be used'
                 );
             }

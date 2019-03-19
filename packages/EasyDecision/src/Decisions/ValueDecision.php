@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyDecision\Decisions;
 
-use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
+use StepTheFkUp\EasyDecision\Exceptions\MissingValueIndexException;
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
 use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
 
@@ -16,7 +16,7 @@ final class ValueDecision extends AbstractDecision
     {
         // If input is an array, index value must be set
         if (\is_array($input) && isset($input['value']) === false) {
-            throw new InvalidArgumentException(\sprintf(
+            throw new MissingValueIndexException(\sprintf(
                 'Passing an array input to %s require to set the index "value"',
                 self::class
             ));

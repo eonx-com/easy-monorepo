@@ -6,6 +6,8 @@ namespace StepTheFkUp\EasyDecision\Tests\Decisions;
 use StepTheFkUp\EasyDecision\Decisions\ValueDecision;
 use StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException;
 use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
+use StepTheFkUp\EasyDecision\Exceptions\MissingValueIndexException;
+use StepTheFkUp\EasyDecision\Exceptions\ReservedContextIndexException;
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
 use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
 use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
@@ -45,7 +47,7 @@ final class ValueDecisionTest extends AbstractTestCase
      */
     public function testNotSetValueInInputArrayException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(MissingValueIndexException::class);
 
         $decision = new ValueDecision([$this->getModifyValueRuleInArray()]);
 
@@ -59,7 +61,7 @@ final class ValueDecisionTest extends AbstractTestCase
      */
     public function testReservedContextInInputArrayException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ReservedContextIndexException::class);
 
         $decision = new ValueDecision([$this->getModifyValueRuleInArray()]);
 
