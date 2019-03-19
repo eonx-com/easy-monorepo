@@ -8,23 +8,28 @@ use StepTheFkUp\EasyDecision\Context;
 use StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException;
 use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
 use StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException;
+use StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface;
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
 use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
+use StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
 use StepTheFkUp\EasyDecision\Middleware\ValueMiddleware;
 use StepTheFkUp\EasyDecision\Middleware\YesNoMiddleware;
-use StepTheFkUp\EasyDecision\Traits\DealsWithContextTrait;
 use StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline;
 use StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface;
 
 abstract class AbstractDecision implements DecisionInterface
 {
-    use DealsWithContextTrait;
-
     /**
      * @var \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
      */
     private $context;
+
+    /**
+     * @var null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     */
+    private $expressionLanguage;
 
     /**
      * @var \Illuminate\Pipeline\Pipeline
@@ -37,18 +42,23 @@ abstract class AbstractDecision implements DecisionInterface
     private $rules;
 
     /**
-     * ValueDecision constructor.
+     * AbstractDecision constructor.
      *
      * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[] $rules
      * @param null|\Illuminate\Pipeline\Pipeline $illuminatePipeline
+     * @param null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
      *
      * @throws \StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException
      */
-    public function __construct(array $rules, ?BaseIlluminatePipeline $illuminatePipeline = null)
-    {
-        $this->setRules($rules);
-
+    public function __construct(
+        array $rules,
+        ?BaseIlluminatePipeline $illuminatePipeline = null,
+        ?ExpressionLanguageInterface $expressionLanguage = null
+    ) {
         $this->illuminatePipeline = $illuminatePipeline ?? new BaseIlluminatePipeline();
+        $this->expressionLanguage = $expressionLanguage;
+
+        $this->setRules($rules);
     }
 
     /**
@@ -76,9 +86,7 @@ abstract class AbstractDecision implements DecisionInterface
      */
     public function make($input)
     {
-        $this->context = new Context($this->getDecisionType(), $input);
-
-        $this->handleContextAwareInputs($this->context);
+        $this->context = $this->createContext($input);
 
         try {
             $this->createPipeline()->process($this->context);
@@ -86,8 +94,6 @@ abstract class AbstractDecision implements DecisionInterface
         } catch (\Exception $exception) {
             throw new UnableToMakeDecisionException($exception->getMessage(), $exception->getCode(), $exception);
         }
-
-        $this->removeContextFromInput($this->context);
 
         return $this->context->getInput();
     }
@@ -107,6 +113,37 @@ abstract class AbstractDecision implements DecisionInterface
      * @return string
      */
     abstract protected function getDecisionType(): string;
+
+    /**
+     * Create context for given input.
+     *
+     * @param mixed $input
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     */
+    protected function createContext($input): ContextInterface
+    {
+        $context = new Context($this->getDecisionType(), $input);
+
+        // If input is an array add context to it
+        if (\is_array($input)) {
+            // Index context cannot be used by users to avoid unexpected behaviours
+            if (isset($input['context'])) {
+                throw new InvalidArgumentException(
+                    'When giving an array input to a decision, "context" is a reserved index it cannot be used'
+                );
+            }
+
+            $input['context'] = $context;
+        }
+
+        // Give context to input to be able to stop propagation from expression rules
+        if ($input instanceof ContextAwareInterface) {
+            $input->setContext($context);
+        }
+
+        return $context;
+    }
 
     /**
      * Create middleware list for given rules and class.
@@ -172,6 +209,17 @@ abstract class AbstractDecision implements DecisionInterface
                     \gettype($rule),
                     $key
                 ));
+            }
+
+            if ($rule instanceof ExpressionLanguageAwareInterface) {
+                if ($this->expressionLanguage === null) {
+                    throw new InvalidArgumentException(\sprintf(
+                        'When passing "%s" rules, the expression language instance must be set on the decision',
+                        ExpressionLanguageAwareInterface::class
+                    ));
+                }
+
+                $rule->setExpressionLanguage($this->expressionLanguage);
             }
         }
 

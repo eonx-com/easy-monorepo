@@ -71,7 +71,7 @@ final class ValueDecisionTest extends AbstractTestCase
 
         $expectedRuleOutput = [
             'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
-            $modifyRule->toString() => $expected
+            $modifyRule->toString() => 10
         ];
 
         self::assertEquals($expected, $decision->make($original));
@@ -116,7 +116,7 @@ final class ValueDecisionTest extends AbstractTestCase
 
         $expectedRuleOutput = [
             'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
-            $modifyRule->toString() => $expected
+            $modifyRule->toString() => 10
         ];
 
         self::assertEquals($expected, $decision->make($original));
@@ -155,9 +155,7 @@ final class ValueDecisionTest extends AbstractTestCase
             {
                 $input = $context->getInput();
 
-                $input['value'] = $input['value'] + 10;
-
-                return $input;
+                return $input['value'] + 10;
             }
 
             /**
@@ -215,9 +213,7 @@ final class ValueDecisionTest extends AbstractTestCase
             {
                 $input = $context->getInput();
 
-                $input->value = $input->value + 10;
-
-                return $input;
+                return $input->value + 10;
             }
 
             /**

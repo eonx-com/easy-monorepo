@@ -4,12 +4,9 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyDecision;
 
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Traits\DealsWithContextTrait;
 
 final class Context implements ContextInterface
 {
-    use DealsWithContextTrait;
-
     /**
      * @var string
      */
@@ -58,7 +55,7 @@ final class Context implements ContextInterface
      */
     public function addRuleOutput(string $rule, $output): ContextInterface
     {
-        $this->ruleOutputs[$rule] = $this->removeContextFromOutput($output);
+        $this->ruleOutputs[$rule] = $output;
 
         return $this;
     }

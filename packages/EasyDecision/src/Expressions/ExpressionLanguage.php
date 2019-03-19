@@ -28,9 +28,9 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     /**
      * Add function to use in expressions.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ExpressionFunctionInterface $function
+     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface $function
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageInterface
+     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     public function addFunction(ExpressionFunctionInterface $function): ExpressionLanguageInterface
     {
@@ -42,9 +42,9 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     /**
      * Add function provider to add multiple functions at once.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionFunctionProviderInterface $provider
+     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface $provider
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expression\ExpressionLanguageInterface
+     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     public function addFunctionProvider(ExpressionFunctionProviderInterface $provider): ExpressionLanguageInterface
     {

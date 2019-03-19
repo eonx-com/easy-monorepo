@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyDecision\Tests\Stubs;
 
 use StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface;
+use StepTheFkUp\EasyDecision\Interfaces\ValueInputInterface;
 use StepTheFkUp\EasyDecision\Traits\ContextAwareTrait;
 
-final class ValueContextAwareInputStub implements ContextAwareInterface
+final class ValueContextAwareInputStub implements ContextAwareInterface, ValueInputInterface
 {
     use ContextAwareTrait;
 
@@ -38,14 +39,12 @@ final class ValueContextAwareInputStub implements ContextAwareInterface
     /**
      * Set value.
      *
-     * @param int $value
+     * @param mixed $value
      *
-     * @return \StepTheFkUp\EasyDecision\Tests\Stubs\ValueContextAwareInputStub
+     * @return void
      */
-    public function setValue(int $value): self
+    public function setValue($value): void
     {
         $this->value = $value;
-
-        return $this;
     }
 }
