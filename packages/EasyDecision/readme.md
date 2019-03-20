@@ -7,17 +7,21 @@
 
 ## Roadmap
 
-- [ ] Yes/No Decision: Give input -> Rules -> True/False
-- [ ] Value Decision: Give input -> Rules -> Get output
-- [ ] Specific functions per decision type
-- [ ] Common functions to all decision types
-- [ ] Yes/No decision have different strategies:
-- [ ] affirmative: Yes as soon as first rule says yes
-- [ ] consensus: Yes if more yes than no
-- [ ] unanimous: Yes if everybody says yes
-- [ ] Priority on rules: Run first the rules with biggest priority
-- [ ] Rules can say if they support the given input
-- [ ] After run users can get which rules ran, their body and output
+- [x] Yes/No Decision: Give input -> Rules -> True/False
+- [x] Value Decision: Give input -> Rules -> Get output
+- [x] Specific functions per decision type
+- [x] Common functions to all decision types
+- [x] Yes/No decision have different strategies:
+- [x] affirmative: Yes as soon as first rule says yes
+- [x] consensus: Yes if more yes than no
+- [x] unanimous: Yes if everybody says yes
+- [x] Priority on rules: Run first the rules with biggest priority
+- [x] Rules can say if they support the given input
+- [x] After run users can get which rules ran, their body and output
+- [ ] Test the Laravel Decision Factory
+- [ ] Improve config file with some examples
+- [ ] Create a PHP methods expression functions provider as helper
+- [ ] Create documentation
 
 ## Documentation
 
