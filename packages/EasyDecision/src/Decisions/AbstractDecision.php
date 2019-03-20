@@ -6,6 +6,7 @@ namespace StepTheFkUp\EasyDecision\Decisions;
 use Illuminate\Pipeline\Pipeline as BaseIlluminatePipeline;
 use StepTheFkUp\EasyDecision\Context;
 use StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException;
+use StepTheFkUp\EasyDecision\Exceptions\EmptyRulesException;
 use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
 use StepTheFkUp\EasyDecision\Exceptions\ReservedContextIndexException;
 use StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException;
@@ -33,33 +34,51 @@ abstract class AbstractDecision implements DecisionInterface
     private $expressionLanguage;
 
     /**
-     * @var \Illuminate\Pipeline\Pipeline
-     */
-    private $illuminatePipeline;
-
-    /**
      * @var \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[]
      */
-    private $rules;
+    private $rules = [];
 
     /**
-     * AbstractDecision constructor.
+     * Add rule.
+     *
+     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface $rule
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function addRule(RuleInterface $rule): DecisionInterface
+    {
+        if ($rule instanceof ExpressionLanguageAwareInterface) {
+            if ($this->expressionLanguage === null) {
+                throw new InvalidArgumentException(\sprintf(
+                    'When passing "%s" rules, the expression language instance must be set on the decision',
+                    ExpressionLanguageAwareInterface::class
+                ));
+            }
+
+            $rule->setExpressionLanguage($this->expressionLanguage);
+        }
+
+        $this->rules[] = $rule;
+
+        return $this;
+    }
+
+    /**
+     * Validate each rule is an instance of RuleInterface and sort them by priority.
      *
      * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[] $rules
-     * @param null|\Illuminate\Pipeline\Pipeline $illuminatePipeline
-     * @param null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
      *
      * @throws \StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException
      */
-    public function __construct(
-        array $rules,
-        ?BaseIlluminatePipeline $illuminatePipeline = null,
-        ?ExpressionLanguageInterface $expressionLanguage = null
-    ) {
-        $this->illuminatePipeline = $illuminatePipeline ?? new BaseIlluminatePipeline();
-        $this->expressionLanguage = $expressionLanguage;
+    public function addRules(array $rules): DecisionInterface
+    {
+        foreach ($rules as $rule) {
+            $this->addRule($rule);
+        }
 
-        $this->setRules($rules);
+        return $this;
     }
 
     /**
@@ -87,6 +106,13 @@ abstract class AbstractDecision implements DecisionInterface
      */
     public function make($input)
     {
+        if (empty($this->rules)) {
+            throw new EmptyRulesException(\sprintf(
+                'Decision "%s" cannot be made without any rules',
+                \get_class($this)
+            ));
+        }
+
         $this->context = $this->createContext($input);
 
         try {
@@ -97,6 +123,20 @@ abstract class AbstractDecision implements DecisionInterface
         }
 
         return $this->context->getInput();
+    }
+
+    /**
+     * Set expression language.
+     *
+     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function setExpressionLanguage(ExpressionLanguageInterface $expressionLanguage): DecisionInterface
+    {
+        $this->expressionLanguage = $expressionLanguage;
+
+        return $this;
     }
 
     /**
@@ -155,9 +195,15 @@ abstract class AbstractDecision implements DecisionInterface
      */
     protected function createMiddlewareList(string $class): array
     {
+        $rules = $this->rules;
+
+        \usort($rules, function (RuleInterface $first, RuleInterface $second): bool {
+            return $first->getPriority() < $second->getPriority();
+        });
+
         $middlewareList = [];
 
-        foreach ($this->rules as $rule) {
+        foreach ($rules as $rule) {
             $middlewareList[] = new $class($rule);
         }
 
@@ -172,7 +218,7 @@ abstract class AbstractDecision implements DecisionInterface
     private function createPipeline(): PipelineInterface
     {
         return new IlluminatePipeline(
-            $this->illuminatePipeline,
+            new BaseIlluminatePipeline(),
             $this->createMiddlewareList($this->getMiddlewareClass())
         );
     }
@@ -189,45 +235,5 @@ abstract class AbstractDecision implements DecisionInterface
         }
 
         return YesNoMiddleware::class;
-    }
-
-    /**
-     * Validate each rule is an instance of RuleInterface and sort them by priority.
-     *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[] $rules
-     *
-     * @return void
-     *
-     * @throws \StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException
-     */
-    private function setRules(array $rules): void
-    {
-        foreach ($rules as $key => $rule) {
-            if (($rule instanceof RuleInterface) === false) {
-                throw new InvalidArgumentException(\sprintf(
-                    'Rule must be an instance of %s, "%s" given at index "%d"',
-                    RuleInterface::class,
-                    \gettype($rule),
-                    $key
-                ));
-            }
-
-            if ($rule instanceof ExpressionLanguageAwareInterface) {
-                if ($this->expressionLanguage === null) {
-                    throw new InvalidArgumentException(\sprintf(
-                        'When passing "%s" rules, the expression language instance must be set on the decision',
-                        ExpressionLanguageAwareInterface::class
-                    ));
-                }
-
-                $rule->setExpressionLanguage($this->expressionLanguage);
-            }
-        }
-
-        \usort($rules, function (RuleInterface $first, RuleInterface $second): bool {
-            return $first->getPriority() < $second->getPriority();
-        });
-
-        $this->rules = $rules;
     }
 }

@@ -16,7 +16,7 @@ final class UnanimousDecisionTest extends AbstractTestCase
      */
     public function testReturnFalseWhenAtLeastOneFalse(): void
     {
-        $decision = new UnanimousDecision([
+        $decision = (new UnanimousDecision())->addRules([
             $this->createTrueRule('true-1'),
             $this->createTrueRule('true-2'),
             $this->createFalseRule('false-1'),
@@ -41,7 +41,7 @@ final class UnanimousDecisionTest extends AbstractTestCase
      */
     public function testReturnTrueIfOnlyTrues(): void
     {
-        $decision = new UnanimousDecision([
+        $decision = (new UnanimousDecision())->addRules([
             $this->createTrueRule('true-1'),
             $this->createTrueRule('true-2'),
             $this->createTrueRule('true-3'),
@@ -66,7 +66,7 @@ final class UnanimousDecisionTest extends AbstractTestCase
      */
     public function testReturnTrueWhenOnlyUnsupported(): void
     {
-        $decision = new UnanimousDecision([
+        $decision = (new UnanimousDecision())->addRules([
             $this->createUnsupportedRule('unsupported-1')
         ]);
 

@@ -101,7 +101,7 @@ abstract class AbstractTestCase extends TestCase
      *
      * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
      */
-    private function getExpressionLanguageFactory(): ExpressionLanguageFactoryInterface
+    protected function getExpressionLanguageFactory(): ExpressionLanguageFactoryInterface
     {
         if ($this->expressionLanguageFactory !== null) {
             return $this->expressionLanguageFactory;

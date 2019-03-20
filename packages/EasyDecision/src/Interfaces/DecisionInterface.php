@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyDecision\Interfaces;
 
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+
 interface DecisionInterface
 {
     /**
@@ -35,6 +37,24 @@ interface DecisionInterface
     public const TYPE_YESNO_UNANIMOUS = 'yesno_unanimous';
 
     /**
+     * Add rule.
+     *
+     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface $rule
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function addRule(RuleInterface $rule): self;
+
+    /**
+     * Set rules.
+     *
+     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[] $rules
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function addRules(array $rules): self;
+
+    /**
      * Get context.
      *
      * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
@@ -54,4 +74,13 @@ interface DecisionInterface
      * @throws \StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
     public function make($input);
+
+    /**
+     * Set expression language.
+     *
+     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function setExpressionLanguage(ExpressionLanguageInterface $expressionLanguage): self;
 }

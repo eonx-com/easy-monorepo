@@ -16,7 +16,7 @@ final class AffirmativeDecisionTest extends AbstractTestCase
      */
     public function testReturnFalseWhenNoTrue(): void
     {
-        $decision = new AffirmativeDecision([
+        $decision = (new AffirmativeDecision())->addRules([
             $this->createFalseRule('false-1'),
             $this->createUnsupportedRule('unsupported-1')
         ]);
@@ -37,7 +37,7 @@ final class AffirmativeDecisionTest extends AbstractTestCase
      */
     public function testReturnTrueAtFirstTrue(): void
     {
-        $decision = new AffirmativeDecision([
+        $decision = (new AffirmativeDecision())->addRules([
             $this->createTrueRule('true-1'),
             $this->createTrueRule('true-2'),
             $this->createTrueRule('true-3'),
@@ -62,7 +62,7 @@ final class AffirmativeDecisionTest extends AbstractTestCase
      */
     public function testReturnTrueInMiddleOfRules(): void
     {
-        $decision = new AffirmativeDecision([
+        $decision = (new AffirmativeDecision())->addRules([
             $this->createFalseRule('false-1'),
             $this->createTrueRule('true-1'),
             $this->createTrueRule('true-2'),
@@ -87,7 +87,7 @@ final class AffirmativeDecisionTest extends AbstractTestCase
      */
     public function testReturnTrueWithPriorities(): void
     {
-        $decision = new AffirmativeDecision([
+        $decision = (new AffirmativeDecision())->addRules([
             $this->createFalseRule('false-1'),
             $this->createTrueRule('true-1', 100)
         ]);

@@ -5,9 +5,9 @@ namespace StepTheFkUp\EasyDecision\Tests\Decisions;
 
 use StepTheFkUp\EasyDecision\Decisions\ValueDecision;
 use StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException;
-use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
 use StepTheFkUp\EasyDecision\Exceptions\MissingValueIndexException;
 use StepTheFkUp\EasyDecision\Exceptions\ReservedContextIndexException;
+use StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
 use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
 use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
@@ -25,19 +25,7 @@ final class ValueDecisionTest extends AbstractTestCase
     {
         $this->expectException(ContextNotSetException::class);
 
-        (new ValueDecision([$this->createUnsupportedRule('whatever')]))->getContext();
-    }
-
-    /**
-     * Decision should throw an exception when invalid rule given.
-     *
-     * @return void
-     */
-    public function testNonRuleInterfaceException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        new ValueDecision(['not-a-rule']);
+        ((new ValueDecision())->addRules([$this->createUnsupportedRule('whatever')]))->getContext();
     }
 
     /**
@@ -49,7 +37,7 @@ final class ValueDecisionTest extends AbstractTestCase
     {
         $this->expectException(MissingValueIndexException::class);
 
-        $decision = new ValueDecision([$this->getModifyValueRuleInArray()]);
+        $decision = (new ValueDecision())->addRules([$this->getModifyValueRuleInArray()]);
 
         $decision->make([]);
     }
@@ -63,7 +51,7 @@ final class ValueDecisionTest extends AbstractTestCase
     {
         $this->expectException(ReservedContextIndexException::class);
 
-        $decision = new ValueDecision([$this->getModifyValueRuleInArray()]);
+        $decision = (new ValueDecision())->addRules([$this->getModifyValueRuleInArray()]);
 
         $decision->make(['context' => 'I know it is bad...', 'value' => 'value']);
     }
@@ -77,7 +65,7 @@ final class ValueDecisionTest extends AbstractTestCase
     {
         $modifyRule = $this->getModifyValueRuleInArray();
 
-        $decision = new ValueDecision([
+        $decision = (new ValueDecision())->addRules([
             $this->createUnsupportedRule('unsupported-1'),
             $modifyRule
         ]);
@@ -103,7 +91,7 @@ final class ValueDecisionTest extends AbstractTestCase
     public function testReturnModifiedObjectInputContextAwareSuccessfully(): void
     {
         // Assertion done in AssertContextAwareInputRuleStub
-        $decision = new ValueDecision([new AssertContextAwareInputRuleStub()]);
+        $decision = (new ValueDecision())->addRules([new AssertContextAwareInputRuleStub()]);
 
         $input = new ValueContextAwareInputStub(10);
 
@@ -119,7 +107,7 @@ final class ValueDecisionTest extends AbstractTestCase
     {
         $modifyRule = $this->getModifyValueRuleInObject();
 
-        $decision = new ValueDecision([
+        $decision = (new ValueDecision())->addRules([
             $this->createUnsupportedRule('unsupported-1'),
             $modifyRule
         ]);
@@ -138,6 +126,75 @@ final class ValueDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->make($original));
         self::assertEquals($expectedRuleOutput, $decision->getContext()->getRuleOutputs());
         self::assertEquals($original, $decision->getContext()->getOriginalInput());
+    }
+
+    /**
+     * Decision should throw exception if anything goes wrong in rules.
+     *
+     * @return void
+     */
+    public function testUnableToMakeDecisionWhenExceptionInRules(): void
+    {
+        $this->expectException(UnableToMakeDecisionException::class);
+
+        $decision = (new ValueDecision())->addRule($this->getExceptionRule());
+
+        $decision->make(['value' => 1]);
+    }
+
+    /**
+     * Get rule to throw exception.
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
+     */
+    private function getExceptionRule(): RuleInterface
+    {
+        return new class implements RuleInterface
+        {
+            /**
+             * Get priority.
+             *
+             * @return int
+             */
+            public function getPriority(): int
+            {
+                return 0;
+            }
+
+            /**
+             * Proceed with input.
+             *
+             * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+             *
+             * @return mixed
+             */
+            public function proceed(ContextInterface $context)
+            {
+                throw new \Exception('');
+            }
+
+            /**
+             * Check if rule supports given input.
+             *
+             * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+             *
+             * @return bool
+             */
+            public function supports(ContextInterface $context): bool
+            {
+                return true;
+            }
+
+            /**
+             * Get string representation of the rule.
+             *
+             * @return string
+             */
+            public function toString(): string
+            {
+                return 'exception';
+            }
+        };
     }
 
     /**

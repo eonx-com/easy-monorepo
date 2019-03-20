@@ -20,7 +20,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new ValueDecision([$this->createLanguageRule('value + 10')]);
+        (new ValueDecision())->addRules([$this->createLanguageRule('value + 10')]);
     }
 
     /**
@@ -30,11 +30,9 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
      */
     public function testModifyValueInArray(): void
     {
-        $decision = new ValueDecision(
-            [$this->createLanguageRule('value + 10')],
-            null,
-            $this->createExpressionLanguage()
-        );
+        $decision = (new ValueDecision())
+            ->setExpressionLanguage($this->createExpressionLanguage())
+            ->addRules([$this->createLanguageRule('value + 10')]);
 
         $original = ['value' => 1];
         $expected = ['value' => 11];
@@ -62,7 +60,9 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
             })
         ]);
 
-        $decision = new ValueDecision($rules, null, $this->createExpressionLanguage($config));
+        $decision = (new ValueDecision())
+            ->setExpressionLanguage($this->createExpressionLanguage($config))
+            ->addRules($rules);
 
         $tests = [
             [

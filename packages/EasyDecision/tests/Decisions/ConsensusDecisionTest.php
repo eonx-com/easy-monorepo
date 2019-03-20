@@ -4,12 +4,24 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyDecision\Tests\Decisions;
 
 use StepTheFkUp\EasyDecision\Decisions\ConsensusDecision;
-use StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException;
+use StepTheFkUp\EasyDecision\Exceptions\EmptyRulesException;
 use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
 use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
 
 final class ConsensusDecisionTest extends AbstractTestCase
 {
+    /**
+     * Decision should throw an exception if no rules given.
+     *
+     * @return void
+     */
+    public function testNoRulesException(): void
+    {
+        $this->expectException(EmptyRulesException::class);
+
+        (new ConsensusDecision())->addRules([])->make([]);
+    }
+
     /**
      * Decision should return false when more false than true.
      *
@@ -17,7 +29,7 @@ final class ConsensusDecisionTest extends AbstractTestCase
      */
     public function testReturnFalseWhenMoreFalseThanTrue(): void
     {
-        $decision = new ConsensusDecision([
+        $decision = (new ConsensusDecision())->addRules([
             $this->createTrueRule('true-1'),
             $this->createFalseRule('false-1'),
             $this->createFalseRule('false-2'),
@@ -42,7 +54,7 @@ final class ConsensusDecisionTest extends AbstractTestCase
      */
     public function testReturnTrueWhenMoreTrueThenFalse(): void
     {
-        $decision = new ConsensusDecision([
+        $decision = (new ConsensusDecision())->addRules([
             $this->createTrueRule('true-1'),
             $this->createTrueRule('true-2'),
             $this->createFalseRule('false-1'),
@@ -61,27 +73,13 @@ final class ConsensusDecisionTest extends AbstractTestCase
     }
 
     /**
-     * Decision should throw an exception if no rules given.
-     *
-     * @return void
-     */
-    public function testReturnTrueWhenNoRules(): void
-    {
-        $this->expectException(UnableToMakeDecisionException::class);
-
-        $decision = new ConsensusDecision([]);
-
-        $decision->make([]);
-    }
-
-    /**
      * Decision should return true when no supported rules.
      *
      * @return void
      */
     public function testReturnTrueWhenNoRulesSupported(): void
     {
-        $decision = new ConsensusDecision([$this->createUnsupportedRule('unsupported-1')]);
+        $decision = (new ConsensusDecision())->addRules([$this->createUnsupportedRule('unsupported-1')]);
 
         $expected = ['unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED];
 
@@ -96,7 +94,7 @@ final class ConsensusDecisionTest extends AbstractTestCase
      */
     public function testReturnTrueWhenSameNumberOfTrueAndFalse(): void
     {
-        $decision = new ConsensusDecision([
+        $decision = (new ConsensusDecision())->addRules([
             $this->createTrueRule('true-1'),
             $this->createTrueRule('true-2'),
             $this->createFalseRule('false-1'),
