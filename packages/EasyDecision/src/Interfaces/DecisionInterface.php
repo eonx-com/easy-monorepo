@@ -74,13 +74,4 @@ interface DecisionInterface
      * @throws \StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
     public function make($input);
-
-    /**
-     * Set expression language.
-     *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
-     *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
-     */
-    public function setExpressionLanguage(ExpressionLanguageInterface $expressionLanguage): self;
 }

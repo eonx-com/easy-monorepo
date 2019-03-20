@@ -5,7 +5,7 @@ namespace StepTheFkUp\EasyDecision\Exceptions;
 
 use StepTheFkUp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
 
-final class MissingValueIndexException extends \RuntimeException implements EasyDecisionExceptionInterface
+final class MissingValueIndexException extends \InvalidArgumentException implements EasyDecisionExceptionInterface
 {
     // No body needed.
 }

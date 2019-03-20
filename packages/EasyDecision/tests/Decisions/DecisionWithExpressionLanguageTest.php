@@ -4,25 +4,14 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyDecision\Tests\Decisions;
 
 use StepTheFkUp\EasyDecision\Decisions\ValueDecision;
-use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
 use StepTheFkUp\EasyDecision\Expressions\ExpressionFunction;
 use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageConfig;
+use StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
 
 final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 {
-    /**
-     * Decision should throw exception when passing an ExpressionLanguageAware rule but no ExpressionLanguage set.
-     *
-     * @return void
-     */
-    public function testExpressionLanguageRuleButNoExpressionLanguageException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        (new ValueDecision())->addRules([$this->createLanguageRule('value + 10')]);
-    }
-
     /**
      * Decision should modify given input based on expression language rule.
      *
@@ -30,9 +19,11 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
      */
     public function testModifyValueInArray(): void
     {
-        $decision = (new ValueDecision())
-            ->setExpressionLanguage($this->createExpressionLanguage())
-            ->addRules([$this->createLanguageRule('value + 10')]);
+        $rules = [$this->createLanguageRule('value + 10')];
+
+        $this->injectExpressionLanguage($rules);
+
+        $decision = (new ValueDecision())->addRules($rules);
 
         $original = ['value' => 1];
         $expected = ['value' => 11];
@@ -54,15 +45,13 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
             $this->createLanguageRule('cap(value, 200)')
         ];
 
-        $config = new ExpressionLanguageConfig(null, null, [
+        $this->injectExpressionLanguage($rules, new ExpressionLanguageConfig(null, null, [
             new ExpressionFunction('cap', function ($arguments, $value, $max) {
                 return \min($value, $max);
             })
-        ]);
+        ]));
 
-        $decision = (new ValueDecision())
-            ->setExpressionLanguage($this->createExpressionLanguage($config))
-            ->addRules($rules);
+        $decision = (new ValueDecision())->addRules($rules);
 
         $tests = [
             [
@@ -100,6 +89,25 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
         foreach ($tests as $test) {
             self::assertEquals($test['expected'], $decision->make($test['original']));
             self::assertEquals($test['outputs'], $decision->getContext()->getRuleOutputs());
+        }
+    }
+
+    /**
+     * Inject expression language in rules.
+     *
+     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[] $rules
+     * @param null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     *
+     * @return void
+     */
+    private function injectExpressionLanguage(array $rules, ?ExpressionLanguageConfigInterface $config = null): void
+    {
+        $expressionLanguage = $this->createExpressionLanguage($config);
+
+        foreach ($rules as $rule) {
+            if ($rule instanceof ExpressionLanguageAwareInterface) {
+                $rule->setExpressionLanguage($expressionLanguage);
+            }
         }
     }
 }

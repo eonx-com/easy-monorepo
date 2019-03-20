@@ -5,13 +5,23 @@ namespace StepTheFkUp\EasyDecision\Decisions;
 
 use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
 use StepTheFkUp\EasyDecision\Exceptions\InvalidDecisionException;
+use StepTheFkUp\EasyDecision\Exceptions\InvalidRuleProviderException;
+use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageConfig;
 use StepTheFkUp\EasyDecision\Interfaces\DecisionConfigInterface;
 use StepTheFkUp\EasyDecision\Interfaces\DecisionFactoryInterface;
 use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
+use StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
+use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface;
 
 final class DecisionFactory implements DecisionFactoryInterface
 {
+    /**
+     * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     */
+    private $expressionLanguage;
+
     /**
      * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
      */
@@ -45,15 +55,43 @@ final class DecisionFactory implements DecisionFactoryInterface
     {
         $decision = $this->instantiateDecision($config->getDecisionType());
 
-        if ($config->getExpressionLanguageConfig() !== null) {
-            $decision->setExpressionLanguage($this->expressionLanguageFactory->create($config->getExpressionLanguageConfig()));
-        }
-
         foreach ($config->getRuleProviders() as $provider) {
-            $decision->addRules($provider->getRules());
+            if (($provider instanceof RuleProviderInterface) === false) {
+                throw new InvalidRuleProviderException(\sprintf(
+                    'RuleProvider "%s" does not implement %s',
+                    \get_class($provider),
+                    RuleProviderInterface::class
+                ));
+            }
+
+            foreach ($provider->getRules() as $rule) {
+                if ($rule instanceof ExpressionLanguageAwareInterface) {
+                    $rule->setExpressionLanguage($this->getExpressionLanguage($config));
+                }
+
+                $decision->addRule($rule);
+            }
         }
 
         return $decision;
+    }
+
+    /**
+     * Get expression language for given config.
+     *
+     * @param \StepTheFkUp\EasyDecision\Interfaces\DecisionConfigInterface $config
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     */
+    private function getExpressionLanguage(DecisionConfigInterface $config): ExpressionLanguageInterface
+    {
+        if ($this->expressionLanguage !== null) {
+            return $this->expressionLanguage;
+        }
+
+        return $this->expressionLanguage = $this->expressionLanguageFactory->create(
+            $config->getExpressionLanguageConfig() ?? new ExpressionLanguageConfig()
+        );
     }
 
     /**

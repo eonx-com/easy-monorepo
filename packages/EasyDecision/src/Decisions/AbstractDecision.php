@@ -7,14 +7,11 @@ use Illuminate\Pipeline\Pipeline as BaseIlluminatePipeline;
 use StepTheFkUp\EasyDecision\Context;
 use StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException;
 use StepTheFkUp\EasyDecision\Exceptions\EmptyRulesException;
-use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
 use StepTheFkUp\EasyDecision\Exceptions\ReservedContextIndexException;
 use StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface;
 use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
 use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
-use StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
 use StepTheFkUp\EasyDecision\Middleware\ValueMiddleware;
 use StepTheFkUp\EasyDecision\Middleware\YesNoMiddleware;
@@ -27,11 +24,6 @@ abstract class AbstractDecision implements DecisionInterface
      * @var \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
      */
     private $context;
-
-    /**
-     * @var null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
-     */
-    private $expressionLanguage;
 
     /**
      * @var \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[]
@@ -47,17 +39,6 @@ abstract class AbstractDecision implements DecisionInterface
      */
     public function addRule(RuleInterface $rule): DecisionInterface
     {
-        if ($rule instanceof ExpressionLanguageAwareInterface) {
-            if ($this->expressionLanguage === null) {
-                throw new InvalidArgumentException(\sprintf(
-                    'When passing "%s" rules, the expression language instance must be set on the decision',
-                    ExpressionLanguageAwareInterface::class
-                ));
-            }
-
-            $rule->setExpressionLanguage($this->expressionLanguage);
-        }
-
         $this->rules[] = $rule;
 
         return $this;
@@ -123,20 +104,6 @@ abstract class AbstractDecision implements DecisionInterface
         }
 
         return $this->context->getInput();
-    }
-
-    /**
-     * Set expression language.
-     *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
-     *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
-     */
-    public function setExpressionLanguage(ExpressionLanguageInterface $expressionLanguage): DecisionInterface
-    {
-        $this->expressionLanguage = $expressionLanguage;
-
-        return $this;
     }
 
     /**

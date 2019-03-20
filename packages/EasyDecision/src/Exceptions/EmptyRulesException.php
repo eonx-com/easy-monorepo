@@ -5,7 +5,7 @@ namespace StepTheFkUp\EasyDecision\Exceptions;
 
 use StepTheFkUp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
 
-final class EmptyRulesException extends \RuntimeException implements EasyDecisionExceptionInterface
+final class EmptyRulesException extends \InvalidArgumentException implements EasyDecisionExceptionInterface
 {
     // No body needed.
 }
