@@ -73,6 +73,55 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
         if ($config === null) {
             throw new InvalidArgumentException(\sprintf('No decision configured for "%s"', $decision));
         }
+
+        if (\is_array($config)) {
+            return $this->resolved[$decision] = $this->doCreateForConfig($decision, $config);
+        }
+
+        if (\is_string($config) || $config instanceof DecisionConfigProviderInterface) {
+            return $this->resolved[$decision] = $this->doCreateForConfigProvider($decision, $config);
+        }
+
+        throw new InvalidArgumentException(\sprintf(
+            'Config for decision "%s" must be either an array, a string or an instance of %s, "%s" given',
+            $decision,
+            DecisionConfigProviderInterface::class,
+            \gettype($config)
+        ));
+    }
+
+    /**
+     * Do create decision.
+     *
+     * @param string $type
+     * @param mixed[] $providers
+     * @param mixed[] $expressions
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    private function doCreate(string $type, array $providers, array $expressions): DecisionInterface
+    {
+        return $this->decorated->create(new DecisionConfig(
+            $type,
+            $this->getRuleProviders($providers),
+            $this->getExpressionLanguageConfig($expressions)
+        ));
+    }
+
+    /**
+     * Do create decision for given config.
+     *
+     * @param string $decision
+     * @param mixed[] $config
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    private function doCreateForConfig(string $decision, array $config): DecisionInterface
+    {
         if (empty($config['providers'] ?? null)) {
             throw new InvalidArgumentException(\sprintf('No rule providers configured for "%s"', $decision));
         }
@@ -80,10 +129,45 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
             throw new InvalidArgumentException(\sprintf('No decision type configured for "%s"', $decision));
         }
 
-        return $this->resolved[$decision] = $this->decorated->create(new DecisionConfig(
+        return $this->doCreate(
             (string)$config['type'],
-            $this->getRuleProviders((array)$config['providers']),
-            $this->getExpressionLanguageConfig((array)($config['expressions'] ?? []))
+            (array)$config['providers'],
+            (array)($config['expressions'] ?? [])
+        );
+    }
+
+    /**
+     * Do create decision for given config provider.
+     *
+     * @param string $decision
+     * @param mixed $configProvider
+     *
+     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    private function doCreateForConfigProvider(string $decision, $configProvider): DecisionInterface
+    {
+        if (\is_string($configProvider)) {
+            $configProvider = $this->app->make($configProvider);
+        }
+
+        if ($configProvider instanceof DecisionConfigProviderInterface) {
+            return $this->doCreate(
+                $configProvider->getDecisionType(),
+                $configProvider->getRuleProviders(),
+                [
+                    'functions' => $configProvider->getExpressionFunctions() ?? [],
+                    'providers' => $configProvider->getExpressionFunctionProviders() ?? []
+                ]
+            );
+        }
+
+        throw new InvalidArgumentException(\sprintf(
+            'Decision config provider for "%s" must be an instance of "%s", "%s" given',
+            $decision,
+            DecisionConfigProviderInterface::class,
+            \gettype($configProvider)
         ));
     }
 

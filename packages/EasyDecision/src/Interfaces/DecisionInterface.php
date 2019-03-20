@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyDecision\Interfaces;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
-
 interface DecisionInterface
 {
     /**
