@@ -18,9 +18,9 @@
 - [x] Priority on rules: Run first the rules with biggest priority
 - [x] Rules can say if they support the given input
 - [x] After run users can get which rules ran, their body and output
-- [ ] Test the Laravel Decision Factory
-- [ ] Improve config file with some examples
-- [ ] Create a PHP methods expression functions provider as helper
+- [x] Test the Laravel Decision Factory
+- [x] Improve config file with some examples
+- [x] Create a PHP methods expression functions provider as helper
 - [ ] Create documentation
 
 ## Documentation

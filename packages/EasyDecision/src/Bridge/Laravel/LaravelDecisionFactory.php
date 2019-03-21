@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyDecision\Bridge\Laravel;
 
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Container\Container;
 use StepTheFkUp\EasyDecision\Decisions\DecisionConfig;
 use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
 use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageConfig;
@@ -17,7 +17,7 @@ use StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface;
 final class LaravelDecisionFactory implements DecisionFactoryInterface
 {
     /**
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Illuminate\Contracts\Container\Container
      */
     private $app;
 
@@ -44,10 +44,10 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
     /**
      * LaravelDecisionFactory constructor.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param \Illuminate\Contracts\Container\Container $app
      * @param \StepTheFkUp\EasyDecision\Interfaces\DecisionFactoryInterface $decorated
      */
-    public function __construct(Application $app, BaseDecisionFactoryInterface $decorated)
+    public function __construct(Container $app, BaseDecisionFactoryInterface $decorated)
     {
         $this->app = $app;
         $this->decorated = $decorated;

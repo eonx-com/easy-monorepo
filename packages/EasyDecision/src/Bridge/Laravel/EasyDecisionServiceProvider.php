@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyDecision\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
+use StepTheFkUp\EasyDecision\Decisions\DecisionFactory;
 use StepTheFkUp\EasyDecision\Expressions\ExpressionFunctionFactory;
 use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageFactory;
 use StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
@@ -39,7 +40,10 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         $this->app->singleton(ExpressionLanguageRuleFactoryInterface::class, ExpressionLanguageRuleFactory::class);
 
         $this->app->singleton(DecisionFactoryInterface::class, function (): DecisionFactoryInterface {
-            return new LaravelDecisionFactory($this->app, \config('easy-decision.mapping', []));
+            return new LaravelDecisionFactory($this->app, new DecisionFactory(
+                \config('easy-decision.mapping', []),
+                $this->app->make(ExpressionLanguageFactoryInterface::class)
+            ));
         });
     }
 }
