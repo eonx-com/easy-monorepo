@@ -45,7 +45,7 @@ final class JwtTokenEncoder implements ApiTokenEncoderInterface
 
         try {
             return $this->jwtDriver->encode($apiToken->getPayload());
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             throw new UnableToEncodeApiTokenException(
                 \sprintf(
                     'In "%s", unable to encode token. Reason: %s',
