@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Services\Identity\Auth0;
 
-use Auth0\SDK\API\Authentication;
 use Auth0\SDK\API\Management;
 use Auth0\SDK\API\Management\Users;
 use Auth0\SDK\JWTVerifier;
@@ -14,13 +13,15 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
 use StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException;
+use StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException;
 use StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService;
 use StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory;
 use StepTheFkUp\EasyIdentity\Implementations\Auth0\Config;
 use StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
 use StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory;
+use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
 use StepTheFkUp\EasyIdentity\Tests\AbstractTestCase;
-use StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserIdHolderStub;
+use StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub;
 
 class Auth0IdentityServiceTest extends AbstractTestCase
 {
@@ -45,8 +46,9 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                 ->andReturn(['expected']);
         });
 
-        $this->getServiceForUsersMethod($management)->createUser(new IdentityUserIdHolderStub('initial'), []);
+        $this->getServiceForUsersMethod($management)->createUser(new IdentityUserStub());
     }
+
     /**
      * Service should call Auth0 to create user for given data.
      *
@@ -68,15 +70,17 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                             && \array_shift($connection) === $this->getConfig()->getConnection();
                     }
                 )
-                ->andReturn(['user_id' => 'identity-id', 'expected']);
+                ->andReturn(['user_id' => 'identity-id']);
         });
 
-        $identityUserIdHolder = new IdentityUserIdHolderStub('initial');
+        $identityUser = new IdentityUserStub();
 
-        $actual = $this->getServiceForUsersMethod($management)->createUser($identityUserIdHolder, []);
+        $this->getServiceForUsersMethod($management)->createUser($identityUser);
 
-        self::assertEquals(['user_id' => 'identity-id', 'expected'], $actual);
-        self::assertEquals('identity-id', $identityUserIdHolder->getIdentityUserId());
+        self::assertEquals(
+            'identity-id',
+            $identityUser->getIdentityUserId(IdentityServiceNamesInterface::SERVICE_AUTH0)
+        );
     }
 
     /**
@@ -133,7 +137,10 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             })->andReturnNull();
         });
 
-        $this->getServiceForUsersMethod($management)->deleteUser(new IdentityUserIdHolderStub('identity-id'));
+        $identityUser = new IdentityUserStub();
+        $identityUser->setIdentityUserId(IdentityServiceNamesInterface::SERVICE_AUTH0, 'identity-id');
+
+        $this->getServiceForUsersMethod($management)->deleteUser($identityUser);
     }
 
     /**
@@ -155,10 +162,35 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                 self::assertTrue($condition);
 
                 return $condition;
-            })->andReturn([]);
+            })->andReturn(['new-key' => 'new-value']);
         });
 
-        $this->getServiceForUsersMethod($management)->getUser(new IdentityUserIdHolderStub('identity-id'));
+        $service = IdentityServiceNamesInterface::SERVICE_AUTH0;
+        $identityUser = new IdentityUserStub();
+        $identityUser->setIdentityUserId($service, 'identity-id');
+
+        $this->getServiceForUsersMethod($management)->getUser($identityUser);
+
+        self::assertEquals(['new-key' => 'new-value'], $identityUser->getIdentityToArray($service));
+    }
+
+    /**
+     * Identity service should throw exception if no identity user id on given user.
+     *
+     * @return void
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function testGetUserNoIdentityUserIdException(): void
+    {
+        $this->expectException(NoIdentityUserIdException::class);
+
+        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
+        $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
+            $mock->shouldNotReceive('get');
+        });
+
+        $this->getServiceForUsersMethod($management)->getUser(new IdentityUserStub());
     }
 
     /**
@@ -201,7 +233,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             new TokenVerifierFactory($this->getConfig())
         );
 
-        $service->loginUser([]);
+        $service->loginUser(new IdentityUserStub());
     }
 
     /**
@@ -235,50 +267,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             new TokenVerifierFactory($this->getConfig())
         );
 
-        $service->loginUser([]);
-    }
-
-    /**
-     * Service should call auth0 authentication api to login a user.
-     *
-     * @return void
-     *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \Auth0\SDK\Exception\ApiException
-     */
-    public function testLoginUserWithUsernamePassword(): void
-    {
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authentication */
-        $authentication = $this->mock(AuthenticationApiClientFactory::class, function (MockInterface $mock): void {
-            $auth = $this->mock(Authentication::class, function (MockInterface $mock): void {
-                $mock
-                    ->shouldReceive('login')
-                    ->once()
-                    ->with([
-                        'username' => 'username',
-                        'password' => 'password',
-                        'realm' => $this->getConfig()->getConnection(),
-                        'metadata' => ['token_version' => 'v1.0.0'],
-                        'metadataDomain' => 'https://edining.com.au'
-                    ])
-                    ->andReturn(['expected']);
-            });
-
-            $mock->shouldReceive('create')->once()->withNoArgs()->andReturn($auth);
-        });
-
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
-        $management = $this->mock(ManagementApiClientFactory::class);
-
-        $service = new Auth0IdentityService(
-            $authentication,
-            $this->getConfig(),
-            $management,
-            new TokenVerifierFactory($this->getConfig())
-        );
-
-        self::assertEquals(['expected'], $service->loginUserWithUsernamePassword('username', 'password'));
+        $service->loginUser(new IdentityUserStub());
     }
 
     /**
@@ -303,15 +292,22 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                         && \array_key_exists('client_id', $identityArray)
                         && \array_key_exists('connection', $identityArray);
                 })
-                ->andReturn(['expected']);
+                ->andReturn(['new-key' => 'new-value']);
         });
 
-        $actual = $this->getServiceForUsersMethod($management)->updateUser(new IdentityUserIdHolderStub(
-            'identity-id'), [
-            'email' => 'email@email.com'
-        ]);
+        $service = IdentityServiceNamesInterface::SERVICE_AUTH0;
+        $identityUser = new IdentityUserStub();
+        $identityUser->setIdentityUserId($service, 'my-identity-id');
+        $identityUser->setIdentityValue($service, 'email', 'email@email.com');
 
-        self::assertEquals(['expected'], $actual);
+        $this->getServiceForUsersMethod($management)->updateUser(
+            $identityUser,
+            $identityUser->getIdentityToArray($service)
+        );
+
+        $expected = ['email' => 'email@email.com', 'new-key' => 'new-value'];
+
+        self::assertEquals($expected, $identityUser->getIdentityToArray($service));
     }
 
     /**
