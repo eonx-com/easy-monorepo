@@ -1,5 +1,11 @@
 <!-- changelog-linker -->
 
+## v0.4.1 - 2019-03-21
+
+### EasyIdentity
+
+- IdentityUserInterface doesn't use fluent setters to make it easier to implement
+
 <!-- dumped content start -->
 
 ## v0.4.0 - 2019-03-21
