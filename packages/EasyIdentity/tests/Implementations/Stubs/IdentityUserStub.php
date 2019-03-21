@@ -75,12 +75,10 @@ final class IdentityUserStub implements IdentityUserInterface
      * @param string $key
      * @param mixed $value
      *
-     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return void
      */
-    public function setIdentityValue(string $service, string $key, $value): IdentityUserInterface
+    public function setIdentityValue(string $service, string $key, $value): void
     {
         $this->identity[$service][$key] = $value;
-
-        return $this;
     }
 }

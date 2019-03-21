@@ -53,5 +53,5 @@ interface IdentityUserInterface
      *
      * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
      */
-    public function setIdentityValue(string $service, string $key, $value): self;
+    public function setIdentityValue(string $service, string $key, $value): void;
 }
