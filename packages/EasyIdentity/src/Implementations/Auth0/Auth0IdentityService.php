@@ -6,13 +6,12 @@ namespace StepTheFkUp\EasyIdentity\Implementations\Auth0;
 use GuzzleHttp\Exception\RequestException;
 use StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
 use StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException;
+use StepTheFkUp\EasyIdentity\Implementations\AbstractIdentityService;
 use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceInterface;
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface;
+use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
+use StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface;
 
-/**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Suppress due to dependency
- */
-class Auth0IdentityService implements IdentityServiceInterface
+final class Auth0IdentityService extends AbstractIdentityService implements IdentityServiceInterface
 {
     /**
      * @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory
@@ -55,27 +54,27 @@ class Auth0IdentityService implements IdentityServiceInterface
     }
 
     /**
-     * Create user for given email and password.
+     * Create user for given data.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
-     * @param mixed[] $data
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return mixed[]
+     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
      */
-    public function createUser(IdentityUserIdHolderInterface $userIdHolder, array $data): array
+    public function createUser(IdentityUserInterface $user): IdentityUserInterface
     {
+        $data = $this->getIdentityToArray($user);
         $data['connection'] = $this->config->getConnection();
 
         $response = $this->managementFactory->create()->users->create($data);
 
         if (empty($response['user_id']) === false) {
-            $userIdHolder->setIdentityUserId($response['user_id']);
+            $this->setIdentityUserId($user, $response['user_id']);
 
-            return $response;
+            return $user;
         }
 
         throw new InvalidResponseFromIdentityException('Missing "user_id" from identity response');
@@ -100,52 +99,55 @@ class Auth0IdentityService implements IdentityServiceInterface
     /**
      * Delete user for given id.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
      * @return void
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException
      * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
-    public function deleteUser(IdentityUserIdHolderInterface $userIdHolder): void
+    public function deleteUser(IdentityUserInterface $user): void
     {
-        $this->managementFactory->create()->users->delete($userIdHolder->getIdentityUserId());
+        $this->managementFactory->create()->users->delete($this->getIdentityUserId($user));
     }
 
     /**
      * Get user information for given id.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return mixed[]
+     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException
      */
-    public function getUser(IdentityUserIdHolderInterface $userIdHolder): array
+    public function getUser(IdentityUserInterface $user): IdentityUserInterface
     {
-        return $this->managementFactory->create()->users->get($userIdHolder->getIdentityUserId());
+        $identityUser = $this->managementFactory->create()->users->get($this->getIdentityUserId($user));
+
+        foreach ($identityUser as $key => $value) {
+            $this->setIdentityValue($user, $key, $value);
+        }
+
+        return $user;
     }
 
     /**
-     * Login user for given email and password.
+     * Login given user.
      *
-     * @param mixed[] $data
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return mixed
+     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \Auth0\SDK\Exception\ApiException
      */
-    public function loginUser(array $data)
+    public function loginUser(IdentityUserInterface $user): IdentityUserInterface
     {
+        $data = $this->getIdentityToArray($user);
         $data['realm'] = $this->config->getConnection();
-        $data['metadata'] = $data['metadata'] ?? [];
-        $data['metadata']['token_version'] = 'v1.0.0';
-        $data['metadataDomain'] = 'https://edining.com.au';
 
         try {
             return $this->authFactory->create()->login($data);
@@ -155,45 +157,39 @@ class Auth0IdentityService implements IdentityServiceInterface
     }
 
     /**
-     * Login user for given username and password.
-     *
-     * @param string $username
-     * @param string $password
-     * @param null|mixed[] $data
-     *
-     * @return mixed
-     *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException
-     * @throws \Auth0\SDK\Exception\ApiException
-     */
-    public function loginUserWithUsernamePassword(string $username, string $password, ?array $data = null)
-    {
-        $data = $data ?? [];
-        $data['username'] = $username;
-        $data['password'] = $password;
-
-        return $this->loginUser($data);
-    }
-
-    /**
      * Update user for given id with given data.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface $userIdHolder
+     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param mixed[] $data
      *
-     * @return mixed[]
+     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException
      */
-    public function updateUser(IdentityUserIdHolderInterface $userIdHolder, array $data): array
+    public function updateUser(IdentityUserInterface $user, array $data): IdentityUserInterface
     {
         $data['client_id'] = $this->config->getClientId();
         $data['connection'] = $this->config->getConnection();
 
-        return $this->managementFactory->create()->users->update($userIdHolder->getIdentityUserId(), $data);
+        $identity = $this->managementFactory->create()->users->update($this->getIdentityUserId($user), $data);
+
+        foreach ($identity as $key => $value) {
+            $this->setIdentityValue($user, $key, $value);
+        }
+
+        return $user;
+    }
+
+    /**
+     * Get service name.
+     *
+     * @return string
+     */
+    protected function getServiceName(): string
+    {
+        return IdentityServiceNamesInterface::SERVICE_AUTH0;
     }
 
     /**

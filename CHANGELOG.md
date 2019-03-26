@@ -1,8 +1,28 @@
 <!-- changelog-linker -->
 
+## v0.4.1 - 2019-03-21
+
+### EasyIdentity
+
+- IdentityUserInterface doesn't use fluent setters to make it easier to implement
+
 <!-- dumped content start -->
 
-## v0.3.4 - 2019-03-15
+## v0.4.0 - 2019-03-21
+
+### ApiToken
+
+- [#16] Create Auth0 JWT driver
+
+### EasyIdentity
+
+- Make identity service and user more generic
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.3.4] - 2019-03-15
 
 ### EasyIdentity
 
@@ -122,3 +142,5 @@
 [#14]: https://github.com/StepTheFkUp/StepTheFkUp/pull/14
 [v0.3.2]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.1...v0.3.2
 [v0.3.3]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.2...v0.3.3
+[#16]: https://github.com/StepTheFkUp/StepTheFkUp/pull/16
+[v0.3.4]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.3...v0.3.4
