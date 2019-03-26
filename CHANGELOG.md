@@ -1,6 +1,16 @@
 <!-- changelog-linker -->
 
-## v0.4.1 - 2019-03-21
+<!-- dumped content start -->
+
+## v0.4.2 - 2019-03-26
+
+### EasyDecision
+
+- [#17] Create package
+
+<!-- dumped content end -->
+
+## [v0.4.1] - 2019-03-21
 
 ### EasyIdentity
 
@@ -8,7 +18,7 @@
 
 <!-- dumped content start -->
 
-## v0.4.0 - 2019-03-21
+## [v0.4.0] - 2019-03-21
 
 ### ApiToken
 
@@ -144,3 +154,6 @@
 [v0.3.3]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.2...v0.3.3
 [#16]: https://github.com/StepTheFkUp/StepTheFkUp/pull/16
 [v0.3.4]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.3...v0.3.4
+[#17]: https://github.com/StepTheFkUp/StepTheFkUp/pull/17
+[v0.4.1]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.0...v0.4.1
+[v0.4.0]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.4...v0.4.0
