@@ -18,6 +18,7 @@ parameters:
     directories_to_repositories:
         packages/ApiFilters: 'git@github.com:StepTheFkUp/ApiFilters.git'
         packages/ApiToken: 'git@github.com:StepTheFkUp/ApiToken.git'
+        packages/EasyDecision: 'git@github.com:StepTheFkUp/EasyDecision.git'
         packages/EasyIdentity: 'git@github.com:StepTheFkUp/EasyIdentity.git'
         packages/EasyPipeline: 'git@github.com:StepTheFkUp/EasyPipeline.git'
         packages/EasyRepository: 'git@github.com:StepTheFkUp/EasyRepository.git'
