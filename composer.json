@@ -6,6 +6,7 @@
     "require": {
         "eoneopay/utils": "dev-master",
         "php": "^7.1",
+        "symfony/expression-language": "^4.2",
         "symfony/psr-http-message-bridge": "^1.1",
         "zendframework/zend-diactoros": "^1.8"
     },
@@ -26,6 +27,7 @@
         "psr-4": {
             "StepTheFkUp\\ApiFilters\\": "packages/ApiFilters/src",
             "StepTheFkUp\\ApiToken\\": "packages/ApiToken/src",
+            "StepTheFkUp\\EasyDecision\\": "packages/EasyDecision/src",
             "StepTheFkUp\\EasyIdentity\\": "packages/EasyIdentity/src",
             "StepTheFkUp\\EasyPipeline\\": "packages/EasyPipeline/src",
             "StepTheFkUp\\EasyRepository\\": "packages/EasyRepository/src",
@@ -37,6 +39,7 @@
         "psr-4": {
             "StepTheFkUp\\ApiFilters\\Tests\\": "packages/ApiFilters/tests",
             "StepTheFkUp\\ApiToken\\Tests\\": "packages/ApiToken/tests",
+            "StepTheFkUp\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
             "StepTheFkUp\\EasyIdentity\\Tests\\": "packages/EasyIdentity/tests",
             "StepTheFkUp\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
             "StepTheFkUp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
@@ -51,7 +54,8 @@
         "stepthefkup/pagination": "self.version",
         "stepthefkup/psr7-factory": "self.version",
         "stepthefkup/easy-pipeline": "self.version",
-        "stepthefkup/easy-identity": "self.version"
+        "stepthefkup/easy-identity": "self.version",
+        "stepthefkup/easy-decision": "self.version"
     },
     "scripts": {
         "changelog": [
