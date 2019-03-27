@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine\ORM;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Mockery\MockInterface;
 use StepTheFkUp\EasyRepository\Tests\AbstractTestCase;

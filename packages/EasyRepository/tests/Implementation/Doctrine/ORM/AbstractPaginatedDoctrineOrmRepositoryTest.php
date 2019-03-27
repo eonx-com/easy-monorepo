@@ -14,6 +14,11 @@ use StepTheFkUp\Pagination\Data\StartSizeData;
 
 final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
 {
+    /**
+     * Repository should return paginator for given query successfully.
+     *
+     * @return void
+     */
     public function testPaginateSetResultsSuccessfully(): void
     {
         /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */

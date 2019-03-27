@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyIdentity\Implementations\Auth0;
 
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 
 final class Auth0IdentityServiceFactory
 {

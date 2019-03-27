@@ -26,6 +26,7 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
             'param' => $this->createToken()
         ]);
 
+        /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface $token */
         $token = $decoder->decode($request);
 
         $payload = $token->getPayload();
@@ -47,8 +48,10 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
      */
     public function testNullWhenQueryParamNotSet(): void
     {
-        $decoder = new JwtTokenInQueryDecoder($this->createJwtApiTokenFactory(
-            $this->createAuth0JwtDriver()),
+        $decoder = new JwtTokenInQueryDecoder(
+            $this->createJwtApiTokenFactory(
+                $this->createAuth0JwtDriver()
+            ),
             'param'
         );
 

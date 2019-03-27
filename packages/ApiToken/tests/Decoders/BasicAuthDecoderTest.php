@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\ApiToken\Tests\Decoders;
 
-use StepTheFkUp\ApiToken\Interfaces\Tokens\BasicAuthApiTokenInterface;
 use StepTheFkUp\ApiToken\Decoders\BasicAuthDecoder;
+use StepTheFkUp\ApiToken\Interfaces\Tokens\BasicAuthApiTokenInterface;
 use StepTheFkUp\ApiToken\Tests\AbstractTestCase;
 
 final class BasicAuthDecoderTest extends AbstractTestCase
@@ -69,6 +69,7 @@ final class BasicAuthDecoderTest extends AbstractTestCase
         ];
 
         foreach ($tests as $test => $expected) {
+            /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\BasicAuthApiTokenInterface $token */
             $token = (new BasicAuthDecoder())->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test))
             ]));

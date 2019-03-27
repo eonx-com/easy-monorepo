@@ -14,6 +14,9 @@ use StepTheFkUp\Pagination\Tests\AbstractTestCase;
 
 final class ServiceProvidersTest extends AbstractTestCase
 {
+    /**
+     * @var string[]
+     */
     private static $providers = [
         StartSizeAsArrayInQueryPaginationProvider::class => StartSizeAsArrayInQueryResolver::class,
         StartSizeInQueryPaginationProvider::class => StartSizeInQueryResolver::class

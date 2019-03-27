@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\App\Unit\Services\Identity\Auth0;
+namespace StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0;
 
 use Auth0\SDK\API\Management;
 use Auth0\SDK\API\Management\Users;
@@ -31,6 +31,10 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     private $config;
 
     /**
+     * Service should throw exception if response structure is invalid.
+     *
+     * @return void
+     *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testCreateUserInvalidResponseException(): void

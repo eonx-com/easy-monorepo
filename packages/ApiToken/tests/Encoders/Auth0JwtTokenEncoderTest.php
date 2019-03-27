@@ -5,11 +5,11 @@ namespace StepTheFkUp\ApiToken\Tests\Encoders;
 
 use StepTheFkUp\ApiToken\Decoders\JwtTokenDecoder;
 use StepTheFkUp\ApiToken\Encoders\JwtTokenEncoder;
+use StepTheFkUp\ApiToken\Exceptions\InvalidArgumentException;
 use StepTheFkUp\ApiToken\Exceptions\UnableToEncodeApiTokenException;
 use StepTheFkUp\ApiToken\Tests\AbstractAuth0JwtTokenTestCase;
 use StepTheFkUp\ApiToken\Tokens\BasicAuthApiToken;
 use StepTheFkUp\ApiToken\Tokens\JwtApiToken;
-use StepTheFkUp\ApiToken\Exceptions\InvalidArgumentException;
 
 final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
 {
@@ -27,6 +27,7 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
         $jwtDriver = $this->createAuth0JwtDriver();
 
         $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtApiToken([]));
+        /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface $token */
         $token = $this->createJwtTokenDecoder()->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
         ]));

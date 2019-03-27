@@ -36,6 +36,7 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
                 'param' => $this->createToken($algo)
             ]);
 
+            /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface $token */
             $token = $decoder->decode($request);
 
             $payload = $token->getPayload();
@@ -58,8 +59,10 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
      */
     public function testNullWhenQueryParamNotSet(): void
     {
-        $decoder = new JwtTokenInQueryDecoder($this->createJwtApiTokenFactory(
-            $this->createFirebaseJwtDriver()),
+        $decoder = new JwtTokenInQueryDecoder(
+            $this->createJwtApiTokenFactory(
+                $this->createFirebaseJwtDriver()
+            ),
             'param'
         );
 

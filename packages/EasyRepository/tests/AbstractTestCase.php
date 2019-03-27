@@ -76,7 +76,8 @@ abstract class AbstractTestCase extends TestCase
 
                 $manager->shouldReceive('getRepository')->once()->with('my-entity-class')->andReturn($repository);
                 $registry->shouldReceive('getManagerForClass')->once()->with('my-entity-class')->andReturn($manager);
-            });
+            }
+        );
 
         return $registry;
     }

@@ -5,5 +5,4 @@ namespace StepTheFkUp\EasyRepository\Tests\Bridge\Laravel\Stubs;
 
 final class Repository2Stub
 {
-
 }

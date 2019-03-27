@@ -41,7 +41,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
      * @param string[] $authorizedIss
      * @param string|resource $privateKey
      * @param null|string $audienceForEncode
-     * @param null|array $allowedAlgos
+     * @param null|string[] $allowedAlgos
      */
     public function __construct(
         array $validAudiences,
@@ -53,7 +53,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
         $this->validAudiences = $validAudiences;
         $this->authorizedIss = $authorizedIss;
         $this->privateKey = $privateKey;
-        $this->audienceForEncode = $audienceForEncode ?? \reset($validAudiences);
+        $this->audienceForEncode = $audienceForEncode ?? (string)\reset($validAudiences);
         $this->allowedAlgos = $allowedAlgos ?? ['HS256', 'RS256'];
     }
 
@@ -87,7 +87,10 @@ final class Auth0JwtDriver implements JwtDriverInterface
      */
     public function encode($input): string
     {
-        $generator = new TokenGenerator($this->audienceForEncode, $this->privateKey);
+        /** @var string $privateKey */
+        $privateKey = $this->privateKey;
+
+        $generator = new TokenGenerator($this->audienceForEncode, $privateKey);
 
         return $generator->generate($input['scopes'] ?? [], $input['lifetime'] ?? TokenGenerator::DEFAULT_LIFETIME);
     }

@@ -60,6 +60,8 @@ abstract class AbstractDoctrineOrmRepository implements ObjectRepositoryInterfac
      * @param int|string $identifier
      *
      * @return null|object
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      */
     public function find($identifier)
     {

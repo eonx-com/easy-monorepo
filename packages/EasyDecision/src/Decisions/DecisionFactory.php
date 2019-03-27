@@ -36,12 +36,12 @@ final class DecisionFactory implements DecisionFactoryInterface
      * DecisionFactory constructor.
      *
      * @param string[] $mapping
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface $expressionLanguageFactory
+     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface $languageFactory
      */
-    public function __construct(array $mapping, ExpressionLanguageFactoryInterface $expressionLanguageFactory)
+    public function __construct(array $mapping, ExpressionLanguageFactoryInterface $languageFactory)
     {
         $this->mapping = $mapping;
-        $this->expressionLanguageFactory = $expressionLanguageFactory;
+        $this->expressionLanguageFactory = $languageFactory;
     }
 
     /**

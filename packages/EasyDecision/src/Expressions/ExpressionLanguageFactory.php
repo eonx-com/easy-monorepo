@@ -34,7 +34,9 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
      */
     public function create(ExpressionLanguageConfigInterface $config): ExpressionLanguage
     {
-        $expressionLanguage = new ExpressionLanguage($config->getBaseExpressionLanguage() ?? $this->createBaseExpressionLanguage());
+        $expressionLanguage = new ExpressionLanguage(
+            $config->getBaseExpressionLanguage() ?? $this->createBaseExpressionLanguage()
+        );
 
         foreach ($config->getFunctions() ?? [] as $function) {
             $expressionLanguage->addFunction($this->functionFactory->create($function));

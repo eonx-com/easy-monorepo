@@ -21,7 +21,11 @@
         "phpunit/phpunit": "^7.5",
         "vlucas/phpdotenv": "^3.3",
         "symplify/monorepo-builder": "^5.4",
-        "symplify/changelog-linker": "^5.4"
+        "symplify/changelog-linker": "^5.4",
+        "natepage/sniffs": "^1.1",
+        "phpstan/phpstan": "^0.11.5",
+        "sensiolabs/security-checker": "^5.0",
+        "symplify/easy-coding-standard": "^5.4"
     },
     "autoload": {
         "psr-4": {
@@ -58,6 +62,14 @@
         "stepthefkup/easy-decision": "self.version"
     },
     "scripts": {
+        "check-all": [
+            "@check-ecs",
+            "@check-phpstan",
+            "@check-security"
+        ],
+        "check-ecs": "vendor/bin/ecs check packages",
+        "check-phpstan": "vendor/bin/phpstan analyse packages --level=7 --ansi",
+        "check-security": "vendor/bin/security-checker security:check",
         "changelog": [
             "vendor/bin/changelog-linker dump-merges --in-packages",
             "vendor/bin/changelog-linker link",

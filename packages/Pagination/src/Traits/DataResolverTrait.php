@@ -13,7 +13,7 @@ trait DataResolverTrait
      * Create page pagination data for given data and configuration.
      *
      * @param \StepTheFkUp\Pagination\Interfaces\StartSizeConfigInterface $config
-     * @param mixed[] $data
+     * @param mixed $data
      *
      * @return \StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface
      */
@@ -23,9 +23,14 @@ trait DataResolverTrait
             return new StartSizeData($config->getStartDefault(), $config->getSizeDefault());
         }
 
-        return new StartSizeData(
-            empty($data[$config->getStartAttribute()]) ? $config->getStartDefault() : (int)$data[$config->getStartAttribute()],
-            empty($data[$config->getSizeAttribute()]) ? $config->getSizeDefault() : (int)$data[$config->getSizeAttribute()]
-        );
+        $start = empty($data[$config->getStartAttribute()])
+            ? $config->getStartDefault()
+            : (int)$data[$config->getStartAttribute()];
+
+        $size = empty($data[$config->getSizeAttribute()])
+            ? $config->getSizeDefault()
+            : (int)$data[$config->getSizeAttribute()];
+
+        return new StartSizeData($start, $size);
     }
 }
