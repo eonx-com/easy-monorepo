@@ -58,8 +58,10 @@ abstract class AbstractEloquentRepository implements ObjectRepositoryInterface
      * @param int|string $identifier
      *
      * @return null|object
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      */
-    public function find($identifier): ?object
+    public function find($identifier)
     {
         return $this->model->find($identifier);
     }
