@@ -1,6 +1,11 @@
 <div align="center">
     <h1>StepTheFkUp</h1>
     <p>Packages to help you stepping the f*k up in your projects.</p>
+    
+    <br>
+    
+    [![Build Status](https://travis-ci.org/StepTheFkUp/StepTheFkUp.svg?branch=master)](https://travis-ci.org/StepTheFkUp/StepTheFkUp)
+    [![Coverage Status](https://coveralls.io/repos/github/StepTheFkUp/StepTheFkUp/badge.svg?branch=master)](https://coveralls.io/github/StepTheFkUp/StepTheFkUp?branch=master)
 </div>
 
 ---
