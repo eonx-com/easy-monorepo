@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace StepTheFkUp\ApiToken\Decoders;
 
 use Psr\Http\Message\ServerRequestInterface;
-use StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenDecoderInterface;
+use StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface;
 use StepTheFkUp\ApiToken\Tokens\BasicAuthApiToken;
 use StepTheFkUp\ApiToken\Traits\ApiTokenDecoderTrait;
 

@@ -6,7 +6,6 @@ namespace StepTheFkUp\EasyRepository\Implementations\Illuminate;
 use Illuminate\Database\Eloquent\Model;
 use StepTheFkUp\EasyRepository\Interfaces\ObjectRepositoryInterface;
 
-
 abstract class AbstractEloquentRepository implements ObjectRepositoryInterface
 {
     /**
@@ -53,7 +52,7 @@ abstract class AbstractEloquentRepository implements ObjectRepositoryInterface
      *
      * @return null|object
      */
-    public function find($identifier)
+    public function find($identifier): ?object
     {
         return $this->model->find($identifier);
     }

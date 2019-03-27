@@ -57,7 +57,9 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
      */
     public function testJwtTokenNullIfAuthorizationHeaderNotSet(): void
     {
-        self::assertNull((new JwtTokenDecoder($this->createJwtApiTokenFactory($this->createFirebaseJwtDriver())))->decode($this->createServerRequest()));
+        $decoder = new JwtTokenDecoder($this->createJwtApiTokenFactory($this->createFirebaseJwtDriver()));
+
+        self::assertNull($decoder->decode($this->createServerRequest()));
     }
 
     /**
@@ -69,9 +71,9 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
      */
     public function testJwtTokenNullIfDoesntStartWithBearer(): void
     {
-        self::assertNull((new JwtTokenDecoder($this->createJwtApiTokenFactory($this->createFirebaseJwtDriver())))->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'SomethingElse'
-        ])));
+        $decoder = new JwtTokenDecoder($this->createJwtApiTokenFactory($this->createFirebaseJwtDriver()));
+
+        self::assertNull($decoder->decode($this->createServerRequest(['HTTP_AUTHORIZATION' => 'SomethingElse'])));
     }
 
     /**

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\ApiToken\Tests\Decoders;
 
-use StepTheFkUp\ApiToken\Interfaces\Tokens\BasicAuthApiTokenInterface;
 use StepTheFkUp\ApiToken\Decoders\BasicAuthDecoder;
+use StepTheFkUp\ApiToken\Interfaces\Tokens\BasicAuthApiTokenInterface;
 use StepTheFkUp\ApiToken\Tests\AbstractTestCase;
 
 final class BasicAuthDecoderTest extends AbstractTestCase

@@ -5,11 +5,11 @@ namespace StepTheFkUp\ApiToken\Tests\Encoders;
 
 use StepTheFkUp\ApiToken\Decoders\JwtTokenDecoder;
 use StepTheFkUp\ApiToken\Encoders\JwtTokenEncoder;
+use StepTheFkUp\ApiToken\Exceptions\InvalidArgumentException;
 use StepTheFkUp\ApiToken\Exceptions\UnableToEncodeApiTokenException;
 use StepTheFkUp\ApiToken\Tests\AbstractAuth0JwtTokenTestCase;
 use StepTheFkUp\ApiToken\Tokens\BasicAuthApiToken;
 use StepTheFkUp\ApiToken\Tokens\JwtApiToken;
-use StepTheFkUp\ApiToken\Exceptions\InvalidArgumentException;
 
 final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
 {

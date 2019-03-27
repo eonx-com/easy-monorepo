@@ -47,7 +47,8 @@ final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterf
         }
 
         throw new InvalidArgumentException(\sprintf(
-            '%s::create called with array expects either "[\'name\' => \'myFunction\', \'evaluator\' => function () {}]" or "[\'myFunction\', function () {}]"',
+            '%s::create called with array expects either "[\'name\' => \'myFunction\', 
+                    \'evaluator\' => function () {}]" or "[\'myFunction\', function () {}]"',
             self::class
         ));
     }

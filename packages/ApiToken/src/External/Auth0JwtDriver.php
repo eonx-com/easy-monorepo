@@ -41,7 +41,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
      * @param string[] $authorizedIss
      * @param string|resource $privateKey
      * @param null|string $audienceForEncode
-     * @param null|array $allowedAlgos
+     * @param null|string[] $allowedAlgos
      */
     public function __construct(
         array $validAudiences,

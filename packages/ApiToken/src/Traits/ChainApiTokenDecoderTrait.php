@@ -27,7 +27,7 @@ trait ChainApiTokenDecoderTrait
             'In "%s", decoder must be an instance of "%s", "%s" given',
             \get_class($this),
             ApiTokenDecoderInterface::class,
-            gettype($decoder)
+            \gettype($decoder)
         ));
     }
 

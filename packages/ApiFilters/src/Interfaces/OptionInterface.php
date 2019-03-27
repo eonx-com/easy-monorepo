@@ -5,5 +5,4 @@ namespace StepTheFkUp\ApiFilters\Interfaces;
 
 interface OptionInterface
 {
-
 }

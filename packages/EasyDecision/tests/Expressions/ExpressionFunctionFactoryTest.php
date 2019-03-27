@@ -71,7 +71,7 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
      */
     public function testInstanceOfExpressionFunctionReturnItAsItIs(): void
     {
-        $expressionFunction = new ExpressionFunction('function', function () {
+        $expressionFunction = new ExpressionFunction('function', function (): void {
         });
 
         self::assertEquals(

@@ -44,7 +44,9 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
      */
     public function testJwtTokenNullIfAuthorizationHeaderNotSet(): void
     {
-        self::assertNull((new JwtTokenDecoder($this->createJwtApiTokenFactory($this->createAuth0JwtDriver())))->decode($this->createServerRequest()));
+        $decoder = new JwtTokenDecoder($this->createJwtApiTokenFactory($this->createAuth0JwtDriver()));
+
+        self::assertNull($decoder->decode($this->createServerRequest()));
     }
 
     /**
@@ -56,9 +58,9 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
      */
     public function testJwtTokenNullIfDoesntStartWithBearer(): void
     {
-        self::assertNull((new JwtTokenDecoder($this->createJwtApiTokenFactory($this->createAuth0JwtDriver())))->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'SomethingElse'
-        ])));
+        $decoder = new JwtTokenDecoder($this->createJwtApiTokenFactory($this->createAuth0JwtDriver()));
+
+        self::assertNull($decoder->decode($this->createServerRequest(['HTTP_AUTHORIZATION' => 'SomethingElse'])));
     }
 
     /**
