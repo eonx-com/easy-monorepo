@@ -1,8 +1,10 @@
 <div align="center">
     <h1>StepTheFkUp</h1>
     <p>Packages to help you stepping the f*k up in your projects.</p>
-    <p><img alt="Build Status" src="https://img.shields.io/travis/StepTheFkUp/StepTheFkUp/master.svg"></p>
-    <p><img alt="Coveralls github branch" src="https://img.shields.io/coveralls/github/StepTheFkUp/StepTheFkUp/master.svg"></p>
+    <p>
+        <img alt="Build Status" src="https://img.shields.io/travis/StepTheFkUp/StepTheFkUp/master.svg">
+        <img alt="Coveralls github branch" src="https://img.shields.io/coveralls/github/StepTheFkUp/StepTheFkUp/master.svg">
+    </p>
 </div>
 
 ---
