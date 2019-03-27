@@ -12,7 +12,7 @@ matrix:
     - php: 7.2
       env: MONOREPO_SPLIT=true STANDALONE=true
     - php: 7.3
-      env: COVERAGE="--coverage-clover coverage.xml"
+      env: COVERAGE=true
   # for better contributor experience
   allow_failures:
     - php: 7.1
