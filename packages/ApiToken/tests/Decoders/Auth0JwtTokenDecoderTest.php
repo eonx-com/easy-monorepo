@@ -21,6 +21,7 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
     {
         $jwtApiTokenFactory = $this->createJwtApiTokenFactory($this->createAuth0JwtDriver());
 
+        /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface $token */
         $token = (new JwtTokenDecoder($jwtApiTokenFactory))->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken()
         ]));

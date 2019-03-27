@@ -27,6 +27,7 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
         $jwtDriver = $this->createAuth0JwtDriver();
 
         $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtApiToken([]));
+        /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface $token */
         $token = $this->createJwtTokenDecoder()->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
         ]));

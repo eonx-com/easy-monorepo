@@ -36,6 +36,7 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
                 'param' => $this->createToken($algo)
             ]);
 
+            /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface $token */
             $token = $decoder->decode($request);
 
             $payload = $token->getPayload();

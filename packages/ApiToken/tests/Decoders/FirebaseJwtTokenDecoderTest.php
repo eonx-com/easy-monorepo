@@ -33,6 +33,7 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
                 [$algo]
             ));
 
+            /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface $token */
             $token = (new JwtTokenDecoder($jwtApiTokenFactory))->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken($algo)
             ]));

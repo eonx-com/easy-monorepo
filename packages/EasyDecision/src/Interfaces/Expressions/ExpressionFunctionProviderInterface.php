@@ -8,7 +8,7 @@ interface ExpressionFunctionProviderInterface
     /**
      * Get list of functions.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @return mixed[]
      */
     public function getFunctions(): array;
 }

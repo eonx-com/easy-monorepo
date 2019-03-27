@@ -69,6 +69,7 @@ final class BasicAuthDecoderTest extends AbstractTestCase
         ];
 
         foreach ($tests as $test => $expected) {
+            /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\BasicAuthApiTokenInterface $token */
             $token = (new BasicAuthDecoder())->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test))
             ]));

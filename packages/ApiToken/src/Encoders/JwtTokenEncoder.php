@@ -3,17 +3,15 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\ApiToken\Encoders;
 
+use StepTheFkUp\ApiToken\Exceptions\InvalidArgumentException;
 use StepTheFkUp\ApiToken\Exceptions\UnableToEncodeApiTokenException;
 use StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenEncoderInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface;
-use StepTheFkUp\ApiToken\Tokens\JwtApiToken;
-use StepTheFkUp\ApiToken\Traits\ApiTokenEncoderTrait;
+use StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface;
 
 final class JwtTokenEncoder implements ApiTokenEncoderInterface
 {
-    use ApiTokenEncoderTrait;
-
     /**
      * @var \StepTheFkUp\ApiToken\External\Interfaces\JwtDriverInterface
      */
@@ -41,7 +39,14 @@ final class JwtTokenEncoder implements ApiTokenEncoderInterface
      */
     public function encode(ApiTokenInterface $apiToken): string
     {
-        $this->validateToken(JwtApiToken::class, $apiToken);
+        if (($apiToken instanceof JwtApiTokenInterface) === false) {
+            throw new InvalidArgumentException(\sprintf(
+                'In "%s", API token expected to be instance of "%s", "%s" given.',
+                \get_class($this),
+                JwtApiTokenInterface::class,
+                \get_class($apiToken)
+            ));
+        }
 
         try {
             return $this->jwtDriver->encode($apiToken->getPayload());

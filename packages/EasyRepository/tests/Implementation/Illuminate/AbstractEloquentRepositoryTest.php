@@ -57,7 +57,11 @@ final class AbstractEloquentRepositoryTest extends AbstractTestCase
             $model->shouldReceive('find')->once()->with('identifier')->andReturn($object);
         });
 
-        self::assertEquals(\spl_object_hash($object), \spl_object_hash($repo->find('identifier')));
+        $found = $repo->find('identifier');
+
+        if ($found !== null) {
+            self::assertEquals(\spl_object_hash($object), \spl_object_hash($found));
+        }
     }
 
     /**

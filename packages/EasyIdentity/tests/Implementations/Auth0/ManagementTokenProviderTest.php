@@ -84,7 +84,7 @@ class ManagementTokenProviderTest extends AbstractTestCase
                     'grant_type' => 'client_credentials'
                 ]
             ])
-            ->andReturn(new Response(200, [], \json_encode($content ?? [])));
+            ->andReturn(new Response(200, [], (string)\json_encode($content ?? [])));
     }
 
     /**

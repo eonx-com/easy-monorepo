@@ -26,6 +26,7 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
             'param' => $this->createToken()
         ]);
 
+        /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface $token */
         $token = $decoder->decode($request);
 
         $payload = $token->getPayload();
