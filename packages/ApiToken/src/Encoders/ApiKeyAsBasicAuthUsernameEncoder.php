@@ -3,16 +3,14 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\ApiToken\Encoders;
 
+use StepTheFkUp\ApiToken\Exceptions\InvalidArgumentException;
 use StepTheFkUp\ApiToken\Exceptions\UnableToEncodeApiTokenException;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenEncoderInterface;
 use StepTheFkUp\ApiToken\Interfaces\ApiTokenInterface;
 use StepTheFkUp\ApiToken\Interfaces\Tokens\ApiKeyApiTokenInterface;
-use StepTheFkUp\ApiToken\Traits\ApiTokenEncoderTrait;
 
 final class ApiKeyAsBasicAuthUsernameEncoder implements ApiTokenEncoderInterface
 {
-    use ApiTokenEncoderTrait;
-
     /**
      * Return encoded string representation of given API token.
      *
@@ -25,7 +23,14 @@ final class ApiKeyAsBasicAuthUsernameEncoder implements ApiTokenEncoderInterface
      */
     public function encode(ApiTokenInterface $apiToken): string
     {
-        $this->validateToken(ApiKeyApiTokenInterface::class, $apiToken);
+        if (($apiToken instanceof ApiKeyApiTokenInterface) === false) {
+            throw new InvalidArgumentException(\sprintf(
+                'In "%s", API token expected to be instance of "%s", "%s" given.',
+                \get_class($this),
+                ApiKeyApiTokenInterface::class,
+                \get_class($apiToken)
+            ));
+        }
 
         /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\ApiKeyApiTokenInterface $apiToken */
         $apiKey = $apiToken->getApiKey();

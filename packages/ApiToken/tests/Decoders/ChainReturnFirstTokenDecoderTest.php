@@ -22,6 +22,7 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
      */
     public function testChainFirstApiKeyTokenSuccessfully(): void
     {
+        /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\ApiKeyApiTokenInterface $token */
         $token = $this->createChainReturnFirstTokenDecoder()->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode('api-key: ')
         ]));
@@ -39,6 +40,7 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
      */
     public function testChainFirstBasicAuthTokenSuccessfully(): void
     {
+        /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\BasicAuthApiTokenInterface $token */
         $token = $this->createChainReturnFirstTokenDecoder()->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode('username:password')
         ]));

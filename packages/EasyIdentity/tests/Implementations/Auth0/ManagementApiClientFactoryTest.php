@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\App\Unit\Services\Identity\Auth0;
+namespace StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0;
 
 use Auth0\SDK\API\Management;
 use Mockery\MockInterface;

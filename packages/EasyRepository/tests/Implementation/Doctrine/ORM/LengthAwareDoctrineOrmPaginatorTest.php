@@ -10,6 +10,11 @@ use StepTheFkUp\EasyRepository\Tests\AbstractTestCase;
 
 final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
 {
+    /**
+     * Paginator should return expected values from getters.
+     *
+     * @return void
+     */
     public function testGettersReturnExpectedValues(): void
     {
         /** @var \Doctrine\ORM\Tools\Pagination\Paginator $doctrinePaginator */
@@ -25,6 +30,11 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
         self::assertFalse($paginator->hasPreviousPage());
     }
 
+    /**
+     * Mock doctrine paginator.
+     *
+     * @return \Mockery\MockInterface
+     */
     private function mockDoctrinePaginator(): MockInterface
     {
         return $this->mock(DoctrinePaginator::class, function (MockInterface $paginator): void {

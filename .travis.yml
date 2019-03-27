@@ -1,9 +1,56 @@
 language: php
 
-php:
-    - 7.1
-    - 7.2
-    - 7.3
+git:
+  depth: false
+
+matrix:
+  include:
+    - php: 7.1
+      env: CODE_ANALYSIS=true
+    - php: 7.1
+      env: COMPOSER_FLAGS="--prefer-lowest"
+    - php: 7.2
+      env: MONOREPO_SPLIT=true STANDALONE=true
+    - php: 7.3
+      env: COVERAGE="--coverage-clover coverage.xml"
+  # for better contributor experience
+  allow_failures:
+    - php: 7.1
+      env: CODE_ANALYSIS=true
 
 before_script:
-    - composer update --prefer-dist --no-progress --no-suggest --ansi
+  - composer update --prefer-dist --no-progress --no-suggest --ansi
+  - if [[ $COVERAGE != true ]]; then phpenv config-rm xdebug.ini || echo "xdebug not available"; fi
+
+script:
+  - vendor/bin/phpunit
+  - |
+    if [[ $CODE_ANALYSIS == true ]]; then composer check-all; fi
+
+  - |
+    if [[ $STANDALONE == true ]]; then
+        for DIRECTORY in `find packages -mindepth 1 -maxdepth 1 -type d`
+        do
+            CMD="vendor/bin/phpunit $DIRECTORY"
+            echo "Running '$CMD'"
+            $CMD
+        done
+    fi
+
+  - composer validate-repo
+
+after_script:
+  - |
+    if [[ $TRAVIS_EVENT_TYPE == "push" && $TRAVIS_BRANCH == "master" && $COVERAGE == true ]]; then
+        vendor/bin/phpunit --coverage-clover coverage.xml
+        wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar
+        php php-coveralls.phar --verbose
+    fi
+
+  - |
+    if [[ $TRAVIS_EVENT_TYPE == "push" && $TRAVIS_BRANCH == "master" && $MONOREPO_SPLIT == true ]]; then
+        composer split
+    fi
+
+notifications:
+  email: false

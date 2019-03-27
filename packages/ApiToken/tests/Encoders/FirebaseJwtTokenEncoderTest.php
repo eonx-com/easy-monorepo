@@ -35,6 +35,7 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
             $jwtDriver = $this->createFirebaseJwtDriver($algo, null, $privateKey);
 
             $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtApiToken(static::$tokenPayload));
+            /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\JwtApiTokenInterface $token */
             $token = $this->createJwtTokenDecoder($algo, $publicKey)->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
             ]));

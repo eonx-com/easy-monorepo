@@ -71,7 +71,10 @@ final class FirebaseJwtDriver implements JwtDriverInterface
             JWT::$leeway = $this->leeway;
         }
 
-        return JWT::decode($token, $this->publicKey, $this->allowedAlgos);
+        /** @var mixed[]|string $publicKey */
+        $publicKey = $this->publicKey;
+
+        return JWT::decode($token, $publicKey, $this->allowedAlgos);
     }
 
     /**
@@ -83,6 +86,9 @@ final class FirebaseJwtDriver implements JwtDriverInterface
      */
     public function encode($input): string
     {
-        return JWT::encode($input, $this->privateKey, $this->algo);
+        /** @var string $privateKey */
+        $privateKey = $this->privateKey;
+        
+        return JWT::encode($input, $privateKey, $this->algo);
     }
 }

@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyPipeline\Tests;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;

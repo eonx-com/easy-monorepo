@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\App\Unit\Services\Identity\Auth0;
+namespace StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
@@ -84,7 +84,7 @@ class ManagementTokenProviderTest extends AbstractTestCase
                     'grant_type' => 'client_credentials'
                 ]
             ])
-            ->andReturn(new Response(200, [], \json_encode($content ?? [])));
+            ->andReturn(new Response(200, [], (string)\json_encode($content ?? [])));
     }
 
     /**

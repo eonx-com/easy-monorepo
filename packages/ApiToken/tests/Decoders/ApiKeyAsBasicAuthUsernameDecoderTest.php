@@ -68,6 +68,7 @@ final class ApiKeyAsBasicAuthUsernameDecoderTest extends AbstractTestCase
         ];
 
         foreach ($tests as $test => $expected) {
+            /** @var \StepTheFkUp\ApiToken\Interfaces\Tokens\ApiKeyApiTokenInterface $token */
             $token = (new ApiKeyAsBasicAuthUsernameDecoder())->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test))
             ]));

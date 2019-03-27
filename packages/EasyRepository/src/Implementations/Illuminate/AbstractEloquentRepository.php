@@ -6,7 +6,6 @@ namespace StepTheFkUp\EasyRepository\Implementations\Illuminate;
 use Illuminate\Database\Eloquent\Model;
 use StepTheFkUp\EasyRepository\Interfaces\ObjectRepositoryInterface;
 
-
 abstract class AbstractEloquentRepository implements ObjectRepositoryInterface
 {
     /**
@@ -43,7 +42,14 @@ abstract class AbstractEloquentRepository implements ObjectRepositoryInterface
      */
     public function delete($object): void
     {
-        $object->delete();
+        if (\is_array($object) === false) {
+            $object = [$object];
+        }
+
+        /** @var \Illuminate\Database\Eloquent\Model $obj */
+        foreach ($object as $obj) {
+            $obj->delete();
+        }
     }
 
     /**
@@ -52,6 +58,8 @@ abstract class AbstractEloquentRepository implements ObjectRepositoryInterface
      * @param int|string $identifier
      *
      * @return null|object
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      */
     public function find($identifier)
     {
@@ -67,7 +75,14 @@ abstract class AbstractEloquentRepository implements ObjectRepositoryInterface
      */
     public function save($object): void
     {
-        $object->save();
+        if (\is_array($object) === false) {
+            $object = [$object];
+        }
+
+        /** @var \Illuminate\Database\Eloquent\Model $obj */
+        foreach ($object as $obj) {
+            $obj->save();
+        }
     }
 
     /**

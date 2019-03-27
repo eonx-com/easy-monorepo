@@ -51,7 +51,7 @@ interface IdentityUserInterface
      * @param string $key
      * @param mixed $value
      *
-     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return void
      */
     public function setIdentityValue(string $service, string $key, $value): void;
 }

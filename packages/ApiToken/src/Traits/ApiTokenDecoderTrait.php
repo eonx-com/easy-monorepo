@@ -36,7 +36,7 @@ trait ApiTokenDecoderTrait
             return null;
         }
 
-        return \substr($this->getFirstHeaderValue($header, $request), \strlen($prefix));
+        return \substr((string)$this->getFirstHeaderValue($header, $request), \strlen($prefix));
     }
 
     /**
