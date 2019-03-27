@@ -39,3 +39,6 @@ after_script:
     if [[ $TRAVIS_EVENT_TYPE == "push" && $TRAVIS_BRANCH == "master" && $MONOREPO_SPLIT == true ]]; then
         composer split
     fi
+
+notifications:
+  email: false
