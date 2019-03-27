@@ -7,3 +7,7 @@ php:
 
 before_script:
     - composer update --prefer-dist --no-progress --no-suggest --ansi
+
+script:
+    - vendor/bin/phpunit
+    - composer check-all
