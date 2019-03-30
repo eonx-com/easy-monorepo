@@ -164,7 +164,9 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
             return $this->expressionLanguageConfigFactory;
         }
 
-        return $this->expressionLanguageConfigFactory = $this->app->make(ExpressionLanguageConfigFactoryInterface::class);
+        return $this->expressionLanguageConfigFactory = $this->app->make(
+            ExpressionLanguageConfigFactoryInterface::class
+        );
     }
 
     /**
