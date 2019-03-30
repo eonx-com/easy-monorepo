@@ -6,12 +6,8 @@ namespace StepTheFkUp\EasyDecision\Bridge\Laravel;
 use Illuminate\Contracts\Container\Container;
 use StepTheFkUp\EasyDecision\Decisions\DecisionConfig;
 use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
-use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageConfig;
 use StepTheFkUp\EasyDecision\Interfaces\DecisionFactoryInterface as BaseDecisionFactoryInterface;
 use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 use StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface;
 
 final class LaravelDecisionFactory implements DecisionFactoryInterface
@@ -27,14 +23,9 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
     private $decorated;
 
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
+     * @var \StepTheFkUp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactoryInterface
      */
-    private $expressionFunctionFactory;
-
-    /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
-     */
-    private $globalExpressionFunctions;
+    private $expressionLanguageConfigFactory;
 
     /**
      * @var \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface[]
@@ -93,20 +84,20 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
     /**
      * Do create decision.
      *
+     * @param string $decision
      * @param string $type
      * @param mixed[] $providers
-     * @param mixed[] $expressions
      *
      * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    private function doCreate(string $type, array $providers, array $expressions): DecisionInterface
+    private function doCreate(string $decision, string $type, array $providers): DecisionInterface
     {
         return $this->decorated->create(new DecisionConfig(
             $type,
             $this->getRuleProviders($providers),
-            $this->getExpressionLanguageConfig($expressions)
+            $this->getExpressionLanguageConfigFactory()->create($decision)
         ));
     }
 
@@ -129,11 +120,7 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
             throw new InvalidArgumentException(\sprintf('No decision type configured for "%s"', $decision));
         }
 
-        return $this->doCreate(
-            (string)$config['type'],
-            (array)$config['providers'],
-            (array)($config['expressions'] ?? [])
-        );
+        return $this->doCreate($decision, (string)$config['type'], (array)$config['providers']);
     }
 
     /**
@@ -153,14 +140,7 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
         }
 
         if ($configProvider instanceof DecisionConfigProviderInterface) {
-            return $this->doCreate(
-                $configProvider->getDecisionType(),
-                $configProvider->getRuleProviders(),
-                [
-                    'functions' => $configProvider->getExpressionFunctions() ?? [],
-                    'providers' => $configProvider->getExpressionFunctionProviders() ?? []
-                ]
-            );
+            return $this->doCreate($decision, $configProvider->getDecisionType(), $configProvider->getRuleProviders());
         }
 
         throw new InvalidArgumentException(\sprintf(
@@ -172,107 +152,20 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
     }
 
     /**
-     * Get expression function factory.
+     * Get expression language config factory.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    private function getExpressionFunctionFactory(): ExpressionFunctionFactoryInterface
-    {
-        if ($this->expressionFunctionFactory !== null) {
-            return $this->expressionFunctionFactory;
-        }
-
-        return $this->expressionFunctionFactory = $this->app->make(ExpressionFunctionFactoryInterface::class);
-    }
-
-    /**
-     * Get expression function provider.
-     *
-     * @param mixed $provider
-     *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
+     * @return \StepTheFkUp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactoryInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    private function getExpressionFunctionProvider($provider): ExpressionFunctionProviderInterface
+    private function getExpressionLanguageConfigFactory(): ExpressionLanguageConfigFactoryInterface
     {
-        if ($provider instanceof ExpressionFunctionProviderInterface) {
-            return $provider;
+        if ($this->expressionLanguageConfigFactory !== null) {
+            return $this->expressionLanguageConfigFactory;
         }
 
-        return $this->app->make($provider);
-    }
-
-    /**
-     * Get expression functions for given functions and providers.
-     *
-     * @param mixed[] $functions
-     * @param mixed[] $providers
-     *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    private function getExpressionFunctions(array $functions, array $providers): array
-    {
-        $functionFactory = $this->getExpressionFunctionFactory();
-        $expressionFunctions = [];
-
-        foreach ($functions as $function) {
-            $expressionFunctions[] = $functionFactory->create($function);
-        }
-
-        foreach ($providers as $provider) {
-            foreach ($this->getExpressionFunctionProvider($provider)->getFunctions() as $function) {
-                $expressionFunctions[] = $functionFactory->create($function);
-            }
-        }
-
-        return $expressionFunctions;
-    }
-
-    /**
-     * Get expression language config for given expression config.
-     *
-     * @param mixed[] $config
-     *
-     * @return null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    private function getExpressionLanguageConfig(array $config): ?ExpressionLanguageConfigInterface
-    {
-        $functions = $config['functions'] ?? [];
-        $providers = $config['providers'] ?? [];
-        $globals = $this->getGlobalExpressionFunctions();
-
-        $expressionFunctions = $this->getExpressionFunctions($functions, $providers) + $globals;
-
-        if (empty($expressionFunctions) === false) {
-            return new ExpressionLanguageConfig(null, null, $expressionFunctions);
-        }
-
-        return null;
-    }
-
-    /**
-     * Get global expression functions.
-     *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    private function getGlobalExpressionFunctions(): array
-    {
-        if ($this->globalExpressionFunctions !== null) {
-            return $this->globalExpressionFunctions;
-        }
-
-        return $this->globalExpressionFunctions = $this->getExpressionFunctions(
-            \config('easy-decision.expressions.functions', []),
-            \config('easy-decision.expressions.providers', [])
+        return $this->expressionLanguageConfigFactory = $this->app->make(
+            ExpressionLanguageConfigFactoryInterface::class
         );
     }
 
