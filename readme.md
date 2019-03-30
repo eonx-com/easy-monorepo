@@ -2,10 +2,10 @@
     <h1>StepTheFkUp</h1>
     <p>Packages to help you stepping the f*k up in your projects.</p>
     <p>
-        <a href="https://travis-ci.org/StepTheFkUp/StepTheFkUp">
+        <a href="https://travis-ci.org/StepTheFkUp/StepTheFkUp" target="_blank">
             <img alt="Build Status" src="https://img.shields.io/travis/StepTheFkUp/StepTheFkUp/master.svg">
         </a>
-        <a href="https://coveralls.io/github/StepTheFkUp/StepTheFkUp">
+        <a href="https://coveralls.io/github/StepTheFkUp/StepTheFkUp" target="_blank">
             <img alt="Coveralls github branch" src="https://img.shields.io/coveralls/github/StepTheFkUp/StepTheFkUp/master.svg">
         </a>
     </p>
