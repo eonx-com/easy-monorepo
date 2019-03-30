@@ -36,6 +36,7 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config/easy-decision.php', 'easy-decision');
 
         $this->app->singleton(ExpressionFunctionFactoryInterface::class, ExpressionFunctionFactory::class);
+        $this->app->singleton(ExpressionLanguageConfigFactoryInterface::class, ExpressionLanguageConfigFactory::class);
         $this->app->singleton(ExpressionLanguageFactoryInterface::class, ExpressionLanguageFactory::class);
         $this->app->singleton(ExpressionLanguageRuleFactoryInterface::class, ExpressionLanguageRuleFactory::class);
 
