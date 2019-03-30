@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "stepthefkup/easy-pipeline": "^0.5",
+        "stepthefkup/easy-pipeline": "^0.4.3",
         "symfony/expression-language": "^4.2"
     },
     "require-dev": {

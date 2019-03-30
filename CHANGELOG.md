@@ -2,7 +2,19 @@
 
 <!-- dumped content start -->
 
-## v0.4.2 - 2019-03-26
+## v0.4.3 - 2019-03-30
+
+- [#18] Implement Coding Standards
+
+### EasyDecision
+
+- [#19] Add validate on ExpressionLanguage + remove addFunctionProvider
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.4.2] - 2019-03-26
 
 ### EasyDecision
 
@@ -157,3 +169,6 @@
 [#17]: https://github.com/StepTheFkUp/StepTheFkUp/pull/17
 [v0.4.1]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.0...v0.4.1
 [v0.4.0]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.3.4...v0.4.0
+[#19]: https://github.com/StepTheFkUp/StepTheFkUp/pull/19
+[#18]: https://github.com/StepTheFkUp/StepTheFkUp/pull/18
+[v0.4.2]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.1...v0.4.2
