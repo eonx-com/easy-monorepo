@@ -15,15 +15,6 @@ interface ExpressionLanguageInterface
     public function addFunction(ExpressionFunctionInterface $function): self;
 
     /**
-     * Add function provider to add multiple functions at once.
-     *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface $provider
-     *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
-     */
-    public function addFunctionProvider(ExpressionFunctionProviderInterface $provider): self;
-
-    /**
      * Evaluate given expression with given arguments and return output.
      *
      * @param string $expression
@@ -32,4 +23,14 @@ interface ExpressionLanguageInterface
      * @return mixed
      */
     public function evaluate(string $expression, ?array $arguments = null);
+
+    /**
+     * Validate given expression for given names.
+     *
+     * @param string $expression
+     * @param null|string[] $names
+     *
+     * @return bool
+     */
+    public function validate(string $expression, ?array $names = null): bool;
 }

@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace StepTheFkUp\EasyDecision\Expressions;
 
+use StepTheFkUp\EasyDecision\Exceptions\InvalidExpressionException;
 use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
 use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\SyntaxError;
 
 final class ExpressionLanguage implements ExpressionLanguageInterface
 {
@@ -40,22 +41,6 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     }
 
     /**
-     * Add function provider to add multiple functions at once.
-     *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface $provider
-     *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
-     */
-    public function addFunctionProvider(ExpressionFunctionProviderInterface $provider): ExpressionLanguageInterface
-    {
-        foreach ($provider->getFunctions() as $function) {
-            $this->addFunction($function);
-        }
-
-        return $this;
-    }
-
-    /**
      * Evaluate given expression with given arguments and return output.
      *
      * @param string $expression
@@ -66,6 +51,27 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     public function evaluate(string $expression, ?array $arguments = null)
     {
         return $this->expressionLanguage->evaluate($expression, $arguments ?? []);
+    }
+
+    /**
+     * Validate given expression for given names.
+     *
+     * @param string $expression
+     * @param null|string[] $names
+     *
+     * @return bool
+     *
+     * @throws \StepTheFkUp\EasyDecision\Exceptions\InvalidExpressionException
+     */
+    public function validate(string $expression, ?array $names = null): bool
+    {
+        try {
+            $this->expressionLanguage->parse($expression, $names ?? []);
+
+            return true;
+        } catch (SyntaxError $exception) {
+            throw new InvalidExpressionException($exception->getMessage(), $exception->getCode(), $exception);
+        }
     }
 
     /**

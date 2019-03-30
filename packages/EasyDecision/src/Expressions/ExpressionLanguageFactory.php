@@ -43,7 +43,9 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
         }
 
         foreach ($config->getFunctionProviders() ?? [] as $provider) {
-            $expressionLanguage->addFunctionProvider($provider);
+            foreach ($provider->getFunctions() as $function) {
+                $expressionLanguage->addFunction($this->functionFactory->create($function));
+            }
         }
 
         return $expressionLanguage;
