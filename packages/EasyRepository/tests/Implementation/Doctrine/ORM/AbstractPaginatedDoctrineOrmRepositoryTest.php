@@ -24,6 +24,11 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
         /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
         $registry = $this->mockRegistry(null, function (MockInterface $repository): void {
             $repository
+                ->shouldReceive('getClassName')
+                ->once()
+                ->withNoArgs()
+                ->andReturn('my-entity-class');
+            $repository
                 ->shouldReceive('createQueryBuilder')
                 ->once()
                 ->with('m', null)

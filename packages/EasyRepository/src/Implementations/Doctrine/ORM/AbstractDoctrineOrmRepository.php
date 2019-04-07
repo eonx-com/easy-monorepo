@@ -22,4 +22,11 @@ abstract class AbstractDoctrineOrmRepository implements ObjectRepositoryInterfac
         $this->manager = $registry->getManagerForClass($entityClass);
         $this->repository = $this->manager->getRepository($entityClass);
     }
+
+    /**
+     * Get entity class managed by the repository.
+     *
+     * @return string
+     */
+    abstract protected function getEntityClass(): string;
 }

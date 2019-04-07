@@ -66,13 +66,6 @@ trait DoctrineOrmRepositoryTrait
     }
 
     /**
-     * Get entity class managed by the repository.
-     *
-     * @return string
-     */
-    abstract protected function getEntityClass(): string;
-
-    /**
      * Create query builder from ORM repository.
      *
      * @param null|string $alias
@@ -92,7 +85,7 @@ trait DoctrineOrmRepositoryTrait
      */
     protected function getEntityAlias(): string
     {
-        $exploded = \explode('\\', $this->getEntityClass());
+        $exploded = \explode('\\', $this->repository->getClassName());
 
         return \strtolower(\substr($exploded[\count($exploded) - 1], 0, 1));
     }
