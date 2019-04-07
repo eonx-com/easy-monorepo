@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.4.3 - 2019-03-30
+## v0.4.4 - 2019-04-07
+
+### EasyRepository
+
+- [#20] Trait for DoctrineOrmRepository
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.4.3] - 2019-03-30
 
 - [#18] Implement Coding Standards
 
@@ -172,3 +182,5 @@
 [#19]: https://github.com/StepTheFkUp/StepTheFkUp/pull/19
 [#18]: https://github.com/StepTheFkUp/StepTheFkUp/pull/18
 [v0.4.2]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.1...v0.4.2
+[#20]: https://github.com/StepTheFkUp/StepTheFkUp/pull/20
+[v0.4.3]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.2...v0.4.3
