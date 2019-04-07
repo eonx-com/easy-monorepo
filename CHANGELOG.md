@@ -1,5 +1,11 @@
 <!-- changelog-linker -->
 
+## v0.4.5 - 2019-04-07
+
+### EasyRepository
+
+- Put getEntityClass on abstract doctrine ORM repository instead of trait
+
 <!-- dumped content start -->
 
 ## v0.4.4 - 2019-04-07
