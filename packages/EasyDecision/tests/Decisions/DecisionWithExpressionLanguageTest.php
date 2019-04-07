@@ -42,7 +42,8 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
             $this->createLanguageRule('value + 10'),
             $this->createLanguageRule('name in ["Brad", "Matt"] ? value + 10 : value'),
             $this->createLanguageRule('name === "Matt" ? value + 1000 : value'),
-            $this->createLanguageRule('cap(value, 200)')
+            $this->createLanguageRule('cap(value, 200)'),
+            $this->createLanguageRule('extra_param1 > 10 ? value + extra_param1 : value')
         ];
 
         $this->injectExpressionLanguage($rules, new ExpressionLanguageConfig(null, null, [
@@ -55,33 +56,36 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 
         $tests = [
             [
-                'original' => ['value' => 0, 'name' => 'Nathan'],
-                'expected' => ['value' => 10, 'name' => 'Nathan'],
+                'original' => ['value' => 0, 'name' => 'Nathan', 'extra_param1' => 1],
+                'expected' => ['value' => 10, 'name' => 'Nathan', 'extra_param1' => 1],
                 'outputs' => [
                     'value + 10' => 10,
                     'name in ["Brad", "Matt"] ? value + 10 : value' => 10,
                     'name === "Matt" ? value + 1000 : value' => 10,
-                    'cap(value, 200)' => 10
+                    'cap(value, 200)' => 10,
+                    'extra_param1 > 10 ? value + extra_param1 : value' => 10
                 ]
             ],
             [
-                'original' => ['value' => 0, 'name' => 'Brad'],
-                'expected' => ['value' => 20, 'name' => 'Brad'],
+                'original' => ['value' => 0, 'name' => 'Brad', 'extra_param1' => 1],
+                'expected' => ['value' => 20, 'name' => 'Brad', 'extra_param1' => 1],
                 'outputs' => [
                     'value + 10' => 10,
                     'name in ["Brad", "Matt"] ? value + 10 : value' => 20,
                     'name === "Matt" ? value + 1000 : value' => 20,
-                    'cap(value, 200)' => 20
+                    'cap(value, 200)' => 20,
+                    'extra_param1 > 10 ? value + extra_param1 : value' => 20
                 ]
             ],
             [
-                'original' => ['value' => 0, 'name' => 'Matt'],
-                'expected' => ['value' => 200, 'name' => 'Matt'],
+                'original' => ['value' => 0, 'name' => 'Matt', 'extra_param1' => 1],
+                'expected' => ['value' => 200, 'name' => 'Matt', 'extra_param1' => 1],
                 'outputs' => [
                     'value + 10' => 10,
                     'name in ["Brad", "Matt"] ? value + 10 : value' => 20,
                     'name === "Matt" ? value + 1000 : value' => 1020,
-                    'cap(value, 200)' => 200
+                    'cap(value, 200)' => 200,
+                    'extra_param1 > 10 ? value + extra_param1 : value' => 200
                 ]
             ]
         ];
