@@ -10,3 +10,9 @@ final class EmptyPipelinesListException extends InvalidArgumentException impleme
 {
     // No body needed.
 }
+
+\class_alias(
+    EmptyPipelinesListException::class,
+    'LoyaltyCorp\EasyPipeline\Exceptions\EmptyPipelinesListException',
+    false
+);

@@ -1,5 +1,5 @@
 {
-    "name": "stepthefkup/easy-pipeline",
+    "name": "loyaltycorp/easy-pipeline",
     "description": "Provides an easy and powerful way to implement pipelines for anything",
     "type": "library",
     "license": "MIT",
@@ -14,11 +14,13 @@
     },
     "autoload": {
         "psr-4": {
+            "LoyaltyCorp\\EasyPipeline\\": "src",
             "StepTheFkUp\\EasyPipeline\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "LoyaltyCorp\\EasyPipeline\\Tests\\": "tests",
             "StepTheFkUp\\EasyPipeline\\Tests\\": "tests"
         }
     },

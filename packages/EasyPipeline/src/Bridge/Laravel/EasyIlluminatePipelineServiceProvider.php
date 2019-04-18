@@ -83,3 +83,9 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
         }
     }
 }
+
+\class_alias(
+    EasyIlluminatePipelineServiceProvider::class,
+    'LoyaltyCorp\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider',
+    false
+);

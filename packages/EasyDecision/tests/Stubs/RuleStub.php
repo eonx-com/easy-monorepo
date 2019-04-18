@@ -88,3 +88,9 @@ final class RuleStub implements RuleInterface
         return $this->name;
     }
 }
+
+\class_alias(
+    RuleStub::class,
+    'LoyaltyCorp\EasyDecision\Tests\Stubs\RuleStub',
+    false
+);

@@ -28,3 +28,9 @@ final class ValueMiddleware extends AbstractMiddleware
         }
     }
 }
+
+\class_alias(
+    ValueMiddleware::class,
+    'LoyaltyCorp\EasyDecision\Middleware\ValueMiddleware',
+    false
+);

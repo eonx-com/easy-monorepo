@@ -48,7 +48,7 @@
 
 ## [v0.4.0] - 2019-03-21
 
-### ApiToken
+### EasyApiToken
 
 - [#16] Create Auth0 JWT driver
 
@@ -127,9 +127,9 @@
 
 <!-- dumped content start -->
 
-### Pagination
+### EasyPagination
 
-- [#4] Refactor PagePaginationDataResolverTrait according to new StartSizeData, Thanks to [@AlbertLabarento]
+- [#4] Refactor PageEasyPaginationDataResolverTrait according to new StartSizeData, Thanks to [@AlbertLabarento]
 
 <!-- dumped content end -->
 
@@ -145,7 +145,7 @@
 
 <!-- dumped content start -->
 
-### ApiToken
+### EasyApiToken
 
 - [#2] Add api token package, Thanks to [@natepage]
 

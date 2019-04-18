@@ -48,3 +48,9 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         });
     }
 }
+
+\class_alias(
+    EasyDecisionServiceProvider::class,
+    'LoyaltyCorp\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider',
+    false
+);

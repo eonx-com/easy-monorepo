@@ -57,3 +57,9 @@ final class DecisionConfigProviderStub implements DecisionConfigProviderInterfac
         ];
     }
 }
+
+\class_alias(
+    DecisionConfigProviderStub::class,
+    'LoyaltyCorp\EasyDecision\Tests\Stubs\DecisionConfigProviderStub',
+    false
+);

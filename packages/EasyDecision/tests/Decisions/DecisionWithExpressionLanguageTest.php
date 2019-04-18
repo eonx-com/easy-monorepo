@@ -115,3 +115,9 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
         }
     }
 }
+
+\class_alias(
+    DecisionWithExpressionLanguageTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Decisions\DecisionWithExpressionLanguageTest',
+    false
+);

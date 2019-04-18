@@ -167,3 +167,9 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
         );
     }
 }
+
+\class_alias(
+    ExpressionLanguageConfigFactory::class,
+    'LoyaltyCorp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactory',
+    false
+);

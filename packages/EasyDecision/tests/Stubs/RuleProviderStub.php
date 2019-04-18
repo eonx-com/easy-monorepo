@@ -22,3 +22,9 @@ final class RuleProviderStub implements RuleProviderInterface
         ];
     }
 }
+
+\class_alias(
+    RuleProviderStub::class,
+    'LoyaltyCorp\EasyDecision\Tests\Stubs\RuleProviderStub',
+    false
+);

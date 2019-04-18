@@ -12,3 +12,9 @@ interface RuleProviderInterface
      */
     public function getRules(): array;
 }
+
+\class_alias(
+    RuleProviderInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface',
+    false
+);

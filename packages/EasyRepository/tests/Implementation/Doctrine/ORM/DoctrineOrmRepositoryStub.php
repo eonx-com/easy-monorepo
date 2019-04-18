@@ -17,3 +17,9 @@ final class DoctrineOrmRepositoryStub extends AbstractDoctrineOrmRepository
         return 'my-entity-class';
     }
 }
+
+\class_alias(
+    DoctrineOrmRepositoryStub::class,
+    'LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM\DoctrineOrmRepositoryStub',
+    false
+);

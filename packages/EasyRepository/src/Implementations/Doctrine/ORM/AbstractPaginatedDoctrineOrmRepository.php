@@ -7,13 +7,13 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use StepTheFkUp\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface as RepoInterface;
-use StepTheFkUp\Pagination\Interfaces\LengthAwarePaginatorInterface;
-use StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface;
+use StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface;
 
 abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOrmRepository implements RepoInterface
 {
     /**
-     * @var \StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface
+     * @var \StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface
      */
     private $startSizeData;
 
@@ -21,7 +21,7 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
      * AbstractPaginatedDoctrineOrmRepository constructor.
      *
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
-     * @param \StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface $startSizeData
+     * @param \StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
      */
     public function __construct(ManagerRegistry $registry, StartSizeDataInterface $startSizeData)
     {
@@ -33,9 +33,9 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
     /**
      * Return a paginated list of objects managed by the repository.
      *
-     * @param null|\StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface $startSizeData
+     * @param null|\StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
      *
-     * @return \StepTheFkUp\Pagination\Interfaces\LengthAwarePaginatorInterface
+     * @return \StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface
      */
     public function paginate(?StartSizeDataInterface $startSizeData = null): LengthAwarePaginatorInterface
     {
@@ -46,10 +46,10 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
      * Create paginator for given query.
      *
      * @param \Doctrine\ORM\Query $query
-     * @param null|\StepTheFkUp\Pagination\Interfaces\StartSizeDataInterface $startSizeData
+     * @param null|\StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
      * @param null|bool $fetchJoinCollection
      *
-     * @return \StepTheFkUp\Pagination\Interfaces\LengthAwarePaginatorInterface
+     * @return \StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface
      */
     protected function doPaginate(
         Query $query,
@@ -72,3 +72,9 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
         );
     }
 }
+
+\class_alias(
+    AbstractPaginatedDoctrineOrmRepository::class,
+    'LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository',
+    false
+);

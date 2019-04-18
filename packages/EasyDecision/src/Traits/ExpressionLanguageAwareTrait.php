@@ -24,3 +24,9 @@ trait ExpressionLanguageAwareTrait
         $this->expressionLanguage = $expressionLanguage;
     }
 }
+
+\class_alias(
+    ExpressionLanguageAwareTrait::class,
+    'LoyaltyCorp\EasyDecision\Traits\ExpressionLanguageAwareTrait',
+    false
+);

@@ -204,3 +204,9 @@ abstract class AbstractDecision implements DecisionInterface
         return YesNoMiddleware::class;
     }
 }
+
+\class_alias(
+    AbstractDecision::class,
+    'LoyaltyCorp\EasyDecision\Decisions\AbstractDecision',
+    false
+);

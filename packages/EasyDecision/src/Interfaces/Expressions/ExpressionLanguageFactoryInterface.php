@@ -16,3 +16,9 @@ interface ExpressionLanguageFactoryInterface
      */
     public function create(ExpressionLanguageConfigInterface $config): ExpressionLanguage;
 }
+
+\class_alias(
+    ExpressionLanguageFactoryInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface',
+    false
+);

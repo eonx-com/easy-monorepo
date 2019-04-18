@@ -23,3 +23,9 @@ interface PipelineInterface
      */
     public function getLogs(): array;
 }
+
+\class_alias(
+    PipelineInterface::class,
+    'LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface',
+    false
+);

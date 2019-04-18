@@ -10,3 +10,9 @@ final class PipelineDidntRunException extends LogicException implements EasyPipe
 {
     // No body needed.
 }
+
+\class_alias(
+    PipelineDidntRunException::class,
+    'LoyaltyCorp\EasyPipeline\Exceptions\PipelineDidntRunException',
+    false
+);

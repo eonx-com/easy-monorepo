@@ -15,3 +15,9 @@ interface MiddlewareLoggerInterface
      */
     public function log(string $middleware, $content): void;
 }
+
+\class_alias(
+    MiddlewareLoggerInterface::class,
+    'LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface',
+    false
+);

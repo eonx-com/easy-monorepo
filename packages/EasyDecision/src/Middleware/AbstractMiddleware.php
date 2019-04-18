@@ -86,3 +86,9 @@ abstract class AbstractMiddleware implements MiddlewareInterface
         return $next($context);
     }
 }
+
+\class_alias(
+    AbstractMiddleware::class,
+    'LoyaltyCorp\EasyDecision\Middleware\AbstractMiddleware',
+    false
+);

@@ -28,3 +28,9 @@ final class Auth0IdentityServiceFactory
         return new Auth0IdentityService($authFactory, $config, $managementFactory, $tokenVerifierFactory);
     }
 }
+
+\class_alias(
+    Auth0IdentityServiceFactory::class,
+    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory',
+    false
+);

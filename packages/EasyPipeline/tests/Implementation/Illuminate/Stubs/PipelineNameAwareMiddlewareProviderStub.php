@@ -38,3 +38,9 @@ final class PipelineNameAwareMiddlewareProviderStub implements MiddlewareProvide
         ];
     }
 }
+
+\class_alias(
+    PipelineNameAwareMiddlewareProviderStub::class,
+    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\PipelineNameAwareMiddlewareProviderStub',
+    false
+);

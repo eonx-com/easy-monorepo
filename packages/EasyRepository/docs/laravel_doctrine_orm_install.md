@@ -93,7 +93,7 @@ Here is a simple example how to use it:
 // app/Repositories/PostRepositoryInterface.php
 
 use App\Database\Entities\Post;
-use StepTheFkUp\Pagination\Interfaces\LengthAwarePaginatorInterface;
+use StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 
 interface PostRepositoryInterface
 {
@@ -133,4 +133,4 @@ final class PostRepository extends AbstractPaginatedDoctrineOrmRepository implem
 [2]: https://lumen.laravel.com/
 [3]: https://www.doctrine-project.org/projects/orm.html
 [4]: https://www.laraveldoctrine.org/docs/1.3/orm
-[5]: https://github.com/StepTheFkUp/Pagination/blob/master/docs/install_laravel.md
+[5]: https://github.com/StepTheFkUp/EasyPagination/blob/master/docs/install_laravel.md

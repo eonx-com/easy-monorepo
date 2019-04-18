@@ -1,7 +1,7 @@
 parameters:
     ignoreErrors:
-        - message: '#Parameter \#3 \$privateKey of method StepTheFkUp\\ApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource|string|null, bool|resource|string|null given.#'
-          path: packages/ApiToken/tests
+        - message: '#Parameter \#3 \$privateKey of method StepTheFkUp\\EasyEasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource|string|null, bool|resource|string|null given.#'
+          path: packages/EasyEasyApiToken/tests
 
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDecision/src/Decisions
@@ -28,7 +28,7 @@ parameters:
           path: packages/EasyRepository/tests/Implementation/Illuminate
 
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
-          path: packages/Pagination/tests/Bridge/Laravel
+          path: packages/EasyPagination/tests/Bridge/Laravel
 
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#PHPDoc tag @throws with type ([\w\\|]+)?GuzzleHttp\\Exception\\GuzzleException([|\w\\]+)? is not subtype of Throwable#'

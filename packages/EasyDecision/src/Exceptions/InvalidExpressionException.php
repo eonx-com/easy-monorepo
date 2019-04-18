@@ -9,3 +9,9 @@ final class InvalidExpressionException extends \InvalidArgumentException impleme
 {
     // No body needed.
 }
+
+\class_alias(
+    InvalidExpressionException::class,
+    'LoyaltyCorp\EasyDecision\Exceptions\InvalidExpressionException',
+    false
+);

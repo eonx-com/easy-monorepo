@@ -90,3 +90,9 @@ class Config
         throw new RequiredDataMissingException(\sprintf('Required identity data for %s missing', $key));
     }
 }
+
+\class_alias(
+    Config::class,
+    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config',
+    false
+);

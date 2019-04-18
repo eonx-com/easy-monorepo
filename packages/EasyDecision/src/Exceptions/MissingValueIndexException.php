@@ -9,3 +9,9 @@ final class MissingValueIndexException extends \InvalidArgumentException impleme
 {
     // No body needed.
 }
+
+\class_alias(
+    MissingValueIndexException::class,
+    'LoyaltyCorp\EasyDecision\Exceptions\MissingValueIndexException',
+    false
+);

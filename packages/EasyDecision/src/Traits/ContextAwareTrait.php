@@ -44,3 +44,9 @@ trait ContextAwareTrait
         $this->context = $context;
     }
 }
+
+\class_alias(
+    ContextAwareTrait::class,
+    'LoyaltyCorp\EasyDecision\Traits\ContextAwareTrait',
+    false
+);

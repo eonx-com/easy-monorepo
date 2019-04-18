@@ -20,3 +20,9 @@ final class ExpressionLanguageRuleFactory implements ExpressionLanguageRuleFacto
         return new ExpressionLanguageRule($expression, $priority);
     }
 }
+
+\class_alias(
+    ExpressionLanguageRuleFactory::class,
+    'LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRuleFactory',
+    false
+);

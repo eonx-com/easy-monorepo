@@ -122,3 +122,9 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
         return $this->prefix . $pipeline;
     }
 }
+
+\class_alias(
+    IlluminatePipelineFactory::class,
+    'LoyaltyCorp\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory',
+    false
+);

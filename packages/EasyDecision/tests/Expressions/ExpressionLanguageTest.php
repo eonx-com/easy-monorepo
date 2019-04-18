@@ -50,3 +50,9 @@ final class ExpressionLanguageTest extends AbstractTestCase
         ]));
     }
 }
+
+\class_alias(
+    ExpressionLanguageTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Expressions\ExpressionLanguageTest',
+    false
+);

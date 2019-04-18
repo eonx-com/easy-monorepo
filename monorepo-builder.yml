@@ -16,11 +16,10 @@ parameters:
 
     # for "split" command
     directories_to_repositories:
-        packages/ApiFilters: 'git@github.com:StepTheFkUp/ApiFilters.git'
-        packages/ApiToken: 'git@github.com:StepTheFkUp/ApiToken.git'
-        packages/EasyDecision: 'git@github.com:StepTheFkUp/EasyDecision.git'
-        packages/EasyIdentity: 'git@github.com:StepTheFkUp/EasyIdentity.git'
-        packages/EasyPipeline: 'git@github.com:StepTheFkUp/EasyPipeline.git'
-        packages/EasyRepository: 'git@github.com:StepTheFkUp/EasyRepository.git'
-        packages/Pagination: 'git@github.com:StepTheFkUp/Pagination.git'
-        packages/Psr7Factory: 'git@github.com:StepTheFkUp/Psr7Factory.git'
+        packages/EasyApiToken: 'git@github.com:loyaltycorp/easy-api-token.git'
+        packages/EasyDecision: 'git@github.com:loyaltycorp/easy-decision.git'
+        packages/EasyIdentity: 'git@github.com:loyaltycorp/easy-identity.git'
+        packages/EasyPipeline: 'git@github.com:loyaltycorp/easy-pipeline.git'
+        packages/EasyRepository: 'git@github.com:loyaltycorp/easy-repository.git'
+        packages/EasyPagination: 'git@github.com:loyaltycorp/easy-pagination.git'
+        packages/EasyPsr7Factory: 'git@github.com:loyaltycorp/easy-psr7-factory.git'

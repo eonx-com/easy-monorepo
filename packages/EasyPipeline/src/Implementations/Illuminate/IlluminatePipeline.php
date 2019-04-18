@@ -103,3 +103,9 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
             });
     }
 }
+
+\class_alias(
+    IlluminatePipeline::class,
+    'LoyaltyCorp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline',
+    false
+);

@@ -85,3 +85,9 @@ final class DecisionFactoryTest extends AbstractTestCase
         (new DecisionFactory([], $this->getExpressionLanguageFactory()))->create(new DecisionConfig('', []));
     }
 }
+
+\class_alias(
+    DecisionFactoryTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Decisions\DecisionFactoryTest',
+    false
+);

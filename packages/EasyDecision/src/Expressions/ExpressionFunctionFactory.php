@@ -53,3 +53,9 @@ final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterf
         ));
     }
 }
+
+\class_alias(
+    ExpressionFunctionFactory::class,
+    'LoyaltyCorp\EasyDecision\Expressions\ExpressionFunctionFactory',
+    false
+);

@@ -39,3 +39,9 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         return $this->app = new Application(__DIR__);
     }
 }
+
+\class_alias(
+    AbstractLumenTestCase::class,
+    'LoyaltyCorp\EasyRepository\Tests\AbstractLumenTestCase',
+    false
+);

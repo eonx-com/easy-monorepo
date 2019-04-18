@@ -19,3 +19,9 @@ interface ExpressionFunctionInterface
      */
     public function getName(): string;
 }
+
+\class_alias(
+    ExpressionFunctionInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface',
+    false
+);

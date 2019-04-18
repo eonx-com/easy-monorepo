@@ -78,3 +78,9 @@ final class UnanimousDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 }
+
+\class_alias(
+    UnanimousDecisionTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Decisions\UnanimousDecisionTest',
+    false
+);

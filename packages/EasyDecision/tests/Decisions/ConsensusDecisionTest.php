@@ -114,3 +114,9 @@ final class ConsensusDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 }
+
+\class_alias(
+    ConsensusDecisionTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Decisions\ConsensusDecisionTest',
+    false
+);

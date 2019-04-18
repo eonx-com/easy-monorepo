@@ -38,3 +38,9 @@ final class AffirmativeDecision extends AbstractDecision
         return DecisionInterface::TYPE_YESNO_AFFIRMATIVE;
     }
 }
+
+\class_alias(
+    AffirmativeDecision::class,
+    'LoyaltyCorp\EasyDecision\Decisions\AffirmativeDecision',
+    false
+);

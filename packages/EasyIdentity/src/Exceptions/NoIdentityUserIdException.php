@@ -9,3 +9,9 @@ final class NoIdentityUserIdException extends \RuntimeException implements Ident
 {
     // No body needed.
 }
+
+\class_alias(
+    NoIdentityUserIdException::class,
+    'LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException',
+    false
+);

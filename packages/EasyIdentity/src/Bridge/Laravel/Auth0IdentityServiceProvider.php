@@ -35,3 +35,9 @@ final class Auth0IdentityServiceProvider extends ServiceProvider
         });
     }
 }
+
+\class_alias(
+    Auth0IdentityServiceProvider::class,
+    'LoyaltyCorp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider',
+    false
+);

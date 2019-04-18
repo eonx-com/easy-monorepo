@@ -9,3 +9,9 @@ final class InvalidRuleProviderException extends \InvalidArgumentException imple
 {
     // No body needed.
 }
+
+\class_alias(
+    InvalidRuleProviderException::class,
+    'LoyaltyCorp\EasyDecision\Exceptions\InvalidRuleProviderException',
+    false
+);

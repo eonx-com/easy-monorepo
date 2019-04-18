@@ -124,3 +124,9 @@ abstract class AbstractTestCase extends TestCase
         return $this->languageRuleFactory = new ExpressionLanguageRuleFactory();
     }
 }
+
+\class_alias(
+    AbstractTestCase::class,
+    'LoyaltyCorp\EasyDecision\Tests\AbstractTestCase',
+    false
+);

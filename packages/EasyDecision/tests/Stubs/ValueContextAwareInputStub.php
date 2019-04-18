@@ -48,3 +48,9 @@ final class ValueContextAwareInputStub implements ContextAwareInterface, ValueIn
         $this->value = $value;
     }
 }
+
+\class_alias(
+    ValueContextAwareInputStub::class,
+    'LoyaltyCorp\EasyDecision\Tests\Stubs\ValueContextAwareInputStub',
+    false
+);

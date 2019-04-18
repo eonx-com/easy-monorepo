@@ -13,3 +13,9 @@ interface IdentityServiceNamesInterface
         self::SERVICE_AUTH0
     ];
 }
+
+\class_alias(
+    IdentityServiceNamesInterface::class,
+    'LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceNamesInterface',
+    false
+);

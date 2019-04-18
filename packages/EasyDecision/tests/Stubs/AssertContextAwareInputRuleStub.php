@@ -59,3 +59,9 @@ final class AssertContextAwareInputRuleStub implements RuleInterface
         return 'test_context_aware_rule';
     }
 }
+
+\class_alias(
+    AssertContextAwareInputRuleStub::class,
+    'LoyaltyCorp\EasyDecision\Tests\Stubs\AssertContextAwareInputRuleStub',
+    false
+);

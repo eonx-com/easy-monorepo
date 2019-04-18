@@ -23,3 +23,9 @@ final class FromPhpExpressionFunctionProviderTest extends AbstractTestCase
         }
     }
 }
+
+\class_alias(
+    FromPhpExpressionFunctionProviderTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Helpers\FromPhpExpressionFunctionProviderTest',
+    false
+);

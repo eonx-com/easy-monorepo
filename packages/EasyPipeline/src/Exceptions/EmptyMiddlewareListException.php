@@ -9,3 +9,9 @@ final class EmptyMiddlewareListException extends \InvalidArgumentException imple
 {
     // No body needed.
 }
+
+\class_alias(
+    EmptyMiddlewareListException::class,
+    'LoyaltyCorp\EasyPipeline\Exceptions\EmptyMiddlewareListException',
+    false
+);

@@ -15,3 +15,9 @@ interface MiddlewareInterface
      */
     public function handle(ContextInterface $context, callable $next);
 }
+
+\class_alias(
+    MiddlewareInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\MiddlewareInterface',
+    false
+);

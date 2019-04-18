@@ -91,3 +91,9 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
         ], $logs);
     }
 }
+
+\class_alias(
+    IlluminatePipelineTest::class,
+    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\IlluminatePipelineTest',
+    false
+);

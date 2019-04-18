@@ -16,3 +16,9 @@ interface DecisionFactoryInterface
      */
     public function create(string $decision): DecisionInterface;
 }
+
+\class_alias(
+    DecisionFactoryInterface::class,
+    'LoyaltyCorp\EasyDecision\Bridge\Laravel\DecisionFactoryInterface',
+    false
+);

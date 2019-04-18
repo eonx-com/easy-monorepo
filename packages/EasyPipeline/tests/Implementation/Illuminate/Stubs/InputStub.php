@@ -44,3 +44,9 @@ final class InputStub
         return $this;
     }
 }
+
+\class_alias(
+    InputStub::class,
+    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\InputStub',
+    false
+);

@@ -38,3 +38,9 @@ class AuthenticationApiClientFactory
         );
     }
 }
+
+\class_alias(
+    AuthenticationApiClientFactory::class,
+    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory',
+    false
+);

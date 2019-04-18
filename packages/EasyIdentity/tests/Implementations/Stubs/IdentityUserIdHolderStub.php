@@ -44,3 +44,9 @@ final class IdentityUserIdHolderStub implements IdentityUserIdHolderInterface
         $this->userId = $userId;
     }
 }
+
+\class_alias(
+    IdentityUserIdHolderStub::class,
+    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserIdHolderStub',
+    false
+);

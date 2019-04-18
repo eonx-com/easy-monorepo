@@ -28,3 +28,9 @@ interface ExpressionLanguageConfigInterface
      */
     public function getFunctions(): ?array;
 }
+
+\class_alias(
+    ExpressionLanguageConfigInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface',
+    false
+);

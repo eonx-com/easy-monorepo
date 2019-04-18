@@ -92,3 +92,9 @@ abstract class AbstractEloquentRepository implements ObjectRepositoryInterface
      */
     abstract protected function getModel(): Model;
 }
+
+\class_alias(
+    AbstractEloquentRepository::class,
+    'LoyaltyCorp\EasyRepository\Implementations\Illuminate\AbstractEloquentRepository',
+    false
+);

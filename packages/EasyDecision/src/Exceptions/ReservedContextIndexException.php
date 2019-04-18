@@ -9,3 +9,9 @@ final class ReservedContextIndexException extends \InvalidArgumentException impl
 {
     // No body needed.
 }
+
+\class_alias(
+    ReservedContextIndexException::class,
+    'LoyaltyCorp\EasyDecision\Exceptions\ReservedContextIndexException',
+    false
+);

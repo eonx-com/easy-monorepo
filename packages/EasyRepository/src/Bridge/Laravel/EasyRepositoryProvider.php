@@ -43,3 +43,9 @@ final class EasyRepositoryProvider extends ServiceProvider
         }
     }
 }
+
+\class_alias(
+    EasyRepositoryProvider::class,
+    'LoyaltyCorp\EasyRepository\Bridge\Laravel\EasyRepositoryProvider',
+    false
+);

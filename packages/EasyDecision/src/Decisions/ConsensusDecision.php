@@ -44,3 +44,9 @@ final class ConsensusDecision extends AbstractDecision
         return DecisionInterface::TYPE_YESNO_CONSENSUS;
     }
 }
+
+\class_alias(
+    ConsensusDecision::class,
+    'LoyaltyCorp\EasyDecision\Decisions\ConsensusDecision',
+    false
+);

@@ -12,3 +12,9 @@ interface ExpressionFunctionProviderInterface
      */
     public function getFunctions(): array;
 }
+
+\class_alias(
+    ExpressionFunctionProviderInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface',
+    false
+);

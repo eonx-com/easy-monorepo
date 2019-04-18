@@ -17,3 +17,9 @@ final class ValidMiddlewareProviderStub implements MiddlewareProviderInterface
         return ['middleware1', 'middleware2'];
     }
 }
+
+\class_alias(
+    ValidMiddlewareProviderStub::class,
+    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ValidMiddlewareProviderStub',
+    false
+);

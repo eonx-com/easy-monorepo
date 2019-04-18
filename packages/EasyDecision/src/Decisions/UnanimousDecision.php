@@ -38,3 +38,9 @@ final class UnanimousDecision extends AbstractDecision
         return DecisionInterface::TYPE_YESNO_UNANIMOUS;
     }
 }
+
+\class_alias(
+    UnanimousDecision::class,
+    'LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision',
+    false
+);

@@ -101,3 +101,9 @@ final class AffirmativeDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 }
+
+\class_alias(
+    AffirmativeDecisionTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Decisions\AffirmativeDecisionTest',
+    false
+);

@@ -9,3 +9,9 @@ class RequiredDataMissingException extends \RuntimeException implements Identity
 {
     // No body needed.
 }
+
+\class_alias(
+    RequiredDataMissingException::class,
+    'LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException',
+    false
+);

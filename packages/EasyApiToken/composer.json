@@ -1,0 +1,38 @@
+{
+    "name": "loyaltycorp/easy-api-token",
+    "description": "Tools to handle API tokens like a pro",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "eoneopay/utils": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5",
+        "ext-openssl": "^7.1",
+        "firebase/php-jwt": "^5.0",
+        "zendframework/zend-diactoros": "^1.8",
+        "auth0/auth0-php": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyApiToken\\": "src",
+            "StepTheFkUp\\EasyApiToken\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyApiToken\\Tests\\": "tests",
+            "StepTheFkUp\\EasyApiToken\\Tests\\": "tests"
+        }
+    },
+    "suggest": {
+        "auth0/auth0-php": "To use the Auth0 JWT driver to decode/encode tokens",
+        "firebase/php-jwt": "To use the Firebase JWT driver to decode/encode tokens"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.5-dev"
+        }
+    }
+}

@@ -58,3 +58,9 @@ class ManagementTokenProvider
         throw new RequiredDataMissingException('Required "access_token" missing for Auth0');
     }
 }
+
+\class_alias(
+    ManagementTokenProvider::class,
+    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider',
+    false
+);

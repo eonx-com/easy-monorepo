@@ -212,3 +212,9 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
         return $contents['error_description'] ?? $exception->getMessage();
     }
 }
+
+\class_alias(
+    Auth0IdentityService::class,
+    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityService',
+    false
+);

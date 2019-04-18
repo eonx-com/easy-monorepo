@@ -102,3 +102,9 @@ class ManagementTokenProviderTest extends AbstractTestCase
         ]);
     }
 }
+
+\class_alias(
+    ManagementTokenProviderTest::class,
+    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0\ManagementTokenProviderTest',
+    false
+);

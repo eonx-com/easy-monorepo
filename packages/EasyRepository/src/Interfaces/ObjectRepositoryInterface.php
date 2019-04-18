@@ -41,3 +41,9 @@ interface ObjectRepositoryInterface
      */
     public function save($object): void;
 }
+
+\class_alias(
+    ObjectRepositoryInterface::class,
+    'LoyaltyCorp\EasyRepository\Interfaces\ObjectRepositoryInterface',
+    false
+);
