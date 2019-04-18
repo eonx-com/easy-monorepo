@@ -20,15 +20,15 @@ class EasyPsr7FactoryTest extends AbstractTestCase
     {
         $psr7Factory = $this->getFactory();
 
-        $uri = 'https://google.com';
+        $uri = 'google.com';
         $value = 'value-query-1';
 
-        $symfonyRequest = new Request(['query1' => $value], [], [], [], [], ['ORIG_PATH_INFO' => $uri]);
+        $symfonyRequest = new Request(['query1' => $value], [], [], [], [], ['HTTP_HOST' => $uri]);
         $psrRequest = $psr7Factory->createRequest($symfonyRequest);
 
         self::assertInstanceOf(ServerRequestInterface::class, $psrRequest);
         self::assertEquals($value, $psrRequest->getQueryParams()['query1']);
-        self::assertEquals($uri, $psrRequest->getRequestTarget());
+        self::assertEquals('/', $psrRequest->getRequestTarget());
     }
 
     /**
