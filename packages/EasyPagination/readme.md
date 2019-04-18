@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>StepTheFkUp - EasyPagination</h1>
+    <h1>LoyaltyCorp - EasyPagination</h1>
     <p>Provides a generic way to handle pagination data from clients.</p>
 </div>
 
