@@ -6,12 +6,16 @@ namespace StepTheFkUp\EasyPsr7Factory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use StepTheFkUp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Zend\Diactoros\ResponseFactory;
+use Zend\Diactoros\ServerRequestFactory;
+use Zend\Diactoros\StreamFactory;
+use Zend\Diactoros\UploadedFileFactory;
 
 final class EasyPsr7Factory implements EasyPsr7FactoryInterface
 {
@@ -36,7 +40,12 @@ final class EasyPsr7Factory implements EasyPsr7FactoryInterface
         ?HttpMessageFactoryInterface $httpMessage = null
     ) {
         $this->httpFoundation = $httpFoundation ?? new HttpFoundationFactory();
-        $this->httpMessage = $httpMessage ?? new DiactorosFactory();
+        $this->httpMessage = $httpMessage ?? new PsrHttpFactory(
+            new ServerRequestFactory(),
+            new StreamFactory(),
+            new UploadedFileFactory(),
+            new ResponseFactory()
+        );
     }
 
     /**
