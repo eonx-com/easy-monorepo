@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>StepTheFkUp - EasyPagination</h1>
+    <h1>LoyaltyCorp - EasyPagination</h1>
     <p>Provides a generic way to handle pagination data from clients.</p>
 </div>
 
@@ -12,7 +12,7 @@ This document describes the steps to install this package into a [Laravel][1] an
 Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
 
 ```bash
-$ composer require stepthefkup/pagination
+$ composer require loyaltycorp/easy-pagination
 ```
 
 # Service Providers
@@ -28,10 +28,10 @@ You just have to register the one you want:
     // Other Service Providers...
     
     // If you want to handle pagination data as an array in the request query
-    \StepTheFkUp\EasyPagination\Bridge\Laravel\Providers\StartSizeAsArrayInQueryEasyPaginationProvider::class,
+    \LoyaltyCorp\EasyPagination\Bridge\Laravel\Providers\StartSizeAsArrayInQueryEasyPaginationProvider::class,
     
     // If you want to handle pagination data directly in the request query
-    \StepTheFkUp\EasyPagination\Bridge\Laravel\Providers\StartSizeInQueryEasyPaginationProvider::class,
+    \LoyaltyCorp\EasyPagination\Bridge\Laravel\Providers\StartSizeInQueryEasyPaginationProvider::class,
 ],
 ``` 
 
@@ -41,15 +41,15 @@ You just have to register the one you want:
 
 The "StartSize" service providers will register 2 services as:
 
-- `StepTheFkUp\EasyPagination\Interfaces\StartSizeDataResolverInterface`: Used to resolve the pagination data
-- `StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface`: Resolved pagination data
+- `LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataResolverInterface`: Used to resolve the pagination data
+- `LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface`: Resolved pagination data
 
 That's it you're all setup! You're now able to resolve pagination data or automatically inject it anywhere you want, 
 using dependency injection or service locator (we strongly recommend to use the first one haha).
 
 ```php
 // Dependency Injection
-public function __construct(\StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface $data) {
+public function __construct(\LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface $data) {
     $this->data = $data;
     
     $data->getStart();
@@ -57,7 +57,7 @@ public function __construct(\StepTheFkUp\EasyPagination\Interfaces\StartSizeData
 }
 
 // Service Locator
-$app->make(\StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface::class);
+$app->make(\LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface::class);
 ```
 
 # Config

@@ -1,6 +1,6 @@
 <div align="center">
-    <h1>StepTheFkUp - EasyDecision</h1>
-    <p>Your most complex decisions taken the easiest way.</p>
+    <h1>LoyaltyCorp - EasyDecision</h1>
+    <p>Your most complex decisions made the easiest way.</p>
 </div>
 
 ---

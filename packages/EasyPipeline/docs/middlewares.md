@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>StepTheFkUp - EasyPipeline</h1>
+    <h1>LoyaltyCorp - EasyPipeline</h1>
     <p>Provides an easy and powerful way to implement pipelines for anything.</p>
 </div>
 
@@ -10,11 +10,11 @@ This document describes the concept of middleware and how to use them.
 # What's a middleware
 
 If you're not familiar with the Pipeline Design Pattern we recommend you to have a look at this [documentation][1].
-In this package the "tasks or stages" are the middleware and are defined by the `StepTheFkUp\EasyPipeline\Interfaces\MiddlewareInterface`.
+In this package the "tasks or stages" are the middleware and are defined by the `LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareInterface`.
 
 # How to create a middleware
 
-A middleware is a simple PHP object implementing the `StepTheFkUp\EasyPipeline\Interfaces\MiddlewareInterface`, this
+A middleware is a simple PHP object implementing the `LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareInterface`, this
 interface defines only one method `handle($input, callable $next)` where `$input` is the pipeline input data, potentially
 modified by a previous middleware, and `$next` is the callable to tell the next middleware it can proceed with the input.
 
@@ -22,7 +22,7 @@ To ensure the pipeline works as expected, each middleware MUST keep passing the 
 the minimum required code for a middleware:
 
 ```php
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareInterface;
 
 final class MyMiddleware implements MiddlewareInterface
 {
@@ -47,14 +47,14 @@ final class MyMiddleware implements MiddlewareInterface
 
 This package comes with all the tools to allow your middleware to log information for each step of your pipeline, this
 can be really handy for debugging purposes. In order to allow your middleware to log information, it must implement
-the `StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface` so that the pipeline know your middleware
-requires the `StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerInterface` instance.
+the `LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface` so that the pipeline know your middleware
+requires the `LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface` instance.
 
 
 The `MiddlewareLoggerInterface` defines one method `log(string $middleware, $content): void`, the first `$middleware`
 parameter is to categorise the `$content` under a single identifier, it can be any string you want.
 
-This package provides you with the `StepTheFkUp\EasyPipeline\Traits\MiddlewareLoggerAwareTrait` which defines the setter
+This package provides you with the `LoyaltyCorp\EasyPipeline\Traits\MiddlewareLoggerAwareTrait` which defines the setter
 for the `MiddlewareLoggerInterface` and also the `log($content, ?string $middleware = null)` method to easily log content.
 The `$middleware` parameter is optional, when it is not set the trait will default it to your middleware class name.
 The trait is a convenient way of allowing your middleware to log content but if you do not like using traits you're free
@@ -64,9 +64,9 @@ to implement the logging logic yourself.
 Here is the minimum required code for your middleware to log content:
 
 ```php
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareInterface;
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
-use StepTheFkUp\EasyPipeline\Traits\MiddlewareLoggerAwareTrait;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
+use LoyaltyCorp\EasyPipeline\Traits\MiddlewareLoggerAwareTrait;
 
 final class MyMiddlewareWithLog implements MiddlewareInterface, MiddlewareLoggerAwareInterface
 {

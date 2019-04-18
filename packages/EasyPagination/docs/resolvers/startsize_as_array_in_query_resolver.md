@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>StepTheFkUp - EasyPagination</h1>
+    <h1>LoyaltyCorp - EasyPagination</h1>
     <p>Provides a generic way to handle pagination data from clients.</p>
 </div>
 
@@ -17,8 +17,8 @@ This resolver will look for pagination data in the request query parameters as w
 # Usage
 
 ```php
-use StepTheFkUp\EasyPagination\Resolvers\Config\StartSizeConfig;
-use StepTheFkUp\EasyPagination\Resolvers\StartSizeInQueryResolver;
+use LoyaltyCorp\EasyPagination\Resolvers\Config\StartSizeConfig;
+use LoyaltyCorp\EasyPagination\Resolvers\StartSizeInQueryResolver;
 
 // Request: <url>?page[number]=2&page[size]=30
 

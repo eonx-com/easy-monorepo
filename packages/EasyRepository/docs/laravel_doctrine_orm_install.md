@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>StepTheFkUp - EasyRepository</h1>
+    <h1>LoyaltyCorp - EasyRepository</h1>
     <p>Provides an easy way to implement the Repository Design Pattern in your applications.</p>
 </div>
 
@@ -17,7 +17,7 @@ strongly recommend you to use the [Laravel Doctrine ORM package][4], please refe
 
 ## AbstractDoctrineRepository
 
-This package provides you with `StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\AbstractDoctrineRepository` which
+This package provides you with `LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\AbstractDoctrineRepository` which
 has everything setup for you to implement the generic `ObjectRepositoryInterface` using Doctrine ORM, and take advantage
 of the dependency injection. Using this abstraction is completely optional you could create your own, but we recommend
 to use it to avoid you doing work already done.
@@ -41,7 +41,7 @@ interface PostRepositoryInterface
 // app/Repositories/PostRepository.php
 
 use App\Database\Entities\Post;
-use StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\AbstractDoctrineRepository;
+use LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\AbstractDoctrineRepository;
 
 final class PostRepository extends AbstractDoctrineRepository implements PostRepositoryInterface
 {
@@ -72,7 +72,7 @@ final class PostRepository extends AbstractDoctrineRepository implements PostRep
 
 ## AbstractPaginatedDoctrineOrmRepository
 
-If you need to deal with paginated sets of objects, this package provides you with `StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository`
+If you need to deal with paginated sets of objects, this package provides you with `LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository`
 which has everything setup for you. This repository has a dependency on the `StartSizeDataInterface` from the `stepthefkup/pagination`
 package so to be able to use it you first need to update your project's dependencies:
 
@@ -93,7 +93,7 @@ Here is a simple example how to use it:
 // app/Repositories/PostRepositoryInterface.php
 
 use App\Database\Entities\Post;
-use StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use LoyaltyCorp\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 
 interface PostRepositoryInterface
 {
@@ -103,7 +103,7 @@ interface PostRepositoryInterface
 // app/Repositories/PostRepository.php
 
 use App\Database\Entities\Post;
-use StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository;
+use LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository;
 
 final class PostRepository extends AbstractPaginatedDoctrineOrmRepository implements PostRepositoryInterface
 {
@@ -133,4 +133,4 @@ final class PostRepository extends AbstractPaginatedDoctrineOrmRepository implem
 [2]: https://lumen.laravel.com/
 [3]: https://www.doctrine-project.org/projects/orm.html
 [4]: https://www.laraveldoctrine.org/docs/1.3/orm
-[5]: https://github.com/StepTheFkUp/EasyPagination/blob/master/docs/install_laravel.md
+[5]: https://github.com/loyaltycorp/easy-pagination/blob/master/docs/install_laravel.md

@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>StepTheFkUp - EasyDecision</h1>
+    <h1>LoyaltyCorp - EasyDecision</h1>
     <p>Your most complex decisions taken the easiest way.</p>
 </div>
 
@@ -12,7 +12,7 @@ This document describes the steps to install this package into a [Laravel][1] an
 Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
 
 ```bash
-$ composer require stepthefkup/easy-decision
+$ composer require loyaltycorp/easy-decision
 ```
 
 # Service Provider
@@ -26,7 +26,7 @@ not familiar with this concept make sure to have a look at the [documentation][4
 'providers' => [
     // Other Service Providers...
     
-    \StepTheFkUp\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider::class
+    \LoyaltyCorp\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider::class
 ],
 ```
 
@@ -47,7 +47,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\StepTheFkUp\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider::class);
+$app->register(\LoyaltyCorp\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider::class);
 ```
 
 ## Add Config

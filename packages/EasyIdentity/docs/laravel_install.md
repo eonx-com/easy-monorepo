@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>StepTheFkUp - EasyIdentity</h1>
+    <h1>LoyaltyCorp - EasyIdentity</h1>
     <p>Tools to handle authentication like a pro.</p>
 </div>
 
@@ -12,7 +12,7 @@ This document describes the steps to install this package into a [Laravel][1] an
 Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
 
 ```bash
-$ composer require stepthefkup/easy-identity
+$ composer require loyaltycorp/easy-identity
 ```
 
 # Service Provider
@@ -30,7 +30,7 @@ implementations into the services container automatically. Make sure to register
     // Other Service Providers...
     
     // Register Auth0 implementation
-    \StepTheFkUp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider::class
+    \LoyaltyCorp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider::class
 ],
 ```
 
@@ -67,7 +67,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\StepTheFkUp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider::class);
+$app->register(\LoyaltyCorp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider::class);
 ```
 
 ## Add Config
