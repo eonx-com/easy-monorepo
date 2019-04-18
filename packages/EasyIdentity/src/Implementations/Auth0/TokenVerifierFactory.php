@@ -40,3 +40,9 @@ class TokenVerifierFactory
         ]);
     }
 }
+
+\class_alias(
+    TokenVerifierFactory::class,
+    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory',
+    false
+);

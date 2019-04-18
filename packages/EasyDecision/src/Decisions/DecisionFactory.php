@@ -125,3 +125,9 @@ final class DecisionFactory implements DecisionFactoryInterface
         ));
     }
 }
+
+\class_alias(
+    DecisionFactory::class,
+    'LoyaltyCorp\EasyDecision\Decisions\DecisionFactory',
+    false
+);

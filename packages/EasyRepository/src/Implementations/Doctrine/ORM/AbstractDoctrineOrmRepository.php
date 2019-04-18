@@ -30,3 +30,9 @@ abstract class AbstractDoctrineOrmRepository implements ObjectRepositoryInterfac
      */
     abstract protected function getEntityClass(): string;
 }
+
+\class_alias(
+    AbstractDoctrineOrmRepository::class,
+    'LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\AbstractDoctrineOrmRepository',
+    false
+);

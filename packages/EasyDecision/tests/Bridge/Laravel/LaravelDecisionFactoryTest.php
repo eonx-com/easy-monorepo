@@ -183,3 +183,9 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $this->getApplication()->make('config')->set('easy-decision', $config);
     }
 }
+
+\class_alias(
+    LaravelDecisionFactoryTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Bridge\Laravel\LaravelDecisionFactoryTest',
+    false
+);

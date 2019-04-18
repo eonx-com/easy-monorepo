@@ -62,3 +62,9 @@ interface IdentityServiceInterface
      */
     public function updateUser(IdentityUserInterface $user, array $data): IdentityUserInterface;
 }
+
+\class_alias(
+    IdentityServiceInterface::class,
+    'LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceInterface',
+    false
+);

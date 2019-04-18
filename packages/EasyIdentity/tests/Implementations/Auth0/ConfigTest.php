@@ -49,3 +49,9 @@ class ConfigTest extends AbstractTestCase
         (new Config())->getClientId();
     }
 }
+
+\class_alias(
+    ConfigTest::class,
+    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0\ConfigTest',
+    false
+);

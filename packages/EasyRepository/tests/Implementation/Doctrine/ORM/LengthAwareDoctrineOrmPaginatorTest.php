@@ -46,3 +46,9 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
         });
     }
 }
+
+\class_alias(
+    LengthAwareDoctrineOrmPaginatorTest::class,
+    'LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM\LengthAwareDoctrineOrmPaginatorTest',
+    false
+);

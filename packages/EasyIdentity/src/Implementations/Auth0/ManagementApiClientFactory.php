@@ -42,3 +42,9 @@ class ManagementApiClientFactory
         return new Management($this->tokenProvider->getToken(), $this->config->getDomain());
     }
 }
+
+\class_alias(
+    ManagementApiClientFactory::class,
+    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory',
+    false
+);

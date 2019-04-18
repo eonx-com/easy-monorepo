@@ -1,5 +1,5 @@
 {
-    "name": "stepthefkup/easy-identity",
+    "name": "loyaltycorp/easy-identity",
     "description": "Tools to handle authentication like a pro",
     "type": "library",
     "license": "MIT",
@@ -15,11 +15,13 @@
     },
     "autoload": {
         "psr-4": {
+            "LoyaltyCorp\\EasyIdentity\\": "src",
             "StepTheFkUp\\EasyIdentity\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "LoyaltyCorp\\EasyIdentity\\Tests\\": "tests",
             "StepTheFkUp\\EasyIdentity\\Tests\\": "tests"
         }
     },

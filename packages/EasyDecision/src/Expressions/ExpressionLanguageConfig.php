@@ -70,3 +70,9 @@ final class ExpressionLanguageConfig implements ExpressionLanguageConfigInterfac
         return $this->functions;
     }
 }
+
+\class_alias(
+    ExpressionLanguageConfig::class,
+    'LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig',
+    false
+);

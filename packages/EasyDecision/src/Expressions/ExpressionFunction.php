@@ -49,3 +49,9 @@ final class ExpressionFunction implements ExpressionFunctionInterface
         return $this->name;
     }
 }
+
+\class_alias(
+    ExpressionFunction::class,
+    'LoyaltyCorp\EasyDecision\Expressions\ExpressionFunction',
+    false
+);

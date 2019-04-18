@@ -1,5 +1,5 @@
 {
-    "name": "stepthefkup/easy-decision",
+    "name": "loyaltycorp/easy-decision",
     "description": "Your most complex decisions taken the easiest way",
     "type": "library",
     "license": "MIT",
@@ -14,11 +14,13 @@
     },
     "autoload": {
         "psr-4": {
+            "LoyaltyCorp\\EasyDecision\\": "src",
             "StepTheFkUp\\EasyDecision\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "LoyaltyCorp\\EasyDecision\\Tests\\": "tests",
             "StepTheFkUp\\EasyDecision\\Tests\\": "tests"
         }
     },

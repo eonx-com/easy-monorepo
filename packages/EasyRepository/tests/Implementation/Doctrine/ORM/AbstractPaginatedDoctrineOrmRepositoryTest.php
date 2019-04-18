@@ -10,7 +10,7 @@ use Doctrine\ORM\QueryBuilder;
 use Mockery\MockInterface;
 use StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator;
 use StepTheFkUp\EasyRepository\Tests\AbstractTestCase;
-use StepTheFkUp\Pagination\Data\StartSizeData;
+use StepTheFkUp\EasyPagination\Data\StartSizeData;
 
 final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
 {
@@ -58,3 +58,9 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
         });
     }
 }
+
+\class_alias(
+    AbstractPaginatedDoctrineOrmRepositoryTest::class,
+    'LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepositoryTest',
+    false
+);

@@ -15,13 +15,13 @@
 
 ## Packages
 
-- [ApiToken](https://github.com/StepTheFkUp/ApiToken): Tools to handle API tokens like a pro.
+- [EasyApiToken](https://github.com/StepTheFkUp/EasyApiToken): Tools to handle API tokens like a pro.
 - [EasyDecision](https://github.com/StepTheFkUp/EasyDecision): Your most complex decisions taken the easiest way.
 - [EasyIdentity](https://github.com/StepTheFkUp/EasyIdentity): Tools to handle authentication like a pro.
 - [EasyPipeline](https://github.com/StepTheFkUp/EasyPipeline): An easy way to implement the Pipeline Design Pattern in your applications.
 - [EasyRepository](https://github.com/StepTheFkUp/EasyRepository): An easy way to implement the Repository Design Pattern in your applications.
-- [Pagination](https://github.com/StepTheFkUp/Pagination): A generic way to handle pagination data from clients.
-- [Psr7Factory](https://github.com/StepTheFkUp/Psr7Factory): An easy way to create PSR7 Request/Response from Symfony Request/Response.
+- [EasyPagination](https://github.com/StepTheFkUp/EasyPagination): A generic way to handle pagination data from clients.
+- [EasyPsr7Factory](https://github.com/StepTheFkUp/EasyPsr7Factory): An easy way to create PSR7 Request/Response from Symfony Request/Response.
 
 ## Documentation
 

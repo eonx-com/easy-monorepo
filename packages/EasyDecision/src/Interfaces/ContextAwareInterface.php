@@ -23,3 +23,9 @@ interface ContextAwareInterface
      */
     public function setContext(ContextInterface $context): void;
 }
+
+\class_alias(
+    ContextAwareInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\ContextAwareInterface',
+    false
+);

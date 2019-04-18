@@ -22,3 +22,9 @@ trait PipelineNameAwareTrait
         $this->pipelineName = $pipelineName;
     }
 }
+
+\class_alias(
+    PipelineNameAwareTrait::class,
+    'LoyaltyCorp\EasyPipeline\Traits\PipelineNameAwareTrait',
+    false
+);

@@ -49,3 +49,9 @@ final class LoggerChangeNameMiddleware implements MiddlewareInterface, Middlewar
         return $next($input);
     }
 }
+
+\class_alias(
+    LoggerChangeNameMiddleware::class,
+    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\LoggerChangeNameMiddleware',
+    false
+);

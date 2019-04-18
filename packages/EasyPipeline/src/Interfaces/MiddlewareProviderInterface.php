@@ -12,3 +12,9 @@ interface MiddlewareProviderInterface
      */
     public function getMiddlewareList(): array;
 }
+
+\class_alias(
+    MiddlewareProviderInterface::class,
+    'LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareProviderInterface',
+    false
+);

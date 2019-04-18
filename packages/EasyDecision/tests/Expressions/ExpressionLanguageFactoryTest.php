@@ -40,3 +40,9 @@ final class ExpressionLanguageFactoryTest extends AbstractTestCase
         self::assertEquals(4, $expressionLanguage->evaluate('max(1,2) + min(2,3)'));
     }
 }
+
+\class_alias(
+    ExpressionLanguageFactoryTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Expressions\ExpressionLanguageFactoryTest',
+    false
+);

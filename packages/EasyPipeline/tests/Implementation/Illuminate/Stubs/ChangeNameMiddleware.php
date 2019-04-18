@@ -39,3 +39,9 @@ final class ChangeNameMiddleware implements MiddlewareInterface
         return $next($input);
     }
 }
+
+\class_alias(
+    ChangeNameMiddleware::class,
+    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware',
+    false
+);

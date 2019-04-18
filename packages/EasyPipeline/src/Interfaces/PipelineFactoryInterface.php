@@ -16,3 +16,9 @@ interface PipelineFactoryInterface
      */
     public function create(string $pipeline): PipelineInterface;
 }
+
+\class_alias(
+    PipelineFactoryInterface::class,
+    'LoyaltyCorp\EasyPipeline\Interfaces\PipelineFactoryInterface',
+    false
+);

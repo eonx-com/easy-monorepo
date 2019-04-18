@@ -85,3 +85,9 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
         };
     }
 }
+
+\class_alias(
+    ExpressionLanguage::class,
+    'LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguage',
+    false
+);

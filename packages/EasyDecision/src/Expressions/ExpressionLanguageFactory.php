@@ -61,3 +61,9 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
         return new BaseExpressionLanguage();
     }
 }
+
+\class_alias(
+    ExpressionLanguageFactory::class,
+    'LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageFactory',
+    false
+);

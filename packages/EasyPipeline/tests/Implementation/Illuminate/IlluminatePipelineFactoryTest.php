@@ -75,3 +75,9 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
         (new IlluminatePipelineFactory($this->getApplication(), []))->create('invalid');
     }
 }
+
+\class_alias(
+    IlluminatePipelineFactoryTest::class,
+    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\IlluminatePipelineFactoryTest',
+    false
+);

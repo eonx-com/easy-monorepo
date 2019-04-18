@@ -37,3 +37,9 @@ trait MiddlewareLoggerAwareTrait
         $this->logger->log($middleware ?? \get_class($this), $content);
     }
 }
+
+\class_alias(
+    MiddlewareLoggerAwareTrait::class,
+    'LoyaltyCorp\EasyPipeline\Traits\MiddlewareLoggerAwareTrait',
+    false
+);

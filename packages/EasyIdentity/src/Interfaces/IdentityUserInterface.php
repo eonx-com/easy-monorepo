@@ -55,3 +55,9 @@ interface IdentityUserInterface
      */
     public function setIdentityValue(string $service, string $key, $value): void;
 }
+
+\class_alias(
+    IdentityUserInterface::class,
+    'LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface',
+    false
+);

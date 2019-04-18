@@ -16,3 +16,9 @@ interface ExpressionLanguageConfigFactoryInterface
      */
     public function create(string $decision): ?ExpressionLanguageConfigInterface;
 }
+
+\class_alias(
+    ExpressionLanguageConfigFactoryInterface::class,
+    'LoyaltyCorp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactoryInterface',
+    false
+);

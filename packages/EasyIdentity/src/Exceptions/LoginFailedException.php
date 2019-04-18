@@ -9,3 +9,9 @@ class LoginFailedException extends \RuntimeException implements IdentityServiceE
 {
     // No body needed.
 }
+
+\class_alias(
+    LoginFailedException::class,
+    'LoyaltyCorp\EasyIdentity\Exceptions\LoginFailedException',
+    false
+);

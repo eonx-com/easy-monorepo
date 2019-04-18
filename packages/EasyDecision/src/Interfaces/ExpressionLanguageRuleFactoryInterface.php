@@ -17,3 +17,9 @@ interface ExpressionLanguageRuleFactoryInterface
      */
     public function create(string $expression, ?int $priority = null): ExpressionLanguageRule;
 }
+
+\class_alias(
+    ExpressionLanguageRuleFactoryInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface',
+    false
+);

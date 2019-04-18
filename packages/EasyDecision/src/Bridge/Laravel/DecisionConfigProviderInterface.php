@@ -33,3 +33,9 @@ interface DecisionConfigProviderInterface
      */
     public function getRuleProviders(): array;
 }
+
+\class_alias(
+    DecisionConfigProviderInterface::class,
+    'LoyaltyCorp\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface',
+    false
+);

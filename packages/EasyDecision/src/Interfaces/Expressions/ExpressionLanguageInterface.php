@@ -34,3 +34,9 @@ interface ExpressionLanguageInterface
      */
     public function validate(string $expression, ?array $names = null): bool;
 }
+
+\class_alias(
+    ExpressionLanguageInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface',
+    false
+);

@@ -21,3 +21,9 @@ interface ValueInputInterface
      */
     public function setValue($value): void;
 }
+
+\class_alias(
+    ValueInputInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\ValueInputInterface',
+    false
+);

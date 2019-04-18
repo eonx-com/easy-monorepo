@@ -47,3 +47,9 @@ final class ValueDecision extends AbstractDecision
         return DecisionInterface::TYPE_VALUE;
     }
 }
+
+\class_alias(
+    ValueDecision::class,
+    'LoyaltyCorp\EasyDecision\Decisions\ValueDecision',
+    false
+);

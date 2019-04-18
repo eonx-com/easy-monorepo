@@ -29,3 +29,9 @@ final class YesNoMiddleware extends AbstractMiddleware
         }
     }
 }
+
+\class_alias(
+    YesNoMiddleware::class,
+    'LoyaltyCorp\EasyDecision\Middleware\YesNoMiddleware',
+    false
+);

@@ -70,3 +70,9 @@ final class DecisionConfig implements DecisionConfigInterface
         return $this->ruleProviders;
     }
 }
+
+\class_alias(
+    DecisionConfig::class,
+    'LoyaltyCorp\EasyDecision\Decisions\DecisionConfig',
+    false
+);

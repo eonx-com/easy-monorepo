@@ -136,3 +136,9 @@ final class Context implements ContextInterface
         return $this;
     }
 }
+
+\class_alias(
+    Context::class,
+    'LoyaltyCorp\EasyDecision\Context',
+    false
+);

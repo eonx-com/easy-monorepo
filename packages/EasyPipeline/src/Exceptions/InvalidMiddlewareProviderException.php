@@ -10,3 +10,9 @@ final class InvalidMiddlewareProviderException extends InvalidArgumentException 
 {
     // No body needed.
 }
+
+\class_alias(
+    InvalidMiddlewareProviderException::class,
+    'LoyaltyCorp\EasyPipeline\Exceptions\InvalidMiddlewareProviderException',
+    false
+);

@@ -14,3 +14,9 @@ interface DecisionFactoryInterface
      */
     public function create(DecisionConfigInterface $config): DecisionInterface;
 }
+
+\class_alias(
+    DecisionFactoryInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\DecisionFactoryInterface',
+    false
+);

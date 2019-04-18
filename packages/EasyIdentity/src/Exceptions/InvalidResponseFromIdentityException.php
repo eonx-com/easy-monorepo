@@ -9,3 +9,9 @@ final class InvalidResponseFromIdentityException extends \RuntimeException imple
 {
     // No body needed.
 }
+
+\class_alias(
+    InvalidResponseFromIdentityException::class,
+    'LoyaltyCorp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException',
+    false
+);

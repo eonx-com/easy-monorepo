@@ -82,3 +82,9 @@ abstract class AbstractTestCase extends TestCase
         return $registry;
     }
 }
+
+\class_alias(
+    AbstractTestCase::class,
+    'LoyaltyCorp\EasyRepository\Tests\AbstractTestCase',
+    false
+);

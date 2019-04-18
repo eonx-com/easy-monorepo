@@ -15,3 +15,9 @@ interface MiddlewareInterface
      */
     public function handle($input, callable $next);
 }
+
+\class_alias(
+    MiddlewareInterface::class,
+    'LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareInterface',
+    false
+);

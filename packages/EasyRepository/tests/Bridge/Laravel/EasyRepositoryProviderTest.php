@@ -52,3 +52,9 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
         $this->assertInstanceInApp(Repository2Stub::class, 'interface-2');
     }
 }
+
+\class_alias(
+    EasyRepositoryProviderTest::class,
+    'LoyaltyCorp\EasyRepository\Tests\Bridge\Laravel\EasyRepositoryProviderTest',
+    false
+);

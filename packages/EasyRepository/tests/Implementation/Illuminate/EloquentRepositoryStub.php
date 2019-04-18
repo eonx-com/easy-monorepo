@@ -43,3 +43,9 @@ final class EloquentRepositoryStub extends AbstractEloquentRepository
         return $mock;
     }
 }
+
+\class_alias(
+    EloquentRepositoryStub::class,
+    'LoyaltyCorp\EasyRepository\Tests\Implementation\Illuminate\EloquentRepositoryStub',
+    false
+);

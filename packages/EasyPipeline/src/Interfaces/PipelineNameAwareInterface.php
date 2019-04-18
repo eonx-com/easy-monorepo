@@ -14,3 +14,9 @@ interface PipelineNameAwareInterface
      */
     public function setPipelineName(string $pipeline): void;
 }
+
+\class_alias(
+    PipelineNameAwareInterface::class,
+    'LoyaltyCorp\EasyPipeline\Interfaces\PipelineNameAwareInterface',
+    false
+);

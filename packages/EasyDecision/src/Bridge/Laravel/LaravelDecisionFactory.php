@@ -195,3 +195,9 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
         return $ruleProviders;
     }
 }
+
+\class_alias(
+    LaravelDecisionFactory::class,
+    'LoyaltyCorp\EasyDecision\Bridge\Laravel\LaravelDecisionFactory',
+    false
+);

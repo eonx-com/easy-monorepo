@@ -82,3 +82,9 @@ final class IdentityUserStub implements IdentityUserInterface
         $this->identity[$service][$key] = $value;
     }
 }
+
+\class_alias(
+    IdentityUserStub::class,
+    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub',
+    false
+);

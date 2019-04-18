@@ -114,3 +114,9 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
         return new ExpressionFunctionFactory();
     }
 }
+
+\class_alias(
+    ExpressionFunctionFactoryTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Expressions\ExpressionFunctionFactoryTest',
+    false
+);

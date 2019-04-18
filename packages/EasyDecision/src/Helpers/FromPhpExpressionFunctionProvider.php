@@ -39,3 +39,9 @@ final class FromPhpExpressionFunctionProvider implements ExpressionFunctionProvi
         return $expressionFunctions;
     }
 }
+
+\class_alias(
+    FromPhpExpressionFunctionProvider::class,
+    'LoyaltyCorp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider',
+    false
+);

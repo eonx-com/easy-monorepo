@@ -66,3 +66,9 @@ interface ContextInterface
      */
     public function stopPropagation(): self;
 }
+
+\class_alias(
+    ContextInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\ContextInterface',
+    false
+);

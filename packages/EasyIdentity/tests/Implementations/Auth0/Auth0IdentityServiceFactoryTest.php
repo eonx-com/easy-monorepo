@@ -27,3 +27,9 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
         );
     }
 }
+
+\class_alias(
+    Auth0IdentityServiceFactoryTest::class,
+    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceFactoryTest',
+    false
+);

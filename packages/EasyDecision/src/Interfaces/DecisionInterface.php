@@ -73,3 +73,9 @@ interface DecisionInterface
      */
     public function make($input);
 }
+
+\class_alias(
+    DecisionInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface',
+    false
+);

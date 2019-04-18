@@ -111,3 +111,9 @@ trait DoctrineOrmRepositoryTrait
         $this->manager->flush();
     }
 }
+
+\class_alias(
+    DoctrineOrmRepositoryTrait::class,
+    'LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\DoctrineOrmRepositoryTrait',
+    false
+);

@@ -28,3 +28,9 @@ interface DecisionConfigInterface
      */
     public function getRuleProviders(): array;
 }
+
+\class_alias(
+    DecisionConfigInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\DecisionConfigInterface',
+    false
+);

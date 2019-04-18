@@ -43,3 +43,9 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         return $this->getApplication()->make(DecisionFactoryInterface::class);
     }
 }
+
+\class_alias(
+    AbstractLumenTestCase::class,
+    'LoyaltyCorp\EasyDecision\Tests\AbstractLumenTestCase',
+    false
+);

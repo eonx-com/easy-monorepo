@@ -78,3 +78,9 @@ final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageA
         return $this->expression;
     }
 }
+
+\class_alias(
+    ExpressionLanguageRule::class,
+    'LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRule',
+    false
+);

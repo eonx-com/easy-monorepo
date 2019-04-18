@@ -36,3 +36,9 @@ class ManagementApiClientFactoryTest extends AbstractTestCase
         );
     }
 }
+
+\class_alias(
+    ManagementApiClientFactoryTest::class,
+    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0\ManagementApiClientFactoryTest',
+    false
+);

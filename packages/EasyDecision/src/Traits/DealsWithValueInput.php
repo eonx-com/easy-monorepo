@@ -35,3 +35,9 @@ trait DealsWithValueInput
         $context->setInput($input);
     }
 }
+
+\class_alias(
+    DealsWithValueInput::class,
+    'LoyaltyCorp\EasyDecision\Traits\DealsWithValueInput',
+    false
+);

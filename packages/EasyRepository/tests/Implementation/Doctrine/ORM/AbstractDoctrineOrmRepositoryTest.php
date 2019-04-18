@@ -126,3 +126,9 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
         };
     }
 }
+
+\class_alias(
+    AbstractDoctrineOrmRepositoryTest::class,
+    'LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM\AbstractDoctrineOrmRepositoryTest',
+    false
+);

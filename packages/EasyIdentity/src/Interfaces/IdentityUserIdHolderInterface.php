@@ -21,3 +21,9 @@ interface IdentityUserIdHolderInterface
      */
     public function setIdentityUserId(string $userId): void;
 }
+
+\class_alias(
+    IdentityUserIdHolderInterface::class,
+    'LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface',
+    false
+);

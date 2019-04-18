@@ -40,3 +40,9 @@ interface RuleInterface
      */
     public function toString(): string;
 }
+
+\class_alias(
+    RuleInterface::class,
+    'LoyaltyCorp\EasyDecision\Interfaces\RuleInterface',
+    false
+);

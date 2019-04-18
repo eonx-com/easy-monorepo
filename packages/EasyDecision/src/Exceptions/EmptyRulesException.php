@@ -9,3 +9,9 @@ final class EmptyRulesException extends \InvalidArgumentException implements Eas
 {
     // No body needed.
 }
+
+\class_alias(
+    EmptyRulesException::class,
+    'LoyaltyCorp\EasyDecision\Exceptions\EmptyRulesException',
+    false
+);

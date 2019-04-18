@@ -7,3 +7,9 @@ interface IdentityServiceExceptionInterface
 {
     // Marker for all identity exceptions.
 }
+
+\class_alias(
+    IdentityServiceExceptionInterface::class,
+    'LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceExceptionInterface',
+    false
+);

@@ -9,3 +9,9 @@ final class InvalidDecisionException extends \InvalidArgumentException implement
 {
     // No body needed.
 }
+
+\class_alias(
+    InvalidDecisionException::class,
+    'LoyaltyCorp\EasyDecision\Exceptions\InvalidDecisionException',
+    false
+);

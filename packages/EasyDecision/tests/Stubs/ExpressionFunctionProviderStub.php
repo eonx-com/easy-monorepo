@@ -35,3 +35,9 @@ final class ExpressionFunctionProviderStub implements ExpressionFunctionProvider
         ];
     }
 }
+
+\class_alias(
+    ExpressionFunctionProviderStub::class,
+    'LoyaltyCorp\EasyDecision\Tests\Stubs\ExpressionFunctionProviderStub',
+    false
+);

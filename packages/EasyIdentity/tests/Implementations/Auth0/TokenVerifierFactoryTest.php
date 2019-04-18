@@ -33,3 +33,9 @@ class TokenVerifierFactoryTest extends AbstractTestCase
         self::assertInstanceOf(JWTVerifier::class, (new TokenVerifierFactory($config))->create());
     }
 }
+
+\class_alias(
+    TokenVerifierFactoryTest::class,
+    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0\TokenVerifierFactoryTest',
+    false
+);

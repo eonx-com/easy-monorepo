@@ -372,3 +372,9 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         );
     }
 }
+
+\class_alias(
+    Auth0IdentityServiceTest::class,
+    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceTest',
+    false
+);

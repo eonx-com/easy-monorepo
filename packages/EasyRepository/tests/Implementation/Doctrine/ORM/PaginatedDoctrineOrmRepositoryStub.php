@@ -17,3 +17,9 @@ final class PaginatedDoctrineOrmRepositoryStub extends AbstractPaginatedDoctrine
         return 'my-entity-class';
     }
 }
+
+\class_alias(
+    PaginatedDoctrineOrmRepositoryStub::class,
+    'LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM\PaginatedDoctrineOrmRepositoryStub',
+    false
+);

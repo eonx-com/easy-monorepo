@@ -31,3 +31,9 @@ class AuthenticationApiClientFactoryTest extends AbstractTestCase
         self::assertInstanceOf(Authentication::class, (new AuthenticationApiClientFactory($config))->create());
     }
 }
+
+\class_alias(
+    AuthenticationApiClientFactoryTest::class,
+    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0\AuthenticationApiClientFactoryTest',
+    false
+);

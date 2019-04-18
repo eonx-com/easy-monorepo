@@ -21,3 +21,9 @@ final class ContextAwareTraitTest extends AbstractTestCase
         (new ValueContextAwareInputStub(10))->getContext();
     }
 }
+
+\class_alias(
+    ContextAwareTraitTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Traits\ContextAwareTraitTest',
+    false
+);

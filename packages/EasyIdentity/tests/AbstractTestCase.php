@@ -32,3 +32,9 @@ abstract class AbstractTestCase extends TestCase
         return $mock;
     }
 }
+
+\class_alias(
+    AbstractTestCase::class,
+    'LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase',
+    false
+);

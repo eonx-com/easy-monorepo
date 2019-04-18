@@ -96,3 +96,9 @@ final class AbstractEloquentRepositoryTest extends AbstractTestCase
         return new EloquentRepositoryStub($expectations);
     }
 }
+
+\class_alias(
+    AbstractEloquentRepositoryTest::class,
+    'LoyaltyCorp\EasyRepository\Tests\Implementation\Illuminate\AbstractEloquentRepositoryTest',
+    false
+);

@@ -308,3 +308,9 @@ final class ValueDecisionTest extends AbstractTestCase
         };
     }
 }
+
+\class_alias(
+    ValueDecisionTest::class,
+    'LoyaltyCorp\EasyDecision\Tests\Decisions\ValueDecisionTest',
+    false
+);

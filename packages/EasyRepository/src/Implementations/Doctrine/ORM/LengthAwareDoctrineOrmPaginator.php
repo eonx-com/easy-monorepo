@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use StepTheFkUp\Pagination\Interfaces\LengthAwarePaginatorInterface;
+use StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 
 final class LengthAwareDoctrineOrmPaginator implements LengthAwarePaginatorInterface
 {
@@ -107,3 +107,9 @@ final class LengthAwareDoctrineOrmPaginator implements LengthAwarePaginatorInter
         return $this->getCurrentPage() > 1;
     }
 }
+
+\class_alias(
+    LengthAwareDoctrineOrmPaginator::class,
+    'LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator',
+    false
+);
