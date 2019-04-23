@@ -1,45 +1,45 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Implementations\Auth0;
+namespace LoyaltyCorp\EasyIdentity\Implementations\Auth0;
 
 use GuzzleHttp\Exception\RequestException;
-use StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
-use StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException;
-use StepTheFkUp\EasyIdentity\Implementations\AbstractIdentityService;
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceInterface;
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface;
+use LoyaltyCorp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
+use LoyaltyCorp\EasyIdentity\Exceptions\LoginFailedException;
+use LoyaltyCorp\EasyIdentity\Implementations\AbstractIdentityService;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceInterface;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface;
 
 final class Auth0IdentityService extends AbstractIdentityService implements IdentityServiceInterface
 {
     /**
-     * @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory
+     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory
      */
     private $authFactory;
 
     /**
-     * @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\Config
+     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config
      */
     private $config;
 
     /**
-     * @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory
+     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory
      */
     private $managementFactory;
 
     /**
-     * @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory
+     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory
      */
     private $tokenVerifierFactory;
 
     /**
      * Auth0IdentityService constructor.
      *
-     * @param \StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory
-     * @param \StepTheFkUp\EasyIdentity\Implementations\Auth0\Config $config
-     * @param \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $managementFactory
-     * @param \StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory
+     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory
+     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config $config
+     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $managementFactory
+     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory
      */
     public function __construct(
         AuthenticationApiClientFactory $authFactory,
@@ -56,13 +56,13 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
     /**
      * Create user for given data.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
      */
     public function createUser(IdentityUserInterface $user): IdentityUserInterface
     {
@@ -87,7 +87,7 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
      *
      * @return mixed
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \Auth0\SDK\Exception\CoreException
      * @throws \Auth0\SDK\Exception\InvalidTokenException
      */
@@ -99,14 +99,14 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
     /**
      * Delete user for given id.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
      * @return void
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function deleteUser(IdentityUserInterface $user): void
     {
@@ -116,13 +116,13 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
     /**
      * Get user information for given id.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException
      */
     public function getUser(IdentityUserInterface $user): IdentityUserInterface
     {
@@ -138,9 +138,9 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
     /**
      * Login given user.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Auth0\SDK\Exception\ApiException
      */
@@ -159,14 +159,14 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
     /**
      * Update user for given id with given data.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param mixed[] $data
      *
-     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException
      */
     public function updateUser(IdentityUserInterface $user, array $data): IdentityUserInterface
     {
@@ -215,6 +215,6 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
 
 \class_alias(
     Auth0IdentityService::class,
-    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityService',
+    'StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService',
     false
 );

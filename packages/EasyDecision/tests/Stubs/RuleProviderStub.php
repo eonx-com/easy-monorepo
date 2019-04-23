@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Stubs;
+namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
 
-use StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface;
-use StepTheFkUp\EasyDecision\Rules\ExpressionLanguageRule;
+use LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface;
+use LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRule;
 
 final class RuleProviderStub implements RuleProviderInterface
 {
     /**
      * Get rules.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[]
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[]
      */
     public function getRules(): array
     {
@@ -25,6 +25,6 @@ final class RuleProviderStub implements RuleProviderInterface
 
 \class_alias(
     RuleProviderStub::class,
-    'LoyaltyCorp\EasyDecision\Tests\Stubs\RuleProviderStub',
+    'StepTheFkUp\EasyDecision\Tests\Stubs\RuleProviderStub',
     false
 );

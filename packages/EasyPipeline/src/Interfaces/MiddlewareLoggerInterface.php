@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Interfaces;
+namespace LoyaltyCorp\EasyPipeline\Interfaces;
 
 interface MiddlewareLoggerInterface
 {
@@ -18,6 +18,6 @@ interface MiddlewareLoggerInterface
 
 \class_alias(
     MiddlewareLoggerInterface::class,
-    'LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface',
+    'StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerInterface',
     false
 );

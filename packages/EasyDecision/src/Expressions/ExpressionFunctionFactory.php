@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Expressions;
+namespace LoyaltyCorp\EasyDecision\Expressions;
 
-use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
+use LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
 final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterface
@@ -15,7 +15,7 @@ final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterf
      *
      * @param mixed $expressionFunction
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      */
     public function create($expressionFunction): ExpressionFunctionInterface
     {
@@ -56,6 +56,6 @@ final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterf
 
 \class_alias(
     ExpressionFunctionFactory::class,
-    'LoyaltyCorp\EasyDecision\Expressions\ExpressionFunctionFactory',
+    'StepTheFkUp\EasyDecision\Expressions\ExpressionFunctionFactory',
     false
 );

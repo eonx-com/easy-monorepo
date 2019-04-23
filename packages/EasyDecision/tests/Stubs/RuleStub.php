@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Stubs;
+namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
 
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
 
 final class RuleStub implements RuleInterface
 {
@@ -57,7 +57,7 @@ final class RuleStub implements RuleInterface
     /**
      * Proceed with input.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return mixed
      */
@@ -69,7 +69,7 @@ final class RuleStub implements RuleInterface
     /**
      * Check if rule supports given input.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return bool
      */
@@ -91,6 +91,6 @@ final class RuleStub implements RuleInterface
 
 \class_alias(
     RuleStub::class,
-    'LoyaltyCorp\EasyDecision\Tests\Stubs\RuleStub',
+    'StepTheFkUp\EasyDecision\Tests\Stubs\RuleStub',
     false
 );

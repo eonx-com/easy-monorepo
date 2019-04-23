@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Exceptions;
+namespace LoyaltyCorp\EasyDecision\Exceptions;
 
-use StepTheFkUp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
 
 final class ContextNotSetException extends \RuntimeException implements EasyDecisionExceptionInterface
 {
@@ -12,6 +12,6 @@ final class ContextNotSetException extends \RuntimeException implements EasyDeci
 
 \class_alias(
     ContextNotSetException::class,
-    'LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException',
+    'StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException',
     false
 );

@@ -59,4 +59,4 @@ Here are some examples of configuration you can have:
 
 [1]: https://getcomposer.org/
 [2]: https://www.php-fig.org/psr/psr-7/#15-server-side-requests
-[3]: https://github.com/StepTheFkUp/EasyPsr7Factory
+[3]: https://github.com/LoyaltyCorp/EasyPsr7Factory

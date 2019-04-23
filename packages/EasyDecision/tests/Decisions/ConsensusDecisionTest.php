@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Decisions;
+namespace LoyaltyCorp\EasyDecision\Tests\Decisions;
 
-use StepTheFkUp\EasyDecision\Decisions\ConsensusDecision;
-use StepTheFkUp\EasyDecision\Exceptions\EmptyRulesException;
-use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
-use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyDecision\Decisions\ConsensusDecision;
+use LoyaltyCorp\EasyDecision\Exceptions\EmptyRulesException;
+use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
+use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
 
 final class ConsensusDecisionTest extends AbstractTestCase
 {
@@ -117,6 +117,6 @@ final class ConsensusDecisionTest extends AbstractTestCase
 
 \class_alias(
     ConsensusDecisionTest::class,
-    'LoyaltyCorp\EasyDecision\Tests\Decisions\ConsensusDecisionTest',
+    'StepTheFkUp\EasyDecision\Tests\Decisions\ConsensusDecisionTest',
     false
 );

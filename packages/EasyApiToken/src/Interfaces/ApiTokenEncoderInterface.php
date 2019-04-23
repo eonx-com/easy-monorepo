@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Interfaces;
+namespace LoyaltyCorp\EasyApiToken\Interfaces;
 
 interface EasyApiTokenEncoderInterface
 {
     /**
      * Return encoded string representation of given API token.
      *
-     * @param \StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenInterface $apiToken
+     * @param \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface $apiToken
      *
      * @return string
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException If encoder doesn't support given apiToken
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException If encoder fails to encode apiToken
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException If encoder doesn't support given apiToken
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException If encoder fails to encode apiToken
      */
     public function encode(EasyApiTokenInterface $apiToken): string;
 }
 
 \class_alias(
     EasyApiTokenEncoderInterface::class,
-    'LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenEncoderInterface',
+    'StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenEncoderInterface',
     false
 );

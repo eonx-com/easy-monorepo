@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Implementations\Auth0;
+namespace LoyaltyCorp\EasyIdentity\Implementations\Auth0;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -14,7 +14,7 @@ final class Auth0IdentityServiceFactory
      * @param mixed[] $config
      * @param null|\GuzzleHttp\ClientInterface $client
      *
-     * @return \StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService
+     * @return \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityService
      */
     public function create(array $config, ?ClientInterface $client = null): Auth0IdentityService
     {
@@ -31,6 +31,6 @@ final class Auth0IdentityServiceFactory
 
 \class_alias(
     Auth0IdentityServiceFactory::class,
-    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory',
+    'StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory',
     false
 );

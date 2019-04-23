@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Tests\Data;
+namespace LoyaltyCorp\EasyPagination\Tests\Data;
 
-use StepTheFkUp\EasyPagination\Data\StartSizeData;
-use StepTheFkUp\EasyPagination\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyPagination\Data\StartSizeData;
+use LoyaltyCorp\EasyPagination\Tests\AbstractTestCase;
 
 final class StartSizeDataTest extends AbstractTestCase
 {
@@ -24,6 +24,6 @@ final class StartSizeDataTest extends AbstractTestCase
 
 \class_alias(
     StartSizeDataTest::class,
-    'LoyaltyCorp\EasyPagination\Tests\Data\StartSizeDataTest',
+    'StepTheFkUp\EasyPagination\Tests\Data\StartSizeDataTest',
     false
 );

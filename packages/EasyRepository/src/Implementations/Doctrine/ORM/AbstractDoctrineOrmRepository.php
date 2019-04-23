@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM;
+namespace LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use StepTheFkUp\EasyRepository\Interfaces\ObjectRepositoryInterface;
+use LoyaltyCorp\EasyRepository\Interfaces\ObjectRepositoryInterface;
 
 abstract class AbstractDoctrineOrmRepository implements ObjectRepositoryInterface
 {
@@ -33,6 +33,6 @@ abstract class AbstractDoctrineOrmRepository implements ObjectRepositoryInterfac
 
 \class_alias(
     AbstractDoctrineOrmRepository::class,
-    'LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\AbstractDoctrineOrmRepository',
+    'StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\AbstractDoctrineOrmRepository',
     false
 );

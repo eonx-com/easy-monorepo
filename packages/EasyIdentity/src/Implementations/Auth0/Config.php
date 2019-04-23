@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Implementations\Auth0;
+namespace LoyaltyCorp\EasyIdentity\Implementations\Auth0;
 
-use StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException;
+use LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException;
 
 class Config
 {
@@ -27,7 +27,7 @@ class Config
      *
      * @return string
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function getClientId(): string
     {
@@ -39,7 +39,7 @@ class Config
      *
      * @return string
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function getClientSecret(): string
     {
@@ -51,7 +51,7 @@ class Config
      *
      * @return string
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function getConnection(): string
     {
@@ -63,7 +63,7 @@ class Config
      *
      * @return string
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function getDomain(): string
     {
@@ -77,7 +77,7 @@ class Config
      *
      * @return mixed
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     private function getRequiredData(string $key)
     {
@@ -93,6 +93,6 @@ class Config
 
 \class_alias(
     Config::class,
-    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config',
+    'StepTheFkUp\EasyIdentity\Implementations\Auth0\Config',
     false
 );

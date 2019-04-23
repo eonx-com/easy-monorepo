@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Exceptions;
+namespace LoyaltyCorp\EasyPipeline\Exceptions;
 
 use InvalidArgumentException;
-use StepTheFkUp\EasyPipeline\Interfaces\EasyPipelineExceptionInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\EasyPipelineExceptionInterface;
 
 final class PipelineNotFoundException extends InvalidArgumentException implements EasyPipelineExceptionInterface
 {
@@ -13,6 +13,6 @@ final class PipelineNotFoundException extends InvalidArgumentException implement
 
 \class_alias(
     PipelineNotFoundException::class,
-    'LoyaltyCorp\EasyPipeline\Exceptions\PipelineNotFoundException',
+    'StepTheFkUp\EasyPipeline\Exceptions\PipelineNotFoundException',
     false
 );

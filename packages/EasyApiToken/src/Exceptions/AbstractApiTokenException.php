@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Exceptions;
+namespace LoyaltyCorp\EasyApiToken\Exceptions;
 
-use StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenExceptionInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenExceptionInterface;
 
 abstract class AbstractEasyApiTokenException extends \Exception implements EasyApiTokenExceptionInterface
 {
@@ -12,6 +12,6 @@ abstract class AbstractEasyApiTokenException extends \Exception implements EasyA
 
 \class_alias(
     AbstractEasyApiTokenException::class,
-    'LoyaltyCorp\EasyApiToken\Exceptions\AbstractEasyApiTokenException',
+    'StepTheFkUp\EasyApiToken\Exceptions\AbstractEasyApiTokenException',
     false
 );

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Traits;
+namespace LoyaltyCorp\EasyDecision\Traits;
 
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\ValueInputInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ValueInputInterface;
 
 trait DealsWithValueInput
 {
     /**
      * Update input on given context for given output for next rules to be able to proceed.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      * @param mixed $output
      *
      * @return void
@@ -38,6 +38,6 @@ trait DealsWithValueInput
 
 \class_alias(
     DealsWithValueInput::class,
-    'LoyaltyCorp\EasyDecision\Traits\DealsWithValueInput',
+    'StepTheFkUp\EasyDecision\Traits\DealsWithValueInput',
     false
 );

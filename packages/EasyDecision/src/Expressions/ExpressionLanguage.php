@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Expressions;
+namespace LoyaltyCorp\EasyDecision\Expressions;
 
-use StepTheFkUp\EasyDecision\Exceptions\InvalidExpressionException;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use LoyaltyCorp\EasyDecision\Exceptions\InvalidExpressionException;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 
@@ -29,9 +29,9 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     /**
      * Add function to use in expressions.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface $function
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface $function
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     public function addFunction(ExpressionFunctionInterface $function): ExpressionLanguageInterface
     {
@@ -61,7 +61,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
      *
      * @return bool
      *
-     * @throws \StepTheFkUp\EasyDecision\Exceptions\InvalidExpressionException
+     * @throws \LoyaltyCorp\EasyDecision\Exceptions\InvalidExpressionException
      */
     public function validate(string $expression, ?array $names = null): bool
     {
@@ -88,6 +88,6 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
 
 \class_alias(
     ExpressionLanguage::class,
-    'LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguage',
+    'StepTheFkUp\EasyDecision\Expressions\ExpressionLanguage',
     false
 );

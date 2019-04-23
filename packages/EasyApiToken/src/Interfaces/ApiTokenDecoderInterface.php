@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Interfaces;
+namespace LoyaltyCorp\EasyApiToken\Interfaces;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -12,13 +12,13 @@ interface EasyApiTokenDecoderInterface
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return null|\StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenInterface
+     * @return null|\LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface
      */
     public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface;
 }
 
 \class_alias(
     EasyApiTokenDecoderInterface::class,
-    'LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface',
+    'StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface',
     false
 );

@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces\Expressions;
+namespace LoyaltyCorp\EasyDecision\Interfaces\Expressions;
 
-use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguage;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguage;
 
 interface ExpressionLanguageFactoryInterface
 {
     /**
      * Create expression language for given config.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      *
-     * @return \StepTheFkUp\EasyDecision\Expressions\ExpressionLanguage
+     * @return \LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguage
      */
     public function create(ExpressionLanguageConfigInterface $config): ExpressionLanguage;
 }
 
 \class_alias(
     ExpressionLanguageFactoryInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface',
     false
 );

@@ -97,7 +97,7 @@
         "firebase/php-jwt": "To use the Firebase JWT driver to decode/encode tokens",
         "illuminate/database": "To use the Illuminate Eloquent implementation",
         "illuminate/pipeline": "To use the Illuminate Pipeline implementation",
-        "stepthefkup/pagination": "To use pagination within your repositories"
+        "loyaltycorp/pagination": "To use pagination within your repositories"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

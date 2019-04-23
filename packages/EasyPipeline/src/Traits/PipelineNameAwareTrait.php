@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Traits;
+namespace LoyaltyCorp\EasyPipeline\Traits;
 
 trait PipelineNameAwareTrait
 {
@@ -25,6 +25,6 @@ trait PipelineNameAwareTrait
 
 \class_alias(
     PipelineNameAwareTrait::class,
-    'LoyaltyCorp\EasyPipeline\Traits\PipelineNameAwareTrait',
+    'StepTheFkUp\EasyPipeline\Traits\PipelineNameAwareTrait',
     false
 );

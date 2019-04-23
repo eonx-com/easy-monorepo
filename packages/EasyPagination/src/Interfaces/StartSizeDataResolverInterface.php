@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Interfaces;
+namespace LoyaltyCorp\EasyPagination\Interfaces;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -12,13 +12,13 @@ interface StartSizeDataResolverInterface
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return \StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface
+     * @return \LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface
      */
     public function resolve(ServerRequestInterface $request): StartSizeDataInterface;
 }
 
 \class_alias(
     StartSizeDataResolverInterface::class,
-    'LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataResolverInterface',
+    'StepTheFkUp\EasyPagination\Interfaces\StartSizeDataResolverInterface',
     false
 );

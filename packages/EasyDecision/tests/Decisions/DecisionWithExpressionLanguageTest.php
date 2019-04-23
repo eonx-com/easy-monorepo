@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Decisions;
+namespace LoyaltyCorp\EasyDecision\Tests\Decisions;
 
-use StepTheFkUp\EasyDecision\Decisions\ValueDecision;
-use StepTheFkUp\EasyDecision\Expressions\ExpressionFunction;
-use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
-use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyDecision\Decisions\ValueDecision;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunction;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
+use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
 
 final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 {
@@ -99,8 +99,8 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
     /**
      * Inject expression language in rules.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[] $rules
-     * @param null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[] $rules
+     * @param null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      *
      * @return void
      */
@@ -118,6 +118,6 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 
 \class_alias(
     DecisionWithExpressionLanguageTest::class,
-    'LoyaltyCorp\EasyDecision\Tests\Decisions\DecisionWithExpressionLanguageTest',
+    'StepTheFkUp\EasyDecision\Tests\Decisions\DecisionWithExpressionLanguageTest',
     false
 );

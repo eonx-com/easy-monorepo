@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Middleware;
+namespace LoyaltyCorp\EasyDecision\Middleware;
 
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
 
 final class YesNoMiddleware extends AbstractMiddleware
 {
     /**
      * Make sure children classes handle given context.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      * @param mixed $output
      *
      * @return void
@@ -32,6 +32,6 @@ final class YesNoMiddleware extends AbstractMiddleware
 
 \class_alias(
     YesNoMiddleware::class,
-    'LoyaltyCorp\EasyDecision\Middleware\YesNoMiddleware',
+    'StepTheFkUp\EasyDecision\Middleware\YesNoMiddleware',
     false
 );

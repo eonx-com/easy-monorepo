@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Exceptions;
+namespace LoyaltyCorp\EasyIdentity\Exceptions;
 
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceExceptionInterface;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceExceptionInterface;
 
 class RequiredDataMissingException extends \RuntimeException implements IdentityServiceExceptionInterface
 {
@@ -12,6 +12,6 @@ class RequiredDataMissingException extends \RuntimeException implements Identity
 
 \class_alias(
     RequiredDataMissingException::class,
-    'LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException',
+    'StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException',
     false
 );

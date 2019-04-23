@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Traits;
+namespace LoyaltyCorp\EasyPipeline\Traits;
 
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface;
 
 trait MiddlewareLoggerAwareTrait
 {
     /**
-     * @var \StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerInterface
+     * @var \LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface
      */
     private $logger;
 
     /**
      * Set middleware logger.
      *
-     * @param \StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerInterface $logger
+     * @param \LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface $logger
      *
      * @return void
      */
@@ -40,6 +40,6 @@ trait MiddlewareLoggerAwareTrait
 
 \class_alias(
     MiddlewareLoggerAwareTrait::class,
-    'LoyaltyCorp\EasyPipeline\Traits\MiddlewareLoggerAwareTrait',
+    'StepTheFkUp\EasyPipeline\Traits\MiddlewareLoggerAwareTrait',
     false
 );

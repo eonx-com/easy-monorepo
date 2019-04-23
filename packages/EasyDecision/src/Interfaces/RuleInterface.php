@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces;
+namespace LoyaltyCorp\EasyDecision\Interfaces;
 
 interface RuleInterface
 {
@@ -18,7 +18,7 @@ interface RuleInterface
     /**
      * Proceed with input.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return mixed
      */
@@ -27,7 +27,7 @@ interface RuleInterface
     /**
      * Check if rule supports given input.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return bool
      */
@@ -43,6 +43,6 @@ interface RuleInterface
 
 \class_alias(
     RuleInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\RuleInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\RuleInterface',
     false
 );

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Tests;
+namespace LoyaltyCorp\EasyRepository\Tests;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -85,6 +85,6 @@ abstract class AbstractTestCase extends TestCase
 
 \class_alias(
     AbstractTestCase::class,
-    'LoyaltyCorp\EasyRepository\Tests\AbstractTestCase',
+    'StepTheFkUp\EasyRepository\Tests\AbstractTestCase',
     false
 );

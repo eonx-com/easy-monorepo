@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Bridge\Laravel;
+namespace LoyaltyCorp\EasyDecision\Bridge\Laravel;
 
 use Illuminate\Contracts\Container\Container;
-use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 
 final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigFactoryInterface
 {
@@ -17,12 +17,12 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     private $app;
 
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
      */
     private $expressionFunctionFactory;
 
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      */
     private $globalExpressionFunctions;
 
@@ -41,7 +41,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      *
      * @param string $decision
      *
-     * @return null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
+     * @return null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -89,7 +89,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     /**
      * Get expression function factory.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -107,7 +107,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      *
      * @param mixed $provider
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -126,7 +126,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      * @param mixed[] $functions
      * @param mixed[] $providers
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -151,7 +151,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     /**
      * Get global expression functions.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -170,6 +170,6 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
 
 \class_alias(
     ExpressionLanguageConfigFactory::class,
-    'LoyaltyCorp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactory',
+    'StepTheFkUp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactory',
     false
 );

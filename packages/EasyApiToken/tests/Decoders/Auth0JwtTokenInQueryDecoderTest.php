@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Tests\Decoders;
+namespace LoyaltyCorp\EasyApiToken\Tests\Decoders;
 
-use StepTheFkUp\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
-use StepTheFkUp\EasyApiToken\Tests\AbstractAuth0JwtTokenTestCase;
-use StepTheFkUp\EasyApiToken\Tokens\JwtEasyApiToken;
+use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
+use LoyaltyCorp\EasyApiToken\Tests\AbstractAuth0JwtTokenTestCase;
+use LoyaltyCorp\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCase
 {
@@ -14,7 +14,7 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testJwtTokenDecodeSuccessfully(): void
     {
@@ -26,7 +26,7 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
             'param' => $this->createToken()
         ]);
 
-        /** @var \StepTheFkUp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
+        /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
         $token = $decoder->decode($request);
 
         $payload = $token->getPayload();
@@ -44,7 +44,7 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testNullWhenQueryParamNotSet(): void
     {
@@ -61,6 +61,6 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
 
 \class_alias(
     Auth0JwtTokenInQueryDecoderTest::class,
-    'LoyaltyCorp\EasyApiToken\Tests\Decoders\Auth0JwtTokenInQueryDecoderTest',
+    'StepTheFkUp\EasyApiToken\Tests\Decoders\Auth0JwtTokenInQueryDecoderTest',
     false
 );

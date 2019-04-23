@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Bridge\Laravel\Providers;
+namespace LoyaltyCorp\EasyPagination\Bridge\Laravel\Providers;
 
-use StepTheFkUp\EasyPagination\Resolvers\StartSizeInQueryResolver;
+use LoyaltyCorp\EasyPagination\Resolvers\StartSizeInQueryResolver;
 
 final class StartSizeInQueryEasyPaginationProvider extends AbstractStartSizeEasyPaginationProvider
 {
@@ -22,6 +22,6 @@ final class StartSizeInQueryEasyPaginationProvider extends AbstractStartSizeEasy
 
 \class_alias(
     StartSizeInQueryEasyPaginationProvider::class,
-    'LoyaltyCorp\EasyPagination\Bridge\Laravel\Providers\StartSizeInQueryEasyPaginationProvider',
+    'StepTheFkUp\EasyPagination\Bridge\Laravel\Providers\StartSizeInQueryEasyPaginationProvider',
     false
 );

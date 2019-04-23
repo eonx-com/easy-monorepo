@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests;
+namespace LoyaltyCorp\EasyDecision\Tests;
 
 use PHPUnit\Framework\TestCase;
-use StepTheFkUp\EasyDecision\Expressions\ExpressionFunctionFactory;
-use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageFactory;
-use StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
-use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
-use StepTheFkUp\EasyDecision\Rules\ExpressionLanguageRuleFactory;
-use StepTheFkUp\EasyDecision\Tests\Stubs\RuleStub;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunctionFactory;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageFactory;
+use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
+use LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRuleFactory;
+use LoyaltyCorp\EasyDecision\Tests\Stubs\RuleStub;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -22,21 +22,21 @@ use StepTheFkUp\EasyDecision\Tests\Stubs\RuleStub;
 abstract class AbstractTestCase extends TestCase
 {
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
      */
     private $expressionLanguageFactory;
 
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface
      */
     private $languageRuleFactory;
 
     /**
      * Create expression language for given config.
      *
-     * @param null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     * @param null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     protected function createExpressionLanguage(
         ?ExpressionLanguageConfigInterface $config = null
@@ -50,7 +50,7 @@ abstract class AbstractTestCase extends TestCase
      * @param string $name
      * @param null|int $priority
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
      */
     protected function createFalseRule(string $name, ?int $priority = null): RuleInterface
     {
@@ -63,7 +63,7 @@ abstract class AbstractTestCase extends TestCase
      * @param string $expression
      * @param null|int $priority
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
      */
     protected function createLanguageRule(string $expression, ?int $priority = null): RuleInterface
     {
@@ -76,7 +76,7 @@ abstract class AbstractTestCase extends TestCase
      * @param string $name
      * @param null|int $priority
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
      */
     protected function createTrueRule(string $name, ?int $priority = null): RuleInterface
     {
@@ -89,7 +89,7 @@ abstract class AbstractTestCase extends TestCase
      * @param string $name
      * @param null|int $priority
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
      */
     protected function createUnsupportedRule(string $name, ?int $priority = null): RuleInterface
     {
@@ -99,7 +99,7 @@ abstract class AbstractTestCase extends TestCase
     /**
      * Get expression language factory.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
      */
     protected function getExpressionLanguageFactory(): ExpressionLanguageFactoryInterface
     {
@@ -113,7 +113,7 @@ abstract class AbstractTestCase extends TestCase
     /**
      * Get expression language rule factory.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface
      */
     private function getLanguageRuleFactory(): ExpressionLanguageRuleFactoryInterface
     {
@@ -127,6 +127,6 @@ abstract class AbstractTestCase extends TestCase
 
 \class_alias(
     AbstractTestCase::class,
-    'LoyaltyCorp\EasyDecision\Tests\AbstractTestCase',
+    'StepTheFkUp\EasyDecision\Tests\AbstractTestCase',
     false
 );

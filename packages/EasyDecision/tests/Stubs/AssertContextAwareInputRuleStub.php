@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Stubs;
+namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
 
 use PHPUnit\Framework\TestCase;
-use StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface;
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextAwareInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
 
 final class AssertContextAwareInputRuleStub implements RuleInterface
 {
@@ -23,7 +23,7 @@ final class AssertContextAwareInputRuleStub implements RuleInterface
     /**
      * Proceed with input.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return mixed
      */
@@ -40,7 +40,7 @@ final class AssertContextAwareInputRuleStub implements RuleInterface
     /**
      * Check if rule supports given input.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return bool
      */
@@ -62,6 +62,6 @@ final class AssertContextAwareInputRuleStub implements RuleInterface
 
 \class_alias(
     AssertContextAwareInputRuleStub::class,
-    'LoyaltyCorp\EasyDecision\Tests\Stubs\AssertContextAwareInputRuleStub',
+    'StepTheFkUp\EasyDecision\Tests\Stubs\AssertContextAwareInputRuleStub',
     false
 );

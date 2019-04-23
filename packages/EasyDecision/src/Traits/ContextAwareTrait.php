@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Traits;
+namespace LoyaltyCorp\EasyDecision\Traits;
 
-use StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException;
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
 
 trait ContextAwareTrait
 {
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
      */
     private $context;
 
     /**
      * Get context.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
      *
-     * @throws \StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException
+     * @throws \LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException
      */
     public function getContext(): ContextInterface
     {
@@ -35,7 +35,7 @@ trait ContextAwareTrait
     /**
      * Set context.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return void
      */
@@ -47,6 +47,6 @@ trait ContextAwareTrait
 
 \class_alias(
     ContextAwareTrait::class,
-    'LoyaltyCorp\EasyDecision\Traits\ContextAwareTrait',
+    'StepTheFkUp\EasyDecision\Traits\ContextAwareTrait',
     false
 );

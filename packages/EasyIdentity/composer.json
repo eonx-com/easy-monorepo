@@ -16,13 +16,13 @@
     "autoload": {
         "psr-4": {
             "LoyaltyCorp\\EasyIdentity\\": "src",
-            "StepTheFkUp\\EasyIdentity\\": "src"
+            "LoyaltyCorp\\EasyIdentity\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "LoyaltyCorp\\EasyIdentity\\Tests\\": "tests",
-            "StepTheFkUp\\EasyIdentity\\Tests\\": "tests"
+            "LoyaltyCorp\\EasyIdentity\\Tests\\": "tests"
         }
     },
     "suggest": {

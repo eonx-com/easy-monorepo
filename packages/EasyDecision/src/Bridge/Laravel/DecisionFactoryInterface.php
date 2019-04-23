@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Bridge\Laravel;
+namespace LoyaltyCorp\EasyDecision\Bridge\Laravel;
 
-use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
 
 interface DecisionFactoryInterface
 {
@@ -12,13 +12,13 @@ interface DecisionFactoryInterface
      *
      * @param string $decision
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      */
     public function create(string $decision): DecisionInterface;
 }
 
 \class_alias(
     DecisionFactoryInterface::class,
-    'LoyaltyCorp\EasyDecision\Bridge\Laravel\DecisionFactoryInterface',
+    'StepTheFkUp\EasyDecision\Bridge\Laravel\DecisionFactoryInterface',
     false
 );

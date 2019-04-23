@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Expressions;
+namespace LoyaltyCorp\EasyDecision\Tests\Expressions;
 
-use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
-use StepTheFkUp\EasyDecision\Tests\Stubs\ExpressionFunctionProviderStub;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
+use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyDecision\Tests\Stubs\ExpressionFunctionProviderStub;
 
 final class ExpressionLanguageFactoryTest extends AbstractTestCase
 {
@@ -43,6 +43,6 @@ final class ExpressionLanguageFactoryTest extends AbstractTestCase
 
 \class_alias(
     ExpressionLanguageFactoryTest::class,
-    'LoyaltyCorp\EasyDecision\Tests\Expressions\ExpressionLanguageFactoryTest',
+    'StepTheFkUp\EasyDecision\Tests\Expressions\ExpressionLanguageFactoryTest',
     false
 );

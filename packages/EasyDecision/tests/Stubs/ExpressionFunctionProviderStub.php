@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Stubs;
+namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
 
-use StepTheFkUp\EasyDecision\Expressions\ExpressionFunctionFactory;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunctionFactory;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
 final class ExpressionFunctionProviderStub implements ExpressionFunctionProviderInterface
 {
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
      */
     private $functionFactory;
 
@@ -25,7 +25,7 @@ final class ExpressionFunctionProviderStub implements ExpressionFunctionProvider
     /**
      * Get list of functions.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      */
     public function getFunctions(): array
     {
@@ -38,6 +38,6 @@ final class ExpressionFunctionProviderStub implements ExpressionFunctionProvider
 
 \class_alias(
     ExpressionFunctionProviderStub::class,
-    'LoyaltyCorp\EasyDecision\Tests\Stubs\ExpressionFunctionProviderStub',
+    'StepTheFkUp\EasyDecision\Tests\Stubs\ExpressionFunctionProviderStub',
     false
 );

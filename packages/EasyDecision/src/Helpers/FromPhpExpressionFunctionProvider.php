@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Helpers;
+namespace LoyaltyCorp\EasyDecision\Helpers;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
 final class FromPhpExpressionFunctionProvider implements ExpressionFunctionProviderInterface
@@ -42,6 +42,6 @@ final class FromPhpExpressionFunctionProvider implements ExpressionFunctionProvi
 
 \class_alias(
     FromPhpExpressionFunctionProvider::class,
-    'LoyaltyCorp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider',
+    'StepTheFkUp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider',
     false
 );

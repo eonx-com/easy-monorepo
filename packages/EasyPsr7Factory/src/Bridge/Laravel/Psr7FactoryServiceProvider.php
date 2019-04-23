@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPsr7Factory\Bridge\Laravel;
+namespace LoyaltyCorp\EasyPsr7Factory\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use StepTheFkUp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
-use StepTheFkUp\EasyPsr7Factory\EasyPsr7Factory;
+use LoyaltyCorp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
+use LoyaltyCorp\EasyPsr7Factory\EasyPsr7Factory;
 
 final class EasyPsr7FactoryServiceProvider extends ServiceProvider
 {
@@ -22,6 +22,6 @@ final class EasyPsr7FactoryServiceProvider extends ServiceProvider
 
 \class_alias(
     EasyPsr7FactoryServiceProvider::class,
-    'LoyaltyCorp\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider',
+    'StepTheFkUp\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider',
     false
 );

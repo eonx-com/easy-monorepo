@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Implementations\Illuminate;
+namespace LoyaltyCorp\EasyPipeline\Implementations\Illuminate;
 
 use Illuminate\Contracts\Pipeline\Pipeline as IlluminatePipelineContract;
-use StepTheFkUp\EasyPipeline\Exceptions\EmptyMiddlewareListException;
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerInterface;
-use StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface;
+use LoyaltyCorp\EasyPipeline\Exceptions\EmptyMiddlewareListException;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface;
 
 final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInterface
 {
@@ -32,7 +32,7 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
      * @param \Illuminate\Contracts\Pipeline\Pipeline $illuminatePipeline
      * @param mixed[] $middlewareList
      *
-     * @throws \StepTheFkUp\EasyPipeline\Exceptions\EmptyMiddlewareListException
+     * @throws \LoyaltyCorp\EasyPipeline\Exceptions\EmptyMiddlewareListException
      */
     public function __construct(IlluminatePipelineContract $illuminatePipeline, array $middlewareList)
     {
@@ -52,7 +52,7 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
      *
      * @return mixed[]
      *
-     * @throws \StepTheFkUp\EasyPipeline\Exceptions\PipelineDidntRunException If called before process() is called
+     * @throws \LoyaltyCorp\EasyPipeline\Exceptions\PipelineDidntRunException If called before process() is called
      */
     public function getLogs(): array
     {
@@ -106,6 +106,6 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
 
 \class_alias(
     IlluminatePipeline::class,
-    'LoyaltyCorp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline',
+    'StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline',
     false
 );

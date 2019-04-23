@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPsr7Factory\Tests;
+namespace LoyaltyCorp\EasyPsr7Factory\Tests;
 
 use Mockery;
 use Mockery\MockInterface;
@@ -35,6 +35,6 @@ abstract class AbstractTestCase extends TestCase
 
 \class_alias(
     AbstractTestCase::class,
-    'LoyaltyCorp\EasyPsr7Factory\Tests\AbstractTestCase',
+    'StepTheFkUp\EasyPsr7Factory\Tests\AbstractTestCase',
     false
 );

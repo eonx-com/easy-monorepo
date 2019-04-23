@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-use StepTheFkUp\EasyDecision\Decisions\AffirmativeDecision;
-use StepTheFkUp\EasyDecision\Decisions\ConsensusDecision;
-use StepTheFkUp\EasyDecision\Decisions\UnanimousDecision;
-use StepTheFkUp\EasyDecision\Decisions\ValueDecision;
-use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Decisions\AffirmativeDecision;
+use LoyaltyCorp\EasyDecision\Decisions\ConsensusDecision;
+use LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision;
+use LoyaltyCorp\EasyDecision\Decisions\ValueDecision;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
 
 return [
     /*
@@ -45,7 +45,7 @@ return [
         | directly from here or return the service locator of your provider.
         |
         | Your providers must implement:
-        | \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
+        | \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
         |
         | Example:
         | \App\Decisions\Expressions\MyOwnFunctionsProvider::class, -> Instantiate from container
@@ -66,7 +66,7 @@ return [
     | to control which decision types are available within your application.
     |
     | Your decisions must implement:
-    | \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+    | \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
     |
     */
     'mapping' => [
@@ -104,7 +104,7 @@ return [
     |
     | Or you have the possibility to use a decision config provider if you prefer.
     | Your decision config providers must implement:
-    | \StepTheFkUp\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface
+    | \LoyaltyCorp\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface
     |
     | 'my-decision' => \App\Decisions\MyDecisionConfigProvider::class -> Instantiated from container
     | 'my-other-decision' => new \App\Decisions\MyOtherDecisionConfigProvider()

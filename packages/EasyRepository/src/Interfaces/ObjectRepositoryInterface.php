@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Interfaces;
+namespace LoyaltyCorp\EasyRepository\Interfaces;
 
 interface ObjectRepositoryInterface
 {
@@ -44,6 +44,6 @@ interface ObjectRepositoryInterface
 
 \class_alias(
     ObjectRepositoryInterface::class,
-    'LoyaltyCorp\EasyRepository\Interfaces\ObjectRepositoryInterface',
+    'StepTheFkUp\EasyRepository\Interfaces\ObjectRepositoryInterface',
     false
 );

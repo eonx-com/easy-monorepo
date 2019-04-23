@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces;
+namespace LoyaltyCorp\EasyDecision\Interfaces;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 
 interface DecisionConfigInterface
 {
@@ -17,20 +17,20 @@ interface DecisionConfigInterface
     /**
      * Get expression language config.
      *
-     * @return null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
+     * @return null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
      */
     public function getExpressionLanguageConfig(): ?ExpressionLanguageConfigInterface;
 
     /**
      * Get rules providers.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface[]
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[]
      */
     public function getRuleProviders(): array;
 }
 
 \class_alias(
     DecisionConfigInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\DecisionConfigInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\DecisionConfigInterface',
     false
 );

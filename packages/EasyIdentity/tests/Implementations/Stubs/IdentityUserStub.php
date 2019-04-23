@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs;
+namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Stubs;
 
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface;
 
 final class IdentityUserStub implements IdentityUserInterface
 {
@@ -85,6 +85,6 @@ final class IdentityUserStub implements IdentityUserInterface
 
 \class_alias(
     IdentityUserStub::class,
-    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub',
+    'StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub',
     false
 );

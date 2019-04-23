@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Decisions;
+namespace LoyaltyCorp\EasyDecision\Decisions;
 
-use StepTheFkUp\EasyDecision\Interfaces\DecisionConfigInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionConfigInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 
 final class DecisionConfig implements DecisionConfigInterface
 {
@@ -14,12 +14,12 @@ final class DecisionConfig implements DecisionConfigInterface
     private $decisionType;
 
     /**
-     * @var null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
+     * @var null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
      */
     private $expressionLanguageConfig;
 
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface[]
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[]
      */
     private $ruleProviders;
 
@@ -27,8 +27,8 @@ final class DecisionConfig implements DecisionConfigInterface
      * DecisionConfig constructor.
      *
      * @param string $decisionType
-     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface[] $ruleProviders
-     * @param null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[] $ruleProviders
+     * @param null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      */
     public function __construct(
         string $decisionType,
@@ -53,7 +53,7 @@ final class DecisionConfig implements DecisionConfigInterface
     /**
      * Get expression language config.
      *
-     * @return null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
+     * @return null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
      */
     public function getExpressionLanguageConfig(): ?ExpressionLanguageConfigInterface
     {
@@ -63,7 +63,7 @@ final class DecisionConfig implements DecisionConfigInterface
     /**
      * Get rules providers.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface[]
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[]
      */
     public function getRuleProviders(): array
     {
@@ -73,6 +73,6 @@ final class DecisionConfig implements DecisionConfigInterface
 
 \class_alias(
     DecisionConfig::class,
-    'LoyaltyCorp\EasyDecision\Decisions\DecisionConfig',
+    'StepTheFkUp\EasyDecision\Decisions\DecisionConfig',
     false
 );
