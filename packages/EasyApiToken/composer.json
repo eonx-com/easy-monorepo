@@ -16,13 +16,11 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyApiToken\\": "src",
             "LoyaltyCorp\\EasyApiToken\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyApiToken\\Tests\\": "tests",
             "LoyaltyCorp\\EasyApiToken\\Tests\\": "tests"
         }
     },

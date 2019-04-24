@@ -15,13 +15,11 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyPsr7Factory\\": "src",
             "LoyaltyCorp\\EasyPsr7Factory\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyPsr7Factory\\Tests\\": "tests",
             "LoyaltyCorp\\EasyPsr7Factory\\Tests\\": "tests"
         }
     },
