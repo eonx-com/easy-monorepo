@@ -1,0 +1,12 @@
+managed_accounts:
+  ops:
+    local: true
+  dev:
+    aws_account_number: '{{ dev_account }}'
+    assume_iam_role: {{ cloudformation.ciinabox_role }}
+  prod:
+    aws_account_number: '{{ prod_account }}'
+    assume_iam_role: {{ cloudformation.ciinabox_role }}
+# flowlogs:
+#   traffic_type: ALL
+#   log_retention: 14

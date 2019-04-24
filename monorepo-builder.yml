@@ -5,6 +5,7 @@ parameters:
         - 'require-dev'
         - 'autoload'
         - 'autoload-dev'
+        - 'bin'
         - 'repositories'
         - 'suggest'
 
@@ -13,6 +14,10 @@ parameters:
         require-dev:
             symplify/monorepo-builder: '^5.4'
             symplify/changelog-linker: '^5.4'
+            natepage/sniffs: '^1.1'
+            phpstan/phpstan: '^0.11.5'
+            sensiolabs/security-checker: '^5.0'
+            symplify/easy-coding-standard: '^5.4'
 
     # for "split" command
     directories_to_repositories:

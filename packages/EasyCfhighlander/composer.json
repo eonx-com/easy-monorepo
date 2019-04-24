@@ -1,0 +1,33 @@
+{
+    "name": "loyaltycorp/easy-cfhighlander",
+    "description": "Tools to handle API tokens like a pro",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "symplify/package-builder": "^5.4",
+        "twig/twig": "^2.8",
+        "symfony/filesystem": "^4.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyCfhighlander\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyCfhighlander\\Tests\\": "tests"
+        }
+    },
+    "bin": [
+        "bin/cfhighlander"
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.7-dev"
+        }
+    }
+}

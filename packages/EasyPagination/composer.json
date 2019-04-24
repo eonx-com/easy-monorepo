@@ -13,12 +13,14 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyPagination\\": "src"
+            "LoyaltyCorp\\EasyPagination\\": "src",
+            "StepTheFkUp\\EasyPagination\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyPagination\\Tests\\": "tests"
+            "LoyaltyCorp\\EasyPagination\\Tests\\": "tests",
+            "StepTheFkUp\\EasyPagination\\Tests\\": "tests"
         }
     },
     "extra": {

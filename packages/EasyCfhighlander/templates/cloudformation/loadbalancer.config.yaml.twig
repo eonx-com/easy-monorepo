@@ -1,0 +1,18 @@
+records:
+  - "*"
+
+listeners:
+  http:
+    port: 80
+    protocol: http
+    default_targetgroup: default
+  https:
+    port: 443
+    protocol: https
+    default_targetgroup: default
+    ssl_policy: ELBSecurityPolicy-TLS-1-2-2017-01 #
+# loadbalancer_attributes:
+#   access_logs.s3.enabled: true
+#   access_logs.s3.bucket:
+#     Fn::Sub: "${EnvironmentName}.logs.${DnsDomain}"
+#   access_logs.s3.prefix: "Loadbalancer"

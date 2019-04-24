@@ -1,0 +1,180 @@
+@Library('ciinabox') _
+
+pipeline{
+  agent {
+    node {
+      label 'docker'
+    }
+  }
+  options {
+    disableConcurrentBuilds()
+  }
+  environment {
+    AWS_REGION = '{{ cloudformation.aws_region }}'
+    REGION = '{{ cloudformation.region }}'
+    PROJECT_NAME = '{{ project }}'
+    SOURCE_BUCKET = '{{ cloudformation.source_bucket }}'
+    DEV_ACCOUNT_ID = '{{ dev_account }}'
+    PROD_ACCOUNT_ID = '{{ prod_account }}'
+    CIINABOX_ROLE = '{{ cloudformation.ciinabox_role }}'
+  }
+  stages {
+    stage('Compile and Validate') {
+      agent {
+        docker {
+          image 'theonestack/cfhighlander:0.8.2'
+          reuseNode true
+        }
+      }
+      steps {
+        sh "rm -rf ~/.cfhighlander"
+        sh "cfhighlander cfcompile ${env.PROJECT_NAME} --validate"
+        sh "cat az.mappings.yaml"
+      }
+    }
+    stage('Publish') {
+      agent {
+        docker {
+          image 'theonestack/cfhighlander:0.8.2'
+          reuseNode true
+        }
+      }
+      steps {
+        script {
+          println "env:${env.GIT_COMMIT}"
+          env['cf_version'] = env.BRANCH_NAME
+          env['project_name'] = env.PROJECT_NAME
+          env['BRANCH'] = env.BRANCH_NAME
+          env['SHORT_COMMIT'] = env.GIT_COMMIT.substring(0,7)
+          if(env.BRANCH_NAME == 'master') {
+            env['cf_version'] = "master-${env.SHORT_COMMIT}"
+          }
+        }
+        sh "env && cfhighlander cfpublish ${env.PROJECT_NAME} --version ${env.cf_version} --dstbucket ${env.SOURCE_BUCKET} --dstprefix cloudformation/${env.PROJECT_NAME}"
+      }
+    }
+    stage('Update Dev Environment') {
+      when {
+        expression { env.BRANCH_NAME == 'development' }
+      }
+      steps {
+        println "Create Dev Environment"
+        println ""
+        cloudformation(
+          stackName: 'dev-{{ project }}',
+          action: 'create',
+          region: env.REGION,
+          templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
+          accountId: env.DEV_ACCOUNT_ID,
+          role: env.CIINABOX_ROLE,
+          parameters: [
+            'EnvironmentName': 'dev',
+            'EnvironmentType': 'development',
+            'NetworkPrefix': '10',
+            'StackOctet': '130'
+          ]
+        )
+        println "Update Dev Environment"
+        println ""
+        cloudformation(
+          stackName: 'dev-{{ project }}',
+          action: 'update',
+          region: env.AWS_REGION,
+          templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
+          accountId: env.DEV_ACCOUNT_ID,
+          role: env.CIINABOX_ROLE,
+          parameters: [
+            'EnvironmentName': 'dev',
+            'EnvironmentType': 'development'
+          ]
+        )
+      }
+    }
+    stage('Update UAT Environment') {
+      when {
+        expression { env.BRANCH_NAME == 'master' }
+      }
+      steps {
+        println "Create uat Environment"
+        println ""
+        cloudformation(
+          stackName: 'uat-{{ project }}',
+          action: 'create',
+          region: env.REGION,
+          templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
+          accountId: env.DEV_ACCOUNT_ID,
+          role: env.CIINABOX_ROLE,
+          parameters: [
+            'EnvironmentName': 'uat',
+            'EnvironmentType': 'production',
+            'NetworkPrefix': '10',
+            'StackOctet': '120'
+          ]
+        )
+        println "Update uat Environment"
+        println ""
+        cloudformation(
+          stackName: 'uat-{{ project }}',
+          action: 'update',
+          region: env.AWS_REGION,
+          templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
+          accountId: env.DEV_ACCOUNT_ID,
+          role: env.CIINABOX_ROLE,
+          parameters: [
+            'EnvironmentName': 'uat',
+            'EnvironmentType': 'production'
+          ]
+        )
+      }
+    }
+    stage('Update prod Environment') {
+      when {
+        expression { env.BRANCH_NAME == 'master' }
+      }
+      steps {
+        timeout(time: 120, unit: 'MINUTES') {
+            script {
+                input( message: 'Deploy to prod?' )
+            }
+        }
+        println "Create prod Environment"
+        println ""
+        cloudformation(
+          stackName: 'prod-{{ project }}',
+          action: 'create',
+          region: env.REGION,
+          templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
+          accountId: env.PROD_ACCOUNT_ID,
+          role: env.CIINABOX_ROLE,
+          parameters: [
+            'EnvironmentName': 'prod',
+            'EnvironmentType': 'production',
+            'NetworkPrefix': '10',
+            'StackOctet': '110',
+            'SingleNatGateway': 'false',
+            'MaxNatGateways': '3'
+          ]
+        )
+        println "Update prod Environment"
+        println ""
+        cloudformation(
+          stackName: 'prod-{{ project }}',
+          action: 'update',
+          region: env.AWS_REGION,
+          templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
+          accountId: env.PROD_ACCOUNT_ID,
+          role: env.CIINABOX_ROLE,
+          parameters: [
+            'EnvironmentName': 'prod',
+            'EnvironmentType': 'production'
+          ]
+        )
+      }
+    }
+  }
+  post {
+      always {
+            deleteDir()
+        }
+  }
+}
