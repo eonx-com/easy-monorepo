@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Bridge\Laravel;
+namespace LoyaltyCorp\EasyDecision\Bridge\Laravel;
 
 interface DecisionConfigProviderInterface
 {
@@ -36,6 +36,6 @@ interface DecisionConfigProviderInterface
 
 \class_alias(
     DecisionConfigProviderInterface::class,
-    'LoyaltyCorp\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface',
+    'StepTheFkUp\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface',
     false
 );

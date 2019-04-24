@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces\Expressions;
+namespace LoyaltyCorp\EasyDecision\Interfaces\Expressions;
 
 interface ExpressionFunctionFactoryInterface
 {
@@ -10,15 +10,15 @@ interface ExpressionFunctionFactoryInterface
      *
      * @param mixed $expressionFunction
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      *
-     * @throws \StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException
      */
     public function create($expressionFunction): ExpressionFunctionInterface;
 }
 
 \class_alias(
     ExpressionFunctionFactoryInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface',
     false
 );

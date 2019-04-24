@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine\ORM;
+namespace LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM;
 
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator;
+use LoyaltyCorp\EasyRepository\Tests\AbstractTestCase;
 use Mockery\MockInterface;
-use StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator;
-use StepTheFkUp\EasyRepository\Tests\AbstractTestCase;
 
 final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
 {
@@ -49,6 +49,6 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
 
 \class_alias(
     LengthAwareDoctrineOrmPaginatorTest::class,
-    'LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM\LengthAwareDoctrineOrmPaginatorTest',
+    'StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine\ORM\LengthAwareDoctrineOrmPaginatorTest',
     false
 );

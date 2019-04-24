@@ -17,13 +17,13 @@
     "autoload": {
         "psr-4": {
             "LoyaltyCorp\\EasyApiToken\\": "src",
-            "StepTheFkUp\\EasyApiToken\\": "src"
+            "LoyaltyCorp\\EasyApiToken\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "LoyaltyCorp\\EasyApiToken\\Tests\\": "tests",
-            "StepTheFkUp\\EasyApiToken\\Tests\\": "tests"
+            "LoyaltyCorp\\EasyApiToken\\Tests\\": "tests"
         }
     },
     "suggest": {

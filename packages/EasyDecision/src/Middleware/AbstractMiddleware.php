@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Middleware;
+namespace LoyaltyCorp\EasyDecision\Middleware;
 
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\MiddlewareInterface;
-use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\MiddlewareInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
 
 abstract class AbstractMiddleware implements MiddlewareInterface
 {
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
      */
     protected $rule;
 
     /**
      * AbstractMiddleware constructor.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface $rule
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface $rule
      */
     public function __construct(RuleInterface $rule)
     {
@@ -27,7 +27,7 @@ abstract class AbstractMiddleware implements MiddlewareInterface
     /**
      * Handle given context input and pass return through next.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      * @param callable $next
      *
      * @return mixed
@@ -50,7 +50,7 @@ abstract class AbstractMiddleware implements MiddlewareInterface
     /**
      * Make sure children classes handle given context.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      * @param mixed $output
      *
      * @return void
@@ -60,10 +60,10 @@ abstract class AbstractMiddleware implements MiddlewareInterface
     /**
      * Add given rule output to given context.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      * @param mixed $output
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
      */
     protected function addRuleOutput(ContextInterface $context, $output): ContextInterface
     {
@@ -73,7 +73,7 @@ abstract class AbstractMiddleware implements MiddlewareInterface
     /**
      * Abort rule.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      * @param callable $next
      * @param string $reason
      *
@@ -89,6 +89,6 @@ abstract class AbstractMiddleware implements MiddlewareInterface
 
 \class_alias(
     AbstractMiddleware::class,
-    'LoyaltyCorp\EasyDecision\Middleware\AbstractMiddleware',
+    'StepTheFkUp\EasyDecision\Middleware\AbstractMiddleware',
     false
 );

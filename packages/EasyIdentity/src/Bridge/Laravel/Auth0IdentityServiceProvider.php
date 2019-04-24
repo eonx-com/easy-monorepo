@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Bridge\Laravel;
+namespace LoyaltyCorp\EasyIdentity\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory;
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceInterface;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceInterface;
 
 final class Auth0IdentityServiceProvider extends ServiceProvider
 {
@@ -38,6 +38,6 @@ final class Auth0IdentityServiceProvider extends ServiceProvider
 
 \class_alias(
     Auth0IdentityServiceProvider::class,
-    'LoyaltyCorp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider',
+    'StepTheFkUp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider',
     false
 );

@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Decisions;
+namespace LoyaltyCorp\EasyDecision\Tests\Decisions;
 
-use StepTheFkUp\EasyDecision\Decisions\ValueDecision;
-use StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException;
-use StepTheFkUp\EasyDecision\Exceptions\MissingValueIndexException;
-use StepTheFkUp\EasyDecision\Exceptions\ReservedContextIndexException;
-use StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException;
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
-use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
-use StepTheFkUp\EasyDecision\Tests\Stubs\AssertContextAwareInputRuleStub;
-use StepTheFkUp\EasyDecision\Tests\Stubs\ValueContextAwareInputStub;
+use LoyaltyCorp\EasyDecision\Decisions\ValueDecision;
+use LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException;
+use LoyaltyCorp\EasyDecision\Exceptions\MissingValueIndexException;
+use LoyaltyCorp\EasyDecision\Exceptions\ReservedContextIndexException;
+use LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
+use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyDecision\Tests\Stubs\AssertContextAwareInputRuleStub;
+use LoyaltyCorp\EasyDecision\Tests\Stubs\ValueContextAwareInputStub;
 
 final class ValueDecisionTest extends AbstractTestCase
 {
@@ -145,7 +145,7 @@ final class ValueDecisionTest extends AbstractTestCase
     /**
      * Get rule to throw exception.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
      */
     private function getExceptionRule(): RuleInterface
     {
@@ -163,7 +163,7 @@ final class ValueDecisionTest extends AbstractTestCase
             /**
              * Proceed with input.
              *
-             * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+             * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
              *
              * @return mixed
              */
@@ -175,7 +175,7 @@ final class ValueDecisionTest extends AbstractTestCase
             /**
              * Check if rule supports given input.
              *
-             * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+             * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
              *
              * @return bool
              */
@@ -199,7 +199,7 @@ final class ValueDecisionTest extends AbstractTestCase
     /**
      * Get rule to modify value from input.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
      */
     private function getModifyValueRuleInArray(): RuleInterface
     {
@@ -217,7 +217,7 @@ final class ValueDecisionTest extends AbstractTestCase
             /**
              * Proceed with input.
              *
-             * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+             * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
              *
              * @return mixed
              */
@@ -231,7 +231,7 @@ final class ValueDecisionTest extends AbstractTestCase
             /**
              * Check if rule supports given input.
              *
-             * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+             * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
              *
              * @return bool
              */
@@ -255,7 +255,7 @@ final class ValueDecisionTest extends AbstractTestCase
     /**
      * Get rule to modify value from input.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
      */
     private function getModifyValueRuleInObject(): RuleInterface
     {
@@ -273,7 +273,7 @@ final class ValueDecisionTest extends AbstractTestCase
             /**
              * Proceed with input.
              *
-             * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+             * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
              *
              * @return mixed
              */
@@ -287,7 +287,7 @@ final class ValueDecisionTest extends AbstractTestCase
             /**
              * Check if rule supports given input.
              *
-             * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+             * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
              *
              * @return bool
              */
@@ -311,6 +311,6 @@ final class ValueDecisionTest extends AbstractTestCase
 
 \class_alias(
     ValueDecisionTest::class,
-    'LoyaltyCorp\EasyDecision\Tests\Decisions\ValueDecisionTest',
+    'StepTheFkUp\EasyDecision\Tests\Decisions\ValueDecisionTest',
     false
 );

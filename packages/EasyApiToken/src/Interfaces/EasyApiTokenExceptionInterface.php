@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Interfaces;
+namespace LoyaltyCorp\EasyApiToken\Interfaces;
 
 interface EasyApiTokenExceptionInterface
 {
@@ -10,6 +10,6 @@ interface EasyApiTokenExceptionInterface
 
 \class_alias(
     EasyApiTokenExceptionInterface::class,
-    'LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenExceptionInterface',
+    'StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenExceptionInterface',
     false
 );

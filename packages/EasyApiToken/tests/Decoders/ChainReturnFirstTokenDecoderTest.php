@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Tests\Decoders;
+namespace LoyaltyCorp\EasyApiToken\Tests\Decoders;
 
-use StepTheFkUp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
-use StepTheFkUp\EasyApiToken\Decoders\BasicAuthDecoder;
-use StepTheFkUp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
-use StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException;
-use StepTheFkUp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface;
-use StepTheFkUp\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface;
-use StepTheFkUp\EasyApiToken\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
+use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
+use LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
+use LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException;
+use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface;
+use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
 
 final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
 {
@@ -18,11 +18,11 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function testChainFirstApiKeyTokenSuccessfully(): void
     {
-        /** @var \StepTheFkUp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface $token */
+        /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface $token */
         $token = $this->createChainReturnFirstTokenDecoder()->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode('api-key: ')
         ]));
@@ -36,11 +36,11 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function testChainFirstBasicAuthTokenSuccessfully(): void
     {
-        /** @var \StepTheFkUp\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface $token */
+        /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface $token */
         $token = $this->createChainReturnFirstTokenDecoder()->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode('username:password')
         ]));
@@ -55,7 +55,7 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function testChainFirstNullIfNoDecoderCouldDecoderToken(): void
     {
@@ -67,7 +67,7 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function testEmptyDecodersArrayException(): void
     {
@@ -81,7 +81,7 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function testInvalidDecoderException(): void
     {
@@ -93,9 +93,9 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
     /**
      * Create ChainReturnFirstTokenDecoder.
      *
-     * @return \StepTheFkUp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder
+     * @return \LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      */
     private function createChainReturnFirstTokenDecoder(): ChainReturnFirstTokenDecoder
     {
@@ -105,6 +105,6 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
 
 \class_alias(
     ChainReturnFirstTokenDecoderTest::class,
-    'LoyaltyCorp\EasyApiToken\Tests\Decoders\ChainReturnFirstTokenDecoderTest',
+    'StepTheFkUp\EasyApiToken\Tests\Decoders\ChainReturnFirstTokenDecoderTest',
     false
 );

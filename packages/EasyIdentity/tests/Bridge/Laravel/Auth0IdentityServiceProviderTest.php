@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Tests\Bridge\Laravel;
+namespace LoyaltyCorp\EasyIdentity\Tests\Bridge\Laravel;
 
-use StepTheFkUp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService;
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceInterface;
-use StepTheFkUp\EasyIdentity\Tests\AbstractLumenTestCase;
+use LoyaltyCorp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityService;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceInterface;
+use LoyaltyCorp\EasyIdentity\Tests\AbstractLumenTestCase;
 
 final class Auth0IdentityServiceProviderTest extends AbstractLumenTestCase
 {
@@ -31,6 +31,6 @@ final class Auth0IdentityServiceProviderTest extends AbstractLumenTestCase
 
 \class_alias(
     Auth0IdentityServiceProviderTest::class,
-    'LoyaltyCorp\EasyIdentity\Tests\Bridge\Laravel\Auth0IdentityServiceProviderTest',
+    'StepTheFkUp\EasyIdentity\Tests\Bridge\Laravel\Auth0IdentityServiceProviderTest',
     false
 );

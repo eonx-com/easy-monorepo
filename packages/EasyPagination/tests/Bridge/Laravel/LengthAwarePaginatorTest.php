@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Tests\Bridge\Laravel;
+namespace LoyaltyCorp\EasyPagination\Tests\Bridge\Laravel;
 
 use Illuminate\Pagination\LengthAwarePaginator as IlluminateLengthAwarePaginator;
-use StepTheFkUp\EasyPagination\Bridge\Laravel\LengthAwarePaginator;
-use StepTheFkUp\EasyPagination\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyPagination\Bridge\Laravel\LengthAwarePaginator;
+use LoyaltyCorp\EasyPagination\Tests\AbstractTestCase;
 
 class LengthAwarePaginatorTest extends AbstractTestCase
 {
@@ -35,6 +35,6 @@ class LengthAwarePaginatorTest extends AbstractTestCase
 
 \class_alias(
     LengthAwarePaginatorTest::class,
-    'LoyaltyCorp\EasyPagination\Tests\Bridge\Laravel\LengthAwarePaginatorTest',
+    'StepTheFkUp\EasyPagination\Tests\Bridge\Laravel\LengthAwarePaginatorTest',
     false
 );

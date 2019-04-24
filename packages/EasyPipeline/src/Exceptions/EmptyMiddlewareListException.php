@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Exceptions;
+namespace LoyaltyCorp\EasyPipeline\Exceptions;
 
-use StepTheFkUp\EasyPipeline\Interfaces\EasyPipelineExceptionInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\EasyPipelineExceptionInterface;
 
 final class EmptyMiddlewareListException extends \InvalidArgumentException implements EasyPipelineExceptionInterface
 {
@@ -12,6 +12,6 @@ final class EmptyMiddlewareListException extends \InvalidArgumentException imple
 
 \class_alias(
     EmptyMiddlewareListException::class,
-    'LoyaltyCorp\EasyPipeline\Exceptions\EmptyMiddlewareListException',
+    'StepTheFkUp\EasyPipeline\Exceptions\EmptyMiddlewareListException',
     false
 );

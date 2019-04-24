@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Exceptions;
+namespace LoyaltyCorp\EasyDecision\Exceptions;
 
-use StepTheFkUp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
 
 final class MissingValueIndexException extends \InvalidArgumentException implements EasyDecisionExceptionInterface
 {
@@ -12,6 +12,6 @@ final class MissingValueIndexException extends \InvalidArgumentException impleme
 
 \class_alias(
     MissingValueIndexException::class,
-    'LoyaltyCorp\EasyDecision\Exceptions\MissingValueIndexException',
+    'StepTheFkUp\EasyDecision\Exceptions\MissingValueIndexException',
     false
 );

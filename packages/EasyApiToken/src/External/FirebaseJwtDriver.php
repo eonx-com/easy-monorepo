@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\External;
+namespace LoyaltyCorp\EasyApiToken\External;
 
 use Firebase\JWT\JWT;
-use StepTheFkUp\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
 
 final class FirebaseJwtDriver implements JwtDriverInterface
 {
@@ -95,6 +95,6 @@ final class FirebaseJwtDriver implements JwtDriverInterface
 
 \class_alias(
     FirebaseJwtDriver::class,
-    'LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver',
+    'StepTheFkUp\EasyApiToken\External\FirebaseJwtDriver',
     false
 );

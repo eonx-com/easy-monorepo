@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Tests;
+namespace LoyaltyCorp\EasyApiToken\Tests;
 
-use StepTheFkUp\EasyApiToken\External\FirebaseJwtDriver;
-use StepTheFkUp\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver;
+use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
 
 abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
 {
@@ -49,7 +49,7 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
      * @param null|string[] $allowedAlgos
      * @param null|int $leeway
      *
-     * @return \StepTheFkUp\EasyApiToken\External\Interfaces\JwtDriverInterface
+     * @return \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface
      */
     protected function createFirebaseJwtDriver(
         ?string $algo = null,
@@ -88,6 +88,6 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
 
 \class_alias(
     AbstractFirebaseJwtTokenTestCase::class,
-    'LoyaltyCorp\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase',
+    'StepTheFkUp\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase',
     false
 );

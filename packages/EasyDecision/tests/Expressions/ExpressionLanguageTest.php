@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Expressions;
+namespace LoyaltyCorp\EasyDecision\Tests\Expressions;
 
-use StepTheFkUp\EasyDecision\Exceptions\InvalidExpressionException;
-use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use StepTheFkUp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
-use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyDecision\Exceptions\InvalidExpressionException;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
+use LoyaltyCorp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
 
 final class ExpressionLanguageTest extends AbstractTestCase
 {
@@ -41,7 +41,7 @@ final class ExpressionLanguageTest extends AbstractTestCase
     /**
      * Get expression language.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     private function getExpressionLanguage(): ExpressionLanguageInterface
     {
@@ -53,6 +53,6 @@ final class ExpressionLanguageTest extends AbstractTestCase
 
 \class_alias(
     ExpressionLanguageTest::class,
-    'LoyaltyCorp\EasyDecision\Tests\Expressions\ExpressionLanguageTest',
+    'StepTheFkUp\EasyDecision\Tests\Expressions\ExpressionLanguageTest',
     false
 );

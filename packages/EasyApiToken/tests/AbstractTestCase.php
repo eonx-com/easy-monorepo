@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Tests;
+namespace LoyaltyCorp\EasyApiToken\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,6 +29,6 @@ abstract class AbstractTestCase extends TestCase
 
 \class_alias(
     AbstractTestCase::class,
-    'LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase',
+    'StepTheFkUp\EasyApiToken\Tests\AbstractTestCase',
     false
 );

@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0;
+namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
 
 use Auth0\SDK\JWTVerifier;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\Config;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory;
-use StepTheFkUp\EasyIdentity\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory;
+use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
 
 /**
- * @covers \StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory
+ * @covers \LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory
  */
 class TokenVerifierFactoryTest extends AbstractTestCase
 {
@@ -18,7 +18,7 @@ class TokenVerifierFactoryTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \Auth0\SDK\Exception\CoreException
      */
     public function testCreate(): void
@@ -36,6 +36,6 @@ class TokenVerifierFactoryTest extends AbstractTestCase
 
 \class_alias(
     TokenVerifierFactoryTest::class,
-    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0\TokenVerifierFactoryTest',
+    'StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\TokenVerifierFactoryTest',
     false
 );

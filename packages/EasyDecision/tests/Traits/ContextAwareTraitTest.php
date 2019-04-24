@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Traits;
+namespace LoyaltyCorp\EasyDecision\Tests\Traits;
 
-use StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException;
-use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
-use StepTheFkUp\EasyDecision\Tests\Stubs\ValueContextAwareInputStub;
+use LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException;
+use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyDecision\Tests\Stubs\ValueContextAwareInputStub;
 
 final class ContextAwareTraitTest extends AbstractTestCase
 {
@@ -24,6 +24,6 @@ final class ContextAwareTraitTest extends AbstractTestCase
 
 \class_alias(
     ContextAwareTraitTest::class,
-    'LoyaltyCorp\EasyDecision\Tests\Traits\ContextAwareTraitTest',
+    'StepTheFkUp\EasyDecision\Tests\Traits\ContextAwareTraitTest',
     false
 );

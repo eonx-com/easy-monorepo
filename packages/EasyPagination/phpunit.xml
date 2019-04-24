@@ -4,7 +4,7 @@
         bootstrap="vendor/autoload.php"
 >
     <testsuites>
-        <testsuite name="StepTheFkUp EasyPagination Package Test Suite">
+        <testsuite name="LoyaltyCorp EasyPagination Package Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

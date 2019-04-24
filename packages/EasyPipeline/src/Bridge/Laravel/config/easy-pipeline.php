@@ -11,7 +11,7 @@ return [
     | as services in the container.
     | Pipelines list must be an associative array where the keys are the
     | name of the pipeline the middleware provider belongs to. Each middleware provider must implement
-    | the StepTheFkUp\EasyPipeline\Interfaces\MiddlewareProviderInterface.
+    | the LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareProviderInterface.
     |
     | Example:
     | 'pipeline-1' => \App\Pipelines\Providers\Pipeline1MiddlewareProvider::class,

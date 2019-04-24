@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Data;
+namespace LoyaltyCorp\EasyPagination\Data;
 
-use StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface;
+use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface;
 
 final class StartSizeData implements StartSizeDataInterface
 {
@@ -52,6 +52,6 @@ final class StartSizeData implements StartSizeDataInterface
 
 \class_alias(
     StartSizeData::class,
-    'LoyaltyCorp\EasyPagination\Data\StartSizeData',
+    'StepTheFkUp\EasyPagination\Data\StartSizeData',
     false
 );

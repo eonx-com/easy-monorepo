@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Bridge\Laravel;
+namespace LoyaltyCorp\EasyDecision\Bridge\Laravel;
 
 use Illuminate\Contracts\Container\Container;
-use StepTheFkUp\EasyDecision\Decisions\DecisionConfig;
-use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
-use StepTheFkUp\EasyDecision\Interfaces\DecisionFactoryInterface as BaseDecisionFactoryInterface;
-use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
-use StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface;
+use LoyaltyCorp\EasyDecision\Decisions\DecisionConfig;
+use LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionFactoryInterface as BaseDecisionFactoryInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface;
 
 final class LaravelDecisionFactory implements DecisionFactoryInterface
 {
@@ -18,17 +18,17 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
     private $app;
 
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\DecisionFactoryInterface
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\DecisionFactoryInterface
      */
     private $decorated;
 
     /**
-     * @var \StepTheFkUp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactoryInterface
+     * @var \LoyaltyCorp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactoryInterface
      */
     private $expressionLanguageConfigFactory;
 
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface[]
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface[]
      */
     private $resolved = [];
 
@@ -36,7 +36,7 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
      * LaravelDecisionFactory constructor.
      *
      * @param \Illuminate\Contracts\Container\Container $app
-     * @param \StepTheFkUp\EasyDecision\Interfaces\DecisionFactoryInterface $decorated
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\DecisionFactoryInterface $decorated
      */
     public function __construct(Container $app, BaseDecisionFactoryInterface $decorated)
     {
@@ -49,7 +49,7 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
      *
      * @param string $decision
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -88,7 +88,7 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
      * @param string $type
      * @param mixed[] $providers
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -107,7 +107,7 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
      * @param string $decision
      * @param mixed[] $config
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -129,7 +129,7 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
      * @param string $decision
      * @param mixed $configProvider
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -154,7 +154,7 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
     /**
      * Get expression language config factory.
      *
-     * @return \StepTheFkUp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactoryInterface
+     * @return \LoyaltyCorp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactoryInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -174,7 +174,7 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
      *
      * @param mixed[] $providers
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface[]
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[]
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -198,6 +198,6 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
 
 \class_alias(
     LaravelDecisionFactory::class,
-    'LoyaltyCorp\EasyDecision\Bridge\Laravel\LaravelDecisionFactory',
+    'StepTheFkUp\EasyDecision\Bridge\Laravel\LaravelDecisionFactory',
     false
 );

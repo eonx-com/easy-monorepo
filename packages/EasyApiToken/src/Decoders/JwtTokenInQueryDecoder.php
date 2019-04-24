@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Decoders;
+namespace LoyaltyCorp\EasyApiToken\Decoders;
 
+use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
+use LoyaltyCorp\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
 use Psr\Http\Message\ServerRequestInterface;
-use StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
-use StepTheFkUp\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
 
 final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
 {
     use EasyApiTokenDecoderTrait;
 
     /**
-     * @var \StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface
+     * @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface
      */
     private $jwtApiTokenFactory;
 
@@ -26,7 +26,7 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
     /**
      * JwtTokenInQueryDecoder constructor.
      *
-     * @param \StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory
+     * @param \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory
      * @param string $queryParam
      */
     public function __construct(JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory, string $queryParam)
@@ -40,9 +40,9 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return null|\StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenInterface
+     * @return null|\LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
     {
@@ -58,6 +58,6 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
 
 \class_alias(
     JwtTokenInQueryDecoder::class,
-    'LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder',
+    'StepTheFkUp\EasyApiToken\Decoders\JwtTokenInQueryDecoder',
     false
 );

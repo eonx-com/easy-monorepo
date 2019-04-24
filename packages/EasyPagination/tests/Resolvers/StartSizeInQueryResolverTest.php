@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Tests\Resolvers;
+namespace LoyaltyCorp\EasyPagination\Tests\Resolvers;
 
-use StepTheFkUp\EasyPagination\Resolvers\StartSizeInQueryResolver;
-use StepTheFkUp\EasyPagination\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyPagination\Resolvers\StartSizeInQueryResolver;
+use LoyaltyCorp\EasyPagination\Tests\AbstractTestCase;
 
 final class StartSizeInQueryResolverTest extends AbstractTestCase
 {
@@ -59,6 +59,6 @@ final class StartSizeInQueryResolverTest extends AbstractTestCase
 
 \class_alias(
     StartSizeInQueryResolverTest::class,
-    'LoyaltyCorp\EasyPagination\Tests\Resolvers\StartSizeInQueryResolverTest',
+    'StepTheFkUp\EasyPagination\Tests\Resolvers\StartSizeInQueryResolverTest',
     false
 );

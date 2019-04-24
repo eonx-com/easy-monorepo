@@ -1,27 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Resolvers;
+namespace LoyaltyCorp\EasyPagination\Resolvers;
 
+use LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface;
+use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface;
+use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataResolverInterface;
+use LoyaltyCorp\EasyPagination\Traits\DataResolverTrait;
 use Psr\Http\Message\ServerRequestInterface;
-use StepTheFkUp\EasyPagination\Interfaces\StartSizeConfigInterface;
-use StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface;
-use StepTheFkUp\EasyPagination\Interfaces\StartSizeDataResolverInterface;
-use StepTheFkUp\EasyPagination\Traits\DataResolverTrait;
 
 final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
 {
     use DataResolverTrait;
 
     /**
-     * @var \StepTheFkUp\EasyPagination\Interfaces\StartSizeConfigInterface
+     * @var \LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface
      */
     private $config;
 
     /**
      * StartSizeInQueryResolver constructor.
      *
-     * @param \StepTheFkUp\EasyPagination\Interfaces\StartSizeConfigInterface $config
+     * @param \LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface $config
      */
     public function __construct(StartSizeConfigInterface $config)
     {
@@ -33,7 +33,7 @@ final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return \StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface
+     * @return \LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface
      */
     public function resolve(ServerRequestInterface $request): StartSizeDataInterface
     {
@@ -43,6 +43,6 @@ final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
 
 \class_alias(
     StartSizeInQueryResolver::class,
-    'LoyaltyCorp\EasyPagination\Resolvers\StartSizeInQueryResolver',
+    'StepTheFkUp\EasyPagination\Resolvers\StartSizeInQueryResolver',
     false
 );

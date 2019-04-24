@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Decoders;
+namespace LoyaltyCorp\EasyApiToken\Decoders;
 
+use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use LoyaltyCorp\EasyApiToken\Traits\ChainEasyApiTokenDecoderTrait;
 use Psr\Http\Message\ServerRequestInterface;
-use StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use StepTheFkUp\EasyApiToken\Traits\ChainEasyApiTokenDecoderTrait;
 
 final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
 {
     use ChainEasyApiTokenDecoderTrait;
 
     /**
-     * @var \StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface[]
+     * @var \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface[]
      */
     private $decoders;
 
@@ -22,7 +22,7 @@ final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
      *
      * @param mixed[] $decoders
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function __construct(array $decoders)
     {
@@ -36,7 +36,7 @@ final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return null|\StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenInterface
+     * @return null|\LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface
      */
     public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
     {
@@ -54,6 +54,6 @@ final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
 
 \class_alias(
     ChainReturnFirstTokenDecoder::class,
-    'LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder',
+    'StepTheFkUp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder',
     false
 );

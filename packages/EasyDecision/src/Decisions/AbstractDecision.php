@@ -1,41 +1,41 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Decisions;
+namespace LoyaltyCorp\EasyDecision\Decisions;
 
 use Illuminate\Pipeline\Pipeline as BaseIlluminatePipeline;
-use StepTheFkUp\EasyDecision\Context;
-use StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException;
-use StepTheFkUp\EasyDecision\Exceptions\EmptyRulesException;
-use StepTheFkUp\EasyDecision\Exceptions\ReservedContextIndexException;
-use StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException;
-use StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface;
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
-use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
-use StepTheFkUp\EasyDecision\Middleware\ValueMiddleware;
-use StepTheFkUp\EasyDecision\Middleware\YesNoMiddleware;
-use StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline;
-use StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface;
+use LoyaltyCorp\EasyDecision\Context;
+use LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException;
+use LoyaltyCorp\EasyDecision\Exceptions\EmptyRulesException;
+use LoyaltyCorp\EasyDecision\Exceptions\ReservedContextIndexException;
+use LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextAwareInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
+use LoyaltyCorp\EasyDecision\Middleware\ValueMiddleware;
+use LoyaltyCorp\EasyDecision\Middleware\YesNoMiddleware;
+use LoyaltyCorp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline;
+use LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface;
 
 abstract class AbstractDecision implements DecisionInterface
 {
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
      */
     private $context;
 
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[]
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[]
      */
     private $rules = [];
 
     /**
      * Add rule.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface $rule
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface $rule
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      */
     public function addRule(RuleInterface $rule): DecisionInterface
     {
@@ -47,11 +47,11 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Validate each rule is an instance of RuleInterface and sort them by priority.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[] $rules
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[] $rules
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      *
-     * @throws \StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException
      */
     public function addRules(array $rules): DecisionInterface
     {
@@ -65,9 +65,9 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Get context.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
      *
-     * @throws \StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException
+     * @throws \LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException
      */
     public function getContext(): ContextInterface
     {
@@ -109,7 +109,7 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Do make decision based on given context.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return void
      */
@@ -127,7 +127,7 @@ abstract class AbstractDecision implements DecisionInterface
      *
      * @param mixed $input
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
      */
     protected function createContext($input): ContextInterface
     {
@@ -158,7 +158,7 @@ abstract class AbstractDecision implements DecisionInterface
      *
      * @param string $class
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\MiddlewareInterface[]
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\MiddlewareInterface[]
      */
     protected function createMiddlewareList(string $class): array
     {
@@ -180,7 +180,7 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Create pipeline.
      *
-     * @return \StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface
+     * @return \LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface
      */
     private function createPipeline(): PipelineInterface
     {
@@ -207,6 +207,6 @@ abstract class AbstractDecision implements DecisionInterface
 
 \class_alias(
     AbstractDecision::class,
-    'LoyaltyCorp\EasyDecision\Decisions\AbstractDecision',
+    'StepTheFkUp\EasyDecision\Decisions\AbstractDecision',
     false
 );

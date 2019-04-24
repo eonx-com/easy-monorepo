@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Stubs;
+namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
 
-use StepTheFkUp\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface;
-use StepTheFkUp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
-use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface;
+use LoyaltyCorp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
 final class DecisionConfigProviderStub implements DecisionConfigProviderInterface
@@ -60,6 +60,6 @@ final class DecisionConfigProviderStub implements DecisionConfigProviderInterfac
 
 \class_alias(
     DecisionConfigProviderStub::class,
-    'LoyaltyCorp\EasyDecision\Tests\Stubs\DecisionConfigProviderStub',
+    'StepTheFkUp\EasyDecision\Tests\Stubs\DecisionConfigProviderStub',
     false
 );

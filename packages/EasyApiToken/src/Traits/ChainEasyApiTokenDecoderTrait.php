@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Traits;
+namespace LoyaltyCorp\EasyApiToken\Traits;
 
-use StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException;
-use StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException;
+use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 
 trait ChainEasyApiTokenDecoderTrait
 {
@@ -15,7 +15,7 @@ trait ChainEasyApiTokenDecoderTrait
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      */
     private function validateDecoder($decoder): void
     {
@@ -38,7 +38,7 @@ trait ChainEasyApiTokenDecoderTrait
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      */
     private function validateDecoders(array $decoders): void
     {
@@ -54,6 +54,6 @@ trait ChainEasyApiTokenDecoderTrait
 
 \class_alias(
     ChainEasyApiTokenDecoderTrait::class,
-    'LoyaltyCorp\EasyApiToken\Traits\ChainEasyApiTokenDecoderTrait',
+    'StepTheFkUp\EasyApiToken\Traits\ChainEasyApiTokenDecoderTrait',
     false
 );

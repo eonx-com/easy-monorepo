@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Rules;
+namespace LoyaltyCorp\EasyDecision\Rules;
 
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
-use StepTheFkUp\EasyDecision\Interfaces\RuleInterface;
-use StepTheFkUp\EasyDecision\Traits\ExpressionLanguageAwareTrait;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
+use LoyaltyCorp\EasyDecision\Traits\ExpressionLanguageAwareTrait;
 
 final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageAwareInterface
 {
@@ -47,7 +47,7 @@ final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageA
     /**
      * Proceed with input.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return mixed
      */
@@ -59,7 +59,7 @@ final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageA
     /**
      * Check if rule supports given input.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return bool
      */
@@ -81,6 +81,6 @@ final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageA
 
 \class_alias(
     ExpressionLanguageRule::class,
-    'LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRule',
+    'StepTheFkUp\EasyDecision\Rules\ExpressionLanguageRule',
     false
 );

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Bridge\Laravel\Exceptions;
+namespace LoyaltyCorp\EasyRepository\Bridge\Laravel\Exceptions;
 
 use Exception;
-use StepTheFkUp\EasyRepository\Interfaces\EasyRepositoryExceptionInterface;
+use LoyaltyCorp\EasyRepository\Interfaces\EasyRepositoryExceptionInterface;
 
 final class EmptyRepositoriesListException extends Exception implements EasyRepositoryExceptionInterface
 {
@@ -13,6 +13,6 @@ final class EmptyRepositoriesListException extends Exception implements EasyRepo
 
 \class_alias(
     EmptyRepositoriesListException::class,
-    'LoyaltyCorp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException',
+    'StepTheFkUp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException',
     false
 );

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces;
+namespace LoyaltyCorp\EasyDecision\Interfaces;
 
-use StepTheFkUp\EasyDecision\Rules\ExpressionLanguageRule;
+use LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRule;
 
 interface ExpressionLanguageRuleFactoryInterface
 {
@@ -13,13 +13,13 @@ interface ExpressionLanguageRuleFactoryInterface
      * @param string $expression
      * @param null|int $priority
      *
-     * @return \StepTheFkUp\EasyDecision\Rules\ExpressionLanguageRule
+     * @return \LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRule
      */
     public function create(string $expression, ?int $priority = null): ExpressionLanguageRule;
 }
 
 \class_alias(
     ExpressionLanguageRuleFactoryInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface',
     false
 );

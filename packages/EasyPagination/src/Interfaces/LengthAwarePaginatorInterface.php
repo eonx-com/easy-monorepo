@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Interfaces;
+namespace LoyaltyCorp\EasyPagination\Interfaces;
 
 interface LengthAwarePaginatorInterface
 {
@@ -57,6 +57,6 @@ interface LengthAwarePaginatorInterface
 
 \class_alias(
     LengthAwarePaginatorInterface::class,
-    'LoyaltyCorp\EasyPagination\Interfaces\LengthAwarePaginatorInterface',
+    'StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface',
     false
 );

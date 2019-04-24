@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
+namespace LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
 
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareInterface;
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
-use StepTheFkUp\EasyPipeline\Traits\MiddlewareLoggerAwareTrait;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
+use LoyaltyCorp\EasyPipeline\Traits\MiddlewareLoggerAwareTrait;
 
 final class LoggerChangeNameMiddleware implements MiddlewareInterface, MiddlewareLoggerAwareInterface
 {
     use MiddlewareLoggerAwareTrait;
 
     /**
-     * @var \StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware
+     * @var \LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware
      */
     private $decorated;
 
     /**
      * LoggerChangeNameMiddleware constructor.
      *
-     * @param \StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware $decorated
+     * @param \LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware $decorated
      */
     public function __construct(ChangeNameMiddleware $decorated)
     {
@@ -52,6 +52,6 @@ final class LoggerChangeNameMiddleware implements MiddlewareInterface, Middlewar
 
 \class_alias(
     LoggerChangeNameMiddleware::class,
-    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\LoggerChangeNameMiddleware',
+    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\LoggerChangeNameMiddleware',
     false
 );

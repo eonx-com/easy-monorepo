@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision;
+namespace LoyaltyCorp\EasyDecision;
 
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
 
 final class Context implements ContextInterface
 {
@@ -51,7 +51,7 @@ final class Context implements ContextInterface
      * @param string $rule
      * @param mixed $output
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
      */
     public function addRuleOutput(string $rule, $output): ContextInterface
     {
@@ -115,7 +115,7 @@ final class Context implements ContextInterface
      *
      * @param mixed $input
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
      */
     public function setInput($input): ContextInterface
     {
@@ -127,7 +127,7 @@ final class Context implements ContextInterface
     /**
      * Stop propagation, all rules after propagation has been stopped will be skipped.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
      */
     public function stopPropagation(): ContextInterface
     {
@@ -139,6 +139,6 @@ final class Context implements ContextInterface
 
 \class_alias(
     Context::class,
-    'LoyaltyCorp\EasyDecision\Context',
+    'StepTheFkUp\EasyDecision\Context',
     false
 );

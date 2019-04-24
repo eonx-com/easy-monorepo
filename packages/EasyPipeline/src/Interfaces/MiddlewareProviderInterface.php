@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Interfaces;
+namespace LoyaltyCorp\EasyPipeline\Interfaces;
 
 interface MiddlewareProviderInterface
 {
@@ -15,6 +15,6 @@ interface MiddlewareProviderInterface
 
 \class_alias(
     MiddlewareProviderInterface::class,
-    'LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareProviderInterface',
+    'StepTheFkUp\EasyPipeline\Interfaces\MiddlewareProviderInterface',
     false
 );

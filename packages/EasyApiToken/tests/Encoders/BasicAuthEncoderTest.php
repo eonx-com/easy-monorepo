@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Tests\Encoders;
+namespace LoyaltyCorp\EasyApiToken\Tests\Encoders;
 
-use StepTheFkUp\EasyApiToken\Encoders\BasicAuthEncoder;
-use StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException;
-use StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException;
-use StepTheFkUp\EasyApiToken\Tests\AbstractTestCase;
-use StepTheFkUp\EasyApiToken\Tokens\ApiKeyEasyApiToken;
-use StepTheFkUp\EasyApiToken\Tokens\BasicAuthEasyApiToken;
+use LoyaltyCorp\EasyApiToken\Encoders\BasicAuthEncoder;
+use LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException;
+use LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException;
+use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyApiToken\Tokens\ApiKeyEasyApiToken;
+use LoyaltyCorp\EasyApiToken\Tokens\BasicAuthEasyApiToken;
 
 final class BasicAuthEncoderTest extends AbstractTestCase
 {
@@ -17,8 +17,8 @@ final class BasicAuthEncoderTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
      */
     public function testBasicAuthEncodeSuccessfully(): void
     {
@@ -40,8 +40,8 @@ final class BasicAuthEncoderTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
      */
     public function testInvalidTokenException(): void
     {
@@ -55,8 +55,8 @@ final class BasicAuthEncoderTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
      */
     public function testUnableToEncodePasswordEmptyException(): void
     {
@@ -70,8 +70,8 @@ final class BasicAuthEncoderTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
      */
     public function testUnableToEncodeUsernameEmptyException(): void
     {
@@ -83,6 +83,6 @@ final class BasicAuthEncoderTest extends AbstractTestCase
 
 \class_alias(
     BasicAuthEncoderTest::class,
-    'LoyaltyCorp\EasyApiToken\Tests\Encoders\BasicAuthEncoderTest',
+    'StepTheFkUp\EasyApiToken\Tests\Encoders\BasicAuthEncoderTest',
     false
 );

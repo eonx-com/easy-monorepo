@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
+namespace LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
 
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareProviderInterface;
-use StepTheFkUp\EasyPipeline\Interfaces\PipelineNameAwareInterface;
-use StepTheFkUp\EasyPipeline\Traits\PipelineNameAwareTrait;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareProviderInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\PipelineNameAwareInterface;
+use LoyaltyCorp\EasyPipeline\Traits\PipelineNameAwareTrait;
 
 final class PipelineNameAwareMiddlewareProviderStub implements MiddlewareProviderInterface, PipelineNameAwareInterface
 {
@@ -41,6 +41,6 @@ final class PipelineNameAwareMiddlewareProviderStub implements MiddlewareProvide
 
 \class_alias(
     PipelineNameAwareMiddlewareProviderStub::class,
-    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\PipelineNameAwareMiddlewareProviderStub',
+    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\PipelineNameAwareMiddlewareProviderStub',
     false
 );

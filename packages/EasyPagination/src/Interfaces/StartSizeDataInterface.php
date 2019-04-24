@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Interfaces;
+namespace LoyaltyCorp\EasyPagination\Interfaces;
 
 interface StartSizeDataInterface
 {
@@ -22,6 +22,6 @@ interface StartSizeDataInterface
 
 \class_alias(
     StartSizeDataInterface::class,
-    'LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface',
+    'StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface',
     false
 );

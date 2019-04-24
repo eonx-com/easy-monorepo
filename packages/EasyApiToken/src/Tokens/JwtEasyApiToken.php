@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Tokens;
+namespace LoyaltyCorp\EasyApiToken\Tokens;
 
-use StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException;
-use StepTheFkUp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
+use LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException;
+use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 
 final class JwtEasyApiToken implements JwtEasyApiTokenInterface
 {
@@ -40,7 +40,7 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
      *
      * @return mixed
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException If claim not found on token
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException If claim not found on token
      */
     public function getClaim(string $claim)
     {
@@ -66,6 +66,6 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
 
 \class_alias(
     JwtEasyApiToken::class,
-    'LoyaltyCorp\EasyApiToken\Tokens\JwtEasyApiToken',
+    'StepTheFkUp\EasyApiToken\Tokens\JwtEasyApiToken',
     false
 );

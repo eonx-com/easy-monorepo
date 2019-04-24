@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Middleware;
+namespace LoyaltyCorp\EasyDecision\Middleware;
 
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
-use StepTheFkUp\EasyDecision\Traits\DealsWithValueInput;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Traits\DealsWithValueInput;
 
 final class ValueMiddleware extends AbstractMiddleware
 {
@@ -14,7 +14,7 @@ final class ValueMiddleware extends AbstractMiddleware
     /**
      * Make sure children classes handle given context.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      * @param mixed $output
      *
      * @return void
@@ -31,6 +31,6 @@ final class ValueMiddleware extends AbstractMiddleware
 
 \class_alias(
     ValueMiddleware::class,
-    'LoyaltyCorp\EasyDecision\Middleware\ValueMiddleware',
+    'StepTheFkUp\EasyDecision\Middleware\ValueMiddleware',
     false
 );

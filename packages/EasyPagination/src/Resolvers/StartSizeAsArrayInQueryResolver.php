@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Resolvers;
+namespace LoyaltyCorp\EasyPagination\Resolvers;
 
+use LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface;
+use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface;
+use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataResolverInterface;
+use LoyaltyCorp\EasyPagination\Traits\DataResolverTrait;
 use Psr\Http\Message\ServerRequestInterface;
-use StepTheFkUp\EasyPagination\Interfaces\StartSizeConfigInterface;
-use StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface;
-use StepTheFkUp\EasyPagination\Interfaces\StartSizeDataResolverInterface;
-use StepTheFkUp\EasyPagination\Traits\DataResolverTrait;
 
 final class StartSizeAsArrayInQueryResolver implements StartSizeDataResolverInterface
 {
     use DataResolverTrait;
 
     /**
-     * @var \StepTheFkUp\EasyPagination\Interfaces\StartSizeConfigInterface
+     * @var \LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface
      */
     private $config;
 
@@ -28,7 +28,7 @@ final class StartSizeAsArrayInQueryResolver implements StartSizeDataResolverInte
     /**
      * StartSizeAsArrayInQueryResolver constructor.
      *
-     * @param \StepTheFkUp\EasyPagination\Interfaces\StartSizeConfigInterface $config
+     * @param \LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface $config
      * @param string $queryAttr
      */
     public function __construct(StartSizeConfigInterface $config, string $queryAttr)
@@ -42,7 +42,7 @@ final class StartSizeAsArrayInQueryResolver implements StartSizeDataResolverInte
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return \StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface
+     * @return \LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface
      */
     public function resolve(ServerRequestInterface $request): StartSizeDataInterface
     {
@@ -54,6 +54,6 @@ final class StartSizeAsArrayInQueryResolver implements StartSizeDataResolverInte
 
 \class_alias(
     StartSizeAsArrayInQueryResolver::class,
-    'LoyaltyCorp\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver',
+    'StepTheFkUp\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver',
     false
 );

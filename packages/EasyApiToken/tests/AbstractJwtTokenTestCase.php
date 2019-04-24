@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Tests;
+namespace LoyaltyCorp\EasyApiToken\Tests;
 
 use EoneoPay\Utils\Str;
-use StepTheFkUp\EasyApiToken\External\Interfaces\JwtDriverInterface;
-use StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
-use StepTheFkUp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
+use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
+use LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 
 abstract class AbstractJwtTokenTestCase extends AbstractTestCase
 {
     /**
      * Create JwtEasyApiTokenFactory using Firebase JWT driver.
      *
-     * @param \StepTheFkUp\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
+     * @param \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
      *
-     * @return \StepTheFkUp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory
+     * @return \LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory
      */
     protected function createJwtEasyApiTokenFactory(JwtDriverInterface $jwtDriver): JwtEasyApiTokenFactoryInterface
     {
@@ -57,6 +57,6 @@ abstract class AbstractJwtTokenTestCase extends AbstractTestCase
 
 \class_alias(
     AbstractJwtTokenTestCase::class,
-    'LoyaltyCorp\EasyApiToken\Tests\AbstractJwtTokenTestCase',
+    'StepTheFkUp\EasyApiToken\Tests\AbstractJwtTokenTestCase',
     false
 );

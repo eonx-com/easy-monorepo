@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Implementations\Auth0;
+namespace LoyaltyCorp\EasyIdentity\Implementations\Auth0;
 
 use GuzzleHttp\ClientInterface;
-use StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException;
+use LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException;
 
 class ManagementTokenProvider
 {
@@ -14,7 +14,7 @@ class ManagementTokenProvider
     private $client;
 
     /**
-     * @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\Config
+     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config
      */
     private $config;
 
@@ -22,7 +22,7 @@ class ManagementTokenProvider
      * ManagementTokenProvider constructor.
      *
      * @param \GuzzleHttp\ClientInterface $client
-     * @param \StepTheFkUp\EasyIdentity\Implementations\Auth0\Config $config
+     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config $config
      */
     public function __construct(ClientInterface $client, Config $config)
     {
@@ -35,7 +35,7 @@ class ManagementTokenProvider
      *
      * @return string
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getToken(): string
@@ -61,6 +61,6 @@ class ManagementTokenProvider
 
 \class_alias(
     ManagementTokenProvider::class,
-    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider',
+    'StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider',
     false
 );

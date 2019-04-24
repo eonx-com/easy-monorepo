@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\External\Interfaces;
+namespace LoyaltyCorp\EasyApiToken\External\Interfaces;
 
 interface JwtDriverInterface
 {
@@ -26,6 +26,6 @@ interface JwtDriverInterface
 
 \class_alias(
     JwtDriverInterface::class,
-    'LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface',
+    'StepTheFkUp\EasyApiToken\External\Interfaces\JwtDriverInterface',
     false
 );

@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Implementations;
+namespace LoyaltyCorp\EasyIdentity\Implementations;
 
-use StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException;
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceInterface;
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface;
+use LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceInterface;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface;
 
 abstract class AbstractIdentityService implements IdentityServiceInterface
 {
     /**
      * Get identity user array representation.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
      * @return mixed[]
      */
@@ -24,7 +24,7 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
     /**
      * Set identity user id for given service.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param mixed $id
      *
      * @return void
@@ -37,7 +37,7 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
     /**
      * Set identity value.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param string $key
      * @param mixed $value
      *
@@ -58,11 +58,11 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
     /**
      * Get identity user id.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
      * @return string
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException
      */
     protected function getIdentityUserId(IdentityUserInterface $user): string
     {
@@ -78,6 +78,6 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
 
 \class_alias(
     AbstractIdentityService::class,
-    'LoyaltyCorp\EasyIdentity\Implementations\AbstractIdentityService',
+    'StepTheFkUp\EasyIdentity\Implementations\AbstractIdentityService',
     false
 );

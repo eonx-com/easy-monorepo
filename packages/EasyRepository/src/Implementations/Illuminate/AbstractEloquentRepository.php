@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Implementations\Illuminate;
+namespace LoyaltyCorp\EasyRepository\Implementations\Illuminate;
 
 use Illuminate\Database\Eloquent\Model;
-use StepTheFkUp\EasyRepository\Interfaces\ObjectRepositoryInterface;
+use LoyaltyCorp\EasyRepository\Interfaces\ObjectRepositoryInterface;
 
 abstract class AbstractEloquentRepository implements ObjectRepositoryInterface
 {
@@ -95,6 +95,6 @@ abstract class AbstractEloquentRepository implements ObjectRepositoryInterface
 
 \class_alias(
     AbstractEloquentRepository::class,
-    'LoyaltyCorp\EasyRepository\Implementations\Illuminate\AbstractEloquentRepository',
+    'StepTheFkUp\EasyRepository\Implementations\Illuminate\AbstractEloquentRepository',
     false
 );

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Bridge\Laravel;
+namespace LoyaltyCorp\EasyDecision\Bridge\Laravel;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 
 interface ExpressionLanguageConfigFactoryInterface
 {
@@ -12,13 +12,13 @@ interface ExpressionLanguageConfigFactoryInterface
      *
      * @param string $decision
      *
-     * @return null|\StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
+     * @return null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
      */
     public function create(string $decision): ?ExpressionLanguageConfigInterface;
 }
 
 \class_alias(
     ExpressionLanguageConfigFactoryInterface::class,
-    'LoyaltyCorp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactoryInterface',
+    'StepTheFkUp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactoryInterface',
     false
 );

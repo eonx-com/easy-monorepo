@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Decisions;
+namespace LoyaltyCorp\EasyDecision\Decisions;
 
-use StepTheFkUp\EasyDecision\Exceptions\MissingValueIndexException;
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Exceptions\MissingValueIndexException;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
 
 final class ValueDecision extends AbstractDecision
 {
@@ -28,7 +28,7 @@ final class ValueDecision extends AbstractDecision
     /**
      * Do make decision based on given context.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return void
      */
@@ -50,6 +50,6 @@ final class ValueDecision extends AbstractDecision
 
 \class_alias(
     ValueDecision::class,
-    'LoyaltyCorp\EasyDecision\Decisions\ValueDecision',
+    'StepTheFkUp\EasyDecision\Decisions\ValueDecision',
     false
 );

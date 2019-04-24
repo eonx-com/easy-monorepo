@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Resolvers\Config;
+namespace LoyaltyCorp\EasyPagination\Resolvers\Config;
 
-use StepTheFkUp\EasyPagination\Interfaces\StartSizeConfigInterface;
+use LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface;
 
 final class StartSizeConfig implements StartSizeConfigInterface
 {
@@ -86,6 +86,6 @@ final class StartSizeConfig implements StartSizeConfigInterface
 
 \class_alias(
     StartSizeConfig::class,
-    'LoyaltyCorp\EasyPagination\Resolvers\Config\StartSizeConfig',
+    'StepTheFkUp\EasyPagination\Resolvers\Config\StartSizeConfig',
     false
 );

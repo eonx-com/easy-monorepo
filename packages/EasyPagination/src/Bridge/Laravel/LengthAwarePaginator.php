@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Bridge\Laravel;
+namespace LoyaltyCorp\EasyPagination\Bridge\Laravel;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorContract;
-use StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use LoyaltyCorp\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 
 final class LengthAwarePaginator implements LengthAwarePaginatorInterface
 {
@@ -96,6 +96,6 @@ final class LengthAwarePaginator implements LengthAwarePaginatorInterface
 
 \class_alias(
     LengthAwarePaginator::class,
-    'LoyaltyCorp\EasyPagination\Bridge\Laravel\LengthAwarePaginator',
+    'StepTheFkUp\EasyPagination\Bridge\Laravel\LengthAwarePaginator',
     false
 );

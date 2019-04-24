@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces;
+namespace LoyaltyCorp\EasyDecision\Interfaces;
 
 interface RuleProviderInterface
 {
     /**
      * Get rules.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[]
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[]
      */
     public function getRules(): array;
 }
 
 \class_alias(
     RuleProviderInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface',
     false
 );

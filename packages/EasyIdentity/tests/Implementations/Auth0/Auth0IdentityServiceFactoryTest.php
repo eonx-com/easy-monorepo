@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0;
+namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
 
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory;
-use StepTheFkUp\EasyIdentity\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityService;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory;
+use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
 
 final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
 {
@@ -30,6 +30,6 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
 
 \class_alias(
     Auth0IdentityServiceFactoryTest::class,
-    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceFactoryTest',
+    'StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceFactoryTest',
     false
 );

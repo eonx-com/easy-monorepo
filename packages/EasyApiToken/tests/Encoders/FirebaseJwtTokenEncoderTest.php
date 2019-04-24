@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Tests\Encoders;
+namespace LoyaltyCorp\EasyApiToken\Tests\Encoders;
 
-use StepTheFkUp\EasyApiToken\Decoders\JwtTokenDecoder;
-use StepTheFkUp\EasyApiToken\Encoders\JwtTokenEncoder;
-use StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException;
-use StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException;
-use StepTheFkUp\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase;
-use StepTheFkUp\EasyApiToken\Tokens\BasicAuthEasyApiToken;
-use StepTheFkUp\EasyApiToken\Tokens\JwtEasyApiToken;
+use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
+use LoyaltyCorp\EasyApiToken\Encoders\JwtTokenEncoder;
+use LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException;
+use LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException;
+use LoyaltyCorp\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase;
+use LoyaltyCorp\EasyApiToken\Tokens\BasicAuthEasyApiToken;
+use LoyaltyCorp\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
 {
@@ -18,9 +18,9 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
      */
     public function testJwtTokenEncodeSuccessfully(): void
     {
@@ -35,7 +35,7 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
             $jwtDriver = $this->createFirebaseJwtDriver($algo, null, $privateKey);
 
             $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken(static::$tokenPayload));
-            /** @var \StepTheFkUp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
+            /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
             $token = $this->createJwtTokenDecoder($algo, $publicKey)->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
             ]));
@@ -56,8 +56,8 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
      */
     public function testJwtTokenInvalidTokenException(): void
     {
@@ -71,8 +71,8 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
      */
     public function testJwtTokenUnableToEncodeException(): void
     {
@@ -89,7 +89,7 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
      * @param string $algo
      * @param string|resource $key
      *
-     * @return \StepTheFkUp\EasyApiToken\Decoders\JwtTokenDecoder
+     * @return \LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder
      */
     private function createJwtTokenDecoder(string $algo, $key): JwtTokenDecoder
     {
@@ -104,6 +104,6 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
 
 \class_alias(
     FirebaseJwtTokenEncoderTest::class,
-    'LoyaltyCorp\EasyApiToken\Tests\Encoders\FirebaseJwtTokenEncoderTest',
+    'StepTheFkUp\EasyApiToken\Tests\Encoders\FirebaseJwtTokenEncoderTest',
     false
 );

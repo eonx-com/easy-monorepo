@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate;
+namespace LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate;
 
 use Illuminate\Pipeline\Pipeline;
-use StepTheFkUp\EasyPipeline\Exceptions\EmptyMiddlewareListException;
-use StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline;
-use StepTheFkUp\EasyPipeline\Tests\AbstractLumenTestCase;
-use StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware;
-use StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\InputStub;
-use StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\LoggerChangeNameMiddleware;
+use LoyaltyCorp\EasyPipeline\Exceptions\EmptyMiddlewareListException;
+use LoyaltyCorp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline;
+use LoyaltyCorp\EasyPipeline\Tests\AbstractLumenTestCase;
+use LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware;
+use LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\InputStub;
+use LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\LoggerChangeNameMiddleware;
 
 final class IlluminatePipelineTest extends AbstractLumenTestCase
 {
@@ -94,6 +94,6 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
 
 \class_alias(
     IlluminatePipelineTest::class,
-    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\IlluminatePipelineTest',
+    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\IlluminatePipelineTest',
     false
 );

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
+namespace LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
 
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareInterface;
 
 final class ChangeNameMiddleware implements MiddlewareInterface
 {
@@ -42,6 +42,6 @@ final class ChangeNameMiddleware implements MiddlewareInterface
 
 \class_alias(
     ChangeNameMiddleware::class,
-    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware',
+    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware',
     false
 );

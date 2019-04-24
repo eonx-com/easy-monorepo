@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Implementations\Auth0;
+namespace LoyaltyCorp\EasyIdentity\Implementations\Auth0;
 
 use Auth0\SDK\API\Authentication;
 
 class AuthenticationApiClientFactory
 {
     /**
-     * @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\Config
+     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config
      */
     private $config;
 
     /**
      * AuthenticationApiClientFactory constructor.
      *
-     * @param \StepTheFkUp\EasyIdentity\Implementations\Auth0\Config $config
+     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config $config
      */
     public function __construct(Config $config)
     {
@@ -27,7 +27,7 @@ class AuthenticationApiClientFactory
      *
      * @return \Auth0\SDK\API\Authentication
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function create(): Authentication
     {
@@ -41,6 +41,6 @@ class AuthenticationApiClientFactory
 
 \class_alias(
     AuthenticationApiClientFactory::class,
-    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory',
+    'StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory',
     false
 );

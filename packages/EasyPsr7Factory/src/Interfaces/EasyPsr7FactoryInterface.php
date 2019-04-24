@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPsr7Factory\Interfaces;
+namespace LoyaltyCorp\EasyPsr7Factory\Interfaces;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,6 +31,6 @@ interface EasyPsr7FactoryInterface
 
 \class_alias(
     EasyPsr7FactoryInterface::class,
-    'LoyaltyCorp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface',
+    'StepTheFkUp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface',
     false
 );

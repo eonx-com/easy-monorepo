@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces;
+namespace LoyaltyCorp\EasyDecision\Interfaces;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 
 interface ExpressionLanguageAwareInterface
 {
     /**
      * Set expression language.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
      *
      * @return void
      */
@@ -19,6 +19,6 @@ interface ExpressionLanguageAwareInterface
 
 \class_alias(
     ExpressionLanguageAwareInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface',
     false
 );

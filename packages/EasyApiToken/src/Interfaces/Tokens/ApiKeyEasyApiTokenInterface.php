@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Interfaces\Tokens;
+namespace LoyaltyCorp\EasyApiToken\Interfaces\Tokens;
 
-use StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
 
 interface ApiKeyEasyApiTokenInterface extends EasyApiTokenInterface
 {
@@ -17,6 +17,6 @@ interface ApiKeyEasyApiTokenInterface extends EasyApiTokenInterface
 
 \class_alias(
     ApiKeyEasyApiTokenInterface::class,
-    'LoyaltyCorp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface',
+    'StepTheFkUp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface',
     false
 );
