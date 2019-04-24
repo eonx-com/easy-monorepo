@@ -6,9 +6,9 @@ namespace StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
-use StepTheFkUp\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface as RepoInterface;
 use StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface;
+use StepTheFkUp\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface as RepoInterface;
 
 abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOrmRepository implements RepoInterface
 {

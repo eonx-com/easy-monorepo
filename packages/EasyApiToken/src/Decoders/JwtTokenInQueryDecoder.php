@@ -16,7 +16,7 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
     /**
      * @var \StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface
      */
-    private $jwtEasyApiTokenFactory;
+    private $jwtApiTokenFactory;
 
     /**
      * @var string
@@ -26,12 +26,12 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
     /**
      * JwtTokenInQueryDecoder constructor.
      *
-     * @param \StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface $jwtEasyApiTokenFactory
+     * @param \StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory
      * @param string $queryParam
      */
-    public function __construct(JwtEasyApiTokenFactoryInterface $jwtEasyApiTokenFactory, string $queryParam)
+    public function __construct(JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory, string $queryParam)
     {
-        $this->jwtEasyApiTokenFactory = $jwtEasyApiTokenFactory;
+        $this->jwtApiTokenFactory = $jwtApiTokenFactory;
         $this->queryParam = $queryParam;
     }
 
@@ -52,7 +52,7 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
             return null;
         }
 
-        return $this->jwtEasyApiTokenFactory->createFromString((string)$jwtToken);
+        return $this->jwtApiTokenFactory->createFromString((string)$jwtToken);
     }
 }
 
