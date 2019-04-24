@@ -19,7 +19,8 @@ final class BasicAuthEncoder implements EasyApiTokenEncoderInterface
      * @return string
      *
      * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException If encoder doesn't support given apiToken
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException If encoder fails to encode apiToken
+     * @throws \StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException If encoder fails to
+     * encode apiToken
      */
     public function encode(EasyApiTokenInterface $apiToken): string
     {

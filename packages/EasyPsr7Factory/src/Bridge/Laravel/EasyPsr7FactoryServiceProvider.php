@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyPsr7Factory\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use StepTheFkUp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use StepTheFkUp\EasyPsr7Factory\EasyPsr7Factory;
+use StepTheFkUp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 
 final class EasyPsr7FactoryServiceProvider extends ServiceProvider
 {

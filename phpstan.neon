@@ -1,7 +1,7 @@
 parameters:
     ignoreErrors:
-        - message: '#Parameter \#3 \$privateKey of method StepTheFkUp\\EasyEasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource|string|null, bool|resource|string|null given.#'
-          path: packages/EasyEasyApiToken/tests
+        - message: '#Parameter \#3 \$privateKey of method StepTheFkUp\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource|string|null, bool|resource|string|null given.#'
+          path: packages/EasyApiToken/tests
 
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDecision/src/Decisions
