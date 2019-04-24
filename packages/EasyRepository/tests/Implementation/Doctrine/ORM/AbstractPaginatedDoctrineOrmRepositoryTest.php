@@ -8,9 +8,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Mockery\MockInterface;
+use StepTheFkUp\EasyPagination\Data\StartSizeData;
 use StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator;
 use StepTheFkUp\EasyRepository\Tests\AbstractTestCase;
-use StepTheFkUp\EasyPagination\Data\StartSizeData;
 
 final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
 {

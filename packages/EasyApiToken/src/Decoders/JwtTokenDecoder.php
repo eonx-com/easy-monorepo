@@ -16,16 +16,16 @@ final class JwtTokenDecoder implements EasyApiTokenDecoderInterface
     /**
      * @var \StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface
      */
-    private $jwtEasyApiTokenFactory;
+    private $jwtApiTokenFactory;
 
     /**
      * JwtTokenDecoder constructor.
      *
-     * @param \StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface $jwtEasyApiTokenFactory
+     * @param \StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory
      */
-    public function __construct(JwtEasyApiTokenFactoryInterface $jwtEasyApiTokenFactory)
+    public function __construct(JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory)
     {
-        $this->jwtEasyApiTokenFactory = $jwtEasyApiTokenFactory;
+        $this->jwtApiTokenFactory = $jwtApiTokenFactory;
     }
 
     /**
@@ -45,7 +45,7 @@ final class JwtTokenDecoder implements EasyApiTokenDecoderInterface
             return null; // If Authorization doesn't start with Basic, return null
         }
 
-        return $this->jwtEasyApiTokenFactory->createFromString($authorization);
+        return $this->jwtApiTokenFactory->createFromString($authorization);
     }
 }
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace StepTheFkUp\EasyPsr7Factory\Tests\Bridge\Laravel;
 
 use StepTheFkUp\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider;
-use StepTheFkUp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use StepTheFkUp\EasyPsr7Factory\EasyPsr7Factory;
+use StepTheFkUp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use StepTheFkUp\EasyPsr7Factory\Tests\AbstractTestCase;
 
 final class EasyPsr7FactoryServiceProviderTest extends AbstractTestCase
