@@ -1,6 +1,15 @@
 <!-- changelog-linker -->
 
-## v0.4.5 - 2019-04-07
+<!-- dumped content start -->
+
+## v0.6.0 - 2019-04-24
+
+- [#22] Fix: Rename filename based on classname, Thanks to [@fsti-francohora]
+- [#23] Switch to LoyaltyCorp namespaces
+
+<!-- dumped content end -->
+
+## [v0.4.5] - 2019-04-07
 
 ### EasyRepository
 
@@ -8,7 +17,7 @@
 
 <!-- dumped content start -->
 
-## v0.4.4 - 2019-04-07
+## [v0.4.4] - 2019-04-07
 
 ### EasyRepository
 
@@ -190,3 +199,8 @@
 [v0.4.2]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.1...v0.4.2
 [#20]: https://github.com/StepTheFkUp/StepTheFkUp/pull/20
 [v0.4.3]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.2...v0.4.3
+[#23]: https://github.com/StepTheFkUp/StepTheFkUp/pull/23
+[#22]: https://github.com/StepTheFkUp/StepTheFkUp/pull/22
+[@fsti-francohora]: https://github.com/fsti-francohora
+[v0.4.5]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.4...v0.4.5
+[v0.4.4]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.3...v0.4.4
