@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Exceptions;
+namespace LoyaltyCorp\EasyDecision\Exceptions;
 
-use StepTheFkUp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
 
 final class ReservedContextIndexException extends \InvalidArgumentException implements EasyDecisionExceptionInterface
 {
@@ -12,6 +12,6 @@ final class ReservedContextIndexException extends \InvalidArgumentException impl
 
 \class_alias(
     ReservedContextIndexException::class,
-    'LoyaltyCorp\EasyDecision\Exceptions\ReservedContextIndexException',
+    'StepTheFkUp\EasyDecision\Exceptions\ReservedContextIndexException',
     false
 );

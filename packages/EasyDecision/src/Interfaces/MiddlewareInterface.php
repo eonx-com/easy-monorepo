@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces;
+namespace LoyaltyCorp\EasyDecision\Interfaces;
 
 interface MiddlewareInterface
 {
     /**
      * Handle given context input and pass return through next.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      * @param callable $next
      *
      * @return mixed
@@ -18,6 +18,6 @@ interface MiddlewareInterface
 
 \class_alias(
     MiddlewareInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\MiddlewareInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\MiddlewareInterface',
     false
 );

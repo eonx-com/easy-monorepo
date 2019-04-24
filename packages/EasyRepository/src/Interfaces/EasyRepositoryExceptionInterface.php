@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Interfaces;
+namespace LoyaltyCorp\EasyRepository\Interfaces;
 
 interface EasyRepositoryExceptionInterface
 {
@@ -10,6 +10,6 @@ interface EasyRepositoryExceptionInterface
 
 \class_alias(
     EasyRepositoryExceptionInterface::class,
-    'LoyaltyCorp\EasyRepository\Interfaces\EasyRepositoryExceptionInterface',
+    'StepTheFkUp\EasyRepository\Interfaces\EasyRepositoryExceptionInterface',
     false
 );

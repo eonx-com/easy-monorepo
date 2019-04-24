@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces;
+namespace LoyaltyCorp\EasyDecision\Interfaces;
 
 interface DecisionInterface
 {
@@ -37,27 +37,27 @@ interface DecisionInterface
     /**
      * Add rule.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface $rule
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface $rule
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      */
     public function addRule(RuleInterface $rule): self;
 
     /**
      * Set rules.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\RuleInterface[] $rules
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[] $rules
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\DecisionInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      */
     public function addRules(array $rules): self;
 
     /**
      * Get context.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
      *
-     * @throws \StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException
+     * @throws \LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException
      */
     public function getContext(): ContextInterface;
 
@@ -68,14 +68,14 @@ interface DecisionInterface
      *
      * @return mixed
      *
-     * @throws \StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException
-     * @throws \StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException
+     * @throws \LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
     public function make($input);
 }
 
 \class_alias(
     DecisionInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\DecisionInterface',
     false
 );

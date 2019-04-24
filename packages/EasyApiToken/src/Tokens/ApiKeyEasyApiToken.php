@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Tokens;
+namespace LoyaltyCorp\EasyApiToken\Tokens;
 
-use StepTheFkUp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface;
 
 final class ApiKeyEasyApiToken implements ApiKeyEasyApiTokenInterface
 {
@@ -45,6 +45,6 @@ final class ApiKeyEasyApiToken implements ApiKeyEasyApiTokenInterface
 
 \class_alias(
     ApiKeyEasyApiToken::class,
-    'LoyaltyCorp\EasyApiToken\Tokens\ApiKeyEasyApiToken',
+    'StepTheFkUp\EasyApiToken\Tokens\ApiKeyEasyApiToken',
     false
 );

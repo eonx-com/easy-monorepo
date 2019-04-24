@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Decisions;
+namespace LoyaltyCorp\EasyDecision\Decisions;
 
-use StepTheFkUp\EasyDecision\Interfaces\ContextInterface;
-use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
 
 final class UnanimousDecision extends AbstractDecision
 {
     /**
      * Do make decision based on given context.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return void
      */
@@ -41,6 +41,6 @@ final class UnanimousDecision extends AbstractDecision
 
 \class_alias(
     UnanimousDecision::class,
-    'LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision',
+    'StepTheFkUp\EasyDecision\Decisions\UnanimousDecision',
     false
 );

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Expressions;
+namespace LoyaltyCorp\EasyDecision\Expressions;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
 
 final class ExpressionFunction implements ExpressionFunctionInterface
 {
@@ -52,6 +52,6 @@ final class ExpressionFunction implements ExpressionFunctionInterface
 
 \class_alias(
     ExpressionFunction::class,
-    'LoyaltyCorp\EasyDecision\Expressions\ExpressionFunction',
+    'StepTheFkUp\EasyDecision\Expressions\ExpressionFunction',
     false
 );

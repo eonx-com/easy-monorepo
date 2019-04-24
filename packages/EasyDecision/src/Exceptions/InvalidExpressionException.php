@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Exceptions;
+namespace LoyaltyCorp\EasyDecision\Exceptions;
 
-use StepTheFkUp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
 
 final class InvalidExpressionException extends \InvalidArgumentException implements EasyDecisionExceptionInterface
 {
@@ -12,6 +12,6 @@ final class InvalidExpressionException extends \InvalidArgumentException impleme
 
 \class_alias(
     InvalidExpressionException::class,
-    'LoyaltyCorp\EasyDecision\Exceptions\InvalidExpressionException',
+    'StepTheFkUp\EasyDecision\Exceptions\InvalidExpressionException',
     false
 );

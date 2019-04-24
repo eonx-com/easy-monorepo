@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces\Expressions;
+namespace LoyaltyCorp\EasyDecision\Interfaces\Expressions;
 
 interface ExpressionLanguageInterface
 {
     /**
      * Add function to use in expressions.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface $function
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface $function
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     public function addFunction(ExpressionFunctionInterface $function): self;
 
@@ -37,6 +37,6 @@ interface ExpressionLanguageInterface
 
 \class_alias(
     ExpressionLanguageInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface',
     false
 );

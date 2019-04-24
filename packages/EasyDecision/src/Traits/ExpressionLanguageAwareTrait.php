@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Traits;
+namespace LoyaltyCorp\EasyDecision\Traits;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 
 trait ExpressionLanguageAwareTrait
 {
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     private $expressionLanguage;
 
     /**
      * Set expression language.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface $expressionLanguage
      *
      * @return void
      */
@@ -27,6 +27,6 @@ trait ExpressionLanguageAwareTrait
 
 \class_alias(
     ExpressionLanguageAwareTrait::class,
-    'LoyaltyCorp\EasyDecision\Traits\ExpressionLanguageAwareTrait',
+    'StepTheFkUp\EasyDecision\Traits\ExpressionLanguageAwareTrait',
     false
 );

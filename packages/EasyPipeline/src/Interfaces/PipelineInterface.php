@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Interfaces;
+namespace LoyaltyCorp\EasyPipeline\Interfaces;
 
 interface PipelineInterface
 {
@@ -19,13 +19,13 @@ interface PipelineInterface
      *
      * @return mixed[]
      *
-     * @throws \StepTheFkUp\EasyPipeline\Exceptions\PipelineDidntRunException If called before process() is called
+     * @throws \LoyaltyCorp\EasyPipeline\Exceptions\PipelineDidntRunException If called before process() is called
      */
     public function getLogs(): array;
 }
 
 \class_alias(
     PipelineInterface::class,
-    'LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface',
+    'StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface',
     false
 );

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Tests\Implementation\Illuminate;
+namespace LoyaltyCorp\EasyRepository\Tests\Implementation\Illuminate;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use StepTheFkUp\EasyRepository\Implementations\Illuminate\AbstractEloquentRepository;
+use LoyaltyCorp\EasyRepository\Implementations\Illuminate\AbstractEloquentRepository;
 
 final class EloquentRepositoryStub extends AbstractEloquentRepository
 {
@@ -46,6 +46,6 @@ final class EloquentRepositoryStub extends AbstractEloquentRepository
 
 \class_alias(
     EloquentRepositoryStub::class,
-    'LoyaltyCorp\EasyRepository\Tests\Implementation\Illuminate\EloquentRepositoryStub',
+    'StepTheFkUp\EasyRepository\Tests\Implementation\Illuminate\EloquentRepositoryStub',
     false
 );

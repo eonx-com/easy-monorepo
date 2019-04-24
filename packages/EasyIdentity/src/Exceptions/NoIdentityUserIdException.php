@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Exceptions;
+namespace LoyaltyCorp\EasyIdentity\Exceptions;
 
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceExceptionInterface;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceExceptionInterface;
 
 final class NoIdentityUserIdException extends \RuntimeException implements IdentityServiceExceptionInterface
 {
@@ -12,6 +12,6 @@ final class NoIdentityUserIdException extends \RuntimeException implements Ident
 
 \class_alias(
     NoIdentityUserIdException::class,
-    'LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException',
+    'StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException',
     false
 );

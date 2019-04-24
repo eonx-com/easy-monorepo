@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Stubs;
+namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
 
-use StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface;
-use StepTheFkUp\EasyDecision\Interfaces\ValueInputInterface;
-use StepTheFkUp\EasyDecision\Traits\ContextAwareTrait;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextAwareInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ValueInputInterface;
+use LoyaltyCorp\EasyDecision\Traits\ContextAwareTrait;
 
 final class ValueContextAwareInputStub implements ContextAwareInterface, ValueInputInterface
 {
@@ -51,6 +51,6 @@ final class ValueContextAwareInputStub implements ContextAwareInterface, ValueIn
 
 \class_alias(
     ValueContextAwareInputStub::class,
-    'LoyaltyCorp\EasyDecision\Tests\Stubs\ValueContextAwareInputStub',
+    'StepTheFkUp\EasyDecision\Tests\Stubs\ValueContextAwareInputStub',
     false
 );

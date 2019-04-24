@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPsr7Factory;
+namespace LoyaltyCorp\EasyPsr7Factory;
 
+use LoyaltyCorp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use StepTheFkUp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
@@ -75,6 +75,6 @@ final class EasyPsr7Factory implements EasyPsr7FactoryInterface
 
 \class_alias(
     EasyPsr7Factory::class,
-    'LoyaltyCorp\EasyPsr7Factory\EasyPsr7Factory',
+    'StepTheFkUp\EasyPsr7Factory\EasyPsr7Factory',
     false
 );

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces\Expressions;
+namespace LoyaltyCorp\EasyDecision\Interfaces\Expressions;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 
@@ -31,6 +31,6 @@ interface ExpressionLanguageConfigInterface
 
 \class_alias(
     ExpressionLanguageConfigInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface',
     false
 );

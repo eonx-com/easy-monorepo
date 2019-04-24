@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces;
+namespace LoyaltyCorp\EasyDecision\Interfaces;
 
 interface EasyDecisionExceptionInterface
 {
@@ -10,6 +10,6 @@ interface EasyDecisionExceptionInterface
 
 \class_alias(
     EasyDecisionExceptionInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\EasyDecisionExceptionInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\EasyDecisionExceptionInterface',
     false
 );

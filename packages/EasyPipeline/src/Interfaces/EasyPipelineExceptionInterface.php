@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Interfaces;
+namespace LoyaltyCorp\EasyPipeline\Interfaces;
 
 interface EasyPipelineExceptionInterface
 {
@@ -10,6 +10,6 @@ interface EasyPipelineExceptionInterface
 
 \class_alias(
     EasyPipelineExceptionInterface::class,
-    'LoyaltyCorp\EasyPipeline\Interfaces\EasyPipelineExceptionInterface',
+    'StepTheFkUp\EasyPipeline\Interfaces\EasyPipelineExceptionInterface',
     false
 );

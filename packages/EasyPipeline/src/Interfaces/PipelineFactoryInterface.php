@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Interfaces;
+namespace LoyaltyCorp\EasyPipeline\Interfaces;
 
 interface PipelineFactoryInterface
 {
@@ -10,15 +10,15 @@ interface PipelineFactoryInterface
      *
      * @param string $pipeline The pipeline name
      *
-     * @return \StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface
+     * @return \LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface
      *
-     * @throws \StepTheFkUp\EasyPipeline\Exceptions\PipelineNotFoundException If given pipeline not found
+     * @throws \LoyaltyCorp\EasyPipeline\Exceptions\PipelineNotFoundException If given pipeline not found
      */
     public function create(string $pipeline): PipelineInterface;
 }
 
 \class_alias(
     PipelineFactoryInterface::class,
-    'LoyaltyCorp\EasyPipeline\Interfaces\PipelineFactoryInterface',
+    'StepTheFkUp\EasyPipeline\Interfaces\PipelineFactoryInterface',
     false
 );

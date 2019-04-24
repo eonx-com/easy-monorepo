@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces;
+namespace LoyaltyCorp\EasyDecision\Interfaces;
 
 interface ValueInputInterface
 {
@@ -24,6 +24,6 @@ interface ValueInputInterface
 
 \class_alias(
     ValueInputInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\ValueInputInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\ValueInputInterface',
     false
 );

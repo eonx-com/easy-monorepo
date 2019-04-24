@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Expressions;
+namespace LoyaltyCorp\EasyDecision\Expressions;
 
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 
 final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterface
 {
     /**
-     * @var \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
      */
     private $functionFactory;
 
     /**
      * ExpressionLanguageFactory constructor.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface $functionFactory
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface $functionFactory
      */
     public function __construct(ExpressionFunctionFactoryInterface $functionFactory)
     {
@@ -28,9 +28,9 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
     /**
      * Create expression language for given config.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      *
-     * @return \StepTheFkUp\EasyDecision\Expressions\ExpressionLanguage
+     * @return \LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguage
      */
     public function create(ExpressionLanguageConfigInterface $config): ExpressionLanguage
     {
@@ -64,6 +64,6 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
 
 \class_alias(
     ExpressionLanguageFactory::class,
-    'LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageFactory',
+    'StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageFactory',
     false
 );

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Exceptions;
+namespace LoyaltyCorp\EasyApiToken\Exceptions;
 
 final class EmptyRequiredPayloadException extends AbstractEasyApiTokenException
 {
@@ -10,6 +10,6 @@ final class EmptyRequiredPayloadException extends AbstractEasyApiTokenException
 
 \class_alias(
     EmptyRequiredPayloadException::class,
-    'LoyaltyCorp\EasyApiToken\Exceptions\EmptyRequiredPayloadException',
+    'StepTheFkUp\EasyApiToken\Exceptions\EmptyRequiredPayloadException',
     false
 );

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0;
+namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
 
 use Auth0\SDK\API\Management;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider;
+use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
 use Mockery\MockInterface;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\Config;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider;
-use StepTheFkUp\EasyIdentity\Tests\AbstractTestCase;
 
 /**
- * @covers \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory
+ * @covers \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory
  */
 class ManagementApiClientFactoryTest extends AbstractTestCase
 {
@@ -20,12 +20,12 @@ class ManagementApiClientFactoryTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testCreate(): void
     {
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider $tokenProvider */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider $tokenProvider */
         $tokenProvider = $this->mock(ManagementTokenProvider::class, function (MockInterface $mock): void {
             $mock->shouldReceive('getToken')->once()->withNoArgs()->andReturn('access_token');
         });
@@ -39,6 +39,6 @@ class ManagementApiClientFactoryTest extends AbstractTestCase
 
 \class_alias(
     ManagementApiClientFactoryTest::class,
-    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0\ManagementApiClientFactoryTest',
+    'StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\ManagementApiClientFactoryTest',
     false
 );

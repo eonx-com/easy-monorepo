@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Exceptions;
+namespace LoyaltyCorp\EasyDecision\Exceptions;
 
-use StepTheFkUp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
 
 final class UnableToMakeDecisionException extends \RuntimeException implements EasyDecisionExceptionInterface
 {
@@ -12,6 +12,6 @@ final class UnableToMakeDecisionException extends \RuntimeException implements E
 
 \class_alias(
     UnableToMakeDecisionException::class,
-    'LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException',
+    'StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException',
     false
 );

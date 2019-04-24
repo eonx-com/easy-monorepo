@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Implementations\Illuminate;
+namespace LoyaltyCorp\EasyPipeline\Implementations\Illuminate;
 
 use Illuminate\Contracts\Container\Container as ContainerInterface;
 use Illuminate\Pipeline\Pipeline;
-use StepTheFkUp\EasyPipeline\Exceptions\InvalidMiddlewareProviderException;
-use StepTheFkUp\EasyPipeline\Exceptions\PipelineNotFoundException;
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareProviderInterface;
-use StepTheFkUp\EasyPipeline\Interfaces\PipelineFactoryInterface;
-use StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface;
-use StepTheFkUp\EasyPipeline\Interfaces\PipelineNameAwareInterface;
+use LoyaltyCorp\EasyPipeline\Exceptions\InvalidMiddlewareProviderException;
+use LoyaltyCorp\EasyPipeline\Exceptions\PipelineNotFoundException;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareProviderInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\PipelineFactoryInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\PipelineNameAwareInterface;
 
 final class IlluminatePipelineFactory implements PipelineFactoryInterface
 {
@@ -30,7 +30,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
     private $prefix;
 
     /**
-     * @var \StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface[]
+     * @var \LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface[]
      */
     private $resolved = [];
 
@@ -53,9 +53,9 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
      *
      * @param string $pipeline The pipeline name
      *
-     * @return \StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface
+     * @return \LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface
      *
-     * @throws \StepTheFkUp\EasyPipeline\Exceptions\PipelineNotFoundException If given pipeline not found
+     * @throws \LoyaltyCorp\EasyPipeline\Exceptions\PipelineNotFoundException If given pipeline not found
      */
     public function create(string $pipeline): PipelineInterface
     {
@@ -80,7 +80,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
      *
      * @param string $pipeline
      *
-     * @return \StepTheFkUp\EasyPipeline\Interfaces\MiddlewareProviderInterface
+     * @return \LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareProviderInterface
      */
     private function createMiddlewareProvider(string $pipeline): MiddlewareProviderInterface
     {
@@ -125,6 +125,6 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
 
 \class_alias(
     IlluminatePipelineFactory::class,
-    'LoyaltyCorp\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory',
+    'StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory',
     false
 );

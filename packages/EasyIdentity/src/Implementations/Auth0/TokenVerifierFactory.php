@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Implementations\Auth0;
+namespace LoyaltyCorp\EasyIdentity\Implementations\Auth0;
 
 use Auth0\SDK\JWTVerifier;
 
 class TokenVerifierFactory
 {
     /**
-     * @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\Config
+     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config
      */
     private $config;
 
     /**
      * TokenVerifierFactory constructor.
      *
-     * @param \StepTheFkUp\EasyIdentity\Implementations\Auth0\Config $config
+     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config $config
      */
     public function __construct(Config $config)
     {
@@ -28,7 +28,7 @@ class TokenVerifierFactory
      * @return \Auth0\SDK\JWTVerifier
      *
      * @throws \Auth0\SDK\Exception\CoreException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function create(): JWTVerifier
     {
@@ -43,6 +43,6 @@ class TokenVerifierFactory
 
 \class_alias(
     TokenVerifierFactory::class,
-    'LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory',
+    'StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory',
     false
 );

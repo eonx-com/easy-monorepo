@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Exceptions;
+namespace LoyaltyCorp\EasyIdentity\Exceptions;
 
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceExceptionInterface;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceExceptionInterface;
 
 final class InvalidResponseFromIdentityException extends \RuntimeException implements IdentityServiceExceptionInterface
 {
@@ -12,6 +12,6 @@ final class InvalidResponseFromIdentityException extends \RuntimeException imple
 
 \class_alias(
     InvalidResponseFromIdentityException::class,
-    'LoyaltyCorp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException',
+    'StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException',
     false
 );

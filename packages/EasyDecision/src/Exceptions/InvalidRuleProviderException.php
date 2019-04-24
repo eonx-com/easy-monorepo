@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Exceptions;
+namespace LoyaltyCorp\EasyDecision\Exceptions;
 
-use StepTheFkUp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
 
 final class InvalidRuleProviderException extends \InvalidArgumentException implements EasyDecisionExceptionInterface
 {
@@ -12,6 +12,6 @@ final class InvalidRuleProviderException extends \InvalidArgumentException imple
 
 \class_alias(
     InvalidRuleProviderException::class,
-    'LoyaltyCorp\EasyDecision\Exceptions\InvalidRuleProviderException',
+    'StepTheFkUp\EasyDecision\Exceptions\InvalidRuleProviderException',
     false
 );

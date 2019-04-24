@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Exceptions;
+namespace LoyaltyCorp\EasyApiToken\Exceptions;
 
 final class InvalidArgumentException extends AbstractEasyApiTokenException
 {
@@ -10,6 +10,6 @@ final class InvalidArgumentException extends AbstractEasyApiTokenException
 
 \class_alias(
     InvalidArgumentException::class,
-    'LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException',
+    'StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException',
     false
 );

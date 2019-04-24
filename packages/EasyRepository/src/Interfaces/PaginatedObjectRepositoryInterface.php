@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Interfaces;
+namespace LoyaltyCorp\EasyRepository\Interfaces;
 
-use StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
-use StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface;
+use LoyaltyCorp\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface;
 
 interface PaginatedObjectRepositoryInterface extends ObjectRepositoryInterface
 {
     /**
      * Return a paginated list of objects managed by the repository.
      *
-     * @param null|\StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
+     * @param null|\LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
      *
-     * @return \StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface
+     * @return \LoyaltyCorp\EasyPagination\Interfaces\LengthAwarePaginatorInterface
      */
     public function paginate(?StartSizeDataInterface $startSizeData = null): LengthAwarePaginatorInterface;
 }
 
 \class_alias(
     PaginatedObjectRepositoryInterface::class,
-    'LoyaltyCorp\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface',
+    'StepTheFkUp\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface',
     false
 );

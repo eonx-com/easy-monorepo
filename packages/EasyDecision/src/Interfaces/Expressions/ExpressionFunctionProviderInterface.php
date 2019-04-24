@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces\Expressions;
+namespace LoyaltyCorp\EasyDecision\Interfaces\Expressions;
 
 interface ExpressionFunctionProviderInterface
 {
@@ -15,6 +15,6 @@ interface ExpressionFunctionProviderInterface
 
 \class_alias(
     ExpressionFunctionProviderInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface',
     false
 );

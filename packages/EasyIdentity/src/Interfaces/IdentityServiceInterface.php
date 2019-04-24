@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Interfaces;
+namespace LoyaltyCorp\EasyIdentity\Interfaces;
 
 interface IdentityServiceInterface
 {
     /**
      * Create user for given data.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
      */
     public function createUser(IdentityUserInterface $user): IdentityUserInterface;
 
@@ -28,7 +28,7 @@ interface IdentityServiceInterface
     /**
      * Delete user for given id.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
      * @return void
      */
@@ -37,34 +37,34 @@ interface IdentityServiceInterface
     /**
      * Get user information for given id.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
      */
     public function getUser(IdentityUserInterface $user): IdentityUserInterface;
 
     /**
      * Login given user.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
      */
     public function loginUser(IdentityUserInterface $user): IdentityUserInterface;
 
     /**
      * Update user for given id with given data.
      *
-     * @param \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param mixed[] $data
      *
-     * @return \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
      */
     public function updateUser(IdentityUserInterface $user, array $data): IdentityUserInterface;
 }
 
 \class_alias(
     IdentityServiceInterface::class,
-    'LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceInterface',
+    'StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceInterface',
     false
 );

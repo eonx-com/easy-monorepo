@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Exceptions;
+namespace LoyaltyCorp\EasyApiToken\Exceptions;
 
 final class UnableToEncodeEasyApiTokenException extends AbstractEasyApiTokenException
 {
@@ -10,6 +10,6 @@ final class UnableToEncodeEasyApiTokenException extends AbstractEasyApiTokenExce
 
 \class_alias(
     UnableToEncodeEasyApiTokenException::class,
-    'LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException',
+    'StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException',
     false
 );

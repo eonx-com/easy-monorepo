@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Traits;
+namespace LoyaltyCorp\EasyPagination\Traits;
 
-use StepTheFkUp\EasyPagination\Data\StartSizeData;
-use StepTheFkUp\EasyPagination\Interfaces\StartSizeConfigInterface;
-use StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface;
+use LoyaltyCorp\EasyPagination\Data\StartSizeData;
+use LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface;
+use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface;
 
 trait DataResolverTrait
 {
     /**
      * Create page pagination data for given data and configuration.
      *
-     * @param \StepTheFkUp\EasyPagination\Interfaces\StartSizeConfigInterface $config
+     * @param \LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface $config
      * @param mixed $data
      *
-     * @return \StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface
+     * @return \LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface
      */
     private function createStartSizeData(StartSizeConfigInterface $config, $data): StartSizeDataInterface
     {
@@ -37,6 +37,6 @@ trait DataResolverTrait
 
 \class_alias(
     DataResolverTrait::class,
-    'LoyaltyCorp\EasyPagination\Traits\DataResolverTrait',
+    'StepTheFkUp\EasyPagination\Traits\DataResolverTrait',
     false
 );

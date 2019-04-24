@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Tests\Bridge\Laravel;
+namespace LoyaltyCorp\EasyRepository\Tests\Bridge\Laravel;
 
-use StepTheFkUp\EasyRepository\Bridge\Laravel\EasyRepositoryProvider;
-use StepTheFkUp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException;
-use StepTheFkUp\EasyRepository\Tests\AbstractLumenTestCase;
-use StepTheFkUp\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository1Stub;
-use StepTheFkUp\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository2Stub;
+use LoyaltyCorp\EasyRepository\Bridge\Laravel\EasyRepositoryProvider;
+use LoyaltyCorp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException;
+use LoyaltyCorp\EasyRepository\Tests\AbstractLumenTestCase;
+use LoyaltyCorp\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository1Stub;
+use LoyaltyCorp\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository2Stub;
 
 final class EasyRepositoryProviderTest extends AbstractLumenTestCase
 {
@@ -16,7 +16,7 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
+     * @throws \LoyaltyCorp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
      */
     public function testEmptyRepositoriesListException(): void
     {
@@ -33,7 +33,7 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
+     * @throws \LoyaltyCorp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
      */
     public function testRegisterRepositoriesSuccessfully(): void
     {
@@ -55,6 +55,6 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
 
 \class_alias(
     EasyRepositoryProviderTest::class,
-    'LoyaltyCorp\EasyRepository\Tests\Bridge\Laravel\EasyRepositoryProviderTest',
+    'StepTheFkUp\EasyRepository\Tests\Bridge\Laravel\EasyRepositoryProviderTest',
     false
 );

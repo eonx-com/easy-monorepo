@@ -1,26 +1,26 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\Tokens\Factories;
+namespace LoyaltyCorp\EasyApiToken\Tokens\Factories;
 
 use Exception;
-use StepTheFkUp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
-use StepTheFkUp\EasyApiToken\External\Interfaces\JwtDriverInterface;
-use StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
-use StepTheFkUp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
-use StepTheFkUp\EasyApiToken\Tokens\JwtEasyApiToken;
+use LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
+use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
+use LoyaltyCorp\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class JwtEasyApiTokenFactory implements JwtEasyApiTokenFactoryInterface
 {
     /**
-     * @var \StepTheFkUp\EasyApiToken\External\Interfaces\JwtDriverInterface
+     * @var \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface
      */
     private $jwtDriver;
 
     /**
      * JwtEasyApiTokenFactory constructor.
      *
-     * @param \StepTheFkUp\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
+     * @param \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
      */
     public function __construct(JwtDriverInterface $jwtDriver)
     {
@@ -32,9 +32,9 @@ final class JwtEasyApiTokenFactory implements JwtEasyApiTokenFactoryInterface
      *
      * @param string $token
      *
-     * @return \StepTheFkUp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface
+     * @return \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface
      *
-     * @throws \StepTheFkUp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function createFromString(string $token): JwtEasyApiTokenInterface
     {
@@ -56,6 +56,6 @@ final class JwtEasyApiTokenFactory implements JwtEasyApiTokenFactoryInterface
 
 \class_alias(
     JwtEasyApiTokenFactory::class,
-    'LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory',
+    'StepTheFkUp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory',
     false
 );

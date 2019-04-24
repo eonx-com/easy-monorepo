@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Tests\Implementation\Illuminate;
+namespace LoyaltyCorp\EasyRepository\Tests\Implementation\Illuminate;
 
 use Illuminate\Database\Eloquent\Model;
+use LoyaltyCorp\EasyRepository\Tests\AbstractTestCase;
 use Mockery\MockInterface;
-use StepTheFkUp\EasyRepository\Tests\AbstractTestCase;
 
 final class AbstractEloquentRepositoryTest extends AbstractTestCase
 {
@@ -89,7 +89,7 @@ final class AbstractEloquentRepositoryTest extends AbstractTestCase
      *
      * @param null|callable $expectations
      *
-     * @return \StepTheFkUp\EasyRepository\Tests\Implementation\Illuminate\EloquentRepositoryStub
+     * @return \LoyaltyCorp\EasyRepository\Tests\Implementation\Illuminate\EloquentRepositoryStub
      */
     private function createEloquentRepository(?callable $expectations = null): EloquentRepositoryStub
     {
@@ -99,6 +99,6 @@ final class AbstractEloquentRepositoryTest extends AbstractTestCase
 
 \class_alias(
     AbstractEloquentRepositoryTest::class,
-    'LoyaltyCorp\EasyRepository\Tests\Implementation\Illuminate\AbstractEloquentRepositoryTest',
+    'StepTheFkUp\EasyRepository\Tests\Implementation\Illuminate\AbstractEloquentRepositoryTest',
     false
 );

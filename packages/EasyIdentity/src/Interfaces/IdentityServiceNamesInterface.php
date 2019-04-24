@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Interfaces;
+namespace LoyaltyCorp\EasyIdentity\Interfaces;
 
 interface IdentityServiceNamesInterface
 {
@@ -16,6 +16,6 @@ interface IdentityServiceNamesInterface
 
 \class_alias(
     IdentityServiceNamesInterface::class,
-    'LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceNamesInterface',
+    'StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceNamesInterface',
     false
 );

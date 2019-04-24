@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Exceptions;
+namespace LoyaltyCorp\EasyPipeline\Exceptions;
 
 use LogicException;
-use StepTheFkUp\EasyPipeline\Interfaces\EasyPipelineExceptionInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\EasyPipelineExceptionInterface;
 
 final class PipelineDidntRunException extends LogicException implements EasyPipelineExceptionInterface
 {
@@ -13,6 +13,6 @@ final class PipelineDidntRunException extends LogicException implements EasyPipe
 
 \class_alias(
     PipelineDidntRunException::class,
-    'LoyaltyCorp\EasyPipeline\Exceptions\PipelineDidntRunException',
+    'StepTheFkUp\EasyPipeline\Exceptions\PipelineDidntRunException',
     false
 );

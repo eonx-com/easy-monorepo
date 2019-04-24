@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Interfaces;
+namespace LoyaltyCorp\EasyDecision\Interfaces;
 
 interface ContextAwareInterface
 {
     /**
      * Get context.
      *
-     * @return \StepTheFkUp\EasyDecision\Interfaces\ContextInterface
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
      *
-     * @throws \StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException
+     * @throws \LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException
      */
     public function getContext(): ContextInterface;
 
     /**
      * Set context.
      *
-     * @param \StepTheFkUp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return void
      */
@@ -26,6 +26,6 @@ interface ContextAwareInterface
 
 \class_alias(
     ContextAwareInterface::class,
-    'LoyaltyCorp\EasyDecision\Interfaces\ContextAwareInterface',
+    'StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface',
     false
 );

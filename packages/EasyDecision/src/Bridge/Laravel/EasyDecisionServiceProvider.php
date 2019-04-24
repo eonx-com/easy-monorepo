@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Bridge\Laravel;
+namespace LoyaltyCorp\EasyDecision\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use StepTheFkUp\EasyDecision\Decisions\DecisionFactory;
-use StepTheFkUp\EasyDecision\Expressions\ExpressionFunctionFactory;
-use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageFactory;
-use StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
-use StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
-use StepTheFkUp\EasyDecision\Rules\ExpressionLanguageRuleFactory;
+use LoyaltyCorp\EasyDecision\Decisions\DecisionFactory;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunctionFactory;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageFactory;
+use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
+use LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRuleFactory;
 
 final class EasyDecisionServiceProvider extends ServiceProvider
 {
@@ -51,6 +51,6 @@ final class EasyDecisionServiceProvider extends ServiceProvider
 
 \class_alias(
     EasyDecisionServiceProvider::class,
-    'LoyaltyCorp\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider',
+    'StepTheFkUp\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider',
     false
 );

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyApiToken\External;
+namespace LoyaltyCorp\EasyApiToken\External;
 
 use Auth0\SDK\API\Helpers\TokenGenerator;
 use Auth0\SDK\JWTVerifier;
-use StepTheFkUp\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
 
 final class Auth0JwtDriver implements JwtDriverInterface
 {
@@ -98,6 +98,6 @@ final class Auth0JwtDriver implements JwtDriverInterface
 
 \class_alias(
     Auth0JwtDriver::class,
-    'LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver',
+    'StepTheFkUp\EasyApiToken\External\Auth0JwtDriver',
     false
 );

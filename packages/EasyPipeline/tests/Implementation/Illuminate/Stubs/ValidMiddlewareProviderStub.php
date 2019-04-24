@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
+namespace LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
 
-use StepTheFkUp\EasyPipeline\Interfaces\MiddlewareProviderInterface;
+use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareProviderInterface;
 
 final class ValidMiddlewareProviderStub implements MiddlewareProviderInterface
 {
@@ -20,6 +20,6 @@ final class ValidMiddlewareProviderStub implements MiddlewareProviderInterface
 
 \class_alias(
     ValidMiddlewareProviderStub::class,
-    'LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ValidMiddlewareProviderStub',
+    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ValidMiddlewareProviderStub',
     false
 );

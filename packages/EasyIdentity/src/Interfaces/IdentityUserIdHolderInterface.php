@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Interfaces;
+namespace LoyaltyCorp\EasyIdentity\Interfaces;
 
 interface IdentityUserIdHolderInterface
 {
@@ -24,6 +24,6 @@ interface IdentityUserIdHolderInterface
 
 \class_alias(
     IdentityUserIdHolderInterface::class,
-    'LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface',
+    'StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface',
     false
 );

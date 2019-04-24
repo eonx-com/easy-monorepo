@@ -1,32 +1,32 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0;
+namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
 
 use Auth0\SDK\API\Management;
 use Auth0\SDK\API\Management\Users;
 use Auth0\SDK\JWTVerifier;
 use Closure;
 use GuzzleHttp\Exception\RequestException;
+use LoyaltyCorp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
+use LoyaltyCorp\EasyIdentity\Exceptions\LoginFailedException;
+use LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityService;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
+use LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
+use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub;
 use Mockery\MockInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
-use StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException;
-use StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\Config;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
-use StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory;
-use StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
-use StepTheFkUp\EasyIdentity\Tests\AbstractTestCase;
-use StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub;
 
 class Auth0IdentityServiceTest extends AbstractTestCase
 {
     /**
-     * @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\Config
+     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config
      */
     private $config;
 
@@ -41,7 +41,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     {
         $this->expectException(InvalidResponseFromIdentityException::class);
 
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
             $mock
                 ->shouldReceive('create')
@@ -63,7 +63,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      */
     public function testCreateUserSuccessfully(): void
     {
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
             $mock
                 ->shouldReceive('create')
@@ -92,13 +92,13 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \Auth0\SDK\Exception\CoreException
      * @throws \Auth0\SDK\Exception\InvalidTokenException
      */
     public function testDecodeToken(): void
     {
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory */
         $tokenVerifierFactory = $this->mock(TokenVerifierFactory::class, function (MockInterface $mock): void {
             $jwt = $this->mock(JWTVerifier::class, function (MockInterface $mock): void {
                 $mock->shouldReceive('verifyAndDecode')->once()->with('token')->andReturn(['expected']);
@@ -106,7 +106,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
 
             $mock->shouldReceive('create')->once()->withNoArgs()->andReturn($jwt);
         });
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mock(ManagementApiClientFactory::class);
 
         $service = new Auth0IdentityService(
@@ -126,11 +126,11 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function testDeleteUser(): void
     {
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
             $mock->shouldReceive('delete')->once()->withArgs(function ($userId): bool {
                 $condition = \is_string($userId) && $userId === 'identity-id';
@@ -154,11 +154,11 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function testGetUser(): void
     {
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
             $mock->shouldReceive('get')->once()->withArgs(function ($userId): bool {
                 $condition = \is_string($userId) && $userId === 'identity-id';
@@ -189,7 +189,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     {
         $this->expectException(NoIdentityUserIdException::class);
 
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
             $mock->shouldNotReceive('get');
         });
@@ -202,15 +202,15 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\LoginFailedException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \Auth0\SDK\Exception\ApiException
      */
     public function testLoginUserWithExceptionAuthResponse(): void
     {
         $this->expectException(LoginFailedException::class);
 
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory */
         $authFactory = $this->mock(AuthenticationApiClientFactory::class, function (MockInterface $mock): void {
             $exception = $this->mock(RequestException::class, function (MockInterface $mock): void {
                 $response = $this->mock(ResponseInterface::class, function (MockInterface $mock): void {
@@ -227,7 +227,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             $mock->shouldReceive('create')->once()->withNoArgs()->andThrow($exception);
         });
 
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mock(ManagementApiClientFactory::class);
 
         $service = new Auth0IdentityService(
@@ -245,15 +245,15 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\LoginFailedException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \Auth0\SDK\Exception\ApiException
      */
     public function testLoginUserWithExceptionNullAuthResponse(): void
     {
         $this->expectException(LoginFailedException::class);
 
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory */
         $authFactory = $this->mock(AuthenticationApiClientFactory::class, function (MockInterface $mock): void {
             $exception = $this->mock(RequestException::class, function (MockInterface $mock): void {
                 $mock->shouldReceive('getResponse')->once()->withNoArgs()->andReturn(null);
@@ -261,7 +261,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             $mock->shouldReceive('create')->once()->withNoArgs()->andThrow($exception);
         });
 
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mock(ManagementApiClientFactory::class);
 
         $service = new Auth0IdentityService(
@@ -279,13 +279,13 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testUpdateUser(): void
     {
-        /** @var \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
+        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
             $mock
                 ->shouldReceive('update')
@@ -317,7 +317,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     /**
      * Get config.
      *
-     * @return \StepTheFkUp\EasyIdentity\Implementations\Auth0\Config
+     * @return \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config
      */
     private function getConfig(): Config
     {
@@ -336,9 +336,9 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     /**
      * Instantiate service for simple users method test.
      *
-     * @param \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management
+     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management
      *
-     * @return \StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService
+     * @return \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityService
      */
     private function getServiceForUsersMethod(ManagementApiClientFactory $management): Auth0IdentityService
     {
@@ -375,6 +375,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
 
 \class_alias(
     Auth0IdentityServiceTest::class,
-    'LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceTest',
+    'StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceTest',
     false
 );

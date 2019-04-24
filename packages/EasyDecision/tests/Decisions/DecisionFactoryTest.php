@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyDecision\Tests\Decisions;
+namespace LoyaltyCorp\EasyDecision\Tests\Decisions;
 
-use StepTheFkUp\EasyDecision\Decisions\DecisionConfig;
-use StepTheFkUp\EasyDecision\Decisions\DecisionFactory;
-use StepTheFkUp\EasyDecision\Decisions\UnanimousDecision;
-use StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException;
-use StepTheFkUp\EasyDecision\Exceptions\InvalidDecisionException;
-use StepTheFkUp\EasyDecision\Exceptions\InvalidRuleProviderException;
-use StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use StepTheFkUp\EasyDecision\Interfaces\DecisionInterface;
-use StepTheFkUp\EasyDecision\Tests\AbstractTestCase;
-use StepTheFkUp\EasyDecision\Tests\Stubs\RuleProviderStub;
+use LoyaltyCorp\EasyDecision\Decisions\DecisionConfig;
+use LoyaltyCorp\EasyDecision\Decisions\DecisionFactory;
+use LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision;
+use LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException;
+use LoyaltyCorp\EasyDecision\Exceptions\InvalidDecisionException;
+use LoyaltyCorp\EasyDecision\Exceptions\InvalidRuleProviderException;
+use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
+use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyDecision\Tests\Stubs\RuleProviderStub;
 
 final class DecisionFactoryTest extends AbstractTestCase
 {
@@ -88,6 +88,6 @@ final class DecisionFactoryTest extends AbstractTestCase
 
 \class_alias(
     DecisionFactoryTest::class,
-    'LoyaltyCorp\EasyDecision\Tests\Decisions\DecisionFactoryTest',
+    'StepTheFkUp\EasyDecision\Tests\Decisions\DecisionFactoryTest',
     false
 );

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPipeline\Tests\Bridge\Laravel\Stubs;
+namespace LoyaltyCorp\EasyPipeline\Tests\Bridge\Laravel\Stubs;
 
 final class MiddlewareProviderStub
 {
@@ -10,6 +10,6 @@ final class MiddlewareProviderStub
 
 \class_alias(
     MiddlewareProviderStub::class,
-    'LoyaltyCorp\EasyPipeline\Tests\Bridge\Laravel\Stubs\MiddlewareProviderStub',
+    'StepTheFkUp\EasyPipeline\Tests\Bridge\Laravel\Stubs\MiddlewareProviderStub',
     false
 );

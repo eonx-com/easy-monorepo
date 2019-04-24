@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyPagination\Tests\Resolvers\Config;
+namespace LoyaltyCorp\EasyPagination\Tests\Resolvers\Config;
 
-use StepTheFkUp\EasyPagination\Resolvers\Config\StartSizeConfig;
-use StepTheFkUp\EasyPagination\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyPagination\Resolvers\Config\StartSizeConfig;
+use LoyaltyCorp\EasyPagination\Tests\AbstractTestCase;
 
 final class StartSizeConfigTest extends AbstractTestCase
 {
@@ -26,6 +26,6 @@ final class StartSizeConfigTest extends AbstractTestCase
 
 \class_alias(
     StartSizeConfigTest::class,
-    'LoyaltyCorp\EasyPagination\Tests\Resolvers\Config\StartSizeConfigTest',
+    'StepTheFkUp\EasyPagination\Tests\Resolvers\Config\StartSizeConfigTest',
     false
 );

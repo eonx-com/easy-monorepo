@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine\ORM;
+namespace LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM;
 
-use StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository;
+use LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository;
 
 final class PaginatedDoctrineOrmRepositoryStub extends AbstractPaginatedDoctrineOrmRepository
 {
@@ -20,6 +20,6 @@ final class PaginatedDoctrineOrmRepositoryStub extends AbstractPaginatedDoctrine
 
 \class_alias(
     PaginatedDoctrineOrmRepositoryStub::class,
-    'LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM\PaginatedDoctrineOrmRepositoryStub',
+    'StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine\ORM\PaginatedDoctrineOrmRepositoryStub',
     false
 );
