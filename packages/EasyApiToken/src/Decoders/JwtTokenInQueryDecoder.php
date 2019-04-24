@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyApiToken\Decoders;
 
-use Psr\Http\Message\ServerRequestInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
 use LoyaltyCorp\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
 {
@@ -16,7 +16,7 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
     /**
      * @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface
      */
-    private $jwtEasyApiTokenFactory;
+    private $jwtApiTokenFactory;
 
     /**
      * @var string
@@ -26,12 +26,12 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
     /**
      * JwtTokenInQueryDecoder constructor.
      *
-     * @param \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface $jwtEasyApiTokenFactory
+     * @param \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory
      * @param string $queryParam
      */
-    public function __construct(JwtEasyApiTokenFactoryInterface $jwtEasyApiTokenFactory, string $queryParam)
+    public function __construct(JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory, string $queryParam)
     {
-        $this->jwtEasyApiTokenFactory = $jwtEasyApiTokenFactory;
+        $this->jwtApiTokenFactory = $jwtApiTokenFactory;
         $this->queryParam = $queryParam;
     }
 
@@ -52,7 +52,7 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
             return null;
         }
 
-        return $this->jwtEasyApiTokenFactory->createFromString((string)$jwtToken);
+        return $this->jwtApiTokenFactory->createFromString((string)$jwtToken);
     }
 }
 

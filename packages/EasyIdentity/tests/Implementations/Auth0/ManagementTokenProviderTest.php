@@ -5,12 +5,12 @@ namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
-use Mockery\ExpectationInterface;
-use Mockery\MockInterface;
 use LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider;
 use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
+use Mockery\ExpectationInterface;
+use Mockery\MockInterface;
 
 /**
  * @covers \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider

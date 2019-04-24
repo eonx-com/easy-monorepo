@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyPsr7Factory;
 
+use LoyaltyCorp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use LoyaltyCorp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;

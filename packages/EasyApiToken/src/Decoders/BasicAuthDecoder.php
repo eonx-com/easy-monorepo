@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyApiToken\Decoders;
 
-use Psr\Http\Message\ServerRequestInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
 use LoyaltyCorp\EasyApiToken\Tokens\BasicAuthEasyApiToken;
 use LoyaltyCorp\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class BasicAuthDecoder implements EasyApiTokenDecoderInterface
 {

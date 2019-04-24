@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyPagination\Resolvers;
 
-use Psr\Http\Message\ServerRequestInterface;
 use LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface;
 use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface;
 use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use LoyaltyCorp\EasyPagination\Traits\DataResolverTrait;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
 {

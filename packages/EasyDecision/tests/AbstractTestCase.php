@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyDecision\Tests;
 
-use PHPUnit\Framework\TestCase;
 use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunctionFactory;
 use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
 use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageFactory;
@@ -14,6 +13,7 @@ use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
 use LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRuleFactory;
 use LoyaltyCorp\EasyDecision\Tests\Stubs\RuleStub;
+use PHPUnit\Framework\TestCase;
 
 /**
  * This class has for objective to provide common features to all tests without having to update

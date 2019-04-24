@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyApiToken\Decoders;
 
-use Psr\Http\Message\ServerRequestInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
 use LoyaltyCorp\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class JwtTokenDecoder implements EasyApiTokenDecoderInterface
 {
@@ -16,16 +16,16 @@ final class JwtTokenDecoder implements EasyApiTokenDecoderInterface
     /**
      * @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface
      */
-    private $jwtEasyApiTokenFactory;
+    private $jwtApiTokenFactory;
 
     /**
      * JwtTokenDecoder constructor.
      *
-     * @param \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface $jwtEasyApiTokenFactory
+     * @param \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory
      */
-    public function __construct(JwtEasyApiTokenFactoryInterface $jwtEasyApiTokenFactory)
+    public function __construct(JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory)
     {
-        $this->jwtEasyApiTokenFactory = $jwtEasyApiTokenFactory;
+        $this->jwtApiTokenFactory = $jwtApiTokenFactory;
     }
 
     /**
@@ -45,7 +45,7 @@ final class JwtTokenDecoder implements EasyApiTokenDecoderInterface
             return null; // If Authorization doesn't start with Basic, return null
         }
 
-        return $this->jwtEasyApiTokenFactory->createFromString($authorization);
+        return $this->jwtApiTokenFactory->createFromString($authorization);
     }
 }
 

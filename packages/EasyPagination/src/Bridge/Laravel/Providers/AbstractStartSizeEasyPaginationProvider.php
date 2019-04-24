@@ -5,10 +5,10 @@ namespace LoyaltyCorp\EasyPagination\Bridge\Laravel\Providers;
 
 use Closure;
 use Illuminate\Support\ServiceProvider;
-use Psr\Http\Message\ServerRequestInterface;
 use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface;
 use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use LoyaltyCorp\EasyPagination\Resolvers\Config\StartSizeConfig;
+use Psr\Http\Message\ServerRequestInterface;
 
 abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
 {

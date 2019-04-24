@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyPsr7Factory\Tests;
 
-use Psr\Http\Message\ServerRequestInterface;
 use LoyaltyCorp\EasyPsr7Factory\EasyPsr7Factory;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Tests\Fixtures\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;

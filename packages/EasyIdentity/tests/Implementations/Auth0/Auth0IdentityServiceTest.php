@@ -8,9 +8,6 @@ use Auth0\SDK\API\Management\Users;
 use Auth0\SDK\JWTVerifier;
 use Closure;
 use GuzzleHttp\Exception\RequestException;
-use Mockery\MockInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 use LoyaltyCorp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
 use LoyaltyCorp\EasyIdentity\Exceptions\LoginFailedException;
 use LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException;
@@ -22,6 +19,9 @@ use LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory;
 use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
 use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
 use LoyaltyCorp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub;
+use Mockery\MockInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 class Auth0IdentityServiceTest extends AbstractTestCase
 {

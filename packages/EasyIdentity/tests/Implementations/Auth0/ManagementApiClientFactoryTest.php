@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
 
 use Auth0\SDK\API\Management;
-use Mockery\MockInterface;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider;
 use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
+use Mockery\MockInterface;
 
 /**
  * @covers \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory

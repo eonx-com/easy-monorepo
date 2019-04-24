@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyApiToken\Decoders;
 
-use Psr\Http\Message\ServerRequestInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
 use LoyaltyCorp\EasyApiToken\Traits\ChainEasyApiTokenDecoderTrait;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
 {

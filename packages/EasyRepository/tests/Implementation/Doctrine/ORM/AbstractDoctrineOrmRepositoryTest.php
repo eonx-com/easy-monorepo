@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-use Mockery\MockInterface;
 use LoyaltyCorp\EasyRepository\Tests\AbstractTestCase;
+use Mockery\MockInterface;
 
 final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
 {

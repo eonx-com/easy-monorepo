@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyRepository\Tests\Implementation\Illuminate;
 
 use Illuminate\Database\Eloquent\Model;
-use Mockery\MockInterface;
 use LoyaltyCorp\EasyRepository\Tests\AbstractTestCase;
+use Mockery\MockInterface;
 
 final class AbstractEloquentRepositoryTest extends AbstractTestCase
 {

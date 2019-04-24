@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
 
-use PHPUnit\Framework\TestCase;
 use LoyaltyCorp\EasyDecision\Interfaces\ContextAwareInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
+use PHPUnit\Framework\TestCase;
 
 final class AssertContextAwareInputRuleStub implements RuleInterface
 {

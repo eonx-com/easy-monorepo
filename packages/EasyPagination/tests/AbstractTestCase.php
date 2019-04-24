@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyPagination\Tests;
 
 use Laravel\Lumen\Application;
+use LoyaltyCorp\EasyPagination\Resolvers\Config\StartSizeConfig;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use LoyaltyCorp\EasyPagination\Resolvers\Config\StartSizeConfig;
 use Zend\Diactoros\ServerRequestFactory;
 
 /**

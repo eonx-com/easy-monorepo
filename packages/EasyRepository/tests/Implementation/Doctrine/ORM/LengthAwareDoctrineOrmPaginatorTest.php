@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM;
 
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
-use Mockery\MockInterface;
 use LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator;
 use LoyaltyCorp\EasyRepository\Tests\AbstractTestCase;
+use Mockery\MockInterface;
 
 final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
 {

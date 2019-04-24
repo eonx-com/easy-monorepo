@@ -34,8 +34,8 @@ final class JwtTokenEncoder implements EasyApiTokenEncoderInterface
      *
      * @return string
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException If encoder doesn't support given apiToken
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException If encoder fails to encode apiToken
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException If given apiToken not supported
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException If encoding fails
      */
     public function encode(EasyApiTokenInterface $apiToken): string
     {
