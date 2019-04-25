@@ -1,6 +1,6 @@
 {
     "name": "loyaltycorp/easy-cfhighlander",
-    "description": "Tools to handle API tokens like a pro",
+    "description": "CLI tool to generate Cfhighlander templates",
     "type": "library",
     "license": "MIT",
     "require": {

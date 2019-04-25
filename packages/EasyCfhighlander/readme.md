@@ -1,6 +1,6 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyApiToken</h1>
-    <p>Tools to handle API tokens like a pro.</p>
+    <h1>LoyaltyCorp - EasyCfhighlander</h1>
+    <p>CLI tool to generate Cfhighlander templates.</p>
 </div>
 
 ---
