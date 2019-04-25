@@ -5,7 +5,6 @@ namespace LoyaltyCorp\EasyCfhighlander\Console\Commands;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symplify\PackageBuilder\Console\Command\CommandNaming;
 
 final class CloudFormationCommand extends AbstractTemplatesCommand
@@ -26,7 +25,10 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
         'loadbalancer.config.yaml',
         'redis.config.yaml',
         'sqs.config.yaml',
-        'vpc.config.yaml'
+        'vpc.config.yaml',
+        'ecs/ecs.cfhighlander.rb',
+        'ecs/ecs.cfndsl.rb',
+        'ecs/ecs.config.yaml'
     ];
 
     /**
