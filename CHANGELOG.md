@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.6.1 - 2019-04-26
+## v0.6.2 - 2019-04-26
+
+### EasyCfhighlander
+
+- [#25] Fix name of bin file
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.6.1] - 2019-04-26
 
 ### EasyCfhighlander
 
@@ -216,3 +226,5 @@
 [v0.4.4]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.3...v0.4.4
 [#24]: https://github.com/StepTheFkUp/StepTheFkUp/pull/24
 [v0.6.0]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.5...v0.6.0
+[#25]: https://github.com/loyaltycorp/easy-monorepo/pull/25
+[v0.6.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.0...v0.6.1
