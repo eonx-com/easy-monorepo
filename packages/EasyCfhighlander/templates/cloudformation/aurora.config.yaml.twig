@@ -1,0 +1,8 @@
+hostname: mysql
+
+db_name: {{ project }}
+
+secrets_manager: true
+secret_username: {{ project }}
+storage_encrypted: true
+kms_key_id: 'create'

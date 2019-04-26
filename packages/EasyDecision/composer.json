@@ -14,12 +14,14 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyDecision\\": "src"
+            "LoyaltyCorp\\EasyDecision\\": "src",
+            "StepTheFkUp\\EasyDecision\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyDecision\\Tests\\": "tests"
+            "LoyaltyCorp\\EasyDecision\\Tests\\": "tests",
+            "StepTheFkUp\\EasyDecision\\Tests\\": "tests"
         }
     },
     "extra": {

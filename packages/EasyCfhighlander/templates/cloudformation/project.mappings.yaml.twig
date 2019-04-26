@@ -1,0 +1,42 @@
+EnvironmentType:
+    development:
+        MaxNatGateways: 1
+        SingleNatGateway: true
+        CacheInstanceType: cache.t2.micro
+        BastionInstanceType: t2.micro
+        CacheClusters: 1
+        RedisCluster: false
+        RedisEndpointType: PrimaryEndPoint.Address
+        WriterInstanceType: db.t2.small
+        ReaderInstanceType: db.t2.small
+        SnapshotRetentionLimit: 0
+        ReplicasPerNodeGroup: 0
+        EnableReader: false
+    production:
+        MaxNatGateways: 3
+        BastionInstanceType: t2.micro
+        SingleNatGateway: false
+        RDSConnectordbMultiAZ: true
+        CacheInstanceType: cache.t2.medium
+        CacheClusters: 2
+        RedisCluster: true
+        RedisEndpointType: ConfigurationEndPoint.Address
+        WriterInstanceType: db.t2.small
+        ReaderInstanceType: db.t2.small
+        SnapshotRetentionLimit: 0
+        ReplicasPerNodeGroup: 0
+        EnableReader: true
+
+EnvironmentName:
+    dev:
+        SslCertId: arn:aws:acm:ap-southeast-2:014552530676:certificate/070a7bf7-431c-4063-ba22-14607dc9a954
+    uat:
+        SslCertId: arn:aws:acm:ap-southeast-2:014552530676:certificate/1d7851b8-f2ef-4ceb-ad4b-670290e994a7 #replace
+    prod:
+        SslCertId: arn:aws:acm:ap-southeast-2:014552530676:certificate/1d2f79be-e27c-41ce-b429-03739a77d494 #replace
+
+AccountId:
+    '{{ dev_account }}':
+        KeyName: dev-{{ project }}
+    '{{ prod_account }}':
+        KeyName: prod-{{ project }}

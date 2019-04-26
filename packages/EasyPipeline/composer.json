@@ -14,12 +14,14 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyPipeline\\": "src"
+            "LoyaltyCorp\\EasyPipeline\\": "src",
+            "StepTheFkUp\\EasyPipeline\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyPipeline\\Tests\\": "tests"
+            "LoyaltyCorp\\EasyPipeline\\Tests\\": "tests",
+            "StepTheFkUp\\EasyPipeline\\Tests\\": "tests"
         }
     },
     "suggest": {
