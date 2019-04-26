@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\Twig;
+namespace LoyaltyCorp\EasyCfhighlander\Factories;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;

@@ -26,12 +26,13 @@ final class ParameterResolver implements ParameterResolverInterface
     /**
      * ParameterResolver constructor.
      *
+     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
      * @param \Symplify\PackageBuilder\Parameter\ParameterProvider $parameterProvider
      * @param null|string $cacheFile
      */
-    public function __construct(ParameterProvider $parameterProvider, ?string $cacheFile = null)
+    public function __construct(Filesystem $filesystem, ParameterProvider $parameterProvider, ?string $cacheFile = null)
     {
-        $this->filesystem = new Filesystem();
+        $this->filesystem = $filesystem;
         $this->parameterProvider = $parameterProvider;
         $this->cacheFile = $cacheFile ?? __DIR__ . '/../../var/last_params.yaml';
     }

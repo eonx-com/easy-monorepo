@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractTemplatesCommand extends Command
 {
@@ -21,6 +22,9 @@ abstract class AbstractTemplatesCommand extends Command
     /** @var \LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface */
     private $fileGenerator;
 
+    /** @var \Symfony\Component\Filesystem\Filesystem */
+    private $filesystem;
+
     /** @var \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface */
     private $parameterResolver;
 
@@ -28,13 +32,15 @@ abstract class AbstractTemplatesCommand extends Command
      * AbstractTemplatesCommand constructor.
      *
      * @param \LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface $fileGenerator
+     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
      * @param \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface $parameterResolver
      */
-    public function __construct(FileGeneratorInterface $fileGenerator, ParameterResolverInterface $parameterResolver)
+    public function __construct(FileGeneratorInterface $fileGenerator, Filesystem $filesystem, ParameterResolverInterface $parameterResolver)
     {
         parent::__construct();
 
         $this->fileGenerator = $fileGenerator;
+        $this->filesystem = $filesystem;
         $this->parameterResolver = $parameterResolver;
     }
 
@@ -74,7 +80,7 @@ abstract class AbstractTemplatesCommand extends Command
                     throw new \RuntimeException('A value is required');
                 }
 
-                return \str_replace(' ', '', \strtolower($answer));
+                return \str_replace(' ', '', \strtolower((string)$answer));
             };
 
             return [
@@ -107,7 +113,8 @@ abstract class AbstractTemplatesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        $this->addParamResolver(new SymfonyStyle($input, $output));
+        $style = new SymfonyStyle($input, $output);
+        $this->addParamResolver($style);
 
         $params = $this->parameterResolver->resolve($input);
         $files = [];
@@ -120,25 +127,24 @@ abstract class AbstractTemplatesCommand extends Command
             $files[] = $this->getSimpleFileToGenerate($file);
         }
 
-        /** @var \Symfony\Component\Console\Output\ConsoleOutput $output */
-        $progressSection = new SymfonyStyle($input, $output->section());
-        $reportSection = new SymfonyStyle($input, $output->section());
-
-        $progressSection->title('Progress');
-        $reportSection->title('Report');
-
-        $progress = new ProgressBar($progressSection, \count($files));
-        $progress->start();
+        ProgressBar::setFormatDefinition('custom', ' %current%/%max% [%bar%] %percent:3s%% %message%');
+        $progress = new ProgressBar($style, \count($files));
+        $progress->setFormat('custom');
+        $progress->setOverwrite(false);
 
         $cwd = $input->getOption('cwd') ?? \getcwd();
 
-        $reportSection->writeln(\sprintf("Generating files in <comment>%s</comment>:\n", \realpath($cwd)));
+        if ($this->filesystem->exists($cwd) === false) {
+            $this->filesystem->mkdir($cwd);
+        }
+
+        $style->write(\sprintf("Generating files in <comment>%s</comment>:\n", \realpath($cwd)));
 
         foreach ($files as $file) {
             $this->fileGenerator->generate($cwd . '/' . $file->getFile(), $file->getTemplate(), $params);
 
+            $progress->setMessage(\sprintf('- Generating <info>%s</info>...', $file->getFile()));
             $progress->advance();
-            $reportSection->write(\sprintf('  - Generating <info>%s</info>...', $file->getFile()));
         }
 
         return self::EXIT_CODE_SUCCESS;

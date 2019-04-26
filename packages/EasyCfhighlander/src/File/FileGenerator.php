@@ -19,10 +19,11 @@ final class FileGenerator implements FileGeneratorInterface
      * FileGenerator constructor.
      *
      * @param \Twig\Environment $twig
+     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
      */
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Filesystem $filesystem)
     {
-        $this->filesystem = new Filesystem();
+        $this->filesystem = $filesystem;
         $this->twig = $twig;
     }
 
