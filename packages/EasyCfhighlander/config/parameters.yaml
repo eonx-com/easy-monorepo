@@ -1,6 +1,7 @@
 parameters:
   aws_region: ap-southeast-2
   ciinabox_role: ciinabox
+  ops_account: 599070804856 # Defined here because unique across projects
   source_bucket: source.tools.loyaltycorp.com.au
 
   cloudformation:
