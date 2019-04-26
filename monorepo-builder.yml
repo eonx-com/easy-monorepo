@@ -22,6 +22,7 @@ parameters:
     # for "split" command
     directories_to_repositories:
         packages/EasyApiToken: 'git@github.com:loyaltycorp/easy-api-token.git'
+        packages/EasyCfhighlander: 'git@github.com:loyaltycorp/easy-cfhighlander.git'
         packages/EasyDecision: 'git@github.com:loyaltycorp/easy-decision.git'
         packages/EasyIdentity: 'git@github.com:loyaltycorp/easy-identity.git'
         packages/EasyPipeline: 'git@github.com:loyaltycorp/easy-pipeline.git'
