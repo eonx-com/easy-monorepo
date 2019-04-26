@@ -1,11 +1,10 @@
 parameters:
+  aws_region: ap-southeast-2
+  ciinabox_role: ciinabox
+  source_bucket: source.tools.loyaltycorp.com.au
+
   cloudformation:
-    aws_region: ap-southeast-2
     region: ap-southeast-2
-
-    ciinabox_role: ciinabox
-
-    source_bucket: source.tools.loyaltycorp.com.au
 
     # IP blocks for project.config.yaml
     ip_blocks:
@@ -21,3 +20,6 @@ parameters:
         - 54.200.105.138/32
       dev:
         - 115.70.204.250/32
+
+  code:
+    ecr_repo: 599070804856.dkr.ecr.ap-southeast-2.amazonaws.com

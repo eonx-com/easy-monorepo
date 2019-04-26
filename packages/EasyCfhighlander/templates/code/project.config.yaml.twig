@@ -1,0 +1,196 @@
+dns_domain: {{ dns_domain }}
+api:
+  cpu: 512
+  memory: 1024
+  volumes:
+    - storage-volume
+    - data-volume
+  health_check_grace_period: 0
+  task_definition:
+    api:
+      repo: {{ ecr_repo }}/{{ project }}
+      image: backend
+      tag_param: ApiTag
+      # read_only_root: true
+      # cpu: 256
+      # memory: 512
+      env_vars:
+        SSM_PATH:
+          Fn::Sub: /{{ project }}/${EnvironmentName}
+        FORMAT: shell
+        AWS_REGION:
+          Ref: AWS::Region
+        APP_ENV:
+          Fn::Sub: ${EnvironmentName}
+        SQS_QUEUE_URL:
+          Ref: SqsUrl
+        REDIS_HOST: 
+          Fn::Sub: redis.${EnvironmentName}.${DnsDomain}
+        TO_STDOUT: true
+        LOG_LEVEL: warn
+      ports:
+       - 9000:9000
+      # mounts:
+      #   - /var/www/storage/logs:storage-volume
+      #   - /ssm:data-volume
+    nginx:
+      repo: {{ ecr_repo }}/{{ project }}
+      image: nginx
+      tag_param: NginxTag
+      # cpu: 256
+      # memory: 512
+      # links:
+      #   - api
+      # volumes_from:
+      #   - api
+      ports:
+        - 80:80
+  # scaling_policy:
+  #   min: 2
+  #   max: 4
+  #   up:
+  #     cooldown: 150
+  #     threshold: 70
+  #     evaluation_periods: 5
+  #     adjustment: 2
+  #   down:
+  #     cooldown: 600
+  #     threshold: 70
+  #     evaluation_periods: 5
+  #     adjustment: -1
+
+  targetgroup:
+    name: api
+    type: ip
+    container: nginx
+    port: 80
+    protocol: http
+    listener: https
+    healthcheck:
+      path: /ping
+      code: 200
+    rules:
+      - host: api.*
+        priority: 10
+    tags:
+        Name: api
+    attributes:
+      deregistration_delay.timeout_seconds: 60
+
+  iam_policies:
+    ssm-parameters-ro:
+      action:
+        - ssm:GetParameter
+        - ssm:GetParameters
+        - ssm:GetParametersByPath
+        - ssm:DescribeParameters
+    sqs:
+      action:
+      - sqs:*
+
+  ip_blocks:
+    local:
+      - 169.254.169.254/32
+
+  security_group:
+    - rules:
+      -
+        IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+      ips:
+        - local
+
+  task_ingress_rules:
+    -
+      from_port: 9000
+      to_port: 9000
+
+
+worker:
+  volumes:
+    - data-volume
+    - storage-volume
+  cpu: 256
+  memory: 512
+  task_definition:
+    worker:
+      repo: {{ ecr_repo }}/{{ project }}
+      image: backend
+      tag_param: WorkerTag
+      command: [ "php", "artisan", "queue:work", "--sleep=3", "--tries=3", "--delay=30" ]
+      cpu: 256
+      memory: 256
+      # read_only_root: true
+      # mounts:
+      #   - /var/www/storage/logs:storage-volume
+      #   - /ssm:data-volume
+      env_vars:
+        SSM_PATH:
+          Fn::Sub: /{{ project }}/${EnvironmentName}
+        LOG_LEVEL: warn
+        TO_STDOUT: true
+        FORMAT: shell
+        AWS_REGION:
+          Ref: AWS::Region
+        APP_ENV:
+          Fn::Sub: ${EnvironmentName}
+        SQS_QUEUE_URL:
+          Ref: SqsUrl
+        REDIS_HOST:
+          Fn::Sub: redis.${EnvironmentName}.${DnsDomain}
+
+  iam_policies:
+    ssm-parameters-ro:
+      action:
+        - ssm:GetParameter
+        - ssm:GetParameters
+        - ssm:GetParametersByPath
+        - ssm:DescribeParameters
+    sqs:
+      action:
+        - sqs:*
+
+cron:
+  volumes:
+    - data-volume
+    - storage-volume
+  cpu: 256
+  memory: 512
+  task_definition:
+    cron:
+      repo: {{ ecr_repo }}/{{ project }}
+      image: backend
+      tag_param: CronTag
+      command: [ "/usr/sbin/crond", "-f" ]
+      cpu: 256
+      memory: 256
+      # read_only_root: true
+      # mounts:
+      #   - /var/www/storage/logs:storage-volume
+      #   - /ssm:data-volume
+      env_vars:
+        SSM_PATH:
+          Fn::Sub: /{{ project }}/${EnvironmentName}
+        LOG_LEVEL: warn
+        TO_STDOUT: true
+        FORMAT: shell
+        AWS_REGION:
+          Ref: AWS::Region
+        APP_ENV:
+          Fn::Sub: ${EnvironmentName}
+        SQS_QUEUE_URL:
+          Ref: SqsUrl
+        REDIS_HOST:
+          Fn::Sub: redis.${EnvironmentName}.${DnsDomain}
+
+  iam_policies:
+    ssm-parameters-ro:
+      action:
+        - ssm:GetParameter
+        - ssm:GetParameters
+        - ssm:GetParametersByPath
+        - ssm:DescribeParameters
+    sqs:
+      action:
+        - sqs:*

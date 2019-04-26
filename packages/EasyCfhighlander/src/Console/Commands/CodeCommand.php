@@ -3,7 +3,11 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyCfhighlander\Console\Commands;
 
-final class CloudFormationCommand extends AbstractTemplatesCommand
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symplify\PackageBuilder\Console\Command\CommandNaming;
+
+final class CodeCommand extends AbstractTemplatesCommand
 {
     /**
      * Configure command.
@@ -12,8 +16,8 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
      */
     protected function configure(): void
     {
-        $this->setName('cloudformation');
-        $this->setDescription('Generates Cfhighlander templates for CloudFormation repository.');
+        $this->setName('code');
+        $this->setDescription('Generates Cfhighlander templates for Code repository.');
 
         parent::configure();
     }
@@ -28,7 +32,8 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
         return [
             'project.cfhighlander.rb',
             'project.config.yaml',
-            'project.mappings.yaml'
+            'project-schema.cfhighlander.rb',
+            'project-schema.config.yaml'
         ];
     }
 
@@ -40,17 +45,7 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
     protected function getSimpleFiles(): array
     {
         return [
-            'Jenkinsfile',
-            'aurora.config.yaml',
-            'az.mappings.yaml',
-            'bastion.config.yaml',
-            'loadbalancer.config.yaml',
-            'redis.config.yaml',
-            'sqs.config.yaml',
-            'vpc.config.yaml',
-            'ecs/ecs.cfhighlander.rb',
-            'ecs/ecs.cfndsl.rb',
-            'ecs/ecs.config.yaml'
+            'Jenkinsfile'
         ];
     }
 
@@ -61,6 +56,6 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
      */
     protected function getTemplatePrefix(): string
     {
-        return 'cloudformation';
+        return 'code';
     }
 }

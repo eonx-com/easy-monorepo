@@ -39,19 +39,18 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
-     * Do get files to generator from children commands.
+     * Get project files names.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param mixed[] $params
-     *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\FileToGenerate[]
+     * @return string[]
      */
-    abstract protected function doGetFilesToGenerate(
-        InputInterface $input,
-        OutputInterface $output,
-        array $params
-    ): array;
+    abstract protected function getProjectFiles(): array;
+
+    /**
+     * Get simple files names.
+     *
+     * @return string[]
+     */
+    abstract protected function getSimpleFiles(): array;
 
     /**
      * Get template prefix.
@@ -82,6 +81,7 @@ abstract class AbstractTemplatesCommand extends Command
                 'project' => $style->ask('Project name', $params['project'] ?? null, $validator),
                 'dns_domain' => $style->ask('DNS domain', $params['dns_domain'] ?? null, $validator),
                 'dev_account' => $style->ask('AWS DEV account', $params['dev_account'] ?? null, $validator),
+                'ops_account' => $style->ask('AWS OPS account', $params['ops_account'] ?? null, $validator),
                 'prod_account' => $style->ask('AWS PROD account', $params['prod_account'] ?? null, $validator)
             ];
         });
@@ -110,7 +110,15 @@ abstract class AbstractTemplatesCommand extends Command
         $this->addParamResolver(new SymfonyStyle($input, $output));
 
         $params = $this->parameterResolver->resolve($input);
-        $files = $this->doGetFilesToGenerate($input, $output, $params);
+        $files = [];
+
+        foreach ($this->getProjectFiles() as $file) {
+            $files[] = $this->getProjectFileToGenerate($file, $params['project']);
+        }
+
+        foreach ($this->getSimpleFiles() as $file) {
+            $files[] = $this->getSimpleFileToGenerate($file);
+        }
 
         /** @var \Symfony\Component\Console\Output\ConsoleOutput $output */
         $progressSection = new SymfonyStyle($input, $output->section());
@@ -146,10 +154,7 @@ abstract class AbstractTemplatesCommand extends Command
      */
     protected function getProjectFileToGenerate(string $name, string $project): FileToGenerate
     {
-        return new FileToGenerate(
-            \sprintf('%s.%s', $project, $name),
-            $this->getTemplateName(\sprintf('project.%s', $name))
-        );
+        return new FileToGenerate(\str_replace('project', $project, $name), $this->getTemplateName($name));
     }
 
     /**

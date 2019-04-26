@@ -10,13 +10,13 @@ pipeline{
     disableConcurrentBuilds()
   }
   environment {
-    AWS_REGION = '{{ cloudformation.aws_region }}'
+    AWS_REGION = '{{ aws_region }}'
     REGION = '{{ cloudformation.region }}'
     PROJECT_NAME = '{{ project }}'
-    SOURCE_BUCKET = '{{ cloudformation.source_bucket }}'
+    SOURCE_BUCKET = '{{ source_bucket }}'
     DEV_ACCOUNT_ID = '{{ dev_account }}'
     PROD_ACCOUNT_ID = '{{ prod_account }}'
-    CIINABOX_ROLE = '{{ cloudformation.ciinabox_role }}'
+    CIINABOX_ROLE = '{{ ciinabox_role }}'
   }
   stages {
     stage('Compile and Validate') {
