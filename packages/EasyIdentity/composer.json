@@ -15,12 +15,14 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyIdentity\\": "src"
+            "LoyaltyCorp\\EasyIdentity\\": "src",
+            "StepTheFkUp\\EasyIdentity\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyIdentity\\Tests\\": "tests"
+            "LoyaltyCorp\\EasyIdentity\\Tests\\": "tests",
+            "StepTheFkUp\\EasyIdentity\\Tests\\": "tests"
         }
     },
     "suggest": {

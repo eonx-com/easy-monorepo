@@ -3,11 +3,18 @@
     "type": "library",
     "description": "The packages to step the f*k up in your projects",
     "license": "MIT",
+    "bin": [
+        "bin/cfhighlander"
+    ],
     "require": {
         "eoneopay/utils": "dev-master",
         "php": "^7.1",
+        "stepthefkup/easy-pipeline": "^0.5",
         "symfony/expression-language": "^4.2",
+        "symfony/filesystem": "^4.2",
         "symfony/psr-http-message-bridge": "^1.1",
+        "symplify/package-builder": "^5.4",
+        "twig/twig": "^2.8",
         "zendframework/zend-diactoros": "^2.1"
     },
     "require-dev": {
@@ -30,37 +37,39 @@
     "autoload": {
         "psr-4": {
             "LoyaltyCorp\\EasyApiToken\\": "packages/EasyApiToken/src",
+            "LoyaltyCorp\\EasyCfhighlander\\": "packages/EasyCfhighlander/src",
             "LoyaltyCorp\\EasyDecision\\": "packages/EasyDecision/src",
             "LoyaltyCorp\\EasyIdentity\\": "packages/EasyIdentity/src",
-            "LoyaltyCorp\\EasyPipeline\\": "packages/EasyPipeline/src",
-            "LoyaltyCorp\\EasyRepository\\": "packages/EasyRepository/src",
             "LoyaltyCorp\\EasyPagination\\": "packages/EasyPagination/src",
+            "LoyaltyCorp\\EasyPipeline\\": "packages/EasyPipeline/src",
             "LoyaltyCorp\\EasyPsr7Factory\\": "packages/EasyPsr7Factory/src",
+            "LoyaltyCorp\\EasyRepository\\": "packages/EasyRepository/src",
             "StepTheFkUp\\EasyApiToken\\": "packages/EasyApiToken/src",
             "StepTheFkUp\\EasyDecision\\": "packages/EasyDecision/src",
             "StepTheFkUp\\EasyIdentity\\": "packages/EasyIdentity/src",
-            "StepTheFkUp\\EasyPipeline\\": "packages/EasyPipeline/src",
-            "StepTheFkUp\\EasyRepository\\": "packages/EasyRepository/src",
             "StepTheFkUp\\EasyPagination\\": "packages/EasyPagination/src",
-            "StepTheFkUp\\EasyPsr7Factory\\": "packages/EasyPsr7Factory/src"
+            "StepTheFkUp\\EasyPipeline\\": "packages/EasyPipeline/src",
+            "StepTheFkUp\\EasyPsr7Factory\\": "packages/EasyPsr7Factory/src",
+            "StepTheFkUp\\EasyRepository\\": "packages/EasyRepository/src"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "LoyaltyCorp\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
+            "LoyaltyCorp\\EasyCfhighlander\\Tests\\": "packages/EasyCfhighlander/tests",
             "LoyaltyCorp\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
             "LoyaltyCorp\\EasyIdentity\\Tests\\": "packages/EasyIdentity/tests",
-            "LoyaltyCorp\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
-            "LoyaltyCorp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "LoyaltyCorp\\EasyPagination\\Tests\\": "packages/EasyPagination/tests",
+            "LoyaltyCorp\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
             "LoyaltyCorp\\EasyPsr7Factory\\Tests\\": "packages/EasyPsr7Factory/tests",
+            "LoyaltyCorp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "StepTheFkUp\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
             "StepTheFkUp\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
             "StepTheFkUp\\EasyIdentity\\Tests\\": "packages/EasyIdentity/tests",
-            "StepTheFkUp\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
-            "StepTheFkUp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "StepTheFkUp\\EasyPagination\\Tests\\": "packages/EasyPagination/tests",
-            "StepTheFkUp\\EasyPsr7Factory\\Tests\\": "packages/EasyPsr7Factory/tests"
+            "StepTheFkUp\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
+            "StepTheFkUp\\EasyPsr7Factory\\Tests\\": "packages/EasyPsr7Factory/tests",
+            "StepTheFkUp\\EasyRepository\\Tests\\": "packages/EasyRepository/tests"
         }
     },
     "replace": {
@@ -70,7 +79,8 @@
         "loyaltycorp/easy-psr7-factory": "self.version",
         "loyaltycorp/easy-pipeline": "self.version",
         "loyaltycorp/easy-identity": "self.version",
-        "loyaltycorp/easy-decision": "self.version"
+        "loyaltycorp/easy-decision": "self.version",
+        "loyaltycorp/easy-cfhighlander": "self.version"
     },
     "scripts": {
         "check-all": [
@@ -97,7 +107,7 @@
         "firebase/php-jwt": "To use the Firebase JWT driver to decode/encode tokens",
         "illuminate/database": "To use the Illuminate Eloquent implementation",
         "illuminate/pipeline": "To use the Illuminate Pipeline implementation",
-        "loyaltycorp/pagination": "To use pagination within your repositories"
+        "loyaltycorp/easy-pagination": "To use pagination within your repositories"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

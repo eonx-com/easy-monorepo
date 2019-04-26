@@ -1,0 +1,35 @@
+schema:
+  # volumes:
+  #   - data-volume
+  cpu: 256
+  memory: 512
+  task_definition:
+    schema:
+      repo: {{ ecr_repo }}/{{ project }}
+      image: backend
+      tag_param: SchemaTag
+      entrypoint: ["/usr/local/bin/migrate.sh"]
+      #command: [ "/usr/local/bin/migrate.sh"]
+      env_vars:
+        SSM_PATH:
+          Fn::Sub: /{{ project }}/${EnvironmentName}
+        LOG_LEVEL: warn
+        TO_STDOUT: true
+        FORMAT: shell
+        AWS_REGION:
+          Ref: AWS::Region
+        APP_ENV:
+          Fn::Sub: ${EnvironmentName}
+        SQS_QUEUE_URL:
+          Ref: SqsUrl
+
+  iam_policies:
+    ssm-parameters-ro:
+      action:
+        - ssm:GetParameter
+        - ssm:GetParameters
+        - ssm:GetParametersByPath
+        - ssm:DescribeParameters
+    sqs:
+      action:
+      - sqs:*

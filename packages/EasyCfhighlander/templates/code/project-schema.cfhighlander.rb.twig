@@ -1,0 +1,17 @@
+CfhighlanderComponent do
+  
+    Parameters do
+      ComponentParam 'SchemaTag', 'latest'
+      ComponentParam 'EnvironmentName', 'dev', isGlobal: true
+      ComponentParam 'EnvironmentType', 'development', isGlobal: true, allowedValues: ['development','production']
+    end
+  
+    Component name: '{{ project }}-schema-task', template: 'git:https://github.com/loyaltycorp/cfhighlander-ecs-task.git', config: schema do
+      Parameters do
+        ComponentParam 'SqsUrl', type:'String'
+      end
+      parameter name: 'SchemaTag', value: Ref('SchemaTag')
+      parameter name: 'VPCId', value: FnImportValue(FnSub("${EnvironmentName}-vpc-VPCId"))
+    end
+  
+  end

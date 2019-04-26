@@ -11,17 +11,19 @@
         "phpunit/phpunit": "^7.5",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
-        "zendframework/zend-diactoros": "^1.8",
+        "zendframework/zend-diactoros": "^2.1",
         "auth0/auth0-php": "^5.4"
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyApiToken\\": "src"
+            "LoyaltyCorp\\EasyApiToken\\": "src",
+            "StepTheFkUp\\EasyApiToken\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyApiToken\\Tests\\": "tests"
+            "LoyaltyCorp\\EasyApiToken\\Tests\\": "tests",
+            "StepTheFkUp\\EasyApiToken\\Tests\\": "tests"
         }
     },
     "suggest": {

@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.1",
         "symfony/psr-http-message-bridge": "^1.1",
-        "zendframework/zend-diactoros": "^1.8"
+        "zendframework/zend-diactoros": "^2.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5",
@@ -15,12 +15,14 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyPsr7Factory\\": "src"
+            "LoyaltyCorp\\EasyPsr7Factory\\": "src",
+            "StepTheFkUp\\EasyPsr7Factory\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyPsr7Factory\\Tests\\": "tests"
+            "LoyaltyCorp\\EasyPsr7Factory\\Tests\\": "tests",
+            "StepTheFkUp\\EasyPsr7Factory\\Tests\\": "tests"
         }
     },
     "extra": {
