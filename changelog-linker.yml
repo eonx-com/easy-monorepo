@@ -1,5 +1,5 @@
 parameters:
     authors_to_ignore: ['natepage']
 
-    repository_url: 'https://github.com/StepTheFkUp/StepTheFkUp'
+    repository_url: 'https://github.com/loyaltycorp/easy-monorepo'
     

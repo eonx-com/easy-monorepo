@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.6.0 - 2019-04-24
+## v0.6.1 - 2019-04-26
+
+### EasyCfhighlander
+
+- [#24] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.6.0] - 2019-04-24
 
 - [#22] Fix: Rename filename based on classname, Thanks to [@fsti-francohora]
 - [#23] Switch to LoyaltyCorp namespaces
@@ -204,3 +214,5 @@
 [@fsti-francohora]: https://github.com/fsti-francohora
 [v0.4.5]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.4...v0.4.5
 [v0.4.4]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.3...v0.4.4
+[#24]: https://github.com/StepTheFkUp/StepTheFkUp/pull/24
+[v0.6.0]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.5...v0.6.0
