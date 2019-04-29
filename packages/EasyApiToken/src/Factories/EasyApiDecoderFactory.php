@@ -63,6 +63,16 @@ class EasyApiDecoderFactory
     }
 
     private function createJwtHeaderDecoder(array $configuration) {
-        return new JwtTokenDecoder(new JwtEasyApiTokenFactory( new Auth0JwtDriver([], [], '')));
+        $driverConfiguration = $configuration['driver']; // todo test this missing
+        $options = $configuration['options']; // todo stuff to validate required fields
+
+        $driver = new Auth0JwtDriver(
+            $options['valid_audiences'],
+            $options['authorized_iss'],
+            $options['private_key'],
+            $options['audience_for_encode'] ?? null,
+            $options['allowed_algos'] ?? null
+        );
+        return new JwtTokenDecoder(new JwtEasyApiTokenFactory($driver));
     }
 }
