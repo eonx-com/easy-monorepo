@@ -55,10 +55,14 @@ class EasyApiDecoderFactory
             case 'user-apikey':
                 return new ApiKeyAsBasicAuthUsernameDecoder();
             case 'jwt-header':
-                return new JwtTokenDecoder(new JwtEasyApiTokenFactory( new Auth0JwtDriver([], [], '')));
+                return $this->createJwtHeaderDecoder($this->config[$configKey]);
         }
         throw new InvalidConfigurationException(
             \sprintf('Invalid EasyApiToken decoder type: %s configured for key: %s.', $decoderType, $configKey)
         );
+    }
+
+    private function createJwtHeaderDecoder(array $configuration) {
+        return new JwtTokenDecoder(new JwtEasyApiTokenFactory( new Auth0JwtDriver([], [], '')));
     }
 }
