@@ -59,6 +59,21 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     }
 
     /**
+     * Test that an error is thrown when a non-existent driver is configured.
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     */
+    public function testInvalidDriver(): void
+    {
+        $factory = new EasyApiDecoderFactory(['xxx' => ['driver' => 'yyy']]);
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Invalid EasyApiToken driver: yyy configured for key: xxx.');
+
+        $factory->build('xxx');
+    }
+
+    /**
      * Test that an ApiKeyAsBasicAuthUsernameDecoder is created when requested.
      *
      * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
