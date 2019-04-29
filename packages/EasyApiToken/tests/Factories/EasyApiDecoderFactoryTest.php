@@ -7,6 +7,7 @@ use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
 use LoyaltyCorp\EasyApiToken\Factories\EasyApiDecoderFactory;
 use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
+use StepTheFkUp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 
 /**
  * @covers \LoyaltyCorp\EasyApiToken\Factories\EasyApiDecoderFactory
@@ -55,6 +56,20 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $this->expectExceptionMessage('Could not find EasyApiConfiguration for key: some_other_thing.');
 
         $factory->build('some_other_thing');
+    }
+
+    /**
+     * Test that an ApiKeyAsBasicAuthUsernameDecoder is created when requested.
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     */
+    public function testApiKeyDriver(): void
+    {
+        $factory = new EasyApiDecoderFactory(['apiconfig' => ['driver' => 'user-apikey']]);
+
+        $actual = $factory->build('apiconfig');
+
+        $this->assertInstanceOf(ApiKeyAsBasicAuthUsernameDecoder::class, $actual);
     }
 }
 
