@@ -5,8 +5,11 @@ namespace LoyaltyCorp\EasyApiToken\Factories;
 
 use LoyaltyCorp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
+use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
+use LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 
 class EasyApiDecoderFactory
 {
@@ -51,6 +54,8 @@ class EasyApiDecoderFactory
                 return new BasicAuthDecoder();
             case 'user-apikey':
                 return new ApiKeyAsBasicAuthUsernameDecoder();
+            case 'jwt-header':
+                return new JwtTokenDecoder(new JwtEasyApiTokenFactory( new Auth0JwtDriver([], [], '')));
         }
         throw new InvalidConfigurationException(
             \sprintf('Invalid EasyApiToken decoder type: %s configured for key: %s.', $decoderType, $configKey)
