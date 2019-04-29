@@ -25,7 +25,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('Could not find a valid configuration.');
 
-        $factory->build();
+        $factory->build('nothing');
     }
 
     /**
