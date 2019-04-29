@@ -53,13 +53,13 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $factory = new EasyApiDecoderFactory(['onething' => ['type' => 'basic']]);
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Could not find EasyApiConfiguration for key: some_other_thing.');
+        $this->expectExceptionMessage('Could not find EasyApiToken for key: some_other_thing.');
 
         $factory->build('some_other_thing');
     }
 
     /**
-     * Test that an error is thrown when a non-existent driver is configured.
+     * Test that an error is thrown when a non-existent decoder type is configured.
      *
      * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
      */
@@ -68,7 +68,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $factory = new EasyApiDecoderFactory(['xxx' => ['type' => 'yyy']]);
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Invalid EasyApiToken driver: yyy configured for key: xxx.');
+        $this->expectExceptionMessage('Invalid EasyApiToken decoder type: yyy configured for key: xxx.');
 
         $factory->build('xxx');
     }
