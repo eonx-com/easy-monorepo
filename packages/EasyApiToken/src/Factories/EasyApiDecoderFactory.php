@@ -40,20 +40,20 @@ class EasyApiDecoderFactory
         }
         if (\array_key_exists($configKey, $this->config) === false) {
             throw new InvalidConfigurationException(
-                \sprintf('Could not find EasyApiConfiguration for key: %s.', $configKey)
+                \sprintf('Could not find EasyApiToken for key: %s.', $configKey)
             );
         }
 
-        $driver = $this->config[$configKey]['driver'] ?? '';
+        $decoderType = $this->config[$configKey]['type'] ?? '';
 
-        switch ($driver) {
+        switch ($decoderType) {
             case 'basic':
                 return new BasicAuthDecoder();
             case 'user-apikey':
                 return new ApiKeyAsBasicAuthUsernameDecoder();
         }
         throw new InvalidConfigurationException(
-            \sprintf('Invalid EasyApiToken driver: %s configured for key: %s.', $driver,$configKey)
+            \sprintf('Invalid EasyApiToken decoder type: %s configured for key: %s.', $decoderType, $configKey)
         );
     }
 }
