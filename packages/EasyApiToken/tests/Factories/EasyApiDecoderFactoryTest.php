@@ -13,6 +13,11 @@ use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
  */
 final class EasyApiDecoderFactoryTest extends AbstractTestCase
 {
+    /**
+     * Test that an empty exception throws an error.
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     */
     public function testNullCreation(): void
     {
         $factory = new EasyApiDecoderFactory([]);
@@ -23,6 +28,11 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $factory->build();
     }
 
+    /**
+     * Test that a basic driver is configured on request.
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     */
     public function testBasicAuthCreation(): void
     {
         $factory = new EasyApiDecoderFactory(['something' => ['driver' => 'basic']]);
