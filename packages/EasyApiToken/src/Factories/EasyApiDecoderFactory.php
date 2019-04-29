@@ -24,14 +24,23 @@ class EasyApiDecoderFactory
     }
 
     /**
+     * Build a named TokenFactory.
+     *
+     * @param string $configKey Key of configuration found in the configuration.
+     *
      * @return \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      *
      * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    public function build(): EasyApiTokenDecoderInterface
+    public function build(string $configKey): EasyApiTokenDecoderInterface
     {
         if (\count($this->config) === 0) {
             throw new InvalidConfigurationException('Could not find a valid configuration.');
+        }
+        if (\array_key_exists($configKey, $this->config) === false) {
+            throw new InvalidConfigurationException(
+                \sprintf('Could not find EasyApiConfiguration for key: %s.', $configKey)
+            );
         }
         return new BasicAuthDecoder();
     }
