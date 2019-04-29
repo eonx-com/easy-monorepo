@@ -36,7 +36,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      */
     public function testBasicAuthCreation(): void
     {
-        $factory = new EasyApiDecoderFactory(['something' => ['driver' => 'basic']]);
+        $factory = new EasyApiDecoderFactory(['something' => ['type' => 'basic']]);
 
         $actual = $factory->build('something');
 
@@ -50,7 +50,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      */
     public function testNoSuchKey(): void
     {
-        $factory = new EasyApiDecoderFactory(['onething' => ['driver' => 'basic']]);
+        $factory = new EasyApiDecoderFactory(['onething' => ['type' => 'basic']]);
 
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('Could not find EasyApiConfiguration for key: some_other_thing.');
@@ -65,7 +65,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      */
     public function testInvalidDriver(): void
     {
-        $factory = new EasyApiDecoderFactory(['xxx' => ['driver' => 'yyy']]);
+        $factory = new EasyApiDecoderFactory(['xxx' => ['type' => 'yyy']]);
 
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('Invalid EasyApiToken driver: yyy configured for key: xxx.');
@@ -80,7 +80,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      */
     public function testApiKeyDriver(): void
     {
-        $factory = new EasyApiDecoderFactory(['apiconfig' => ['driver' => 'user-apikey']]);
+        $factory = new EasyApiDecoderFactory(['apiconfig' => ['type' => 'user-apikey']]);
 
         $actual = $factory->build('apiconfig');
 
