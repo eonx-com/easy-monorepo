@@ -41,6 +41,21 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
 
         $this->assertInstanceOf(BasicAuthDecoder::class, $actual);
     }
+
+    /**
+     * Test that a chain driver is configured on request.
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     */
+    public function test(): void
+    {
+        $factory = new EasyApiDecoderFactory(['onething' => ['driver' => 'basic']]);
+
+        $factory->build('some_other_thing');
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Could not find EasyApiConfiguration for key: some_other_thing.');
+    }
 }
 
 \class_alias(
