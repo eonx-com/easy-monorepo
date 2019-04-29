@@ -43,8 +43,8 @@ class EasyApiDecoderFactory
                 \sprintf('Could not find EasyApiConfiguration for key: %s.', $configKey)
             );
         }
-        // todo next check if driver exists
-        $driver = $this->config[$configKey]['driver'];
+
+        $driver = $this->config[$configKey]['driver'] ?? '';
 
         switch ($driver) {
             case 'basic':
@@ -52,5 +52,8 @@ class EasyApiDecoderFactory
             case 'user-apikey':
                 return new ApiKeyAsBasicAuthUsernameDecoder();
         }
+        throw new InvalidConfigurationException(
+            \sprintf('Invalid EasyApiToken driver: %s configured for key: %s.', $driver,$configKey)
+        );
     }
 }
