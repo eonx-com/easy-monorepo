@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyApiToken\Tests\Factories;
 
 use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
+use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
 use LoyaltyCorp\EasyApiToken\Factories\EasyApiDecoderFactory;
 use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
@@ -85,6 +86,31 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $actual = $factory->build('apiconfig');
 
         $this->assertInstanceOf(ApiKeyAsBasicAuthUsernameDecoder::class, $actual);
+    }
+
+    /**
+     * Test that an JwtTokenDecoder is created when requested.
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     */
+    public function testJwtWithAuth0Configuration(): void
+    {
+        $factory = new EasyApiDecoderFactory([
+            'jwt' => [
+                'type' => 'jwt-header',
+                'driver' => 'auth0',
+                'options' => [
+                    'valid_audiences' => ['id1', 'id2'],
+                    'authorized_iss' => ['xyz.auth0', 'abc.goog'],
+                    'private_key' => 'someprivatekeystring',
+                    'allowed_algos' => ['HS256', 'RS256']
+                ]
+            ]
+        ]);
+
+        $actual = $factory->build('jwt');
+
+        $this->assertInstanceOf(JwtTokenDecoder::class, $actual);
     }
 }
 
