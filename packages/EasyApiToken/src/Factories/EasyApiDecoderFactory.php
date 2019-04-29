@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyApiToken\Factories;
 
+use LoyaltyCorp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
@@ -42,6 +43,14 @@ class EasyApiDecoderFactory
                 \sprintf('Could not find EasyApiConfiguration for key: %s.', $configKey)
             );
         }
-        return new BasicAuthDecoder();
+        // todo next check if driver exists
+        $driver = $this->config[$configKey]['driver'];
+
+        switch ($driver) {
+            case 'basic':
+                return new BasicAuthDecoder();
+            case 'user-apikey':
+                return new ApiKeyAsBasicAuthUsernameDecoder();
+        }
     }
 }
