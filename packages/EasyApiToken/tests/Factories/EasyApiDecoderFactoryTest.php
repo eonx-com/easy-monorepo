@@ -25,9 +25,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
 
     public function testBasicAuthCreation(): void
     {
-        $factory = new EasyApiDecoderFactory(['basic' => []]);
+        $factory = new EasyApiDecoderFactory(['something' => ['driver' => 'basic']]);
 
-        $actual = $factory->build();
+        $actual = $factory->build('something');
 
         $this->assertInstanceOf(BasicAuthDecoder::class, $actual);
     }
