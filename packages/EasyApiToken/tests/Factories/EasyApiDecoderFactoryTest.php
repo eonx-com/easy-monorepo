@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyApiToken\Tests\Factories;
 
 use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
+use LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
@@ -197,6 +198,35 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     }
 
     /**
+     * @return iterable
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     */
+    public function getChainBuilds(): iterable
+    {
+        $config = [
+            'chain-key' => [
+                'type' => 'chain',
+                'list' => [
+                    'api',
+                    'pass'
+                ],
+            ],
+            'api' => ['type' => 'user-apikey'],
+            'pass' => ['type' => 'basic']
+        ];
+
+        yield 'Build API Chain' => [
+            $config,
+            'chain-key',
+            new ChainReturnFirstTokenDecoder([
+                new ApiKeyAsBasicAuthUsernameDecoder(),
+                new BasicAuthDecoder()
+            ])
+        ];
+    }
+
+    /**
      * Test that the requested object graph is built as expected.
      *
      * @param array $config
@@ -209,6 +239,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      *
      * @dataProvider getSimpleBuilds
      * @dataProvider getJwtBuilds
+     * @dataProvider getChainBuilds
      */
     public function testBuild(array $config, string $key, EasyApiTokenDecoderInterface $expected): void
     {
