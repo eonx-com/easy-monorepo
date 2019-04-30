@@ -51,6 +51,18 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
             'chain-thing',
             'EasyApiToken decoder: chain-thing is missing a required list option.'
         ];
+
+        yield 'Expect error for invalid jwt driver.' => [
+            ['foobar' => ['type' => 'jwt-header', 'driver' => 'GOOGLE']],
+            'foobar',
+            'Invalid JWT decoder driver: GOOGLE configured for EasyApiToken decoder: foobar.'
+        ];
+
+        yield 'Expect error for missing jwt driver' => [
+            ['something' => ['type' => 'jwt-header']],
+            'something',
+            'EasyApiToken decoder: something is missing a driver key.'
+        ];
     }
 
     public function getSimpleBuilds(): iterable
