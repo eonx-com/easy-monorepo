@@ -58,12 +58,21 @@ class EasyApiDecoderFactory
                 return new BasicAuthDecoder();
             case 'user-apikey':
                 return new ApiKeyAsBasicAuthUsernameDecoder();
+            case 'chain':
+                return $this->createChain($configKey, $this->config[$configKey]);
+        }
+
+        if (\array_key_exists('options', $this->config[$configKey]) === false) {
+            throw new InvalidConfigurationException(\sprintf(
+                'Missing options array for EasyApiToken decoder: %s.', $configKey
+            ));
+        }
+
+        switch ($decoderType) {
             case 'jwt-header':
                 return $this->createJwtHeaderDecoder($this->config[$configKey]);
             case 'jwt-param':
                 return $this->createJwtParamDecoder($this->config[$configKey]);
-            case 'chain':
-                return $this->createChain($configKey, $this->config[$configKey]);
         }
         throw new InvalidConfigurationException(
             \sprintf('Invalid EasyApiToken decoder type: %s configured for key: %s.', $decoderType, $configKey)
