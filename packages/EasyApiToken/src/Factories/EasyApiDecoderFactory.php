@@ -67,7 +67,15 @@ class EasyApiDecoderFactory
         );
     }
 
-    private function createJwtHeaderDecoder(array $configuration) {
+    /**
+     * Build a JWT parameter decoder.
+     *
+     * @param array $configuration Options for building decoder.
+     *
+     * @return \LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder
+     */
+    private function createJwtHeaderDecoder(array $configuration)
+    {
         $driverName = $configuration['driver'];
         $options = $configuration['options'];
 
@@ -75,7 +83,15 @@ class EasyApiDecoderFactory
         return new JwtTokenDecoder(new JwtEasyApiTokenFactory($driver));
     }
 
-    private function createJwtParamDecoder(array $configuration) {
+    /**
+     * Build a JWT request decoder.
+     *
+     * @param array $configuration Options for building decoder.
+     *
+     * @return \LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder
+     */
+    private function createJwtParamDecoder(array $configuration)
+    {
         $driverName = $configuration['driver'];
         $options = $configuration['options'];
 
@@ -83,6 +99,14 @@ class EasyApiDecoderFactory
         return new JwtTokenInQueryDecoder(new JwtEasyApiTokenFactory($driver), $options['param']);
     }
 
+    /**
+     * Build a JWT driver.
+     *
+     * @param string $driver Driver to build, must be one of 'auth0' or 'firebase'.
+     * @param array $options List of options to use to create Driver.
+     *
+     * @return \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface
+     */
     private function createJwtDriver($driver, $options): JwtDriverInterface
     {
         switch ($driver) {
@@ -95,10 +119,13 @@ class EasyApiDecoderFactory
     }
 
     /**
-     * @param $options
+     * Build a Auth09 JWT Driver.
+     *
+     * @param mixed[] $options List of options to pass to Auth0JwtDriver. Keys match constructor parameters.
+     *
      * @return \LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver
      */
-    private function createAuth0Driver($options): \LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver
+    private function createAuth0Driver($options): Auth0JwtDriver
     {
         $driver = new Auth0JwtDriver(
             $options['valid_audiences'],
@@ -111,10 +138,13 @@ class EasyApiDecoderFactory
     }
 
     /**
-     * @param $options
+     * Build a Firebase JWT Driver.
+     *
+     * @param mixed[] $options List of options to pass to FirebaseJwtDriver. Keys match constructor parameters.
+     *
      * @return \LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver
      */
-    private function createFirebaseDriver($options): \LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver
+    private function createFirebaseDriver($options): FirebaseJwtDriver
     {
         $driver = new FirebaseJwtDriver(
             $options['algo'],
