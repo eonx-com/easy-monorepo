@@ -22,48 +22,29 @@ use StepTheFkUp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 final class EasyApiDecoderFactoryTest extends AbstractTestCase
 {
     /**
-     * Test that an empty exception throws an error.
+     * Get a list of errors caused by Invalid configurations.
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @return iterable List of Configuration array, key to request, and expected error message.
      */
-    public function testNullCreation(): void
+    public function getBrokenConfigurations(): iterable
     {
-        $factory = new EasyApiDecoderFactory([]);
+        yield 'Empty configuration' => [
+            [],
+            'nothing',
+            'Could not find a valid configuration.'
+        ];
 
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Could not find a valid configuration.');
+        yield 'Error is thrown when a non-existent key is requested.' => [
+            ['onething' => ['type' => 'basic']],
+            'some_other_thing',
+            'Could not find EasyApiToken for key: some_other_thing.'
+        ];
 
-        $factory->build('nothing');
-    }
-
-    /**
-     * Test that an error is thrown when a non-existent key is requested.
-     *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
-     */
-    public function testNoSuchKey(): void
-    {
-        $factory = new EasyApiDecoderFactory(['onething' => ['type' => 'basic']]);
-
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Could not find EasyApiToken for key: some_other_thing.');
-
-        $factory->build('some_other_thing');
-    }
-
-    /**
-     * Test that an error is thrown when a non-existent decoder type is configured.
-     *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
-     */
-    public function testInvalidDriver(): void
-    {
-        $factory = new EasyApiDecoderFactory(['xxx' => ['type' => 'yyy']]);
-
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Invalid EasyApiToken decoder type: yyy configured for key: xxx.');
-
-        $factory->build('xxx');
+        yield 'Test that an error is thrown when a non-existent decoder type is configured.' => [
+            ['xxx' => ['type' => 'yyy']],
+            'xxx',
+            'Invalid EasyApiToken decoder type: yyy configured for key: xxx.'
+        ];
     }
 
     public function getSimpleBuilds(): iterable
@@ -229,9 +210,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     /**
      * Test that the requested object graph is built as expected.
      *
-     * @param array $config
-     * @param string $key
-     * @param \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected
+     * @param array $config Config array to build factory with.
+     * @param string $key Key of configuration to request.
+     * @param \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected Expected decoder object.
      *
      * @return void
      *
@@ -248,6 +229,27 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $actual = $factory->build($key);
 
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * Test Exceptions for building invalid configurations.
+     *
+     * @param array $config Config array to build factory with.
+     * @param string $key Key of configuration to request.
+     * @param string $expectedError Expected exception message.
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     *
+     * @dataProvider getBrokenConfigurations
+     */
+    public function testInvalidConfigurationErrors(array $config, string $key, string $expectedError): void
+    {
+        $factory = new EasyApiDecoderFactory($config);
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage($expectedError);
+
+        $factory->build($key);
     }
 }
 
