@@ -8,6 +8,7 @@ use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
 use LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver;
 use LoyaltyCorp\EasyApiToken\Factories\EasyApiDecoderFactory;
+use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
 use LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 use StepTheFkUp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
@@ -30,20 +31,6 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $this->expectExceptionMessage('Could not find a valid configuration.');
 
         $factory->build('nothing');
-    }
-
-    /**
-     * Test that a basic driver is configured on request.
-     *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
-     */
-    public function testBasicAuthCreation(): void
-    {
-        $factory = new EasyApiDecoderFactory(['something' => ['type' => 'basic']]);
-
-        $actual = $factory->build('something');
-
-        $this->assertInstanceOf(BasicAuthDecoder::class, $actual);
     }
 
     /**
@@ -76,52 +63,71 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $factory->build('xxx');
     }
 
-    /**
-     * Test that an ApiKeyAsBasicAuthUsernameDecoder is created when requested.
-     *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
-     */
-    public function testApiKeyDriver(): void
+    public function getSimpleBuilds(): iterable
     {
-        $factory = new EasyApiDecoderFactory(['apiconfig' => ['type' => 'user-apikey']]);
+        yield 'Simple API Key' => [
+            ['apiconfig' => ['type' => 'user-apikey']],
+            'apiconfig',
+            new ApiKeyAsBasicAuthUsernameDecoder()
+        ];
 
-        $actual = $factory->build('apiconfig');
+        yield 'Simple Basic Auth decoder' => [
+            ['something' => ['type' => 'basic']],
+            'something',
+            new BasicAuthDecoder()
+        ];
+    }
 
-        $this->assertInstanceOf(ApiKeyAsBasicAuthUsernameDecoder::class, $actual);
+    public function getJwtBuilds(): iterable
+    {
+        yield 'Jwt Header' => [
+            [
+                'jwt' => [
+                    'type' => 'jwt-header',
+                    'driver' => 'auth0',
+                    'options' => [
+                        'valid_audiences' => ['id1', 'id2'],
+                        'authorized_iss' => ['xyz.auth0', 'abc.goog'],
+                        'private_key' => 'someprivatekeystring',
+                        'allowed_algos' => ['HS256', 'RS256']
+                    ]
+                ]
+            ],
+            'jwt',
+            new JwtTokenDecoder(
+                new JwtEasyApiTokenFactory(
+                    new Auth0JwtDriver(
+                        ['id1', 'id2'],
+                        ['xyz.auth0', 'abc.goog'],
+                        'someprivatekeystring',
+                        'id1',
+                        ['HS256', 'RS256']
+                    )
+                )
+            )
+        ];
     }
 
     /**
-     * Test that an JwtTokenDecoder is created when requested.
+     * Test that the requested object graph is built as expected.
+     *
+     * @param array $config
+     * @param string $key
+     * @param \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected
+     *
+     * @return void
      *
      * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     *
+     * @dataProvider getSimpleBuilds
+     * @dataProvider getJwtBuilds
      */
-    public function testJwtWithAuth0Configuration(): void
+    public function testBuild(array $config, string $key, EasyApiTokenDecoderInterface $expected): void
     {
-        $factory = new EasyApiDecoderFactory([
-            'jwt' => [
-                'type' => 'jwt-header',
-                'driver' => 'auth0',
-                'options' => [
-                    'valid_audiences' => ['id1', 'id2'],
-                    'authorized_iss' => ['xyz.auth0', 'abc.goog'],
-                    'private_key' => 'someprivatekeystring',
-                    'allowed_algos' => ['HS256', 'RS256']
-                ]
-            ]
-        ]);
-        $expected = new JwtTokenDecoder(
-            new JwtEasyApiTokenFactory(
-                new Auth0JwtDriver(
-                    ['id1', 'id2'],
-                    ['xyz.auth0', 'abc.goog'],
-                    'someprivatekeystring',
-                    'id1',
-                    ['HS256', 'RS256']
-                )
-            )
-        );
+        $factory = new EasyApiDecoderFactory($config);
 
-        $actual = $factory->build('jwt');
+        $actual = $factory->build($key);
+
         $this->assertEquals($expected, $actual);
     }
 }
