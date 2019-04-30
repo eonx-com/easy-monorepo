@@ -104,6 +104,28 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     'private_key' => 'someprivatekeystring',
                     'public_key' => 'somepublickeystring',
                 ]
+            ],
+            'jwt-by-header-firebase' => [
+                'type' => 'jwt-header',
+                'driver' => 'firebase',
+                'options' => [
+                    'algo' => 'HS256',
+                    'allowed_algos' => ['HS256', 'RS256'],
+                    'leeway' => 15,
+                    'private_key' => 'someprivatekeystring',
+                    'public_key' => 'somepublickeystring',
+                ]
+            ],
+            'jwt-by-parameter-auth0' => [
+                'type' => 'jwt-param',
+                'driver' => 'auth0',
+                'options' => [
+                    'allowed_algos' => ['HS256', 'RS256'],
+                    'authorized_iss' => ['xyz.auth0', 'abc.goog'],
+                    'param' => 'authParam',
+                    'private_key' => 'someprivatekeystring',
+                    'valid_audiences' => ['id1', 'id2']
+                ]
             ]
         ];
 
@@ -134,6 +156,39 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                         'someprivatekeystring',
                         ['HS256', 'RS256'],
                         15
+                    )
+                ),
+                'authParam'
+            )
+        ];
+
+        yield 'Jwt Header with Firebase' => [
+            $config,
+            'jwt-by-header-firebase',
+            new JwtTokenDecoder(
+                new JwtEasyApiTokenFactory(
+                    new FirebaseJwtDriver(
+                        'HS256',
+                        'somepublickeystring',
+                        'someprivatekeystring',
+                        ['HS256', 'RS256'],
+                        15
+                    )
+                )
+            )
+        ];
+
+        yield 'Jwt Parameter with Auth0' => [
+            $config,
+            'jwt-by-parameter-auth0',
+            new JwtTokenInQueryDecoder(
+                new JwtEasyApiTokenFactory(
+                    new Auth0JwtDriver(
+                        ['id1', 'id2'],
+                        ['xyz.auth0', 'abc.goog'],
+                        'someprivatekeystring',
+                        'id1',
+                        ['HS256', 'RS256']
                     )
                 ),
                 'authParam'
