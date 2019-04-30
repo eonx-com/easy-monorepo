@@ -8,8 +8,8 @@ use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
 use LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver;
 use LoyaltyCorp\EasyApiToken\Factories\EasyApiDecoderFactory;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
+use LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 use StepTheFkUp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 
 /**
@@ -109,55 +109,20 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                 ]
             ]
         ]);
+        $expected = new JwtTokenDecoder(
+            new JwtEasyApiTokenFactory(
+                new Auth0JwtDriver(
+                    ['id1', 'id2'],
+                    ['xyz.auth0', 'abc.goog'],
+                    'someprivatekeystring',
+                    'id1',
+                    ['HS256', 'RS256']
+                )
+            )
+        );
 
         $actual = $factory->build('jwt');
-
-        $this->assertInstanceOf(JwtTokenDecoder::class, $actual);
-        $this->assertJwtDriverConfiguration(Auth0JwtDriver::class,
-            [
-                    'allowedAlgos' => ['HS256', 'RS256'],
-                    'audienceForEncode' => 'id1',
-                    'authorizedIss' => ['xyz.auth0', 'abc.goog'],
-                    'privateKey' => 'someprivatekeystring',
-                    'validAudiences' => ['id1', 'id2']
-            ],
-            $actual
-        );
-    }
-
-    /**
-     * Assert that JWT drivers are built correctly.
-     *
-     * @param string $class Expected JWT Driver class.
-     * @param array $properties List of properties that should be set on the JWT Driver class.
-     * @param \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $actual Implementation to test.
-     *
-     * @throws \ReflectionException
-     */
-    private function assertJwtDriverConfiguration(
-        string $class,
-        array $properties,
-        EasyApiTokenDecoderInterface $actual
-    ): void {
-        $decoderReflection = new \ReflectionClass($actual);
-        $decoderTokenProperty = $decoderReflection->getProperty('jwtApiTokenFactory');
-        $decoderTokenProperty->setAccessible(true);
-        $tokenFactory = $decoderTokenProperty->getValue($actual);
-
-        $tokenFactoryReflection = new \ReflectionClass($tokenFactory);
-        $tokenFactoryDriverProperty = $tokenFactoryReflection->getProperty('jwtDriver');
-        $tokenFactoryDriverProperty->setAccessible(true);
-        $jwtDriver = $tokenFactoryDriverProperty->getValue($tokenFactory);
-
-        $this->assertInstanceOf($class, $jwtDriver);
-
-        $jwtDriverReflection = new \ReflectionClass($jwtDriver);
-        foreach ($properties as $property => $expectedValue) {
-            $jwtDriverProperty = $jwtDriverReflection->getProperty($property);
-            $jwtDriverProperty->setAccessible(true);
-            $actualValue = $jwtDriverProperty->getValue($jwtDriver);
-            $this->assertSame($expectedValue, $actualValue, "Failed on {$property}");
-        }
+        $this->assertEquals($expected, $actual);
     }
 }
 
