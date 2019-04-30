@@ -67,6 +67,11 @@ class EasyApiDecoderFactory
                 'Missing options array for EasyApiToken decoder: %s.', $configKey
             ));
         }
+        if (\array_key_exists('driver', $this->config[$configKey]) === false) {
+            throw new InvalidConfigurationException(\sprintf(
+                'EasyApiToken decoder: %s is missing a driver key.', $configKey
+            ));
+        }
 
         switch ($decoderType) {
             case 'jwt-header':
