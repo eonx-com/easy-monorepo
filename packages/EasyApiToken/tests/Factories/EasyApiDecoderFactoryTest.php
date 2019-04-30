@@ -45,6 +45,12 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
             'xxx',
             'Invalid EasyApiToken decoder type: yyy configured for key: xxx.'
         ];
+
+        yield 'Expect chain driver with no list to return error.' => [
+            ['chain-thing' => ['type' => 'chain']],
+            'chain-thing',
+            'EasyApiToken decoder: chain-thing is missing a required list option.'
+        ];
     }
 
     public function getSimpleBuilds(): iterable
