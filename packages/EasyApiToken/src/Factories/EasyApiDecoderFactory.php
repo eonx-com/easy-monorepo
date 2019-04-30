@@ -6,8 +6,10 @@ namespace LoyaltyCorp\EasyApiToken\Factories;
 use LoyaltyCorp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
+use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
 use LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver;
+use LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 
@@ -56,6 +58,8 @@ class EasyApiDecoderFactory
                 return new ApiKeyAsBasicAuthUsernameDecoder();
             case 'jwt-header':
                 return $this->createJwtHeaderDecoder($this->config[$configKey]);
+            case 'jwt-param':
+                return $this->createJwtParamDecoder($this->config[$configKey]);
         }
         throw new InvalidConfigurationException(
             \sprintf('Invalid EasyApiToken decoder type: %s configured for key: %s.', $decoderType, $configKey)
@@ -63,8 +67,8 @@ class EasyApiDecoderFactory
     }
 
     private function createJwtHeaderDecoder(array $configuration) {
-        $driverConfiguration = $configuration['driver']; // todo test this missing
-        $options = $configuration['options']; // todo stuff to validate required fields
+        $driverConfiguration = $configuration['driver'];
+        $options = $configuration['options'];
 
         $driver = new Auth0JwtDriver(
             $options['valid_audiences'],
@@ -74,5 +78,19 @@ class EasyApiDecoderFactory
             $options['allowed_algos'] ?? null
         );
         return new JwtTokenDecoder(new JwtEasyApiTokenFactory($driver));
+    }
+
+    private function createJwtParamDecoder(array $configuration) {
+        $driverConfiguration = $configuration['driver'];
+        $options = $configuration['options'];
+
+        $driver = new FirebaseJwtDriver(
+            $options['algo'],
+            $options['public_key'],
+            $options['private_key'],
+            $options['allowed_algos'] ?? null,
+            $options['leeway'] ?? null
+        );
+        return new JwtTokenInQueryDecoder(new JwtEasyApiTokenFactory($driver), $options['param']);
     }
 }
