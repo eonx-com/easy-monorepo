@@ -63,7 +63,7 @@ class EasyApiDecoderFactory
             case 'jwt-param':
                 return $this->createJwtParamDecoder($this->config[$configKey]);
             case 'chain':
-                return $this->createChain($this->config[$configKey]);
+                return $this->createChain($configKey, $this->config[$configKey]);
         }
         throw new InvalidConfigurationException(
             \sprintf('Invalid EasyApiToken decoder type: %s configured for key: %s.', $decoderType, $configKey)
@@ -73,15 +73,22 @@ class EasyApiDecoderFactory
     /**
      * Build a chain Decoder.
      *
+     * @param string $name The name of this chain driver being requested.
      * @param array $config Configuration options for the chain driver. Should have a single item named 'list'.
      *
      * @return \LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder
+     *
      * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    private function createChain($config)
+    private function createChain($name, $config): ChainReturnFirstTokenDecoder
     {
-        $driverKeys = $config['list']; // todo - handle this missing. chain.
+        if (\array_key_exists('list', $config) === false) {
+            throw new InvalidConfigurationException(\sprintf(
+                'EasyApiToken decoder: %s is missing a required list option.', $name
+            ));
+        }
+        $driverKeys = $config['list'];
 
         $list = [];
         foreach ($driverKeys as $key) {
