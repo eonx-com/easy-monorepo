@@ -5,6 +5,7 @@ namespace LoyaltyCorp\EasyApiToken\Factories;
 
 use LoyaltyCorp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
+use LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
@@ -61,10 +62,32 @@ class EasyApiDecoderFactory
                 return $this->createJwtHeaderDecoder($this->config[$configKey]);
             case 'jwt-param':
                 return $this->createJwtParamDecoder($this->config[$configKey]);
+            case 'chain':
+                return $this->createChain($this->config[$configKey]);
         }
         throw new InvalidConfigurationException(
             \sprintf('Invalid EasyApiToken decoder type: %s configured for key: %s.', $decoderType, $configKey)
         );
+    }
+
+    /**
+     * Build a chain Decoder.
+     *
+     * @param array $config Configuration options for the chain driver. Should have a single item named 'list'.
+     *
+     * @return \LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     */
+    private function createChain($config)
+    {
+        $driverKeys = $config['list']; // todo - handle this missing. chain.
+
+        $list = [];
+        foreach ($driverKeys as $key) {
+            $list[] = $this->build($key);
+        }
+        return new ChainReturnFirstTokenDecoder($list);
     }
 
     /**
