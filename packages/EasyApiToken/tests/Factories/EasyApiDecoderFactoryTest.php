@@ -41,7 +41,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         ];
 
         yield 'Test that an error is thrown when a non-existent decoder type is configured.' => [
-            ['xxx' => ['type' => 'yyy', 'options' => []]],
+            ['xxx' => ['type' => 'yyy', 'driver' => 'auth0', 'options' => []]],
             'xxx',
             'Invalid EasyApiToken decoder type: yyy configured for key: xxx.'
         ];
