@@ -5,8 +5,10 @@ namespace LoyaltyCorp\EasyApiToken\Tests\Factories;
 
 use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
+use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
 use LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver;
+use LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver;
 use LoyaltyCorp\EasyApiToken\Factories\EasyApiDecoderFactory;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
@@ -80,20 +82,34 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
 
     public function getJwtBuilds(): iterable
     {
-        yield 'Jwt Header' => [
-            [
-                'jwt' => [
-                    'type' => 'jwt-header',
-                    'driver' => 'auth0',
-                    'options' => [
-                        'valid_audiences' => ['id1', 'id2'],
-                        'authorized_iss' => ['xyz.auth0', 'abc.goog'],
-                        'private_key' => 'someprivatekeystring',
-                        'allowed_algos' => ['HS256', 'RS256']
-                    ]
+        $config = [
+            'jwt-by-header' => [
+                'type' => 'jwt-header',
+                'driver' => 'auth0',
+                'options' => [
+                    'valid_audiences' => ['id1', 'id2'],
+                    'authorized_iss' => ['xyz.auth0', 'abc.goog'],
+                    'private_key' => 'someprivatekeystring',
+                    'allowed_algos' => ['HS256', 'RS256']
                 ]
             ],
-            'jwt',
+            'jwt-by-parameter' => [
+                'type' => 'jwt-param',
+                'driver' => 'firebase',
+                'options' => [
+                    'algo' => 'HS256',
+                    'allowed_algos' => ['HS256', 'RS256'],
+                    'leeway' => 15,
+                    'param' => 'authParam',
+                    'private_key' => 'someprivatekeystring',
+                    'public_key' => 'somepublickeystring',
+                ]
+            ]
+        ];
+
+        yield 'Jwt Header' => [
+            $config,
+            'jwt-by-header',
             new JwtTokenDecoder(
                 new JwtEasyApiTokenFactory(
                     new Auth0JwtDriver(
@@ -104,6 +120,23 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                         ['HS256', 'RS256']
                     )
                 )
+            )
+        ];
+
+        yield 'Jwt Parameter' => [
+            $config,
+            'jwt-by-parameter',
+            new JwtTokenInQueryDecoder(
+                new JwtEasyApiTokenFactory(
+                    new FirebaseJwtDriver(
+                        'HS256',
+                        'somepublickeystring',
+                        'someprivatekeystring',
+                        ['HS256', 'RS256'],
+                        15
+                    )
+                ),
+                'authParam'
             )
         ];
     }
