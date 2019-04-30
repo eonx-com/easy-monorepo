@@ -52,6 +52,12 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
             'EasyApiToken decoder: chain-thing is missing a required list option.'
         ];
 
+        yield 'Expect error for missing options supplied for JWT driver.' => [
+            ['rad' => ['type' => 'jwt-header', 'driver' => 'auth0']],
+            'rad',
+            'Missing options array for EasyApiToken decoder: rad.'
+        ];
+
         yield 'Expect error for invalid jwt driver.' => [
             ['foobar' => ['type' => 'jwt-header', 'driver' => 'GOOGLE']],
             'foobar',
