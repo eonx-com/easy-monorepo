@@ -2,7 +2,19 @@
 
 <!-- dumped content start -->
 
-## v0.6.2 - 2019-04-26
+## v0.6.3 - 2019-05-01
+
+- [#27] Bump eoneopay/utils to 0.2
+
+### EasyApiToken
+
+- [#26] Add factory for EasyApiTokenDecoder objects, Thanks to [@edwardmurrell-loyaltycorp]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.6.2] - 2019-04-26
 
 ### EasyCfhighlander
 
@@ -228,3 +240,7 @@
 [v0.6.0]: https://github.com/StepTheFkUp/StepTheFkUp/compare/v0.4.5...v0.6.0
 [#25]: https://github.com/loyaltycorp/easy-monorepo/pull/25
 [v0.6.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.0...v0.6.1
+[#27]: https://github.com/loyaltycorp/easy-monorepo/pull/27
+[#26]: https://github.com/loyaltycorp/easy-monorepo/pull/26
+[@edwardmurrell-loyaltycorp]: https://github.com/edwardmurrell-loyaltycorp
+[v0.6.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.1...v0.6.2
