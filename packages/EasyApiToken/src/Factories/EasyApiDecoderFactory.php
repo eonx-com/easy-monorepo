@@ -15,6 +15,9 @@ use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 
+/**
+ * Build an EasyApiDecoder from a configuration file.
+ */
 class EasyApiDecoderFactory
 {
     /**
