@@ -7,7 +7,7 @@
         "bin/cfhighlander"
     ],
     "require": {
-        "eoneopay/utils": "dev-master",
+        "eoneopay/utils": "^0.2",
         "php": "^7.1",
         "stepthefkup/easy-pipeline": "^0.5",
         "symfony/expression-language": "^4.2",
