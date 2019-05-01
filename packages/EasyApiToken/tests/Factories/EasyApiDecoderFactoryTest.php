@@ -10,14 +10,14 @@ use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
 use LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver;
 use LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver;
-use LoyaltyCorp\EasyApiToken\Factories\EasyApiDecoderFactory;
+use LoyaltyCorp\EasyApiToken\Factories\EasyApiTokenDecoderFactory;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
 use LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 use StepTheFkUp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 
 /**
- * @covers \LoyaltyCorp\EasyApiToken\Factories\EasyApiDecoderFactory
+ * @covers \LoyaltyCorp\EasyApiToken\Factories\EasyApiTokenDecoderFactory
  */
 final class EasyApiDecoderFactoryTest extends AbstractTestCase
 {
@@ -248,7 +248,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      */
     public function testBuild(array $config, string $key, EasyApiTokenDecoderInterface $expected): void
     {
-        $factory = new EasyApiDecoderFactory($config);
+        $factory = new EasyApiTokenDecoderFactory($config);
 
         $actual = $factory->build($key);
 
@@ -268,7 +268,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      */
     public function testInvalidConfigurationErrors(array $config, string $key, string $expectedError): void
     {
-        $factory = new EasyApiDecoderFactory($config);
+        $factory = new EasyApiTokenDecoderFactory($config);
 
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage($expectedError);

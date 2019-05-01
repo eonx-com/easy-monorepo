@@ -18,7 +18,7 @@ use LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 /**
  * Build an EasyApiDecoder from a configuration file.
  */
-class EasyApiDecoderFactory
+class EasyApiTokenDecoderFactory
 {
     /**
      * @var array
@@ -26,7 +26,7 @@ class EasyApiDecoderFactory
     private $config;
 
     /**
-     * EasyApiDecoderFactory constructor.
+     * EasyApiTokenDecoderFactory constructor.
      * @param array $config
      */
     public function __construct(array $config)
