@@ -150,6 +150,8 @@ class EasyApiDecoderFactory
      * @param array $options List of options to use to create Driver.
      *
      * @return \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     private function createJwtDriver($driver, $options): JwtDriverInterface
     {
@@ -159,7 +161,9 @@ class EasyApiDecoderFactory
             case 'firebase':
                 return $this->createFirebaseDriver($options);
         }
-        //todo add exception handler here
+        throw new InvalidConfigurationException(\sprintf(
+            'Invalid JWT decoder driver: %s.', $driver
+        ));
     }
 
     /**

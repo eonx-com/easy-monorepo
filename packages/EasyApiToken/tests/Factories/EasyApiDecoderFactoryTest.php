@@ -61,7 +61,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         yield 'Expect error for invalid jwt driver.' => [
             ['foobar' => ['type' => 'jwt-header', 'driver' => 'GOOGLE', 'options' => []]],
             'foobar',
-            'Invalid JWT decoder driver: GOOGLE configured for EasyApiToken decoder: foobar.'
+            'Invalid JWT decoder driver: GOOGLE.'
         ];
 
         yield 'Expect error for missing jwt driver' => [
