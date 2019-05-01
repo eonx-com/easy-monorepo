@@ -38,6 +38,7 @@ class EasyApiDecoderFactory
      *
      * @return \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     public function build(string $configKey): EasyApiTokenDecoderInterface
@@ -117,8 +118,10 @@ class EasyApiDecoderFactory
      * @param array $configuration Options for building decoder.
      *
      * @return \LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    private function createJwtHeaderDecoder(array $configuration)
+    private function createJwtHeaderDecoder(array $configuration): JwtTokenDecoder
     {
         $driverName = $configuration['driver'];
         $options = $configuration['options'];
@@ -133,8 +136,10 @@ class EasyApiDecoderFactory
      * @param array $configuration Options for building decoder.
      *
      * @return \LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    private function createJwtParamDecoder(array $configuration)
+    private function createJwtParamDecoder(array $configuration): JwtTokenInQueryDecoder
     {
         $driverName = $configuration['driver'];
         $options = $configuration['options'];
