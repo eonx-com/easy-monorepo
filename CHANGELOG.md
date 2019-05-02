@@ -1,5 +1,9 @@
 <!-- changelog-linker -->
 
+## v0.6.5 - 2019-05-02
+
+- Fix composer dependencies and wrong name in readme files
+
 <!-- dumped content start -->
 
 ## v0.6.4 - 2019-05-02
