@@ -23,7 +23,7 @@ handling system to keep you away from any troubles :)
 The recommended way to install this package is to use [Composer][1].
 
 ```bash
-$ composer require stepthefkup/pagination
+$ composer require loyaltycorp/pagination
 ```
 
 ## How it works
