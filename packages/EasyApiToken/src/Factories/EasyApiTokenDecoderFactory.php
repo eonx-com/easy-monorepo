@@ -3,212 +3,161 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyApiToken\Factories;
 
-use LoyaltyCorp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
-use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
-use LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
-use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
-use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
-use LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver;
-use LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver;
-use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
+use LoyaltyCorp\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\Factories\MasterDecoderFactoryAwareInterface;
+use LoyaltyCorp\EasyApiToken\Traits\DefaultDecoderFactoriesTrait;
+use Psr\Container\ContainerInterface;
 
-/**
- * Build an EasyApiDecoder from a configuration file.
- */
-class EasyApiTokenDecoderFactory
+class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
 {
+    use DefaultDecoderFactoriesTrait;
+
     /**
-     * @var array
+     * @var mixed[]
      */
     private $config;
 
     /**
-     * EasyApiTokenDecoderFactory constructor.
-     * @param array $config
+     * @var \Psr\Container\ContainerInterface
      */
-    public function __construct(array $config)
+    private $container;
+
+    /**
+     * @var string[]
+     */
+    private $defaultFactories;
+
+    /**
+     * @var mixed[]
+     */
+    private $resolved = [];
+
+    /**
+     * EasyApiTokenDecoderFactory constructor.
+     *
+     * @param mixed[] $config
+     * @param null|string[] $defaultFactories
+     */
+    public function __construct(array $config, ?array $defaultFactories = null)
     {
         $this->config = $config;
+        $this->defaultFactories = $defaultFactories ?? $this->getDefaultDecoderFactories();
     }
 
     /**
      * Build a named TokenFactory.
      *
-     * @param string $configKey Key of configuration found in the configuration.
+     * @param string $decoder Key of configuration found in the configuration.
      *
      * @return \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
      * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    public function build(string $configKey): EasyApiTokenDecoderInterface
+    public function build(string $decoder): EasyApiTokenDecoderInterface
     {
-        if (\count($this->config) === 0) {
-            throw new InvalidConfigurationException('Could not find a valid configuration.');
-        }
-        if (\array_key_exists($configKey, $this->config) === false) {
-            throw new InvalidConfigurationException(
-                \sprintf('Could not find EasyApiToken for key: %s.', $configKey)
-            );
+        if (isset($this->resolved[$decoder])) {
+            return $this->resolved[$decoder];
         }
 
-        $decoderType = $this->config[$configKey]['type'] ?? '';
-
-        switch ($decoderType) {
-            case 'basic':
-                return new BasicAuthDecoder();
-            case 'user-apikey':
-                return new ApiKeyAsBasicAuthUsernameDecoder();
-            case 'chain':
-                return $this->createChain($configKey, $this->config[$configKey]);
+        if (empty($this->config) || \array_key_exists($decoder, $this->config) === false) {
+            throw new InvalidConfigurationException(\sprintf('No decoder configured for key: "%s".', $decoder));
         }
 
-        if (\array_key_exists('options', $this->config[$configKey]) === false) {
-            throw new InvalidConfigurationException(\sprintf(
-                'Missing options array for EasyApiToken decoder: %s.', $configKey
-            ));
+        $config = $this->config[$decoder] ?? [];
+        $subFactory = $this->instantiateSubFactory($decoder, $config);
+
+        if ($subFactory instanceof DecoderNameAwareInterface) {
+            $subFactory->setDecoderName($decoder);
         }
-        if (\array_key_exists('driver', $this->config[$configKey]) === false) {
-            throw new InvalidConfigurationException(\sprintf(
-                'EasyApiToken decoder: %s is missing a driver key.', $configKey
-            ));
+        if ($subFactory instanceof MasterDecoderFactoryAwareInterface) {
+            $subFactory->setMasterFactory($this);
         }
 
-        switch ($decoderType) {
-            case 'jwt-header':
-                return $this->createJwtHeaderDecoder($this->config[$configKey]);
-            case 'jwt-param':
-                return $this->createJwtParamDecoder($this->config[$configKey]);
-        }
-        throw new InvalidConfigurationException(
-            \sprintf('Invalid EasyApiToken decoder type: %s configured for key: %s.', $decoderType, $configKey)
-        );
+        return $this->resolved[$decoder] = $subFactory->build($config);
     }
 
     /**
-     * Build a chain Decoder.
+     * Set PSR container.
      *
-     * @param string $name The name of this chain driver being requested.
-     * @param array $config Configuration options for the chain driver. Should have a single item named 'list'.
+     * @param \Psr\Container\ContainerInterface $container
      *
-     * @return \LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder
-     *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @return void
      */
-    private function createChain($name, $config): ChainReturnFirstTokenDecoder
+    public function setContainer(ContainerInterface $container): void
     {
-        if (\array_key_exists('list', $config) === false) {
-            throw new InvalidConfigurationException(\sprintf(
-                'EasyApiToken decoder: %s is missing a required list option.', $name
-            ));
-        }
-        $driverKeys = $config['list'];
-
-        $list = [];
-        foreach ($driverKeys as $key) {
-            $list[] = $this->build($key);
-        }
-        return new ChainReturnFirstTokenDecoder($list);
+        $this->container = $container;
     }
 
     /**
-     * Build a JWT parameter decoder.
+     * Get sub-factory class.
      *
-     * @param array $configuration Options for building decoder.
+     * @param string $decoder
+     * @param mixed[] $config
      *
-     * @return \LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder
-     *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
-     */
-    private function createJwtHeaderDecoder(array $configuration): JwtTokenDecoder
-    {
-        $driverName = $configuration['driver'];
-        $options = $configuration['options'];
-
-        $driver = $this->createJwtDriver($driverName, $options);
-        return new JwtTokenDecoder(new JwtEasyApiTokenFactory($driver));
-    }
-
-    /**
-     * Build a JWT request decoder.
-     *
-     * @param array $configuration Options for building decoder.
-     *
-     * @return \LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder
+     * @return string
      *
      * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    private function createJwtParamDecoder(array $configuration): JwtTokenInQueryDecoder
+    private function getSubFactoryClass(string $decoder, array $config): string
     {
-        $driverName = $configuration['driver'];
-        $options = $configuration['options'];
+        // If explicit type is set, use it
+        if (empty($config['type']) === false && \is_string($config['type'])) {
+            $type = $config['type'];
 
-        $driver = $this->createJwtDriver($driverName, $options);
-        return new JwtTokenInQueryDecoder(new JwtEasyApiTokenFactory($driver), $options['param']);
-    }
-
-    /**
-     * Build a JWT driver.
-     *
-     * @param string $driver Driver to build, must be one of 'auth0' or 'firebase'.
-     * @param array $options List of options to use to create Driver.
-     *
-     * @return \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface
-     *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
-     */
-    private function createJwtDriver($driver, $options): JwtDriverInterface
-    {
-        switch ($driver) {
-            case 'auth0':
-                return $this->createAuth0Driver($options);
-            case 'firebase':
-                return $this->createFirebaseDriver($options);
+            // Allow type to be alias of default factory
+            return empty($this->defaultFactories[$type]) === false ? $this->defaultFactories[$type] : $type;
         }
+
+        // Default to factory for decoder
+        if (empty($this->defaultFactories[$decoder]) === false) {
+            return $this->defaultFactories[$decoder];
+        }
+
         throw new InvalidConfigurationException(\sprintf(
-            'Invalid JWT decoder driver: %s.', $driver
+            'No "type" or default factory configured for decoder "%s".',
+            $decoder
         ));
     }
 
     /**
-     * Build a Auth09 JWT Driver.
+     * Instantiate sub-factory.
      *
-     * @param mixed[] $options List of options to pass to Auth0JwtDriver. Keys match constructor parameters.
+     * @param string $decoder
+     * @param mixed[] $config
      *
-     * @return \LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver
+     * @return \LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    private function createAuth0Driver($options): Auth0JwtDriver
+    private function instantiateSubFactory(string $decoder, array $config): EasyApiTokenDecoderSubFactoryInterface
     {
-        $driver = new Auth0JwtDriver(
-            $options['valid_audiences'],
-            $options['authorized_iss'],
-            $options['private_key'],
-            $options['audience_for_encode'] ?? null,
-            $options['allowed_algos'] ?? null
-        );
-        return $driver;
-    }
+        $factoryClass = $this->getSubFactoryClass($decoder, $config);
 
-    /**
-     * Build a Firebase JWT Driver.
-     *
-     * @param mixed[] $options List of options to pass to FirebaseJwtDriver. Keys match constructor parameters.
-     *
-     * @return \LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver
-     */
-    private function createFirebaseDriver($options): FirebaseJwtDriver
-    {
-        $driver = new FirebaseJwtDriver(
-            $options['algo'],
-            $options['public_key'],
-            $options['private_key'],
-            $options['allowed_algos'] ?? null,
-            $options['leeway'] ?? null
-        );
-        return $driver;
+        try {
+            if ($this->container !== null && $this->container->has($factoryClass)) {
+                return $this->container->get($factoryClass);
+            }
+
+            if (\class_exists($factoryClass)) {
+                return new $factoryClass();
+            }
+        } catch (\Exception $exception) {
+            throw new InvalidConfigurationException(\sprintf(
+                'Unable to instantiate the factory "%s" for decoder "%s": %s',
+                $factoryClass,
+                $decoder,
+                $exception->getMessage()
+            ), $exception->getCode(), $exception);
+        }
+
+        throw new InvalidConfigurationException(\sprintf(
+            'Unable to instantiate the factory "%s" for decoder "%s".',
+            $factoryClass,
+            $decoder
+        ));
     }
 }
