@@ -12,7 +12,7 @@
 The recommended way to install this package is to use [Composer][1].
 
 ```bash
-$ composer require stepthefkup/psr7-factory
+$ composer require loyaltycorp/psr7-factory
 ```
 
 ## How it works

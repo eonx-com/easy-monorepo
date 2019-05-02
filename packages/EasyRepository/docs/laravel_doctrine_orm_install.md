@@ -73,11 +73,11 @@ final class PostRepository extends AbstractDoctrineRepository implements PostRep
 ## AbstractPaginatedDoctrineOrmRepository
 
 If you need to deal with paginated sets of objects, this package provides you with `LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository`
-which has everything setup for you. This repository has a dependency on the `StartSizeDataInterface` from the `stepthefkup/pagination`
+which has everything setup for you. This repository has a dependency on the `StartSizeDataInterface` from the `loyaltycorp/pagination`
 package so to be able to use it you first need to update your project's dependencies:
 
 ```bash
-$ composer require stepthefkup/pagination
+$ composer require loyaltycorp/pagination
 ``` 
 And then don't forget to register the service provider into your application, please refer to the [documentation][5].
 
