@@ -63,13 +63,13 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
      * Build a JWT driver.
      *
      * @param string $driver Driver to build, must be one of 'auth0' or 'firebase'.
-     * @param array $options List of options to use to create Driver.
+     * @param mixed[] $options List of options to use to create Driver.
      *
      * @return \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface
      *
      * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    protected function createJwtDriver($driver, $options): JwtDriverInterface
+    protected function createJwtDriver(string $driver, array $options): JwtDriverInterface
     {
         switch ($driver) {
             case 'auth0':
@@ -92,7 +92,7 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
      *
      * @return \LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver
      */
-    private function createAuth0Driver($options): Auth0JwtDriver
+    private function createAuth0Driver(array $options): Auth0JwtDriver
     {
         $driver = new Auth0JwtDriver(
             $options['valid_audiences'],
@@ -112,7 +112,7 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
      *
      * @return \LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver
      */
-    private function createFirebaseDriver($options): FirebaseJwtDriver
+    private function createFirebaseDriver(array $options): FirebaseJwtDriver
     {
         $driver = new FirebaseJwtDriver(
             $options['algo'],

@@ -27,7 +27,8 @@ final class JwtTokenInQueryDecoderFactory extends AbstractJwtTokenDecoderFactory
 
         if (empty($param) || \is_string($param) === false) {
             throw new InvalidConfigurationException(\sprintf(
-                '"param" is required and must be an string for decoder "%s".', $this->decoderName
+                '"param" is required and must be an string for decoder "%s".',
+                $this->decoderName
             ));
         }
 

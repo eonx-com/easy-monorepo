@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyApiToken\Tests\Factories;
 
+use Laravel\Lumen\Application;
 use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
 use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
@@ -10,6 +11,7 @@ use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
 use LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver;
 use LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver;
+use LoyaltyCorp\EasyApiToken\Factories\Decoders\BasicAuthDecoderFactory;
 use LoyaltyCorp\EasyApiToken\Factories\EasyApiTokenDecoderFactory;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
@@ -83,38 +85,59 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         ];
 
         yield 'Expect error for missing param' => [
-            ['foobar' => ['type' => 'jwt-param', 'driver' => 'auth0', 'options' => [
-                'valid_audiences' => ['id1', 'id2'],
-                'authorized_iss' => ['xyz.auth0', 'abc.goog'],
-                'private_key' => 'someprivatekeystring',
-                'allowed_algos' => ['HS256', 'RS256']
-            ]]],
+            [
+                'foobar' => [
+                    'type' => 'jwt-param',
+                    'driver' => 'auth0',
+                    'options' => [
+                        'valid_audiences' => ['id1', 'id2'],
+                        'authorized_iss' => ['xyz.auth0', 'abc.goog'],
+                        'private_key' => 'someprivatekeystring',
+                        'allowed_algos' => ['HS256', 'RS256']
+                    ]
+                ]
+            ],
             'foobar',
             '"param" is required and must be an string for decoder "foobar".'
         ];
     }
 
-    public function getSimpleBuilds(): iterable
+    /**
+     * Get a list builds for chain decoder.
+     *
+     * @return iterable
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     */
+    public function getChainBuilds(): iterable
     {
-        yield 'Simple API Key' => [
-            ['apiconfig' => ['type' => 'user-apikey']],
-            'apiconfig',
-            new ApiKeyAsBasicAuthUsernameDecoder()
+        $config = [
+            'chain-key' => [
+                'type' => 'chain',
+                'list' => [
+                    'api',
+                    'pass'
+                ]
+            ],
+            'api' => ['type' => 'user-apikey'],
+            'pass' => ['type' => 'basic']
         ];
 
-        yield 'Simple Basic Auth decoder' => [
-            ['something' => ['type' => 'basic']],
-            'something',
-            new BasicAuthDecoder()
-        ];
-
-        yield 'Simple Basic Auth decoder using default factory' => [
-            ['basic' => null],
-            'basic',
-            new BasicAuthDecoder()
+        yield 'Build API Chain' => [
+            $config,
+            'chain-key',
+            new ChainReturnFirstTokenDecoder([
+                new ApiKeyAsBasicAuthUsernameDecoder(),
+                new BasicAuthDecoder()
+            ])
         ];
     }
 
+    /**
+     * Get a list of builds for jwt decoders.
+     *
+     * @return iterable
+     */
     public function getJwtBuilds(): iterable
     {
         $config = [
@@ -137,7 +160,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     'leeway' => 15,
                     'param' => 'authParam',
                     'private_key' => 'someprivatekeystring',
-                    'public_key' => 'somepublickeystring',
+                    'public_key' => 'somepublickeystring'
                 ]
             ],
             'jwt-by-header-firebase' => [
@@ -148,7 +171,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     'allowed_algos' => ['HS256', 'RS256'],
                     'leeway' => 15,
                     'private_key' => 'someprivatekeystring',
-                    'public_key' => 'somepublickeystring',
+                    'public_key' => 'somepublickeystring'
                 ]
             ],
             'jwt-by-parameter-auth0' => [
@@ -232,31 +255,28 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable
+     * Get a list of builds for simple decoders.
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @return iterable
      */
-    public function getChainBuilds(): iterable
+    public function getSimpleBuilds(): iterable
     {
-        $config = [
-            'chain-key' => [
-                'type' => 'chain',
-                'list' => [
-                    'api',
-                    'pass'
-                ],
-            ],
-            'api' => ['type' => 'user-apikey'],
-            'pass' => ['type' => 'basic']
+        yield 'Simple API Key' => [
+            ['apiconfig' => ['type' => 'user-apikey']],
+            'apiconfig',
+            new ApiKeyAsBasicAuthUsernameDecoder()
         ];
 
-        yield 'Build API Chain' => [
-            $config,
-            'chain-key',
-            new ChainReturnFirstTokenDecoder([
-                new ApiKeyAsBasicAuthUsernameDecoder(),
-                new BasicAuthDecoder()
-            ])
+        yield 'Simple Basic Auth decoder' => [
+            ['something' => ['type' => 'basic']],
+            'something',
+            new BasicAuthDecoder()
+        ];
+
+        yield 'Simple Basic Auth decoder using default factory' => [
+            ['basic' => null],
+            'basic',
+            new BasicAuthDecoder()
         ];
     }
 
@@ -278,6 +298,66 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     public function testBuild(array $config, string $key, EasyApiTokenDecoderInterface $expected): void
     {
         $factory = new EasyApiTokenDecoderFactory($config);
+
+        $actual = $factory->build($key);
+        $second = $factory->build($key);
+
+        $this->assertEquals($expected, $actual);
+        $this->assertEquals(\spl_object_hash($actual), \spl_object_hash($second));
+    }
+
+    /**
+     * Test that the factory handles the container exceptions and returns its own one.
+     *
+     * @return void
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     */
+    public function testBuildContainerThrows(): void
+    {
+        $container = new class extends Application {
+            /**
+             * @noinspection PhpMissingParentCallCommonInspection
+             *
+             * {@inheritdoc}
+             */
+            public function has($id)
+            {
+                throw new \RuntimeException('runtime problems');
+            }
+        };
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('runtime problems');
+
+        $factory = new EasyApiTokenDecoderFactory(['basic' => []]);
+        $factory->setContainer($container);
+
+        $factory->build('basic');
+    }
+
+    /**
+     * Test that the requested object graph is built as expected.
+     *
+     * @param array $config Config array to build factory with.
+     * @param string $key Key of configuration to request.
+     * @param \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected Expected decoder object.
+     *
+     * @return void
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     *
+     * @dataProvider getSimpleBuilds
+     * @dataProvider getJwtBuilds
+     * @dataProvider getChainBuilds
+     */
+    public function testBuildWithContainer(array $config, string $key, EasyApiTokenDecoderInterface $expected): void
+    {
+        $container = new Application();
+        $container->bind(BasicAuthDecoderFactory::class, BasicAuthDecoderFactory::class);
+
+        $factory = new EasyApiTokenDecoderFactory($config);
+        $factory->setContainer($container);
 
         $actual = $factory->build($key);
         $second = $factory->build($key);

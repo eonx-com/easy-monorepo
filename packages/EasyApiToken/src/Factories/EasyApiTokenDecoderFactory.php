@@ -6,9 +6,9 @@ namespace LoyaltyCorp\EasyApiToken\Factories;
 use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
 use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
+use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface;
 use LoyaltyCorp\EasyApiToken\Interfaces\Factories\MasterDecoderFactoryAwareInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use LoyaltyCorp\EasyApiToken\Traits\DefaultDecoderFactoriesTrait;
 use Psr\Container\ContainerInterface;
 
@@ -117,7 +117,10 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
             return $this->defaultFactories[$decoder];
         }
 
-        throw new InvalidConfigurationException(\sprintf('No "type" or default factory configured for decoder "%s".', $decoder));
+        throw new InvalidConfigurationException(\sprintf(
+            'No "type" or default factory configured for decoder "%s".',
+            $decoder
+        ));
     }
 
     /**

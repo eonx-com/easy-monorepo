@@ -26,6 +26,7 @@
         "laravel/lumen-framework": "^5.5",
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^7.5",
+        "psr/container": "^1.0",
         "vlucas/phpdotenv": "^3.3",
         "symplify/monorepo-builder": "^5.4",
         "symplify/changelog-linker": "^5.4",
