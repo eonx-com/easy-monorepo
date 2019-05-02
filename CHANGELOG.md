@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.6.3 - 2019-05-01
+## v0.6.4 - 2019-05-02
+
+### EasyApiToken
+
+- [#28] Make easy api token decoder factory extendable
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.6.3] - 2019-05-01
 
 - [#27] Bump eoneopay/utils to 0.2
 
@@ -244,3 +254,5 @@
 [#26]: https://github.com/loyaltycorp/easy-monorepo/pull/26
 [@edwardmurrell-loyaltycorp]: https://github.com/edwardmurrell-loyaltycorp
 [v0.6.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.1...v0.6.2
+[#28]: https://github.com/loyaltycorp/easy-monorepo/pull/28
+[v0.6.3]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.2...v0.6.3
