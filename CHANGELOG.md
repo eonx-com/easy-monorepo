@@ -1,12 +1,22 @@
 <!-- changelog-linker -->
 
-## v0.6.5 - 2019-05-02
+<!-- dumped content start -->
+
+## v0.6.6 - 2019-05-03
+
+### EasyIdentity
+
+- [#29] Make simple implementation easier
+
+<!-- dumped content end -->
+
+## [v0.6.5] - 2019-05-02
 
 - Fix composer dependencies and wrong name in readme files
 
 <!-- dumped content start -->
 
-## v0.6.4 - 2019-05-02
+## [v0.6.4] - 2019-05-02
 
 ### EasyApiToken
 
@@ -260,3 +270,6 @@
 [v0.6.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.1...v0.6.2
 [#28]: https://github.com/loyaltycorp/easy-monorepo/pull/28
 [v0.6.3]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.2...v0.6.3
+[#29]: https://github.com/loyaltycorp/easy-monorepo/pull/29
+[v0.6.5]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.4...v0.6.5
+[v0.6.4]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.3...v0.6.4
