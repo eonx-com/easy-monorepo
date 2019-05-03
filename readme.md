@@ -1,14 +1,6 @@
 <div align="center">
-    <h1>StepTheFkUp</h1>
+    <h1>LoyaltyCorp - EasyMonorepo</h1>
     <p>Packages to help you stepping the f*k up in your projects.</p>
-    <p>
-        <a href="https://travis-ci.org/loyaltycorp/easy-monorepo" target="_blank">
-            <img alt="Build Status" src="https://img.shields.io/travis/loyaltycorp/easy-monorepo/master.svg">
-        </a>
-        <a href="https://coveralls.io/github/loyaltycorp/easy-monorepo" target="_blank">
-            <img alt="Coveralls github branch" src="https://img.shields.io/coveralls/github/loyaltycorp/easy-monorepo/master.svg">
-        </a>
-    </p>
 </div>
 
 ---
