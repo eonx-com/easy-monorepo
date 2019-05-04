@@ -32,7 +32,8 @@
         "natepage/sniffs": "^1.1",
         "phpstan/phpstan": "^0.11.5",
         "sensiolabs/security-checker": "^5.0",
-        "symplify/easy-coding-standard": "^5.4"
+        "symplify/easy-coding-standard": "^5.4",
+        "symfony/symfony": "^4.2"
     },
     "autoload": {
         "psr-4": {
