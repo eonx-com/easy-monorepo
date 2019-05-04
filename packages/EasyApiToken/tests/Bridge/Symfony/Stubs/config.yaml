@@ -1,0 +1,6 @@
+easy_api_token:
+  decoders:
+    basic: ~
+    chain:
+      list:
+        - basic
