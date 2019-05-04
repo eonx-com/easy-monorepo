@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyPsr7Factory\Tests;
 
-use Mockery;
-use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,24 +11,7 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * Create mock for given class and apply expectations if given.
-     *
-     * @param string $class
-     * @param null|callable $expectations
-     *
-     * @return \Mockery\MockInterface
-     */
-    protected function mock(string $class, ?callable $expectations = null): MockInterface
-    {
-        $mock = Mockery::mock($class);
-
-        if ($expectations !== null) {
-            $expectations($mock);
-        }
-
-        return $mock;
-    }
+    // No body needed.
 }
 
 \class_alias(
