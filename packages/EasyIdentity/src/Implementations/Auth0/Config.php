@@ -87,7 +87,7 @@ class Config
             return $value;
         }
 
-        throw new RequiredDataMissingException(\sprintf('Required identity data for %s missing', $key));
+        throw new RequiredDataMissingException(\sprintf('Required identity data for "%s" missing', $key));
     }
 }
 
