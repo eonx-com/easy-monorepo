@@ -150,7 +150,7 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
         $data['realm'] = $this->config->getConnection();
 
         try {
-            return $this->authFactory->create()->login($data);
+            return $this->authFactory->create()->oauth_token($data);
         } catch (RequestException $exception) {
             throw new LoginFailedException($this->getLoginExceptionMessage($exception));
         }
