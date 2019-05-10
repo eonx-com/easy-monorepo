@@ -43,10 +43,6 @@ final class CloudFormationCommandTest extends AbstractTestCase
 
         $display = $this->executeCommand('cloudformation', $inputs);
 
-        foreach ($inputs as $input) {
-            self::assertContains($input, $display);
-        }
-
         self::assertContains(\sprintf('Generating files in %s:', \realpath(static::$cwd)), $display);
 
         foreach ($files as $file) {
