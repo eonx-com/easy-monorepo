@@ -22,6 +22,14 @@ final class ValueDecision extends AbstractDecision
             ));
         }
 
+        // If input is a stdClass, property value must be set
+        if ($input instanceof \stdClass && isset($input->value) === false) {
+            throw new MissingValueIndexException(\sprintf(
+                'Passing a stdClass input to %s require to set the property "value"',
+                self::class
+            ));
+        }
+
         return parent::createContext($input);
     }
 

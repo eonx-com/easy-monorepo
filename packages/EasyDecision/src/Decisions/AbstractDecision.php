@@ -103,7 +103,7 @@ abstract class AbstractDecision implements DecisionInterface
             throw new UnableToMakeDecisionException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
-        return $this->context->getInput();
+        return $this->removeContext($this->context->getInput());
     }
 
     /**
@@ -145,12 +145,24 @@ abstract class AbstractDecision implements DecisionInterface
             $input['context'] = $context;
         }
 
+        // If input is an array add context to it
+        if ($input instanceof \stdClass) {
+            // Index context cannot be used by users to avoid unexpected behaviours
+            if (isset($input->context)) {
+                throw new ReservedContextIndexException(
+                    'When giving a stdClass input to a decision, "context" is a reserved property it cannot be used'
+                );
+            }
+
+            $input->context = $context;
+        }
+
         // Give context to input to be able to stop propagation from expression rules
         if ($input instanceof ContextAwareInterface) {
             $input->setContext($context);
         }
 
-        return $context;
+        return $context->setInput($input);
     }
 
     /**
@@ -202,6 +214,26 @@ abstract class AbstractDecision implements DecisionInterface
         }
 
         return YesNoMiddleware::class;
+    }
+
+    /**
+     * Remove context from given output.
+     *
+     * @param mixed $output
+     *
+     * @return mixed
+     */
+    private function removeContext($output)
+    {
+        if (\is_array($output)) {
+            unset($output['context']);
+        }
+
+        if ($output instanceof \stdClass) {
+            unset($output->context);
+        }
+
+        return $output;
     }
 }
 

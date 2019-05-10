@@ -43,6 +43,20 @@ final class ValueDecisionTest extends AbstractTestCase
     }
 
     /**
+     * Decision should throw an exception when given input is a stdClass and "value" property isn't set.
+     *
+     * @return void
+     */
+    public function testNotSetValueInInputStdClassException(): void
+    {
+        $this->expectException(MissingValueIndexException::class);
+
+        $decision = (new ValueDecision())->addRules([$this->getModifyValueRuleInArray()]);
+
+        $decision->make(new \stdClass());
+    }
+
+    /**
      * Decision should throw an exception when given input is an array and contains the reserved "context" index.
      *
      * @return void
@@ -54,6 +68,24 @@ final class ValueDecisionTest extends AbstractTestCase
         $decision = (new ValueDecision())->addRules([$this->getModifyValueRuleInArray()]);
 
         $decision->make(['context' => 'I know it is bad...', 'value' => 'value']);
+    }
+
+    /**
+     * Decision should throw an exception when given input is a stdClass and contains the reserved "context" property.
+     *
+     * @return void
+     */
+    public function testReservedContextInInputStdClassException(): void
+    {
+        $this->expectException(ReservedContextIndexException::class);
+
+        $decision = (new ValueDecision())->addRules([$this->getModifyValueRuleInArray()]);
+
+        $input = new \stdClass();
+        $input->value = 'value';
+        $input->context = 'I know it is bad...';
+
+        $decision->make($input);
     }
 
     /**
@@ -149,7 +181,8 @@ final class ValueDecisionTest extends AbstractTestCase
      */
     private function getExceptionRule(): RuleInterface
     {
-        return new class implements RuleInterface {
+        return new class implements RuleInterface
+        {
             /**
              * Get priority.
              *
@@ -203,7 +236,8 @@ final class ValueDecisionTest extends AbstractTestCase
      */
     private function getModifyValueRuleInArray(): RuleInterface
     {
-        return new class implements RuleInterface {
+        return new class implements RuleInterface
+        {
             /**
              * Get priority.
              *
@@ -259,7 +293,8 @@ final class ValueDecisionTest extends AbstractTestCase
      */
     private function getModifyValueRuleInObject(): RuleInterface
     {
-        return new class implements RuleInterface {
+        return new class implements RuleInterface
+        {
             /**
              * Get priority.
              *
