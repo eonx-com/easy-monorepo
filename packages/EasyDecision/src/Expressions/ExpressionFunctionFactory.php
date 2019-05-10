@@ -36,14 +36,22 @@ final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterf
             ));
         }
 
-        // ['name' => 'myFunction', 'evaluator' => function () {}]
+        // ['name' => 'myFunction', 'evaluator' => function () {}, 'description' => 'Optional text']
         if (\is_string($expressionFunction['name'] ?? null) && \is_callable($expressionFunction['evaluator'] ?? null)) {
-            return new ExpressionFunction($expressionFunction['name'], $expressionFunction['evaluator']);
+            return new ExpressionFunction(
+                $expressionFunction['name'],
+                $expressionFunction['evaluator'],
+                $expressionFunction['description'] ?? null
+            );
         }
 
-        // ['myFunction', function () {}]
+        // ['myFunction', function () {}, 'Optional text']
         if (\is_string($expressionFunction[0] ?? null) && \is_callable($expressionFunction[1] ?? null)) {
-            return new ExpressionFunction($expressionFunction[0], $expressionFunction[1]);
+            return new ExpressionFunction(
+                $expressionFunction[0],
+                $expressionFunction[1],
+                $expressionFunction[2] ?? null
+            );
         }
 
         throw new InvalidArgumentException(\sprintf(

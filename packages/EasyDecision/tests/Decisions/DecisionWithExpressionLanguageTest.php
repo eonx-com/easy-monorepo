@@ -6,6 +6,7 @@ namespace LoyaltyCorp\EasyDecision\Tests\Decisions;
 use LoyaltyCorp\EasyDecision\Decisions\ValueDecision;
 use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunction;
 use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
+use LoyaltyCorp\EasyDecision\Helpers\ValueExpressionFunctionProvider;
 use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
@@ -39,53 +40,60 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
     public function testSameDecisionWithDifferentInputs(): void
     {
         $rules = [
-            $this->createLanguageRule('value + 10'),
-            $this->createLanguageRule('name in ["Brad", "Matt"] ? value + 10 : value'),
-            $this->createLanguageRule('name === "Matt" ? value + 1000 : value'),
+            $this->createLanguageRule('add(10)'),
+            $this->createLanguageRule('if(name in ["Brad", "Matt"]).then(add(10))'),
+            $this->createLanguageRule('if(equal(name, "Matt")).then(add(1000))'),
             $this->createLanguageRule('cap(value, 200)'),
-            $this->createLanguageRule('extra_param1 > 10 ? value + extra_param1 : value')
+            $this->createLanguageRule('if(extra_param1 > 10).then(add(extra_param1))'),
+            $this->createLanguageRule('if(extra_param1 > 10).else(add(extra_param1))')
         ];
 
-        $this->injectExpressionLanguage($rules, new ExpressionLanguageConfig(null, null, [
+        $providers = [new ValueExpressionFunctionProvider()];
+        $functions = [
             new ExpressionFunction('cap', function ($arguments, $value, $max) {
                 return \min($value, $max);
             })
-        ]));
+        ];
+
+        $this->injectExpressionLanguage($rules, new ExpressionLanguageConfig(null, $providers, $functions));
 
         $decision = (new ValueDecision())->addRules($rules);
 
         $tests = [
             [
                 'original' => ['value' => 0, 'name' => 'Nathan', 'extra_param1' => 1],
-                'expected' => ['value' => 10, 'name' => 'Nathan', 'extra_param1' => 1],
+                'expected' => ['value' => 11, 'name' => 'Nathan', 'extra_param1' => 1],
                 'outputs' => [
-                    'value + 10' => 10,
-                    'name in ["Brad", "Matt"] ? value + 10 : value' => 10,
-                    'name === "Matt" ? value + 1000 : value' => 10,
+                    'add(10)' => 10,
+                    'if(name in ["Brad", "Matt"]).then(add(10))' => 10,
+                    'if(equal(name, "Matt")).then(add(1000))' => 10,
                     'cap(value, 200)' => 10,
-                    'extra_param1 > 10 ? value + extra_param1 : value' => 10
+                    'if(extra_param1 > 10).then(add(extra_param1))' => 10,
+                    'if(extra_param1 > 10).else(add(extra_param1))' => 11
                 ]
             ],
             [
                 'original' => ['value' => 0, 'name' => 'Brad', 'extra_param1' => 1],
-                'expected' => ['value' => 20, 'name' => 'Brad', 'extra_param1' => 1],
+                'expected' => ['value' => 21, 'name' => 'Brad', 'extra_param1' => 1],
                 'outputs' => [
-                    'value + 10' => 10,
-                    'name in ["Brad", "Matt"] ? value + 10 : value' => 20,
-                    'name === "Matt" ? value + 1000 : value' => 20,
+                    'add(10)' => 10,
+                    'if(name in ["Brad", "Matt"]).then(add(10))' => 20,
+                    'if(equal(name, "Matt")).then(add(1000))' => 20,
                     'cap(value, 200)' => 20,
-                    'extra_param1 > 10 ? value + extra_param1 : value' => 20
+                    'if(extra_param1 > 10).then(add(extra_param1))' => 20,
+                    'if(extra_param1 > 10).else(add(extra_param1))' => 21
                 ]
             ],
             [
                 'original' => ['value' => 0, 'name' => 'Matt', 'extra_param1' => 1],
-                'expected' => ['value' => 200, 'name' => 'Matt', 'extra_param1' => 1],
+                'expected' => ['value' => 201, 'name' => 'Matt', 'extra_param1' => 1],
                 'outputs' => [
-                    'value + 10' => 10,
-                    'name in ["Brad", "Matt"] ? value + 10 : value' => 20,
-                    'name === "Matt" ? value + 1000 : value' => 1020,
+                    'add(10)' => 10,
+                    'if(name in ["Brad", "Matt"]).then(add(10))' => 20,
+                    'if(equal(name, "Matt")).then(add(1000))' => 1020,
                     'cap(value, 200)' => 200,
-                    'extra_param1 > 10 ? value + extra_param1 : value' => 200
+                    'if(extra_param1 > 10).then(add(extra_param1))' => 200,
+                    'if(extra_param1 > 10).else(add(extra_param1))' => 201
                 ]
             ]
         ];

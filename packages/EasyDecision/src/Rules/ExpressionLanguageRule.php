@@ -53,7 +53,7 @@ final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageA
      */
     public function proceed(ContextInterface $context)
     {
-        return $this->expressionLanguage->evaluate($this->expression, $context->getInput());
+        return $this->expressionLanguage->evaluate($this->expression, (array)$context->getInput());
     }
 
     /**

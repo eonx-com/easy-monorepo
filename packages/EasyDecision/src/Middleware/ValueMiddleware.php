@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyDecision\Middleware;
 
+use LoyaltyCorp\EasyDecision\Helpers\IfConditionForValue;
 use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
 use LoyaltyCorp\EasyDecision\Traits\DealsWithValueInput;
@@ -21,6 +22,10 @@ final class ValueMiddleware extends AbstractMiddleware
      */
     protected function doHandle(ContextInterface $context, $output): void
     {
+        if ($output instanceof IfConditionForValue) {
+            $output = $output->getValue();
+        }
+
         // If value decision, update the input for next middleware
         if ($context->getDecisionType() === DecisionInterface::TYPE_VALUE) {
             $this->addRuleOutput($context, $output);
