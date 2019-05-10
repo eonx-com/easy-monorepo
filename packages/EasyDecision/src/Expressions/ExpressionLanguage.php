@@ -17,6 +17,11 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     private $expressionLanguage;
 
     /**
+     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     */
+    private $functions = [];
+
+    /**
      * ExpressionLanguage constructor.
      *
      * @param \Symfony\Component\ExpressionLanguage\ExpressionLanguage $expressionLanguage
@@ -36,6 +41,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     public function addFunction(ExpressionFunctionInterface $function): ExpressionLanguageInterface
     {
         $this->expressionLanguage->register($function->getName(), $this->getEmptyCallable(), $function->getEvaluator());
+        $this->functions[] = $function;
 
         return $this;
     }
@@ -51,6 +57,16 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     public function evaluate(string $expression, ?array $arguments = null)
     {
         return $this->expressionLanguage->evaluate($expression, $arguments ?? []);
+    }
+
+    /**
+     * Get list of functions added.
+     *
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     */
+    public function getFunctions(): array
+    {
+        return $this->functions;
     }
 
     /**
