@@ -6,6 +6,13 @@ namespace LoyaltyCorp\EasyDecision\Interfaces\Expressions;
 interface ExpressionFunctionInterface
 {
     /**
+     * Get description.
+     *
+     * @return null|string
+     */
+    public function getDescription(): ?string;
+
+    /**
      * Get callable to evaluate function.
      *
      * @return callable
