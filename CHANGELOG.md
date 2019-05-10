@@ -2,7 +2,25 @@
 
 <!-- dumped content start -->
 
-## v0.6.6 - 2019-05-03
+## Unreleased
+
+### EasyDecision
+
+- [#32] Improve expression language implementation
+
+### EasyApiToken
+
+- [#31] Create Symfony bundle
+
+### EasyPsr7Factory
+
+- [#30] Create Symfony bundle
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.6.6] - 2019-05-03
 
 ### EasyIdentity
 
@@ -273,3 +291,7 @@
 [#29]: https://github.com/loyaltycorp/easy-monorepo/pull/29
 [v0.6.5]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.4...v0.6.5
 [v0.6.4]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.3...v0.6.4
+[#32]: https://github.com/loyaltycorp/easy-monorepo/pull/32
+[#31]: https://github.com/loyaltycorp/easy-monorepo/pull/31
+[#30]: https://github.com/loyaltycorp/easy-monorepo/pull/30
+[v0.6.6]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.5...v0.6.6
