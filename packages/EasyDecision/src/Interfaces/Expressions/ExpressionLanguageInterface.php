@@ -25,6 +25,13 @@ interface ExpressionLanguageInterface
     public function evaluate(string $expression, ?array $arguments = null);
 
     /**
+     * Get list of functions added.
+     *
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     */
+    public function getFunctions(): array;
+
+    /**
      * Validate given expression for given names.
      *
      * @param string $expression

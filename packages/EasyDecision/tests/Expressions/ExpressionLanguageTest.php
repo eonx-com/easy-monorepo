@@ -17,6 +17,20 @@ final class ExpressionLanguageTest extends AbstractTestCase
     private static $expression = '(max(1,2,3,4,5,6) + min(6,5,4,3,2,1) + 3) / (2 - input)';
 
     /**
+     * ExpressionLanguage should return list of functions added.
+     *
+     * @return void
+     */
+    public function testGetFunctions(): void
+    {
+        $functions = $this->getExpressionLanguage()->getFunctions();
+
+        self::assertCount(2, $functions);
+        self::assertEquals('min', $functions[0]->getName());
+        self::assertEquals('max', $functions[1]->getName());
+    }
+
+    /**
      * ExpressionLanguage should throw an exception if given expression is invalid for given names.
      *
      * @return void
