@@ -2,7 +2,11 @@
 
 <!-- dumped content start -->
 
-## Unreleased
+## v0.6.7 - 2019-05-14
+
+### EasyRepository
+
+- Fix namespaces in AbstractPaginatedDoctrineOrmRepository
 
 ### EasyDecision
 

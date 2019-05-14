@@ -10,7 +10,7 @@
         "phpunit/phpunit": "^7.5",
         "mockery/mockery": "^1.2",
         "doctrine/orm": "^2.6",
-        "loyaltycorp/easy-pagination": "^0.7",
+        "loyaltycorp/easy-pagination": "^0.6.7",
         "laravel/lumen-framework": "^5.5",
         "vlucas/phpdotenv": "^3.3"
     },
