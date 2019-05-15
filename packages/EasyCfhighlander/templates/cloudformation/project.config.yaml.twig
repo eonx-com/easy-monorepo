@@ -1,5 +1,6 @@
 maximum_availability_zones: 5
 dns_domain: {{ dns_domain }}
+ops_account_dns_iam_role: {{ ops_account_dns_iam_role }}
 ip_blocks:
 {% for env, ips in cloudformation.ip_blocks %}
   {{ env }}:

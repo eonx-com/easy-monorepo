@@ -6,6 +6,16 @@ listeners:
     port: 80
     protocol: http
     default_targetgroup: default
+    rules:
+      - host: "*"
+        priority: 100
+        redirect:
+          Host: '#{host}'
+          Path: '/#{path}'
+          Port: '443'
+          Protocol: 'HTTPS'
+          Query: '#{query}'
+          StatusCode: 'HTTP_301'
   https:
     port: 443
     protocol: https
