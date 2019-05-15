@@ -1,6 +1,10 @@
 imports:
     - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/psr2.yml' }
 
+parameters:
+    exclude_files:
+        - '*/var/*.php'
+
 services:
     PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
         absoluteLineLimit: 120
