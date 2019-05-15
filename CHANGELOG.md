@@ -1,5 +1,11 @@
 <!-- changelog-linker -->
 
+## v0.6.9 - 2019-05-15
+
+### EasyCfhighlander
+
+- Update cloudformation branch to develop
+
 <!-- dumped content start -->
 
 ## v0.6.8 - 2019-05-15
