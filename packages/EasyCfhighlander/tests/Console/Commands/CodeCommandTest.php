@@ -25,9 +25,9 @@ final class CodeCommandTest extends AbstractTestCase
         ];
 
         $files = [
-            'Jenkinsfile.twig',
-            'gcs.cfhighlander.rb',
-            'gcs.config.yaml',
+            'Jenkinsfile',
+            'project.cfhighlander.rb',
+            'project.config.yaml',
             'project-schema.cfhighlander.rb',
             'project-schema.config.yaml'
         ];

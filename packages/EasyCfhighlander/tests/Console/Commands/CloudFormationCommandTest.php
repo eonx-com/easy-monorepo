@@ -25,20 +25,25 @@ final class CloudFormationCommandTest extends AbstractTestCase
         ];
 
         $files = [
-            'gcs.cfhighlander.rb',
-            'gcs.config.yaml',
-            'gcs.mappings.yaml',
-            'Jenkinsfile.twig',
+            'project.cfhighlander.rb',
+            'project.config.yaml',
+            'project.mappings.yaml',
+            'Jenkinsfile',
             'aurora.config.yaml',
             'az.mappings.yaml',
             'bastion.config.yaml',
+            'kms.config.yaml',
             'loadbalancer.config.yaml',
-            'redis.config.yaml.twig',
+            'redis.config.yaml',
             'sqs.config.yaml',
             'vpc.config.yaml',
             'ecs/ecs.cfhighlander.rb',
             'ecs/ecs.cfndsl.rb',
-            'ecs/ecs.config.yaml'
+            'ecs/ecs.config.yaml',
+            'redis/redis.cfhighlander.rb',
+            'redis/redis.cfndsl.rb',
+            'redis/redis.config.yaml',
+            'redis/redis.mappings.yaml'
         ];
 
         $display = $this->executeCommand('cloudformation', $inputs);
