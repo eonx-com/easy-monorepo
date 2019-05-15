@@ -69,7 +69,7 @@ pipeline{
     }
     stage('Update Dev Environment') {
       when {
-        expression { env.BRANCH_NAME == 'development' }
+        expression { env.BRANCH_NAME == 'develop' }
       }
       steps {
         println "Create Dev Environment"
