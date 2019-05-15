@@ -4,61 +4,55 @@ CfhighlanderTemplate do
       ComponentParam 'MaxNatGateways', '1'
       ComponentParam 'SingleNatGateway', 'true'
     end
-  
-    Component name:'vpc', template: 'vpc' do
-      parameter name: 'MaxNatGateways', value: Ref('MaxNatGateways')
-      parameter name: 'SingleNatGateway', value: Ref('SingleNatGateway')
-      parameter name: 'DnsDomain', value: dns_domain
-    end
 
-    Component name:'loadbalancer', template: 'loadbalancer' do
-      parameter name: 'DnsDomain', value: dns_domain
-      parameter name: 'SslCertId', value: FindInMap(
-        'EnvironmentName', Ref('EnvironmentName'), 'SslCertId'
-      )
-    end
-
-    Component template: 'redis', name: 'redis' do
+     Component name:'vpc', template: 'vpc@1.6.3' do
+       parameter name: 'MaxNatGateways', value: Ref('MaxNatGateways')
+       parameter name: 'SingleNatGateway', value: Ref('SingleNatGateway')
        parameter name: 'DnsDomain', value: dns_domain
-       parameter name: 'CacheInstanceType', value: FindInMap(
-         'EnvironmentType', Ref('EnvironmentType'), 'CacheInstanceType'
-       )
-       parameter name: 'CacheClusters', value: FindInMap(
-         'EnvironmentType', Ref('EnvironmentType'), 'CacheClusters'
-       )
-       parameter name: 'Cluster', value: FindInMap(
-         'EnvironmentType', Ref('EnvironmentType'), 'RedisCluster'
-       )
-       parameter name: 'RedisEndpointType', value: FindInMap(
-         'EnvironmentType', Ref('EnvironmentType'), 'RedisEndpointType'
-       )
-    end
+       parameter name: 'dnszoneAddNSRecords', value: 'true'
+       parameter name: 'dnszoneParentIAMRole', value: ops_account_dns_iam_role
+     end
 
-    Component name:'aurora', template: 'aurora-mysql@2.0.1' do
+     Component template: 'keypair@1.0.0', name: 'keypair' do
+       parameter name: 'KeyPairName', value: Ref('EnvironmentName')
+       parameter name: 'SSMParameterPath', value: FnSub('/loyaltycorp/gcs/${EnvironmentName}')
+     end
+
+     Component template: 'redis', name: 'redis' do
+       parameter name: 'DnsDomain', value: dns_domain
+       parameter name: 'CacheInstanceType', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'CacheInstanceType')
+       parameter name: 'CacheClusters', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'CacheClusters')
+       parameter name: 'Cluster', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'RedisCluster')
+       parameter name: 'RedisEndpointType', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'RedisEndpointType')
+     end
+
+     Component template: 'acm@1.1.0', name: 'acm' do
+       parameter name: 'DomainName', value: FnSub("*.${EnvironmentName}.#{dns_domain}")
+     end
+
+     Component name:'loadbalancer', template: 'loadbalancer' do
+       parameter name: 'DnsDomain', value: dns_domain
+       parameter name: 'SslCertId', value: cfout('acm', 'CertificateArn')
+     end
+
+     Component name:'ecs', template: 'ecs'
+
+     Component name:'sqs', template: 'sqs@1.1.2'
+
+     Component name:'bastion', template: 'bastion' do
+       parameter name: 'KeyName', value: cfout('keypair','KeyPair')
+       parameter name: 'DnsDomain', value: dns_domain
+       parameter name: 'InstanceType', value: 't2.micro'
+     end
+
+     Component name:'aurora', template: 'aurora-mysql@2.0.1' do
        parameter name:'DnsDomain', value: dns_domain
-       parameter name: 'WriterInstanceType', value: FindInMap(
-         'EnvironmentType', Ref('EnvironmentType'), 'WriterInstanceType'
-       )
-       parameter name: 'ReaderInstanceType', value: FindInMap(
-         'EnvironmentType', Ref('EnvironmentType'), 'ReaderInstanceType'
-       )
-       parameter name: 'EnableReader', value: FindInMap(
-         'EnvironmentType', Ref('EnvironmentType'), 'EnableReader'
-       )
-       parameter name: 'KmsKeyId', value: FindInMap(
-         'EnvironmentName', Ref('EnvironmentName'), 'KmsKeyId'
-       )
-    end
+       parameter name: 'KmsKeyId', value: cfout('kms', 'AuroraKey')
+       parameter name: 'WriterInstanceType', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'WriterInstanceType')
+       parameter name: 'ReaderInstanceType', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'ReaderInstanceType')
+       parameter name: 'EnableReader', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'EnableReader')
+     end
 
-    Component name:'ecs', template: 'ecs'
-
-    Component name:'sqs', template: 'sqs@1.1.2'
-
-    Component name:'bastion', template: 'bastion' do
-      parameter name: 'DnsDomain', value: dns_domain
-      parameter name: 'Ami', value: FindInMap(
-        'EnvironmentName', Ref('EnvironmentName'), 'BastionAmi'
-      )
-    end
+     Component name: 'kms', template: 'kms@0.1.1'
 
 end

@@ -44,13 +44,20 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
             'aurora.config.yaml',
             'az.mappings.yaml',
             'bastion.config.yaml',
+            'kms.config.yaml',
             'loadbalancer.config.yaml',
             'redis.config.yaml',
             'sqs.config.yaml',
             'vpc.config.yaml',
+            // ECS
             'ecs/ecs.cfhighlander.rb',
             'ecs/ecs.cfndsl.rb',
-            'ecs/ecs.config.yaml'
+            'ecs/ecs.config.yaml',
+            // Redis
+            'redis/redis.cfhighlander.rb',
+            'redis/redis.cfndsl.rb',
+            'redis/redis.config.yaml',
+            'redis/redis.mappings.yaml'
         ];
     }
 
