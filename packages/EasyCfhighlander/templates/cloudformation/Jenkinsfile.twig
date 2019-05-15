@@ -18,6 +18,9 @@ pipeline{
     PROD_ACCOUNT_ID = '{{ prod_account }}'
     CIINABOX_ROLE = '{{ ciinabox_role }}'
   }
+  parameters {
+     string(name: 'CHEF_BRANCH', defaultValue: "${env.BRANCH_NAME}", description: 'Chef branch for AMIs')
+  }
   stages {
     stage('Compile and Validate') {
       agent {
@@ -27,7 +30,7 @@ pipeline{
         }
       }
       steps {
-        sh "rm -rf ~/.cfhighlander"
+        sh "rm -rf ~/cfhighlander/.cfhighlander"
         sh "cfhighlander cfcompile ${env.PROJECT_NAME} --validate"
         sh "cat az.mappings.yaml"
       }
@@ -53,6 +56,17 @@ pipeline{
         sh "env && cfhighlander cfpublish ${env.PROJECT_NAME} --version ${env.cf_version} --dstbucket ${env.SOURCE_BUCKET} --dstprefix cloudformation/${env.PROJECT_NAME}"
       }
     }
+    stage('Fetch AMI and Container Mappings') {
+      steps {
+        sh """#!/bin/bash
+        aws s3 cp s3://${env.SOURCE_BUCKET}/amis/${params.CHEF_BRANCH}-ami-latest.yml ${params.CHEF_BRANCH}-ami-latest.yml --region ${env.REGION}
+        """
+        script {
+          mappings = readYaml file: "${params.CHEF_BRANCH}-ami-latest.yml"
+          bastionAMI = "${mappings['bastionAMI'][env.REGION]['ami']}"
+        }
+      }
+    }
     stage('Update Dev Environment') {
       when {
         expression { env.BRANCH_NAME == 'development' }
@@ -71,7 +85,8 @@ pipeline{
             'EnvironmentName': 'dev',
             'EnvironmentType': 'development',
             'NetworkPrefix': '10',
-            'StackOctet': '130'
+            'StackOctet': '130',
+            'bastionAmi': bastionAMI
           ]
         )
         println "Update Dev Environment"
@@ -85,7 +100,8 @@ pipeline{
           role: env.CIINABOX_ROLE,
           parameters: [
             'EnvironmentName': 'dev',
-            'EnvironmentType': 'development'
+            'EnvironmentType': 'development',
+            'bastionAmi': bastionAMI
           ]
         )
       }
@@ -108,7 +124,8 @@ pipeline{
             'EnvironmentName': 'uat',
             'EnvironmentType': 'production',
             'NetworkPrefix': '10',
-            'StackOctet': '120'
+            'StackOctet': '120',
+            'bastionAmi': bastionAMI
           ]
         )
         println "Update uat Environment"
@@ -122,7 +139,8 @@ pipeline{
           role: env.CIINABOX_ROLE,
           parameters: [
             'EnvironmentName': 'uat',
-            'EnvironmentType': 'production'
+            'EnvironmentType': 'production',
+            'bastionAmi': bastionAMI
           ]
         )
       }
@@ -152,7 +170,8 @@ pipeline{
             'NetworkPrefix': '10',
             'StackOctet': '110',
             'SingleNatGateway': 'false',
-            'MaxNatGateways': '3'
+            'MaxNatGateways': '3',
+            'bastionAmi': bastionAMI
           ]
         )
         println "Update prod Environment"
@@ -166,7 +185,8 @@ pipeline{
           role: env.CIINABOX_ROLE,
           parameters: [
             'EnvironmentName': 'prod',
-            'EnvironmentType': 'production'
+            'EnvironmentType': 'production',
+            'bastionAmi': bastionAMI
           ]
         )
       }

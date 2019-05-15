@@ -1,0 +1,34 @@
+maximum_availability_zones: 5
+component_version: 1.0.0
+
+# Restore
+restore_from_s3: false
+restore_from_snapshot: false
+
+# engine_version: 4.0.10
+family: redis4.0
+
+minor_upgrade: true
+encrypt: true
+
+# maintenance_window: sun:03:25-sun:05:30
+# snapshot_window: 00:30-02:30
+
+parameters:
+  maxmemory-policy: allkeys-lru
+#
+# redis_port: 6379
+
+security_groups:
+-
+  rules:
+  -
+    IpProtocol: tcp
+    FromPort: 6379
+    ToPort: 6379
+  ips:
+  - stack
+
+ip_blocks:
+  local:
+  - 169.254.169.254/32

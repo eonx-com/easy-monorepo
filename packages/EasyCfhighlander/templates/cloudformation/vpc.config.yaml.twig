@@ -7,6 +7,9 @@ managed_accounts:
   prod:
     aws_account_number: '{{ prod_account }}'
     assume_iam_role: {{ ciinabox_role }}
+
+manage_ns_records: true
+
 # flowlogs:
 #   traffic_type: ALL
 #   log_retention: 14

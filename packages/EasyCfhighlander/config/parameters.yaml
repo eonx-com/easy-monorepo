@@ -2,12 +2,13 @@ parameters:
   aws_region: ap-southeast-2
   ciinabox_role: ciinabox
   ops_account: 599070804856 # Defined here because unique across projects
+  ops_account_dns_iam_role: arn:aws:iam::599070804856:role/Base2-Automatic-NS-Resolver
   source_bucket: source.tools.loyaltycorp.com.au
 
   cloudformation:
     region: ap-southeast-2
 
-    # IP blocks for project.config.yaml
+    # IP blocks for gcs.config.yaml
     ip_blocks:
       public:
         - 0.0.0.0/0
