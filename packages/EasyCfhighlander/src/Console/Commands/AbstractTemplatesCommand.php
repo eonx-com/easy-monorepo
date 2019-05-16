@@ -35,8 +35,11 @@ abstract class AbstractTemplatesCommand extends Command
      * @param \Symfony\Component\Filesystem\Filesystem $filesystem
      * @param \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface $parameterResolver
      */
-    public function __construct(FileGeneratorInterface $fileGenerator, Filesystem $filesystem, ParameterResolverInterface $parameterResolver)
-    {
+    public function __construct(
+        FileGeneratorInterface $fileGenerator,
+        Filesystem $filesystem,
+        ParameterResolverInterface $parameterResolver
+    ) {
         parent::__construct();
 
         $this->fileGenerator = $fileGenerator;
@@ -75,21 +78,17 @@ abstract class AbstractTemplatesCommand extends Command
     protected function addParamResolver(SymfonyStyle $style): void
     {
         $this->parameterResolver->addResolver(function (array $params) use ($style): array {
-            $validator = static function ($answer): string {
-                if (empty($answer)) {
-                    throw new \RuntimeException('A value is required');
-                }
-
-                return \str_replace(' ', '', \strtolower((string)$answer));
-            };
+            $alpha = $this->getAlphaParamValidator();
+            $required = $this->getRequiredParamValidator();
 
             return [
-                'project' => $style->ask('Project name', $params['project'] ?? null, $validator),
-                'db_name' => $style->ask('Database name', $params['db_name'] ?? null, $validator),
-                'dns_domain' => $style->ask('DNS domain', $params['dns_domain'] ?? null, $validator),
-                'dev_account' => $style->ask('AWS DEV account', $params['dev_account'] ?? null, $validator),
-                'ops_account' => $style->ask('AWS OPS account', $params['ops_account'] ?? null, $validator),
-                'prod_account' => $style->ask('AWS PROD account', $params['prod_account'] ?? null, $validator)
+                'project' => $style->ask('Project name', $params['project'] ?? null, $required),
+                'db_name' => $style->ask('Database name', $params['db_name'] ?? null, $alpha),
+                'db_username' => $style->ask('Database username', $params['db_username'] ?? null, $alpha),
+                'dns_domain' => $style->ask('DNS domain', $params['dns_domain'] ?? null, $required),
+                'dev_account' => $style->ask('AWS DEV account', $params['dev_account'] ?? null, $required),
+                'ops_account' => $style->ask('AWS OPS account', $params['ops_account'] ?? null, $required),
+                'prod_account' => $style->ask('AWS PROD account', $params['prod_account'] ?? null, $required)
             ];
         });
     }
@@ -186,5 +185,41 @@ abstract class AbstractTemplatesCommand extends Command
     protected function getTemplateName(string $template): string
     {
         return \sprintf('%s/%s.twig', $this->getTemplatePrefix(), $template);
+    }
+
+    /**
+     * Get validator for required alphabetic parameters.
+     *
+     * @return \Closure
+     */
+    private function getAlphaParamValidator(): \Closure
+    {
+        return static function ($answer): string {
+            if (empty($answer)) {
+                throw new \RuntimeException('A value is required');
+            }
+
+            if (\ctype_alpha($answer) === false) {
+                throw new \RuntimeException('Value must be strictly alphabetic');
+            }
+
+            return \str_replace(' ', '', (string)$answer);
+        };
+    }
+
+    /**
+     * Get validator for required parameters.
+     *
+     * @return \Closure
+     */
+    private function getRequiredParamValidator(): \Closure
+    {
+        return static function ($answer): string {
+            if (empty($answer)) {
+                throw new \RuntimeException('A value is required');
+            }
+
+            return \str_replace(' ', '', (string)$answer);
+        };
     }
 }
