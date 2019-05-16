@@ -46,7 +46,7 @@ CfhighlanderTemplate do
      end
 
      Component name:'aurora', template: 'aurora-mysql@2.0.1' do
-       parameter name:'DnsDomain', value: dns_domain
+       parameter name: 'DnsDomain', value: dns_domain
        parameter name: 'KmsKeyId', value: cfout('kms', 'AuroraKey')
        parameter name: 'WriterInstanceType', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'WriterInstanceType')
        parameter name: 'ReaderInstanceType', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'ReaderInstanceType')
