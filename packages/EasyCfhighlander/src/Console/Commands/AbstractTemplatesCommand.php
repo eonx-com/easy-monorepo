@@ -85,6 +85,7 @@ abstract class AbstractTemplatesCommand extends Command
 
             return [
                 'project' => $style->ask('Project name', $params['project'] ?? null, $validator),
+                'db_name' => $style->ask('Database name', $params['db_name'] ?? null, $validator),
                 'dns_domain' => $style->ask('DNS domain', $params['dns_domain'] ?? null, $validator),
                 'dev_account' => $style->ask('AWS DEV account', $params['dev_account'] ?? null, $validator),
                 'ops_account' => $style->ask('AWS OPS account', $params['ops_account'] ?? null, $validator),
