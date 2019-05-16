@@ -1,5 +1,11 @@
 <!-- changelog-linker -->
 
+## v0.6.10 - 2019-05-16
+
+### EasyCfhighlander
+
+- Allow database name to be different than project name
+
 ## v0.6.9 - 2019-05-15
 
 ### EasyCfhighlander
