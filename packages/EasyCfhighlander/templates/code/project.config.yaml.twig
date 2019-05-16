@@ -8,7 +8,7 @@ api:
   health_check_grace_period: 0
   task_definition:
     api:
-      repo: {{ ecr_repo }}/{{ project }}
+      repo: {{ code.ecr_repo }}/{{ project }}
       image: backend
       tag_param: ApiTag
       # read_only_root: true
@@ -34,7 +34,7 @@ api:
       #   - /var/www/storage/logs:storage-volume
       #   - /ssm:data-volume
     nginx:
-      repo: {{ ecr_repo }}/{{ project }}
+      repo: {{ code.ecr_repo }}/{{ project }}
       image: nginx
       tag_param: NginxTag
       # cpu: 256
@@ -115,7 +115,7 @@ worker:
   memory: 512
   task_definition:
     worker:
-      repo: {{ ecr_repo }}/{{ project }}
+      repo: {{ code.ecr_repo }}/{{ project }}
       image: backend
       tag_param: WorkerTag
       command: [ "php", "artisan", "queue:work", "--sleep=3", "--tries=3", "--delay=30" ]
@@ -159,7 +159,7 @@ cron:
   memory: 512
   task_definition:
     cron:
-      repo: {{ ecr_repo }}/{{ project }}
+      repo: {{ code.ecr_repo }}/{{ project }}
       image: backend
       tag_param: CronTag
       command: [ "/usr/sbin/crond", "-f" ]
