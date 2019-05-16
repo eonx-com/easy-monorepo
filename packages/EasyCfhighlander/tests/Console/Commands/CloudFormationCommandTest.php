@@ -18,6 +18,8 @@ final class CloudFormationCommandTest extends AbstractTestCase
     {
         $inputs = [
             'project',
+            'projectDatabase',
+            'projectDatabaseUsername',
             'project.com',
             'aws_dev_account',
             '599070804856',
