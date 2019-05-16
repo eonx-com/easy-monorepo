@@ -1,5 +1,11 @@
 <!-- changelog-linker -->
 
+## v0.6.12 - 2019-05-16
+
+### EasyCfhighlander
+
+- Fix ecr_repo in code templates
+
 ## v0.6.11 - 2019-05-16
 
 ### EasyCfhighlander
