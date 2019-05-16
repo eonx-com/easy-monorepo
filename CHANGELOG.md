@@ -1,5 +1,11 @@
 <!-- changelog-linker -->
 
+## v0.6.11 - 2019-05-16
+
+### EasyCfhighlander
+
+- Add alpha validator + db_username
+
 ## v0.6.10 - 2019-05-16
 
 ### EasyCfhighlander
