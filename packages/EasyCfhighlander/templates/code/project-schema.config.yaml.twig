@@ -5,7 +5,7 @@ schema:
   memory: 512
   task_definition:
     schema:
-      repo: {{ ecr_repo }}/{{ project }}
+      repo: {{ code.ecr_repo }}/{{ project }}
       image: backend
       tag_param: SchemaTag
       entrypoint: ["/usr/local/bin/migrate.sh"]
