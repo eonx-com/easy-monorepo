@@ -2,7 +2,22 @@
 
 <!-- dumped content start -->
 
-## v0.6.14 - 2019-05-31
+## v0.7.0 - 2019-05-31
+
+### EasyCfhighlander
+
+- [#38] Add simple documentation
+- [#39] Update bin name for consistency
+
+### EasyDocker
+
+- [#37] Add simple documentation
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.6.14] - 2019-05-31
 
 ### EasyCfhighlander
 
@@ -368,3 +383,7 @@
 [#36]: https://github.com/loyaltycorp/easy-monorepo/pull/36
 [#35]: https://github.com/loyaltycorp/easy-monorepo/pull/35
 [v0.6.13]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.12...v0.6.13
+[#39]: https://github.com/loyaltycorp/easy-monorepo/pull/39
+[#38]: https://github.com/loyaltycorp/easy-monorepo/pull/38
+[#37]: https://github.com/loyaltycorp/easy-monorepo/pull/37
+[v0.6.14]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.13...v0.6.14
