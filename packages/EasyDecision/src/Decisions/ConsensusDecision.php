@@ -5,6 +5,7 @@ namespace LoyaltyCorp\EasyDecision\Decisions;
 
 use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Middleware\YesNoMiddleware;
 
 final class ConsensusDecision extends AbstractDecision
 {
@@ -42,6 +43,16 @@ final class ConsensusDecision extends AbstractDecision
     protected function getDecisionType(): string
     {
         return DecisionInterface::TYPE_YESNO_CONSENSUS;
+    }
+
+    /**
+     * Get middleware class.
+     *
+     * @return string
+     */
+    protected function getMiddlewareClass(): string
+    {
+        return YesNoMiddleware::class;
     }
 }
 
