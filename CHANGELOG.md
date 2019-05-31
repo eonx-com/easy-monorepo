@@ -1,24 +1,34 @@
 <!-- changelog-linker -->
 
-## v0.6.12 - 2019-05-16
+<!-- dumped content start -->
+
+## v0.6.13 - 2019-05-31
+
+### EasyDecision
+
+- [#34] Delegate middleware class definition to concrete decision
+
+<!-- dumped content end -->
+
+## [v0.6.12] - 2019-05-16
 
 ### EasyCfhighlander
 
 - Fix ecr_repo in code templates
 
-## v0.6.11 - 2019-05-16
+## [v0.6.11] - 2019-05-16
 
 ### EasyCfhighlander
 
 - Add alpha validator + db_username
 
-## v0.6.10 - 2019-05-16
+## [v0.6.10] - 2019-05-16
 
 ### EasyCfhighlander
 
 - Allow database name to be different than project name
 
-## v0.6.9 - 2019-05-15
+## [v0.6.9] - 2019-05-15
 
 ### EasyCfhighlander
 
@@ -26,7 +36,7 @@
 
 <!-- dumped content start -->
 
-## v0.6.8 - 2019-05-15
+## [v0.6.8] - 2019-05-15
 
 ### EasyCfhighlander
 
@@ -335,3 +345,9 @@
 [v0.6.6]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.5...v0.6.6
 [#33]: https://github.com/loyaltycorp/easy-monorepo/pull/33
 [v0.6.7]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.6...v0.6.7
+[#34]: https://github.com/loyaltycorp/easy-monorepo/pull/34
+[v0.6.9]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.8...v0.6.9
+[v0.6.8]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.7...v0.6.8
+[v0.6.12]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.11...v0.6.12
+[v0.6.11]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.10...v0.6.11
+[v0.6.10]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.9...v0.6.10
