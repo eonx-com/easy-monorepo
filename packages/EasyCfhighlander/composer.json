@@ -23,7 +23,7 @@
         }
     },
     "bin": [
-        "bin/cfhighlander"
+        "bin/easy-cfhighlander"
     ],
     "extra": {
         "branch-alias": {
