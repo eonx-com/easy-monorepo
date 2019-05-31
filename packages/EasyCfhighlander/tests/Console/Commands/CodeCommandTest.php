@@ -17,11 +17,13 @@ final class CodeCommandTest extends AbstractTestCase
     public function testGenerateCloudFormationFiles(): void
     {
         $inputs = [
-            'project',
-            'project.com',
-            'aws_dev_account',
-            '599070804856',
-            'aws_prod_account'
+            'project', // project
+            'project', // db_name
+            'project', // db_username
+            'project.com', // dns_domain
+            'aws_dev_account', // dev_account
+            '599070804856', // ops_account
+            'aws_prod_account' // prod_account
         ];
 
         $files = [
