@@ -13,8 +13,6 @@ use LoyaltyCorp\EasyDecision\Interfaces\ContextAwareInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
-use LoyaltyCorp\EasyDecision\Middleware\ValueMiddleware;
-use LoyaltyCorp\EasyDecision\Middleware\YesNoMiddleware;
 use LoyaltyCorp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline;
 use LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface;
 
@@ -123,6 +121,13 @@ abstract class AbstractDecision implements DecisionInterface
     abstract protected function getDecisionType(): string;
 
     /**
+     * Get middleware class.
+     *
+     * @return string
+     */
+    abstract protected function getMiddlewareClass(): string;
+
+    /**
      * Create context for given input.
      *
      * @param mixed $input
@@ -200,20 +205,6 @@ abstract class AbstractDecision implements DecisionInterface
             new BaseIlluminatePipeline(),
             $this->createMiddlewareList($this->getMiddlewareClass())
         );
-    }
-
-    /**
-     * Get middleware class.
-     *
-     * @return string
-     */
-    private function getMiddlewareClass(): string
-    {
-        if ($this->getDecisionType() === DecisionInterface::TYPE_VALUE) {
-            return ValueMiddleware::class;
-        }
-
-        return YesNoMiddleware::class;
     }
 
     /**
