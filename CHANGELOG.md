@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v0.6.13 - 2019-05-31
+## v0.6.14 - 2019-05-31
+
+### EasyCfhighlander
+
+- [#36] Implement status and manifest concept
+
+### EasyDocker
+
+- [#35] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.6.13] - 2019-05-31
 
 ### EasyDecision
 
@@ -351,3 +365,6 @@
 [v0.6.12]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.11...v0.6.12
 [v0.6.11]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.10...v0.6.11
 [v0.6.10]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.9...v0.6.10
+[#36]: https://github.com/loyaltycorp/easy-monorepo/pull/36
+[#35]: https://github.com/loyaltycorp/easy-monorepo/pull/35
+[v0.6.13]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.12...v0.6.13
