@@ -6,7 +6,7 @@ namespace LoyaltyCorp\EasyCfhighlander\File;
 final class FileToGenerate
 {
     /** @var string */
-    private $file;
+    private $filename;
 
     /** @var string */
     private $template;
@@ -14,12 +14,12 @@ final class FileToGenerate
     /**
      * FileToGenerate constructor.
      *
-     * @param string $file
+     * @param string $filename
      * @param string $template
      */
-    public function __construct(string $file, string $template)
+    public function __construct(string $filename, string $template)
     {
-        $this->file = $file;
+        $this->filename = $filename;
         $this->template = $template;
     }
 
@@ -28,9 +28,9 @@ final class FileToGenerate
      *
      * @return string
      */
-    public function getFile(): string
+    public function getFilename(): string
     {
-        return $this->file;
+        return $this->filename;
     }
 
     /**
