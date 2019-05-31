@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+
+  api:
+    volumes:
+      - ./:/var/www:delegated
+      - ./docker/api/development/php.ini:/usr/local/etc/php/conf.d/99-overrides.ini
+
+  worker:
+    volumes:
+      - ./:/var/www:delegated
+
+  cron:
+    volumes:
+      - ./:/var/www:delegated

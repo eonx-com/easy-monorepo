@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+set -e
+
+# get env vars
+if [ ! -z ${SSM_PATH+x} ]; then
+  eval $(awsenv)
+fi
+
+ARTISAN=$(/usr/bin/find /var/www -name artisan)
+
+if [ -f ${ARTISAN} ]; then
+    echo "doctrine:clear:metadata:cache"
+    /usr/local/bin/php ${ARTISAN} doctrine:clear:metadata:cache
+    echo "doctrine:clear:result:cache"
+    /usr/local/bin/php ${ARTISAN} doctrine:clear:result:cache
+    echo "doctrine:clear:query:cache"
+    /usr/local/bin/php ${ARTISAN} doctrine:clear:query:cache
+    echo "doctrine:generate:proxies"
+    /usr/local/bin/php ${ARTISAN} doctrine:generate:proxies
+fi
+
+if [ ! -z ${NEWRELIC_KEY} ]
+  then
+    echo "New Relic: Enabling"
+    sed -i "s/;newrelic.enabled = true/newrelic.enabled = true/g" "${PHP_INI_DIR}/conf.d/newrelic.ini"
+    echo "New Relic: Setting New Relic license key to '${NEWRELIC_KEY}'"
+    sed -i "s/newrelic.license = \"REPLACE_WITH_REAL_KEY\"/newrelic.license = \"${NEWRELIC_KEY}\"/g" "${PHP_INI_DIR}/conf.d/newrelic.ini"
+    sed -i "s/newrelic.appname = \".*\"/newrelic.appname = \"${APP_NAME}\"/g" "${PHP_INI_DIR}/conf.d/newrelic.ini"
+  else
+    echo "Skipping New Relic setup"
+fi
+
+exec "$@"
