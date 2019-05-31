@@ -30,18 +30,62 @@ final class FileGenerator implements FileGeneratorInterface
     /**
      * Generate file for given template and params.
      *
-     * @param string $filename
-     * @param string $template
+     * @param \LoyaltyCorp\EasyCfhighlander\File\FileToGenerate $fileToGenerate
      * @param null|mixed[] $params
      *
-     * @return void
+     * @return \LoyaltyCorp\EasyCfhighlander\File\FileStatus
      *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function generate(string $filename, string $template, ?array $params = null): void
+    public function generate(FileToGenerate $fileToGenerate, ?array $params = null): FileStatus
     {
-        $this->filesystem->dumpFile($filename, $this->twig->render($template, $params ?? []));
+        $filename = $fileToGenerate->getFilename();
+        $rendered = $this->renderTemplate($fileToGenerate->getTemplate(), $params);
+        $renderedHash = $this->hash($rendered);
+        $exists = $this->filesystem->exists($filename);
+
+        // If file already exist and is identical, skip
+        if ($exists && $renderedHash === $this->hash(\file_get_contents($filename))) {
+            return new FileStatus(
+                $fileToGenerate,
+                $this->hash(\file_get_contents($filename)),
+                self::STATUS_SKIPPED_IDENTICAL
+            );
+        }
+
+        $this->filesystem->dumpFile($filename, $rendered);
+
+        return new FileStatus($fileToGenerate, $renderedHash, $exists ? self::STATUS_UPDATED : self::STATUS_CREATED);
+    }
+
+    /**
+     * Hash given content.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    private function hash(string $content): string
+    {
+        return \md5($content);
+    }
+
+    /**
+     * Return given template for given params.
+     *
+     * @param string $template
+     * @param null|array $params
+     *
+     * @return string
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    private function renderTemplate(string $template, ?array $params = null): string
+    {
+        return $this->twig->render($template, $params ?? []);
     }
 }
