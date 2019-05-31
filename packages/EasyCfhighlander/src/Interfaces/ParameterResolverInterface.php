@@ -24,4 +24,13 @@ interface ParameterResolverInterface
      * @return mixed[]
      */
     public function resolve(InputInterface $input): array;
+
+    /**
+     * Set cache pathname to use to store previous parameters.
+     *
+     * @param string $pathname
+     *
+     * @return \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface
+     */
+    public function setCachePathname(string $pathname): self;
 }

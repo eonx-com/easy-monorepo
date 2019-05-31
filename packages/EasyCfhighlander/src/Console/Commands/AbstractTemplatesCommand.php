@@ -5,6 +5,7 @@ namespace LoyaltyCorp\EasyCfhighlander\Console\Commands;
 
 use LoyaltyCorp\EasyCfhighlander\File\FileToGenerate;
 use LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface;
+use LoyaltyCorp\EasyCfhighlander\Interfaces\ManifestGeneratorInterface;
 use LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -25,6 +26,9 @@ abstract class AbstractTemplatesCommand extends Command
     /** @var \Symfony\Component\Filesystem\Filesystem */
     private $filesystem;
 
+    /** @var \LoyaltyCorp\EasyCfhighlander\Interfaces\ManifestGeneratorInterface */
+    private $manifestGenerator;
+
     /** @var \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface */
     private $parameterResolver;
 
@@ -33,17 +37,20 @@ abstract class AbstractTemplatesCommand extends Command
      *
      * @param \LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface $fileGenerator
      * @param \Symfony\Component\Filesystem\Filesystem $filesystem
+     * @param \LoyaltyCorp\EasyCfhighlander\Interfaces\ManifestGeneratorInterface $manifestGenerator
      * @param \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface $parameterResolver
      */
     public function __construct(
         FileGeneratorInterface $fileGenerator,
         Filesystem $filesystem,
+        ManifestGeneratorInterface $manifestGenerator,
         ParameterResolverInterface $parameterResolver
     ) {
         parent::__construct();
 
         $this->fileGenerator = $fileGenerator;
         $this->filesystem = $filesystem;
+        $this->manifestGenerator = $manifestGenerator;
         $this->parameterResolver = $parameterResolver;
     }
 
@@ -116,15 +123,18 @@ abstract class AbstractTemplatesCommand extends Command
         $style = new SymfonyStyle($input, $output);
         $this->addParamResolver($style);
 
-        $params = $this->parameterResolver->resolve($input);
-        $files = [];
+        $cwd = $input->getOption('cwd') ?? \getcwd();
+        $params = $this->parameterResolver
+            ->setCachePathname(\sprintf('%s/easy-cfhighlander-params.yaml', $cwd))
+            ->resolve($input);
 
+        $files = [];
         foreach ($this->getProjectFiles() as $file) {
-            $files[] = $this->getProjectFileToGenerate($file, $params['project']);
+            $files[] = $this->getProjectFileToGenerate($cwd, $file, $params['project']);
         }
 
         foreach ($this->getSimpleFiles() as $file) {
-            $files[] = $this->getSimpleFileToGenerate($file);
+            $files[] = $this->getSimpleFileToGenerate($cwd, $file);
         }
 
         ProgressBar::setFormatDefinition('custom', ' %current%/%max% [%bar%] %percent:3s%% %message%');
@@ -132,20 +142,27 @@ abstract class AbstractTemplatesCommand extends Command
         $progress->setFormat('custom');
         $progress->setOverwrite(false);
 
-        $cwd = $input->getOption('cwd') ?? \getcwd();
-
         if ($this->filesystem->exists($cwd) === false) {
             $this->filesystem->mkdir($cwd);
         }
 
         $style->write(\sprintf("Generating files in <comment>%s</comment>:\n", \realpath($cwd)));
 
-        foreach ($files as $file) {
-            $this->fileGenerator->generate($cwd . '/' . $file->getFile(), $file->getTemplate(), $params);
+        $statuses = [];
 
-            $progress->setMessage(\sprintf('- Generating <info>%s</info>...', $file->getFile()));
+        foreach ($files as $file) {
+            /** @var \LoyaltyCorp\EasyCfhighlander\File\FileToGenerate $file */
+            $statuses[] = $status = $this->fileGenerator->generate($file, $params);
+
+            $progress->setMessage(\sprintf(
+                '- <comment>%s</comment> <info>%s</info>...',
+                $status->getStatus(),
+                $file->getFilename()
+            ));
             $progress->advance();
         }
+
+        $this->manifestGenerator->generate($cwd, $this->getApplication()->getVersion(), $statuses);
 
         return self::EXIT_CODE_SUCCESS;
     }
@@ -153,26 +170,30 @@ abstract class AbstractTemplatesCommand extends Command
     /**
      * Get project file to generate.
      *
+     * @param string $cwd
      * @param string $name
      * @param string $project
      *
      * @return \LoyaltyCorp\EasyCfhighlander\File\FileToGenerate
      */
-    protected function getProjectFileToGenerate(string $name, string $project): FileToGenerate
+    protected function getProjectFileToGenerate(string $cwd, string $name, string $project): FileToGenerate
     {
-        return new FileToGenerate(\str_replace('project', $project, $name), $this->getTemplateName($name));
+        $filename = \sprintf('%s/%s', $cwd, $name);
+
+        return new FileToGenerate(\str_replace('project', $project, $filename), $this->getTemplateName($name));
     }
 
     /**
      * Get file to generate for given name.
      *
+     * @param string $cwd
      * @param string $name
      *
      * @return \LoyaltyCorp\EasyCfhighlander\File\FileToGenerate
      */
-    protected function getSimpleFileToGenerate(string $name): FileToGenerate
+    protected function getSimpleFileToGenerate(string $cwd, string $name): FileToGenerate
     {
-        return new FileToGenerate($name, $this->getTemplateName($name));
+        return new FileToGenerate(\sprintf('%s/%s', $cwd, $name), $this->getTemplateName($name));
     }
 
     /**

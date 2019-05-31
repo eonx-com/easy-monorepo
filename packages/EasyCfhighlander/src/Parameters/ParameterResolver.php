@@ -74,6 +74,20 @@ final class ParameterResolver implements ParameterResolverInterface
     }
 
     /**
+     * Set cache pathname to use to store previous parameters.
+     *
+     * @param string $pathname
+     *
+     * @return \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface
+     */
+    public function setCachePathname(string $pathname): ParameterResolverInterface
+    {
+        $this->cacheFile = $pathname;
+
+        return $this;
+    }
+
+    /**
      * Resolve default parameters from cache and config files.
      *
      * @return mixed[]
