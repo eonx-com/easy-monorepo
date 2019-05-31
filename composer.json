@@ -4,7 +4,7 @@
     "description": "The packages to step the f*k up in your projects",
     "license": "MIT",
     "bin": [
-        "packages/EasyCfhighlander/bin/cfhighlander",
+        "packages/EasyCfhighlander/bin/easy-cfhighlander",
         "packages/EasyDocker/bin/easy-docker"
     ],
     "require": {
