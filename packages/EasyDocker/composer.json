@@ -1,0 +1,35 @@
+{
+    "name": "loyaltycorp/easy-docker",
+    "description": "CLI tool to generate Docker files",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "ext-json": "*",
+        "symplify/package-builder": "^5.4",
+        "twig/twig": "^2.8",
+        "symfony/filesystem": "^4.2",
+        "symfony/finder": "^4.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyDocker\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyDocker\\Tests\\": "tests"
+        }
+    },
+    "bin": [
+        "bin/easy-docker"
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.7-dev"
+        }
+    }
+}

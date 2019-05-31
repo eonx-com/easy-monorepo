@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        public: true
+
+    LoyaltyCorp\EasyDocker\:
+        resource: '../src'
+        exclude: '../src/{HttpKernel,File/FileToGenerate.php,File/FileStatus.php}'
+
+    Symplify\PackageBuilder\Parameter\ParameterProvider: ~

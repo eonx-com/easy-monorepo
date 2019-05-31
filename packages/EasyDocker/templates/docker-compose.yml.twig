@@ -1,0 +1,72 @@
+version: '3.7'
+services:
+
+  api:
+    build:
+      context: ./
+      dockerfile: ./docker/api/Dockerfile
+    image: {{ project }}-api:latest
+    restart: on-failure
+    user: www-data
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: {{ project }}
+      DB_USERNAME: {{ project }}
+      DB_PASSWORD: {{ project }}
+    depends_on:
+      - mysql
+      - redis
+
+  worker:
+    image: {{ project }}-api:latest
+    command: "php artisan queue:work --sleep=3 --tries=3 --delay=30"
+    restart: on-failure
+    user: www-data
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: {{ project }}
+      DB_USERNAME: {{ project }}
+      DB_PASSWORD: {{ project }}
+      QUEUE_DRIVER: redis
+    depends_on:
+      - api
+
+  cron:
+    image: {{ project }}-api:latest
+    command: "/usr/sbin/cron -f"
+    restart: on-failure
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: {{ project }}
+      DB_USERNAME: {{ project }}
+      DB_PASSWORD: {{ project }}
+    depends_on:
+      - api
+
+  redis:
+    image: redis:alpine
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ project }}
+      MYSQL_DATABASE: {{ project }}
+      MYSQL_USER: {{ project }}
+      MYSQL_PASSWORD: {{ project }}
+    ports:
+      - '3306:3306'
+
+  nginx:
+    build:
+      context: ./
+      dockerfile: ./docker/nginx/Dockerfile
+    ports:
+      - '80:8080'
+    depends_on:
+      - api

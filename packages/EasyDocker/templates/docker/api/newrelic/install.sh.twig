@@ -1,0 +1,20 @@
+#!/bin/sh
+
+NEWRELIC_VERSION=`curl -s https://download.newrelic.com/php_agent/release/ | grep -o "newrelic-php[-\.0-9]*-linux.tar.gz" | uniq`
+
+echo "New Relic: Version ${NEWRELIC_VERSION}"
+
+NEWRELIC_URL="https://download.newrelic.com/php_agent/release/${NEWRELIC_VERSION}"
+
+echo "New Relic: URL ${NEWRELIC_URL}"
+
+mkdir /tmp/nr
+
+curl -L ${NEWRELIC_URL} | tar -C /tmp/nr -zx
+
+export NR_INSTALL_USE_CP_NOT_LN=1
+export NR_INSTALL_SILENT=1
+
+/tmp/nr/newrelic-php5-*/newrelic-install install
+
+rm -rf /tmp/nr

@@ -5,7 +5,6 @@ parameters:
         - 'require-dev'
         - 'autoload'
         - 'autoload-dev'
-        - 'bin'
         - 'repositories'
         - 'suggest'
 
@@ -24,6 +23,7 @@ parameters:
         packages/EasyApiToken: 'git@github.com:loyaltycorp/easy-api-token.git'
         packages/EasyCfhighlander: 'git@github.com:loyaltycorp/easy-cfhighlander.git'
         packages/EasyDecision: 'git@github.com:loyaltycorp/easy-decision.git'
+        packages/EasyDocker: 'git@github.com:loyaltycorp/easy-docker.git'
         packages/EasyIdentity: 'git@github.com:loyaltycorp/easy-identity.git'
         packages/EasyPipeline: 'git@github.com:loyaltycorp/easy-pipeline.git'
         packages/EasyRepository: 'git@github.com:loyaltycorp/easy-repository.git'
