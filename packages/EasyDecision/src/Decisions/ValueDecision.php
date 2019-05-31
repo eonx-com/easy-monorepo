@@ -6,6 +6,7 @@ namespace LoyaltyCorp\EasyDecision\Decisions;
 use LoyaltyCorp\EasyDecision\Exceptions\MissingValueIndexException;
 use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Middleware\ValueMiddleware;
 
 final class ValueDecision extends AbstractDecision
 {
@@ -53,6 +54,16 @@ final class ValueDecision extends AbstractDecision
     protected function getDecisionType(): string
     {
         return DecisionInterface::TYPE_VALUE;
+    }
+
+    /**
+     * Get middleware class.
+     *
+     * @return string
+     */
+    protected function getMiddlewareClass(): string
+    {
+        return ValueMiddleware::class;
     }
 }
 
