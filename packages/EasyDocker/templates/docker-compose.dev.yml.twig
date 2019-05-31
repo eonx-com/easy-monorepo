@@ -1,0 +1,64 @@
+version: '3.7'
+services:
+
+  migrate:
+    image: {{ project }}-api:latest
+    entrypoint: "/usr/local/bin/migrate.sh"
+    user: www-data
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: {{ project }}
+      DB_USERNAME: {{ project }}
+      DB_PASSWORD: {{ project }}
+      QUEUE_DRIVER: redis
+    volumes:
+      - ./:/var/www
+
+  composer:
+    build:
+      context: ./
+      dockerfile: ./docker/api/Dockerfile
+      target: composer
+    entrypoint: "/usr/local/bin/composer"
+    command: "--help"
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: {{ project }}
+      DB_USERNAME: {{ project }}
+      DB_PASSWORD: {{ project }}
+      QUEUE_DRIVER: redis
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - ./docker/api/development/php-composer.ini:/usr/local/etc/php/conf.d/99-overrides.ini
+      - ./vendor:/var/www/vendor
+      - ./composer.lock:/var/www/composer.lock
+      - ./composer.json:/var/www/composer.json
+      - composer-cache:/var/www/.composer
+
+  artisan:
+    image: {{ project }}-api:latest
+    entrypoint: "/usr/local/bin/php /var/www/artisan"
+    command: "--help"
+    user: www-data
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: {{ project }}
+      DB_USERNAME: {{ project }}
+      DB_PASSWORD: {{ project }}
+      QUEUE_DRIVER: redis
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - ./:/var/www
+
+volumes:
+  composer-cache:

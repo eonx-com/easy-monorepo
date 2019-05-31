@@ -1,0 +1,36 @@
+<?php
+declare(strict_types=1);
+
+namespace LoyaltyCorp\EasyDocker\Interfaces;
+
+use Symfony\Component\Console\Input\InputInterface;
+
+interface ParameterResolverInterface
+{
+    /**
+     * Add resolver callable.
+     *
+     * @param callable $resolver
+     *
+     * @return \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface
+     */
+    public function addResolver(callable $resolver): self;
+
+    /**
+     * Resolve parameters.
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *
+     * @return mixed[]
+     */
+    public function resolve(InputInterface $input): array;
+
+    /**
+     * Set cache pathname to use to store previous parameters.
+     *
+     * @param string $pathname
+     *
+     * @return \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface
+     */
+    public function setCachePathname(string $pathname): self;
+}

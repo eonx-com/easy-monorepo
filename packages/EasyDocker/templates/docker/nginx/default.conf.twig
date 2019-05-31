@@ -1,0 +1,29 @@
+server {
+    listen 8080;
+
+    server_name api;
+
+    root /var/www/public;
+
+    index index.php;
+
+    client_max_body_size 1M;
+
+    location / {
+        try_files \$uri \$uri/ /index.php?\$query_string;
+    }
+
+    location @rewriteapp {
+        rewrite ^(.*)$ /index.php/$1 last;
+    }
+
+    location ~ ^/index\.php(/|$) {
+        fastcgi_pass api:9000;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param HTTPS off;
+        include snippets/cors.conf;
+    }
+
+}

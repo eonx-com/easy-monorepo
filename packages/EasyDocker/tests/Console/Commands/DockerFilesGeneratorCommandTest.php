@@ -1,0 +1,54 @@
+<?php
+declare(strict_types=1);
+
+namespace LoyaltyCorp\EasyDocker\Tests\Console\Commands;
+
+use LoyaltyCorp\EasyDocker\Tests\AbstractTestCase;
+
+final class DockerFilesGeneratorCommandTest extends AbstractTestCase
+{
+    /**
+     * Command should generate cloudformation files.
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function testGenerateCloudFormationFiles(): void
+    {
+        $inputs = [
+            'project'
+        ];
+
+        $files = [
+            'docker/api/cron/artisan-schedule',
+            'docker/api/development/php.ini',
+            'docker/api/development/php-composer.ini',
+            'docker/api/newrelic/install.sh',
+            'docker/api/Dockerfile',
+            'docker/api/migrate.sh',
+            'docker/api/php.ini',
+            'docker/api/startup.sh',
+            'docker/nginx/snippets/cors.conf',
+            'docker/nginx/default.conf',
+            'docker/nginx/Dockerfile',
+            'docker/nginx/nginx.conf',
+            'd.sh',
+            'da.sh',
+            'dc.sh',
+            'dm.sh',
+            'docker-compose.dev.yml',
+            'docker-compose.local.yml',
+            'docker-compose.yml'
+        ];
+
+        $display = $this->executeCommand('generate', $inputs);
+
+        self::assertContains(\sprintf('Generating files in %s:', \realpath(static::$cwd)), $display);
+
+        foreach ($files as $file) {
+            self::assertTrue($this->getFilesystem()->exists(static::$cwd . '/' . $file));
+            self::assertContains($file, $display);
+        }
+    }
+}
