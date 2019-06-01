@@ -40,3 +40,5 @@ $ vendor/bin/easy-cfhighlander code
 The commands will ask you to provide the required information about your project to make sure to generate
 the files that fits the most your needs. Once done, it will generate a `easy-cfhighlander-manifest.json` file to keep 
 track of the files generated and the version of the command used to generate them.
+
+[1]: https://getcomposer.org/
