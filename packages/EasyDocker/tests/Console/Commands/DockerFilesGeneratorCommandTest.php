@@ -26,6 +26,7 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'docker/api/development/php-composer.ini',
             'docker/api/newrelic/install.sh',
             'docker/api/Dockerfile',
+            'docker/api/fpm.conf',
             'docker/api/migrate.sh',
             'docker/api/php.ini',
             'docker/api/startup.sh',
@@ -42,13 +43,10 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'docker-compose.yml'
         ];
 
-        $display = $this->executeCommand('generate', $inputs);
-
-        self::assertContains(\sprintf('Generating files in %s:', \realpath(static::$cwd)), $display);
+        $this->executeCommand('generate', $inputs);
 
         foreach ($files as $file) {
             self::assertTrue($this->getFilesystem()->exists(static::$cwd . '/' . $file));
-            self::assertContains($file, $display);
         }
     }
 }
