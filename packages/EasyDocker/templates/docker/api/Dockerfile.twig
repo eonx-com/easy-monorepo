@@ -90,6 +90,7 @@ RUN mkdir /ssm
 
 ## PHP OVERRIDES
 COPY ./docker/api/php.ini "${PHP_INI_DIR}/conf.d/99-overrides.ini"
+COPY ./docker/api/fpm.conf /usr/local/etc/php-fpm.d/zzz-overrides.conf
 
 ## COPY APPLICATION
 COPY ./app /var/www/app
