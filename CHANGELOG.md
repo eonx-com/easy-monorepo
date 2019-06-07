@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.7.1 - 2019-06-07
+## v0.7.2 - 2019-06-07
+
+### EasyDocker
+
+- [#41] Fix nginx conf to listen to port 80 instead of 8080
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.7.1] - 2019-06-07
 
 ### EasyDocker
 
@@ -399,3 +409,5 @@
 [v0.6.14]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.13...v0.6.14
 [#40]: https://github.com/loyaltycorp/easy-monorepo/pull/40
 [v0.7.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.14...v0.7.0
+[#41]: https://github.com/loyaltycorp/easy-monorepo/pull/41
+[v0.7.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.0...v0.7.1
