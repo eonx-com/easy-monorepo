@@ -15,6 +15,9 @@ services:
       QUEUE_DRIVER: redis
     volumes:
       - ./:/var/www
+    depends_on:
+      - mysql
+      - redis
 
   composer:
     build:
