@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.7.2 - 2019-06-07
+## v0.7.3 - 2019-06-07
+
+### EasyDocker
+
+- [#42] Nginx conf file and migrate container dependencies, Thanks to [@bradmathews]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.7.2] - 2019-06-07
 
 ### EasyDocker
 
@@ -411,3 +421,6 @@
 [v0.7.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.14...v0.7.0
 [#41]: https://github.com/loyaltycorp/easy-monorepo/pull/41
 [v0.7.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.0...v0.7.1
+[#42]: https://github.com/loyaltycorp/easy-monorepo/pull/42
+[v0.7.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.1...v0.7.2
+[@bradmathews]: https://github.com/bradmathews
