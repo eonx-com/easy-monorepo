@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.7.0 - 2019-05-31
+## v0.7.1 - 2019-06-07
+
+### EasyDocker
+
+- [#40] Improve docker files templates
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.7.0] - 2019-05-31
 
 ### EasyCfhighlander
 
@@ -387,3 +397,5 @@
 [#38]: https://github.com/loyaltycorp/easy-monorepo/pull/38
 [#37]: https://github.com/loyaltycorp/easy-monorepo/pull/37
 [v0.6.14]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.13...v0.6.14
+[#40]: https://github.com/loyaltycorp/easy-monorepo/pull/40
+[v0.7.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.6.14...v0.7.0
