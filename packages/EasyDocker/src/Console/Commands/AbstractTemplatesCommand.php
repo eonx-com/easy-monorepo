@@ -72,9 +72,20 @@ abstract class AbstractTemplatesCommand extends Command
     {
         $this->parameterResolver->addResolver(function (array $params) use ($style): array {
             $required = $this->getRequiredParamValidator();
+            $boolean = $this->getBooleanParamValidator();
 
             return [
-                'project' => $style->ask('Project name', $params['project'] ?? null, $required)
+                'project' => $style->ask('Project name', $params['project'] ?? null, $required),
+                'newrelic' => $style->ask(
+                    'Install New Relic',
+                    (bool)($params['newrelic'] ?? null) ? 'true' : 'false',
+                    $boolean
+                ),
+                'soap' => $style->ask(
+                    'Install PHP-Soap',
+                    (bool)($params['soap'] ?? null) ? 'true' : 'false',
+                    $boolean
+                ),
             ];
         });
     }
@@ -141,6 +152,28 @@ abstract class AbstractTemplatesCommand extends Command
         $this->manifestGenerator->generate($cwd, $this->getApplication()->getVersion(), $statuses);
 
         return self::EXIT_CODE_SUCCESS;
+    }
+
+    /**
+     * Get validator for boolean parameters.
+     *
+     * @return \Closure
+     */
+    private function getBooleanParamValidator(): \Closure
+    {
+        return static function ($answer): bool {
+            if (empty($answer)) {
+                return false;
+            }
+
+            $answer = \strtolower((string)$answer);
+
+            if (\in_array($answer, ['true', 'false'], true) === false) {
+                throw new \RuntimeException('The value must be either empty, or a string "true" or "false"');
+            }
+
+            return $answer === 'true';
+        };
     }
 
     /**
