@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -e
+
+# get env vars
+if [ ! -z ${SSM_PATH+x} ]; then
+  eval $(awsenv)
+fi
+
+INIT_FILE="/tmp/cache.initialised"
+ARTISAN="/var/www/artisan"
+
+if [ ! -f ${ARTISAN} ]; then
+    echo "Could not find ARTISAN file";
+    exit 1
+fi
+
+if [ ! -f ${INIT_FILE} ]; then
+
+    echo "configure shell for www-data"
+    chsh -s /bin/bash www-data
+
+    echo "doctrine:clear:metadata:cache"
+    /bin/su -c "/usr/local/bin/php ${ARTISAN} doctrine:clear:metadata:cache" - www-data
+
+    echo "doctrine:clear:result:cache"
+    /bin/su -c "/usr/local/bin/php ${ARTISAN} doctrine:clear:result:cache" - www-data
+
+    echo "doctrine:clear:query:cache"
+    /bin/su -c " /usr/local/bin/php ${ARTISAN} doctrine:clear:query:cache" - www-data
+
+    echo "doctrine:generate:proxies"
+    /bin/su -c "/usr/local/bin/php ${ARTISAN} doctrine:generate:proxies" - www-data
+
+    echo "touching ${INIT_FILE}"
+    touch ${INIT_FILE}
+
+fi
+
+echo "artisan:schedule:run"
+/bin/su -c "/usr/local/bin/php ${ARTISAN} schedule:run" - www-data
+

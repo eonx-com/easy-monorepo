@@ -15,11 +15,12 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && pecl install xdebug-2.7.2  \
     && rm -rf /var/lib/apt/lists/*
 
-# SOAP
-#RUN apt-get update && apt-get install --no-install-recommends -y \
-#      libxml2-dev \
-#    && docker-php-ext-install soap \
-#    && rm -rf /var/lib/apt/lists/*
+{% if soap %}
+RUN apt-get update && apt-get install --no-install-recommends -y \
+      libxml2-dev \
+    && docker-php-ext-install soap \
+    && rm -rf /var/lib/apt/lists/*
+{% endif %}
 
 RUN mv "${PHP_INI_DIR}/php.ini-production" "${PHP_INI_DIR}/php.ini" \
     && sed -i 's/memory_limit = .*/memory_limit = 512M/' "${PHP_INI_DIR}/php.ini"
@@ -28,6 +29,7 @@ RUN rm -rfv /var/www/*
 
 WORKDIR /var/www
 
+{% if newrelic %}
 ########################################################################################################################
 ##
 ## NEWRELIC
@@ -40,6 +42,7 @@ WORKDIR /tmp
 COPY ./docker/api/newrelic/install.sh /tmp/nr.sh
 
 RUN chmod +x /tmp/nr.sh && /tmp/nr.sh && rm /tmp/nr.sh
+{% endif %}
 
 ########################################################################################################################
 ##

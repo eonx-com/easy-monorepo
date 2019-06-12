@@ -6,7 +6,7 @@ if [ ! -z ${SSM_PATH+x} ]; then
   eval $(awsenv)
 fi
 
-ARTISAN=$(/usr/bin/find /var/www -name artisan)
+ARTISAN="/var/www/artisan"
 
 if [ -f ${ARTISAN} ]; then
     echo "doctrine:clear:metadata:cache"
@@ -19,6 +19,7 @@ if [ -f ${ARTISAN} ]; then
     /usr/local/bin/php ${ARTISAN} doctrine:generate:proxies
 fi
 
+{% if newrelic %}
 if [ ! -z ${NEWRELIC_KEY} ]
   then
     echo "New Relic: Enabling"
@@ -29,5 +30,6 @@ if [ ! -z ${NEWRELIC_KEY} ]
   else
     echo "Skipping New Relic setup"
 fi
+{% endif %}
 
 exec "$@"

@@ -60,13 +60,13 @@ services:
       MYSQL_USER: {{ project }}
       MYSQL_PASSWORD: {{ project }}
     ports:
-      - '3306:3306'
+      - '{{ '${' ~ project|upper ~ '_MYSQL_PORT:-3306}' }}:3306'
 
   nginx:
     build:
       context: ./
       dockerfile: ./docker/nginx/Dockerfile
     ports:
-      - '80:80'
+      - '{{ '${' ~ project|upper ~ '_NGINX_PORT:-80}' }}:80'
     depends_on:
       - api

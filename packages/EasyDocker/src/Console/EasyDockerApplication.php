@@ -17,7 +17,7 @@ final class EasyDockerApplication extends Application
      */
     public function __construct(array $commands)
     {
-        parent::__construct('easy-docker', '1.0.1');
+        parent::__construct('easy-docker', '1.0.2');
 
         $this->addCommands($commands);
     }
