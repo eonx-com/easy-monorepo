@@ -5,7 +5,7 @@ if [ ! -z ${SSM_PATH+x} ]; then
   eval $(awsenv)
 fi
 
-ARTISAN=$(/usr/bin/find /var/www -name artisan)
+ARTISAN="/var/www/artisan"
 
 # Migrate database if artisan exists
 if [ -f ${ARTISAN} ]; then

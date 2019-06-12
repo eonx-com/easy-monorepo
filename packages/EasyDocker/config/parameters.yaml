@@ -1,1 +1,3 @@
 parameters:
+    newrelic: false
+    soap: false

@@ -5,7 +5,6 @@ COPY ./docker/nginx/snippets/cors.conf /etc/nginx/snippets/cors.conf
 COPY ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 RUN mkdir -p /var/www/public
-#RUN nginx -t
 
 COPY ./public /var/www/public
 
