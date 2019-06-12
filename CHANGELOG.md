@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.7.3 - 2019-06-07
+## v0.7.4 - 2019-06-12
+
+### EasyDocker
+
+- [#43] Update cron user permissions to fix logging, Thanks to [@bradmathews]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.7.3] - 2019-06-07
 
 ### EasyDocker
 
@@ -424,3 +434,5 @@
 [#42]: https://github.com/loyaltycorp/easy-monorepo/pull/42
 [v0.7.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.1...v0.7.2
 [@bradmathews]: https://github.com/bradmathews
+[#43]: https://github.com/loyaltycorp/easy-monorepo/pull/43
+[v0.7.3]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.2...v0.7.3
