@@ -2,7 +2,22 @@
 
 <!-- dumped content start -->
 
-## v0.7.4 - 2019-06-12
+## v0.7.5 - 2019-06-13
+
+### EasyCfhighlander
+
+- [#45] Improve CLIs params cache
+
+### EasyDocker
+
+- [#44] fix bug with newrelic skip, Thanks to [@bradmathews]
+- [#45] Improve CLIs params cache
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.7.4] - 2019-06-12
 
 ### EasyDocker
 
@@ -436,3 +451,6 @@
 [@bradmathews]: https://github.com/bradmathews
 [#43]: https://github.com/loyaltycorp/easy-monorepo/pull/43
 [v0.7.3]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.2...v0.7.3
+[#45]: https://github.com/loyaltycorp/easy-monorepo/pull/45
+[#44]: https://github.com/loyaltycorp/easy-monorepo/pull/44
+[v0.7.4]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.3...v0.7.4
