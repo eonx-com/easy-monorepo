@@ -48,7 +48,6 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
         $this->executeCommand('generate', $inputs);
 
         foreach ($files as $file) {
-            \var_dump($file);
             self::assertTrue($this->getFilesystem()->exists(static::$cwd . '/' . $file));
         }
     }
