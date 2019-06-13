@@ -56,6 +56,7 @@ final class FileGenerator implements FileGeneratorInterface
         }
 
         $this->filesystem->dumpFile($filename, $rendered);
+        $this->filesystem->chmod($filename, 0755);
 
         return new FileStatus($fileToGenerate, $renderedHash, $exists ? self::STATUS_UPDATED : self::STATUS_CREATED);
     }

@@ -78,12 +78,12 @@ abstract class AbstractTemplatesCommand extends Command
                 'project' => $style->ask('Project name', $params['project'] ?? null, $required),
                 'newrelic' => $style->ask(
                     'Install New Relic',
-                    (bool)($params['newrelic'] ?? null) ? 'true' : 'false',
+                    $this->getBooleanParamAsString($params['newrelic'] ?? null),
                     $boolean
                 ),
                 'soap' => $style->ask(
                     'Install PHP-Soap',
-                    (bool)($params['soap'] ?? null) ? 'true' : 'false',
+                    $this->getBooleanParamAsString($params['soap'] ?? null),
                     $boolean
                 ),
             ];
@@ -155,28 +155,6 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
-     * Get validator for boolean parameters.
-     *
-     * @return \Closure
-     */
-    private function getBooleanParamValidator(): \Closure
-    {
-        return static function ($answer): bool {
-            if (empty($answer)) {
-                return false;
-            }
-
-            $answer = \strtolower((string)$answer);
-
-            if (\in_array($answer, ['true', 'false'], true) === false) {
-                throw new \RuntimeException('The value must be either empty, or a string "true" or "false"');
-            }
-
-            return $answer === 'true';
-        };
-    }
-
-    /**
      * Get file to generate for given name.
      *
      * @param string $cwd
@@ -199,6 +177,40 @@ abstract class AbstractTemplatesCommand extends Command
     protected function getTemplateName(string $template): string
     {
         return \sprintf('%s.twig', $template);
+    }
+
+    /**
+     * Get boolean param as string.
+     *
+     * @param null|mixed $param
+     *
+     * @return string
+     */
+    private function getBooleanParamAsString($param = null): string
+    {
+        return ((bool)($param)) ? 'true' : 'false';
+    }
+
+    /**
+     * Get validator for boolean parameters.
+     *
+     * @return \Closure
+     */
+    private function getBooleanParamValidator(): \Closure
+    {
+        return static function ($answer): bool {
+            if (empty($answer)) {
+                return false;
+            }
+
+            $answer = \strtolower((string)$answer);
+
+            if (\in_array($answer, ['true', 'false'], true) === false) {
+                throw new \RuntimeException('The value must be either empty, or a string "true" or "false"');
+            }
+
+            return $answer === 'true';
+        };
     }
 
     /**
