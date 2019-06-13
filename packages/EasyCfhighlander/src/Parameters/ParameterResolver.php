@@ -66,11 +66,11 @@ final class ParameterResolver implements ParameterResolverInterface
         foreach ($this->resolvers as $resolver) {
             $resolved = \call_user_func($resolver, $params);
 
-            $cache = \array_merge($cache, $resolved);
-            $params = \array_merge($params, $resolved);
+            $cache = $resolved + $cache;
+            $params = $resolved + $params;
         }
 
-        $params = \array_merge($params, $input->getArguments(), $input->getOptions());
+        $params = $input->getArguments() + $input->getOptions() + $params;
 
         $this->filesystem->dumpFile($this->cacheFile, Yaml::dump($cache));
 
@@ -104,6 +104,6 @@ final class ParameterResolver implements ParameterResolverInterface
             $params = Yaml::parseFile($this->cacheFile);
         }
 
-        return \array_merge($params, $this->parameterProvider->provide());
+        return $params + $this->parameterProvider->provide();
     }
 }
