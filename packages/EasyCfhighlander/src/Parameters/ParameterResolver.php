@@ -61,14 +61,18 @@ final class ParameterResolver implements ParameterResolverInterface
     public function resolve(InputInterface $input): array
     {
         $params = $this->resolveDefaultParameters();
+        $cache = [];
 
         foreach ($this->resolvers as $resolver) {
-            $params = \array_merge($params, \call_user_func($resolver, $params));
+            $resolved = \call_user_func($resolver, $params);
+
+            $cache = \array_merge($cache, $resolved);
+            $params = \array_merge($params, $resolved);
         }
 
         $params = \array_merge($params, $input->getArguments(), $input->getOptions());
 
-        $this->filesystem->dumpFile($this->cacheFile, Yaml::dump($params));
+        $this->filesystem->dumpFile($this->cacheFile, Yaml::dump($cache));
 
         return $params;
     }
