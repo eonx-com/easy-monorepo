@@ -83,9 +83,11 @@ RUN /usr/local/bin/composer install -o -v
 ########################################################################################################################
 FROM php AS api-production
 
+{% if newrelic %}
 ## NEW RELIC
 COPY --from=newrelic /usr/local/lib/php/extensions/no-debug-non-zts-20180731/newrelic.so /usr/local/lib/php/extensions/no-debug-non-zts-20180731/newrelic.so
 COPY --from=newrelic /usr/local/etc/php/conf.d/newrelic.ini /usr/local/etc/php/conf.d/newrelic.ini
+{% endif %}
 
 ## SSM ENVIRONMENT
 COPY --from=base2/awsenv /awsenv /bin/awsenv
