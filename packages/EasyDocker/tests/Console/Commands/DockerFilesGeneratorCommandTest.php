@@ -17,11 +17,13 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
     public function testGenerateCloudFormationFiles(): void
     {
         $inputs = [
-            'project'
+            'project',
+            'true',
+            'true'
         ];
 
         $files = [
-            'docker/api/cron/artisan-schedule',
+            'docker/api/cron/crontab',
             'docker/api/development/php.ini',
             'docker/api/development/php-composer.ini',
             'docker/api/newrelic/install.sh',
@@ -46,6 +48,7 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
         $this->executeCommand('generate', $inputs);
 
         foreach ($files as $file) {
+            \var_dump($file);
             self::assertTrue($this->getFilesystem()->exists(static::$cwd . '/' . $file));
         }
     }
