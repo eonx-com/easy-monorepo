@@ -78,12 +78,12 @@ abstract class AbstractTemplatesCommand extends Command
                 'project' => $style->ask('Project name', $params['project'] ?? null, $required),
                 'newrelic' => $style->ask(
                     'Install New Relic',
-                    (bool)($params['newrelic'] ?? null) ? 'true' : 'false',
+                    ((bool)($params['newrelic'] ?? null)) ? 'true' : 'false',
                     $boolean
                 ),
                 'soap' => $style->ask(
                     'Install PHP-Soap',
-                    (bool)($params['soap'] ?? null) ? 'true' : 'false',
+                    ((bool)($params['soap'] ?? null)) ? 'true' : 'false',
                     $boolean
                 ),
             ];
