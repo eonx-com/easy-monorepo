@@ -86,6 +86,7 @@ abstract class AbstractTemplatesCommand extends Command
     {
         $this->parameterResolver->addResolver(function (array $params) use ($style): array {
             $alpha = $this->getAlphaParamValidator();
+            $boolean = $this->getBooleanParamValidator();
             $required = $this->getRequiredParamValidator();
 
             return [
@@ -93,6 +94,17 @@ abstract class AbstractTemplatesCommand extends Command
                 'db_name' => $style->ask('Database name', $params['db_name'] ?? null, $alpha),
                 'db_username' => $style->ask('Database username', $params['db_username'] ?? null, $alpha),
                 'dns_domain' => $style->ask('DNS domain', $params['dns_domain'] ?? null, $required),
+                'redis_enabled' => $style->ask(
+                    'Redis enabled',
+                    $this->getBooleanParamAsString($params['redis_enabled'] ?? null),
+                    $boolean
+                ),
+                'elasticsearch_enabled' => $style->ask(
+                    'Elasticsearch enabled',
+                    $this->getBooleanParamAsString($params['elasticsearch_enabled'] ?? null),
+                    $boolean
+                ),
+                'ssm_prefix' => $style->ask('SSM Prefix', $params['ssm_prefix'] ?? null, $alpha),
                 'dev_account' => $style->ask('AWS DEV account', $params['dev_account'] ?? null, $required),
                 'ops_account' => $style->ask('AWS OPS account', $params['ops_account'] ?? null, $required),
                 'prod_account' => $style->ask('AWS PROD account', $params['prod_account'] ?? null, $required)
@@ -225,6 +237,40 @@ abstract class AbstractTemplatesCommand extends Command
             }
 
             return \str_replace(' ', '', (string)$answer);
+        };
+    }
+
+    /**
+     * Get boolean param as string.
+     *
+     * @param null|mixed $param
+     *
+     * @return string
+     */
+    private function getBooleanParamAsString($param = null): string
+    {
+        return ((bool)($param)) ? 'true' : 'false';
+    }
+
+    /**
+     * Get validator for boolean parameters.
+     *
+     * @return \Closure
+     */
+    private function getBooleanParamValidator(): \Closure
+    {
+        return static function ($answer): bool {
+            if (empty($answer)) {
+                return false;
+            }
+
+            $answer = \strtolower((string)$answer);
+
+            if (\in_array($answer, ['true', 'false'], true) === false) {
+                throw new \RuntimeException('The value must be either empty, or a string "true" or "false"');
+            }
+
+            return $answer === 'true';
         };
     }
 

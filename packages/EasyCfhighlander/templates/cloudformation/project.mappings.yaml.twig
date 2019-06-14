@@ -1,5 +1,9 @@
 EnvironmentType:
   development:
+    AutoPause: true
+    MinCapacity: 1
+    MaxCapacity: 1
+    SecondsUntilAutoPause: 600
     CacheInstanceType: cache.t2.micro
     CacheClusters: 1
     RedisCluster: false
@@ -10,6 +14,10 @@ EnvironmentType:
     ReplicasPerNodeGroup: 0
     EnableReader: false
   production:
+    AutoPause: true
+    MinCapacity: 1
+    MaxCapacity: 1
+    SecondsUntilAutoPause: 600
     RDSConnectordbMultiAZ: true
     CacheInstanceType: cache.t2.medium
     CacheClusters: 2
