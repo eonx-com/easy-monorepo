@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyDocker\Console\Commands;
 
-use LoyaltyCorp\EasyDocker\File\FileToGenerate;
+use EoneoPay\Utils\Interfaces\StrInterface;
+use LoyaltyCorp\EasyDocker\File\File;
+use LoyaltyCorp\EasyDocker\File\FileStatus;
 use LoyaltyCorp\EasyDocker\Interfaces\FileGeneratorInterface;
 use LoyaltyCorp\EasyDocker\Interfaces\ManifestGeneratorInterface;
 use LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface;
@@ -32,6 +34,9 @@ abstract class AbstractTemplatesCommand extends Command
     /** @var \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface */
     private $parameterResolver;
 
+    /** @var \EoneoPay\Utils\Interfaces\StrInterface */
+    private $str;
+
     /**
      * AbstractTemplatesCommand constructor.
      *
@@ -39,12 +44,14 @@ abstract class AbstractTemplatesCommand extends Command
      * @param \Symfony\Component\Filesystem\Filesystem $filesystem
      * @param \LoyaltyCorp\EasyDocker\Interfaces\ManifestGeneratorInterface $manifestGenerator
      * @param \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface $parameterResolver
+     * @param \EoneoPay\Utils\Interfaces\StrInterface $str
      */
     public function __construct(
         FileGeneratorInterface $fileGenerator,
         Filesystem $filesystem,
         ManifestGeneratorInterface $manifestGenerator,
-        ParameterResolverInterface $parameterResolver
+        ParameterResolverInterface $parameterResolver,
+        StrInterface $str
     ) {
         parent::__construct();
 
@@ -52,6 +59,7 @@ abstract class AbstractTemplatesCommand extends Command
         $this->filesystem = $filesystem;
         $this->manifestGenerator = $manifestGenerator;
         $this->parameterResolver = $parameterResolver;
+        $this->str = $str;
     }
 
     /**
@@ -121,7 +129,7 @@ abstract class AbstractTemplatesCommand extends Command
 
         $files = [];
         foreach ($this->getSimpleFiles() as $file) {
-            $files[] = $this->getSimpleFileToGenerate($cwd, $file);
+            $files[] = $this->getSimpleFile($cwd, $file);
         }
 
         ProgressBar::setFormatDefinition('custom', ' %current%/%max% [%bar%] %percent:3s%% %message%');
@@ -138,8 +146,8 @@ abstract class AbstractTemplatesCommand extends Command
         $statuses = [];
 
         foreach ($files as $file) {
-            /** @var \LoyaltyCorp\EasyDocker\File\FileToGenerate $file */
-            $statuses[] = $status = $this->fileGenerator->generate($file, $params);
+            /** @var \LoyaltyCorp\EasyDocker\File\File $file */
+            $statuses[] = $status = $this->processFile($file, $params);
 
             $progress->setMessage(\sprintf(
                 '- <comment>%s</comment> <info>%s</info>...',
@@ -155,16 +163,16 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
-     * Get file to generate for given name.
+     * Get file for given name.
      *
      * @param string $cwd
      * @param string $name
      *
-     * @return \LoyaltyCorp\EasyDocker\File\FileToGenerate
+     * @return \LoyaltyCorp\EasyDocker\File\File
      */
-    protected function getSimpleFileToGenerate(string $cwd, string $name): FileToGenerate
+    protected function getSimpleFile(string $cwd, string $name): File
     {
-        return new FileToGenerate(\sprintf('%s/%s', $cwd, $name), $this->getTemplateName($name));
+        return new File(\sprintf('%s/%s', $cwd, $name), $this->getTemplateName($name));
     }
 
     /**
@@ -227,5 +235,24 @@ abstract class AbstractTemplatesCommand extends Command
 
             return \str_replace(' ', '', (string)$answer);
         };
+    }
+
+    /**
+     * Process file.
+     *
+     * @param \LoyaltyCorp\EasyDocker\File\File $file
+     * @param mixed[] $params
+     *
+     * @return \LoyaltyCorp\EasyDocker\File\FileStatus
+     */
+    private function processFile(File $file, array $params): FileStatus
+    {
+        $newrelic = (bool)($params['newrelic'] ?? false);
+
+        if ($newrelic === false && $this->str->contains($file->getFilename(), 'newrelic')) {
+            return $this->fileGenerator->remove($file);
+        }
+
+        return $this->fileGenerator->generate($file, $params);
     }
 }

@@ -5,7 +5,7 @@ namespace LoyaltyCorp\EasyDocker\File;
 
 final class FileStatus
 {
-    /** @var \LoyaltyCorp\EasyDocker\File\FileToGenerate */
+    /** @var \LoyaltyCorp\EasyDocker\File\File */
     private $file;
 
     /** @var string */
@@ -17,11 +17,11 @@ final class FileStatus
     /**
      * FileStatus constructor.
      *
-     * @param \LoyaltyCorp\EasyDocker\File\FileToGenerate $file
-     * @param string $hash
+     * @param \LoyaltyCorp\EasyDocker\File\File $file
      * @param string $status
+     * @param null|string $hash
      */
-    public function __construct(FileToGenerate $file, string $hash, string $status)
+    public function __construct(File $file, string $status, ?string $hash = null)
     {
         $this->file = $file;
         $this->hash = $hash;
@@ -31,9 +31,9 @@ final class FileStatus
     /**
      * Get file.
      *
-     * @return \LoyaltyCorp\EasyDocker\File\FileToGenerate
+     * @return \LoyaltyCorp\EasyDocker\File\File
      */
-    public function getFile(): FileToGenerate
+    public function getFile(): File
     {
         return $this->file;
     }
@@ -41,9 +41,9 @@ final class FileStatus
     /**
      * Get hash.
      *
-     * @return string
+     * @return null|string
      */
-    public function getHash(): string
+    public function getHash(): ?string
     {
         return $this->hash;
     }

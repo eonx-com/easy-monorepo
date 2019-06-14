@@ -6,6 +6,7 @@
     "require": {
         "php": "^7.1",
         "ext-json": "*",
+        "eoneopay/utils": "^0.2",
         "symplify/package-builder": "^5.4",
         "twig/twig": "^2.8",
         "symfony/filesystem": "^4.2",

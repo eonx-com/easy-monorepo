@@ -5,6 +5,6 @@ services:
 
     LoyaltyCorp\EasyDocker\:
         resource: '../src'
-        exclude: '../src/{HttpKernel,File/FileToGenerate.php,File/FileStatus.php}'
+        exclude: '../src/{HttpKernel,File/File.php,File/FileStatus.php}'
 
     Symplify\PackageBuilder\Parameter\ParameterProvider: ~
