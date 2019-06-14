@@ -20,6 +20,7 @@ pipeline{
   }
   parameters {
      string(name: 'CHEF_BRANCH', defaultValue: "${env.BRANCH_NAME}", description: 'Chef branch for AMIs')
+     string(name: 'BASTION_SPOT_PRICE', defaultValue: '0.0146', description: 'Spot price for bastion, set to ondemand price of t2.micro')
   }
   stages {
     stage('Compile and Validate') {
@@ -86,7 +87,8 @@ pipeline{
             'EnvironmentType': 'development',
             'NetworkPrefix': '10',
             'StackOctet': '130',
-            'bastionAmi': bastionAMI
+            'bastionAmi': bastionAMI,
+            'bastionSpotPrice': params.BASTION_SPOT_PRICE
           ]
         )
         println "Update Dev Environment"
@@ -101,7 +103,8 @@ pipeline{
           parameters: [
             'EnvironmentName': 'dev',
             'EnvironmentType': 'development',
-            'bastionAmi': bastionAMI
+            'bastionAmi': bastionAMI,
+            'bastionSpotPrice': params.BASTION_SPOT_PRICE
           ]
         )
       }
