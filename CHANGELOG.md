@@ -2,11 +2,12 @@
 
 <!-- dumped content start -->
 
-## Unreleased
+## v0.7.6 - 2019-06-14
 
 ### EasyDocker
 
 - [#47] Fix generated files permissions + cached params
+- [#48] Improve files generation and structure
 
 ### EasyCfhighlander
 
@@ -471,3 +472,4 @@
 [#47]: https://github.com/loyaltycorp/easy-monorepo/pull/47
 [#46]: https://github.com/loyaltycorp/easy-monorepo/pull/46
 [v0.7.5]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.4...v0.7.5
+[#48]: https://github.com/loyaltycorp/easy-monorepo/pull/48
