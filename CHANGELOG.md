@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.7.7 - 2019-06-14
+## v0.7.8 - 2019-06-14
+
+### EasyCfhighlander
+
+- [#51] Update templates
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.7.7] - 2019-06-14
 
 ### EasyCfhighlander
 
@@ -490,3 +500,5 @@
 [#50]: https://github.com/loyaltycorp/easy-monorepo/pull/50
 [#49]: https://github.com/loyaltycorp/easy-monorepo/pull/49
 [v0.7.6]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.5...v0.7.6
+[#51]: https://github.com/loyaltycorp/easy-monorepo/pull/51
+[v0.7.7]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.6...v0.7.7

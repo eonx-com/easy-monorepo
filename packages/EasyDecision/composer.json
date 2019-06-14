@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "loyaltycorp/easy-pipeline": "^0.8",
+        "loyaltycorp/easy-pipeline": "^0.7.8",
         "symfony/expression-language": "^4.2"
     },
     "require-dev": {
