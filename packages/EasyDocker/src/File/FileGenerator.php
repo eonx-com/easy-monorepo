@@ -30,7 +30,7 @@ final class FileGenerator implements FileGeneratorInterface
     /**
      * Generate file for given template and params.
      *
-     * @param \LoyaltyCorp\EasyDocker\File\FileToGenerate $fileToGenerate
+     * @param \LoyaltyCorp\EasyDocker\File\File $fileToGenerate
      * @param null|mixed[] $params
      *
      * @return \LoyaltyCorp\EasyDocker\File\FileStatus
@@ -39,7 +39,7 @@ final class FileGenerator implements FileGeneratorInterface
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function generate(FileToGenerate $fileToGenerate, ?array $params = null): FileStatus
+    public function generate(File $fileToGenerate, ?array $params = null): FileStatus
     {
         $filename = $fileToGenerate->getFilename();
         $rendered = $this->renderTemplate($fileToGenerate->getTemplate(), $params);
@@ -50,15 +50,33 @@ final class FileGenerator implements FileGeneratorInterface
         if ($exists && $renderedHash === $this->hash(\file_get_contents($filename))) {
             return new FileStatus(
                 $fileToGenerate,
-                $this->hash(\file_get_contents($filename)),
-                self::STATUS_SKIPPED_IDENTICAL
+                self::STATUS_SKIPPED_IDENTICAL,
+                $this->hash(\file_get_contents($filename))
             );
         }
 
         $this->filesystem->dumpFile($filename, $rendered);
         $this->filesystem->chmod($filename, 0755);
 
-        return new FileStatus($fileToGenerate, $renderedHash, $exists ? self::STATUS_UPDATED : self::STATUS_CREATED);
+        return new FileStatus($fileToGenerate, $exists ? self::STATUS_UPDATED : self::STATUS_CREATED, $renderedHash);
+    }
+
+    /**
+     * Remove given file.
+     *
+     * @param \LoyaltyCorp\EasyDocker\File\File $fileToRemove
+     *
+     * @return \LoyaltyCorp\EasyDocker\File\FileStatus
+     */
+    public function remove(File $fileToRemove): FileStatus
+    {
+        if ($this->filesystem->exists($fileToRemove->getFilename()) === false) {
+            return new FileStatus($fileToRemove, self::STATUS_SKIPPED_NO_FILE);
+        }
+
+        $this->filesystem->remove($fileToRemove->getFilename());
+
+        return new FileStatus($fileToRemove, self::STATUS_REMOVED);
     }
 
     /**
