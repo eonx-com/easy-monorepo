@@ -15,9 +15,10 @@ CfhighlanderTemplate do
 
      Component template: 'keypair@1.0.0', name: 'keypair' do
        parameter name: 'KeyPairName', value: Ref('EnvironmentName')
-       parameter name: 'SSMParameterPath', value: FnSub('/loyaltycorp/gcs/${EnvironmentName}')
+       parameter name: 'SSMParameterPath', value: FnSub('/loyaltycorp/{{ ssm_prefix }}/${EnvironmentName}')
      end
 
+    {% if redis_enabled %}
      Component template: 'redis', name: 'redis' do
        parameter name: 'DnsDomain', value: dns_domain
        parameter name: 'CacheInstanceType', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'CacheInstanceType')
@@ -25,6 +26,18 @@ CfhighlanderTemplate do
        parameter name: 'Cluster', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'RedisCluster')
        parameter name: 'RedisEndpointType', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'RedisEndpointType')
      end
+     {% endif %}
+
+     {% if elasticsearch_enabled %}
+     Component name: 'elasticsearch', template: 'elasticsearch@master.snapshot' do
+       parameter name: 'ESDomainName', value: FnSub("${EnvironmentName}-elasticsearch")
+       parameter name: 'ElasticsearchVersion', value: '6.5'
+       parameter name: 'InstanceType', value: 't2.small.elasticsearch'
+       parameter name: 'EncryptionAtRest', value: false #The T2 instance types do not support encryption of data at rest
+       parameter name: 'VPCId', value: cfout('vpc', 'VPCId')
+       parameter name: 'Subnets', value: cfout('vpc', 'CacheSubnets')
+     end
+    {% endif %}
 
      Component template: 'acm@1.1.0', name: 'acm' do
        parameter name: 'DomainName', value: FnSub("*.${EnvironmentName}.#{dns_domain}")
@@ -35,22 +48,23 @@ CfhighlanderTemplate do
        parameter name: 'SslCertId', value: cfout('acm', 'CertificateArn')
      end
 
-     Component name:'ecs', template: 'ecs'
+     Component name:'ecs', template: 'ecs@2.0.0'
 
      Component name:'sqs', template: 'sqs@1.1.2'
 
-     Component name:'bastion', template: 'bastion' do
+     Component name:'bastion', template: 'bastion@1.3.1' do
        parameter name: 'KeyName', value: cfout('keypair','KeyPair')
        parameter name: 'DnsDomain', value: dns_domain
        parameter name: 'InstanceType', value: 't2.micro'
      end
 
-     Component name:'aurora', template: 'aurora-mysql@2.0.1' do
+     Component name: 'aurora', template: 'aurora-mysql@2.0.2' do
        parameter name: 'DnsDomain', value: dns_domain
+       parameter name: 'AutoPause', value: cfmap('EnvironmentType',Ref('EnvironmentType'),'AutoPause')
+       parameter name: 'MinCapacity', value: cfmap('EnvironmentType',Ref('EnvironmentType'),'MinCapacity')
+       parameter name: 'MaxCapacity', value: cfmap('EnvironmentType',Ref('EnvironmentType'),'MaxCapacity')
+       parameter name: 'SecondsUntilAutoPause', value: cfmap('EnvironmentType',Ref('EnvironmentType'),'SecondsUntilAutoPause')
        parameter name: 'KmsKeyId', value: cfout('kms', 'AuroraKey')
-       parameter name: 'WriterInstanceType', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'WriterInstanceType')
-       parameter name: 'ReaderInstanceType', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'ReaderInstanceType')
-       parameter name: 'EnableReader', value: FindInMap('EnvironmentType', Ref('EnvironmentType'), 'EnableReader')
      end
 
      Component name: 'kms', template: 'kms@0.1.1'

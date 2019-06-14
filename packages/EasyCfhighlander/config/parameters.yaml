@@ -5,6 +5,10 @@ parameters:
   ops_account_dns_iam_role: arn:aws:iam::599070804856:role/Base2-Automatic-NS-Resolver
   source_bucket: source.tools.loyaltycorp.com.au
 
+  # Enable/Disable components
+  elasticsearch_enabled: false
+  redis_enabled: false
+
   cloudformation:
     region: ap-southeast-2
 

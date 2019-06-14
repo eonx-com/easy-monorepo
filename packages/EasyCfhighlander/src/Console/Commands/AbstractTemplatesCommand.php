@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyCfhighlander\Console\Commands;
 
-use LoyaltyCorp\EasyCfhighlander\File\FileToGenerate;
+use EoneoPay\Utils\Interfaces\StrInterface;
+use LoyaltyCorp\EasyCfhighlander\File\File;
+use LoyaltyCorp\EasyCfhighlander\File\FileStatus;
 use LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface;
 use LoyaltyCorp\EasyCfhighlander\Interfaces\ManifestGeneratorInterface;
 use LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface;
@@ -20,6 +22,11 @@ abstract class AbstractTemplatesCommand extends Command
     public const EXIT_CODE_ERROR = 1;
     public const EXIT_CODE_SUCCESS = 0;
 
+    private const CHECKS = [
+        'elasticsearch_enabled' => 'elasticsearch',
+        'redis_enabled' => 'redis'
+    ];
+
     /** @var \LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface */
     private $fileGenerator;
 
@@ -32,6 +39,9 @@ abstract class AbstractTemplatesCommand extends Command
     /** @var \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface */
     private $parameterResolver;
 
+    /** @var \EoneoPay\Utils\Interfaces\StrInterface */
+    private $str;
+
     /**
      * AbstractTemplatesCommand constructor.
      *
@@ -39,12 +49,14 @@ abstract class AbstractTemplatesCommand extends Command
      * @param \Symfony\Component\Filesystem\Filesystem $filesystem
      * @param \LoyaltyCorp\EasyCfhighlander\Interfaces\ManifestGeneratorInterface $manifestGenerator
      * @param \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface $parameterResolver
+     * @param \EoneoPay\Utils\Interfaces\StrInterface $str
      */
     public function __construct(
         FileGeneratorInterface $fileGenerator,
         Filesystem $filesystem,
         ManifestGeneratorInterface $manifestGenerator,
-        ParameterResolverInterface $parameterResolver
+        ParameterResolverInterface $parameterResolver,
+        StrInterface $str
     ) {
         parent::__construct();
 
@@ -52,6 +64,7 @@ abstract class AbstractTemplatesCommand extends Command
         $this->filesystem = $filesystem;
         $this->manifestGenerator = $manifestGenerator;
         $this->parameterResolver = $parameterResolver;
+        $this->str = $str;
     }
 
     /**
@@ -86,6 +99,7 @@ abstract class AbstractTemplatesCommand extends Command
     {
         $this->parameterResolver->addResolver(function (array $params) use ($style): array {
             $alpha = $this->getAlphaParamValidator();
+            $boolean = $this->getBooleanParamValidator();
             $required = $this->getRequiredParamValidator();
 
             return [
@@ -93,6 +107,17 @@ abstract class AbstractTemplatesCommand extends Command
                 'db_name' => $style->ask('Database name', $params['db_name'] ?? null, $alpha),
                 'db_username' => $style->ask('Database username', $params['db_username'] ?? null, $alpha),
                 'dns_domain' => $style->ask('DNS domain', $params['dns_domain'] ?? null, $required),
+                'redis_enabled' => $style->ask(
+                    'Redis enabled',
+                    $this->getBooleanParamAsString($params['redis_enabled'] ?? null),
+                    $boolean
+                ),
+                'elasticsearch_enabled' => $style->ask(
+                    'Elasticsearch enabled',
+                    $this->getBooleanParamAsString($params['elasticsearch_enabled'] ?? null),
+                    $boolean
+                ),
+                'ssm_prefix' => $style->ask('SSM Prefix', $params['ssm_prefix'] ?? null, $alpha),
                 'dev_account' => $style->ask('AWS DEV account', $params['dev_account'] ?? null, $required),
                 'ops_account' => $style->ask('AWS OPS account', $params['ops_account'] ?? null, $required),
                 'prod_account' => $style->ask('AWS PROD account', $params['prod_account'] ?? null, $required)
@@ -151,8 +176,8 @@ abstract class AbstractTemplatesCommand extends Command
         $statuses = [];
 
         foreach ($files as $file) {
-            /** @var \LoyaltyCorp\EasyCfhighlander\File\FileToGenerate $file */
-            $statuses[] = $status = $this->fileGenerator->generate($file, $params);
+            /** @var \LoyaltyCorp\EasyCfhighlander\File\File $file */
+            $statuses[] = $status = $this->processFile($file, $params);
 
             $progress->setMessage(\sprintf(
                 '- <comment>%s</comment> <info>%s</info>...',
@@ -174,13 +199,13 @@ abstract class AbstractTemplatesCommand extends Command
      * @param string $name
      * @param string $project
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\FileToGenerate
+     * @return \LoyaltyCorp\EasyCfhighlander\File\File
      */
-    protected function getProjectFileToGenerate(string $cwd, string $name, string $project): FileToGenerate
+    protected function getProjectFileToGenerate(string $cwd, string $name, string $project): File
     {
         $filename = \sprintf('%s/%s', $cwd, $name);
 
-        return new FileToGenerate(\str_replace('project', $project, $filename), $this->getTemplateName($name));
+        return new File(\str_replace('project', $project, $filename), $this->getTemplateName($name));
     }
 
     /**
@@ -189,11 +214,11 @@ abstract class AbstractTemplatesCommand extends Command
      * @param string $cwd
      * @param string $name
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\FileToGenerate
+     * @return \LoyaltyCorp\EasyCfhighlander\File\File
      */
-    protected function getSimpleFileToGenerate(string $cwd, string $name): FileToGenerate
+    protected function getSimpleFileToGenerate(string $cwd, string $name): File
     {
-        return new FileToGenerate(\sprintf('%s/%s', $cwd, $name), $this->getTemplateName($name));
+        return new File(\sprintf('%s/%s', $cwd, $name), $this->getTemplateName($name));
     }
 
     /**
@@ -229,6 +254,40 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
+     * Get boolean param as string.
+     *
+     * @param null|mixed $param
+     *
+     * @return string
+     */
+    private function getBooleanParamAsString($param = null): string
+    {
+        return ((bool)($param)) ? 'true' : 'false';
+    }
+
+    /**
+     * Get validator for boolean parameters.
+     *
+     * @return \Closure
+     */
+    private function getBooleanParamValidator(): \Closure
+    {
+        return static function ($answer): bool {
+            if (empty($answer)) {
+                return false;
+            }
+
+            $answer = \strtolower((string)$answer);
+
+            if (\in_array($answer, ['true', 'false'], true) === false) {
+                throw new \RuntimeException('The value must be either empty, or a string "true" or "false"');
+            }
+
+            return $answer === 'true';
+        };
+    }
+
+    /**
      * Get validator for required parameters.
      *
      * @return \Closure
@@ -242,5 +301,26 @@ abstract class AbstractTemplatesCommand extends Command
 
             return \str_replace(' ', '', (string)$answer);
         };
+    }
+
+    /**
+     * Process file.
+     *
+     * @param \LoyaltyCorp\EasyCfhighlander\File\File $file
+     * @param mixed[] $params
+     *
+     * @return \LoyaltyCorp\EasyCfhighlander\File\FileStatus
+     */
+    private function processFile(File $file, array $params): FileStatus
+    {
+        foreach (self::CHECKS as $param => $path) {
+            $check = (bool)($params[$param] ?? false);
+
+            if ($check === false && $this->str->contains($file->getFilename(), $path)) {
+                return $this->fileGenerator->remove($file);
+            }
+        }
+
+        return $this->fileGenerator->generate($file, $params);
     }
 }
