@@ -17,13 +17,16 @@ final class CloudFormationCommandTest extends AbstractTestCase
     public function testGenerateCloudFormationFiles(): void
     {
         $inputs = [
-            'project',
-            'projectDatabase',
-            'projectDatabaseUsername',
-            'project.com',
-            'aws_dev_account',
-            '599070804856',
-            'aws_prod_account'
+            'project', // project
+            'projectDatabase', // db_name
+            'projectDatabaseUsername', // db_username
+            'project.com', // dns_domain
+            'true', // redis_enabled,
+            'true', // elasticsearch_enabled
+            'project', // ssm_prefix
+            'aws_dev_account', // dev_account
+            '599070804856', // ops_account
+            'aws_prod_account' // prod_account
         ];
 
         $files = [
@@ -34,14 +37,13 @@ final class CloudFormationCommandTest extends AbstractTestCase
             'aurora.config.yaml',
             'az.mappings.yaml',
             'bastion.config.yaml',
+            'ecs.config.yaml',
+            'elasticsearch.config.yaml',
             'kms.config.yaml',
             'loadbalancer.config.yaml',
             'redis.config.yaml',
             'sqs.config.yaml',
             'vpc.config.yaml',
-            'ecs/ecs.cfhighlander.rb',
-            'ecs/ecs.cfndsl.rb',
-            'ecs/ecs.config.yaml',
             'redis/redis.cfhighlander.rb',
             'redis/redis.cfndsl.rb',
             'redis/redis.config.yaml',
@@ -54,7 +56,6 @@ final class CloudFormationCommandTest extends AbstractTestCase
 
         foreach ($files as $file) {
             self::assertTrue($this->getFilesystem()->exists(static::$cwd . '/' . $file));
-            self::assertContains($file, $display);
         }
     }
 }

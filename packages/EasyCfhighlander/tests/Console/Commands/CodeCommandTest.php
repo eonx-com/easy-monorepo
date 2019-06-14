@@ -18,9 +18,12 @@ final class CodeCommandTest extends AbstractTestCase
     {
         $inputs = [
             'project', // project
-            'project', // db_name
-            'project', // db_username
+            'projectDatabase', // db_name
+            'projectDatabaseUsername', // db_username
             'project.com', // dns_domain
+            'true', // redis_enabled,
+            'true', // elasticsearch_enabled
+            'project', // ssm_prefix
             'aws_dev_account', // dev_account
             '599070804856', // ops_account
             'aws_prod_account' // prod_account
@@ -40,7 +43,6 @@ final class CodeCommandTest extends AbstractTestCase
 
         foreach ($files as $file) {
             self::assertTrue($this->getFilesystem()->exists(static::$cwd . '/' . $file));
-            self::assertContains($file, $display);
         }
     }
 }
