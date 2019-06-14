@@ -5,10 +5,10 @@ namespace LoyaltyCorp\EasyCfhighlander\File;
 
 final class FileStatus
 {
-    /** @var \LoyaltyCorp\EasyCfhighlander\File\FileToGenerate */
+    /** @var \LoyaltyCorp\EasyCfhighlander\File\File */
     private $file;
 
-    /** @var string */
+    /** @var null|string */
     private $hash;
 
     /** @var string */
@@ -17,11 +17,11 @@ final class FileStatus
     /**
      * FileStatus constructor.
      *
-     * @param \LoyaltyCorp\EasyCfhighlander\File\FileToGenerate $file
-     * @param string $hash
+     * @param \LoyaltyCorp\EasyCfhighlander\File\File $file
      * @param string $status
+     * @param null|string $hash
      */
-    public function __construct(FileToGenerate $file, string $hash, string $status)
+    public function __construct(File $file, string $status, ?string $hash = null)
     {
         $this->file = $file;
         $this->hash = $hash;
@@ -31,9 +31,9 @@ final class FileStatus
     /**
      * Get file.
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\FileToGenerate
+     * @return \LoyaltyCorp\EasyCfhighlander\File\File
      */
-    public function getFile(): FileToGenerate
+    public function getFile(): File
     {
         return $this->file;
     }
@@ -41,9 +41,9 @@ final class FileStatus
     /**
      * Get hash.
      *
-     * @return string
+     * @return null|string
      */
-    public function getHash(): string
+    public function getHash(): ?string
     {
         return $this->hash;
     }

@@ -42,7 +42,7 @@ final class ManifestGenerator implements ManifestGeneratorInterface
 
         foreach ($statuses as $status) {
             $statusString = $status->getStatus();
-            $file = $status->getFile()->getFilename();
+            $file = $this->removeCwd($cwd, $status->getFile()->getFilename());
 
             if (\in_array($statusString, FileGeneratorInterface::STATUSES_TO_TRIGGER_MANIFEST, true)) {
                 $manifest[$file] = [
@@ -83,5 +83,18 @@ final class ManifestGenerator implements ManifestGeneratorInterface
     private function getFilename(string $cwd): string
     {
         return \sprintf('%s/%s', $cwd, self::MANIFEST_NAME);
+    }
+
+    /**
+     * Remove cwd from given filename.
+     *
+     * @param string $cwd
+     * @param string $filename
+     *
+     * @return string
+     */
+    private function removeCwd(string $cwd, string $filename): string
+    {
+        return \str_replace($cwd . '/', '', $filename);
     }
 }
