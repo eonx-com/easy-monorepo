@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v0.7.6 - 2019-06-14
+## v0.7.7 - 2019-06-14
+
+### EasyCfhighlander
+
+- [#50] Remove cwd from filename in manifest
+
+### EasyDocker
+
+- [#49] Remove cwd from filename in manifest
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.7.6] - 2019-06-14
 
 ### EasyDocker
 
@@ -473,3 +487,6 @@
 [#46]: https://github.com/loyaltycorp/easy-monorepo/pull/46
 [v0.7.5]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.4...v0.7.5
 [#48]: https://github.com/loyaltycorp/easy-monorepo/pull/48
+[#50]: https://github.com/loyaltycorp/easy-monorepo/pull/50
+[#49]: https://github.com/loyaltycorp/easy-monorepo/pull/49
+[v0.7.6]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.5...v0.7.6
