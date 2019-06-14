@@ -2,6 +2,12 @@
 
 <!-- dumped content start -->
 
+## v0.7.9 - 2019-06-14
+
+### EasyCfhighlander
+
+- Fix dependencies
+
 ## v0.7.8 - 2019-06-14
 
 ### EasyCfhighlander
