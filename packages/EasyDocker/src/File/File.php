@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyDocker\File;
 
-final class FileToGenerate
+final class File
 {
     /** @var string */
     private $filename;

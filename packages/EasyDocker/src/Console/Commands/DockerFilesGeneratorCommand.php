@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyDocker\Console\Commands;
 
+use EoneoPay\Utils\Interfaces\StrInterface;
 use LoyaltyCorp\EasyDocker\Interfaces\FileGeneratorInterface;
 use LoyaltyCorp\EasyDocker\Interfaces\ManifestGeneratorInterface;
 use LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface;
@@ -25,17 +26,19 @@ final class DockerFilesGeneratorCommand extends AbstractTemplatesCommand
      * @param \Symfony\Component\Finder\Finder $finder
      * @param \LoyaltyCorp\EasyDocker\Interfaces\ManifestGeneratorInterface $manifestGenerator
      * @param \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface $parameterResolver
+     * @param \EoneoPay\Utils\Interfaces\StrInterface $str
      */
     public function __construct(
         FileGeneratorInterface $fileGenerator,
         Filesystem $filesystem,
         Finder $finder,
         ManifestGeneratorInterface $manifestGenerator,
-        ParameterResolverInterface $parameterResolver
+        ParameterResolverInterface $parameterResolver,
+        StrInterface $str
     ) {
         $this->finder = $finder;
 
-        parent::__construct($fileGenerator, $filesystem, $manifestGenerator, $parameterResolver);
+        parent::__construct($fileGenerator, $filesystem, $manifestGenerator, $parameterResolver, $str);
     }
 
     /**
