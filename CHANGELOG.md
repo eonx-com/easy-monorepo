@@ -1,5 +1,11 @@
 <!-- changelog-linker -->
 
+## v0.7.10 - 2019-06-17
+
+### EasyDocker
+
+- Fix nginx default config with backslash
+
 <!-- dumped content start -->
 
 ## v0.7.9 - 2019-06-14
