@@ -1,6 +1,16 @@
 <!-- changelog-linker -->
 
-## v0.7.10 - 2019-06-17
+<!-- dumped content start -->
+
+## v0.7.11 - 2019-06-17
+
+### EasyDocker
+
+- [#52] Fix cron permissions + query string in nginx + queue driver to redis
+
+<!-- dumped content end -->
+
+## [v0.7.10] - 2019-06-17
 
 ### EasyDocker
 
@@ -8,13 +18,13 @@
 
 <!-- dumped content start -->
 
-## v0.7.9 - 2019-06-14
+## [v0.7.9] - 2019-06-14
 
 ### EasyCfhighlander
 
 - Fix dependencies
 
-## v0.7.8 - 2019-06-14
+## [v0.7.8] - 2019-06-14
 
 ### EasyCfhighlander
 
@@ -514,3 +524,7 @@
 [v0.7.6]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.5...v0.7.6
 [#51]: https://github.com/loyaltycorp/easy-monorepo/pull/51
 [v0.7.7]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.6...v0.7.7
+[#52]: https://github.com/loyaltycorp/easy-monorepo/pull/52
+[v0.7.9]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.8...v0.7.9
+[v0.7.8]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.7...v0.7.8
+[v0.7.10]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.9...v0.7.10
