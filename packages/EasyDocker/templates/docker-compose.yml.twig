@@ -38,7 +38,7 @@ services:
 
   cron:
     image: {{ project }}-api:latest
-    command: "/usr/sbin/cron -f"
+    entrypoint: "/usr/sbin/cron -f"
     restart: on-failure
     environment:
       DB_CONNECTION: mysql
