@@ -10,6 +10,9 @@ final class EasyDockerApplication extends Application
 {
     use HelpfulApplicationTrait;
 
+    /** @var string */
+    public const VERSION = '1.0.3';
+
     /**
      * EasyDockerApplication constructor.
      *
@@ -17,7 +20,7 @@ final class EasyDockerApplication extends Application
      */
     public function __construct(array $commands)
     {
-        parent::__construct('easy-docker', '1.0.2');
+        parent::__construct('easy-docker', self::VERSION);
 
         $this->addCommands($commands);
     }
