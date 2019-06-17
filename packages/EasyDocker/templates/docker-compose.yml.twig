@@ -15,6 +15,7 @@ services:
       DB_DATABASE: {{ project }}
       DB_USERNAME: {{ project }}
       DB_PASSWORD: {{ project }}
+      QUEUE_DRIVER: redis
     depends_on:
       - mysql
       - redis
@@ -46,6 +47,7 @@ services:
       DB_DATABASE: {{ project }}
       DB_USERNAME: {{ project }}
       DB_PASSWORD: {{ project }}
+      QUEUE_DRIVER: redis
     depends_on:
       - api
 
