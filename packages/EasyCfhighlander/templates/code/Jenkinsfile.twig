@@ -10,45 +10,17 @@ def slackError(message){
   slackSend color: '#e80d4b', channel: '#{{ project }}-ops', message: "${env.JOB_NAME} - ${env.BUILD_URL} | ${message}"
 }
 
-
-// def dockerScan(body) {
-//   sh "/bin/start-clair.sh"
-//   if (body.accountId && body.region) {
-//     body.image = "${env.ECR_REPO}/${body.image}"
-//     ecr_login = sh (script: "aws ecr get-login --region ap-southeast-2 --no-include-email", returnStdout: true)
-//     def match = (ecr_login =~ /docker login -u AWS -p (.+) https:\/\/378031083288\.dkr\.ecr\.ap-southeast-2\.amazonaws\.com/)
-//     body.password = match[0][1]
-//   }
-
-//   runKlar(body)
-// }
-
-// def runKlar(body) {
-//   def image = body.image
-//   def token = body.get('token', '')
-//   def threshold = body.get('threshold', 'Critical')
-//   def password = body.password
-
-//   if (body.action.toLowerCase() == 'ignore') {
-//     sh "DOCKER_USER=AWS DOCKER_PASSWORD=${password} JSON_OUTPUT=true CLAIR_OUTPUT=${threshold} /bin/klar ${image} || true"
-//   } else {
-//     sh "DOCKER_USER=AWS DOCKER_PASSWORD=${password} JSON_OUTPUT=true CLAIR_OUTPUT=${threshold} /bin/klar ${image}"
-//   }
-// }
-
-
 pipeline {
   environment {
     AWS_REGION = '{{ aws_region }}'
     ECR_REPO = '{{ code.ecr_repo }}'
     PROJECT_NAME = '{{ project }}'
     SOURCE_BUCKET = '{{ source_bucket }}'
-    OPS_ACCOUNT_ID = '{{ ops_account }}'
     DEV_ACCOUNT_ID = '{{ dev_account }}'
     PROD_ACCOUNT_ID = '{{ prod_account }}'
     CIINABOX_ROLE = '{{ ciinabox_role }}'
-    BRANCH = env.BRANCH_NAME.replaceAll('/','-')
     BUILD_VER = "${env.BRANCH}-${env.GIT_COMMIT.substring(0,7)}"
+    DNS_DOMAIN = "{{ dns_domain }}"
   }
   parameters {
     booleanParam(name: 'UPDATE_SCHEMA_TASK_DEF', defaultValue: false, description: 'Update Schema Task Def')
@@ -63,126 +35,37 @@ pipeline {
   stages {
     stage('Prepare the build') {
         steps {
-          script {
-            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'packagist', usernameVariable: 'PACKAGIST_USR', passwordVariable: 'PACKAGIST_PWD'],])
-              {
-                sh """#!/bin/bash
-cat << EOT > auth.json
-{
-    "http-basic": {
-        "repo.packagist.com": {
-            "username": "\${PACKAGIST_USR}",
-            "password": "\${PACKAGIST_PWD}"
+            sh "aws s3 cp s3://${SOURCE_BUCKET}/scripts/auth.json auth.json"
         }
     }
-}
-EOT
-cat auth.json
-  """
-            }
-          }
-        }
-      }
-      stage('Create empty vendor folder') {
-        steps {
-          sh "mkdir vendor"
-        }
-      }
     stage('Build containers') {
-      steps {
-        parallel(
-        "Build Api": {
-              dockerBuild repo: env.ECR_REPO,
+        steps {
+            parallel(
+                "Build api": {
+                    dockerBuild repo: env.ECR_REPO,
                     image: "${env.PROJECT_NAME}/backend",
                     dir: './',
                     dockerfile: 'docker/api/Dockerfile',
-                    tags: [env.BUILD_VER, env.BUILD_NUMBER, 'latest'],
+                    tags: [env.GIT_COMMIT, env.BUILD_NUMBER, 'latest'],
                     push: true,
                     cleanup: true
-        },
-        "Build Nginx": {
-           dockerBuild repo: env.ECR_REPO,
+                },
+                "Build nginx": {
+                    dockerBuild repo: env.ECR_REPO,
                     image: "${env.PROJECT_NAME}/nginx",
-                    dir: './docker/nginx',
+                    dir: './',
                     dockerfile: 'docker/nginx/Dockerfile',
-                    tags: [env.BUILD_VER, env.BUILD_NUMBER, 'latest'],
+                    tags: [env.GIT_COMMIT, env.BUILD_NUMBER, 'latest'],
                     push: true,
                     cleanup: true
-         }
-        )
-      }
+                }
+            )
+        }
     }
-    // stage('Run unit tests') {
-    //   agent {
-    //     docker {
-    //       image "${env.ECR_REPO}/${env.PROJECT_NAME}/backend/toscan:${env.GIT_COMMIT}"
-    //       args '-u root:root --entrypoint=""'
-    //     }
-    //   }
-    //   steps {
-    //     sh """#!/bin/bash
-    //       cd /var/www/
-    //       bash /var/www/vendor/bin/es
-    //     """
-    //   }
-    // }
-    // stage('Scan containers for vulnerabilities') {
-    //   agent {
-    //     docker {
-    //       image 'base2/clair'
-    //     }
-    //   }
-    //   steps {
-    //     parallel(
-    //       "Scan API": {
-    //         dockerScan(
-    //           threshold: 'Critical',
-    //           accountId: env.OPS_ACCOUNT_ID,
-    //           image: "${env.PROJECT_NAME}/backend/toscan:${env.GIT_COMMIT}",
-    //           action: 'Ignore',
-    //           region: env.AWS_REGION
-    //         )
-    //       },
-    //       "Scan Nginx": {
-    //         dockerScan(
-    //           threshold: 'Critical',
-    //           accountId: env.OPS_ACCOUNT_ID,
-    //           image: "${env.PROJECT_NAME}/nginx/toscan:${env.GIT_COMMIT}",
-    //           action: 'Ignore',
-    //           region: env.AWS_REGION
-    //         )
-    //       }
-    //     )
-    //   }
-    // }
-    // stage('Tag and push scanned images') {
-    //   steps {
-    //     parallel(
-    //       "Tag and push API": {
-    //         dockerTag repo: env.ECR_REPO,
-    //           image: "${env.PROJECT_NAME}/backend/toscan",
-    //           newImage: "${env.PROJECT_NAME}/backend",
-    //           baseTag: 'latest',
-    //           tags: ['latest', env.BUILD_NUMBER, env.GIT_COMMIT],
-    //           push: true,
-    //           cleanup: true
-    //       },
-    //       "Tag and push Nginx": {
-    //         dockerTag repo: env.ECR_REPO,
-    //           image: "${env.PROJECT_NAME}/nginx/toscan",
-    //           newImage: "${env.PROJECT_NAME}/nginx",
-    //           baseTag: 'latest',
-    //           tags: ['latest', env.BUILD_NUMBER, env.GIT_COMMIT],
-    //           push: true,
-    //           cleanup: true
-    //       }
-    //     )
-    //   }
-    // }
     stage('Compile and Validate') {
       agent {
         docker {
-          image 'theonestack/cfhighlander:0.8.2'
+          image 'theonestack/cfhighlander'
           reuseNode true
         }
       }
@@ -194,17 +77,20 @@ cat auth.json
     stage('Publish') {
       agent {
         docker {
-          image 'theonestack/cfhighlander:0.8.2'
+          image 'theonestack/cfhighlander'
           reuseNode true
         }
       }
       steps {
         script {
-          env['VERSION'] = env.BRANCH_NAME.replaceAll('/','-')
-          env['SHORT_COMMIT'] = env.GIT_COMMIT.substring(0,7)
-          if(env.BRANCH_NAME == 'master') {
-            env['VERSION'] = "master-${env.SHORT_COMMIT}"
-          }
+            println "env:${env.GIT_COMMIT}"
+            env['cf_version'] = env.BRANCH_NAME
+            env['project_name'] = env.PROJECT_NAME
+            env['BRANCH'] = env.BRANCH_NAME
+            env['SHORT_COMMIT'] = env.GIT_COMMIT.substring(0,7)
+            if(env.BRANCH_NAME == 'master') {
+                env['cf_version'] = "master-${env.SHORT_COMMIT}"
+            }
         }
         sh "env && cfhighlander cfpublish ${env.PROJECT_NAME} --version ${env.cf_version} --dstbucket ${env.SOURCE_BUCKET} --dstprefix cloudformation/${env.PROJECT_NAME}"
         sh "env && cfhighlander cfpublish ${env.PROJECT_NAME}-schema --version ${env.cf_version} --dstbucket ${env.SOURCE_BUCKET} --dstprefix cloudformation/${env.PROJECT_NAME}-schema"
@@ -212,7 +98,7 @@ cat auth.json
     }
     stage('Update Dev Schema Environment') {
       when {
-        expression { (env.BRANCH_NAME == 'development' || env.BRANCH_NAME == 'feature/jenkinsfile') && params.UPDATE_SCHEMA_TASK_DEF == true }
+        expression { (env.BRANCH_NAME == 'development') && params.UPDATE_SCHEMA_TASK_DEF == true }
       }
       steps {
         println "Update Schema Task Def Dev Environment"
@@ -248,30 +134,25 @@ cat auth.json
         ENV = "dev"
       }
       when {
-        expression { (env.BRANCH_NAME == 'development' || env.BRANCH_NAME == 'feature/jenkinsfile') && params.UPDATE_SCHEMA == true }
+        expression { (env.BRANCH_NAME == 'development') && params.UPDATE_SCHEMA == true }
       }
       steps {
         println "Updating Schema"
         sh '''
         #!/bin/bash
-        aws s3 cp s3://${SOURCE_BUCKET}/scripts/ecs-run-fargate.sh ecs-run-fargate.sh
-        chmod +x ./ecs-run-fargate.sh
+        aws s3 cp s3://${SOURCE_BUCKET}/scripts/ecs-run.sh ecs-run.sh
+        chmod +x ./ecs-run.sh
         '''
         withAWS(roleAccount:env.DEV_ACCOUNT_ID, region:env.AWS_REGION, role:env.CIINABOX_ROLE) {
           script {
             def task_def = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-{{ project }}-schema-task-EcsTaskArn`].Value' --output text --region ${AWS_REGION}"
             def cluster = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-ecs-EcsCluster`].Value' --output text --region ${AWS_REGION}"
-            def securityGroups = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-SecurityGroupBackplane`].Value' --output text --region ${AWS_REGION}"
-            def subnets = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-ComputeSubnets`].Value' --output text --region ${AWS_REGION}"
-            subnets = subnets.split(',')
             sh """
             #!/bin/bash
             task_def=${task_def}
             cluster=${cluster}
-            subnets=${subnets[0]}
-            securitygroups=${securityGroups}
-            chmod +x ./ecs-run-fargate.sh
-            ./ecs-run-fargate.sh -c \$cluster -d \$task_def -a \$subnets -b \$securitygroups -n schema -r ${AWS_REGION}
+            chmod +x ./ecs-run.sh
+            ./ecs-run.sh -c \$cluster -d \$task_def -n schema -r ${AWS_REGION}
             """
           }
         }
@@ -293,10 +174,11 @@ cat auth.json
           parameters: [
             'EnvironmentName': 'dev',
             'EnvironmentType': 'development',
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
+            'DnsDomain': env.DNS_DOMAIN,
+            'ApiTag': env.GIT_COMMIT,
+            'NginxTag': env.GIT_COMMIT,
+            'WorkerTag': env.GIT_COMMIT,
+            'CronTag': env.GIT_COMMIT
           ]
         )
         cloudformation(
@@ -307,17 +189,17 @@ cat auth.json
           accountId: env.DEV_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
+            'ApiTag': env.GIT_COMMIT,
+            'NginxTag': env.GIT_COMMIT,
+            'WorkerTag': env.GIT_COMMIT,
+            'CronTag': env.GIT_COMMIT
           ]
         )
       }
     }
     stage('Update UAT Schema Environment') {
       when {
-        expression { env.BRANCH_NAME == 'master'  && params.UPDATE_SCHEMA_TASK_DEF == true }
+        expression { env.BRANCH_NAME == 'master' && params.UPDATE_SCHEMA_TASK_DEF == true }
       }
       steps {
         println "Update Schema Task Def UAT Environment"
@@ -327,7 +209,7 @@ cat auth.json
           action: 'create',
           region: env.AWS_REGION,
           templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.cf_version}/${env.PROJECT_NAME}-schema.compiled.yaml",
-          accountId: env.DEV_ACCOUNT_ID,
+          accountId: env.PROD_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
             'EnvironmentName': 'uat',
@@ -339,7 +221,7 @@ cat auth.json
           action: 'update',
           region: env.AWS_REGION,
           templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.cf_version}/${env.PROJECT_NAME}-schema.compiled.yaml",
-          accountId: env.DEV_ACCOUNT_ID,
+          accountId: env.PROD_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
             'EnvironmentName': 'uat',
@@ -362,21 +244,16 @@ cat auth.json
         aws s3 cp s3://${SOURCE_BUCKET}/scripts/ecs-run-fargate.sh ecs-run-fargate.sh
         chmod +x ./ecs-run-fargate.sh
         '''
-        withAWS(roleAccount:env.DEV_ACCOUNT_ID, region:env.AWS_REGION, role:env.CIINABOX_ROLE) {
+        withAWS(roleAccount:env.PROD_ACCOUNT_ID, region:env.AWS_REGION, role:env.CIINABOX_ROLE) {
           script {
             def task_def = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-{{ project }}-schema-task-EcsTaskArn`].Value' --output text --region ${AWS_REGION}"
             def cluster = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-ecs-EcsCluster`].Value' --output text --region ${AWS_REGION}"
-            def securityGroups = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-SecurityGroupBackplane`].Value' --output text --region ${AWS_REGION}"
-            def subnets = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-ComputeSubnets`].Value' --output text --region ${AWS_REGION}"
-            subnets = subnets.split(',')
             sh """
             #!/bin/bash
             task_def=${task_def}
             cluster=${cluster}
-            subnets=${subnets[0]}
-            securitygroups=${securityGroups}
-            chmod +x ./ecs-run-fargate.sh
-            ./ecs-run-fargate.sh -c \$cluster -d \$task_def -a \$subnets -b \$securitygroups -n schema -r ${AWS_REGION}
+            chmod +x ./ecs-run.sh
+            ./ecs-run.sh -c \$cluster -d \$task_def -n schema -r ${AWS_REGION}
             """
           }
         }
@@ -384,7 +261,7 @@ cat auth.json
     }
     stage('Update UAT Environment') {
       when {
-        expression { env.BRANCH_NAME == 'master'  }
+        expression { env.BRANCH_NAME == 'master' }
       }
       steps {
         println "Updating uat Environment"
@@ -393,15 +270,16 @@ cat auth.json
           action: 'create',
           region: env.AWS_REGION,
           templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
-          accountId: env.DEV_ACCOUNT_ID,
+          accountId: env.PROD_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
             'EnvironmentName': 'uat',
             'EnvironmentType': 'production',
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
+            'DnsDomain': env.DNS_DOMAIN,
+            'ApiTag': env.GIT_COMMIT,
+            'NginxTag': env.GIT_COMMIT,
+            'WorkerTag': env.GIT_COMMIT,
+            'CronTag': env.GIT_COMMIT
           ]
         )
         cloudformation(
@@ -409,20 +287,20 @@ cat auth.json
           action: 'update',
           region: env.AWS_REGION,
           templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
-          accountId: env.DEV_ACCOUNT_ID,
+          accountId: env.PROD_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
+            'ApiTag': env.GIT_COMMIT,
+            'NginxTag': env.GIT_COMMIT,
+            'WorkerTag': env.GIT_COMMIT,
+            'CronTag': env.GIT_COMMIT
           ]
         )
       }
     }
     stage('Deploy to production') {
       when {
-        expression { env.BRANCH_NAME == 'master'  }
+        expression { env.BRANCH_NAME == 'master' }
       }
       steps {
         timeout(time: 120, unit: 'MINUTES') {
@@ -434,7 +312,7 @@ cat auth.json
     }
     stage('Update prod Schema Environment') {
       when {
-        expression { env.BRANCH_NAME == 'master'  && params.UPDATE_SCHEMA_TASK_DEF == true }
+        expression { env.BRANCH_NAME == 'master' && params.UPDATE_SCHEMA_TASK_DEF == true }
       }
       steps {
         println "Update Schema Task Def prod Environment"
@@ -476,24 +354,19 @@ cat auth.json
         println "Updating Schema"
         sh '''
         #!/bin/bash
-        aws s3 cp s3://${SOURCE_BUCKET}/scripts/ecs-run-fargate.sh ecs-run-fargate.sh
-        chmod +x ./ecs-run-fargate.sh
+        aws s3 cp s3://${SOURCE_BUCKET}/scripts/ecs-run.sh ecs-run.sh
+        chmod +x ./ecs-run.sh
         '''
         withAWS(roleAccount:env.PROD_ACCOUNT_ID, region:env.AWS_REGION, role:env.CIINABOX_ROLE) {
           script {
             def task_def = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-{{ project }}-schema-task-EcsTaskArn`].Value' --output text --region ${AWS_REGION}"
             def cluster = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-ecs-EcsCluster`].Value' --output text --region ${AWS_REGION}"
-            def securityGroups = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-SecurityGroupBackplane`].Value' --output text --region ${AWS_REGION}"
-            def subnets = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-ComputeSubnets`].Value' --output text --region ${AWS_REGION}"
-            subnets = subnets.split(',')
             sh """
             #!/bin/bash
             task_def=${task_def}
             cluster=${cluster}
-            subnets=${subnets[0]}
-            securitygroups=${securityGroups}
-            chmod +x ./ecs-run-fargate.sh
-            ./ecs-run-fargate.sh -c \$cluster -d \$task_def -a \$subnets -b \$securitygroups -n schema -r ${AWS_REGION}
+            chmod +x ./ecs-run.sh
+            ./ecs-run.sh -c \$cluster -d \$task_def -n schema -r ${AWS_REGION}
             """
           }
         }
@@ -501,7 +374,7 @@ cat auth.json
     }
     stage('Update prod Environment') {
       when {
-        expression { env.BRANCH_NAME == 'master'  }
+        expression { env.BRANCH_NAME == 'master' }
       }
       steps {
         println "Updating PROD Environment"
@@ -515,10 +388,11 @@ cat auth.json
           parameters: [
             'EnvironmentName': 'prod',
             'EnvironmentType': 'production',
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
+            'DnsDomain': env.DNS_DOMAIN,
+            'ApiTag': env.GIT_COMMIT,
+            'NginxTag': env.GIT_COMMIT,
+            'WorkerTag': env.GIT_COMMIT,
+            'CronTag': env.GIT_COMMIT
           ]
         )
         cloudformation(
@@ -529,10 +403,10 @@ cat auth.json
           accountId: env.PROD_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
+            'ApiTag': env.GIT_COMMIT,
+            'NginxTag': env.GIT_COMMIT,
+            'WorkerTag': env.GIT_COMMIT,
+            'CronTag': env.GIT_COMMIT
           ]
         )
       }
