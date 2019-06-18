@@ -16,16 +16,27 @@ api:
       # memory: 512
       env_vars:
         SSM_PATH:
-          Fn::Sub: /{{ project }}/${EnvironmentName}
+          Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
         FORMAT: shell
+        DB_DATABASE: {{ db_name }}
+        DB_PORT: 3306
+        DB_CONNECTION: mysql
+        DB_HOST:
+          Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
+        {% if elasticsearch_enabled %}
+        ELASTICSEARCH_HOST:
+          Ref: ElasticSearchHost
+        {% endif %}
         AWS_REGION:
           Ref: AWS::Region
         APP_ENV:
           Fn::Sub: ${EnvironmentName}
         SQS_QUEUE_URL:
           Ref: SqsUrl
+        {% if redis_enabled %}
         REDIS_HOST: 
           Fn::Sub: redis.${EnvironmentName}.${DnsDomain}
+        {% endif %}
         TO_STDOUT: true
         LOG_LEVEL: warn
       ports:
@@ -126,8 +137,17 @@ worker:
       #   - /var/www/storage/logs:storage-volume
       #   - /ssm:data-volume
       env_vars:
+        DB_DATABASE: {{ db_name }}
+        DB_PORT: 3306
+        DB_CONNECTION: mysql
+        DB_HOST:
+            Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
+        {% if elasticsearch_enabled %}
+        ELASTICSEARCH_HOST:
+          Ref: ElasticSearchHost
+        {% endif %}
         SSM_PATH:
-          Fn::Sub: /{{ project }}/${EnvironmentName}
+          Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
         LOG_LEVEL: warn
         TO_STDOUT: true
         FORMAT: shell
@@ -137,8 +157,10 @@ worker:
           Fn::Sub: ${EnvironmentName}
         SQS_QUEUE_URL:
           Ref: SqsUrl
+        {% if redis_enabled %}
         REDIS_HOST:
           Fn::Sub: redis.${EnvironmentName}.${DnsDomain}
+        {% endif %}
 
   iam_policies:
     ssm-parameters-ro:
@@ -162,7 +184,7 @@ cron:
       repo: {{ code.ecr_repo }}/{{ project }}
       image: backend
       tag_param: CronTag
-      command: [ "/usr/sbin/crond", "-f" ]
+      entrypoint: [ "/usr/sbin/crond", "-f" ]
       cpu: 256
       memory: 256
       # read_only_root: true
@@ -170,8 +192,17 @@ cron:
       #   - /var/www/storage/logs:storage-volume
       #   - /ssm:data-volume
       env_vars:
+        DB_DATABASE: {{ db_name }}
+        DB_PORT: 3306
+        DB_CONNECTION: mysql
+        DB_HOST:
+          Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
+        {% if elasticsearch_enabled %}
+        ELASTICSEARCH_HOST:
+          Ref: ElasticSearchHost
+        {% endif %}
         SSM_PATH:
-          Fn::Sub: /{{ project }}/${EnvironmentName}
+          Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
         LOG_LEVEL: warn
         TO_STDOUT: true
         FORMAT: shell
@@ -181,8 +212,10 @@ cron:
           Fn::Sub: ${EnvironmentName}
         SQS_QUEUE_URL:
           Ref: SqsUrl
+        {% if redis_enabled %}
         REDIS_HOST:
           Fn::Sub: redis.${EnvironmentName}.${DnsDomain}
+        {% endif %}
 
   iam_policies:
     ssm-parameters-ro:

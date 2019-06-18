@@ -10,32 +10,30 @@ def slackError(message){
   slackSend color: '#e80d4b', channel: '#{{ project }}-ops', message: "${env.JOB_NAME} - ${env.BUILD_URL} | ${message}"
 }
 
+def dockerScan(body) {
+  sh "/bin/start-clair.sh"
+  if (body.accountId && body.region) {
+    body.image = "${env.ECR_REPO}/${body.image}"
+    ecr_login = sh (script: "aws ecr get-login --region ap-southeast-2 --no-include-email", returnStdout: true)
+    def match = (ecr_login =~ /docker login -u AWS -p (.+) https:\/\/599070804856\.dkr\.ecr\.ap-southeast-2\.amazonaws\.com/)
+    body.password = match[0][1]
+  }
 
-// def dockerScan(body) {
-//   sh "/bin/start-clair.sh"
-//   if (body.accountId && body.region) {
-//     body.image = "${env.ECR_REPO}/${body.image}"
-//     ecr_login = sh (script: "aws ecr get-login --region ap-southeast-2 --no-include-email", returnStdout: true)
-//     def match = (ecr_login =~ /docker login -u AWS -p (.+) https:\/\/378031083288\.dkr\.ecr\.ap-southeast-2\.amazonaws\.com/)
-//     body.password = match[0][1]
-//   }
+  runKlar(body)
+}
 
-//   runKlar(body)
-// }
+def runKlar(body) {
+  def image = body.image
+  def token = body.get('token', '')
+  def threshold = body.get('threshold', 'Critical')
+  def password = body.password
 
-// def runKlar(body) {
-//   def image = body.image
-//   def token = body.get('token', '')
-//   def threshold = body.get('threshold', 'Critical')
-//   def password = body.password
-
-//   if (body.action.toLowerCase() == 'ignore') {
-//     sh "DOCKER_USER=AWS DOCKER_PASSWORD=${password} JSON_OUTPUT=true CLAIR_OUTPUT=${threshold} /bin/klar ${image} || true"
-//   } else {
-//     sh "DOCKER_USER=AWS DOCKER_PASSWORD=${password} JSON_OUTPUT=true CLAIR_OUTPUT=${threshold} /bin/klar ${image}"
-//   }
-// }
-
+  if (body.action.toLowerCase() == 'ignore') {
+    sh "DOCKER_USER=AWS DOCKER_PASSWORD=${password} JSON_OUTPUT=true CLAIR_OUTPUT=${threshold} /bin/klar ${image} || true"
+  } else {
+    sh "DOCKER_USER=AWS DOCKER_PASSWORD=${password} JSON_OUTPUT=true CLAIR_OUTPUT=${threshold} /bin/klar ${image}"
+  }
+}
 
 pipeline {
   environment {
@@ -61,128 +59,122 @@ pipeline {
   }
   options { disableConcurrentBuilds() }
   stages {
-    stage('Prepare the build') {
-        steps {
-          script {
-            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'packagist', usernameVariable: 'PACKAGIST_USR', passwordVariable: 'PACKAGIST_PWD'],])
-              {
-                sh """#!/bin/bash
-cat << EOT > auth.json
-{
-    "http-basic": {
-        "repo.packagist.com": {
-            "username": "\${PACKAGIST_USR}",
-            "password": "\${PACKAGIST_PWD}"
-        }
-    }
-}
-EOT
-cat auth.json
-  """
-            }
+    stage('Prepare Build') {
+      steps {
+        script {
+          env['SHORT_COMMIT'] = env.GIT_COMMIT.substring(0,7)
+          env['VERSION'] = env.BRANCH_NAME.replace('/', '')
+          if(env.BRANCH_NAME == 'master') {
+            env['VERSION'] = "master-${env.SHORT_COMMIT}"
           }
         }
-      }
-      stage('Create empty vendor folder') {
-        steps {
-          sh "mkdir vendor"
-        }
-      }
-    stage('Build containers') {
-      steps {
-        parallel(
-        "Build Api": {
-              dockerBuild repo: env.ECR_REPO,
-                    image: "${env.PROJECT_NAME}/backend",
-                    dir: './',
-                    dockerfile: 'docker/api/Dockerfile',
-                    tags: [env.BUILD_VER, env.BUILD_NUMBER, 'latest'],
-                    push: true,
-                    cleanup: true
-        },
-        "Build Nginx": {
-           dockerBuild repo: env.ECR_REPO,
-                    image: "${env.PROJECT_NAME}/nginx",
-                    dir: './docker/nginx',
-                    dockerfile: 'docker/nginx/Dockerfile',
-                    tags: [env.BUILD_VER, env.BUILD_NUMBER, 'latest'],
-                    push: true,
-                    cleanup: true
-         }
-        )
+        sh "aws s3 cp s3://${SOURCE_BUCKET}/scripts/auth.json auth.json"
+        sh "mkdir vendor"
+
+        ecr accountId: env.OPS_ACCOUNT_ID,
+          region: env.AWS_REGION,
+          image: "${env.PROJECT_NAME}/backend",
+          otherAccountIds: [env.DEV_ACCOUNT_ID, env.PROD_ACCOUNT_ID],
+          taggedCleanup: ['master']
+
+        ecr accountId: env.OPS_ACCOUNT_ID,
+          region: env.AWS_REGION,
+          image: "${env.PROJECT_NAME}/nginx",
+          otherAccountIds: [env.DEV_ACCOUNT_ID, env.PROD_ACCOUNT_ID],
+          taggedCleanup: ['master']
+
+        ecr accountId: env.OPS_ACCOUNT_ID,
+          region: env.AWS_REGION,
+          image: "${env.PROJECT_NAME}/backend/toscan",
+          taggedCleanup: ['master']
+
+        ecr accountId: env.OPS_ACCOUNT_ID,
+          region: env.AWS_REGION,
+          image: "${env.PROJECT_NAME}/nginx/toscan",
+          taggedCleanup: ['master']
       }
     }
-    // stage('Run unit tests') {
-    //   agent {
-    //     docker {
-    //       image "${env.ECR_REPO}/${env.PROJECT_NAME}/backend/toscan:${env.GIT_COMMIT}"
-    //       args '-u root:root --entrypoint=""'
-    //     }
-    //   }
-    //   steps {
-    //     sh """#!/bin/bash
-    //       cd /var/www/
-    //       bash /var/www/vendor/bin/es
-    //     """
-    //   }
-    // }
-    // stage('Scan containers for vulnerabilities') {
-    //   agent {
-    //     docker {
-    //       image 'base2/clair'
-    //     }
-    //   }
-    //   steps {
-    //     parallel(
-    //       "Scan API": {
-    //         dockerScan(
-    //           threshold: 'Critical',
-    //           accountId: env.OPS_ACCOUNT_ID,
-    //           image: "${env.PROJECT_NAME}/backend/toscan:${env.GIT_COMMIT}",
-    //           action: 'Ignore',
-    //           region: env.AWS_REGION
-    //         )
-    //       },
-    //       "Scan Nginx": {
-    //         dockerScan(
-    //           threshold: 'Critical',
-    //           accountId: env.OPS_ACCOUNT_ID,
-    //           image: "${env.PROJECT_NAME}/nginx/toscan:${env.GIT_COMMIT}",
-    //           action: 'Ignore',
-    //           region: env.AWS_REGION
-    //         )
-    //       }
-    //     )
-    //   }
-    // }
-    // stage('Tag and push scanned images') {
-    //   steps {
-    //     parallel(
-    //       "Tag and push API": {
-    //         dockerTag repo: env.ECR_REPO,
-    //           image: "${env.PROJECT_NAME}/backend/toscan",
-    //           newImage: "${env.PROJECT_NAME}/backend",
-    //           baseTag: 'latest',
-    //           tags: ['latest', env.BUILD_NUMBER, env.GIT_COMMIT],
-    //           push: true,
-    //           cleanup: true
-    //       },
-    //       "Tag and push Nginx": {
-    //         dockerTag repo: env.ECR_REPO,
-    //           image: "${env.PROJECT_NAME}/nginx/toscan",
-    //           newImage: "${env.PROJECT_NAME}/nginx",
-    //           baseTag: 'latest',
-    //           tags: ['latest', env.BUILD_NUMBER, env.GIT_COMMIT],
-    //           push: true,
-    //           cleanup: true
-    //       }
-    //     )
-    //   }
-    // }
+    stage('Build containers') {
+        steps {
+            parallel(
+                "Build api": {
+                    dockerBuild repo: env.ECR_REPO,
+                    image: "${env.PROJECT_NAME}/backend/toscan",
+                    dir: './',
+                    dockerfile: 'docker/api/Dockerfile',
+                    tags: ['latest', env.VERSION],
+                    push: true,
+                    cleanup: false
+                },
+                "Build nginx": {
+                    dockerBuild repo: env.ECR_REPO,
+                    image: "${env.PROJECT_NAME}/nginx/toscan",
+                    dir: './docker/nginx',
+                    dockerfile: 'docker/nginx/Dockerfile',
+                    tags: ['latest', env.VERSION],
+                    push: true,
+                    cleanup: false
+                }
+            )
+        }
+    }
+    stage('Scan containers for vulnerabilities') {
+        agent {
+            docker {
+                image 'base2/clair:latest'
+            }
+        }
+        steps {
+            parallel(
+                "Scan API": {
+                    dockerScan(
+                        threshold: 'Critical',
+                        accountId: env.OPS_ACCOUNT_ID,
+                        image: "${env.PROJECT_NAME}/backend/toscan:${env.VERSION}",
+                        action: 'Ignore',
+                        region: env.AWS_REGION
+                    )
+                },
+                "Scan Nginx": {
+                    dockerScan(
+                        threshold: 'Critical',
+                        accountId: env.OPS_ACCOUNT_ID,
+                        image: "${env.PROJECT_NAME}/nginx/toscan:${env.VERSION}",
+                        action: 'Ignore',
+                        region: env.AWS_REGION
+                    )
+                }
+            )
+        }
+    }
+    stage('Tag and push scanned images') {
+        steps {
+            parallel(
+                "Tag and push API": {
+                    dockerTag repo: env.ECR_REPO,
+                    image: "${env.PROJECT_NAME}/backend/toscan",
+                    newImage: "${env.PROJECT_NAME}/backend",
+                    baseTag: 'latest',
+                    tags: ['latest', 'scanned', env.VERSION],
+                    push: true,
+                    cleanup: true
+                },
+                "Tag and push Nginx": {
+                    dockerTag repo: env.ECR_REPO,
+                    image: "${env.PROJECT_NAME}/nginx/toscan",
+                    newImage: "${env.PROJECT_NAME}/nginx",
+                    baseTag: 'latest',
+                    tags: ['latest', 'scanned', env.VERSION],
+                    push: true,
+                    cleanup: true
+                }
+            )
+        }
+    }
     stage('Compile and Validate') {
       agent {
         docker {
-          image 'theonestack/cfhighlander:0.8.2'
+          image 'theonestack/cfhighlander'
           reuseNode true
         }
       }
@@ -194,34 +186,26 @@ cat auth.json
     stage('Publish') {
       agent {
         docker {
-          image 'theonestack/cfhighlander:0.8.2'
+          image 'theonestack/cfhighlander'
           reuseNode true
         }
       }
       steps {
-        script {
-          env['VERSION'] = env.BRANCH_NAME.replaceAll('/','-')
-          env['SHORT_COMMIT'] = env.GIT_COMMIT.substring(0,7)
-          if(env.BRANCH_NAME == 'master') {
-            env['VERSION'] = "master-${env.SHORT_COMMIT}"
-          }
-        }
-        sh "env && cfhighlander cfpublish ${env.PROJECT_NAME} --version ${env.cf_version} --dstbucket ${env.SOURCE_BUCKET} --dstprefix cloudformation/${env.PROJECT_NAME}"
-        sh "env && cfhighlander cfpublish ${env.PROJECT_NAME}-schema --version ${env.cf_version} --dstbucket ${env.SOURCE_BUCKET} --dstprefix cloudformation/${env.PROJECT_NAME}-schema"
+        sh "env && cfhighlander cfpublish ${env.PROJECT_NAME} --version ${env.VERSION} --dstbucket ${env.SOURCE_BUCKET} --dstprefix cloudformation/${env.PROJECT_NAME}"
+        sh "env && cfhighlander cfpublish ${env.PROJECT_NAME}-schema --version ${env.VERSION} --dstbucket ${env.SOURCE_BUCKET} --dstprefix cloudformation/${env.PROJECT_NAME}-schema"
       }
     }
     stage('Update Dev Schema Environment') {
       when {
-        expression { (env.BRANCH_NAME == 'development' || env.BRANCH_NAME == 'feature/jenkinsfile') && params.UPDATE_SCHEMA_TASK_DEF == true }
+        expression { (env.BRANCH_NAME == 'development') && params.UPDATE_SCHEMA_TASK_DEF == true }
       }
       steps {
         println "Update Schema Task Def Dev Environment"
-        sh "export"
         cloudformation(
           stackName: 'dev-{{ project }}-schema',
           action: 'create',
           region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.cf_version}/${env.PROJECT_NAME}-schema.compiled.yaml",
+          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.VERSION}/${env.PROJECT_NAME}-schema.compiled.yaml",
           accountId: env.DEV_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
@@ -233,7 +217,7 @@ cat auth.json
           stackName: 'dev-{{ project }}-schema',
           action: 'update',
           region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.cf_version}/${env.PROJECT_NAME}-schema.compiled.yaml",
+          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.VERSION}/${env.PROJECT_NAME}-schema.compiled.yaml",
           accountId: env.DEV_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
@@ -248,38 +232,36 @@ cat auth.json
         ENV = "dev"
       }
       when {
-        expression { (env.BRANCH_NAME == 'development' || env.BRANCH_NAME == 'feature/jenkinsfile') && params.UPDATE_SCHEMA == true }
+        expression { (env.BRANCH_NAME == 'development') && params.UPDATE_SCHEMA == true }
       }
       steps {
         println "Updating Schema"
-        sh '''
-        #!/bin/bash
-        aws s3 cp s3://${SOURCE_BUCKET}/scripts/ecs-run-fargate.sh ecs-run-fargate.sh
-        chmod +x ./ecs-run-fargate.sh
-        '''
         withAWS(roleAccount:env.DEV_ACCOUNT_ID, region:env.AWS_REGION, role:env.CIINABOX_ROLE) {
           script {
-            def task_def = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-{{ project }}-schema-task-EcsTaskArn`].Value' --output text --region ${AWS_REGION}"
-            def cluster = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-ecs-EcsCluster`].Value' --output text --region ${AWS_REGION}"
-            def securityGroups = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-SecurityGroupBackplane`].Value' --output text --region ${AWS_REGION}"
-            def subnets = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-ComputeSubnets`].Value' --output text --region ${AWS_REGION}"
-            subnets = subnets.split(',')
-            sh """
-            #!/bin/bash
-            task_def=${task_def}
-            cluster=${cluster}
-            subnets=${subnets[0]}
-            securitygroups=${securityGroups}
-            chmod +x ./ecs-run-fargate.sh
-            ./ecs-run-fargate.sh -c \$cluster -d \$task_def -a \$subnets -b \$securitygroups -n schema -r ${AWS_REGION}
-            """
+            env.TASK_DEF = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-${env.PROJECT_NAME}-schema-task-EcsTaskArn`].Value' --output text --region ${AWS_REGION}").trim()
+            env.CLUSTER = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-ecs-EcsCluster`].Value' --output text --region ${AWS_REGION}").trim()
+            env.SECURITYGROUP = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-SecurityGroupBackplane`].Value' --output text --region ${AWS_REGION}").trim()
+            env.SUBNETS = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-ComputeSubnets`].Value' --output text --region ${AWS_REGION}").trim()
+            env.SUBNETS = env.SUBNETS.split(',')[0]
+            sh "printenv"
           }
         }
+        ecsTask (
+            action: 'runAndWait',
+            taskDefinition: env.TASK_DEF,
+            cluster: env.CLUSTER,
+            region: env.AWS_REGION,
+            accountId: env.DEV_ACCOUNT_ID,
+            subnets: env.SUBNETS,
+            securityGroup: env.SECURITYGROUP,
+            launchType: 'FARGATE',
+            role: 'ciinabox'
+        )
       }
     }
     stage('Update Dev Environment') {
       when {
-        expression { env.BRANCH_NAME == 'development' || env.BRANCH_NAME == 'feature/jenkinsfile' }
+        expression { env.BRANCH_NAME == 'development' }
       }
       steps {
         println "Updating Dev Environment"
@@ -287,142 +269,139 @@ cat auth.json
           stackName: 'dev-{{ project }}',
           action: 'create',
           region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
+          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.VERSION}/${env.PROJECT_NAME}.compiled.yaml",
           accountId: env.DEV_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
             'EnvironmentName': 'dev',
             'EnvironmentType': 'development',
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
+            'ApiTag': env.VERSION,
+            'NginxTag': env.VERSION,
+            'WorkerTag': env.VERSION,
+            'CronTag': env.VERSION
           ]
         )
         cloudformation(
           stackName: 'dev-{{ project }}',
           action: 'update',
           region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
+          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.VERSION}/${env.PROJECT_NAME}.compiled.yaml",
           accountId: env.DEV_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
+            'ApiTag': env.VERSION,
+            'NginxTag': env.VERSION,
+            'WorkerTag': env.VERSION,
+            'CronTag': env.VERSION
           ]
         )
       }
     }
-    stage('Update UAT Schema Environment') {
-      when {
-        expression { env.BRANCH_NAME == 'master'  && params.UPDATE_SCHEMA_TASK_DEF == true }
-      }
-      steps {
-        println "Update Schema Task Def UAT Environment"
-        sh "export"
-        cloudformation(
-          stackName: 'uat-{{ project }}-schema',
-          action: 'create',
-          region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.cf_version}/${env.PROJECT_NAME}-schema.compiled.yaml",
-          accountId: env.DEV_ACCOUNT_ID,
-          role: env.CIINABOX_ROLE,
-          parameters: [
-            'EnvironmentName': 'uat',
-            'EnvironmentType': 'production'
-          ]
-        )
-        cloudformation(
-          stackName: 'uat-{{ project }}-schema',
-          action: 'update',
-          region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.cf_version}/${env.PROJECT_NAME}-schema.compiled.yaml",
-          accountId: env.DEV_ACCOUNT_ID,
-          role: env.CIINABOX_ROLE,
-          parameters: [
-            'EnvironmentName': 'uat',
-            'EnvironmentType': 'production'
-          ]
-        )
-      }
-    }
-    stage('Update UAT Schema') {
-      environment {
-        ENV = "uat"
-      }
-      when {
-        expression { env.BRANCH_NAME == 'master' && params.UPDATE_SCHEMA == true }
-      }
-      steps {
-        println "Updating Schema"
-        sh '''
-        #!/bin/bash
-        aws s3 cp s3://${SOURCE_BUCKET}/scripts/ecs-run-fargate.sh ecs-run-fargate.sh
-        chmod +x ./ecs-run-fargate.sh
-        '''
-        withAWS(roleAccount:env.DEV_ACCOUNT_ID, region:env.AWS_REGION, role:env.CIINABOX_ROLE) {
-          script {
-            def task_def = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-{{ project }}-schema-task-EcsTaskArn`].Value' --output text --region ${AWS_REGION}"
-            def cluster = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-ecs-EcsCluster`].Value' --output text --region ${AWS_REGION}"
-            def securityGroups = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-SecurityGroupBackplane`].Value' --output text --region ${AWS_REGION}"
-            def subnets = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-ComputeSubnets`].Value' --output text --region ${AWS_REGION}"
-            subnets = subnets.split(',')
-            sh """
-            #!/bin/bash
-            task_def=${task_def}
-            cluster=${cluster}
-            subnets=${subnets[0]}
-            securitygroups=${securityGroups}
-            chmod +x ./ecs-run-fargate.sh
-            ./ecs-run-fargate.sh -c \$cluster -d \$task_def -a \$subnets -b \$securitygroups -n schema -r ${AWS_REGION}
-            """
-          }
+    stage('Update Uat Schema Environment') {
+        when {
+            expression { (env.BRANCH_NAME == 'master') && params.UPDATE_SCHEMA_TASK_DEF == true }
         }
-      }
+        steps {
+            println "Update Schema Task Def Uat Environment"
+            cloudformation(
+                stackName: 'uat-{{ project }}-schema',
+                action: 'create',
+                region: env.AWS_REGION,
+                templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.VERSION}/${env.PROJECT_NAME}-schema.compiled.yaml",
+                accountId: env.PROD_ACCOUNT_ID,
+                role: env.CIINABOX_ROLE,
+                parameters: [
+                    'EnvironmentName': 'uat',
+                    'EnvironmentType': 'production'
+                ]
+            )
+            cloudformation(
+                stackName: 'uat-{{ project }}-schema',
+                action: 'update',
+                region: env.AWS_REGION,
+                templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.VERSION}/${env.PROJECT_NAME}-schema.compiled.yaml",
+                accountId: env.PROD_ACCOUNT_ID,
+                role: env.CIINABOX_ROLE,
+                parameters: [
+                    'EnvironmentName': 'uat',
+                    'EnvironmentType': 'production'
+                ]
+            )
+        }
     }
-    stage('Update UAT Environment') {
-      when {
-        expression { env.BRANCH_NAME == 'master'  }
-      }
-      steps {
-        println "Updating uat Environment"
-        cloudformation(
-          stackName: 'uat-{{ project }}',
-          action: 'create',
-          region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
-          accountId: env.DEV_ACCOUNT_ID,
-          role: env.CIINABOX_ROLE,
-          parameters: [
-            'EnvironmentName': 'uat',
-            'EnvironmentType': 'production',
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
-          ]
-        )
-        cloudformation(
-          stackName: 'uat-{{ project }}',
-          action: 'update',
-          region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
-          accountId: env.DEV_ACCOUNT_ID,
-          role: env.CIINABOX_ROLE,
-          parameters: [
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
-          ]
-        )
-      }
+    stage('Update Uat Schema') {
+        environment {
+            ENV = "uat"
+        }
+        when {
+            expression { (env.BRANCH_NAME == 'master') && params.UPDATE_SCHEMA == true }
+        }
+        steps {
+            println "Updating Schema"
+            withAWS(roleAccount:env.PROD_ACCOUNT_ID, region:env.AWS_REGION, role:env.CIINABOX_ROLE) {
+                script {
+                    env.TASK_DEF = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-${env.PROJECT_NAME}-schema-task-EcsTaskArn`].Value' --output text --region ${AWS_REGION}").trim()
+                    env.CLUSTER = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-ecs-EcsCluster`].Value' --output text --region ${AWS_REGION}").trim()
+                    env.SECURITYGROUP = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-SecurityGroupBackplane`].Value' --output text --region ${AWS_REGION}").trim()
+                    env.SUBNETS = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-ComputeSubnets`].Value' --output text --region ${AWS_REGION}").trim()
+                    env.SUBNETS = env.SUBNETS.split(',')[0]
+                    sh "printenv"
+                }
+            }
+            ecsTask (
+                action: 'runAndWait',
+                taskDefinition: env.TASK_DEF,
+                cluster: env.CLUSTER,
+                region: env.AWS_REGION,
+                accountId: env.PROD_ACCOUNT_ID,
+                subnets: env.SUBNETS,
+                securityGroup: env.SECURITYGROUP,
+                launchType: 'FARGATE',
+                role: 'ciinabox'
+            )
+        }
+    }
+    stage('Update Uat Environment') {
+        when {
+            expression { env.BRANCH_NAME == 'master' }
+        }
+        steps {
+            println "Updating Uat Environment"
+            cloudformation(
+                stackName: 'uat-{{ project }}',
+                action: 'create',
+                region: env.AWS_REGION,
+                templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.VERSION}/${env.PROJECT_NAME}.compiled.yaml",
+                accountId: env.PROD_ACCOUNT_ID,
+                role: env.CIINABOX_ROLE,
+                parameters: [
+                    'EnvironmentName': 'uat',
+                    'EnvironmentType': 'production',
+                    'ApiTag': env.VERSION,
+                    'NginxTag': env.VERSION,
+                    'WorkerTag': env.VERSION,
+                    'CronTag': env.VERSION
+                ]
+            )
+            cloudformation(
+                stackName: 'uat-{{ project }}',
+                action: 'update',
+                region: env.AWS_REGION,
+                templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.VERSION}/${env.PROJECT_NAME}.compiled.yaml",
+                accountId: env.PROD_ACCOUNT_ID,
+                role: env.CIINABOX_ROLE,
+                parameters: [
+                    'ApiTag': env.VERSION,
+                    'NginxTag': env.VERSION,
+                    'WorkerTag': env.VERSION,
+                    'CronTag': env.VERSION
+                ]
+            )
+        }
     }
     stage('Deploy to production') {
       when {
-        expression { env.BRANCH_NAME == 'master'  }
+        expression { env.BRANCH_NAME == 'master' }
       }
       steps {
         timeout(time: 120, unit: 'MINUTES') {
@@ -434,7 +413,7 @@ cat auth.json
     }
     stage('Update prod Schema Environment') {
       when {
-        expression { env.BRANCH_NAME == 'master'  && params.UPDATE_SCHEMA_TASK_DEF == true }
+        expression { env.BRANCH_NAME == 'master' && params.UPDATE_SCHEMA_TASK_DEF == true }
       }
       steps {
         println "Update Schema Task Def prod Environment"
@@ -443,7 +422,7 @@ cat auth.json
           stackName: 'prod-{{ project }}-schema',
           action: 'create',
           region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.cf_version}/${env.PROJECT_NAME}-schema.compiled.yaml",
+          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.VERSION}/${env.PROJECT_NAME}-schema.compiled.yaml",
           accountId: env.PROD_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
@@ -455,7 +434,7 @@ cat auth.json
           stackName: 'prod-{{ project }}-schema',
           action: 'update',
           region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.cf_version}/${env.PROJECT_NAME}-schema.compiled.yaml",
+          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}-schema/${env.VERSION}/${env.PROJECT_NAME}-schema.compiled.yaml",
           accountId: env.PROD_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
@@ -465,43 +444,41 @@ cat auth.json
         )
       }
     }
-    stage('Update prod Schema') {
-      environment {
-        ENV = "prod"
-      }
-      when {
-        expression { env.BRANCH_NAME == 'master' && params.UPDATE_SCHEMA == true }
-      }
-      steps {
-        println "Updating Schema"
-        sh '''
-        #!/bin/bash
-        aws s3 cp s3://${SOURCE_BUCKET}/scripts/ecs-run-fargate.sh ecs-run-fargate.sh
-        chmod +x ./ecs-run-fargate.sh
-        '''
-        withAWS(roleAccount:env.PROD_ACCOUNT_ID, region:env.AWS_REGION, role:env.CIINABOX_ROLE) {
-          script {
-            def task_def = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-{{ project }}-schema-task-EcsTaskArn`].Value' --output text --region ${AWS_REGION}"
-            def cluster = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-ecs-EcsCluster`].Value' --output text --region ${AWS_REGION}"
-            def securityGroups = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-SecurityGroupBackplane`].Value' --output text --region ${AWS_REGION}"
-            def subnets = sh returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-ComputeSubnets`].Value' --output text --region ${AWS_REGION}"
-            subnets = subnets.split(',')
-            sh """
-            #!/bin/bash
-            task_def=${task_def}
-            cluster=${cluster}
-            subnets=${subnets[0]}
-            securitygroups=${securityGroups}
-            chmod +x ./ecs-run-fargate.sh
-            ./ecs-run-fargate.sh -c \$cluster -d \$task_def -a \$subnets -b \$securitygroups -n schema -r ${AWS_REGION}
-            """
-          }
+    stage('Update Prod Schema') {
+        environment {
+            ENV = "prod"
         }
-      }
+        when {
+            expression { (env.BRANCH_NAME == 'master') && params.UPDATE_SCHEMA == true }
+        }
+        steps {
+            println "Updating Schema"
+            withAWS(roleAccount:env.PROD_ACCOUNT_ID, region:env.AWS_REGION, role:env.CIINABOX_ROLE) {
+                script {
+                    env.TASK_DEF = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-${env.PROJECT_NAME}-schema-task-EcsTaskArn`].Value' --output text --region ${AWS_REGION}").trim()
+                    env.CLUSTER = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-ecs-EcsCluster`].Value' --output text --region ${AWS_REGION}").trim()
+                    env.SECURITYGROUP = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-SecurityGroupBackplane`].Value' --output text --region ${AWS_REGION}").trim()
+                    env.SUBNETS = sh (returnStdout: true, script: "aws cloudformation list-exports --query 'Exports[?Name==`${ENV}-vpc-ComputeSubnets`].Value' --output text --region ${AWS_REGION}").trim()
+                    env.SUBNETS = env.SUBNETS.split(',')[0]
+                    sh "printenv"
+                }
+            }
+            ecsTask (
+                action: 'runAndWait',
+                taskDefinition: env.TASK_DEF,
+                cluster: env.CLUSTER,
+                region: env.AWS_REGION,
+                accountId: env.PROD_ACCOUNT_ID,
+                subnets: env.SUBNETS,
+                securityGroup: env.SECURITYGROUP,
+                launchType: 'FARGATE',
+                role: 'ciinabox'
+            )
+        }
     }
     stage('Update prod Environment') {
       when {
-        expression { env.BRANCH_NAME == 'master'  }
+        expression { env.BRANCH_NAME == 'master' }
       }
       steps {
         println "Updating PROD Environment"
@@ -509,30 +486,30 @@ cat auth.json
           stackName: 'prod-{{ project }}',
           action: 'create',
           region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
+          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.VERSION}/${env.PROJECT_NAME}.compiled.yaml",
           accountId: env.PROD_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
             'EnvironmentName': 'prod',
             'EnvironmentType': 'production',
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
+            'ApiTag': env.VERSION,
+            'NginxTag': env.VERSION,
+            'WorkerTag': env.VERSION,
+            'CronTag': env.VERSION
           ]
         )
         cloudformation(
           stackName: 'prod-{{ project }}',
           action: 'update',
           region: env.AWS_REGION,
-          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
+          templateUrl: "https://s3-${env.AWS_REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.VERSION}/${env.PROJECT_NAME}.compiled.yaml",
           accountId: env.PROD_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
-            'ApiTag': env.BUILD_VER,
-            'NginxTag': env.BUILD_VER,
-            'WorkerTag': env.BUILD_VER,
-            'CronTag': env.BUILD_VER
+            'ApiTag': env.VERSION,
+            'NginxTag': env.VERSION,
+            'WorkerTag': env.VERSION,
+            'CronTag': env.VERSION
           ]
         )
       }
