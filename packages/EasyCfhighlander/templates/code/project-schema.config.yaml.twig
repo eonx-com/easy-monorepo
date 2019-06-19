@@ -12,7 +12,7 @@ schema:
       entrypoint: ["/usr/local/bin/migrate.sh"]
       env_vars:
         SSM_PATH:
-          Fn::Sub: /{{ project }}/${EnvironmentName}
+          Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
         LOG_LEVEL: warn
         TO_STDOUT: true
         FORMAT: shell
