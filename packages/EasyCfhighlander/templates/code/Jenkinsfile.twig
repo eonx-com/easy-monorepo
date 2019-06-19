@@ -109,7 +109,7 @@ pipeline {
                 "Build nginx": {
                     dockerBuild repo: env.ECR_REPO,
                     image: "${env.PROJECT_NAME}/nginx/toscan",
-                    dir: './docker/nginx',
+                    dir: './',
                     dockerfile: 'docker/nginx/Dockerfile',
                     tags: ['latest', env.VERSION],
                     push: true,

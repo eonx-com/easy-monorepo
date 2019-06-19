@@ -141,7 +141,7 @@ worker:
         DB_PORT: 3306
         DB_CONNECTION: mysql
         DB_HOST:
-            Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
+          Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
         {% if elasticsearch_enabled %}
         ELASTICSEARCH_HOST:
           Ref: ElasticSearchHost
