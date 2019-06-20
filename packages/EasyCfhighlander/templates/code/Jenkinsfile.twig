@@ -63,7 +63,7 @@ pipeline {
       steps {
         script {
           env['SHORT_COMMIT'] = env.GIT_COMMIT.substring(0,7)
-          env['VERSION'] = env.BRANCH_NAME.replace('/', '')
+          env['VERSION'] = "${env.BRANCH_NAME.replace('/', '')}-${env.SHORT_COMMIT}"
           if(env.BRANCH_NAME == 'master') {
             env['VERSION'] = "master-${env.SHORT_COMMIT}"
           }
