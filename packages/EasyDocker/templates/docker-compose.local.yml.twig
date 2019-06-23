@@ -6,10 +6,14 @@ services:
       - ./:/var/www:delegated
       - ./docker/api/development/php.ini:/usr/local/etc/php/conf.d/99-overrides.ini
 
-  worker:
+  cron:
     volumes:
       - ./:/var/www:delegated
 
-  cron:
+  nginx:
+    volumes:
+      - ./public:/var/www/public:delegated
+
+  worker:
     volumes:
       - ./:/var/www:delegated
