@@ -20,22 +20,6 @@ services:
       - mysql
       - redis
 
-  worker:
-    image: {{ project }}-api:latest
-    command: "php artisan queue:work --sleep=3 --tries=3 --delay=30"
-    restart: on-failure
-    user: www-data
-    environment:
-      DB_CONNECTION: mysql
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_DATABASE: {{ project }}
-      DB_USERNAME: {{ project }}
-      DB_PASSWORD: {{ project }}
-      QUEUE_DRIVER: redis
-    depends_on:
-      - api
-
   cron:
     image: {{ project }}-api:latest
     entrypoint: "/usr/sbin/cron -f"
@@ -50,9 +34,6 @@ services:
       QUEUE_DRIVER: redis
     depends_on:
       - api
-
-  redis:
-    image: redis:alpine
 
   mysql:
     image: mysql:5.7
@@ -70,5 +51,24 @@ services:
       dockerfile: ./docker/nginx/Dockerfile
     ports:
       - '{{ '${' ~ project|upper ~ '_NGINX_PORT:-80}' }}:80'
+    depends_on:
+      - api
+
+  redis:
+    image: redis:alpine
+
+  worker:
+    image: {{ project }}-api:latest
+    command: "php artisan queue:work --sleep=3 --tries=3 --delay=30"
+    restart: on-failure
+    user: www-data
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: {{ project }}
+      DB_USERNAME: {{ project }}
+      DB_PASSWORD: {{ project }}
+      QUEUE_DRIVER: redis
     depends_on:
       - api
