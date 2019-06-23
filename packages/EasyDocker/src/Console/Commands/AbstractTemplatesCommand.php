@@ -70,40 +70,6 @@ abstract class AbstractTemplatesCommand extends Command
     abstract protected function getSimpleFiles(): array;
 
     /**
-     * Add parameters resolver.
-     *
-     * @param \Symfony\Component\Console\Style\SymfonyStyle $style
-     *
-     * @return void
-     */
-    protected function addParamResolver(SymfonyStyle $style): void
-    {
-        $this->parameterResolver->addResolver(function (array $params) use ($style): array {
-            $required = $this->getRequiredParamValidator();
-            $boolean = $this->getBooleanParamValidator();
-
-            return [
-                'project' => $style->ask('Project name', $params['project'] ?? null, $required),
-                'newrelic' => $style->ask(
-                    'Install New Relic',
-                    $this->getBooleanParamAsString($params['newrelic'] ?? null),
-                    $boolean
-                ),
-                'soap' => $style->ask(
-                    'Install PHP-Soap',
-                    $this->getBooleanParamAsString($params['soap'] ?? null),
-                    $boolean
-                ),
-                'doctrine_migrations_enabled' => $style->ask(
-                    'Is DoctrineMigrations enabled?',
-                    $this->getBooleanParamAsString($params['doctrine_migrations_enabled'] ?? null),
-                    $boolean
-                )
-            ];
-        });
-    }
-
-    /**
      * Configure command.
      *
      * @return void
@@ -124,9 +90,11 @@ abstract class AbstractTemplatesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $style = new SymfonyStyle($input, $output);
-        $this->addParamResolver($style);
-
         $cwd = $input->getOption('cwd') ?? \getcwd();
+
+        foreach ($this->getParamResolvers($style) as $param => $resolver) {
+            $this->parameterResolver->addResolver($param, $resolver);
+        }
 
         $params = $this->parameterResolver
             ->setCachePathname(\sprintf('%s/easy-docker-params.yaml', $cwd))
@@ -223,6 +191,51 @@ abstract class AbstractTemplatesCommand extends Command
             }
 
             return $answer === 'true';
+        };
+    }
+
+    /**
+     * Get parameter resolvers.
+     *
+     * @param \Symfony\Component\Console\Style\SymfonyStyle $style
+     *
+     * @return iterable<string, callable>
+     */
+    private function getParamResolvers(SymfonyStyle $style): iterable
+    {
+        $required = $this->getRequiredParamValidator();
+        $boolean = $this->getBooleanParamValidator();
+
+        // Project Name
+        yield 'project' => function (array $params) use ($style, $required): string {
+            return $style->ask('Project Name', $params['project'] ?? null, $required);
+        };
+
+        // Newrelic
+        yield 'newrelic' => function (array $params) use ($style, $boolean): bool {
+            return $style->ask(
+                'Install New Relic',
+                $this->getBooleanParamAsString($params['newrelic'] ?? null),
+                $boolean
+            );
+        };
+
+        // SOAP
+        yield 'soap' => function (array $params) use ($style, $boolean): bool {
+            return $style->ask(
+                'Install PHP-Soap',
+                $this->getBooleanParamAsString($params['soap'] ?? null),
+                $boolean
+            );
+        };
+
+        // Doctrine Migrations
+        yield 'doctrine_migrations_enabled' => function (array $params) use ($style, $boolean): bool {
+            return $style->ask(
+                'Is DoctrineMigrations enabled?',
+                $this->getBooleanParamAsString($params['doctrine_migrations_enabled'] ?? null),
+                $boolean
+            );
         };
     }
 

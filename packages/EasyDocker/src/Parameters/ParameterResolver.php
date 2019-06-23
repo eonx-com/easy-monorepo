@@ -38,15 +38,16 @@ final class ParameterResolver implements ParameterResolverInterface
     }
 
     /**
-     * Add resolver callable.
+     * Add resolver callable for given param name.
      *
+     * @param string $param
      * @param callable $resolver
      *
      * @return \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface
      */
-    public function addResolver(callable $resolver): ParameterResolverInterface
+    public function addResolver(string $param, callable $resolver): ParameterResolverInterface
     {
-        $this->resolvers[] = $resolver;
+        $this->resolvers[$param] = $resolver;
 
         return $this;
     }
@@ -63,11 +64,11 @@ final class ParameterResolver implements ParameterResolverInterface
         $params = $this->resolveDefaultParameters();
         $cache = [];
 
-        foreach ($this->resolvers as $resolver) {
+        foreach ($this->resolvers as $param => $resolver) {
             $resolved = \call_user_func($resolver, $params);
 
-            $cache = $resolved + $cache;
-            $params = $resolved + $params;
+            $cache[$param] = $resolved;
+            $params[$param] = $resolved;
         }
 
         $params = $input->getArguments() + $input->getOptions() + $params;
