@@ -19,13 +19,17 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractTemplatesCommand extends Command
 {
-    public const EXIT_CODE_ERROR = 1;
-    public const EXIT_CODE_SUCCESS = 0;
-
+    /** @var string[] */
     private const CHECKS = [
         'elasticsearch_enabled' => 'elasticsearch',
         'redis_enabled' => 'redis'
     ];
+
+    /** @var int */
+    public const EXIT_CODE_ERROR = 1;
+
+    /** @var int */
+    public const EXIT_CODE_SUCCESS = 0;
 
     /** @var \LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface */
     private $fileGenerator;
@@ -89,43 +93,6 @@ abstract class AbstractTemplatesCommand extends Command
     abstract protected function getTemplatePrefix(): string;
 
     /**
-     * Add parameters resolver.
-     *
-     * @param \Symfony\Component\Console\Style\SymfonyStyle $style
-     *
-     * @return void
-     */
-    protected function addParamResolver(SymfonyStyle $style): void
-    {
-        $this->parameterResolver->addResolver(function (array $params) use ($style): array {
-            $alpha = $this->getAlphaParamValidator();
-            $boolean = $this->getBooleanParamValidator();
-            $required = $this->getRequiredParamValidator();
-
-            return [
-                'project' => $style->ask('Project name', $params['project'] ?? null, $required),
-                'db_name' => $style->ask('Database name', $params['db_name'] ?? null, $alpha),
-                'db_username' => $style->ask('Database username', $params['db_username'] ?? null, $alpha),
-                'dns_domain' => $style->ask('DNS domain', $params['dns_domain'] ?? null, $required),
-                'redis_enabled' => $style->ask(
-                    'Redis enabled',
-                    $this->getBooleanParamAsString($params['redis_enabled'] ?? null),
-                    $boolean
-                ),
-                'elasticsearch_enabled' => $style->ask(
-                    'Elasticsearch enabled',
-                    $this->getBooleanParamAsString($params['elasticsearch_enabled'] ?? null),
-                    $boolean
-                ),
-                'ssm_prefix' => $style->ask('SSM Prefix', $params['ssm_prefix'] ?? null, $alpha),
-                'dev_account' => $style->ask('AWS DEV account', $params['dev_account'] ?? null, $required),
-                'ops_account' => $style->ask('AWS OPS account', $params['ops_account'] ?? null, $required),
-                'prod_account' => $style->ask('AWS PROD account', $params['prod_account'] ?? null, $required)
-            ];
-        });
-    }
-
-    /**
      * Configure command.
      *
      * @return void
@@ -146,9 +113,12 @@ abstract class AbstractTemplatesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $style = new SymfonyStyle($input, $output);
-        $this->addParamResolver($style);
-
         $cwd = $input->getOption('cwd') ?? \getcwd();
+
+        foreach ($this->getParamResolvers($style) as $param => $resolver) {
+            $this->parameterResolver->addResolver($param, $resolver);
+        }
+
         $params = $this->parameterResolver
             ->setCachePathname(\sprintf('%s/easy-cfhighlander-params.yaml', $cwd))
             ->resolve($input);
@@ -284,6 +254,95 @@ abstract class AbstractTemplatesCommand extends Command
             }
 
             return $answer === 'true';
+        };
+    }
+
+    /**
+     * Get parameter resolvers.
+     *
+     * @param \Symfony\Component\Console\Style\SymfonyStyle $style
+     *
+     * @return iterable<string, callable>
+     */
+    private function getParamResolvers(SymfonyStyle $style): iterable
+    {
+        $alpha = $this->getAlphaParamValidator();
+        $boolean = $this->getBooleanParamValidator();
+        $required = $this->getRequiredParamValidator();
+
+        // Project name
+        yield 'project' => function (array $params) use ($style, $required): string {
+            return $style->ask('Project name', $params['project'] ?? null, $required);
+        };
+
+        // Database name
+        yield 'db_name' => function (array $params) use ($style, $alpha): string {
+            return $style->ask('Database name', $params['db_name'] ?? null, $alpha);
+        };
+
+        // Database username
+        yield 'db_username' => function (array $params) use ($style, $alpha): string {
+            return $style->ask(
+                'Database username',
+                $params['db_username'] ?? $params['db_name'] ?? null,
+                $alpha
+            );
+        };
+
+        // DNS domain
+        yield 'dns_domain' => function (array $params) use ($style, $required): string {
+            return $style->ask('DNS domain', $params['dns_domain'] ?? null, $required);
+        };
+
+        // Redis enabled
+        yield 'redis_enabled' => function (array $params) use ($style, $boolean): bool {
+            return $style->ask(
+                'Redis enabled',
+                $this->getBooleanParamAsString($params['redis_enabled'] ?? null),
+                $boolean
+            );
+        };
+
+        // Elasticsearch enabled
+        yield 'elasticsearch_enabled' => function (array $params) use ($style, $boolean): bool {
+            return $style->ask(
+                'Elasticsearch enabled',
+                $this->getBooleanParamAsString($params['elasticsearch_enabled'] ?? null),
+                $boolean
+            );
+        };
+
+        // SSM Prefix
+        yield 'ssm_prefix' => function (array $params) use ($style, $alpha): string {
+            return $style->ask(
+                'SSM Prefix',
+                $params['ssm_prefix'] ?? $params['project'] ?? null,
+                $alpha
+            );
+        };
+
+        // SQS Queue
+        yield 'sqs_queue' => function (array $params) use ($style, $alpha): string {
+            return $style->ask(
+                'SQS Queue',
+                $params['sqs_queue'] ?? $params['project'] ?? null,
+                $alpha
+            );
+        };
+
+        // AWS DEV Account
+        yield 'dev_account' => function (array $params) use ($style, $required): string {
+            return $style->ask('AWS DEV Account', $params['dev_account'] ?? null, $required);
+        };
+
+        // AWS OPS Account
+        yield 'ops_account' => function (array $params) use ($style, $required): string {
+            return $style->ask('AWS OPS Account', $params['ops_account'] ?? null, $required);
+        };
+
+        // AWS PROD Account
+        yield 'prod_account' => function (array $params) use ($style, $required): string {
+            return $style->ask('AWS PROD Account', $params['prod_account'] ?? null, $required);
         };
     }
 
