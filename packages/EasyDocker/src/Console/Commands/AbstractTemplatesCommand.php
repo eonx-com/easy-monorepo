@@ -94,6 +94,11 @@ abstract class AbstractTemplatesCommand extends Command
                     $this->getBooleanParamAsString($params['soap'] ?? null),
                     $boolean
                 ),
+                'doctrine_migrations_enabled' => $style->ask(
+                    'Is DoctrineMigrations enabled?',
+                    $this->getBooleanParamAsString($params['doctrine_migrations_enabled'] ?? null),
+                    $boolean
+                )
             ];
         });
     }

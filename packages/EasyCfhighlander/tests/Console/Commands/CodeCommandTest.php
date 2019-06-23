@@ -24,6 +24,7 @@ final class CodeCommandTest extends AbstractTestCase
             'true', // redis_enabled,
             'true', // elasticsearch_enabled
             'project', // ssm_prefix
+            'project', // sqs_queue
             'aws_dev_account', // dev_account
             '599070804856', // ops_account
             'aws_prod_account' // prod_account
