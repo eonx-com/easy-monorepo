@@ -48,10 +48,11 @@ final class DecisionFactory implements DecisionFactoryInterface
      * Create decision for given config.
      *
      * @param \LoyaltyCorp\EasyDecision\Interfaces\DecisionConfigInterface $config
+     * @param mixed[]|null $params
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      */
-    public function create(DecisionConfigInterface $config): DecisionInterface
+    public function create(DecisionConfigInterface $config, ?array $params = null): DecisionInterface
     {
         $decision = $this->instantiateDecision($config->getDecisionType());
 
@@ -64,7 +65,7 @@ final class DecisionFactory implements DecisionFactoryInterface
                 ));
             }
 
-            foreach ($provider->getRules() as $rule) {
+            foreach ($provider->getRules($params) as $rule) {
                 if ($rule instanceof ExpressionLanguageAwareInterface) {
                     $rule->setExpressionLanguage($this->getExpressionLanguage($config));
                 }

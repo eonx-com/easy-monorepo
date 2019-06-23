@@ -11,10 +11,11 @@ interface DecisionFactoryInterface
      * Create decision for given decision name.
      *
      * @param string $decision
+     * @param mixed[]|null $params
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      */
-    public function create(string $decision): DecisionInterface;
+    public function create(string $decision, ?array $params = null): DecisionInterface;
 }
 
 \class_alias(
