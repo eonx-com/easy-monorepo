@@ -14,10 +14,11 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
      *
      * @throws \Exception
      */
-    public function testGenerateCloudFormationFiles(): void
+    public function testGenerateDockerFiles(): void
     {
         $inputs = [
             'project',
+            'true',
             'true',
             'true'
         ];
