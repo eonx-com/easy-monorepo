@@ -19,6 +19,11 @@ final class DecisionConfig implements DecisionConfigInterface
     private $expressionLanguageConfig;
 
     /**
+     * @var null|mixed[]
+     */
+    private $params;
+
+    /**
      * @var \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[]
      */
     private $ruleProviders;
@@ -29,15 +34,18 @@ final class DecisionConfig implements DecisionConfigInterface
      * @param string $decisionType
      * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[] $ruleProviders
      * @param null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     * @param null|mixed[]
      */
     public function __construct(
         string $decisionType,
         array $ruleProviders,
-        ?ExpressionLanguageConfigInterface $config = null
+        ?ExpressionLanguageConfigInterface $config = null,
+        ?array $params = null
     ) {
         $this->decisionType = $decisionType;
         $this->ruleProviders = $ruleProviders;
         $this->expressionLanguageConfig = $config;
+        $this->params = $params;
     }
 
     /**
@@ -58,6 +66,16 @@ final class DecisionConfig implements DecisionConfigInterface
     public function getExpressionLanguageConfig(): ?ExpressionLanguageConfigInterface
     {
         return $this->expressionLanguageConfig;
+    }
+
+    /**
+     * Get additional params.
+     *
+     * @return null|mixed[]
+     */
+    public function getParams(): ?array
+    {
+        return $this->params;
     }
 
     /**

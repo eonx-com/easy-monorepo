@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
 
-use LoyaltyCorp\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface;
+use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface;
+use LoyaltyCorp\EasyDecision\Decisions\AffirmativeDecision;
 use LoyaltyCorp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
 final class DecisionConfigProviderStub implements DecisionConfigProviderInterface
@@ -17,7 +17,7 @@ final class DecisionConfigProviderStub implements DecisionConfigProviderInterfac
      */
     public function getDecisionType(): string
     {
-        return DecisionInterface::TYPE_YESNO_AFFIRMATIVE;
+        return AffirmativeDecision::class;
     }
 
     /**

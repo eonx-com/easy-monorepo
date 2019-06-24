@@ -13,12 +13,7 @@ final class Context implements ContextInterface
     private $decisionType;
 
     /**
-     * @var mixed
-     */
-    private $input;
-
-    /**
-     * @var mixed
+     * @var mixed[]
      */
     private $originalInput;
 
@@ -36,12 +31,11 @@ final class Context implements ContextInterface
      * Context constructor.
      *
      * @param string $decisionType
-     * @param mixed $input
+     * @param mixed[] $input
      */
-    public function __construct(string $decisionType, $input)
+    public function __construct(string $decisionType, array $input)
     {
         $this->decisionType = $decisionType;
-        $this->input = $input;
         $this->originalInput = $input;
     }
 
@@ -71,21 +65,11 @@ final class Context implements ContextInterface
     }
 
     /**
-     * Get input.
-     *
-     * @return mixed
-     */
-    public function getInput()
-    {
-        return $this->input;
-    }
-
-    /**
      * Get original input.
      *
-     * @return mixed
+     * @return mixed[]
      */
-    public function getOriginalInput()
+    public function getOriginalInput(): array
     {
         return $this->originalInput;
     }
@@ -108,20 +92,6 @@ final class Context implements ContextInterface
     public function isPropagationStopped(): bool
     {
         return $this->propagationStopped;
-    }
-
-    /**
-     * Set input.
-     *
-     * @param mixed $input
-     *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
-     */
-    public function setInput($input): ContextInterface
-    {
-        $this->input = $input;
-
-        return $this;
     }
 
     /**

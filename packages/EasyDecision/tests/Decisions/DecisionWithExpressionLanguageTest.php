@@ -10,6 +10,8 @@ use LoyaltyCorp\EasyDecision\Helpers\ValueExpressionFunctionProvider;
 use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 {
@@ -27,7 +29,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
         $decision = (new ValueDecision())->addRules($rules);
 
         $original = ['value' => 1];
-        $expected = ['value' => 11];
+        $expected = 11;
 
         self::assertEquals($expected, $decision->make($original));
     }
@@ -62,7 +64,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
         $tests = [
             [
                 'original' => ['value' => 0, 'name' => 'Nathan', 'extra_param1' => 1],
-                'expected' => ['value' => 11, 'name' => 'Nathan', 'extra_param1' => 1],
+                'expected' => 11,
                 'outputs' => [
                     'add(10)' => 10,
                     'if(name in ["Brad", "Matt"]).then(add(10))' => 10,
@@ -74,7 +76,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
             ],
             [
                 'original' => ['value' => 0, 'name' => 'Brad', 'extra_param1' => 1],
-                'expected' => ['value' => 21, 'name' => 'Brad', 'extra_param1' => 1],
+                'expected' => 21,
                 'outputs' => [
                     'add(10)' => 10,
                     'if(name in ["Brad", "Matt"]).then(add(10))' => 20,
@@ -86,7 +88,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
             ],
             [
                 'original' => ['value' => 0, 'name' => 'Matt', 'extra_param1' => 1],
-                'expected' => ['value' => 201, 'name' => 'Matt', 'extra_param1' => 1],
+                'expected' => 201,
                 'outputs' => [
                     'add(10)' => 10,
                     'if(name in ["Brad", "Matt"]).then(add(10))' => 20,

@@ -57,28 +57,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Decision Types/Implementation Mapping
-    |--------------------------------------------------------------------------
-    |
-    | Here you will define the mapping between the different types of decision
-    | and the implementation to use for it. It will allow you to create your
-    | own decision type and/or implementations and use it. It also allow you
-    | to control which decision types are available within your application.
-    |
-    | Your decisions must implement:
-    | \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
-    |
-    */
-    'mapping' => [
-        DecisionInterface::TYPE_YESNO_AFFIRMATIVE => AffirmativeDecision::class,
-        DecisionInterface::TYPE_YESNO_CONSENSUS => ConsensusDecision::class,
-        DecisionInterface::TYPE_YESNO_UNANIMOUS => UnanimousDecision::class,
-        DecisionInterface::TYPE_VALUE => ValueDecision::class
-        // 'My-Own-Type' => MyOwnDecision::class
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Decisions
     |--------------------------------------------------------------------------
     |

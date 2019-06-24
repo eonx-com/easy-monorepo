@@ -4,66 +4,61 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyDecision\Decisions;
 
 use LoyaltyCorp\EasyDecision\Exceptions\MissingValueIndexException;
+use LoyaltyCorp\EasyDecision\Helpers\IfConditionForValue;
 use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
-use LoyaltyCorp\EasyDecision\Middleware\ValueMiddleware;
 
 final class ValueDecision extends AbstractDecision
 {
+    /** @var mixed */
+    private $value;
+
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    protected function createContext($input): ContextInterface
+    public function make(array $input)
     {
-        // If input is an array, index value must be set
-        if (\is_array($input) && isset($input['value']) === false) {
-            throw new MissingValueIndexException(\sprintf(
-                'Passing an array input to %s require to set the index "value"',
-                self::class
+        if (isset($input['value']) === false) {
+            throw new MissingValueIndexException($this->getExceptionMessage(
+                'missing "value" index in given input'
             ));
         }
 
-        // If input is a stdClass, property value must be set
-        if ($input instanceof \stdClass && isset($input->value) === false) {
-            throw new MissingValueIndexException(\sprintf(
-                'Passing a stdClass input to %s require to set the property "value"',
-                self::class
-            ));
-        }
-
-        return parent::createContext($input);
+        return parent::make($input);
     }
 
     /**
-     * Do make decision based on given context.
+     * Let children classes make the decision.
+     *
+     * @return mixed
+     */
+    protected function doMake()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Handle rule output.
      *
      * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param string $rule
+     * @param mixed $output
      *
      * @return void
      */
-    protected function doMake(ContextInterface $context): void
+    protected function handleRuleOutput(ContextInterface $context, string $rule, $output): void
     {
-        // Nothing to do for this type of decision
-    }
+        if ($output instanceof IfConditionForValue) {
+            $output = $output->getValue();
+        }
 
-    /**
-     * Get decision type.
-     *
-     * @return string
-     */
-    protected function getDecisionType(): string
-    {
-        return DecisionInterface::TYPE_VALUE;
-    }
+        // Log output
+        $context->addRuleOutput($rule, $output);
 
-    /**
-     * Get middleware class.
-     *
-     * @return string
-     */
-    protected function getMiddlewareClass(): string
-    {
-        return ValueMiddleware::class;
+        // Store local value
+        $this->value = $output;
+
+        // Update input for next rules with new value
+        $this->updateInput(['value' => $output]);
     }
 }
 

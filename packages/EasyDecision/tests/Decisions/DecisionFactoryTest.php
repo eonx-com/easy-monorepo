@@ -23,14 +23,13 @@ final class DecisionFactoryTest extends AbstractTestCase
      */
     public function testCreateDecisionSuccessfully(): void
     {
-        $mapping = [DecisionInterface::TYPE_YESNO_UNANIMOUS => UnanimousDecision::class];
         $config = new DecisionConfig(
-            DecisionInterface::TYPE_YESNO_UNANIMOUS,
+            UnanimousDecision::class,
             [new RuleProviderStub()],
             new ExpressionLanguageConfig()
         );
 
-        $decision = (new DecisionFactory($mapping, $this->getExpressionLanguageFactory()))->create($config);
+        $decision = (new DecisionFactory($this->getExpressionLanguageFactory()))->create($config);
 
         $expected = [
             'true-1' => true,
@@ -39,7 +38,7 @@ final class DecisionFactoryTest extends AbstractTestCase
         ];
 
         self::assertTrue($decision->make(['value' => 1]));
-        self::assertEquals(DecisionInterface::TYPE_YESNO_UNANIMOUS, $decision->getContext()->getDecisionType());
+        self::assertEquals(UnanimousDecision::class, $decision->getContext()->getDecisionType());
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 
@@ -52,10 +51,9 @@ final class DecisionFactoryTest extends AbstractTestCase
     {
         $this->expectException(InvalidDecisionException::class);
 
-        $mapping = ['decision' => \stdClass::class];
-        $config = new DecisionConfig('decision', []);
+        $config = new DecisionConfig(\stdClass::class, []);
 
-        (new DecisionFactory($mapping, $this->getExpressionLanguageFactory()))->create($config);
+        (new DecisionFactory($this->getExpressionLanguageFactory()))->create($config);
     }
 
     /**
@@ -67,10 +65,9 @@ final class DecisionFactoryTest extends AbstractTestCase
     {
         $this->expectException(InvalidRuleProviderException::class);
 
-        $mapping = [DecisionInterface::TYPE_YESNO_UNANIMOUS => UnanimousDecision::class];
-        $config = new DecisionConfig(DecisionInterface::TYPE_YESNO_UNANIMOUS, [new \stdClass()]);
+        $config = new DecisionConfig(UnanimousDecision::class, [new \stdClass()]);
 
-        (new DecisionFactory($mapping, $this->getExpressionLanguageFactory()))->create($config);
+        (new DecisionFactory($this->getExpressionLanguageFactory()))->create($config);
     }
 
     /**
@@ -80,9 +77,9 @@ final class DecisionFactoryTest extends AbstractTestCase
      */
     public function testNotInMappingDecisionException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InvalidDecisionException::class);
 
-        (new DecisionFactory([], $this->getExpressionLanguageFactory()))->create(new DecisionConfig('', []));
+        (new DecisionFactory($this->getExpressionLanguageFactory()))->create(new DecisionConfig('', []));
     }
 }
 

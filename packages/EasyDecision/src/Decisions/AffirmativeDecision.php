@@ -4,49 +4,45 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyDecision\Decisions;
 
 use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
-use LoyaltyCorp\EasyDecision\Middleware\YesNoMiddleware;
 
 final class AffirmativeDecision extends AbstractDecision
 {
+    /** @var bool */
+    private $output = false;
+
     /**
-     * Do make decision based on given context.
+     * Let children classes make the decision.
+     *
+     * @return mixed
+     */
+    protected function doMake()
+    {
+        return $this->output;
+    }
+
+    /**
+     * Handle rule output.
      *
      * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param string $rule
+     * @param mixed $output
      *
      * @return void
      */
-    protected function doMake(ContextInterface $context): void
+    protected function handleRuleOutput(ContextInterface $context, string $rule, $output): void
     {
-        foreach ($context->getRuleOutputs() as $output) {
-            if ($output === true) {
-                $context->setInput(true);
+        // Convert output to boolean
+        $output = (bool)$output;
 
-                return;
-            }
+        // Log output
+        $context->addRuleOutput($rule, $output);
+
+        // If at least one true, decision output is true
+        if ($output === true) {
+            $this->output = true;
+            // No need to keep processing rules because only one true is required to output true
+            $context->stopPropagation();
         }
-
-        $context->setInput(false);
-    }
-
-    /**
-     * Get decision type.
-     *
-     * @return string
-     */
-    protected function getDecisionType(): string
-    {
-        return DecisionInterface::TYPE_YESNO_AFFIRMATIVE;
-    }
-
-    /**
-     * Get middleware class.
-     *
-     * @return string
-     */
-    protected function getMiddlewareClass(): string
-    {
-        return YesNoMiddleware::class;
     }
 }
 

@@ -1,20 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Bridge\Laravel;
+namespace LoyaltyCorp\EasyDecision\Bridge\Common;
 
-use Illuminate\Contracts\Container\Container;
+use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface;
+use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
 use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
 use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use Psr\Container\ContainerInterface;
 
 final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigFactoryInterface
 {
     /**
-     * @var \Illuminate\Contracts\Container\Container
+     * @var mixed[]
      */
-    private $app;
+    private $config;
+
+    /**
+     * @var \Psr\Container\ContainerInterface
+     */
+    private $container;
 
     /**
      * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
@@ -29,11 +36,13 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     /**
      * ExpressionLanguageConfigFactory constructor.
      *
-     * @param \Illuminate\Contracts\Container\Container $app
+     * @param mixed[] $config
+     * @param \Psr\Container\ContainerInterface $container
      */
-    public function __construct(Container $app)
+    public function __construct(array $config, ContainerInterface $container)
     {
-        $this->app = $app;
+        $this->config = $config;
+        $this->container = $container;
     }
 
     /**
@@ -42,15 +51,11 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      * @param string $decision
      *
      * @return null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function create(string $decision): ?ExpressionLanguageConfigInterface
     {
         $expressions = $this->getDecisionExpressions($decision);
-
         $globals = $this->getGlobalExpressionFunctions();
-
         $expressionFunctions = $this->getExpressionFunctions($expressions['functions'], $expressions['providers']);
 
         if (empty($expressionFunctions) === false) {
@@ -69,7 +74,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      */
     private function getDecisionExpressions(string $decision): array
     {
-        $config = \config(\sprintf('easy-decision.decisions.%s', $decision), []);
+        $config = $this->config['decisions'][$decision] ?? [];
         $functions = [];
         $providers = [];
 
@@ -90,8 +95,6 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      * Get expression function factory.
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     private function getExpressionFunctionFactory(): ExpressionFunctionFactoryInterface
     {
@@ -99,7 +102,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
             return $this->expressionFunctionFactory;
         }
 
-        return $this->expressionFunctionFactory = $this->app->make(ExpressionFunctionFactoryInterface::class);
+        return $this->expressionFunctionFactory = $this->container->get(ExpressionFunctionFactoryInterface::class);
     }
 
     /**
@@ -108,8 +111,6 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      * @param mixed $provider
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     private function getExpressionFunctionProvider($provider): ExpressionFunctionProviderInterface
     {
@@ -117,7 +118,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
             return $provider;
         }
 
-        return $this->app->make($provider);
+        return $this->container->get($provider);
     }
 
     /**
@@ -127,8 +128,6 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      * @param mixed[] $providers
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     private function getExpressionFunctions(array $functions, array $providers): array
     {
@@ -152,8 +151,6 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      * Get global expression functions.
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     private function getGlobalExpressionFunctions(): array
     {
@@ -161,15 +158,11 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
             return $this->globalExpressionFunctions;
         }
 
+        $config = $this->config;
+
         return $this->globalExpressionFunctions = $this->getExpressionFunctions(
-            \config('easy-decision.expressions.functions', []),
-            \config('easy-decision.expressions.providers', [])
+            $config['expressions']['functions'] ?? [],
+            $config['expressions']['providers'] ?? []
         );
     }
 }
-
-\class_alias(
-    ExpressionLanguageConfigFactory::class,
-    'StepTheFkUp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactory',
-    false
-);
