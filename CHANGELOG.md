@@ -13,11 +13,13 @@
 
 - [#55] Better parameters resolvers
 - [#53] Update code templates to latest (Fargate, ecs, ...)
+- [#61] Update templates to work with FARGATE
 
 ### EasyDocker
 
 - [#56] Better parameter resolvers
 - [#54] nginx improvements, Thanks to [@merk]
+- [#60] Update templates to work with FARGATE
 
 <!-- dumped content end -->
 
@@ -558,3 +560,5 @@
 [@merk]: https://github.com/merk
 [@albusss]: https://github.com/albusss
 [v0.7.11]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.10...v0.7.11
+[#61]: https://github.com/loyaltycorp/easy-monorepo/pull/61
+[#60]: https://github.com/loyaltycorp/easy-monorepo/pull/60
