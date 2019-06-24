@@ -1,12 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use LoyaltyCorp\EasyDecision\Decisions\AffirmativeDecision;
-use LoyaltyCorp\EasyDecision\Decisions\ConsensusDecision;
-use LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision;
-use LoyaltyCorp\EasyDecision\Decisions\ValueDecision;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -68,7 +62,7 @@ return [
     | using an associative array:
     |
     | 'my-decision' => [
-    |     'type' => DecisionInterface::TYPE_YESNO_UNANIMOUS,
+    |     'type' => \LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision::class,
     |     'providers' => [
     |          \App\Decisions\MyDecisionRuleProvider::class, -> Instantiated from container
     |          new \App\Decisions\MyDecisionAdditionalRuleProvider()
