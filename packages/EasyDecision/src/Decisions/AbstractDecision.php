@@ -137,6 +137,20 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
+     * Set decision name.
+     *
+     * @param string $name
+     *
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function setName(string $name): DecisionInterface
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
      * Let children classes make the decision.
      *
      * @return mixed

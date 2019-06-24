@@ -109,6 +109,7 @@ final class DecisionFactory implements DecisionFactoryInterface
         return $this->decorated->create(
             new DecisionConfig(
                 $type,
+                $decision,
                 $this->getRuleProviders($providers),
                 $this->getExpressionLanguageConfigFactory()->create($decision),
                 $params

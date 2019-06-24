@@ -6,11 +6,9 @@ namespace LoyaltyCorp\EasyDecision\Tests\Decisions;
 use LoyaltyCorp\EasyDecision\Decisions\DecisionConfig;
 use LoyaltyCorp\EasyDecision\Decisions\DecisionFactory;
 use LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision;
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException;
 use LoyaltyCorp\EasyDecision\Exceptions\InvalidDecisionException;
 use LoyaltyCorp\EasyDecision\Exceptions\InvalidRuleProviderException;
 use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
 use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
 use LoyaltyCorp\EasyDecision\Tests\Stubs\RuleProviderStub;
 
@@ -25,6 +23,7 @@ final class DecisionFactoryTest extends AbstractTestCase
     {
         $config = new DecisionConfig(
             UnanimousDecision::class,
+            'my-decision',
             [new RuleProviderStub()],
             new ExpressionLanguageConfig()
         );
@@ -51,7 +50,7 @@ final class DecisionFactoryTest extends AbstractTestCase
     {
         $this->expectException(InvalidDecisionException::class);
 
-        $config = new DecisionConfig(\stdClass::class, []);
+        $config = new DecisionConfig(\stdClass::class, 'my-decision', []);
 
         (new DecisionFactory($this->getExpressionLanguageFactory()))->create($config);
     }
@@ -65,7 +64,7 @@ final class DecisionFactoryTest extends AbstractTestCase
     {
         $this->expectException(InvalidRuleProviderException::class);
 
-        $config = new DecisionConfig(UnanimousDecision::class, [new \stdClass()]);
+        $config = new DecisionConfig(UnanimousDecision::class, 'my-decision', [new \stdClass()]);
 
         (new DecisionFactory($this->getExpressionLanguageFactory()))->create($config);
     }
@@ -79,7 +78,11 @@ final class DecisionFactoryTest extends AbstractTestCase
     {
         $this->expectException(InvalidDecisionException::class);
 
-        (new DecisionFactory($this->getExpressionLanguageFactory()))->create(new DecisionConfig('', []));
+        (new DecisionFactory($this->getExpressionLanguageFactory()))->create(new DecisionConfig(
+            '',
+            'my-decision',
+            []
+        ));
     }
 }
 

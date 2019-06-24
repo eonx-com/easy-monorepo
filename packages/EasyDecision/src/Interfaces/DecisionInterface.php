@@ -51,6 +51,15 @@ interface DecisionInterface
      * @throws \LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
     public function make(array $input);
+
+    /**
+     * Set decision name.
+     *
+     * @param string $name
+     *
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function setName(string $name): self;
 }
 
 \class_alias(

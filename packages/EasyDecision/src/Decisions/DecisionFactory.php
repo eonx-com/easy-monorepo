@@ -51,7 +51,7 @@ final class DecisionFactory implements DecisionFactoryInterface
      */
     public function create(DecisionConfigInterface $config): DecisionInterface
     {
-        $decision = $this->instantiateDecision($config->getDecisionType());
+        $decision = $this->instantiateDecision($config->getDecisionType())->setName($config->getName());
 
         foreach ($config->getRuleProviders() as $provider) {
             if (($provider instanceof RuleProviderInterface) === false) {
