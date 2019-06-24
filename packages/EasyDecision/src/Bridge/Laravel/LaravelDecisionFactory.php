@@ -48,12 +48,13 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
      * Create decision for given decision name.
      *
      * @param string $decision
+     * @param mixed[]|null $params
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function create(string $decision): DecisionInterface
+    public function create(string $decision, ?array $params = null): DecisionInterface
     {
         if (isset($this->resolved[$decision])) {
             return $this->resolved[$decision];
@@ -66,11 +67,11 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
         }
 
         if (\is_array($config)) {
-            return $this->resolved[$decision] = $this->doCreateForConfig($decision, $config);
+            return $this->resolved[$decision] = $this->doCreateForConfig($decision, $config, $params);
         }
 
         if (\is_string($config) || $config instanceof DecisionConfigProviderInterface) {
-            return $this->resolved[$decision] = $this->doCreateForConfigProvider($decision, $config);
+            return $this->resolved[$decision] = $this->doCreateForConfigProvider($decision, $config, $params);
         }
 
         throw new InvalidArgumentException(\sprintf(
@@ -87,18 +88,26 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
      * @param string $decision
      * @param string $type
      * @param mixed[] $providers
+     * @param mixed[]|null $params
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    private function doCreate(string $decision, string $type, array $providers): DecisionInterface
-    {
-        return $this->decorated->create(new DecisionConfig(
-            $type,
-            $this->getRuleProviders($providers),
-            $this->getExpressionLanguageConfigFactory()->create($decision)
-        ));
+    private function doCreate(
+        string $decision,
+        string $type,
+        array $providers,
+        ?array $params = null
+    ): DecisionInterface {
+        return $this->decorated->create(
+            new DecisionConfig(
+                $type,
+                $this->getRuleProviders($providers),
+                $this->getExpressionLanguageConfigFactory()->create($decision)
+            ),
+            $params
+        );
     }
 
     /**
@@ -106,12 +115,13 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
      *
      * @param string $decision
      * @param mixed[] $config
+     * @param mixed[]|null $params
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    private function doCreateForConfig(string $decision, array $config): DecisionInterface
+    private function doCreateForConfig(string $decision, array $config, ?array $params = null): DecisionInterface
     {
         if (empty($config['providers'] ?? null)) {
             throw new InvalidArgumentException(\sprintf('No rule providers configured for "%s"', $decision));
@@ -120,7 +130,7 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
             throw new InvalidArgumentException(\sprintf('No decision type configured for "%s"', $decision));
         }
 
-        return $this->doCreate($decision, (string)$config['type'], (array)$config['providers']);
+        return $this->doCreate($decision, (string)$config['type'], (array)$config['providers'], $params);
     }
 
     /**
@@ -128,19 +138,28 @@ final class LaravelDecisionFactory implements DecisionFactoryInterface
      *
      * @param string $decision
      * @param mixed $configProvider
+     * @param mixed[]|null $params
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    private function doCreateForConfigProvider(string $decision, $configProvider): DecisionInterface
-    {
+    private function doCreateForConfigProvider(
+        string $decision,
+        $configProvider,
+        ?array $params = null
+    ): DecisionInterface {
         if (\is_string($configProvider)) {
             $configProvider = $this->app->make($configProvider);
         }
 
         if ($configProvider instanceof DecisionConfigProviderInterface) {
-            return $this->doCreate($decision, $configProvider->getDecisionType(), $configProvider->getRuleProviders());
+            return $this->doCreate(
+                $decision,
+                $configProvider->getDecisionType(),
+                $configProvider->getRuleProviders(),
+                $params
+            );
         }
 
         throw new InvalidArgumentException(\sprintf(

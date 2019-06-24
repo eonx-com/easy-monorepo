@@ -11,9 +11,11 @@ final class RuleProviderStub implements RuleProviderInterface
     /**
      * Get rules.
      *
+     * @param mixed[]|null $params
+     *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[]
      */
-    public function getRules(): array
+    public function getRules(?array $params = null): array
     {
         return [
             new RuleStub('true-1', true),

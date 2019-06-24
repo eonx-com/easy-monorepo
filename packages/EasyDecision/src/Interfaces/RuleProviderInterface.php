@@ -8,9 +8,11 @@ interface RuleProviderInterface
     /**
      * Get rules.
      *
+     * @param mixed[]|null $params
+     *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[]
      */
-    public function getRules(): array;
+    public function getRules(?array $params = null): array;
 }
 
 \class_alias(
