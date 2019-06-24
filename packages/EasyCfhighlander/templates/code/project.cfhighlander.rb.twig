@@ -9,7 +9,7 @@ CfhighlanderComponent do
       ComponentParam 'EnvironmentType', 'development', isGlobal: true, allowedValues: ['development','production']
     end
 
-    Component name: '{{ project }}-api-service', template: 'fargate', config: api do
+    Component name: '{{ project }}-api-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: api do
       Parameters do
         ComponentParam 'SqsUrl', type:'String'
       end
@@ -27,7 +27,7 @@ CfhighlanderComponent do
       {% endif %}
     end
 
-  Component name: '{{ project }}-worker-service', template: 'fargate', config: worker do
+  Component name: '{{ project }}-worker-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: worker do
     Parameters do
       ComponentParam 'SqsUrl', type:'String'
     end
@@ -43,7 +43,7 @@ CfhighlanderComponent do
     {% endif %}
   end
 
-  Component name: '{{ project }}-cron-service', template: 'fargate', config: cron do
+  Component name: '{{ project }}-cron-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: cron do
     Parameters do
       ComponentParam 'SqsUrl', type:'String'
     end
