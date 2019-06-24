@@ -19,7 +19,7 @@ CfhighlanderComponent do
       parameter name: 'Listener', value: FnImportValue(FnSub("${EnvironmentName}-loadbalancer-httpsListener"))
       parameter name: 'VPCId', value: FnImportValue(FnSub("${EnvironmentName}-vpc-VPCId"))
       parameter name: 'DnsDomain', value: dns_domain
-      parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ project }}Url"))
+      parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
       parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
       parameter name: 'LoadbalancerSecurityGroup', value: FnImportValue(FnSub("${EnvironmentName}-loadbalancer-SecurityGroupLoadBalancer"))
       {% if elasticsearch_enabled %}
@@ -35,7 +35,7 @@ CfhighlanderComponent do
     parameter name: 'EcsCluster', value: FnImportValue(FnSub("${EnvironmentName}-ecs-EcsCluster"))
     parameter name: 'VPCId', value: FnImportValue(FnSub("${EnvironmentName}-vpc-VPCId"))
     parameter name: 'DnsDomain', value: dns_domain
-    parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ project }}Url"))
+    parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
     parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
     parameter name: 'SecurityGroupBackplane', value: FnImportValue(FnSub("${EnvironmentName}-vpc-SecurityGroupBackplane"))
     {% if elasticsearch_enabled %}
@@ -51,7 +51,7 @@ CfhighlanderComponent do
     parameter name: 'EcsCluster', value: FnImportValue(FnSub("${EnvironmentName}-ecs-EcsCluster"))
     parameter name: 'VPCId', value: FnImportValue(FnSub("${EnvironmentName}-vpc-VPCId"))
     parameter name: 'DnsDomain', value: dns_domain
-    parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ project }}Url"))
+    parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
     parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
     parameter name: 'SecurityGroupBackplane', value: FnImportValue(FnSub("${EnvironmentName}-vpc-SecurityGroupBackplane"))
     {% if elasticsearch_enabled %}
