@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyDecision\Decisions;
 
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException;
 use LoyaltyCorp\EasyDecision\Exceptions\InvalidDecisionException;
 use LoyaltyCorp\EasyDecision\Exceptions\InvalidRuleProviderException;
 use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
@@ -14,9 +13,15 @@ use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface;
+use Psr\Container\ContainerInterface;
 
 final class DecisionFactory implements DecisionFactoryInterface
 {
+    /**
+     * @var \Psr\Container\ContainerInterface
+     */
+    private $container;
+
     /**
      * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
@@ -28,19 +33,12 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $expressionLanguageFactory;
 
     /**
-     * @var string[]
-     */
-    private $mapping;
-
-    /**
      * DecisionFactory constructor.
      *
-     * @param string[] $mapping
      * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface $languageFactory
      */
-    public function __construct(array $mapping, ExpressionLanguageFactoryInterface $languageFactory)
+    public function __construct(ExpressionLanguageFactoryInterface $languageFactory)
     {
-        $this->mapping = $mapping;
         $this->expressionLanguageFactory = $languageFactory;
     }
 
@@ -48,13 +46,12 @@ final class DecisionFactory implements DecisionFactoryInterface
      * Create decision for given config.
      *
      * @param \LoyaltyCorp\EasyDecision\Interfaces\DecisionConfigInterface $config
-     * @param mixed[]|null $params
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
      */
-    public function create(DecisionConfigInterface $config, ?array $params = null): DecisionInterface
+    public function create(DecisionConfigInterface $config): DecisionInterface
     {
-        $decision = $this->instantiateDecision($config->getDecisionType());
+        $decision = $this->instantiateDecision($config->getDecisionType())->setName($config->getName());
 
         foreach ($config->getRuleProviders() as $provider) {
             if (($provider instanceof RuleProviderInterface) === false) {
@@ -64,6 +61,8 @@ final class DecisionFactory implements DecisionFactoryInterface
                     RuleProviderInterface::class
                 ));
             }
+
+            $params = $config->getParams();
 
             foreach ($provider->getRules($params) as $rule) {
                 if ($rule instanceof ExpressionLanguageAwareInterface) {
@@ -75,6 +74,18 @@ final class DecisionFactory implements DecisionFactoryInterface
         }
 
         return $decision;
+    }
+
+    /**
+     * Set container.
+     *
+     * @param \Psr\Container\ContainerInterface $container
+     *
+     * @return void
+     */
+    public function setContainer(ContainerInterface $container): void
+    {
+        $this->container = $container;
     }
 
     /**
@@ -107,20 +118,26 @@ final class DecisionFactory implements DecisionFactoryInterface
      */
     private function instantiateDecision(string $decisionType): DecisionInterface
     {
-        if (empty($this->mapping[$decisionType])) {
-            throw new InvalidArgumentException(\sprintf('No decision class configured for type "%s"', $decisionType));
-        }
+        $decision = null;
 
-        $class = $this->mapping[$decisionType];
-        $decision = new $class();
+        try {
+            if ($this->container !== null && $this->container->has($decisionType)) {
+                $decision = $this->container->get($decisionType);
+            }
+
+            if ($decision === null && \class_exists($decisionType)) {
+                $decision = new $decisionType();
+            }
+        } catch (\Throwable $exception) {
+            throw new InvalidDecisionException(\sprintf('Unable to instantiate decision for type "%s"', $decisionType));
+        }
 
         if ($decision instanceof DecisionInterface) {
             return $decision;
         }
 
         throw new InvalidDecisionException(\sprintf(
-            'Configured decision "%s" for type "%s" does not implement %s',
-            \get_class($decision),
+            'Configured decision "%s" does not implement %s',
             $decisionType,
             DecisionInterface::class
         ));

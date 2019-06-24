@@ -27,7 +27,7 @@ final class UnanimousDecisionTest extends AbstractTestCase
             'true-1' => true,
             'true-2' => true,
             'false-1' => false,
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED
+            'unsupported-1' => RuleInterface::OUTPUT_SKIPPED
         ];
 
         self::assertFalse($decision->make([]));

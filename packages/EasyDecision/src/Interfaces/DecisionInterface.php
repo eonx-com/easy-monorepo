@@ -6,35 +6,6 @@ namespace LoyaltyCorp\EasyDecision\Interfaces;
 interface DecisionInterface
 {
     /**
-     * @var string[]
-     */
-    public const TYPES_YESNO = [
-        self::TYPE_YESNO_AFFIRMATIVE,
-        self::TYPE_YESNO_CONSENSUS,
-        self::TYPE_YESNO_UNANIMOUS
-    ];
-
-    /**
-     * @var string
-     */
-    public const TYPE_VALUE = 'value';
-
-    /**
-     * @var string
-     */
-    public const TYPE_YESNO_AFFIRMATIVE = 'yesno_affirmative';
-
-    /**
-     * @var string
-     */
-    public const TYPE_YESNO_CONSENSUS = 'yesno_consensus';
-
-    /**
-     * @var string
-     */
-    public const TYPE_YESNO_UNANIMOUS = 'yesno_unanimous';
-
-    /**
      * Add rule.
      *
      * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface $rule
@@ -62,16 +33,33 @@ interface DecisionInterface
     public function getContext(): ContextInterface;
 
     /**
-     * Make value decision for given input.
+     * Get decision name.
      *
-     * @param mixed $input
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
+     * Make value decision for given array input.
+     *
+     * @param mixed[] $input
      *
      * @return mixed
      *
+     * @throws \LoyaltyCorp\EasyDecision\Exceptions\EmptyRulesException
      * @throws \LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException
      * @throws \LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
-    public function make($input);
+    public function make(array $input);
+
+    /**
+     * Set decision name.
+     *
+     * @param string $name
+     *
+     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function setName(string $name): self;
 }
 
 \class_alias(

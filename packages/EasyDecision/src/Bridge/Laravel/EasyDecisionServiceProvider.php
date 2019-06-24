@@ -4,7 +4,11 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyDecision\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use LoyaltyCorp\EasyDecision\Decisions\DecisionFactory;
+use LoyaltyCorp\EasyDecision\Bridge\Common\DecisionFactory as BridgeDecisionFactory;
+use LoyaltyCorp\EasyDecision\Bridge\Common\ExpressionLanguageConfigFactory;
+use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
+use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
+use LoyaltyCorp\EasyDecision\Decisions\DecisionFactory as BaseDecisionFactory;
 use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunctionFactory;
 use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageFactory;
 use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
@@ -40,11 +44,19 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         $this->app->singleton(ExpressionLanguageFactoryInterface::class, ExpressionLanguageFactory::class);
         $this->app->singleton(ExpressionLanguageRuleFactoryInterface::class, ExpressionLanguageRuleFactory::class);
 
+        $this->app->singleton(
+            ExpressionLanguageConfigFactoryInterface::class,
+            function (): ExpressionLanguageConfigFactoryInterface {
+                return new ExpressionLanguageConfigFactory(\config('easy-decision', []), $this->app);
+            }
+        );
+
         $this->app->singleton(DecisionFactoryInterface::class, function (): DecisionFactoryInterface {
-            return new LaravelDecisionFactory($this->app, new DecisionFactory(
-                \config('easy-decision.mapping', []),
+            $baseFactory = new BaseDecisionFactory(
                 $this->app->make(ExpressionLanguageFactoryInterface::class)
-            ));
+            );
+
+            return new BridgeDecisionFactory(\config('easy-decision', []), $this->app, $baseFactory);
         });
     }
 }

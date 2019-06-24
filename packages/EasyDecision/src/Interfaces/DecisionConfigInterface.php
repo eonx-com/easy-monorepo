@@ -22,6 +22,20 @@ interface DecisionConfigInterface
     public function getExpressionLanguageConfig(): ?ExpressionLanguageConfigInterface;
 
     /**
+     * Get decision name.
+     *
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
+     * Get additional params.
+     *
+     * @return null|mixed[]
+     */
+    public function getParams(): ?array;
+
+    /**
      * Get rules providers.
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[]

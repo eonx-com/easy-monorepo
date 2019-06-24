@@ -6,9 +6,9 @@ namespace LoyaltyCorp\EasyDecision\Interfaces;
 interface RuleProviderInterface
 {
     /**
-     * Get rules.
+     * Get rules for optionally given parameters.
      *
-     * @param mixed[]|null $params
+     * @param null|mixed[] $params
      *
      * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[]
      */

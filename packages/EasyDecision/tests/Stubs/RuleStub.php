@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
 
-use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
 
 final class RuleStub implements RuleInterface
@@ -57,11 +56,11 @@ final class RuleStub implements RuleInterface
     /**
      * Proceed with input.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param mixed[] $input
      *
      * @return mixed
      */
-    public function proceed(ContextInterface $context)
+    public function proceed(array $input)
     {
         return $this->output;
     }
@@ -69,11 +68,11 @@ final class RuleStub implements RuleInterface
     /**
      * Check if rule supports given input.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param mixed[] $input
      *
      * @return bool
      */
-    public function supports(ContextInterface $context): bool
+    public function supports(array $input): bool
     {
         return $this->supports;
     }
