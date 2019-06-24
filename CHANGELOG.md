@@ -2,7 +2,28 @@
 
 <!-- dumped content start -->
 
-## v0.7.11 - 2019-06-17
+## Unreleased
+
+### EasyDecision
+
+- [#58] Allow additional parameters when creating decision, Thanks to [@albusss]
+- [#59] Fix scaling issues and make decision engine easier to extend
+
+### EasyCfhighlander
+
+- [#55] Better parameters resolvers
+- [#53] Update code templates to latest (Fargate, ecs, ...)
+
+### EasyDocker
+
+- [#56] Better parameter resolvers
+- [#54] nginx improvements, Thanks to [@merk]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.7.11] - 2019-06-17
 
 ### EasyDocker
 
@@ -528,3 +549,12 @@
 [v0.7.9]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.8...v0.7.9
 [v0.7.8]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.7...v0.7.8
 [v0.7.10]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.9...v0.7.10
+[#59]: https://github.com/loyaltycorp/easy-monorepo/pull/59
+[#58]: https://github.com/loyaltycorp/easy-monorepo/pull/58
+[#56]: https://github.com/loyaltycorp/easy-monorepo/pull/56
+[#55]: https://github.com/loyaltycorp/easy-monorepo/pull/55
+[#54]: https://github.com/loyaltycorp/easy-monorepo/pull/54
+[#53]: https://github.com/loyaltycorp/easy-monorepo/pull/53
+[@merk]: https://github.com/merk
+[@albusss]: https://github.com/albusss
+[v0.7.11]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.10...v0.7.11
