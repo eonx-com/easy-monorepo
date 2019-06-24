@@ -6,9 +6,24 @@ services:
       - ./:/var/www:delegated
       - ./docker/api/development/php.ini:/usr/local/etc/php/conf.d/99-overrides.ini
 
+  artisan:
+    volumes:
+      - ./:/var/www:delegated
+      - ./docker/api/development/php.ini:/usr/local/etc/php/conf.d/99-overrides.ini
+
+  composer:
+    volumes:
+      - ./:/var/www:delegated
+      - ./docker/api/development/php.ini:/usr/local/etc/php/conf.d/99-overrides.ini
+
   cron:
     volumes:
       - ./:/var/www:delegated
+
+  migrate:
+    volumes:
+      - ./:/var/www:delegated
+      - ./docker/api/development/php.ini:/usr/local/etc/php/conf.d/99-overrides.ini
 
   nginx:
     volumes:
