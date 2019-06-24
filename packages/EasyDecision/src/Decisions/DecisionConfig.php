@@ -19,6 +19,16 @@ final class DecisionConfig implements DecisionConfigInterface
     private $expressionLanguageConfig;
 
     /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var null|mixed[]
+     */
+    private $params;
+
+    /**
      * @var \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[]
      */
     private $ruleProviders;
@@ -27,17 +37,23 @@ final class DecisionConfig implements DecisionConfigInterface
      * DecisionConfig constructor.
      *
      * @param string $decisionType
+     * @param string $name
      * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[] $ruleProviders
      * @param null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     * @param null|mixed[]
      */
     public function __construct(
         string $decisionType,
+        string $name,
         array $ruleProviders,
-        ?ExpressionLanguageConfigInterface $config = null
+        ?ExpressionLanguageConfigInterface $config = null,
+        ?array $params = null
     ) {
         $this->decisionType = $decisionType;
+        $this->name = $name;
         $this->ruleProviders = $ruleProviders;
         $this->expressionLanguageConfig = $config;
+        $this->params = $params;
     }
 
     /**
@@ -58,6 +74,26 @@ final class DecisionConfig implements DecisionConfigInterface
     public function getExpressionLanguageConfig(): ?ExpressionLanguageConfigInterface
     {
         return $this->expressionLanguageConfig;
+    }
+
+    /**
+     * Get decision name.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get additional params.
+     *
+     * @return null|mixed[]
+     */
+    public function getParams(): ?array
+    {
+        return $this->params;
     }
 
     /**

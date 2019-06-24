@@ -21,13 +21,10 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
     public function testArrayConfigCreateDecisionSuccessfully(): void
     {
         $this->setConfig([
-            'mapping' => [
-                DecisionInterface::TYPE_YESNO_AFFIRMATIVE => AffirmativeDecision::class
-            ],
             'decisions' => [
                 'my-decision' => [
                     'providers' => [new RuleProviderStub()],
-                    'type' => DecisionInterface::TYPE_YESNO_AFFIRMATIVE
+                    'type' => AffirmativeDecision::class
                 ]
             ]
         ]);
@@ -80,13 +77,10 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $this->getApplication()->instance(RuleProviderStub::class, new RuleProviderStub());
 
         $this->setConfig([
-            'mapping' => [
-                DecisionInterface::TYPE_YESNO_AFFIRMATIVE => AffirmativeDecision::class
-            ],
             'decisions' => [
                 'my-decision' => [
                     'providers' => RuleProviderStub::class,
-                    'type' => DecisionInterface::TYPE_YESNO_AFFIRMATIVE
+                    'type' => AffirmativeDecision::class
                 ]
             ]
         ]);
@@ -104,9 +98,6 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $this->getApplication()->instance('minPhpFunctionProvider', new FromPhpExpressionFunctionProvider(['min']));
 
         $this->setConfig([
-            'mapping' => [
-                DecisionInterface::TYPE_YESNO_AFFIRMATIVE => AffirmativeDecision::class
-            ],
             'decisions' => [
                 'my-decision' => new DecisionConfigProviderStub(),
                 'my-decision-different' => new DecisionConfigProviderStub()
@@ -134,9 +125,6 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $this->getApplication()->instance('MyDecisionConfigProvider', new \stdClass());
 
         $this->setConfig([
-            'mapping' => [
-                DecisionInterface::TYPE_YESNO_AFFIRMATIVE => AffirmativeDecision::class
-            ],
             'decisions' => [
                 'my-decision' => 'MyDecisionConfigProvider'
             ]

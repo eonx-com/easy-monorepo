@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Bridge\Laravel;
+namespace LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces;
 
 use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 
@@ -16,9 +16,3 @@ interface ExpressionLanguageConfigFactoryInterface
      */
     public function create(string $decision): ?ExpressionLanguageConfigInterface;
 }
-
-\class_alias(
-    ExpressionLanguageConfigFactoryInterface::class,
-    'StepTheFkUp\EasyDecision\Bridge\Laravel\ExpressionLanguageConfigFactoryInterface',
-    false
-);

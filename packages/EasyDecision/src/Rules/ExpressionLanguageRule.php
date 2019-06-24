@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyDecision\Rules;
 
-use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\ContextAwareInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
+use LoyaltyCorp\EasyDecision\Traits\ContextAwareTrait;
 use LoyaltyCorp\EasyDecision\Traits\ExpressionLanguageAwareTrait;
 
-final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageAwareInterface
+final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterface, ExpressionLanguageAwareInterface
 {
+    use ContextAwareTrait;
     use ExpressionLanguageAwareTrait;
 
     /**
@@ -47,23 +49,25 @@ final class ExpressionLanguageRule implements RuleInterface, ExpressionLanguageA
     /**
      * Proceed with input.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param mixed[] $input
      *
      * @return mixed
      */
-    public function proceed(ContextInterface $context)
+    public function proceed(array $input)
     {
-        return $this->expressionLanguage->evaluate($this->expression, (array)$context->getInput());
+        $input['context'] = $this->context;
+
+        return $this->expressionLanguage->evaluate($this->expression, $input);
     }
 
     /**
      * Check if rule supports given input.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param mixed[] $input
      *
      * @return bool
      */
-    public function supports(ContextInterface $context): bool
+    public function supports(array $input): bool
     {
         return true;
     }

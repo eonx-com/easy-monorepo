@@ -4,55 +4,53 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyDecision\Decisions;
 
 use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
-use LoyaltyCorp\EasyDecision\Middleware\YesNoMiddleware;
 
 final class ConsensusDecision extends AbstractDecision
 {
+    /** @var int */
+    private $countFalse = 0;
+
+    /** @var int */
+    private $countTrue = 0;
+
     /**
-     * Do make decision based on given context.
+     * Let children classes make the decision.
+     *
+     * @return mixed
+     */
+    protected function doMake()
+    {
+        return $this->countTrue >= $this->countFalse;
+    }
+
+    /**
+     * Handle rule output.
      *
      * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param string $rule
+     * @param mixed $output
      *
      * @return void
      */
-    protected function doMake(ContextInterface $context): void
+    protected function handleRuleOutput(ContextInterface $context, string $rule, $output): void
     {
-        $true = 0;
-        $false = 0;
+        // Convert output to boolean
+        $output = (bool)$output;
 
-        foreach ($context->getRuleOutputs() as $output) {
-            if ($output === true) {
-                $true++;
-                continue;
-            }
+        // Log output
+        $context->addRuleOutput($rule, $output);
 
-            if ($output === false) {
-                $false++;
-            }
+        // Count true
+        if ($output === true) {
+            $this->countTrue++;
+
+            return;
         }
 
-        $context->setInput($true >= $false);
-    }
-
-    /**
-     * Get decision type.
-     *
-     * @return string
-     */
-    protected function getDecisionType(): string
-    {
-        return DecisionInterface::TYPE_YESNO_CONSENSUS;
-    }
-
-    /**
-     * Get middleware class.
-     *
-     * @return string
-     */
-    protected function getMiddlewareClass(): string
-    {
-        return YesNoMiddleware::class;
+        // Count false
+        if ($output === false) {
+            $this->countFalse++;
+        }
     }
 }
 

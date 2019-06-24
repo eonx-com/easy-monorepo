@@ -18,20 +18,20 @@ interface RuleInterface
     /**
      * Proceed with input.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param mixed[] $input
      *
      * @return mixed
      */
-    public function proceed(ContextInterface $context);
+    public function proceed(array $input);
 
     /**
      * Check if rule supports given input.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param mixed[] $input
      *
      * @return bool
      */
-    public function supports(ContextInterface $context): bool;
+    public function supports(array $input): bool;
 
     /**
      * Get string representation of the rule.

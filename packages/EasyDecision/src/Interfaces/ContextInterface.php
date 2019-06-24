@@ -23,18 +23,11 @@ interface ContextInterface
     public function getDecisionType(): string;
 
     /**
-     * Get input.
-     *
-     * @return mixed
-     */
-    public function getInput();
-
-    /**
      * Get original input.
      *
-     * @return mixed
+     * @return mixed[]
      */
-    public function getOriginalInput();
+    public function getOriginalInput(): array;
 
     /**
      * Get all rules outputs in an associative array.
@@ -49,15 +42,6 @@ interface ContextInterface
      * @return bool
      */
     public function isPropagationStopped(): bool;
-
-    /**
-     * Set input.
-     *
-     * @param mixed $input
-     *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
-     */
-    public function setInput($input): self;
 
     /**
      * Stop propagation, all rules after propagation has been stopped will be skipped.

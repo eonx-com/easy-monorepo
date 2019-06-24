@@ -1,12 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use LoyaltyCorp\EasyDecision\Decisions\AffirmativeDecision;
-use LoyaltyCorp\EasyDecision\Decisions\ConsensusDecision;
-use LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision;
-use LoyaltyCorp\EasyDecision\Decisions\ValueDecision;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -57,28 +51,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Decision Types/Implementation Mapping
-    |--------------------------------------------------------------------------
-    |
-    | Here you will define the mapping between the different types of decision
-    | and the implementation to use for it. It will allow you to create your
-    | own decision type and/or implementations and use it. It also allow you
-    | to control which decision types are available within your application.
-    |
-    | Your decisions must implement:
-    | \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
-    |
-    */
-    'mapping' => [
-        DecisionInterface::TYPE_YESNO_AFFIRMATIVE => AffirmativeDecision::class,
-        DecisionInterface::TYPE_YESNO_CONSENSUS => ConsensusDecision::class,
-        DecisionInterface::TYPE_YESNO_UNANIMOUS => UnanimousDecision::class,
-        DecisionInterface::TYPE_VALUE => ValueDecision::class
-        // 'My-Own-Type' => MyOwnDecision::class
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Decisions
     |--------------------------------------------------------------------------
     |
@@ -90,7 +62,7 @@ return [
     | using an associative array:
     |
     | 'my-decision' => [
-    |     'type' => DecisionInterface::TYPE_YESNO_UNANIMOUS,
+    |     'type' => \LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision::class,
     |     'providers' => [
     |          \App\Decisions\MyDecisionRuleProvider::class, -> Instantiated from container
     |          new \App\Decisions\MyDecisionAdditionalRuleProvider()

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Bridge\Laravel;
+namespace LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces;
 
 interface DecisionConfigProviderInterface
 {
@@ -33,9 +33,3 @@ interface DecisionConfigProviderInterface
      */
     public function getRuleProviders(): array;
 }
-
-\class_alias(
-    DecisionConfigProviderInterface::class,
-    'StepTheFkUp\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface',
-    false
-);
