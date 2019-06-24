@@ -129,7 +129,7 @@ final class DecisionFactory implements DecisionFactoryInterface
                 $decision = new $decisionType();
             }
         } catch (\Throwable $exception) {
-            throw new InvalidDecisionException(\sprintf(''));
+            throw new InvalidDecisionException(\sprintf('Unable to instantiate decision for type "%s"', $decisionType));
         }
 
         if ($decision instanceof DecisionInterface) {
