@@ -12,7 +12,7 @@ server {
     }
 
     location ~ ^/index\.php(/|$) {
-        fastcgi_pass api:9000;
+        fastcgi_pass localhost:9000;
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;
 
