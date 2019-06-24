@@ -11,9 +11,7 @@ api:
       repo: {{ code.ecr_repo }}/{{ project }}
       image: backend
       tag_param: ApiTag
-      # read_only_root: true
-      # cpu: 256
-      # memory: 512
+      user: www-data
       env_vars:
         SSM_PATH:
           Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
@@ -41,34 +39,12 @@ api:
         LOG_LEVEL: warn
       ports:
        - 9000:9000
-      # mounts:
-      #   - /var/www/storage/logs:storage-volume
-      #   - /ssm:data-volume
     nginx:
       repo: {{ code.ecr_repo }}/{{ project }}
       image: nginx
       tag_param: NginxTag
-      # cpu: 256
-      # memory: 512
-      # links:
-      #   - api
-      # volumes_from:
-      #   - api
       ports:
         - 80:80
-  # scaling_policy:
-  #   min: 2
-  #   max: 4
-  #   up:
-  #     cooldown: 150
-  #     threshold: 70
-  #     evaluation_periods: 5
-  #     adjustment: 2
-  #   down:
-  #     cooldown: 600
-  #     threshold: 70
-  #     evaluation_periods: 5
-  #     adjustment: -1
 
   targetgroup:
     name: api
@@ -128,14 +104,11 @@ worker:
     worker:
       repo: {{ code.ecr_repo }}/{{ project }}
       image: backend
+      user: www-data
       tag_param: WorkerTag
       command: [ "php", "artisan", "queue:work", "--sleep=3", "--tries=3", "--delay=30" ]
       cpu: 256
       memory: 256
-      # read_only_root: true
-      # mounts:
-      #   - /var/www/storage/logs:storage-volume
-      #   - /ssm:data-volume
       env_vars:
         DB_DATABASE: {{ db_name }}
         DB_PORT: 3306
@@ -184,13 +157,9 @@ cron:
       repo: {{ code.ecr_repo }}/{{ project }}
       image: backend
       tag_param: CronTag
-      entrypoint: [ "/usr/sbin/crond", "-f" ]
+      entrypoint: [ "/usr/local/bin/cron-entrypoint.sh" ]
       cpu: 256
       memory: 256
-      # read_only_root: true
-      # mounts:
-      #   - /var/www/storage/logs:storage-volume
-      #   - /ssm:data-volume
       env_vars:
         DB_DATABASE: {{ db_name }}
         DB_PORT: 3306
@@ -203,8 +172,6 @@ cron:
         {% endif %}
         SSM_PATH:
           Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
-        LOG_LEVEL: warn
-        TO_STDOUT: true
         FORMAT: shell
         AWS_REGION:
           Ref: AWS::Region
