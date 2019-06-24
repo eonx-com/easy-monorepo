@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -e
+
+# get env vars
+if [ ! -z ${SSM_PATH+x} ]; then
+    echo "Write envs to .env file for cron"
+    awsenv
+    source /ssm/.env
+    cat /ssm/.env >> .env
+fi
+
+if [ -f "/usr/sbin/cron" ]; then
+    echo "Running cron"
+    /usr/sbin/cron -f
+else
+    echo "No cron"
+fi
+
