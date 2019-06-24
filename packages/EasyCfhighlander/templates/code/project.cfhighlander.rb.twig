@@ -9,7 +9,7 @@ CfhighlanderComponent do
       ComponentParam 'EnvironmentType', 'development', isGlobal: true, allowedValues: ['development','production']
     end
 
-    Component name: '{{ project }}-api-service', template: 'fargate', config: api do
+    Component name: '{{ project }}-api-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: api do
       Parameters do
         ComponentParam 'SqsUrl', type:'String'
       end
@@ -19,7 +19,7 @@ CfhighlanderComponent do
       parameter name: 'Listener', value: FnImportValue(FnSub("${EnvironmentName}-loadbalancer-httpsListener"))
       parameter name: 'VPCId', value: FnImportValue(FnSub("${EnvironmentName}-vpc-VPCId"))
       parameter name: 'DnsDomain', value: dns_domain
-      parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ project }}Url"))
+      parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
       parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
       parameter name: 'LoadbalancerSecurityGroup', value: FnImportValue(FnSub("${EnvironmentName}-loadbalancer-SecurityGroupLoadBalancer"))
       {% if elasticsearch_enabled %}
@@ -27,7 +27,7 @@ CfhighlanderComponent do
       {% endif %}
     end
 
-  Component name: '{{ project }}-worker-service', template: 'fargate', config: worker do
+  Component name: '{{ project }}-worker-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: worker do
     Parameters do
       ComponentParam 'SqsUrl', type:'String'
     end
@@ -35,7 +35,7 @@ CfhighlanderComponent do
     parameter name: 'EcsCluster', value: FnImportValue(FnSub("${EnvironmentName}-ecs-EcsCluster"))
     parameter name: 'VPCId', value: FnImportValue(FnSub("${EnvironmentName}-vpc-VPCId"))
     parameter name: 'DnsDomain', value: dns_domain
-    parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ project }}Url"))
+    parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
     parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
     parameter name: 'SecurityGroupBackplane', value: FnImportValue(FnSub("${EnvironmentName}-vpc-SecurityGroupBackplane"))
     {% if elasticsearch_enabled %}
@@ -43,7 +43,7 @@ CfhighlanderComponent do
     {% endif %}
   end
 
-  Component name: '{{ project }}-cron-service', template: 'fargate', config: cron do
+  Component name: '{{ project }}-cron-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: cron do
     Parameters do
       ComponentParam 'SqsUrl', type:'String'
     end
@@ -51,7 +51,7 @@ CfhighlanderComponent do
     parameter name: 'EcsCluster', value: FnImportValue(FnSub("${EnvironmentName}-ecs-EcsCluster"))
     parameter name: 'VPCId', value: FnImportValue(FnSub("${EnvironmentName}-vpc-VPCId"))
     parameter name: 'DnsDomain', value: dns_domain
-    parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ project }}Url"))
+    parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
     parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
     parameter name: 'SecurityGroupBackplane', value: FnImportValue(FnSub("${EnvironmentName}-vpc-SecurityGroupBackplane"))
     {% if elasticsearch_enabled %}

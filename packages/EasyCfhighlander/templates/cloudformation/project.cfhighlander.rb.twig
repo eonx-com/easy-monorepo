@@ -5,7 +5,7 @@ CfhighlanderTemplate do
       ComponentParam 'SingleNatGateway', 'true'
     end
 
-     Component name:'vpc', template: 'vpc@1.6.3' do
+     Component name:'vpc', template: 'vpc@1.7.0' do
        parameter name: 'MaxNatGateways', value: Ref('MaxNatGateways')
        parameter name: 'SingleNatGateway', value: Ref('SingleNatGateway')
        parameter name: 'DnsDomain', value: dns_domain

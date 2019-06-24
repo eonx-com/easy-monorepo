@@ -121,7 +121,7 @@ pipeline{
           action: 'create',
           region: env.REGION,
           templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
-          accountId: env.DEV_ACCOUNT_ID,
+          accountId: env.PROD_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
             'EnvironmentName': 'uat',
@@ -138,7 +138,7 @@ pipeline{
           action: 'update',
           region: env.AWS_REGION,
           templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
-          accountId: env.DEV_ACCOUNT_ID,
+          accountId: env.PROD_ACCOUNT_ID,
           role: env.CIINABOX_ROLE,
           parameters: [
             'EnvironmentName': 'uat',
