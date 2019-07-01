@@ -71,7 +71,7 @@ class TokenGenerator implements TokenGeneratorInterface
 
         $payload['jti'] = md5(\json_encode($payload));
 
-        $secret = $secretEncoded ? base64_decode(strtr($this->secret, '-_', '+/')) : $this->secret;
+        $secret = $secretEncoded === true ? base64_decode(strtr($this->secret, '-_', '+/')) : $this->secret;
 
         return JWT::encode($payload, $secret);
     }
