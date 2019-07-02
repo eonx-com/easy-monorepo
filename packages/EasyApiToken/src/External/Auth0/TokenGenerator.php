@@ -1,18 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Helpers\Jwt;
+namespace LoyaltyCorp\EasyApiToken\External\Auth0;
 
 use Firebase\JWT\JWT;
-use LoyaltyCorp\EasyApiToken\Interfaces\Helpers\Jwt\TokenGeneratorInterface;
+use LoyaltyCorp\EasyApiToken\External\Auth0\Interfaces\TokenGeneratorInterface;
+use Auth0\SDK\API\Helpers\TokenGenerator as BaseTokenGenerator;
 
-class TokenGenerator implements TokenGeneratorInterface
+final class TokenGenerator implements TokenGeneratorInterface
 {
-    /**
-     * Default token expiration time.
-     */
-    private const DEFAULT_LIFETIME = 3600;
-
     /**
      * Audience for the ID token.
      *
@@ -56,8 +52,9 @@ class TokenGenerator implements TokenGeneratorInterface
         ?bool $secretEncoded = null
     ): string {
         $secretEncoded = $secretEncoded ?? true;
-        $lifetime = $lifetime ?? self::DEFAULT_LIFETIME;
-        $time = time();
+        $lifetime = $lifetime ?? BaseTokenGenerator::DEFAULT_LIFETIME;
+
+        $time = \time();
         $payload = [
             'iat' => $time,
             'scopes' => $scopes,
@@ -66,12 +63,12 @@ class TokenGenerator implements TokenGeneratorInterface
         ];
 
         if ($subject !== null) {
-            $payload = \array_merge($payload, ['sub' => $subject]);
+            $payload['sub'] = $subject;
         }
 
-        $payload['jti'] = md5(\json_encode($payload));
+        $payload['jti'] = \md5(\json_encode($payload));
 
-        $secret = $secretEncoded === true ? base64_decode(strtr($this->secret, '-_', '+/')) : $this->secret;
+        $secret = $secretEncoded === true ? \base64_decode(\strtr($this->secret, '-_', '+/')) : $this->secret;
 
         return JWT::encode($payload, $secret);
     }
