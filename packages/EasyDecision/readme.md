@@ -15,7 +15,7 @@
 - [x] affirmative: Yes as soon as first rule says yes
 - [x] consensus: Yes if more yes than no
 - [x] unanimous: Yes if everybody says yes
-- [x] Priority on rules: Run first the rules with biggest priority
+- [x] Priority on rules: Run first the rules with smallest priority
 - [x] Rules can say if they support the given input
 - [x] After run users can get which rules ran, their body and output
 - [x] Test the Laravel Decision Factory
