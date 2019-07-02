@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyApiToken\External;
 
-use Auth0\SDK\API\Helpers\TokenGenerator;
 use Auth0\SDK\JWTVerifier;
 use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use LoyaltyCorp\EasyApiToken\Helpers\Jwt\TokenGenerator;
 
 final class Auth0JwtDriver implements JwtDriverInterface
 {
@@ -92,7 +92,10 @@ final class Auth0JwtDriver implements JwtDriverInterface
 
         $generator = new TokenGenerator($this->audienceForEncode, $privateKey);
 
-        return $generator->generate($input['scopes'] ?? [], $input['lifetime'] ?? TokenGenerator::DEFAULT_LIFETIME);
+        return $generator->generate(
+            $input['scopes'] ?? [],
+            $input['sub'] ?? null,
+            $input['lifetime'] ?? null);
     }
 }
 
