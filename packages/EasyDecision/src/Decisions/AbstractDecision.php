@@ -193,7 +193,7 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
-     * Get sorted rules.
+     * Get sorted rules (priority value 0 is higher than 100).
      *
      * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
      *
@@ -203,8 +203,8 @@ abstract class AbstractDecision implements DecisionInterface
     {
         // Sort rules by priority
         $rules = $this->rules;
-        \usort($rules, function (RuleInterface $first, RuleInterface $second): bool {
-            return $first->getPriority() < $second->getPriority();
+        \usort($rules, function (RuleInterface $first, RuleInterface $second): int {
+            return $first->getPriority() <=> $second->getPriority();
         });
 
         foreach ($rules as $rule) {

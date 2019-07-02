@@ -81,15 +81,15 @@ final class AffirmativeDecisionTest extends AbstractTestCase
     }
 
     /**
-     * Decision should return true and run highest priority first.
+     * Decision should return true and run highest priority first (0 is higher than 100).
      *
      * @return void
      */
     public function testReturnTrueWithPriorities(): void
     {
         $decision = (new AffirmativeDecision())->addRules([
-            $this->createFalseRule('false-1'),
-            $this->createTrueRule('true-1', 100)
+            $this->createFalseRule('false-1', 100),
+            $this->createTrueRule('true-1')
         ]);
 
         $expected = [
