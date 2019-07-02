@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Interfaces\Helpers\Jwt;
+namespace LoyaltyCorp\EasyApiToken\External\Auth0\Interfaces;
 
 interface TokenGeneratorInterface
 {

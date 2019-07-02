@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyApiToken\External;
 
 use Auth0\SDK\JWTVerifier;
+use LoyaltyCorp\EasyApiToken\External\Auth0\TokenGenerator;
 use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
-use LoyaltyCorp\EasyApiToken\Helpers\Jwt\TokenGenerator;
 
 final class Auth0JwtDriver implements JwtDriverInterface
 {
