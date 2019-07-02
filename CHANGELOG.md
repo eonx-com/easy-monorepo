@@ -2,12 +2,17 @@
 
 <!-- dumped content start -->
 
-## Unreleased
+## v0.8.0 - 2019-07-02
+
+### EasyApiToken
+
+- [#62] Use custom token generator for auth0 jwt token creation, Thanks to [@ketanp77]
 
 ### EasyDecision
 
 - [#58] Allow additional parameters when creating decision, Thanks to [@albusss]
 - [#59] Fix scaling issues and make decision engine easier to extend
+- [#63] Reverse priority order for decision rules, Thanks to [@egor-dev]
 
 ### EasyCfhighlander
 
@@ -562,3 +567,7 @@
 [v0.7.11]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.10...v0.7.11
 [#61]: https://github.com/loyaltycorp/easy-monorepo/pull/61
 [#60]: https://github.com/loyaltycorp/easy-monorepo/pull/60
+[#63]: https://github.com/loyaltycorp/easy-monorepo/pull/63
+[#62]: https://github.com/loyaltycorp/easy-monorepo/pull/62
+[@ketanp77]: https://github.com/ketanp77
+[@egor-dev]: https://github.com/egor-dev
