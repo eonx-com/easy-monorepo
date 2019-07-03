@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.8.0 - 2019-07-02
+## v0.8.1 - 2019-07-03
+
+### EasyDocker
+
+- [#64] Change sh to bash
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.8.0] - 2019-07-02
 
 ### EasyApiToken
 
@@ -571,3 +581,5 @@
 [#62]: https://github.com/loyaltycorp/easy-monorepo/pull/62
 [@ketanp77]: https://github.com/ketanp77
 [@egor-dev]: https://github.com/egor-dev
+[#64]: https://github.com/loyaltycorp/easy-monorepo/pull/64
+[v0.8.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.11...v0.8.0
