@@ -22,9 +22,9 @@ CfhighlanderComponent do
       parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
       parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
       parameter name: 'LoadbalancerSecurityGroup', value: FnImportValue(FnSub("${EnvironmentName}-loadbalancer-SecurityGroupLoadBalancer"))
-      {% if elasticsearch_enabled %}
+    {%- if elasticsearch_enabled ~%}
       parameter name: 'ElasticSearchHost', value: FnImportValue(FnSub("${EnvironmentName}-elasticsearch-ESClusterEndpoint"))
-      {% endif %}
+    {%- endif ~%}
     end
 
   Component name: '{{ project }}-worker-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: worker do
@@ -38,9 +38,9 @@ CfhighlanderComponent do
     parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
     parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
     parameter name: 'SecurityGroupBackplane', value: FnImportValue(FnSub("${EnvironmentName}-vpc-SecurityGroupBackplane"))
-    {% if elasticsearch_enabled %}
+  {%- if elasticsearch_enabled ~%}
     parameter name: 'ElasticSearchHost', value: FnImportValue(FnSub("${EnvironmentName}-elasticsearch-ESClusterEndpoint"))
-    {% endif %}
+  {%- endif ~%}
   end
 
   Component name: '{{ project }}-cron-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: cron do
@@ -54,9 +54,9 @@ CfhighlanderComponent do
     parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
     parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
     parameter name: 'SecurityGroupBackplane', value: FnImportValue(FnSub("${EnvironmentName}-vpc-SecurityGroupBackplane"))
-    {% if elasticsearch_enabled %}
+  {%- if elasticsearch_enabled ~%}
     parameter name: 'ElasticSearchHost', value: FnImportValue(FnSub("${EnvironmentName}-elasticsearch-ESClusterEndpoint"))
-    {% endif %}
+  {%- endif ~%}
   end
   
 end
