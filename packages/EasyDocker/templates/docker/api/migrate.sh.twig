@@ -7,7 +7,7 @@ fi
 
 ARTISAN="/var/www/artisan"
 
-if [[ -f ${ARTISAN} ]]; then
+if [ -f ${ARTISAN} ]; then
     {% if doctrine_migrations_enabled %}
     # Migrate database if artisan exists
     /usr/local/bin/php ${ARTISAN} doctrine:clear:metadata:cache || exit 1
