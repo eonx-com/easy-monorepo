@@ -21,20 +21,20 @@ api:
         DB_CONNECTION: mysql
         DB_HOST:
           Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
-        {% if elasticsearch_enabled %}
+        {% if elasticsearch_enabled -%}
         ELASTICSEARCH_HOST:
           Ref: ElasticSearchHost
-        {% endif %}
+        {% endif -%}
         AWS_REGION:
           Ref: AWS::Region
         APP_ENV:
           Fn::Sub: ${EnvironmentName}
         SQS_QUEUE_URL:
           Ref: SqsUrl
-        {% if redis_enabled %}
+        {% if redis_enabled -%}
         REDIS_HOST: 
           Fn::Sub: redis.${EnvironmentName}.${DnsDomain}
-        {% endif %}
+        {% endif -%}
         TO_STDOUT: true
         LOG_LEVEL: warn
       ports:
@@ -90,8 +90,8 @@ api:
 
   task_ingress_rules:
     -
-      from_port: 9000
-      to_port: 9000
+      from_port: 80
+      to_port: 80
 
 
 worker:
@@ -115,10 +115,10 @@ worker:
         DB_CONNECTION: mysql
         DB_HOST:
           Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
-        {% if elasticsearch_enabled %}
+        {% if elasticsearch_enabled -%}
         ELASTICSEARCH_HOST:
           Ref: ElasticSearchHost
-        {% endif %}
+        {% endif -%}
         SSM_PATH:
           Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
         LOG_LEVEL: warn
@@ -130,10 +130,10 @@ worker:
           Fn::Sub: ${EnvironmentName}
         SQS_QUEUE_URL:
           Ref: SqsUrl
-        {% if redis_enabled %}
+        {% if redis_enabled -%}
         REDIS_HOST:
           Fn::Sub: redis.${EnvironmentName}.${DnsDomain}
-        {% endif %}
+        {% endif -%}
 
   iam_policies:
     ssm-parameters-ro:
@@ -166,10 +166,10 @@ cron:
         DB_CONNECTION: mysql
         DB_HOST:
           Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
-        {% if elasticsearch_enabled %}
+        {% if elasticsearch_enabled -%}
         ELASTICSEARCH_HOST:
           Ref: ElasticSearchHost
-        {% endif %}
+        {% endif -%}
         SSM_PATH:
           Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
         FORMAT: shell
@@ -179,10 +179,10 @@ cron:
           Fn::Sub: ${EnvironmentName}
         SQS_QUEUE_URL:
           Ref: SqsUrl
-        {% if redis_enabled %}
+        {% if redis_enabled -%}
         REDIS_HOST:
           Fn::Sub: redis.${EnvironmentName}.${DnsDomain}
-        {% endif %}
+        {% endif -%}
 
   iam_policies:
     ssm-parameters-ro:
