@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v0.8.1 - 2019-07-03
+## v0.8.2 - 2019-07-05
+
+### EasyCfhighlander
+
+- [#66] Fix templates whitespace + nginx ports for FARGATE
+
+### EasyDocker
+
+- [#65] Remove double brackets in migrate.sh
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.8.1] - 2019-07-03
 
 ### EasyDocker
 
@@ -583,3 +597,6 @@
 [@egor-dev]: https://github.com/egor-dev
 [#64]: https://github.com/loyaltycorp/easy-monorepo/pull/64
 [v0.8.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.7.11...v0.8.0
+[#66]: https://github.com/loyaltycorp/easy-monorepo/pull/66
+[#65]: https://github.com/loyaltycorp/easy-monorepo/pull/65
+[v0.8.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.8.0...v0.8.1
