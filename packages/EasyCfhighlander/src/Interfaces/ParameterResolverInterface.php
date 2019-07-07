@@ -8,6 +8,16 @@ use Symfony\Component\Console\Input\InputInterface;
 interface ParameterResolverInterface
 {
     /**
+     * Add modifier callable for given param name.
+     *
+     * @param string $param
+     * @param callable $modifier
+     *
+     * @return \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface
+     */
+    public function addModifier(string $param, callable $modifier): self;
+
+    /**
      * Add resolver callable for given param name.
      *
      * @param string $param

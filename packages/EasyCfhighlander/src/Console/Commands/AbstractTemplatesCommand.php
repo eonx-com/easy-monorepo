@@ -118,6 +118,9 @@ abstract class AbstractTemplatesCommand extends Command
         foreach ($this->getParamResolvers($style) as $param => $resolver) {
             $this->parameterResolver->addResolver($param, $resolver);
         }
+        foreach ($this->getParamModifiers() as $param => $modifier) {
+            $this->parameterResolver->addModifier($param, $modifier);
+        }
 
         $params = $this->parameterResolver
             ->setCachePathname(\sprintf('%s/easy-cfhighlander-params.yaml', $cwd))
@@ -163,52 +166,11 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
-     * Get project file to generate.
-     *
-     * @param string $cwd
-     * @param string $name
-     * @param string $project
-     *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\File
-     */
-    protected function getProjectFileToGenerate(string $cwd, string $name, string $project): File
-    {
-        $filename = \sprintf('%s/%s', $cwd, $name);
-
-        return new File(\str_replace('project', $project, $filename), $this->getTemplateName($name));
-    }
-
-    /**
-     * Get file to generate for given name.
-     *
-     * @param string $cwd
-     * @param string $name
-     *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\File
-     */
-    protected function getSimpleFileToGenerate(string $cwd, string $name): File
-    {
-        return new File(\sprintf('%s/%s', $cwd, $name), $this->getTemplateName($name));
-    }
-
-    /**
-     * Get template name for given template.
-     *
-     * @param string $template
-     *
-     * @return string
-     */
-    protected function getTemplateName(string $template): string
-    {
-        return \sprintf('%s/%s.twig', $this->getTemplatePrefix(), $template);
-    }
-
-    /**
      * Get validator for required alphabetic parameters.
      *
      * @return \Closure
      */
-    private function getAlphaParamValidator(): \Closure
+    protected function getAlphaParamValidator(): \Closure
     {
         return static function ($answer): string {
             if (empty($answer)) {
@@ -230,7 +192,7 @@ abstract class AbstractTemplatesCommand extends Command
      *
      * @return string
      */
-    private function getBooleanParamAsString($param = null): string
+    protected function getBooleanParamAsString($param = null): string
     {
         return ((bool)($param)) ? 'true' : 'false';
     }
@@ -240,7 +202,7 @@ abstract class AbstractTemplatesCommand extends Command
      *
      * @return \Closure
      */
-    private function getBooleanParamValidator(): \Closure
+    protected function getBooleanParamValidator(): \Closure
     {
         return static function ($answer): bool {
             if (empty($answer)) {
@@ -258,13 +220,25 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
+     * Get parameter modifiers.
+     *
+     * @return iterable<string, callable>
+     */
+    protected function getParamModifiers(): iterable
+    {
+        // No body needed for now.
+
+        return [];
+    }
+
+    /**
      * Get parameter resolvers.
      *
      * @param \Symfony\Component\Console\Style\SymfonyStyle $style
      *
      * @return iterable<string, callable>
      */
-    private function getParamResolvers(SymfonyStyle $style): iterable
+    protected function getParamResolvers(SymfonyStyle $style): iterable
     {
         $alpha = $this->getAlphaParamValidator();
         $boolean = $this->getBooleanParamValidator();
@@ -347,11 +321,27 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
+     * Get project file to generate.
+     *
+     * @param string $cwd
+     * @param string $name
+     * @param string $project
+     *
+     * @return \LoyaltyCorp\EasyCfhighlander\File\File
+     */
+    protected function getProjectFileToGenerate(string $cwd, string $name, string $project): File
+    {
+        $filename = \sprintf('%s/%s', $cwd, $name);
+
+        return new File(\str_replace('project', $project, $filename), $this->getTemplateName($name));
+    }
+
+    /**
      * Get validator for required parameters.
      *
      * @return \Closure
      */
-    private function getRequiredParamValidator(): \Closure
+    protected function getRequiredParamValidator(): \Closure
     {
         return static function ($answer): string {
             if (empty($answer)) {
@@ -360,6 +350,31 @@ abstract class AbstractTemplatesCommand extends Command
 
             return \str_replace(' ', '', (string)$answer);
         };
+    }
+
+    /**
+     * Get file to generate for given name.
+     *
+     * @param string $cwd
+     * @param string $name
+     *
+     * @return \LoyaltyCorp\EasyCfhighlander\File\File
+     */
+    protected function getSimpleFileToGenerate(string $cwd, string $name): File
+    {
+        return new File(\sprintf('%s/%s', $cwd, $name), $this->getTemplateName($name));
+    }
+
+    /**
+     * Get template name for given template.
+     *
+     * @param string $template
+     *
+     * @return string
+     */
+    protected function getTemplateName(string $template): string
+    {
+        return \sprintf('%s/%s.twig', $this->getTemplatePrefix(), $template);
     }
 
     /**
