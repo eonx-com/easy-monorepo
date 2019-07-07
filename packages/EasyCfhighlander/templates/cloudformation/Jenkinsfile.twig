@@ -12,7 +12,7 @@ pipeline{
   environment {
     AWS_REGION = '{{ aws_region }}'
     REGION = '{{ cloudformation.region }}'
-    PROJECT_NAME = '{{ project }}'
+    PROJECT_NAME = '{{ project }}-backend'
     SOURCE_BUCKET = '{{ source_bucket }}'
     DEV_ACCOUNT_ID = '{{ dev_account }}'
     PROD_ACCOUNT_ID = '{{ prod_account }}'
@@ -76,7 +76,7 @@ pipeline{
         println "Create Dev Environment"
         println ""
         cloudformation(
-          stackName: 'dev-{{ project }}',
+          stackName: 'dev-{{ project }}-backend',
           action: 'create',
           region: env.REGION,
           templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
@@ -94,7 +94,7 @@ pipeline{
         println "Update Dev Environment"
         println ""
         cloudformation(
-          stackName: 'dev-{{ project }}',
+          stackName: 'dev-{{ project }}-backend',
           action: 'update',
           region: env.AWS_REGION,
           templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
@@ -117,7 +117,7 @@ pipeline{
         println "Create uat Environment"
         println ""
         cloudformation(
-          stackName: 'uat-{{ project }}',
+          stackName: 'uat-{{ project }}-backend',
           action: 'create',
           region: env.REGION,
           templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
@@ -134,7 +134,7 @@ pipeline{
         println "Update uat Environment"
         println ""
         cloudformation(
-          stackName: 'uat-{{ project }}',
+          stackName: 'uat-{{ project }}-backend',
           action: 'update',
           region: env.AWS_REGION,
           templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
@@ -161,7 +161,7 @@ pipeline{
         println "Create prod Environment"
         println ""
         cloudformation(
-          stackName: 'prod-{{ project }}',
+          stackName: 'prod-{{ project }}-backend',
           action: 'create',
           region: env.REGION,
           templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
@@ -180,7 +180,7 @@ pipeline{
         println "Update prod Environment"
         println ""
         cloudformation(
-          stackName: 'prod-{{ project }}',
+          stackName: 'prod-{{ project }}-backend',
           action: 'update',
           region: env.AWS_REGION,
           templateUrl: "https://s3-${env.REGION}.amazonaws.com/${env.SOURCE_BUCKET}/cloudformation/${env.PROJECT_NAME}/${env.cf_version}/${env.PROJECT_NAME}.compiled.yaml",
