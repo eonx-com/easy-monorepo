@@ -17,6 +17,9 @@ final class ParameterResolver implements ParameterResolverInterface
     /** @var \Symfony\Component\Filesystem\Filesystem */
     private $filesystem;
 
+    /** @var callable[] */
+    private $modifiers = [];
+
     /** @var \Symplify\PackageBuilder\Parameter\ParameterProvider */
     private $parameterProvider;
 
@@ -35,6 +38,25 @@ final class ParameterResolver implements ParameterResolverInterface
         $this->filesystem = $filesystem;
         $this->parameterProvider = $parameterProvider;
         $this->cacheFile = $cacheFile ?? __DIR__ . '/../../var/last_params.yaml';
+    }
+
+    /**
+     * Add modifier callable for given param name.
+     *
+     * @param string $param
+     * @param callable $modifier
+     *
+     * @return \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface
+     */
+    public function addModifier(string $param, callable $modifier): ParameterResolverInterface
+    {
+        if (isset($this->modifiers[$param]) === false) {
+            $this->modifiers[$param] = [];
+        }
+
+        $this->modifiers[$param][] = $modifier;
+
+        return $this;
     }
 
     /**
@@ -64,11 +86,19 @@ final class ParameterResolver implements ParameterResolverInterface
         $params = $this->resolveDefaultParameters();
         $cache = [];
 
+        // Resolve params values
         foreach ($this->resolvers as $param => $resolver) {
             $resolved = \call_user_func($resolver, $params);
 
             $cache[$param] = $resolved;
             $params[$param] = $resolved;
+        }
+
+        // Apply modifiers
+        foreach ($this->modifiers as $param => $modifiers) {
+            foreach ($modifiers as $modifier) {
+                $params[$param] = \call_user_func($modifier, $params);
+            }
         }
 
         $params = $input->getArguments() + $input->getOptions() + $params;
