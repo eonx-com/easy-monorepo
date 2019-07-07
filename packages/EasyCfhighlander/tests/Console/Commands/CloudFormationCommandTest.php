@@ -31,9 +31,9 @@ final class CloudFormationCommandTest extends AbstractTestCase
         ];
 
         $files = [
-            'project.cfhighlander.rb',
-            'project.config.yaml',
-            'project.mappings.yaml',
+            'project-backend.cfhighlander.rb',
+            'project-backend.config.yaml',
+            'project-backend.mappings.yaml',
             'Jenkinsfile',
             'aurora.config.yaml',
             'az.mappings.yaml',

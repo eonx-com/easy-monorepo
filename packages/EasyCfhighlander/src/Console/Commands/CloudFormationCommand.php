@@ -19,6 +19,17 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
     }
 
     /**
+     * {@inheritDoc}
+     */
+    protected function getParamModifiers(): iterable
+    {
+        // Project name
+        yield 'project' => function (array $params): string {
+            return \sprintf('%s-backend', $params['project']);
+        };
+    }
+
+    /**
      * Get project files names.
      *
      * @return string[]
