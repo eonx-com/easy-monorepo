@@ -114,6 +114,7 @@ abstract class AbstractTemplatesCommand extends Command
     {
         $style = new SymfonyStyle($input, $output);
         $cwd = $input->getOption('cwd') ?? \getcwd();
+        $easyDirectory = $this->getEasyDirectory($cwd);
 
         foreach ($this->getParamResolvers($style) as $param => $resolver) {
             $this->parameterResolver->addResolver($param, $resolver);
@@ -123,7 +124,7 @@ abstract class AbstractTemplatesCommand extends Command
         }
 
         $params = $this->parameterResolver
-            ->setCachePathname(\sprintf('%s/easy-cfhighlander-params.yaml', $cwd))
+            ->setCachePathname(\sprintf('%s/easy-cfhighlander-params.yaml', $easyDirectory))
             ->resolve($input);
 
         $files = [];
@@ -144,6 +145,11 @@ abstract class AbstractTemplatesCommand extends Command
             $this->filesystem->mkdir($cwd);
         }
 
+        // Create easy directory if required
+        if ($this->filesystem->exists($easyDirectory) === false) {
+            $this->filesystem->mkdir($easyDirectory);
+        }
+
         $style->write(\sprintf("Generating files in <comment>%s</comment>:\n", \realpath($cwd)));
 
         $statuses = [];
@@ -160,7 +166,7 @@ abstract class AbstractTemplatesCommand extends Command
             $progress->advance();
         }
 
-        $this->manifestGenerator->generate($cwd, $this->getApplication()->getVersion(), $statuses);
+        $this->manifestGenerator->generate($easyDirectory, $this->getApplication()->getVersion(), $statuses);
 
         return self::EXIT_CODE_SUCCESS;
     }
@@ -375,6 +381,24 @@ abstract class AbstractTemplatesCommand extends Command
     protected function getTemplateName(string $template): string
     {
         return \sprintf('%s/%s.twig', $this->getTemplatePrefix(), $template);
+    }
+
+    /**
+     * Determine if the .easy directory exists
+     *
+     * @param string $cwd
+     *
+     * @return string
+     */
+    private function getEasyDirectory(string $cwd): string
+    {
+        // If easy-docker* file already exists in cwd, .easy directory will not be used/created
+        if (\file_exists($cwd . \DIRECTORY_SEPARATOR . 'easy-docker-params.yaml') === true) {
+            return $cwd;
+        }
+
+        // Otherwise return path to .easy directory
+        return \implode(\DIRECTORY_SEPARATOR, [$cwd, '.easy']);
     }
 
     /**
