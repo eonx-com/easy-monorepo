@@ -8,6 +8,37 @@ use LoyaltyCorp\EasyDocker\Tests\AbstractTestCase;
 final class DockerFilesGeneratorCommandTest extends AbstractTestCase
 {
     /**
+     * Ensure the .easy directory is only used if no existing files are present
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function testEasyDirectoryBackwardsCompatibility(): void
+    {
+        $inputs = [
+            'project',
+            'true',
+            'true',
+            'true'
+        ];
+
+        $filesNotExisting = [
+            '.easy/easy-docker-manifest.json',
+            '.easy/easy-docker-params.yaml',
+        ];
+
+        $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-docker-manifest.json', '{}');
+        $this->getFilesystem()->touch(static::$cwd . '/' . 'easy-docker-params.yaml');
+
+        $this->executeCommand('generate', $inputs);
+
+        foreach ($filesNotExisting as $file) {
+            self::assertFalse($this->getFilesystem()->exists(static::$cwd . '/' . $file));
+        }
+    }
+
+    /**
      * Command should generate cloudformation files.
      *
      * @return void
@@ -24,6 +55,8 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
         ];
 
         $files = [
+            '.easy/easy-docker-manifest.json',
+            '.easy/easy-docker-params.yaml',
             'docker/api/cron/crontab',
             'docker/api/development/php.ini',
             'docker/api/development/php-composer.ini',
