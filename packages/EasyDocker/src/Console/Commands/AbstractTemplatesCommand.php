@@ -20,6 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 abstract class AbstractTemplatesCommand extends Command
 {
     public const EXIT_CODE_ERROR = 1;
+
     public const EXIT_CODE_SUCCESS = 0;
 
     /** @var \LoyaltyCorp\EasyDocker\Interfaces\FileGeneratorInterface */
@@ -91,13 +92,14 @@ abstract class AbstractTemplatesCommand extends Command
     {
         $style = new SymfonyStyle($input, $output);
         $cwd = $input->getOption('cwd') ?? \getcwd();
+        $easyDirectory = $this->getEasyDirectory($cwd);
 
         foreach ($this->getParamResolvers($style) as $param => $resolver) {
             $this->parameterResolver->addResolver($param, $resolver);
         }
 
         $params = $this->parameterResolver
-            ->setCachePathname(\sprintf('%s/easy-docker-params.yaml', $cwd))
+            ->setCachePathname(\sprintf('%s/easy-docker-params.yaml', $easyDirectory))
             ->resolve($input);
 
         $files = [];
@@ -112,6 +114,11 @@ abstract class AbstractTemplatesCommand extends Command
 
         if ($this->filesystem->exists($cwd) === false) {
             $this->filesystem->mkdir($cwd);
+        }
+
+        // Create easy directory if required
+        if ($this->filesystem->exists($easyDirectory) === false) {
+            $this->filesystem->mkdir($easyDirectory);
         }
 
         $style->write(\sprintf("Generating files in <comment>%s</comment>:\n", \realpath($cwd)));
@@ -130,7 +137,7 @@ abstract class AbstractTemplatesCommand extends Command
             $progress->advance();
         }
 
-        $this->manifestGenerator->generate($cwd, $this->getApplication()->getVersion(), $statuses);
+        $this->manifestGenerator->generate($easyDirectory, $this->getApplication()->getVersion(), $statuses);
 
         return self::EXIT_CODE_SUCCESS;
     }
@@ -192,6 +199,24 @@ abstract class AbstractTemplatesCommand extends Command
 
             return $answer === 'true';
         };
+    }
+
+    /**
+     * Determine if the .easy directory exists
+     *
+     * @param string $cwd
+     *
+     * @return string
+     */
+    private function getEasyDirectory(string $cwd): string
+    {
+        // If easy-docker* file already exists in cwd, .easy directory will not be used/created
+        if (\file_exists($cwd . \DIRECTORY_SEPARATOR . 'easy-docker-params.yaml') === true) {
+            return $cwd;
+        }
+
+        // Otherwise return path to .easy directory
+        return \implode(\DIRECTORY_SEPARATOR, [$cwd, '.easy']);
     }
 
     /**

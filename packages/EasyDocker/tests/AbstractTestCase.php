@@ -72,6 +72,18 @@ abstract class AbstractTestCase extends TestCase
     }
 
     /**
+     * Create the temporary directory
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->getFilesystem()->mkdir(static::$cwd);
+    }
+
+    /**
      * Remove tmp dir.
      *
      * @return void
