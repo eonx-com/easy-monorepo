@@ -392,8 +392,8 @@ abstract class AbstractTemplatesCommand extends Command
      */
     private function getEasyDirectory(string $cwd): string
     {
-        // If easy-docker* file already exists in cwd, .easy directory will not be used/created
-        if (\file_exists($cwd . \DIRECTORY_SEPARATOR . 'easy-docker-params.yaml') === true) {
+        // If easy-cfhighlander* file already exists in cwd, .easy directory will not be used/created
+        if (\file_exists($cwd . \DIRECTORY_SEPARATOR . 'easy-cfhighlander-params.yaml') === true) {
             return $cwd;
         }
 
