@@ -31,12 +31,12 @@ final class CodeCommandTest extends AbstractTestCase
         ];
 
         $filesNotExisting = [
-            '.easy/easy-docker-manifest.json',
-            '.easy/easy-docker-params.yaml',
+            '.easy/easy-cfhighlander-manifest.json',
+            '.easy/easy-cfhighlander-params.yaml',
         ];
 
-        $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-docker-manifest.json', '{}');
-        $this->getFilesystem()->touch(static::$cwd . '/' . 'easy-docker-params.yaml');
+        $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-cfhighlander-manifest.json', '{}');
+        $this->getFilesystem()->touch(static::$cwd . '/' . 'easy-cfhighlander-params.yaml');
 
         $this->executeCommand('code', $inputs);
 

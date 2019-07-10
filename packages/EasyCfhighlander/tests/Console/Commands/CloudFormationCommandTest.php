@@ -31,17 +31,20 @@ final class CloudFormationCommandTest extends AbstractTestCase
         ];
 
         $filesNotExisting = [
-            '.easy/easy-docker-manifest.json',
-            '.easy/easy-docker-params.yaml',
+            '.easy/easy-cfhighlander-manifest.json',
+            '.easy/easy-cfhighlander-params.yaml',
         ];
 
-        $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-docker-manifest.json', '{}');
-        $this->getFilesystem()->touch(static::$cwd . '/' . 'easy-docker-params.yaml');
+        $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-cfhighlander-manifest.json', '{}');
+        $this->getFilesystem()->touch(static::$cwd . '/' . 'easy-cfhighlander-params.yaml');
 
         $this->executeCommand('code', $inputs);
 
         foreach ($filesNotExisting as $file) {
-            self::assertFalse($this->getFilesystem()->exists(static::$cwd . '/' . $file));
+            self::assertFalse(
+                $this->getFilesystem()->exists(static::$cwd . '/' . $file),
+                \sprintf('%s exists, but was not expected to', $file)
+            );
         }
     }
 
