@@ -26,6 +26,26 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
             ])
         );
     }
+
+    /**
+     * Test config with empty string.
+     * This can happen when auth0 is not setup in env or has empty values.
+     * @see https://loyaltycorp.atlassian.net/browse/PYMT-1020
+     *
+     * @return void
+     */
+    public function testCreateWorksWithEmptyConfig(): void
+    {
+        (new Auth0IdentityServiceFactory())->create([
+            'client_id' => '',
+            'client_secret' => '',
+            'connection' => '',
+            'domain' => ''
+        ]);
+
+        // assert the above code works without any exception thrown.
+        $this->addToAssertionCount(1);
+    }
 }
 
 \class_alias(

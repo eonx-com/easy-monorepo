@@ -19,13 +19,25 @@ final class Auth0IdentityServiceFactory
     public function create(array $config, ?ClientInterface $client = null): Auth0IdentityService
     {
         $config = new Config($config);
-        $client = $client ?? new Client(['base_uri' => \sprintf('https://%s', $config->getDomain())]);
+        $client = $client ?? new Client(['base_uri' => $this->createBaseUri($config)]);
 
         $authFactory = new AuthenticationApiClientFactory($config);
         $managementFactory = new ManagementApiClientFactory($config, new ManagementTokenProvider($client, $config));
         $tokenVerifierFactory = new TokenVerifierFactory($config);
 
         return new Auth0IdentityService($authFactory, $config, $managementFactory, $tokenVerifierFactory);
+    }
+
+    /**
+     * Create base uri from config.
+     *
+     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config $config
+     *
+     * @return string
+     */
+    private function createBaseUri(Config $config): string
+    {
+        return $config->getDomain() === '' ? '' : \sprintf('https://%s', $config->getDomain());
     }
 }
 
