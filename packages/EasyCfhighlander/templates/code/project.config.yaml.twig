@@ -24,7 +24,7 @@ api:
           Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
         {% if elasticsearch_enabled -%}
         ELASTICSEARCH_HOST:
-          Ref: ElasticSearchHost
+          Fn::Sub: https://${ElasticSearchHost}
         {% endif -%}
         AWS_REGION:
           Ref: AWS::Region
@@ -118,7 +118,7 @@ worker:
           Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
         {% if elasticsearch_enabled -%}
         ELASTICSEARCH_HOST:
-          Ref: ElasticSearchHost
+          Fn::Sub: https://${ElasticSearchHost}
         {% endif -%}
         SSM_PATH:
           Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
@@ -169,7 +169,7 @@ cron:
           Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
         {% if elasticsearch_enabled -%}
         ELASTICSEARCH_HOST:
-          Ref: ElasticSearchHost
+          Fn::Sub: https://${ElasticSearchHost}
         {% endif -%}
         SSM_PATH:
           Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
