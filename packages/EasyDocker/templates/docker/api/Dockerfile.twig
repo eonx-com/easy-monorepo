@@ -60,6 +60,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # install composer
 RUN curl 'http://getcomposer.org/installer' | php -- --install-dir=/usr/local/bin/ --filename=composer
+{% if prestissimo %}
+RUN /usr/local/bin/composer global require hirak/prestissimo -n; exit 0
+{% endif %}
 
 VOLUME '/var/www/.composer'
 
@@ -74,7 +77,7 @@ COPY ./auth.json /var/www/auth.json
 COPY ./composer.json /var/www/composer.json
 COPY ./composer.lock /var/www/composer.lock
 
-RUN /usr/local/bin/composer install -o -v
+RUN /usr/local/bin/composer install -o -n -v --no-progress --no-suggest
 
 ########################################################################################################################
 ##

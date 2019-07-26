@@ -176,7 +176,7 @@ abstract class AbstractTemplatesCommand extends Command
      */
     private function getBooleanParamAsString($param = null): string
     {
-        return ((bool)($param)) ? 'true' : 'false';
+        return ((bool)$param) ? 'true' : 'false';
     }
 
     /**
@@ -259,6 +259,15 @@ abstract class AbstractTemplatesCommand extends Command
             return $style->ask(
                 'Is DoctrineMigrations enabled?',
                 $this->getBooleanParamAsString($params['doctrine_migrations_enabled'] ?? null),
+                $boolean
+            );
+        };
+
+        // Newrelic
+        yield 'prestissimo' => function (array $params) use ($style, $boolean): bool {
+            return $style->ask(
+                'Install prestissimo plugin for composer?',
+                $this->getBooleanParamAsString($params['prestissimo'] ?? null),
                 $boolean
             );
         };
