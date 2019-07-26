@@ -135,6 +135,6 @@ final class ParameterResolver implements ParameterResolverInterface
             $params = Yaml::parseFile($this->cacheFile);
         }
 
-        return $params + $this->parameterProvider->provide();
+        return $params ?? [] + $this->parameterProvider->provide();
     }
 }
