@@ -21,7 +21,6 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'project',
             'false',
             'false',
-            'false',
             'true' // prestissimo
         ];
 
@@ -117,7 +116,6 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'docker/api/cron/crontab',
             'docker/api/development/php.ini',
             'docker/api/development/php-composer.ini',
-            'docker/api/newrelic/install.sh',
             'docker/api/Dockerfile',
             'docker/api/fpm.conf',
             'docker/api/migrate.sh',

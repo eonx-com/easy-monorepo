@@ -1,4 +1,3 @@
 parameters:
     doctrine_migrations_enabled: true
-    newrelic: false
     soap: false

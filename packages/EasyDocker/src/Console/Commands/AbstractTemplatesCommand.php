@@ -236,15 +236,6 @@ abstract class AbstractTemplatesCommand extends Command
             return $style->ask('Project Name', $params['project'] ?? null, $required);
         };
 
-        // Newrelic
-        yield 'newrelic' => function (array $params) use ($style, $boolean): bool {
-            return $style->ask(
-                'Install New Relic',
-                $this->getBooleanParamAsString($params['newrelic'] ?? null),
-                $boolean
-            );
-        };
-
         // SOAP
         yield 'soap' => function (array $params) use ($style, $boolean): bool {
             return $style->ask(
@@ -299,12 +290,6 @@ abstract class AbstractTemplatesCommand extends Command
      */
     private function processFile(File $file, array $params): FileStatus
     {
-        $newrelic = (bool)($params['newrelic'] ?? false);
-
-        if ($newrelic === false && $this->str->contains($file->getFilename(), 'newrelic')) {
-            return $this->fileGenerator->remove($file);
-        }
-
         return $this->fileGenerator->generate($file, $params);
     }
 }
