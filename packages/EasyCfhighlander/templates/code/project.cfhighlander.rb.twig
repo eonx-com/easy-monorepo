@@ -1,3 +1,4 @@
+# AWS ECS Task to update api, worker and cron
 CfhighlanderComponent do
 
     Parameters do
@@ -9,6 +10,7 @@ CfhighlanderComponent do
       ComponentParam 'EnvironmentType', 'development', isGlobal: true, allowedValues: ['development','production']
     end
 
+    # AWS Fargate service responsible to run the docker containers for the API
     Component name: '{{ project }}-api-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: api do
       Parameters do
         ComponentParam 'SqsUrl', type:'String'
@@ -27,6 +29,7 @@ CfhighlanderComponent do
     {%- endif ~%}
     end
 
+  # AWS Fargate service responsible to run the docker containers for the queue workers
   Component name: '{{ project }}-worker-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: worker do
     Parameters do
       ComponentParam 'SqsUrl', type:'String'
@@ -43,6 +46,7 @@ CfhighlanderComponent do
   {%- endif ~%}
   end
 
+  # AWS Fargate service responsible to run the docker containers for the cron commands
   Component name: '{{ project }}-cron-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: cron do
     Parameters do
       ComponentParam 'SqsUrl', type:'String'
