@@ -29,21 +29,6 @@ RUN rm -rfv /var/www/*
 
 WORKDIR /var/www
 
-{% if newrelic %}
-########################################################################################################################
-##
-## NEWRELIC
-##
-########################################################################################################################
-FROM php AS newrelic
-
-WORKDIR /tmp
-
-COPY ./docker/api/newrelic/install.sh /tmp/nr.sh
-
-RUN chmod +x /tmp/nr.sh && /tmp/nr.sh && rm /tmp/nr.sh
-{% endif %}
-
 ########################################################################################################################
 ##
 ## COMPOSER
@@ -85,12 +70,6 @@ RUN /usr/local/bin/composer install -o -n -v --no-progress --no-suggest
 ##
 ########################################################################################################################
 FROM php AS api-production
-
-{% if newrelic %}
-## NEW RELIC
-COPY --from=newrelic /usr/local/lib/php/extensions/no-debug-non-zts-20180731/newrelic.so /usr/local/lib/php/extensions/no-debug-non-zts-20180731/newrelic.so
-COPY --from=newrelic /usr/local/etc/php/conf.d/newrelic.ini /usr/local/etc/php/conf.d/newrelic.ini
-{% endif %}
 
 ## SSM ENVIRONMENT
 COPY --from=base2/awsenv /awsenv /bin/awsenv
