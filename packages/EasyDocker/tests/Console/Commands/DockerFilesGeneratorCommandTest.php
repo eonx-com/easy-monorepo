@@ -8,6 +8,61 @@ use LoyaltyCorp\EasyDocker\Tests\AbstractTestCase;
 final class DockerFilesGeneratorCommandTest extends AbstractTestCase
 {
     /**
+     * Ensure the Dockerfile contains the compose require line if input is true for prestissimo
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function testDockerfileContainsPrestissimo(): void
+    {
+        $filesystem = $this->getFilesystem();
+        $inputs = [
+            'project',
+            'false',
+            'false',
+            'false',
+            'true' // prestissimo
+        ];
+
+        $this->executeCommand('generate', $inputs);
+
+        self::assertTrue($filesystem->exists(static::$cwd . '/docker/api/Dockerfile'));
+        self::assertStringContainsString(
+            'composer global require hirak/prestissimo',
+            \file_get_contents(static::$cwd . '/docker/api/Dockerfile')
+        );
+    }
+
+    /**
+     * Ensure the Dockerfile does not contain the compose require line if input is false for prestissimo
+     * This is the inverse of testDockerfileContainsPrestissimo
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function testDockerfileDoesNotContainPrestissimo(): void
+    {
+        $filesystem = $this->getFilesystem();
+        $inputs = [
+            'project',
+            'false',
+            'false',
+            'false',
+            'false' // prestissimo
+        ];
+
+        $this->executeCommand('generate', $inputs);
+
+        self::assertTrue($filesystem->exists(static::$cwd . '/docker/api/Dockerfile'));
+        self::assertStringNotContainsString(
+            'composer global require hirak/prestissimo',
+            \file_get_contents(static::$cwd . '/docker/api/Dockerfile')
+        );
+    }
+
+    /**
      * Ensure the .easy directory is only used if no existing files are present
      *
      * @return void
@@ -20,7 +75,8 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'project',
             'true',
             'true',
-            'true'
+            'true',
+            'false'
         ];
 
         $filesNotExisting = [
@@ -51,7 +107,8 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'project',
             'true',
             'true',
-            'true'
+            'true',
+            'false'
         ];
 
         $files = [
