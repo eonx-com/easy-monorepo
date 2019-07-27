@@ -43,8 +43,15 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
       unzip  \
    && rm -rf /var/lib/apt/lists/*
 
-# install composer
-RUN curl 'http://getcomposer.org/installer' | php -- --install-dir=/usr/local/bin/ --filename=composer
+# Install composer
+COPY ./docker/api/composer-installer.sh /usr/local/bin/composer-installer
+
+RUN chmod +x /usr/local/bin/composer-installer \
+    && /usr/local/bin/composer-installer \
+    && mv composer.phar /usr/local/bin/composer \
+    && chmod +x /usr/local/bin/composer \
+    && composer --version
+
 {% if prestissimo %}
 RUN /usr/local/bin/composer global require hirak/prestissimo -n; exit 0
 {% endif %}
