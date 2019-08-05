@@ -47,12 +47,12 @@ final class FileGenerator implements FileGeneratorInterface
         $exists = $this->filesystem->exists($filename);
         $identical = $exists ? $renderedHash === $this->hash(\file_get_contents($filename)) : null;
 
-        // If file already exist but is not identical
+        // If file already exists but is not identical
         if ($identical === false) {
             $filename .= '_new';
         }
 
-        // If file already exist and is identical, skip
+        // If file already exists and is identical, skip
         if ($identical) {
             return new FileStatus(
                 $fileToGenerate,
