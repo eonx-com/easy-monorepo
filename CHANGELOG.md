@@ -2,7 +2,41 @@
 
 <!-- dumped content start -->
 
-## v0.8.2 - 2019-07-05
+## v0.8.3 - 2019-08-05
+
+- [#70] Updated GitHub PR Template to denote CHANGELOG does not actually require, Thanks to [@MitchellMacpherson]
+
+### EasyCfhighlander
+
+- [#71] Added comments to template cfhighlander files to explain file purpose, Thanks to [@MitchellMacpherson]
+- [#78] Fix autoload paths issue, Thanks to [@olamedia]
+
+### EasyDocker
+
+- [#77] Fix autoload paths issue, Thanks to [@olamedia]
+- [#75] Remove NewRelic
+
+### EasyCfhighlander
+
+- [#73] Update ELASTICSEARCH_HOST to append https:// to $ElasticSearchHost, Thanks to [@merk]
+- [#69] Use .easy directory for easy-docker generated parameter & manifest files, Thanks to [@MitchellMacpherson]
+- [#67] Make sure project has "-backend" in the name for Cloudformation
+
+### EasyDocker
+
+- [#76] Check composer install with official signature
+- [#72] Support for hirak/prestissimo in api Dockerfile, Thanks to [@MitchellMacpherson]
+- [#68] Use .easy directory for easy-docker generated parameter & manifest files, Thanks to [@MitchellMacpherson]
+
+### EasyIdentity
+
+- [#74] Avoid exceptions when empty URL for Auth0, Thanks to [@rashmitsingh]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.8.2] - 2019-07-05
 
 ### EasyCfhighlander
 
@@ -600,3 +634,19 @@
 [#66]: https://github.com/loyaltycorp/easy-monorepo/pull/66
 [#65]: https://github.com/loyaltycorp/easy-monorepo/pull/65
 [v0.8.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.8.0...v0.8.1
+[#78]: https://github.com/loyaltycorp/easy-monorepo/pull/78
+[#77]: https://github.com/loyaltycorp/easy-monorepo/pull/77
+[#76]: https://github.com/loyaltycorp/easy-monorepo/pull/76
+[#75]: https://github.com/loyaltycorp/easy-monorepo/pull/75
+[#74]: https://github.com/loyaltycorp/easy-monorepo/pull/74
+[#73]: https://github.com/loyaltycorp/easy-monorepo/pull/73
+[#72]: https://github.com/loyaltycorp/easy-monorepo/pull/72
+[#71]: https://github.com/loyaltycorp/easy-monorepo/pull/71
+[#70]: https://github.com/loyaltycorp/easy-monorepo/pull/70
+[#69]: https://github.com/loyaltycorp/easy-monorepo/pull/69
+[#68]: https://github.com/loyaltycorp/easy-monorepo/pull/68
+[#67]: https://github.com/loyaltycorp/easy-monorepo/pull/67
+[@rashmitsingh]: https://github.com/rashmitsingh
+[@olamedia]: https://github.com/olamedia
+[@MitchellMacpherson]: https://github.com/MitchellMacpherson
+[v0.8.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.8.1...v0.8.2
