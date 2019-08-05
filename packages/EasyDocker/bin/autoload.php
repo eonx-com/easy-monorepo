@@ -8,6 +8,7 @@ $paths = [
     __DIR__ . '/../../..',
     // monorepo
     __DIR__ . '/../../../vendor',
+    __DIR__ . '/../../../../../../vendor',
 ];
 
 foreach ($paths as $possiblePath) {
