@@ -8,25 +8,19 @@
 
 ### EasyCfhighlander
 
-- [#71] Added comments to template cfhighlander files to explain file purpose, Thanks to [@MitchellMacpherson]
-- [#78] Fix autoload paths issue, Thanks to [@olamedia]
-
-### EasyDocker
-
-- [#77] Fix autoload paths issue, Thanks to [@olamedia]
-- [#75] Remove NewRelic
-
-### EasyCfhighlander
-
 - [#73] Update ELASTICSEARCH_HOST to append https:// to $ElasticSearchHost, Thanks to [@merk]
 - [#69] Use .easy directory for easy-docker generated parameter & manifest files, Thanks to [@MitchellMacpherson]
 - [#67] Make sure project has "-backend" in the name for Cloudformation
+- [#71] Added comments to template cfhighlander files to explain file purpose, Thanks to [@MitchellMacpherson]
+- [#78] Fix autoload paths issue, Thanks to [@olamedia]
 
 ### EasyDocker
 
 - [#76] Check composer install with official signature
 - [#72] Support for hirak/prestissimo in api Dockerfile, Thanks to [@MitchellMacpherson]
 - [#68] Use .easy directory for easy-docker generated parameter & manifest files, Thanks to [@MitchellMacpherson]
+- [#77] Fix autoload paths issue, Thanks to [@olamedia]
+- [#75] Remove NewRelic
 
 ### EasyIdentity
 
