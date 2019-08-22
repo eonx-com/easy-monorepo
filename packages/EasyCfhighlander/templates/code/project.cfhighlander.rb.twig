@@ -6,12 +6,13 @@ CfhighlanderComponent do
       ComponentParam 'NginxTag'
       ComponentParam 'WorkerTag'
       ComponentParam 'CronTag'
+      ComponentParam 'CliTag'
       ComponentParam 'EnvironmentName', 'dev', isGlobal: true
       ComponentParam 'EnvironmentType', 'development', isGlobal: true, allowedValues: ['development','production']
     end
 
     # AWS Fargate service responsible to run the docker containers for the API
-    Component name: '{{ project }}-api-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: api do
+    Component name: '{{ project }}-api-service', template: 'fargate@1.0.7', config: api do
       Parameters do
         ComponentParam 'SqsUrl', type:'String'
       end
@@ -30,7 +31,7 @@ CfhighlanderComponent do
     end
 
   # AWS Fargate service responsible to run the docker containers for the queue workers
-  Component name: '{{ project }}-worker-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: worker do
+  Component name: '{{ project }}-worker-service', template: 'fargate@1.0.7', config: worker do
     Parameters do
       ComponentParam 'SqsUrl', type:'String'
     end
@@ -47,7 +48,7 @@ CfhighlanderComponent do
   end
 
   # AWS Fargate service responsible to run the docker containers for the cron commands
-  Component name: '{{ project }}-cron-service', template: 'git:https://github.com/Samseppiol/hl-component-fargate.git', config: cron do
+  Component name: '{{ project }}-cron-service', template: 'fargate@1.0.7', config: cron do
     Parameters do
       ComponentParam 'SqsUrl', type:'String'
     end
@@ -62,5 +63,23 @@ CfhighlanderComponent do
     parameter name: 'ElasticSearchHost', value: FnImportValue(FnSub("${EnvironmentName}-elasticsearch-ESClusterEndpoint"))
   {%- endif ~%}
   end
+
+  {% if cli_enabled %}
+    # AWS EC2 service responsible to run the docker container for the cli
+    Component name: '{{ project }}-cli-service', template: 'ecs-service@2.1.1', config: cli do
+      Parameters do
+        ComponentParam 'SqsUrl', type:'String'
+      end
+      parameter name: 'CliTag', value: Ref('CliTag')
+      parameter name: 'EcsCluster', value: FnImportValue(FnSub("${EnvironmentName}-ecs-EcsCluster"))
+      parameter name: 'DnsDomain', value: dns_domain
+      parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
+      parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
+      parameter name: 'SecurityGroupBackplane', value: FnImportValue(FnSub("${EnvironmentName}-vpc-SecurityGroupBackplane"))
+    {%- if elasticsearch_enabled ~%}
+      parameter name: 'ElasticSearchHost', value: FnImportValue(FnSub("${EnvironmentName}-elasticsearch-ESClusterEndpoint"))
+    {%- endif ~%}
+    end
+  {% endif %}
   
 end

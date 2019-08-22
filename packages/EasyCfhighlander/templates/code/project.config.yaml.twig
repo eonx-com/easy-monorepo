@@ -24,7 +24,8 @@ api:
           Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
         {% if elasticsearch_enabled -%}
         ELASTICSEARCH_HOST:
-          Fn::Sub: https://${ElasticSearchHost}
+          # PHP elasticsearch/elasticsearch assumes port 9200 if no port is present
+          Fn::Sub: https://${ElasticSearchHost}:443
         {% endif -%}
         AWS_REGION:
           Ref: AWS::Region
@@ -118,7 +119,8 @@ worker:
           Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
         {% if elasticsearch_enabled -%}
         ELASTICSEARCH_HOST:
-          Fn::Sub: https://${ElasticSearchHost}
+          # PHP elasticsearch/elasticsearch assumes port 9200 if no port is present
+          Fn::Sub: https://${ElasticSearchHost}:443
         {% endif -%}
         SSM_PATH:
           Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
@@ -169,7 +171,8 @@ cron:
           Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
         {% if elasticsearch_enabled -%}
         ELASTICSEARCH_HOST:
-          Fn::Sub: https://${ElasticSearchHost}
+          # PHP elasticsearch/elasticsearch assumes port 9200 if no port is present
+          Fn::Sub: https://${ElasticSearchHost}:443
         {% endif -%}
         SSM_PATH:
           Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
@@ -195,3 +198,48 @@ cron:
     sqs:
       action:
         - sqs:*
+
+{% if cli_enabled %}
+cli:
+  cpu: 512
+  memory: 512
+  task_definition:
+    cli:
+      repo: {{ code.ecr_repo }}/{{ project }}
+      image: backend
+      tag_param: CliTag
+      entrypoint: [ "tail", "-f", "/dev/null" ]
+      cpu: 512
+      memory: 512
+      env_vars:
+        DB_DATABASE: {{ db_name }}
+        DB_PORT: 3306
+        DB_CONNECTION: mysql
+        DB_HOST:
+          Fn::Sub: mysql.${EnvironmentName}.${DnsDomain}
+        {% if elasticsearch_enabled -%}
+        ELASTICSEARCH_HOST:
+          # PHP elasticsearch/elasticsearch assumes port 9200 if no port is present
+          Fn::Sub: https://${ElasticSearchHost}:443
+        {% endif -%}
+        SSM_PATH:
+          Fn::Sub: /{{ ssm_prefix }}/${EnvironmentName}
+        FORMAT: shell
+        AWS_REGION:
+          Ref: AWS::Region
+        APP_ENV:
+          Fn::Sub: ${EnvironmentName}
+        SQS_QUEUE_URL:
+          Ref: SqsUrl
+
+  iam_policies:
+    ssm-parameters-ro:
+      action:
+        - ssm:GetParameter
+        - ssm:GetParameters
+        - ssm:GetParameterByPath
+        - ssm:DescribeParameters
+    sqs:
+      action:
+        - sqs:*
+{% endif %}
