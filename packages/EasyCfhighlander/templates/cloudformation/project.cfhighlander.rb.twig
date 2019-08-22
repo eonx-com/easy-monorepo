@@ -58,7 +58,7 @@ CfhighlanderTemplate do
        parameter name: 'InstanceType', value: 't2.micro'
      end
 
-     Component name: 'aurora', template: 'aurora-mysql@2.0.2' do
+     Component name: 'aurora', template: 'aurora-mysql@2.0.4' do
        parameter name: 'DnsDomain', value: dns_domain
        parameter name: 'AutoPause', value: cfmap('EnvironmentType',Ref('EnvironmentType'),'AutoPause')
        parameter name: 'MinCapacity', value: cfmap('EnvironmentType',Ref('EnvironmentType'),'MinCapacity')
