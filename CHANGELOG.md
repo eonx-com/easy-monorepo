@@ -2,7 +2,25 @@
 
 <!-- dumped content start -->
 
-## v0.8.3 - 2019-08-05
+## Unreleased
+
+- [#77] Fix autoload paths issue, Thanks to [@olamedia]
+
+### EasyCfhighlander
+
+- [#80] Fix file overwrite issue, Thanks to [@olamedia]
+- [#81] Fix CLI params missing
+
+### EasyDocker
+
+- [#81] Fix CLI params missing
+- [#79] Fix file overwrite issue, Thanks to [@olamedia]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.8.3] - 2019-08-05
 
 - [#70] Updated GitHub PR Template to denote CHANGELOG does not actually require, Thanks to [@MitchellMacpherson]
 
@@ -644,3 +662,7 @@
 [@olamedia]: https://github.com/olamedia
 [@MitchellMacpherson]: https://github.com/MitchellMacpherson
 [v0.8.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.8.1...v0.8.2
+[#81]: https://github.com/loyaltycorp/easy-monorepo/pull/81
+[#80]: https://github.com/loyaltycorp/easy-monorepo/pull/80
+[#79]: https://github.com/loyaltycorp/easy-monorepo/pull/79
+[v0.8.3]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.8.2...v0.8.3
