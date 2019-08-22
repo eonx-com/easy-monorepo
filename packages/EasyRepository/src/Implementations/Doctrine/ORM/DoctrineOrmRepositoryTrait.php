@@ -75,6 +75,16 @@ trait DoctrineOrmRepositoryTrait
     }
 
     /**
+     * Synchronise in-memory changes to database.
+     *
+     * @return void
+     */
+    public function flush(): void
+    {
+        $this->manager->flush();
+    }
+
+    /**
      * Performs a rollback on the underlying database connection.
      *
      * @return void

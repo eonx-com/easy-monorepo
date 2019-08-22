@@ -90,6 +90,16 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
     }
 
     /**
+     * Synchronise in-memory changes to database.
+     *
+     * @return void
+     */
+    public function flush(): void
+    {
+        // Feature not supported by eloquent.
+    }
+
+    /**
      * Performs a rollback on the underlying database connection.
      *
      * @return void
