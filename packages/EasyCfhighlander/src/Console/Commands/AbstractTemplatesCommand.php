@@ -324,6 +324,15 @@ abstract class AbstractTemplatesCommand extends Command
         yield 'prod_account' => function (array $params) use ($style, $required): string {
             return $style->ask('AWS PROD Account', $params['prod_account'] ?? null, $required);
         };
+
+        // CLI ECS Task (on EC2)
+        yield 'cli_enabled' => function (array $params) use ($style, $boolean): bool {
+            return $style->ask(
+                'CLI enabled',
+                $this->getBooleanParamAsString($params['cli_enabled'] ?? null),
+                $boolean
+            );
+        };
     }
 
     /**
