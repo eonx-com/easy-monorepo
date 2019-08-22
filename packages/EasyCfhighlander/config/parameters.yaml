@@ -6,6 +6,7 @@ parameters:
   source_bucket: source.tools.loyaltycorp.com.au
 
   # Enable/Disable components
+  cli_enabled: false
   elasticsearch_enabled: false
   redis_enabled: false
 
