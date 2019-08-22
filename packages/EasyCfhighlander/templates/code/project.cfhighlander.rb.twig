@@ -64,22 +64,22 @@ CfhighlanderComponent do
   {%- endif ~%}
   end
 
-  {% if cli_enabled %}
-    # AWS EC2 service responsible to run the docker container for the cli
-    Component name: '{{ project }}-cli-service', template: 'ecs-service@2.1.1', config: cli do
-      Parameters do
-        ComponentParam 'SqsUrl', type:'String'
-      end
-      parameter name: 'CliTag', value: Ref('CliTag')
-      parameter name: 'EcsCluster', value: FnImportValue(FnSub("${EnvironmentName}-ecs-EcsCluster"))
-      parameter name: 'DnsDomain', value: dns_domain
-      parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
-      parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
-      parameter name: 'SecurityGroupBackplane', value: FnImportValue(FnSub("${EnvironmentName}-vpc-SecurityGroupBackplane"))
-    {%- if elasticsearch_enabled ~%}
-      parameter name: 'ElasticSearchHost', value: FnImportValue(FnSub("${EnvironmentName}-elasticsearch-ESClusterEndpoint"))
-    {%- endif ~%}
+{% if cli_enabled %}
+  # AWS EC2 service responsible to run the docker container for the cli
+  Component name: '{{ project }}-cli-service', template: 'ecs-service@2.1.1', config: cli do
+    Parameters do
+      ComponentParam 'SqsUrl', type:'String'
     end
-  {% endif %}
+    parameter name: 'CliTag', value: Ref('CliTag')
+    parameter name: 'EcsCluster', value: FnImportValue(FnSub("${EnvironmentName}-ecs-EcsCluster"))
+    parameter name: 'DnsDomain', value: dns_domain
+    parameter name: 'SqsUrl', value: FnImportValue(FnSub("${EnvironmentName}-sqs-{{ sqs_queue }}Url"))
+    parameter name: 'Subnets', value: FnImportValue(FnSub("${EnvironmentName}-vpc-ComputeSubnets"))
+    parameter name: 'SecurityGroupBackplane', value: FnImportValue(FnSub("${EnvironmentName}-vpc-SecurityGroupBackplane"))
+  {%- if elasticsearch_enabled ~%}
+    parameter name: 'ElasticSearchHost', value: FnImportValue(FnSub("${EnvironmentName}-elasticsearch-ESClusterEndpoint"))
+  {%- endif ~%}
+  end
+{% endif %}
   
 end
