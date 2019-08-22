@@ -2,7 +2,7 @@
 
 <!-- dumped content start -->
 
-## Unreleased
+## v0.9.0 - 2019-08-22
 
 - [#77] Fix autoload paths issue, Thanks to [@olamedia]
 
@@ -15,6 +15,10 @@
 
 - [#81] Fix CLI params missing
 - [#79] Fix file overwrite issue, Thanks to [@olamedia]
+
+### EasyRepository
+
+- [#82] Database repository interface
 
 <!-- dumped content end -->
 
@@ -666,3 +670,4 @@
 [#80]: https://github.com/loyaltycorp/easy-monorepo/pull/80
 [#79]: https://github.com/loyaltycorp/easy-monorepo/pull/79
 [v0.8.3]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.8.2...v0.8.3
+[#82]: https://github.com/loyaltycorp/easy-monorepo/pull/82
