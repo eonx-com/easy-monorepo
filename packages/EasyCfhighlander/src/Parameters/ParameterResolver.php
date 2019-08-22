@@ -101,7 +101,7 @@ final class ParameterResolver implements ParameterResolverInterface
             }
         }
 
-        $params = $input->getArguments() + $input->getOptions() + $params;
+        $params = \array_merge($input->getArguments(), $input->getOptions(), $params);
 
         $this->filesystem->dumpFile($this->cacheFile, Yaml::dump($cache));
 
@@ -135,6 +135,6 @@ final class ParameterResolver implements ParameterResolverInterface
             $params = Yaml::parseFile($this->cacheFile);
         }
 
-        return $params ?? [] + $this->parameterProvider->provide();
+        return \array_merge($params ?? [], $this->parameterProvider->provide());
     }
 }
