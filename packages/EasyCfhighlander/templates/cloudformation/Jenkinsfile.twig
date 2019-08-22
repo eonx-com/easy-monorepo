@@ -21,6 +21,7 @@ pipeline{
   parameters {
      string(name: 'CHEF_BRANCH', defaultValue: "${env.BRANCH_NAME}", description: 'Chef branch for AMIs')
      string(name: 'BASTION_SPOT_PRICE', defaultValue: '0.0146', description: 'Spot price for bastion, set to ondemand price of t2.micro')
+     string(name: 'ECS_SPOT_PRICE', defaultValue: '0.0292', description: 'Spot price for ECS, set to ondemand price of t2.small')
   }
   stages {
     stage('Compile and Validate') {
@@ -65,6 +66,7 @@ pipeline{
         script {
           mappings = readYaml file: "${params.CHEF_BRANCH}-ami-latest.yml"
           bastionAMI = "${mappings['bastionAMI'][env.REGION]['ami']}"
+          ecsAMI = "${mappings['EcsAMI'][env.REGION]['ami']}"
         }
       }
     }
@@ -88,7 +90,9 @@ pipeline{
             'NetworkPrefix': '10',
             'StackOctet': '130',
             'bastionAmi': bastionAMI,
-            'bastionSpotPrice': params.BASTION_SPOT_PRICE
+            'bastionSpotPrice': params.BASTION_SPOT_PRICE,
+            'ecsAmi': ecsAMI,
+            'ecsSpotPrice': params.ECS_SPOT_PRICE
           ]
         )
         println "Update Dev Environment"
@@ -104,7 +108,9 @@ pipeline{
             'EnvironmentName': 'dev',
             'EnvironmentType': 'development',
             'bastionAmi': bastionAMI,
-            'bastionSpotPrice': params.BASTION_SPOT_PRICE
+            'bastionSpotPrice': params.BASTION_SPOT_PRICE,
+            'ecsAmi': ecsAMI,
+            'ecsSpotPrice': params.ECS_SPOT_PRICE
           ]
         )
       }
@@ -128,7 +134,10 @@ pipeline{
             'EnvironmentType': 'production',
             'NetworkPrefix': '10',
             'StackOctet': '120',
-            'bastionAmi': bastionAMI
+            'bastionAmi': bastionAMI,
+            'bastionSpotPrice': params.BASTION_SPOT_PRICE,
+            'ecsAmi': ecsAMI,
+            'ecsSpotPrice': params.ECS_SPOT_PRICE
           ]
         )
         println "Update uat Environment"
@@ -143,7 +152,10 @@ pipeline{
           parameters: [
             'EnvironmentName': 'uat',
             'EnvironmentType': 'production',
-            'bastionAmi': bastionAMI
+            'bastionAmi': bastionAMI,
+            'bastionSpotPrice': params.BASTION_SPOT_PRICE,
+            'ecsAmi': ecsAMI,
+            'ecsSpotPrice': params.ECS_SPOT_PRICE
           ]
         )
       }
@@ -174,7 +186,8 @@ pipeline{
             'StackOctet': '110',
             'SingleNatGateway': 'false',
             'MaxNatGateways': '3',
-            'bastionAmi': bastionAMI
+            'bastionAmi': bastionAMI,
+            'ecsAmi': ecsAMI
           ]
         )
         println "Update prod Environment"
@@ -189,7 +202,8 @@ pipeline{
           parameters: [
             'EnvironmentName': 'prod',
             'EnvironmentType': 'production',
-            'bastionAmi': bastionAMI
+            'bastionAmi': bastionAMI,
+            'ecsAmi': ecsAMI,
           ]
         )
       }

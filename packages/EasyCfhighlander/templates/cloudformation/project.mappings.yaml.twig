@@ -8,18 +8,15 @@ EnvironmentType:
     CacheClusters: 1
     RedisCluster: false
     RedisEndpointType: PrimaryEndPoint.Address
-    WriterInstanceType: db.t2.small
-    ReaderInstanceType: db.t2.small
     SnapshotRetentionLimit: 0
     ReplicasPerNodeGroup: 0
-    EnableReader: false
   production:
-    AutoPause: true
+    AutoPause: false
     MinCapacity: 1
-    MaxCapacity: 1
-    SecondsUntilAutoPause: 600
+    MaxCapacity: 8
+    SecondsUntilAutoPause: 86400
     RDSConnectordbMultiAZ: true
-    CacheInstanceType: cache.t2.medium
+    CacheInstanceType: cache.t2.micro
     CacheClusters: 2
     RedisCluster: true
     RedisEndpointType: ConfigurationEndPoint.Address
@@ -27,4 +24,3 @@ EnvironmentType:
     ReaderInstanceType: db.t2.small
     SnapshotRetentionLimit: 0
     ReplicasPerNodeGroup: 0
-    EnableReader: true

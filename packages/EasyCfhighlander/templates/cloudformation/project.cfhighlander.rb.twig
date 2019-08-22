@@ -48,7 +48,12 @@ CfhighlanderTemplate do
        parameter name: 'SslCertId', value: cfout('acm', 'CertificateArn')
      end
 
-     Component name:'ecs', template: 'ecs@2.0.0'
+     Component name:'ecs', template: 'ecs@2.0.0' do
+       parameter name: 'InstanceType', value: 't2.small'
+       parameter name: 'KeyName', value: cfout('keypair','KeyPair')
+       parameter name: 'VPCId', value: cfout('vpc', 'VPCId')
+       parameter name: 'SubnetIds', value: cfout('vpc', 'ComputeSubnets')
+     end
 
      Component name:'sqs', template: 'sqs@1.1.2'
 
@@ -58,7 +63,7 @@ CfhighlanderTemplate do
        parameter name: 'InstanceType', value: 't2.micro'
      end
 
-     Component name: 'aurora', template: 'aurora-mysql@2.0.2' do
+     Component name: 'aurora', template: 'aurora-mysql@~2.0' do
        parameter name: 'DnsDomain', value: dns_domain
        parameter name: 'AutoPause', value: cfmap('EnvironmentType',Ref('EnvironmentType'),'AutoPause')
        parameter name: 'MinCapacity', value: cfmap('EnvironmentType',Ref('EnvironmentType'),'MinCapacity')
