@@ -3,19 +3,20 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM;
 
+use Closure;
 use Doctrine\ORM\QueryBuilder;
 
 trait DoctrineOrmRepositoryTrait
 {
     /**
-     * @var \Doctrine\ORM\EntityRepository
-     */
-    protected $repository;
-
-    /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
     protected $manager;
+
+    /**
+     * @var \Doctrine\ORM\EntityRepository
+     */
+    protected $repository;
 
     /**
      * Get all the objects managed by the repository.
@@ -25,6 +26,26 @@ trait DoctrineOrmRepositoryTrait
     public function all(): array
     {
         return $this->repository->findAll();
+    }
+
+    /**
+     * Starts a transaction on the underlying database connection.
+     *
+     * @return void
+     */
+    public function beginTransaction(): void
+    {
+        $this->manager->beginTransaction();
+    }
+
+    /**
+     * Commits a transaction on the underlying database connection.
+     *
+     * @return void
+     */
+    public function commit(): void
+    {
+        $this->manager->commit();
     }
 
     /**
@@ -54,6 +75,26 @@ trait DoctrineOrmRepositoryTrait
     }
 
     /**
+     * Synchronise in-memory changes to database.
+     *
+     * @return void
+     */
+    public function flush(): void
+    {
+        $this->manager->flush();
+    }
+
+    /**
+     * Performs a rollback on the underlying database connection.
+     *
+     * @return void
+     */
+    public function rollback(): void
+    {
+        $this->manager->rollback();
+    }
+
+    /**
      * Save given object(s).
      *
      * @param object|object[] $object The object or list of objects to save
@@ -63,6 +104,35 @@ trait DoctrineOrmRepositoryTrait
     public function save($object): void
     {
         $this->callManagerMethodForObjects('persist', $object);
+    }
+
+    /**
+     * Executes a function in a transaction.
+     * If an exception occurs during execution of the function or flushing or transaction commit,
+     * the transaction is rolled back, the EntityManager closed and the exception re-thrown.
+     *
+     * @param \Closure $func
+     *
+     * @return mixed
+     *
+     * @throws \Throwable
+     */
+    public function transactional(Closure $func)
+    {
+        $this->beginTransaction();
+
+        try {
+            $return = \call_user_func($func);
+
+            $this->commit();
+
+            return $return ?? true;
+        } catch (\Throwable $exception) {
+            $this->manager->close();
+            $this->rollback();
+
+            throw $exception;
+        }
     }
 
     /**
@@ -107,8 +177,6 @@ trait DoctrineOrmRepositoryTrait
         foreach ($objects as $object) {
             $this->manager->$method($object);
         }
-
-        $this->manager->flush();
     }
 }
 
