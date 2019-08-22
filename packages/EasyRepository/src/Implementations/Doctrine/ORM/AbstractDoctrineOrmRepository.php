@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use LoyaltyCorp\EasyRepository\Interfaces\DatabaseRepositoryInterface;
 use LoyaltyCorp\EasyRepository\Interfaces\ObjectRepositoryInterface;
 
-abstract class AbstractDoctrineOrmRepository implements ObjectRepositoryInterface
+abstract class AbstractDoctrineOrmRepository implements DatabaseRepositoryInterface
 {
     use DoctrineOrmRepositoryTrait;
 
