@@ -27,7 +27,8 @@ final class CodeCommandTest extends AbstractTestCase
             'project', // sqs_queue
             'aws_dev_account', // dev_account
             '599070804856', // ops_account
-            'aws_prod_account' // prod_account
+            'aws_prod_account', // prod_account
+            'true' // cli_enabled
         ];
 
         $filesNotExisting = [
@@ -65,7 +66,8 @@ final class CodeCommandTest extends AbstractTestCase
             'project', // sqs_queue
             'aws_dev_account', // dev_account
             '599070804856', // ops_account
-            'aws_prod_account' // prod_account
+            'aws_prod_account', // prod_account
+            'true' // cli_enabled
         ];
 
         $files = [
