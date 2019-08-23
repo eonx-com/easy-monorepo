@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v0.9.0 - 2019-08-22
+## v0.9.1 - 2019-08-23
+
+### EasyCfhighlander
+
+- [#83] Sync template + CLI service
+
+### EasyDocker
+
+- [#84] Make sure to use cached params first
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.9.0] - 2019-08-22
 
 - [#77] Fix autoload paths issue, Thanks to [@olamedia]
 
@@ -671,3 +685,6 @@
 [#79]: https://github.com/loyaltycorp/easy-monorepo/pull/79
 [v0.8.3]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.8.2...v0.8.3
 [#82]: https://github.com/loyaltycorp/easy-monorepo/pull/82
+[#84]: https://github.com/loyaltycorp/easy-monorepo/pull/84
+[#83]: https://github.com/loyaltycorp/easy-monorepo/pull/83
+[v0.9.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.8.3...v0.9.0
