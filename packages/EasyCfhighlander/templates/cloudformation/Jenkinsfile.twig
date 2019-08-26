@@ -90,9 +90,11 @@ pipeline{
             'NetworkPrefix': '10',
             'StackOctet': '130',
             'bastionAmi': bastionAMI,
-            'bastionSpotPrice': params.BASTION_SPOT_PRICE,
+            'bastionSpotPrice': params.BASTION_SPOT_PRICE{% if cli_enabled %},{% endif %}
+          {%- if cli_enabled ~%}
             'ecsAmi': ecsAMI,
             'ecsSpotPrice': params.ECS_SPOT_PRICE
+          {%- endif ~%}
           ]
         )
         println "Update Dev Environment"
@@ -108,9 +110,11 @@ pipeline{
             'EnvironmentName': 'dev',
             'EnvironmentType': 'development',
             'bastionAmi': bastionAMI,
-            'bastionSpotPrice': params.BASTION_SPOT_PRICE,
-            'ecsAmi': ecsAMI,
-            'ecsSpotPrice': params.ECS_SPOT_PRICE
+            'bastionSpotPrice': params.BASTION_SPOT_PRICE{% if cli_enabled %},{% endif %}
+            {%- if cli_enabled ~%}
+              'ecsAmi': ecsAMI,
+              'ecsSpotPrice': params.ECS_SPOT_PRICE
+            {%- endif ~%}
           ]
         )
       }
@@ -135,9 +139,11 @@ pipeline{
             'NetworkPrefix': '10',
             'StackOctet': '120',
             'bastionAmi': bastionAMI,
-            'bastionSpotPrice': params.BASTION_SPOT_PRICE,
-            'ecsAmi': ecsAMI,
-            'ecsSpotPrice': params.ECS_SPOT_PRICE
+            'bastionSpotPrice': params.BASTION_SPOT_PRICE{% if cli_enabled %},{% endif %}
+            {%- if cli_enabled ~%}
+              'ecsAmi': ecsAMI,
+              'ecsSpotPrice': params.ECS_SPOT_PRICE
+            {%- endif ~%}
           ]
         )
         println "Update uat Environment"
@@ -153,9 +159,11 @@ pipeline{
             'EnvironmentName': 'uat',
             'EnvironmentType': 'production',
             'bastionAmi': bastionAMI,
-            'bastionSpotPrice': params.BASTION_SPOT_PRICE,
-            'ecsAmi': ecsAMI,
-            'ecsSpotPrice': params.ECS_SPOT_PRICE
+            'bastionSpotPrice': params.BASTION_SPOT_PRICE{% if cli_enabled %},{% endif %}
+            {%- if cli_enabled ~%}
+              'ecsAmi': ecsAMI,
+              'ecsSpotPrice': params.ECS_SPOT_PRICE
+            {%- endif ~%}
           ]
         )
       }
@@ -186,8 +194,10 @@ pipeline{
             'StackOctet': '110',
             'SingleNatGateway': 'false',
             'MaxNatGateways': '3',
-            'bastionAmi': bastionAMI,
-            'ecsAmi': ecsAMI
+            'bastionAmi': bastionAMI{% if cli_enabled %},{% endif %}
+            {%- if cli_enabled ~%}
+              'ecsAmi': ecsAMI
+            {%- endif ~%}
           ]
         )
         println "Update prod Environment"
@@ -202,8 +212,10 @@ pipeline{
           parameters: [
             'EnvironmentName': 'prod',
             'EnvironmentType': 'production',
-            'bastionAmi': bastionAMI,
-            'ecsAmi': ecsAMI,
+            'bastionAmi': bastionAMI{% if cli_enabled %},{% endif %}
+            {%- if cli_enabled ~%}
+              'ecsAmi': ecsAMI
+            {%- endif ~%}
           ]
         )
       }
