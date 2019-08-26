@@ -2,7 +2,18 @@
 
 <!-- dumped content start -->
 
-## v0.9.1 - 2019-08-23
+## v0.9.2 - 2019-08-26
+
+### EasyCfhighlander
+
+- [#86] Use aurora 2.0.4 because the semver syntax is broken
+- [#85] Pass ecs params to cloudformation only when cli enabled
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.9.1] - 2019-08-23
 
 ### EasyCfhighlander
 
@@ -688,3 +699,6 @@
 [#84]: https://github.com/loyaltycorp/easy-monorepo/pull/84
 [#83]: https://github.com/loyaltycorp/easy-monorepo/pull/83
 [v0.9.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.8.3...v0.9.0
+[#86]: https://github.com/loyaltycorp/easy-monorepo/pull/86
+[#85]: https://github.com/loyaltycorp/easy-monorepo/pull/85
+[v0.9.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.0...v0.9.1
