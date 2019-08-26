@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.9.2 - 2019-08-26
+## v0.9.3 - 2019-08-26
+
+### EasyCfhighlander
+
+- [#87] Fix indent in project.config.yaml for code templates
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.9.2] - 2019-08-26
 
 ### EasyCfhighlander
 
@@ -702,3 +712,5 @@
 [#86]: https://github.com/loyaltycorp/easy-monorepo/pull/86
 [#85]: https://github.com/loyaltycorp/easy-monorepo/pull/85
 [v0.9.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.0...v0.9.1
+[#87]: https://github.com/loyaltycorp/easy-monorepo/pull/87
+[v0.9.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.1...v0.9.2
