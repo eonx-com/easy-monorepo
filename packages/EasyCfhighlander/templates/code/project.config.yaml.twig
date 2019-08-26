@@ -136,7 +136,7 @@ worker:
         {% if redis_enabled -%}
         REDIS_HOST:
           Fn::Sub: redis.${EnvironmentName}.${DnsDomain}
-        {% endif -%}
+        {% endif ~%}
 
   iam_policies:
     ssm-parameters-ro:
@@ -186,7 +186,7 @@ cron:
         {% if redis_enabled -%}
         REDIS_HOST:
           Fn::Sub: redis.${EnvironmentName}.${DnsDomain}
-        {% endif -%}
+        {% endif ~%}
 
   iam_policies:
     ssm-parameters-ro:
