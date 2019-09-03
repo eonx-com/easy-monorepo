@@ -22,7 +22,7 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
      * @var mixed[]
      */
     protected static $tokenPayload = [
-        'scopes' => [],
+        'scope' => 'purple orange',
         'aud' => 'my-identifier'
     ];
 
@@ -61,11 +61,14 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
     /**
      * Create JWT token for given algo.
      *
+     * @param mixed[]|null $input
+     *
      * @return string
      */
-    protected function createToken(): string
+    protected function createToken(?array $input = null): string
     {
-        return $this->createAuth0JwtDriver(null, null, static::$key)->encode([]);
+        $input = $input ?? [];
+        return $this->createAuth0JwtDriver(null, null, static::$key)->encode($input);
     }
 }
 

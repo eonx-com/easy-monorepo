@@ -26,7 +26,7 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
     {
         $jwtDriver = $this->createAuth0JwtDriver();
 
-        $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken([]));
+        $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken(['scope' => 'purple orange']));
         /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
         $token = $this->createJwtTokenDecoder()->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
@@ -59,6 +59,7 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
 
     /**
      * JwtTokenEncoder should throw an exception if anything goes wrong while encoding token.
+     * In this case passing a scope as an array, when it should actually be a string
      *
      * @return void
      *
@@ -71,7 +72,7 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
 
         $jwtDriver = $this->createAuth0JwtDriver();
 
-        (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken(['scopes' => 1]));
+        (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken(['scope' => []]));
     }
 
     /**

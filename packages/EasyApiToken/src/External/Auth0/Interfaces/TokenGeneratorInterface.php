@@ -8,7 +8,7 @@ interface TokenGeneratorInterface
     /**
      * Create the ID token.
      *
-     * @param mixed[] $scopes Array of scopes to include.
+     * @param string $scope Space separated list of scopes.
      * @param string|null  $subject Information about JWT subject.
      * @param integer|null $lifetime Lifetime of the token, in seconds.
      * @param boolean|null $secretEncoded True to base64 decode the client secret.
@@ -16,7 +16,7 @@ interface TokenGeneratorInterface
      * @return string
      */
     public function generate(
-        array $scopes,
+        string $scope,
         ?string $subject = null,
         ?int $lifetime = null,
         ?bool $secretEncoded = null

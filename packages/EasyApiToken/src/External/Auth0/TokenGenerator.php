@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyApiToken\External\Auth0;
 
+use Auth0\SDK\API\Helpers\TokenGenerator as BaseTokenGenerator;
 use Firebase\JWT\JWT;
 use LoyaltyCorp\EasyApiToken\External\Auth0\Interfaces\TokenGeneratorInterface;
-use Auth0\SDK\API\Helpers\TokenGenerator as BaseTokenGenerator;
 
 final class TokenGenerator implements TokenGeneratorInterface
 {
@@ -38,15 +38,15 @@ final class TokenGenerator implements TokenGeneratorInterface
     /**
      * Create the ID token.
      *
-     * @param mixed[] $scopes Array of scopes to include.
-     * @param string|null  $subject Information about JWT subject.
+     * @param string|null $scope Space separated list of scopes.
+     * @param string|null $subject Information about JWT subject.
      * @param integer|null $lifetime Lifetime of the token, in seconds.
      * @param boolean|null $secretEncoded True to base64 decode the client secret.
      *
      * @return string
      */
     public function generate(
-        array $scopes,
+        ?string $scope,
         ?string $subject = null,
         ?int $lifetime = null,
         ?bool $secretEncoded = null
@@ -57,10 +57,13 @@ final class TokenGenerator implements TokenGeneratorInterface
         $time = \time();
         $payload = [
             'iat' => $time,
-            'scopes' => $scopes,
             'exp' => $time + $lifetime,
             'aud' => $this->audience
         ];
+
+        if (\is_string($scope) === true) {
+            $payload['scope'] = $scope;
+        }
 
         if ($subject !== null) {
             $payload['sub'] = $subject;

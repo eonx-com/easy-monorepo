@@ -93,7 +93,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
         $generator = new TokenGenerator($this->audienceForEncode, $privateKey);
 
         return $generator->generate(
-            $input['scopes'] ?? [],
+            $input['scope'] ?? null,
             $input['sub'] ?? null,
             $input['lifetime'] ?? null);
     }

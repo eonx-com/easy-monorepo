@@ -23,7 +23,7 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
 
         /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
         $token = (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken()
+            'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken(['scope' => 'purple orange'])
         ]));
 
         $payload = $token->getPayload();
