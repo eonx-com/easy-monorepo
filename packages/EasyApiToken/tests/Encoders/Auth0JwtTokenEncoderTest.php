@@ -14,6 +14,45 @@ use LoyaltyCorp\EasyApiToken\Tokens\JwtEasyApiToken;
 final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
 {
     /**
+     * Test creating a token with roles.
+     *
+     * @return void
+     *
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
+     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     */
+    public function testCreateTokenWithRoles(): void
+    {
+        $jwtDriver = $this->createAuth0JwtDriver();
+        $encoder = new JwtTokenEncoder($jwtDriver);
+        $apiToken = new JwtEasyApiToken([
+            'roles' => [
+                'https://manage.eonx.com/roles' => [
+                    'subscriptions:operator',
+                    'subscriptions:finance'
+                ]
+            ]
+        ]);
+        $token = $encoder->encode($apiToken);
+
+        /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $decodedToken */
+        $decodedToken = $this->createJwtTokenDecoder()->decode($this->createServerRequest([
+            'HTTP_AUTHORIZATION' => 'Bearer ' . $token
+        ]));
+
+        self::assertInstanceOf(JwtEasyApiToken::class, $decodedToken);
+        self::assertTrue($decodedToken->hasClaim('https://manage.eonx.com/roles'));
+        self::assertSame(
+            [
+                'subscriptions:operator',
+                'subscriptions:finance'
+            ],
+            $decodedToken->getClaim('https://manage.eonx.com/roles')
+        );
+    }
+
+    /**
      * JwtTokenEncoder should encode tokens JwtTokenDecoder can decode.
      *
      * @return void
