@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyApiToken\External\Auth0;
 
+use Auth0\SDK\API\Helpers\TokenGenerator as BaseTokenGenerator;
 use Firebase\JWT\JWT;
 use LoyaltyCorp\EasyApiToken\External\Auth0\Interfaces\TokenGeneratorInterface;
-use Auth0\SDK\API\Helpers\TokenGenerator as BaseTokenGenerator;
 
 final class TokenGenerator implements TokenGeneratorInterface
 {
@@ -39,7 +39,8 @@ final class TokenGenerator implements TokenGeneratorInterface
      * Create the ID token.
      *
      * @param mixed[] $scopes Array of scopes to include.
-     * @param string|null  $subject Information about JWT subject.
+     * @param mixed[][]|null $roles Array of roles this token can be used by.
+     * @param string|null $subject Information about JWT subject.
      * @param integer|null $lifetime Lifetime of the token, in seconds.
      * @param boolean|null $secretEncoded True to base64 decode the client secret.
      *
@@ -47,6 +48,7 @@ final class TokenGenerator implements TokenGeneratorInterface
      */
     public function generate(
         array $scopes,
+        ?array $roles = null,
         ?string $subject = null,
         ?int $lifetime = null,
         ?bool $secretEncoded = null
@@ -64,6 +66,10 @@ final class TokenGenerator implements TokenGeneratorInterface
 
         if ($subject !== null) {
             $payload['sub'] = $subject;
+        }
+
+        if ($roles !== null) {
+            $payload = \array_merge($payload, $roles);
         }
 
         $payload['jti'] = \md5(\json_encode($payload));
