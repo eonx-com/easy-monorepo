@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.9.3 - 2019-08-26
+## v0.9.4 - 2019-09-05
+
+### EasyApiToken
+
+- [#89] Update Auth0JwtDriver to accept roles custom claim, Thanks to [@rashmitsingh]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.9.3] - 2019-08-26
 
 ### EasyCfhighlander
 
@@ -714,3 +724,5 @@
 [v0.9.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.0...v0.9.1
 [#87]: https://github.com/loyaltycorp/easy-monorepo/pull/87
 [v0.9.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.1...v0.9.2
+[#89]: https://github.com/loyaltycorp/easy-monorepo/pull/89
+[v0.9.3]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.2...v0.9.3
