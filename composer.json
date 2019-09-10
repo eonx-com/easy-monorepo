@@ -27,6 +27,7 @@
         "firebase/php-jwt": "^5.0",
         "laravel/lumen-framework": "^5.5",
         "mockery/mockery": "^1.2",
+        "mikey179/vfsstream": "~1",
         "phpunit/phpunit": "^7.5",
         "psr/container": "^1.0",
         "symfony/symfony": "^4.2",
@@ -36,12 +37,14 @@
         "natepage/sniffs": "^1.1",
         "phpstan/phpstan": "^0.11.5",
         "sensiolabs/security-checker": "^5.0",
-        "symplify/easy-coding-standard": "^5.4"
+        "symplify/easy-coding-standard": "^5.4",
+        "phpspec/prophecy": "~1.0"
     },
     "autoload": {
         "psr-4": {
             "LoyaltyCorp\\EasyApiToken\\": "packages/EasyApiToken/src",
             "LoyaltyCorp\\EasyCfhighlander\\": "packages/EasyCfhighlander/src",
+            "LoyaltyCorp\\EasyCore\\": "packages/EasyCore/src",
             "LoyaltyCorp\\EasyDecision\\": "packages/EasyDecision/src",
             "LoyaltyCorp\\EasyDocker\\": "packages/EasyDocker/src",
             "LoyaltyCorp\\EasyIdentity\\": "packages/EasyIdentity/src",
@@ -62,6 +65,7 @@
         "psr-4": {
             "LoyaltyCorp\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
             "LoyaltyCorp\\EasyCfhighlander\\Tests\\": "packages/EasyCfhighlander/tests",
+            "LoyaltyCorp\\EasyCore\\Tests\\": "packages/EasyCore/tests",
             "LoyaltyCorp\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
             "LoyaltyCorp\\EasyDocker\\Tests\\": "packages/EasyDocker/tests",
             "LoyaltyCorp\\EasyIdentity\\Tests\\": "packages/EasyIdentity/tests",
