@@ -55,6 +55,39 @@ final class CachedConfigurationServiceProviderTest extends AbstractVfsTestCase
     }
 
     /**
+     * Test register successfully with Application not loading original config files via `configure` method.
+     *
+     * @return void
+     */
+    public function testRegisterSucceedsWithApplicationConfigureNotLoadingOriginalConfig(): void
+    {
+        $structure = [
+            'config' => [
+                'a.php' => "<?php\r\nreturn ['a' => 'original-value'];"
+            ],
+            'storage' => [
+                'cached_config.php' => "<?php\r\nreturn ['a' => 'cached-value'];"
+            ]
+        ];
+        $base = vfsStream::setup('base', null, $structure);
+        $repositoryProphecy = $this->prophesize(Repository::class);
+        $repositoryProphecy->has('a')->willReturn(false);
+        $repositoryProphecy->set('a', 'cached-value')->willReturn();
+        $repository = $repositoryProphecy->reveal();
+        $app = new Application($base->url());
+        $app->instance('config', $repository);
+        $serviceProvider = new CachedConfigurationServiceProvider($app);
+        $serviceProvider->register();
+
+        $app->configure('a');
+
+        self::assertSame($repository, $app->make('config'));
+        $repositoryProphecy->has('a')->shouldHaveBeenCalledOnce();
+        $repositoryProphecy->set('a', 'cached-value')->shouldHaveBeenCalledOnce();
+        $repositoryProphecy->set('a', 'original-value')->shouldNotHaveBeenCalled();
+    }
+
+    /**
      * Test register successfully.
      *
      * @return void
@@ -97,8 +130,8 @@ final class CachedConfigurationServiceProviderTest extends AbstractVfsTestCase
         $appProphecy->make('config')->shouldHaveBeenCalledOnce();
         $repositoryProphecy->has('a')->shouldHaveBeenCalledOnce();
         $repositoryProphecy->set('a', 'a-value')->shouldHaveBeenCalledOnce();
-        $cacheCommandProphecy->setLaravel($app)->shouldHaveBeenCalledOnce();
-        $clearCommandProphecy->setLaravel($app)->shouldHaveBeenCalledOnce();
+        $cacheCommandProphecy->setLaravel($app)->shouldHaveBeenCalledTimes(2);
+        $clearCommandProphecy->setLaravel($app)->shouldHaveBeenCalledTimes(2);
     }
 
     /**

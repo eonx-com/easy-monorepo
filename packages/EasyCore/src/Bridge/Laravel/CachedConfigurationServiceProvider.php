@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyCore\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application;
 use LoyaltyCorp\EasyCore\Console\Commands\Lumen\CacheConfigCommand;
 use LoyaltyCorp\EasyCore\Console\Commands\Lumen\ClearConfigCommand;
 
@@ -15,6 +16,7 @@ final class CachedConfigurationServiceProvider extends ServiceProvider
     private const CACHED_CONFIG_PATH = 'cached_config.php';
 
     /** @noinspection PhpMissingParentCallCommonInspection */
+
     /**
      * Register the services.
      *
@@ -41,7 +43,13 @@ final class CachedConfigurationServiceProvider extends ServiceProvider
             /** @var \Illuminate\Config\Repository $repository */
             $repository = $app->make('config');
             foreach ($items as $name => $config) {
-                $repository->has($name) || $repository->set($name, $config);
+                if ($repository->has($name) === false) {
+                    $repository->set($name, $config);
+                    (function ($name) {
+                        /** @noinspection PhpUndefinedFieldInspection */
+                        $this->loadedConfigurations[$name] = true;
+                    })->bindTo($app, Application::class)($name);
+                }
             }
 
             return;
