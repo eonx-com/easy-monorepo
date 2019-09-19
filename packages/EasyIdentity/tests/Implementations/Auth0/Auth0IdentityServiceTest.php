@@ -16,7 +16,9 @@ use LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactor
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory;
+use LoyaltyCorp\EasyIdentity\Implementations\IdentityUserService;
 use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface;
 use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
 use LoyaltyCorp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub;
 use Mockery\MockInterface;
@@ -50,9 +52,10 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                 ->andReturn(['expected']);
         });
 
+        $identityUserService = new IdentityUserService();
         $identityUser = new IdentityUserStub();
 
-        $this->getServiceForUsersMethod($management)->createUser($identityUser);
+        $this->getServiceForUsersMethod($identityUserService, $management)->createUser($identityUser);
     }
 
     /**
@@ -79,13 +82,14 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                 ->andReturn(['user_id' => 'identity-id']);
         });
 
+        $identityUserService = new IdentityUserService();
         $identityUser = new IdentityUserStub();
 
-        $this->getServiceForUsersMethod($management)->createUser($identityUser);
+        $this->getServiceForUsersMethod($identityUserService, $management)->createUser($identityUser);
 
         self::assertSame(
             'identity-id',
-            $identityUser->getIdentityUserId(IdentityServiceNamesInterface::SERVICE_AUTH0)
+            $identityUserService->getIdentityUserId($identityUser, IdentityServiceNamesInterface::SERVICE_AUTH0)
         );
     }
 
@@ -114,6 +118,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $service = new Auth0IdentityService(
             new AuthenticationApiClientFactory($this->getConfig()),
             $this->getConfig(),
+            new IdentityUserService(),
             $management,
             $tokenVerifierFactory
         );
@@ -143,10 +148,12 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             })->andReturnNull();
         });
 
+        $identityUserService = new IdentityUserService();
         $identityUser = new IdentityUserStub();
-        $identityUser->setIdentityUserId(IdentityServiceNamesInterface::SERVICE_AUTH0, 'identity-id');
 
-        $this->getServiceForUsersMethod($management)->deleteUser($identityUser);
+        $identityUserService->setIdentityUserId($identityUser, IdentityServiceNamesInterface::SERVICE_AUTH0, 'identity-id');
+
+        $this->getServiceForUsersMethod($identityUserService, $management)->deleteUser($identityUser);
     }
 
     /**
@@ -172,12 +179,17 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         });
 
         $service = IdentityServiceNamesInterface::SERVICE_AUTH0;
+
+        $identityUserService = new IdentityUserService();
         $identityUser = new IdentityUserStub();
-        $identityUser->setIdentityUserId($service, 'identity-id');
+        $identityUserService->setIdentityUserId($identityUser, $service, 'identity-id');
 
-        $this->getServiceForUsersMethod($management)->getUser($identityUser);
+        $this->getServiceForUsersMethod($identityUserService, $management)->getUser($identityUser);
 
-        self::assertEquals(['new-key' => 'new-value'], $identityUser->getIdentityToArray($service));
+        self::assertEquals(
+            ['new-key' => 'new-value'],
+            $identityUserService->getIdentityToArray($identityUser, $service)
+        );
     }
 
     /**
@@ -196,9 +208,10 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             $mock->shouldNotReceive('get');
         });
 
+        $identityUserService = new IdentityUserService();
         $identityUser = new IdentityUserStub();
 
-        $this->getServiceForUsersMethod($management)->getUser($identityUser);
+        $this->getServiceForUsersMethod($identityUserService, $management)->getUser($identityUser);
     }
 
     /**
@@ -237,6 +250,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $service = new Auth0IdentityService(
             $authFactory,
             $this->getConfig(),
+            new IdentityUserService(),
             $management,
             new TokenVerifierFactory($this->getConfig())
         );
@@ -273,6 +287,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $service = new Auth0IdentityService(
             $authFactory,
             $this->getConfig(),
+            new IdentityUserService(),
             $management,
             new TokenVerifierFactory($this->getConfig())
         );
@@ -308,18 +323,20 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         });
 
         $service = IdentityServiceNamesInterface::SERVICE_AUTH0;
-        $identityUser = new IdentityUserStub();
-        $identityUser->setIdentityUserId($service, 'my-identity-id');
-        $identityUser->setIdentityValue($service, 'email', 'email@email.com');
 
-        $this->getServiceForUsersMethod($management)->updateUser(
+        $identityUserService = new IdentityUserService();
+        $identityUser = new IdentityUserStub();
+        $identityUserService->setIdentityUserId($identityUser, $service, 'my-identity-id');
+        $identityUserService->setIdentityValue($identityUser, $service, 'email', 'email@email.com');
+
+        $this->getServiceForUsersMethod($identityUserService, $management)->updateUser(
             $identityUser,
-            $identityUser->getIdentityToArray($service)
+            $identityUserService->getIdentityToArray($identityUser, $service)
         );
 
         $expected = ['email' => 'email@email.com', 'new-key' => 'new-value'];
 
-        self::assertEquals($expected, $identityUser->getIdentityToArray($service));
+        self::assertEquals($expected, $identityUserService->getIdentityToArray($identityUser, $service));
     }
 
     /**
@@ -344,15 +361,17 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     /**
      * Instantiate service for simple users method test.
      *
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface $identityUserService
      * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management
      *
      * @return \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityService
      */
-    private function getServiceForUsersMethod(ManagementApiClientFactory $management): Auth0IdentityService
+    private function getServiceForUsersMethod(IdentityUserServiceInterface $identityUserService, ManagementApiClientFactory $management): Auth0IdentityService
     {
         return new Auth0IdentityService(
             new AuthenticationApiClientFactory($this->getConfig()),
             $this->getConfig(),
+            $identityUserService,
             $management,
             new TokenVerifierFactory($this->getConfig())
         );

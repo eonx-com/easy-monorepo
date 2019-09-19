@@ -9,6 +9,7 @@ use LoyaltyCorp\EasyIdentity\Exceptions\LoginFailedException;
 use LoyaltyCorp\EasyIdentity\Implementations\AbstractIdentityService;
 use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
 use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface;
 
 final class Auth0IdentityService extends AbstractIdentityService
 {
@@ -37,15 +38,19 @@ final class Auth0IdentityService extends AbstractIdentityService
      *
      * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory
      * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config $config
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface $identityUserService
      * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $managementFactory
      * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory
      */
     public function __construct(
         AuthenticationApiClientFactory $authFactory,
         Config $config,
+        IdentityUserServiceInterface $identityUserService,
         ManagementApiClientFactory $managementFactory,
         TokenVerifierFactory $tokenVerifierFactory
     ) {
+        parent::__construct($identityUserService);
+
         $this->authFactory = $authFactory;
         $this->config = $config;
         $this->managementFactory = $managementFactory;
