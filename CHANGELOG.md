@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.9.4 - 2019-09-05
+## v0.10.0 - 2019-09-19
+
+### EasyIdentity
+
+- [#90] Remove state from identity, Thanks to [@sjdaws]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.9.4] - 2019-09-05
 
 ### EasyApiToken
 
@@ -726,3 +736,6 @@
 [v0.9.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.1...v0.9.2
 [#89]: https://github.com/loyaltycorp/easy-monorepo/pull/89
 [v0.9.3]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.2...v0.9.3
+[#90]: https://github.com/loyaltycorp/easy-monorepo/pull/90
+[@sjdaws]: https://github.com/sjdaws
+[v0.9.4]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.3...v0.9.4
