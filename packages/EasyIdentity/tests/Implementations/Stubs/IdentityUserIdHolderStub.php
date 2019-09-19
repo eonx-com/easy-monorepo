@@ -47,6 +47,6 @@ final class IdentityUserIdHolderStub implements IdentityUserIdHolderInterface
 
 \class_alias(
     IdentityUserIdHolderStub::class,
-    'StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserIdHolderStub',
+    StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserIdHolderStub::class,
     false
 );

@@ -16,6 +16,6 @@ interface IdentityServiceNamesInterface
 
 \class_alias(
     IdentityServiceNamesInterface::class,
-    'StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceNamesInterface',
+    \StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceNamesInterface::class,
     false
 );

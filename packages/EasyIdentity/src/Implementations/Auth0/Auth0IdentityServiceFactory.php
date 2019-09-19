@@ -11,14 +11,14 @@ final class Auth0IdentityServiceFactory
     /**
      * Create the Auth0 Identity service.
      *
-     * @param mixed[] $config
+     * @param mixed[] $configData
      * @param null|\GuzzleHttp\ClientInterface $client
      *
      * @return \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityService
      */
-    public function create(array $config, ?ClientInterface $client = null): Auth0IdentityService
+    public function create(array $configData, ?ClientInterface $client = null): Auth0IdentityService
     {
-        $config = new Config($config);
+        $config = new Config($configData);
         $client = $client ?? new Client(['base_uri' => $this->createBaseUri($config)]);
 
         $authFactory = new AuthenticationApiClientFactory($config);
@@ -43,6 +43,6 @@ final class Auth0IdentityServiceFactory
 
 \class_alias(
     Auth0IdentityServiceFactory::class,
-    'StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory',
+    \StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory::class,
     false
 );

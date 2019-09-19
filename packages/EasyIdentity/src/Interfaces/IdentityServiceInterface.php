@@ -65,6 +65,6 @@ interface IdentityServiceInterface
 
 \class_alias(
     IdentityServiceInterface::class,
-    'StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceInterface',
+    \StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceInterface::class,
     false
 );

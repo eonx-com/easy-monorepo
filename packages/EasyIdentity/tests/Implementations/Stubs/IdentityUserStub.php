@@ -85,6 +85,6 @@ final class IdentityUserStub implements IdentityUserInterface
 
 \class_alias(
     IdentityUserStub::class,
-    'StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub',
+    StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub::class,
     false
 );

@@ -68,8 +68,8 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
     {
         $userId = $user->getIdentityUserId($this->getServiceName());
 
-        if (empty($userId) === false) {
-            return $userId;
+        if (\is_string($userId) === true && \trim($userId) !== '') {
+            return \trim($userId);
         }
 
         throw new NoIdentityUserIdException(\sprintf('No identity user id for service "%s"', $this->getServiceName()));
@@ -78,6 +78,6 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
 
 \class_alias(
     AbstractIdentityService::class,
-    'StepTheFkUp\EasyIdentity\Implementations\AbstractIdentityService',
+    \StepTheFkUp\EasyIdentity\Implementations\AbstractIdentityService::class,
     false
 );

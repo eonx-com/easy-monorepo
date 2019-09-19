@@ -58,6 +58,6 @@ interface IdentityUserInterface
 
 \class_alias(
     IdentityUserInterface::class,
-    'StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface',
+    \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface::class,
     false
 );

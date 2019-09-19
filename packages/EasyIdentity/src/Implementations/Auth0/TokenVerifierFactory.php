@@ -43,6 +43,6 @@ class TokenVerifierFactory
 
 \class_alias(
     TokenVerifierFactory::class,
-    'StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory',
+    \StepTheFkUp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory::class,
     false
 );

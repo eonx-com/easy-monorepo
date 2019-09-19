@@ -50,7 +50,9 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                 ->andReturn(['expected']);
         });
 
-        $this->getServiceForUsersMethod($management)->createUser(new IdentityUserStub());
+        $identityUser = new IdentityUserStub();
+
+        $this->getServiceForUsersMethod($management)->createUser($identityUser);
     }
 
     /**
@@ -81,7 +83,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
 
         $this->getServiceForUsersMethod($management)->createUser($identityUser);
 
-        self::assertEquals(
+        self::assertSame(
             'identity-id',
             $identityUser->getIdentityUserId(IdentityServiceNamesInterface::SERVICE_AUTH0)
         );
@@ -100,7 +102,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     {
         /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory */
         $tokenVerifierFactory = $this->mock(TokenVerifierFactory::class, function (MockInterface $mock): void {
-            $jwt = $this->mock(JWTVerifier::class, function (MockInterface $mock): void {
+            $jwt = $this->mock(JWTVerifier::class, static function (MockInterface $mock): void {
                 $mock->shouldReceive('verifyAndDecode')->once()->with('token')->andReturn(['expected']);
             });
 
@@ -131,8 +133,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     public function testDeleteUser(): void
     {
         /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
-        $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
-            $mock->shouldReceive('delete')->once()->withArgs(function ($userId): bool {
+        $management = $this->mockManagementForUsersClient(static function (MockInterface $mock): void {
+            $mock->shouldReceive('delete')->once()->withArgs(static function ($userId): bool {
                 $condition = \is_string($userId) && $userId === 'identity-id';
 
                 self::assertTrue($condition);
@@ -159,8 +161,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     public function testGetUser(): void
     {
         /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
-        $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
-            $mock->shouldReceive('get')->once()->withArgs(function ($userId): bool {
+        $management = $this->mockManagementForUsersClient(static function (MockInterface $mock): void {
+            $mock->shouldReceive('get')->once()->withArgs(static function ($userId): bool {
                 $condition = \is_string($userId) && $userId === 'identity-id';
 
                 self::assertTrue($condition);
@@ -190,11 +192,13 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $this->expectException(NoIdentityUserIdException::class);
 
         /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
-        $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
+        $management = $this->mockManagementForUsersClient(static function (MockInterface $mock): void {
             $mock->shouldNotReceive('get');
         });
 
-        $this->getServiceForUsersMethod($management)->getUser(new IdentityUserStub());
+        $identityUser = new IdentityUserStub();
+
+        $this->getServiceForUsersMethod($management)->getUser($identityUser);
     }
 
     /**
@@ -214,7 +218,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $authFactory = $this->mock(AuthenticationApiClientFactory::class, function (MockInterface $mock): void {
             $exception = $this->mock(RequestException::class, function (MockInterface $mock): void {
                 $response = $this->mock(ResponseInterface::class, function (MockInterface $mock): void {
-                    $body = $this->mock(StreamInterface::class, function (MockInterface $mock): void {
+                    $body = $this->mock(StreamInterface::class, static function (MockInterface $mock): void {
                         $mock->shouldReceive('getContents')->once()->withNoArgs()->andReturn('');
                     });
 
@@ -237,7 +241,9 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             new TokenVerifierFactory($this->getConfig())
         );
 
-        $service->loginUser(new IdentityUserStub());
+        $identityUser = new IdentityUserStub();
+
+        $service->loginUser($identityUser);
     }
 
     /**
@@ -255,7 +261,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
 
         /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory */
         $authFactory = $this->mock(AuthenticationApiClientFactory::class, function (MockInterface $mock): void {
-            $exception = $this->mock(RequestException::class, function (MockInterface $mock): void {
+            $exception = $this->mock(RequestException::class, static function (MockInterface $mock): void {
                 $mock->shouldReceive('getResponse')->once()->withNoArgs()->andReturn(null);
             });
             $mock->shouldReceive('create')->once()->withNoArgs()->andThrow($exception);
@@ -271,7 +277,9 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             new TokenVerifierFactory($this->getConfig())
         );
 
-        $service->loginUser(new IdentityUserStub());
+        $identityUser = new IdentityUserStub();
+
+        $service->loginUser($identityUser);
     }
 
     /**
@@ -286,11 +294,11 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     public function testUpdateUser(): void
     {
         /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
-        $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
+        $management = $this->mockManagementForUsersClient(static function (MockInterface $mock): void {
             $mock
                 ->shouldReceive('update')
                 ->once()
-                ->withArgs(function ($identityId, $identityArray): bool {
+                ->withArgs(static function ($identityId, $identityArray): bool {
                     return \is_string($identityId)
                         && \array_key_exists('email', $identityArray)
                         && \array_key_exists('client_id', $identityArray)
@@ -375,6 +383,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
 
 \class_alias(
     Auth0IdentityServiceTest::class,
-    'StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceTest',
+    StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceTest::class,
     false
 );

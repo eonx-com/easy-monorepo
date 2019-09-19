@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyIdentity\Traits;
 
+/**
+ * @noinspection PhpUnused Trait is for implementing in projects
+ */
 trait IdentityUserTrait
 {
     /** @var array */
