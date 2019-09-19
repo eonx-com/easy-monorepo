@@ -29,6 +29,6 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
 
 \class_alias(
     AbstractLumenTestCase::class,
-    'StepTheFkUp\EasyIdentity\Tests\AbstractLumenTestCase',
+    StepTheFkUp\EasyIdentity\Tests\AbstractLumenTestCase::class,
     false
 );

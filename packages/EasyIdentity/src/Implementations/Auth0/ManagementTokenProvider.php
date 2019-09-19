@@ -51,8 +51,9 @@ class ManagementTokenProvider
 
         $data = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
 
-        if (empty($data['access_token'] ?? null) === false) {
-            return $data['access_token'];
+        $accessToken = $data['access_token'] ?? null;
+        if (\is_string($accessToken) === true && \trim($accessToken) !== '') {
+            return \trim($accessToken);
         }
 
         throw new RequiredDataMissingException('Required "access_token" missing for Auth0');
@@ -61,6 +62,6 @@ class ManagementTokenProvider
 
 \class_alias(
     ManagementTokenProvider::class,
-    'StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider',
+    \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider::class,
     false
 );

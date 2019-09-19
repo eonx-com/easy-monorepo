@@ -31,6 +31,6 @@ final class Auth0IdentityServiceProviderTest extends AbstractLumenTestCase
 
 \class_alias(
     Auth0IdentityServiceProviderTest::class,
-    'StepTheFkUp\EasyIdentity\Tests\Bridge\Laravel\Auth0IdentityServiceProviderTest',
+    StepTheFkUp\EasyIdentity\Tests\Bridge\Laravel\Auth0IdentityServiceProviderTest::class,
     false
 );

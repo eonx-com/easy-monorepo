@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
 
-use Auth0\SDK\API\Authentication;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
 use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
@@ -28,12 +27,16 @@ class AuthenticationApiClientFactoryTest extends AbstractTestCase
             'domain' => 'domain'
         ]);
 
-        self::assertInstanceOf(Authentication::class, (new AuthenticationApiClientFactory($config))->create());
+        $factory = new AuthenticationApiClientFactory($config);
+        $factory->create();
+
+        // If no exception was thrown test is good.
+        $this->addToAssertionCount(1);
     }
 }
 
 \class_alias(
     AuthenticationApiClientFactoryTest::class,
-    'StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\AuthenticationApiClientFactoryTest',
+    StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\AuthenticationApiClientFactoryTest::class,
     false
 );

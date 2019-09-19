@@ -6,9 +6,25 @@ namespace LoyaltyCorp\EasyIdentity\Implementations;
 use LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException;
 use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceInterface;
 use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface;
 
 abstract class AbstractIdentityService implements IdentityServiceInterface
 {
+    /**
+     * @var \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface
+     */
+    private $identityUserService;
+
+    /**
+     * Create abstract identity service.
+     *
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface $identityUserService
+     */
+    public function __construct(IdentityUserServiceInterface $identityUserService)
+    {
+        $this->identityUserService = $identityUserService;
+    }
+
     /**
      * Get identity user array representation.
      *
@@ -18,7 +34,7 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
      */
     public function getIdentityToArray(IdentityUserInterface $user): array
     {
-        return $user->getIdentityToArray($this->getServiceName());
+        return $this->identityUserService->getIdentityToArray($user, $this->getServiceName());
     }
 
     /**
@@ -31,7 +47,7 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
      */
     public function setIdentityUserId(IdentityUserInterface $user, $id): void
     {
-        $user->setIdentityUserId($this->getServiceName(), $id);
+        $this->identityUserService->setIdentityUserId($user, $this->getServiceName(), $id);
     }
 
     /**
@@ -45,7 +61,7 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
      */
     public function setIdentityValue(IdentityUserInterface $user, string $key, $value): void
     {
-        $user->setIdentityValue($this->getServiceName(), $key, $value);
+        $this->identityUserService->setIdentityValue($user, $this->getServiceName(), $key, $value);
     }
 
     /**
@@ -66,10 +82,10 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
      */
     protected function getIdentityUserId(IdentityUserInterface $user): string
     {
-        $userId = $user->getIdentityUserId($this->getServiceName());
+        $userId = $this->identityUserService->getIdentityUserId($user, $this->getServiceName());
 
-        if (empty($userId) === false) {
-            return $userId;
+        if (\is_string($userId) === true && \trim($userId) !== '') {
+            return \trim($userId);
         }
 
         throw new NoIdentityUserIdException(\sprintf('No identity user id for service "%s"', $this->getServiceName()));
@@ -78,6 +94,6 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
 
 \class_alias(
     AbstractIdentityService::class,
-    'StepTheFkUp\EasyIdentity\Implementations\AbstractIdentityService',
+    \StepTheFkUp\EasyIdentity\Implementations\AbstractIdentityService::class,
     false
 );

@@ -93,6 +93,6 @@ class Config
 
 \class_alias(
     Config::class,
-    'StepTheFkUp\EasyIdentity\Implementations\Auth0\Config',
+    \StepTheFkUp\EasyIdentity\Implementations\Auth0\Config::class,
     false
 );

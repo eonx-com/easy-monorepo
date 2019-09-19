@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
 
-use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityService;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory;
 use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
 
@@ -16,15 +15,16 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
      */
     public function testCreate(): void
     {
-        self::assertInstanceOf(
-            Auth0IdentityService::class,
-            (new Auth0IdentityServiceFactory())->create([
-                'client_id' => 'client_id',
-                'client_secret' => 'client_secret',
-                'connection' => 'connection',
-                'domain' => 'domain'
-            ])
-        );
+        $factory = new Auth0IdentityServiceFactory();
+        $factory->create([
+            'client_id' => 'client_id',
+            'client_secret' => 'client_secret',
+            'connection' => 'connection',
+            'domain' => 'domain'
+        ]);
+
+        // If service was instantiated without error then test passes.
+        $this->addToAssertionCount(1);
     }
 
     /**
@@ -36,7 +36,8 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
      */
     public function testCreateWorksWithEmptyConfig(): void
     {
-        (new Auth0IdentityServiceFactory())->create([
+        $factory = new Auth0IdentityServiceFactory();
+        $factory->create([
             'client_id' => '',
             'client_secret' => '',
             'connection' => '',
@@ -50,6 +51,6 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
 
 \class_alias(
     Auth0IdentityServiceFactoryTest::class,
-    'StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceFactoryTest',
+    StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceFactoryTest::class,
     false
 );

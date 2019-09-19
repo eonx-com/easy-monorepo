@@ -22,6 +22,8 @@ final class Auth0IdentityServiceProvider extends ServiceProvider
     }
 
     /**
+     * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty.
+     *
      * Register the services to use Auth0 as identity service.
      *
      * @return void
@@ -30,14 +32,16 @@ final class Auth0IdentityServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-identity.php', 'easy-identity');
 
-        $this->app->singleton(IdentityServiceInterface::class, function (): IdentityServiceInterface {
-            return (new Auth0IdentityServiceFactory())->create(\config('easy-identity.implementations.auth0'));
+        $this->app->singleton(IdentityServiceInterface::class, static function (): IdentityServiceInterface {
+            $factory = new Auth0IdentityServiceFactory();
+
+            return $factory->create(\config('easy-identity.implementations.auth0'));
         });
     }
 }
 
 \class_alias(
     Auth0IdentityServiceProvider::class,
-    'StepTheFkUp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider',
+    \StepTheFkUp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider::class,
     false
 );

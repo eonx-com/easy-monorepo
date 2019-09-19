@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
 
-use Auth0\SDK\API\Management;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
 use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider;
@@ -26,19 +25,21 @@ class ManagementApiClientFactoryTest extends AbstractTestCase
     public function testCreate(): void
     {
         /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider $tokenProvider */
-        $tokenProvider = $this->mock(ManagementTokenProvider::class, function (MockInterface $mock): void {
+        $tokenProvider = $this->mock(ManagementTokenProvider::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('getToken')->once()->withNoArgs()->andReturn('access_token');
         });
 
-        self::assertInstanceOf(
-            Management::class,
-            (new ManagementApiClientFactory(new Config(['domain' => 'domain']), $tokenProvider))->create()
-        );
+        $config = new Config(['domain' => 'domain']);
+        $factory = new ManagementApiClientFactory($config, $tokenProvider);
+        $factory->create();
+
+        // If no exception was thrown, test passes.
+        $this->addToAssertionCount(1);
     }
 }
 
 \class_alias(
     ManagementApiClientFactoryTest::class,
-    'StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\ManagementApiClientFactoryTest',
+    StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\ManagementApiClientFactoryTest::class,
     false
 );
