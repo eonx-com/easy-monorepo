@@ -24,6 +24,6 @@ interface IdentityUserIdHolderInterface
 
 \class_alias(
     IdentityUserIdHolderInterface::class,
-    'StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface',
+    \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface::class,
     false
 );

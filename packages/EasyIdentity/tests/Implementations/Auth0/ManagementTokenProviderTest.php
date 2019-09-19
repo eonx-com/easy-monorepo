@@ -34,7 +34,10 @@ class ManagementTokenProviderTest extends AbstractTestCase
             $this->buildBaseExpectation($mock, $config, ['access_token' => 'access_token']);
         });
 
-        self::assertEquals('access_token', (new ManagementTokenProvider($client, $config))->getToken());
+        $provider = new ManagementTokenProvider($client, $config);
+        $token = $provider->getToken();
+
+        self::assertSame('access_token', $token);
     }
 
     /**
@@ -56,7 +59,10 @@ class ManagementTokenProviderTest extends AbstractTestCase
             $this->buildBaseExpectation($mock, $config);
         });
 
-        self::assertEquals('access_token', (new ManagementTokenProvider($client, $config))->getToken());
+        $provider = new ManagementTokenProvider($client, $config);
+        $token = $provider->getToken();
+
+        self::assertSame('access_token', $token);
     }
 
     /**
@@ -73,6 +79,8 @@ class ManagementTokenProviderTest extends AbstractTestCase
         Config $config,
         ?array $content = null
     ): ExpectationInterface {
+        $response = new Response(200, [], (string)\json_encode($content ?? []));
+
         return $mock
             ->shouldReceive('request')
             ->once()
@@ -84,7 +92,7 @@ class ManagementTokenProviderTest extends AbstractTestCase
                     'grant_type' => 'client_credentials'
                 ]
             ])
-            ->andReturn(new Response(200, [], (string)\json_encode($content ?? [])));
+            ->andReturn($response);
     }
 
     /**
@@ -105,6 +113,6 @@ class ManagementTokenProviderTest extends AbstractTestCase
 
 \class_alias(
     ManagementTokenProviderTest::class,
-    'StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\ManagementTokenProviderTest',
+    StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\ManagementTokenProviderTest::class,
     false
 );

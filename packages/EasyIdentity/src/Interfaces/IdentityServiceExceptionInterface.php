@@ -10,6 +10,6 @@ interface IdentityServiceExceptionInterface
 
 \class_alias(
     IdentityServiceExceptionInterface::class,
-    'StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceExceptionInterface',
+    \StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceExceptionInterface::class,
     false
 );

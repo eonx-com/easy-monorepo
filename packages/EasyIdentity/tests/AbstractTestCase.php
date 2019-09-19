@@ -35,6 +35,6 @@ abstract class AbstractTestCase extends TestCase
 
 \class_alias(
     AbstractTestCase::class,
-    'StepTheFkUp\EasyIdentity\Tests\AbstractTestCase',
+    StepTheFkUp\EasyIdentity\Tests\AbstractTestCase::class,
     false
 );

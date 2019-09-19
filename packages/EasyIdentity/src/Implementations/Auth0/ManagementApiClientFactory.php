@@ -45,6 +45,6 @@ class ManagementApiClientFactory
 
 \class_alias(
     ManagementApiClientFactory::class,
-    'StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory',
+    \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory::class,
     false
 );

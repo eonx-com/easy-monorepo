@@ -12,6 +12,6 @@ class RequiredDataMissingException extends \RuntimeException implements Identity
 
 \class_alias(
     RequiredDataMissingException::class,
-    'StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException',
+    \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException::class,
     false
 );

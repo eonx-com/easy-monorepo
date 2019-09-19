@@ -12,6 +12,6 @@ final class NoIdentityUserIdException extends \RuntimeException implements Ident
 
 \class_alias(
     NoIdentityUserIdException::class,
-    'StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException',
+    \StepTheFkUp\EasyIdentity\Exceptions\NoIdentityUserIdException::class,
     false
 );
