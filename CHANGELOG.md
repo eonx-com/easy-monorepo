@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.10.0 - 2019-09-19
+## v0.10.1 - 2019-09-21
+
+### EasyDecision
+
+- [#92] Add non blocking error handling
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.0] - 2019-09-19
 
 ### EasyIdentity
 
@@ -739,3 +749,5 @@
 [#90]: https://github.com/loyaltycorp/easy-monorepo/pull/90
 [@sjdaws]: https://github.com/sjdaws
 [v0.9.4]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.3...v0.9.4
+[#92]: https://github.com/loyaltycorp/easy-monorepo/pull/92
+[v0.10.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.4...v0.10.0
