@@ -12,6 +12,6 @@ final class InvalidResponseFromIdentityException extends \RuntimeException imple
 
 \class_alias(
     InvalidResponseFromIdentityException::class,
-    'StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException',
+    \StepTheFkUp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException::class,
     false
 );

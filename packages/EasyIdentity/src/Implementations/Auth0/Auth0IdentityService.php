@@ -7,11 +7,11 @@ use GuzzleHttp\Exception\RequestException;
 use LoyaltyCorp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
 use LoyaltyCorp\EasyIdentity\Exceptions\LoginFailedException;
 use LoyaltyCorp\EasyIdentity\Implementations\AbstractIdentityService;
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceInterface;
 use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
 use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface;
+use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface;
 
-final class Auth0IdentityService extends AbstractIdentityService implements IdentityServiceInterface
+final class Auth0IdentityService extends AbstractIdentityService
 {
     /**
      * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory
@@ -38,15 +38,19 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
      *
      * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory
      * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config $config
+     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface $identityUserService
      * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $managementFactory
      * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory
      */
     public function __construct(
         AuthenticationApiClientFactory $authFactory,
         Config $config,
+        IdentityUserServiceInterface $identityUserService,
         ManagementApiClientFactory $managementFactory,
         TokenVerifierFactory $tokenVerifierFactory
     ) {
+        parent::__construct($identityUserService);
+
         $this->authFactory = $authFactory;
         $this->config = $config;
         $this->managementFactory = $managementFactory;
@@ -128,8 +132,10 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
     {
         $identityUser = $this->managementFactory->create()->users->get($this->getIdentityUserId($user));
 
-        foreach ($identityUser as $key => $value) {
-            $this->setIdentityValue($user, $key, $value);
+        if (\is_array($identityUser) === true) {
+            foreach ($identityUser as $key => $value) {
+                $this->setIdentityValue($user, $key, $value);
+            }
         }
 
         return $user;
@@ -209,12 +215,14 @@ final class Auth0IdentityService extends AbstractIdentityService implements Iden
 
         $contents = \json_decode($response->getBody()->getContents(), true) ?? [];
 
-        return $contents['error_description'] ?? $exception->getMessage();
+        return isset($contents['error_description']) === true && \is_scalar($contents['error_description']) === true ?
+            (string)$contents['error_description'] :
+            $exception->getMessage();
     }
 }
 
 \class_alias(
     Auth0IdentityService::class,
-    'StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService',
+    \StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService::class,
     false
 );

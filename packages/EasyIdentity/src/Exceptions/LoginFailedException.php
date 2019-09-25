@@ -12,6 +12,6 @@ class LoginFailedException extends \RuntimeException implements IdentityServiceE
 
 \class_alias(
     LoginFailedException::class,
-    'StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException',
+    \StepTheFkUp\EasyIdentity\Exceptions\LoginFailedException::class,
     false
 );

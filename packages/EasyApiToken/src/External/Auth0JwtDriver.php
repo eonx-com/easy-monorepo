@@ -94,6 +94,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
 
         return $generator->generate(
             $input['scopes'] ?? [],
+            $input['roles'] ?? [],
             $input['sub'] ?? null,
             $input['lifetime'] ?? null);
     }

@@ -27,12 +27,13 @@ class ConfigTest extends AbstractTestCase
             'connection' => 'connection',
             'domain' => 'domain'
         ];
+
         $config = new Config($expected);
 
-        self::assertEquals($expected['client_id'], $config->getClientId());
-        self::assertEquals($expected['client_secret'], $config->getClientSecret());
-        self::assertEquals($expected['connection'], $config->getConnection());
-        self::assertEquals($expected['domain'], $config->getDomain());
+        self::assertSame($expected['client_id'], $config->getClientId());
+        self::assertSame($expected['client_secret'], $config->getClientSecret());
+        self::assertSame($expected['connection'], $config->getConnection());
+        self::assertSame($expected['domain'], $config->getDomain());
     }
 
     /**
@@ -44,14 +45,16 @@ class ConfigTest extends AbstractTestCase
      */
     public function testRequiredDataMissingException(): void
     {
+        $config = new Config();
+
         $this->expectException(RequiredDataMissingException::class);
 
-        (new Config())->getClientId();
+        $config->getClientId();
     }
 }
 
 \class_alias(
     ConfigTest::class,
-    'StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\ConfigTest',
+    StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\ConfigTest::class,
     false
 );

@@ -41,6 +41,6 @@ class AuthenticationApiClientFactory
 
 \class_alias(
     AuthenticationApiClientFactory::class,
-    'StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory',
+    \StepTheFkUp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory::class,
     false
 );

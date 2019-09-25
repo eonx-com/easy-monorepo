@@ -11,6 +11,7 @@ use LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use LoyaltyCorp\EasyDecision\Interfaces\ContextAwareInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
+use LoyaltyCorp\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
 
 abstract class AbstractDecision implements DecisionInterface
@@ -238,8 +239,12 @@ abstract class AbstractDecision implements DecisionInterface
                 continue;
             }
 
-            // Let children classes handle the rule output
-            $this->handleRuleOutput($context, $rule->toString(), $rule->proceed($this->input));
+            try {
+                // Let children classes handle the rule output
+                $this->handleRuleOutput($context, $rule->toString(), $rule->proceed($this->input));
+            } catch (NonBlockingRuleErrorInterface $exception) {
+                $context->addRuleOutput($rule->toString(), $exception->getErrorOutput());
+            }
         }
 
         return $this;

@@ -8,10 +8,9 @@ use LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException;
 use LoyaltyCorp\EasyDecision\Exceptions\MissingValueIndexException;
 use LoyaltyCorp\EasyDecision\Exceptions\ReservedContextIndexException;
 use LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException;
-use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
 use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
 use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
-use LoyaltyCorp\EasyDecision\Tests\Stubs\ValueContextAwareInputStub;
+use LoyaltyCorp\EasyDecision\Tests\Stubs\RuleWithNonBlockingErrorStub;
 
 final class ValueDecisionTest extends AbstractTestCase
 {
@@ -25,6 +24,20 @@ final class ValueDecisionTest extends AbstractTestCase
         $this->expectException(ContextNotSetException::class);
 
         ((new ValueDecision())->addRules([$this->createUnsupportedRule('whatever')]))->getContext();
+    }
+
+    /**
+     * Decision should handle gracefully the non blocking error and add the output to the context.
+     *
+     * @return void
+     */
+    public function testNonBlockingRuleErrorException(): void
+    {
+        $decision = (new ValueDecision())->addRule(new RuleWithNonBlockingErrorStub());
+
+        $decision->make(['value' => 10]);
+
+        self::assertSame(['non-blocking-error' => 'non-blocking-error'], $decision->getContext()->getRuleOutputs());
     }
 
     /**
