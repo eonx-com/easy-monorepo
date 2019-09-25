@@ -22,6 +22,7 @@ parameters:
     directories_to_repositories:
         packages/EasyApiToken: 'git@github.com:loyaltycorp/easy-api-token.git'
         packages/EasyCfhighlander: 'git@github.com:loyaltycorp/easy-cfhighlander.git'
+        packages/EasyCore: 'git@github.com:loyaltycorp/easy-core.git'
         packages/EasyDecision: 'git@github.com:loyaltycorp/easy-decision.git'
         packages/EasyDocker: 'git@github.com:loyaltycorp/easy-docker.git'
         packages/EasyIdentity: 'git@github.com:loyaltycorp/easy-identity.git'
