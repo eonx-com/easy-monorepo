@@ -1,0 +1,30 @@
+{
+    "name": "loyaltycorp/easy-core",
+    "description": "Provides core features for Lumen applications",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "mikey179/vfsstream": "~1",
+        "phpunit/phpunit": "^7.5",
+        "laravel/lumen-framework": "^5.5",
+        "phpspec/prophecy": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyCore\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyCore\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.10-dev"
+        }
+    }
+}
