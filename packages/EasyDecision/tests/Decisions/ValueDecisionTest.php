@@ -35,9 +35,10 @@ final class ValueDecisionTest extends AbstractTestCase
     {
         $decision = (new ValueDecision())->addRule(new RuleWithNonBlockingErrorStub());
 
-        $decision->make(['value' => 10]);
+        $output = $decision->make(['value' => 10]);
 
         self::assertSame(['non-blocking-error' => 'non-blocking-error'], $decision->getContext()->getRuleOutputs());
+        self::assertEquals(10, $output);
     }
 
     /**
