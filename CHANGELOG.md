@@ -2,7 +2,23 @@
 
 <!-- dumped content start -->
 
-## v0.10.1 - 2019-09-21
+## v0.10.3 - 2019-09-30
+
+### EasyDecision
+
+- [#93] Make sure value decision always return at least the input value
+
+## [v0.10.2] - 2019-09-25
+
+### EasyCore
+
+- [#91] lumen configuration cache, Thanks to [@olamedia]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.1] - 2019-09-21
 
 ### EasyDecision
 
@@ -751,3 +767,7 @@
 [v0.9.4]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.3...v0.9.4
 [#92]: https://github.com/loyaltycorp/easy-monorepo/pull/92
 [v0.10.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.9.4...v0.10.0
+[#93]: https://github.com/loyaltycorp/easy-monorepo/pull/93
+[#91]: https://github.com/loyaltycorp/easy-monorepo/pull/91
+[v0.10.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.1...v0.10.2
+[v0.10.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.0...v0.10.1
