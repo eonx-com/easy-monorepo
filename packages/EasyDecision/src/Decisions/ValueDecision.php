@@ -23,6 +23,9 @@ final class ValueDecision extends AbstractDecision
             ));
         }
 
+        // Store original value so even if no rule successful run we return at least the input value
+        $this->value = $input['value'];
+
         return parent::make($input);
     }
 
