@@ -1,0 +1,30 @@
+{
+    "name": "loyaltycorp/easy-entity-change",
+    "description": "Provides an easy way to hook up logic in your entities lifecycle",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "eoneopay/externals": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyEntityChange\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyEntityChange\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.11-dev"
+        }
+    }
+}
