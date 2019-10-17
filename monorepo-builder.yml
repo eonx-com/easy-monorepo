@@ -25,6 +25,7 @@ parameters:
         packages/EasyCore: 'git@github.com:loyaltycorp/easy-core.git'
         packages/EasyDecision: 'git@github.com:loyaltycorp/easy-decision.git'
         packages/EasyDocker: 'git@github.com:loyaltycorp/easy-docker.git'
+        packages/EasyEntityChange: 'git@github.com:loyaltycorp/easy-entity-change.git'
         packages/EasyIdentity: 'git@github.com:loyaltycorp/easy-identity.git'
         packages/EasyPipeline: 'git@github.com:loyaltycorp/easy-pipeline.git'
         packages/EasyRepository: 'git@github.com:loyaltycorp/easy-repository.git'
