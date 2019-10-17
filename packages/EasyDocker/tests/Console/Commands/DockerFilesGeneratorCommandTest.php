@@ -21,6 +21,7 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'project',
             'false',
             'false',
+            'false',
             'true' // prestissimo
         ];
 
