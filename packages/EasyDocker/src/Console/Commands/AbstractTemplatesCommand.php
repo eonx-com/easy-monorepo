@@ -19,6 +19,11 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractTemplatesCommand extends Command
 {
+    /** @var string[] */
+    private const CHECKS = [
+        'elasticsearch_enabled' => 'elasticsearch'
+    ];
+
     public const EXIT_CODE_ERROR = 1;
 
     public const EXIT_CODE_SUCCESS = 0;
@@ -236,6 +241,15 @@ abstract class AbstractTemplatesCommand extends Command
             return $style->ask('Project Name', $params['project'] ?? null, $required);
         };
 
+        // Elasticsearch enabled
+        yield 'elasticsearch_enabled' => function (array $params) use ($style, $boolean): bool {
+            return $style->ask(
+                'Elasticsearch enabled',
+                $this->getBooleanParamAsString($params['elasticsearch_enabled'] ?? null),
+                $boolean
+            );
+        };
+
         // SOAP
         yield 'soap' => function (array $params) use ($style, $boolean): bool {
             return $style->ask(
@@ -290,6 +304,14 @@ abstract class AbstractTemplatesCommand extends Command
      */
     private function processFile(File $file, array $params): FileStatus
     {
+        foreach (self::CHECKS as $param => $path) {
+            $check = (bool)($params[$param] ?? false);
+
+            if ($check === false && $this->str->contains($file->getFilename(), $path)) {
+                return $this->fileGenerator->remove($file);
+            }
+        }
+
         return $this->fileGenerator->generate($file, $params);
     }
 }

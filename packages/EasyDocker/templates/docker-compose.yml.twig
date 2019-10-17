@@ -72,3 +72,13 @@ services:
       QUEUE_DRIVER: redis
     depends_on:
       - api
+  {% if elasticsearch_enabled ~%}
+  elasticsearch:
+    build:
+      context: ./
+      dockerfile: docker/elasticsearch/Dockerfile.twig
+    environment:
+      - discovery.type=single-node
+    ports:
+      - '{{ '${' ~ project|upper ~ '_ELASTICSEARCH_PORT:-9200}' }}:9200'
+  {%- endif ~%}
