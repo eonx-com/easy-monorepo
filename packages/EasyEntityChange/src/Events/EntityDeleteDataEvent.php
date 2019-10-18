@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyEntityChange\Events;
 
+use LoyaltyCorp\EasyEntityChange\Interfaces\EasyEntityChangeEventInterface;
+
 /**
  * This event is fired when deletes occurred inside a flush, and
  * is an event that allows listeners to convert data
@@ -13,7 +15,7 @@ namespace LoyaltyCorp\EasyEntityChange\Events;
  * entity that includes the required "external id" to remove from search
  * that is not the same as the entity primary ids.
  */
-class EntityDeleteDataEvent
+final class EntityDeleteDataEvent implements EasyEntityChangeEventInterface
 {
     /**
      * @var object[]

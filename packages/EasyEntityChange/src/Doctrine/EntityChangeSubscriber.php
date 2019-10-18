@@ -14,7 +14,7 @@ use LoyaltyCorp\EasyEntityChange\Events\EntityChangeEvent;
 use LoyaltyCorp\EasyEntityChange\Events\EntityDeleteDataEvent;
 use LoyaltyCorp\EasyEntityChange\Exceptions\InvalidDispatcherException;
 
-class EntityChangeSubscriber implements EventSubscriber
+final class EntityChangeSubscriber implements EventSubscriber
 {
     /**
      * @var \EoneoPay\Utils\Arr

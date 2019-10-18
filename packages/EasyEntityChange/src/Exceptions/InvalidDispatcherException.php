@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace LoyaltyCorp\EasyEntityChange\Exceptions;
 
 use EoneoPay\Utils\Exceptions\RuntimeException;
+use LoyaltyCorp\EasyEntityChange\Interfaces\EasyEntityChangeExceptionInterface;
 
-class InvalidDispatcherException extends RuntimeException
+final class InvalidDispatcherException extends RuntimeException implements EasyEntityChangeExceptionInterface
 {
     /**
      * {@inheritdoc}

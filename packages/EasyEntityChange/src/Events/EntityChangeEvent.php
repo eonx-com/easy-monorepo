@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\EasyEntityChange\Events;
 
+use LoyaltyCorp\EasyEntityChange\Interfaces\EasyEntityChangeEventInterface;
+
 /**
  * This event is fired with data about any entities
  * that have been updated, created or deleted where listeners can
  * pay attention to those events and handle reactions as required.
  */
-class EntityChangeEvent
+final class EntityChangeEvent implements EasyEntityChangeEventInterface
 {
     /**
      * This array contains any data that any subscribers to EntityDeleteDataEvent
