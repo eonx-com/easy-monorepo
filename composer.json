@@ -8,9 +8,10 @@
         "packages/EasyDocker/bin/easy-docker"
     ],
     "require": {
+        "eoneopay/externals": "^1.0",
         "eoneopay/utils": "^0.2",
-        "php": "^7.1",
         "ext-json": "*",
+        "php": "^7.1",
         "symfony/expression-language": "^4.2",
         "symfony/filesystem": "^4.2",
         "symfony/finder": "^4.2",
@@ -22,12 +23,12 @@
     "require-dev": {
         "auth0/auth0-php": "^5.4",
         "doctrine/orm": "^2.6",
-        "ext-json": "*",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
         "laravel/lumen-framework": "^5.5",
-        "mockery/mockery": "^1.2",
         "mikey179/vfsstream": "~1",
+        "mockery/mockery": "^1.2",
+        "phpspec/prophecy": "~1.0",
         "phpunit/phpunit": "^7.5",
         "psr/container": "^1.0",
         "symfony/symfony": "^4.2",
@@ -37,8 +38,7 @@
         "natepage/sniffs": "^1.1",
         "phpstan/phpstan": "^0.11.5",
         "sensiolabs/security-checker": "^5.0",
-        "symplify/easy-coding-standard": "^5.4",
-        "phpspec/prophecy": "~1.0"
+        "symplify/easy-coding-standard": "^5.4"
     },
     "autoload": {
         "psr-4": {
@@ -47,6 +47,7 @@
             "LoyaltyCorp\\EasyCore\\": "packages/EasyCore/src",
             "LoyaltyCorp\\EasyDecision\\": "packages/EasyDecision/src",
             "LoyaltyCorp\\EasyDocker\\": "packages/EasyDocker/src",
+            "LoyaltyCorp\\EasyEntityChange\\": "packages/EasyEntityChange/src",
             "LoyaltyCorp\\EasyIdentity\\": "packages/EasyIdentity/src",
             "LoyaltyCorp\\EasyPagination\\": "packages/EasyPagination/src",
             "LoyaltyCorp\\EasyPipeline\\": "packages/EasyPipeline/src",
@@ -68,6 +69,7 @@
             "LoyaltyCorp\\EasyCore\\Tests\\": "packages/EasyCore/tests",
             "LoyaltyCorp\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
             "LoyaltyCorp\\EasyDocker\\Tests\\": "packages/EasyDocker/tests",
+            "LoyaltyCorp\\EasyEntityChange\\Tests\\": "packages/EasyEntityChange/tests",
             "LoyaltyCorp\\EasyIdentity\\Tests\\": "packages/EasyIdentity/tests",
             "LoyaltyCorp\\EasyPagination\\Tests\\": "packages/EasyPagination/tests",
             "LoyaltyCorp\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
@@ -91,7 +93,9 @@
         "loyaltycorp/easy-identity": "self.version",
         "loyaltycorp/easy-decision": "self.version",
         "loyaltycorp/easy-cfhighlander": "self.version",
-        "loyaltycorp/easy-docker": "self.version"
+        "loyaltycorp/easy-docker": "self.version",
+        "loyaltycorp/easy-core": "self.version",
+        "loyaltycorp/easy-entity-change": "self.version"
     },
     "scripts": {
         "check-all": [
