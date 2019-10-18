@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v0.10.3 - 2019-09-30
+## v0.10.4 - 2019-10-18
+
+### EasyDocker
+
+- [#95] Implement elasticsearch in docker templates
+
+### EasyEntityChange
+
+- [#96] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.3] - 2019-09-30
 
 ### EasyDecision
 
@@ -771,3 +785,6 @@
 [#91]: https://github.com/loyaltycorp/easy-monorepo/pull/91
 [v0.10.2]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.1...v0.10.2
 [v0.10.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.0...v0.10.1
+[#96]: https://github.com/loyaltycorp/easy-monorepo/pull/96
+[#95]: https://github.com/loyaltycorp/easy-monorepo/pull/95
+[v0.10.3]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.2...v0.10.3
