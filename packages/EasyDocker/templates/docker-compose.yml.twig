@@ -76,7 +76,7 @@ services:
   elasticsearch:
     build:
       context: ./
-      dockerfile: docker/elasticsearch/Dockerfile.twig
+      dockerfile: docker/elasticsearch/Dockerfile
     environment:
       - discovery.type=single-node
     ports:
