@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.10.4 - 2019-10-18
+## v0.10.5 - 2019-10-22
+
+### EasyDocker
+
+- [#97] Fix elasticsearch config in docker-compose.yml.twig, Thanks to [@roman-loyaltycorp]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.4] - 2019-10-18
 
 ### EasyDocker
 
@@ -788,3 +798,6 @@
 [#96]: https://github.com/loyaltycorp/easy-monorepo/pull/96
 [#95]: https://github.com/loyaltycorp/easy-monorepo/pull/95
 [v0.10.3]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.2...v0.10.3
+[#97]: https://github.com/loyaltycorp/easy-monorepo/pull/97
+[@roman-loyaltycorp]: https://github.com/roman-loyaltycorp
+[v0.10.4]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.3...v0.10.4
