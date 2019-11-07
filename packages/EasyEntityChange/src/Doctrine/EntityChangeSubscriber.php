@@ -88,7 +88,7 @@ final class EntityChangeSubscriber implements EventSubscriber
         }
 
         foreach ($unitOfWork->getScheduledEntityDeletions() as $entity) {
-            $this->flagForDelete($entity);
+            $this->flagForDelete(clone $entity);
         }
 
         foreach ($unitOfWork->getScheduledCollectionUpdates() as $collection) {
