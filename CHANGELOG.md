@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.10.5 - 2019-10-22
+## v0.10.6 - 2019-11-07
+
+### EasyEntityChange
+
+- [#98] Preserving entity id for use at postFlush, Thanks to [@olamedia]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.5] - 2019-10-22
 
 ### EasyDocker
 
@@ -801,3 +811,5 @@
 [#97]: https://github.com/loyaltycorp/easy-monorepo/pull/97
 [@roman-loyaltycorp]: https://github.com/roman-loyaltycorp
 [v0.10.4]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.3...v0.10.4
+[#98]: https://github.com/loyaltycorp/easy-monorepo/pull/98
+[v0.10.5]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.4...v0.10.5
