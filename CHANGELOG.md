@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.10.6 - 2019-11-07
+## v0.10.7 - 2019-11-13
+
+### EasyCfhighlander
+
+- [#99] Update cfhighlander versions in cloudformation templates
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.6] - 2019-11-07
 
 ### EasyEntityChange
 
@@ -813,3 +823,5 @@
 [v0.10.4]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.3...v0.10.4
 [#98]: https://github.com/loyaltycorp/easy-monorepo/pull/98
 [v0.10.5]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.4...v0.10.5
+[#99]: https://github.com/loyaltycorp/easy-monorepo/pull/99
+[v0.10.6]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.5...v0.10.6
