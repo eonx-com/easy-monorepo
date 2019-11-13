@@ -5,7 +5,7 @@ CfhighlanderTemplate do
       ComponentParam 'SingleNatGateway', 'true'
     end
 
-     Component name:'vpc', template: 'vpc@1.7.0' do
+     Component name:'vpc', template: 'vpc@2.1.0' do
        parameter name: 'MaxNatGateways', value: Ref('MaxNatGateways')
        parameter name: 'SingleNatGateway', value: Ref('SingleNatGateway')
        parameter name: 'DnsDomain', value: dns_domain
@@ -57,10 +57,11 @@ CfhighlanderTemplate do
 
      Component name:'sqs', template: 'sqs@1.1.2'
 
-     Component name:'bastion', template: 'bastion@1.3.1' do
+     Component name:'bastion', template: 'bastion@2.0.1' do
        parameter name: 'KeyName', value: cfout('keypair','KeyPair')
        parameter name: 'DnsDomain', value: dns_domain
        parameter name: 'InstanceType', value: 't2.micro'
+       parameter name: 'SubnetIds', value: cfout('vpc', 'PublicSubnets')
      end
 
      Component name: 'aurora', template: 'aurora-mysql@2.0.4' do
