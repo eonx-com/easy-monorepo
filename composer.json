@@ -1,5 +1,5 @@
 {
-    "name": "loyaltycorp/easy-monorepo",
+    "name": "eonx-com/easy-monorepo",
     "type": "library",
     "description": "The packages to step the f*k up in your projects",
     "license": "MIT",
@@ -85,17 +85,17 @@
         }
     },
     "replace": {
-        "loyaltycorp/easy-api-token": "self.version",
-        "loyaltycorp/easy-repository": "self.version",
-        "loyaltycorp/easy-pagination": "self.version",
-        "loyaltycorp/easy-psr7-factory": "self.version",
-        "loyaltycorp/easy-pipeline": "self.version",
-        "loyaltycorp/easy-identity": "self.version",
-        "loyaltycorp/easy-decision": "self.version",
-        "loyaltycorp/easy-cfhighlander": "self.version",
-        "loyaltycorp/easy-docker": "self.version",
-        "loyaltycorp/easy-core": "self.version",
-        "loyaltycorp/easy-entity-change": "self.version"
+        "eonx-com/easy-api-token": "self.version",
+        "eonx-com/easy-repository": "self.version",
+        "eonx-com/easy-pagination": "self.version",
+        "eonx-com/easy-psr7-factory": "self.version",
+        "eonx-com/easy-pipeline": "self.version",
+        "eonx-com/easy-identity": "self.version",
+        "eonx-com/easy-decision": "self.version",
+        "eonx-com/easy-cfhighlander": "self.version",
+        "eonx-com/easy-docker": "self.version",
+        "eonx-com/easy-core": "self.version",
+        "eonx-com/easy-entity-change": "self.version"
     },
     "scripts": {
         "check-all": [
@@ -122,7 +122,7 @@
         "firebase/php-jwt": "To use the Firebase JWT driver to decode/encode tokens",
         "illuminate/database": "To use the Illuminate Eloquent implementation",
         "illuminate/pipeline": "To use the Illuminate Pipeline implementation",
-        "loyaltycorp/easy-pagination": "To use pagination within your repositories"
+        "eonx-com/easy-pagination": "To use pagination within your repositories"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
