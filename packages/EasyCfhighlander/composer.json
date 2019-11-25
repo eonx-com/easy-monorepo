@@ -1,12 +1,12 @@
 {
-    "name": "loyaltycorp/easy-cfhighlander",
+    "name": "eonx-com/easy-cfhighlander",
     "description": "CLI tool to generate Cfhighlander templates",
     "type": "library",
     "license": "MIT",
     "require": {
         "php": "^7.1",
         "eoneopay/utils": "^0.2",
-        "symplify/package-builder": "^5.4",
+        "symplify/package-builder": "^6.1",
         "twig/twig": "^2.8",
         "symfony/filesystem": "^4.2"
     },
