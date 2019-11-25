@@ -11,23 +11,23 @@ parameters:
     # for "merge" command
     data_to_append:
         require-dev:
-            symplify/monorepo-builder: '^5.4'
-            symplify/changelog-linker: '^5.4'
+            symplify/monorepo-builder: '^6.1'
+            symplify/changelog-linker: '^6.1'
             natepage/sniffs: '^1.1'
             phpstan/phpstan: '^0.11.5'
             sensiolabs/security-checker: '^5.0'
-            symplify/easy-coding-standard: '^5.4'
+            symplify/easy-coding-standard: '^6.1'
 
     # for "split" command
     directories_to_repositories:
-        packages/EasyApiToken: 'git@github.com:loyaltycorp/easy-api-token.git'
-        packages/EasyCfhighlander: 'git@github.com:loyaltycorp/easy-cfhighlander.git'
-        packages/EasyCore: 'git@github.com:loyaltycorp/easy-core.git'
-        packages/EasyDecision: 'git@github.com:loyaltycorp/easy-decision.git'
-        packages/EasyDocker: 'git@github.com:loyaltycorp/easy-docker.git'
-        packages/EasyEntityChange: 'git@github.com:loyaltycorp/easy-entity-change.git'
-        packages/EasyIdentity: 'git@github.com:loyaltycorp/easy-identity.git'
-        packages/EasyPipeline: 'git@github.com:loyaltycorp/easy-pipeline.git'
-        packages/EasyRepository: 'git@github.com:loyaltycorp/easy-repository.git'
-        packages/EasyPagination: 'git@github.com:loyaltycorp/easy-pagination.git'
-        packages/EasyPsr7Factory: 'git@github.com:loyaltycorp/easy-psr7-factory.git'
+        packages/EasyApiToken: 'git@github.com:eonx-com/easy-api-token.git'
+        packages/EasyCfhighlander: 'git@github.com:eonx-com/easy-cfhighlander.git'
+        packages/EasyCore: 'git@github.com:eonx-com/easy-core.git'
+        packages/EasyDecision: 'git@github.com:eonx-com/easy-decision.git'
+        packages/EasyDocker: 'git@github.com:eonx-com/easy-docker.git'
+        packages/EasyEntityChange: 'git@github.com:eonx-com/easy-entity-change.git'
+        packages/EasyIdentity: 'git@github.com:eonx-com/easy-identity.git'
+        packages/EasyPipeline: 'git@github.com:eonx-com/easy-pipeline.git'
+        packages/EasyRepository: 'git@github.com:eonx-com/easy-repository.git'
+        packages/EasyPagination: 'git@github.com:eonx-com/easy-pagination.git'
+        packages/EasyPsr7Factory: 'git@github.com:eonx-com/easy-psr7-factory.git'
