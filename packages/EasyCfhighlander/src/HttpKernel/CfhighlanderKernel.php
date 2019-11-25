@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symplify\PackageBuilder\Contract\HttpKernel\ExtraConfigAwareKernelInterface;
 use Symplify\PackageBuilder\DependencyInjection\CompilerPass\AutoReturnFactoryCompilerPass;
 use Symplify\PackageBuilder\DependencyInjection\CompilerPass\AutowireArrayParameterCompilerPass;
-use Symplify\PackageBuilder\DependencyInjection\CompilerPass\AutowireSinglyImplementedCompilerPass;
 use Symplify\PackageBuilder\HttpKernel\SimpleKernelTrait;
 
 final class CfhighlanderKernel extends Kernel implements ExtraConfigAwareKernelInterface
@@ -61,7 +60,6 @@ final class CfhighlanderKernel extends Kernel implements ExtraConfigAwareKernelI
     {
         $container
             ->addCompilerPass(new AutoReturnFactoryCompilerPass())
-            ->addCompilerPass(new AutowireArrayParameterCompilerPass())
-            ->addCompilerPass(new AutowireSinglyImplementedCompilerPass());
+            ->addCompilerPass(new AutowireArrayParameterCompilerPass());
     }
 }
