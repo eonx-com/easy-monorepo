@@ -1,5 +1,5 @@
 {
-    "name": "loyaltycorp/easy-repository",
+    "name": "eonx-com/easy-repository",
     "description": "Provides an easy way to implement the Repository Design Pattern in your applications",
     "type": "library",
     "license": "MIT",
@@ -10,7 +10,7 @@
         "phpunit/phpunit": "^7.5",
         "mockery/mockery": "^1.2",
         "doctrine/orm": "^2.6",
-        "loyaltycorp/easy-pagination": "^0.11",
+        "eonx-com/easy-pagination": "^0.11",
         "laravel/lumen-framework": "^5.5",
         "vlucas/phpdotenv": "^3.3"
     },
@@ -29,7 +29,7 @@
     "suggest": {
         "doctrine/orm": "To use the Doctrine ORM implementation",
         "illuminate/database": "To use the Illuminate Eloquent implementation",
-        "loyaltycorp/easy-pagination": "To use pagination within your repositories"
+        "eonx-com/easy-pagination": "To use pagination within your repositories"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -1,5 +1,5 @@
 {
-    "name": "loyaltycorp/easy-psr7-factory",
+    "name": "eonx-com/easy-psr7-factory",
     "description": "Provides an easy way to create PSR7 Request/Response from Symfony Request/Response",
     "type": "library",
     "license": "MIT",

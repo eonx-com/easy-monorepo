@@ -1,5 +1,5 @@
 {
-    "name": "loyaltycorp/easy-pagination",
+    "name": "eonx-com/easy-pagination",
     "description": "Provides a generic way to handle pagination data from clients",
     "type": "library",
     "license": "MIT",

@@ -1,5 +1,5 @@
 {
-    "name": "loyaltycorp/easy-entity-change",
+    "name": "eonx-com/easy-entity-change",
     "description": "Provides an easy way to hook up logic in your entities lifecycle",
     "type": "library",
     "license": "MIT",

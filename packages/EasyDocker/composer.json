@@ -1,5 +1,5 @@
 {
-    "name": "loyaltycorp/easy-docker",
+    "name": "eonx-com/easy-docker",
     "description": "CLI tool to generate Docker files",
     "type": "library",
     "license": "MIT",
@@ -7,7 +7,7 @@
         "php": "^7.1",
         "ext-json": "*",
         "eoneopay/utils": "^0.2",
-        "symplify/package-builder": "^5.4",
+        "symplify/package-builder": "^6.1",
         "twig/twig": "^2.8",
         "symfony/filesystem": "^4.2",
         "symfony/finder": "^4.2"
