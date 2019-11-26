@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.10.7 - 2019-11-13
+## v0.10.8 - 2019-11-26
+
+### EasyLogging
+
+- [#100] Create package to centralise common logging logic
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.7] - 2019-11-13
 
 ### EasyCfhighlander
 
@@ -825,3 +835,5 @@
 [v0.10.5]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.4...v0.10.5
 [#99]: https://github.com/loyaltycorp/easy-monorepo/pull/99
 [v0.10.6]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.5...v0.10.6
+[#100]: https://github.com/loyaltycorp/easy-monorepo/pull/100
+[v0.10.7]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.6...v0.10.7

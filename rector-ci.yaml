@@ -1,0 +1,9 @@
+parameters:
+    exclude_paths:
+        - 'packages/*/var/*'
+        - 'packages/*/src/Console/Commands/Abstract*'
+
+    sets:
+        - 'coding-style'
+        - 'code-quality'
+        - 'dead-code'
