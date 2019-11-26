@@ -27,6 +27,7 @@ parameters:
         packages/EasyDocker: 'git@github.com:eonx-com/easy-docker.git'
         packages/EasyEntityChange: 'git@github.com:eonx-com/easy-entity-change.git'
         packages/EasyIdentity: 'git@github.com:eonx-com/easy-identity.git'
+        packages/EasyLogging: 'git@github.com:eonx-com/easy-logging.git'
         packages/EasyPipeline: 'git@github.com:eonx-com/easy-pipeline.git'
         packages/EasyRepository: 'git@github.com:eonx-com/easy-repository.git'
         packages/EasyPagination: 'git@github.com:eonx-com/easy-pagination.git'
