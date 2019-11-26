@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.10.8 - 2019-11-26
+## v0.10.9 - 2019-11-26
+
+### EasyLogging
+
+- [#101] Fix autoload for easy-logging in composer.json
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.8] - 2019-11-26
 
 ### EasyLogging
 
@@ -837,3 +847,5 @@
 [v0.10.6]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.5...v0.10.6
 [#100]: https://github.com/loyaltycorp/easy-monorepo/pull/100
 [v0.10.7]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.6...v0.10.7
+[#101]: https://github.com/loyaltycorp/easy-monorepo/pull/101
+[v0.10.8]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.7...v0.10.8
