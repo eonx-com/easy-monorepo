@@ -1,0 +1,31 @@
+{
+    "name": "eonx-com/easy-logging",
+    "description": "Centralise logging logic for our lumen projects",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "eoneopay/externals": "^1.0"
+    },
+    "require-dev": {
+        "laravel/lumen-framework": "^5.5",
+        "laravel-doctrine/orm": "^1.4",
+        "bugsnag/bugsnag": "^3.19",
+        "bugsnag/bugsnag-laravel": "^2.17"
+    },
+    "autoload": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyLogging\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LoyaltyCorp\\EasyLogging\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.11-dev"
+        }
+    }
+}
