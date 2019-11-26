@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\Tests\Console\Commands;
+namespace EonX\EasyDocker\Tests\Console\Commands;
 
-use LoyaltyCorp\EasyDocker\Tests\AbstractTestCase;
+use EonX\EasyDocker\Tests\AbstractTestCase;
 
 final class DockerFilesGeneratorCommandTest extends AbstractTestCase
 {

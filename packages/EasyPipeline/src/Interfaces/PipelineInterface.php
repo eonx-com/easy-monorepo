@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Interfaces;
+namespace EonX\EasyPipeline\Interfaces;
 
 interface PipelineInterface
 {
@@ -19,7 +19,7 @@ interface PipelineInterface
      *
      * @return mixed[]
      *
-     * @throws \LoyaltyCorp\EasyPipeline\Exceptions\PipelineDidntRunException If called before process() is called
+     * @throws \EonX\EasyPipeline\Exceptions\PipelineDidntRunException If called before process() is called
      */
     public function getLogs(): array;
 }

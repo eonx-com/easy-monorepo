@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\Tests;
+namespace EonX\EasyDocker\Tests;
 
-use LoyaltyCorp\EasyDocker\Console\EasyDockerApplication;
+use EonX\EasyDocker\Console\EasyDockerApplication;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
@@ -45,7 +45,7 @@ abstract class AbstractTestCase extends TestCase
     /**
      * Get application.
      *
-     * @return \LoyaltyCorp\EasyDocker\Console\EasyDockerApplication
+     * @return \EonX\EasyDocker\Console\EasyDockerApplication
      *
      * @throws \Exception
      */

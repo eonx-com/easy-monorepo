@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Expressions;
+namespace EonX\EasyDecision\Expressions;
 
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 
 final class ExpressionLanguageConfig implements ExpressionLanguageConfigInterface

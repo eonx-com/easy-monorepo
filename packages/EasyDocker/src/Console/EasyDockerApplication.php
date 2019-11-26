@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\Console;
+namespace EonX\EasyDocker\Console;
 
 use Symfony\Component\Console\Application;
 use Symplify\PackageBuilder\Console\HelpfulApplicationTrait;

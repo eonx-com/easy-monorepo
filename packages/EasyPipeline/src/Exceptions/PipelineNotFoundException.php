@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Exceptions;
+namespace EonX\EasyPipeline\Exceptions;
 
 use InvalidArgumentException;
-use LoyaltyCorp\EasyPipeline\Interfaces\EasyPipelineExceptionInterface;
+use EonX\EasyPipeline\Interfaces\EasyPipelineExceptionInterface;
 
 final class PipelineNotFoundException extends InvalidArgumentException implements EasyPipelineExceptionInterface
 {

@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCore\Tests\Http\Middleware;
+namespace EonX\EasyCore\Tests\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use LoyaltyCorp\EasyCore\Http\Middleware\SetContentLength;
-use LoyaltyCorp\EasyCore\Tests\AbstractTestCase;
+use EonX\EasyCore\Http\Middleware\SetContentLength;
+use EonX\EasyCore\Tests\AbstractTestCase;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
- * @covers \LoyaltyCorp\EasyCore\Http\Middleware\SetContentLength
+ * @covers \EonX\EasyCore\Http\Middleware\SetContentLength
  *
  * @internal
  */

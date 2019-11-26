@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
+namespace EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
 
-use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareProviderInterface;
+use EonX\EasyPipeline\Interfaces\MiddlewareProviderInterface;
 
 final class ValidMiddlewareProviderStub implements MiddlewareProviderInterface
 {

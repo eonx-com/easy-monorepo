@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Traits;
+namespace EonX\EasyApiToken\Traits;
 
 use EoneoPay\Utils\Str;
 use Psr\Http\Message\ServerRequestInterface;

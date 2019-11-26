@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
+namespace EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
 
-use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareInterface;
-use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
-use LoyaltyCorp\EasyPipeline\Traits\MiddlewareLoggerAwareTrait;
+use EonX\EasyPipeline\Interfaces\MiddlewareInterface;
+use EonX\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
+use EonX\EasyPipeline\Traits\MiddlewareLoggerAwareTrait;
 
 final class LoggerChangeNameMiddleware implements MiddlewareInterface, MiddlewareLoggerAwareInterface
 {
     use MiddlewareLoggerAwareTrait;
 
     /**
-     * @var \LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware
+     * @var \EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware
      */
     private $decorated;
 
     /**
      * LoggerChangeNameMiddleware constructor.
      *
-     * @param \LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware $decorated
+     * @param \EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware $decorated
      */
     public function __construct(ChangeNameMiddleware $decorated)
     {

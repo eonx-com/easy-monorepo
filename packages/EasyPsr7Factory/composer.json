@@ -16,14 +16,12 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyPsr7Factory\\": "src",
-            "StepTheFkUp\\EasyPsr7Factory\\": "src"
+            "EonX\\EasyPsr7Factory\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyPsr7Factory\\Tests\\": "tests",
-            "StepTheFkUp\\EasyPsr7Factory\\Tests\\": "tests"
+            "EonX\\EasyPsr7Factory\\Tests\\": "tests"
         }
     },
     "extra": {

@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Bridge\Laravel;
+namespace EonX\EasyDecision\Tests\Bridge\Laravel;
 
-use LoyaltyCorp\EasyDecision\Decisions\AffirmativeDecision;
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException;
-use LoyaltyCorp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
-use LoyaltyCorp\EasyDecision\Tests\AbstractLumenTestCase;
-use LoyaltyCorp\EasyDecision\Tests\Stubs\DecisionConfigProviderStub;
-use LoyaltyCorp\EasyDecision\Tests\Stubs\RuleProviderStub;
+use EonX\EasyDecision\Decisions\AffirmativeDecision;
+use EonX\EasyDecision\Exceptions\InvalidArgumentException;
+use EonX\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
+use EonX\EasyDecision\Interfaces\DecisionInterface;
+use EonX\EasyDecision\Tests\AbstractLumenTestCase;
+use EonX\EasyDecision\Tests\Stubs\DecisionConfigProviderStub;
+use EonX\EasyDecision\Tests\Stubs\RuleProviderStub;
 
 final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
 {

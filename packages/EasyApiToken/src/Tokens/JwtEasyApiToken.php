@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tokens;
+namespace EonX\EasyApiToken\Tokens;
 
-use LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException;
-use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
+use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
+use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 
 final class JwtEasyApiToken implements JwtEasyApiTokenInterface
 {
@@ -40,7 +40,7 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
      *
      * @return mixed
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException If claim not found on token
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException If claim not found on token
      */
     public function getClaim(string $claim)
     {

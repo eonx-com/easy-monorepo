@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPsr7Factory;
+namespace EonX\EasyPsr7Factory;
 
-use LoyaltyCorp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
+use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;

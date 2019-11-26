@@ -16,14 +16,12 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyRepository\\": "src",
-            "StepTheFkUp\\EasyRepository\\": "src"
+            "EonX\\EasyRepository\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyRepository\\Tests\\": "tests",
-            "StepTheFkUp\\EasyRepository\\Tests\\": "tests"
+            "EonX\\EasyRepository\\Tests\\": "tests"
         }
     },
     "suggest": {

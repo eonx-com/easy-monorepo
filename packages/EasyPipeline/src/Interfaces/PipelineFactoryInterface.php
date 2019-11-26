@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Interfaces;
+namespace EonX\EasyPipeline\Interfaces;
 
 interface PipelineFactoryInterface
 {
@@ -10,9 +10,9 @@ interface PipelineFactoryInterface
      *
      * @param string $pipeline The pipeline name
      *
-     * @return \LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface
+     * @return \EonX\EasyPipeline\Interfaces\PipelineInterface
      *
-     * @throws \LoyaltyCorp\EasyPipeline\Exceptions\PipelineNotFoundException If given pipeline not found
+     * @throws \EonX\EasyPipeline\Exceptions\PipelineNotFoundException If given pipeline not found
      */
     public function create(string $pipeline): PipelineInterface;
 }

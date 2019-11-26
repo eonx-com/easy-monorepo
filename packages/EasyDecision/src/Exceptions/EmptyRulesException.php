@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Exceptions;
+namespace EonX\EasyDecision\Exceptions;
 
-use LoyaltyCorp\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
+use EonX\EasyDecision\Interfaces\EasyDecisionExceptionInterface;
 
 final class EmptyRulesException extends \InvalidArgumentException implements EasyDecisionExceptionInterface
 {

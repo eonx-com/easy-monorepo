@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyPagination</h1>
+    <h1>EonX - EasyPagination</h1>
     <p>Provides a generic way to handle pagination data from clients.</p>
 </div>
 
@@ -23,7 +23,7 @@ handling system to keep you away from any troubles :)
 The recommended way to install this package is to use [Composer][1].
 
 ```bash
-$ composer require loyaltycorp/pagination
+$ composer require eonx/pagination
 ```
 
 ## How it works
@@ -59,4 +59,4 @@ Here are some examples of configuration you can have:
 
 [1]: https://getcomposer.org/
 [2]: https://www.php-fig.org/psr/psr-7/#15-server-side-requests
-[3]: https://github.com/LoyaltyCorp/EasyPsr7Factory
+[3]: https://github.com/EonX/EasyPsr7Factory

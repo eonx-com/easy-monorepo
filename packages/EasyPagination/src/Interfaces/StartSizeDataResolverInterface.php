@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPagination\Interfaces;
+namespace EonX\EasyPagination\Interfaces;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -12,7 +12,7 @@ interface StartSizeDataResolverInterface
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return \LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface
+     * @return \EonX\EasyPagination\Interfaces\StartSizeDataInterface
      */
     public function resolve(ServerRequestInterface $request): StartSizeDataInterface;
 }

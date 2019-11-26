@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCore\Tests;
+namespace EonX\EasyCore\Tests;
 
 use PHPUnit\Framework\TestCase;
 

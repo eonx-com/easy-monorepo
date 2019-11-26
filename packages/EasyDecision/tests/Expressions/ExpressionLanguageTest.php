@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Expressions;
+namespace EonX\EasyDecision\Tests\Expressions;
 
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidExpressionException;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use LoyaltyCorp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
-use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Exceptions\InvalidExpressionException;
+use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
+use EonX\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class ExpressionLanguageTest extends AbstractTestCase
 {
@@ -55,7 +55,7 @@ final class ExpressionLanguageTest extends AbstractTestCase
     /**
      * Get expression language.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     private function getExpressionLanguage(): ExpressionLanguageInterface
     {

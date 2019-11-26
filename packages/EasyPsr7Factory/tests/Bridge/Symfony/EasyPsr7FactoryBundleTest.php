@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPsr7Factory\Tests\Bridge\Symfony;
+namespace EonX\EasyPsr7Factory\Tests\Bridge\Symfony;
 
-use LoyaltyCorp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
-use LoyaltyCorp\EasyPsr7Factory\Tests\AbstractTestCase;
-use LoyaltyCorp\EasyPsr7Factory\Tests\Bridge\Symfony\Stubs\KernelStub;
-use LoyaltyCorp\EasyPsr7Factory\Tests\Bridge\Symfony\Stubs\ServiceStub;
+use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
+use EonX\EasyPsr7Factory\Tests\AbstractTestCase;
+use EonX\EasyPsr7Factory\Tests\Bridge\Symfony\Stubs\KernelStub;
+use EonX\EasyPsr7Factory\Tests\Bridge\Symfony\Stubs\ServiceStub;
 
 final class EasyPsr7FactoryBundleTest extends AbstractTestCase
 {

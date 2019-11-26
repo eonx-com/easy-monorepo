@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM;
+namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use LoyaltyCorp\EasyRepository\Interfaces\DatabaseRepositoryInterface;
-use LoyaltyCorp\EasyRepository\Interfaces\ObjectRepositoryInterface;
+use EonX\EasyRepository\Interfaces\DatabaseRepositoryInterface;
+use EonX\EasyRepository\Interfaces\ObjectRepositoryInterface;
 
 abstract class AbstractDoctrineOrmRepository implements DatabaseRepositoryInterface
 {

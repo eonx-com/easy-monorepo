@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM;
+namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
 use Closure;
 use Doctrine\ORM\QueryBuilder;

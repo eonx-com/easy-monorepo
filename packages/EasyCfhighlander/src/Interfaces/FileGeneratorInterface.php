@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\Interfaces;
+namespace EonX\EasyCfhighlander\Interfaces;
 
-use LoyaltyCorp\EasyCfhighlander\File\FileStatus;
-use LoyaltyCorp\EasyCfhighlander\File\File;
+use EonX\EasyCfhighlander\File\FileStatus;
+use EonX\EasyCfhighlander\File\File;
 
 interface FileGeneratorInterface
 {
@@ -42,19 +42,19 @@ interface FileGeneratorInterface
     /**
      * Generate file for given template and params.
      *
-     * @param \LoyaltyCorp\EasyCfhighlander\File\File $fileToGenerate
+     * @param \EonX\EasyCfhighlander\File\File $fileToGenerate
      * @param null|mixed[] $params
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\FileStatus
+     * @return \EonX\EasyCfhighlander\File\FileStatus
      */
     public function generate(File $fileToGenerate, ?array $params = null): FileStatus;
 
     /**
      * Remove given file.
      *
-     * @param \LoyaltyCorp\EasyCfhighlander\File\File $fileToRemove
+     * @param \EonX\EasyCfhighlander\File\File $fileToRemove
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\FileStatus
+     * @return \EonX\EasyCfhighlander\File\FileStatus
      */
     public function remove(File $fileToRemove): FileStatus;
 }

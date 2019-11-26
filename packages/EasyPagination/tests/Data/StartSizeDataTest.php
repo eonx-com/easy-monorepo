@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPagination\Tests\Data;
+namespace EonX\EasyPagination\Tests\Data;
 
-use LoyaltyCorp\EasyPagination\Data\StartSizeData;
-use LoyaltyCorp\EasyPagination\Tests\AbstractTestCase;
+use EonX\EasyPagination\Data\StartSizeData;
+use EonX\EasyPagination\Tests\AbstractTestCase;
 
 final class StartSizeDataTest extends AbstractTestCase
 {

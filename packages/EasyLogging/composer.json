@@ -15,12 +15,12 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyLogging\\": "src"
+            "EonX\\EasyLogging\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyLogging\\Tests\\": "tests"
+            "EonX\\EasyLogging\\Tests\\": "tests"
         }
     },
     "extra": {

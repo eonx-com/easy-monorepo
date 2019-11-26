@@ -1,34 +1,34 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Interfaces;
+namespace EonX\EasyDecision\Interfaces;
 
 interface DecisionInterface
 {
     /**
      * Add rule.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface $rule
+     * @param \EonX\EasyDecision\Interfaces\RuleInterface $rule
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function addRule(RuleInterface $rule): self;
 
     /**
      * Set rules.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[] $rules
+     * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function addRules(array $rules): self;
 
     /**
      * Get context.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
+     * @return \EonX\EasyDecision\Interfaces\ContextInterface
      *
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException
+     * @throws \EonX\EasyDecision\Exceptions\ContextNotSetException
      */
     public function getContext(): ContextInterface;
 
@@ -46,9 +46,9 @@ interface DecisionInterface
      *
      * @return mixed
      *
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\EmptyRulesException
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException
+     * @throws \EonX\EasyDecision\Exceptions\EmptyRulesException
+     * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
     public function make(array $input);
 
@@ -57,7 +57,7 @@ interface DecisionInterface
      *
      * @param string $name
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function setName(string $name): self;
 }

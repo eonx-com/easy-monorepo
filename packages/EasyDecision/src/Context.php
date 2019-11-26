@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision;
+namespace EonX\EasyDecision;
 
-use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use EonX\EasyDecision\Interfaces\ContextInterface;
 
 final class Context implements ContextInterface
 {
@@ -45,7 +45,7 @@ final class Context implements ContextInterface
      * @param string $rule
      * @param mixed $output
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
+     * @return \EonX\EasyDecision\Interfaces\ContextInterface
      */
     public function addRuleOutput(string $rule, $output): ContextInterface
     {
@@ -97,7 +97,7 @@ final class Context implements ContextInterface
     /**
      * Stop propagation, all rules after propagation has been stopped will be skipped.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
+     * @return \EonX\EasyDecision\Interfaces\ContextInterface
      */
     public function stopPropagation(): ContextInterface
     {

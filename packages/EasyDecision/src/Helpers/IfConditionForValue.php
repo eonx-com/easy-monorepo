@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Helpers;
+namespace EonX\EasyDecision\Helpers;
 
 final class IfConditionForValue
 {

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
+namespace EonX\EasyDecision\Tests\Stubs;
 
-use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface;
-use LoyaltyCorp\EasyDecision\Decisions\AffirmativeDecision;
-use LoyaltyCorp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
+use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface;
+use EonX\EasyDecision\Decisions\AffirmativeDecision;
+use EonX\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
 final class DecisionConfigProviderStub implements DecisionConfigProviderInterface

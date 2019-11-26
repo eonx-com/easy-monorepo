@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
+namespace EonX\EasyIdentity\Tests\Implementations\Auth0;
 
-use LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException;
-use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
-use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
+use EonX\EasyIdentity\Exceptions\RequiredDataMissingException;
+use EonX\EasyIdentity\Implementations\Auth0\Config;
+use EonX\EasyIdentity\Tests\AbstractTestCase;
 
 /**
- * @covers \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config
+ * @covers \EonX\EasyIdentity\Implementations\Auth0\Config
  */
 class ConfigTest extends AbstractTestCase
 {
@@ -17,7 +17,7 @@ class ConfigTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function testGettersReturnExpectedValues(): void
     {
@@ -41,7 +41,7 @@ class ConfigTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function testRequiredDataMissingException(): void
     {
@@ -55,6 +55,6 @@ class ConfigTest extends AbstractTestCase
 
 \class_alias(
     ConfigTest::class,
-    StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\ConfigTest::class,
+    EonX\EasyIdentity\Tests\Implementations\Auth0\ConfigTest::class,
     false
 );

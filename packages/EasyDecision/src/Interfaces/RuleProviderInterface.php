@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Interfaces;
+namespace EonX\EasyDecision\Interfaces;
 
 interface RuleProviderInterface
 {
@@ -10,7 +10,7 @@ interface RuleProviderInterface
      *
      * @param null|mixed[] $params
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[]
+     * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
     public function getRules(?array $params = null): array;
 }

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\File;
+namespace EonX\EasyDocker\File;
 
-use LoyaltyCorp\EasyDocker\Interfaces\FileGeneratorInterface;
-use LoyaltyCorp\EasyDocker\Interfaces\ManifestGeneratorInterface;
+use EonX\EasyDocker\Interfaces\FileGeneratorInterface;
+use EonX\EasyDocker\Interfaces\ManifestGeneratorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class ManifestGenerator implements ManifestGeneratorInterface
@@ -30,7 +30,7 @@ final class ManifestGenerator implements ManifestGeneratorInterface
      *
      * @param string $cwd
      * @param string $version
-     * @param \LoyaltyCorp\EasyDocker\File\FileStatus[] $statuses
+     * @param \EonX\EasyDocker\File\FileStatus[] $statuses
      *
      * @return void
      */

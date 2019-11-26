@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Expressions;
+namespace EonX\EasyDecision\Expressions;
 
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 
 final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterface
 {
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
+     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
      */
     private $functionFactory;
 
     /**
      * ExpressionLanguageFactory constructor.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface $functionFactory
+     * @param \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface $functionFactory
      */
     public function __construct(ExpressionFunctionFactoryInterface $functionFactory)
     {
@@ -28,9 +28,9 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
     /**
      * Create expression language for given config.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     * @param \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      *
-     * @return \LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguage
+     * @return \EonX\EasyDecision\Expressions\ExpressionLanguage
      */
     public function create(ExpressionLanguageConfigInterface $config): ExpressionLanguage
     {

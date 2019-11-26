@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tokens;
+namespace EonX\EasyApiToken\Tokens;
 
-use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface;
 
 final class ApiKeyEasyApiToken implements ApiKeyEasyApiTokenInterface
 {

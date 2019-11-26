@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\File;
+namespace EonX\EasyCfhighlander\File;
 
-use LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface;
+use EonX\EasyCfhighlander\Interfaces\FileGeneratorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment;
 
@@ -30,10 +30,10 @@ final class FileGenerator implements FileGeneratorInterface
     /**
      * Generate file for given template and params.
      *
-     * @param \LoyaltyCorp\EasyCfhighlander\File\File $fileToGenerate
+     * @param \EonX\EasyCfhighlander\File\File $fileToGenerate
      * @param null|mixed[] $params
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\FileStatus
+     * @return \EonX\EasyCfhighlander\File\FileStatus
      *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
@@ -70,9 +70,9 @@ final class FileGenerator implements FileGeneratorInterface
     /**
      * Remove given file.
      *
-     * @param \LoyaltyCorp\EasyCfhighlander\File\File $fileToRemove
+     * @param \EonX\EasyCfhighlander\File\File $fileToRemove
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\FileStatus
+     * @return \EonX\EasyCfhighlander\File\FileStatus
      */
     public function remove(File $fileToRemove): FileStatus
     {

@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyCore</h1>
+    <h1>EonX - EasyCore</h1>
     <p>Provides core features for Lumen applications.</p>
 </div>
 

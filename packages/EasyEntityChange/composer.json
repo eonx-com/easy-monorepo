@@ -12,12 +12,12 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyEntityChange\\": "src"
+            "EonX\\EasyEntityChange\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyEntityChange\\Tests\\": "tests"
+            "EonX\\EasyEntityChange\\Tests\\": "tests"
         }
     },
     "minimum-stability": "dev",

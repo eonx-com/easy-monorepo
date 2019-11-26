@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyEntityChange\Exceptions;
+namespace EonX\EasyEntityChange\Exceptions;
 
 use EoneoPay\Utils\Exceptions\RuntimeException;
-use LoyaltyCorp\EasyEntityChange\Interfaces\EasyEntityChangeExceptionInterface;
+use EonX\EasyEntityChange\Interfaces\EasyEntityChangeExceptionInterface;
 
 final class InvalidDispatcherException extends RuntimeException implements EasyEntityChangeExceptionInterface
 {

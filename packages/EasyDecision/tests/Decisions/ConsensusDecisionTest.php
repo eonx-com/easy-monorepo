@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Decisions;
+namespace EonX\EasyDecision\Tests\Decisions;
 
-use LoyaltyCorp\EasyDecision\Decisions\ConsensusDecision;
-use LoyaltyCorp\EasyDecision\Exceptions\EmptyRulesException;
-use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
-use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Decisions\ConsensusDecision;
+use EonX\EasyDecision\Exceptions\EmptyRulesException;
+use EonX\EasyDecision\Interfaces\RuleInterface;
+use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class ConsensusDecisionTest extends AbstractTestCase
 {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\Console\Commands;
+namespace EonX\EasyCfhighlander\Console\Commands;
 
 final class CloudFormationCommand extends AbstractTemplatesCommand
 {

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Rules;
+namespace EonX\EasyDecision\Rules;
 
-use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
+use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
 
 final class ExpressionLanguageRuleFactory implements ExpressionLanguageRuleFactoryInterface
 {
@@ -13,7 +13,7 @@ final class ExpressionLanguageRuleFactory implements ExpressionLanguageRuleFacto
      * @param string $expression
      * @param null|int $priority
      *
-     * @return \LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRule
+     * @return \EonX\EasyDecision\Rules\ExpressionLanguageRule
      */
     public function create(string $expression, ?int $priority = null): ExpressionLanguageRule
     {

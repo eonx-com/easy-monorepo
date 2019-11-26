@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Decisions;
+namespace EonX\EasyDecision\Decisions;
 
-use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use EonX\EasyDecision\Interfaces\ContextInterface;
 
 final class UnanimousDecision extends AbstractDecision
 {
@@ -23,7 +23,7 @@ final class UnanimousDecision extends AbstractDecision
     /**
      * Handle rule output.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
      * @param string $rule
      * @param mixed $output
      *

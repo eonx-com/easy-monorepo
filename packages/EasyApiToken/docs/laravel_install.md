@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyApiToken</h1>
+    <h1>EonX - EasyApiToken</h1>
     <p>Tools to handle API tokens like a pro.</p>
 </div>
 
@@ -12,7 +12,7 @@ This document describes the steps to install this package into a [Laravel][1] an
 Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
 
 ```bash
-$ composer require loyaltycorp/easy-api-token
+$ composer require eonx/easy-api-token
 ```
 
 # Service Provider
@@ -26,7 +26,7 @@ not familiar with this concept make sure to have a look at the [documentation][4
 'providers' => [
     // Other Service Providers...
     
-    \LoyaltyCorp\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider::class
+    \EonX\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider::class
 ],
 ```
 
@@ -47,7 +47,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\LoyaltyCorp\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider::class);
+$app->register(\EonX\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider::class);
 ```
 
 ## Add Config

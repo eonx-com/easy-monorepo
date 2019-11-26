@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM;
+namespace EonX\EasyRepository\Tests\Implementation\Doctrine\ORM;
 
-use LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository;
+use EonX\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository;
 
 final class PaginatedDoctrineOrmRepositoryStub extends AbstractPaginatedDoctrineOrmRepository
 {

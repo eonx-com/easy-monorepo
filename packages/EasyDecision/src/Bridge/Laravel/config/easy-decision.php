@@ -39,7 +39,7 @@ return [
         | directly from here or return the service locator of your provider.
         |
         | Your providers must implement:
-        | \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
+        | \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
         |
         | Example:
         | \App\Decisions\Expressions\MyOwnFunctionsProvider::class, -> Instantiate from container
@@ -62,7 +62,7 @@ return [
     | using an associative array:
     |
     | 'my-decision' => [
-    |     'type' => \LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision::class,
+    |     'type' => \EonX\EasyDecision\Decisions\UnanimousDecision::class,
     |     'providers' => [
     |          \App\Decisions\MyDecisionRuleProvider::class, -> Instantiated from container
     |          new \App\Decisions\MyDecisionAdditionalRuleProvider()
@@ -76,7 +76,7 @@ return [
     |
     | Or you have the possibility to use a decision config provider if you prefer.
     | Your decision config providers must implement:
-    | \LoyaltyCorp\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface
+    | \EonX\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface
     |
     | 'my-decision' => \App\Decisions\MyDecisionConfigProvider::class -> Instantiated from container
     | 'my-other-decision' => new \App\Decisions\MyOtherDecisionConfigProvider()

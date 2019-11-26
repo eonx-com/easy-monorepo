@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Implementations;
+namespace EonX\EasyIdentity\Implementations;
 
-use LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException;
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceInterface;
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface;
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface;
+use EonX\EasyIdentity\Exceptions\NoIdentityUserIdException;
+use EonX\EasyIdentity\Interfaces\IdentityServiceInterface;
+use EonX\EasyIdentity\Interfaces\IdentityUserInterface;
+use EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface;
 
 abstract class AbstractIdentityService implements IdentityServiceInterface
 {
     /**
-     * @var \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface
+     * @var \EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface
      */
     private $identityUserService;
 
     /**
      * Create abstract identity service.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface $identityUserService
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface $identityUserService
      */
     public function __construct(IdentityUserServiceInterface $identityUserService)
     {
@@ -28,7 +28,7 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
     /**
      * Get identity user array representation.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
      * @return mixed[]
      */
@@ -40,7 +40,7 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
     /**
      * Set identity user id for given service.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param mixed $id
      *
      * @return void
@@ -53,7 +53,7 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
     /**
      * Set identity value.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param string $key
      * @param mixed $value
      *
@@ -74,11 +74,11 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
     /**
      * Get identity user id.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
      * @return string
      *
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException
+     * @throws \EonX\EasyIdentity\Exceptions\NoIdentityUserIdException
      */
     protected function getIdentityUserId(IdentityUserInterface $user): string
     {
@@ -92,8 +92,4 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
     }
 }
 
-\class_alias(
-    AbstractIdentityService::class,
-    \StepTheFkUp\EasyIdentity\Implementations\AbstractIdentityService::class,
-    false
-);
+

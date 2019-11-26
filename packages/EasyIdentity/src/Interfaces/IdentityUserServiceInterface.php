@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Interfaces;
+namespace EonX\EasyIdentity\Interfaces;
 
 interface IdentityUserServiceInterface
 {
     /**
      * Get identity user array representation.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param string $service
      *
      * @return mixed[]
@@ -18,7 +18,7 @@ interface IdentityUserServiceInterface
     /**
      * Get identity user id for given service.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param string $service
      *
      * @return mixed
@@ -28,7 +28,7 @@ interface IdentityUserServiceInterface
     /**
      * Get identity value.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param string $service
      * @param string $key
      * @param null|mixed $default
@@ -40,7 +40,7 @@ interface IdentityUserServiceInterface
     /**
      * Set identity user id for given service.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param string $service
      * @param mixed $id
      *
@@ -51,7 +51,7 @@ interface IdentityUserServiceInterface
     /**
      * Set identity value.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param string $service
      * @param string $key
      * @param mixed $value
@@ -61,8 +61,4 @@ interface IdentityUserServiceInterface
     public function setIdentityValue(IdentityUserInterface $user, string $service, string $key, $value): void;
 }
 
-\class_alias(
-    IdentityUserServiceInterface::class,
-    \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserServiceInterface::class,
-    false
-);
+

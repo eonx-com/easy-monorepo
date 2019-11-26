@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Decisions;
+namespace EonX\EasyDecision\Tests\Decisions;
 
-use LoyaltyCorp\EasyDecision\Decisions\DecisionConfig;
-use LoyaltyCorp\EasyDecision\Decisions\DecisionFactory;
-use LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision;
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidDecisionException;
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidRuleProviderException;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
-use LoyaltyCorp\EasyDecision\Tests\Stubs\RuleProviderStub;
+use EonX\EasyDecision\Decisions\DecisionConfig;
+use EonX\EasyDecision\Decisions\DecisionFactory;
+use EonX\EasyDecision\Decisions\UnanimousDecision;
+use EonX\EasyDecision\Exceptions\InvalidDecisionException;
+use EonX\EasyDecision\Exceptions\InvalidRuleProviderException;
+use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
+use EonX\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Tests\Stubs\RuleProviderStub;
 
 final class DecisionFactoryTest extends AbstractTestCase
 {

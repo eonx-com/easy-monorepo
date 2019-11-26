@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Tests;
+namespace EonX\EasyRepository\Tests;
 
 use Laravel\Lumen\Application;
 

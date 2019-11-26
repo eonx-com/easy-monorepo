@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCore\Bridge\Laravel;
+namespace EonX\EasyCore\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
-use LoyaltyCorp\EasyCore\Console\Commands\Lumen\CacheConfigCommand;
-use LoyaltyCorp\EasyCore\Console\Commands\Lumen\ClearConfigCommand;
+use EonX\EasyCore\Console\Commands\Lumen\CacheConfigCommand;
+use EonX\EasyCore\Console\Commands\Lumen\ClearConfigCommand;
 
 final class CachedConfigurationServiceProvider extends ServiceProvider
 {

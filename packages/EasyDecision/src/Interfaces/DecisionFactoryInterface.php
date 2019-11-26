@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Interfaces;
+namespace EonX\EasyDecision\Interfaces;
 
 use Psr\Container\ContainerInterface;
 
@@ -10,9 +10,9 @@ interface DecisionFactoryInterface
     /**
      * Create decision for given config.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\DecisionConfigInterface $config
+     * @param \EonX\EasyDecision\Interfaces\DecisionConfigInterface $config
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function create(DecisionConfigInterface $config): DecisionInterface;
 

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Interfaces\Tokens;
+namespace EonX\EasyApiToken\Interfaces\Tokens;
 
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
 
 interface JwtEasyApiTokenInterface extends EasyApiTokenInterface
 {
@@ -14,7 +14,7 @@ interface JwtEasyApiTokenInterface extends EasyApiTokenInterface
      *
      * @return mixed
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException If claim not found on token
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException If claim not found on token
      */
     public function getClaim(string $claim);
 

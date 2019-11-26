@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
+namespace EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
 
-use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareProviderInterface;
-use LoyaltyCorp\EasyPipeline\Interfaces\PipelineNameAwareInterface;
-use LoyaltyCorp\EasyPipeline\Traits\PipelineNameAwareTrait;
+use EonX\EasyPipeline\Interfaces\MiddlewareProviderInterface;
+use EonX\EasyPipeline\Interfaces\PipelineNameAwareInterface;
+use EonX\EasyPipeline\Traits\PipelineNameAwareTrait;
 
 final class PipelineNameAwareMiddlewareProviderStub implements MiddlewareProviderInterface, PipelineNameAwareInterface
 {

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\Console\Commands;
+namespace EonX\EasyCfhighlander\Console\Commands;
 
 use EoneoPay\Utils\Interfaces\StrInterface;
-use LoyaltyCorp\EasyCfhighlander\File\File;
-use LoyaltyCorp\EasyCfhighlander\File\FileStatus;
-use LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface;
-use LoyaltyCorp\EasyCfhighlander\Interfaces\ManifestGeneratorInterface;
-use LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface;
+use EonX\EasyCfhighlander\File\File;
+use EonX\EasyCfhighlander\File\FileStatus;
+use EonX\EasyCfhighlander\Interfaces\FileGeneratorInterface;
+use EonX\EasyCfhighlander\Interfaces\ManifestGeneratorInterface;
+use EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,16 +31,16 @@ abstract class AbstractTemplatesCommand extends Command
     /** @var int */
     public const EXIT_CODE_SUCCESS = 0;
 
-    /** @var \LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface */
+    /** @var \EonX\EasyCfhighlander\Interfaces\FileGeneratorInterface */
     private $fileGenerator;
 
     /** @var \Symfony\Component\Filesystem\Filesystem */
     private $filesystem;
 
-    /** @var \LoyaltyCorp\EasyCfhighlander\Interfaces\ManifestGeneratorInterface */
+    /** @var \EonX\EasyCfhighlander\Interfaces\ManifestGeneratorInterface */
     private $manifestGenerator;
 
-    /** @var \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface */
+    /** @var \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface */
     private $parameterResolver;
 
     /** @var \EoneoPay\Utils\Interfaces\StrInterface */
@@ -49,10 +49,10 @@ abstract class AbstractTemplatesCommand extends Command
     /**
      * AbstractTemplatesCommand constructor.
      *
-     * @param \LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface $fileGenerator
+     * @param \EonX\EasyCfhighlander\Interfaces\FileGeneratorInterface $fileGenerator
      * @param \Symfony\Component\Filesystem\Filesystem $filesystem
-     * @param \LoyaltyCorp\EasyCfhighlander\Interfaces\ManifestGeneratorInterface $manifestGenerator
-     * @param \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface $parameterResolver
+     * @param \EonX\EasyCfhighlander\Interfaces\ManifestGeneratorInterface $manifestGenerator
+     * @param \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface $parameterResolver
      * @param \EoneoPay\Utils\Interfaces\StrInterface $str
      */
     public function __construct(
@@ -155,7 +155,7 @@ abstract class AbstractTemplatesCommand extends Command
         $statuses = [];
 
         foreach ($files as $file) {
-            /** @var \LoyaltyCorp\EasyCfhighlander\File\File $file */
+            /** @var \EonX\EasyCfhighlander\File\File $file */
             $statuses[] = $status = $this->processFile($file, $params);
 
             $progress->setMessage(\sprintf(
@@ -342,7 +342,7 @@ abstract class AbstractTemplatesCommand extends Command
      * @param string $name
      * @param string $project
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\File
+     * @return \EonX\EasyCfhighlander\File\File
      */
     protected function getProjectFileToGenerate(string $cwd, string $name, string $project): File
     {
@@ -373,7 +373,7 @@ abstract class AbstractTemplatesCommand extends Command
      * @param string $cwd
      * @param string $name
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\File
+     * @return \EonX\EasyCfhighlander\File\File
      */
     protected function getSimpleFileToGenerate(string $cwd, string $name): File
     {
@@ -413,10 +413,10 @@ abstract class AbstractTemplatesCommand extends Command
     /**
      * Process file.
      *
-     * @param \LoyaltyCorp\EasyCfhighlander\File\File $file
+     * @param \EonX\EasyCfhighlander\File\File $file
      * @param mixed[] $params
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\FileStatus
+     * @return \EonX\EasyCfhighlander\File\FileStatus
      */
     private function processFile(File $file, array $params): FileStatus
     {

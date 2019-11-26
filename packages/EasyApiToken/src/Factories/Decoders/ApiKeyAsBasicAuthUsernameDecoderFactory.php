@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Factories\Decoders;
+namespace EonX\EasyApiToken\Factories\Decoders;
 
-use LoyaltyCorp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface;
+use EonX\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface;
 
 final class ApiKeyAsBasicAuthUsernameDecoderFactory implements EasyApiTokenDecoderSubFactoryInterface
 {
@@ -14,7 +14,7 @@ final class ApiKeyAsBasicAuthUsernameDecoderFactory implements EasyApiTokenDecod
      *
      * @param null|mixed[] $config
      *
-     * @return \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
+     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      */
     public function build(?array $config = null): EasyApiTokenDecoderInterface
     {

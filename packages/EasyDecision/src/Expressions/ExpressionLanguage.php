@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Expressions;
+namespace EonX\EasyDecision\Expressions;
 
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidExpressionException;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use EonX\EasyDecision\Exceptions\InvalidExpressionException;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 
@@ -17,7 +17,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     private $expressionLanguage;
 
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      */
     private $functions = [];
 
@@ -34,9 +34,9 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     /**
      * Add function to use in expressions.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface $function
+     * @param \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface $function
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     public function addFunction(ExpressionFunctionInterface $function): ExpressionLanguageInterface
     {
@@ -62,7 +62,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     /**
      * Get list of functions added.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      */
     public function getFunctions(): array
     {
@@ -77,7 +77,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
      *
      * @return bool
      *
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\InvalidExpressionException
+     * @throws \EonX\EasyDecision\Exceptions\InvalidExpressionException
      */
     public function validate(string $expression, ?array $names = null): bool
     {

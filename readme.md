@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyMonorepo</h1>
+    <h1>EonX - EasyMonorepo</h1>
     <p>Packages to help you stepping the f*k up in your projects.</p>
 </div>
 

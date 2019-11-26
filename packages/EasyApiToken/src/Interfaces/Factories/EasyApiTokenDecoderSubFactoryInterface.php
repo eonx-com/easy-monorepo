@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Interfaces\Factories;
+namespace EonX\EasyApiToken\Interfaces\Factories;
 
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 
 interface EasyApiTokenDecoderSubFactoryInterface
 {
@@ -12,9 +12,9 @@ interface EasyApiTokenDecoderSubFactoryInterface
      *
      * @param null|mixed[] $config
      *
-     * @return \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
+     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     public function build(?array $config = null): EasyApiTokenDecoderInterface;
 }

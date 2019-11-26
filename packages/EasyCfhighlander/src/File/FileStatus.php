@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\File;
+namespace EonX\EasyCfhighlander\File;
 
 final class FileStatus
 {
-    /** @var \LoyaltyCorp\EasyCfhighlander\File\File */
+    /** @var \EonX\EasyCfhighlander\File\File */
     private $file;
 
     /** @var null|string */
@@ -17,7 +17,7 @@ final class FileStatus
     /**
      * FileStatus constructor.
      *
-     * @param \LoyaltyCorp\EasyCfhighlander\File\File $file
+     * @param \EonX\EasyCfhighlander\File\File $file
      * @param string $status
      * @param null|string $hash
      */
@@ -31,7 +31,7 @@ final class FileStatus
     /**
      * Get file.
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\File\File
+     * @return \EonX\EasyCfhighlander\File\File
      */
     public function getFile(): File
     {

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Interfaces;
+namespace EonX\EasyPipeline\Interfaces;
 
 interface MiddlewareLoggerAwareInterface
 {
     /**
      * Set middleware logger.
      *
-     * @param \LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface $logger
+     * @param \EonX\EasyPipeline\Interfaces\MiddlewareLoggerInterface $logger
      *
      * @return void
      */

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\Console;
+namespace EonX\EasyCfhighlander\Console;
 
 use Symfony\Component\Console\Application;
 use Symplify\PackageBuilder\Console\HelpfulApplicationTrait;

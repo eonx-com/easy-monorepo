@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
+namespace EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
 
-use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareInterface;
+use EonX\EasyPipeline\Interfaces\MiddlewareInterface;
 
 final class ChangeNameMiddleware implements MiddlewareInterface
 {

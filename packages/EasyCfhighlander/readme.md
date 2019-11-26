@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyCfhighlander</h1>
+    <h1>EonX - EasyCfhighlander</h1>
     <p>CLI tool to generate Cfhighlander templates.</p>
 </div>
 
@@ -12,7 +12,7 @@
 The recommended way to install this package is to use [Composer][1].
 
 ```bash
-$ composer require loyaltycorp/easy-cfhighlander
+$ composer require eonx/easy-cfhighlander
 ```
 
 ### Available commands

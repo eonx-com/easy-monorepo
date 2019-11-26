@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Decisions;
+namespace EonX\EasyDecision\Tests\Decisions;
 
-use LoyaltyCorp\EasyDecision\Decisions\ValueDecision;
-use LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException;
-use LoyaltyCorp\EasyDecision\Exceptions\MissingValueIndexException;
-use LoyaltyCorp\EasyDecision\Exceptions\ReservedContextIndexException;
-use LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException;
-use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
-use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
-use LoyaltyCorp\EasyDecision\Tests\Stubs\RuleWithNonBlockingErrorStub;
+use EonX\EasyDecision\Decisions\ValueDecision;
+use EonX\EasyDecision\Exceptions\ContextNotSetException;
+use EonX\EasyDecision\Exceptions\MissingValueIndexException;
+use EonX\EasyDecision\Exceptions\ReservedContextIndexException;
+use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
+use EonX\EasyDecision\Interfaces\RuleInterface;
+use EonX\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Tests\Stubs\RuleWithNonBlockingErrorStub;
 
 final class ValueDecisionTest extends AbstractTestCase
 {
@@ -113,7 +113,7 @@ final class ValueDecisionTest extends AbstractTestCase
     /**
      * Get rule to throw exception.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
+     * @return \EonX\EasyDecision\Interfaces\RuleInterface
      */
     private function getExceptionRule(): RuleInterface
     {
@@ -168,7 +168,7 @@ final class ValueDecisionTest extends AbstractTestCase
     /**
      * Get rule to modify value from input.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
+     * @return \EonX\EasyDecision\Interfaces\RuleInterface
      */
     private function getModifyValueRuleInArray(): RuleInterface
     {

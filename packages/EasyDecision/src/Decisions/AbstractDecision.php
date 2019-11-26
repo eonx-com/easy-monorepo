@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Decisions;
+namespace EonX\EasyDecision\Decisions;
 
-use LoyaltyCorp\EasyDecision\Context;
-use LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException;
-use LoyaltyCorp\EasyDecision\Exceptions\EmptyRulesException;
-use LoyaltyCorp\EasyDecision\Exceptions\ReservedContextIndexException;
-use LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException;
-use LoyaltyCorp\EasyDecision\Interfaces\ContextAwareInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
+use EonX\EasyDecision\Context;
+use EonX\EasyDecision\Exceptions\ContextNotSetException;
+use EonX\EasyDecision\Exceptions\EmptyRulesException;
+use EonX\EasyDecision\Exceptions\ReservedContextIndexException;
+use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
+use EonX\EasyDecision\Interfaces\ContextAwareInterface;
+use EonX\EasyDecision\Interfaces\ContextInterface;
+use EonX\EasyDecision\Interfaces\DecisionInterface;
+use EonX\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
+use EonX\EasyDecision\Interfaces\RuleInterface;
 
 abstract class AbstractDecision implements DecisionInterface
 {
-    /** @var \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface */
+    /** @var \EonX\EasyDecision\Interfaces\ContextInterface */
     private $context;
 
     /** @var mixed[] */
@@ -25,7 +25,7 @@ abstract class AbstractDecision implements DecisionInterface
     /** @var string */
     private $name;
 
-    /** @var \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[] */
+    /** @var \EonX\EasyDecision\Interfaces\RuleInterface[] */
     private $rules = [];
 
     /**
@@ -41,9 +41,9 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Add rule.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface $rule
+     * @param \EonX\EasyDecision\Interfaces\RuleInterface $rule
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function addRule(RuleInterface $rule): DecisionInterface
     {
@@ -55,9 +55,9 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Set rules.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[] $rules
+     * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function addRules(array $rules): DecisionInterface
     {
@@ -71,9 +71,9 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Get context.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
+     * @return \EonX\EasyDecision\Interfaces\ContextInterface
      *
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\ContextNotSetException
+     * @throws \EonX\EasyDecision\Exceptions\ContextNotSetException
      */
     public function getContext(): ContextInterface
     {
@@ -103,9 +103,9 @@ abstract class AbstractDecision implements DecisionInterface
      *
      * @return mixed
      *
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\EmptyRulesException
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\UnableToMakeDecisionException
+     * @throws \EonX\EasyDecision\Exceptions\EmptyRulesException
+     * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
     public function make(array $input)
     {
@@ -142,7 +142,7 @@ abstract class AbstractDecision implements DecisionInterface
      *
      * @param string $name
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function setName(string $name): DecisionInterface
     {
@@ -161,7 +161,7 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Handle rule output.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
      * @param string $rule
      * @param mixed $output
      *
@@ -196,9 +196,9 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Get sorted rules (priority value 0 is higher than 100).
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[]
+     * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
     private function getRules(ContextInterface $context): array
     {
@@ -220,7 +220,7 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Process rules for given context.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return self
      */

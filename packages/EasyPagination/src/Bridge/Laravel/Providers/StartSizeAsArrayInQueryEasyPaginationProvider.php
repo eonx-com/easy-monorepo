@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPagination\Bridge\Laravel\Providers;
+namespace EonX\EasyPagination\Bridge\Laravel\Providers;
 
-use LoyaltyCorp\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
+use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
 
 final class StartSizeAsArrayInQueryEasyPaginationProvider extends AbstractStartSizeEasyPaginationProvider
 {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Interfaces\Expressions;
+namespace EonX\EasyDecision\Interfaces\Expressions;
 
 interface ExpressionFunctionFactoryInterface
 {
@@ -10,9 +10,9 @@ interface ExpressionFunctionFactoryInterface
      *
      * @param mixed $expressionFunction
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      *
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
      */
     public function create($expressionFunction): ExpressionFunctionInterface;
 }

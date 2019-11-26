@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Expressions;
+namespace EonX\EasyDecision\Tests\Expressions;
 
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
-use LoyaltyCorp\EasyDecision\Tests\Stubs\ExpressionFunctionProviderStub;
+use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
+use EonX\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Tests\Stubs\ExpressionFunctionProviderStub;
 
 final class ExpressionLanguageFactoryTest extends AbstractTestCase
 {

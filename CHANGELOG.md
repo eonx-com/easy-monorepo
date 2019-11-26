@@ -509,7 +509,7 @@
 ## [v0.6.0] - 2019-04-24
 
 - [#22] Fix: Rename filename based on classname, Thanks to [@fsti-francohora]
-- [#23] Switch to LoyaltyCorp namespaces
+- [#23] Switch to EonX namespaces
 
 <!-- dumped content end -->
 

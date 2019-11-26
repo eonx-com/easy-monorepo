@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces;
+namespace EonX\EasyDecision\Bridge\Common\Interfaces;
 
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 
 interface ExpressionLanguageConfigFactoryInterface
 {
@@ -12,7 +12,7 @@ interface ExpressionLanguageConfigFactoryInterface
      *
      * @param string $decision
      *
-     * @return null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
+     * @return null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
      */
     public function create(string $decision): ?ExpressionLanguageConfigInterface;
 }

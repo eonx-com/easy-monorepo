@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\External\Interfaces;
+namespace EonX\EasyApiToken\External\Interfaces;
 
 interface JwtDriverInterface
 {

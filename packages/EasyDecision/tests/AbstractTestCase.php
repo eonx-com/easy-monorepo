@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests;
+namespace EonX\EasyDecision\Tests;
 
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunctionFactory;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageFactory;
-use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
-use LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRuleFactory;
-use LoyaltyCorp\EasyDecision\Tests\Stubs\RuleStub;
+use EonX\EasyDecision\Expressions\ExpressionFunctionFactory;
+use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
+use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
+use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use EonX\EasyDecision\Interfaces\RuleInterface;
+use EonX\EasyDecision\Rules\ExpressionLanguageRuleFactory;
+use EonX\EasyDecision\Tests\Stubs\RuleStub;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,21 +22,21 @@ use PHPUnit\Framework\TestCase;
 abstract class AbstractTestCase extends TestCase
 {
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
+     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
      */
     private $expressionLanguageFactory;
 
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface
+     * @var \EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface
      */
     private $languageRuleFactory;
 
     /**
      * Create expression language for given config.
      *
-     * @param null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     * @param null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     protected function createExpressionLanguage(
         ?ExpressionLanguageConfigInterface $config = null
@@ -50,7 +50,7 @@ abstract class AbstractTestCase extends TestCase
      * @param string $name
      * @param null|int $priority
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
+     * @return \EonX\EasyDecision\Interfaces\RuleInterface
      */
     protected function createFalseRule(string $name, ?int $priority = null): RuleInterface
     {
@@ -63,7 +63,7 @@ abstract class AbstractTestCase extends TestCase
      * @param string $expression
      * @param null|int $priority
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
+     * @return \EonX\EasyDecision\Interfaces\RuleInterface
      */
     protected function createLanguageRule(string $expression, ?int $priority = null): RuleInterface
     {
@@ -76,7 +76,7 @@ abstract class AbstractTestCase extends TestCase
      * @param string $name
      * @param null|int $priority
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
+     * @return \EonX\EasyDecision\Interfaces\RuleInterface
      */
     protected function createTrueRule(string $name, ?int $priority = null): RuleInterface
     {
@@ -89,7 +89,7 @@ abstract class AbstractTestCase extends TestCase
      * @param string $name
      * @param null|int $priority
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface
+     * @return \EonX\EasyDecision\Interfaces\RuleInterface
      */
     protected function createUnsupportedRule(string $name, ?int $priority = null): RuleInterface
     {
@@ -99,7 +99,7 @@ abstract class AbstractTestCase extends TestCase
     /**
      * Get expression language factory.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
      */
     protected function getExpressionLanguageFactory(): ExpressionLanguageFactoryInterface
     {
@@ -113,7 +113,7 @@ abstract class AbstractTestCase extends TestCase
     /**
      * Get expression language rule factory.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface
+     * @return \EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface
      */
     private function getLanguageRuleFactory(): ExpressionLanguageRuleFactoryInterface
     {

@@ -1,5 +1,4 @@
 parameters:
     authors_to_ignore: ['natepage']
 
-    repository_url: 'https://github.com/loyaltycorp/easy-monorepo'
-    
+    repository_url: 'https://github.com/eonx-com/easy-monorepo'

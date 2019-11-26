@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\Console\Commands;
+namespace EonX\EasyDocker\Console\Commands;
 
 use EoneoPay\Utils\Interfaces\StrInterface;
-use LoyaltyCorp\EasyDocker\File\File;
-use LoyaltyCorp\EasyDocker\File\FileStatus;
-use LoyaltyCorp\EasyDocker\Interfaces\FileGeneratorInterface;
-use LoyaltyCorp\EasyDocker\Interfaces\ManifestGeneratorInterface;
-use LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface;
+use EonX\EasyDocker\File\File;
+use EonX\EasyDocker\File\FileStatus;
+use EonX\EasyDocker\Interfaces\FileGeneratorInterface;
+use EonX\EasyDocker\Interfaces\ManifestGeneratorInterface;
+use EonX\EasyDocker\Interfaces\ParameterResolverInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,16 +28,16 @@ abstract class AbstractTemplatesCommand extends Command
 
     public const EXIT_CODE_SUCCESS = 0;
 
-    /** @var \LoyaltyCorp\EasyDocker\Interfaces\FileGeneratorInterface */
+    /** @var \EonX\EasyDocker\Interfaces\FileGeneratorInterface */
     private $fileGenerator;
 
     /** @var \Symfony\Component\Filesystem\Filesystem */
     private $filesystem;
 
-    /** @var \LoyaltyCorp\EasyDocker\Interfaces\ManifestGeneratorInterface */
+    /** @var \EonX\EasyDocker\Interfaces\ManifestGeneratorInterface */
     private $manifestGenerator;
 
-    /** @var \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface */
+    /** @var \EonX\EasyDocker\Interfaces\ParameterResolverInterface */
     private $parameterResolver;
 
     /** @var \EoneoPay\Utils\Interfaces\StrInterface */
@@ -46,10 +46,10 @@ abstract class AbstractTemplatesCommand extends Command
     /**
      * AbstractTemplatesCommand constructor.
      *
-     * @param \LoyaltyCorp\EasyDocker\Interfaces\FileGeneratorInterface $fileGenerator
+     * @param \EonX\EasyDocker\Interfaces\FileGeneratorInterface $fileGenerator
      * @param \Symfony\Component\Filesystem\Filesystem $filesystem
-     * @param \LoyaltyCorp\EasyDocker\Interfaces\ManifestGeneratorInterface $manifestGenerator
-     * @param \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface $parameterResolver
+     * @param \EonX\EasyDocker\Interfaces\ManifestGeneratorInterface $manifestGenerator
+     * @param \EonX\EasyDocker\Interfaces\ParameterResolverInterface $parameterResolver
      * @param \EoneoPay\Utils\Interfaces\StrInterface $str
      */
     public function __construct(
@@ -131,7 +131,7 @@ abstract class AbstractTemplatesCommand extends Command
         $statuses = [];
 
         foreach ($files as $file) {
-            /** @var \LoyaltyCorp\EasyDocker\File\File $file */
+            /** @var \EonX\EasyDocker\File\File $file */
             $statuses[] = $status = $this->processFile($file, $params);
 
             $progress->setMessage(\sprintf(
@@ -153,7 +153,7 @@ abstract class AbstractTemplatesCommand extends Command
      * @param string $cwd
      * @param string $name
      *
-     * @return \LoyaltyCorp\EasyDocker\File\File
+     * @return \EonX\EasyDocker\File\File
      */
     protected function getSimpleFile(string $cwd, string $name): File
     {
@@ -297,10 +297,10 @@ abstract class AbstractTemplatesCommand extends Command
     /**
      * Process file.
      *
-     * @param \LoyaltyCorp\EasyDocker\File\File $file
+     * @param \EonX\EasyDocker\File\File $file
      * @param mixed[] $params
      *
-     * @return \LoyaltyCorp\EasyDocker\File\FileStatus
+     * @return \EonX\EasyDocker\File\FileStatus
      */
     private function processFile(File $file, array $params): FileStatus
     {

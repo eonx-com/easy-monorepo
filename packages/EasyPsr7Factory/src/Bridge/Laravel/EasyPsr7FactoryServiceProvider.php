@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPsr7Factory\Bridge\Laravel;
+namespace EonX\EasyPsr7Factory\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use LoyaltyCorp\EasyPsr7Factory\EasyPsr7Factory;
-use LoyaltyCorp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
+use EonX\EasyPsr7Factory\EasyPsr7Factory;
+use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 
 final class EasyPsr7FactoryServiceProvider extends ServiceProvider
 {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\Factories;
+namespace EonX\EasyDocker\Factories;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;

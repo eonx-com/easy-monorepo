@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Bridge\Laravel;
+namespace EonX\EasyApiToken\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use LoyaltyCorp\EasyApiToken\Factories\EasyApiTokenDecoderFactory;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface as DecoderFactoryInterface;
+use EonX\EasyApiToken\Factories\EasyApiTokenDecoderFactory;
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface as DecoderFactoryInterface;
 
 final class EasyApiTokenServiceProvider extends ServiceProvider
 {

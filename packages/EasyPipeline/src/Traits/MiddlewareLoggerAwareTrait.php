@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Traits;
+namespace EonX\EasyPipeline\Traits;
 
-use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface;
+use EonX\EasyPipeline\Interfaces\MiddlewareLoggerInterface;
 
 trait MiddlewareLoggerAwareTrait
 {
     /**
-     * @var \LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface
+     * @var \EonX\EasyPipeline\Interfaces\MiddlewareLoggerInterface
      */
     private $logger;
 
     /**
      * Set middleware logger.
      *
-     * @param \LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface $logger
+     * @param \EonX\EasyPipeline\Interfaces\MiddlewareLoggerInterface $logger
      *
      * @return void
      */

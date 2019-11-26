@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Exceptions;
+namespace EonX\EasyApiToken\Exceptions;
 
 final class InvalidArgumentException extends AbstractEasyApiTokenException
 {
