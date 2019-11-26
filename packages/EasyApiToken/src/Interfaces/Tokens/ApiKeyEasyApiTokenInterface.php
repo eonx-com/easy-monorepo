@@ -14,9 +14,3 @@ interface ApiKeyEasyApiTokenInterface extends EasyApiTokenInterface
      */
     public function getApiKey(): string;
 }
-
-\class_alias(
-    ApiKeyEasyApiTokenInterface::class,
-    'StepTheFkUp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface',
-    false
-);

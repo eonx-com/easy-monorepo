@@ -53,9 +53,3 @@ final class JwtEasyApiTokenFactory implements JwtEasyApiTokenFactoryInterface
         }
     }
 }
-
-\class_alias(
-    JwtEasyApiTokenFactory::class,
-    'StepTheFkUp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory',
-    false
-);

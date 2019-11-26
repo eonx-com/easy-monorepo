@@ -102,8 +102,4 @@ final class AffirmativeDecisionTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    AffirmativeDecisionTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Decisions\AffirmativeDecisionTest',
-    false
-);
+

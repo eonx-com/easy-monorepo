@@ -42,8 +42,4 @@ interface ExpressionLanguageInterface
     public function validate(string $expression, ?array $names = null): bool;
 }
 
-\class_alias(
-    ExpressionLanguageInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface',
-    false
-);
+

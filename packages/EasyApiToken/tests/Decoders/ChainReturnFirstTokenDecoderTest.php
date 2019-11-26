@@ -102,9 +102,3 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
         return new ChainReturnFirstTokenDecoder([new BasicAuthDecoder(), new ApiKeyAsBasicAuthUsernameDecoder()]);
     }
 }
-
-\class_alias(
-    ChainReturnFirstTokenDecoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Decoders\ChainReturnFirstTokenDecoderTest',
-    false
-);

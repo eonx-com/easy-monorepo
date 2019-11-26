@@ -84,8 +84,4 @@ final class StartSizeConfig implements StartSizeConfigInterface
     }
 }
 
-\class_alias(
-    StartSizeConfig::class,
-    'StepTheFkUp\EasyPagination\Resolvers\Config\StartSizeConfig',
-    false
-);
+

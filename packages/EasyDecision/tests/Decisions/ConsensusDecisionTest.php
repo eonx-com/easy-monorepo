@@ -115,8 +115,4 @@ final class ConsensusDecisionTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    ConsensusDecisionTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Decisions\ConsensusDecisionTest',
-    false
-);
+

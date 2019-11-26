@@ -77,8 +77,4 @@ final class StartSizeAsArrayInQueryResolverTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    StartSizeAsArrayInQueryResolverTest::class,
-    'StepTheFkUp\EasyPagination\Tests\Resolvers\StartSizeAsArrayInQueryResolverTest',
-    false
-);
+

@@ -18,9 +18,3 @@ interface JwtEasyApiTokenFactoryInterface
      */
     public function createFromString(string $token): JwtEasyApiTokenInterface;
 }
-
-\class_alias(
-    JwtEasyApiTokenFactoryInterface::class,
-    'StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface',
-    false
-);

@@ -102,8 +102,4 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     }
 }
 
-\class_alias(
-    ExpressionLanguage::class,
-    'StepTheFkUp\EasyDecision\Expressions\ExpressionLanguage',
-    false
-);
+

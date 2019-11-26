@@ -52,8 +52,4 @@ final class StartSizeAsArrayInQueryResolver implements StartSizeDataResolverInte
     }
 }
 
-\class_alias(
-    StartSizeAsArrayInQueryResolver::class,
-    'StepTheFkUp\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver',
-    false
-);
+

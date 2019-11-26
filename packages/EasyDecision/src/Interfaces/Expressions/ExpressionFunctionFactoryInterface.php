@@ -17,8 +17,4 @@ interface ExpressionFunctionFactoryInterface
     public function create($expressionFunction): ExpressionFunctionInterface;
 }
 
-\class_alias(
-    ExpressionFunctionFactoryInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface',
-    false
-);
+

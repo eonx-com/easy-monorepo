@@ -123,9 +123,3 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
         return new JwtTokenDecoder($this->createJwtEasyApiTokenFactory($this->createAuth0JwtDriver()));
     }
 }
-
-\class_alias(
-    Auth0JwtTokenEncoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Encoders\Auth0JwtTokenEncoderTest',
-    false
-);

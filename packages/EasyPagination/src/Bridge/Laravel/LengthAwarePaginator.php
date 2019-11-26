@@ -94,8 +94,4 @@ final class LengthAwarePaginator implements LengthAwarePaginatorInterface
     }
 }
 
-\class_alias(
-    LengthAwarePaginator::class,
-    'StepTheFkUp\EasyPagination\Bridge\Laravel\LengthAwarePaginator',
-    false
-);
+

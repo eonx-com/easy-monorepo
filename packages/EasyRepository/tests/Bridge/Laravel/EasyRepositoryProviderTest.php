@@ -53,8 +53,4 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
     }
 }
 
-\class_alias(
-    EasyRepositoryProviderTest::class,
-    'StepTheFkUp\EasyRepository\Tests\Bridge\Laravel\EasyRepositoryProviderTest',
-    false
-);
+

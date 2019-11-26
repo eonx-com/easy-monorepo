@@ -9,9 +9,3 @@ final class ReservedContextIndexException extends \InvalidArgumentException impl
 {
     // No body needed.
 }
-
-\class_alias(
-    ReservedContextIndexException::class,
-    'StepTheFkUp\EasyDecision\Exceptions\ReservedContextIndexException',
-    false
-);

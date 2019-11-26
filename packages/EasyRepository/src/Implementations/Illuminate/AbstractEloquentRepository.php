@@ -166,8 +166,4 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
     abstract protected function getModel(): Model;
 }
 
-\class_alias(
-    AbstractEloquentRepository::class,
-    'StepTheFkUp\EasyRepository\Implementations\Illuminate\AbstractEloquentRepository',
-    false
-);
+

@@ -25,8 +25,4 @@ trait ExpressionLanguageAwareTrait
     }
 }
 
-\class_alias(
-    ExpressionLanguageAwareTrait::class,
-    'StepTheFkUp\EasyDecision\Traits\ExpressionLanguageAwareTrait',
-    false
-);
+

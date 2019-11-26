@@ -88,8 +88,4 @@ final class RuleStub implements RuleInterface
     }
 }
 
-\class_alias(
-    RuleStub::class,
-    'StepTheFkUp\EasyDecision\Tests\Stubs\RuleStub',
-    false
-);
+

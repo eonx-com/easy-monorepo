@@ -125,8 +125,4 @@ abstract class AbstractTestCase extends TestCase
     }
 }
 
-\class_alias(
-    AbstractTestCase::class,
-    'StepTheFkUp\EasyDecision\Tests\AbstractTestCase',
-    false
-);
+

@@ -18,8 +18,4 @@ final class DoctrineOrmRepositoryStub extends AbstractDoctrineOrmRepository
     }
 }
 
-\class_alias(
-    DoctrineOrmRepositoryStub::class,
-    'StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine\ORM\DoctrineOrmRepositoryStub',
-    false
-);
+

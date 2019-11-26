@@ -17,8 +17,4 @@ interface ExpressionLanguageFactoryInterface
     public function create(ExpressionLanguageConfigInterface $config): ExpressionLanguage;
 }
 
-\class_alias(
-    ExpressionLanguageFactoryInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface',
-    false
-);
+

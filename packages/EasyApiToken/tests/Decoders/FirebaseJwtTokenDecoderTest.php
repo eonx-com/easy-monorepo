@@ -101,9 +101,3 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
         ]));
     }
 }
-
-\class_alias(
-    FirebaseJwtTokenDecoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Decoders\FirebaseJwtTokenDecoderTest',
-    false
-);

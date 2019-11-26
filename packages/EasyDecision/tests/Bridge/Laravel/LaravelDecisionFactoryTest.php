@@ -172,8 +172,4 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
     }
 }
 
-\class_alias(
-    LaravelDecisionFactoryTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Bridge\Laravel\LaravelDecisionFactoryTest',
-    false
-);
+

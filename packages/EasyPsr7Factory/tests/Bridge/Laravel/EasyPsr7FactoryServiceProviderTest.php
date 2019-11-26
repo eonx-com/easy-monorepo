@@ -26,7 +26,7 @@ final class EasyPsr7FactoryServiceProviderTest extends AbstractTestCase
     }
 }
 
-\class_alias(
+\
     EasyPsr7FactoryServiceProviderTest::class,
     'StepTheFkUp\EasyPsr7Factory\Tests\Bridge\Laravel\EasyPsr7FactoryServiceProviderTest',
     false

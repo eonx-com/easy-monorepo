@@ -51,9 +51,3 @@ final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
         return null;
     }
 }
-
-\class_alias(
-    ChainReturnFirstTokenDecoder::class,
-    'StepTheFkUp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder',
-    false
-);

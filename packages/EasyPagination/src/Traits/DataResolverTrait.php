@@ -35,8 +35,4 @@ trait DataResolverTrait
     }
 }
 
-\class_alias(
-    DataResolverTrait::class,
-    'StepTheFkUp\EasyPagination\Traits\DataResolverTrait',
-    false
-);
+

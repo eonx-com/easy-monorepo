@@ -54,8 +54,4 @@ abstract class AbstractTestCase extends TestCase
     }
 }
 
-\class_alias(
-    AbstractTestCase::class,
-    'StepTheFkUp\EasyPipeline\Tests\AbstractTestCase',
-    false
-);
+

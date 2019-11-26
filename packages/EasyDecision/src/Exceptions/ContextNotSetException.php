@@ -9,9 +9,3 @@ final class ContextNotSetException extends \RuntimeException implements EasyDeci
 {
     // No body needed.
 }
-
-\class_alias(
-    ContextNotSetException::class,
-    'StepTheFkUp\EasyDecision\Exceptions\ContextNotSetException',
-    false
-);

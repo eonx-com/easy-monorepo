@@ -44,8 +44,4 @@ final class ServiceProvidersTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    ServiceProvidersTest::class,
-    'StepTheFkUp\EasyPagination\Tests\Bridge\Laravel\ServiceProvidersTest',
-    false
-);
+

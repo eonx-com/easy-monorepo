@@ -143,9 +143,3 @@ final class DecisionFactory implements DecisionFactoryInterface
         ));
     }
 }
-
-\class_alias(
-    DecisionFactory::class,
-    'StepTheFkUp\EasyDecision\Decisions\DecisionFactory',
-    false
-);

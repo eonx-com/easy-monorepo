@@ -15,8 +15,4 @@ interface PipelineNameAwareInterface
     public function setPipelineName(string $pipeline): void;
 }
 
-\class_alias(
-    PipelineNameAwareInterface::class,
-    'StepTheFkUp\EasyPipeline\Interfaces\PipelineNameAwareInterface',
-    false
-);
+

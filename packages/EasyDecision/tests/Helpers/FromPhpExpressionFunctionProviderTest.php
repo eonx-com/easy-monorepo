@@ -24,8 +24,4 @@ final class FromPhpExpressionFunctionProviderTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    FromPhpExpressionFunctionProviderTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Helpers\FromPhpExpressionFunctionProviderTest',
-    false
-);
+

@@ -79,8 +79,4 @@ final class UnanimousDecisionTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    UnanimousDecisionTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Decisions\UnanimousDecisionTest',
-    false
-);
+

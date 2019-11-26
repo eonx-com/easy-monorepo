@@ -7,9 +7,3 @@ final class EmptyRequiredPayloadException extends AbstractEasyApiTokenException
 {
     // No body needed.
 }
-
-\class_alias(
-    EmptyRequiredPayloadException::class,
-    'StepTheFkUp\EasyApiToken\Exceptions\EmptyRequiredPayloadException',
-    false
-);

@@ -48,9 +48,3 @@ final class JwtTokenDecoder implements EasyApiTokenDecoderInterface
         return $this->jwtApiTokenFactory->createFromString($authorization);
     }
 }
-
-\class_alias(
-    JwtTokenDecoder::class,
-    'StepTheFkUp\EasyApiToken\Decoders\JwtTokenDecoder',
-    false
-);

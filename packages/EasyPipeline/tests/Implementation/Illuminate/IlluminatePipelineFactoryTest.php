@@ -76,8 +76,4 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
     }
 }
 
-\class_alias(
-    IlluminatePipelineFactoryTest::class,
-    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\IlluminatePipelineFactoryTest',
-    false
-);
+

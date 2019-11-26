@@ -27,8 +27,4 @@ interface ExpressionFunctionInterface
     public function getName(): string;
 }
 
-\class_alias(
-    ExpressionFunctionInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface',
-    false
-);
+

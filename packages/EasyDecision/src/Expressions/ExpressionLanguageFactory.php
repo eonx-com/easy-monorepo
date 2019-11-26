@@ -62,8 +62,4 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
     }
 }
 
-\class_alias(
-    ExpressionLanguageFactory::class,
-    'StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageFactory',
-    false
-);
+

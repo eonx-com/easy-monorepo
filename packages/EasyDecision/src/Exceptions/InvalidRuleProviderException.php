@@ -9,9 +9,3 @@ final class InvalidRuleProviderException extends \InvalidArgumentException imple
 {
     // No body needed.
 }
-
-\class_alias(
-    InvalidRuleProviderException::class,
-    'StepTheFkUp\EasyDecision\Exceptions\InvalidRuleProviderException',
-    false
-);

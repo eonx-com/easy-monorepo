@@ -58,8 +58,4 @@ final class DecisionConfigProviderStub implements DecisionConfigProviderInterfac
     }
 }
 
-\class_alias(
-    DecisionConfigProviderStub::class,
-    'StepTheFkUp\EasyDecision\Tests\Stubs\DecisionConfigProviderStub',
-    false
-);
+

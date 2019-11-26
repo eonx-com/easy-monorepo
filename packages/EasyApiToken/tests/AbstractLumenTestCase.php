@@ -29,9 +29,3 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         return $this->app = $app;
     }
 }
-
-\class_alias(
-    AbstractLumenTestCase::class,
-    'StepTheFkUp\EasyApiToken\Tests\AbstractLumenTestCase',
-    false
-);

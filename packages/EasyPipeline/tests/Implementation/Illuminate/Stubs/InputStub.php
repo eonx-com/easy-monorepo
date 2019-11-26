@@ -45,8 +45,4 @@ final class InputStub
     }
 }
 
-\class_alias(
-    InputStub::class,
-    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\InputStub',
-    false
-);
+

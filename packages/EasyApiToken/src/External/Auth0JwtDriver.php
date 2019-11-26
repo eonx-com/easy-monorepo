@@ -99,9 +99,3 @@ final class Auth0JwtDriver implements JwtDriverInterface
             $input['lifetime'] ?? null);
     }
 }
-
-\class_alias(
-    Auth0JwtDriver::class,
-    'StepTheFkUp\EasyApiToken\External\Auth0JwtDriver',
-    false
-);

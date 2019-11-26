@@ -54,9 +54,3 @@ abstract class AbstractJwtTokenTestCase extends AbstractTestCase
         return (new Str())->startsWith(\strtolower($algo), 'rs');
     }
 }
-
-\class_alias(
-    AbstractJwtTokenTestCase::class,
-    'StepTheFkUp\EasyApiToken\Tests\AbstractJwtTokenTestCase',
-    false
-);

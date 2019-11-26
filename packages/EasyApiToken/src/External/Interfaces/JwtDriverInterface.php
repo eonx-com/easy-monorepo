@@ -23,9 +23,3 @@ interface JwtDriverInterface
      */
     public function encode($input): string;
 }
-
-\class_alias(
-    JwtDriverInterface::class,
-    'StepTheFkUp\EasyApiToken\External\Interfaces\JwtDriverInterface',
-    false
-);

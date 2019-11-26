@@ -18,8 +18,4 @@ final class ValidMiddlewareProviderStub implements MiddlewareProviderInterface
     }
 }
 
-\class_alias(
-    ValidMiddlewareProviderStub::class,
-    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ValidMiddlewareProviderStub',
-    false
-);
+

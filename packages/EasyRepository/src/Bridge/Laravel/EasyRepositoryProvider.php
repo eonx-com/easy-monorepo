@@ -43,9 +43,3 @@ final class EasyRepositoryProvider extends ServiceProvider
         }
     }
 }
-
-\class_alias(
-    EasyRepositoryProvider::class,
-    'StepTheFkUp\EasyRepository\Bridge\Laravel\EasyRepositoryProvider',
-    false
-);

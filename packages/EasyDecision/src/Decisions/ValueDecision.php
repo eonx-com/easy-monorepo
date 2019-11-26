@@ -64,9 +64,3 @@ final class ValueDecision extends AbstractDecision
         $this->updateInput(['value' => $output]);
     }
 }
-
-\class_alias(
-    ValueDecision::class,
-    'StepTheFkUp\EasyDecision\Decisions\ValueDecision',
-    false
-);

@@ -41,8 +41,4 @@ final class ExpressionLanguageFactoryTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    ExpressionLanguageFactoryTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Expressions\ExpressionLanguageFactoryTest',
-    false
-);
+

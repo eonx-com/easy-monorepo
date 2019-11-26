@@ -221,8 +221,4 @@ final class ValueDecisionTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    ValueDecisionTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Decisions\ValueDecisionTest',
-    false
-);
+

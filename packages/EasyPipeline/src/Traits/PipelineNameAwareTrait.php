@@ -23,8 +23,4 @@ trait PipelineNameAwareTrait
     }
 }
 
-\class_alias(
-    PipelineNameAwareTrait::class,
-    'StepTheFkUp\EasyPipeline\Traits\PipelineNameAwareTrait',
-    false
-);
+

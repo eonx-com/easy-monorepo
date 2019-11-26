@@ -100,8 +100,4 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
     }
 }
 
-\class_alias(
-    AbstractStartSizeEasyPaginationProvider::class,
-    'StepTheFkUp\EasyPagination\Bridge\Laravel\Providers\AbstractStartSizeEasyPaginationProvider',
-    false
-);
+

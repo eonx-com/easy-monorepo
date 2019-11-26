@@ -24,8 +24,4 @@ final class StartSizeConfigTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    StartSizeConfigTest::class,
-    'StepTheFkUp\EasyPagination\Tests\Resolvers\Config\StartSizeConfigTest',
-    false
-);
+

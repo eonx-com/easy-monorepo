@@ -36,8 +36,4 @@ final class ExpressionFunctionProviderStub implements ExpressionFunctionProvider
     }
 }
 
-\class_alias(
-    ExpressionFunctionProviderStub::class,
-    'StepTheFkUp\EasyDecision\Tests\Stubs\ExpressionFunctionProviderStub',
-    false
-);
+

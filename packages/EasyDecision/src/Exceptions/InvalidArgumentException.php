@@ -9,9 +9,3 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
 {
     // No body needed.
 }
-
-\class_alias(
-    InvalidArgumentException::class,
-    'StepTheFkUp\EasyDecision\Exceptions\InvalidArgumentException',
-    false
-);

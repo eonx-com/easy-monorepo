@@ -43,8 +43,4 @@ interface DecisionConfigInterface
     public function getRuleProviders(): array;
 }
 
-\class_alias(
-    DecisionConfigInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\DecisionConfigInterface',
-    false
-);
+

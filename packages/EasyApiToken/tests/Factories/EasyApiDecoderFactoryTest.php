@@ -387,9 +387,3 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $factory->build($key);
     }
 }
-
-\class_alias(
-    EasyApiDecoderFactoryTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Factories\EasyApiDecoderFactoryTest',
-    false
-);

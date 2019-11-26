@@ -51,9 +51,3 @@ final class BasicAuthEasyApiTokenTest extends AbstractTestCase
         return new BasicAuthEasyApiToken('username', 'password');
     }
 }
-
-\class_alias(
-    BasicAuthEasyApiTokenTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Tokens\BasicAuthEasyApiTokenTest',
-    false
-);

@@ -62,8 +62,4 @@ interface DecisionInterface
     public function setName(string $name): self;
 }
 
-\class_alias(
-    DecisionInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\DecisionInterface',
-    false
-);
+

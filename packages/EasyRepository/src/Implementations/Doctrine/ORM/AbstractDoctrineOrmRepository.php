@@ -32,8 +32,4 @@ abstract class AbstractDoctrineOrmRepository implements DatabaseRepositoryInterf
     abstract protected function getEntityClass(): string;
 }
 
-\class_alias(
-    AbstractDoctrineOrmRepository::class,
-    'StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\AbstractDoctrineOrmRepository',
-    false
-);
+

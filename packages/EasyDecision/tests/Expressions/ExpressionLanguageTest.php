@@ -65,8 +65,4 @@ final class ExpressionLanguageTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    ExpressionLanguageTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Expressions\ExpressionLanguageTest',
-    false
-);
+

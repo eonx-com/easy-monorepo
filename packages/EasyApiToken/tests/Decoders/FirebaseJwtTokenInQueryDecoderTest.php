@@ -69,9 +69,3 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
         self::assertNull($decoder->decode($this->createServerRequest()));
     }
 }
-
-\class_alias(
-    FirebaseJwtTokenInQueryDecoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Decoders\FirebaseJwtTokenInQueryDecoderTest',
-    false
-);

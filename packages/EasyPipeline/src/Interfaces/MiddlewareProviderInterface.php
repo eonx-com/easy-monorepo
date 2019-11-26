@@ -13,8 +13,4 @@ interface MiddlewareProviderInterface
     public function getMiddlewareList(): array;
 }
 
-\class_alias(
-    MiddlewareProviderInterface::class,
-    'StepTheFkUp\EasyPipeline\Interfaces\MiddlewareProviderInterface',
-    false
-);
+

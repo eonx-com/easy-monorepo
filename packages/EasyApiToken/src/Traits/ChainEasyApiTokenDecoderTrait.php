@@ -51,9 +51,3 @@ trait ChainEasyApiTokenDecoderTrait
         }
     }
 }
-
-\class_alias(
-    ChainEasyApiTokenDecoderTrait::class,
-    'StepTheFkUp\EasyApiToken\Traits\ChainEasyApiTokenDecoderTrait',
-    false
-);

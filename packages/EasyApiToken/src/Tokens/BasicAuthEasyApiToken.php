@@ -62,9 +62,3 @@ final class BasicAuthEasyApiToken implements BasicAuthEasyApiTokenInterface
         return $this->username;
     }
 }
-
-\class_alias(
-    BasicAuthEasyApiToken::class,
-    'StepTheFkUp\EasyApiToken\Tokens\BasicAuthEasyApiToken',
-    false
-);

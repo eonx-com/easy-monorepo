@@ -80,9 +80,3 @@ final class BasicAuthDecoderTest extends AbstractTestCase
         }
     }
 }
-
-\class_alias(
-    BasicAuthDecoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Decoders\BasicAuthDecoderTest',
-    false
-);

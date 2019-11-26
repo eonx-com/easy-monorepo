@@ -53,9 +53,3 @@ final class ConsensusDecision extends AbstractDecision
         }
     }
 }
-
-\class_alias(
-    ConsensusDecision::class,
-    'StepTheFkUp\EasyDecision\Decisions\ConsensusDecision',
-    false
-);

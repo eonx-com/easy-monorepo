@@ -67,8 +67,4 @@ final class ExpressionFunction implements ExpressionFunctionInterface
     }
 }
 
-\class_alias(
-    ExpressionFunction::class,
-    'StepTheFkUp\EasyDecision\Expressions\ExpressionFunction',
-    false
-);
+

@@ -16,8 +16,4 @@ interface MiddlewareLoggerInterface
     public function log(string $middleware, $content): void;
 }
 
-\class_alias(
-    MiddlewareLoggerInterface::class,
-    'StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerInterface',
-    false
-);
+

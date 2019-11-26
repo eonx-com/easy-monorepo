@@ -78,9 +78,3 @@ final class ApiKeyAsBasicAuthUsernameDecoderTest extends AbstractTestCase
         }
     }
 }
-
-\class_alias(
-    ApiKeyAsBasicAuthUsernameDecoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Decoders\ApiKeyAsBasicAuthUsernameDecoderTest',
-    false
-);

@@ -83,8 +83,4 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     }
 }
 
-\class_alias(
-    ExpressionLanguageRule::class,
-    'StepTheFkUp\EasyDecision\Rules\ExpressionLanguageRule',
-    false
-);
+

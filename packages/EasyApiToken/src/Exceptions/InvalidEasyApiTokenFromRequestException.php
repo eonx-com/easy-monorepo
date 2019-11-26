@@ -7,9 +7,3 @@ final class InvalidEasyApiTokenFromRequestException extends AbstractEasyApiToken
 {
     // No body needed.
 }
-
-\class_alias(
-    InvalidEasyApiTokenFromRequestException::class,
-    'StepTheFkUp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException',
-    false
-);

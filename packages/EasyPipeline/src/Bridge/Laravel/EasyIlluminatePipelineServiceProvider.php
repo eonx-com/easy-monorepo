@@ -84,8 +84,4 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
     }
 }
 
-\class_alias(
-    EasyIlluminatePipelineServiceProvider::class,
-    'StepTheFkUp\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider',
-    false
-);
+

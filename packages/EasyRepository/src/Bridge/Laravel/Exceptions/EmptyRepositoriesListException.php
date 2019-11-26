@@ -11,8 +11,4 @@ final class EmptyRepositoriesListException extends Exception implements EasyRepo
     // No body needed.
 }
 
-\class_alias(
-    EmptyRepositoriesListException::class,
-    'StepTheFkUp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException',
-    false
-);
+

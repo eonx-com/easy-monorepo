@@ -106,9 +106,3 @@ final class Context implements ContextInterface
         return $this;
     }
 }
-
-\class_alias(
-    Context::class,
-    'StepTheFkUp\EasyDecision\Context',
-    false
-);

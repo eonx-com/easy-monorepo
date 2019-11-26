@@ -80,9 +80,3 @@ final class BasicAuthEncoderTest extends AbstractTestCase
         (new BasicAuthEncoder())->encode(new BasicAuthEasyApiToken('', 'password'));
     }
 }
-
-\class_alias(
-    BasicAuthEncoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Encoders\BasicAuthEncoderTest',
-    false
-);

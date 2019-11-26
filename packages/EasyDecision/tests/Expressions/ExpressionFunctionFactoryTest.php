@@ -115,8 +115,4 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    ExpressionFunctionFactoryTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Expressions\ExpressionFunctionFactoryTest',
-    false
-);
+

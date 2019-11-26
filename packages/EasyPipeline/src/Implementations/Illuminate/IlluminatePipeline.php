@@ -104,8 +104,4 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
     }
 }
 
-\class_alias(
-    IlluminatePipeline::class,
-    'StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline',
-    false
-);
+

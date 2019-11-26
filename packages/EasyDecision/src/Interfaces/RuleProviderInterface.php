@@ -15,8 +15,4 @@ interface RuleProviderInterface
     public function getRules(?array $params = null): array;
 }
 
-\class_alias(
-    RuleProviderInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\RuleProviderInterface',
-    false
-);
+

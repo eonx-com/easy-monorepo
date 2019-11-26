@@ -68,9 +68,3 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
         return $this->createAuth0JwtDriver(null, null, static::$key)->encode([]);
     }
 }
-
-\class_alias(
-    AbstractAuth0JwtTokenTestCase::class,
-    'StepTheFkUp\EasyApiToken\Tests\AbstractAuth0JwtTokenTestCase',
-    false
-);

@@ -63,9 +63,3 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
         return isset($this->payload[$claim]);
     }
 }
-
-\class_alias(
-    JwtEasyApiToken::class,
-    'StepTheFkUp\EasyApiToken\Tokens\JwtEasyApiToken',
-    false
-);

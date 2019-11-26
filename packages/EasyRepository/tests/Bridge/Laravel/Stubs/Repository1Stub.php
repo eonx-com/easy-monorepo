@@ -7,8 +7,4 @@ final class Repository1Stub
 {
 }
 
-\class_alias(
-    Repository1Stub::class,
-    'StepTheFkUp\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository1Stub',
-    false
-);
+

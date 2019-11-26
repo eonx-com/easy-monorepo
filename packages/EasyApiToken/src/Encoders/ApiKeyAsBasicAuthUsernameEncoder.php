@@ -42,9 +42,3 @@ final class ApiKeyAsBasicAuthUsernameEncoder implements EasyApiTokenEncoderInter
         throw new UnableToEncodeEasyApiTokenException(\sprintf('In "%s", api key empty.', \get_class($this)));
     }
 }
-
-\class_alias(
-    ApiKeyAsBasicAuthUsernameEncoder::class,
-    'StepTheFkUp\EasyApiToken\Encoders\ApiKeyAsBasicAuthUsernameEncoder',
-    false
-);

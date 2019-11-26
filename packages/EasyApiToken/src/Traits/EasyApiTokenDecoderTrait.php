@@ -66,9 +66,3 @@ trait EasyApiTokenDecoderTrait
         return (new Str())->startsWith($this->getFirstHeaderValue($header, $request) ?? '', $prefix);
     }
 }
-
-\class_alias(
-    EasyApiTokenDecoderTrait::class,
-    'StepTheFkUp\EasyApiToken\Traits\EasyApiTokenDecoderTrait',
-    false
-);

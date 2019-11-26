@@ -82,9 +82,3 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
         ]));
     }
 }
-
-\class_alias(
-    Auth0JwtTokenDecoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Decoders\Auth0JwtTokenDecoderTest',
-    false
-);

@@ -65,9 +65,3 @@ final class ApiKeyAsBasicAuthUsernameEncoderTest extends AbstractTestCase
         (new ApiKeyAsBasicAuthUsernameEncoder())->encode(new JwtEasyApiToken([]));
     }
 }
-
-\class_alias(
-    ApiKeyAsBasicAuthUsernameEncoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Encoders\ApiKeyAsBasicAuthUsernameEncoderTest',
-    false
-);

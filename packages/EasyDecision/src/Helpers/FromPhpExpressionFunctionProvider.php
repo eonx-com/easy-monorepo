@@ -61,8 +61,4 @@ final class FromPhpExpressionFunctionProvider implements ExpressionFunctionProvi
     }
 }
 
-\class_alias(
-    FromPhpExpressionFunctionProvider::class,
-    'StepTheFkUp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider',
-    false
-);
+

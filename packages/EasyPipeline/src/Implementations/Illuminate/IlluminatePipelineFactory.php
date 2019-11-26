@@ -123,8 +123,4 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
     }
 }
 
-\class_alias(
-    IlluminatePipelineFactory::class,
-    'StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory',
-    false
-);
+

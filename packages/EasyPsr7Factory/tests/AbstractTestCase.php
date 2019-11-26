@@ -14,8 +14,4 @@ abstract class AbstractTestCase extends TestCase
     // No body needed.
 }
 
-\class_alias(
-    AbstractTestCase::class,
-    'StepTheFkUp\EasyPsr7Factory\Tests\AbstractTestCase',
-    false
-);
+

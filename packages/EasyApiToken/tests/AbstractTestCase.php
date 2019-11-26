@@ -26,9 +26,3 @@ abstract class AbstractTestCase extends TestCase
         return ServerRequestFactory::fromGlobals($server ?? [], $query ?? []);
     }
 }
-
-\class_alias(
-    AbstractTestCase::class,
-    'StepTheFkUp\EasyApiToken\Tests\AbstractTestCase',
-    false
-);

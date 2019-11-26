@@ -17,8 +17,4 @@ interface StartSizeDataResolverInterface
     public function resolve(ServerRequestInterface $request): StartSizeDataInterface;
 }
 
-\class_alias(
-    StartSizeDataResolverInterface::class,
-    'StepTheFkUp\EasyPagination\Interfaces\StartSizeDataResolverInterface',
-    false
-);
+

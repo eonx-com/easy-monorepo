@@ -88,8 +88,4 @@ abstract class AbstractTestCase extends TestCase
     }
 }
 
-\class_alias(
-    AbstractTestCase::class,
-    'StepTheFkUp\EasyPagination\Tests\AbstractTestCase',
-    false
-);
+

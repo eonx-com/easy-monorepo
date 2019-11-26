@@ -18,8 +18,4 @@ interface PaginatedObjectRepositoryInterface extends ObjectRepositoryInterface
     public function paginate(?StartSizeDataInterface $startSizeData = null): LengthAwarePaginatorInterface;
 }
 
-\class_alias(
-    PaginatedObjectRepositoryInterface::class,
-    'StepTheFkUp\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface',
-    false
-);
+

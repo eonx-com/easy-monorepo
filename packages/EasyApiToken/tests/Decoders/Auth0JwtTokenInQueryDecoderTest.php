@@ -58,9 +58,3 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
         self::assertNull($decoder->decode($this->createServerRequest()));
     }
 }
-
-\class_alias(
-    Auth0JwtTokenInQueryDecoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Decoders\Auth0JwtTokenInQueryDecoderTest',
-    false
-);

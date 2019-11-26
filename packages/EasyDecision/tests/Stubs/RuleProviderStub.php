@@ -25,8 +25,4 @@ final class RuleProviderStub implements RuleProviderInterface
     }
 }
 
-\class_alias(
-    RuleProviderStub::class,
-    'StepTheFkUp\EasyDecision\Tests\Stubs\RuleProviderStub',
-    false
-);
+

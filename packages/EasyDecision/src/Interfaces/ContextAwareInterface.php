@@ -15,8 +15,4 @@ interface ContextAwareInterface
     public function setContext(ContextInterface $context): void;
 }
 
-\class_alias(
-    ContextAwareInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface',
-    false
-);
+

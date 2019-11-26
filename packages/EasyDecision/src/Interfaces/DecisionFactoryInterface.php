@@ -26,8 +26,4 @@ interface DecisionFactoryInterface
     public function setContainer(ContainerInterface $container): void;
 }
 
-\class_alias(
-    DecisionFactoryInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\DecisionFactoryInterface',
-    false
-);
+

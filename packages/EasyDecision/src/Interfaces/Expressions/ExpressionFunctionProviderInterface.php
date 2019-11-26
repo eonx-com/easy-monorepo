@@ -13,8 +13,4 @@ interface ExpressionFunctionProviderInterface
     public function getFunctions(): array;
 }
 
-\class_alias(
-    ExpressionFunctionProviderInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface',
-    false
-);
+

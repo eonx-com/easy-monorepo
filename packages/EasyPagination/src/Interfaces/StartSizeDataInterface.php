@@ -20,8 +20,4 @@ interface StartSizeDataInterface
     public function getSize(): int;
 }
 
-\class_alias(
-    StartSizeDataInterface::class,
-    'StepTheFkUp\EasyPagination\Interfaces\StartSizeDataInterface',
-    false
-);
+

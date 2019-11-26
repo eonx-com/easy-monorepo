@@ -21,8 +21,4 @@ final class ExpressionLanguageRuleFactory implements ExpressionLanguageRuleFacto
     }
 }
 
-\class_alias(
-    ExpressionLanguageRuleFactory::class,
-    'StepTheFkUp\EasyDecision\Rules\ExpressionLanguageRuleFactory',
-    false
-);
+

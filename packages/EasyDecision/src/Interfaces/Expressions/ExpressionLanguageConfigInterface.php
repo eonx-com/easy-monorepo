@@ -29,8 +29,4 @@ interface ExpressionLanguageConfigInterface
     public function getFunctions(): ?array;
 }
 
-\class_alias(
-    ExpressionLanguageConfigInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface',
-    false
-);
+

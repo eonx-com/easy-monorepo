@@ -44,8 +44,4 @@ final class EloquentRepositoryStub extends AbstractEloquentRepository
     }
 }
 
-\class_alias(
-    EloquentRepositoryStub::class,
-    'StepTheFkUp\EasyRepository\Tests\Implementation\Illuminate\EloquentRepositoryStub',
-    false
-);
+

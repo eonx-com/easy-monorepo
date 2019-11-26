@@ -25,8 +25,4 @@ trait ContextAwareTrait
     }
 }
 
-\class_alias(
-    ContextAwareTrait::class,
-    'StepTheFkUp\EasyDecision\Traits\ContextAwareTrait',
-    false
-);
+

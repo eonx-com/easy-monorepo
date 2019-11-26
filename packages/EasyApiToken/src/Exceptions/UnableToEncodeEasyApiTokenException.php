@@ -7,9 +7,3 @@ final class UnableToEncodeEasyApiTokenException extends AbstractEasyApiTokenExce
 {
     // No body needed.
 }
-
-\class_alias(
-    UnableToEncodeEasyApiTokenException::class,
-    'StepTheFkUp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException',
-    false
-);

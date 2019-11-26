@@ -11,8 +11,4 @@ final class InvalidMiddlewareProviderException extends InvalidArgumentException 
     // No body needed.
 }
 
-\class_alias(
-    InvalidMiddlewareProviderException::class,
-    'StepTheFkUp\EasyPipeline\Exceptions\InvalidMiddlewareProviderException',
-    false
-);
+

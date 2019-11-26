@@ -9,9 +9,3 @@ abstract class AbstractEasyApiTokenFactoryException extends \Exception implement
 {
     // No body needed.
 }
-
-\class_alias(
-    AbstractEasyApiTokenFactoryException::class,
-    'StepTheFkUp\EasyApiToken\Exceptions\AbstractEasyApiTokenFactoryException',
-    false
-);

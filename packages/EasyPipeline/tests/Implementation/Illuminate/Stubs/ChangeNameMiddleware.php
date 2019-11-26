@@ -40,8 +40,4 @@ final class ChangeNameMiddleware implements MiddlewareInterface
     }
 }
 
-\class_alias(
-    ChangeNameMiddleware::class,
-    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware',
-    false
-);
+

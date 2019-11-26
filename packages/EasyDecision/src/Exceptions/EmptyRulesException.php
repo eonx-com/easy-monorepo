@@ -9,9 +9,3 @@ final class EmptyRulesException extends \InvalidArgumentException implements Eas
 {
     // No body needed.
 }
-
-\class_alias(
-    EmptyRulesException::class,
-    'StepTheFkUp\EasyDecision\Exceptions\EmptyRulesException',
-    false
-);

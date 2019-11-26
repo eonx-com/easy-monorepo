@@ -11,8 +11,4 @@ final class EmptyPipelinesListException extends InvalidArgumentException impleme
     // No body needed.
 }
 
-\class_alias(
-    EmptyPipelinesListException::class,
-    'StepTheFkUp\EasyPipeline\Exceptions\EmptyPipelinesListException',
-    false
-);
+

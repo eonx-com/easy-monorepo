@@ -48,9 +48,3 @@ final class BasicAuthEncoder implements EasyApiTokenEncoderInterface
         ));
     }
 }
-
-\class_alias(
-    BasicAuthEncoder::class,
-    'StepTheFkUp\EasyApiToken\Encoders\BasicAuthEncoder',
-    false
-);

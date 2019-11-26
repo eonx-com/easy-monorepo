@@ -27,9 +27,3 @@ interface JwtEasyApiTokenInterface extends EasyApiTokenInterface
      */
     public function hasClaim(string $claim): bool;
 }
-
-\class_alias(
-    JwtEasyApiTokenInterface::class,
-    'StepTheFkUp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface',
-    false
-);

@@ -85,9 +85,3 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
         return $this->createFirebaseJwtDriver($algo, null, $key)->encode(static::$tokenPayload);
     }
 }
-
-\class_alias(
-    AbstractFirebaseJwtTokenTestCase::class,
-    'StepTheFkUp\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase',
-    false
-);

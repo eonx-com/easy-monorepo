@@ -45,9 +45,3 @@ final class UnanimousDecision extends AbstractDecision
         }
     }
 }
-
-\class_alias(
-    UnanimousDecision::class,
-    'StepTheFkUp\EasyDecision\Decisions\UnanimousDecision',
-    false
-);

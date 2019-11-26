@@ -62,8 +62,4 @@ final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterf
     }
 }
 
-\class_alias(
-    ExpressionFunctionFactory::class,
-    'StepTheFkUp\EasyDecision\Expressions\ExpressionFunctionFactory',
-    false
-);
+

@@ -72,8 +72,4 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
     }
 }
 
-\class_alias(
-    EasyPipelineProviderTest::class,
-    'StepTheFkUp\EasyPipeline\Tests\Bridge\Laravel\EasyPipelineProviderTest',
-    false
-);
+

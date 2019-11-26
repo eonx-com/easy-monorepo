@@ -11,8 +11,4 @@ final class PipelineDidntRunException extends LogicException implements EasyPipe
     // No body needed.
 }
 
-\class_alias(
-    PipelineDidntRunException::class,
-    'StepTheFkUp\EasyPipeline\Exceptions\PipelineDidntRunException',
-    false
-);
+

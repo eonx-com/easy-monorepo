@@ -9,9 +9,3 @@ final class InvalidExpressionException extends \InvalidArgumentException impleme
 {
     // No body needed.
 }
-
-\class_alias(
-    InvalidExpressionException::class,
-    'StepTheFkUp\EasyDecision\Exceptions\InvalidExpressionException',
-    false
-);

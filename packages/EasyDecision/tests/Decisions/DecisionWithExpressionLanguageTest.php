@@ -126,8 +126,4 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    DecisionWithExpressionLanguageTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Decisions\DecisionWithExpressionLanguageTest',
-    false
-);
+

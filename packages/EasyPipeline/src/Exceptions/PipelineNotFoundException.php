@@ -11,8 +11,4 @@ final class PipelineNotFoundException extends InvalidArgumentException implement
     // No body needed.
 }
 
-\class_alias(
-    PipelineNotFoundException::class,
-    'StepTheFkUp\EasyPipeline\Exceptions\PipelineNotFoundException',
-    false
-);
+

@@ -106,9 +106,3 @@ final class DecisionConfig implements DecisionConfigInterface
         return $this->ruleProviders;
     }
 }
-
-\class_alias(
-    DecisionConfig::class,
-    'StepTheFkUp\EasyDecision\Decisions\DecisionConfig',
-    false
-);

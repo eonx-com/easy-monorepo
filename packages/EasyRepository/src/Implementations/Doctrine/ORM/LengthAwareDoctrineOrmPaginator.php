@@ -108,8 +108,4 @@ final class LengthAwareDoctrineOrmPaginator implements LengthAwarePaginatorInter
     }
 }
 
-\class_alias(
-    LengthAwareDoctrineOrmPaginator::class,
-    'StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator',
-    false
-);
+

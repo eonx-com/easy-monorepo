@@ -63,9 +63,3 @@ final class JwtTokenEncoder implements EasyApiTokenEncoderInterface
         }
     }
 }
-
-\class_alias(
-    JwtTokenEncoder::class,
-    'StepTheFkUp\EasyApiToken\Encoders\JwtTokenEncoder',
-    false
-);

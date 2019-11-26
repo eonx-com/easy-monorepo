@@ -15,8 +15,4 @@ interface MiddlewareLoggerAwareInterface
     public function setLogger(MiddlewareLoggerInterface $logger): void;
 }
 
-\class_alias(
-    MiddlewareLoggerAwareInterface::class,
-    'StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface',
-    false
-);
+

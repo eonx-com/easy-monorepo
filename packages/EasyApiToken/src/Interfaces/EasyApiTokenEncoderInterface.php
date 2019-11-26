@@ -17,9 +17,3 @@ interface EasyApiTokenEncoderInterface
      */
     public function encode(EasyApiTokenInterface $apiToken): string;
 }
-
-\class_alias(
-    EasyApiTokenEncoderInterface::class,
-    'StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenEncoderInterface',
-    false
-);

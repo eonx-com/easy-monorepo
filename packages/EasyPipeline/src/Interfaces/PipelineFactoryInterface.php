@@ -17,8 +17,4 @@ interface PipelineFactoryInterface
     public function create(string $pipeline): PipelineInterface;
 }
 
-\class_alias(
-    PipelineFactoryInterface::class,
-    'StepTheFkUp\EasyPipeline\Interfaces\PipelineFactoryInterface',
-    false
-);
+

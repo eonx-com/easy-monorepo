@@ -86,8 +86,4 @@ final class DecisionFactoryTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    DecisionFactoryTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Decisions\DecisionFactoryTest',
-    false
-);
+

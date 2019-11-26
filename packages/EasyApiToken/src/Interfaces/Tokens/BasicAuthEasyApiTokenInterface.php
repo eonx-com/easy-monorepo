@@ -21,9 +21,3 @@ interface BasicAuthEasyApiTokenInterface extends EasyApiTokenInterface
      */
     public function getUsername(): string;
 }
-
-\class_alias(
-    BasicAuthEasyApiTokenInterface::class,
-    'StepTheFkUp\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface',
-    false
-);

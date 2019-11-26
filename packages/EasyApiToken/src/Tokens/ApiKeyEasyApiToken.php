@@ -42,9 +42,3 @@ final class ApiKeyEasyApiToken implements ApiKeyEasyApiTokenInterface
         return ['api_key' => $this->apiKey];
     }
 }
-
-\class_alias(
-    ApiKeyEasyApiToken::class,
-    'StepTheFkUp\EasyApiToken\Tokens\ApiKeyEasyApiToken',
-    false
-);

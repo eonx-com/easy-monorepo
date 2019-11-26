@@ -37,9 +37,3 @@ final class ApiKeyAsBasicAuthUsernameDecoder implements EasyApiTokenDecoderInter
         return new ApiKeyEasyApiToken(\trim($authorization[0]));
     }
 }
-
-\class_alias(
-    ApiKeyAsBasicAuthUsernameDecoder::class,
-    'StepTheFkUp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder',
-    false
-);

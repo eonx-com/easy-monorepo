@@ -17,8 +17,4 @@ interface ExpressionLanguageAwareInterface
     public function setExpressionLanguage(ExpressionLanguageInterface $expressionLanguage): void;
 }
 
-\class_alias(
-    ExpressionLanguageAwareInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface',
-    false
-);
+

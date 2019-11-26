@@ -9,9 +9,3 @@ final class MissingValueIndexException extends \InvalidArgumentException impleme
 {
     // No body needed.
 }
-
-\class_alias(
-    MissingValueIndexException::class,
-    'StepTheFkUp\EasyDecision\Exceptions\MissingValueIndexException',
-    false
-);

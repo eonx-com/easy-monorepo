@@ -29,8 +29,4 @@ final class StartSizeAsArrayInQueryEasyPaginationProvider extends AbstractStartS
     }
 }
 
-\class_alias(
-    StartSizeAsArrayInQueryEasyPaginationProvider::class,
-    'StepTheFkUp\EasyPagination\Bridge\Laravel\Providers\StartSizeAsArrayInQueryEasyPaginationProvider',
-    false
-);
+

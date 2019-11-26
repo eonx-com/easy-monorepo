@@ -50,8 +50,4 @@ final class LoggerChangeNameMiddleware implements MiddlewareInterface, Middlewar
     }
 }
 
-\class_alias(
-    LoggerChangeNameMiddleware::class,
-    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\LoggerChangeNameMiddleware',
-    false
-);
+

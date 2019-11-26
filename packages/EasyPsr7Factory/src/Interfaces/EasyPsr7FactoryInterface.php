@@ -29,8 +29,4 @@ interface EasyPsr7FactoryInterface
     public function createResponse(ResponseInterface $response): Response;
 }
 
-\class_alias(
-    EasyPsr7FactoryInterface::class,
-    'StepTheFkUp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface',
-    false
-);
+

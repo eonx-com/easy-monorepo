@@ -51,8 +51,4 @@ interface ContextInterface
     public function stopPropagation(): self;
 }
 
-\class_alias(
-    ContextInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\ContextInterface',
-    false
-);
+

@@ -73,8 +73,4 @@ final class EasyPsr7Factory implements EasyPsr7FactoryInterface
     }
 }
 
-\class_alias(
-    EasyPsr7Factory::class,
-    'StepTheFkUp\EasyPsr7Factory\EasyPsr7Factory',
-    false
-);
+

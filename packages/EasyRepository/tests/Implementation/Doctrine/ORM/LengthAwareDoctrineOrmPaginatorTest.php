@@ -47,8 +47,4 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    LengthAwareDoctrineOrmPaginatorTest::class,
-    'StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine\ORM\LengthAwareDoctrineOrmPaginatorTest',
-    false
-);
+

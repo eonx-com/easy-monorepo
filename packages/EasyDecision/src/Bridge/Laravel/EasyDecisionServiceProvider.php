@@ -60,9 +60,3 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         });
     }
 }
-
-\class_alias(
-    EasyDecisionServiceProvider::class,
-    'StepTheFkUp\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider',
-    false
-);

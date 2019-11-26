@@ -42,8 +42,4 @@ interface ObjectRepositoryInterface
     public function save($object): void;
 }
 
-\class_alias(
-    ObjectRepositoryInterface::class,
-    'StepTheFkUp\EasyRepository\Interfaces\ObjectRepositoryInterface',
-    false
-);
+

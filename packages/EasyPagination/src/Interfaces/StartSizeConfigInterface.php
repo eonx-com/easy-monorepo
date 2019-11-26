@@ -34,8 +34,4 @@ interface StartSizeConfigInterface
     public function getStartDefault(): int;
 }
 
-\class_alias(
-    StartSizeConfigInterface::class,
-    'StepTheFkUp\EasyPagination\Interfaces\StartSizeConfigInterface',
-    false
-);
+

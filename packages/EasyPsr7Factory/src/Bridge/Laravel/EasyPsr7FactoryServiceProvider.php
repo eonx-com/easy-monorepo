@@ -20,8 +20,4 @@ final class EasyPsr7FactoryServiceProvider extends ServiceProvider
     }
 }
 
-\class_alias(
-    EasyPsr7FactoryServiceProvider::class,
-    'StepTheFkUp\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider',
-    false
-);
+

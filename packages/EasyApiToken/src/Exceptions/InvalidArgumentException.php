@@ -7,9 +7,3 @@ final class InvalidArgumentException extends AbstractEasyApiTokenException
 {
     // No body needed.
 }
-
-\class_alias(
-    InvalidArgumentException::class,
-    'StepTheFkUp\EasyApiToken\Exceptions\InvalidArgumentException',
-    false
-);

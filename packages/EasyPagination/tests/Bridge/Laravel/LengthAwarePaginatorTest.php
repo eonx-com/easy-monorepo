@@ -33,8 +33,4 @@ class LengthAwarePaginatorTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    LengthAwarePaginatorTest::class,
-    'StepTheFkUp\EasyPagination\Tests\Bridge\Laravel\LengthAwarePaginatorTest',
-    false
-);
+

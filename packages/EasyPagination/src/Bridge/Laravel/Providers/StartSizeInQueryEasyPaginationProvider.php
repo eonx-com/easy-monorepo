@@ -20,8 +20,4 @@ final class StartSizeInQueryEasyPaginationProvider extends AbstractStartSizeEasy
     }
 }
 
-\class_alias(
-    StartSizeInQueryEasyPaginationProvider::class,
-    'StepTheFkUp\EasyPagination\Bridge\Laravel\Providers\StartSizeInQueryEasyPaginationProvider',
-    false
-);
+

@@ -16,9 +16,3 @@ interface EasyApiTokenDecoderInterface
      */
     public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface;
 }
-
-\class_alias(
-    EasyApiTokenDecoderInterface::class,
-    'StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface',
-    false
-);

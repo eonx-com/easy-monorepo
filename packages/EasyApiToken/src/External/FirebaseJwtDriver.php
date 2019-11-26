@@ -88,13 +88,7 @@ final class FirebaseJwtDriver implements JwtDriverInterface
     {
         /** @var string $privateKey */
         $privateKey = $this->privateKey;
-        
+
         return JWT::encode($input, $privateKey, $this->algo);
     }
 }
-
-\class_alias(
-    FirebaseJwtDriver::class,
-    'StepTheFkUp\EasyApiToken\External\FirebaseJwtDriver',
-    false
-);

@@ -12,9 +12,3 @@ interface EasyApiTokenInterface
      */
     public function getPayload(): array;
 }
-
-\class_alias(
-    EasyApiTokenInterface::class,
-    'StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenInterface',
-    false
-);

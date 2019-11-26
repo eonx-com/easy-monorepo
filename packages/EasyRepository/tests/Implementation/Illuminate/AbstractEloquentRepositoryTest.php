@@ -97,8 +97,4 @@ final class AbstractEloquentRepositoryTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    AbstractEloquentRepositoryTest::class,
-    'StepTheFkUp\EasyRepository\Tests\Implementation\Illuminate\AbstractEloquentRepositoryTest',
-    false
-);
+

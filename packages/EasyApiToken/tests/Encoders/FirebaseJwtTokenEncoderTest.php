@@ -101,9 +101,3 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
         )));
     }
 }
-
-\class_alias(
-    FirebaseJwtTokenEncoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Encoders\FirebaseJwtTokenEncoderTest',
-    false
-);

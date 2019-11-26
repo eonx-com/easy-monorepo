@@ -40,9 +40,3 @@ final class ApiKeyEasyApiTokenTest extends AbstractTestCase
         return new ApiKeyEasyApiToken('api-key');
     }
 }
-
-\class_alias(
-    ApiKeyEasyApiTokenTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Tokens\ApiKeyEasyApiTokenTest',
-    false
-);

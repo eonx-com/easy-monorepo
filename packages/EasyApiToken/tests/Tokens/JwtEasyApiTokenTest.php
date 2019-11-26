@@ -60,9 +60,3 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
         (new JwtEasyApiToken([]))->getClaim('invalid');
     }
 }
-
-\class_alias(
-    JwtEasyApiTokenTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Tokens\JwtEasyApiTokenTest',
-    false
-);

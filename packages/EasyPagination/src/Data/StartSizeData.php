@@ -50,8 +50,4 @@ final class StartSizeData implements StartSizeDataInterface
     }
 }
 
-\class_alias(
-    StartSizeData::class,
-    'StepTheFkUp\EasyPagination\Data\StartSizeData',
-    false
-);
+

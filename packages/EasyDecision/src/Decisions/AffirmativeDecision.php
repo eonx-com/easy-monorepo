@@ -45,9 +45,3 @@ final class AffirmativeDecision extends AbstractDecision
         }
     }
 }
-
-\class_alias(
-    AffirmativeDecision::class,
-    'StepTheFkUp\EasyDecision\Decisions\AffirmativeDecision',
-    false
-);

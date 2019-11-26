@@ -37,9 +37,3 @@ final class BasicAuthDecoder implements EasyApiTokenDecoderInterface
         return new BasicAuthEasyApiToken(\trim($authorization[0]), \trim($authorization[1]));
     }
 }
-
-\class_alias(
-    BasicAuthDecoder::class,
-    'StepTheFkUp\EasyApiToken\Decoders\BasicAuthDecoder',
-    false
-);

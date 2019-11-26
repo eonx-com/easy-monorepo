@@ -180,8 +180,4 @@ trait DoctrineOrmRepositoryTrait
     }
 }
 
-\class_alias(
-    DoctrineOrmRepositoryTrait::class,
-    'StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\DoctrineOrmRepositoryTrait',
-    false
-);
+

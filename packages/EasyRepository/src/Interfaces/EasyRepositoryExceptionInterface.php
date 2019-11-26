@@ -8,8 +8,4 @@ interface EasyRepositoryExceptionInterface
     // Marker for all exceptions of this package.
 }
 
-\class_alias(
-    EasyRepositoryExceptionInterface::class,
-    'StepTheFkUp\EasyRepository\Interfaces\EasyRepositoryExceptionInterface',
-    false
-);
+

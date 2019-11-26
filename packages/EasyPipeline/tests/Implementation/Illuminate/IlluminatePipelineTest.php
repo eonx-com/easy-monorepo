@@ -92,8 +92,4 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
     }
 }
 
-\class_alias(
-    IlluminatePipelineTest::class,
-    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\IlluminatePipelineTest',
-    false
-);
+

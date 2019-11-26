@@ -55,9 +55,3 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
         return $this->jwtApiTokenFactory->createFromString((string)$jwtToken);
     }
 }
-
-\class_alias(
-    JwtTokenInQueryDecoder::class,
-    'StepTheFkUp\EasyApiToken\Decoders\JwtTokenInQueryDecoder',
-    false
-);

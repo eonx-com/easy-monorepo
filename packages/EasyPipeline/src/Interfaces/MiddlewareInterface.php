@@ -16,8 +16,4 @@ interface MiddlewareInterface
     public function handle($input, callable $next);
 }
 
-\class_alias(
-    MiddlewareInterface::class,
-    'StepTheFkUp\EasyPipeline\Interfaces\MiddlewareInterface',
-    false
-);
+

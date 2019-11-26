@@ -41,8 +41,4 @@ final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
     }
 }
 
-\class_alias(
-    StartSizeInQueryResolver::class,
-    'StepTheFkUp\EasyPagination\Resolvers\StartSizeInQueryResolver',
-    false
-);
+

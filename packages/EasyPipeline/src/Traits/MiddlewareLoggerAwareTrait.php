@@ -38,8 +38,4 @@ trait MiddlewareLoggerAwareTrait
     }
 }
 
-\class_alias(
-    MiddlewareLoggerAwareTrait::class,
-    'StepTheFkUp\EasyPipeline\Traits\MiddlewareLoggerAwareTrait',
-    false
-);
+

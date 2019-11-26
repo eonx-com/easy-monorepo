@@ -57,8 +57,4 @@ class EasyPsr7FactoryTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    EasyPsr7FactoryTest::class,
-    'StepTheFkUp\EasyPsr7Factory\Tests\EasyPsr7FactoryTest',
-    false
-);
+

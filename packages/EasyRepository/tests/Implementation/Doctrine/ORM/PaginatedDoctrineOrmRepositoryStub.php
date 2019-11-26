@@ -18,8 +18,4 @@ final class PaginatedDoctrineOrmRepositoryStub extends AbstractPaginatedDoctrine
     }
 }
 
-\class_alias(
-    PaginatedDoctrineOrmRepositoryStub::class,
-    'StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine\ORM\PaginatedDoctrineOrmRepositoryStub',
-    false
-);
+

@@ -71,8 +71,4 @@ final class ExpressionLanguageConfig implements ExpressionLanguageConfigInterfac
     }
 }
 
-\class_alias(
-    ExpressionLanguageConfig::class,
-    'StepTheFkUp\EasyDecision\Expressions\ExpressionLanguageConfig',
-    false
-);
+

@@ -44,8 +44,4 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
     }
 }
 
-\class_alias(
-    AbstractLumenTestCase::class,
-    'StepTheFkUp\EasyDecision\Tests\AbstractLumenTestCase',
-    false
-);
+

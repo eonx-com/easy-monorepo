@@ -22,8 +22,4 @@ final class StartSizeDataTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    StartSizeDataTest::class,
-    'StepTheFkUp\EasyPagination\Tests\Data\StartSizeDataTest',
-    false
-);
+

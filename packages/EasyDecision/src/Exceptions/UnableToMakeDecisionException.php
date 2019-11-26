@@ -9,9 +9,3 @@ final class UnableToMakeDecisionException extends \RuntimeException implements E
 {
     // No body needed.
 }
-
-\class_alias(
-    UnableToMakeDecisionException::class,
-    'StepTheFkUp\EasyDecision\Exceptions\UnableToMakeDecisionException',
-    false
-);

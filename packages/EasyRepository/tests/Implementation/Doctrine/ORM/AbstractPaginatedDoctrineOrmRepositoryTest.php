@@ -59,8 +59,4 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    AbstractPaginatedDoctrineOrmRepositoryTest::class,
-    'LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepositoryTest',
-    false
-);
+

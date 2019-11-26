@@ -73,8 +73,4 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
     }
 }
 
-\class_alias(
-    AbstractPaginatedDoctrineOrmRepository::class,
-    'StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository',
-    false
-);
+

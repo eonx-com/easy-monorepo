@@ -24,8 +24,4 @@ interface PipelineInterface
     public function getLogs(): array;
 }
 
-\class_alias(
-    PipelineInterface::class,
-    'StepTheFkUp\EasyPipeline\Interfaces\PipelineInterface',
-    false
-);
+

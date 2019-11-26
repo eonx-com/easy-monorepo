@@ -55,8 +55,4 @@ interface LengthAwarePaginatorInterface
     public function hasPreviousPage(): bool;
 }
 
-\class_alias(
-    LengthAwarePaginatorInterface::class,
-    'StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface',
-    false
-);
+
