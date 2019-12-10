@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.10.9 - 2019-11-26
+## v0.10.10 - 2019-12-10
+
+### EasyLogging
+
+- [#104] Replace eoneopay/externals with eonx-com/externals, Thanks to [@roman-loyaltycorp]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.9] - 2019-11-26
 
 ### EasyLogging
 
@@ -849,3 +859,5 @@
 [v0.10.7]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.6...v0.10.7
 [#101]: https://github.com/loyaltycorp/easy-monorepo/pull/101
 [v0.10.8]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.7...v0.10.8
+[#104]: https://github.com/loyaltycorp/easy-monorepo/pull/104
+[v0.10.9]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.8...v0.10.9
