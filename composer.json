@@ -9,6 +9,7 @@
     ],
     "require": {
         "eoneopay/externals": "^1.0",
+        "eonx-com/externals": "^1.0",
         "eoneopay/utils": "^0.2",
         "ext-json": "*",
         "php": "^7.1",
