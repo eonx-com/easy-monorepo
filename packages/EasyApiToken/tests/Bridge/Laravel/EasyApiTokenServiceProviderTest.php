@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests\Bridge\Laravel;
+namespace EonX\EasyApiToken\Tests\Bridge\Laravel;
 
-use LoyaltyCorp\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface as DecoderFactoryInterface;
-use LoyaltyCorp\EasyApiToken\Tests\AbstractLumenTestCase;
+use EonX\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider;
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface as DecoderFactoryInterface;
+use EonX\EasyApiToken\Tests\AbstractLumenTestCase;
 
 final class EasyApiTokenServiceProviderTest extends AbstractLumenTestCase
 {

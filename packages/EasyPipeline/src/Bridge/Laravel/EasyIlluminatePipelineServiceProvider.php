@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Bridge\Laravel;
+namespace EonX\EasyPipeline\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use LoyaltyCorp\EasyPipeline\Exceptions\EmptyPipelinesListException;
-use LoyaltyCorp\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory;
-use LoyaltyCorp\EasyPipeline\Interfaces\PipelineFactoryInterface;
+use EonX\EasyPipeline\Exceptions\EmptyPipelinesListException;
+use EonX\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory;
+use EonX\EasyPipeline\Interfaces\PipelineFactoryInterface;
 
 final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
 {
@@ -84,8 +84,4 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
     }
 }
 
-\class_alias(
-    EasyIlluminatePipelineServiceProvider::class,
-    'StepTheFkUp\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider',
-    false
-);
+

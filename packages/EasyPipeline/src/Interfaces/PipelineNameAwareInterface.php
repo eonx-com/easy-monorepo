@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Interfaces;
+namespace EonX\EasyPipeline\Interfaces;
 
 interface PipelineNameAwareInterface
 {
@@ -15,8 +15,4 @@ interface PipelineNameAwareInterface
     public function setPipelineName(string $pipeline): void;
 }
 
-\class_alias(
-    PipelineNameAwareInterface::class,
-    'StepTheFkUp\EasyPipeline\Interfaces\PipelineNameAwareInterface',
-    false
-);
+

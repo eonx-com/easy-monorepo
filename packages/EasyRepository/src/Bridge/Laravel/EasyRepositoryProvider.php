@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Bridge\Laravel;
+namespace EonX\EasyRepository\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use LoyaltyCorp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException;
+use EonX\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException;
 
 final class EasyRepositoryProvider extends ServiceProvider
 {
@@ -25,7 +25,7 @@ final class EasyRepositoryProvider extends ServiceProvider
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
+     * @throws \EonX\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
      */
     public function register(): void
     {
@@ -43,9 +43,3 @@ final class EasyRepositoryProvider extends ServiceProvider
         }
     }
 }
-
-\class_alias(
-    EasyRepositoryProvider::class,
-    'StepTheFkUp\EasyRepository\Bridge\Laravel\EasyRepositoryProvider',
-    false
-);

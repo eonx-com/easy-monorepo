@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyRepository</h1>
+    <h1>EonX - EasyRepository</h1>
     <p>Provides an easy way to implement the Repository Design Pattern in your applications.</p>
 </div>
 
@@ -12,7 +12,7 @@ This document describes the steps to install this package into a [Laravel][1] an
 Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
 
 ```bash
-$ composer require loyaltycorp/easy-repository
+$ composer require eonx/easy-repository
 ```
 
 # Service Provider
@@ -29,7 +29,7 @@ automatically. Make sure to register it:
 'providers' => [
     // Other Service Providers...
     
-    \LoyaltyCorp\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class
+    \EonX\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class
 ],
 ```
 
@@ -67,7 +67,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\LoyaltyCorp\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class);
+$app->register(\EonX\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class);
 ```
 
 ## Add Config

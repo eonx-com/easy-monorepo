@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Interfaces;
+namespace EonX\EasyIdentity\Interfaces;
 
 interface IdentityServiceInterface
 {
     /**
      * Create user for given data.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
      *
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
+     * @throws \EonX\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
      */
     public function createUser(IdentityUserInterface $user): IdentityUserInterface;
 
@@ -28,7 +28,7 @@ interface IdentityServiceInterface
     /**
      * Delete user for given id.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
      * @return void
      */
@@ -37,34 +37,30 @@ interface IdentityServiceInterface
     /**
      * Get user information for given id.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
      */
     public function getUser(IdentityUserInterface $user): IdentityUserInterface;
 
     /**
      * Login given user.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
      */
     public function loginUser(IdentityUserInterface $user): IdentityUserInterface;
 
     /**
      * Update user for given id with given data.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param mixed[] $data
      *
-     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
      */
     public function updateUser(IdentityUserInterface $user, array $data): IdentityUserInterface;
 }
 
-\class_alias(
-    IdentityServiceInterface::class,
-    \StepTheFkUp\EasyIdentity\Interfaces\IdentityServiceInterface::class,
-    false
-);
+

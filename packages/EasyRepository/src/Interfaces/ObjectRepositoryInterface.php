@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Interfaces;
+namespace EonX\EasyRepository\Interfaces;
 
 interface ObjectRepositoryInterface
 {
@@ -42,8 +42,4 @@ interface ObjectRepositoryInterface
     public function save($object): void;
 }
 
-\class_alias(
-    ObjectRepositoryInterface::class,
-    'StepTheFkUp\EasyRepository\Interfaces\ObjectRepositoryInterface',
-    false
-);
+

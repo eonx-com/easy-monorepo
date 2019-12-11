@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyEntityChange</h1>
+    <h1>EonX - EasyEntityChange</h1>
     <p>Provides an easy way to hook up logic in your entities lifecycle.</p>
 </div>
 
@@ -12,7 +12,7 @@ This document describes the steps to install this package into a [Laravel][1] an
 Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
 
 ```bash
-$ composer require loyaltycorp/easy-entity-change
+$ composer require eonx/easy-entity-change
 ```
 
 # Config
@@ -32,7 +32,7 @@ the [Laravel Doctrine package][4] you just have to modify the doctrine config fi
         'subscribers' => [
             // Your other subscribers...
     
-            \LoyaltyCorp\EasyEntityChange\Doctrine\EntityChangeSubscriber::class,
+            \EonX\EasyEntityChange\Doctrine\EntityChangeSubscriber::class,
         ]
     ]
 ]

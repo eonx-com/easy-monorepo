@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\External;
+namespace EonX\EasyApiToken\External;
 
 use Auth0\SDK\JWTVerifier;
-use LoyaltyCorp\EasyApiToken\External\Auth0\TokenGenerator;
-use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use EonX\EasyApiToken\External\Auth0\TokenGenerator;
+use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 
 final class Auth0JwtDriver implements JwtDriverInterface
 {
@@ -99,9 +99,3 @@ final class Auth0JwtDriver implements JwtDriverInterface
             $input['lifetime'] ?? null);
     }
 }
-
-\class_alias(
-    Auth0JwtDriver::class,
-    'StepTheFkUp\EasyApiToken\External\Auth0JwtDriver',
-    false
-);

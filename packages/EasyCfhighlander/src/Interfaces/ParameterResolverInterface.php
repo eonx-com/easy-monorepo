@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\Interfaces;
+namespace EonX\EasyCfhighlander\Interfaces;
 
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -13,7 +13,7 @@ interface ParameterResolverInterface
      * @param string $param
      * @param callable $modifier
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface
+     * @return \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface
      */
     public function addModifier(string $param, callable $modifier): self;
 
@@ -23,7 +23,7 @@ interface ParameterResolverInterface
      * @param string $param
      * @param callable $resolver
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface
+     * @return \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface
      */
     public function addResolver(string $param, callable $resolver): self;
 
@@ -41,7 +41,7 @@ interface ParameterResolverInterface
      *
      * @param string $pathname
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface
+     * @return \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface
      */
     public function setCachePathname(string $pathname): self;
 }

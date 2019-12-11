@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Decoders;
+namespace EonX\EasyApiToken\Decoders;
 
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use LoyaltyCorp\EasyApiToken\Tokens\ApiKeyEasyApiToken;
-use LoyaltyCorp\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
+use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class ApiKeyAsBasicAuthUsernameDecoder implements EasyApiTokenDecoderInterface
@@ -18,7 +18,7 @@ final class ApiKeyAsBasicAuthUsernameDecoder implements EasyApiTokenDecoderInter
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return null|\LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface
+     * @return null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface
      */
     public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
     {
@@ -37,9 +37,3 @@ final class ApiKeyAsBasicAuthUsernameDecoder implements EasyApiTokenDecoderInter
         return new ApiKeyEasyApiToken(\trim($authorization[0]));
     }
 }
-
-\class_alias(
-    ApiKeyAsBasicAuthUsernameDecoder::class,
-    'StepTheFkUp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder',
-    false
-);

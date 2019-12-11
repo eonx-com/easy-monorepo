@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests\Decoders;
+namespace EonX\EasyApiToken\Tests\Decoders;
 
-use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
-use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface;
-use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
+use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
+use EonX\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface;
+use EonX\EasyApiToken\Tests\AbstractTestCase;
 
 final class BasicAuthDecoderTest extends AbstractTestCase
 {
@@ -69,7 +69,7 @@ final class BasicAuthDecoderTest extends AbstractTestCase
         ];
 
         foreach ($tests as $test => $expected) {
-            /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface $token */
+            /** @var \EonX\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface $token */
             $token = (new BasicAuthDecoder())->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test))
             ]));
@@ -80,9 +80,3 @@ final class BasicAuthDecoderTest extends AbstractTestCase
         }
     }
 }
-
-\class_alias(
-    BasicAuthDecoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Decoders\BasicAuthDecoderTest',
-    false
-);

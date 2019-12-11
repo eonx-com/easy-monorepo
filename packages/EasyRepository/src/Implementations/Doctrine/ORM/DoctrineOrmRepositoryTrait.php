@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM;
+namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
 use Closure;
 use Doctrine\ORM\QueryBuilder;
@@ -180,8 +180,4 @@ trait DoctrineOrmRepositoryTrait
     }
 }
 
-\class_alias(
-    DoctrineOrmRepositoryTrait::class,
-    'StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\DoctrineOrmRepositoryTrait',
-    false
-);
+

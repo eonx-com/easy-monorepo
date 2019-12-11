@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Decisions;
+namespace EonX\EasyDecision\Tests\Decisions;
 
-use LoyaltyCorp\EasyDecision\Decisions\UnanimousDecision;
-use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
-use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Decisions\UnanimousDecision;
+use EonX\EasyDecision\Interfaces\RuleInterface;
+use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class UnanimousDecisionTest extends AbstractTestCase
 {
@@ -79,8 +79,4 @@ final class UnanimousDecisionTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    UnanimousDecisionTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Decisions\UnanimousDecisionTest',
-    false
-);
+

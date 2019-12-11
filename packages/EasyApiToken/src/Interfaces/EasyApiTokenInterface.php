@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Interfaces;
+namespace EonX\EasyApiToken\Interfaces;
 
 interface EasyApiTokenInterface
 {
@@ -12,9 +12,3 @@ interface EasyApiTokenInterface
      */
     public function getPayload(): array;
 }
-
-\class_alias(
-    EasyApiTokenInterface::class,
-    'StepTheFkUp\EasyApiToken\Interfaces\EasyApiTokenInterface',
-    false
-);

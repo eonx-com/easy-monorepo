@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Helpers;
+namespace EonX\EasyDecision\Tests\Helpers;
 
-use LoyaltyCorp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
-use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
+use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class FromPhpExpressionFunctionProviderTest extends AbstractTestCase
 {
@@ -24,8 +24,4 @@ final class FromPhpExpressionFunctionProviderTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    FromPhpExpressionFunctionProviderTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Helpers\FromPhpExpressionFunctionProviderTest',
-    false
-);
+

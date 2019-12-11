@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Interfaces\Factories;
+namespace EonX\EasyApiToken\Interfaces\Factories;
 
 interface DecoderNameAwareInterface
 {

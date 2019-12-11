@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests\Bridge\Symfony\Stubs;
+namespace EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs;
 
-use LoyaltyCorp\EasyApiToken\Bridge\Symfony\EasyApiTokenBundle;
+use EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\File;
+namespace EonX\EasyCfhighlander\File;
 
 final class File
 {

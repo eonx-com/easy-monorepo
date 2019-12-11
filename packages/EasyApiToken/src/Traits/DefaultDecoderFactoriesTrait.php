@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Traits;
+namespace EonX\EasyApiToken\Traits;
 
-use LoyaltyCorp\EasyApiToken\Factories\Decoders\ApiKeyAsBasicAuthUsernameDecoderFactory;
-use LoyaltyCorp\EasyApiToken\Factories\Decoders\BasicAuthDecoderFactory;
-use LoyaltyCorp\EasyApiToken\Factories\Decoders\ChainReturnFirstTokenDecoderFactory;
-use LoyaltyCorp\EasyApiToken\Factories\Decoders\JwtTokenDecoderFactory;
-use LoyaltyCorp\EasyApiToken\Factories\Decoders\JwtTokenInQueryDecoderFactory;
+use EonX\EasyApiToken\Factories\Decoders\ApiKeyAsBasicAuthUsernameDecoderFactory;
+use EonX\EasyApiToken\Factories\Decoders\BasicAuthDecoderFactory;
+use EonX\EasyApiToken\Factories\Decoders\ChainReturnFirstTokenDecoderFactory;
+use EonX\EasyApiToken\Factories\Decoders\JwtTokenDecoderFactory;
+use EonX\EasyApiToken\Factories\Decoders\JwtTokenInQueryDecoderFactory;
 
 trait DefaultDecoderFactoriesTrait
 {

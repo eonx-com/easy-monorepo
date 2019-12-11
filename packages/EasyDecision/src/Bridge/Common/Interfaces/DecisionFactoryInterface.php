@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces;
+namespace EonX\EasyDecision\Bridge\Common\Interfaces;
 
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
+use EonX\EasyDecision\Interfaces\DecisionInterface;
 
 interface DecisionFactoryInterface
 {
@@ -13,7 +13,7 @@ interface DecisionFactoryInterface
      * @param string $decision
      * @param null|mixed[] $params
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function create(string $decision, ?array $params = null): DecisionInterface;
 }

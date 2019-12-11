@@ -15,12 +15,12 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyCfhighlander\\": "src"
+            "EonX\\EasyCfhighlander\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyCfhighlander\\Tests\\": "tests"
+            "EonX\\EasyCfhighlander\\Tests\\": "tests"
         }
     },
     "bin": [

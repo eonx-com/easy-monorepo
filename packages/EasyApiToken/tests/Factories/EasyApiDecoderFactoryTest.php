@@ -1,31 +1,31 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests\Factories;
+namespace EonX\EasyApiToken\Tests\Factories;
 
+use EonX\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
+use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
+use EonX\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
+use EonX\EasyApiToken\Decoders\JwtTokenDecoder;
+use EonX\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
+use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
+use EonX\EasyApiToken\External\Auth0JwtDriver;
+use EonX\EasyApiToken\External\FirebaseJwtDriver;
+use EonX\EasyApiToken\Factories\Decoders\BasicAuthDecoderFactory;
+use EonX\EasyApiToken\Factories\EasyApiTokenDecoderFactory;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Tests\AbstractTestCase;
+use EonX\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 use Laravel\Lumen\Application;
-use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
-use LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
-use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
-use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
-use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
-use LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver;
-use LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver;
-use LoyaltyCorp\EasyApiToken\Factories\Decoders\BasicAuthDecoderFactory;
-use LoyaltyCorp\EasyApiToken\Factories\EasyApiTokenDecoderFactory;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
-use LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
-use StepTheFkUp\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 
 /**
- * @covers \LoyaltyCorp\EasyApiToken\Factories\EasyApiTokenDecoderFactory
- * @covers \LoyaltyCorp\EasyApiToken\Factories\Decoders\AbstractJwtTokenDecoderFactory
- * @covers \LoyaltyCorp\EasyApiToken\Factories\Decoders\ApiKeyAsBasicAuthUsernameDecoderFactory
- * @covers \LoyaltyCorp\EasyApiToken\Factories\Decoders\BasicAuthDecoderFactory
- * @covers \LoyaltyCorp\EasyApiToken\Factories\Decoders\ChainReturnFirstTokenDecoderFactory
- * @covers \LoyaltyCorp\EasyApiToken\Factories\Decoders\JwtTokenDecoderFactory
- * @covers \LoyaltyCorp\EasyApiToken\Factories\Decoders\JwtTokenInQueryDecoderFactory
+ * @covers \EonX\EasyApiToken\Factories\EasyApiTokenDecoderFactory
+ * @covers \EonX\EasyApiToken\Factories\Decoders\AbstractJwtTokenDecoderFactory
+ * @covers \EonX\EasyApiToken\Factories\Decoders\ApiKeyAsBasicAuthUsernameDecoderFactory
+ * @covers \EonX\EasyApiToken\Factories\Decoders\BasicAuthDecoderFactory
+ * @covers \EonX\EasyApiToken\Factories\Decoders\ChainReturnFirstTokenDecoderFactory
+ * @covers \EonX\EasyApiToken\Factories\Decoders\JwtTokenDecoderFactory
+ * @covers \EonX\EasyApiToken\Factories\Decoders\JwtTokenInQueryDecoderFactory
  */
 final class EasyApiDecoderFactoryTest extends AbstractTestCase
 {
@@ -107,7 +107,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      *
      * @return iterable
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function getChainBuilds(): iterable
     {
@@ -285,11 +285,11 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      *
      * @param array $config Config array to build factory with.
      * @param string $key Key of configuration to request.
-     * @param \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected Expected decoder object.
+     * @param \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected Expected decoder object.
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      *
      * @dataProvider getSimpleBuilds
      * @dataProvider getJwtBuilds
@@ -311,11 +311,12 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     public function testBuildContainerThrows(): void
     {
-        $container = new class extends Application {
+        $container = new class extends Application
+        {
             /**
              * @noinspection PhpMissingParentCallCommonInspection
              *
@@ -341,11 +342,11 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      *
      * @param array $config Config array to build factory with.
      * @param string $key Key of configuration to request.
-     * @param \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected Expected decoder object.
+     * @param \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected Expected decoder object.
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      *
      * @dataProvider getSimpleBuilds
      * @dataProvider getJwtBuilds
@@ -373,7 +374,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      * @param string $key Key of configuration to request.
      * @param string $expectedError Expected exception message.
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      *
      * @dataProvider getBrokenConfigurations
      */
@@ -387,9 +388,3 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $factory->build($key);
     }
 }
-
-\class_alias(
-    EasyApiDecoderFactoryTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Factories\EasyApiDecoderFactoryTest',
-    false
-);

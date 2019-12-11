@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\Factories;
+namespace EonX\EasyDocker\Factories;
 
 use Symfony\Component\Filesystem\Filesystem;
 

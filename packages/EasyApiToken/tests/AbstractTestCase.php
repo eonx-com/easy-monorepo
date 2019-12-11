@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests;
+namespace EonX\EasyApiToken\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,9 +26,3 @@ abstract class AbstractTestCase extends TestCase
         return ServerRequestFactory::fromGlobals($server ?? [], $query ?? []);
     }
 }
-
-\class_alias(
-    AbstractTestCase::class,
-    'StepTheFkUp\EasyApiToken\Tests\AbstractTestCase',
-    false
-);

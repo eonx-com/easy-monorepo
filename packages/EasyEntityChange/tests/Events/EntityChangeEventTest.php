@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyEntityChange\Tests\Events;
+namespace EonX\EasyEntityChange\Tests\Events;
 
-use LoyaltyCorp\EasyEntityChange\Events\EntityChangeEvent;
-use LoyaltyCorp\EasyEntityChange\Tests\AbstractTestCase;
+use EonX\EasyEntityChange\Events\EntityChangeEvent;
+use EonX\EasyEntityChange\Tests\AbstractTestCase;
 
 /**
- * @covers \LoyaltyCorp\EasyEntityChange\Events\EntityChangeEvent
+ * @covers \EonX\EasyEntityChange\Events\EntityChangeEvent
  */
 class EntityChangeEventTest extends AbstractTestCase
 {

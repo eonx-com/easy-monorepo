@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
+namespace EonX\EasyDecision\Tests\Stubs;
 
-use LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface;
-use LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRule;
+use EonX\EasyDecision\Interfaces\RuleProviderInterface;
+use EonX\EasyDecision\Rules\ExpressionLanguageRule;
 
 final class RuleProviderStub implements RuleProviderInterface
 {
@@ -13,7 +13,7 @@ final class RuleProviderStub implements RuleProviderInterface
      *
      * @param mixed[]|null $params
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[]
+     * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
     public function getRules(?array $params = null): array
     {
@@ -25,8 +25,4 @@ final class RuleProviderStub implements RuleProviderInterface
     }
 }
 
-\class_alias(
-    RuleProviderStub::class,
-    'StepTheFkUp\EasyDecision\Tests\Stubs\RuleProviderStub',
-    false
-);
+

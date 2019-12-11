@@ -3,7 +3,7 @@ services:
         autowire: true
         public: true
 
-    LoyaltyCorp\EasyDocker\:
+    EonX\EasyDocker\:
         resource: '../src'
         exclude: '../src/{HttpKernel,File/File.php,File/FileStatus.php}'
 

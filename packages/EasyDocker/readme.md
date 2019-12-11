@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyDocker</h1>
+    <h1>EonX - EasyDocker</h1>
     <p>CLI tool to generate Docker files.</p>
 </div>
 
@@ -12,7 +12,7 @@
 The recommended way to install this package is to use [Composer][1].
 
 ```bash
-$ composer require loyaltycorp/easy-docker
+$ composer require eonx/easy-docker
 ```
 
 ### Generate the Docker files

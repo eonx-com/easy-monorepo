@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\File;
+namespace EonX\EasyDocker\File;
 
 final class FileStatus
 {
-    /** @var \LoyaltyCorp\EasyDocker\File\File */
+    /** @var \EonX\EasyDocker\File\File */
     private $file;
 
     /** @var string */
@@ -17,7 +17,7 @@ final class FileStatus
     /**
      * FileStatus constructor.
      *
-     * @param \LoyaltyCorp\EasyDocker\File\File $file
+     * @param \EonX\EasyDocker\File\File $file
      * @param string $status
      * @param null|string $hash
      */
@@ -31,7 +31,7 @@ final class FileStatus
     /**
      * Get file.
      *
-     * @return \LoyaltyCorp\EasyDocker\File\File
+     * @return \EonX\EasyDocker\File\File
      */
     public function getFile(): File
     {

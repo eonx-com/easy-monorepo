@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Bridge\Symfony;
+namespace EonX\EasyApiToken\Bridge\Symfony;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

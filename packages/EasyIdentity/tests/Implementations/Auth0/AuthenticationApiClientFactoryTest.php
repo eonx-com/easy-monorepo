@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
+namespace EonX\EasyIdentity\Tests\Implementations\Auth0;
 
-use LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory;
-use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
-use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
+use EonX\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory;
+use EonX\EasyIdentity\Implementations\Auth0\Config;
+use EonX\EasyIdentity\Tests\AbstractTestCase;
 
 /**
- * @covers \LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory
+ * @covers \EonX\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory
  */
 class AuthenticationApiClientFactoryTest extends AbstractTestCase
 {
@@ -17,7 +17,7 @@ class AuthenticationApiClientFactoryTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function testCreate(): void
     {
@@ -37,6 +37,6 @@ class AuthenticationApiClientFactoryTest extends AbstractTestCase
 
 \class_alias(
     AuthenticationApiClientFactoryTest::class,
-    StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\AuthenticationApiClientFactoryTest::class,
+    EonX\EasyIdentity\Tests\Implementations\Auth0\AuthenticationApiClientFactoryTest::class,
     false
 );

@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
+namespace EonX\EasyIdentity\Tests\Implementations\Auth0;
 
-use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
-use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
-use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider;
-use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
+use EonX\EasyIdentity\Implementations\Auth0\Config;
+use EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory;
+use EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider;
+use EonX\EasyIdentity\Tests\AbstractTestCase;
 use Mockery\MockInterface;
 
 /**
- * @covers \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory
+ * @covers \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory
  */
 class ManagementApiClientFactoryTest extends AbstractTestCase
 {
@@ -19,12 +19,12 @@ class ManagementApiClientFactoryTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testCreate(): void
     {
-        /** @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider $tokenProvider */
+        /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider $tokenProvider */
         $tokenProvider = $this->mock(ManagementTokenProvider::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('getToken')->once()->withNoArgs()->andReturn('access_token');
         });
@@ -40,6 +40,6 @@ class ManagementApiClientFactoryTest extends AbstractTestCase
 
 \class_alias(
     ManagementApiClientFactoryTest::class,
-    StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\ManagementApiClientFactoryTest::class,
+    EonX\EasyIdentity\Tests\Implementations\Auth0\ManagementApiClientFactoryTest::class,
     false
 );

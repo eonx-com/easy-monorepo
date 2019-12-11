@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Interfaces;
+namespace EonX\EasyRepository\Interfaces;
 
 use Closure;
 

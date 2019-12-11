@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Traits;
+namespace EonX\EasyApiToken\Traits;
 
 use EoneoPay\Utils\Str;
 use Psr\Http\Message\ServerRequestInterface;
@@ -66,9 +66,3 @@ trait EasyApiTokenDecoderTrait
         return (new Str())->startsWith($this->getFirstHeaderValue($header, $request) ?? '', $prefix);
     }
 }
-
-\class_alias(
-    EasyApiTokenDecoderTrait::class,
-    'StepTheFkUp\EasyApiToken\Traits\EasyApiTokenDecoderTrait',
-    false
-);

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\File;
+namespace EonX\EasyCfhighlander\File;
 
-use LoyaltyCorp\EasyCfhighlander\Interfaces\FileGeneratorInterface;
-use LoyaltyCorp\EasyCfhighlander\Interfaces\ManifestGeneratorInterface;
+use EonX\EasyCfhighlander\Interfaces\FileGeneratorInterface;
+use EonX\EasyCfhighlander\Interfaces\ManifestGeneratorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class ManifestGenerator implements ManifestGeneratorInterface
@@ -30,7 +30,7 @@ final class ManifestGenerator implements ManifestGeneratorInterface
      *
      * @param string $cwd
      * @param string $version
-     * @param \LoyaltyCorp\EasyCfhighlander\File\FileStatus[] $statuses
+     * @param \EonX\EasyCfhighlander\File\FileStatus[] $statuses
      *
      * @return void
      */

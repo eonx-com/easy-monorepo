@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyPsr7Factory</h1>
+    <h1>EonX - EasyPsr7Factory</h1>
     <p>Provides an easy way to create PSR7 Request/Response from Symfony Request/Response.</p>
 </div>
 
@@ -12,7 +12,7 @@
 The recommended way to install this package is to use [Composer][1].
 
 ```bash
-$ composer require loyaltycorp/psr7-factory
+$ composer require eonx/psr7-factory
 ```
 
 ## How it works
@@ -26,7 +26,7 @@ Request and then will also allow you to create a Symfony Response from a PSR-7 R
 ## Usage
 
 ```php
-use LoyaltyCorp\EasyPsr7Factory\EasyPsr7Factory;
+use EonX\EasyPsr7Factory\EasyPsr7Factory;
 
  // Gives you a \Psr\Http\Message\ServerRequestInterface based on all values from the $symfonyRequest
 $serverRequest = (new EasyPsr7Factory())->createRequest($symfonyRequest);
@@ -51,7 +51,7 @@ you want in your application :)
 'providers' => [
     // Other Service Providers...
     
-    \LoyaltyCorp\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider::class,
+    \EonX\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider::class,
 ],
 ```
 
@@ -60,7 +60,7 @@ you want in your application :)
 ```php
 // bootstrap/app.php
 
-$app->register(\LoyaltyCorp\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider::class);
+$app->register(\EonX\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider::class);
 ```
 
 ## Contributing
@@ -72,5 +72,5 @@ or event a [Pull Request][6] to help us grow the package.
 [2]: https://symfony.com/doc/current/components/http_foundation.html
 [3]: https://laravel.com/
 [4]: https://lumen.laravel.com/
-[5]: https://github.com/LoyaltyCorp/LoyaltyCorp/issues/new/choose
-[6]: https://github.com/LoyaltyCorp/LoyaltyCorp/compare
+[5]: https://github.com/EonX/EonX/issues/new/choose
+[6]: https://github.com/EonX/EonX/compare

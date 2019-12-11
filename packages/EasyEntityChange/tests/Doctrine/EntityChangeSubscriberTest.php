@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyEntityChange\Tests\Doctrine;
+namespace EonX\EasyEntityChange\Tests\Doctrine;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use LoyaltyCorp\EasyEntityChange\Doctrine\EntityChangeSubscriber;
-use LoyaltyCorp\EasyEntityChange\Exceptions\InvalidDispatcherException;
-use LoyaltyCorp\EasyEntityChange\Tests\AbstractTestCase;
-use LoyaltyCorp\EasyEntityChange\Tests\Stubs\EventDispatcherStub;
+use EonX\EasyEntityChange\Doctrine\EntityChangeSubscriber;
+use EonX\EasyEntityChange\Exceptions\InvalidDispatcherException;
+use EonX\EasyEntityChange\Tests\AbstractTestCase;
+use EonX\EasyEntityChange\Tests\Stubs\EventDispatcherStub;
 use stdClass;
 
 final class EntityChangeSubscriberTest extends AbstractTestCase
@@ -32,7 +32,7 @@ final class EntityChangeSubscriberTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyEntityChange\Exceptions\InvalidDispatcherException
+     * @throws \EonX\EasyEntityChange\Exceptions\InvalidDispatcherException
      */
     public function testThrowOnInvalidDispatch(): void
     {
@@ -76,7 +76,7 @@ final class EntityChangeSubscriberTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyEntityChange\Exceptions\InvalidDispatcherException
+     * @throws \EonX\EasyEntityChange\Exceptions\InvalidDispatcherException
      */
     public function testNoDispatch(): void
     {

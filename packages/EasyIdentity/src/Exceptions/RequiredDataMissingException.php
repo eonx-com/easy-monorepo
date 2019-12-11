@@ -1,17 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Exceptions;
+namespace EonX\EasyIdentity\Exceptions;
 
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceExceptionInterface;
+use EonX\EasyIdentity\Interfaces\IdentityServiceExceptionInterface;
 
 class RequiredDataMissingException extends \RuntimeException implements IdentityServiceExceptionInterface
 {
     // No body needed.
 }
 
-\class_alias(
-    RequiredDataMissingException::class,
-    \StepTheFkUp\EasyIdentity\Exceptions\RequiredDataMissingException::class,
-    false
-);
+

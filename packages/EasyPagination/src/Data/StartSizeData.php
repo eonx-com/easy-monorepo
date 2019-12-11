@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPagination\Data;
+namespace EonX\EasyPagination\Data;
 
-use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface;
+use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 
 final class StartSizeData implements StartSizeDataInterface
 {
@@ -50,8 +50,4 @@ final class StartSizeData implements StartSizeDataInterface
     }
 }
 
-\class_alias(
-    StartSizeData::class,
-    'StepTheFkUp\EasyPagination\Data\StartSizeData',
-    false
-);
+

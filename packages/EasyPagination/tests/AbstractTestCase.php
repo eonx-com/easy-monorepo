@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPagination\Tests;
+namespace EonX\EasyPagination\Tests;
 
 use Laravel\Lumen\Application;
-use LoyaltyCorp\EasyPagination\Resolvers\Config\StartSizeConfig;
+use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\ServerRequestFactory;
@@ -41,7 +41,7 @@ abstract class AbstractTestCase extends TestCase
      * @param null|string $sizeAttr
      * @param null|int $sizeDefault
      *
-     * @return \LoyaltyCorp\EasyPagination\Resolvers\Config\StartSizeConfig
+     * @return \EonX\EasyPagination\Resolvers\Config\StartSizeConfig
      */
     protected function createConfig(
         ?string $numberAttr = null,
@@ -88,8 +88,4 @@ abstract class AbstractTestCase extends TestCase
     }
 }
 
-\class_alias(
-    AbstractTestCase::class,
-    'StepTheFkUp\EasyPagination\Tests\AbstractTestCase',
-    false
-);
+

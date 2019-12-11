@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
+namespace EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
 
 final class InputStub
 {
@@ -35,7 +35,7 @@ final class InputStub
      *
      * @param string $name
      *
-     * @return \LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\InputStub
+     * @return \EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\InputStub
      */
     public function setName(string $name): self
     {
@@ -45,8 +45,4 @@ final class InputStub
     }
 }
 
-\class_alias(
-    InputStub::class,
-    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\InputStub',
-    false
-);
+

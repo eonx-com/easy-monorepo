@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPsr7Factory\Tests;
+namespace EonX\EasyPsr7Factory\Tests;
 
-use LoyaltyCorp\EasyPsr7Factory\EasyPsr7Factory;
+use EonX\EasyPsr7Factory\EasyPsr7Factory;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Tests\Fixtures\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +49,7 @@ class EasyPsr7FactoryTest extends AbstractTestCase
     /**
      * Get PSR-7 factory.
      *
-     * @return \LoyaltyCorp\EasyPsr7Factory\EasyPsr7Factory
+     * @return \EonX\EasyPsr7Factory\EasyPsr7Factory
      */
     private function getFactory(): EasyPsr7Factory
     {
@@ -57,8 +57,4 @@ class EasyPsr7FactoryTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    EasyPsr7FactoryTest::class,
-    'StepTheFkUp\EasyPsr7Factory\Tests\EasyPsr7FactoryTest',
-    false
-);
+

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Tests;
+namespace EonX\EasyPipeline\Tests;
 
 use Mockery;
 use Mockery\MockInterface;
@@ -54,8 +54,4 @@ abstract class AbstractTestCase extends TestCase
     }
 }
 
-\class_alias(
-    AbstractTestCase::class,
-    'StepTheFkUp\EasyPipeline\Tests\AbstractTestCase',
-    false
-);
+

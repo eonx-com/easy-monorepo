@@ -1,26 +1,26 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Encoders;
+namespace EonX\EasyApiToken\Encoders;
 
-use LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException;
-use LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException;
-use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenEncoderInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
+use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
+use EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException;
+use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenEncoderInterface;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 
 final class JwtTokenEncoder implements EasyApiTokenEncoderInterface
 {
     /**
-     * @var \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface
+     * @var \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface
      */
     private $jwtDriver;
 
     /**
      * JwtTokenEncoder constructor.
      *
-     * @param \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
+     * @param \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
      */
     public function __construct(JwtDriverInterface $jwtDriver)
     {
@@ -30,12 +30,12 @@ final class JwtTokenEncoder implements EasyApiTokenEncoderInterface
     /**
      * Return encoded string representation of given API token.
      *
-     * @param \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface $apiToken
+     * @param \EonX\EasyApiToken\Interfaces\EasyApiTokenInterface $apiToken
      *
      * @return string
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException If given apiToken not supported
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException If encoding fails
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException If given apiToken not supported
+     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException If encoding fails
      */
     public function encode(EasyApiTokenInterface $apiToken): string
     {
@@ -63,9 +63,3 @@ final class JwtTokenEncoder implements EasyApiTokenEncoderInterface
         }
     }
 }
-
-\class_alias(
-    JwtTokenEncoder::class,
-    'StepTheFkUp\EasyApiToken\Encoders\JwtTokenEncoder',
-    false
-);

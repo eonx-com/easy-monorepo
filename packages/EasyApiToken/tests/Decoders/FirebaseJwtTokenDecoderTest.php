@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests\Decoders;
+namespace EonX\EasyApiToken\Tests\Decoders;
 
-use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
-use LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
-use LoyaltyCorp\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase;
-use LoyaltyCorp\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Decoders\JwtTokenDecoder;
+use EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
+use EonX\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase;
+use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
 {
@@ -15,7 +15,7 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testJwtTokenDecodeSuccessfully(): void
     {
@@ -33,7 +33,7 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
                 [$algo]
             ));
 
-            /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
+            /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
             $token = (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken($algo)
             ]));
@@ -54,7 +54,7 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testJwtTokenNullIfAuthorizationHeaderNotSet(): void
     {
@@ -68,7 +68,7 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testJwtTokenNullIfDoesntStartWithBearer(): void
     {
@@ -82,7 +82,7 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testJwtTokenThrowExceptionIfUnableToDecodeToken(): void
     {
@@ -101,9 +101,3 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
         ]));
     }
 }
-
-\class_alias(
-    FirebaseJwtTokenDecoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Decoders\FirebaseJwtTokenDecoderTest',
-    false
-);

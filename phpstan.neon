@@ -1,30 +1,30 @@
 parameters:
     ignoreErrors:
-        - message: '#Parameter \#3 \$privateKey of method LoyaltyCorp\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource|string|null, bool|resource|string|null given.#'
+        - message: '#Parameter \#3 \$privateKey of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource|string|null, bool|resource|string|null given.#'
           path: packages/EasyApiToken/tests
 
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDecision/src/Decisions
 
-        - message: '#Parameter \#2 \$ruleProviders of class LoyaltyCorp\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<LoyaltyCorp\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
+        - message: '#Parameter \#2 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
           path: packages/EasyDecision/tests/Decisions
 
         - message: '#Access to an undefined property Mockery\\MockInterface::\$users.#'
           path: packages/EasyIdentity/tests/Implementations/Auth0
 
-        - message: '#Parameter \#2 \$pipelines of class LoyaltyCorp\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int|string> given.#'
+        - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int|string> given.#'
           path: packages/EasyPipeline/src/Bridge/Laravel
 
-        - message: '#Property LoyaltyCorp\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$manager \(Doctrine\\ORM\\EntityManagerInterface\) does not accept Doctrine\\Common\\Persistence\\ObjectManager|null.#'
+        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$manager \(Doctrine\\ORM\\EntityManagerInterface\) does not accept Doctrine\\Common\\Persistence\\ObjectManager|null.#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM
 
-        - message: '#Property LoyaltyCorp\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$repository \(Doctrine\\ORM\\EntityRepository\) does not accept Doctrine\\Common\\Persistence\\ObjectRepository.#'
+        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$repository \(Doctrine\\ORM\\EntityRepository\) does not accept Doctrine\\Common\\Persistence\\ObjectRepository.#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM
 
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
           path: packages/EasyRepository/src/Implementations/Illuminate
 
-        - message: '#Method LoyaltyCorp\\EasyRepository\\Tests\\Implementation\\Illuminate\\EloquentRepositoryStub::getModel\(\) should return Illuminate\\Database\\Eloquent\\Model but returns Mockery\\MockInterface.#'
+        - message: '#Method EonX\\EasyRepository\\Tests\\Implementation\\Illuminate\\EloquentRepositoryStub::getModel\(\) should return Illuminate\\Database\\Eloquent\\Model but returns Mockery\\MockInterface.#'
           path: packages/EasyRepository/tests/Implementation/Illuminate
 
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'

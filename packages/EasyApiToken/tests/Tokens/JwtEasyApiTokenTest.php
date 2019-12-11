@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests\Tokens;
+namespace EonX\EasyApiToken\Tests\Tokens;
 
-use LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException;
-use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
-use LoyaltyCorp\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
+use EonX\EasyApiToken\Tests\AbstractTestCase;
+use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class JwtEasyApiTokenTest extends AbstractTestCase
 {
@@ -26,7 +26,7 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function testGetClaimSuccessfully(): void
     {
@@ -51,7 +51,7 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function testInvalidClaimException(): void
     {
@@ -60,9 +60,3 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
         (new JwtEasyApiToken([]))->getClaim('invalid');
     }
 }
-
-\class_alias(
-    JwtEasyApiTokenTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Tokens\JwtEasyApiTokenTest',
-    false
-);

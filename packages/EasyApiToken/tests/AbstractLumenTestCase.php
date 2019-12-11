@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests;
+namespace EonX\EasyApiToken\Tests;
 
 use Laravel\Lumen\Application;
 
@@ -29,9 +29,3 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         return $this->app = $app;
     }
 }
-
-\class_alias(
-    AbstractLumenTestCase::class,
-    'StepTheFkUp\EasyApiToken\Tests\AbstractLumenTestCase',
-    false
-);

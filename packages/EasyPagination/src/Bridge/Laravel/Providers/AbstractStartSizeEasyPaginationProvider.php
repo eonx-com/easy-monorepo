@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPagination\Bridge\Laravel\Providers;
+namespace EonX\EasyPagination\Bridge\Laravel\Providers;
 
 use Closure;
 use Illuminate\Support\ServiceProvider;
-use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface;
-use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataResolverInterface;
-use LoyaltyCorp\EasyPagination\Resolvers\Config\StartSizeConfig;
+use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
+use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
+use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
 use Psr\Http\Message\ServerRequestInterface;
 
 abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
@@ -59,7 +59,7 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
     /**
      * Create start_size pagination config from app config.
      *
-     * @return \LoyaltyCorp\EasyPagination\Resolvers\Config\StartSizeConfig
+     * @return \EonX\EasyPagination\Resolvers\Config\StartSizeConfig
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -100,8 +100,4 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
     }
 }
 
-\class_alias(
-    AbstractStartSizeEasyPaginationProvider::class,
-    'StepTheFkUp\EasyPagination\Bridge\Laravel\Providers\AbstractStartSizeEasyPaginationProvider',
-    false
-);
+

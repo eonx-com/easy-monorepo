@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\File;
+namespace EonX\EasyDocker\File;
 
-use LoyaltyCorp\EasyDocker\Interfaces\FileGeneratorInterface;
+use EonX\EasyDocker\Interfaces\FileGeneratorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment;
 
@@ -30,10 +30,10 @@ final class FileGenerator implements FileGeneratorInterface
     /**
      * Generate file for given template and params.
      *
-     * @param \LoyaltyCorp\EasyDocker\File\File $fileToGenerate
+     * @param \EonX\EasyDocker\File\File $fileToGenerate
      * @param null|mixed[] $params
      *
-     * @return \LoyaltyCorp\EasyDocker\File\FileStatus
+     * @return \EonX\EasyDocker\File\FileStatus
      *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
@@ -70,9 +70,9 @@ final class FileGenerator implements FileGeneratorInterface
     /**
      * Remove given file.
      *
-     * @param \LoyaltyCorp\EasyDocker\File\File $fileToRemove
+     * @param \EonX\EasyDocker\File\File $fileToRemove
      *
-     * @return \LoyaltyCorp\EasyDocker\File\FileStatus
+     * @return \EonX\EasyDocker\File\FileStatus
      */
     public function remove(File $fileToRemove): FileStatus
     {

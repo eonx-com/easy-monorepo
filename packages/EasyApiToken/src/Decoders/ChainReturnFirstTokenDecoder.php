@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Decoders;
+namespace EonX\EasyApiToken\Decoders;
 
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use LoyaltyCorp\EasyApiToken\Traits\ChainEasyApiTokenDecoderTrait;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Traits\ChainEasyApiTokenDecoderTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
@@ -13,7 +13,7 @@ final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
     use ChainEasyApiTokenDecoderTrait;
 
     /**
-     * @var \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface[]
+     * @var \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface[]
      */
     private $decoders;
 
@@ -22,7 +22,7 @@ final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
      *
      * @param mixed[] $decoders
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function __construct(array $decoders)
     {
@@ -36,7 +36,7 @@ final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return null|\LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface
+     * @return null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface
      */
     public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
     {
@@ -51,9 +51,3 @@ final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
         return null;
     }
 }
-
-\class_alias(
-    ChainReturnFirstTokenDecoder::class,
-    'StepTheFkUp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder',
-    false
-);

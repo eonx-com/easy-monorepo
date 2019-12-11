@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM;
+namespace EonX\EasyRepository\Tests\Implementation\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-use LoyaltyCorp\EasyRepository\Tests\AbstractTestCase;
+use EonX\EasyRepository\Tests\AbstractTestCase;
 use Mockery\MockInterface;
 
 final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
@@ -127,8 +127,4 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    AbstractDoctrineOrmRepositoryTest::class,
-    'StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine\ORM\AbstractDoctrineOrmRepositoryTest',
-    false
-);
+

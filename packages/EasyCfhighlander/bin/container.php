@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use LoyaltyCorp\EasyCfhighlander\HttpKernel\CfhighlanderKernel;
+use EonX\EasyCfhighlander\HttpKernel\CfhighlanderKernel;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symplify\PackageBuilder\Configuration\ConfigFileFinder;
 

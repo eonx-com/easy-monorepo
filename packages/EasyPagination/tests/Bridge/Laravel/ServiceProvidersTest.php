@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPagination\Tests\Bridge\Laravel;
+namespace EonX\EasyPagination\Tests\Bridge\Laravel;
 
-use LoyaltyCorp\EasyPagination\Bridge\Laravel\Providers\StartSizeAsArrayInQueryEasyPaginationProvider;
-use LoyaltyCorp\EasyPagination\Bridge\Laravel\Providers\StartSizeInQueryEasyPaginationProvider;
-use LoyaltyCorp\EasyPagination\Data\StartSizeData;
-use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface;
-use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataResolverInterface;
-use LoyaltyCorp\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
-use LoyaltyCorp\EasyPagination\Resolvers\StartSizeInQueryResolver;
-use LoyaltyCorp\EasyPagination\Tests\AbstractTestCase;
+use EonX\EasyPagination\Bridge\Laravel\Providers\StartSizeAsArrayInQueryEasyPaginationProvider;
+use EonX\EasyPagination\Bridge\Laravel\Providers\StartSizeInQueryEasyPaginationProvider;
+use EonX\EasyPagination\Data\StartSizeData;
+use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
+use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
+use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
+use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
+use EonX\EasyPagination\Tests\AbstractTestCase;
 
 final class ServiceProvidersTest extends AbstractTestCase
 {
@@ -44,8 +44,4 @@ final class ServiceProvidersTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    ServiceProvidersTest::class,
-    'StepTheFkUp\EasyPagination\Tests\Bridge\Laravel\ServiceProvidersTest',
-    false
-);
+

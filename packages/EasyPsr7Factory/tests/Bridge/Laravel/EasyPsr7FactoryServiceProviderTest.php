@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPsr7Factory\Tests\Bridge\Laravel;
+namespace EonX\EasyPsr7Factory\Tests\Bridge\Laravel;
 
-use LoyaltyCorp\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider;
-use LoyaltyCorp\EasyPsr7Factory\EasyPsr7Factory;
-use LoyaltyCorp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
-use LoyaltyCorp\EasyPsr7Factory\Tests\AbstractTestCase;
+use EonX\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider;
+use EonX\EasyPsr7Factory\EasyPsr7Factory;
+use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
+use EonX\EasyPsr7Factory\Tests\AbstractTestCase;
 
 final class EasyPsr7FactoryServiceProviderTest extends AbstractTestCase
 {
@@ -25,9 +25,3 @@ final class EasyPsr7FactoryServiceProviderTest extends AbstractTestCase
         self::assertInstanceOf(EasyPsr7Factory::class, $app->get(EasyPsr7FactoryInterface::class));
     }
 }
-
-\class_alias(
-    EasyPsr7FactoryServiceProviderTest::class,
-    'StepTheFkUp\EasyPsr7Factory\Tests\Bridge\Laravel\EasyPsr7FactoryServiceProviderTest',
-    false
-);

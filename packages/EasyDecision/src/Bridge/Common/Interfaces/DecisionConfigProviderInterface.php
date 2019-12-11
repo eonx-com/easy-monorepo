@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces;
+namespace EonX\EasyDecision\Bridge\Common\Interfaces;
 
 interface DecisionConfigProviderInterface
 {

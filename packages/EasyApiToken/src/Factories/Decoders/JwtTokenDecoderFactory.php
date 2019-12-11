@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Factories\Decoders;
+namespace EonX\EasyApiToken\Factories\Decoders;
 
-use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
-use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use LoyaltyCorp\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
+use EonX\EasyApiToken\Decoders\JwtTokenDecoder;
+use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 
 final class JwtTokenDecoderFactory extends AbstractJwtTokenDecoderFactory
 {
     /**
      * Do build decoder factory for children classes.
      *
-     * @param \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
+     * @param \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
      * @param mixed[] $config
      *
-     * @return \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
+     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      */
     protected function doBuild(JwtDriverInterface $jwtDriver, array $config): EasyApiTokenDecoderInterface
     {

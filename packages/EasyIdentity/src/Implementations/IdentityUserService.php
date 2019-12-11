@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Implementations;
+namespace EonX\EasyIdentity\Implementations;
 
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface;
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface;
+use EonX\EasyIdentity\Interfaces\IdentityUserInterface;
+use EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface;
 
 class IdentityUserService implements IdentityUserServiceInterface
 {

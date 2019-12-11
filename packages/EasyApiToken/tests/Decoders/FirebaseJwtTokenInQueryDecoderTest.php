@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests\Decoders;
+namespace EonX\EasyApiToken\Tests\Decoders;
 
-use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
-use LoyaltyCorp\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase;
-use LoyaltyCorp\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
+use EonX\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase;
+use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenTestCase
 {
@@ -14,7 +14,7 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testJwtTokenDecodeSuccessfully(): void
     {
@@ -36,7 +36,7 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
                 'param' => $this->createToken($algo)
             ]);
 
-            /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
+            /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
             $token = $decoder->decode($request);
 
             $payload = $token->getPayload();
@@ -55,7 +55,7 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testNullWhenQueryParamNotSet(): void
     {
@@ -69,9 +69,3 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
         self::assertNull($decoder->decode($this->createServerRequest()));
     }
 }
-
-\class_alias(
-    FirebaseJwtTokenInQueryDecoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Decoders\FirebaseJwtTokenInQueryDecoderTest',
-    false
-);

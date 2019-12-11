@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Interfaces;
+namespace EonX\EasyDecision\Interfaces;
 
 interface RuleInterface
 {
@@ -41,8 +41,4 @@ interface RuleInterface
     public function toString(): string;
 }
 
-\class_alias(
-    RuleInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\RuleInterface',
-    false
-);
+

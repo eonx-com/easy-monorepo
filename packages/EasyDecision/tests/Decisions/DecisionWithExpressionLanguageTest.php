@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Decisions;
+namespace EonX\EasyDecision\Tests\Decisions;
 
-use LoyaltyCorp\EasyDecision\Decisions\ValueDecision;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunction;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use LoyaltyCorp\EasyDecision\Helpers\ValueExpressionFunctionProvider;
-use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
-use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Decisions\ValueDecision;
+use EonX\EasyDecision\Expressions\ExpressionFunction;
+use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
+use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
+use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use EonX\EasyDecision\Tests\AbstractTestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
@@ -109,8 +109,8 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
     /**
      * Inject expression language in rules.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleInterface[] $rules
-     * @param null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
+     * @param null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      *
      * @return void
      */
@@ -126,8 +126,4 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    DecisionWithExpressionLanguageTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Decisions\DecisionWithExpressionLanguageTest',
-    false
-);
+

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCore\Http\Middleware;
+namespace EonX\EasyCore\Http\Middleware;
 
 use Illuminate\Http\Request;
 

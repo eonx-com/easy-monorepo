@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\Tests\Console\Commands;
+namespace EonX\EasyCfhighlander\Tests\Console\Commands;
 
-use LoyaltyCorp\EasyCfhighlander\Tests\AbstractTestCase;
+use EonX\EasyCfhighlander\Tests\AbstractTestCase;
 
 final class CodeCommandTest extends AbstractTestCase
 {

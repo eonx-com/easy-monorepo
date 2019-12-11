@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\Factories;
+namespace EonX\EasyCfhighlander\Factories;
 
 use EoneoPay\Utils\Interfaces\StrInterface;
 use EoneoPay\Utils\Str;

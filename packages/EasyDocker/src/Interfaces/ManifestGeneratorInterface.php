@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\Interfaces;
+namespace EonX\EasyDocker\Interfaces;
 
 interface ManifestGeneratorInterface
 {
@@ -10,7 +10,7 @@ interface ManifestGeneratorInterface
      *
      * @param string $cwd
      * @param string $version
-     * @param \LoyaltyCorp\EasyDocker\File\FileStatus[] $statuses
+     * @param \EonX\EasyDocker\File\FileStatus[] $statuses
      *
      * @return void
      */

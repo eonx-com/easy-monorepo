@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Interfaces\Factories;
+namespace EonX\EasyApiToken\Interfaces\Factories;
 
 interface MasterDecoderFactoryAwareInterface
 {
     /**
      * Set master factory.
      *
-     * @param \LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface $factory
+     * @param \EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface $factory
      *
      * @return void
      */

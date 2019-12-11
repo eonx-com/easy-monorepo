@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM;
+namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use LoyaltyCorp\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 
 final class LengthAwareDoctrineOrmPaginator implements LengthAwarePaginatorInterface
 {
@@ -108,8 +108,4 @@ final class LengthAwareDoctrineOrmPaginator implements LengthAwarePaginatorInter
     }
 }
 
-\class_alias(
-    LengthAwareDoctrineOrmPaginator::class,
-    'StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator',
-    false
-);
+

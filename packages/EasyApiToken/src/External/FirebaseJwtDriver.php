@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\External;
+namespace EonX\EasyApiToken\External;
 
 use Firebase\JWT\JWT;
-use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 
 final class FirebaseJwtDriver implements JwtDriverInterface
 {
@@ -88,13 +88,7 @@ final class FirebaseJwtDriver implements JwtDriverInterface
     {
         /** @var string $privateKey */
         $privateKey = $this->privateKey;
-        
+
         return JWT::encode($input, $privateKey, $this->algo);
     }
 }
-
-\class_alias(
-    FirebaseJwtDriver::class,
-    'StepTheFkUp\EasyApiToken\External\FirebaseJwtDriver',
-    false
-);

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\Interfaces;
+namespace EonX\EasyDocker\Interfaces;
 
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -13,7 +13,7 @@ interface ParameterResolverInterface
      * @param string $param
      * @param callable $resolver
      *
-     * @return \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface
+     * @return \EonX\EasyDocker\Interfaces\ParameterResolverInterface
      */
     public function addResolver(string $param, callable $resolver): self;
 
@@ -31,7 +31,7 @@ interface ParameterResolverInterface
      *
      * @param string $pathname
      *
-     * @return \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface
+     * @return \EonX\EasyDocker\Interfaces\ParameterResolverInterface
      */
     public function setCachePathname(string $pathname): self;
 }

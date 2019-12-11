@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Tests\Bridge\Laravel;
+namespace EonX\EasyRepository\Tests\Bridge\Laravel;
 
-use LoyaltyCorp\EasyRepository\Bridge\Laravel\EasyRepositoryProvider;
-use LoyaltyCorp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException;
-use LoyaltyCorp\EasyRepository\Tests\AbstractLumenTestCase;
-use LoyaltyCorp\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository1Stub;
-use LoyaltyCorp\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository2Stub;
+use EonX\EasyRepository\Bridge\Laravel\EasyRepositoryProvider;
+use EonX\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException;
+use EonX\EasyRepository\Tests\AbstractLumenTestCase;
+use EonX\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository1Stub;
+use EonX\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository2Stub;
 
 final class EasyRepositoryProviderTest extends AbstractLumenTestCase
 {
@@ -16,7 +16,7 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
+     * @throws \EonX\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
      */
     public function testEmptyRepositoriesListException(): void
     {
@@ -33,7 +33,7 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
+     * @throws \EonX\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
      */
     public function testRegisterRepositoriesSuccessfully(): void
     {
@@ -53,8 +53,4 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
     }
 }
 
-\class_alias(
-    EasyRepositoryProviderTest::class,
-    'StepTheFkUp\EasyRepository\Tests\Bridge\Laravel\EasyRepositoryProviderTest',
-    false
-);
+

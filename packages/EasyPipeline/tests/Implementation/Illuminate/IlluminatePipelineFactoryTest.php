@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate;
+namespace EonX\EasyPipeline\Tests\Implementation\Illuminate;
 
-use LoyaltyCorp\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider;
-use LoyaltyCorp\EasyPipeline\Exceptions\InvalidMiddlewareProviderException;
-use LoyaltyCorp\EasyPipeline\Exceptions\PipelineNotFoundException;
-use LoyaltyCorp\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory;
-use LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface;
-use LoyaltyCorp\EasyPipeline\Tests\AbstractLumenTestCase;
-use LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\PipelineNameAwareMiddlewareProviderStub;
-use LoyaltyCorp\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ValidMiddlewareProviderStub;
+use EonX\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider;
+use EonX\EasyPipeline\Exceptions\InvalidMiddlewareProviderException;
+use EonX\EasyPipeline\Exceptions\PipelineNotFoundException;
+use EonX\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory;
+use EonX\EasyPipeline\Interfaces\PipelineInterface;
+use EonX\EasyPipeline\Tests\AbstractLumenTestCase;
+use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\PipelineNameAwareMiddlewareProviderStub;
+use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ValidMiddlewareProviderStub;
 
 final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
 {
@@ -76,8 +76,4 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
     }
 }
 
-\class_alias(
-    IlluminatePipelineFactoryTest::class,
-    'StepTheFkUp\EasyPipeline\Tests\Implementation\Illuminate\IlluminatePipelineFactoryTest',
-    false
-);
+

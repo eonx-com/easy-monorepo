@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Bridge\Laravel;
+namespace EonX\EasyIdentity\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory;
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceInterface;
+use EonX\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory;
+use EonX\EasyIdentity\Interfaces\IdentityServiceInterface;
 
 final class Auth0IdentityServiceProvider extends ServiceProvider
 {
@@ -40,8 +40,4 @@ final class Auth0IdentityServiceProvider extends ServiceProvider
     }
 }
 
-\class_alias(
-    Auth0IdentityServiceProvider::class,
-    \StepTheFkUp\EasyIdentity\Bridge\Laravel\Auth0IdentityServiceProvider::class,
-    false
-);
+

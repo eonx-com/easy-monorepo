@@ -7,6 +7,6 @@
     <services>
         <defaults public="false" />
 
-        <service id="LoyaltyCorp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface" class="LoyaltyCorp\EasyPsr7Factory\EasyPsr7Factory"/>
+        <service id="EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface" class="EonX\EasyPsr7Factory\EasyPsr7Factory"/>
     </services>
 </container>

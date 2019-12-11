@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyEntityChange\Interfaces;
+namespace EonX\EasyEntityChange\Interfaces;
 
 interface EasyEntityChangeExceptionInterface
 {

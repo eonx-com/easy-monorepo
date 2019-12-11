@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyEntityChange</h1>
+    <h1>EonX - EasyEntityChange</h1>
     <p>Provides an easy way to hook up logic in your entities lifecycle.</p>
 </div>
 

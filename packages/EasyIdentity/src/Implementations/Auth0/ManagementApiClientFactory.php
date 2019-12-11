@@ -1,27 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Implementations\Auth0;
+namespace EonX\EasyIdentity\Implementations\Auth0;
 
 use Auth0\SDK\API\Management;
 
 class ManagementApiClientFactory
 {
     /**
-     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config
+     * @var \EonX\EasyIdentity\Implementations\Auth0\Config
      */
     private $config;
 
     /**
-     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider
+     * @var \EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider
      */
     private $tokenProvider;
 
     /**
      * ManagementApiClientFactory constructor.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config $config
-     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider $tokenProvider
+     * @param \EonX\EasyIdentity\Implementations\Auth0\Config $config
+     * @param \EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider $tokenProvider
      */
     public function __construct(Config $config, ManagementTokenProvider $tokenProvider)
     {
@@ -35,7 +35,7 @@ class ManagementApiClientFactory
      * @return \Auth0\SDK\API\Management
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function create(): Management
     {
@@ -43,8 +43,4 @@ class ManagementApiClientFactory
     }
 }
 
-\class_alias(
-    ManagementApiClientFactory::class,
-    \StepTheFkUp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory::class,
-    false
-);
+
