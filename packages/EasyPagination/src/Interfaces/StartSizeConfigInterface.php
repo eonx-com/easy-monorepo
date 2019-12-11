@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPagination\Interfaces;
+namespace EonX\EasyPagination\Interfaces;
 
 interface StartSizeConfigInterface
 {
@@ -34,8 +34,4 @@ interface StartSizeConfigInterface
     public function getStartDefault(): int;
 }
 
-\class_alias(
-    StartSizeConfigInterface::class,
-    'StepTheFkUp\EasyPagination\Interfaces\StartSizeConfigInterface',
-    false
-);
+

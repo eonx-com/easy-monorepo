@@ -1,22 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Interfaces;
+namespace EonX\EasyDecision\Interfaces;
 
 interface ContextAwareInterface
 {
     /**
      * Set context.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return void
      */
     public function setContext(ContextInterface $context): void;
 }
 
-\class_alias(
-    ContextAwareInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\ContextAwareInterface',
-    false
-);
+

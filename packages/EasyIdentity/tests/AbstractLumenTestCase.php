@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Tests;
+namespace EonX\EasyIdentity\Tests;
 
 use Laravel\Lumen\Application;
 
@@ -29,6 +29,6 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
 
 \class_alias(
     AbstractLumenTestCase::class,
-    StepTheFkUp\EasyIdentity\Tests\AbstractLumenTestCase::class,
+    EonX\EasyIdentity\Tests\AbstractLumenTestCase::class,
     false
 );

@@ -17,12 +17,12 @@
     },
     "autoload": {
         "psr-4": {
-            "LoyaltyCorp\\EasyDocker\\": "src"
+            "EonX\\EasyDocker\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LoyaltyCorp\\EasyDocker\\Tests\\": "tests"
+            "EonX\\EasyDocker\\Tests\\": "tests"
         }
     },
     "bin": [

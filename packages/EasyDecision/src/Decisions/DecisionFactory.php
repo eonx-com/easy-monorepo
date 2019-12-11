@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Decisions;
+namespace EonX\EasyDecision\Decisions;
 
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidDecisionException;
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidRuleProviderException;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionConfigInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionFactoryInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface;
+use EonX\EasyDecision\Exceptions\InvalidDecisionException;
+use EonX\EasyDecision\Exceptions\InvalidRuleProviderException;
+use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
+use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
+use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
+use EonX\EasyDecision\Interfaces\DecisionInterface;
+use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use EonX\EasyDecision\Interfaces\RuleProviderInterface;
 use Psr\Container\ContainerInterface;
 
 final class DecisionFactory implements DecisionFactoryInterface
@@ -23,19 +23,19 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $container;
 
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     private $expressionLanguage;
 
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
+     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
      */
     private $expressionLanguageFactory;
 
     /**
      * DecisionFactory constructor.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface $languageFactory
+     * @param \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface $languageFactory
      */
     public function __construct(ExpressionLanguageFactoryInterface $languageFactory)
     {
@@ -45,9 +45,9 @@ final class DecisionFactory implements DecisionFactoryInterface
     /**
      * Create decision for given config.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\DecisionConfigInterface $config
+     * @param \EonX\EasyDecision\Interfaces\DecisionConfigInterface $config
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function create(DecisionConfigInterface $config): DecisionInterface
     {
@@ -91,9 +91,9 @@ final class DecisionFactory implements DecisionFactoryInterface
     /**
      * Get expression language for given config.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\DecisionConfigInterface $config
+     * @param \EonX\EasyDecision\Interfaces\DecisionConfigInterface $config
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     private function getExpressionLanguage(DecisionConfigInterface $config): ExpressionLanguageInterface
     {
@@ -111,10 +111,10 @@ final class DecisionFactory implements DecisionFactoryInterface
      *
      * @param string $decisionType
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      *
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException
-     * @throws \LoyaltyCorp\EasyDecision\Exceptions\InvalidDecisionException
+     * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyDecision\Exceptions\InvalidDecisionException
      */
     private function instantiateDecision(string $decisionType): DecisionInterface
     {
@@ -143,9 +143,3 @@ final class DecisionFactory implements DecisionFactoryInterface
         ));
     }
 }
-
-\class_alias(
-    DecisionFactory::class,
-    'StepTheFkUp\EasyDecision\Decisions\DecisionFactory',
-    false
-);

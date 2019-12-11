@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
+namespace EonX\EasyIdentity\Tests\Implementations\Auth0;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
-use LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException;
-use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config;
-use LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider;
-use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
+use EonX\EasyIdentity\Exceptions\RequiredDataMissingException;
+use EonX\EasyIdentity\Implementations\Auth0\Config;
+use EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider;
+use EonX\EasyIdentity\Tests\AbstractTestCase;
 use Mockery\ExpectationInterface;
 use Mockery\MockInterface;
 
 /**
- * @covers \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementTokenProvider
+ * @covers \EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider
  */
 class ManagementTokenProviderTest extends AbstractTestCase
 {
@@ -22,7 +22,7 @@ class ManagementTokenProviderTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testGetToken(): void
@@ -45,7 +45,7 @@ class ManagementTokenProviderTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testGetTokenWithMissingTokenInResponse(): void
@@ -69,7 +69,7 @@ class ManagementTokenProviderTest extends AbstractTestCase
      * Build the base expectation for the mock for the client.
      *
      * @param \Mockery\MockInterface $mock
-     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config $config
+     * @param \EonX\EasyIdentity\Implementations\Auth0\Config $config
      * @param null|mixed[] $content
      *
      * @return \Mockery\ExpectationInterface
@@ -98,7 +98,7 @@ class ManagementTokenProviderTest extends AbstractTestCase
     /**
      * Get config.
      *
-     * @return \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config
+     * @return \EonX\EasyIdentity\Implementations\Auth0\Config
      */
     private function getConfig(): Config
     {
@@ -113,6 +113,6 @@ class ManagementTokenProviderTest extends AbstractTestCase
 
 \class_alias(
     ManagementTokenProviderTest::class,
-    StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\ManagementTokenProviderTest::class,
+    EonX\EasyIdentity\Tests\Implementations\Auth0\ManagementTokenProviderTest::class,
     false
 );

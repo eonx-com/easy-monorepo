@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Implementations\Illuminate;
+namespace EonX\EasyPipeline\Implementations\Illuminate;
 
 use Illuminate\Contracts\Pipeline\Pipeline as IlluminatePipelineContract;
-use LoyaltyCorp\EasyPipeline\Exceptions\EmptyMiddlewareListException;
-use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
-use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface;
-use LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface;
+use EonX\EasyPipeline\Exceptions\EmptyMiddlewareListException;
+use EonX\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
+use EonX\EasyPipeline\Interfaces\MiddlewareLoggerInterface;
+use EonX\EasyPipeline\Interfaces\PipelineInterface;
 
 final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInterface
 {
@@ -32,7 +32,7 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
      * @param \Illuminate\Contracts\Pipeline\Pipeline $illuminatePipeline
      * @param mixed[] $middlewareList
      *
-     * @throws \LoyaltyCorp\EasyPipeline\Exceptions\EmptyMiddlewareListException
+     * @throws \EonX\EasyPipeline\Exceptions\EmptyMiddlewareListException
      */
     public function __construct(IlluminatePipelineContract $illuminatePipeline, array $middlewareList)
     {
@@ -52,7 +52,7 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
      *
      * @return mixed[]
      *
-     * @throws \LoyaltyCorp\EasyPipeline\Exceptions\PipelineDidntRunException If called before process() is called
+     * @throws \EonX\EasyPipeline\Exceptions\PipelineDidntRunException If called before process() is called
      */
     public function getLogs(): array
     {
@@ -104,8 +104,4 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
     }
 }
 
-\class_alias(
-    IlluminatePipeline::class,
-    'StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipeline',
-    false
-);
+

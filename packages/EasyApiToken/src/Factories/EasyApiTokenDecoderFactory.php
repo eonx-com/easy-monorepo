@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Factories;
+namespace EonX\EasyApiToken\Factories;
 
-use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\MasterDecoderFactoryAwareInterface;
-use LoyaltyCorp\EasyApiToken\Traits\DefaultDecoderFactoriesTrait;
+use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\MasterDecoderFactoryAwareInterface;
+use EonX\EasyApiToken\Traits\DefaultDecoderFactoriesTrait;
 use Psr\Container\ContainerInterface;
 
 class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
@@ -53,9 +53,9 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
      *
      * @param string $decoder Key of configuration found in the configuration.
      *
-     * @return \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
+     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     public function build(string $decoder): EasyApiTokenDecoderInterface
     {
@@ -100,7 +100,7 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
      *
      * @return string
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     private function getSubFactoryClass(string $decoder, array $config): string
     {
@@ -129,9 +129,9 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
      * @param string $decoder
      * @param mixed[] $config
      *
-     * @return \LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface
+     * @return \EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     private function instantiateSubFactory(string $decoder, array $config): EasyApiTokenDecoderSubFactoryInterface
     {

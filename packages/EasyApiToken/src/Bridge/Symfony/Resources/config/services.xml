@@ -7,8 +7,8 @@
     <services>
         <defaults public="false" />
 
-        <service id="LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface"
-                 class="LoyaltyCorp\EasyApiToken\Factories\EasyApiTokenDecoderFactory"
+        <service id="EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface"
+                 class="EonX\EasyApiToken\Factories\EasyApiTokenDecoderFactory"
         >
             <argument/> <!-- $config -->
             <argument/> <!-- $defaultFactories -->

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Interfaces\Tokens;
+namespace EonX\EasyApiToken\Interfaces\Tokens;
 
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
 
 interface BasicAuthEasyApiTokenInterface extends EasyApiTokenInterface
 {
@@ -21,9 +21,3 @@ interface BasicAuthEasyApiTokenInterface extends EasyApiTokenInterface
      */
     public function getUsername(): string;
 }
-
-\class_alias(
-    BasicAuthEasyApiTokenInterface::class,
-    'StepTheFkUp\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface',
-    false
-);

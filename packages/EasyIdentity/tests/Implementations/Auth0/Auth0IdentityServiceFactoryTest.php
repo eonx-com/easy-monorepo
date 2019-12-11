@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Auth0;
+namespace EonX\EasyIdentity\Tests\Implementations\Auth0;
 
-use LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory;
-use LoyaltyCorp\EasyIdentity\Tests\AbstractTestCase;
+use EonX\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory;
+use EonX\EasyIdentity\Tests\AbstractTestCase;
 
 final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
 {
@@ -30,7 +30,7 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
     /**
      * Test config with empty string.
      * This can happen when auth0 is not setup in env or has empty values.
-     * @see https://loyaltycorp.atlassian.net/browse/PYMT-1020
+     * @see https://eonx.atlassian.net/browse/PYMT-1020
      *
      * @return void
      */
@@ -51,6 +51,6 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
 
 \class_alias(
     Auth0IdentityServiceFactoryTest::class,
-    StepTheFkUp\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceFactoryTest::class,
+    EonX\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceFactoryTest::class,
     false
 );

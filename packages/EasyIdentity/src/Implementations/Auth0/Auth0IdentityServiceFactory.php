@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Implementations\Auth0;
+namespace EonX\EasyIdentity\Implementations\Auth0;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use LoyaltyCorp\EasyIdentity\Implementations\IdentityUserService;
+use EonX\EasyIdentity\Implementations\IdentityUserService;
 
 final class Auth0IdentityServiceFactory
 {
@@ -15,7 +15,7 @@ final class Auth0IdentityServiceFactory
      * @param mixed[] $configData
      * @param null|\GuzzleHttp\ClientInterface $client
      *
-     * @return \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Auth0IdentityService
+     * @return \EonX\EasyIdentity\Implementations\Auth0\Auth0IdentityService
      */
     public function create(array $configData, ?ClientInterface $client = null): Auth0IdentityService
     {
@@ -39,7 +39,7 @@ final class Auth0IdentityServiceFactory
     /**
      * Create base uri from config.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config $config
+     * @param \EonX\EasyIdentity\Implementations\Auth0\Config $config
      *
      * @return string
      */
@@ -49,8 +49,4 @@ final class Auth0IdentityServiceFactory
     }
 }
 
-\class_alias(
-    Auth0IdentityServiceFactory::class,
-    \StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory::class,
-    false
-);
+

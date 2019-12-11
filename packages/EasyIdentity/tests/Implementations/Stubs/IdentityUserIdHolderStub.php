@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Tests\Implementations\Stubs;
+namespace EonX\EasyIdentity\Tests\Implementations\Stubs;
 
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface;
+use EonX\EasyIdentity\Interfaces\IdentityUserIdHolderInterface;
 
 final class IdentityUserIdHolderStub implements IdentityUserIdHolderInterface
 {
@@ -47,6 +47,6 @@ final class IdentityUserIdHolderStub implements IdentityUserIdHolderInterface
 
 \class_alias(
     IdentityUserIdHolderStub::class,
-    StepTheFkUp\EasyIdentity\Tests\Implementations\Stubs\IdentityUserIdHolderStub::class,
+    EonX\EasyIdentity\Tests\Implementations\Stubs\IdentityUserIdHolderStub::class,
     false
 );

@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Traits;
+namespace EonX\EasyDecision\Traits;
 
-use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use EonX\EasyDecision\Interfaces\ContextInterface;
 
 trait ContextAwareTrait
 {
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface
+     * @var \EonX\EasyDecision\Interfaces\ContextInterface
      */
     private $context;
 
     /**
      * Set context.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
      *
      * @return void
      */
@@ -25,8 +25,4 @@ trait ContextAwareTrait
     }
 }
 
-\class_alias(
-    ContextAwareTrait::class,
-    'StepTheFkUp\EasyDecision\Traits\ContextAwareTrait',
-    false
-);
+

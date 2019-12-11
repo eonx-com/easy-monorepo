@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPsr7Factory\Tests\Bridge\Symfony\Stubs;
+namespace EonX\EasyPsr7Factory\Tests\Bridge\Symfony\Stubs;
 
-use LoyaltyCorp\EasyPsr7Factory\Bridge\Symfony\EasyPsr7FactoryBundle;
+use EonX\EasyPsr7Factory\Bridge\Symfony\EasyPsr7FactoryBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

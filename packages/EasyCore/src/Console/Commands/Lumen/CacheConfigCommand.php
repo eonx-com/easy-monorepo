@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCore\Console\Commands\Lumen;
+namespace EonX\EasyCore\Console\Commands\Lumen;
 
 use Illuminate\Console\Command;
 

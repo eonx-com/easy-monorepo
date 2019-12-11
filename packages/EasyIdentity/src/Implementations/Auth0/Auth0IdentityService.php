@@ -1,46 +1,46 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Implementations\Auth0;
+namespace EonX\EasyIdentity\Implementations\Auth0;
 
 use GuzzleHttp\Exception\RequestException;
-use LoyaltyCorp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
-use LoyaltyCorp\EasyIdentity\Exceptions\LoginFailedException;
-use LoyaltyCorp\EasyIdentity\Implementations\AbstractIdentityService;
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface;
-use LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface;
+use EonX\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
+use EonX\EasyIdentity\Exceptions\LoginFailedException;
+use EonX\EasyIdentity\Implementations\AbstractIdentityService;
+use EonX\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
+use EonX\EasyIdentity\Interfaces\IdentityUserInterface;
+use EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface;
 
 final class Auth0IdentityService extends AbstractIdentityService
 {
     /**
-     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory
+     * @var \EonX\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory
      */
     private $authFactory;
 
     /**
-     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config
+     * @var \EonX\EasyIdentity\Implementations\Auth0\Config
      */
     private $config;
 
     /**
-     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory
+     * @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory
      */
     private $managementFactory;
 
     /**
-     * @var \LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory
+     * @var \EonX\EasyIdentity\Implementations\Auth0\TokenVerifierFactory
      */
     private $tokenVerifierFactory;
 
     /**
      * Auth0IdentityService constructor.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory
-     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\Config $config
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserServiceInterface $identityUserService
-     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $managementFactory
-     * @param \LoyaltyCorp\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory
+     * @param \EonX\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory
+     * @param \EonX\EasyIdentity\Implementations\Auth0\Config $config
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface $identityUserService
+     * @param \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $managementFactory
+     * @param \EonX\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory
      */
     public function __construct(
         AuthenticationApiClientFactory $authFactory,
@@ -60,13 +60,13 @@ final class Auth0IdentityService extends AbstractIdentityService
     /**
      * Create user for given data.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
+     * @throws \EonX\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
      */
     public function createUser(IdentityUserInterface $user): IdentityUserInterface
     {
@@ -91,7 +91,7 @@ final class Auth0IdentityService extends AbstractIdentityService
      *
      * @return mixed
      *
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
      * @throws \Auth0\SDK\Exception\CoreException
      * @throws \Auth0\SDK\Exception\InvalidTokenException
      */
@@ -103,14 +103,14 @@ final class Auth0IdentityService extends AbstractIdentityService
     /**
      * Delete user for given id.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
      * @return void
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\RequiredDataMissingException
+     * @throws \EonX\EasyIdentity\Exceptions\NoIdentityUserIdException
+     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
      */
     public function deleteUser(IdentityUserInterface $user): void
     {
@@ -120,13 +120,13 @@ final class Auth0IdentityService extends AbstractIdentityService
     /**
      * Get user information for given id.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException
+     * @throws \EonX\EasyIdentity\Exceptions\NoIdentityUserIdException
      */
     public function getUser(IdentityUserInterface $user): IdentityUserInterface
     {
@@ -144,9 +144,9 @@ final class Auth0IdentityService extends AbstractIdentityService
     /**
      * Login given user.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      *
-     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Auth0\SDK\Exception\ApiException
      */
@@ -165,14 +165,14 @@ final class Auth0IdentityService extends AbstractIdentityService
     /**
      * Update user for given id with given data.
      *
-     * @param \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface $user
+     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param mixed[] $data
      *
-     * @return \LoyaltyCorp\EasyIdentity\Interfaces\IdentityUserInterface
+     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \LoyaltyCorp\EasyIdentity\Exceptions\NoIdentityUserIdException
+     * @throws \EonX\EasyIdentity\Exceptions\NoIdentityUserIdException
      */
     public function updateUser(IdentityUserInterface $user, array $data): IdentityUserInterface
     {
@@ -221,8 +221,4 @@ final class Auth0IdentityService extends AbstractIdentityService
     }
 }
 
-\class_alias(
-    Auth0IdentityService::class,
-    \StepTheFkUp\EasyIdentity\Implementations\Auth0\Auth0IdentityService::class,
-    false
-);
+

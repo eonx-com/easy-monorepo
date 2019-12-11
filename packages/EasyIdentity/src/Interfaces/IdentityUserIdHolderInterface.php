@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Interfaces;
+namespace EonX\EasyIdentity\Interfaces;
 
 interface IdentityUserIdHolderInterface
 {
@@ -22,8 +22,4 @@ interface IdentityUserIdHolderInterface
     public function setIdentityUserId(string $userId): void;
 }
 
-\class_alias(
-    IdentityUserIdHolderInterface::class,
-    \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserIdHolderInterface::class,
-    false
-);
+

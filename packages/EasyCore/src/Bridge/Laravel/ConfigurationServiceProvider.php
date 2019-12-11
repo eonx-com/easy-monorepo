@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCore\Bridge\Laravel;
+namespace EonX\EasyCore\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
 

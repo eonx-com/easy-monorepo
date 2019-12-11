@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Factories\Decoders;
+namespace EonX\EasyApiToken\Factories\Decoders;
 
-use LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
-use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface as SubFactory;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\MasterDecoderFactoryAwareInterface as MasterAware;
-use LoyaltyCorp\EasyApiToken\Traits\DecoderNameAwareTrait;
-use LoyaltyCorp\EasyApiToken\Traits\MasterDecoderFactoryAwareTrait;
+use EonX\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
+use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface as SubFactory;
+use EonX\EasyApiToken\Interfaces\Factories\MasterDecoderFactoryAwareInterface as MasterAware;
+use EonX\EasyApiToken\Traits\DecoderNameAwareTrait;
+use EonX\EasyApiToken\Traits\MasterDecoderFactoryAwareTrait;
 
 final class ChainReturnFirstTokenDecoderFactory implements SubFactory, MasterAware, DecoderNameAwareInterface
 {
@@ -22,10 +22,10 @@ final class ChainReturnFirstTokenDecoderFactory implements SubFactory, MasterAwa
      *
      * @param null|mixed[] $config
      *
-     * @return \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
+     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function build(?array $config = null): EasyApiTokenDecoderInterface
     {

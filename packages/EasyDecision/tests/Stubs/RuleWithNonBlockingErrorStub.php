@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
+namespace EonX\EasyDecision\Tests\Stubs;
 
-use LoyaltyCorp\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
+use EonX\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
+use EonX\EasyDecision\Interfaces\RuleInterface;
 
 final class RuleWithNonBlockingErrorStub implements RuleInterface
 {

@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Factories\Decoders;
+namespace EonX\EasyApiToken\Factories\Decoders;
 
-use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
-use LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver;
-use LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver;
-use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface as DecoderSubFactory;
-use LoyaltyCorp\EasyApiToken\Traits\DecoderNameAwareTrait;
+use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
+use EonX\EasyApiToken\External\Auth0JwtDriver;
+use EonX\EasyApiToken\External\FirebaseJwtDriver;
+use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface as DecoderSubFactory;
+use EonX\EasyApiToken\Traits\DecoderNameAwareTrait;
 
 abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, DecoderNameAwareInterface
 {
@@ -26,9 +26,9 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
      *
      * @param null|mixed[] $config
      *
-     * @return \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
+     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     public function build(?array $config = null): EasyApiTokenDecoderInterface
     {
@@ -52,10 +52,10 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
     /**
      * Do build decoder factory for children classes.
      *
-     * @param \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
+     * @param \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
      * @param mixed[] $config
      *
-     * @return \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
+     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      */
     abstract protected function doBuild(JwtDriverInterface $jwtDriver, array $config): EasyApiTokenDecoderInterface;
 
@@ -65,9 +65,9 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
      * @param string $driver Driver to build, must be one of 'auth0' or 'firebase'.
      * @param mixed[] $options List of options to use to create Driver.
      *
-     * @return \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface
+     * @return \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     protected function createJwtDriver(string $driver, array $options): JwtDriverInterface
     {
@@ -90,7 +90,7 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
      *
      * @param mixed[] $options List of options to pass to Auth0JwtDriver. Keys match constructor parameters.
      *
-     * @return \LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver
+     * @return \EonX\EasyApiToken\External\Auth0JwtDriver
      */
     private function createAuth0Driver(array $options): Auth0JwtDriver
     {
@@ -110,7 +110,7 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
      *
      * @param mixed[] $options List of options to pass to FirebaseJwtDriver. Keys match constructor parameters.
      *
-     * @return \LoyaltyCorp\EasyApiToken\External\FirebaseJwtDriver
+     * @return \EonX\EasyApiToken\External\FirebaseJwtDriver
      */
     private function createFirebaseDriver(array $options): FirebaseJwtDriver
     {

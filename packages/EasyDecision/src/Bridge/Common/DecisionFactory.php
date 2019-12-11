@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Bridge\Common;
+namespace EonX\EasyDecision\Bridge\Common;
 
-use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface;
-use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
-use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
-use LoyaltyCorp\EasyDecision\Decisions\DecisionConfig;
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionFactoryInterface as BaseDecisionFactoryInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface;
+use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface;
+use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
+use EonX\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
+use EonX\EasyDecision\Decisions\DecisionConfig;
+use EonX\EasyDecision\Exceptions\InvalidArgumentException;
+use EonX\EasyDecision\Interfaces\DecisionFactoryInterface as BaseDecisionFactoryInterface;
+use EonX\EasyDecision\Interfaces\DecisionInterface;
+use EonX\EasyDecision\Interfaces\RuleProviderInterface;
 use Psr\Container\ContainerInterface;
 
 final class DecisionFactory implements DecisionFactoryInterface
@@ -26,17 +26,17 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $container;
 
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\DecisionFactoryInterface
+     * @var \EonX\EasyDecision\Interfaces\DecisionFactoryInterface
      */
     private $decorated;
 
     /**
-     * @var \LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface
+     * @var \EonX\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface
      */
     private $expressionLanguageConfigFactory;
 
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface[]
+     * @var \EonX\EasyDecision\Interfaces\DecisionInterface[]
      */
     private $resolved = [];
 
@@ -45,7 +45,7 @@ final class DecisionFactory implements DecisionFactoryInterface
      *
      * @param mixed[] $config
      * @param \Psr\Container\ContainerInterface $container
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\DecisionFactoryInterface $decorated
+     * @param \EonX\EasyDecision\Interfaces\DecisionFactoryInterface $decorated
      */
     public function __construct(array $config, ContainerInterface $container, BaseDecisionFactoryInterface $decorated)
     {
@@ -60,7 +60,7 @@ final class DecisionFactory implements DecisionFactoryInterface
      * @param string $decision
      * @param mixed[]|null $params
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function create(string $decision, ?array $params = null): DecisionInterface
     {
@@ -98,7 +98,7 @@ final class DecisionFactory implements DecisionFactoryInterface
      * @param mixed[] $providers
      * @param mixed[]|null $params
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     private function doCreate(
         string $decision,
@@ -124,7 +124,7 @@ final class DecisionFactory implements DecisionFactoryInterface
      * @param mixed[] $config
      * @param mixed[]|null $params
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     private function doCreateForConfig(string $decision, array $config, ?array $params = null): DecisionInterface
     {
@@ -145,7 +145,7 @@ final class DecisionFactory implements DecisionFactoryInterface
      * @param mixed $configProvider
      * @param mixed[]|null $params
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\DecisionInterface
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     private function doCreateForConfigProvider(
         string $decision,
@@ -176,7 +176,7 @@ final class DecisionFactory implements DecisionFactoryInterface
     /**
      * Get expression language config factory.
      *
-     * @return \LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface
+     * @return \EonX\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface
      */
     private function getExpressionLanguageConfigFactory(): ExpressionLanguageConfigFactoryInterface
     {
@@ -194,7 +194,7 @@ final class DecisionFactory implements DecisionFactoryInterface
      *
      * @param mixed[] $providers
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[]
+     * @return \EonX\EasyDecision\Interfaces\RuleProviderInterface[]
      */
     private function getRuleProviders(array $providers): array
     {

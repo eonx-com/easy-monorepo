@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyPipeline</h1>
+    <h1>EonX - EasyPipeline</h1>
     <p>Provides an easy and powerful way to implement pipelines for anything.</p>
 </div>
 
@@ -12,7 +12,7 @@ This document describes the steps to install this package into a [Laravel][1] an
 Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
 
 ```bash
-$ composer require loyaltycorp/easy-pipeline
+$ composer require eonx/easy-pipeline
 ```
 
 # Service Provider
@@ -29,7 +29,7 @@ automatically. Make sure to register it:
 'providers' => [
     // Other Service Providers...
     
-    \LoyaltyCorp\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider::class
+    \EonX\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider::class
 ],
 ```
 
@@ -66,7 +66,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\LoyaltyCorp\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider::class);
+$app->register(\EonX\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider::class);
 ```
 
 ## Add Config
@@ -90,10 +90,10 @@ of your pipeline, for more information please have a look at the [documentation]
 
 That's it you're all setup! You're now able to use your pipelines anywhere you want, using dependency
 injection or service locator (we strongly recommend to use the first one haha). To do so, you need to use the 
-`LoyaltyCorp\EasyPipeline\Interfaces\PipelineFactoryInterface` to create your pipelines and their middleware list.
+`EonX\EasyPipeline\Interfaces\PipelineFactoryInterface` to create your pipelines and their middleware list.
 
 ```php
-use LoyaltyCorp\EasyPipeline\Interfaces\PipelineFactoryInterface;
+use EonX\EasyPipeline\Interfaces\PipelineFactoryInterface;
 
 final class MyClass
 {
@@ -111,7 +111,7 @@ final class MyClass
     public function processMyPipelineToo($input)
     {
         // Will be your configured repository implementation as well
-        $pipeline = $app->make(\LoyaltyCorp\EasyPipeline\Interfaces\PipelineFactoryInterface::class)->create('my-pipeline');
+        $pipeline = $app->make(\EonX\EasyPipeline\Interfaces\PipelineFactoryInterface::class)->create('my-pipeline');
         
         $output = $pipeline->process($input); // Return the potentially modified version of $input
                 

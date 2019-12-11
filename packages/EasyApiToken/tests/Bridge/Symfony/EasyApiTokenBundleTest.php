@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests\Bridge\Symfony;
+namespace EonX\EasyApiToken\Tests\Bridge\Symfony;
 
-use LoyaltyCorp\EasyApiToken\Decoders\BasicAuthDecoder;
-use LoyaltyCorp\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
-use LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException;
-use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
-use LoyaltyCorp\EasyApiToken\Tests\Bridge\Symfony\Stubs\KernelStub;
-use LoyaltyCorp\EasyApiToken\Tests\Bridge\Symfony\Stubs\ServiceStub;
+use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
+use EonX\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
+use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
+use EonX\EasyApiToken\Tests\AbstractTestCase;
+use EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs\KernelStub;
+use EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs\ServiceStub;
 
 final class EasyApiTokenBundleTest extends AbstractTestCase
 {
@@ -17,7 +17,7 @@ final class EasyApiTokenBundleTest extends AbstractTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     public function testDecoderFactoryIsRegisteredAsService(): void
     {

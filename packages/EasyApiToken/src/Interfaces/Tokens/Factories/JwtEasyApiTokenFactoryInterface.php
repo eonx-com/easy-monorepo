@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Interfaces\Tokens\Factories;
+namespace EonX\EasyApiToken\Interfaces\Tokens\Factories;
 
-use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 
 interface JwtEasyApiTokenFactoryInterface
 {
@@ -12,15 +12,9 @@ interface JwtEasyApiTokenFactoryInterface
      *
      * @param string $token
      *
-     * @return \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface
+     * @return \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function createFromString(string $token): JwtEasyApiTokenInterface;
 }
-
-\class_alias(
-    JwtEasyApiTokenFactoryInterface::class,
-    'StepTheFkUp\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface',
-    false
-);

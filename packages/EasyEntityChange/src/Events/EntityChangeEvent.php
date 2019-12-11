@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyEntityChange\Events;
+namespace EonX\EasyEntityChange\Events;
 
-use LoyaltyCorp\EasyEntityChange\Interfaces\EasyEntityChangeEventInterface;
+use EonX\EasyEntityChange\Interfaces\EasyEntityChangeEventInterface;
 
 /**
  * This event is fired with data about any entities

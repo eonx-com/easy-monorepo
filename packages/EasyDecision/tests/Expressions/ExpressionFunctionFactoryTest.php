@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Expressions;
+namespace EonX\EasyDecision\Tests\Expressions;
 
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunction;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunctionFactory;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
-use LoyaltyCorp\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Exceptions\InvalidArgumentException;
+use EonX\EasyDecision\Expressions\ExpressionFunction;
+use EonX\EasyDecision\Expressions\ExpressionFunctionFactory;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
+use EonX\EasyDecision\Tests\AbstractTestCase;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
 final class ExpressionFunctionFactoryTest extends AbstractTestCase
@@ -107,7 +107,7 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
     /**
      * Get expression function factory.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
      */
     private function getFactory(): ExpressionFunctionFactoryInterface
     {
@@ -115,8 +115,4 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    ExpressionFunctionFactoryTest::class,
-    'StepTheFkUp\EasyDecision\Tests\Expressions\ExpressionFunctionFactoryTest',
-    false
-);
+

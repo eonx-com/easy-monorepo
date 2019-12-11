@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\Interfaces;
+namespace EonX\EasyDocker\Interfaces;
 
-use LoyaltyCorp\EasyDocker\File\FileStatus;
-use LoyaltyCorp\EasyDocker\File\File;
+use EonX\EasyDocker\File\FileStatus;
+use EonX\EasyDocker\File\File;
 
 interface FileGeneratorInterface
 {
@@ -42,19 +42,19 @@ interface FileGeneratorInterface
     /**
      * Generate file for given template and params.
      *
-     * @param \LoyaltyCorp\EasyDocker\File\File $fileToGenerate
+     * @param \EonX\EasyDocker\File\File $fileToGenerate
      * @param null|mixed[] $params
      *
-     * @return \LoyaltyCorp\EasyDocker\File\FileStatus
+     * @return \EonX\EasyDocker\File\FileStatus
      */
     public function generate(File $fileToGenerate, ?array $params = null): FileStatus;
 
     /**
      * Remove given file.
      *
-     * @param \LoyaltyCorp\EasyDocker\File\File $fileToRemove
+     * @param \EonX\EasyDocker\File\File $fileToRemove
      *
-     * @return \LoyaltyCorp\EasyDocker\File\FileStatus
+     * @return \EonX\EasyDocker\File\FileStatus
      */
     public function remove(File $fileToRemove): FileStatus;
 }

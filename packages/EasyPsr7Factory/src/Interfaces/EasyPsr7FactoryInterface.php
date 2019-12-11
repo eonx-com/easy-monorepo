@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPsr7Factory\Interfaces;
+namespace EonX\EasyPsr7Factory\Interfaces;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,8 +29,4 @@ interface EasyPsr7FactoryInterface
     public function createResponse(ResponseInterface $response): Response;
 }
 
-\class_alias(
-    EasyPsr7FactoryInterface::class,
-    'StepTheFkUp\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface',
-    false
-);
+

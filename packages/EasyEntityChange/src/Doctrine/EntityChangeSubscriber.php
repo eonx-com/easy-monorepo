@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyEntityChange\Doctrine;
+namespace EonX\EasyEntityChange\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,9 +10,9 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\PersistentCollection;
 use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
 use EoneoPay\Utils\Arr;
-use LoyaltyCorp\EasyEntityChange\Events\EntityChangeEvent;
-use LoyaltyCorp\EasyEntityChange\Events\EntityDeleteDataEvent;
-use LoyaltyCorp\EasyEntityChange\Exceptions\InvalidDispatcherException;
+use EonX\EasyEntityChange\Events\EntityChangeEvent;
+use EonX\EasyEntityChange\Events\EntityDeleteDataEvent;
+use EonX\EasyEntityChange\Exceptions\InvalidDispatcherException;
 
 final class EntityChangeSubscriber implements EventSubscriber
 {
@@ -105,7 +105,7 @@ final class EntityChangeSubscriber implements EventSubscriber
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyEntityChange\Exceptions\InvalidDispatcherException
+     * @throws \EonX\EasyEntityChange\Exceptions\InvalidDispatcherException
      */
     public function postFlush(): void
     {

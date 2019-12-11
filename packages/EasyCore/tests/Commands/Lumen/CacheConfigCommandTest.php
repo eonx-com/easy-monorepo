@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCore\Tests\Commands\Lumen;
+namespace EonX\EasyCore\Tests\Commands\Lumen;
 
 use Illuminate\Console\Command;
 use Laravel\Lumen\Application;
-use LoyaltyCorp\EasyCore\Console\Commands\Lumen\CacheConfigCommand;
-use LoyaltyCorp\EasyCore\Tests\AbstractVfsTestCase;
+use EonX\EasyCore\Console\Commands\Lumen\CacheConfigCommand;
+use EonX\EasyCore\Tests\AbstractVfsTestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use Prophecy\Argument;
@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @covers \LoyaltyCorp\EasyCore\Console\Commands\Lumen\CacheConfigCommand
+ * @covers \EonX\EasyCore\Console\Commands\Lumen\CacheConfigCommand
  *
  * @internal
  */
@@ -205,7 +205,7 @@ final class CacheConfigCommandTest extends AbstractVfsTestCase
             $root->getChild('bootstrap/app.php')->url(),
             "<?php
             \$app = new \\Laravel\\Lumen\\Application('" . $root->url() . "');
-            \$app->register(\\LoyaltyCorp\\EasyCore\\Bridge\\Laravel\\ConfigurationServiceProvider::class);
+            \$app->register(\\EonX\\EasyCore\\Bridge\\Laravel\\ConfigurationServiceProvider::class);
             return \$app;
             "
         );

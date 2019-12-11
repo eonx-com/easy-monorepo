@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace StepTheFkUp\EasyRepository\Tests\Implementation\Doctrine\ORM;
+namespace EonX\EasyRepository\Tests\Implementation\Doctrine\ORM;
 
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Mockery\MockInterface;
-use StepTheFkUp\EasyPagination\Data\StartSizeData;
-use StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator;
-use StepTheFkUp\EasyRepository\Tests\AbstractTestCase;
+use EonX\EasyPagination\Data\StartSizeData;
+use EonX\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator;
+use EonX\EasyRepository\Tests\AbstractTestCase;
 
 final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
 {
@@ -59,8 +59,4 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
     }
 }
 
-\class_alias(
-    AbstractPaginatedDoctrineOrmRepositoryTest::class,
-    'LoyaltyCorp\EasyRepository\Tests\Implementation\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepositoryTest',
-    false
-);
+

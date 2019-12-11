@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCore\Tests\Commands\Lumen;
+namespace EonX\EasyCore\Tests\Commands\Lumen;
 
 use Illuminate\Console\Command;
 use Laravel\Lumen\Application;
-use LoyaltyCorp\EasyCore\Console\Commands\Lumen\ClearConfigCommand;
-use LoyaltyCorp\EasyCore\Tests\AbstractVfsTestCase;
+use EonX\EasyCore\Console\Commands\Lumen\ClearConfigCommand;
+use EonX\EasyCore\Tests\AbstractVfsTestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @covers \LoyaltyCorp\EasyCore\Console\Commands\Lumen\ClearConfigCommand
+ * @covers \EonX\EasyCore\Console\Commands\Lumen\ClearConfigCommand
  *
  * @internal
  */

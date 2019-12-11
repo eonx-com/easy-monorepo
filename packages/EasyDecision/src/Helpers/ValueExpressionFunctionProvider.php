@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Helpers;
+namespace EonX\EasyDecision\Helpers;
 
-use LoyaltyCorp\EasyDecision\Exceptions\InvalidArgumentException;
-use LoyaltyCorp\EasyDecision\Exceptions\MissingValueIndexException;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunction;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
+use EonX\EasyDecision\Exceptions\InvalidArgumentException;
+use EonX\EasyDecision\Exceptions\MissingValueIndexException;
+use EonX\EasyDecision\Expressions\ExpressionFunction;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
 
 final class ValueExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
@@ -31,7 +31,7 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
     /**
      * Add given value to value from input.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      */
     private function add(): ExpressionFunctionInterface
     {
@@ -45,7 +45,7 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
     /**
      * Divide by value the value from input.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      */
     private function divide(): ExpressionFunctionInterface
     {
@@ -63,7 +63,7 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
     /**
      * Check if given target strictly equal given value.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      */
     private function equal(): ExpressionFunctionInterface
     {
@@ -75,7 +75,7 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
     /**
      * Create if condition.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      */
     private function if(): ExpressionFunctionInterface
     {
@@ -89,7 +89,7 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
     /**
      * Multiply by value the value from input.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      */
     private function multiply(): ExpressionFunctionInterface
     {
@@ -103,7 +103,7 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
     /**
      * Subtract given value to value from input.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      */
     private function subtract(): ExpressionFunctionInterface
     {

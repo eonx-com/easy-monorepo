@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Implementations\Doctrine\ORM;
+namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use LoyaltyCorp\EasyRepository\Interfaces\DatabaseRepositoryInterface;
-use LoyaltyCorp\EasyRepository\Interfaces\ObjectRepositoryInterface;
+use EonX\EasyRepository\Interfaces\DatabaseRepositoryInterface;
+use EonX\EasyRepository\Interfaces\ObjectRepositoryInterface;
 
 abstract class AbstractDoctrineOrmRepository implements DatabaseRepositoryInterface
 {
@@ -32,8 +32,4 @@ abstract class AbstractDoctrineOrmRepository implements DatabaseRepositoryInterf
     abstract protected function getEntityClass(): string;
 }
 
-\class_alias(
-    AbstractDoctrineOrmRepository::class,
-    'StepTheFkUp\EasyRepository\Implementations\Doctrine\ORM\AbstractDoctrineOrmRepository',
-    false
-);
+

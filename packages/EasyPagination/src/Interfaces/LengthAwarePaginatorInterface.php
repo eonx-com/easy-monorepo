@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPagination\Interfaces;
+namespace EonX\EasyPagination\Interfaces;
 
 interface LengthAwarePaginatorInterface
 {
@@ -55,8 +55,4 @@ interface LengthAwarePaginatorInterface
     public function hasPreviousPage(): bool;
 }
 
-\class_alias(
-    LengthAwarePaginatorInterface::class,
-    'StepTheFkUp\EasyPagination\Interfaces\LengthAwarePaginatorInterface',
-    false
-);
+

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\Tests;
+namespace EonX\EasyCfhighlander\Tests;
 
-use LoyaltyCorp\EasyCfhighlander\Console\CfhighlanderApplication;
+use EonX\EasyCfhighlander\Console\CfhighlanderApplication;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
@@ -45,7 +45,7 @@ abstract class AbstractTestCase extends TestCase
     /**
      * Get application.
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\Console\CfhighlanderApplication
+     * @return \EonX\EasyCfhighlander\Console\CfhighlanderApplication
      *
      * @throws \Exception
      */

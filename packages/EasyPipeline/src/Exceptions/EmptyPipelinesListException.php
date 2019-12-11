@@ -1,18 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Exceptions;
+namespace EonX\EasyPipeline\Exceptions;
 
 use InvalidArgumentException;
-use LoyaltyCorp\EasyPipeline\Interfaces\EasyPipelineExceptionInterface as ExceptionInterface;
+use EonX\EasyPipeline\Interfaces\EasyPipelineExceptionInterface as ExceptionInterface;
 
 final class EmptyPipelinesListException extends InvalidArgumentException implements ExceptionInterface
 {
     // No body needed.
 }
 
-\class_alias(
-    EmptyPipelinesListException::class,
-    'StepTheFkUp\EasyPipeline\Exceptions\EmptyPipelinesListException',
-    false
-);
+

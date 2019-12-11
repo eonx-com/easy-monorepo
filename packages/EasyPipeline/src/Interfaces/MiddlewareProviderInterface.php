@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Interfaces;
+namespace EonX\EasyPipeline\Interfaces;
 
 interface MiddlewareProviderInterface
 {
@@ -13,8 +13,4 @@ interface MiddlewareProviderInterface
     public function getMiddlewareList(): array;
 }
 
-\class_alias(
-    MiddlewareProviderInterface::class,
-    'StepTheFkUp\EasyPipeline\Interfaces\MiddlewareProviderInterface',
-    false
-);
+

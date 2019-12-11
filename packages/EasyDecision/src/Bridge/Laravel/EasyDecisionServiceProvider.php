@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Bridge\Laravel;
+namespace EonX\EasyDecision\Bridge\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use LoyaltyCorp\EasyDecision\Bridge\Common\DecisionFactory as BridgeDecisionFactory;
-use LoyaltyCorp\EasyDecision\Bridge\Common\ExpressionLanguageConfigFactory;
-use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
-use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
-use LoyaltyCorp\EasyDecision\Decisions\DecisionFactory as BaseDecisionFactory;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunctionFactory;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageFactory;
-use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
-use LoyaltyCorp\EasyDecision\Rules\ExpressionLanguageRuleFactory;
+use EonX\EasyDecision\Bridge\Common\DecisionFactory as BridgeDecisionFactory;
+use EonX\EasyDecision\Bridge\Common\ExpressionLanguageConfigFactory;
+use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
+use EonX\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
+use EonX\EasyDecision\Decisions\DecisionFactory as BaseDecisionFactory;
+use EonX\EasyDecision\Expressions\ExpressionFunctionFactory;
+use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
+use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
+use EonX\EasyDecision\Rules\ExpressionLanguageRuleFactory;
 
 final class EasyDecisionServiceProvider extends ServiceProvider
 {
@@ -60,9 +60,3 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         });
     }
 }
-
-\class_alias(
-    EasyDecisionServiceProvider::class,
-    'StepTheFkUp\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider',
-    false
-);

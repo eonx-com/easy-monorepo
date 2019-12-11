@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Decisions;
+namespace EonX\EasyDecision\Decisions;
 
-use LoyaltyCorp\EasyDecision\Interfaces\DecisionConfigInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 
 final class DecisionConfig implements DecisionConfigInterface
 {
@@ -14,7 +14,7 @@ final class DecisionConfig implements DecisionConfigInterface
     private $decisionType;
 
     /**
-     * @var null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
+     * @var null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
      */
     private $expressionLanguageConfig;
 
@@ -29,7 +29,7 @@ final class DecisionConfig implements DecisionConfigInterface
     private $params;
 
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[]
+     * @var \EonX\EasyDecision\Interfaces\RuleProviderInterface[]
      */
     private $ruleProviders;
 
@@ -38,8 +38,8 @@ final class DecisionConfig implements DecisionConfigInterface
      *
      * @param string $decisionType
      * @param string $name
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[] $ruleProviders
-     * @param null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     * @param \EonX\EasyDecision\Interfaces\RuleProviderInterface[] $ruleProviders
+     * @param null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      * @param null|mixed[]
      */
     public function __construct(
@@ -69,7 +69,7 @@ final class DecisionConfig implements DecisionConfigInterface
     /**
      * Get expression language config.
      *
-     * @return null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
+     * @return null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
      */
     public function getExpressionLanguageConfig(): ?ExpressionLanguageConfigInterface
     {
@@ -99,16 +99,10 @@ final class DecisionConfig implements DecisionConfigInterface
     /**
      * Get rules providers.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\RuleProviderInterface[]
+     * @return \EonX\EasyDecision\Interfaces\RuleProviderInterface[]
      */
     public function getRuleProviders(): array
     {
         return $this->ruleProviders;
     }
 }
-
-\class_alias(
-    DecisionConfig::class,
-    'StepTheFkUp\EasyDecision\Decisions\DecisionConfig',
-    false
-);

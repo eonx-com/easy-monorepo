@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyEntityChange\Tests\Exceptions;
+namespace EonX\EasyEntityChange\Tests\Exceptions;
 
-use LoyaltyCorp\EasyEntityChange\Exceptions\InvalidDispatcherException;
-use LoyaltyCorp\EasyEntityChange\Tests\AbstractTestCase;
+use EonX\EasyEntityChange\Exceptions\InvalidDispatcherException;
+use EonX\EasyEntityChange\Tests\AbstractTestCase;
 
 /**
- * @covers \LoyaltyCorp\EasyEntityChange\Exceptions\InvalidDispatcherException
+ * @covers \EonX\EasyEntityChange\Exceptions\InvalidDispatcherException
  */
 class InvalidDispatcherExceptionTest extends AbstractTestCase
 {

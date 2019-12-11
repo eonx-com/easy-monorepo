@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Tests\Bridge\Laravel;
+namespace EonX\EasyPipeline\Tests\Bridge\Laravel;
 
-use LoyaltyCorp\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider;
-use LoyaltyCorp\EasyPipeline\Exceptions\EmptyPipelinesListException;
-use LoyaltyCorp\EasyPipeline\Interfaces\PipelineFactoryInterface;
-use LoyaltyCorp\EasyPipeline\Tests\AbstractLumenTestCase;
-use LoyaltyCorp\EasyPipeline\Tests\Bridge\Laravel\Stubs\MiddlewareProviderStub;
+use EonX\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider;
+use EonX\EasyPipeline\Exceptions\EmptyPipelinesListException;
+use EonX\EasyPipeline\Interfaces\PipelineFactoryInterface;
+use EonX\EasyPipeline\Tests\AbstractLumenTestCase;
+use EonX\EasyPipeline\Tests\Bridge\Laravel\Stubs\MiddlewareProviderStub;
 
 final class EasyPipelineProviderTest extends AbstractLumenTestCase
 {
@@ -16,7 +16,7 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyPipeline\Exceptions\EmptyPipelinesListException
+     * @throws \EonX\EasyPipeline\Exceptions\EmptyPipelinesListException
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testEmptyProvidersListException(): void
@@ -72,8 +72,4 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
     }
 }
 
-\class_alias(
-    EasyPipelineProviderTest::class,
-    'StepTheFkUp\EasyPipeline\Tests\Bridge\Laravel\EasyPipelineProviderTest',
-    false
-);
+

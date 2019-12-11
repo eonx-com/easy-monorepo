@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests\Tokens;
+namespace EonX\EasyApiToken\Tests\Tokens;
 
-use LoyaltyCorp\EasyApiToken\Tests\AbstractTestCase;
-use LoyaltyCorp\EasyApiToken\Tokens\BasicAuthEasyApiToken;
+use EonX\EasyApiToken\Tests\AbstractTestCase;
+use EonX\EasyApiToken\Tokens\BasicAuthEasyApiToken;
 
 final class BasicAuthEasyApiTokenTest extends AbstractTestCase
 {
@@ -44,16 +44,10 @@ final class BasicAuthEasyApiTokenTest extends AbstractTestCase
     /**
      * Create BasicAuthEasyApiToken.
      *
-     * @return \LoyaltyCorp\EasyApiToken\Tokens\BasicAuthEasyApiToken
+     * @return \EonX\EasyApiToken\Tokens\BasicAuthEasyApiToken
      */
     private function createBasicAuthEasyApiToken(): BasicAuthEasyApiToken
     {
         return new BasicAuthEasyApiToken('username', 'password');
     }
 }
-
-\class_alias(
-    BasicAuthEasyApiTokenTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Tokens\BasicAuthEasyApiTokenTest',
-    false
-);

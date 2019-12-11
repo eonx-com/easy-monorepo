@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests\Stubs;
+namespace EonX\EasyDecision\Tests\Stubs;
 
-use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
+use EonX\EasyDecision\Interfaces\RuleInterface;
 
 final class RuleStub implements RuleInterface
 {
@@ -88,8 +88,4 @@ final class RuleStub implements RuleInterface
     }
 }
 
-\class_alias(
-    RuleStub::class,
-    'StepTheFkUp\EasyDecision\Tests\Stubs\RuleStub',
-    false
-);
+

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Traits;
+namespace EonX\EasyPipeline\Traits;
 
 trait PipelineNameAwareTrait
 {
@@ -23,8 +23,4 @@ trait PipelineNameAwareTrait
     }
 }
 
-\class_alias(
-    PipelineNameAwareTrait::class,
-    'StepTheFkUp\EasyPipeline\Traits\PipelineNameAwareTrait',
-    false
-);
+

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Tests;
+namespace EonX\EasyDecision\Tests;
 
 use Laravel\Lumen\Application;
-use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
-use LoyaltyCorp\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider;
+use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
+use EonX\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
 {
@@ -36,7 +36,7 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
     /**
      * Get laravel decision factory.
      *
-     * @return \LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface
+     * @return \EonX\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface
      */
     protected function getDecisionFactory(): DecisionFactoryInterface
     {
@@ -44,8 +44,4 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
     }
 }
 
-\class_alias(
-    AbstractLumenTestCase::class,
-    'StepTheFkUp\EasyDecision\Tests\AbstractLumenTestCase',
-    false
-);
+

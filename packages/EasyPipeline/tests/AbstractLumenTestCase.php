@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Tests;
+namespace EonX\EasyPipeline\Tests;
 
 use Laravel\Lumen\Application;
 
@@ -27,8 +27,4 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
     }
 }
 
-\class_alias(
-    AbstractLumenTestCase::class,
-    'StepTheFkUp\EasyPipeline\Tests\AbstractLumenTestCase',
-    false
-);
+

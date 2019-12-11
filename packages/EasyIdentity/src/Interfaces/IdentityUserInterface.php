@@ -1,14 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyIdentity\Interfaces;
+namespace EonX\EasyIdentity\Interfaces;
 
 interface IdentityUserInterface
 {
 }
 
-\class_alias(
-    IdentityUserInterface::class,
-    \StepTheFkUp\EasyIdentity\Interfaces\IdentityUserInterface::class,
-    false
-);
+

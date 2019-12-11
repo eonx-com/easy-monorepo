@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests;
+namespace EonX\EasyApiToken\Tests;
 
-use LoyaltyCorp\EasyApiToken\External\Auth0JwtDriver;
-use LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use EonX\EasyApiToken\External\Auth0JwtDriver;
+use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 
 abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
 {
@@ -40,7 +40,7 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
      * @param null|string $audienceForEncode
      * @param null|string[] $allowedAlgos
      *
-     * @return \LoyaltyCorp\EasyApiToken\External\Interfaces\JwtDriverInterface
+     * @return \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface
      */
     protected function createAuth0JwtDriver(
         ?array $validAudiences = null,
@@ -68,9 +68,3 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
         return $this->createAuth0JwtDriver(null, null, static::$key)->encode([]);
     }
 }
-
-\class_alias(
-    AbstractAuth0JwtTokenTestCase::class,
-    'StepTheFkUp\EasyApiToken\Tests\AbstractAuth0JwtTokenTestCase',
-    false
-);

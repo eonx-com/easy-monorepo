@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\File;
+namespace EonX\EasyDocker\File;
 
 final class File
 {

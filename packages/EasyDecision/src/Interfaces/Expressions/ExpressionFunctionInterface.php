@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Interfaces\Expressions;
+namespace EonX\EasyDecision\Interfaces\Expressions;
 
 interface ExpressionFunctionInterface
 {
@@ -27,8 +27,4 @@ interface ExpressionFunctionInterface
     public function getName(): string;
 }
 
-\class_alias(
-    ExpressionFunctionInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface',
-    false
-);
+

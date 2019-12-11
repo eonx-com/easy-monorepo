@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\External\Auth0\Interfaces;
+namespace EonX\EasyApiToken\External\Auth0\Interfaces;
 
 interface TokenGeneratorInterface
 {

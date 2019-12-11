@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyPagination</h1>
+    <h1>EonX - EasyPagination</h1>
     <p>Provides a generic way to handle pagination data from clients.</p>
 </div>
 
@@ -17,8 +17,8 @@ This resolver will look for pagination data in the request query parameters as w
 # Usage
 
 ```php
-use LoyaltyCorp\EasyPagination\Resolvers\Config\StartSizeConfig;
-use LoyaltyCorp\EasyPagination\Resolvers\StartSizeInQueryResolver;
+use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
+use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
 
 // Request: <url>?page[number]=2&page[size]=30
 

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Rules;
+namespace EonX\EasyDecision\Rules;
 
-use LoyaltyCorp\EasyDecision\Interfaces\ContextAwareInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\RuleInterface;
-use LoyaltyCorp\EasyDecision\Traits\ContextAwareTrait;
-use LoyaltyCorp\EasyDecision\Traits\ExpressionLanguageAwareTrait;
+use EonX\EasyDecision\Interfaces\ContextAwareInterface;
+use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
+use EonX\EasyDecision\Interfaces\RuleInterface;
+use EonX\EasyDecision\Traits\ContextAwareTrait;
+use EonX\EasyDecision\Traits\ExpressionLanguageAwareTrait;
 
 final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterface, ExpressionLanguageAwareInterface
 {
@@ -83,8 +83,4 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     }
 }
 
-\class_alias(
-    ExpressionLanguageRule::class,
-    'StepTheFkUp\EasyDecision\Rules\ExpressionLanguageRule',
-    false
-);
+

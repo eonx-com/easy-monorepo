@@ -4,7 +4,7 @@
         bootstrap="vendor/autoload.php"
 >
     <testsuites>
-        <testsuite name="LoyaltyCorp EasyEntityChange Package Test Suite">
+        <testsuite name="EonX EasyEntityChange Package Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

@@ -15,7 +15,7 @@ CfhighlanderTemplate do
 
      Component template: 'keypair@1.0.0', name: 'keypair' do
        parameter name: 'KeyPairName', value: Ref('EnvironmentName')
-       parameter name: 'SSMParameterPath', value: FnSub('/loyaltycorp/{{ ssm_prefix }}/${EnvironmentName}')
+       parameter name: 'SSMParameterPath', value: FnSub('/eonx/{{ ssm_prefix }}/${EnvironmentName}')
      end
 
     {% if redis_enabled %}

@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Encoders;
+namespace EonX\EasyApiToken\Encoders;
 
-use LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException;
-use LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenEncoderInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use LoyaltyCorp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface;
+use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
+use EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenEncoderInterface;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface;
 
 final class ApiKeyAsBasicAuthUsernameEncoder implements EasyApiTokenEncoderInterface
 {
     /**
      * Return encoded string representation of given API token.
      *
-     * @param \LoyaltyCorp\EasyApiToken\Interfaces\EasyApiTokenInterface $apiToken
+     * @param \EonX\EasyApiToken\Interfaces\EasyApiTokenInterface $apiToken
      *
      * @return string
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidArgumentException If given apiToken not supported
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException If encoding fails
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException If given apiToken not supported
+     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException If encoding fails
      */
     public function encode(EasyApiTokenInterface $apiToken): string
     {
@@ -32,7 +32,7 @@ final class ApiKeyAsBasicAuthUsernameEncoder implements EasyApiTokenEncoderInter
             ));
         }
 
-        /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface $apiToken */
+        /** @var \EonX\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface $apiToken */
         $apiKey = $apiToken->getApiKey();
 
         if (empty($apiKey) === false) {
@@ -42,9 +42,3 @@ final class ApiKeyAsBasicAuthUsernameEncoder implements EasyApiTokenEncoderInter
         throw new UnableToEncodeEasyApiTokenException(\sprintf('In "%s", api key empty.', \get_class($this)));
     }
 }
-
-\class_alias(
-    ApiKeyAsBasicAuthUsernameEncoder::class,
-    'StepTheFkUp\EasyApiToken\Encoders\ApiKeyAsBasicAuthUsernameEncoder',
-    false
-);

@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCore\Tests\Bridge\Laravel;
+namespace EonX\EasyCore\Tests\Bridge\Laravel;
 
 use Illuminate\Config\Repository;
 use Illuminate\Console\Command;
 use Illuminate\Events\Dispatcher;
 use Laravel\Lumen\Application;
-use LoyaltyCorp\EasyCore\Bridge\Laravel\CachedConfigurationServiceProvider;
-use LoyaltyCorp\EasyCore\Bridge\Laravel\ConfigurationServiceProvider;
-use LoyaltyCorp\EasyCore\Console\Commands\Lumen\CacheConfigCommand;
-use LoyaltyCorp\EasyCore\Console\Commands\Lumen\ClearConfigCommand;
-use LoyaltyCorp\EasyCore\Tests\AbstractVfsTestCase;
+use EonX\EasyCore\Bridge\Laravel\CachedConfigurationServiceProvider;
+use EonX\EasyCore\Bridge\Laravel\ConfigurationServiceProvider;
+use EonX\EasyCore\Console\Commands\Lumen\CacheConfigCommand;
+use EonX\EasyCore\Console\Commands\Lumen\ClearConfigCommand;
+use EonX\EasyCore\Tests\AbstractVfsTestCase;
 use org\bovigo\vfs\vfsStream;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
- * @covers \LoyaltyCorp\EasyCore\Bridge\Laravel\CachedConfigurationServiceProvider
+ * @covers \EonX\EasyCore\Bridge\Laravel\CachedConfigurationServiceProvider
  *
  * @internal
  */

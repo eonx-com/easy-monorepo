@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Bridge\Common;
+namespace EonX\EasyDecision\Bridge\Common;
 
-use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface;
-use LoyaltyCorp\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionLanguageConfig;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface;
+use EonX\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
+use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 use Psr\Container\ContainerInterface;
 
 final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigFactoryInterface
@@ -24,12 +24,12 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     private $container;
 
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
+     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
      */
     private $expressionFunctionFactory;
 
     /**
-     * @var \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      */
     private $globalExpressionFunctions;
 
@@ -50,7 +50,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      *
      * @param string $decision
      *
-     * @return null|\LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
+     * @return null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
      */
     public function create(string $decision): ?ExpressionLanguageConfigInterface
     {
@@ -94,7 +94,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     /**
      * Get expression function factory.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
      */
     private function getExpressionFunctionFactory(): ExpressionFunctionFactoryInterface
     {
@@ -110,7 +110,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      *
      * @param mixed $provider
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
      */
     private function getExpressionFunctionProvider($provider): ExpressionFunctionProviderInterface
     {
@@ -127,7 +127,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      * @param mixed[] $functions
      * @param mixed[] $providers
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      */
     private function getExpressionFunctions(array $functions, array $providers): array
     {
@@ -150,7 +150,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     /**
      * Get global expression functions.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      */
     private function getGlobalExpressionFunctions(): array
     {

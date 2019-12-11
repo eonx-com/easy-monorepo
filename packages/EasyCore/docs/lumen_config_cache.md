@@ -1,6 +1,6 @@
 # To enable configuration cache
 
-- Register `LoyaltyCorp\EasyCore\Bridge\Laravel\CachedConfigurationServiceProvider` at `bootstrap/app.php`
+- Register `EonX\EasyCore\Bridge\Laravel\CachedConfigurationServiceProvider` at `bootstrap/app.php`
   instead of `ConfigurationServiceProvider`
 - Execute `php artisan config:cache` at container start or whenever you want to update cache
 - Add `echo "config:cache"` and `/usr/local/bin/php ${ARTISAN} config:cache` lines to startup.sh

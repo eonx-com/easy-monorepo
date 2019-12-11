@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCfhighlander\Parameters;
+namespace EonX\EasyCfhighlander\Parameters;
 
-use LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface;
+use EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -46,7 +46,7 @@ final class ParameterResolver implements ParameterResolverInterface
      * @param string $param
      * @param callable $modifier
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface
+     * @return \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface
      */
     public function addModifier(string $param, callable $modifier): ParameterResolverInterface
     {
@@ -65,7 +65,7 @@ final class ParameterResolver implements ParameterResolverInterface
      * @param string $param
      * @param callable $resolver
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface
+     * @return \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface
      */
     public function addResolver(string $param, callable $resolver): ParameterResolverInterface
     {
@@ -113,7 +113,7 @@ final class ParameterResolver implements ParameterResolverInterface
      *
      * @param string $pathname
      *
-     * @return \LoyaltyCorp\EasyCfhighlander\Interfaces\ParameterResolverInterface
+     * @return \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface
      */
     public function setCachePathname(string $pathname): ParameterResolverInterface
     {

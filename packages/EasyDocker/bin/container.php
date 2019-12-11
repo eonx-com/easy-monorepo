@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use LoyaltyCorp\EasyDocker\HttpKernel\EasyDockerKernel;
+use EonX\EasyDocker\HttpKernel\EasyDockerKernel;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symplify\PackageBuilder\Configuration\ConfigFileFinder;
 

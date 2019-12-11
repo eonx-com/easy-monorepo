@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Interfaces;
+namespace EonX\EasyPipeline\Interfaces;
 
 interface MiddlewareInterface
 {
@@ -16,8 +16,4 @@ interface MiddlewareInterface
     public function handle($input, callable $next);
 }
 
-\class_alias(
-    MiddlewareInterface::class,
-    'StepTheFkUp\EasyPipeline\Interfaces\MiddlewareInterface',
-    false
-);
+

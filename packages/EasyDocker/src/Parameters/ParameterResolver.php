@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDocker\Parameters;
+namespace EonX\EasyDocker\Parameters;
 
-use LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface;
+use EonX\EasyDocker\Interfaces\ParameterResolverInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -43,7 +43,7 @@ final class ParameterResolver implements ParameterResolverInterface
      * @param string $param
      * @param callable $resolver
      *
-     * @return \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface
+     * @return \EonX\EasyDocker\Interfaces\ParameterResolverInterface
      */
     public function addResolver(string $param, callable $resolver): ParameterResolverInterface
     {
@@ -83,7 +83,7 @@ final class ParameterResolver implements ParameterResolverInterface
      *
      * @param string $pathname
      *
-     * @return \LoyaltyCorp\EasyDocker\Interfaces\ParameterResolverInterface
+     * @return \EonX\EasyDocker\Interfaces\ParameterResolverInterface
      */
     public function setCachePathname(string $pathname): ParameterResolverInterface
     {

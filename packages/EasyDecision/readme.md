@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyDecision</h1>
+    <h1>EonX - EasyDecision</h1>
     <p>Your most complex decisions made the easiest way.</p>
 </div>
 

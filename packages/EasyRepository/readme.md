@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>LoyaltyCorp - EasyRepository</h1>
+    <h1>EonX - EasyRepository</h1>
     <p>Provides an easy way to implement the Repository Design Pattern in your applications.</p>
 </div>
 

@@ -1,22 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Interfaces;
+namespace EonX\EasyPipeline\Interfaces;
 
 interface MiddlewareLoggerAwareInterface
 {
     /**
      * Set middleware logger.
      *
-     * @param \LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareLoggerInterface $logger
+     * @param \EonX\EasyPipeline\Interfaces\MiddlewareLoggerInterface $logger
      *
      * @return void
      */
     public function setLogger(MiddlewareLoggerInterface $logger): void;
 }
 
-\class_alias(
-    MiddlewareLoggerAwareInterface::class,
-    'StepTheFkUp\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface',
-    false
-);
+

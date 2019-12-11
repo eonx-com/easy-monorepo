@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Helpers;
+namespace EonX\EasyDecision\Helpers;
 
-use LoyaltyCorp\EasyDecision\Expressions\ExpressionFunction;
-use LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
+use EonX\EasyDecision\Expressions\ExpressionFunction;
+use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
 final class FromPhpExpressionFunctionProvider implements ExpressionFunctionProviderInterface
@@ -61,8 +61,4 @@ final class FromPhpExpressionFunctionProvider implements ExpressionFunctionProvi
     }
 }
 
-\class_alias(
-    FromPhpExpressionFunctionProvider::class,
-    'StepTheFkUp\EasyDecision\Helpers\FromPhpExpressionFunctionProvider',
-    false
-);
+

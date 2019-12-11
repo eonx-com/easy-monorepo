@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests\Decoders;
+namespace EonX\EasyApiToken\Tests\Decoders;
 
-use LoyaltyCorp\EasyApiToken\Decoders\JwtTokenDecoder;
-use LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
-use LoyaltyCorp\EasyApiToken\Tests\AbstractAuth0JwtTokenTestCase;
-use LoyaltyCorp\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Decoders\JwtTokenDecoder;
+use EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
+use EonX\EasyApiToken\Tests\AbstractAuth0JwtTokenTestCase;
+use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
 {
@@ -15,13 +15,13 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testJwtTokenDecodeSuccessfully(): void
     {
         $jwtEasyApiTokenFactory = $this->createJwtEasyApiTokenFactory($this->createAuth0JwtDriver());
 
-        /** @var \LoyaltyCorp\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
+        /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
         $token = (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken()
         ]));
@@ -41,7 +41,7 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testJwtTokenNullIfAuthorizationHeaderNotSet(): void
     {
@@ -55,7 +55,7 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testJwtTokenNullIfDoesntStartWithBearer(): void
     {
@@ -69,7 +69,7 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
      *
      * @return void
      *
-     * @throws \LoyaltyCorp\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
     public function testJwtTokenThrowExceptionIfUnableToDecodeToken(): void
     {
@@ -82,9 +82,3 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
         ]));
     }
 }
-
-\class_alias(
-    Auth0JwtTokenDecoderTest::class,
-    'StepTheFkUp\EasyApiToken\Tests\Decoders\Auth0JwtTokenDecoderTest',
-    false
-);

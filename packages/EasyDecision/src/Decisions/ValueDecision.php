@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Decisions;
+namespace EonX\EasyDecision\Decisions;
 
-use LoyaltyCorp\EasyDecision\Exceptions\MissingValueIndexException;
-use LoyaltyCorp\EasyDecision\Helpers\IfConditionForValue;
-use LoyaltyCorp\EasyDecision\Interfaces\ContextInterface;
+use EonX\EasyDecision\Exceptions\MissingValueIndexException;
+use EonX\EasyDecision\Helpers\IfConditionForValue;
+use EonX\EasyDecision\Interfaces\ContextInterface;
 
 final class ValueDecision extends AbstractDecision
 {
@@ -42,7 +42,7 @@ final class ValueDecision extends AbstractDecision
     /**
      * Handle rule output.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\ContextInterface $context
+     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
      * @param string $rule
      * @param mixed $output
      *
@@ -64,9 +64,3 @@ final class ValueDecision extends AbstractDecision
         $this->updateInput(['value' => $output]);
     }
 }
-
-\class_alias(
-    ValueDecision::class,
-    'StepTheFkUp\EasyDecision\Decisions\ValueDecision',
-    false
-);

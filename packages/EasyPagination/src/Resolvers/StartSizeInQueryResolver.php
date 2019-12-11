@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPagination\Resolvers;
+namespace EonX\EasyPagination\Resolvers;
 
-use LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface;
-use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface;
-use LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataResolverInterface;
-use LoyaltyCorp\EasyPagination\Traits\DataResolverTrait;
+use EonX\EasyPagination\Interfaces\StartSizeConfigInterface;
+use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
+use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
+use EonX\EasyPagination\Traits\DataResolverTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
@@ -14,14 +14,14 @@ final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
     use DataResolverTrait;
 
     /**
-     * @var \LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface
+     * @var \EonX\EasyPagination\Interfaces\StartSizeConfigInterface
      */
     private $config;
 
     /**
      * StartSizeInQueryResolver constructor.
      *
-     * @param \LoyaltyCorp\EasyPagination\Interfaces\StartSizeConfigInterface $config
+     * @param \EonX\EasyPagination\Interfaces\StartSizeConfigInterface $config
      */
     public function __construct(StartSizeConfigInterface $config)
     {
@@ -33,7 +33,7 @@ final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return \LoyaltyCorp\EasyPagination\Interfaces\StartSizeDataInterface
+     * @return \EonX\EasyPagination\Interfaces\StartSizeDataInterface
      */
     public function resolve(ServerRequestInterface $request): StartSizeDataInterface
     {
@@ -41,8 +41,4 @@ final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
     }
 }
 
-\class_alias(
-    StartSizeInQueryResolver::class,
-    'StepTheFkUp\EasyPagination\Resolvers\StartSizeInQueryResolver',
-    false
-);
+

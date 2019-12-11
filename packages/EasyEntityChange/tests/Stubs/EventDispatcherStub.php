@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyEntityChange\Tests\Stubs;
+namespace EonX\EasyEntityChange\Tests\Stubs;
 
 use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
 

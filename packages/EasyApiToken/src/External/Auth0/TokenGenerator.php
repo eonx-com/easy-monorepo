@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\External\Auth0;
+namespace EonX\EasyApiToken\External\Auth0;
 
 use Auth0\SDK\API\Helpers\TokenGenerator as BaseTokenGenerator;
 use Firebase\JWT\JWT;
-use LoyaltyCorp\EasyApiToken\External\Auth0\Interfaces\TokenGeneratorInterface;
+use EonX\EasyApiToken\External\Auth0\Interfaces\TokenGeneratorInterface;
 
 final class TokenGenerator implements TokenGeneratorInterface
 {

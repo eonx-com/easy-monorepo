@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyCore\Tests\Bridge\Laravel;
+namespace EonX\EasyCore\Tests\Bridge\Laravel;
 
 use Laravel\Lumen\Application;
-use LoyaltyCorp\EasyCore\Bridge\Laravel\ConfigurationServiceProvider;
-use LoyaltyCorp\EasyCore\Tests\AbstractVfsTestCase;
+use EonX\EasyCore\Bridge\Laravel\ConfigurationServiceProvider;
+use EonX\EasyCore\Tests\AbstractVfsTestCase;
 use org\bovigo\vfs\vfsStream;
 
 /**
- * @covers \LoyaltyCorp\EasyCore\Bridge\Laravel\ConfigurationServiceProvider
+ * @covers \EonX\EasyCore\Bridge\Laravel\ConfigurationServiceProvider
  *
  * @internal
  */

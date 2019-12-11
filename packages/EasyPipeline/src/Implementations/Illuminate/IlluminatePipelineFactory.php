@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyPipeline\Implementations\Illuminate;
+namespace EonX\EasyPipeline\Implementations\Illuminate;
 
 use Illuminate\Contracts\Container\Container as ContainerInterface;
 use Illuminate\Pipeline\Pipeline;
-use LoyaltyCorp\EasyPipeline\Exceptions\InvalidMiddlewareProviderException;
-use LoyaltyCorp\EasyPipeline\Exceptions\PipelineNotFoundException;
-use LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareProviderInterface;
-use LoyaltyCorp\EasyPipeline\Interfaces\PipelineFactoryInterface;
-use LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface;
-use LoyaltyCorp\EasyPipeline\Interfaces\PipelineNameAwareInterface;
+use EonX\EasyPipeline\Exceptions\InvalidMiddlewareProviderException;
+use EonX\EasyPipeline\Exceptions\PipelineNotFoundException;
+use EonX\EasyPipeline\Interfaces\MiddlewareProviderInterface;
+use EonX\EasyPipeline\Interfaces\PipelineFactoryInterface;
+use EonX\EasyPipeline\Interfaces\PipelineInterface;
+use EonX\EasyPipeline\Interfaces\PipelineNameAwareInterface;
 
 final class IlluminatePipelineFactory implements PipelineFactoryInterface
 {
@@ -30,7 +30,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
     private $prefix;
 
     /**
-     * @var \LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface[]
+     * @var \EonX\EasyPipeline\Interfaces\PipelineInterface[]
      */
     private $resolved = [];
 
@@ -53,9 +53,9 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
      *
      * @param string $pipeline The pipeline name
      *
-     * @return \LoyaltyCorp\EasyPipeline\Interfaces\PipelineInterface
+     * @return \EonX\EasyPipeline\Interfaces\PipelineInterface
      *
-     * @throws \LoyaltyCorp\EasyPipeline\Exceptions\PipelineNotFoundException If given pipeline not found
+     * @throws \EonX\EasyPipeline\Exceptions\PipelineNotFoundException If given pipeline not found
      */
     public function create(string $pipeline): PipelineInterface
     {
@@ -80,7 +80,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
      *
      * @param string $pipeline
      *
-     * @return \LoyaltyCorp\EasyPipeline\Interfaces\MiddlewareProviderInterface
+     * @return \EonX\EasyPipeline\Interfaces\MiddlewareProviderInterface
      */
     private function createMiddlewareProvider(string $pipeline): MiddlewareProviderInterface
     {
@@ -123,8 +123,4 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
     }
 }
 
-\class_alias(
-    IlluminatePipelineFactory::class,
-    'StepTheFkUp\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory',
-    false
-);
+

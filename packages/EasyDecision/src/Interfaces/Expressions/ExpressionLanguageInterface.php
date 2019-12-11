@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyDecision\Interfaces\Expressions;
+namespace EonX\EasyDecision\Interfaces\Expressions;
 
 interface ExpressionLanguageInterface
 {
     /**
      * Add function to use in expressions.
      *
-     * @param \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface $function
+     * @param \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface $function
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
      */
     public function addFunction(ExpressionFunctionInterface $function): self;
 
@@ -27,7 +27,7 @@ interface ExpressionLanguageInterface
     /**
      * Get list of functions added.
      *
-     * @return \LoyaltyCorp\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      */
     public function getFunctions(): array;
 
@@ -42,8 +42,4 @@ interface ExpressionLanguageInterface
     public function validate(string $expression, ?array $names = null): bool;
 }
 
-\class_alias(
-    ExpressionLanguageInterface::class,
-    'StepTheFkUp\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface',
-    false
-);
+

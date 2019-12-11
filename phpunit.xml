@@ -4,7 +4,7 @@
         bootstrap="vendor/autoload.php"
 >
     <testsuites>
-        <testsuite name="StepTheFkUp Test Suite">
+        <testsuite name="EonX EasyMonorepo Test Suite">
             <directory>packages/*/tests</directory>
         </testsuite>
     </testsuites>

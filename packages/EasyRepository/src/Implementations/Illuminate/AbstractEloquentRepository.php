@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyRepository\Implementations\Illuminate;
+namespace EonX\EasyRepository\Implementations\Illuminate;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use LoyaltyCorp\EasyRepository\Interfaces\DatabaseRepositoryInterface;
+use EonX\EasyRepository\Interfaces\DatabaseRepositoryInterface;
 
 abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
 {
@@ -166,8 +166,4 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
     abstract protected function getModel(): Model;
 }
 
-\class_alias(
-    AbstractEloquentRepository::class,
-    'StepTheFkUp\EasyRepository\Implementations\Illuminate\AbstractEloquentRepository',
-    false
-);
+

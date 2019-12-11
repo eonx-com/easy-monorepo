@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Services\EntityChange\Events;
 
-use LoyaltyCorp\EasyEntityChange\Events\EntityDeleteDataEvent;
-use LoyaltyCorp\EasyEntityChange\Tests\AbstractTestCase;
+use EonX\EasyEntityChange\Events\EntityDeleteDataEvent;
+use EonX\EasyEntityChange\Tests\AbstractTestCase;
 
 /**
- * @covers \LoyaltyCorp\EasyEntityChange\Events\EntityDeleteDataEvent
+ * @covers \EonX\EasyEntityChange\Events\EntityDeleteDataEvent
  */
 class EntityDeleteDataEventTest extends AbstractTestCase
 {

@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace LoyaltyCorp\EasyApiToken\Tests\Bridge\Symfony\Stubs;
+namespace EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs;
 
 
-use LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 
 final class ServiceStub
 {
     /**
-     * @var \LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface
+     * @var \EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface
      */
     private $decoderFactory;
 
     /**
      * ServiceStub constructor.
      *
-     * @param \LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface $decoderFactory
+     * @param \EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface $decoderFactory
      */
     public function __construct(EasyApiTokenDecoderFactoryInterface $decoderFactory)
     {
@@ -26,7 +26,7 @@ final class ServiceStub
     /**
      * Get decoder factory.
      *
-     * @return \LoyaltyCorp\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface
+     * @return \EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface
      */
     public function getDecoderFactory(): EasyApiTokenDecoderFactoryInterface
     {
