@@ -2,7 +2,19 @@
 
 <!-- dumped content start -->
 
-## v0.11.0 - 2019-12-11
+## v1.0.0 - 2019-12-11
+
+- [#102] Migrate to EonX namespaces
+
+## [v0.11.0] - 2019-12-11
+
+- [#105] Package fixes, Thanks to [@roman-loyaltycorp]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.11.0] - 2019-12-11
 
 - [#105] Update dependencies to eonx-com, Thanks to [@roman-loyaltycorp]
 
@@ -884,3 +896,6 @@
 [v0.10.10]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.9...v0.10.10
 [#105]: https://github.com/loyaltycorp/easy-monorepo/pull/105
 [v0.10.11]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.10...v0.10.11
+
+[#102]: https://github.com/eonx-com/easy-monorepo/pull/102
+[v0.11.0]: https://github.com/eonx-com/easy-monorepo/compare/v0.10.11...v0.11.0
