@@ -115,11 +115,15 @@ final class EntityChangeSubscriber implements EventSubscriber
         $updates = $this->updates;
         $this->updates = [];
 
+        $processedDeletes = [];
+
         // synchronously dispatch to add data to the deletes so that
         // workers have all required information
-        $processedDeletes = $this->dispatcher->dispatch(new EntityDeleteDataEvent(
-            $deletes
-        ));
+        if (\count($deletes) > 0) {
+            $processedDeletes = $this->dispatcher->dispatch(new EntityDeleteDataEvent(
+                $deletes
+            ));
+        }
 
         if ($processedDeletes === null) {
             // While the DispatcherInterface allows for a null return, we're not calling
@@ -127,6 +131,11 @@ final class EntityChangeSubscriber implements EventSubscriber
             // since EntityDeleteDataEvent is synchronous.
 
             throw new InvalidDispatcherException('exceptions.services.entitychange.doctrine.invalid_dispatcher');
+        }
+
+        // If we have no changes, there is no point dispatching the event.
+        if (\count($processedDeletes) === 0 && \count($updates) === 0) {
+            return;
         }
 
         // asynchronously dispatch change events for handling by any
