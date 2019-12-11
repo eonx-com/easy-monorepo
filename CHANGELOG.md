@@ -2,7 +2,15 @@
 
 <!-- dumped content start -->
 
-## v0.10.11 - 2019-12-11
+## v0.11.0 - 2019-12-11
+
+- [#105] Update dependencies to eonx-com, Thanks to [@roman-loyaltycorp]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.11] - 2019-12-11
 
 ### EasyEntityChange
 
@@ -874,3 +882,5 @@
 
 [#106]: https://github.com/loyaltycorp/easy-monorepo/pull/106
 [v0.10.10]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.9...v0.10.10
+[#105]: https://github.com/loyaltycorp/easy-monorepo/pull/105
+[v0.10.11]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.10...v0.10.11
