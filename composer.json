@@ -8,9 +8,8 @@
         "packages/EasyDocker/bin/easy-docker"
     ],
     "require": {
-        "eoneopay/externals": "^1.0",
         "eonx-com/externals": "^1.0",
-        "eoneopay/utils": "^0.2",
+        "eonx-com/utils": "^0.2",
         "ext-json": "*",
         "php": "^7.1",
         "symfony/expression-language": "^4.2",
