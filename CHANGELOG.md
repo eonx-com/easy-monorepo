@@ -2,7 +2,35 @@
 
 <!-- dumped content start -->
 
-## v0.10.9 - 2019-11-26
+## v0.11.0 - 2019-12-11
+
+- [#105] Update dependencies to eonx-com, Thanks to [@roman-loyaltycorp]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.11] - 2019-12-11
+
+### EasyEntityChange
+
+- [#106] Skip job dispatches for empty jobs, Thanks to [@merk]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.10] - 2019-12-10
+
+### EasyLogging
+
+- [#104] Replace eoneopay/externals with eonx-com/externals, Thanks to [@roman-loyaltycorp]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.9] - 2019-11-26
 
 ### EasyLogging
 
@@ -519,7 +547,7 @@
 ## [v0.6.0] - 2019-04-24
 
 - [#22] Fix: Rename filename based on classname, Thanks to [@fsti-francohora]
-- [#23] Switch to EonX namespaces
+- [#23] Switch to LoyaltyCorp namespaces
 
 <!-- dumped content end -->
 
@@ -849,3 +877,10 @@
 [v0.10.7]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.6...v0.10.7
 [#101]: https://github.com/loyaltycorp/easy-monorepo/pull/101
 [v0.10.8]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.7...v0.10.8
+[#104]: https://github.com/loyaltycorp/easy-monorepo/pull/104
+[v0.10.9]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.8...v0.10.9
+
+[#106]: https://github.com/loyaltycorp/easy-monorepo/pull/106
+[v0.10.10]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.9...v0.10.10
+[#105]: https://github.com/loyaltycorp/easy-monorepo/pull/105
+[v0.10.11]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.10...v0.10.11
