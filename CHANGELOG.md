@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v0.10.10 - 2019-12-10
+## v0.10.11 - 2019-12-11
+
+### EasyEntityChange
+
+- [#106] Skip job dispatches for empty jobs, Thanks to [@merk]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v0.10.10] - 2019-12-10
 
 ### EasyLogging
 
@@ -861,3 +871,6 @@
 [v0.10.8]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.7...v0.10.8
 [#104]: https://github.com/loyaltycorp/easy-monorepo/pull/104
 [v0.10.9]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.8...v0.10.9
+
+[#106]: https://github.com/loyaltycorp/easy-monorepo/pull/106
+[v0.10.10]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.9...v0.10.10
