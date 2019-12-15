@@ -9,7 +9,7 @@
     ],
     "require": {
         "eonx-com/externals": "^1.0",
-        "eonx-com/utils": "^0.2",
+        "eonx-com/utils": "^1.0",
         "ext-json": "*",
         "php": "^7.1",
         "symfony/expression-language": "^4.2",
