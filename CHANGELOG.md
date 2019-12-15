@@ -6,15 +6,11 @@
 
 - [#102] Migrate to EonX namespaces
 
-## [v0.11.0] - 2019-12-11
+## v0.11.1 - 2019-12-15
 
-- [#105] Package fixes, Thanks to [@roman-loyaltycorp]
+- Bump utils version to ^1.0
 
-<!-- dumped content end -->
-
-<!-- dumped content start -->
-
-## [v0.11.0] - 2019-12-11
+## v0.11.0 - 2019-12-11
 
 - [#105] Update dependencies to eonx-com, Thanks to [@roman-loyaltycorp]
 

@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.1",
         "ext-json": "*",
-        "eonx-com/utils": "^0.2",
+        "eonx-com/utils": "^1.0",
         "symplify/package-builder": "^6.1",
         "twig/twig": "^2.8",
         "symfony/filesystem": "^4.2",
