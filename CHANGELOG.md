@@ -6,11 +6,21 @@
 
 - [#102] Migrate to EonX namespaces
 
+## v0.11.2 - 2019-12-16
+
+### EasyEntityChange
+
+- [#109] Add a watchlist to EntityChangeSubscriber
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
 ## v0.11.1 - 2019-12-15
 
 - Bump utils version to ^1.0
 
-## v0.11.0 - 2019-12-11
+## [v0.11.0] - 2019-12-11
 
 - [#105] Update dependencies to eonx-com, Thanks to [@roman-loyaltycorp]
 
@@ -893,5 +903,8 @@
 [#105]: https://github.com/loyaltycorp/easy-monorepo/pull/105
 [v0.10.11]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.10...v0.10.11
 
-[#102]: https://github.com/eonx-com/easy-monorepo/pull/102
-[v0.11.0]: https://github.com/eonx-com/easy-monorepo/compare/v0.10.11...v0.11.0
+[#109]: https://github.com/loyaltycorp/easy-monorepo/pull/109
+[#102]: https://github.com/loyaltycorp/easy-monorepo/pull/102
+[v1.0.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.11.0...v1.0.0
+[v0.11.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.11.0...v0.11.1
+[v0.11.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.11...v0.11.0
