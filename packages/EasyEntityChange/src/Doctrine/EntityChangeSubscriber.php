@@ -43,14 +43,24 @@ final class EntityChangeSubscriber implements EventSubscriber
     private $updates = [];
 
     /**
+     * Stores an array of class names we're watching for updates. If null, we will watch for
+     * any changes, if an array, we will only dispatch when we see a change of the given classes.
+     *
+     * @var null|string[]
+     */
+    private $watchedClasses;
+
+    /**
      * Constructor.
      *
      * @param \EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface $dispatcher
+     * @param null|string[]
      */
-    public function __construct(EventDispatcherInterface $dispatcher)
+    public function __construct(EventDispatcherInterface $dispatcher, ?array $watchedClasses = null)
     {
         $this->arr = new Arr();
         $this->dispatcher = $dispatcher;
+        $this->watchedClasses = $watchedClasses;
     }
 
     /**
@@ -222,6 +232,19 @@ final class EntityChangeSubscriber implements EventSubscriber
      */
     private function flagForDelete($entity): void
     {
+        // If the provided object isn't an object, we cant process the deletion (weird stuff going on).
+        if (\is_object($entity) === false) {
+            return;
+        }
+
+        $className = \get_class($entity);
+
+        // If we've got an array of watched classes, and we dont have a match, there is nothing
+        // to flag.
+        if (\is_array($this->watchedClasses) === true && \in_array($className, $this->watchedClasses, true) === false) {
+            return;
+        }
+
         $this->deletes[] = $entity;
     }
 
@@ -236,7 +259,15 @@ final class EntityChangeSubscriber implements EventSubscriber
      */
     private function flagForUpdate(object $entity, EntityManagerInterface $entityManager): void
     {
-        $meta = $entityManager->getClassMetadata(\get_class($entity));
+        $className = \get_class($entity);
+
+        // If we've got an array of watched classes, and we dont have a match, there is nothing
+        // to flag.
+        if (\is_array($this->watchedClasses) === true && \in_array($className, $this->watchedClasses, true) === false) {
+            return;
+        }
+
+        $meta = $entityManager->getClassMetadata($className);
         if ($meta->isIdentifierComposite) {
             // @codeCoverageIgnoreStart
             // we do not support composite identifiers for elasticsearch
