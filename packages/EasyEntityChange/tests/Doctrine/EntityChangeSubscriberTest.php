@@ -72,6 +72,45 @@ final class EntityChangeSubscriberTest extends AbstractTestCase
     }
 
     /**
+     * Test skipping unwatched classes.
+     *
+     * @return void
+     *
+     * @throws \EonX\EasyEntityChange\Exceptions\InvalidDispatcherException
+     */
+    public function testSkippingUnwatched(): void
+    {
+        $dispatcherStub = new EventDispatcherStub();
+        // Simulate a misconfigured dispatcher
+        $dispatcherStub->addReturn([]);
+        $unitOfWork = $this->createMock(UnitOfWork::class);
+        $unitOfWork->expects(static::once())
+            ->method('getScheduledEntityInsertions')
+            ->willReturn([new stdClass()]);
+        $unitOfWork->expects(static::once())
+            ->method('getScheduledEntityUpdates')
+            ->willReturn([]);
+        $unitOfWork->expects(static::once())
+            ->method('getScheduledEntityDeletions')
+            ->willReturn([new stdClass()]);
+        $unitOfWork->expects(static::once())
+            ->method('getScheduledCollectionUpdates')
+            ->willReturn([]);
+        $unitOfWork->expects(static::once())
+            ->method('getScheduledCollectionDeletions')
+            ->willReturn([]);
+        $entityManager = $this->createMock(EntityManager::class);
+        $entityManager->expects(static::once())
+            ->method('getUnitOfWork')
+            ->willReturn($unitOfWork);
+        $eventArgs = new OnFlushEventArgs($entityManager);
+        $subscriber = new EntityChangeSubscriber($dispatcherStub, ['notStdClass']);
+        $subscriber->onFlush($eventArgs);
+        $subscriber->postFlush();
+        self::assertSame([], $dispatcherStub->getDispatched());
+    }
+
+    /**
      * Test events subscription.
      *
      * @return void
