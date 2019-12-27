@@ -16,11 +16,13 @@ use EonX\EasyEntityChange\Events\EntityChangeEvent;
 use EonX\EasyEntityChange\Tests\AbstractTestCase;
 use EonX\EasyEntityChange\Tests\Stubs\DeletedEntityEnrichmentStub;
 use EonX\EasyEntityChange\Tests\Stubs\EventDispatcherStub;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
 /**
  * @covers \EonX\EasyEntityChange\Doctrine\EntityChangeSubscriber
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class EntityChangeSubscriberTest extends AbstractTestCase
 {
@@ -36,24 +38,12 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $entity = new stdClass();
 
-        $unitOfWork = $this->createMock(UnitOfWork::class);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityUpdates')
-            ->willReturn([$entity]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityDeletions')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledCollectionUpdates')
-            ->willReturn([]);
+        $unitOfWork = $this->getUnitOfWork(null, [$entity]);
         $unitOfWork->expects(self::once())
             ->method('getEntityChangeSet')
             ->with($entity)
             ->willReturn([
-                'property' => ['old', 'new']
+                'property' => ['blue', 'red']
             ]);
 
         $metadata = $this->createMock(ClassMetadata::class);
@@ -63,13 +53,57 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         $metadata->expects(self::once())
             ->method('getIdentifierValues')
             ->with($entity)
-            ->willReturn(['id' => 'value']);
+            ->willReturn(['id' => 'thing']);
 
         $expectedEvent = new EntityChangeEvent([
             new UpdatedEntity(
                 ['property'],
                 stdClass::class,
-                ['id' => 'value']
+                ['id' => 'thing']
+            )
+        ]);
+
+        $this->callSubscriber($subscriber, $metadata, $unitOfWork);
+
+        self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
+    }
+
+    /**
+     * Tests that the listener dispatches for inserts.
+     *
+     * @return void
+     */
+    public function testListenerCollection(): void
+    {
+        $dispatcher = new EventDispatcherStub();
+        $subscriber = new EntityChangeSubscriber($dispatcher);
+
+        $entity = new stdClass();
+
+        $unitOfWork = $this->getUnitOfWork(null, null, null, [new ArrayCollection([
+            $entity
+        ])]);
+        $unitOfWork->expects(self::once())
+            ->method('getEntityChangeSet')
+            ->with($entity)
+            ->willReturn([
+                'property' => ['green', 'purple']
+            ]);
+
+        $metadata = $this->createMock(ClassMetadata::class);
+        $metadata->expects(self::once())
+            ->method('getName')
+            ->willReturn(stdClass::class);
+        $metadata->expects(self::once())
+            ->method('getIdentifierValues')
+            ->with($entity)
+            ->willReturn(['id' => 'seventy']);
+
+        $expectedEvent = new EntityChangeEvent([
+            new UpdatedEntity(
+                ['property'],
+                stdClass::class,
+                ['id' => 'seventy']
             )
         ]);
 
@@ -91,19 +125,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $entity = new stdClass();
 
-        $unitOfWork = $this->createMock(UnitOfWork::class);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityUpdates')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityDeletions')
-            ->willReturn([$entity]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledCollectionUpdates')
-            ->willReturn([]);
+        $unitOfWork = $this->getUnitOfWork(null, null, [$entity]);
 
         $metadata = $this->createMock(ClassMetadata::class);
         $metadata->expects(self::once())
@@ -141,19 +163,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $entity = new stdClass();
 
-        $unitOfWork = $this->createMock(UnitOfWork::class);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityUpdates')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityDeletions')
-            ->willReturn([$entity]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledCollectionUpdates')
-            ->willReturn([]);
+        $unitOfWork = $this->getUnitOfWork(null, null, [$entity]);
 
         $metadata = $this->createMock(ClassMetadata::class);
         $metadata->expects(self::once())
@@ -195,75 +205,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $entity = new stdClass();
 
-        $unitOfWork = $this->createMock(UnitOfWork::class);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([$entity]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityUpdates')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityDeletions')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledCollectionUpdates')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getEntityChangeSet')
-            ->with($entity)
-            ->willReturn([
-                'property' => ['old', 'new']
-            ]);
-
-        $metadata = $this->createMock(ClassMetadata::class);
-        $metadata->expects(self::once())
-            ->method('getName')
-            ->willReturn(stdClass::class);
-        $metadata->expects(self::once())
-            ->method('getIdentifierValues')
-            ->with($entity)
-            ->willReturn(['id' => 'value']);
-
-        $expectedEvent = new EntityChangeEvent([
-            new UpdatedEntity(
-                ['property'],
-                stdClass::class,
-                ['id' => 'value']
-            )
-        ]);
-
-        $this->callSubscriber($subscriber, $metadata, $unitOfWork);
-
-        self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
-    }
-
-    /**
-     * Tests that the listener dispatches for inserts.
-     *
-     * @return void
-     */
-    public function testListenerCollection(): void
-    {
-        $dispatcher = new EventDispatcherStub();
-        $subscriber = new EntityChangeSubscriber($dispatcher);
-
-        $entity = new stdClass();
-
-        $unitOfWork = $this->createMock(UnitOfWork::class);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityUpdates')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityDeletions')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledCollectionUpdates')
-            ->willReturn([new ArrayCollection([
-                $entity
-            ])]);
+        $unitOfWork = $this->getUnitOfWork([$entity]);
         $unitOfWork->expects(self::once())
             ->method('getEntityChangeSet')
             ->with($entity)
@@ -306,19 +248,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $entity = new stdClass();
 
-        $unitOfWork = $this->createMock(UnitOfWork::class);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityUpdates')
-            ->willReturn([$entity]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledEntityDeletions')
-            ->willReturn([]);
-        $unitOfWork->expects(self::once())
-            ->method('getScheduledCollectionUpdates')
-            ->willReturn([]);
+        $unitOfWork = $this->getUnitOfWork(null, [$entity]);
         $unitOfWork->expects(self::never())
             ->method('getEntityChangeSet');
 
@@ -349,9 +279,46 @@ class EntityChangeSubscriberTest extends AbstractTestCase
     }
 
     /**
-     * @param EntityChangeSubscriber $subscriber
-     * @param ClassMetadata|null $metadata
-     * @param UnitOfWork|null $unitOfWork
+     * Builds the Unit Of Work mock.
+     *
+     * @param mixed[]|null $insertions
+     * @param mixed[]|null $updates
+     * @param mixed[]|null $deletions
+     * @param mixed[]|null $collectionUpdates
+     *
+     * @phpstan-return \PHPUnit\Framework\MockObject\MockObject&\Doctrine\ORM\UnitOfWork
+     *
+     * @return \PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getUnitOfWork(
+        ?array $insertions = null,
+        ?array $updates = null,
+        ?array $deletions = null,
+        ?array $collectionUpdates = null
+    ): MockObject {
+        $unitOfWork = $this->createMock(UnitOfWork::class);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityInsertions')
+            ->willReturn($insertions ?? []);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityUpdates')
+            ->willReturn($updates ?? []);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityDeletions')
+            ->willReturn($deletions ?? []);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledCollectionUpdates')
+            ->willReturn($collectionUpdates ?? []);
+
+        return $unitOfWork;
+    }
+
+    /**
+     * Calls the subscriber.
+     *
+     * @param \EonX\EasyEntityChange\Doctrine\EntityChangeSubscriber $subscriber
+     * @param \Doctrine\ORM\Mapping\ClassMetadata|null $metadata
+     * @param \Doctrine\ORM\UnitOfWork|null $unitOfWork
      *
      * @return void
      */
