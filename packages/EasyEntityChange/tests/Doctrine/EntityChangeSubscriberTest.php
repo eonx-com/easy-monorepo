@@ -3,153 +3,397 @@ declare(strict_types=1);
 
 namespace EonX\EasyEntityChange\Tests\Doctrine;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Events;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\UnitOfWork;
+use EonX\EasyEntityChange\DataTransferObjects\DeletedEntity;
+use EonX\EasyEntityChange\DataTransferObjects\UpdatedEntity;
 use EonX\EasyEntityChange\Doctrine\EntityChangeSubscriber;
-use EonX\EasyEntityChange\Exceptions\InvalidDispatcherException;
+use EonX\EasyEntityChange\Events\EntityChangeEvent;
 use EonX\EasyEntityChange\Tests\AbstractTestCase;
+use EonX\EasyEntityChange\Tests\Stubs\DeletedEntityEnrichmentStub;
 use EonX\EasyEntityChange\Tests\Stubs\EventDispatcherStub;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use stdClass;
 
-final class EntityChangeSubscriberTest extends AbstractTestCase
+/**
+ * @covers \EonX\EasyEntityChange\Doctrine\EntityChangeSubscriber
+ */
+class EntityChangeSubscriberTest extends AbstractTestCase
 {
     /**
-     * Test events subscription.
+     * Tests that the listener dispatches for updates.
+     *
+     * @return void
+     */
+    public function testListener(): void
+    {
+        $dispatcher = new EventDispatcherStub();
+        $subscriber = new EntityChangeSubscriber($dispatcher);
+
+        $entity = new stdClass();
+
+        $unitOfWork = $this->createMock(UnitOfWork::class);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityInsertions')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityUpdates')
+            ->willReturn([$entity]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityDeletions')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledCollectionUpdates')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getEntityChangeSet')
+            ->with($entity)
+            ->willReturn([
+                'property' => ['old', 'new']
+            ]);
+
+        $metadata = $this->createMock(ClassMetadata::class);
+        $metadata->expects(self::once())
+            ->method('getName')
+            ->willReturn(stdClass::class);
+        $metadata->expects(self::once())
+            ->method('getIdentifierValues')
+            ->with($entity)
+            ->willReturn(['id' => 'value']);
+
+        $expectedEvent = new EntityChangeEvent([
+            new UpdatedEntity(
+                ['property'],
+                stdClass::class,
+                ['id' => 'value']
+            )
+        ]);
+
+        $this->callSubscriber($subscriber, $metadata, $unitOfWork);
+
+        self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
+    }
+
+    /**
+     * Tests that the listener dispatches for deletes.
+     *
+     * @return void
+     */
+    public function testListenerDelete(): void
+    {
+        $dispatcher = new EventDispatcherStub();
+        $enrichment = new DeletedEntityEnrichmentStub([['metadata' => 'thing']]);
+        $subscriber = new EntityChangeSubscriber($dispatcher, $enrichment);
+
+        $entity = new stdClass();
+
+        $unitOfWork = $this->createMock(UnitOfWork::class);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityInsertions')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityUpdates')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityDeletions')
+            ->willReturn([$entity]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledCollectionUpdates')
+            ->willReturn([]);
+
+        $metadata = $this->createMock(ClassMetadata::class);
+        $metadata->expects(self::once())
+            ->method('getName')
+            ->willReturn(stdClass::class);
+        $metadata->expects(self::once())
+            ->method('getIdentifierValues')
+            ->with($entity)
+            ->willReturn(['id' => 'value']);
+
+        $expectedEvent = new EntityChangeEvent([
+            new DeletedEntity(
+                stdClass::class,
+                ['id' => 'value'],
+                ['metadata' => 'thing']
+            )
+        ]);
+
+        $this->callSubscriber($subscriber, $metadata, $unitOfWork);
+
+        self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
+    }
+
+    /**
+     * Tests that the listener does not dispatch if we're not watching
+     * for the change.
+     *
+     * @return void
+     */
+    public function testListenerDeleteNotWatching(): void
+    {
+        $dispatcher = new EventDispatcherStub();
+        $enrichment = new DeletedEntityEnrichmentStub([['metadata' => 'thing']]);
+        $subscriber = new EntityChangeSubscriber($dispatcher, $enrichment, []);
+
+        $entity = new stdClass();
+
+        $unitOfWork = $this->createMock(UnitOfWork::class);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityInsertions')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityUpdates')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityDeletions')
+            ->willReturn([$entity]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledCollectionUpdates')
+            ->willReturn([]);
+
+        $metadata = $this->createMock(ClassMetadata::class);
+        $metadata->expects(self::once())
+            ->method('getName')
+            ->willReturn(stdClass::class);
+        $metadata->expects(self::never())
+            ->method('getIdentifierValues');
+
+        $this->callSubscriber($subscriber, $metadata, $unitOfWork);
+
+        self::assertEquals([], $dispatcher->getDispatched());
+    }
+
+    /**
+     * Tests that the listener does not dispatch if there are no
+     * changes.
+     *
+     * @return void
+     */
+    public function testListenerDoesntDispatchOnEmptyChanges(): void
+    {
+        $dispatcher = new EventDispatcherStub();
+        $subscriber = new EntityChangeSubscriber($dispatcher);
+
+        $this->callSubscriber($subscriber);
+
+        self::assertSame([], $dispatcher->getDispatched());
+    }
+
+    /**
+     * Tests that the listener dispatches for inserts.
+     *
+     * @return void
+     */
+    public function testListenerInsert(): void
+    {
+        $dispatcher = new EventDispatcherStub();
+        $subscriber = new EntityChangeSubscriber($dispatcher);
+
+        $entity = new stdClass();
+
+        $unitOfWork = $this->createMock(UnitOfWork::class);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityInsertions')
+            ->willReturn([$entity]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityUpdates')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityDeletions')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledCollectionUpdates')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getEntityChangeSet')
+            ->with($entity)
+            ->willReturn([
+                'property' => ['old', 'new']
+            ]);
+
+        $metadata = $this->createMock(ClassMetadata::class);
+        $metadata->expects(self::once())
+            ->method('getName')
+            ->willReturn(stdClass::class);
+        $metadata->expects(self::once())
+            ->method('getIdentifierValues')
+            ->with($entity)
+            ->willReturn(['id' => 'value']);
+
+        $expectedEvent = new EntityChangeEvent([
+            new UpdatedEntity(
+                ['property'],
+                stdClass::class,
+                ['id' => 'value']
+            )
+        ]);
+
+        $this->callSubscriber($subscriber, $metadata, $unitOfWork);
+
+        self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
+    }
+
+    /**
+     * Tests that the listener dispatches for inserts.
+     *
+     * @return void
+     */
+    public function testListenerCollection(): void
+    {
+        $dispatcher = new EventDispatcherStub();
+        $subscriber = new EntityChangeSubscriber($dispatcher);
+
+        $entity = new stdClass();
+
+        $unitOfWork = $this->createMock(UnitOfWork::class);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityInsertions')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityUpdates')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityDeletions')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledCollectionUpdates')
+            ->willReturn([new ArrayCollection([
+                $entity
+            ])]);
+        $unitOfWork->expects(self::once())
+            ->method('getEntityChangeSet')
+            ->with($entity)
+            ->willReturn([
+                'property' => ['old', 'new']
+            ]);
+
+        $metadata = $this->createMock(ClassMetadata::class);
+        $metadata->expects(self::once())
+            ->method('getName')
+            ->willReturn(stdClass::class);
+        $metadata->expects(self::once())
+            ->method('getIdentifierValues')
+            ->with($entity)
+            ->willReturn(['id' => 'value']);
+
+        $expectedEvent = new EntityChangeEvent([
+            new UpdatedEntity(
+                ['property'],
+                stdClass::class,
+                ['id' => 'value']
+            )
+        ]);
+
+        $this->callSubscriber($subscriber, $metadata, $unitOfWork);
+
+        self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
+    }
+
+    /**
+     * Tests that the listener does not dispatch if we're not watching
+     * for the change.
+     *
+     * @return void
+     */
+    public function testListenerNotWatching(): void
+    {
+        $dispatcher = new EventDispatcherStub();
+        $subscriber = new EntityChangeSubscriber($dispatcher, null, []);
+
+        $entity = new stdClass();
+
+        $unitOfWork = $this->createMock(UnitOfWork::class);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityInsertions')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityUpdates')
+            ->willReturn([$entity]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledEntityDeletions')
+            ->willReturn([]);
+        $unitOfWork->expects(self::once())
+            ->method('getScheduledCollectionUpdates')
+            ->willReturn([]);
+        $unitOfWork->expects(self::never())
+            ->method('getEntityChangeSet');
+
+        $metadata = $this->createMock(ClassMetadata::class);
+        $metadata->expects(self::once())
+            ->method('getName')
+            ->willReturn(stdClass::class);
+        $metadata->expects(self::never())
+            ->method('getIdentifierValues');
+
+        $this->callSubscriber($subscriber, $metadata, $unitOfWork);
+
+        self::assertEquals([], $dispatcher->getDispatched());
+    }
+
+    /**
+     * Tests subscribed events.
      *
      * @return void
      */
     public function testSubscribedEvents(): void
     {
-        $dispatcherStub = new EventDispatcherStub();
-        $subscriber = new EntityChangeSubscriber($dispatcherStub);
+        $subscriber = new EntityChangeSubscriber(new EventDispatcherStub());
 
-        static::assertSame(['onFlush', 'postFlush'], $subscriber->getSubscribedEvents());
+        $events = $subscriber->getSubscribedEvents();
+
+        self::assertSame([Events::onFlush, Events::postFlush], $events);
     }
 
     /**
-     * Test events subscription.
+     * @param EntityChangeSubscriber $subscriber
+     * @param ClassMetadata|null $metadata
+     * @param UnitOfWork|null $unitOfWork
      *
      * @return void
-     *
-     * @throws \EonX\EasyEntityChange\Exceptions\InvalidDispatcherException
      */
-    public function testThrowOnInvalidDispatch(): void
-    {
-        $dispatcherStub = new EventDispatcherStub();
-        // Simulate a misconfigured dispatcher
-        $dispatcherStub->addReturn(null);
+    private function callSubscriber(
+        EntityChangeSubscriber $subscriber,
+        ?ClassMetadata $metadata = null,
+        ?UnitOfWork $unitOfWork = null
+    ): void {
+        if ($unitOfWork === null) {
+            $unitOfWork = $this->createMock(UnitOfWork::class);
+            $unitOfWork->expects(self::once())
+                ->method('getScheduledEntityInsertions')
+                ->willReturn([]);
+            $unitOfWork->expects(self::once())
+                ->method('getScheduledEntityUpdates')
+                ->willReturn([]);
+            $unitOfWork->expects(self::once())
+                ->method('getScheduledEntityDeletions')
+                ->willReturn([]);
+            $unitOfWork->expects(self::once())
+                ->method('getScheduledCollectionUpdates')
+                ->willReturn([]);
+        }
 
-        $unitOfWork = $this->createMock(UnitOfWork::class);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledEntityUpdates')
-            ->willReturn([]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledEntityDeletions')
-            ->willReturn([new stdClass()]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledCollectionUpdates')
-            ->willReturn([]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledCollectionDeletions')
-            ->willReturn([]);
+        if ($metadata === null) {
+            $metadata = $this->createMock(ClassMetadata::class);
+            $metadata->method('getName')
+                ->willReturn(stdClass::class);
+            $metadata->method('getIdentifierValues')
+                ->willReturn(['id' => 'value']);
+        }
 
-        $entityManager = $this->createMock(EntityManager::class);
-        $entityManager->expects(static::once())
-            ->method('getUnitOfWork')
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->method('getUnitOfWork')
             ->willReturn($unitOfWork);
-        $eventArgs = new OnFlushEventArgs($entityManager);
-        $subscriber = new EntityChangeSubscriber($dispatcherStub);
-        $subscriber->onFlush($eventArgs);
+        $entityManager->method('getClassMetadata')
+            ->with(stdClass::class)
+            ->willReturn($metadata);
 
-        $this->expectException(InvalidDispatcherException::class);
-        $this->expectExceptionMessage('exceptions.services.entitychange.doctrine.invalid_dispatcher');
+        $args = new OnFlushEventArgs($entityManager);
 
+        $subscriber->onFlush($args);
         $subscriber->postFlush();
-    }
-
-    /**
-     * Test skipping unwatched classes.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyEntityChange\Exceptions\InvalidDispatcherException
-     */
-    public function testSkippingUnwatched(): void
-    {
-        $dispatcherStub = new EventDispatcherStub();
-        // Simulate a misconfigured dispatcher
-        $dispatcherStub->addReturn([]);
-        $unitOfWork = $this->createMock(UnitOfWork::class);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([new stdClass()]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledEntityUpdates')
-            ->willReturn([]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledEntityDeletions')
-            ->willReturn([new stdClass()]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledCollectionUpdates')
-            ->willReturn([]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledCollectionDeletions')
-            ->willReturn([]);
-        $entityManager = $this->createMock(EntityManager::class);
-        $entityManager->expects(static::once())
-            ->method('getUnitOfWork')
-            ->willReturn($unitOfWork);
-        $eventArgs = new OnFlushEventArgs($entityManager);
-        $subscriber = new EntityChangeSubscriber($dispatcherStub, ['notStdClass']);
-        $subscriber->onFlush($eventArgs);
-        $subscriber->postFlush();
-        self::assertSame([], $dispatcherStub->getDispatched());
-    }
-
-    /**
-     * Test events subscription.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyEntityChange\Exceptions\InvalidDispatcherException
-     */
-    public function testNoDispatch(): void
-    {
-        $dispatcherStub = new EventDispatcherStub();
-        // Simulate a misconfigured dispatcher
-        $dispatcherStub->addReturn(null);
-
-        $unitOfWork = $this->createMock(UnitOfWork::class);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledEntityUpdates')
-            ->willReturn([]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledEntityDeletions')
-            ->willReturn([]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledCollectionUpdates')
-            ->willReturn([]);
-        $unitOfWork->expects(static::once())
-            ->method('getScheduledCollectionDeletions')
-            ->willReturn([]);
-
-        $entityManager = $this->createMock(EntityManager::class);
-        $entityManager->expects(static::once())
-            ->method('getUnitOfWork')
-            ->willReturn($unitOfWork);
-        $eventArgs = new OnFlushEventArgs($entityManager);
-        $subscriber = new EntityChangeSubscriber($dispatcherStub);
-        $subscriber->onFlush($eventArgs);
-
-        $subscriber->postFlush();
-
-        self::assertSame([], $dispatcherStub->getDispatched());
     }
 }

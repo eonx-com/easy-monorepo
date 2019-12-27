@@ -13,65 +13,28 @@ use EonX\EasyEntityChange\Interfaces\EasyEntityChangeEventInterface;
 final class EntityChangeEvent implements EasyEntityChangeEventInterface
 {
     /**
-     * This array contains any data that any subscribers to EntityDeleteDataEvent
-     * returned. If you need data for a listener in this array, listen to the
-     * above event and return the data you require.
+     * Contains an array of ChangedEntity DTO objects that indicate any
+     * changes that may have occurred during the flush process.
      *
-     * @var string[][]
+     * @var \EonX\EasyEntityChange\DataTransferObjects\ChangedEntity[]
      */
-    private $deletes;
+    private $changes;
 
     /**
-     * Stores a multi dimensional array of entity class name with all
-     * ids of that class that were updated or created.
+     * Constructor
      *
-     * The structure of this array is:
-     * [
-     *   ClassName => [
-     *     spl_object_hash($object) => $objectId
-     *   ]
-     * ]
-     *
-     * Where $objectId is the value returned by Doctrine's
-     * ClassMetadata#getIdentifierValues() which is an array of ids (containing
-     * a single value for an entity unless it is a composite primary key)
-     *
-     * Pass the ids to EntityManager#find
-     *
-     * @var mixed[][]
+     * @param \EonX\EasyEntityChange\DataTransferObjects\ChangedEntity[] $changes
      */
-    private $updates;
-
-    /**
-     * Constructor.
-     *
-     * @param string[][] $deletes
-     * @param mixed[][] $updates
-     */
-    public function __construct(array $deletes, array $updates)
+    public function __construct(array $changes)
     {
-        $this->deletes = $deletes;
-        $this->updates = $updates;
+        $this->changes = $changes;
     }
 
     /**
-     * Returns data about deleted entities.
-     *
-     * @return string[][]
+     * @return \EonX\EasyEntityChange\DataTransferObjects\ChangedEntity[]
      */
-    public function getDeletes(): array
+    public function getChanges(): array
     {
-        return $this->deletes;
-    }
-
-    /**
-     * Returns a multidimensional array of entity ids that have been
-     * updated or created.
-     *
-     * @return mixed[][]
-     */
-    public function getUpdates(): array
-    {
-        return $this->updates;
+        return $this->changes;
     }
 }

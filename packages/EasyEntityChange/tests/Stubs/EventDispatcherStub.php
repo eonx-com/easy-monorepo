@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyEntityChange\Tests\Stubs;
 
-use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class EventDispatcherStub implements EventDispatcherInterface
 {
@@ -36,11 +36,11 @@ final class EventDispatcherStub implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatch($event, $payload = null, ?bool $halt = null): ?array
+    public function dispatch(object $event): object
     {
-        $this->dispatched[] = \compact('event', 'payload', 'halt');
+        $this->dispatched[] = $event;
 
-        return \array_shift($this->returns);
+        return $event;
     }
 
     /**
@@ -51,12 +51,5 @@ final class EventDispatcherStub implements EventDispatcherInterface
     public function getDispatched(): array
     {
         return $this->dispatched;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function listen(array $events, string $listener): void
-    {
     }
 }
