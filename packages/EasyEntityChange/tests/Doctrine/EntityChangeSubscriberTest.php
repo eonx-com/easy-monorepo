@@ -218,10 +218,13 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         $metadata->expects(self::once())
             ->method('getName')
             ->willReturn(stdClass::class);
-        $metadata->expects(self::once())
+        $metadata->expects(self::exactly(2))
             ->method('getIdentifierValues')
             ->with($entity)
-            ->willReturn(['id' => 'value']);
+            ->willReturnOnConsecutiveCalls(
+                [],
+                ['id' => 'value']
+            );
 
         $expectedEvent = new EntityChangeEvent([
             new UpdatedEntity(

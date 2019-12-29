@@ -6,6 +6,7 @@ namespace EonX\EasyEntityChange\Doctrine;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\UnitOfWork;
 use EonX\EasyEntityChange\DataTransferObjects\DeletedEntity;
@@ -23,6 +24,13 @@ final class EntityChangeSubscriber implements EventSubscriber
      * @var \EonX\EasyEntityChange\DataTransferObjects\ChangedEntity[]
      */
     private $changes = [];
+
+    /**
+     * Stores an array of entities that are to be inserted that may not yet have primary ids.
+     *
+     * @var mixed[]
+     */
+    private $inserts = [];
 
     /**
      * @var \EonX\EasyEntityChange\Interfaces\DeletedEntityEnrichmentInterface|null
@@ -111,20 +119,72 @@ final class EntityChangeSubscriber implements EventSubscriber
     /**
      * Dispatches jobs for search index updates.
      *
+     * @param \Doctrine\ORM\Event\PostFlushEventArgs $args
+     *
      * @return void
      */
-    public function postFlush(): void
+    public function postFlush(PostFlushEventArgs $args): void
     {
         // If we had no changes, no event needs to be dispatched.
-        if (\count($this->changes) === 0) {
+        if (\count($this->changes) === 0 && \count($this->inserts) === 0) {
             return;
         }
+
+        $entityManager = $args->getEntityManager();
+
+        // Convert any inserts that had no identifiers into changes with identifiers
+        // from after the flush.
+        $this->processInserts($entityManager);
 
         // Dispatch an event with all changes that occurred in the flush.
         $this->dispatcher->dispatch(new EntityChangeEvent($this->changes));
 
         // Clean up so the listener is (almost) always in a pristine condition.
         $this->changes = [];
+    }
+
+    /**
+     * Takes any changes that were detected from objects that had no identifiers and re-queries
+     * for identifiers.
+     *
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     *
+     * @return void
+     */
+    protected function processInserts(EntityManagerInterface $entityManager): void
+    {
+        foreach ($this->inserts as $insert) {
+            $dto = $insert[0] ?? null;
+            $entity = $insert[1] ?? null;
+
+            if (($dto instanceof UpdatedEntity) === false || $entity === null) {
+                // @codeCoverageIgnoreStart
+                // Invalid insert data - cant normally get here.
+                continue;
+                // @codeCoverageIgnoreEnd
+            }
+
+            /**
+             * @var \EonX\EasyEntityChange\DataTransferObjects\UpdatedEntity $dto
+             *
+             * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises ===
+             */
+
+            $metadata = $entityManager->getClassMetadata(\get_class($entity));
+            $ids = $metadata->getIdentifierValues($entity);
+            if (\count($ids) === 0) {
+                // @codeCoverageIgnoreStart
+                // The object still has no ids, we cant emit a change for it.
+                continue;
+                // @codeCoverageIgnoreEnd
+            }
+
+            $this->changes[] = new UpdatedEntity(
+                $dto->getChangedProperties(),
+                $dto->getClass(),
+                $ids
+            );
+        }
     }
 
     /**
@@ -212,6 +272,17 @@ final class EntityChangeSubscriber implements EventSubscriber
 
         $entityIds = $metadata->getIdentifierValues($entity);
         $changedProperties = $this->calculateChangedProperties($entity, $entityManager->getUnitOfWork());
+
+        // If we dont have any ids for the object we will store the DTO in a separate array to be re-processed
+        // after the flush.
+        if (\count($entityIds) === 0) {
+            $this->inserts[] = [
+                new UpdatedEntity($changedProperties, $className, $entityIds),
+                $entity
+            ];
+
+            return;
+        }
 
         $this->changes[] = new UpdatedEntity($changedProperties, $className, $entityIds);
     }
