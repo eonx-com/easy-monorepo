@@ -6,6 +6,7 @@ namespace EonX\EasyEntityChange\Tests\Doctrine;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\UnitOfWork;
@@ -361,6 +362,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         $args = new OnFlushEventArgs($entityManager);
 
         $subscriber->onFlush($args);
-        $subscriber->postFlush();
+        $subscriber->postFlush(new PostFlushEventArgs($entityManager));
     }
 }
