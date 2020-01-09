@@ -6,41 +6,41 @@ namespace EonX\EasyEntityChange\Doctrine;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
-use Doctrine\ORM\PersistentCollection;
-use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
-use EoneoPay\Utils\Arr;
+use Doctrine\ORM\UnitOfWork;
+use EonX\EasyEntityChange\DataTransferObjects\DeletedEntity;
+use EonX\EasyEntityChange\DataTransferObjects\UpdatedEntity;
 use EonX\EasyEntityChange\Events\EntityChangeEvent;
-use EonX\EasyEntityChange\Events\EntityDeleteDataEvent;
-use EonX\EasyEntityChange\Exceptions\InvalidDispatcherException;
+use EonX\EasyEntityChange\Interfaces\DeletedEntityEnrichmentInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class EntityChangeSubscriber implements EventSubscriber
 {
     /**
-     * @var \EoneoPay\Utils\Arr
-     */
-    private $arr;
-
-    /**
-     * Stores a multi dimensional array of entity class name with all
-     * ids of that class that were deleted.
+     * Stores an array of ChangedEntity DTOs that were collected during the phases before flush,
+     * where we then dispatch an EntityChangeEvent with those DTOs after the flush is successful.
      *
-     * @var object[]
+     * @var \EonX\EasyEntityChange\DataTransferObjects\ChangedEntity[]
      */
-    private $deletes = [];
+    private $changes = [];
 
     /**
-     * @var \EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface
+     * Stores an array of entities that are to be inserted that may not yet have primary ids.
+     *
+     * @var mixed[]
+     */
+    private $inserts = [];
+
+    /**
+     * @var \EonX\EasyEntityChange\Interfaces\DeletedEntityEnrichmentInterface|null
+     */
+    private $deleteEnrichment;
+
+    /**
+     * @var \Psr\EventDispatcher\EventDispatcherInterface
      */
     private $dispatcher;
-
-    /**
-     * Stores a multi dimensional array of entity class name with all
-     * ids of that class that were created or updated.
-     *
-     * @var object[][]
-     */
-    private $updates = [];
 
     /**
      * Stores an array of class names we're watching for updates. If null, we will watch for
@@ -53,13 +53,17 @@ final class EntityChangeSubscriber implements EventSubscriber
     /**
      * Constructor.
      *
-     * @param \EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface $dispatcher
-     * @param null|string[]
+     * @param \Psr\EventDispatcher\EventDispatcherInterface $dispatcher
+     * @param \EonX\EasyEntityChange\Interfaces\DeletedEntityEnrichmentInterface|null $deleteEnrichment
+     * @param string[]|null $watchedClasses
      */
-    public function __construct(EventDispatcherInterface $dispatcher, ?array $watchedClasses = null)
-    {
-        $this->arr = new Arr();
+    public function __construct(
+        EventDispatcherInterface $dispatcher,
+        ?DeletedEntityEnrichmentInterface $deleteEnrichment = null,
+        ?array $watchedClasses = null
+    ) {
         $this->dispatcher = $dispatcher;
+        $this->deleteEnrichment = $deleteEnrichment;
         $this->watchedClasses = $watchedClasses;
     }
 
@@ -86,6 +90,10 @@ final class EntityChangeSubscriber implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $eventArgs): void
     {
+        // Reset the changes array. This listener is intentionally stateful and we start
+        // from an empty change set.
+        $this->changes = [];
+
         $entityManager = $eventArgs->getEntityManager();
         $unitOfWork = $entityManager->getUnitOfWork();
 
@@ -98,128 +106,101 @@ final class EntityChangeSubscriber implements EventSubscriber
         }
 
         foreach ($unitOfWork->getScheduledEntityDeletions() as $entity) {
-            $this->flagForDelete(clone $entity);
+            $this->flagForDelete($entity, $entityManager);
         }
 
         foreach ($unitOfWork->getScheduledCollectionUpdates() as $collection) {
-            $this->flagCollectionForUpdate($collection, $entityManager);
-        }
-
-        foreach ($unitOfWork->getScheduledCollectionDeletions() as $collection) {
-            $this->flagCollectionForDelete($collection, $entityManager);
+            foreach ($collection->getIterator() as $entity) {
+                $this->flagForUpdate($entity, $entityManager);
+            }
         }
     }
 
     /**
      * Dispatches jobs for search index updates.
      *
-     * @return void
+     * @param \Doctrine\ORM\Event\PostFlushEventArgs $args
      *
-     * @throws \EonX\EasyEntityChange\Exceptions\InvalidDispatcherException
+     * @return void
      */
-    public function postFlush(): void
+    public function postFlush(PostFlushEventArgs $args): void
     {
-        $deletes = $this->deletes;
-        $this->deletes = [];
-
-        $updates = $this->updates;
-        $this->updates = [];
-
-        $processedDeletes = [];
-
-        // synchronously dispatch to add data to the deletes so that
-        // workers have all required information
-        if (\count($deletes) > 0) {
-            $processedDeletes = $this->dispatcher->dispatch(new EntityDeleteDataEvent(
-                $deletes
-            ));
-        }
-
-        if ($processedDeletes === null) {
-            // While the DispatcherInterface allows for a null return, we're not calling
-            // it with halt = true, and never expect to see a null return - especially
-            // since EntityDeleteDataEvent is synchronous.
-
-            throw new InvalidDispatcherException('exceptions.services.entitychange.doctrine.invalid_dispatcher');
-        }
-
-        // If we have no changes, there is no point dispatching the event.
-        if (\count($processedDeletes) === 0 && \count($updates) === 0) {
+        // If we had no changes, no event needs to be dispatched.
+        if (\count($this->changes) === 0 && \count($this->inserts) === 0) {
             return;
         }
 
-        // asynchronously dispatch change events for handling by any
-        // interested workers
-        $this->dispatcher->dispatch(new EntityChangeEvent(
-            \count($processedDeletes) > 0 ? \array_merge(...$processedDeletes) : [],
-            $updates
-        ));
+        $entityManager = $args->getEntityManager();
+
+        // Convert any inserts that had no identifiers into changes with identifiers
+        // from after the flush.
+        $this->processInserts($entityManager);
+
+        // Dispatch an event with all changes that occurred in the flush.
+        $this->dispatcher->dispatch(new EntityChangeEvent($this->changes));
+
+        // Clean up so the listener is (almost) always in a pristine condition.
+        $this->changes = [];
     }
 
     /**
-     * Flags anything relating to a collection delete as needing
-     * a search index update or delete.
+     * Takes any changes that were detected from objects that had no identifiers and re-queries
+     * for identifiers.
      *
-     * @param mixed $collection
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      *
      * @return void
      */
-    private function flagCollectionForDelete($collection, EntityManagerInterface $entityManager): void
+    protected function processInserts(EntityManagerInterface $entityManager): void
     {
-        if (($collection instanceof PersistentCollection) === false) {
-            return;
-        }
+        foreach ($this->inserts as $insert) {
+            $dto = $insert[0] ?? null;
+            $entity = $insert[1] ?? null;
 
-        /**
-         * @var \Doctrine\ORM\PersistentCollection $collection
-         *
-         * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
-         */
-        if (($collection->getMapping()['orphanRemoval'] ?? false) === false) {
-            // @codeCoverageIgnoreStart
-            // the collection does not specify orphanRemoval, the clear() method
-            // wont actually do anything.
+            if (($dto instanceof UpdatedEntity) === false || $entity === null) {
+                // @codeCoverageIgnoreStart
+                // Invalid insert data - cant normally get here.
+                continue;
+                // @codeCoverageIgnoreEnd
+            }
 
-            return;
-            // @codeCoverageIgnoreEnd
-        }
+            /**
+             * @var \EonX\EasyEntityChange\DataTransferObjects\UpdatedEntity $dto
+             *
+             * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises ===
+             */
 
-        // We're flagging the owner of the collection for updates to allow anything
-        // listening to be able to react to changes to any toMany collection on
-        // the owner.
-        $this->flagForUpdate($collection->getOwner(), $entityManager);
+            $metadata = $entityManager->getClassMetadata(\get_class($entity));
+            $ids = $metadata->getIdentifierValues($entity);
+            if (\count($ids) === 0) {
+                // @codeCoverageIgnoreStart
+                // The object still has no ids, we cant emit a change for it.
+                continue;
+                // @codeCoverageIgnoreEnd
+            }
 
-        foreach ($collection->getIterator() as $entity) {
-            $this->flagForDelete($entity);
+            $this->changes[] = new UpdatedEntity(
+                $dto->getChangedProperties(),
+                $dto->getClass(),
+                $ids
+            );
         }
     }
 
     /**
-     * Flags anything relating to a collection update as needing
-     * a search index update.
+     * Attempts to discover any changed properties from the doctrine UnitOfWork.
      *
-     * @param mixed $collection
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     * @param object $entity
+     * @param \Doctrine\ORM\UnitOfWork $unitOfWork
      *
-     * @return void
+     * @return string[]
      */
-    private function flagCollectionForUpdate($collection, EntityManagerInterface $entityManager): void
+    private function calculateChangedProperties(object $entity, UnitOfWork $unitOfWork): array
     {
-        if (($collection instanceof PersistentCollection) === false) {
-            return;
-        }
+        $changeset = $unitOfWork->getEntityChangeSet($entity);
 
-        /**
-         * @var \Doctrine\ORM\PersistentCollection $collection
-         *
-         * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
-         */
-        $this->flagForUpdate($collection->getOwner(), $entityManager);
-
-        foreach ($collection->getIterator() as $entity) {
-            $this->flagForUpdate($entity, $entityManager);
-        }
+        // Returns the keys of the change set that represent all changed properties on the entity.
+        return \array_keys($changeset);
     }
 
     /**
@@ -227,25 +208,37 @@ final class EntityChangeSubscriber implements EventSubscriber
      * for queue workers to handle.
      *
      * @param mixed $entity
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      *
      * @return void
      */
-    private function flagForDelete($entity): void
+    private function flagForDelete($entity, EntityManagerInterface $entityManager): void
     {
-        // If the provided object isn't an object, we cant process the deletion (weird stuff going on).
-        if (\is_object($entity) === false) {
+        $metadata = $entityManager->getClassMetadata(\get_class($entity));
+
+        /**
+         * Resolve the proper class name to use when talking about this entity, which isn't going to
+         * be the proxy class name.
+         *
+         * The name returned by ClassMetadata is a class string, which isnt annotated as such in
+         * doctrine.
+         *
+         * @phpstan-var class-string
+         */
+        $className = $metadata->getName();
+
+        // If we're not watching for changes for the class, there's nothing to flag.
+        if ($this->isWatched($className) === false) {
             return;
         }
 
-        $className = \get_class($entity);
+        $ids = $metadata->getIdentifierValues($entity);
 
-        // If we've got an array of watched classes, and we dont have a match, there is nothing
-        // to flag.
-        if (\is_array($this->watchedClasses) === true && \in_array($className, $this->watchedClasses, true) === false) {
-            return;
-        }
+        $metadata = $this->deleteEnrichment instanceof DeletedEntityEnrichmentInterface === true
+            ? $this->deleteEnrichment->getMetadata($entity)
+            : [];
 
-        $this->deletes[] = $entity;
+        $this->changes[] = new DeletedEntity($className, $ids, $metadata);
     }
 
     /**
@@ -259,45 +252,58 @@ final class EntityChangeSubscriber implements EventSubscriber
      */
     private function flagForUpdate(object $entity, EntityManagerInterface $entityManager): void
     {
-        $className = \get_class($entity);
+        $metadata = $entityManager->getClassMetadata(\get_class($entity));
 
-        // If we've got an array of watched classes, and we dont have a match, there is nothing
-        // to flag.
-        if (\is_array($this->watchedClasses) === true && \in_array($className, $this->watchedClasses, true) === false) {
+        /**
+         * Resolve the proper class name to use when talking about this entity, which isn't going to
+         * be the proxy class name.
+         *
+         * The name returned by ClassMetadata is a class string, which isnt annotated as such in
+         * doctrine.
+         *
+         * @phpstan-var class-string
+         */
+        $className = $metadata->getName();
+
+        // If we're not watching for changes for the class, there's nothing to flag.
+        if ($this->isWatched($className) === false) {
             return;
         }
 
-        $meta = $entityManager->getClassMetadata($className);
-        if ($meta->isIdentifierComposite) {
-            // @codeCoverageIgnoreStart
-            // we do not support composite identifiers for elasticsearch
+        $entityIds = $metadata->getIdentifierValues($entity);
+        $changedProperties = $this->calculateChangedProperties($entity, $entityManager->getUnitOfWork());
+
+        // If we dont have any ids for the object we will store the DTO in a separate array to be re-processed
+        // after the flush.
+        if (\count($entityIds) === 0) {
+            $this->inserts[] = [
+                new UpdatedEntity($changedProperties, $className, $entityIds),
+                $entity
+            ];
+
             return;
-            // @cardCoverageIgnoreEnd
         }
 
-        $entityIds = $meta->getIdentifierValues($entity);
-        $entityId = \reset($entityIds);
-        if ($entityId === false) {
-            // @codeCoverageIgnoreStart
-            // Entities will always have an id at this point
-            return;
-            // @codeCoverageIgnoreEnd
-        }
-
-        $key = $this->getArrayPath($entity);
-
-        $this->arr->set($this->updates, $key, $entityId);
+        $this->changes[] = new UpdatedEntity($changedProperties, $className, $entityIds);
     }
 
     /**
-     * Returns a unique array path for the provided entity.
+     * Checks if the class name is in our array of watched classes.
      *
-     * @param object $entity
+     * @phpstan-param class-string $className
      *
-     * @return string
+     * @param string $className
+     *
+     * @return bool
      */
-    private function getArrayPath(object $entity): string
+    private function isWatched(string $className): bool
     {
-        return \sprintf('%s.%s', \get_class($entity), \spl_object_hash($entity));
+        // If the watched array is null, we are not watching for anything specific and will emit
+        // events for all classes.
+        if ($this->watchedClasses === null) {
+            return true;
+        }
+
+        return \in_array($className, $this->watchedClasses, true) === true;
     }
 }

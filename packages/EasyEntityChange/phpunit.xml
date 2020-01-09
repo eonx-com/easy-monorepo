@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
+<phpunit backupGlobals="true"
+        backupStaticAttributes="false"
+        bootstrap="tests/bootstrap.php"
+        cacheResult="false"
         colors="true"
-        bootstrap="vendor/autoload.php"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        processIsolation="false"
+        stopOnFailure="false"
 >
     <testsuites>
         <testsuite name="EonX EasyEntityChange Package Test Suite">
-            <directory>tests</directory>
+            <directory>./tests</directory>
+        </testsuite>
+        <testsuite name="EonX Test Utils Suite">
+            <directory>./vendor/eonx-com/test-utils/src/Tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory>src</directory>
+            <directory>./src</directory>
         </whitelist>
     </filter>
 </phpunit>
