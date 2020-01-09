@@ -80,7 +80,7 @@ final class CodeCommandTest extends AbstractTestCase
 
         $display = $this->executeCommand('code', $inputs);
 
-        self::assertContains(\sprintf('Generating files in %s:', \realpath(static::$cwd)), $display);
+        self::assertStringContainsString(\sprintf('Generating files in %s:', \realpath(static::$cwd)), $display);
 
         foreach ($files as $file) {
             self::assertTrue($this->getFilesystem()->exists(static::$cwd . '/' . $file));

@@ -4,12 +4,12 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^7.3",
+        "php": "^7.1",
         "psr/event-dispatcher": "^1.0",
-        "doctrine/orm": "^2.7"
+        "doctrine/orm": "^2.6"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5",
+        "phpunit/phpunit": "^7.5",
         "eonx-com/test-utils": "^0.0.1",
         "eonx-com/standards": "^0.3.0",
         "phpmd/phpmd": "^2.8",
