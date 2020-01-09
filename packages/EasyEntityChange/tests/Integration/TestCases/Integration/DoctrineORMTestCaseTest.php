@@ -1,0 +1,72 @@
+<?php
+declare(strict_types=1);
+
+namespace EonX\EasyEntityChange\Tests\Integration\TestCases\Integration;
+
+use EonX\EasyEntityChange\DataTransferObjects\UpdatedEntity;
+use EonX\EasyEntityChange\Doctrine\EntityChangeSubscriber;
+use EonX\EasyEntityChange\Events\EntityChangeEvent;
+use EonX\EasyEntityChange\Tests\Integration\Fixtures\SimpleEntity;
+use EonX\EasyEntityChange\Tests\Integration\Fixtures\ProvidedIdEntity;
+use EonX\EasyEntityChange\Tests\Stubs\EventDispatcherStub;
+use Eonx\TestUtils\TestCases\Integration\DoctrineORMTestCase;
+
+/**
+ * @coversNothing
+ */
+class DoctrineORMTestCaseTest extends DoctrineORMTestCase
+{
+    /**
+     * Tests that the entity change event fires when doctrine really calls the subscriber.
+     *
+     * @return void
+     */
+    public function testEntityChangeEventIsDispatchedWithDbId(): void
+    {
+        $expectedDispatches = [
+            new EntityChangeEvent([
+                new UpdatedEntity(['property'], SimpleEntity::class, ['id' => 1])
+            ])
+        ];
+
+        $dispatcher = new EventDispatcherStub();
+
+        $entityManager = $this->getEntityManager();
+        $entityManager->getEventManager()->addEventSubscriber(new EntityChangeSubscriber($dispatcher));
+
+        $entity = new SimpleEntity();
+        $entity->setProperty('hello');
+
+        $entityManager->persist($entity);
+        $entityManager->flush();
+
+        self::assertEquals($expectedDispatches, $dispatcher->getDispatched());
+    }
+
+    /**
+     * Tests that the entity change event fires when doctrine really calls the subscriber.
+     *
+     * @return void
+     */
+    public function testEntityChangeEventIsDispatchedWithProvidedId(): void
+    {
+        $expectedDispatches = [
+            new EntityChangeEvent([
+                new UpdatedEntity(['id', 'property'], ProvidedIdEntity::class, ['id' => 'uuid'])
+            ])
+        ];
+
+        $dispatcher = new EventDispatcherStub();
+
+        $entityManager = $this->getEntityManager();
+        $entityManager->getEventManager()->addEventSubscriber(new EntityChangeSubscriber($dispatcher));
+
+        $entity = new ProvidedIdEntity('uuid');
+        $entity->setProperty('hello');
+
+        $entityManager->persist($entity);
+        $entityManager->flush();
+
+        self::assertEquals($expectedDispatches, $dispatcher->getDispatched());
+    }
+}
