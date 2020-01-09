@@ -2,11 +2,21 @@
 
 <!-- dumped content start -->
 
-## v1.0.0 - 2019-12-11
+## v2.0.0 - 2020-01-09
+
+### Unknown Package
+
+- [#110] BC BREAK Entity Change now tracks changed properties, Thanks to [@merk]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v1.0.0] - 2019-12-11
 
 - [#102] Migrate to EonX namespaces
 
-## v0.11.2 - 2019-12-16
+## [v0.11.2] - 2019-12-16
 
 ### EasyEntityChange
 
@@ -16,7 +26,7 @@
 
 <!-- dumped content start -->
 
-## v0.11.1 - 2019-12-15
+## [v0.11.1] - 2019-12-15
 
 - Bump utils version to ^1.0
 
@@ -908,3 +918,6 @@
 [v1.0.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.11.0...v1.0.0
 [v0.11.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.11.0...v0.11.1
 [v0.11.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.11...v0.11.0
+
+[#110]: https://github.com/eonx-com/easy-monorepo/pull/110
+[v0.11.2]: https://github.com/eonx-com/easy-monorepo/compare/v0.11.1...v0.11.2
