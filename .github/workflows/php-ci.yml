@@ -16,6 +16,13 @@ jobs:
                     path: vendor
                     key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
 
+            -   name: Cache Composer lock
+                id: cache-composer-lock
+                uses: eonx-com/cache@v1
+                with:
+                    path: composer.lock
+                    key: composer-lock-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+
             -   name: Install dependencies
                 run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest;
 
@@ -34,6 +41,13 @@ jobs:
                 with:
                     path: vendor
                     key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+
+            -   name: Cache Composer lock
+                id: cache-composer-lock
+                uses: eonx-com/cache@v1
+                with:
+                    path: composer.lock
+                    key: composer-lock-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
 
             -   name: Check ECS
                 run: composer check-ecs
@@ -54,6 +68,13 @@ jobs:
                     path: vendor
                     key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
 
+            -   name: Cache Composer lock
+                id: cache-composer-lock
+                uses: eonx-com/cache@v1
+                with:
+                    path: composer.lock
+                    key: composer-lock-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+
             -   name: Check PHPStan
                 run: composer check-phpstan
 
@@ -73,6 +94,13 @@ jobs:
                     path: vendor
                     key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
 
+            -   name: Cache Composer lock
+                id: cache-composer-lock
+                uses: eonx-com/cache@v1
+                with:
+                    path: composer.lock
+                    key: composer-lock-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+
             -   name: Check Security
                 run: composer check-security
 
@@ -91,6 +119,13 @@ jobs:
                 with:
                     path: vendor
                     key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+
+            -   name: Cache Composer lock
+                id: cache-composer-lock
+                uses: eonx-com/cache@v1
+                with:
+                    path: composer.lock
+                    key: composer-lock-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
 
             -   name: Check Tests
                 run: composer check-tests
