@@ -7,11 +7,11 @@ jobs:
             matrix:
                 php: [ '7.2', '7.3' ]
         steps:
-            -   uses: actions/checkout@v1
+            -   uses: eonx-com/checkout@v2
 
             -   name: Cache Composer dependencies
                 id: cache-composer
-                uses: actions/cache@v1
+                uses: eonx-com/cache@v1
                 with:
                     path: vendor
                     key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -26,11 +26,11 @@ jobs:
             matrix:
                 php: [ '7.2', '7.3' ]
         steps:
-            -   uses: actions/checkout@v1
+            -   uses: eonx-com/checkout@v2
 
             -   name: Cache Composer dependencies
                 id: cache-composer
-                uses: actions/cache@v1
+                uses: eonx-com/cache@v1
                 with:
                     path: vendor
                     key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -45,11 +45,11 @@ jobs:
             matrix:
                 php: [ '7.2', '7.3' ]
         steps:
-            -   uses: actions/checkout@v1
+            -   uses: eonx-com/checkout@v2
 
             -   name: Cache Composer dependencies
                 id: cache-composer
-                uses: actions/cache@v1
+                uses: eonx-com/cache@v1
                 with:
                     path: vendor
                     key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -64,11 +64,11 @@ jobs:
             matrix:
                 php: [ '7.2', '7.3' ]
         steps:
-            -   uses: actions/checkout@v1
+            -   uses: eonx-com/checkout@v2
 
             -   name: Cache Composer dependencies
                 id: cache-composer
-                uses: actions/cache@v1
+                uses: eonx-com/cache@v1
                 with:
                     path: vendor
                     key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -83,11 +83,11 @@ jobs:
             matrix:
                 php: [ '7.2', '7.3' ]
         steps:
-            -   uses: actions/checkout@v1
+            -   uses: eonx-com/checkout@v2
 
             -   name: Cache Composer dependencies
                 id: cache-composer
-                uses: actions/cache@v1
+                uses: eonx-com/cache@v1
                 with:
                     path: vendor
                     key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
