@@ -9,22 +9,20 @@ jobs:
         steps:
             -   uses: eonx-com/checkout@v2
 
+            -   name: Install dependencies
+                run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest;
+
             -   name: Cache Composer dependencies
                 id: cache-composer
                 uses: eonx-com/cache@v1
                 with:
                     path: vendor
-                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
 
-            -   name: Install dependencies
-                run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest;
-
-            -   name: Cache Composer lock
-                id: cache-composer-lock
-                uses: eonx-com/cache@v1
+            -   uses: eonx-com/actions-upload-artifact@v1
                 with:
+                    name: ${{ github.ref }}-${{ matrix.php }}-composer-lock
                     path: composer.lock
-                    key: composer-lock-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
 
     ecs:
         needs: composer
@@ -35,19 +33,16 @@ jobs:
         steps:
             -   uses: eonx-com/checkout@v2
 
+            -   uses: eonx-com/actions-download-artifact@v1
+                with:
+                    name: ${{ github.ref }}-${{ matrix.php }}-composer-lock
+
             -   name: Cache Composer dependencies
                 id: cache-composer
                 uses: eonx-com/cache@v1
                 with:
                     path: vendor
-                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
-
-            -   name: Cache Composer lock
-                id: cache-composer-lock
-                uses: eonx-com/cache@v1
-                with:
-                    path: composer.lock
-                    key: composer-lock-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
 
             -   name: Check ECS
                 run: composer check-ecs
@@ -61,19 +56,16 @@ jobs:
         steps:
             -   uses: eonx-com/checkout@v2
 
+            -   uses: eonx-com/actions-download-artifact@v1
+                with:
+                    name: ${{ github.ref }}-${{ matrix.php }}-composer-lock
+
             -   name: Cache Composer dependencies
                 id: cache-composer
                 uses: eonx-com/cache@v1
                 with:
                     path: vendor
-                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
-
-            -   name: Cache Composer lock
-                id: cache-composer-lock
-                uses: eonx-com/cache@v1
-                with:
-                    path: composer.lock
-                    key: composer-lock-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
 
             -   name: Check PHPStan
                 run: composer check-phpstan
@@ -87,19 +79,16 @@ jobs:
         steps:
             -   uses: eonx-com/checkout@v2
 
+            -   uses: eonx-com/actions-download-artifact@v1
+                with:
+                    name: ${{ github.ref }}-${{ matrix.php }}-composer-lock
+
             -   name: Cache Composer dependencies
                 id: cache-composer
                 uses: eonx-com/cache@v1
                 with:
                     path: vendor
-                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
-
-            -   name: Cache Composer lock
-                id: cache-composer-lock
-                uses: eonx-com/cache@v1
-                with:
-                    path: composer.lock
-                    key: composer-lock-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
 
             -   name: Check Security
                 run: composer check-security
@@ -113,19 +102,16 @@ jobs:
         steps:
             -   uses: eonx-com/checkout@v2
 
+            -   uses: eonx-com/actions-download-artifact@v1
+                with:
+                    name: ${{ github.ref }}-${{ matrix.php }}-composer-lock
+
             -   name: Cache Composer dependencies
                 id: cache-composer
                 uses: eonx-com/cache@v1
                 with:
                     path: vendor
-                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
-
-            -   name: Cache Composer lock
-                id: cache-composer-lock
-                uses: eonx-com/cache@v1
-                with:
-                    path: composer.lock
-                    key: composer-lock-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
 
             -   name: Check Tests
                 run: composer check-tests
