@@ -16,15 +16,15 @@ jobs:
                     path: vendor
                     key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
 
+            -   name: Install dependencies
+                run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest;
+
             -   name: Cache Composer lock
                 id: cache-composer-lock
                 uses: eonx-com/cache@v1
                 with:
                     path: composer.lock
                     key: composer-lock-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
-
-            -   name: Install dependencies
-                run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest;
 
     ecs:
         needs: composer
