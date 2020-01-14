@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.0.1 - 2020-01-14
+## v2.0.2 - 2020-01-14
+
+### EasyLogging
+
+- [#112] Fix signature for JsonFormatter::format()
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.1] - 2020-01-14
 
 ### EasyLogging
 
@@ -934,3 +944,6 @@
 
 [#111]: https://github.com/eonx-com/easy-monorepo/pull/111
 [v2.0.0]: https://github.com/eonx-com/easy-monorepo/compare/v1.0.0...v2.0.0
+
+[#112]: https://github.com/eonx-com/easy-monorepo/pull/112
+[v2.0.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.0...v2.0.1
