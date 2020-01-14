@@ -101,7 +101,7 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
     }
 
     /**
-     * Subtract given value to value from input.
+     * Subtract given value from value from input.
      *
      * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      */
@@ -111,7 +111,7 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
             $this->validateArguments($arguments);
 
             return $arguments['value'] - $value;
-        }, 'Subtract given argument to value from input');
+        }, 'Subtract given argument from value from input');
     }
 
     /**
