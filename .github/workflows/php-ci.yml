@@ -1,0 +1,96 @@
+name: PHP-CI
+on: [push]
+jobs:
+    composer:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '7.2', '7.3' ]
+        steps:
+            -   uses: actions/checkout@v1
+
+            -   name: Cache Composer dependencies
+                id: cache-composer
+                uses: actions/cache@v1
+                with:
+                    path: vendor
+                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+
+            -   name: Install dependencies
+                run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest;
+
+    ecs:
+        needs: composer
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '7.2', '7.3' ]
+        steps:
+            -   uses: actions/checkout@v1
+
+            -   name: Cache Composer dependencies
+                id: cache-composer
+                uses: actions/cache@v1
+                with:
+                    path: vendor
+                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+
+            -   name: Check ECS
+                run: composer check-ecs
+
+    phpstan:
+        needs: composer
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '7.2', '7.3' ]
+        steps:
+            -   uses: actions/checkout@v1
+
+            -   name: Cache Composer dependencies
+                id: cache-composer
+                uses: actions/cache@v1
+                with:
+                    path: vendor
+                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+
+            -   name: Check PHPStan
+                run: composer check-phpstan
+
+    security:
+        needs: composer
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '7.2', '7.3' ]
+        steps:
+            -   uses: actions/checkout@v1
+
+            -   name: Cache Composer dependencies
+                id: cache-composer
+                uses: actions/cache@v1
+                with:
+                    path: vendor
+                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+
+            -   name: Check Security
+                run: composer check-security
+
+    tests:
+        needs: composer
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '7.2', '7.3' ]
+        steps:
+            -   uses: actions/checkout@v1
+
+            -   name: Cache Composer dependencies
+                id: cache-composer
+                uses: actions/cache@v1
+                with:
+                    path: vendor
+                    key: composer-${{ github.ref }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+
+            -   name: Check Tests
+                run: composer check-tests

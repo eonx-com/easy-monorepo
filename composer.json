@@ -95,11 +95,13 @@
         "check-all": [
             "@check-ecs",
             "@check-phpstan",
-            "@check-security"
+            "@check-security",
+            "@check-tests"
         ],
         "check-ecs": "vendor/bin/ecs check packages",
         "check-phpstan": "vendor/bin/phpstan analyse packages --level=7 --ansi",
         "check-security": "vendor/bin/security-checker security:check",
+        "check-tests": "vendor/bin/phpunit packages",
         "changelog": [
             "vendor/bin/changelog-linker dump-merges --in-packages",
             "vendor/bin/changelog-linker link",
