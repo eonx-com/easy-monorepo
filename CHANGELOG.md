@@ -2,9 +2,19 @@
 
 <!-- dumped content start -->
 
-## v2.0.0 - 2020-01-09
+## v2.0.1 - 2020-01-14
 
-### Unknown Package
+### EasyLogging
+
+- [#111] Fix formatter format signature
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.0] - 2020-01-09
+
+### Search
 
 - [#110] BC BREAK Entity Change now tracks changed properties, Thanks to [@merk]
 
@@ -921,3 +931,6 @@
 
 [#110]: https://github.com/eonx-com/easy-monorepo/pull/110
 [v0.11.2]: https://github.com/eonx-com/easy-monorepo/compare/v0.11.1...v0.11.2
+
+[#111]: https://github.com/eonx-com/easy-monorepo/pull/111
+[v2.0.0]: https://github.com/eonx-com/easy-monorepo/compare/v1.0.0...v2.0.0
