@@ -13,9 +13,9 @@ final class SumoJsonFormatter extends JsonFormatter
      *
      * @param mixed[] $record
      *
-     * @return mixed[]|mixed
+     * @return string
      */
-    public function format(array $record): array
+    public function format(array $record): string
     {
         $record['datetime'] = $record['datetime']->format(DateTime::RFC3339);
 
