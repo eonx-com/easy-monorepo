@@ -12,11 +12,13 @@ jobs:
             -   uses: eonx-com/actions-download-artifact@v1
                 with:
                     name: ${{ matrix.php }}-composer-lock
+                continue-on-error: true
 
             -   name: Move composer.lock
                 run: |
                     cp ${{ matrix.php }}-composer-lock/composer.lock ./composer.lock; \
                     rm -rf ${{ matrix.php }}-composer-lock;
+                continue-on-error: true
 
             -   name: Cache Composer dependencies
                 id: cache-composer
