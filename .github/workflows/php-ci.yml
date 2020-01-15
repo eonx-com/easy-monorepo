@@ -1,41 +1,6 @@
 name: PHP-CI
 on: [push]
 jobs:
-    composer:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                php: [ '7.3' ]
-        steps:
-            -   uses: eonx-com/actions-checkout@v2
-
-            -   uses: eonx-com/actions-setup-php@v1
-                with:
-                    php-version: ${{ matrix.php }}
-                    coverage: none
-
-            -   id: composer-cache-dir
-                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            -   id: cache-composer
-                uses: eonx-com/actions-cache@v1
-                with:
-                    path: ${{ steps.composer-cache-dir.outputs.dir }}
-                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-${{ matrix.php }}-
-
-            -   if: steps.cache-composer.outputs.cache-hit == false
-                run: |
-                    composer global require hirak/prestissimo; composer install --prefer-dist; \
-                    mkdir cache; \
-                    cp ./composer.lock ./cache/composer.lock;
-
-            -   if: steps.cache-composer.outputs.cache-hit == false
-                uses: eonx-com/actions-cache@v1
-                with:
-                    path: cache
-                    key: composer-lock-${{ matrix.php }}
-
     ecs:
         needs: composer
         runs-on: ubuntu-latest
@@ -56,8 +21,8 @@ jobs:
             -   uses: eonx-com/actions-cache@v1
                 with:
                     path: ${{ steps.composer-cache-dir.outputs.dir }}
-                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-${{ matrix.php }}-
+                    key: comp-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+                    restore-keys: comp-${{ matrix.php }}-
 
             -   name: '[CI] Check ECS [CI]'
                 run: composer install --prefer-dist && composer check-ecs
@@ -82,8 +47,8 @@ jobs:
             -   uses: eonx-com/actions-cache@v1
                 with:
                     path: ${{ steps.composer-cache-dir.outputs.dir }}
-                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-${{ matrix.php }}-
+                    key: comp-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+                    restore-keys: comp-${{ matrix.php }}-
 
             -   name: '[CI] Check PHPStan [CI]'
                 run: composer install --prefer-dist && composer check-phpstan
@@ -102,23 +67,14 @@ jobs:
                     php-version: ${{ matrix.php }}
                     coverage: none
 
-            -   uses: eonx-com/actions-cache@v1
-                with:
-                    path: cache
-                    key: composer-lock-${{ matrix.php }}
-
-            -   run: |
-                    cp cache/composer.lock ./composer.lock; \
-                    rm -rf cache;
-
             -   id: composer-cache-dir
                 run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
             -   uses: eonx-com/actions-cache@v1
                 with:
                     path: ${{ steps.composer-cache-dir.outputs.dir }}
-                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-${{ matrix.php }}-
+                    key: comp-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+                    restore-keys: comp-${{ matrix.php }}-
 
             -   name: '[CI] Check Security [CI]'
                 run: composer install --prefer-dist && composer check-security
@@ -143,8 +99,8 @@ jobs:
             -   uses: eonx-com/actions-cache@v1
                 with:
                     path: ${{ steps.composer-cache-dir.outputs.dir }}
-                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-${{ matrix.php }}-
+                    key: comp-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+                    restore-keys: comp-${{ matrix.php }}-
 
             -   name: '[CI] Check Tests [CI]'
                 run: composer install --prefer-dist && composer check-tests
