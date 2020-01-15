@@ -119,11 +119,11 @@ final class CachedConfigurationServiceProviderTest extends AbstractVfsTestCase
 
         $serviceProvider->register();
         // Constructor of \Illuminate\Console\Application triggers commands registration.
-        new \Illuminate\Console\Application(
-            $app,
-            $this->prophesize(Dispatcher::class)->reveal(),
-            ''
-        );
+
+        /** @var \Illuminate\Contracts\Events\Dispatcher $dispatcher */
+        $dispatcher = $this->prophesize(Dispatcher::class)->reveal();
+
+        new \Illuminate\Console\Application($app, $dispatcher, '');
 
         $appProphecy->storagePath('cached_config.php')->shouldHaveBeenCalledOnce();
         $appProphecy->runningInConsole()->shouldHaveBeenCalledOnce();

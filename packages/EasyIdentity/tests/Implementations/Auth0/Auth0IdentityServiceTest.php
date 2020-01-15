@@ -21,7 +21,7 @@ use EonX\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
 use EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface;
 use EonX\EasyIdentity\Tests\AbstractTestCase;
 use EonX\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub;
-use Mockery\MockInterface;
+use Mockery\LegacyMockInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -44,7 +44,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $this->expectException(InvalidResponseFromIdentityException::class);
 
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
-        $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
+        $management = $this->mockManagementForUsersClient(function (LegacyMockInterface $mock): void {
             $mock
                 ->shouldReceive('create')
                 ->once()
@@ -69,7 +69,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     public function testCreateUserSuccessfully(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
-        $management = $this->mockManagementForUsersClient(function (MockInterface $mock): void {
+        $management = $this->mockManagementForUsersClient(function (LegacyMockInterface $mock): void {
             $mock
                 ->shouldReceive('create')
                 ->once()
@@ -105,8 +105,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     public function testDecodeToken(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory */
-        $tokenVerifierFactory = $this->mock(TokenVerifierFactory::class, function (MockInterface $mock): void {
-            $jwt = $this->mock(JWTVerifier::class, static function (MockInterface $mock): void {
+        $tokenVerifierFactory = $this->mock(TokenVerifierFactory::class, function (LegacyMockInterface $mock): void {
+            $jwt = $this->mock(JWTVerifier::class, static function (LegacyMockInterface $mock): void {
                 $mock->shouldReceive('verifyAndDecode')->once()->with('token')->andReturn(['expected']);
             });
 
@@ -138,7 +138,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     public function testDeleteUser(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
-        $management = $this->mockManagementForUsersClient(static function (MockInterface $mock): void {
+        $management = $this->mockManagementForUsersClient(static function (LegacyMockInterface $mock): void {
             $mock->shouldReceive('delete')->once()->withArgs(static function ($userId): bool {
                 $condition = \is_string($userId) && $userId === 'identity-id';
 
@@ -151,7 +151,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $identityUserService = new IdentityUserService();
         $identityUser = new IdentityUserStub();
 
-        $identityUserService->setIdentityUserId($identityUser, IdentityServiceNamesInterface::SERVICE_AUTH0, 'identity-id');
+        $identityUserService->setIdentityUserId($identityUser, IdentityServiceNamesInterface::SERVICE_AUTH0,
+            'identity-id');
 
         $this->getServiceForUsersMethod($identityUserService, $management)->deleteUser($identityUser);
     }
@@ -168,7 +169,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     public function testGetUser(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
-        $management = $this->mockManagementForUsersClient(static function (MockInterface $mock): void {
+        $management = $this->mockManagementForUsersClient(static function (LegacyMockInterface $mock): void {
             $mock->shouldReceive('get')->once()->withArgs(static function ($userId): bool {
                 $condition = \is_string($userId) && $userId === 'identity-id';
 
@@ -204,7 +205,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $this->expectException(NoIdentityUserIdException::class);
 
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
-        $management = $this->mockManagementForUsersClient(static function (MockInterface $mock): void {
+        $management = $this->mockManagementForUsersClient(static function (LegacyMockInterface $mock): void {
             $mock->shouldNotReceive('get');
         });
 
@@ -228,10 +229,10 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $this->expectException(LoginFailedException::class);
 
         /** @var \EonX\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory */
-        $authFactory = $this->mock(AuthenticationApiClientFactory::class, function (MockInterface $mock): void {
-            $exception = $this->mock(RequestException::class, function (MockInterface $mock): void {
-                $response = $this->mock(ResponseInterface::class, function (MockInterface $mock): void {
-                    $body = $this->mock(StreamInterface::class, static function (MockInterface $mock): void {
+        $authFactory = $this->mock(AuthenticationApiClientFactory::class, function (LegacyMockInterface $mock): void {
+            $exception = $this->mock(RequestException::class, function (LegacyMockInterface $mock): void {
+                $response = $this->mock(ResponseInterface::class, function (LegacyMockInterface $mock): void {
+                    $body = $this->mock(StreamInterface::class, static function (LegacyMockInterface $mock): void {
                         $mock->shouldReceive('getContents')->once()->withNoArgs()->andReturn('');
                     });
 
@@ -274,8 +275,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $this->expectException(LoginFailedException::class);
 
         /** @var \EonX\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory */
-        $authFactory = $this->mock(AuthenticationApiClientFactory::class, function (MockInterface $mock): void {
-            $exception = $this->mock(RequestException::class, static function (MockInterface $mock): void {
+        $authFactory = $this->mock(AuthenticationApiClientFactory::class, function (LegacyMockInterface $mock): void {
+            $exception = $this->mock(RequestException::class, static function (LegacyMockInterface $mock): void {
                 $mock->shouldReceive('getResponse')->once()->withNoArgs()->andReturn(null);
             });
             $mock->shouldReceive('create')->once()->withNoArgs()->andThrow($exception);
@@ -309,7 +310,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     public function testUpdateUser(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
-        $management = $this->mockManagementForUsersClient(static function (MockInterface $mock): void {
+        $management = $this->mockManagementForUsersClient(static function (LegacyMockInterface $mock): void {
             $mock
                 ->shouldReceive('update')
                 ->once()
@@ -366,8 +367,10 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      *
      * @return \EonX\EasyIdentity\Implementations\Auth0\Auth0IdentityService
      */
-    private function getServiceForUsersMethod(IdentityUserServiceInterface $identityUserService, ManagementApiClientFactory $management): Auth0IdentityService
-    {
+    private function getServiceForUsersMethod(
+        IdentityUserServiceInterface $identityUserService,
+        ManagementApiClientFactory $management
+    ): Auth0IdentityService {
         return new Auth0IdentityService(
             new AuthenticationApiClientFactory($this->getConfig()),
             $this->getConfig(),
@@ -382,15 +385,15 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      *
      * @param \Closure $closure
      *
-     * @return \Mockery\MockInterface
+     * @return \Mockery\LegacyMockInterface
      */
-    private function mockManagementForUsersClient(Closure $closure): MockInterface
+    private function mockManagementForUsersClient(Closure $closure): LegacyMockInterface
     {
         $users = $this->mock(Users::class, $closure);
 
         return $this->mock(
             ManagementApiClientFactory::class,
-            function (MockInterface $mock) use ($users): void {
+            function (LegacyMockInterface $mock) use ($users): void {
                 $management = $this->mock(Management::class);
                 $management->users = $users;
 

@@ -6,7 +6,7 @@ parameters:
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDecision/src/Decisions
 
-        - message: '#Access to an undefined property Mockery\\MockInterface::\$users.#'
+        - message: '#Access to an undefined property Mockery\\LegacyMockInterface::\$users.#'
           path: packages/EasyIdentity/tests/Implementations/Auth0
 
         - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int|string> given.#'
@@ -24,10 +24,19 @@ parameters:
         - message: '#Access to an undefined property object::\$[\w]+.#'
           path: packages/EasyCore/tests/Http/Middleware
 
-        - message: '#Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
+        - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\CachedConfigurationServiceProvider::\$loadedConfigurations.#'
+          path: packages/EasyCore/src/Bridge/Laravel
+
+        - message: '#Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int,stdClass> given.#'
           path: packages/EasyDecisions/tests/Decisions
 
-        - message: '#Parameter \#(1|2|3) \$[\w]+ of method [\w\\]+::[\w]+\(\) expects [\w\\]+|null, PHPUnit\Framework\MockObject\MockObject given.#'
+        - message: '#PHPDoc tag @param has invalid value \(null|mixed[]\): Unexpected token "\\n     ", expected TOKEN_VARIABLE at offset 320#'
+          path: packages/EasyDecisions/src/Decisions
+
+        - message: "#Offset 'fn' does not exist on array\(string\).#"
+          path: packages/EasyDecisions/src/Helpers
+
+        - message: '#Parameter \#(1|2|3) \$[\w]+ of method [\w\\]+::[\w]+\(\) expects ([\w\\]+|[\w\\]+\|null), PHPUnit\Framework\MockObject\MockObject given.#'
           path: packages/EasyEntityChange/tests/Doctrine
 
         - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'

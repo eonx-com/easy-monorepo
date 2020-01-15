@@ -62,15 +62,15 @@ abstract class AbstractTestCase extends TestCase
      * @param callable|null $managerExpectations
      * @param callable|null $repositoryExpectations
      *
-     * @return \Mockery\MockInterface
+     * @return \Mockery\LegacyMockInterface
      */
     protected function mockRegistry(
         ?callable $managerExpectations = null,
         ?callable $repositoryExpectations = null
-    ): MockInterface {
-        $registry = $this->mock(
+    ): LegacyMockInterface {
+        return $this->mock(
             ManagerRegistry::class,
-            function (MockInterface $registry) use ($managerExpectations, $repositoryExpectations): void {
+            function (LegacyMockInterface $registry) use ($managerExpectations, $repositoryExpectations): void {
                 $manager = $this->mock(ObjectManager::class, $managerExpectations);
                 $repository = $this->mock(ObjectRepository::class, $repositoryExpectations);
 
@@ -78,8 +78,6 @@ abstract class AbstractTestCase extends TestCase
                 $registry->shouldReceive('getManagerForClass')->once()->with('my-entity-class')->andReturn($manager);
             }
         );
-
-        return $registry;
     }
 }
 
