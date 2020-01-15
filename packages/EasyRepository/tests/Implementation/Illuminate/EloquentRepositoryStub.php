@@ -40,8 +40,6 @@ final class EloquentRepositoryStub extends AbstractEloquentRepository
             \call_user_func($this->modelExpectations, $mock, $collection);
         }
 
-        /** @var \Illuminate\Database\Eloquent\Model $mock */
-
         return $mock;
     }
 }

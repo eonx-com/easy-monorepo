@@ -33,7 +33,7 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
     /**
      * Mock doctrine paginator.
      *
-     * @return \Mockery\MockInterface
+     * @return \Mockery\LegacyMockInterface
      */
     private function mockDoctrinePaginator(): LegacyMockInterface
     {

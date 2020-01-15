@@ -28,15 +28,18 @@ parameters:
           path: packages/EasyCore/src/Bridge/Laravel
 
         - message: '#Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int,stdClass> given.#'
-          path: packages/EasyDecisions/tests/Decisions
+          path: packages/EasyDecision/tests/Decisions
 
         - message: '#PHPDoc tag @param has invalid value \(null|mixed\[\]\): Unexpected token "\\n     ", expected TOKEN_VARIABLE at offset 320#'
-          path: packages/EasyDecisions/src/Decisions
+          path: packages/EasyDecision/src/Decisions
 
         - message: "#Offset 'fn' does not exist on array\\(string\\).#"
-          path: packages/EasyDecisions/src/Helpers
+          path: packages/EasyDecision/src/Helpers
 
-        - message: '#Parameter \#(1|2|3) \$[\w]+ of method [\w\\]+::[\w]+\(\) expects ([\w\\]+|[\w\\]+\|null), PHPUnit\Framework\MockObject\MockObject given.#'
+        - message: '#Parameter \#(1|2|3) \$[\w]+ of method [\w\\]+::[\w]+\(\) expects [\w\\]+|null, PHPUnit\Framework\MockObject\MockObject given.#'
+          path: packages/EasyEntityChange/tests/Doctrine
+
+        - message: '#Parameter \#1 \$[\w]+ of method [\w\\]+::[\w]+\(\) expects [\w\\]+, PHPUnit\Framework\MockObject\MockObject given.#'
           path: packages/EasyEntityChange/tests/Doctrine
 
         - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'
@@ -47,6 +50,9 @@ parameters:
 
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$repository \(Doctrine\\ORM\\EntityRepository\) does not accept Doctrine\\Persistence\\ObjectRepository.#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM
+
+        - message: '#Method EonX\\EasyRepository\\Tests\\Implementation\\Illuminate\\EloquentRepositoryStub::getModel\(\) should return Illuminate\\Database\\Eloquent\\Model but returns Mockery\\LegacyMockInterface.#'
+          path: packages/EasyRepository/tests/Implementation/Illuminate
 
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
