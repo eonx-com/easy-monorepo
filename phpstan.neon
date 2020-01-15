@@ -27,7 +27,7 @@ parameters:
         - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\CachedConfigurationServiceProvider::\$loadedConfigurations.#'
           path: packages/EasyCore/src/Bridge/Laravel
 
-        - message: '#Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int,stdClass> given.#'
+        - message: '#Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
           path: packages/EasyDecision/tests/Decisions
 
         - message: '#PHPDoc tag @param has invalid value \(null|mixed\[\]\): Unexpected token "\\n     ", expected TOKEN_VARIABLE at offset 320#'
@@ -39,7 +39,7 @@ parameters:
         - message: '#Parameter \#(1|2|3) \$[\w]+ of method [\w\\]+::[\w]+\(\) expects [\w\\]+|null, PHPUnit\Framework\MockObject\MockObject given.#'
           path: packages/EasyEntityChange/tests/Doctrine
 
-        - message: '#Parameter \#1 \$[\w]+ of method [\w\\]+::[\w]+\(\) expects [\w\\]+, PHPUnit\Framework\MockObject\MockObject given.#'
+        - message: '#Parameter \#1 \$em of class Doctrine\\ORM\\Event\\(OnFlushEventArgs|PostFlushEventArgs) constructor expects Doctrine\\ORM\\EntityManagerInterface, PHPUnit\\Framework\\MockObject\\MockObject given.#'
           path: packages/EasyEntityChange/tests/Doctrine
 
         - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'
