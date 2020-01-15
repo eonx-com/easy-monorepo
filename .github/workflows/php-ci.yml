@@ -37,6 +37,11 @@ jobs:
                 with:
                     name: ${{ github.sha }}-${{ matrix.php }}-composer-lock
 
+            -   name: Move composer.lock
+                run: |
+                    cp ${{ github.sha }}-${{ matrix.php }}-composer-lock/composer.lock ./composer.lock; \
+                    rm -rf ${{ github.sha }}-${{ matrix.php }}-composer-lock;
+
             -   name: Cache Composer dependencies
                 id: cache-composer
                 uses: eonx-com/cache@v1
@@ -59,6 +64,11 @@ jobs:
             -   uses: eonx-com/actions-download-artifact@v1
                 with:
                     name: ${{ github.sha }}-${{ matrix.php }}-composer-lock
+
+            -   name: Move composer.lock
+                run: |
+                    cp ${{ github.sha }}-${{ matrix.php }}-composer-lock/composer.lock ./composer.lock; \
+                    rm -rf ${{ github.sha }}-${{ matrix.php }}-composer-lock;
 
             -   name: Cache Composer dependencies
                 id: cache-composer
@@ -110,6 +120,11 @@ jobs:
             -   uses: eonx-com/actions-download-artifact@v1
                 with:
                     name: ${{ github.sha }}-${{ matrix.php }}-composer-lock
+
+            -   name: Move composer.lock
+                run: |
+                    cp ${{ github.sha }}-${{ matrix.php }}-composer-lock/composer.lock ./composer.lock; \
+                    rm -rf ${{ github.sha }}-${{ matrix.php }}-composer-lock;
 
             -   name: Cache Composer dependencies
                 id: cache-composer
