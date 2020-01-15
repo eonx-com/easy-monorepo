@@ -46,7 +46,7 @@ jobs:
 
             -   uses: eonx-com/actions-cache@v1
                 with:
-                    path: ${{ steps.comp-cache.outputs.dir }}
+                    path: ${{ steps.composer-cache.outputs.dir }}
                     key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
                     restore-keys: ${{ matrix.php }}-comp-
 
