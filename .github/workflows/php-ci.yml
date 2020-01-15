@@ -82,13 +82,9 @@ jobs:
             -   uses: eonx-com/actions-download-artifact@v1
                 with:
                     name: ${{ github.sha }}-${{ matrix.php }}-composer-lock
-                    path: $GITHUB_WORKSPACE
-
-            -   name: List files
-                run: ls -la composer.lock
 
             -   name: Cat composer.lock
-                run: cat composer.lock
+                run: cat ${{ github.sha }}-${{ matrix.php }}-composer-lock
 
             -   name: Cache Composer dependencies
                 id: cache-composer
