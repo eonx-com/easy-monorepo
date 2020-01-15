@@ -110,9 +110,3 @@ class ManagementTokenProviderTest extends AbstractTestCase
         ]);
     }
 }
-
-\class_alias(
-    ManagementTokenProviderTest::class,
-    EonX\EasyIdentity\Tests\Implementations\Auth0\ManagementTokenProviderTest::class,
-    false
-);

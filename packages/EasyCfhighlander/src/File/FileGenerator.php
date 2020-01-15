@@ -45,7 +45,7 @@ final class FileGenerator implements FileGeneratorInterface
         $rendered = $this->renderTemplate($fileToGenerate->getTemplate(), $params);
         $renderedHash = $this->hash($rendered);
         $exists = $this->filesystem->exists($filename);
-        $identical = $exists ? $renderedHash === $this->hash(\file_get_contents($filename)) : null;
+        $identical = $exists ? $renderedHash === $this->hash((string)\file_get_contents($filename)) : null;
 
         // If file already exists but is not identical
         if ($identical === false) {
@@ -57,7 +57,7 @@ final class FileGenerator implements FileGeneratorInterface
             return new FileStatus(
                 $fileToGenerate,
                 self::STATUS_SKIPPED_IDENTICAL,
-                $this->hash(\file_get_contents($filename))
+                $this->hash((string)\file_get_contents($filename))
             );
         }
 

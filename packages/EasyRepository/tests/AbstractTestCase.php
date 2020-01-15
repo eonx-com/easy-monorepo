@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Mockery;
-use Mockery\MockInterface;
+use Mockery\LegacyMockInterface;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
@@ -43,9 +43,9 @@ abstract class AbstractTestCase extends TestCase
      * @param string|object $class
      * @param null|callable $expectations
      *
-     * @return \Mockery\MockInterface
+     * @return \Mockery\LegacyMockInterface
      */
-    protected function mock($class, ?callable $expectations = null): MockInterface
+    protected function mock($class, ?callable $expectations = null): LegacyMockInterface
     {
         $mock = Mockery::mock($class);
 

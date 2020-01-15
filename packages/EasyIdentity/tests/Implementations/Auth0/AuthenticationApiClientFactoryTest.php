@@ -34,9 +34,3 @@ class AuthenticationApiClientFactoryTest extends AbstractTestCase
         $this->addToAssertionCount(1);
     }
 }
-
-\class_alias(
-    AuthenticationApiClientFactoryTest::class,
-    EonX\EasyIdentity\Tests\Implementations\Auth0\AuthenticationApiClientFactoryTest::class,
-    false
-);

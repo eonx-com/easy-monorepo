@@ -54,7 +54,10 @@ abstract class AbstractTestCase extends TestCase
         /** @var \Symfony\Component\DependencyInjection\Container $container */
         $container = require __DIR__ . '/../bin/container.php';
 
-        return $container->get(EasyDockerApplication::class);
+        /** @var \EonX\EasyDocker\Console\EasyDockerApplication $app */
+        $app = $container->get(EasyDockerApplication::class);
+
+        return $app;
     }
 
     /**

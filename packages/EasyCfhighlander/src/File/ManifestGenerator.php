@@ -54,7 +54,10 @@ final class ManifestGenerator implements ManifestGeneratorInterface
             }
         }
 
-        $this->filesystem->dumpFile($filename, \json_encode($manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $this->filesystem->dumpFile(
+            $filename,
+            (string)\json_encode($manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+        );
     }
 
     /**
@@ -67,7 +70,7 @@ final class ManifestGenerator implements ManifestGeneratorInterface
     private function getExistingManifest(string $filename): array
     {
         if ($this->filesystem->exists($filename)) {
-            return \json_decode(\file_get_contents($filename), true);
+            return \json_decode((string)\file_get_contents($filename), true);
         }
 
         return [];

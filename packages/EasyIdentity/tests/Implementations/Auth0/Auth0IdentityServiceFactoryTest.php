@@ -48,9 +48,3 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
         $this->addToAssertionCount(1);
     }
 }
-
-\class_alias(
-    Auth0IdentityServiceFactoryTest::class,
-    EonX\EasyIdentity\Tests\Implementations\Auth0\Auth0IdentityServiceFactoryTest::class,
-    false
-);

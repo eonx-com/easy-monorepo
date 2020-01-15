@@ -54,7 +54,10 @@ abstract class AbstractTestCase extends TestCase
         /** @var \Symfony\Component\DependencyInjection\Container $container */
         $container = require __DIR__ . '/../bin/container.php';
 
-        return $container->get(CfhighlanderApplication::class);
+        /** @var \EonX\EasyCfhighlander\Console\CfhighlanderApplication $app */
+        $app = $container->get(CfhighlanderApplication::class);
+
+        return $app;
     }
 
     /**

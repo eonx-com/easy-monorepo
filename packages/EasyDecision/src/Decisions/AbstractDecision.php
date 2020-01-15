@@ -35,7 +35,7 @@ abstract class AbstractDecision implements DecisionInterface
      */
     public function __construct(?string $name = null)
     {
-        $this->name = $name;
+        $this->name = $name ?? '<no-name>';
     }
 
     /**

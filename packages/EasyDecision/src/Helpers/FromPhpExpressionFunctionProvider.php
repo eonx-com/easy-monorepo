@@ -39,7 +39,9 @@ final class FromPhpExpressionFunctionProvider implements ExpressionFunctionProvi
             // ['function' => 'min', 'description' => 'Optional text']
             // or
             // ['fn' => 'min', 'description' => 'Optional text']
-            if (\is_string($phpFunction['function'] ?? $phpFunction['fn'] ?? null)) {
+            /** @var null|string $fn */
+            $fn = $phpFunction['function'] ?? $phpFunction['fn'] ?? null;
+            if (\is_string($fn)) {
                 $base = BaseExpressionFunction::fromPhp($phpFunction['function'] ?? $phpFunction['fn']);
                 $description = $phpFunction['description'] ?? null;
 

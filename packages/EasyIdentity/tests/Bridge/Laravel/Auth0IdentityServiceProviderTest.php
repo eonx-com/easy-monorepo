@@ -28,9 +28,3 @@ final class Auth0IdentityServiceProviderTest extends AbstractLumenTestCase
         self::assertInstanceOf(Auth0IdentityService::class, $app->get(IdentityServiceInterface::class));
     }
 }
-
-\class_alias(
-    Auth0IdentityServiceProviderTest::class,
-    EonX\EasyIdentity\Tests\Bridge\Laravel\Auth0IdentityServiceProviderTest::class,
-    false
-);

@@ -30,7 +30,7 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
         self::assertTrue($filesystem->exists(static::$cwd . '/docker/api/Dockerfile'));
         self::assertStringContainsString(
             'composer global require hirak/prestissimo',
-            \file_get_contents(static::$cwd . '/docker/api/Dockerfile')
+            (string)\file_get_contents(static::$cwd . '/docker/api/Dockerfile')
         );
     }
 
@@ -58,7 +58,7 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
         self::assertTrue($filesystem->exists(static::$cwd . '/docker/api/Dockerfile'));
         self::assertStringNotContainsString(
             'composer global require hirak/prestissimo',
-            \file_get_contents(static::$cwd . '/docker/api/Dockerfile')
+            (string)\file_get_contents(static::$cwd . '/docker/api/Dockerfile')
         );
     }
 

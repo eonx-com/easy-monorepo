@@ -6,9 +6,6 @@ parameters:
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDecision/src/Decisions
 
-        - message: '#Parameter \#2 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
-          path: packages/EasyDecision/tests/Decisions
-
         - message: '#Access to an undefined property Mockery\\MockInterface::\$users.#'
           path: packages/EasyIdentity/tests/Implementations/Auth0
 
@@ -18,18 +15,30 @@ parameters:
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$manager \(Doctrine\\ORM\\EntityManagerInterface\) does not accept Doctrine\\Common\\Persistence\\ObjectManager|null.#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM
 
-        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$repository \(Doctrine\\ORM\\EntityRepository\) does not accept Doctrine\\Common\\Persistence\\ObjectRepository.#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM
-
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
           path: packages/EasyRepository/src/Implementations/Illuminate
-
-        - message: '#Method EonX\\EasyRepository\\Tests\\Implementation\\Illuminate\\EloquentRepositoryStub::getModel\(\) should return Illuminate\\Database\\Eloquent\\Model but returns Mockery\\MockInterface.#'
-          path: packages/EasyRepository/tests/Implementation/Illuminate
 
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
           path: packages/EasyPagination/tests/Bridge/Laravel
 
+        - message: '#Access to an undefined property object::\$[\w]+.#'
+          path: packages/EasyCore/tests/Http/Middleware
+
+        - message: 'Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
+          path: packages/EasyDecisions/tests/Decisions
+
+        - message: 'Parameter \#(1|2|3) \$[\w]+ of method [\w\\]+::[\w]+\(\) expects [\w\\]+|null, PHPUnit\Framework\MockObject\MockObject given.#'
+          path: packages/EasyEntityChange/tests/Doctrine
+
+        - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'
+          path: packages/EasyLogging/src/ContextModifiers
+
+        - message: '#Call to method getErrors\(\) on an unknown class App\\Exceptions\\EntityValidationFailedException.#'
+          path: packages/EasyLogging/src/ContextModifiers
+
+        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$repository \(Doctrine\\ORM\\EntityRepository\) does not accept Doctrine\\Persistence\\ObjectRepository.#'
+          path: packages/EasyRepository/src/Implementations/Doctrine/ORM
+
+        - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
-        - '#PHPDoc tag @throws with type ([\w\\|]+)?GuzzleHttp\\Exception\\GuzzleException([|\w\\]+)? is not subtype of Throwable#'
         - '#Parameter \#1 \$app of class [A-Z][\w\\]+ constructor expects Illuminate\\(Contracts\\)?Foundation\\Application, Laravel\\Lumen\\Application given.#'

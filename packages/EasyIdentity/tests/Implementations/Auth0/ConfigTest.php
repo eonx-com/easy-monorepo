@@ -52,9 +52,3 @@ class ConfigTest extends AbstractTestCase
         $config->getClientId();
     }
 }
-
-\class_alias(
-    ConfigTest::class,
-    EonX\EasyIdentity\Tests\Implementations\Auth0\ConfigTest::class,
-    false
-);
