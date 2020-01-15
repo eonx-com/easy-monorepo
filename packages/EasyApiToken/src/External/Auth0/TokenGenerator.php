@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\External\Auth0;
 
 use Auth0\SDK\API\Helpers\TokenGenerator as BaseTokenGenerator;
-use Firebase\JWT\JWT;
 use EonX\EasyApiToken\External\Auth0\Interfaces\TokenGeneratorInterface;
+use Firebase\JWT\JWT;
 
 final class TokenGenerator implements TokenGeneratorInterface
 {
@@ -41,8 +41,8 @@ final class TokenGenerator implements TokenGeneratorInterface
      * @param mixed[] $scopes Array of scopes to include.
      * @param mixed[][]|null $roles Array of roles this token can be used by.
      * @param string|null $subject Information about JWT subject.
-     * @param integer|null $lifetime Lifetime of the token, in seconds.
-     * @param boolean|null $secretEncoded True to base64 decode the client secret.
+     * @param int|null $lifetime Lifetime of the token, in seconds.
+     * @param bool|null $secretEncoded True to base64 decode the client secret.
      *
      * @return string
      */
@@ -72,10 +72,10 @@ final class TokenGenerator implements TokenGeneratorInterface
             $payload = \array_merge($payload, $roles);
         }
 
-        $payload['jti'] = \md5(\json_encode($payload));
+        $payload['jti'] = \md5((string)\json_encode($payload));
 
-        $secret = $secretEncoded === true ? \base64_decode(\strtr($this->secret, '-_', '+/')) : $this->secret;
+        $secret = $secretEncoded === true ? \base64_decode(\strtr((string)$this->secret, '-_', '+/')) : $this->secret;
 
-        return JWT::encode($payload, $secret);
+        return JWT::encode($payload, (string)$secret);
     }
 }

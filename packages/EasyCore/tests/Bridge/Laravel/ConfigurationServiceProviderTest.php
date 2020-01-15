@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Laravel;
 
-use Laravel\Lumen\Application;
 use EonX\EasyCore\Bridge\Laravel\ConfigurationServiceProvider;
 use EonX\EasyCore\Tests\AbstractVfsTestCase;
+use Laravel\Lumen\Application;
 use org\bovigo\vfs\vfsStream;
 
 /**

@@ -42,6 +42,7 @@ class ConfigurationServiceProvider extends ServiceProvider
         // stream wrappers. Same for \GlobIterator (which additionally requires
         // an absolute realpath() on Windows).
         // @see https://github.com/mikey179/vfsStream/issues/2
+        /** @var string[] $files */
         $files = \scandir($configPath);
         foreach ($files as $configFile) {
             if (\preg_match(self::CONFIG_FILE_REGEXP, $configFile) &&

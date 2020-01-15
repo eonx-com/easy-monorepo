@@ -14,5 +14,3 @@ interface MiddlewareLoggerAwareInterface
      */
     public function setLogger(MiddlewareLoggerInterface $logger): void;
 }
-
-

@@ -17,5 +17,3 @@ final class PaginatedDoctrineOrmRepositoryStub extends AbstractPaginatedDoctrine
         return 'my-entity-class';
     }
 }
-
-

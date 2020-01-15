@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyRepository\Implementations\Illuminate;
 
 use Closure;
-use Illuminate\Database\Eloquent\Model;
 use EonX\EasyRepository\Interfaces\DatabaseRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
 {
@@ -165,5 +165,3 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
      */
     abstract protected function getModel(): Model;
 }
-
-

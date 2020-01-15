@@ -16,5 +16,3 @@ interface ExpressionLanguageFactoryInterface
      */
     public function create(ExpressionLanguageConfigInterface $config): ExpressionLanguage;
 }
-
-

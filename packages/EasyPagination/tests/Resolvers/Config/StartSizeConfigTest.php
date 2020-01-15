@@ -23,5 +23,3 @@ final class StartSizeConfigTest extends AbstractTestCase
         self::assertEquals(100, $config->getSizeDefault());
     }
 }
-
-

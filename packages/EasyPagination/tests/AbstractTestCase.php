@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests;
 
-use Laravel\Lumen\Application;
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
+use Laravel\Lumen\Application;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\ServerRequestFactory;
@@ -87,5 +87,3 @@ abstract class AbstractTestCase extends TestCase
         return $app;
     }
 }
-
-

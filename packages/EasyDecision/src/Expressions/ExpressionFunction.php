@@ -66,5 +66,3 @@ final class ExpressionFunction implements ExpressionFunctionInterface
         return $this->name;
     }
 }
-
-

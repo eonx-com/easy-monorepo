@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyPipeline\Implementations\Illuminate;
 
-use Illuminate\Contracts\Pipeline\Pipeline as IlluminatePipelineContract;
 use EonX\EasyPipeline\Exceptions\EmptyMiddlewareListException;
 use EonX\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface;
 use EonX\EasyPipeline\Interfaces\MiddlewareLoggerInterface;
 use EonX\EasyPipeline\Interfaces\PipelineInterface;
+use Illuminate\Contracts\Pipeline\Pipeline as IlluminatePipelineContract;
 
 final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInterface
 {
@@ -103,5 +103,3 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
             });
     }
 }
-
-

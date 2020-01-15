@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyIdentity\Implementations\Auth0;
 
+use EonX\EasyIdentity\Implementations\IdentityUserService;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use EonX\EasyIdentity\Implementations\IdentityUserService;
 
 final class Auth0IdentityServiceFactory
 {
@@ -48,5 +48,3 @@ final class Auth0IdentityServiceFactory
         return $config->getDomain() === '' ? '' : \sprintf('https://%s', $config->getDomain());
     }
 }
-
-

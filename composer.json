@@ -11,7 +11,6 @@
         "eonx-com/externals": "^1.0",
         "eonx-com/utils": "^0.2",
         "ext-json": "*",
-        "php": "^7.1",
         "psr/event-dispatcher": "^1.0",
         "symfony/expression-language": "^4.2",
         "symfony/filesystem": "^4.2",
@@ -19,7 +18,8 @@
         "symfony/psr-http-message-bridge": "^1.1",
         "symplify/package-builder": "^6.1",
         "twig/twig": "^2.8",
-        "zendframework/zend-diactoros": "^2.1"
+        "zendframework/zend-diactoros": "^2.1",
+        "php": "^7.1"
     },
     "require-dev": {
         "auth0/auth0-php": "^5.4",
@@ -95,11 +95,13 @@
         "check-all": [
             "@check-ecs",
             "@check-phpstan",
-            "@check-security"
+            "@check-security",
+            "@check-tests"
         ],
         "check-ecs": "vendor/bin/ecs check packages",
         "check-phpstan": "vendor/bin/phpstan analyse packages --level=7 --ansi",
         "check-security": "vendor/bin/security-checker security:check",
+        "check-tests": "vendor/bin/phpunit packages",
         "changelog": [
             "vendor/bin/changelog-linker dump-merges --in-packages",
             "vendor/bin/changelog-linker link",

@@ -19,5 +19,3 @@ interface StartSizeDataInterface
      */
     public function getSize(): int;
 }
-
-

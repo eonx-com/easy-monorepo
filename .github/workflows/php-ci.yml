@@ -1,0 +1,110 @@
+name: PHP-CI
+on: [push]
+jobs:
+    ecs:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '7.3' ]
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   id: composer-cache
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            -   uses: eonx-com/actions-cache@v1
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ matrix.php }}-comp-
+
+            -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
+
+            -   name: '[CI] Check ECS [CI]'
+                run: composer check-ecs
+
+    phpstan:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '7.3' ]
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   id: composer-cache
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            -   uses: eonx-com/actions-cache@v1
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ matrix.php }}-comp-
+
+            -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
+
+            -   name: '[CI] Check PHPStan [CI]'
+                run: composer check-phpstan
+
+    security:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '7.3' ]
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   id: composer-cache
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            -   uses: eonx-com/actions-cache@v1
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ matrix.php }}-comp-
+
+            -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
+
+            -   name: '[CI] Check Security [CI]'
+                run: composer check-security
+
+    tests:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '7.3' ]
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   id: composer-cache
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            -   uses: eonx-com/actions-cache@v1
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ matrix.php }}-comp-
+
+            -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
+
+            -   name: '[CI] Check Tests [CI]'
+                run: composer check-tests

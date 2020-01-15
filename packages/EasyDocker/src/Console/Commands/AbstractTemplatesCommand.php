@@ -96,6 +96,7 @@ abstract class AbstractTemplatesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $style = new SymfonyStyle($input, $output);
+        /** @var string $cwd */
         $cwd = $input->getOption('cwd') ?? \getcwd();
         $easyDirectory = $this->getEasyDirectory($cwd);
 
@@ -142,7 +143,10 @@ abstract class AbstractTemplatesCommand extends Command
             $progress->advance();
         }
 
-        $this->manifestGenerator->generate($easyDirectory, $this->getApplication()->getVersion(), $statuses);
+        /** @var \Symfony\Component\Console\Application $app */
+        $app = $this->getApplication();
+
+        $this->manifestGenerator->generate($easyDirectory, $app->getVersion(), $statuses);
 
         return self::EXIT_CODE_SUCCESS;
     }

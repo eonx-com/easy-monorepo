@@ -72,5 +72,3 @@ final class EasyPsr7Factory implements EasyPsr7FactoryInterface
         return $this->httpFoundation->createResponse($response);
     }
 }
-
-

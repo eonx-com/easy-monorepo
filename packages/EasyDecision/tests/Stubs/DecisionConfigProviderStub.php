@@ -57,5 +57,3 @@ final class DecisionConfigProviderStub implements DecisionConfigProviderInterfac
         ];
     }
 }
-
-

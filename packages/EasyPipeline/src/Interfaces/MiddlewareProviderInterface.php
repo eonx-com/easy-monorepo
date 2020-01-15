@@ -12,5 +12,3 @@ interface MiddlewareProviderInterface
      */
     public function getMiddlewareList(): array;
 }
-
-

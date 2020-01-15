@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyIdentity\Implementations\Auth0;
 
-use GuzzleHttp\Exception\RequestException;
 use EonX\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
 use EonX\EasyIdentity\Exceptions\LoginFailedException;
 use EonX\EasyIdentity\Implementations\AbstractIdentityService;
 use EonX\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
 use EonX\EasyIdentity\Interfaces\IdentityUserInterface;
 use EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface;
+use GuzzleHttp\Exception\RequestException;
 
 final class Auth0IdentityService extends AbstractIdentityService
 {
@@ -220,5 +220,3 @@ final class Auth0IdentityService extends AbstractIdentityService
             $exception->getMessage();
     }
 }
-
-

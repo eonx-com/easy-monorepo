@@ -26,5 +26,3 @@ interface ExpressionFunctionInterface
      */
     public function getName(): string;
 }
-
-

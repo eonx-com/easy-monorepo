@@ -7,5 +7,3 @@ interface EasyPipelineExceptionInterface
 {
     // Marker for all exceptions of this package.
 }
-
-

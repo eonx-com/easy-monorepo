@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Commands\Lumen;
 
-use Illuminate\Console\Command;
-use Laravel\Lumen\Application;
 use EonX\EasyCore\Console\Commands\Lumen\CacheConfigCommand;
 use EonX\EasyCore\Tests\AbstractVfsTestCase;
+use Illuminate\Console\Command;
+use Laravel\Lumen\Application;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use Prophecy\Argument;
@@ -25,6 +25,8 @@ final class CacheConfigCommandTest extends AbstractVfsTestCase
 {
     /**
      * Test handle fails because of unserializable value in config files.
+     *
+     * @return void
      *
      * @throws \ReflectionException
      * @throws \LogicException
@@ -75,6 +77,8 @@ final class CacheConfigCommandTest extends AbstractVfsTestCase
 
     /**
      * Test handle successfully.
+     *
+     * @return void
      *
      * @throws \ReflectionException
      * @throws \LogicException
@@ -184,6 +188,8 @@ final class CacheConfigCommandTest extends AbstractVfsTestCase
      * @param string $propertyName
      * @param mixed $value
      *
+     * @return void
+     *
      * @throws \ReflectionException
      */
     protected function setCommandPrivateProperty(Command $command, string $propertyName, $value): void
@@ -198,6 +204,8 @@ final class CacheConfigCommandTest extends AbstractVfsTestCase
      * Write basic bootstrap file with `ConfigurationServiceProvider` registered.
      *
      * @param \org\bovigo\vfs\vfsStreamDirectory $root
+     *
+     * @return void
      */
     protected function writeBootstrapFile(vfsStreamDirectory $root): void
     {

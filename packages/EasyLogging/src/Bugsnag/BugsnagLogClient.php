@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Bugsnag;
 
-use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
 use Bugsnag\Client as BugsnagClient;
+use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
 use Throwable;
 
 final class BugsnagLogClient implements ExternalLogClientInterface

@@ -16,5 +16,3 @@ interface StartSizeDataResolverInterface
      */
     public function resolve(ServerRequestInterface $request): StartSizeDataInterface;
 }
-
-

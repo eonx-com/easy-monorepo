@@ -49,5 +49,3 @@ final class StartSizeData implements StartSizeDataInterface
         return $this->start;
     }
 }
-
-

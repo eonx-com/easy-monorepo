@@ -28,5 +28,3 @@ final class StartSizeAsArrayInQueryEasyPaginationProvider extends AbstractStartS
         };
     }
 }
-
-

@@ -83,5 +83,3 @@ final class StartSizeConfig implements StartSizeConfigInterface
         return $this->startDefault;
     }
 }
-
-

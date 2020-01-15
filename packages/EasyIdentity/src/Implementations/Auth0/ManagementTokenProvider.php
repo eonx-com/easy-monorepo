@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyIdentity\Implementations\Auth0;
 
-use GuzzleHttp\ClientInterface;
 use EonX\EasyIdentity\Exceptions\RequiredDataMissingException;
+use GuzzleHttp\ClientInterface;
 
 class ManagementTokenProvider
 {
@@ -59,5 +59,3 @@ class ManagementTokenProvider
         throw new RequiredDataMissingException('Required "access_token" missing for Auth0');
     }
 }
-
-

@@ -9,5 +9,3 @@ final class NoIdentityUserIdException extends \RuntimeException implements Ident
 {
     // No body needed.
 }
-
-

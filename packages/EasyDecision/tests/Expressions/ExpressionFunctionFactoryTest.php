@@ -114,5 +114,3 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
         return new ExpressionFunctionFactory();
     }
 }
-
-

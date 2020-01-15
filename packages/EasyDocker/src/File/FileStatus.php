@@ -8,7 +8,7 @@ final class FileStatus
     /** @var \EonX\EasyDocker\File\File */
     private $file;
 
-    /** @var string */
+    /** @var null|string */
     private $hash;
 
     /** @var string */

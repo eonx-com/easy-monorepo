@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Bridge\Laravel;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorContract;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorContract;
 
 final class LengthAwarePaginator implements LengthAwarePaginatorInterface
 {
@@ -93,5 +93,3 @@ final class LengthAwarePaginator implements LengthAwarePaginatorInterface
         return (bool)$this->illuminatePaginator->previousPageUrl();
     }
 }
-
-

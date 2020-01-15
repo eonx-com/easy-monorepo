@@ -41,5 +41,3 @@ interface ObjectRepositoryInterface
      */
     public function save($object): void;
 }
-
-

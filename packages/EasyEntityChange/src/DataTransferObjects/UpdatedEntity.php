@@ -17,11 +17,11 @@ final class UpdatedEntity extends ChangedEntity
     /**
      * Constructor
      *
-     * @phpstan-param class-string $class
-     *
      * @param string[] $changedProperties
      * @param string $class
      * @param mixed[] $ids
+     *
+     * @phpstan-param class-string $class
      */
     public function __construct(array $changedProperties, string $class, array $ids)
     {

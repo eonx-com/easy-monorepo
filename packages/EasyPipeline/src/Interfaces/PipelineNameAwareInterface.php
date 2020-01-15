@@ -14,5 +14,3 @@ interface PipelineNameAwareInterface
      */
     public function setPipelineName(string $pipeline): void;
 }
-
-

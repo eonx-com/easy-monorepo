@@ -82,5 +82,3 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
         return $this->expression;
     }
 }
-
-

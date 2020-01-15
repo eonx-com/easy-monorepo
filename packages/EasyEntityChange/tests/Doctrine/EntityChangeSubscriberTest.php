@@ -290,9 +290,9 @@ class EntityChangeSubscriberTest extends AbstractTestCase
      * @param mixed[]|null $deletions
      * @param mixed[]|null $collectionUpdates
      *
-     * @phpstan-return \PHPUnit\Framework\MockObject\MockObject&\Doctrine\ORM\UnitOfWork
-     *
      * @return \PHPUnit\Framework\MockObject\MockObject
+     *
+     * @phpstan-return \PHPUnit\Framework\MockObject\MockObject&\Doctrine\ORM\UnitOfWork
      */
     protected function getUnitOfWork(
         ?array $insertions = null,

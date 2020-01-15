@@ -61,5 +61,3 @@ interface DecisionInterface
      */
     public function setName(string $name): self;
 }
-
-

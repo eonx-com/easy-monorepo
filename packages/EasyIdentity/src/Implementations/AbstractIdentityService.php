@@ -91,5 +91,3 @@ abstract class AbstractIdentityService implements IdentityServiceInterface
         throw new NoIdentityUserIdException(\sprintf('No identity user id for service "%s"', $this->getServiceName()));
     }
 }
-
-
