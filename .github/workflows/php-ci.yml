@@ -76,6 +76,8 @@ jobs:
                 with:
                     path: cache
                     key: composer-lock-${{ matrix.php }}
+
+            -   name: Move composer.lock
                 run: |
                     cp cache/composer.lock ./composer.lock; \
                     rm -rf cache;
