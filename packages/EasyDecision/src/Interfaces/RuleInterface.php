@@ -40,5 +40,3 @@ interface RuleInterface
      */
     public function toString(): string;
 }
-
-

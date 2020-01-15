@@ -32,14 +32,16 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
      */
     public function build(?array $config = null): EasyApiTokenDecoderInterface
     {
-        if ($config === null || empty($config['driver'] ?? '') || \is_string($config['driver']) === false) {
+        $config = $config ?? [];
+
+        if (empty($config['driver'] ?? '') || \is_string($config['driver']) === false) {
             throw new InvalidConfigurationException(\sprintf(
                 '"driver" is required and must be a string for decoder "%s".',
                 $this->decoderName
             ));
         }
 
-        if ($config === null || empty($config['options'] ?? []) || \is_array($config['options']) === false) {
+        if (empty($config['options'] ?? []) || \is_array($config['options']) === false) {
             throw new InvalidConfigurationException(\sprintf(
                 '"options" is required and must be an array for decoder "%s".',
                 $this->decoderName

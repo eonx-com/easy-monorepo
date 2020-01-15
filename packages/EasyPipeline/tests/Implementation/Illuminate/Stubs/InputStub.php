@@ -44,5 +44,3 @@ final class InputStub
         return $this;
     }
 }
-
-

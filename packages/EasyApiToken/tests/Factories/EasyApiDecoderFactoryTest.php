@@ -32,7 +32,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     /**
      * Get a list of errors caused by Invalid configurations.
      *
-     * @return iterable List of Configuration array, key to request, and expected error message.
+     * @return iterable<mixed> List of Configuration array, key to request, and expected error message.
      */
     public function getBrokenConfigurations(): iterable
     {
@@ -105,7 +105,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     /**
      * Get a list builds for chain decoder.
      *
-     * @return iterable
+     * @return iterable<mixed>
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */
@@ -136,7 +136,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     /**
      * Get a list of builds for jwt decoders.
      *
-     * @return iterable
+     * @return iterable<mixed>
      */
     public function getJwtBuilds(): iterable
     {
@@ -257,7 +257,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     /**
      * Get a list of builds for simple decoders.
      *
-     * @return iterable
+     * @return iterable<mixed>
      */
     public function getSimpleBuilds(): iterable
     {
@@ -283,7 +283,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     /**
      * Test that the requested object graph is built as expected.
      *
-     * @param array $config Config array to build factory with.
+     * @param mixed[] $config Config array to build factory with.
      * @param string $key Key of configuration to request.
      * @param \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected Expected decoder object.
      *
@@ -315,8 +315,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      */
     public function testBuildContainerThrows(): void
     {
-        $container = new class extends Application
-        {
+        $container = new class extends Application {
             /**
              * @noinspection PhpMissingParentCallCommonInspection
              *
@@ -340,7 +339,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     /**
      * Test that the requested object graph is built as expected.
      *
-     * @param array $config Config array to build factory with.
+     * @param mixed[] $config Config array to build factory with.
      * @param string $key Key of configuration to request.
      * @param \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected Expected decoder object.
      *
@@ -370,9 +369,11 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     /**
      * Test Exceptions for building invalid configurations.
      *
-     * @param array $config Config array to build factory with.
+     * @param mixed[] $config Config array to build factory with.
      * @param string $key Key of configuration to request.
      * @param string $expectedError Expected exception message.
+     *
+     * @return void
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      *

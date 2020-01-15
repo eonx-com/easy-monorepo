@@ -62,5 +62,3 @@ interface IdentityServiceInterface
      */
     public function updateUser(IdentityUserInterface $user, array $data): IdentityUserInterface;
 }
-
-

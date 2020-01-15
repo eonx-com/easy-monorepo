@@ -50,5 +50,3 @@ interface ContextInterface
      */
     public function stopPropagation(): self;
 }
-
-

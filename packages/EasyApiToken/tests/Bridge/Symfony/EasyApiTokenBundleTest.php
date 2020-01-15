@@ -24,8 +24,9 @@ final class EasyApiTokenBundleTest extends AbstractTestCase
         $kernel = new KernelStub();
         $kernel->boot();
 
-        $container = $kernel->getContainer();
-        $decoderFactory = $container->get(ServiceStub::class)->getDecoderFactory();
+        /** @var \EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs\ServiceStub $stub */
+        $stub = $kernel->getContainer()->get(ServiceStub::class);
+        $decoderFactory = $stub->getDecoderFactory();
 
         self::assertInstanceOf(ChainReturnFirstTokenDecoder::class, $decoderFactory->build('chain'));
         self::assertInstanceOf(BasicAuthDecoder::class, $decoderFactory->build('basic'));

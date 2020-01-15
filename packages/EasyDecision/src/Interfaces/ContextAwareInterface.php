@@ -14,5 +14,3 @@ interface ContextAwareInterface
      */
     public function setContext(ContextInterface $context): void;
 }
-
-

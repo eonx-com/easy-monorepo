@@ -7,5 +7,3 @@ final class MiddlewareProviderStub
 {
     // No body needed.
 }
-
-

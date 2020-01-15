@@ -11,9 +11,3 @@ use EonX\EasyIdentity\Interfaces\IdentityUserInterface;
 final class IdentityUserStub implements IdentityUserInterface
 {
 }
-
-\class_alias(
-    IdentityUserStub::class,
-    EonX\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub::class,
-    false
-);

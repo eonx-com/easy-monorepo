@@ -34,5 +34,3 @@ trait DataResolverTrait
         return new StartSizeData($start, $size);
     }
 }
-
-

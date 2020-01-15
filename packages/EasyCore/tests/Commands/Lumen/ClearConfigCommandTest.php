@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Commands\Lumen;
 
-use Illuminate\Console\Command;
-use Laravel\Lumen\Application;
 use EonX\EasyCore\Console\Commands\Lumen\ClearConfigCommand;
 use EonX\EasyCore\Tests\AbstractVfsTestCase;
+use Illuminate\Console\Command;
+use Laravel\Lumen\Application;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -22,6 +22,8 @@ final class ClearConfigCommandTest extends AbstractVfsTestCase
 {
     /**
      * Test handle successfully.
+     *
+     * @return void
      *
      * @throws \ReflectionException
      */
@@ -94,6 +96,8 @@ final class ClearConfigCommandTest extends AbstractVfsTestCase
      * @param \Illuminate\Console\Command $command
      * @param string $propertyName
      * @param mixed $value
+     *
+     * @return void
      *
      * @throws \ReflectionException
      */

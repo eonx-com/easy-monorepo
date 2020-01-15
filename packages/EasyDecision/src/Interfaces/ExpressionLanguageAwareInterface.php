@@ -16,5 +16,3 @@ interface ExpressionLanguageAwareInterface
      */
     public function setExpressionLanguage(ExpressionLanguageInterface $expressionLanguage): void;
 }
-
-

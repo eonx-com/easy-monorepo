@@ -23,5 +23,3 @@ interface PipelineInterface
      */
     public function getLogs(): array;
 }
-
-

@@ -51,5 +51,3 @@ final class StartSizeAsArrayInQueryResolver implements StartSizeDataResolverInte
         return $this->createStartSizeData($this->config, $query[$this->queryAttr] ?? []);
     }
 }
-
-

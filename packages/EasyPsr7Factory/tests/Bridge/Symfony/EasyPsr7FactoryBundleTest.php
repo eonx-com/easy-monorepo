@@ -10,16 +10,19 @@ use EonX\EasyPsr7Factory\Tests\Bridge\Symfony\Stubs\ServiceStub;
 
 final class EasyPsr7FactoryBundleTest extends AbstractTestCase
 {
+    /**
+     * Psr7Factory should be registered as service.
+     *
+     * @return void
+     */
     public function testPsr7FactoryRegisteredAsService(): void
     {
         $kernel = new KernelStub();
         $kernel->boot();
 
-        $container = $kernel->getContainer();
+        /** @var \EonX\EasyPsr7Factory\Tests\Bridge\Symfony\Stubs\ServiceStub $stub */
+        $stub = $kernel->getContainer()->get(ServiceStub::class);
 
-        self::assertInstanceOf(
-            EasyPsr7FactoryInterface::class,
-            $container->get(ServiceStub::class)->getPsr7Factory()
-        );
+        self::assertInstanceOf(EasyPsr7FactoryInterface::class, $stub->getPsr7Factory());
     }
 }

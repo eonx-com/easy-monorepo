@@ -17,5 +17,3 @@ final class ValidMiddlewareProviderStub implements MiddlewareProviderInterface
         return ['middleware1', 'middleware2'];
     }
 }
-
-

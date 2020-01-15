@@ -40,7 +40,7 @@ final class DecisionConfig implements DecisionConfigInterface
      * @param string $name
      * @param \EonX\EasyDecision\Interfaces\RuleProviderInterface[] $ruleProviders
      * @param null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
-     * @param null|mixed[]
+     * @param null|mixed[] $params
      */
     public function __construct(
         string $decisionType,

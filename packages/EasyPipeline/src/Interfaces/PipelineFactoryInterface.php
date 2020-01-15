@@ -16,5 +16,3 @@ interface PipelineFactoryInterface
      */
     public function create(string $pipeline): PipelineInterface;
 }
-
-

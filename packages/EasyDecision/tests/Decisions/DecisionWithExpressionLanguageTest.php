@@ -10,8 +10,6 @@ use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 {
@@ -125,5 +123,3 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
         }
     }
 }
-
-

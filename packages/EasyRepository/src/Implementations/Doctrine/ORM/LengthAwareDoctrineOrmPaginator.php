@@ -107,5 +107,3 @@ final class LengthAwareDoctrineOrmPaginator implements LengthAwarePaginatorInter
         return $this->getCurrentPage() > 1;
     }
 }
-
-

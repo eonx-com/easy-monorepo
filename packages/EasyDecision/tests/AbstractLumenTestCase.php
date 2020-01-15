@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests;
 
-use Laravel\Lumen\Application;
 use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider;
+use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
 {
@@ -43,5 +43,3 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         return $this->getApplication()->make(DecisionFactoryInterface::class);
     }
 }
-
-

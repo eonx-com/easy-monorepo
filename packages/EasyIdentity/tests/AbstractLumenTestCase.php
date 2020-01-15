@@ -26,9 +26,3 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         return $this->app = new Application(__DIR__);
     }
 }
-
-\class_alias(
-    AbstractLumenTestCase::class,
-    EonX\EasyIdentity\Tests\AbstractLumenTestCase::class,
-    false
-);

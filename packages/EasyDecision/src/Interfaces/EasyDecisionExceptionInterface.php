@@ -7,5 +7,3 @@ interface EasyDecisionExceptionInterface
 {
     // Marker for all exceptions of this package.
 }
-
-

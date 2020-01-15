@@ -7,5 +7,3 @@ interface IdentityServiceExceptionInterface
 {
     // Marker for all identity exceptions.
 }
-
-

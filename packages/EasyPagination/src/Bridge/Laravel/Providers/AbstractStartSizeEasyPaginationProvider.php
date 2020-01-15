@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Bridge\Laravel\Providers;
 
 use Closure;
-use Illuminate\Support\ServiceProvider;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
+use Illuminate\Support\ServiceProvider;
 use Psr\Http\Message\ServerRequestInterface;
 
 abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
@@ -99,5 +99,3 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
         };
     }
 }
-
-

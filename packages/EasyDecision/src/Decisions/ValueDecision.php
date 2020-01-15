@@ -13,7 +13,11 @@ final class ValueDecision extends AbstractDecision
     private $value;
 
     /**
-     * {@inheritDoc}
+     * Make value decision for given array input.
+     *
+     * @param mixed[] $input
+     *
+     * @return mixed
      */
     public function make(array $input)
     {

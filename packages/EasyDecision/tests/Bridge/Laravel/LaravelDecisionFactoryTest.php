@@ -6,7 +6,6 @@ namespace EonX\EasyDecision\Tests\Bridge\Laravel;
 use EonX\EasyDecision\Decisions\AffirmativeDecision;
 use EonX\EasyDecision\Exceptions\InvalidArgumentException;
 use EonX\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
-use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Tests\AbstractLumenTestCase;
 use EonX\EasyDecision\Tests\Stubs\DecisionConfigProviderStub;
 use EonX\EasyDecision\Tests\Stubs\RuleProviderStub;
@@ -171,5 +170,3 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $this->getApplication()->make('config')->set('easy-decision', $config);
     }
 }
-
-

@@ -25,5 +25,3 @@ interface DecisionFactoryInterface
      */
     public function setContainer(ContainerInterface $container): void;
 }
-
-

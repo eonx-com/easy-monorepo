@@ -20,11 +20,11 @@ final class DeletedEntity extends ChangedEntity
     /**
      * Constructor
      *
-     * @phpstan-param class-string $class
-     *
      * @param string $class
      * @param mixed[] $ids
      * @param mixed[] $metadata
+     *
+     * @phpstan-param class-string $class
      */
     public function __construct(string $class, array $ids, array $metadata)
     {

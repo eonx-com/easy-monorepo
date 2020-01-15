@@ -61,5 +61,3 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
         return new BaseExpressionLanguage();
     }
 }
-
-

@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyPipeline\Implementations\Illuminate;
 
-use Illuminate\Contracts\Container\Container as ContainerInterface;
-use Illuminate\Pipeline\Pipeline;
 use EonX\EasyPipeline\Exceptions\InvalidMiddlewareProviderException;
 use EonX\EasyPipeline\Exceptions\PipelineNotFoundException;
 use EonX\EasyPipeline\Interfaces\MiddlewareProviderInterface;
 use EonX\EasyPipeline\Interfaces\PipelineFactoryInterface;
 use EonX\EasyPipeline\Interfaces\PipelineInterface;
 use EonX\EasyPipeline\Interfaces\PipelineNameAwareInterface;
+use Illuminate\Contracts\Container\Container as ContainerInterface;
+use Illuminate\Pipeline\Pipeline;
 
 final class IlluminatePipelineFactory implements PipelineFactoryInterface
 {
@@ -122,5 +122,3 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
         return $this->prefix . $pipeline;
     }
 }
-
-

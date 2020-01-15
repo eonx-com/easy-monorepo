@@ -15,5 +15,3 @@ interface MiddlewareLoggerInterface
      */
     public function log(string $middleware, $content): void;
 }
-
-

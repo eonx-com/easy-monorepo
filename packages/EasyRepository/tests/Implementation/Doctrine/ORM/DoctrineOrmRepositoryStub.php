@@ -17,5 +17,3 @@ final class DoctrineOrmRepositoryStub extends AbstractDoctrineOrmRepository
         return 'my-entity-class';
     }
 }
-
-

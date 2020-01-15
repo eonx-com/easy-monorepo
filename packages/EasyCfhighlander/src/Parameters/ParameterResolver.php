@@ -17,7 +17,7 @@ final class ParameterResolver implements ParameterResolverInterface
     /** @var \Symfony\Component\Filesystem\Filesystem */
     private $filesystem;
 
-    /** @var callable[] */
+    /** @var mixed[]|callable[] */
     private $modifiers = [];
 
     /** @var \Symplify\PackageBuilder\Parameter\ParameterProvider */

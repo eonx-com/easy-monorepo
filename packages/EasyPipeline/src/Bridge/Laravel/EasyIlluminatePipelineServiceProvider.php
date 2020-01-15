@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyPipeline\Bridge\Laravel;
 
-use Illuminate\Support\ServiceProvider;
 use EonX\EasyPipeline\Exceptions\EmptyPipelinesListException;
 use EonX\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory;
 use EonX\EasyPipeline\Interfaces\PipelineFactoryInterface;
+use Illuminate\Support\ServiceProvider;
 
 final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
 {
@@ -83,5 +83,3 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
         }
     }
 }
-
-

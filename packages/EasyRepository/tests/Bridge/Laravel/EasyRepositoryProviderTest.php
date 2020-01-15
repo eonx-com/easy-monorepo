@@ -52,5 +52,3 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
         $this->assertInstanceInApp(Repository2Stub::class, 'interface-2');
     }
 }
-
-

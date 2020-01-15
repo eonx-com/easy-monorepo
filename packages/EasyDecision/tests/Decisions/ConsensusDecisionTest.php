@@ -114,5 +114,3 @@ final class ConsensusDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 }
-
-

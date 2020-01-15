@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Mockery;
-use Mockery\MockInterface;
+use Mockery\LegacyMockInterface;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
@@ -43,9 +43,9 @@ abstract class AbstractTestCase extends TestCase
      * @param string|object $class
      * @param null|callable $expectations
      *
-     * @return \Mockery\MockInterface
+     * @return \Mockery\LegacyMockInterface
      */
-    protected function mock($class, ?callable $expectations = null): MockInterface
+    protected function mock($class, ?callable $expectations = null): LegacyMockInterface
     {
         $mock = Mockery::mock($class);
 
@@ -62,15 +62,15 @@ abstract class AbstractTestCase extends TestCase
      * @param callable|null $managerExpectations
      * @param callable|null $repositoryExpectations
      *
-     * @return \Mockery\MockInterface
+     * @return \Mockery\LegacyMockInterface
      */
     protected function mockRegistry(
         ?callable $managerExpectations = null,
         ?callable $repositoryExpectations = null
-    ): MockInterface {
-        $registry = $this->mock(
+    ): LegacyMockInterface {
+        return $this->mock(
             ManagerRegistry::class,
-            function (MockInterface $registry) use ($managerExpectations, $repositoryExpectations): void {
+            function (LegacyMockInterface $registry) use ($managerExpectations, $repositoryExpectations): void {
                 $manager = $this->mock(ObjectManager::class, $managerExpectations);
                 $repository = $this->mock(ObjectRepository::class, $repositoryExpectations);
 
@@ -78,9 +78,5 @@ abstract class AbstractTestCase extends TestCase
                 $registry->shouldReceive('getManagerForClass')->once()->with('my-entity-class')->andReturn($manager);
             }
         );
-
-        return $registry;
     }
 }
-
-

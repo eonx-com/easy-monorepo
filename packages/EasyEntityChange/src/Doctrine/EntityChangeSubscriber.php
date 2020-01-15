@@ -165,9 +165,9 @@ final class EntityChangeSubscriber implements EventSubscriber
             }
 
             /**
-             * @var \EonX\EasyEntityChange\DataTransferObjects\UpdatedEntity $dto
-             *
              * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises ===
+             *
+             * @var \EonX\EasyEntityChange\DataTransferObjects\UpdatedEntity $dto
              */
 
             $metadata = $entityManager->getClassMetadata(\get_class($entity));
@@ -290,11 +290,11 @@ final class EntityChangeSubscriber implements EventSubscriber
     /**
      * Checks if the class name is in our array of watched classes.
      *
-     * @phpstan-param class-string $className
-     *
      * @param string $className
      *
      * @return bool
+     *
+     * @phpstan-param class-string $className
      */
     private function isWatched(string $className): bool
     {

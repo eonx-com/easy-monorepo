@@ -38,5 +38,3 @@ final class PipelineNameAwareMiddlewareProviderStub implements MiddlewareProvide
         ];
     }
 }
-
-

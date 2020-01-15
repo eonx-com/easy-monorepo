@@ -23,5 +23,3 @@ final class FromPhpExpressionFunctionProviderTest extends AbstractTestCase
         }
     }
 }
-
-

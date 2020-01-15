@@ -20,5 +20,3 @@ final class ExpressionLanguageRuleFactory implements ExpressionLanguageRuleFacto
         return new ExpressionLanguageRule($expression, $priority);
     }
 }
-
-
