@@ -44,7 +44,7 @@ final class ClearConfigCommand extends Command
      *
      * @return void
      */
-    public function setLaravel($laravel)
+    public function setLaravel($laravel): void
     {
         $this->cachedConfigPath = $laravel->storagePath('cached_config.php');
 

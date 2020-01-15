@@ -13,5 +13,3 @@ abstract class AbstractTestCase extends TestCase
 {
     // No body needed.
 }
-
-

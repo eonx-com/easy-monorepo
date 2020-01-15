@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Bridge\Laravel;
 
-use Illuminate\Support\ServiceProvider;
 use EonX\EasyApiToken\Factories\EasyApiTokenDecoderFactory;
 use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface as DecoderFactoryInterface;
+use Illuminate\Support\ServiceProvider;
 
 final class EasyApiTokenServiceProvider extends ServiceProvider
 {

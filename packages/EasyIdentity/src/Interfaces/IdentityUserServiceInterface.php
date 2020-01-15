@@ -60,5 +60,3 @@ interface IdentityUserServiceInterface
      */
     public function setIdentityValue(IdentityUserInterface $user, string $service, string $key, $value): void;
 }
-
-

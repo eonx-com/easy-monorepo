@@ -17,5 +17,3 @@ interface ExpressionLanguageRuleFactoryInterface
      */
     public function create(string $expression, ?int $priority = null): ExpressionLanguageRule;
 }
-
-

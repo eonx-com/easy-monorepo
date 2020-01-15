@@ -17,5 +17,3 @@ interface PaginatedObjectRepositoryInterface extends ObjectRepositoryInterface
      */
     public function paginate(?StartSizeDataInterface $startSizeData = null): LengthAwarePaginatorInterface;
 }
-
-

@@ -6,5 +6,3 @@ namespace EonX\EasyIdentity\Interfaces;
 interface IdentityUserInterface
 {
 }
-
-

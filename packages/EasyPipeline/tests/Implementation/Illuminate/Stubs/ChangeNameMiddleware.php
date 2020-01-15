@@ -39,5 +39,3 @@ final class ChangeNameMiddleware implements MiddlewareInterface
         return $next($input);
     }
 }
-
-

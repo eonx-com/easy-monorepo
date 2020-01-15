@@ -53,5 +53,3 @@ abstract class AbstractTestCase extends TestCase
         return $mock;
     }
 }
-
-

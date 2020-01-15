@@ -57,5 +57,4 @@ class IdentityUserService implements IdentityUserServiceInterface
     {
         $this->identityValues[$service][$key] = $value;
     }
-
 }

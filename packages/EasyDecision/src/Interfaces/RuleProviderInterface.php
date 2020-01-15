@@ -14,5 +14,3 @@ interface RuleProviderInterface
      */
     public function getRules(?array $params = null): array;
 }
-
-

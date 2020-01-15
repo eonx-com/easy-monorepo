@@ -6,5 +6,3 @@ namespace EonX\EasyRepository\Tests\Bridge\Laravel\Stubs;
 final class Repository2Stub
 {
 }
-
-

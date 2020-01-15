@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyPipeline\Tests\Implementation\Illuminate;
 
-use Illuminate\Pipeline\Pipeline;
 use EonX\EasyPipeline\Exceptions\EmptyMiddlewareListException;
 use EonX\EasyPipeline\Implementations\Illuminate\IlluminatePipeline;
 use EonX\EasyPipeline\Tests\AbstractLumenTestCase;
 use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware;
 use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\InputStub;
 use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\LoggerChangeNameMiddleware;
+use Illuminate\Pipeline\Pipeline;
 
 final class IlluminatePipelineTest extends AbstractLumenTestCase
 {
@@ -91,5 +91,3 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
         ], $logs);
     }
 }
-
-

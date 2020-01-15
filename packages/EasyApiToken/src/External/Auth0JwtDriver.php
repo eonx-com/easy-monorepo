@@ -96,6 +96,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
             $input['scopes'] ?? [],
             $input['roles'] ?? [],
             $input['sub'] ?? null,
-            $input['lifetime'] ?? null);
+            $input['lifetime'] ?? null
+        );
     }
 }

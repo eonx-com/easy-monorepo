@@ -42,5 +42,3 @@ interface DecisionConfigInterface
      */
     public function getRuleProviders(): array;
 }
-
-

@@ -5,7 +5,6 @@ namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use EonX\EasyRepository\Interfaces\DatabaseRepositoryInterface;
-use EonX\EasyRepository\Interfaces\ObjectRepositoryInterface;
 
 abstract class AbstractDoctrineOrmRepository implements DatabaseRepositoryInterface
 {
@@ -31,5 +30,3 @@ abstract class AbstractDoctrineOrmRepository implements DatabaseRepositoryInterf
      */
     abstract protected function getEntityClass(): string;
 }
-
-

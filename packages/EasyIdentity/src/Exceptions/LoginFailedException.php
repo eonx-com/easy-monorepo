@@ -9,5 +9,3 @@ class LoginFailedException extends \RuntimeException implements IdentityServiceE
 {
     // No body needed.
 }
-
-

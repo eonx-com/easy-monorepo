@@ -28,5 +28,3 @@ interface EasyPsr7FactoryInterface
      */
     public function createResponse(ResponseInterface $response): Response;
 }
-
-

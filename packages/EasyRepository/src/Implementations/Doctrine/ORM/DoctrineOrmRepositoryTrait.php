@@ -179,5 +179,3 @@ trait DoctrineOrmRepositoryTrait
         }
     }
 }
-
-

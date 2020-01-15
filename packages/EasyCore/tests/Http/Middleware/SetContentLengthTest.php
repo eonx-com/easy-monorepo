@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Http\Middleware;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use EonX\EasyCore\Http\Middleware\SetContentLength;
 use EonX\EasyCore\Tests\AbstractTestCase;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**

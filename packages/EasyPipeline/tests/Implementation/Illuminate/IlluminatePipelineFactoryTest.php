@@ -75,5 +75,3 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
         (new IlluminatePipelineFactory($this->getApplication(), []))->create('invalid');
     }
 }
-
-

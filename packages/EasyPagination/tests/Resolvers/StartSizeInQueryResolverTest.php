@@ -56,5 +56,3 @@ final class StartSizeInQueryResolverTest extends AbstractTestCase
         self::assertEquals($config->getSizeDefault(), $data->getSize());
     }
 }
-
-

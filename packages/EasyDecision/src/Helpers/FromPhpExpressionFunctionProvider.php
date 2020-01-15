@@ -62,5 +62,3 @@ final class FromPhpExpressionFunctionProvider implements ExpressionFunctionProvi
         return $expressionFunctions;
     }
 }
-
-

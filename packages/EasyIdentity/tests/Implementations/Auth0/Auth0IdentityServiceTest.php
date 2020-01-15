@@ -7,7 +7,6 @@ use Auth0\SDK\API\Management;
 use Auth0\SDK\API\Management\Users;
 use Auth0\SDK\JWTVerifier;
 use Closure;
-use GuzzleHttp\Exception\RequestException;
 use EonX\EasyIdentity\Exceptions\InvalidResponseFromIdentityException;
 use EonX\EasyIdentity\Exceptions\LoginFailedException;
 use EonX\EasyIdentity\Exceptions\NoIdentityUserIdException;
@@ -21,6 +20,7 @@ use EonX\EasyIdentity\Interfaces\IdentityServiceNamesInterface;
 use EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface;
 use EonX\EasyIdentity\Tests\AbstractTestCase;
 use EonX\EasyIdentity\Tests\Implementations\Stubs\IdentityUserStub;
+use GuzzleHttp\Exception\RequestException;
 use Mockery\LegacyMockInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -151,8 +151,11 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $identityUserService = new IdentityUserService();
         $identityUser = new IdentityUserStub();
 
-        $identityUserService->setIdentityUserId($identityUser, IdentityServiceNamesInterface::SERVICE_AUTH0,
-            'identity-id');
+        $identityUserService->setIdentityUserId(
+            $identityUser,
+            IdentityServiceNamesInterface::SERVICE_AUTH0,
+            'identity-id'
+        );
 
         $this->getServiceForUsersMethod($identityUserService, $management)->deleteUser($identityUser);
     }

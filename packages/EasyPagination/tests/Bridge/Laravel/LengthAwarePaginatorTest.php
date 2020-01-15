@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Bridge\Laravel;
 
-use Illuminate\Pagination\LengthAwarePaginator as IlluminateLengthAwarePaginator;
 use EonX\EasyPagination\Bridge\Laravel\LengthAwarePaginator;
 use EonX\EasyPagination\Tests\AbstractTestCase;
+use Illuminate\Pagination\LengthAwarePaginator as IlluminateLengthAwarePaginator;
 
 class LengthAwarePaginatorTest extends AbstractTestCase
 {
@@ -32,5 +32,3 @@ class LengthAwarePaginatorTest extends AbstractTestCase
         self::assertFalse($paginator->hasPreviousPage());
     }
 }
-
-

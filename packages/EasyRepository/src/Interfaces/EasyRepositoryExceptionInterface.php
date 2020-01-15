@@ -7,5 +7,3 @@ interface EasyRepositoryExceptionInterface
 {
     // Marker for all exceptions of this package.
 }
-
-

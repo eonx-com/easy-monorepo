@@ -85,5 +85,3 @@ final class DecisionFactoryTest extends AbstractTestCase
         ));
     }
 }
-
-

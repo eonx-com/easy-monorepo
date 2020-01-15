@@ -9,5 +9,3 @@ class RequiredDataMissingException extends \RuntimeException implements Identity
 {
     // No body needed.
 }
-
-

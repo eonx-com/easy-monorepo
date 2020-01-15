@@ -37,5 +37,3 @@ trait MiddlewareLoggerAwareTrait
         $this->logger->log($middleware ?? \get_class($this), $content);
     }
 }
-
-

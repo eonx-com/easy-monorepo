@@ -19,7 +19,7 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function getParamModifiers(): iterable
     {

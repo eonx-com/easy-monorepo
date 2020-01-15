@@ -28,5 +28,3 @@ interface ExpressionLanguageConfigInterface
      */
     public function getFunctions(): ?array;
 }
-
-

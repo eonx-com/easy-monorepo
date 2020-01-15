@@ -49,5 +49,3 @@ final class LoggerChangeNameMiddleware implements MiddlewareInterface, Middlewar
         return $next($input);
     }
 }
-
-

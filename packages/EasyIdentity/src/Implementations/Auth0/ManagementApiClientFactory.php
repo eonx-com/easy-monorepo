@@ -42,5 +42,3 @@ class ManagementApiClientFactory
         return new Management($this->tokenProvider->getToken(), $this->config->getDomain());
     }
 }
-
-

@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Laravel;
 
-use Illuminate\Config\Repository;
-use Illuminate\Console\Command;
-use Illuminate\Events\Dispatcher;
-use Laravel\Lumen\Application;
 use EonX\EasyCore\Bridge\Laravel\CachedConfigurationServiceProvider;
 use EonX\EasyCore\Bridge\Laravel\ConfigurationServiceProvider;
 use EonX\EasyCore\Console\Commands\Lumen\CacheConfigCommand;
 use EonX\EasyCore\Console\Commands\Lumen\ClearConfigCommand;
 use EonX\EasyCore\Tests\AbstractVfsTestCase;
+use Illuminate\Config\Repository;
+use Illuminate\Console\Command;
+use Illuminate\Events\Dispatcher;
+use Laravel\Lumen\Application;
 use org\bovigo\vfs\vfsStream;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -52,39 +52,6 @@ final class CachedConfigurationServiceProviderTest extends AbstractVfsTestCase
         $appProphecy->storagePath('cached_config.php')->shouldHaveBeenCalledOnce();
         $appProphecy->runningInConsole()->shouldHaveBeenCalledOnce();
         $appProphecy->register(ConfigurationServiceProvider::class)->shouldHaveBeenCalledOnce();
-    }
-
-    /**
-     * Test register successfully with Application not loading original config files via `configure` method.
-     *
-     * @return void
-     */
-    public function testRegisterSucceedsWithApplicationConfigureNotLoadingOriginalConfig(): void
-    {
-        $structure = [
-            'config' => [
-                'a.php' => "<?php\r\nreturn ['a' => 'original-value'];"
-            ],
-            'storage' => [
-                'cached_config.php' => "<?php\r\nreturn ['a' => 'cached-value'];"
-            ]
-        ];
-        $base = vfsStream::setup('base', null, $structure);
-        $repositoryProphecy = $this->prophesize(Repository::class);
-        $repositoryProphecy->has('a')->willReturn(false);
-        $repositoryProphecy->set('a', 'cached-value')->willReturn();
-        $repository = $repositoryProphecy->reveal();
-        $app = new Application($base->url());
-        $app->instance('config', $repository);
-        $serviceProvider = new CachedConfigurationServiceProvider($app);
-        $serviceProvider->register();
-
-        $app->configure('a');
-
-        self::assertSame($repository, $app->make('config'));
-        $repositoryProphecy->has('a')->shouldHaveBeenCalledOnce();
-        $repositoryProphecy->set('a', 'cached-value')->shouldHaveBeenCalledOnce();
-        $repositoryProphecy->set('a', 'original-value')->shouldNotHaveBeenCalled();
     }
 
     /**
@@ -135,6 +102,39 @@ final class CachedConfigurationServiceProviderTest extends AbstractVfsTestCase
     }
 
     /**
+     * Test register successfully with Application not loading original config files via `configure` method.
+     *
+     * @return void
+     */
+    public function testRegisterSucceedsWithApplicationConfigureNotLoadingOriginalConfig(): void
+    {
+        $structure = [
+            'config' => [
+                'a.php' => "<?php\r\nreturn ['a' => 'original-value'];"
+            ],
+            'storage' => [
+                'cached_config.php' => "<?php\r\nreturn ['a' => 'cached-value'];"
+            ]
+        ];
+        $base = vfsStream::setup('base', null, $structure);
+        $repositoryProphecy = $this->prophesize(Repository::class);
+        $repositoryProphecy->has('a')->willReturn(false);
+        $repositoryProphecy->set('a', 'cached-value')->willReturn();
+        $repository = $repositoryProphecy->reveal();
+        $app = new Application($base->url());
+        $app->instance('config', $repository);
+        $serviceProvider = new CachedConfigurationServiceProvider($app);
+        $serviceProvider->register();
+
+        $app->configure('a');
+
+        self::assertSame($repository, $app->make('config'));
+        $repositoryProphecy->has('a')->shouldHaveBeenCalledOnce();
+        $repositoryProphecy->set('a', 'cached-value')->shouldHaveBeenCalledOnce();
+        $repositoryProphecy->set('a', 'original-value')->shouldNotHaveBeenCalled();
+    }
+
+    /**
      * Prophesize \Illuminate\Console\Command.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
@@ -143,7 +143,7 @@ final class CachedConfigurationServiceProviderTest extends AbstractVfsTestCase
      * @return \Prophecy\Prophecy\ObjectProphecy
      */
     protected function prophesizeCommand(
-        $app,
+        \Illuminate\Contracts\Foundation\Application $app,
         string $name
     ): ObjectProphecy {
         $cacheCommandProphecy = $this->prophesize(Command::class);

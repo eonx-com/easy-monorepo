@@ -117,8 +117,7 @@ final class ValueDecisionTest extends AbstractTestCase
      */
     private function getExceptionRule(): RuleInterface
     {
-        return new class implements RuleInterface
-        {
+        return new class implements RuleInterface {
             /**
              * Get priority.
              *
@@ -172,8 +171,7 @@ final class ValueDecisionTest extends AbstractTestCase
      */
     private function getModifyValueRuleInArray(): RuleInterface
     {
-        return new class implements RuleInterface
-        {
+        return new class implements RuleInterface {
             /**
              * Get priority.
              *
@@ -220,5 +218,3 @@ final class ValueDecisionTest extends AbstractTestCase
         };
     }
 }
-
-

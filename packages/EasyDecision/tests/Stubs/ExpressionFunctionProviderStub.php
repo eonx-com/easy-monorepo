@@ -35,5 +35,3 @@ final class ExpressionFunctionProviderStub implements ExpressionFunctionProvider
         ];
     }
 }
-
-

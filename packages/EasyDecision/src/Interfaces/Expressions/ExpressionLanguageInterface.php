@@ -41,5 +41,3 @@ interface ExpressionLanguageInterface
      */
     public function validate(string $expression, ?array $names = null): bool;
 }
-
-

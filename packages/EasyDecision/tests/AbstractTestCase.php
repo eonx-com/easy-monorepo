@@ -124,5 +124,3 @@ abstract class AbstractTestCase extends TestCase
         return $this->languageRuleFactory = new ExpressionLanguageRuleFactory();
     }
 }
-
-
