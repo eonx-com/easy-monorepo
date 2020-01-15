@@ -40,7 +40,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      *
      * @return iterable|\Symfony\Component\HttpKernel\Bundle\BundleInterface[] An iterable of bundle instances
      */
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         yield new EasyApiTokenBundle();
     }
