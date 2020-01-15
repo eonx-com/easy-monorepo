@@ -7,11 +7,11 @@ jobs:
             matrix:
                 php: [ '7.3' ]
         steps:
-            -   uses: eonx-com/checkout@v2
+            -   uses: eonx-com/actions-checkout@v2
 
             -   name: Cache Composer dependencies
                 id: cache-composer
-                uses: eonx-com/cache@v1
+                uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
                     key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -21,10 +21,16 @@ jobs:
                 run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest;
 
             -   if: steps.cache-composer.outputs.cache-hit == false
-                uses: eonx-com/actions-upload-artifact@v1
+                name: Move composer.lock for cache
+                run: |
+                    mkdir cache; \
+                    cp ./composer.lock ./cache/composer.lock;
+
+            -   if: steps.cache-composer.outputs.cache-hit == false
+                uses: eonx-com/actions-cache@v1
                 with:
-                    name: ${{ matrix.php }}-composer-lock
-                    path: composer.lock
+                    path: cache
+                    key: composer-lock-${{ matrix.php }}
 
     ecs:
         needs: composer
@@ -33,11 +39,11 @@ jobs:
             matrix:
                 php: [ '7.3' ]
         steps:
-            -   uses: eonx-com/checkout@v2
+            -   uses: eonx-com/actions-checkout@v2
 
             -   name: Cache Composer dependencies
                 id: cache-composer
-                uses: eonx-com/cache@v1
+                uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
                     key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -52,11 +58,11 @@ jobs:
             matrix:
                 php: [ '7.3' ]
         steps:
-            -   uses: eonx-com/checkout@v2
+            -   uses: eonx-com/actions-checkout@v2
 
             -   name: Cache Composer dependencies
                 id: cache-composer
-                uses: eonx-com/cache@v1
+                uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
                     key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -71,20 +77,21 @@ jobs:
             matrix:
                 php: [ '7.3' ]
         steps:
-            -   uses: eonx-com/checkout@v2
+            -   uses: eonx-com/actions-checkout@v2
 
-            -   uses: eonx-com/actions-download-artifact@v1
+            -   uses: eonx-com/actions-cache@v1
                 with:
-                    name: ${{ matrix.php }}-composer-lock
+                    path: cache
+                    key: composer-lock-${{ matrix.php }}
 
             -   name: Move composer.lock
                 run: |
-                    cp ${{ matrix.php }}-composer-lock/composer.lock ./composer.lock; \
-                    rm -rf ${{ matrix.php }}-composer-lock;
+                    cp cache/composer.lock ./composer.lock; \
+                    rm -rf cache;
 
             -   name: Cache Composer dependencies
                 id: cache-composer
-                uses: eonx-com/cache@v1
+                uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
                     key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -99,11 +106,11 @@ jobs:
             matrix:
                 php: [ '7.3' ]
         steps:
-            -   uses: eonx-com/checkout@v2
+            -   uses: eonx-com/actions-checkout@v2
 
             -   name: Cache Composer dependencies
                 id: cache-composer
-                uses: eonx-com/cache@v1
+                uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
                     key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
