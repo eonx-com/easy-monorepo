@@ -59,6 +59,9 @@ final class CacheConfigCommand extends Command
      * @param \Laravel\Lumen\Application $laravel
      *
      * @return void
+     *
+     * @phpcsSuppress SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingParameterTypeHint
+     * @phpcsSuppress NatePage\Sniffs\Commenting\FunctionCommentSniff.TypeHintMissing
      */
     public function setLaravel($laravel): void
     {
