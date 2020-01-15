@@ -55,53 +55,6 @@ final class CachedConfigurationServiceProviderTest extends AbstractVfsTestCase
     }
 
     /**
-     * Test register successfully.
-     *
-     * @return void
-     */
-    public function testRegisterSucceeds(): void
-    {
-        $structure = [
-            'storage' => [
-                'cached_config.php' => "<?php\r\nreturn ['a' => 'a-value'];"
-            ]
-        ];
-        $base = vfsStream::setup('base', null, $structure);
-        $repositoryProphecy = $this->prophesize(Repository::class);
-        $repositoryProphecy->has('a')->willReturn(false);
-        $repositoryProphecy->set('a', 'a-value')->willReturn();
-        $appProphecy = $this->prophesize(Application::class);
-        $appProphecy
-            ->storagePath('cached_config.php')
-            ->willReturn($base->getChild('storage/cached_config.php')->url());
-        $appProphecy->runningInConsole()->willReturn(true);
-        $appProphecy->make('config')->willReturn($repositoryProphecy->reveal());
-        /** @var \Illuminate\Contracts\Foundation\Application $app */
-        $app = $appProphecy->reveal();
-        $cacheCommandProphecy = $this->prophesizeCommand($app, 'config:cache');
-        $clearCommandProphecy = $this->prophesizeCommand($app, 'config:clear');
-        $appProphecy->make(CacheConfigCommand::class)->willReturn($cacheCommandProphecy);
-        $appProphecy->make(ClearConfigCommand::class)->willReturn($clearCommandProphecy);
-        $serviceProvider = new CachedConfigurationServiceProvider($app);
-
-        $serviceProvider->register();
-        // Constructor of \Illuminate\Console\Application triggers commands registration.
-
-        /** @var \Illuminate\Contracts\Events\Dispatcher $dispatcher */
-        $dispatcher = $this->prophesize(Dispatcher::class)->reveal();
-
-        new \Illuminate\Console\Application($app, $dispatcher, '');
-
-        $appProphecy->storagePath('cached_config.php')->shouldHaveBeenCalledOnce();
-        $appProphecy->runningInConsole()->shouldHaveBeenCalledOnce();
-        $appProphecy->make('config')->shouldHaveBeenCalledOnce();
-        $repositoryProphecy->has('a')->shouldHaveBeenCalledOnce();
-        $repositoryProphecy->set('a', 'a-value')->shouldHaveBeenCalledOnce();
-        $cacheCommandProphecy->setLaravel($app)->shouldHaveBeenCalledTimes(2);
-        $clearCommandProphecy->setLaravel($app)->shouldHaveBeenCalledTimes(2);
-    }
-
-    /**
      * Test register successfully with Application not loading original config files via `configure` method.
      *
      * @return void
