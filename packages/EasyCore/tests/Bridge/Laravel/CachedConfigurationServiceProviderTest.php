@@ -5,12 +5,9 @@ namespace EonX\EasyCore\Tests\Bridge\Laravel;
 
 use EonX\EasyCore\Bridge\Laravel\CachedConfigurationServiceProvider;
 use EonX\EasyCore\Bridge\Laravel\ConfigurationServiceProvider;
-use EonX\EasyCore\Console\Commands\Lumen\CacheConfigCommand;
-use EonX\EasyCore\Console\Commands\Lumen\ClearConfigCommand;
 use EonX\EasyCore\Tests\AbstractVfsTestCase;
 use Illuminate\Config\Repository;
 use Illuminate\Console\Command;
-use Illuminate\Events\Dispatcher;
 use Laravel\Lumen\Application;
 use org\bovigo\vfs\vfsStream;
 use Prophecy\Argument;
