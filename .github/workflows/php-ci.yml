@@ -18,7 +18,7 @@ jobs:
                 id: composer-cache
                 with:
                     path: vendor
-                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
 
             -   if: steps.composer-cache.outputs.cache-hit == false
                 run: |
@@ -31,7 +31,7 @@ jobs:
                 uses: eonx-com/actions-cache@v1
                 with:
                     path: cache
-                    key: composer-lock-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+                    key: ${{ matrix.php }}-composer-lock-${{ hashFiles('**/composer.json') }}
 
     ecs:
         runs-on: ubuntu-latest
@@ -50,8 +50,8 @@ jobs:
             -   uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
-                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-${{ matrix.php }}-
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ matrix.php }}-composer-
 
             -   name: '[CI] Check ECS [CI]'
                 run: composer check-ecs
@@ -73,8 +73,8 @@ jobs:
             -   uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
-                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-${{ matrix.php }}-
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ matrix.php }}-composer-
 
             -   name: '[CI] Check PHPStan [CI]'
                 run: composer check-phpstan
@@ -96,8 +96,8 @@ jobs:
             -   uses: eonx-com/actions-cache@v1
                 with:
                     path: cache
-                    key: composer-lock-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-lock-${{ matrix.php }}-
+                    key: ${{ matrix.php }}-composer-lock-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ matrix.php }}-composer-lock-
 
             -   run: |
                     cp ./cache/composer.lock ./composer.lock; \
@@ -106,8 +106,8 @@ jobs:
             -   uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
-                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-${{ matrix.php }}-
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ matrix.php }}-composer-
 
             -   name: '[CI] Check Security [CI]'
                 run: composer check-security
@@ -129,8 +129,8 @@ jobs:
             -   uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
-                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-${{ matrix.php }}-
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ matrix.php }}-composer-
 
             -   name: '[CI] Check Tests [CI]'
                 run: composer check-tests
