@@ -113,7 +113,8 @@ abstract class AbstractTemplatesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $style = new SymfonyStyle($input, $output);
-        $cwd = (string)($input->getOption('cwd') ?? \getcwd());
+        /** @var string $cwd */
+        $cwd = $input->getOption('cwd') ?? \getcwd();
         $easyDirectory = $this->getEasyDirectory($cwd);
 
         foreach ($this->getParamResolvers($style) as $param => $resolver) {
