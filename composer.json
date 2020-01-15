@@ -10,7 +10,6 @@
     "require": {
         "eonx-com/externals": "^1.0",
         "eonx-com/utils": "^0.2",
-        "php": "^7.1",
         "ext-json": "*",
         "psr/event-dispatcher": "^1.0",
         "symfony/expression-language": "^4.2",
@@ -19,7 +18,8 @@
         "symfony/psr-http-message-bridge": "^1.1",
         "symplify/package-builder": "^6.1",
         "twig/twig": "^2.8",
-        "zendframework/zend-diactoros": "^2.1"
+        "zendframework/zend-diactoros": "^2.1",
+        "php": "^7.1"
     },
     "require-dev": {
         "auth0/auth0-php": "^5.4",
