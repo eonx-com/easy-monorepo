@@ -19,7 +19,6 @@ jobs:
                 with:
                     path: vendor
                     key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-${{ matrix.php }}-
 
             -   if: steps.composer-cache.outputs.cache-hit == false
                 run: |
@@ -33,7 +32,6 @@ jobs:
                 with:
                     path: cache
                     key: composer-lock-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
-                    restore-keys: composer-lock-${{ matrix.php }}-
 
     ecs:
         runs-on: ubuntu-latest
