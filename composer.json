@@ -9,8 +9,8 @@
     ],
     "require": {
         "eonx-com/externals": "^1.0",
-        "php": "^7.1",
         "eonx-com/utils": "^0.2",
+        "php": "^7.1",
         "ext-json": "*",
         "psr/event-dispatcher": "^1.0",
         "symfony/expression-language": "^4.2",

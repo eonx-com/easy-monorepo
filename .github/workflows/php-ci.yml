@@ -9,17 +9,24 @@ jobs:
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
-            -   name: Cache Composer dependencies
-                id: cache-composer
+            -   uses: eonx-com/actions-setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   id: composer-cache-dir
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            -   id: cache-composer
                 uses: eonx-com/actions-cache@v1
                 with:
-                    path: vendor
-                    key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+                    path: ${{ steps.composer-cache-dir.outputs.dir }}
+                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+                    restore-keys: composer-${{ matrix.php }}-
 
             -   if: steps.cache-composer.outputs.cache-hit == false
-                name: Install dependencies
                 run: |
-                    composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest; \
+                    composer global require hirak/prestissimo; composer install --prefer-dist; \
                     mkdir cache; \
                     cp ./composer.lock ./cache/composer.lock;
 
@@ -43,13 +50,17 @@ jobs:
                     php-version: ${{ matrix.php }}
                     coverage: none
 
+            -   id: composer-cache-dir
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
             -   uses: eonx-com/actions-cache@v1
                 with:
-                    path: vendor
-                    key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+                    path: ${{ steps.composer-cache-dir.outputs.dir }}
+                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+                    restore-keys: composer-${{ matrix.php }}-
 
-            -   name: Check ECS
-                run: composer check-ecs
+            -   name: [CI] Check ECS [CI]
+                run: composer install --prefer-dist && composer check-ecs
 
     phpstan:
         needs: composer
@@ -65,13 +76,17 @@ jobs:
                     php-version: ${{ matrix.php }}
                     coverage: none
 
+            -   id: composer-cache-dir
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
             -   uses: eonx-com/actions-cache@v1
                 with:
-                    path: vendor
-                    key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+                    path: ${{ steps.composer-cache-dir.outputs.dir }}
+                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+                    restore-keys: composer-${{ matrix.php }}-
 
-            -   name: Check PHPStan
-                run: composer check-phpstan
+            -   name: [CI] Check PHPStan [CI]
+                run: composer install --prefer-dist && composer check-phpstan
 
     security:
         needs: composer
@@ -82,23 +97,31 @@ jobs:
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
+            -   uses: eonx-com/actions-setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
             -   uses: eonx-com/actions-cache@v1
                 with:
                     path: cache
                     key: composer-lock-${{ matrix.php }}
 
-            -   name: Move composer.lock
-                run: |
+            -   run: |
                     cp cache/composer.lock ./composer.lock; \
                     rm -rf cache;
 
+            -   id: composer-cache-dir
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
             -   uses: eonx-com/actions-cache@v1
                 with:
-                    path: vendor
-                    key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+                    path: ${{ steps.composer-cache-dir.outputs.dir }}
+                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+                    restore-keys: composer-${{ matrix.php }}-
 
-            -   name: Check Security
-                run: composer check-security
+            -   name: [CI] Check Security [CI]
+                run: composer install --prefer-dist && composer check-security
 
     tests:
         needs: composer
@@ -109,10 +132,19 @@ jobs:
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
+            -   uses: eonx-com/actions-setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   id: composer-cache-dir
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
             -   uses: eonx-com/actions-cache@v1
                 with:
-                    path: vendor
-                    key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+                    path: ${{ steps.composer-cache-dir.outputs.dir }}
+                    key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+                    restore-keys: composer-${{ matrix.php }}-
 
-            -   name: Check Tests
-                run: composer check-tests
+            -   name: [CI] Check Tests [CI]
+                run: composer install --prefer-dist && composer check-tests
