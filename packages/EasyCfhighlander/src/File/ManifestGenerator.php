@@ -56,7 +56,7 @@ final class ManifestGenerator implements ManifestGeneratorInterface
 
         $this->filesystem->dumpFile(
             $filename,
-            (string)\json_encode($manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+            (string)\json_encode($manifest, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES)
         );
     }
 

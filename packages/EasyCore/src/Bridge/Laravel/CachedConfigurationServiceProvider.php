@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Laravel;
 
-use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Application;
 use EonX\EasyCore\Console\Commands\Lumen\CacheConfigCommand;
 use EonX\EasyCore\Console\Commands\Lumen\ClearConfigCommand;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application;
 
 final class CachedConfigurationServiceProvider extends ServiceProvider
 {
@@ -45,7 +45,7 @@ final class CachedConfigurationServiceProvider extends ServiceProvider
             foreach ($items as $name => $config) {
                 if ($repository->has($name) === false) {
                     $repository->set($name, $config);
-                    (function ($name) {
+                    (function ($name): void {
                         /** @noinspection PhpUndefinedFieldInspection */
                         $this->loadedConfigurations[$name] = true;
                     })->bindTo($app, Application::class)($name);

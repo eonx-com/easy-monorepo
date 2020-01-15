@@ -23,6 +23,8 @@ final class ClearConfigCommandTest extends AbstractVfsTestCase
     /**
      * Test handle successfully.
      *
+     * @return void
+     *
      * @throws \ReflectionException
      */
     public function testHandleSucceeds(): void
@@ -94,6 +96,8 @@ final class ClearConfigCommandTest extends AbstractVfsTestCase
      * @param \Illuminate\Console\Command $command
      * @param string $propertyName
      * @param mixed $value
+     *
+     * @return void
      *
      * @throws \ReflectionException
      */

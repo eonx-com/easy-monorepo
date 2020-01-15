@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Console\Commands\Lumen;
 
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Container\Container;
 
 final class CacheConfigCommand extends Command
 {
@@ -61,7 +60,7 @@ final class CacheConfigCommand extends Command
      *
      * @return void
      */
-    public function setLaravel($laravel): void
+    public function setLaravel(\Laravel\Lumen\Application $laravel): void
     {
         $this->cachedConfigPath = $laravel->storagePath('cached_config.php');
         $this->bootstrapPath = $laravel->basePath() . '/bootstrap/app.php';

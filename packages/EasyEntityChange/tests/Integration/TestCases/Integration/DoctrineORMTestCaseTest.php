@@ -6,8 +6,8 @@ namespace EonX\EasyEntityChange\Tests\Integration\TestCases\Integration;
 use EonX\EasyEntityChange\DataTransferObjects\UpdatedEntity;
 use EonX\EasyEntityChange\Doctrine\EntityChangeSubscriber;
 use EonX\EasyEntityChange\Events\EntityChangeEvent;
-use EonX\EasyEntityChange\Tests\Integration\Fixtures\SimpleEntity;
 use EonX\EasyEntityChange\Tests\Integration\Fixtures\ProvidedIdEntity;
+use EonX\EasyEntityChange\Tests\Integration\Fixtures\SimpleEntity;
 use EonX\EasyEntityChange\Tests\Stubs\EventDispatcherStub;
 use Eonx\TestUtils\TestCases\Integration\DoctrineORMTestCase;
 

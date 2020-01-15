@@ -81,7 +81,7 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
 
         $filesNotExisting = [
             '.easy/easy-docker-manifest.json',
-            '.easy/easy-docker-params.yaml',
+            '.easy/easy-docker-params.yaml'
         ];
 
         $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-docker-manifest.json', '{}');

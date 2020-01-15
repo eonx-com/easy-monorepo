@@ -53,7 +53,11 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
             $entityManager = $this->mock(
                 EntityManagerInterface::class,
                 function (LegacyMockInterface $entityManager): void {
-                    $entityManager->shouldReceive('getConfiguration')->once()->withNoArgs()->andReturn(new Configuration());
+                    $entityManager
+                        ->shouldReceive('getConfiguration')
+                        ->once()
+                        ->withNoArgs()
+                        ->andReturn(new Configuration());
                 }
             );
 

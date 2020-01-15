@@ -21,6 +21,11 @@ final class Auth0IdentityServiceProvider extends ServiceProvider
         ]);
     }
 
+    /**
+     * Register services.
+     *
+     * @return void
+     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-identity.php', 'easy-identity');

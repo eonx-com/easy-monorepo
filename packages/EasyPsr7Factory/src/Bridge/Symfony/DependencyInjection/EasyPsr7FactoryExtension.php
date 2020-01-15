@@ -11,7 +11,12 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 final class EasyPsr7FactoryExtension extends Extension
 {
     /**
-     * @inheritDoc
+     * Load configs.
+     *
+     * @param mixed[] $configs
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     *
+     * @return void
      *
      * @throws \Exception
      */

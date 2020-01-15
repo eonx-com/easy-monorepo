@@ -30,9 +30,10 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
     /**
      * Test config with empty string.
      * This can happen when auth0 is not setup in env or has empty values.
-     * @see https://eonx.atlassian.net/browse/PYMT-1020
      *
      * @return void
+     *
+     * @see https://eonx.atlassian.net/browse/PYMT-1020
      */
     public function testCreateWorksWithEmptyConfig(): void
     {

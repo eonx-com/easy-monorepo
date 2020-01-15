@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyDocker\Interfaces;
 
-use EonX\EasyDocker\File\FileStatus;
 use EonX\EasyDocker\File\File;
+use EonX\EasyDocker\File\FileStatus;
 
 interface FileGeneratorInterface
 {

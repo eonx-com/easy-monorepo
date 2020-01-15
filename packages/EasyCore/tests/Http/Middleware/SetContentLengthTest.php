@@ -18,6 +18,8 @@ final class SetContentLengthTest extends AbstractTestCase
 {
     /**
      * Test handle successfully.
+     *
+     * @return void
      */
     public function testHandleSucceeds(): void
     {

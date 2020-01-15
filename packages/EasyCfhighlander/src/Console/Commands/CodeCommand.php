@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyCfhighlander\Console\Commands;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symplify\PackageBuilder\Console\Command\CommandNaming;
-
 final class CodeCommand extends AbstractTemplatesCommand
 {
     /**

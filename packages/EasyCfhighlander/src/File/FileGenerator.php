@@ -101,7 +101,7 @@ final class FileGenerator implements FileGeneratorInterface
      * Return given template for given params.
      *
      * @param string $template
-     * @param null|array $params
+     * @param null|mixed[] $params
      *
      * @return string
      *

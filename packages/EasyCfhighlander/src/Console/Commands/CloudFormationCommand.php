@@ -19,7 +19,9 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
     }
 
     /**
-     * @inheritDoc
+     * Get param modifiers.
+     *
+     * @return iterable<mixed>
      */
     protected function getParamModifiers(): iterable
     {

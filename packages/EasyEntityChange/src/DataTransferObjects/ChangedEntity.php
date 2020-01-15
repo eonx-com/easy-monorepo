@@ -24,10 +24,10 @@ abstract class ChangedEntity
     /**
      * Constructor
      *
-     * @phpstan-param class-string $class
-     *
      * @param string $class
      * @param mixed[] $ids
+     *
+     * @phpstan-param class-string $class
      */
     public function __construct(string $class, array $ids)
     {
@@ -38,9 +38,9 @@ abstract class ChangedEntity
     /**
      * Returns the class of the entity who has been changed.
      *
-     * @phpstan-return class-string
-     *
      * @return string
+     *
+     * @phpstan-return class-string
      */
     public function getClass(): string
     {

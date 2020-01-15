@@ -24,7 +24,7 @@ abstract class AbstractTestCase extends TestCase
      * Execute command and return display.
      *
      * @param string $command
-     * @param null|array $inputs
+     * @param null|mixed[] $inputs
      *
      * @return string
      *

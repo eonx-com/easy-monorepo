@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Bridge\Laravel;
 
-use Illuminate\Support\ServiceProvider;
 use EonX\EasyDecision\Bridge\Common\DecisionFactory as BridgeDecisionFactory;
 use EonX\EasyDecision\Bridge\Common\ExpressionLanguageConfigFactory;
 use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
@@ -15,6 +14,7 @@ use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
 use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
 use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
 use EonX\EasyDecision\Rules\ExpressionLanguageRuleFactory;
+use Illuminate\Support\ServiceProvider;
 
 final class EasyDecisionServiceProvider extends ServiceProvider
 {

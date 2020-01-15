@@ -9,12 +9,12 @@ use EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface;
 class IdentityUserService implements IdentityUserServiceInterface
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     private $identityIds = [];
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $identityValues = [];
 

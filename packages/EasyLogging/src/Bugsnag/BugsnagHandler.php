@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Bugsnag;
 
-use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
 use Bugsnag\Report;
+use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Psr\Log\LogLevel;
