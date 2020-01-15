@@ -33,7 +33,7 @@ parameters:
         - message: '#PHPDoc tag @param has invalid value \(null|mixed[]\): Unexpected token "\\n     ", expected TOKEN_VARIABLE at offset 320#'
           path: packages/EasyDecisions/src/Decisions
 
-        - message: "#Offset 'fn' does not exist on array\(string\).#"
+        - message: "#Offset 'fn' does not exist on array\\(string\\).#"
           path: packages/EasyDecisions/src/Helpers
 
         - message: '#Parameter \#(1|2|3) \$[\w]+ of method [\w\\]+::[\w]+\(\) expects ([\w\\]+|[\w\\]+\|null), PHPUnit\Framework\MockObject\MockObject given.#'
