@@ -26,7 +26,7 @@ jobs:
             -   name: '[CI] Check ECS [CI]'
                 run: |
                     composer global require hirak/prestissimo; \
-                    composer install --prefer-dist; \
+                    composer install --prefer-dist --no-progress; \
                     composer check-ecs
 
     phpstan:
@@ -54,7 +54,7 @@ jobs:
             -   name: '[CI] Check PHPStan [CI]'
                 run: |
                     composer global require hirak/prestissimo; \
-                    composer install --prefer-dist; \
+                    composer install --prefer-dist --no-progress; \
                     composer check-phpstan
 
     security:
@@ -82,7 +82,7 @@ jobs:
             -   name: '[CI] Check Security [CI]'
                 run: |
                     composer global require hirak/prestissimo; \
-                    composer install --prefer-dist; \
+                    composer install --prefer-dist --no-progress; \
                     composer check-security
 
     tests:
@@ -110,5 +110,5 @@ jobs:
             -   name: '[CI] Check Tests [CI]'
                 run: |
                     composer global require hirak/prestissimo; \
-                    composer install --prefer-dist; \
+                    composer install --prefer-dist --no-progress; \
                     composer check-tests
