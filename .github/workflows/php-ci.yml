@@ -18,11 +18,8 @@ jobs:
 
             -   if: steps.cache-composer.outputs.cache-hit == false
                 name: Install dependencies
-                run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest;
-
-            -   if: steps.cache-composer.outputs.cache-hit == false
-                name: Move composer.lock for cache
                 run: |
+                    composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest; \
                     mkdir cache; \
                     cp ./composer.lock ./cache/composer.lock;
 
@@ -41,9 +38,7 @@ jobs:
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
-            -   name: Cache Composer dependencies
-                id: cache-composer
-                uses: eonx-com/actions-cache@v1
+            -   uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
                     key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -60,9 +55,7 @@ jobs:
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
-            -   name: Cache Composer dependencies
-                id: cache-composer
-                uses: eonx-com/actions-cache@v1
+            -   uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
                     key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -83,15 +76,11 @@ jobs:
                 with:
                     path: cache
                     key: composer-lock-${{ matrix.php }}
-
-            -   name: Move composer.lock
                 run: |
                     cp cache/composer.lock ./composer.lock; \
                     rm -rf cache;
 
-            -   name: Cache Composer dependencies
-                id: cache-composer
-                uses: eonx-com/actions-cache@v1
+            -   uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
                     key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -108,9 +97,7 @@ jobs:
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
-            -   name: Cache Composer dependencies
-                id: cache-composer
-                uses: eonx-com/actions-cache@v1
+            -   uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
                     key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
