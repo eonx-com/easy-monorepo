@@ -84,7 +84,7 @@ jobs:
                     name: ${{ github.sha }}-${{ matrix.php }}-composer-lock
 
             -   name: Cat composer.lock
-                run: cat ${{ github.sha }}-${{ matrix.php }}-composer-lock
+                run: cat ${{ github.sha }}-${{ matrix.php }}-composer-lock/composer.lock
 
             -   name: Cache Composer dependencies
                 id: cache-composer
