@@ -2,7 +2,6 @@ name: PHP-CI
 on: [push]
 jobs:
     ecs:
-        needs: composer
         runs-on: ubuntu-latest
         strategy:
             matrix:
@@ -28,7 +27,6 @@ jobs:
                 run: composer install --prefer-dist && composer check-ecs
 
     phpstan:
-        needs: composer
         runs-on: ubuntu-latest
         strategy:
             matrix:
@@ -54,7 +52,6 @@ jobs:
                 run: composer install --prefer-dist && composer check-phpstan
 
     security:
-        needs: composer
         runs-on: ubuntu-latest
         strategy:
             matrix:
@@ -80,7 +77,6 @@ jobs:
                 run: composer install --prefer-dist && composer check-security
 
     tests:
-        needs: composer
         runs-on: ubuntu-latest
         strategy:
             matrix:
