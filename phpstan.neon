@@ -24,10 +24,10 @@ parameters:
         - message: '#Access to an undefined property object::\$[\w]+.#'
           path: packages/EasyCore/tests/Http/Middleware
 
-        - message: 'Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
+        - message: '#Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
           path: packages/EasyDecisions/tests/Decisions
 
-        - message: 'Parameter \#(1|2|3) \$[\w]+ of method [\w\\]+::[\w]+\(\) expects [\w\\]+|null, PHPUnit\Framework\MockObject\MockObject given.#'
+        - message: '#Parameter \#(1|2|3) \$[\w]+ of method [\w\\]+::[\w]+\(\) expects [\w\\]+|null, PHPUnit\Framework\MockObject\MockObject given.#'
           path: packages/EasyEntityChange/tests/Doctrine
 
         - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'
