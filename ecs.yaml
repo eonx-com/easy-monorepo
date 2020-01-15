@@ -8,9 +8,11 @@ parameters:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingParameterTypeHint:
             - 'packages/EasyCore/src/Console/Commands/Lumen/CacheConfigCommand.php'
             - 'packages/EasyCore/src/Console/Commands/Lumen/ClearConfigCommand.php'
+            - 'packages/EasyCore/tests/Bridge/Laravel/CachedConfigurationServiceProviderTest.php'
         NatePage\Sniffs\Commenting\FunctionCommentSniff.TypeHintMissing:
             - 'packages/EasyCore/src/Console/Commands/Lumen/CacheConfigCommand.php'
             - 'packages/EasyCore/src/Console/Commands/Lumen/ClearConfigCommand.php'
+            - 'packages/EasyCore/tests/Bridge/Laravel/CachedConfigurationServiceProviderTest.php'
 
 services:
     PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:

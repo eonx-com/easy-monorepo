@@ -142,10 +142,8 @@ final class CachedConfigurationServiceProviderTest extends AbstractVfsTestCase
      *
      * @return \Prophecy\Prophecy\ObjectProphecy
      */
-    protected function prophesizeCommand(
-        \Illuminate\Contracts\Foundation\Application $app,
-        string $name
-    ): ObjectProphecy {
+    protected function prophesizeCommand($app, string $name): ObjectProphecy
+    {
         $cacheCommandProphecy = $this->prophesize(Command::class);
         $cacheCommandProphecy->setLaravel($app)->willReturn();
         $cacheCommandProphecy->setApplication(Argument::type(\Illuminate\Console\Application::class))->willReturn();
