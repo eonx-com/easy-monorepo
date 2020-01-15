@@ -60,6 +60,11 @@ jobs:
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
+            -   uses: eonx-com/actions-setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
             -   uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
