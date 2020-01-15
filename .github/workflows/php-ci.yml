@@ -82,7 +82,7 @@ jobs:
             -   uses: eonx-com/actions-download-artifact@v1
                 with:
                     name: ${{ github.sha }}-${{ matrix.php }}-composer-lock
-                    path: composer.lock
+                    path: $GITHUB_WORKSPACE
 
             -   name: List files
                 run: ls -la composer.lock
