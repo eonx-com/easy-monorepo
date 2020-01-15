@@ -83,6 +83,9 @@ jobs:
                 with:
                     name: ${{ github.sha }}-${{ matrix.php }}-composer-lock
 
+            -   name: List files
+                run: ls -la
+
             -   name: Cache Composer dependencies
                 id: cache-composer
                 uses: eonx-com/cache@v1
