@@ -8,10 +8,10 @@
         "packages/EasyDocker/bin/easy-docker"
     ],
     "require": {
+        "php": "^7.1",
         "eonx-com/externals": "^1.0",
         "eonx-com/utils": "^0.2",
         "ext-json": "*",
-        "php": "^7.1",
         "psr/event-dispatcher": "^1.0",
         "symfony/expression-language": "^4.2",
         "symfony/filesystem": "^4.2",
