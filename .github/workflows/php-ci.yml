@@ -85,7 +85,7 @@ jobs:
                     path: composer.lock
 
             -   name: List files
-                run: ls -la
+                run: ls -la composer.lock
 
             -   name: Cat composer.lock
                 run: cat composer.lock
