@@ -87,6 +87,9 @@ jobs:
             -   name: List files
                 run: ls -la
 
+            -   name: Cat composer.lock
+                run: cat composer.lock
+
             -   name: Cache Composer dependencies
                 id: cache-composer
                 uses: eonx-com/cache@v1
