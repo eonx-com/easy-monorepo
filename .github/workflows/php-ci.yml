@@ -5,23 +5,33 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: [ '7.2', '7.3' ]
+                php: [ '7.3' ]
         steps:
             -   uses: eonx-com/checkout@v2
 
-            -   name: Install dependencies
-                run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest;
+            -   uses: eonx-com/actions-download-artifact@v1
+                with:
+                    name: ${{ matrix.php }}-composer-lock
+
+            -   name: Move composer.lock
+                run: |
+                    cp ${{ matrix.php }}-composer-lock/composer.lock ./composer.lock; \
+                    rm -rf ${{ matrix.php }}-composer-lock;
 
             -   name: Cache Composer dependencies
                 id: cache-composer
                 uses: eonx-com/cache@v1
                 with:
                     path: vendor
-                    key: composer-${{ github.sha }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+                    key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+
+            -   name: Install dependencies
+                if: steps.cache-composer.outputs.cache-hit == false
+                run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress --no-suggest;
 
             -   uses: eonx-com/actions-upload-artifact@v1
                 with:
-                    name: ${{ github.sha }}-${{ matrix.php }}-composer-lock
+                    name: ${{ matrix.php }}-composer-lock
                     path: composer.lock
 
     ecs:
