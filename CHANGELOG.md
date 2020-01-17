@@ -2,7 +2,23 @@
 
 <!-- dumped content start -->
 
-## v2.0.2 - 2020-01-14
+## v2.0.3 - 2020-01-17
+
+- [#114] Feature/clean up repo
+
+### EasyDecision
+
+- [#113] POIN-426-update-available-expressions-spelling, Thanks to [@skrut]
+
+### EasyLogging
+
+- [#115] Check shouldReport if the exception is throwable, Thanks to [@merk]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.2] - 2020-01-14
 
 ### EasyLogging
 
@@ -947,3 +963,8 @@
 
 [#112]: https://github.com/eonx-com/easy-monorepo/pull/112
 [v2.0.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.0...v2.0.1
+[#115]: https://github.com/eonx-com/easy-monorepo/pull/115
+[#114]: https://github.com/eonx-com/easy-monorepo/pull/114
+[#113]: https://github.com/eonx-com/easy-monorepo/pull/113
+[@skrut]: https://github.com/skrut
+[v2.0.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.1...v2.0.2
