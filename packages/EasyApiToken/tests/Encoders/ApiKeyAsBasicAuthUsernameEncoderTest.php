@@ -62,6 +62,6 @@ final class ApiKeyAsBasicAuthUsernameEncoderTest extends AbstractTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new ApiKeyAsBasicAuthUsernameEncoder())->encode(new JwtEasyApiToken([]));
+        (new ApiKeyAsBasicAuthUsernameEncoder())->encode(new JwtEasyApiToken([], ''));
     }
 }
