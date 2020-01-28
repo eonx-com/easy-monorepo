@@ -19,6 +19,7 @@ final class BasicAuthEasyApiTokenTest extends AbstractTestCase
 
         self::assertEquals($token->getPassword(), $token->getPayload()['password']);
         self::assertEquals($token->getUsername(), $token->getPayload()['username']);
+        self::assertEquals($token->getOriginalToken(), 'original');
     }
 
     /**
@@ -48,6 +49,6 @@ final class BasicAuthEasyApiTokenTest extends AbstractTestCase
      */
     private function createBasicAuthEasyApiToken(): BasicAuthEasyApiToken
     {
-        return new BasicAuthEasyApiToken('username', 'password');
+        return new BasicAuthEasyApiToken('username', 'password', 'original');
     }
 }
