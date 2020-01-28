@@ -73,7 +73,8 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $message
+     * @param null|mixed[] $context
      */
     public function alert($message, ?array $context = null): void
     {
@@ -81,7 +82,8 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $message
+     * @param null|mixed[] $context
      */
     public function critical($message, ?array $context = null): void
     {
@@ -89,7 +91,8 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $message
+     * @param null|mixed[] $context
      */
     public function debug($message, ?array $context = null): void
     {
@@ -97,7 +100,8 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $message
+     * @param null|mixed[] $context
      */
     public function emergency($message, ?array $context = null): void
     {
@@ -105,7 +109,8 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $message
+     * @param null|mixed[] $context
      */
     public function error($message, ?array $context = null): void
     {
@@ -143,7 +148,8 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $message
+     * @param null|mixed[] $context
      */
     public function info($message, ?array $context = null): void
     {
@@ -151,7 +157,9 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $level
+     * @param string $message
+     * @param null|mixed[] $context
      */
     public function log($level, $message, ?array $context = null): void
     {
@@ -168,7 +176,8 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $message
+     * @param null|mixed[] $context
      */
     public function notice($message, ?array $context = null): void
     {
@@ -227,7 +236,8 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $message
+     * @param null|mixed[] $context
      */
     public function warning($message, ?array $context = null): void
     {
