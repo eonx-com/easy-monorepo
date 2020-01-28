@@ -33,6 +33,16 @@ final class ApiKeyEasyApiToken implements ApiKeyEasyApiTokenInterface
     }
 
     /**
+     * Get original string token.
+     *
+     * @return string
+     */
+    public function getOriginalToken(): string
+    {
+        return $this->apiKey;
+    }
+
+    /**
      * Get token payload.
      *
      * @return mixed[]

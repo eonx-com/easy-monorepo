@@ -39,7 +39,7 @@ final class JwtEasyApiTokenFactory implements JwtEasyApiTokenFactoryInterface
     public function createFromString(string $token): JwtEasyApiTokenInterface
     {
         try {
-            return new JwtEasyApiToken((array)$this->jwtDriver->decode(\trim($token)));
+            return new JwtEasyApiToken((array)$this->jwtDriver->decode(\trim($token)), $token);
         } catch (Exception $exception) {
             throw new InvalidEasyApiTokenFromRequestException(
                 \sprintf(

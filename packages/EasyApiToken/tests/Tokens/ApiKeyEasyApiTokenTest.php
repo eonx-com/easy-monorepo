@@ -16,6 +16,7 @@ final class ApiKeyEasyApiTokenTest extends AbstractTestCase
     public function testGetApiKeySuccessfully(): void
     {
         self::assertEquals('api-key', $this->createApiKeyEasyApiToken()->getApiKey());
+        self::assertEquals('api-key', $this->createApiKeyEasyApiToken()->getOriginalToken());
     }
 
     /**
