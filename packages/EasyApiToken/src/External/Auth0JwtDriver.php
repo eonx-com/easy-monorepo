@@ -81,7 +81,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
     /**
      * Encode given input to JWT token.
      *
-     * @param mixed[]|object $input
+     * @param mixed[] $input
      *
      * @return string
      */

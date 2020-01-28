@@ -1,7 +1,16 @@
 parameters:
+    excludes_analyse:
+        - packages/*/var/*
+
     ignoreErrors:
-        - message: '#Parameter \#3 \$privateKey of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource|string|null, bool|resource|string|null given.#'
-          path: packages/EasyApiToken/tests
+        - message: '#Parameter \#2 \$publicKey of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource\|string\|null, bool\|resource\|string given.#'
+          path: packages/EasyApiToken/tests/Decoders
+
+        - message: '#Parameter \#3 \$privateKey of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource\|string\|null, bool\|resource\|string given.#'
+          path: packages/EasyApiToken/tests/Encoders
+
+        - message: '#Parameter \#2 \$key of method EonX\\EasyApiToken\\Tests\\Encoders\\FirebaseJwtTokenEncoderTest::createJwtTokenDecoder\(\) expects resource\|string, bool\|resource\|string given.#'
+          path: packages/EasyApiToken/tests/Encoders
 
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDecision/src/Decisions
@@ -9,11 +18,11 @@ parameters:
         - message: '#Access to an undefined property Mockery\\LegacyMockInterface::\$users.#'
           path: packages/EasyIdentity/tests/Implementations/Auth0
 
-        - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int|string> given.#'
+        - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
           path: packages/EasyPipeline/src/Bridge/Laravel
 
-        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$manager \(Doctrine\\ORM\\EntityManagerInterface\) does not accept Doctrine\\Common\\Persistence\\ObjectManager|null.#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM
+        - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
+          path: packages/EasyPipeline/tests
 
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
           path: packages/EasyRepository/src/Implementations/Illuminate
@@ -21,7 +30,16 @@ parameters:
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
           path: packages/EasyPagination/tests/Bridge/Laravel
 
+        - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
+          path: packages/EasyPagination/tests
+
+        - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\)#'
+          path: packages/EasyPagination/tests
+
         - message: '#Access to an undefined property object::\$[\w]+.#'
+          path: packages/EasyCore/tests/Http/Middleware
+
+        - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertSame\(\)#'
           path: packages/EasyCore/tests/Http/Middleware
 
         - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\CachedConfigurationServiceProvider::\$loadedConfigurations.#'
@@ -33,12 +51,6 @@ parameters:
         - message: "#Offset 'fn' does not exist on array\\(string\\).#"
           path: packages/EasyDecision/src/Helpers
 
-        - message: '#Parameter \#(1|2|3) \$[\w]+ of method [\w\\]+::[\w]+\(\) expects [\w\\]+|null, PHPUnit\Framework\MockObject\MockObject given.#'
-          path: packages/EasyEntityChange/tests/Doctrine
-
-        - message: '#Parameter \#1 \$em of class Doctrine\\ORM\\Event\\(OnFlushEventArgs|PostFlushEventArgs) constructor expects Doctrine\\ORM\\EntityManagerInterface, PHPUnit\\Framework\\MockObject\\MockObject given.#'
-          path: packages/EasyEntityChange/tests/Doctrine
-
         - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'
           path: packages/EasyLogging/src/ContextModifiers
 
@@ -48,8 +60,20 @@ parameters:
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$repository \(Doctrine\\ORM\\EntityRepository\) does not accept Doctrine\\Persistence\\ObjectRepository.#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM
 
+        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$manager \(Doctrine\\ORM\\EntityManagerInterface\) does not accept Doctrine\\Persistence\\ObjectManager\|null.#'
+          path: packages/EasyRepository/src/Implementations/Doctrine/ORM
+
         - message: '#Method EonX\\EasyRepository\\Tests\\Implementation\\Illuminate\\EloquentRepositoryStub::getModel\(\) should return Illuminate\\Database\\Eloquent\\Model but returns Mockery\\LegacyMockInterface.#'
           path: packages/EasyRepository/tests/Implementation/Illuminate
+
+        - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
+          path: packages/EasyRepository/tests
+
+        - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\)#'
+          path: packages/EasyRepository/tests
+
+        - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
+          path: packages/EasyRepository/tests
 
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'

@@ -35,7 +35,7 @@ abstract class AbstractJwtTokenTestCase extends AbstractTestCase
     /**
      * Get the openssl public key for algorithms using it.
      *
-     * @return resource
+     * @return bool|resource
      */
     protected function getOpenSslPublicKey()
     {

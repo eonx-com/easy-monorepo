@@ -8,8 +8,8 @@
         "packages/EasyDocker/bin/easy-docker"
     ],
     "require": {
-        "eonx-com/externals": "^1.0",
-        "eonx-com/utils": "^0.2",
+        "eonx-com/externals": "^1.0 || ^2.0",
+        "eonx-com/utils": "^1.0",
         "ext-json": "*",
         "psr/event-dispatcher": "^1.0",
         "symfony/expression-language": "^4.2",
@@ -41,7 +41,7 @@
         "symplify/monorepo-builder": "^6.1",
         "symplify/changelog-linker": "^6.1",
         "natepage/sniffs": "^1.1",
-        "phpstan/phpstan": "^0.11.5",
+        "phpstan/phpstan": "^0.12.3",
         "sensiolabs/security-checker": "^5.0",
         "symplify/easy-coding-standard": "^6.1"
     },
