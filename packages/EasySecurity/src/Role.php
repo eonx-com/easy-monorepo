@@ -30,9 +30,9 @@ final class Role implements RoleInterface
     /**
      * Role constructor.
      *
-     * @param string $name
      * @param string $identifier
      * @param \EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
+     * @param null|string $name
      * @param null|mixed[] $metadata
      */
     public function __construct(string $identifier, array $permissions, ?string $name = null, ?array $metadata = null)
@@ -47,7 +47,9 @@ final class Role implements RoleInterface
     }
 
     /**
-     * @inheritDoc
+     * Get string representation of role.
+     *
+     * @return string
      */
     public function __toString(): string
     {
@@ -65,7 +67,9 @@ final class Role implements RoleInterface
     }
 
     /**
-     * @inheritDoc
+     * Get metadata.
+     *
+     * @return mixed[]
      */
     public function getMetadata(): array
     {

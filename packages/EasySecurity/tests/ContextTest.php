@@ -12,7 +12,7 @@ final class ContextTest extends AbstractTestCase
     /**
      * Data provider for testContextGetters.
      *
-     * @return iterable
+     * @return iterable<mixed>
      */
     public function gettersDataProvider(): iterable
     {
@@ -36,7 +36,7 @@ final class ContextTest extends AbstractTestCase
                 new Role('app:role1', [
                     new Permission('perm1'),
                     new Permission('perm3')
-                ]),
+                ])
             ],
             2,
             3
@@ -45,7 +45,7 @@ final class ContextTest extends AbstractTestCase
         yield '1 role 1 permission because non role given' => [
             [
                 new Role('app:role', [
-                    new Permission('perm1'),
+                    new Permission('perm1')
                 ]),
                 'non-role'
             ],
@@ -57,14 +57,14 @@ final class ContextTest extends AbstractTestCase
     /**
      * Data provider for testContextHas.
      *
-     * @return iterable
+     * @return iterable<mixed>
      */
     public function hasDataProvider(): iterable
     {
         yield 'No role No permission' => [
             [
                 new Role('app:role', [
-                    new Permission('perm1'),
+                    new Permission('perm1')
                 ])
             ],
             'app:role1',
@@ -76,7 +76,7 @@ final class ContextTest extends AbstractTestCase
         yield 'Yes role No permission' => [
             [
                 new Role('app:role', [
-                    new Permission('perm1'),
+                    new Permission('perm1')
                 ])
             ],
             'app:role',
@@ -88,7 +88,7 @@ final class ContextTest extends AbstractTestCase
         yield 'No role Yes permission' => [
             [
                 new Role('app:role1', [
-                    new Permission('perm2'),
+                    new Permission('perm2')
                 ])
             ],
             'app:role',
@@ -100,7 +100,7 @@ final class ContextTest extends AbstractTestCase
         yield 'Yes role Yes permission' => [
             [
                 new Role('app:role', [
-                    new Permission('perm1'),
+                    new Permission('perm1')
                 ])
             ],
             'app:role',
@@ -112,10 +112,10 @@ final class ContextTest extends AbstractTestCase
         yield 'Yes role Yes permission with multiple roles' => [
             [
                 new Role('app:role', [
-                    new Permission('perm1'),
+                    new Permission('perm1')
                 ]),
                 new Role('app:role1', [
-                    new Permission('perm2'),
+                    new Permission('perm2')
                 ])
             ],
             'app:role',

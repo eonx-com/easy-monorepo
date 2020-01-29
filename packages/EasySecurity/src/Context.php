@@ -31,7 +31,9 @@ final class Context implements ContextInterface
     }
 
     /**
-     * @inheritDoc
+     * Get permissions.
+     *
+     * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
      */
     public function getPermissions(): array
     {
@@ -51,7 +53,9 @@ final class Context implements ContextInterface
     }
 
     /**
-     * @inheritDoc
+     * Get roles.
+     *
+     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
      */
     public function getRoles(): array
     {
@@ -59,7 +63,11 @@ final class Context implements ContextInterface
     }
 
     /**
-     * @inheritDoc
+     * Check if context has given permission.
+     *
+     * @param string $permission The identifier of the permission
+     *
+     * @return bool
      */
     public function hasPermission(string $permission): bool
     {
@@ -67,7 +75,11 @@ final class Context implements ContextInterface
     }
 
     /**
-     * @inheritDoc
+     * Check if context has given role.
+     *
+     * @param string $role The identifier of the role
+     *
+     * @return bool
      */
     public function hasRole(string $role): bool
     {

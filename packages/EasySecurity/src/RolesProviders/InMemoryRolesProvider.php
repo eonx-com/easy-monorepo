@@ -26,7 +26,9 @@ final class InMemoryRolesProvider implements RolesProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * Get roles.
+     *
+     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
      */
     public function getRoles(): array
     {
@@ -34,7 +36,11 @@ final class InMemoryRolesProvider implements RolesProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * Get list of roles for given identifiers.
+     *
+     * @param string|string[] $identifiers
+     *
+     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
      */
     public function getRolesByIdentifiers($identifiers): array
     {

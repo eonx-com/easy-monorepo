@@ -12,7 +12,7 @@ final class InMemoryRolesProviderTest extends AbstractTestCase
     /**
      * Data provider for getRolesByIdentifiers tests.
      *
-     * @return iterable
+     * @return iterable<mixed>
      */
     public function getRolesByIdentifiersDataProvider(): iterable
     {
@@ -50,7 +50,7 @@ final class InMemoryRolesProviderTest extends AbstractTestCase
     /**
      * Data provider for getRoles tests.
      *
-     * @return iterable
+     * @return iterable<mixed>
      */
     public function getRolesDataProvider(): iterable
     {

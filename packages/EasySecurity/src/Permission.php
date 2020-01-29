@@ -23,7 +23,9 @@ final class Permission implements PermissionInterface
     }
 
     /**
-     * @inheritDoc
+     * Get string representation of permission.
+     *
+     * @return string
      */
     public function __toString(): string
     {
@@ -31,7 +33,9 @@ final class Permission implements PermissionInterface
     }
 
     /**
-     * @inheritDoc
+     * Get identifier.
+     *
+     * @return string
      */
     public function getIdentifier(): string
     {
