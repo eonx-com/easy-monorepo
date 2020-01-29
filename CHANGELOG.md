@@ -2,7 +2,23 @@
 
 <!-- dumped content start -->
 
-## v2.0.3 - 2020-01-17
+## [v2.0.4] - 2020-01-30
+
+- [#117] Clean-up dependencies versions
+
+### EasyApiToken
+
+- [#116] Allow to retrieve original token
+
+### EasySecurity
+
+- [#118] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.3] - 2020-01-17
 
 - [#114] Feature/clean up repo
 
@@ -968,3 +984,9 @@
 [#113]: https://github.com/eonx-com/easy-monorepo/pull/113
 [@skrut]: https://github.com/skrut
 [v2.0.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.1...v2.0.2
+
+[#118]: https://github.com/eonx-com/easy-monorepo/pull/118
+[#117]: https://github.com/eonx-com/easy-monorepo/pull/117
+[#116]: https://github.com/eonx-com/easy-monorepo/pull/116
+[v2.0.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.3...v2.0.4
+[v2.0.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.2...v2.0.3
