@@ -2,6 +2,16 @@
 
 <!-- dumped content start -->
 
+## v2.0.5 - 2020-01-29
+
+### EasySecurity
+
+- [#119] Make context abstract as each app must define their own context
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
 ## [v2.0.4] - 2020-01-30
 
 - [#117] Clean-up dependencies versions
@@ -990,3 +1000,5 @@
 [#116]: https://github.com/eonx-com/easy-monorepo/pull/116
 [v2.0.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.3...v2.0.4
 [v2.0.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.2...v2.0.3
+
+[#119]: https://github.com/eonx-com/easy-monorepo/pull/119
