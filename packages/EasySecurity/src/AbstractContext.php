@@ -6,7 +6,7 @@ namespace EonX\EasySecurity;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\RoleInterface;
 
-final class Context implements ContextInterface
+abstract class AbstractContext implements ContextInterface
 {
     /**
      * @var \EonX\EasySecurity\Interfaces\PermissionInterface[]
