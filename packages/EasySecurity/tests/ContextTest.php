@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests;
 
-use EonX\EasySecurity\Context;
 use EonX\EasySecurity\Permission;
 use EonX\EasySecurity\Role;
 
@@ -138,7 +137,7 @@ final class ContextTest extends AbstractTestCase
      */
     public function testContextGetters(array $roles, int $countRoles, int $countPermissions): void
     {
-        $context = new Context($roles);
+        $context = new ContextStub($roles);
         $permissions = $context->getPermissions();
 
         self::assertCount($countRoles, $context->getRoles());
@@ -166,7 +165,7 @@ final class ContextTest extends AbstractTestCase
         bool $hasRole,
         bool $hasPermission
     ): void {
-        $context = new Context($roles);
+        $context = new ContextStub($roles);
 
         self::assertEquals($hasRole, $context->hasRole($role));
         self::assertEquals($hasPermission, $context->hasPermission($permission));
