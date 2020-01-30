@@ -44,6 +44,10 @@ final class InMemoryRolesProvider implements RolesProviderInterface
      */
     public function getRolesByIdentifiers($identifiers): array
     {
+        if (empty($identifiers)) {
+            return [];
+        }
+
         $roles = [];
 
         foreach ((array)$identifiers as $identifier) {

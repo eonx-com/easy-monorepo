@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface:
+        class: EonX\EasySecurity\Resolvers\ContextResolver

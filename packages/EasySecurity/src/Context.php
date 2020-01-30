@@ -4,9 +4,14 @@ declare(strict_types=1);
 namespace EonX\EasySecurity;
 
 use EonX\EasySecurity\Interfaces\ContextInterface;
+use EonX\EasySecurity\Interfaces\ProviderInterface;
 use EonX\EasySecurity\Interfaces\RoleInterface;
+use EonX\EasySecurity\Interfaces\UserInterface;
 
-abstract class AbstractContext implements ContextInterface
+/**
+ * Class not final because each app MUST extend it and define their own return types.
+ */
+class Context implements ContextInterface
 {
     /**
      * @var \EonX\EasySecurity\Interfaces\PermissionInterface[]
@@ -14,20 +19,35 @@ abstract class AbstractContext implements ContextInterface
     private $permissions;
 
     /**
+     * @var null|\EonX\EasySecurity\Interfaces\ProviderInterface
+     */
+    private $provider;
+
+    /**
      * @var \EonX\EasySecurity\Interfaces\RoleInterface[]
      */
     private $roles;
 
     /**
-     * Context constructor.
-     *
-     * @param \EonX\EasySecurity\Interfaces\RoleInterface[] $roles
+     * @var null|\EonX\EasySecurity\Interfaces\UserInterface
      */
-    public function __construct(array $roles)
+    private $user;
+
+    /**
+     * AbstractContext constructor.
+     *
+     * @param null|\EonX\EasySecurity\Interfaces\RoleInterface[] $roles
+     * @param null|\EonX\EasySecurity\Interfaces\ProviderInterface $provider
+     * @param null|\EonX\EasySecurity\Interfaces\UserInterface $user
+     */
+    public function __construct(?array $roles = null, ?ProviderInterface $provider = null, ?UserInterface $user = null)
     {
-        $this->initRoles(\array_filter($roles, static function ($role): bool {
+        $this->initRoles(\array_filter($roles ?? [], static function ($role): bool {
             return $role instanceof RoleInterface;
         }));
+
+        $this->provider = $provider;
+        $this->user = $user;
     }
 
     /**
@@ -53,6 +73,16 @@ abstract class AbstractContext implements ContextInterface
     }
 
     /**
+     * Get provider.
+     *
+     * @return null|\EonX\EasySecurity\Interfaces\ProviderInterface
+     */
+    public function getProvider(): ?ProviderInterface
+    {
+        return $this->provider;
+    }
+
+    /**
      * Get roles.
      *
      * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
@@ -60,6 +90,16 @@ abstract class AbstractContext implements ContextInterface
     public function getRoles(): array
     {
         return $this->roles;
+    }
+
+    /**
+     * Get user.
+     *
+     * @return null|\EonX\EasySecurity\Interfaces\UserInterface
+     */
+    public function getUser(): ?UserInterface
+    {
+        return $this->user;
     }
 
     /**

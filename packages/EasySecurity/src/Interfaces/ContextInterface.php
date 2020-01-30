@@ -5,6 +5,8 @@ namespace EonX\EasySecurity\Interfaces;
 
 interface ContextInterface
 {
+    public const JWT_MANAGE_CLAIM = 'https://eonx.com/user';
+
     /**
      * Get permissions.
      *
@@ -13,11 +15,25 @@ interface ContextInterface
     public function getPermissions(): array;
 
     /**
+     * Get provider.
+     *
+     * @return null|\EonX\EasySecurity\Interfaces\ProviderInterface
+     */
+    public function getProvider(): ?ProviderInterface;
+
+    /**
      * Get roles.
      *
      * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
      */
     public function getRoles(): array;
+
+    /**
+     * Get user.
+     *
+     * @return null|\EonX\EasySecurity\Interfaces\UserInterface
+     */
+    public function getUser(): ?UserInterface;
 
     /**
      * Check if context has given permission.
