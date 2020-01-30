@@ -17,12 +17,13 @@ final class RoleTest extends AbstractTestCase
     {
         $role = new Role('app:role', [
             new Permission('perm'),
-            'non-permission'
+            'perm-as-string',
+            new \stdClass()
         ]);
 
         self::assertEquals('app:role', $role->getIdentifier());
         self::assertEquals('app:role', (string)$role);
-        self::assertCount(1, $role->getPermissions());
+        self::assertCount(2, $role->getPermissions());
         self::assertEmpty($role->getMetadata());
         self::assertNull($role->getName());
     }
