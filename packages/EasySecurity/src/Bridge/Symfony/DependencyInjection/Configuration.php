@@ -14,6 +14,7 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
+                ->scalarNode('context_service_id')->end()
                 ->scalarNode('token_decoder')->defaultValue('chain')->end()
             ->end()
         ;

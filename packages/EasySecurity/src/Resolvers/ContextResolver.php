@@ -95,7 +95,7 @@ final class ContextResolver implements ContextResolverInterface
         };
 
         $resolvers = \array_filter($resolvers, $filter);
-        \usort($rules, $sort);
+        \usort($resolvers, $sort);
 
         $this->contextDataResolvers = $resolvers;
     }

@@ -53,12 +53,7 @@ final class ContextAuthenticator extends AbstractGuardAuthenticator
     {
         $user = $context->getUser();
 
-        if ($user instanceof EonxUserInterface) {
-            return $user;
-        }
-
-        // Return void to allow anonymous requests
-        return;
+        return $user instanceof EonxUserInterface ? $user : null;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)

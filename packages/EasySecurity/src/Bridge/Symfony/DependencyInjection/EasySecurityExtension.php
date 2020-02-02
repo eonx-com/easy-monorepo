@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\DependencyInjection;
 
+use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
-use EonX\EasySecurity\Bridge\Symfony\Factories\EasyApiTokenDecoderFactory;
+use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextAwareInterface;
+use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface;
 use EonX\EasySecurity\Bridge\TagsInterface;
 use EonX\EasySecurity\Interfaces\Resolvers\ContextDataResolverInterface;
 use EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface;
@@ -38,18 +40,34 @@ final class EasySecurityExtension extends Extension
         // Register context data resolvers for auto tagging
         $container->registerForAutoconfiguration(ContextDataResolverInterface::class)->addTag(TagsInterface::TAG_CONTEXT_DATA_RESOLVER);
 
+        $this->registerContextResolver($container, $config);
+        $this->registerDeferredContextResolver($container, $config);
+    }
+
+    private function registerContextResolver(ContainerBuilder $container, array $config): void
+    {
         // Define dependencies for context resolver
         $def = $container->getDefinition(ContextResolverInterface::class);
-        $tokenDecoderServiceId = 'easy_security.token_decoder';
 
         // Use EasyApiToken package directly to build decoder
-        $tokenDecoderDef = (new Definition())
-            ->setFactory([\sprintf('@%s', EasyApiTokenDecoderFactoryInterface::class), 'build'])
+        $tokenDecoderDef = (new Definition(EasyApiTokenDecoderInterface::class))
+            ->setFactory([new Reference(EasyApiTokenDecoderFactoryInterface::class), 'build'])
             ->setArguments([$config['token_decoder']]);
 
-        $container->setDefinition($tokenDecoderServiceId, $tokenDecoderDef);
+        $container->setDefinition(EasyApiTokenDecoderInterface::class, $tokenDecoderDef);
 
-        $def->setArgument(3, new Reference($tokenDecoderServiceId));
-        $def->setArgument(4, new TaggedIteratorArgument(TagsInterface::TAG_CONTEXT_DATA_RESOLVER));
+        $def->setArgument(3, new TaggedIteratorArgument(TagsInterface::TAG_CONTEXT_DATA_RESOLVER));
+    }
+
+    private function registerDeferredContextResolver(ContainerBuilder $container, array $config): void
+    {
+        $def = $container->getDefinition(DeferredContextResolverInterface::class);
+
+        $def->setArgument(1, $config['context_service_id']);
+
+        // Inject resolver to all services depending on it
+        $container
+            ->registerForAutoconfiguration(DeferredContextAwareInterface::class)
+            ->addMethodCall('setDeferredContextResolver', [new Reference(DeferredContextResolverInterface::class)]);
     }
 }

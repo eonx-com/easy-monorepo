@@ -16,7 +16,7 @@ interface ContextResolvingDataInterface
 
     public function getRequest(): Request;
 
-    public function getRoles(): array;
+    public function getRoles(): ?array;
 
     public function getUser(): ?UserInterface;
 

@@ -5,3 +5,6 @@ services:
 
     EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface:
         class: EonX\EasySecurity\Resolvers\ContextResolver
+
+    EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface:
+        class: EonX\EasySecurity\Bridge\Symfony\Helpers\DeferredContextResolver

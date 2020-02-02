@@ -57,7 +57,7 @@ final class ContextResolvingData implements ContextResolvingDataInterface
         return $this->request;
     }
 
-    public function getRoles(): array
+    public function getRoles(): ?array
     {
         return $this->roles;
     }

@@ -62,7 +62,7 @@ final class ProviderFromHeaderDataResolver extends AbstractContextDataResolver
         }
 
         // If current context hasn't required permission, skip
-        if ((new Context($data->getRoles()))->hasPermission($this->permission) === false) {
+        if ((new Context($data->getApiToken(), $data->getRoles()))->hasPermission($this->permission) === false) {
             return $data;
         }
 
