@@ -6,24 +6,12 @@ namespace EonX\EasySecurity\RolesProviders;
 use EonX\EasySecurity\Interfaces\RoleInterface;
 use EonX\EasySecurity\Interfaces\RolesProviderInterface;
 
-final class InMemoryRolesProvider implements RolesProviderInterface
+abstract class AbstractInMemoryRolesProvider implements RolesProviderInterface
 {
     /**
      * @var \EonX\EasySecurity\Interfaces\RoleInterface[]
      */
     private $roles;
-
-    /**
-     * InMemoryRolesProvider constructor.
-     *
-     * @param \EonX\EasySecurity\Interfaces\RoleInterface[] $roles
-     */
-    public function __construct(array $roles)
-    {
-        $this->roles = \array_filter($roles, static function ($role): bool {
-            return $role instanceof RoleInterface;
-        });
-    }
 
     /**
      * Get roles.
@@ -32,7 +20,13 @@ final class InMemoryRolesProvider implements RolesProviderInterface
      */
     public function getRoles(): array
     {
-        return $this->roles;
+        if ($this->roles !== null) {
+            return $this->roles;
+        }
+
+        return $this->roles = \array_filter($this->initRoles(), static function ($role): bool {
+            return $role instanceof RoleInterface;
+        });
     }
 
     /**
@@ -51,7 +45,7 @@ final class InMemoryRolesProvider implements RolesProviderInterface
         $roles = [];
 
         foreach ((array)$identifiers as $identifier) {
-            foreach ($this->roles as $role) {
+            foreach ($this->getRoles() as $role) {
                 if ($role->getIdentifier() === $identifier) {
                     $roles[] = $role;
                 }
@@ -60,4 +54,11 @@ final class InMemoryRolesProvider implements RolesProviderInterface
 
         return $roles;
     }
+
+    /**
+     * Init roles.
+     *
+     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
+     */
+    abstract protected function initRoles(): array;
 }
