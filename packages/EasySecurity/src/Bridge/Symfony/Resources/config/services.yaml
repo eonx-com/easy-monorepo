@@ -3,6 +3,12 @@ services:
         autowire: true
         autoconfigure: true
 
+    EonX\EasySecurity\Bridge\Symfony\Resolvers\DecoratorContextResolver: ~
+
+    EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator:
+        arguments:
+            $contextResolver: '@EonX\EasySecurity\Bridge\Symfony\Resolvers\DecoratorContextResolver'
+
     EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface:
         class: EonX\EasySecurity\Resolvers\ContextResolver
 

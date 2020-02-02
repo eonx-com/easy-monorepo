@@ -7,6 +7,7 @@ use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextAwareInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface;
+use EonX\EasySecurity\Bridge\Symfony\Resolvers\DecoratorContextResolver;
 use EonX\EasySecurity\Bridge\TagsInterface;
 use EonX\EasySecurity\Interfaces\Resolvers\ContextDataResolverInterface;
 use EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface;
@@ -42,6 +43,15 @@ final class EasySecurityExtension extends Extension
 
         $this->registerContextResolver($container, $config);
         $this->registerDeferredContextResolver($container, $config);
+        $this->registerContextResolverDecorator($container, $config);
+        $this->registerContext($container, $config);
+    }
+
+    private function registerContext(ContainerBuilder $container, array $config): void
+    {
+        $def = (new Definition())->setSynthetic(true)->setPublic(true);
+
+        $container->setDefinition($config['context_service_id'], $def);
     }
 
     private function registerContextResolver(ContainerBuilder $container, array $config): void
@@ -57,6 +67,13 @@ final class EasySecurityExtension extends Extension
         $container->setDefinition(EasyApiTokenDecoderInterface::class, $tokenDecoderDef);
 
         $def->setArgument(3, new TaggedIteratorArgument(TagsInterface::TAG_CONTEXT_DATA_RESOLVER));
+    }
+
+    private function registerContextResolverDecorator(ContainerBuilder $container, array $config): void
+    {
+        $def = $container->getDefinition(DecoratorContextResolver::class);
+
+        $def->setArgument(2, $config['context_service_id']);
     }
 
     private function registerDeferredContextResolver(ContainerBuilder $container, array $config): void
