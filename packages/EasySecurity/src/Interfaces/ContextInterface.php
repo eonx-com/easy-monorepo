@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Interfaces;
 
+use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+
 interface ContextInterface
 {
     public const JWT_MANAGE_CLAIM = 'https://eonx.com/user';
@@ -27,6 +29,13 @@ interface ContextInterface
      * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
      */
     public function getRoles(): array;
+
+    /**
+     * Get token.
+     *
+     * @return null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface
+     */
+    public function getToken(): ?EasyApiTokenInterface;
 
     /**
      * Get user.

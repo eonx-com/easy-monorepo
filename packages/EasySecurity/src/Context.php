@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
+use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
 use EonX\EasySecurity\Interfaces\RoleInterface;
@@ -29,23 +30,34 @@ class Context implements ContextInterface
     private $roles;
 
     /**
+     * @var null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface
+     */
+    private $token;
+
+    /**
      * @var null|\EonX\EasySecurity\Interfaces\UserInterface
      */
     private $user;
 
     /**
-     * AbstractContext constructor.
+     * Context constructor.
      *
+     * @param null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface $token
      * @param null|\EonX\EasySecurity\Interfaces\RoleInterface[] $roles
      * @param null|\EonX\EasySecurity\Interfaces\ProviderInterface $provider
      * @param null|\EonX\EasySecurity\Interfaces\UserInterface $user
      */
-    public function __construct(?array $roles = null, ?ProviderInterface $provider = null, ?UserInterface $user = null)
-    {
+    public function __construct(
+        ?EasyApiTokenInterface $token = null,
+        ?array $roles = null,
+        ?ProviderInterface $provider = null,
+        ?UserInterface $user = null
+    ) {
         $this->initRoles(\array_filter($roles ?? [], static function ($role): bool {
             return $role instanceof RoleInterface;
         }));
 
+        $this->token = $token;
         $this->provider = $provider;
         $this->user = $user;
     }
@@ -90,6 +102,16 @@ class Context implements ContextInterface
     public function getRoles(): array
     {
         return $this->roles;
+    }
+
+    /**
+     * Get token.
+     *
+     * @return null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface
+     */
+    public function getToken(): ?EasyApiTokenInterface
+    {
+        return $this->token;
     }
 
     /**

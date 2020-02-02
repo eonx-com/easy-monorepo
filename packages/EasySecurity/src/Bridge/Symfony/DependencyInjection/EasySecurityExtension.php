@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\DependencyInjection;
 
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Bridge\Symfony\Factories\EasyApiTokenDecoderFactory;
 use EonX\EasySecurity\Bridge\TagsInterface;
 use EonX\EasySecurity\Interfaces\Resolvers\ContextDataResolverInterface;
@@ -41,8 +42,9 @@ final class EasySecurityExtension extends Extension
         $def = $container->getDefinition(ContextResolverInterface::class);
         $tokenDecoderServiceId = 'easy_security.token_decoder';
 
+        // Use EasyApiToken package directly to build decoder
         $tokenDecoderDef = (new Definition())
-            ->setFactory(new Reference(EasyApiTokenDecoderFactory::class))
+            ->setFactory([\sprintf('@%s', EasyApiTokenDecoderFactoryInterface::class), 'build'])
             ->setArguments([$config['token_decoder']]);
 
         $container->setDefinition($tokenDecoderServiceId, $tokenDecoderDef);
