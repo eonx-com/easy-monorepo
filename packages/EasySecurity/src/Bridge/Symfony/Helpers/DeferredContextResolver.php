@@ -31,8 +31,16 @@ final class DeferredContextResolver implements DeferredContextResolverInterface
         $this->contextServiceId = $contextServiceId;
     }
 
+    /**
+     * Resolve context.
+     *
+     * @return \EonX\EasySecurity\Interfaces\ContextInterface
+     */
     public function resolve(): ContextInterface
     {
-        return $this->container->get($this->contextServiceId);
+        /** @var \EonX\EasySecurity\Interfaces\ContextInterface $context */
+        $context = $this->container->get($this->contextServiceId);
+
+        return $context;
     }
 }

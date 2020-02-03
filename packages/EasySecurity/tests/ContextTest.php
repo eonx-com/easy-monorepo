@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests;
 
+use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
+use EonX\EasySecurity\Context;
 use EonX\EasySecurity\Permission;
 use EonX\EasySecurity\Role;
+use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
+use EonX\EasySecurity\Tests\Stubs\UserInterfaceStub;
 
 final class ContextTest extends AbstractTestCase
 {
@@ -137,12 +141,19 @@ final class ContextTest extends AbstractTestCase
      */
     public function testContextGetters(array $roles, int $countRoles, int $countPermissions): void
     {
-        $context = new ContextStub($roles);
+        $token = new ApiKeyEasyApiToken('api-key');
+        $provider = new ProviderInterfaceStub('uniqueId');
+        $user = new UserInterfaceStub('uniqueId');
+
+        $context = new Context($token, $roles, $provider, $user);
         $permissions = $context->getPermissions();
 
         self::assertCount($countRoles, $context->getRoles());
         self::assertCount($countPermissions, $permissions);
         self::assertEquals($permissions, $context->getPermissions());
+        self::assertSame($token, $context->getToken());
+        self::assertSame($provider, $context->getProvider());
+        self::assertSame($user, $context->getUser());
     }
 
     /**
@@ -165,7 +176,7 @@ final class ContextTest extends AbstractTestCase
         bool $hasRole,
         bool $hasPermission
     ): void {
-        $context = new ContextStub($roles);
+        $context = new Context(null, $roles);
 
         self::assertEquals($hasRole, $context->hasRole($role));
         self::assertEquals($hasPermission, $context->hasPermission($permission));

@@ -21,6 +21,18 @@ final class InMemoryRolesProviderTest extends AbstractTestCase
             0
         ];
 
+        yield 'Zero role because empty array identifiers' => [
+            [],
+            [],
+            0
+        ];
+
+        yield 'Zero role because empty string identifiers' => [
+            [],
+            '',
+            0
+        ];
+
         yield 'One match using string identifier' => [
             [new Role('app:role', [])],
             'app:role',

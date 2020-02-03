@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Resolvers;
 
 use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
+use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\ProviderProviderInterface;
 use EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface;
 
@@ -45,7 +46,8 @@ final class ProviderFromJwtDataResolver extends AbstractContextDataResolver
 
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
 
-        $providerId = $this->getClaimSafely($token, 'provider');
+        $user = $this->getClaimSafely($token, ContextInterface::JWT_MANAGE_CLAIM, []);
+        $providerId = $user['provider'] ?? null;
 
         // If no providerId given in token, skip
         if (empty($providerId)) {
