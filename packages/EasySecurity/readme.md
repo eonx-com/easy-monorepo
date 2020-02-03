@@ -8,3 +8,4 @@
 ## Documentation
 
 - [Installation in Symfony](docs/symfony_install.md)
+- [Installation in Laravel/Lumen](docs/laravel_install.md)
