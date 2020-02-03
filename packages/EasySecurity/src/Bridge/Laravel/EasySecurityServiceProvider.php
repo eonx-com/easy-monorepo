@@ -35,7 +35,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $this->app->singleton(ContextResolverInterface::class, ContextResolver::class);
         $this->app
-            ->when(ContextResolverInterface::class)
+            ->when(ContextResolver::class)
             ->needs('$contextDataResolvers')
             ->give(function (): iterable {
                 return $this->app->tagged(TagsInterface::TAG_CONTEXT_DATA_RESOLVER);

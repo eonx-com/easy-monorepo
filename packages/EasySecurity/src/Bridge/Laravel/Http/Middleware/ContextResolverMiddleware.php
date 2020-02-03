@@ -5,15 +5,15 @@ namespace EonX\EasySecurity\Bridge\Laravel\Http\Middleware;
 
 use Closure;
 use EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 
 final class ContextResolverMiddleware
 {
     /**
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Illuminate\Contracts\Container\Container
      */
-    private $app;
+    private $container;
 
     /**
      * @var \EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface
@@ -23,12 +23,12 @@ final class ContextResolverMiddleware
     /**
      * ContextResolverMiddleware constructor.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param \Illuminate\Contracts\Container\Container $container
      * @param \EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface $resolver
      */
-    public function __construct(Application $app, ContextResolverInterface $resolver)
+    public function __construct(Container $container, ContextResolverInterface $resolver)
     {
-        $this->app = $app;
+        $this->container = $container;
         $this->resolver = $resolver;
     }
 
@@ -42,7 +42,7 @@ final class ContextResolverMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $this->app->instance(\config('easy-security.context_service_id'), $this->resolver->resolve($request));
+        $this->container->instance(\config('easy-security.context_service_id'), $this->resolver->resolve($request));
 
         return $next($request);
     }
