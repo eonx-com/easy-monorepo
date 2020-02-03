@@ -7,4 +7,4 @@
 
 ## Documentation
 
-Coming soon...
+- [Installation in Symfony](docs/symfony_install.md)
