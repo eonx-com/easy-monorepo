@@ -15,7 +15,7 @@ Laravel uses [Composer][3] to manage its dependencies. You can require this pack
 $ composer require eonx/easy-security
 ```
 
-# Service Provider
+# Package Service Provider
 
 Once the package required, you must tell your application to use it. Laravel uses service providers to do so, if you are
 not familiar with this concept make sure to have a look at the [documentation][4].
@@ -48,7 +48,61 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 $app->register(\EonX\EasySecurity\Bridge\Laravel\EasySecurityServiceProvider::class);
 ```
 
+# Your own Service Provider
+
+The services required for this package to work are the same as described in the [Symfony documentation][5].
+The only difference is how to register them as services within your application. Here comes your Service Provider:
+
+```php
+namespace App\Providers;
+
+use App\Services\Security\Factories\ContextFactory;
+use App\Services\Security\Providers\InMemoryRolesProvider;
+use App\Services\Security\Providers\ProviderProvider;
+use App\Services\Security\Providers\UserProvider;
+use EonX\EasySecurity\Bridge\TagsInterface;
+use EonX\EasySecurity\Interfaces\ContextFactoryInterface;
+use EonX\EasySecurity\Interfaces\ProviderProviderInterface;
+use EonX\EasySecurity\Interfaces\RolesProviderInterface;
+use EonX\EasySecurity\Interfaces\UserProviderInterface;
+use EonX\EasySecurity\Resolvers\ProviderFromHeaderDataResolver;
+use EonX\EasySecurity\Resolvers\ProviderFromJwtDataResolver;
+use EonX\EasySecurity\Resolvers\RolesFromJwtDataResolver;
+use EonX\EasySecurity\Resolvers\UserFromJwtDataResolver;
+use Illuminate\Support\ServiceProvider;
+
+final class SecurityServiceProvider extends ServiceProvider
+{
+    /**
+     * Register security services.
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        $this->app->singleton(ContextFactoryInterface::class, ContextFactory::class);
+        $this->app->singleton(RolesProviderInterface::class, InMemoryRolesProvider::class);
+        $this->app->singleton(ProviderProviderInterface::class, ProviderProvider::class);
+        $this->app->singleton(UserProviderInterface::class, UserProvider::class);
+
+        // DataResolvers
+        $dataResolvers = [
+            RolesFromJwtDataResolver::class,
+            ProviderFromJwtDataResolver::class,
+            ProviderFromHeaderDataResolver::class,
+            UserFromJwtDataResolver::class
+        ];
+
+        foreach ($dataResolvers as $dataResolver) {
+            $this->app->singleton($dataResolver);
+            $this->app->tag($dataResolver, [TagsInterface::TAG_CONTEXT_DATA_RESOLVER]);
+        }
+    }
+}
+```
+
 [1]: https://laravel.com/
 [2]: https://lumen.laravel.com/
 [3]: https://getcomposer.org/
 [4]: https://laravel.com/docs/5.7/providers
+[5]: symfony_install.md
