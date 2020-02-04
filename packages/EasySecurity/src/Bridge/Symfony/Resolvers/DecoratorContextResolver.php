@@ -53,6 +53,8 @@ final class DecoratorContextResolver implements ContextResolverInterface
     {
         $context = $this->decorated->resolve($request);
 
+        \dump('DECORATED RESOLVER', $context);
+
         $this->container->set($this->contextServiceId, $context);
 
         return $context;
