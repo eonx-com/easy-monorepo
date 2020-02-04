@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class EasyApiTokenExtension extends Extension
 {
+    private $processedConfig;
+
     /**
      * Loads a specific configuration.
      *
@@ -26,23 +28,26 @@ final class EasyApiTokenExtension extends Extension
     {
         (new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config')))->load('services.xml');
 
-        // Resolve config
-        $decoders = [];
-        $defaultFactories = null;
+        if ($this->processedConfig === null) {
+            // Resolve config
+            $decoders = [];
+            $defaultFactories = null;
 
-        foreach ($configs as $config) {
-            if (isset($config['decoders'])) {
-                $decoders = $config['decoders'];
+            foreach ($configs as $config) {
+                if (isset($config['decoders'])) {
+                    $decoders = $config['decoders'];
+                }
+                if (isset($config['default_factories'])) {
+                    $defaultFactories = $config['default_factories'];
+                }
             }
-            if (isset($config['default_factories'])) {
-                $defaultFactories = $config['default_factories'];
-            }
+
+            $this->processedConfig = ['decoders' => $decoders, 'default_factories' => $defaultFactories];
+            \var_dump($decoders, $defaultFactories);
         }
 
-        \var_dump($decoders, $defaultFactories);
-
         $definition = $container->getDefinition(EasyApiTokenDecoderFactoryInterface::class);
-        $definition->replaceArgument(0, $decoders);
-        $definition->replaceArgument(1, $defaultFactories);
+        $definition->replaceArgument(0, $this->processedConfig['decoders']);
+        $definition->replaceArgument(1, $this->processedConfig['default_factories']);
     }
 }
