@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Laravel;
 
+use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Bridge\Laravel\Helpers\DeferredContextResolver;
 use EonX\EasySecurity\Bridge\Laravel\Interfaces\DeferredContextResolverInterface;
 use EonX\EasySecurity\Bridge\TagsInterface;
@@ -46,5 +48,9 @@ final class EasySecurityServiceProvider extends ServiceProvider
             ->when(DeferredContextResolverInterface::class)
             ->needs('$contextServiceId')
             ->give(\config('easy-security.context_service_id'));
+
+        $this->app->singleton(EasyApiTokenDecoderInterface::class, function (): EasyApiTokenDecoderInterface {
+            return $this->app->get(EasyApiTokenDecoderFactoryInterface::class)->build(\config('easy-security.token_decoder'));
+        });
     }
 }
