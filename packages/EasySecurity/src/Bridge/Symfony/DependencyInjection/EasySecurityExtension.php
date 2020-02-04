@@ -35,8 +35,6 @@ final class EasySecurityExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        \var_dump($config);
-
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
 
