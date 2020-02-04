@@ -5,14 +5,14 @@ namespace EonX\EasySecurity\Bridge\Laravel\Helpers;
 
 use EonX\EasySecurity\Bridge\Laravel\Interfaces\DeferredContextResolverInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Container\Container;
 
 final class DeferredContextResolver implements DeferredContextResolverInterface
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var \Illuminate\Contracts\Container\Container
      */
-    private $app;
+    private $container;
 
     /**
      * @var string
@@ -22,12 +22,12 @@ final class DeferredContextResolver implements DeferredContextResolverInterface
     /**
      * DeferredContextResolver constructor.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param \Illuminate\Contracts\Container\Container $container
      * @param string $contextServiceId
      */
-    public function __construct(Application $app, string $contextServiceId)
+    public function __construct(Container $container, string $contextServiceId)
     {
-        $this->app = $app;
+        $this->container = $container;
         $this->contextServiceId = $contextServiceId;
     }
 
@@ -39,7 +39,7 @@ final class DeferredContextResolver implements DeferredContextResolverInterface
     public function resolve(): ContextInterface
     {
         /** @var \EonX\EasySecurity\Interfaces\ContextInterface $context */
-        $context = $this->app->get($this->contextServiceId);
+        $context = $this->container->get($this->contextServiceId);
 
         return $context;
     }

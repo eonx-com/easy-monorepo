@@ -45,7 +45,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $this->app->singleton(DeferredContextResolverInterface::class, DeferredContextResolver::class);
         $this->app
-            ->when(DeferredContextResolverInterface::class)
+            ->when(DeferredContextResolver::class)
             ->needs('$contextServiceId')
             ->give(\config('easy-security.context_service_id'));
 
