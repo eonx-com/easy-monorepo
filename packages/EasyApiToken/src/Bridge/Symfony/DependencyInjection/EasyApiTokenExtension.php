@@ -39,6 +39,8 @@ final class EasyApiTokenExtension extends Extension
             }
         }
 
+        \var_dump($decoders, $defaultFactories);
+
         $definition = $container->getDefinition(EasyApiTokenDecoderFactoryInterface::class);
         $definition->replaceArgument(0, $decoders);
         $definition->replaceArgument(1, $defaultFactories);

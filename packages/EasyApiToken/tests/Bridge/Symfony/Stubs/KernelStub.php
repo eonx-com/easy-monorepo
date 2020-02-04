@@ -57,5 +57,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__ . '/config.yaml');
+        $loader->load(__DIR__ . '/config_test.yaml');
     }
 }
