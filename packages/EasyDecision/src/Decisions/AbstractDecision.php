@@ -111,11 +111,6 @@ abstract class AbstractDecision implements DecisionInterface
      */
     public function make(array $input)
     {
-        // If no rules provided, return default output
-        if (empty($this->rules)) {
-            return $this->defaultOutput ?? $this->getDefaultOutput($input);
-        }
-
         // Index "context" cannot be used by users to avoid conflicts
         // because context is injected in expression language rules
         if (isset($input['context'])) {
@@ -126,6 +121,11 @@ abstract class AbstractDecision implements DecisionInterface
 
         $this->input = $input;
         $this->context = $context = new Context(\get_class($this), $input);
+
+        // If no rules provided, return default output
+        if (empty($this->rules)) {
+            return $this->defaultOutput ?? $this->getDefaultOutput($input);
+        }
 
         try {
             // Let children classes handle rules output and define the output
