@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.0.5 - 2020-01-29
+## v2.0.6 - 2020-02-05
+
+### EasyDecision
+
+- [#120] Implement default output when no rules provided
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.5] - 2020-01-29
 
 ### EasySecurity
 
@@ -1002,3 +1012,5 @@
 [v2.0.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.2...v2.0.3
 
 [#119]: https://github.com/eonx-com/easy-monorepo/pull/119
+[#120]: https://github.com/eonx-com/easy-monorepo/pull/120
+[v2.0.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.4...v2.0.5

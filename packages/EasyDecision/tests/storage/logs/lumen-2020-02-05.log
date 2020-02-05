@@ -1,0 +1,50 @@
+[2020-02-05 07:19:10] production.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Class EonX\EasyDecision\Tests\Stubs\DecisionConfigProviderStub contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (EonX\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface::getDefaultOutput) in /Volumes/Dev/repositories/eonx-com/easy-monorepo/packages/EasyDecision/tests/Stubs/DecisionConfigProviderStub.php:11
+Stack trace:
+#0 /Volumes/Dev/repositories/eonx-com/easy-monorepo/vendor/laravel/lumen-framework/src/Concerns/RegistersExceptionHandlers.php(54): Laravel\Lumen\Application->handleShutdown()
+#1 [internal function]: Laravel\Lumen\Application->Laravel\Lumen\Concerns\{closure}()
+#2 {main} {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Class EonX\\EasyDecision\\Tests\\Stubs\\DecisionConfigProviderStub contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (EonX\\EasyDecision\\Bridge\\Common\\Interfaces\\DecisionConfigProviderInterface::getDefaultOutput) at /Volumes/Dev/repositories/eonx-com/easy-monorepo/packages/EasyDecision/tests/Stubs/DecisionConfigProviderStub.php:11)
+[stacktrace]
+#0 /Volumes/Dev/repositories/eonx-com/easy-monorepo/vendor/laravel/lumen-framework/src/Concerns/RegistersExceptionHandlers.php(54): Laravel\\Lumen\\Application->handleShutdown()
+#1 [internal function]: Laravel\\Lumen\\Application->Laravel\\Lumen\\Concerns\\{closure}()
+#2 {main}
+"} 
+[2020-02-05 07:19:10] production.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Class EonX\EasyDecision\Tests\Stubs\DecisionConfigProviderStub contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (EonX\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface::getDefaultOutput) in /Volumes/Dev/repositories/eonx-com/easy-monorepo/packages/EasyDecision/tests/Stubs/DecisionConfigProviderStub.php:11
+Stack trace:
+#0 /Volumes/Dev/repositories/eonx-com/easy-monorepo/vendor/laravel/lumen-framework/src/Concerns/RegistersExceptionHandlers.php(54): Laravel\Lumen\Application->handleShutdown()
+#1 [internal function]: Laravel\Lumen\Application->Laravel\Lumen\Concerns\{closure}()
+#2 {main} {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Class EonX\\EasyDecision\\Tests\\Stubs\\DecisionConfigProviderStub contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (EonX\\EasyDecision\\Bridge\\Common\\Interfaces\\DecisionConfigProviderInterface::getDefaultOutput) at /Volumes/Dev/repositories/eonx-com/easy-monorepo/packages/EasyDecision/tests/Stubs/DecisionConfigProviderStub.php:11)
+[stacktrace]
+#0 /Volumes/Dev/repositories/eonx-com/easy-monorepo/vendor/laravel/lumen-framework/src/Concerns/RegistersExceptionHandlers.php(54): Laravel\\Lumen\\Application->handleShutdown()
+#1 [internal function]: Laravel\\Lumen\\Application->Laravel\\Lumen\\Concerns\\{closure}()
+#2 {main}
+"} 
+[2020-02-05 07:19:10] production.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Class EonX\EasyDecision\Tests\Stubs\DecisionConfigProviderStub contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (EonX\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface::getDefaultOutput) in /Volumes/Dev/repositories/eonx-com/easy-monorepo/packages/EasyDecision/tests/Stubs/DecisionConfigProviderStub.php:11
+Stack trace:
+#0 /Volumes/Dev/repositories/eonx-com/easy-monorepo/vendor/laravel/lumen-framework/src/Concerns/RegistersExceptionHandlers.php(54): Laravel\Lumen\Application->handleShutdown()
+#1 [internal function]: Laravel\Lumen\Application->Laravel\Lumen\Concerns\{closure}()
+#2 {main} {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Class EonX\\EasyDecision\\Tests\\Stubs\\DecisionConfigProviderStub contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (EonX\\EasyDecision\\Bridge\\Common\\Interfaces\\DecisionConfigProviderInterface::getDefaultOutput) at /Volumes/Dev/repositories/eonx-com/easy-monorepo/packages/EasyDecision/tests/Stubs/DecisionConfigProviderStub.php:11)
+[stacktrace]
+#0 /Volumes/Dev/repositories/eonx-com/easy-monorepo/vendor/laravel/lumen-framework/src/Concerns/RegistersExceptionHandlers.php(54): Laravel\\Lumen\\Application->handleShutdown()
+#1 [internal function]: Laravel\\Lumen\\Application->Laravel\\Lumen\\Concerns\\{closure}()
+#2 {main}
+"} 
+[2020-02-05 07:19:10] production.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Class EonX\EasyDecision\Tests\Stubs\DecisionConfigProviderStub contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (EonX\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface::getDefaultOutput) in /Volumes/Dev/repositories/eonx-com/easy-monorepo/packages/EasyDecision/tests/Stubs/DecisionConfigProviderStub.php:11
+Stack trace:
+#0 /Volumes/Dev/repositories/eonx-com/easy-monorepo/vendor/laravel/lumen-framework/src/Concerns/RegistersExceptionHandlers.php(54): Laravel\Lumen\Application->handleShutdown()
+#1 [internal function]: Laravel\Lumen\Application->Laravel\Lumen\Concerns\{closure}()
+#2 {main} {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Class EonX\\EasyDecision\\Tests\\Stubs\\DecisionConfigProviderStub contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (EonX\\EasyDecision\\Bridge\\Common\\Interfaces\\DecisionConfigProviderInterface::getDefaultOutput) at /Volumes/Dev/repositories/eonx-com/easy-monorepo/packages/EasyDecision/tests/Stubs/DecisionConfigProviderStub.php:11)
+[stacktrace]
+#0 /Volumes/Dev/repositories/eonx-com/easy-monorepo/vendor/laravel/lumen-framework/src/Concerns/RegistersExceptionHandlers.php(54): Laravel\\Lumen\\Application->handleShutdown()
+#1 [internal function]: Laravel\\Lumen\\Application->Laravel\\Lumen\\Concerns\\{closure}()
+#2 {main}
+"} 
+[2020-02-05 07:19:10] production.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Class EonX\EasyDecision\Tests\Stubs\DecisionConfigProviderStub contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (EonX\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface::getDefaultOutput) in /Volumes/Dev/repositories/eonx-com/easy-monorepo/packages/EasyDecision/tests/Stubs/DecisionConfigProviderStub.php:11
+Stack trace:
+#0 /Volumes/Dev/repositories/eonx-com/easy-monorepo/vendor/laravel/lumen-framework/src/Concerns/RegistersExceptionHandlers.php(54): Laravel\Lumen\Application->handleShutdown()
+#1 [internal function]: Laravel\Lumen\Application->Laravel\Lumen\Concerns\{closure}()
+#2 {main} {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Class EonX\\EasyDecision\\Tests\\Stubs\\DecisionConfigProviderStub contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (EonX\\EasyDecision\\Bridge\\Common\\Interfaces\\DecisionConfigProviderInterface::getDefaultOutput) at /Volumes/Dev/repositories/eonx-com/easy-monorepo/packages/EasyDecision/tests/Stubs/DecisionConfigProviderStub.php:11)
+[stacktrace]
+#0 /Volumes/Dev/repositories/eonx-com/easy-monorepo/vendor/laravel/lumen-framework/src/Concerns/RegistersExceptionHandlers.php(54): Laravel\\Lumen\\Application->handleShutdown()
+#1 [internal function]: Laravel\\Lumen\\Application->Laravel\\Lumen\\Concerns\\{closure}()
+#2 {main}
+"} 
