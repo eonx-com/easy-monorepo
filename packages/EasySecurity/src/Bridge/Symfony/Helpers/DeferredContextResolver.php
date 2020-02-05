@@ -41,9 +41,6 @@ final class DeferredContextResolver implements DeferredContextResolverInterface
         /** @var \EonX\EasySecurity\Interfaces\ContextInterface $context */
         $context = $this->container->get($this->contextServiceId);
 
-        \dump('DEFERRED RESOLVER CONTAINER HASH', \spl_object_hash($this->container));
-        \dump('DEFERRED RESOLVER CONTEXT HASH', \spl_object_hash($context));
-
         return $context;
     }
 }
