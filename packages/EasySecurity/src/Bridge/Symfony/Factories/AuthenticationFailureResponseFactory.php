@@ -45,7 +45,7 @@ final class AuthenticationFailureResponseFactory implements AuthenticationFailur
         }
 
         $data = [
-            'error' => 'Unauthorized',
+            'message' => 'Unauthorized',
             'code' => JsonResponse::HTTP_UNAUTHORIZED,
             'sub_code' => 0
         ];
