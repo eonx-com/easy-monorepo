@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.0.6 - 2020-02-05
+## v2.0.7 - 2020-02-05
+
+### EasyDecision
+
+- [#121] Fix context exception when decision with no rules
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.6] - 2020-02-05
 
 ### EasyDecision
 
@@ -1014,3 +1024,5 @@
 [#119]: https://github.com/eonx-com/easy-monorepo/pull/119
 [#120]: https://github.com/eonx-com/easy-monorepo/pull/120
 [v2.0.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.4...v2.0.5
+[#121]: https://github.com/eonx-com/easy-monorepo/pull/121
+[v2.0.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.5...v2.0.6
