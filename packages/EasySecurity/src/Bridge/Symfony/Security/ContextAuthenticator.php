@@ -6,6 +6,7 @@ namespace EonX\EasySecurity\Bridge\Symfony\Security;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface;
 use EonX\EasySecurity\Interfaces\UserInterface as EonxUserInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -20,6 +21,11 @@ final class ContextAuthenticator extends AbstractGuardAuthenticator
      * @var \EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface
      */
     private $contextResolver;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * ContextAuthenticator constructor.
@@ -58,17 +64,34 @@ final class ContextAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $data = [
-            'message' => \strtr($exception->getMessageKey(), $exception->getMessageData())
-        ];
+        $this->logger->info('Authentication exception', [
+            'message' => $exception->getMessageKey(),
+            'data' => $exception->getMessageData()
+        ]);
 
-        return new JsonResponse($data, JsonResponse::HTTP_FORBIDDEN);
+        $data = ['error' => 'Unauthorized'];
+
+        return new JsonResponse($data, JsonResponse::HTTP_UNAUTHORIZED);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         // null will let the request continue
         return null;
+    }
+
+    /**
+     * Set logger.
+     *
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return void
+     *
+     * @required
+     */
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
     }
 
     public function start(Request $request, AuthenticationException $authException = null): JsonResponse
