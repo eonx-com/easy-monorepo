@@ -9,11 +9,6 @@ use EonX\EasySecurity\Interfaces\ContextInterface;
 trait DeferredContextAwareTrait
 {
     /**
-     * @var \EonX\EasySecurity\Interfaces\ContextInterface
-     */
-    protected $context;
-
-    /**
      * @var \EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface
      */
     protected $contextResolver;
@@ -37,10 +32,6 @@ trait DeferredContextAwareTrait
      */
     protected function resolveContext(): ContextInterface
     {
-        if ($this->context !== null) {
-            return $this->context;
-        }
-
-        return $this->context = $this->contextResolver->resolve();
+        return $this->contextResolver->resolve();
     }
 }
