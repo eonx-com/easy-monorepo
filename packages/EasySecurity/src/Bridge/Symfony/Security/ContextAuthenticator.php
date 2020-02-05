@@ -69,7 +69,11 @@ final class ContextAuthenticator extends AbstractGuardAuthenticator
             'data' => $exception->getMessageData()
         ]);
 
-        $data = ['error' => 'Unauthorized'];
+        $data = [
+            'error' => 'Unauthorized',
+            'code' => JsonResponse::HTTP_UNAUTHORIZED,
+            'sub_code' => 0
+        ];
 
         return new JsonResponse($data, JsonResponse::HTTP_UNAUTHORIZED);
     }
