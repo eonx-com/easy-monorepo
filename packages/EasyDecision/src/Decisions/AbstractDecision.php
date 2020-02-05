@@ -5,7 +5,6 @@ namespace EonX\EasyDecision\Decisions;
 
 use EonX\EasyDecision\Context;
 use EonX\EasyDecision\Exceptions\ContextNotSetException;
-use EonX\EasyDecision\Exceptions\EmptyRulesException;
 use EonX\EasyDecision\Exceptions\ReservedContextIndexException;
 use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use EonX\EasyDecision\Interfaces\ContextAwareInterface;
@@ -18,6 +17,9 @@ abstract class AbstractDecision implements DecisionInterface
 {
     /** @var \EonX\EasyDecision\Interfaces\ContextInterface */
     private $context;
+
+    /** @var null|mixed */
+    private $defaultOutput;
 
     /** @var mixed[] */
     private $input;
@@ -109,9 +111,9 @@ abstract class AbstractDecision implements DecisionInterface
      */
     public function make(array $input)
     {
-        // Cannot make decision with no rules
+        // If no rules provided, return default output
         if (empty($this->rules)) {
-            throw new EmptyRulesException($this->getExceptionMessage('cannot be made with no rules'));
+            return $this->defaultOutput ?? $this->getDefaultOutput($input);
         }
 
         // Index "context" cannot be used by users to avoid conflicts
@@ -138,6 +140,20 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
+     * Set default output.
+     *
+     * @param null|mixed $defaultOutput
+     *
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function setDefaultOutput($defaultOutput = null): DecisionInterface
+    {
+        $this->defaultOutput = $defaultOutput;
+
+        return $this;
+    }
+
+    /**
      * Set decision name.
      *
      * @param string $name
@@ -157,6 +173,15 @@ abstract class AbstractDecision implements DecisionInterface
      * @return mixed
      */
     abstract protected function doMake();
+
+    /**
+     * Get default output to return if no rules provided.
+     *
+     * @param mixed[] $input
+     *
+     * @return mixed
+     */
+    abstract protected function getDefaultOutput(array $input);
 
     /**
      * Handle rule output.
