@@ -97,6 +97,7 @@ final class DecisionFactory implements DecisionFactoryInterface
      * @param string $type
      * @param mixed[] $providers
      * @param mixed[]|null $params
+     * @param null|mixed $defaultOutput
      *
      * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
@@ -104,7 +105,8 @@ final class DecisionFactory implements DecisionFactoryInterface
         string $decision,
         string $type,
         array $providers,
-        ?array $params = null
+        ?array $params = null,
+        $defaultOutput = null
     ): DecisionInterface {
         return $this->decorated->create(
             new DecisionConfig(
@@ -112,7 +114,8 @@ final class DecisionFactory implements DecisionFactoryInterface
                 $decision,
                 $this->getRuleProviders($providers),
                 $this->getExpressionLanguageConfigFactory()->create($decision),
-                $params
+                $params,
+                $defaultOutput
             )
         );
     }
@@ -135,7 +138,13 @@ final class DecisionFactory implements DecisionFactoryInterface
             throw new InvalidArgumentException(\sprintf('No decision type configured for "%s"', $decision));
         }
 
-        return $this->doCreate($decision, (string)$config['type'], (array)$config['providers'], $params);
+        return $this->doCreate(
+            $decision,
+            (string)$config['type'],
+            (array)$config['providers'],
+            $params,
+            $config['default_output'] ?? null
+        );
     }
 
     /**
@@ -161,7 +170,8 @@ final class DecisionFactory implements DecisionFactoryInterface
                 $decision,
                 $configProvider->getDecisionType(),
                 $configProvider->getRuleProviders(),
-                $params
+                $params,
+                $configProvider->getDefaultOutput()
             );
         }
 

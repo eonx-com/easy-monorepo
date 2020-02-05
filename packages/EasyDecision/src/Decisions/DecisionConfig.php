@@ -14,6 +14,11 @@ final class DecisionConfig implements DecisionConfigInterface
     private $decisionType;
 
     /**
+     * @var null|mixed
+     */
+    private $defaultOutput;
+
+    /**
      * @var null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
      */
     private $expressionLanguageConfig;
@@ -41,19 +46,22 @@ final class DecisionConfig implements DecisionConfigInterface
      * @param \EonX\EasyDecision\Interfaces\RuleProviderInterface[] $ruleProviders
      * @param null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      * @param null|mixed[] $params
+     * @param null|mixed $defaultOutput
      */
     public function __construct(
         string $decisionType,
         string $name,
         array $ruleProviders,
         ?ExpressionLanguageConfigInterface $config = null,
-        ?array $params = null
+        ?array $params = null,
+        $defaultOutput = null
     ) {
         $this->decisionType = $decisionType;
         $this->name = $name;
         $this->ruleProviders = $ruleProviders;
         $this->expressionLanguageConfig = $config;
         $this->params = $params;
+        $this->defaultOutput = $defaultOutput;
     }
 
     /**
@@ -64,6 +72,16 @@ final class DecisionConfig implements DecisionConfigInterface
     public function getDecisionType(): string
     {
         return $this->decisionType;
+    }
+
+    /**
+     * Get default output if no rules provided.
+     *
+     * @return null|mixed
+     */
+    public function getDefaultOutput()
+    {
+        return $this->defaultOutput;
     }
 
     /**

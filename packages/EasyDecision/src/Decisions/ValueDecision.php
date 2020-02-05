@@ -21,11 +21,7 @@ final class ValueDecision extends AbstractDecision
      */
     public function make(array $input)
     {
-        if (isset($input['value']) === false) {
-            throw new MissingValueIndexException($this->getExceptionMessage(
-                'missing "value" index in given input'
-            ));
-        }
+        $this->validateInputHasValue($input);
 
         // Store original value so even if no rule successful run we return at least the input value
         $this->value = $input['value'];
@@ -41,6 +37,20 @@ final class ValueDecision extends AbstractDecision
     protected function doMake()
     {
         return $this->value;
+    }
+
+    /**
+     * Get default output to return if no rules provided.
+     *
+     * @param mixed[] $input
+     *
+     * @return mixed
+     */
+    protected function getDefaultOutput(array $input)
+    {
+        $this->validateInputHasValue($input);
+
+        return $input['value'];
     }
 
     /**
@@ -66,5 +76,23 @@ final class ValueDecision extends AbstractDecision
 
         // Update input for next rules with new value
         $this->updateInput(['value' => $output]);
+    }
+
+    /**
+     * Validate that given input has value.
+     *
+     * @param mixed[] $input
+     *
+     * @return void
+     *
+     * @throws \EonX\EasyDecision\Exceptions\MissingValueIndexException If input doesn't contain value
+     */
+    private function validateInputHasValue(array $input): void
+    {
+        if (isset($input['value']) === false) {
+            throw new MissingValueIndexException($this->getExceptionMessage(
+                'missing "value" index in given input'
+            ));
+        }
     }
 }
