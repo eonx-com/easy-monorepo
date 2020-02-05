@@ -27,7 +27,7 @@ final class UnanimousDecision extends AbstractDecision
      *
      * @return mixed
      */
-    protected function getDefaultOutput(array $input): bool
+    protected function getDefaultOutput(array $input)
     {
         return true;
     }
