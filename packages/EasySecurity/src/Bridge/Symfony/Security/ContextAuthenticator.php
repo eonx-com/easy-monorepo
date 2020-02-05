@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Security;
 
+use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface;
 use EonX\EasySecurity\Interfaces\UserInterface as EonxUserInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,18 +23,22 @@ final class ContextAuthenticator extends AbstractGuardAuthenticator
     private $contextResolver;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var \EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface
      */
-    private $logger;
+    private $failureResponseFactory;
 
     /**
      * ContextAuthenticator constructor.
      *
      * @param \EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface $contextResolver
+     * @param \EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface $failureResponseFactory
      */
-    public function __construct(ContextResolverInterface $contextResolver)
-    {
+    public function __construct(
+        ContextResolverInterface $contextResolver,
+        AuthenticationFailureResponseFactoryInterface $failureResponseFactory
+    ) {
         $this->contextResolver = $contextResolver;
+        $this->failureResponseFactory = $failureResponseFactory;
     }
 
     public function checkCredentials($credentials, UserInterface $user)
@@ -64,43 +68,17 @@ final class ContextAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $this->logger->info('Authentication exception', [
-            'message' => $exception->getMessageKey(),
-            'data' => $exception->getMessageData()
-        ]);
-
-        $data = [
-            'error' => 'Unauthorized',
-            'code' => JsonResponse::HTTP_UNAUTHORIZED,
-            'sub_code' => 0
-        ];
-
-        return new JsonResponse($data, JsonResponse::HTTP_UNAUTHORIZED);
+        return $this->failureResponseFactory->create($request, $exception);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        // null will let the request continue
-        return null;
+        return null; // null will let the request continue
     }
 
-    /**
-     * Set logger.
-     *
-     * @param \Psr\Log\LoggerInterface $logger
-     *
-     * @return void
-     *
-     * @required
-     */
-    public function setLogger(LoggerInterface $logger): void
+    public function start(Request $request, AuthenticationException $authException = null): Response
     {
-        $this->logger = $logger;
-    }
-
-    public function start(Request $request, AuthenticationException $authException = null): JsonResponse
-    {
-        return new JsonResponse(['message' => 'Authentication required'], JsonResponse::HTTP_UNAUTHORIZED);
+        return $this->failureResponseFactory->create($request, $authException);
     }
 
     public function supports(Request $request): bool

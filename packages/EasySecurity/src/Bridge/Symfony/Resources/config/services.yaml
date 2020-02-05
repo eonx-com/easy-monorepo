@@ -9,6 +9,9 @@ services:
         arguments:
             $contextResolver: '@EonX\EasySecurity\Bridge\Symfony\Resolvers\DecoratorContextResolver'
 
+    EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface:
+        class: EonX\EasySecurity\Bridge\Symfony\Factories\AuthenticationFailureResponseFactory
+
     EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface:
         class: EonX\EasySecurity\Resolvers\ContextResolver
 
