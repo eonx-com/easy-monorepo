@@ -53,9 +53,14 @@ final class DecoratorContextResolver implements ContextResolverInterface
     {
         $context = $this->decorated->resolve($request);
 
-        \dump('DECORATED RESOLVER', $context);
+        \dump('DECORATED RESOLVER CONTAINER HASH', \spl_object_hash($this->container));
+        \dump('DECORATED RESOLVER, set, CONTEXT HASH', \spl_object_hash($context));
+        \dump('DECORATED RESOLVER, set', $context);
 
         $this->container->set($this->contextServiceId, $context);
+
+        \dump('DECORATED RESOLVER, get', $this->container->get($this->contextServiceId));
+        \dump('DECORATED RESOLVER, get, CONTEXT HASH', \spl_object_hash($this->container->get($this->contextServiceId)));
 
         return $context;
     }
