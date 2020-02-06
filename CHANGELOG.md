@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.0.7 - 2020-02-05
+## v2.0.8 - 2020-02-06
+
+### EasyDecision
+
+- [#122] Implement optional name on expression language rule
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.7] - 2020-02-05
 
 ### EasyDecision
 
@@ -1026,3 +1036,5 @@
 [v2.0.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.4...v2.0.5
 [#121]: https://github.com/eonx-com/easy-monorepo/pull/121
 [v2.0.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.5...v2.0.6
+[#122]: https://github.com/eonx-com/easy-monorepo/pull/122
+[v2.0.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.6...v2.0.7
