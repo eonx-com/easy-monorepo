@@ -108,7 +108,7 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $decisionAgain = $decisionFactory->create('my-decision');
         $differentDecision = $decisionFactory->create('my-decision-different');
 
-        self::assertEquals(\spl_object_hash($decision), \spl_object_hash($decisionAgain));
+        self::assertNotEquals(\spl_object_hash($decision), \spl_object_hash($decisionAgain));
         self::assertEquals($decision->make([]), $differentDecision->make([]));
     }
 
