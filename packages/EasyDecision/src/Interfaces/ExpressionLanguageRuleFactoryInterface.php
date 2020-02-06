@@ -12,8 +12,9 @@ interface ExpressionLanguageRuleFactoryInterface
      *
      * @param string $expression
      * @param null|int $priority
+     * @param null|string $name
      *
      * @return \EonX\EasyDecision\Rules\ExpressionLanguageRule
      */
-    public function create(string $expression, ?int $priority = null): ExpressionLanguageRule;
+    public function create(string $expression, ?int $priority = null, ?string $name = null): ExpressionLanguageRule;
 }
