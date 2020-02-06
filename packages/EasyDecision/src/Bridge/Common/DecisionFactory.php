@@ -36,11 +36,6 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $expressionLanguageConfigFactory;
 
     /**
-     * @var \EonX\EasyDecision\Interfaces\DecisionInterface[]
-     */
-    private $resolved = [];
-
-    /**
      * DecisionFactory constructor.
      *
      * @param mixed[] $config
@@ -64,10 +59,6 @@ final class DecisionFactory implements DecisionFactoryInterface
      */
     public function create(string $decision, ?array $params = null): DecisionInterface
     {
-        if (isset($this->resolved[$decision])) {
-            return $this->resolved[$decision];
-        }
-
         $config = $this->config['decisions'][$decision] ?? null;
 
         if ($config === null) {
@@ -75,11 +66,11 @@ final class DecisionFactory implements DecisionFactoryInterface
         }
 
         if (\is_array($config)) {
-            return $this->resolved[$decision] = $this->doCreateForConfig($decision, $config, $params);
+            return $this->doCreateForConfig($decision, $config, $params);
         }
 
         if (\is_string($config) || $config instanceof DecisionConfigProviderInterface) {
-            return $this->resolved[$decision] = $this->doCreateForConfigProvider($decision, $config, $params);
+            return $this->doCreateForConfigProvider($decision, $config, $params);
         }
 
         throw new InvalidArgumentException(\sprintf(
