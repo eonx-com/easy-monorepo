@@ -11,14 +11,21 @@ parameters:
             - 'packages/EasyCore/src/Console/Commands/Lumen/ClearConfigCommand.php'
             - 'packages/EasyCore/tests/Bridge/Laravel/CachedConfigurationServiceProviderTest.php'
             - 'packages/EasyLogging/src/Logger.php'
+            - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
+        SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedClassNameInAnnotationSniff.NonFullyQualifiedClassName:
+            - 'packages/EasySecurity/tests/Bridge/Symfony/Stubs/KernelStub.php'
+        SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff.UnusedUse:
+            - 'packages/EasySecurity/tests/Bridge/Symfony/Stubs/KernelStub.php'
         NatePage\Sniffs\Commenting\FunctionCommentSniff.TypeHintMissing:
             - 'packages/EasyApiToken/src/External/Auth0JwtDriver.php'
             - 'packages/EasyCore/src/Console/Commands/Lumen/CacheConfigCommand.php'
             - 'packages/EasyCore/src/Console/Commands/Lumen/ClearConfigCommand.php'
             - 'packages/EasyCore/tests/Bridge/Laravel/CachedConfigurationServiceProviderTest.php'
             - 'packages/EasyLogging/src/Logger.php'
+            - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
         NatePage\Sniffs\Commenting\FunctionCommentSniff.ScalarTypeHintMissing:
             - 'packages/EasyLogging/src/Logger.php'
+            - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
 
 services:
     PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:

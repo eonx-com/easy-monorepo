@@ -50,7 +50,9 @@ final class EasySecurityServiceProvider extends ServiceProvider
             ->give(\config('easy-security.context_service_id'));
 
         $this->app->singleton(EasyApiTokenDecoderInterface::class, function (): EasyApiTokenDecoderInterface {
-            return $this->app->get(EasyApiTokenDecoderFactoryInterface::class)->build(\config('easy-security.token_decoder'));
+            return $this->app->get(EasyApiTokenDecoderFactoryInterface::class)->build(
+                \config('easy-security.token_decoder')
+            );
         });
     }
 }

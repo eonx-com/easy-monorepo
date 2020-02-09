@@ -13,8 +13,8 @@ use EonX\EasySecurity\Tests\RolesProviders\InMemoryRolesProviderStub;
 use EonX\EasySecurity\Tests\Stubs\ContextFactoryInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\ProviderProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\TokenDecoderStub;
-use Symfony\Component\HttpFoundation\Request;
 use stdClass;
+use Symfony\Component\HttpFoundation\Request;
 
 final class ContextResolverTest extends AbstractTestCase
 {
@@ -26,7 +26,7 @@ final class ContextResolverTest extends AbstractTestCase
     public function setResolversProvider(): iterable
     {
         yield 'Filter non data resolver' => [
-              [new stdClass()]
+            [new stdClass()]
         ];
 
         yield 'Resolve successfully' => [
@@ -46,7 +46,7 @@ final class ContextResolverTest extends AbstractTestCase
      *
      * @dataProvider setResolversProvider
      */
-    public function testSetResolvers($resolvers): void
+    public function testSetResolvers(iterable $resolvers): void
     {
         $resolver = new ContextResolver(
             new ContextFactoryInterfaceStub(),

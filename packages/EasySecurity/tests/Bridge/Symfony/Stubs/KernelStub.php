@@ -13,9 +13,9 @@ final class KernelStub extends Kernel
     /**
      * Returns an array of bundles to register.
      *
-     * @return iterable|BundleInterface[] An iterable of bundle instances
+     * @return iterable<BundleInterface>|BundleInterface[] An iterable of bundle instances
      */
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         yield new EasySecurityBundle();
     }

@@ -46,7 +46,7 @@ final class ContextResolver implements ContextResolverInterface
         ContextFactoryInterface $contextFactory,
         EasyPsr7FactoryInterface $psr7Factory,
         EasyApiTokenDecoderInterface $tokenDecoder,
-        $contextDataResolvers
+        iterable $contextDataResolvers
     ) {
         $this->contextFactory = $contextFactory;
         $this->psr7Factory = $psr7Factory;
@@ -83,7 +83,7 @@ final class ContextResolver implements ContextResolverInterface
      *
      * @return void
      */
-    private function setDataResolvers($resolvers): void
+    private function setDataResolvers(iterable $resolvers): void
     {
         $resolvers = $resolvers instanceof Traversable ? \iterator_to_array($resolvers) : (array)$resolvers;
 

@@ -39,7 +39,9 @@ final class EasySecurityExtension extends Extension
         $loader->load('services.yaml');
 
         // Register context data resolvers for auto tagging
-        $container->registerForAutoconfiguration(ContextDataResolverInterface::class)->addTag(TagsInterface::TAG_CONTEXT_DATA_RESOLVER);
+        $container
+            ->registerForAutoconfiguration(ContextDataResolverInterface::class)
+            ->addTag(TagsInterface::TAG_CONTEXT_DATA_RESOLVER);
 
         $this->registerContextResolver($container, $config);
         $this->registerDeferredContextResolver($container, $config);
