@@ -237,6 +237,15 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         $this->callSubscriber($subscriber, $metadata, $unitOfWork);
 
         self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
+
+        // Test that a second call with no extra UnitOfWork changes
+        // will result in an empty result.
+
+        $this->callSubscriber($subscriber, $metadata);
+
+        // The dispatcher stub does not reset the calls between the subscriber calls
+        // so the expected array contains the original expected event.
+        self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
     }
 
     /**
