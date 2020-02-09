@@ -93,6 +93,7 @@ final class EntityChangeSubscriber implements EventSubscriber
         // Reset the changes array. This listener is intentionally stateful and we start
         // from an empty change set.
         $this->changes = [];
+        $this->inserts = [];
 
         $entityManager = $eventArgs->getEntityManager();
         $unitOfWork = $entityManager->getUnitOfWork();
