@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasySecurity;
 
 use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasySecurity\Exceptions\NoProviderInContextException;
+use EonX\EasySecurity\Exceptions\NoUserInContextException;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
 use EonX\EasySecurity\Interfaces\RoleInterface;
@@ -95,6 +97,22 @@ class Context implements ContextInterface
     }
 
     /**
+     * Get provider or fail.
+     *
+     * @return \EonX\EasySecurity\Interfaces\ProviderInterface
+     *
+     * @throws \EonX\EasySecurity\Exceptions\NoProviderInContextException
+     */
+    public function getProviderOrFail(): ProviderInterface
+    {
+        if ($this->provider !== null) {
+            return $this->provider;
+        }
+
+        throw new NoProviderInContextException('No provider in context');
+    }
+
+    /**
      * Get roles.
      *
      * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
@@ -122,6 +140,22 @@ class Context implements ContextInterface
     public function getUser(): ?UserInterface
     {
         return $this->user;
+    }
+
+    /**
+     * Get user or fail.
+     *
+     * @return \EonX\EasySecurity\Interfaces\UserInterface
+     *
+     * @throws \EonX\EasySecurity\Exceptions\NoUserInContextException
+     */
+    public function getUserOrFail(): UserInterface
+    {
+        if ($this->user !== null) {
+            return $this->user;
+        }
+
+        throw new NoUserInContextException('No user in context');
     }
 
     /**

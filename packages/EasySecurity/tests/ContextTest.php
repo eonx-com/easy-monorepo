@@ -5,6 +5,8 @@ namespace EonX\EasySecurity\Tests;
 
 use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
 use EonX\EasySecurity\Context;
+use EonX\EasySecurity\Exceptions\NoProviderInContextException;
+use EonX\EasySecurity\Exceptions\NoUserInContextException;
 use EonX\EasySecurity\Permission;
 use EonX\EasySecurity\Role;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
@@ -126,6 +128,30 @@ final class ContextTest extends AbstractTestCase
             true,
             true
         ];
+    }
+
+    /**
+     * Context should throw an exception if no provider set.
+     *
+     * @return void
+     */
+    public function testContextGetProviderOrFail(): void
+    {
+        $this->expectException(NoProviderInContextException::class);
+
+        (new Context())->getProviderOrFail();
+    }
+
+    /**
+     * Context should throw an exception if no user set.
+     *
+     * @return void
+     */
+    public function testContextGetUserOrFail(): void
+    {
+        $this->expectException(NoUserInContextException::class);
+
+        (new Context())->getUserOrFail();
     }
 
     /**

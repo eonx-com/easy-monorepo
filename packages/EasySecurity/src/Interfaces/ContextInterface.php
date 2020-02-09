@@ -24,6 +24,15 @@ interface ContextInterface
     public function getProvider(): ?ProviderInterface;
 
     /**
+     * Get provider or fail.
+     *
+     * @return \EonX\EasySecurity\Interfaces\ProviderInterface
+     *
+     * @throws \EonX\EasySecurity\Exceptions\NoProviderInContextException
+     */
+    public function getProviderOrFail(): ProviderInterface;
+
+    /**
      * Get roles.
      *
      * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
@@ -43,6 +52,15 @@ interface ContextInterface
      * @return null|\EonX\EasySecurity\Interfaces\UserInterface
      */
     public function getUser(): ?UserInterface;
+
+    /**
+     * Get user or fail.
+     *
+     * @return \EonX\EasySecurity\Interfaces\UserInterface
+     *
+     * @throws \EonX\EasySecurity\Exceptions\NoUserInContextException
+     */
+    public function getUserOrFail(): UserInterface;
 
     /**
      * Check if context has given permission.
