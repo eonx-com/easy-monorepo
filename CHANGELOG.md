@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.0.9 - 2020-02-06
+## v2.0.10 - 2020-02-09
+
+### EasyEntityChange
+
+- [#124] Ensure inserts are reset on each flush, Thanks to [@merk]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.9] - 2020-02-06
 
 ### EasyDecision
 
@@ -1050,3 +1060,5 @@
 [v2.0.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.6...v2.0.7
 [#123]: https://github.com/eonx-com/easy-monorepo/pull/123
 [v2.0.8]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.7...v2.0.8
+[#124]: https://github.com/eonx-com/easy-monorepo/pull/124
+[v2.0.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.8...v2.0.9
