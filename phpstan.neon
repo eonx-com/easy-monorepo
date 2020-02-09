@@ -57,6 +57,7 @@ parameters:
         - message: '#Call to method getErrors\(\) on an unknown class App\\Exceptions\\EntityValidationFailedException.#'
           path: packages/EasyLogging/src/ContextModifiers
 
+        # EasyRepository
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$repository \(Doctrine\\ORM\\EntityRepository\) does not accept Doctrine\\Persistence\\ObjectRepository.#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM
 
@@ -75,7 +76,11 @@ parameters:
         - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
           path: packages/EasyRepository/tests
 
-        - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\PermissionInterface>, array<int, EonX\\EasySecurity\\Permission\|stdClass\|string> given.#'
+        # EasySecurity
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
+          path: packages/EasySecurity/src/Bridge/Symfony/DependencyInjection
+
+        - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\PermissionInterface\|string>, array<int, EonX\\EasySecurity\\Permission\|stdClass\|string> given.#'
           path: packages/EasySecurity/tests
 
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'

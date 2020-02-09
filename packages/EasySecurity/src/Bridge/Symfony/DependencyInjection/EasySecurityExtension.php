@@ -47,6 +47,14 @@ final class EasySecurityExtension extends Extension
         $this->registerContext($container, $config);
     }
 
+    /**
+     * Register context.
+     *
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param mixed[] $config
+     *
+     * @return void
+     */
     private function registerContext(ContainerBuilder $container, array $config): void
     {
         $def = (new Definition())->setSynthetic(true)->setPublic(true);
@@ -54,6 +62,14 @@ final class EasySecurityExtension extends Extension
         $container->setDefinition($config['context_service_id'], $def);
     }
 
+    /**
+     * Register context resolver.
+     *
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param mixed[] $config
+     *
+     * @return void
+     */
     private function registerContextResolver(ContainerBuilder $container, array $config): void
     {
         // Define dependencies for context resolver
@@ -69,6 +85,14 @@ final class EasySecurityExtension extends Extension
         $def->setArgument(3, new TaggedIteratorArgument(TagsInterface::TAG_CONTEXT_DATA_RESOLVER));
     }
 
+    /**
+     * Register context resolver decorator.
+     *
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param mixed[] $config
+     *
+     * @return void
+     */
     private function registerContextResolverDecorator(ContainerBuilder $container, array $config): void
     {
         $def = $container->getDefinition(DecoratorContextResolver::class);
@@ -76,6 +100,14 @@ final class EasySecurityExtension extends Extension
         $def->setArgument(2, $config['context_service_id']);
     }
 
+    /**
+     * Register deferred context resolver.
+     *
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param mixed[] $config
+     *
+     * @return void
+     */
     private function registerDeferredContextResolver(ContainerBuilder $container, array $config): void
     {
         $def = $container->getDefinition(DeferredContextResolverInterface::class);

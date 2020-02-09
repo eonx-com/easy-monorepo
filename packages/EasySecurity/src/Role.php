@@ -32,7 +32,7 @@ final class Role implements RoleInterface
      * Role constructor.
      *
      * @param string $identifier
-     * @param \EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
+     * @param string[]|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
      * @param null|string $name
      * @param null|mixed[] $metadata
      */
