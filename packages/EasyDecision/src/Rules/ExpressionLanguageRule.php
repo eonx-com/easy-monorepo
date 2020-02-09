@@ -20,6 +20,11 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     private $expression;
 
     /**
+     * @var null|string
+     */
+    private $name;
+
+    /**
      * @var int
      */
     private $priority;
@@ -29,11 +34,13 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
      *
      * @param string $expression
      * @param null|int $priority
+     * @param null|string $name
      */
-    public function __construct(string $expression, ?int $priority = null)
+    public function __construct(string $expression, ?int $priority = null, ?string $name = null)
     {
         $this->expression = $expression;
         $this->priority = $priority ?? 0;
+        $this->name = $name;
     }
 
     /**
@@ -79,6 +86,6 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
      */
     public function toString(): string
     {
-        return $this->expression;
+        return $this->name ?? $this->expression;
     }
 }

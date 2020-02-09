@@ -62,12 +62,16 @@ abstract class AbstractTestCase extends TestCase
      *
      * @param string $expression
      * @param null|int $priority
+     * @param null|string $name
      *
      * @return \EonX\EasyDecision\Interfaces\RuleInterface
      */
-    protected function createLanguageRule(string $expression, ?int $priority = null): RuleInterface
-    {
-        return $this->getLanguageRuleFactory()->create($expression, $priority);
+    protected function createLanguageRule(
+        string $expression,
+        ?int $priority = null,
+        ?string $name = null
+    ): RuleInterface {
+        return $this->getLanguageRuleFactory()->create($expression, $priority, $name);
     }
 
     /**

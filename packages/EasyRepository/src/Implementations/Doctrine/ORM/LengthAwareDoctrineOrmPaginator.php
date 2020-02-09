@@ -9,7 +9,7 @@ use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 final class LengthAwareDoctrineOrmPaginator implements LengthAwarePaginatorInterface
 {
     /**
-     * @var \Doctrine\ORM\Tools\Pagination\Paginator
+     * @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed>
      */
     private $doctrinePaginator;
 
@@ -26,7 +26,7 @@ final class LengthAwareDoctrineOrmPaginator implements LengthAwarePaginatorInter
     /**
      * LengthAwareDoctrineOrmPaginator constructor.
      *
-     * @param \Doctrine\ORM\Tools\Pagination\Paginator $doctrinePaginator
+     * @param \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator
      * @param int $start
      * @param int $size
      */

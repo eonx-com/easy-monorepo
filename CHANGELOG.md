@@ -2,7 +2,89 @@
 
 <!-- dumped content start -->
 
-## v2.0.2 - 2020-01-14
+## v2.0.9 - 2020-02-06
+
+### EasyDecision
+
+- [#123] Do not cache decision in factory
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.8] - 2020-02-06
+
+### EasyDecision
+
+- [#122] Implement optional name on expression language rule
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.7] - 2020-02-05
+
+### EasyDecision
+
+- [#121] Fix context exception when decision with no rules
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.6] - 2020-02-05
+
+### EasyDecision
+
+- [#120] Implement default output when no rules provided
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.5] - 2020-01-29
+
+### EasySecurity
+
+- [#119] Make context abstract as each app must define their own context
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.4] - 2020-01-30
+
+- [#117] Clean-up dependencies versions
+
+### EasyApiToken
+
+- [#116] Allow to retrieve original token
+
+### EasySecurity
+
+- [#118] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.3] - 2020-01-17
+
+- [#114] Feature/clean up repo
+
+### EasyDecision
+
+- [#113] POIN-426-update-available-expressions-spelling, Thanks to [@skrut]
+
+### EasyLogging
+
+- [#115] Check shouldReport if the exception is throwable, Thanks to [@merk]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.2] - 2020-01-14
 
 ### EasyLogging
 
@@ -947,3 +1029,24 @@
 
 [#112]: https://github.com/eonx-com/easy-monorepo/pull/112
 [v2.0.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.0...v2.0.1
+[#115]: https://github.com/eonx-com/easy-monorepo/pull/115
+[#114]: https://github.com/eonx-com/easy-monorepo/pull/114
+[#113]: https://github.com/eonx-com/easy-monorepo/pull/113
+[@skrut]: https://github.com/skrut
+[v2.0.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.1...v2.0.2
+
+[#118]: https://github.com/eonx-com/easy-monorepo/pull/118
+[#117]: https://github.com/eonx-com/easy-monorepo/pull/117
+[#116]: https://github.com/eonx-com/easy-monorepo/pull/116
+[v2.0.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.3...v2.0.4
+[v2.0.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.2...v2.0.3
+
+[#119]: https://github.com/eonx-com/easy-monorepo/pull/119
+[#120]: https://github.com/eonx-com/easy-monorepo/pull/120
+[v2.0.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.4...v2.0.5
+[#121]: https://github.com/eonx-com/easy-monorepo/pull/121
+[v2.0.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.5...v2.0.6
+[#122]: https://github.com/eonx-com/easy-monorepo/pull/122
+[v2.0.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.6...v2.0.7
+[#123]: https://github.com/eonx-com/easy-monorepo/pull/123
+[v2.0.8]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.7...v2.0.8

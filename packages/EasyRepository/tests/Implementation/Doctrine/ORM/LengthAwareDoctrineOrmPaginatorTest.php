@@ -17,7 +17,7 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
      */
     public function testGettersReturnExpectedValues(): void
     {
-        /** @var \Doctrine\ORM\Tools\Pagination\Paginator $doctrinePaginator */
+        /** @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator */
         $doctrinePaginator = $this->mockDoctrinePaginator();
         $paginator = new LengthAwareDoctrineOrmPaginator($doctrinePaginator, 1, 2);
 

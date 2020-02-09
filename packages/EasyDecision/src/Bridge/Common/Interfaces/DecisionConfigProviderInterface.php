@@ -13,6 +13,13 @@ interface DecisionConfigProviderInterface
     public function getDecisionType(): string;
 
     /**
+     * Get decision default output.
+     *
+     * @return null|mixed
+     */
+    public function getDefaultOutput();
+
+    /**
      * Get expression functions providers list.
      *
      * @return null|mixed[]

@@ -36,11 +36,6 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $expressionLanguageConfigFactory;
 
     /**
-     * @var \EonX\EasyDecision\Interfaces\DecisionInterface[]
-     */
-    private $resolved = [];
-
-    /**
      * DecisionFactory constructor.
      *
      * @param mixed[] $config
@@ -64,10 +59,6 @@ final class DecisionFactory implements DecisionFactoryInterface
      */
     public function create(string $decision, ?array $params = null): DecisionInterface
     {
-        if (isset($this->resolved[$decision])) {
-            return $this->resolved[$decision];
-        }
-
         $config = $this->config['decisions'][$decision] ?? null;
 
         if ($config === null) {
@@ -75,11 +66,11 @@ final class DecisionFactory implements DecisionFactoryInterface
         }
 
         if (\is_array($config)) {
-            return $this->resolved[$decision] = $this->doCreateForConfig($decision, $config, $params);
+            return $this->doCreateForConfig($decision, $config, $params);
         }
 
         if (\is_string($config) || $config instanceof DecisionConfigProviderInterface) {
-            return $this->resolved[$decision] = $this->doCreateForConfigProvider($decision, $config, $params);
+            return $this->doCreateForConfigProvider($decision, $config, $params);
         }
 
         throw new InvalidArgumentException(\sprintf(
@@ -97,6 +88,7 @@ final class DecisionFactory implements DecisionFactoryInterface
      * @param string $type
      * @param mixed[] $providers
      * @param mixed[]|null $params
+     * @param null|mixed $defaultOutput
      *
      * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
@@ -104,7 +96,8 @@ final class DecisionFactory implements DecisionFactoryInterface
         string $decision,
         string $type,
         array $providers,
-        ?array $params = null
+        ?array $params = null,
+        $defaultOutput = null
     ): DecisionInterface {
         return $this->decorated->create(
             new DecisionConfig(
@@ -112,7 +105,8 @@ final class DecisionFactory implements DecisionFactoryInterface
                 $decision,
                 $this->getRuleProviders($providers),
                 $this->getExpressionLanguageConfigFactory()->create($decision),
-                $params
+                $params,
+                $defaultOutput
             )
         );
     }
@@ -135,7 +129,13 @@ final class DecisionFactory implements DecisionFactoryInterface
             throw new InvalidArgumentException(\sprintf('No decision type configured for "%s"', $decision));
         }
 
-        return $this->doCreate($decision, (string)$config['type'], (array)$config['providers'], $params);
+        return $this->doCreate(
+            $decision,
+            (string)$config['type'],
+            (array)$config['providers'],
+            $params,
+            $config['default_output'] ?? null
+        );
     }
 
     /**
@@ -161,7 +161,8 @@ final class DecisionFactory implements DecisionFactoryInterface
                 $decision,
                 $configProvider->getDecisionType(),
                 $configProvider->getRuleProviders(),
-                $params
+                $params,
+                $configProvider->getDefaultOutput()
             );
         }
 
