@@ -3,8 +3,6 @@ services:
         autowire: true
         autoconfigure: true
 
-    EonX\EasySecurity\Bridge\Symfony\Resolvers\DecoratorContextResolver: ~
-
     EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator:
         arguments:
             $contextResolver: '@EonX\EasySecurity\Bridge\Symfony\Resolvers\DecoratorContextResolver'
@@ -12,8 +10,11 @@ services:
     EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface:
         class: EonX\EasySecurity\Bridge\Symfony\Factories\AuthenticationFailureResponseFactory
 
-    EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface:
-        class: EonX\EasySecurity\Resolvers\ContextResolver
+    EonX\EasySecurity\Interfaces\ContextFactoryInterface:
+        class: EonX\EasySecurity\ContextFactory
+
+    EonX\EasySecurity\Interfaces\ContextResolverInterface:
+        class: EonX\EasySecurity\ContextResolver
 
     EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface:
         class: EonX\EasySecurity\Bridge\Symfony\Helpers\DeferredContextResolver

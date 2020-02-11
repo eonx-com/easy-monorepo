@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Resolvers;
+namespace EonX\EasySecurity\Modifiers;
 
 use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\ProviderProviderInterface;
-use EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-final class ProviderFromJwtDataResolver extends AbstractContextDataResolver
+final class ProviderFromJwtModifier extends AbstractContextModifier
 {
     /**
      * @var \EonX\EasySecurity\Interfaces\ProviderProviderInterface
@@ -29,19 +29,20 @@ final class ProviderFromJwtDataResolver extends AbstractContextDataResolver
     }
 
     /**
-     * Resolve context data.
+     * Modify given context for given request.
      *
-     * @param \EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface $data
+     * @param \EonX\EasySecurity\Interfaces\ContextInterface $context
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return \EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface
+     * @return void
      */
-    public function resolve(ContextResolvingDataInterface $data): ContextResolvingDataInterface
+    public function modify(ContextInterface $context, Request $request): void
     {
-        $token = $data->getApiToken();
+        $token = $context->getToken();
 
         // Work only for JWT
         if ($token instanceof JwtEasyApiTokenInterface === false) {
-            return $data;
+            return;
         }
 
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
@@ -51,11 +52,9 @@ final class ProviderFromJwtDataResolver extends AbstractContextDataResolver
 
         // If no providerId given in token, skip
         if (empty($providerId)) {
-            return $data;
+            return;
         }
 
-        $data->setProvider($this->providerProvider->getProvider($providerId));
-
-        return $data;
+        $context->setProvider($this->providerProvider->getProvider($providerId));
     }
 }

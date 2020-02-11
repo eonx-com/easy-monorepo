@@ -1,89 +1,95 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Tests\Resolvers;
+namespace EonX\EasySecurity\Tests\Modifiers;
 
 use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
 use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasySecurity\Context;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
 use EonX\EasySecurity\Interfaces\ProviderProviderInterface;
-use EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface;
-use EonX\EasySecurity\Resolvers\ProviderFromJwtDataResolver;
+use EonX\EasySecurity\Modifiers\ProviderFromJwtModifier;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\ProviderProviderInterfaceStub;
+use Symfony\Component\HttpFoundation\Request;
 
-final class ProviderFromJwtDataResolverTest extends AbstractTestCase
+final class ProviderFromJwtModifierTest extends AbstractTestCase
 {
     /**
-     * Data provider resolver.
+     * Data provider modify.
      *
      * @return iterable<mixed>
      */
-    public function resolveProvider(): iterable
+    public function modifyProvider(): iterable
     {
         yield 'No provider resolved because not token' => [
-            new ProviderProviderInterfaceStub(),
-            $this->createContextResolvingData(),
-            null
+            new ProviderProviderInterfaceStub()
         ];
+
+        $context = new Context();
+        $context->setToken(new ApiKeyEasyApiToken('api-key'));
 
         yield 'No provider resolved because token not jwt' => [
             new ProviderProviderInterfaceStub(),
-            $this->createContextResolvingData(new ApiKeyEasyApiToken('api-key')),
-            null
+            $context
         ];
+
+        $context->setToken(new JwtEasyApiToken([], 'jwt'));
 
         yield 'No provider resolved because no provider claim' => [
             new ProviderProviderInterfaceStub(),
-            $this->createContextResolvingData(new JwtEasyApiToken([], 'jwt')),
-            null
+            $context
         ];
+
+        $context->setToken(new JwtEasyApiToken([ContextInterface::JWT_MANAGE_CLAIM => ['provider' => '']], 'jwt'));
 
         yield 'No provider resolved because provider claim empty' => [
             new ProviderProviderInterfaceStub(),
-            $this->createContextResolvingData(new JwtEasyApiToken([
-                ContextInterface::JWT_MANAGE_CLAIM => ['provider' => '']
-            ], 'jwt')),
-            null
+            $context
         ];
+
+        $context->setToken(new JwtEasyApiToken([
+            ContextInterface::JWT_MANAGE_CLAIM => ['provider' => 'provider-id']
+        ], 'jwt'));
 
         yield 'No provider resolved because provider provider returns null' => [
             new ProviderProviderInterfaceStub(),
-            $this->createContextResolvingData(new JwtEasyApiToken([
-                ContextInterface::JWT_MANAGE_CLAIM => ['provider' => 'provider-id']
-            ], 'jwt')),
-            null
+            $context
         ];
+
+        $context->setToken(new JwtEasyApiToken([
+            ContextInterface::JWT_MANAGE_CLAIM => ['provider' => 'provider-id']
+        ], 'jwt'));
 
         yield 'Provider resolved' => [
             new ProviderProviderInterfaceStub($provider = new ProviderInterfaceStub('provider-id')),
-            $this->createContextResolvingData(new JwtEasyApiToken([
-                ContextInterface::JWT_MANAGE_CLAIM => ['provider' => 'provider-id']
-            ], 'jwt')),
+            $context,
             $provider
         ];
     }
 
     /**
-     * Test resolve.
+     * Test modify.
      *
      * @param \EonX\EasySecurity\Interfaces\ProviderProviderInterface $providerProvider
-     * @param \EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface $data
+     * @param null|\EonX\EasySecurity\Interfaces\ContextInterface $context
      * @param null|\EonX\EasySecurity\Interfaces\ProviderInterface $provider
      *
      * @return void
      *
-     * @dataProvider resolveProvider
+     * @dataProvider modifyProvider
      */
-    public function testResolve(
+    public function testModify(
         ProviderProviderInterface $providerProvider,
-        ContextResolvingDataInterface $data,
+        ?ContextInterface $context = null,
         ?ProviderInterface $provider = null
     ): void {
-        $resolver = new ProviderFromJwtDataResolver($providerProvider);
+        $context = $context ?? new Context();
 
-        self::assertSame($provider, $resolver->resolve($data)->getProvider());
+        (new ProviderFromJwtModifier($providerProvider))->modify($context, new Request());
+
+        self::assertSame($provider, $context->getProvider());
     }
 }

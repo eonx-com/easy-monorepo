@@ -5,7 +5,10 @@ namespace EonX\EasySecurity\Tests\Bridge\Symfony\Helpers;
 
 use EonX\EasySecurity\Bridge\Symfony\Helpers\DeferredContextResolver;
 use EonX\EasySecurity\Context;
+use EonX\EasySecurity\Interfaces\ContextFactoryInterface;
+use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
+use EonX\EasySecurity\Tests\Stubs\ContextFactoryInterfaceStub;
 
 final class DeferredContextResolverTest extends AbstractSymfonyTestCase
 {
@@ -16,13 +19,10 @@ final class DeferredContextResolverTest extends AbstractSymfonyTestCase
      */
     public function testResolve(): void
     {
-        $context = new Context();
         $container = $this->getKernel()->getContainer();
-
-        $container->set('service-id', $context);
 
         $helper = new DeferredContextResolver($container, 'service-id');
 
-        self::assertSame($context, $helper->resolve());
+        self::assertInstanceOf(ContextInterface::class, $helper->resolve());
     }
 }

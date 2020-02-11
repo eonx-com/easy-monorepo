@@ -8,8 +8,10 @@ use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Bridge\Laravel\Helpers\DeferredContextResolver;
 use EonX\EasySecurity\Bridge\Laravel\Interfaces\DeferredContextResolverInterface;
 use EonX\EasySecurity\Bridge\TagsInterface;
-use EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface;
-use EonX\EasySecurity\Resolvers\ContextResolver;
+use EonX\EasySecurity\ContextResolver;
+use EonX\EasySecurity\Interfaces\ContextFactoryInterface;
+use EonX\EasySecurity\Interfaces\ContextInterface;
+use EonX\EasySecurity\Interfaces\ContextResolverInterface;
 use Illuminate\Support\ServiceProvider;
 
 final class EasySecurityServiceProvider extends ServiceProvider
@@ -35,19 +37,26 @@ final class EasySecurityServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-security.php', 'easy-security');
 
+        $contextServiceId = \config('easy-security.context_service_id');
+
+        $this->app->singleton($contextServiceId, function (): ContextInterface {
+            return $this->app->get(ContextFactoryInterface::class)->create();
+        });
+        $this->app->alias($contextServiceId, ContextInterface::class);
+
         $this->app->singleton(ContextResolverInterface::class, ContextResolver::class);
         $this->app
             ->when(ContextResolver::class)
-            ->needs('$contextDataResolvers')
+            ->needs('$contextModifiers')
             ->give(function (): iterable {
-                return $this->app->tagged(TagsInterface::TAG_CONTEXT_DATA_RESOLVER);
+                return $this->app->tagged(TagsInterface::TAG_CONTEXT_MODIFIER);
             });
 
         $this->app->singleton(DeferredContextResolverInterface::class, DeferredContextResolver::class);
         $this->app
             ->when(DeferredContextResolver::class)
             ->needs('$contextServiceId')
-            ->give(\config('easy-security.context_service_id'));
+            ->give($contextServiceId);
 
         $this->app->singleton(EasyApiTokenDecoderInterface::class, function (): EasyApiTokenDecoderInterface {
             return $this->app->get(EasyApiTokenDecoderFactoryInterface::class)->build(

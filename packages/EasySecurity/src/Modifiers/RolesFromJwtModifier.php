@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Resolvers;
+namespace EonX\EasySecurity\Modifiers;
 
 use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
-use EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface;
 use EonX\EasySecurity\Interfaces\RolesProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-final class RolesFromJwtDataResolver extends AbstractContextDataResolver
+final class RolesFromJwtModifier extends AbstractContextModifier
 {
     /**
      * @var \EonX\EasySecurity\Interfaces\RolesProviderInterface
@@ -29,19 +29,20 @@ final class RolesFromJwtDataResolver extends AbstractContextDataResolver
     }
 
     /**
-     * Resolve context data.
+     * Modify given context for given request.
      *
-     * @param \EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface $data
+     * @param \EonX\EasySecurity\Interfaces\ContextInterface $context
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return \EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface
+     * @return void
      */
-    public function resolve(ContextResolvingDataInterface $data): ContextResolvingDataInterface
+    public function modify(ContextInterface $context, Request $request): void
     {
-        $token = $data->getApiToken();
+        $token = $context->getToken();
 
         // Work only for JWT
         if ($token instanceof JwtEasyApiTokenInterface === false) {
-            return $data;
+            return;
         }
 
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
@@ -49,8 +50,6 @@ final class RolesFromJwtDataResolver extends AbstractContextDataResolver
         $user = $this->getClaimSafely($token, ContextInterface::JWT_MANAGE_CLAIM, []);
         $roles = $this->rolesProvider->getRolesByIdentifiers($user['roles'] ?? []);
 
-        $data->setRoles(empty($roles) === false ? $roles : null);
-
-        return $data;
+        $context->setRoles(empty($roles) === false ? $roles : null);
     }
 }

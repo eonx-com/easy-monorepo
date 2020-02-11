@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Resolvers;
+namespace EonX\EasySecurity\Modifiers;
 
 use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
 use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
-use EonX\EasySecurity\Interfaces\Resolvers\ContextDataResolverInterface;
+use EonX\EasySecurity\Interfaces\ContextModifierInterface;
 use stdClass;
 
-abstract class AbstractContextDataResolver implements ContextDataResolverInterface
+abstract class AbstractContextModifier implements ContextModifierInterface
 {
     /**
      * @var null|int

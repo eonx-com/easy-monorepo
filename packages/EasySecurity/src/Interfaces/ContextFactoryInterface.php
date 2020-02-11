@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Interfaces;
 
-use EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface;
-
 interface ContextFactoryInterface
 {
     /**
@@ -14,5 +12,5 @@ interface ContextFactoryInterface
      *
      * @return \EonX\EasySecurity\Interfaces\ContextInterface
      */
-    public function create(ContextResolvingDataInterface $data): ContextInterface;
+    public function create(): ContextInterface;
 }

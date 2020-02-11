@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Tests\Resolvers;
+namespace EonX\EasySecurity\Tests\Modifiers;
 
 use EonX\EasyPsr7Factory\EasyPsr7Factory;
+use EonX\EasySecurity\Context;
+use EonX\EasySecurity\ContextResolver;
 use EonX\EasySecurity\Interfaces\ContextInterface;
-use EonX\EasySecurity\Resolvers\ContextResolver;
-use EonX\EasySecurity\Resolvers\ProviderFromJwtDataResolver;
-use EonX\EasySecurity\Resolvers\RolesFromJwtDataResolver;
+use EonX\EasySecurity\Modifiers\ProviderFromJwtModifier;
+use EonX\EasySecurity\Modifiers\RolesFromJwtModifier;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\RolesProviders\InMemoryRolesProviderStub;
-use EonX\EasySecurity\Tests\Stubs\ContextFactoryInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\ProviderProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\TokenDecoderStub;
 use stdClass;
@@ -19,40 +19,40 @@ use Symfony\Component\HttpFoundation\Request;
 final class ContextResolverTest extends AbstractTestCase
 {
     /**
-     * Data provider for setResolvers tests.
+     * Data provider for setModifier tests.
      *
      * @return iterable<mixed>
      */
-    public function setResolversProvider(): iterable
+    public function setModifiersProvider(): iterable
     {
-        yield 'Filter non data resolver' => [
+        yield 'Filter non context modifier' => [
             [new stdClass()]
         ];
 
         yield 'Resolve successfully' => [
             [
-                new RolesFromJwtDataResolver(new InMemoryRolesProviderStub()),
-                new ProviderFromJwtDataResolver(new ProviderProviderInterfaceStub())
+                new RolesFromJwtModifier(new InMemoryRolesProviderStub()),
+                new ProviderFromJwtModifier(new ProviderProviderInterfaceStub())
             ]
         ];
     }
 
     /**
-     * Test setResolvers.
+     * Test setModifiers.
      *
-     * @param mixed[]|iterable<mixed> $resolvers
+     * @param mixed[]|iterable<mixed> $modifiers
      *
      * @return void
      *
-     * @dataProvider setResolversProvider
+     * @dataProvider setModifiersProvider
      */
-    public function testSetResolvers(iterable $resolvers): void
+    public function testSetModifier(iterable $modifiers): void
     {
         $resolver = new ContextResolver(
-            new ContextFactoryInterfaceStub(),
+            new Context(),
             new EasyPsr7Factory(),
             new TokenDecoderStub(),
-            $resolvers
+            $modifiers
         );
 
         self::assertInstanceOf(ContextInterface::class, $resolver->resolve(

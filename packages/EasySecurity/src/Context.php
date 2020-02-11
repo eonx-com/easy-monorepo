@@ -7,6 +7,7 @@ use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
 use EonX\EasySecurity\Exceptions\NoProviderInContextException;
 use EonX\EasySecurity\Exceptions\NoUserInContextException;
 use EonX\EasySecurity\Interfaces\ContextInterface;
+use EonX\EasySecurity\Interfaces\PermissionInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
 use EonX\EasySecurity\Interfaces\RoleInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
@@ -16,6 +17,11 @@ use EonX\EasySecurity\Interfaces\UserInterface;
  */
 class Context implements ContextInterface
 {
+    /**
+     * @var \EonX\EasySecurity\Interfaces\PermissionInterface[]
+     */
+    private $cachePermissions;
+
     /**
      * @var \EonX\EasySecurity\Interfaces\PermissionInterface[]
      */
@@ -42,26 +48,35 @@ class Context implements ContextInterface
     private $user;
 
     /**
-     * Context constructor.
+     * Add permissions.
      *
-     * @param null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface $token
-     * @param null|\EonX\EasySecurity\Interfaces\RoleInterface[] $roles
-     * @param null|\EonX\EasySecurity\Interfaces\ProviderInterface $provider
-     * @param null|\EonX\EasySecurity\Interfaces\UserInterface $user
+     * @param \EonX\EasySecurity\Interfaces\PermissionInterface|\EonX\EasySecurity\Interfaces\PermissionInterface[]|string|string[] $permissions
+     *
+     * @return void
      */
-    public function __construct(
-        ?EasyApiTokenInterface $token = null,
-        ?array $roles = null,
-        ?ProviderInterface $provider = null,
-        ?UserInterface $user = null
-    ) {
-        $this->initRoles(\array_filter($roles ?? [], static function ($role): bool {
-            return $role instanceof RoleInterface;
-        }));
+    public function addPermissions($permissions): void
+    {
+        $this->cachePermissions = null;
 
-        $this->token = $token;
-        $this->provider = $provider;
-        $this->user = $user;
+        foreach ($this->transformPermissions((array)$permissions) as $permission) {
+            $this->permissions[$permission->getIdentifier()] = $permission;
+        }
+    }
+
+    /**
+     * Add roles.
+     *
+     * @param \EonX\EasySecurity\Interfaces\RoleInterface|\EonX\EasySecurity\Interfaces\RoleInterface[]|string|string[] $roles
+     *
+     * @return void
+     */
+    public function addRoles($roles): void
+    {
+        $this->cachePermissions = null;
+
+        foreach ($this->transformRoles((array)$roles) as $role) {
+            $this->roles[$role->getIdentifier()] = $role;
+        }
     }
 
     /**
@@ -71,19 +86,23 @@ class Context implements ContextInterface
      */
     public function getPermissions(): array
     {
-        if ($this->permissions !== null) {
-            return $this->permissions;
+        if ($this->cachePermissions !== null) {
+            return $this->cachePermissions;
         }
 
-        $permissions = [];
+        $cachePermissions = [];
 
-        foreach ($this->roles as $role) {
+        foreach ($this->roles ?? [] as $role) {
             foreach ($role->getPermissions() as $permission) {
-                $permissions[$permission->getIdentifier()] = $permission;
+                $cachePermissions[$permission->getIdentifier()] = $permission;
             }
         }
 
-        return $this->permissions = $permissions;
+        foreach ($this->permissions ?? [] as $permission) {
+            $cachePermissions[$permission->getIdentifier()] = $permission;
+        }
+
+        return $this->cachePermissions = $cachePermissions;
     }
 
     /**
@@ -119,7 +138,7 @@ class Context implements ContextInterface
      */
     public function getRoles(): array
     {
-        return $this->roles;
+        return $this->roles ?? [];
     }
 
     /**
@@ -183,20 +202,107 @@ class Context implements ContextInterface
     }
 
     /**
-     * Init roles.
+     * Replace existing permissions with given ones.
      *
-     * @param \EonX\EasySecurity\Interfaces\RoleInterface[] $roles
+     * @param string|string[]|\EonX\EasySecurity\Interfaces\PermissionInterface|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
      *
      * @return void
      */
-    private function initRoles(array $roles): void
+    public function setPermissions($permissions): void
     {
-        $indexed = [];
+        $this->cachePermissions = null;
 
-        foreach ($roles as $role) {
-            $indexed[$role->getIdentifier()] = $role;
+        $this->permissions = $this->transformPermissions((array)$permissions);
+    }
+
+    /**
+     * Set provider.
+     *
+     * @param null|\EonX\EasySecurity\Interfaces\ProviderInterface $provider
+     *
+     * @return void
+     */
+    public function setProvider(?ProviderInterface $provider = null): void
+    {
+        $this->provider = $provider;
+    }
+
+    /**
+     * Replace existing roles with given ones.
+     *
+     * @param string|string[]|\EonX\EasySecurity\Interfaces\RoleInterface|\EonX\EasySecurity\Interfaces\RoleInterface[] $roles
+     *
+     * @return void
+     */
+    public function setRoles($roles): void
+    {
+        $this->cachePermissions = null;
+        $this->roles = [];
+
+        foreach ($this->transformRoles((array)$roles) as $role) {
+            $this->roles[$role->getIdentifier()] = $role;
         }
+    }
 
-        $this->roles = $indexed;
+    /**
+     * Set token.
+     *
+     * @param null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface $token
+     *
+     * @return void
+     */
+    public function setToken(?EasyApiTokenInterface $token = null): void
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * Set user.
+     *
+     * @param null|\EonX\EasySecurity\Interfaces\UserInterface $user
+     *
+     * @return void
+     */
+    public function setUser(?UserInterface $user = null): void
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * Transform given permissions to permission instances.
+     *
+     * @param mixed[] $permissions
+     *
+     * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
+     */
+    private function transformPermissions(array $permissions): array
+    {
+        $filter = static function ($permission): bool {
+            return \is_string($permission) || $permission instanceof PermissionInterface;
+        };
+        $map = static function ($permission): PermissionInterface {
+            return \is_string($permission) ? new Permission($permission) : $permission;
+        };
+
+        return \array_map($map, \array_filter($permissions, $filter));
+    }
+
+    /**
+     * Transform given roles to role instances.
+     *
+     * @param mixed[] $roles
+     *
+     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
+     */
+    private function transformRoles(array $roles): array
+    {
+        $filter = static function ($roles): bool {
+            return \is_string($roles) || $roles instanceof RoleInterface;
+        };
+        $map = static function ($roles): RoleInterface {
+            return \is_string($roles) ? new Role($roles, []) : $roles;
+        };
+
+        return \array_map($map, \array_filter($roles, $filter));
     }
 }

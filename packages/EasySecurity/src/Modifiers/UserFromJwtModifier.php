@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Resolvers;
+namespace EonX\EasySecurity\Modifiers;
 
 use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
-use EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface;
 use EonX\EasySecurity\Interfaces\UserProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-final class UserFromJwtDataResolver extends AbstractContextDataResolver
+final class UserFromJwtModifier extends AbstractContextModifier
 {
     /**
      * @var \EonX\EasySecurity\Interfaces\UserProviderInterface
@@ -29,19 +29,20 @@ final class UserFromJwtDataResolver extends AbstractContextDataResolver
     }
 
     /**
-     * Resolve context data.
+     * Modify given context for given request.
      *
-     * @param \EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface $data
+     * @param \EonX\EasySecurity\Interfaces\ContextInterface $context
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return \EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface
+     * @return void
      */
-    public function resolve(ContextResolvingDataInterface $data): ContextResolvingDataInterface
+    public function modify(ContextInterface $context, Request $request): void
     {
-        $token = $data->getApiToken();
+        $token = $context->getToken();
 
         // Work only for JWT
         if ($token instanceof JwtEasyApiTokenInterface === false) {
-            return $data;
+            return;
         }
 
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
@@ -50,13 +51,11 @@ final class UserFromJwtDataResolver extends AbstractContextDataResolver
 
         // If no userId given in token, skip
         if (empty($userId)) {
-            return $data;
+            return;
         }
 
-        $data->setUser(
+        $context->setUser(
             $this->userProvider->getUser($userId, $this->getClaimSafely($token, ContextInterface::JWT_MANAGE_CLAIM, []))
         );
-
-        return $data;
     }
 }

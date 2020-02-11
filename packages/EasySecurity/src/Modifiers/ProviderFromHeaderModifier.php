@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Resolvers;
+namespace EonX\EasySecurity\Modifiers;
 
-use EonX\EasySecurity\Context;
+use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\ProviderProviderInterface;
-use EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-final class ProviderFromHeaderDataResolver extends AbstractContextDataResolver
+final class ProviderFromHeaderModifier extends AbstractContextModifier
 {
     /**
      * @var string
@@ -46,28 +46,27 @@ final class ProviderFromHeaderDataResolver extends AbstractContextDataResolver
     }
 
     /**
-     * Resolve context data.
+     * Modify given context for given request.
      *
-     * @param \EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface $data
+     * @param \EonX\EasySecurity\Interfaces\ContextInterface $context
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return \EonX\EasySecurity\Interfaces\Resolvers\ContextResolvingDataInterface
+     * @return void
      */
-    public function resolve(ContextResolvingDataInterface $data): ContextResolvingDataInterface
+    public function modify(ContextInterface $context, Request $request): void
     {
-        $header = $data->getRequest()->headers->get($this->headerName);
+        $header = $request->headers->get($this->headerName);
 
         // If header empty, skip
         if (empty($header)) {
-            return $data;
+            return;
         }
 
         // If current context hasn't required permission, skip
-        if ((new Context($data->getApiToken(), $data->getRoles()))->hasPermission($this->permission) === false) {
-            return $data;
+        if ($context->hasPermission($this->permission) === false) {
+            return;
         }
 
-        $data->setProvider($this->providerProvider->getProvider($header));
-
-        return $data;
+        $context->setProvider($this->providerProvider->getProvider($header));
     }
 }

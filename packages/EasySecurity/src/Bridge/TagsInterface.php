@@ -5,5 +5,5 @@ namespace EonX\EasySecurity\Bridge;
 
 interface TagsInterface
 {
-    public const TAG_CONTEXT_DATA_RESOLVER = 'easy_security.context_data_resolver';
+    public const TAG_CONTEXT_MODIFIER = 'easy_security.context_modifier';
 }

@@ -52,9 +52,20 @@ final class ContextTest extends AbstractTestCase
                 new Role('app:role', [
                     new Permission('perm1')
                 ]),
-                'non-role'
+                new \stdClass()
             ],
             1,
+            1
+        ];
+
+        yield '2 roles 1 permission because string role given' => [
+            [
+                new Role('app:role', [
+                    new Permission('perm1')
+                ]),
+                'string:role'
+            ],
+            2,
             1
         ];
     }
@@ -171,7 +182,11 @@ final class ContextTest extends AbstractTestCase
         $provider = new ProviderInterfaceStub('uniqueId');
         $user = new UserInterfaceStub('uniqueId');
 
-        $context = new Context($token, $roles, $provider, $user);
+        $context = new Context();
+        $context->setToken($token);
+        $context->setProvider($provider);
+        $context->setRoles($roles);
+        $context->setUser($user);
         $permissions = $context->getPermissions();
 
         self::assertCount($countRoles, $context->getRoles());
@@ -202,7 +217,8 @@ final class ContextTest extends AbstractTestCase
         bool $hasRole,
         bool $hasPermission
     ): void {
-        $context = new Context(null, $roles);
+        $context = new Context();
+        $context->setRoles($roles);
 
         self::assertEquals($hasRole, $context->hasRole($role));
         self::assertEquals($hasPermission, $context->hasPermission($permission));

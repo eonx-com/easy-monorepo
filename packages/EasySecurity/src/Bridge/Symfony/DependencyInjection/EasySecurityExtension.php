@@ -7,10 +7,11 @@ use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextAwareInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface;
-use EonX\EasySecurity\Bridge\Symfony\Resolvers\DecoratorContextResolver;
 use EonX\EasySecurity\Bridge\TagsInterface;
-use EonX\EasySecurity\Interfaces\Resolvers\ContextDataResolverInterface;
-use EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface;
+use EonX\EasySecurity\Interfaces\ContextFactoryInterface;
+use EonX\EasySecurity\Interfaces\ContextInterface;
+use EonX\EasySecurity\Interfaces\ContextModifierInterface;
+use EonX\EasySecurity\Interfaces\ContextResolverInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -38,14 +39,13 @@ final class EasySecurityExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
 
-        // Register context data resolvers for auto tagging
+        // Register context modifiers for auto tagging
         $container
-            ->registerForAutoconfiguration(ContextDataResolverInterface::class)
-            ->addTag(TagsInterface::TAG_CONTEXT_DATA_RESOLVER);
+            ->registerForAutoconfiguration(ContextModifierInterface::class)
+            ->addTag(TagsInterface::TAG_CONTEXT_MODIFIER);
 
         $this->registerContextResolver($container, $config);
         $this->registerDeferredContextResolver($container, $config);
-        $this->registerContextResolverDecorator($container, $config);
         $this->registerContext($container, $config);
     }
 
@@ -59,9 +59,12 @@ final class EasySecurityExtension extends Extension
      */
     private function registerContext(ContainerBuilder $container, array $config): void
     {
-        $def = (new Definition())->setSynthetic(true)->setPublic(true);
+        $def = (new Definition(ContextInterface::class))
+            ->setFactory([new Reference(ContextFactoryInterface::class), 'create'])
+            ->setPublic(true);
 
         $container->setDefinition($config['context_service_id'], $def);
+        $container->setAlias(ContextInterface::class, $config['context_service_id']);
     }
 
     /**
@@ -84,22 +87,7 @@ final class EasySecurityExtension extends Extension
 
         $container->setDefinition(EasyApiTokenDecoderInterface::class, $tokenDecoderDef);
 
-        $def->setArgument(3, new TaggedIteratorArgument(TagsInterface::TAG_CONTEXT_DATA_RESOLVER));
-    }
-
-    /**
-     * Register context resolver decorator.
-     *
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param mixed[] $config
-     *
-     * @return void
-     */
-    private function registerContextResolverDecorator(ContainerBuilder $container, array $config): void
-    {
-        $def = $container->getDefinition(DecoratorContextResolver::class);
-
-        $def->setArgument(2, $config['context_service_id']);
+        $def->setArgument(3, new TaggedIteratorArgument(TagsInterface::TAG_CONTEXT_MODIFIER));
     }
 
     /**

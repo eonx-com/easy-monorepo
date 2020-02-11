@@ -5,7 +5,7 @@ namespace EonX\EasySecurity\Bridge\Symfony\Security;
 
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
-use EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface;
+use EonX\EasySecurity\Interfaces\ContextResolverInterface;
 use EonX\EasySecurity\Interfaces\UserInterface as EonxUserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 final class ContextAuthenticator extends AbstractGuardAuthenticator
 {
     /**
-     * @var \EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface
+     * @var \EonX\EasySecurity\Interfaces\ContextResolverInterface
      */
     private $contextResolver;
 
@@ -30,7 +30,7 @@ final class ContextAuthenticator extends AbstractGuardAuthenticator
     /**
      * ContextAuthenticator constructor.
      *
-     * @param \EonX\EasySecurity\Interfaces\Resolvers\ContextResolverInterface $contextResolver
+     * @param \EonX\EasySecurity\Interfaces\ContextResolverInterface $contextResolver
      * @param \EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface $respFactory
      */
     public function __construct(

@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Interfaces\Resolvers;
+namespace EonX\EasySecurity\Interfaces;
 
-use EonX\EasySecurity\Interfaces\ContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface ContextResolverInterface

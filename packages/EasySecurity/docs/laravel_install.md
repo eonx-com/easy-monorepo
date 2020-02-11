@@ -65,10 +65,10 @@ use EonX\EasySecurity\Interfaces\ContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\ProviderProviderInterface;
 use EonX\EasySecurity\Interfaces\RolesProviderInterface;
 use EonX\EasySecurity\Interfaces\UserProviderInterface;
-use EonX\EasySecurity\Resolvers\ProviderFromHeaderDataResolver;
-use EonX\EasySecurity\Resolvers\ProviderFromJwtDataResolver;
-use EonX\EasySecurity\Resolvers\RolesFromJwtDataResolver;
-use EonX\EasySecurity\Resolvers\UserFromJwtDataResolver;
+use EonX\EasySecurity\Modifiers\ProviderFromHeaderModifier;
+use EonX\EasySecurity\Modifiers\ProviderFromJwtModifier;
+use EonX\EasySecurity\Modifiers\RolesFromJwtModifier;
+use EonX\EasySecurity\Modifiers\UserFromJwtModifier;
 use Illuminate\Support\ServiceProvider;
 
 final class SecurityServiceProvider extends ServiceProvider
@@ -87,10 +87,10 @@ final class SecurityServiceProvider extends ServiceProvider
 
         // DataResolvers
         $dataResolvers = [
-            RolesFromJwtDataResolver::class,
-            ProviderFromJwtDataResolver::class,
-            ProviderFromHeaderDataResolver::class,
-            UserFromJwtDataResolver::class
+            RolesFromJwtModifier::class,
+            ProviderFromJwtModifier::class,
+            ProviderFromHeaderModifier::class,
+            UserFromJwtModifier::class
         ];
 
         foreach ($dataResolvers as $dataResolver) {

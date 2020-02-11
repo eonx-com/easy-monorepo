@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Tests\Stubs;
+namespace EonX\EasySecurity;
 
-use EonX\EasySecurity\Context;
 use EonX\EasySecurity\Interfaces\ContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 
-final class ContextFactoryInterfaceStub implements ContextFactoryInterface
+final class ContextFactory implements ContextFactoryInterface
 {
     /**
      * Create context.
