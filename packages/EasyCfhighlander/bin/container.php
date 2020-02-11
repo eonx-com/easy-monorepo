@@ -8,9 +8,10 @@ use Symplify\SetConfigResolver\ConfigResolver;
 $configs = [];
 
 // Get config
-$inputConfig = (new ConfigResolver())->resolveFromInputWithFallback(new ArgvInput(),
-    ['easy-cfhighlander.yaml', 'easy-cfhighlander.yml']
-);
+$inputConfig = (new ConfigResolver())->resolveFromInputWithFallback(new ArgvInput(), [
+    'easy-cfhighlander.yaml',
+    'easy-cfhighlander.yml'
+]);
 
 if ($inputConfig) {
     $configs[] = $inputConfig;
