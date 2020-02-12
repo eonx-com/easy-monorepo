@@ -34,7 +34,7 @@ jobs:
 
 #            -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
 
-            -   run: composer install --prefer-dist --no-progress
+            -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
