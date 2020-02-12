@@ -23,16 +23,18 @@ jobs:
                     php-version: ${{ matrix.php }}
                     coverage: none
 
-            -   id: composer-cache
-                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+#            -   id: composer-cache
+#                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+#
+#            -   uses: eonx-com/actions-cache@v1
+#                with:
+#                    path: ${{ steps.composer-cache.outputs.dir }}
+#                    key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
+#                    restore-keys: ${{ matrix.php }}-comp-
 
-            -   uses: eonx-com/actions-cache@v1
-                with:
-                    path: ${{ steps.composer-cache.outputs.dir }}
-                    key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
-                    restore-keys: ${{ matrix.php }}-comp-
+#            -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
 
-            -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
+            -   run: composer install --prefer-dist --no-progress
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
