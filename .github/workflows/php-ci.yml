@@ -5,42 +5,21 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: [ '7.2', '7.3', '7.4' ]
-                script:
-                    - { name: Check ECS, script: composer check-ecs }
-                    - { name: Check PHPStan, script: composer check-phpstan }
-                    - { name: Check Security, script: composer check-security }
-                    - { name: Check Tests, script: composer check-tests }
-
-        name: ${{ matrix.script.name }}
-
-        steps:
-            -   uses: eonx-com/actions-checkout@v2
-
-            -   uses: eonx-com/actions-setup-php@v1
-                with:
-                    php-version: ${{ matrix.php }}
-                    coverage: none
-
-            -   id: composer-cache
-                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            -   uses: eonx-com/actions-cache@v1
-                with:
-                    path: ${{ steps.composer-cache.outputs.dir }}
-                    key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
-                    restore-keys: ${{ matrix.php }}-comp-
-
-            -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
-
-            -   name: '[CI] Check ${{ matrix.script }} [CI]'
-                run: ${{ matrix.script.script }}
-
-    monorepo:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
                 php: [ '7.3' ]
+                actions:
+                    - { name: ECS, run: composer check-ecs }
+                    - { name: PHPStan, run: composer check-phpstan }
+                    - { name: Security, run: composer check-security }
+                    - { name: Tests, run: composer check-tests }
+                    - {
+                        name: Monorepo,
+                        run: |
+                            composer validate --strict
+                            composer validate-repo
+                    }
+
+        name: ${{ matrix.actions.name }} (${{ matrix.php }})
+
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
@@ -60,8 +39,5 @@ jobs:
 
             -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
 
-            -   name: '[CI] Check composer [CI]'
-                run: composer validate --strict
-
-            -   name: '[CI] Check monorepo [CI]'
-                run: composer validate-repo
+            -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
+                run: ${{ matrix.actions.run }}
