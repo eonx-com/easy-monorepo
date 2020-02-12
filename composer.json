@@ -104,6 +104,10 @@
             "@check-tests"
         ],
         "check-ecs": "vendor/bin/ecs check packages",
+        "check-monorepo": [
+            "@composer validate --strict",
+            "@validate-repo"
+        ],
         "check-phpstan": "vendor/bin/phpstan analyse packages --level=7 --ansi",
         "check-security": "vendor/bin/security-checker security:check",
         "check-tests": "vendor/bin/phpunit packages",

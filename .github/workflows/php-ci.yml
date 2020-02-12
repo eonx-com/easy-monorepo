@@ -11,10 +11,7 @@ jobs:
                     - { name: PHPStan, run: composer check-phpstan }
                     - { name: Security, run: composer check-security }
                     - { name: Tests, run: composer check-tests }
-                    -   name: Monorepo
-                        run: |
-                            composer validate --strict
-                            composer validate-repo
+                    - { name: Monorepo, run: composer check-monorepo }
 
         name: ${{ matrix.actions.name }} (${{ matrix.php }})
 
