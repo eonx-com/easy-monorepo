@@ -5,12 +5,15 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: [ '7.3' ]
+                php: [ '7.2', '7.3', '7.4' ]
                 script:
-                    - check-ecs
-                    - check-phpstan
-                    - check-security
-                    - check-tests
+                    - { name: Check ECS, script: composer check-ecs }
+                    - { name: Check PHPStan, script: composer check-phpstan }
+                    - { name: Check Security, script: composer check-security }
+                    - { name: Check Tests, script: composer check-tests }
+
+        name: ${{ matrix.script.name }}
+
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
@@ -31,7 +34,7 @@ jobs:
             -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
 
             -   name: '[CI] Check ${{ matrix.script }} [CI]'
-                run: composer ${{ matrix.script }}
+                run: ${{ matrix.script.script }}
 
     monorepo:
         runs-on: ubuntu-latest
