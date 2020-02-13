@@ -18,6 +18,9 @@
             "EonX\\EasyTest\\Tests\\": "tests"
         }
     },
+    "bin": [
+        "bin/easy-test"
+    ],
     "extra": {
         "branch-alias": {
             "dev-master": "2.1-dev"
