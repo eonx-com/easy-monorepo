@@ -1,0 +1,120 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+use EonX\EasyTest\Console\EasyTestApplication;
+
+// performance boost
+\gc_disable();
+
+(new AutoloadIncluder())
+    ->includeCwdVendorAutoloadIfExists()
+    ->autoloadProjectAutoloaderFile('/../../autoload.php')
+    ->includeDependencyOrRepositoryVendorAutoloadIfExists();
+
+$kernel = new \EonX\EasyTest\HttpKernel\EasyTestKernel();
+$kernel->boot();
+
+$container = $kernel->getContainer();
+
+$app = $container->get(EasyTestApplication::class);
+exit($app->run());
+
+/**
+ * Inspired by https://github.com/symplify/symplify/blob/master/packages/easy-coding-standard/bin/ecs
+ */
+final class AutoloadIncluder
+{
+    /**
+     * @var string[]
+     */
+    private $alreadyLoadedAutoloadFiles = [];
+
+    public function autoloadProjectAutoloaderFile(string $file): self
+    {
+        $path = \dirname(__DIR__) . $file;
+
+        if (\extension_loaded('phar') === false) {
+            if (\is_file($path)) {
+                $this->loadIfNotLoadedYet($path, \sprintf('%s()" on line %d', __METHOD__, __LINE__));
+            }
+
+            return $this;
+        }
+
+        $pharPath = Phar::running(false);
+
+        if ($pharPath === '') {
+            if (\is_file($path)) {
+                $this->loadIfNotLoadedYet($path, \sprintf('%s()" on line %d', __METHOD__, __LINE__));
+            }
+
+            return $this;
+        }
+
+        $path = \dirname($pharPath) . $file;
+
+        if (\is_file($path)) {
+            $this->loadIfNotLoadedYet($path, \sprintf('%s()" on line %d', __METHOD__, __LINE__));
+        }
+
+        return $this;
+    }
+
+    public function includeCwdVendorAutoloadIfExists(): self
+    {
+        $cwdVendorAutoload = \sprintf('%s/vendor/autoload.php', \getcwd());
+
+        if (\is_file($cwdVendorAutoload) === false) {
+            return $this;
+        }
+
+        $this->loadIfNotLoadedYet($cwdVendorAutoload, \sprintf('%s()" on line %d', __METHOD__, __LINE__));
+
+        return $this;
+    }
+
+    public function includeDependencyOrRepositoryVendorAutoloadIfExists(): self
+    {
+        // EasySsm' vendor is already loaded
+        if (\class_exists('NatePage\EasySsm\HttpKernel\EasySsmKernel')) {
+            return $this;
+        }
+
+        $devOrPharVendorAutoload = \sprintf('%s/../vendor/autoload.php', __DIR__);
+
+        if (\is_file($devOrPharVendorAutoload) === false) {
+            return $this;
+        }
+
+        $this->loadIfNotLoadedYet($devOrPharVendorAutoload, \sprintf('%s()" on line %d', __METHOD__, __LINE__));
+
+        return $this;
+    }
+
+    private function isDebugOption(): bool
+    {
+        return \in_array('--debug', $_SERVER['argv'], true);
+    }
+
+    private function loadIfNotLoadedYet(string $file, string $location): self
+    {
+        if (\in_array($file, $this->alreadyLoadedAutoloadFiles, true)) {
+            return $this;
+        }
+
+        if ($this->isDebugOption()) {
+            echo \sprintf(
+                'File "%s" is about to be loaded in "%s"' . PHP_EOL,
+                $file,
+                $location
+            );
+        }
+
+        $this->alreadyLoadedAutoloadFiles[] = \realpath($file);
+
+        require_once $file;
+
+        return $this;
+    }
+}
