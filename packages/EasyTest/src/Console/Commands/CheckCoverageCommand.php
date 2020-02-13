@@ -48,20 +48,14 @@ final class CheckCoverageCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $style = new SymfonyStyle($input, $output);
-        $script = $input->getArgument('script');
         $checkCoverage = (float)$input->getOption('coverage');
-
-        $process = Process::fromShellCommandline($script);
-        $process->run(static function ($mode, $buffer) use ($output) {
-            $output->write($buffer);
-        });
-        $scriptOutput = $process->getOutput();
+        $process = $this->runProcess((string)$input->getArgument('script'), $output);
 
         if (($process->getExitCode() ?? 0) !== 0) {
             return $process->getExitCode();
         }
 
-        $coverage = $this->getCoverage($scriptOutput);
+        $coverage = $this->getCoverage($process->getOutput());
 
         if ($coverage === null) {
             $style->error('No coverage found in output');
@@ -97,5 +91,24 @@ final class CheckCoverageCommand extends Command
         $match = Strings::match($output, '/lines:(\d+.\d+\d+)%/i') ?? [];
 
         return isset($match[1]) ? (float)$match[1] : null;
+    }
+
+    /**
+     * Run and return process for given script.
+     *
+     * @param string $script
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     *
+     * @return \Symfony\Component\Process\Process
+     */
+    private function runProcess(string $script, OutputInterface $output): Process
+    {
+        $process = Process::fromShellCommandline($script)->setTimeout(null);
+
+        $process->run(static function ($mode, $buffer) use ($output) {
+            $output->write($buffer);
+        });
+
+        return $process;
     }
 }
