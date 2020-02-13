@@ -104,9 +104,6 @@ final class CheckCoverageCommand extends Command
     private function runProcess(InputInterface $input, OutputInterface $output): Process
     {
         $script = \explode(' ', (string)$input->getArgument('script'));
-
-        $output->writeln(\print_r($script, true));
-
         $process = new Process($script, \getcwd(), ['PWD' => \getcwd()], null, 3600.00);
 
         $process->run(static function ($mode, $buffer) use ($output) {
