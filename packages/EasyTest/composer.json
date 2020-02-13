@@ -6,8 +6,7 @@
     "require": {
         "php": "^7.1",
         "symfony/process": "^4.2",
-        "symplify/package-builder": "^7.2",
-        "symplify/autowire-array-parameter": "^7.2"
+        "symplify/package-builder": "^6.1"
     },
     "autoload": {
         "psr-4": {
