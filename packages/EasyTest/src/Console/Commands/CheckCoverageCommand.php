@@ -103,8 +103,8 @@ final class CheckCoverageCommand extends Command
      */
     private function runProcess(InputInterface $input, OutputInterface $output): Process
     {
-        $process = Process::fromShellCommandline((string)$input->getArgument('script'))
-            ->setTimeout(3600);
+        $script = \explode(' ', (string)$input->getArgument('script'));
+        $process = new Process($script, null, null, null, 3600.00);
 
         $process->run(static function ($mode, $buffer) use ($output) {
             $output->write($buffer);
