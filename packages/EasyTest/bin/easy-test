@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use EonX\EasyTest\Console\EasyTestApplication;
+use EonX\EasyTest\Console\Commands\CheckCoverageCommand;
 
 // performance boost
 \gc_disable();
@@ -12,12 +13,9 @@ use EonX\EasyTest\Console\EasyTestApplication;
     ->autoloadProjectAutoloaderFile('/../../autoload.php')
     ->includeDependencyOrRepositoryVendorAutoloadIfExists();
 
-$kernel = new \EonX\EasyTest\HttpKernel\EasyTestKernel();
-$kernel->boot();
+$app = new EasyTestApplication();
+$app->addCommands([new CheckCoverageCommand()]);
 
-$container = $kernel->getContainer();
-
-$app = $container->get(EasyTestApplication::class);
 exit($app->run());
 
 /**

@@ -49,7 +49,7 @@ final class CheckCoverageCommand extends Command
     {
         $style = new SymfonyStyle($input, $output);
         $checkCoverage = (float)$input->getOption('coverage');
-        $process = $this->runProcess((string)$input->getArgument('script'), $output);
+        $process = $this->runProcess($input, $output);
 
         if (($process->getExitCode() ?? 0) !== 0) {
             return $process->getExitCode();
@@ -96,14 +96,15 @@ final class CheckCoverageCommand extends Command
     /**
      * Run and return process for given script.
      *
-     * @param string $script
+     * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      *
      * @return \Symfony\Component\Process\Process
      */
-    private function runProcess(string $script, OutputInterface $output): Process
+    private function runProcess(InputInterface $input, OutputInterface $output): Process
     {
-        $process = Process::fromShellCommandline($script)->setTimeout(null);
+        $process = Process::fromShellCommandline((string)$input->getArgument('script'))
+            ->setTimeout(3600);
 
         $process->run(static function ($mode, $buffer) use ($output) {
             $output->write($buffer);

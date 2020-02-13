@@ -5,8 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "symfony/process": "^4.2",
-        "symplify/package-builder": "^6.1"
+        "symfony/process": "^4.2"
     },
     "autoload": {
         "psr-4": {
