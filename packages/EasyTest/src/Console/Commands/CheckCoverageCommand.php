@@ -10,7 +10,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Process\Process;
 
 final class CheckCoverageCommand extends Command
 {
@@ -25,9 +24,9 @@ final class CheckCoverageCommand extends Command
             ->setName('check-coverage')
             ->setDescription('Run given test script and check output coverage against coverage option')
             ->addArgument(
-                'script',
+                'file',
                 InputArgument::REQUIRED,
-                'Test script to run'
+                'File containing the coverage output'
             )
             ->addOption(
                 'coverage',
@@ -49,13 +48,15 @@ final class CheckCoverageCommand extends Command
     {
         $style = new SymfonyStyle($input, $output);
         $checkCoverage = (float)$input->getOption('coverage');
-        $process = $this->runProcess($input, $output);
+        $coverageOutput = $this->getCoverageOutput((string)$input->getArgument('file'));
 
-        if (($process->getExitCode() ?? 0) !== 0) {
-            return $process->getExitCode();
+        if ($coverageOutput === null) {
+            $style->error(\sprintf('File "%s" not found', (string)$input->getArgument('file')));
+
+            return 1;
         }
 
-        $coverage = $this->getCoverage($process->getOutput());
+        $coverage = $this->getCoverage($coverageOutput);
 
         if ($coverage === null) {
             $style->error('No coverage found in output');
@@ -94,22 +95,18 @@ final class CheckCoverageCommand extends Command
     }
 
     /**
-     * Run and return process for given script.
+     * Get coverage output from given file.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param string $file
      *
-     * @return \Symfony\Component\Process\Process
+     * @return null|string
      */
-    private function runProcess(InputInterface $input, OutputInterface $output): Process
+    private function getCoverageOutput(string $file): ?string
     {
-        $script = \explode(' ', (string)$input->getArgument('script'));
-        $process = new Process($script, \getcwd(), ['PWD' => \getcwd()], null, 3600.00);
+        if (\file_exists($file) === false) {
+            return null;
+        }
 
-        $process->run(static function ($mode, $buffer) use ($output) {
-            $output->write($buffer);
-        });
-
-        return $process;
+        return \file_get_contents($file);
     }
 }
