@@ -2,7 +2,23 @@
 
 <!-- dumped content start -->
 
-## v2.0.10 - 2020-02-09
+## v2.1.0 - 2020-02-15
+
+- [#126] Feature/upgrade symplify packages
+
+### EasySecurity
+
+- [#127] Create package
+
+### EasyTest
+
+- [#125] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.10] - 2020-02-09
 
 ### EasyEntityChange
 
@@ -1062,3 +1078,7 @@
 [v2.0.8]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.7...v2.0.8
 [#124]: https://github.com/eonx-com/easy-monorepo/pull/124
 [v2.0.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.8...v2.0.9
+[#127]: https://github.com/eonx-com/easy-monorepo/pull/127
+[#126]: https://github.com/eonx-com/easy-monorepo/pull/126
+[#125]: https://github.com/eonx-com/easy-monorepo/pull/125
+[v2.0.10]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.9...v2.0.10
