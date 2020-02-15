@@ -3,15 +3,19 @@ declare(strict_types=1);
 
 use EonX\EasyCfhighlander\HttpKernel\CfhighlanderKernel;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symplify\PackageBuilder\Configuration\ConfigFileFinder;
+use Symplify\SetConfigResolver\ConfigResolver;
 
-$configName = 'easy-cfhighlander.yaml';
-$configFallback = ['easy-cfhighlander.yml'];
 $configs = [];
 
 // Get config
-ConfigFileFinder::detectFromInput($configName, new ArgvInput());
-$configs[] = ConfigFileFinder::provide($configName, $configFallback);
+$inputConfig = (new ConfigResolver())->resolveFromInputWithFallback(new ArgvInput(), [
+    'easy-cfhighlander.yaml',
+    'easy-cfhighlander.yml'
+]);
+
+if ($inputConfig) {
+    $configs[] = $inputConfig;
+}
 
 $kernel = new CfhighlanderKernel();
 $kernel->setConfigs(\array_filter($configs));
