@@ -11,5 +11,4 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    // No body needed for now.e
 }

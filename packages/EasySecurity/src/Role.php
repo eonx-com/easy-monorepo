@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
+use EonX\EasySecurity\Interfaces\PermissionInterface;
 use EonX\EasySecurity\Interfaces\RoleInterface;
 
 final class Role implements RoleInterface
@@ -31,7 +32,7 @@ final class Role implements RoleInterface
      * Role constructor.
      *
      * @param string $identifier
-     * @param \EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
+     * @param string[]|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
      * @param null|string $name
      * @param null|mixed[] $metadata
      */
@@ -41,9 +42,7 @@ final class Role implements RoleInterface
         $this->name = $name;
         $this->metadata = $metadata ?? [];
 
-        $this->permissions = \array_filter($permissions, static function ($permission): bool {
-            return $permission instanceof Permission;
-        });
+        $this->setPermissions($permissions);
     }
 
     /**
@@ -94,5 +93,27 @@ final class Role implements RoleInterface
     public function getPermissions(): array
     {
         return $this->permissions;
+    }
+
+    /**
+     * Set permissions.
+     *
+     * @param mixed[] $permissions
+     *
+     * @return void
+     */
+    private function setPermissions(array $permissions): void
+    {
+        // Accept only either permission instances or string to be converted
+        $filterPermissions = static function ($permission): bool {
+            return $permission instanceof PermissionInterface || \is_string($permission);
+        };
+
+        // Convert string to permissions
+        $mapPermissions = static function ($permission): PermissionInterface {
+            return $permission instanceof PermissionInterface ? $permission : new Permission($permission);
+        };
+
+        $this->permissions = \array_map($mapPermissions, \array_filter($permissions, $filterPermissions));
     }
 }
