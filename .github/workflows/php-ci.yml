@@ -1,7 +1,8 @@
 name: PHP-CI
 on: [push]
 jobs:
-    ecs:
+    # 2nd run with cache + parallel
+    coding_standards:
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
@@ -33,7 +34,8 @@ jobs:
                     key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
                     restore-keys: ${{ matrix.php }}-comp-
 
-            -   run: composer global require hirak/prestissimo; composer install --prefer-dist --no-progress;
+            -   run: composer global require hirak/prestissimo
+            -   run: composer install --prefer-dist --no-progress
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}

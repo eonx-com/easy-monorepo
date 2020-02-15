@@ -16,10 +16,12 @@
         "symfony/filesystem": "^4.2",
         "symfony/finder": "^4.2",
         "symfony/psr-http-message-bridge": "^1.1",
-        "symplify/package-builder": "^6.1",
+        "symplify/package-builder": "^7.2",
         "twig/twig": "^2.8",
         "zendframework/zend-diactoros": "^2.1",
-        "php": "^7.1"
+        "php": "^7.1",
+        "symplify/set-config-resolver": "^7.2",
+        "symplify/autowire-array-parameter": "^7.2"
     },
     "require-dev": {
         "auth0/auth0-php": "^5.4",
@@ -38,12 +40,12 @@
         "psr/container": "^1.0",
         "symfony/symfony": "^4.2",
         "vlucas/phpdotenv": "^3.3",
-        "symplify/monorepo-builder": "^6.1",
-        "symplify/changelog-linker": "^6.1",
+        "symplify/monorepo-builder": "^7.2",
+        "symplify/changelog-linker": "^7.2",
         "natepage/sniffs": "^1.1",
         "phpstan/phpstan": "^0.12.3",
         "sensiolabs/security-checker": "^5.0",
-        "symplify/easy-coding-standard": "^6.1"
+        "symplify/easy-coding-standard": "^7.2"
     },
     "autoload": {
         "psr-4": {
