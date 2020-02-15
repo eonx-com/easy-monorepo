@@ -78,6 +78,13 @@ parameters:
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\PermissionInterface>, array<int, EonX\\EasySecurity\\Permission\|string> given.#'
           path: packages/EasySecurity/tests
 
+        # EasyTest
+        - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
+          path: packages/EasyTest/src/Console/Commands
+
+        - message: '#Cannot cast array<string>\|string\|null to string.#'
+          path: packages/EasyTest/src/Console/Commands
+
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Parameter \#1 \$app of class [A-Z][\w\\]+ constructor expects Illuminate\\(Contracts\\)?Foundation\\Application, Laravel\\Lumen\\Application given.#'

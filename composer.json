@@ -61,7 +61,8 @@
             "EonX\\EasyPipeline\\": "packages/EasyPipeline/src",
             "EonX\\EasyPsr7Factory\\": "packages/EasyPsr7Factory/src",
             "EonX\\EasyRepository\\": "packages/EasyRepository/src",
-            "EonX\\EasySecurity\\": "packages/EasySecurity/src"
+            "EonX\\EasySecurity\\": "packages/EasySecurity/src",
+            "EonX\\EasyTest\\": "packages/EasyTest/src"
         }
     },
     "autoload-dev": {
@@ -78,7 +79,8 @@
             "EonX\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
             "EonX\\EasyPsr7Factory\\Tests\\": "packages/EasyPsr7Factory/tests",
             "EonX\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
-            "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests"
+            "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
+            "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests"
         }
     },
     "replace": {
@@ -94,7 +96,8 @@
         "eonx-com/easy-core": "self.version",
         "eonx-com/easy-entity-change": "self.version",
         "eonx-com/easy-logging": "self.version",
-        "eonx-com/easy-security": "self.version"
+        "eonx-com/easy-security": "self.version",
+        "eonx-com/easy-test": "self.version"
     },
     "scripts": {
         "check-all": [

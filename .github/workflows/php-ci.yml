@@ -5,16 +5,17 @@ jobs:
     coding_standards:
         runs-on: ubuntu-latest
         strategy:
+            fail-fast: false
             matrix:
                 php: [ '7.3' ]
                 actions:
-                    - { name: ECS, run: composer check-ecs }
-                    - { name: PHPStan, run: composer check-phpstan }
-                    - { name: Security, run: composer check-security }
-                    - { name: Tests, run: composer check-tests }
-                    - { name: Monorepo, run: composer check-monorepo }
+                    - { name: ecs, run: composer check-ecs }
+                    - { name: monorepo, run: composer check-monorepo }
+                    - { name: phpstan, run: composer check-phpstan }
+                    - { name: security, run: composer check-security }
+                    - { name: tests, run: composer check-tests }
 
-        name: ${{ matrix.actions.name }} (${{ matrix.php }})
+        name: ${{ matrix.actions.name}} (${{ matrix.php }})
 
         steps:
             -   uses: eonx-com/actions-checkout@v2
