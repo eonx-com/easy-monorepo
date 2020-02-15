@@ -1,0 +1,87 @@
+<?php
+declare(strict_types=1);
+
+namespace EonX\EasySecurity\Tests\Modifiers;
+
+use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
+use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasySecurity\Context;
+use EonX\EasySecurity\Interfaces\ContextInterface;
+use EonX\EasySecurity\Interfaces\RolesProviderInterface;
+use EonX\EasySecurity\Modifiers\RolesFromJwtModifier;
+use EonX\EasySecurity\Role;
+use EonX\EasySecurity\Tests\AbstractTestCase;
+use EonX\EasySecurity\Tests\RolesProviders\InMemoryRolesProviderStub;
+use Symfony\Component\HttpFoundation\Request;
+
+final class RolesFromJwtModifierTest extends AbstractTestCase
+{
+    /**
+     * Data provider for modify tests.
+     *
+     * @return iterable<mixed>
+     */
+    public function modifyProvider(): iterable
+    {
+        yield 'No role resolved because not token' => [
+            new InMemoryRolesProviderStub()
+        ];
+
+        $context = new Context();
+        $context->setToken(new ApiKeyEasyApiToken('api-key'));
+
+        yield 'No role resolved because token not jwt' => [
+            new InMemoryRolesProviderStub(),
+            $context
+        ];
+
+        $context->setToken(new JwtEasyApiToken([], 'jwt'));
+
+        yield 'No role resolved because no roles in token' => [
+            new InMemoryRolesProviderStub(),
+            $context
+        ];
+
+        $context->setToken(new JwtEasyApiToken([
+            ContextInterface::JWT_MANAGE_CLAIM => ['roles' => ['app:role']]
+        ], 'jwt'));
+
+        yield 'No role resolved because provider return empty array' => [
+            new InMemoryRolesProviderStub(),
+            $context
+        ];
+
+        $context->setToken(new JwtEasyApiToken([
+            ContextInterface::JWT_MANAGE_CLAIM => ['roles' => ['app:role']]
+        ], 'jwt'));
+
+        yield 'Roles resolved' => [
+            new InMemoryRolesProviderStub([new Role('app:role', [])]),
+            $context,
+            ['app:role' => new Role('app:role', [])]
+        ];
+    }
+
+    /**
+     * Test modify.
+     *
+     * @param \EonX\EasySecurity\Interfaces\RolesProviderInterface $rolesProvider
+     * @param null|\EonX\EasySecurity\Interfaces\ContextInterface $context
+     * @param null|mixed[] $roles
+     *
+     * @return void
+     *
+     * @dataProvider modifyProvider
+     */
+    public function testModify(
+        RolesProviderInterface $rolesProvider,
+        ?ContextInterface $context = null,
+        ?array $roles = null
+    ): void {
+        $context = $context ?? new Context();
+
+        (new RolesFromJwtModifier($rolesProvider))->modify($context, new Request());
+
+        self::assertEquals($roles ?? [], $context->getRoles());
+    }
+}

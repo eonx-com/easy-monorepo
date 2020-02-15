@@ -11,12 +11,12 @@ parameters:
     # for "merge" command
     data_to_append:
         require-dev:
-            symplify/monorepo-builder: '^6.1'
-            symplify/changelog-linker: '^6.1'
+            symplify/monorepo-builder: '^7.2'
+            symplify/changelog-linker: '^7.2'
             natepage/sniffs: '^1.1'
-            phpstan/phpstan: '^0.11.5'
+            phpstan/phpstan: '^0.12.3'
             sensiolabs/security-checker: '^5.0'
-            symplify/easy-coding-standard: '^6.1'
+            symplify/easy-coding-standard: '^7.2'
 
     # for "split" command
     directories_to_repositories:

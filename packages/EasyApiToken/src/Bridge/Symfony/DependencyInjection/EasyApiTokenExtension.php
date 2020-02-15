@@ -26,8 +26,21 @@ final class EasyApiTokenExtension extends Extension
     {
         (new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config')))->load('services.xml');
 
+        // Resolve config
+        $decoders = [];
+        $defaultFactories = null;
+
+        foreach ($configs as $config) {
+            if (isset($config['decoders'])) {
+                $decoders = $config['decoders'];
+            }
+            if (isset($config['default_factories'])) {
+                $defaultFactories = $config['default_factories'];
+            }
+        }
+
         $definition = $container->getDefinition(EasyApiTokenDecoderFactoryInterface::class);
-        $definition->replaceArgument(0, $configs[0]['decoders'] ?? []);
-        $definition->replaceArgument(1, $configs[0]['default_factories'] ?? null);
+        $definition->replaceArgument(0, $decoders);
+        $definition->replaceArgument(1, $defaultFactories);
     }
 }

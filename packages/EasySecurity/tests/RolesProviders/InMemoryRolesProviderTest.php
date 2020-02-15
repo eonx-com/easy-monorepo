@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Tests\RolesProviders;
 
 use EonX\EasySecurity\Role;
-use EonX\EasySecurity\RolesProviders\InMemoryRolesProvider;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 
 final class InMemoryRolesProviderTest extends AbstractTestCase
@@ -19,6 +18,18 @@ final class InMemoryRolesProviderTest extends AbstractTestCase
         yield 'Zero role in provider' => [
             [],
             'app:role',
+            0
+        ];
+
+        yield 'Zero role because empty array identifiers' => [
+            [],
+            [],
+            0
+        ];
+
+        yield 'Zero role because empty string identifiers' => [
+            [],
+            '',
             0
         ];
 
@@ -87,7 +98,7 @@ final class InMemoryRolesProviderTest extends AbstractTestCase
      */
     public function testGetRoles(array $roles, int $count): void
     {
-        $provider = new InMemoryRolesProvider($roles);
+        $provider = new InMemoryRolesProviderStub($roles);
 
         self::assertCount($count, $provider->getRoles());
     }
@@ -105,7 +116,7 @@ final class InMemoryRolesProviderTest extends AbstractTestCase
      */
     public function testGetRolesByIdentifiers(array $roles, $identifiers, int $count): void
     {
-        $provider = new InMemoryRolesProvider($roles);
+        $provider = new InMemoryRolesProviderStub($roles);
 
         self::assertCount($count, $provider->getRolesByIdentifiers($identifiers));
     }
