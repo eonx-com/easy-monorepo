@@ -21,6 +21,18 @@ final class UnanimousDecision extends AbstractDecision
     }
 
     /**
+     * Get default output to return if no rules provided.
+     *
+     * @param mixed[] $input
+     *
+     * @return mixed
+     */
+    protected function getDefaultOutput(array $input)
+    {
+        return true;
+    }
+
+    /**
      * Handle rule output.
      *
      * @param \EonX\EasyDecision\Interfaces\ContextInterface $context

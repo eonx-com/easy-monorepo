@@ -53,6 +53,15 @@ interface DecisionInterface
     public function make(array $input);
 
     /**
+     * Set default output.
+     *
+     * @param null|mixed $defaultOutput
+     *
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function setDefaultOutput($defaultOutput = null): self;
+
+    /**
      * Set decision name.
      *
      * @param string $name

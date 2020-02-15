@@ -21,6 +21,16 @@ final class DecisionConfigProviderStub implements DecisionConfigProviderInterfac
     }
 
     /**
+     * Get default output if no rules provided.
+     *
+     * @return null|mixed
+     */
+    public function getDefaultOutput()
+    {
+        return null;
+    }
+
+    /**
      * Get expression functions providers list.
      *
      * @return null|mixed[]

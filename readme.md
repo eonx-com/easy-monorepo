@@ -18,6 +18,7 @@
 - [EasyPagination](https://github.com/eonx-com/easy-pagination): A generic way to handle pagination data from clients.
 - [EasyPsr7Factory](https://github.com/eonx-com/easy-psr7-factory): An easy way to create PSR7 Request/Response from Symfony Request/Response.
 - [EasySecurity](https://github.com/eonx-com/easy-security): Provides security features to be generic across applications.
+- [EasyTest](https://github.com/eonx-com/easy-test): Makes testing easier.
 
 ## Documentation
 

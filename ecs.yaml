@@ -35,8 +35,6 @@ services:
 
     SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
     SlevomatCodingStandard\Sniffs\Commenting\EmptyCommentSniff:
-    SlevomatCodingStandard\Sniffs\Commenting\InlineDocCommentDeclarationSniff:
-    SlevomatCodingStandard\Sniffs\ControlStructures\DisallowEqualOperatorsSniff:
     SlevomatCodingStandard\Sniffs\ControlStructures\NewWithParenthesesSniff:
     SlevomatCodingStandard\Sniffs\Exceptions\DeadCatchSniff:
     SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff:
@@ -59,8 +57,6 @@ services:
     SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff:
     SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff:
     SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff:
-    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
-        enableEachParameterAndReturnInspection: 0
 
     NatePage\Sniffs\Arrays\ForbiddenArrayLongSyntaxSniff:
     NatePage\Sniffs\Arrays\ForbiddenArrayTrailingCommaSniff:

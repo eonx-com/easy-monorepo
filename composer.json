@@ -16,10 +16,12 @@
         "symfony/filesystem": "^4.2",
         "symfony/finder": "^4.2",
         "symfony/psr-http-message-bridge": "^1.1",
-        "symplify/package-builder": "^6.1",
+        "symplify/package-builder": "^7.2",
         "twig/twig": "^2.8",
         "zendframework/zend-diactoros": "^2.1",
-        "php": "^7.1"
+        "php": "^7.1",
+        "symplify/set-config-resolver": "^7.2",
+        "symplify/autowire-array-parameter": "^7.2"
     },
     "require-dev": {
         "auth0/auth0-php": "^5.4",
@@ -38,12 +40,12 @@
         "psr/container": "^1.0",
         "symfony/symfony": "^4.2",
         "vlucas/phpdotenv": "^3.3",
-        "symplify/monorepo-builder": "^6.1",
-        "symplify/changelog-linker": "^6.1",
+        "symplify/monorepo-builder": "^7.2",
+        "symplify/changelog-linker": "^7.2",
         "natepage/sniffs": "^1.1",
         "phpstan/phpstan": "^0.12.3",
         "sensiolabs/security-checker": "^5.0",
-        "symplify/easy-coding-standard": "^6.1"
+        "symplify/easy-coding-standard": "^7.2"
     },
     "autoload": {
         "psr-4": {
@@ -59,7 +61,8 @@
             "EonX\\EasyPipeline\\": "packages/EasyPipeline/src",
             "EonX\\EasyPsr7Factory\\": "packages/EasyPsr7Factory/src",
             "EonX\\EasyRepository\\": "packages/EasyRepository/src",
-            "EonX\\EasySecurity\\": "packages/EasySecurity/src"
+            "EonX\\EasySecurity\\": "packages/EasySecurity/src",
+            "EonX\\EasyTest\\": "packages/EasyTest/src"
         }
     },
     "autoload-dev": {
@@ -76,7 +79,8 @@
             "EonX\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
             "EonX\\EasyPsr7Factory\\Tests\\": "packages/EasyPsr7Factory/tests",
             "EonX\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
-            "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests"
+            "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
+            "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests"
         }
     },
     "replace": {
@@ -92,7 +96,8 @@
         "eonx-com/easy-core": "self.version",
         "eonx-com/easy-entity-change": "self.version",
         "eonx-com/easy-logging": "self.version",
-        "eonx-com/easy-security": "self.version"
+        "eonx-com/easy-security": "self.version",
+        "eonx-com/easy-test": "self.version"
     },
     "scripts": {
         "check-all": [
@@ -102,6 +107,10 @@
             "@check-tests"
         ],
         "check-ecs": "vendor/bin/ecs check packages",
+        "check-monorepo": [
+            "@composer validate --strict",
+            "@validate-repo"
+        ],
         "check-phpstan": "vendor/bin/phpstan analyse packages --level=7 --ansi",
         "check-security": "vendor/bin/security-checker security:check",
         "check-tests": "vendor/bin/phpunit packages",
