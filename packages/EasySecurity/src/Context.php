@@ -18,7 +18,7 @@ use EonX\EasySecurity\Interfaces\UserInterface;
 class Context implements ContextInterface
 {
     /**
-     * @var \EonX\EasySecurity\Interfaces\PermissionInterface[]
+     * @var null|\EonX\EasySecurity\Interfaces\PermissionInterface[]
      */
     private $cachePermissions;
 

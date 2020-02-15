@@ -5,6 +5,9 @@ parameters:
     exclude_files:
         - '*/var/*.php'
     skip:
+        PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff.MaxExceeded:
+            - 'packages/EasySecurity/src/Context.php'
+            - 'packages/EasySecurity/src/Interfaces/ContextInterface.php'
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingParameterTypeHint:
             - 'packages/EasyApiToken/src/External/Auth0JwtDriver.php'
             - 'packages/EasyCore/src/Console/Commands/Lumen/CacheConfigCommand.php'
