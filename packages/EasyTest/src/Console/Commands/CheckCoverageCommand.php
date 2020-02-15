@@ -70,6 +70,8 @@ final class CheckCoverageCommand extends Command
             return 1;
         }
 
+        $style->success(\sprintf('Yeah nah yeah nah yeah!! Good coverage mate! "%d%%"', $coverage));
+
         return 0;
     }
 
