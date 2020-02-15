@@ -11,9 +11,7 @@ final class EasyTestApplication extends Application
     public const VERSION = '1.0.0';
 
     /**
-     * EasyDockerApplication constructor.
-     *
-     * @param \Symfony\Component\Console\Command\Command[] $commands
+     * EasyTestApplication constructor.
      */
     public function __construct()
     {

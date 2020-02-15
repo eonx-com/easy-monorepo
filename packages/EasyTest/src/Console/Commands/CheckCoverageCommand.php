@@ -108,7 +108,7 @@ final class CheckCoverageCommand extends Command
         if (\file_exists($file) === false) {
             return null;
         }
-
-        return \file_get_contents($file);
+        
+        return \file_get_contents($file) ?: null;
     }
 }
