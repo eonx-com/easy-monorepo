@@ -305,6 +305,7 @@ final class Logger implements LoggerInterface
                 'Elasticsearch\\',
                 'EoneoPay\\Externals\\',
                 'EoneoPay\\Framework\\',
+                'EonX\\EasyLogging\\',
                 'GuzzleHttp\\',
                 'Illuminate\\',
                 'Laravel\\',
