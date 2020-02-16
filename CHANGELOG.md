@@ -1,5 +1,9 @@
 <!-- changelog-linker -->
 
+## v2.1.3 - 2020-02-16
+
+- Fix path to easy-core config file
+
 <!-- dumped content start -->
 
 ## v2.1.2 - 2020-02-16

@@ -19,7 +19,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/config/easy-core.php' => \base_path('config/easy-core.php')
+            __DIR__ . '/../config/easy-core.php' => \base_path('config/easy-core.php')
         ]);
 
         $this->clearDoctrineEmBeforeJob();
@@ -33,7 +33,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/config/easy-core.php', 'easy-core');
+        $this->mergeConfigFrom(__DIR__ . '/../config/easy-core.php', 'easy-core');
     }
 
     /**
