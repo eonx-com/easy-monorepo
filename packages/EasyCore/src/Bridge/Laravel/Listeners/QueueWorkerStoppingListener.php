@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class QueueWorkerStoppingListener
 {
     /**
-     * @var <int, string>
+     * @var mixed[]
      */
     private static $reasons = [
         12 => 'Memory exceeded'
