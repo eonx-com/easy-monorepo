@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v2.1.0 - 2020-02-15
+## v2.1.1 - 2020-02-16
+
+### EasyLogging
+
+- [#128] Skip easy-logging package itself in introspection
+
+### EasyCore
+
+- [#129] Improve laravel jobs with listeners
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.1.0] - 2020-02-15
 
 - [#126] Feature/upgrade symplify packages
 
@@ -1082,3 +1096,6 @@
 [#126]: https://github.com/eonx-com/easy-monorepo/pull/126
 [#125]: https://github.com/eonx-com/easy-monorepo/pull/125
 [v2.0.10]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.9...v2.0.10
+[#129]: https://github.com/eonx-com/easy-monorepo/pull/129
+[#128]: https://github.com/eonx-com/easy-monorepo/pull/128
+[v2.1.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.10...v2.1.0
