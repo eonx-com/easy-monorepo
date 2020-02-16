@@ -209,8 +209,9 @@ final class Logger implements LoggerInterface
      */
     public function setApp(Application $app): void
     {
-        $app->instance(ExternalsLoggerInterface::class, $this);
-        $app->alias(ExternalsLoggerInterface::class, 'logger');
+        foreach ([ExternalsLoggerInterface::class, 'logger', PsrLoggerInterface::class] as $serviceId) {
+            $app->instance($serviceId, $this);
+        }
 
         $this->app = $app;
     }
