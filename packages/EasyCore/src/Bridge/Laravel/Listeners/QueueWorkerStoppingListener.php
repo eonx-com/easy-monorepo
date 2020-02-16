@@ -4,11 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Laravel\Listeners;
 
 use Illuminate\Queue\Events\WorkerStopping;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 final class QueueWorkerStoppingListener
 {
@@ -20,19 +17,18 @@ final class QueueWorkerStoppingListener
     ];
 
     /**
-     * @var \Symfony\Component\Console\Style\SymfonyStyle
+     * @var \Psr\Log\LoggerInterface
      */
-    private $style;
+    private $logger;
 
     /**
      * QueueWorkerStoppingListener constructor.
      *
-     * @param null|\Symfony\Component\Console\Input\InputInterface $input
-     * @param null|\Symfony\Component\Console\Output\OutputInterface $output
+     * @param null|\Psr\Log\LoggerInterface $logger
      */
-    public function __construct(?InputInterface $input = null, ?OutputInterface $output = null)
+    public function __construct(?LoggerInterface $logger = null)
     {
-        $this->style = new SymfonyStyle($input ?? new ArgvInput(), $output ?? new ConsoleOutput());
+        $this->logger = $logger ?? new NullLogger();
     }
 
     /**
@@ -46,7 +42,7 @@ final class QueueWorkerStoppingListener
     {
         $reason = static::$reasons[$event->status] ?? null;
 
-        $this->style->warning(\sprintf(
+        $this->logger->warning(\sprintf(
             'Worker stopping with status "%s"%s',
             $event->status,
             $reason ? \sprintf(' (%s)', $reason) : ''
