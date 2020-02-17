@@ -44,13 +44,13 @@ final class UnanimousDecision extends AbstractDecision
     protected function handleRuleOutput(ContextInterface $context, string $rule, $output): void
     {
         // Convert output to boolean
-        $output = (bool)$output;
+        $value = (bool)$this->getOutputFromRule($rule, $output);
 
         // Log output
         $context->addRuleOutput($rule, $output);
 
         // If at least one false, decision output is false
-        if ($output === false) {
+        if ($value === false) {
             $this->output = false;
             // No need to keep processing rules because only one false is required to output false
             $context->stopPropagation();

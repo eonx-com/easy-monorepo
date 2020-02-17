@@ -46,7 +46,6 @@ interface DecisionInterface
      *
      * @return mixed
      *
-     * @throws \EonX\EasyDecision\Exceptions\EmptyRulesException
      * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyDecision\Exceptions\UnableToMakeDecisionException
      */

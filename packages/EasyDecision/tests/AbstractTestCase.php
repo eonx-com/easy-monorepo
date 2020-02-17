@@ -6,6 +6,7 @@ namespace EonX\EasyDecision\Tests;
 use EonX\EasyDecision\Expressions\ExpressionFunctionFactory;
 use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
+use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
 use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
@@ -63,15 +64,17 @@ abstract class AbstractTestCase extends TestCase
      * @param string $expression
      * @param null|int $priority
      * @param null|string $name
+     * @param null|mixed[] $extra
      *
      * @return \EonX\EasyDecision\Interfaces\RuleInterface
      */
     protected function createLanguageRule(
         string $expression,
         ?int $priority = null,
-        ?string $name = null
+        ?string $name = null,
+        ?array $extra = null
     ): RuleInterface {
-        return $this->getLanguageRuleFactory()->create($expression, $priority, $name);
+        return $this->getLanguageRuleFactory()->create($expression, $priority, $name, $extra);
     }
 
     /**
@@ -112,6 +115,25 @@ abstract class AbstractTestCase extends TestCase
         }
 
         return $this->expressionLanguageFactory = new ExpressionLanguageFactory(new ExpressionFunctionFactory());
+    }
+
+    /**
+     * Inject expression language in rules.
+     *
+     * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
+     * @param null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
+     *
+     * @return void
+     */
+    protected function injectExpressionLanguage(array $rules, ?ExpressionLanguageConfigInterface $config = null): void
+    {
+        $expressionLanguage = $this->createExpressionLanguage($config);
+
+        foreach ($rules as $rule) {
+            if ($rule instanceof ExpressionLanguageAwareInterface) {
+                $rule->setExpressionLanguage($expressionLanguage);
+            }
+        }
     }
 
     /**
