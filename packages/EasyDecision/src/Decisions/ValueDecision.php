@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Decisions;
 
 use EonX\EasyDecision\Exceptions\MissingValueIndexException;
-use EonX\EasyDecision\Helpers\IfConditionForValue;
 use EonX\EasyDecision\Interfaces\ContextInterface;
 
 final class ValueDecision extends AbstractDecision
@@ -64,18 +63,16 @@ final class ValueDecision extends AbstractDecision
      */
     protected function handleRuleOutput(ContextInterface $context, string $rule, $output): void
     {
-        if ($output instanceof IfConditionForValue) {
-            $output = $output->getValue();
-        }
+        $value = $this->getOutputFromRule($rule, $output);
 
         // Log output
         $context->addRuleOutput($rule, $output);
 
         // Store local value
-        $this->value = $output;
+        $this->value = $value;
 
         // Update input for next rules with new value
-        $this->updateInput(['value' => $output]);
+        $this->updateInput(['value' => $value]);
     }
 
     /**
