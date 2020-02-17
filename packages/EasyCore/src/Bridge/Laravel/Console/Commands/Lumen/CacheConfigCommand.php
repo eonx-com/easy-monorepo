@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Console\Commands\Lumen;
+namespace EonX\EasyCore\Bridge\Laravel\Console\Commands\Lumen;
 
 use Illuminate\Console\Command;
 
@@ -41,6 +41,7 @@ final class CacheConfigCommand extends Command
         $config = $this->getFreshConfiguration();
 
         \file_put_contents($this->cachedConfigPath, '<?php return ' . \var_export($config, true) . ';' . \PHP_EOL);
+        
         try {
             /** @noinspection PhpIncludeInspection */
             require $this->cachedConfigPath;
