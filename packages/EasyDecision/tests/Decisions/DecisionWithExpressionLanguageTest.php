@@ -7,8 +7,6 @@ use EonX\EasyDecision\Decisions\ValueDecision;
 use EonX\EasyDecision\Expressions\ExpressionFunction;
 use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
-use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class DecisionWithExpressionLanguageTest extends AbstractTestCase
@@ -101,25 +99,6 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
         foreach ($tests as $test) {
             self::assertEquals($test['expected'], $decision->make($test['original']));
             self::assertEquals($test['outputs'], $decision->getContext()->getRuleOutputs());
-        }
-    }
-
-    /**
-     * Inject expression language in rules.
-     *
-     * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
-     * @param null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
-     *
-     * @return void
-     */
-    private function injectExpressionLanguage(array $rules, ?ExpressionLanguageConfigInterface $config = null): void
-    {
-        $expressionLanguage = $this->createExpressionLanguage($config);
-
-        foreach ($rules as $rule) {
-            if ($rule instanceof ExpressionLanguageAwareInterface) {
-                $rule->setExpressionLanguage($expressionLanguage);
-            }
         }
     }
 }

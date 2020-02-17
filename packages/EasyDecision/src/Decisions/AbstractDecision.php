@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Decisions;
 
 use EonX\EasyDecision\Context;
+use EonX\EasyDecision\Exceptions\ArrayOutputRequiresOutputKeyException;
 use EonX\EasyDecision\Exceptions\ContextNotSetException;
 use EonX\EasyDecision\Exceptions\ReservedContextIndexException;
 use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
@@ -105,7 +106,6 @@ abstract class AbstractDecision implements DecisionInterface
      *
      * @return mixed
      *
-     * @throws \EonX\EasyDecision\Exceptions\EmptyRulesException
      * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
@@ -204,6 +204,29 @@ abstract class AbstractDecision implements DecisionInterface
     protected function getExceptionMessage(string $message): string
     {
         return \sprintf('Decision "%s" of type "%s": %s', $this->name, \get_class($this), $message);
+    }
+
+    /**
+     * Get output (value) from given rule output.
+     *
+     * @param string $rule
+     * @param mixed $output
+     *
+     * @return mixed
+     */
+    protected function getOutputFromRule(string $rule, $output)
+    {
+        if (\is_array($output)) {
+            if (isset($output['output']) === false) {
+                throw new ArrayOutputRequiresOutputKeyException($this->getExceptionMessage(
+                    \sprintf('Rule "%s" returned output as array but missing "output" key', $rule)
+                ));
+            }
+
+            $output = $output['output'];
+        }
+
+        return $output;
     }
 
     /**

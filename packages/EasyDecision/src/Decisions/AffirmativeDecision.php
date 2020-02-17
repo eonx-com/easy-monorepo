@@ -44,13 +44,13 @@ final class AffirmativeDecision extends AbstractDecision
     protected function handleRuleOutput(ContextInterface $context, string $rule, $output): void
     {
         // Convert output to boolean
-        $output = (bool)$output;
+        $value = (bool)$this->getOutputFromRule($rule, $output);
 
         // Log output
         $context->addRuleOutput($rule, $output);
 
         // If at least one true, decision output is true
-        if ($output === true) {
+        if ($value === true) {
             $this->output = true;
             // No need to keep processing rules because only one true is required to output true
             $context->stopPropagation();
