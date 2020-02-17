@@ -1,12 +1,22 @@
 <!-- changelog-linker -->
 
-## v2.1.3 - 2020-02-16
+<!-- dumped content start -->
+
+## v2.1.4 - 2020-02-17
+
+### EasyDecision
+
+- [#132] Rules extra in output
+
+<!-- dumped content end -->
+
+## [v2.1.3] - 2020-02-16
 
 - Fix path to easy-core config file
 
 <!-- dumped content start -->
 
-## v2.1.2 - 2020-02-16
+## [v2.1.2] - 2020-02-16
 
 ### EasyCore
 
@@ -1120,3 +1130,6 @@
 [#131]: https://github.com/eonx-com/easy-monorepo/pull/131
 [#130]: https://github.com/eonx-com/easy-monorepo/pull/130
 [v2.1.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.0...v2.1.1
+[#132]: https://github.com/eonx-com/easy-monorepo/pull/132
+[v2.1.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.2...v2.1.3
+[v2.1.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.1...v2.1.2
