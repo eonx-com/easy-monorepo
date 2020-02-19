@@ -3,6 +3,11 @@ parameters:
         - packages/*/var/*
 
     ignoreErrors:
+        - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
+        - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
+        - '#Parameter \#1 \$app of class [A-Z][\w\\]+ constructor expects Illuminate\\(Contracts\\)?Foundation\\Application, Laravel\\Lumen\\Application given.#'
+
+        # ---- EasyApiToken ----
         - message: '#Parameter \#2 \$publicKey of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource\|string\|null, bool\|resource\|string given.#'
           path: packages/EasyApiToken/tests/Decoders
 
@@ -12,30 +17,8 @@ parameters:
         - message: '#Parameter \#2 \$key of method EonX\\EasyApiToken\\Tests\\Encoders\\FirebaseJwtTokenEncoderTest::createJwtTokenDecoder\(\) expects resource\|string, bool\|resource\|string given.#'
           path: packages/EasyApiToken/tests/Encoders
 
-        - message: '#Strict comparison using === between true and false will always evaluate to false.#'
-          path: packages/EasyDecision/src/Decisions
-
-        - message: '#Access to an undefined property Mockery\\LegacyMockInterface::\$users.#'
-          path: packages/EasyIdentity/tests/Implementations/Auth0
-
-        - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
-          path: packages/EasyPipeline/src/Bridge/Laravel
-
-        - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
-          path: packages/EasyPipeline/tests
-
-        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
-          path: packages/EasyRepository/src/Implementations/Illuminate
-
-        - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
-          path: packages/EasyPagination/tests/Bridge/Laravel
-
-        - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
-          path: packages/EasyPagination/tests
-
-        - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\)#'
-          path: packages/EasyPagination/tests
-
+        # ---- EasyCfhighlander ----
+        # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'
           path: packages/EasyCore/tests/Http/Middleware
 
@@ -45,19 +28,51 @@ parameters:
         - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\Providers\\CachedConfigServiceProvider::\$loadedConfigurations.#'
           path: packages/EasyCore/src/Bridge/Laravel/Providers
 
+        # ---- EasyDecision ----
+        - message: '#Strict comparison using === between true and false will always evaluate to false.#'
+          path: packages/EasyDecision/src/Decisions
+
         - message: '#Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
           path: packages/EasyDecision/tests/Decisions
 
         - message: "#Offset 'fn' does not exist on array\\(string\\).#"
           path: packages/EasyDecision/src/Helpers
 
+        # ---- EasyDocker ----
+        # ---- EasyEntityChange ----
+        # ---- EasyIdentity ----
+        - message: '#Access to an undefined property Mockery\\LegacyMockInterface::\$users.#'
+          path: packages/EasyIdentity/tests/Implementations/Auth0
+
+        # ---- EasyLogging ----
         - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'
           path: packages/EasyLogging/src/ContextModifiers
 
         - message: '#Call to method getErrors\(\) on an unknown class App\\Exceptions\\EntityValidationFailedException.#'
           path: packages/EasyLogging/src/ContextModifiers
 
-        # EasyRepository
+        # ---- EasyPagination ----
+        - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
+          path: packages/EasyPagination/tests/Bridge/Laravel
+
+        - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
+          path: packages/EasyPagination/tests
+
+        - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\)#'
+          path: packages/EasyPagination/tests
+
+        # ---- EasyPipeline ----
+        - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
+          path: packages/EasyPipeline/src/Bridge/Laravel
+
+        - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
+          path: packages/EasyPipeline/tests
+
+        # ---- EasyPsr7Factory ----
+        # ---- EasyRepository ----
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
+          path: packages/EasyRepository/src/Implementations/Illuminate
+
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$repository \(Doctrine\\ORM\\EntityRepository\) does not accept Doctrine\\Persistence\\ObjectRepository.#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM
 
@@ -76,20 +91,16 @@ parameters:
         - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
           path: packages/EasyRepository/tests
 
-        # EasySecurity
+        # ---- EasySecurity ----
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
           path: packages/EasySecurity/src/Bridge/Symfony/DependencyInjection
 
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\PermissionInterface\|string>, array<int, EonX\\EasySecurity\\Permission\|stdClass\|string> given.#'
           path: packages/EasySecurity/tests
 
-        # EasyTest
+        # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
           path: packages/EasyTest/src/Console/Commands
 
         - message: '#Cannot cast array<string>\|string\|null to string.#'
           path: packages/EasyTest/src/Console/Commands
-
-        - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
-        - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
-        - '#Parameter \#1 \$app of class [A-Z][\w\\]+ constructor expects Illuminate\\(Contracts\\)?Foundation\\Application, Laravel\\Lumen\\Application given.#'
