@@ -9,11 +9,11 @@ jobs:
             matrix:
                 php: [ '7.3' ]
                 actions:
-                    - { name: ecs, run: composer check-ecs }
-                    - { name: monorepo, run: composer check-monorepo }
-                    - { name: phpstan, run: composer check-phpstan }
-                    - { name: security, run: composer check-security }
-                    - { name: tests, run: composer check-tests }
+                    - { name: ecs, coverage: none, run: composer check-ecs }
+                    - { name: monorepo, coverage: none, run: composer check-monorepo }
+                    - { name: phpstan, coverage: none, run: composer check-phpstan }
+                    - { name: security, coverage: none, run: composer check-security }
+                    - { name: tests, coverage: pcov, run: composer check-tests }
 
         name: ${{ matrix.actions.name}} (${{ matrix.php }})
 
@@ -23,7 +23,7 @@ jobs:
             -   uses: eonx-com/actions-setup-php@v1
                 with:
                     php-version: ${{ matrix.php }}
-                    coverage: none
+                    coverage: ${{ matrix.actions.coverage }}
 
             -   id: composer-cache
                 run: echo "::set-output name=dir::$(composer config cache-files-dir)"
