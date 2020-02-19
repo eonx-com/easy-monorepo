@@ -42,7 +42,7 @@ parameters:
         - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertSame\(\)#'
           path: packages/EasyCore/tests/Http/Middleware
 
-        - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\Providers\\CachedConfigurationServiceProvider::\$loadedConfigurations.#'
+        - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\Providers\\CachedConfigServiceProvider::\$loadedConfigurations.#'
           path: packages/EasyCore/src/Bridge/Laravel/Providers
 
         - message: '#Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
