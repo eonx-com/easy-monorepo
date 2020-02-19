@@ -22,6 +22,8 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
      */
     protected function assertInstanceInApp(string $concrete, string $abstract): void
     {
+        throw new \Exception('message');
+
         self::assertInstanceOf($concrete, $this->getApplication()->get($abstract));
     }
 
