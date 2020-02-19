@@ -10,8 +10,8 @@ parameters:
             - 'packages/EasySecurity/src/Interfaces/ContextInterface.php'
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingParameterTypeHint:
             - 'packages/EasyApiToken/src/External/Auth0JwtDriver.php'
-            - 'packages/EasyCore/src/Console/Commands/Lumen/CacheConfigCommand.php'
-            - 'packages/EasyCore/src/Console/Commands/Lumen/ClearConfigCommand.php'
+            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
+            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
             - 'packages/EasyCore/tests/Bridge/Laravel/CachedConfigurationServiceProviderTest.php'
             - 'packages/EasyLogging/src/Logger.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
@@ -21,8 +21,8 @@ parameters:
             - 'packages/EasySecurity/tests/Bridge/Symfony/Stubs/KernelStub.php'
         NatePage\Sniffs\Commenting\FunctionCommentSniff.TypeHintMissing:
             - 'packages/EasyApiToken/src/External/Auth0JwtDriver.php'
-            - 'packages/EasyCore/src/Console/Commands/Lumen/CacheConfigCommand.php'
-            - 'packages/EasyCore/src/Console/Commands/Lumen/ClearConfigCommand.php'
+            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
+            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
             - 'packages/EasyCore/tests/Bridge/Laravel/CachedConfigurationServiceProviderTest.php'
             - 'packages/EasyLogging/src/Logger.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
