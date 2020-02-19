@@ -41,7 +41,7 @@ final class CacheConfigCommand extends Command
         $config = $this->getFreshConfiguration();
 
         \file_put_contents($this->cachedConfigPath, '<?php return ' . \var_export($config, true) . ';' . \PHP_EOL);
-        
+
         try {
             /** @noinspection PhpIncludeInspection */
             require $this->cachedConfigPath;
@@ -67,7 +67,7 @@ final class CacheConfigCommand extends Command
     public function setLaravel($laravel): void
     {
         $this->cachedConfigPath = $laravel->storagePath('cached_config.php');
-        $this->bootstrapPath = $laravel->basePath() . '/bootstrap/app.php';
+        $this->bootstrapPath = $laravel->basePath('bootstrap/app.php');
 
         parent::setLaravel($laravel);
     }

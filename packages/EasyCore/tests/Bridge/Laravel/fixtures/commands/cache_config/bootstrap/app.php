@@ -6,7 +6,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Exceptions\Handler;
 
-$app = new Application(__DIR__ . '/../');
+$app = new Application(__DIR__ . '/..');
 $app->register(CachedConfigServiceProvider::class);
 $app->bind(ExceptionHandler::class, Handler::class);
 
