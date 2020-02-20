@@ -115,7 +115,7 @@
         "check-phpstan": "vendor/bin/phpstan analyse packages --level=7 --ansi",
         "check-security": "vendor/bin/security-checker security:check",
         "check-tests": [
-            "vendor/bin/phpunit packages --coverage-text | tee coverage_output.txt",
+            "vendor/bin/phpunit packages --coverage-text ; echo $?",
             "packages/EasyTest/bin/easy-test check-coverage -c 75 coverage_output.txt"
         ],
         "changelog": [
