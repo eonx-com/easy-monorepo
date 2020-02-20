@@ -38,5 +38,8 @@ jobs:
             -   run: composer install --prefer-dist --no-progress
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
-                run: ${{ matrix.actions.run }} ; echo $?
+                run: ${{ matrix.actions.run }}
                 shell: bash
+
+            -   if: matrix.actions.name == 'tests'
+                run: vendor/bin/phpunit packages --coverage-text | tee coverage_output.txt
