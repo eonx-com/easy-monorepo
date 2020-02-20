@@ -38,5 +38,5 @@ jobs:
             -   run: composer install --prefer-dist --no-progress
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
-                run: ${{ matrix.actions.run }}
+                run: ${{ matrix.actions.run }} ; echo $?
                 shell: bash
