@@ -13,7 +13,11 @@ jobs:
                     - { name: monorepo, coverage: none, run: composer check-monorepo }
                     - { name: phpstan, coverage: none, run: composer check-phpstan }
                     - { name: security, coverage: none, run: composer check-security }
-                    - { name: tests, coverage: pcov, run: composer check-tests }
+                    -   name: tests
+                        coverage: pcov
+                        run: |
+                            composer check-security | tee coverage_output.txt
+                            packages/EasyTest/bin/easy-test check-coverage -c 75 coverage_output.txt
 
         name: ${{ matrix.actions.name}} (${{ matrix.php }})
 

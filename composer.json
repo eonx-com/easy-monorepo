@@ -114,10 +114,7 @@
         ],
         "check-phpstan": "vendor/bin/phpstan analyse packages --level=7 --ansi",
         "check-security": "vendor/bin/security-checker security:check",
-        "check-tests": [
-            "/bin/bash -e -o pipefail vendor/bin/phpunit packages --coverage-text | tee coverage_output.txt",
-            "packages/EasyTest/bin/easy-test check-coverage -c 75 coverage_output.txt"
-        ],
+        "check-tests": "vendor/bin/phpunit packages --coverage-text",
         "changelog": [
             "vendor/bin/changelog-linker dump-merges --in-packages",
             "vendor/bin/changelog-linker link",
