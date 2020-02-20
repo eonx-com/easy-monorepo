@@ -39,3 +39,4 @@ jobs:
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
+                shell: bash
