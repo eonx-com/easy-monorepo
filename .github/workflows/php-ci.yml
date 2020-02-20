@@ -16,7 +16,7 @@ jobs:
                     -   name: tests
                         coverage: pcov
                         run: |
-                            composer check-security | tee coverage_output.txt
+                            composer check-tests | tee coverage_output.txt
                             packages/EasyTest/bin/easy-test check-coverage -c 75 coverage_output.txt
 
         name: ${{ matrix.actions.name}} (${{ matrix.php }})
