@@ -5,7 +5,8 @@
     "license": "MIT",
     "bin": [
         "packages/EasyCfhighlander/bin/easy-cfhighlander",
-        "packages/EasyDocker/bin/easy-docker"
+        "packages/EasyDocker/bin/easy-docker",
+        "packages/EasyTest/bin/easy-test"
     ],
     "require": {
         "eonx-com/externals": "^1.0 || ^2.0",
@@ -113,7 +114,7 @@
         ],
         "check-phpstan": "vendor/bin/phpstan analyse packages --level=7 --ansi",
         "check-security": "vendor/bin/security-checker security:check",
-        "check-tests": "vendor/bin/phpunit packages",
+        "check-tests": "vendor/bin/phpunit packages --coverage-text",
         "changelog": [
             "vendor/bin/changelog-linker dump-merges --in-packages",
             "vendor/bin/changelog-linker link",
