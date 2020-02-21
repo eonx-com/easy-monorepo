@@ -43,6 +43,26 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
     }
 
     /**
+     * Add pagination to given query.
+     *
+     * @param \Doctrine\ORM\Query $query
+     * @param null|\EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
+     *
+     * @return void
+     */
+    protected function addPaginationToQuery(Query $query, ?StartSizeDataInterface $startSizeData = null): void
+    {
+        $startSizeData = $startSizeData ?? $this->startSizeData;
+
+        $start = $startSizeData->getStart();
+        $size = $startSizeData->getSize();
+
+        $query
+            ->setFirstResult(($start - 1) * $size)
+            ->setMaxResults($size);
+    }
+
+    /**
      * Create paginator for given query.
      *
      * @param \Doctrine\ORM\Query $query
@@ -56,19 +76,14 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
         ?StartSizeDataInterface $startSizeData = null,
         ?bool $fetchJoinCollection = null
     ): LengthAwarePaginatorInterface {
+        $this->addPaginationToQuery($query, $startSizeData);
+
         $startSizeData = $startSizeData ?? $this->startSizeData;
-
-        $start = $startSizeData->getStart();
-        $size = $startSizeData->getSize();
-
-        $query
-            ->setFirstResult(($start - 1) * $size)
-            ->setMaxResults($size);
 
         return new LengthAwareDoctrineOrmPaginator(
             new DoctrinePaginator($query, $fetchJoinCollection ?? true),
-            $start,
-            $size
+            $startSizeData->getStart(),
+            $startSizeData->getSize()
         );
     }
 }
