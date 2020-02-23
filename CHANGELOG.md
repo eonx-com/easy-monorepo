@@ -2,7 +2,30 @@
 
 <!-- dumped content start -->
 
-## v2.1.4 - 2020-02-17
+## v2.2.0 - 2020-02-23
+
+- [#136] Check code coverage as part of CI
+- [#135] Organise phpstan.neon by packages
+
+### EasyCore
+
+- [#134] Feature/clean up lumen cached config
+- [#133] Use env method in config
+
+### EasyPagination
+
+- [#137] Improvements for apps to allow "manual" pagination
+- [#138] Implement better length aware paginator for doctrine orm
+
+### EasyRepository
+
+- [#138] Implement better length aware paginator for doctrine orm
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.1.4] - 2020-02-17
 
 ### EasyDecision
 
@@ -1133,3 +1156,10 @@
 [#132]: https://github.com/eonx-com/easy-monorepo/pull/132
 [v2.1.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.2...v2.1.3
 [v2.1.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.1...v2.1.2
+[#138]: https://github.com/eonx-com/easy-monorepo/pull/138
+[#137]: https://github.com/eonx-com/easy-monorepo/pull/137
+[#136]: https://github.com/eonx-com/easy-monorepo/pull/136
+[#135]: https://github.com/eonx-com/easy-monorepo/pull/135
+[#134]: https://github.com/eonx-com/easy-monorepo/pull/134
+[#133]: https://github.com/eonx-com/easy-monorepo/pull/133
+[v2.1.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.3...v2.1.4
