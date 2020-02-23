@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyRepository\Tests;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\LegacyMockInterface;
 use PHPUnit\Framework\TestCase;
@@ -71,7 +71,7 @@ abstract class AbstractTestCase extends TestCase
         return $this->mock(
             ManagerRegistry::class,
             function (LegacyMockInterface $registry) use ($managerExpectations, $repositoryExpectations): void {
-                $manager = $this->mock(ObjectManager::class, $managerExpectations);
+                $manager = $this->mock(EntityManagerInterface::class, $managerExpectations);
                 $repository = $this->mock(ObjectRepository::class, $repositoryExpectations);
 
                 $manager->shouldReceive('getRepository')->once()->with('my-entity-class')->andReturn($repository);

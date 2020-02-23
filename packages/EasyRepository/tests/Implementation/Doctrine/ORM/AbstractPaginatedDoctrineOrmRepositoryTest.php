@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use EonX\EasyPagination\Data\StartSizeData;
-use EonX\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator;
+use EonX\EasyRepository\Implementations\Doctrine\ORM\Paginators\LengthAwarePaginator;
 use EonX\EasyRepository\Tests\AbstractTestCase;
 use Mockery\LegacyMockInterface;
 
@@ -38,7 +38,7 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
         $repository = new PaginatedDoctrineOrmRepositoryStub($registry, new StartSizeData(1, 10));
         $paginator = $repository->paginate();
 
-        self::assertInstanceOf(LengthAwareDoctrineOrmPaginator::class, $paginator);
+        self::assertInstanceOf(LengthAwarePaginator::class, $paginator);
     }
 
     /**

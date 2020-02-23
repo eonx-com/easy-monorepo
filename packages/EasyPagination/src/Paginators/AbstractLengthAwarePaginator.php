@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginators;
 
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 
 abstract class AbstractLengthAwarePaginator implements LengthAwarePaginatorInterface
 {
@@ -20,13 +21,12 @@ abstract class AbstractLengthAwarePaginator implements LengthAwarePaginatorInter
     /**
      * EmptyPaginator constructor.
      *
-     * @param int $start
-     * @param int $size
+     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
      */
-    public function __construct(int $start, int $size)
+    public function __construct(StartSizeDataInterface $startSizeData)
     {
-        $this->start = $start;
-        $this->size = $size;
+        $this->start = $startSizeData->getStart();
+        $this->size = $startSizeData->getSize();
     }
 
     /**

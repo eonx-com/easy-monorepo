@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Paginators;
 
+use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
+
 final class ArrayPaginator extends AbstractLengthAwarePaginator
 {
     /**
@@ -20,15 +22,14 @@ final class ArrayPaginator extends AbstractLengthAwarePaginator
      *
      * @param mixed[] $items
      * @param int $total
-     * @param int $start
-     * @param int $size
+     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
      */
-    public function __construct(array $items, int $total, int $start, int $size)
+    public function __construct(array $items, int $total, StartSizeDataInterface $startSizeData)
     {
         $this->items = $items;
         $this->total = $total;
 
-        parent::__construct($start, $size);
+        parent::__construct($startSizeData);
     }
 
     /**
