@@ -1,0 +1,19 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface:
+        class: EonX\EasyAsync\Generators\DateTimeGenerator
+
+    EonX\EasyAsync\Interfaces\JobFactoryInterface:
+        class: EonX\EasyAsync\Factories\JobFactory
+
+    EonX\EasyAsync\Interfaces\JobLogFactoryInterface:
+        class: EonX\EasyAsync\Factories\JobLogFactory
+
+    EonX\EasyAsync\Interfaces\JobLogUpdaterInterface:
+        class: EonX\EasyAsync\Updaters\JobLogUpdater
+
+    EonX\EasyAsync\Interfaces\UuidGeneratorInterface:
+        class: EonX\EasyAsync\Generators\RamseyUuidGenerator

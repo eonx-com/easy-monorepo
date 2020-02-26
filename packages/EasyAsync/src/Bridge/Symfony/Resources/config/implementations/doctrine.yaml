@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    EonX\EasyAsync\Interfaces\JobLogPersisterInterface:
+        class: EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister
+
+    EonX\EasyAsync\Interfaces\JobPersisterInterface:
+        class: EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister

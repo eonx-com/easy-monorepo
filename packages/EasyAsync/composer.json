@@ -1,0 +1,30 @@
+{
+    "name": "eonx-com/easy-async",
+    "description": "Makes dealing with async processes easier",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "ramsey/uuid": "^3.9"
+    },
+    "require-dev": {
+        "doctrine/orm": "^2.6",
+        "phpunit/phpunit": "^8.4",
+        "symfony/symfony": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasyAsync\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasyAsync\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.3-dev"
+        }
+    }
+}
