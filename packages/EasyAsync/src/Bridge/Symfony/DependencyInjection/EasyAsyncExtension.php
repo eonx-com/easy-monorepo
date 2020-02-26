@@ -33,6 +33,6 @@ final class EasyAsyncExtension extends Extension
         }
 
         // TODO - Handle invalid implementation
-        $loader->load(\sprintf('/implementations/%s.yaml', $config['implementation']));
+        $loader->load(\sprintf('implementations/%s.yaml', $config['implementation']));
     }
 }
