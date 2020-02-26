@@ -53,14 +53,12 @@ final class JobLogUpdater implements JobLogUpdaterInterface
     {
         $jobLog->setStatus(JobLogInterface::STATUS_FAILED);
         $jobLog->setFinishedAt($this->datetime->now());
-        $jobLog->setDebugInfo([
-            'exception' => [
-                'class' => \get_class($throwable),
-                'code' => $throwable->getCode(),
-                'file' => $throwable->getFile(),
-                'line' => $throwable->getLine(),
-                'trace' => $throwable->getTraceAsString()
-            ]
+        $jobLog->addDebugInfo('exception', [
+            'class' => \get_class($throwable),
+            'code' => $throwable->getCode(),
+            'file' => $throwable->getFile(),
+            'line' => $throwable->getLine(),
+            'trace' => $throwable->getTraceAsString()
         ]);
     }
 

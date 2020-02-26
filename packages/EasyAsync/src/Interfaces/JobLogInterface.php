@@ -16,6 +16,16 @@ interface JobLogInterface extends EasyAsyncDataInterface
     public const STATUS_IN_PROGRESS = 'in_progress';
 
     /**
+     * Add debug info.
+     *
+     * @param string $name
+     * @param mixed $info
+     *
+     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
+     */
+    public function addDebugInfo(string $name, $info): self;
+
+    /**
      * Get debug info.
      *
      * @return null|mixed[]

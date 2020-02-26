@@ -11,6 +11,7 @@ use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
 use EonX\EasyAsync\Interfaces\UuidGeneratorInterface;
+use Psr\Log\LoggerInterface;
 
 final class JobLogPersister extends AbstractPersister implements JobLogPersisterInterface
 {
@@ -20,12 +21,18 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
     private $jobPersister;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+
+    /**
      * JobLogPersister constructor.
      *
      * @param \Doctrine\DBAL\Connection $conn
      * @param \EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface $dateTime
      * @param \EonX\EasyAsync\Interfaces\UuidGeneratorInterface $uuid
      * @param \EonX\EasyAsync\Interfaces\JobPersisterInterface $jobPersister
+     * @param \Psr\Log\LoggerInterface $logger
      * @param string $table
      */
     public function __construct(
@@ -33,11 +40,13 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
         DateTimeGeneratorInterface $dateTime,
         UuidGeneratorInterface $uuid,
         JobPersisterInterface $jobPersister,
+        LoggerInterface $logger,
         string $table
     ) {
         parent::__construct($conn, $dateTime, $uuid, $table);
 
         $this->jobPersister = $jobPersister;
+        $this->logger = $logger;
     }
 
     /**
@@ -64,6 +73,7 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
             $this->conn->commit();
         } catch (\Throwable $throwable) {
             $this->conn->rollBack();
+            $this->logger->error($throwable->getMessage());
 
             if ($throwable instanceof UnableToPersistJobLogException) {
                 throw $throwable;
@@ -97,7 +107,7 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
 
         // If first job log
         if ($job->getStartedAt() === null) {
-            $job->setStartedAt($this->datetime->now());
+            $job->setStartedAt($jobLog->getStartedAt());
             $job->setStatus(JobInterface::STATUS_IN_PROGRESS);
         }
 

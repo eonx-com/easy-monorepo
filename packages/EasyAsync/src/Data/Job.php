@@ -56,11 +56,17 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
 
         $job->setStatus($data['status']);
         $job->setId($data['id']);
-        $job
-            ->setFailed((int)$data['failed'])
-            ->setProcessed((int)$data['processed'])
-            ->setSucceeded((int)$data['succeeded']);
+        $job->setFailed((int)$data['failed']);
+        $job->setProcessed((int)$data['processed']);
+        $job->setSucceeded((int)$data['succeeded']);
 
+        if ($data['started_at']) {
+            $job->setStartedAt($data['started_at']);
+        }
+
+        if ($data['finished_at']) {
+            $job->setFinishedAt($data['finished_at']);
+        }
 
         return $job;
     }

@@ -6,9 +6,9 @@ services:
     EonX\EasyAsync\Interfaces\JobLogPersisterInterface:
         class: EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister
         bind:
-            $table: '%easy_async_jobs_table%'
+            $table: '%easy_async_job_logs_table%'
 
     EonX\EasyAsync\Interfaces\JobPersisterInterface:
         class: EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister
         bind:
-            $table: '%easy_async_job_logs_table%'
+            $table: '%easy_async_jobs_table%'

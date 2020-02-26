@@ -49,6 +49,22 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     }
 
     /**
+     * Add debug info.
+     *
+     * @param string $name
+     * @param mixed $info
+     *
+     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
+     */
+    public function addDebugInfo(string $name, $info): JobLogInterface
+    {
+        $debugInfo = $this->debugInfo ?? [];
+        $debugInfo[$name] = $info;
+
+        return $this;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getDebugInfo(): ?array
@@ -136,13 +152,25 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     public function toArray(): array
     {
         $array = [
-            'debug_info' => $this->getDebugInfo(),
-            'failure_params' => $this->getFailureParams(),
+            'debug_info' => $this->jsonEncode($this->getDebugInfo()),
+            'failure_params' => $this->jsonEncode($this->getFailureParams()),
             'failure_reason' => $this->getFailureReason(),
             'job_id' => $this->getJobId(),
-            'validation_errors' => $this->getValidationErrors()
+            'validation_errors' => $this->jsonEncode($this->getValidationErrors())
         ];
 
         return parent::toArray() + $array;
+    }
+
+    /**
+     * Get json representation of given array.
+     *
+     * @param null|mixed $array
+     *
+     * @return null|string
+     */
+    private function jsonEncode(?array $array = null): ?string
+    {
+        return $array !== null ? \json_encode($array) : null;
     }
 }
