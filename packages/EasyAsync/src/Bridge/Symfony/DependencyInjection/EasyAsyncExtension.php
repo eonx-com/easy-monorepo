@@ -27,6 +27,11 @@ final class EasyAsyncExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
 
+        // Set tables parameters
+        foreach (['jobs_table', 'job_logs_table'] as $name) {
+            $container->setParameter(\sprintf('easy_async_%s', $name), $config[$name]);
+        }
+
         // TODO - Handle invalid implementation
         $loader->load(\sprintf('/implementations/%s.yaml', $config['implementation']));
     }

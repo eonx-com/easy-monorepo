@@ -6,7 +6,7 @@ namespace EonX\EasyAsync\Data;
 use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Interfaces\TargetInterface;
 
-class Job extends AbstractEasyAsyncData implements JobInterface
+final class Job extends AbstractEasyAsyncData implements JobInterface
 {
     /**
      * @var int
@@ -52,14 +52,15 @@ class Job extends AbstractEasyAsyncData implements JobInterface
      */
     public static function fromArray(array $data): JobInterface
     {
-        $job = new static(new Target($data['target_id'], $data['target_type']), $data['type'], $data['total']);
+        $job = new static(new Target($data['target_id'], $data['target_type']), $data['type'], (int)$data['total']);
 
         $job->setStatus($data['status']);
         $job->setId($data['id']);
         $job
-            ->setFailed($data['failed'])
-            ->setProcessed($data['processed'])
-            ->setSucceeded($data['succeeded']);
+            ->setFailed((int)$data['failed'])
+            ->setProcessed((int)$data['processed'])
+            ->setSucceeded((int)$data['succeeded']);
+
 
         return $job;
     }

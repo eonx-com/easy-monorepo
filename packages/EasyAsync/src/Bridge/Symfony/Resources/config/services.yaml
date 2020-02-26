@@ -6,14 +6,22 @@ services:
     EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface:
         class: EonX\EasyAsync\Generators\DateTimeGenerator
 
+    EonX\EasyAsync\Interfaces\EventDispatcherInterface:
+        class: EonX\EasyAsync\Bridge\Symfony\Events\EventDispatcher
+
     EonX\EasyAsync\Interfaces\JobFactoryInterface:
         class: EonX\EasyAsync\Factories\JobFactory
 
     EonX\EasyAsync\Interfaces\JobLogFactoryInterface:
         class: EonX\EasyAsync\Factories\JobLogFactory
 
-    EonX\EasyAsync\Interfaces\JobLogUpdaterInterface:
-        class: EonX\EasyAsync\Updaters\JobLogUpdater
-
     EonX\EasyAsync\Interfaces\UuidGeneratorInterface:
         class: EonX\EasyAsync\Generators\RamseyUuidGenerator
+
+    default_job_log_updater:
+        class: EonX\EasyAsync\Updaters\JobLogUpdater
+
+    EonX\EasyAsync\Interfaces\JobLogUpdaterInterface:
+        class: EonX\EasyAsync\Updaters\WithEventsJobLogUpdater
+        bind:
+            $decorated: '@default_job_log_updater'

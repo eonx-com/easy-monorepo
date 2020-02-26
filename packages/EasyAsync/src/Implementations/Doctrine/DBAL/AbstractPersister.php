@@ -18,7 +18,7 @@ abstract class AbstractPersister
     /**
      * @var \EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface
      */
-    protected $dateTime;
+    protected $datetime;
 
     /**
      * @var string
@@ -34,18 +34,18 @@ abstract class AbstractPersister
      * AbstractPersister constructor.
      *
      * @param \Doctrine\DBAL\Connection $conn
-     * @param \EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface $dateTime
+     * @param \EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface $datetime
      * @param \EonX\EasyAsync\Interfaces\UuidGeneratorInterface $uuid
      * @param string $table
      */
     public function __construct(
         Connection $conn,
-        DateTimeGeneratorInterface $dateTime,
+        DateTimeGeneratorInterface $datetime,
         UuidGeneratorInterface $uuid,
         string $table
     ) {
         $this->conn = $conn;
-        $this->dateTime = $dateTime;
+        $this->datetime = $datetime;
         $this->table = $table;
         $this->uuid = $uuid;
     }
@@ -67,6 +67,16 @@ abstract class AbstractPersister
     }
 
     /**
+     * Get table name for query.
+     *
+     * @return string
+     */
+    protected function getTableForQuery(): string
+    {
+        return \sprintf('`%s`', $this->table);
+    }
+
+    /**
      * Get now.
      *
      * @return string
@@ -75,7 +85,7 @@ abstract class AbstractPersister
      */
     private function getDateTimeNow(): string
     {
-        return $this->dateTime->now()->format(DateTimeGeneratorInterface::DATE_FORMAT);
+        return $this->datetime->now()->format(DateTimeGeneratorInterface::DATE_FORMAT);
     }
 
     /**
@@ -99,7 +109,7 @@ abstract class AbstractPersister
         $params['created_at'] = $now;
         $params['updated_at'] = $now;
 
-        $this->conn->insert($this->table, $params);
+        $this->conn->insert($this->getTableForQuery(), $params);
     }
 
     /**
@@ -117,6 +127,6 @@ abstract class AbstractPersister
         $params = $data->toArray();
         $params['updated_at'] = $this->getDateTimeNow();
 
-        $this->conn->update($this->table, $params, ['id' => $data->getId()]);
+        $this->conn->update($this->getTableForQuery(), $params, ['id' => $data->getId()]);
     }
 }

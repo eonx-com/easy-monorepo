@@ -3,25 +3,35 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Updaters;
 
-use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
+use EonX\EasyAsync\Events\JobLogCompletedEvent;
+use EonX\EasyAsync\Events\JobLogFailedEvent;
+use EonX\EasyAsync\Events\JobLogInProgressEvent;
+use EonX\EasyAsync\Interfaces\EventDispatcherInterface;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 
-final class JobLogUpdater implements JobLogUpdaterInterface
+final class WithEventsJobLogUpdater implements JobLogUpdaterInterface
 {
     /**
-     * @var \EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface
+     * @var \EonX\EasyAsync\Interfaces\JobLogUpdaterInterface
      */
-    private $datetime;
+    private $decorated;
 
     /**
-     * JobLogUpdater constructor.
-     *
-     * @param \EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface $datetime
+     * @var \EonX\EasyAsync\Interfaces\EventDispatcherInterface
      */
-    public function __construct(DateTimeGeneratorInterface $datetime)
+    private $dispatcher;
+
+    /**
+     * WithEventsJobLogUpdater constructor.
+     *
+     * @param \EonX\EasyAsync\Interfaces\EventDispatcherInterface $dispatcher
+     * @param \EonX\EasyAsync\Interfaces\JobLogUpdaterInterface $decorated
+     */
+    public function __construct(EventDispatcherInterface $dispatcher, JobLogUpdaterInterface $decorated)
     {
-        $this->datetime = $datetime;
+        $this->dispatcher = $dispatcher;
+        $this->decorated = $decorated;
     }
 
     /**
@@ -35,8 +45,8 @@ final class JobLogUpdater implements JobLogUpdaterInterface
      */
     public function completed(JobLogInterface $jobLog): void
     {
-        $jobLog->setStatus(JobLogInterface::STATUS_COMPLETED);
-        $jobLog->setFinishedAt($this->datetime->now());
+        $this->decorated->completed($jobLog);
+        $this->dispatcher->dispatch(new JobLogCompletedEvent($jobLog));
     }
 
     /**
@@ -51,17 +61,8 @@ final class JobLogUpdater implements JobLogUpdaterInterface
      */
     public function failed(JobLogInterface $jobLog, \Throwable $throwable): void
     {
-        $jobLog->setStatus(JobLogInterface::STATUS_FAILED);
-        $jobLog->setFinishedAt($this->datetime->now());
-        $jobLog->setDebugInfo([
-            'exception' => [
-                'class' => \get_class($throwable),
-                'code' => $throwable->getCode(),
-                'file' => $throwable->getFile(),
-                'line' => $throwable->getLine(),
-                'trace' => $throwable->getTraceAsString()
-            ]
-        ]);
+        $this->decorated->failed($jobLog, $throwable);
+        $this->dispatcher->dispatch(new JobLogFailedEvent($jobLog, $throwable));
     }
 
     /**
@@ -75,7 +76,7 @@ final class JobLogUpdater implements JobLogUpdaterInterface
      */
     public function inProgress(JobLogInterface $jobLog): void
     {
-        $jobLog->setStatus(JobLogInterface::STATUS_IN_PROGRESS);
-        $jobLog->setStartedAt($this->datetime->now());
+        $this->decorated->inProgress($jobLog);
+        $this->dispatcher->dispatch(new JobLogInProgressEvent($jobLog));
     }
 }

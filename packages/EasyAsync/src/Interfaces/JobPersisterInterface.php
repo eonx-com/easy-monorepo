@@ -11,6 +11,9 @@ interface JobPersisterInterface
      * @param string $jobId
      *
      * @return \EonX\EasyAsync\Interfaces\JobInterface
+     *
+     * @throws \EonX\EasyAsync\Exceptions\UnableToFindJobException
+     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
      */
     public function findOneForUpdate(string $jobId): JobInterface;
 

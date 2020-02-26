@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Implementations\Doctrine\DBAL;
 
 use EonX\EasyAsync\Data\Job;
+use EonX\EasyAsync\Exceptions\UnableToFindJobException;
 use EonX\EasyAsync\Exceptions\UnableToPersistJobException;
 use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
@@ -11,17 +12,38 @@ use EonX\EasyAsync\Interfaces\JobPersisterInterface;
 final class JobPersister extends AbstractPersister implements JobPersisterInterface
 {
     /**
-     * @inheritDoc
+     * Find one job for given jobId and lock it for update.
+     *
+     * @param string $jobId
+     *
+     * @return \EonX\EasyAsync\Interfaces\JobInterface
+     *
+     * @throws \EonX\EasyAsync\Exceptions\UnableToFindJobException
+     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
      */
     public function findOneForUpdate(string $jobId): JobInterface
     {
-        $sql = \sprintf('SELECT * FROM %s WHERE id = :jobId FOR UPDATE', $this->table);
+        $sql = \sprintf('SELECT * FROM %s WHERE id = :jobId FOR UPDATE', $this->getTableForQuery());
 
-        $data = $this->conn->fetchAssoc($sql, \compact('jobId'));
+        try {
+            $data = $this->conn->fetchAssoc($sql, \compact('jobId'));
+        } catch (\Exception $exception) {
+            throw new UnableToFindJobException($exception->getMessage(), $exception->getCode(), $exception);
+        }
 
-        // TODO - Handle when job is not found
+        if (\is_array($data)) {
+            foreach (['started_at', 'finished_at'] as $datetime) {
+                if (empty($data[$datetime])) {
+                    continue;
+                }
 
-        return Job::fromArray($data);
+                $data[$datetime] = $this->datetime->fromString($data[$datetime]);
+            }
+
+            return Job::fromArray($data);
+        }
+
+        throw new UnableToFindJobException(\sprintf('Unable to find job for id "%s"', $jobId));
     }
 
     /**

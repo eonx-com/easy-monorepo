@@ -19,7 +19,9 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->scalarNode('implementation')->defaultValue('doctrine')
+                ->scalarNode('implementation')->defaultValue('doctrine')->end()
+                ->scalarNode('jobs_table')->defaultValue('easy_async_jobs')->end()
+                ->scalarNode('job_logs_table')->defaultValue('easy_async_job_logs')->end()
             ->end();
 
         return $treeBuilder;

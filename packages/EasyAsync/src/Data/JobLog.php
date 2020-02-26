@@ -6,7 +6,7 @@ namespace EonX\EasyAsync\Data;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Interfaces\TargetInterface;
 
-class JobLog extends AbstractEasyAsyncData implements JobLogInterface
+final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
 {
     /**
      * @var mixed[]

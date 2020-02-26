@@ -41,7 +41,15 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
     }
 
     /**
-     * @inheritDoc
+     * Persist given job log.
+     *
+     * @param \EonX\EasyAsync\Interfaces\JobLogInterface $jobLog
+     *
+     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
+     *
+     * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobLogException
+     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \Throwable
      */
     public function persist(JobLogInterface $jobLog): JobLogInterface
     {
@@ -72,14 +80,13 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
      * @param \EonX\EasyAsync\Interfaces\JobInterface $job
      *
      * @return \EonX\EasyAsync\Interfaces\JobInterface
+     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
      */
     private function updateJob(JobLogInterface $jobLog, JobInterface $job): JobInterface
     {
-        $status = $jobLog->getStatus();
-
         $job->setProcessed($job->getProcessed() + 1);
 
-        switch ($status) {
+        switch ($jobLog->getStatus()) {
             case JobLogInterface::STATUS_FAILED:
                 $job->setFailed($job->getFailed() + 1);
                 break;
@@ -88,10 +95,16 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
                 break;
         }
 
+        // If first job log
+        if ($job->getStartedAt() === null) {
+            $job->setStartedAt($this->datetime->now());
+            $job->setStatus(JobInterface::STATUS_IN_PROGRESS);
+        }
+
+        // Job finished
         if ($job->getTotal() === $job->getProcessed()) {
-            $job->setStatus(
-                $job->getFailed() > 0 ? JobInterface::STATUS_FAILED : JobInterface::STATUS_COMPLETED
-            );
+            $job->setStatus($job->getFailed() > 0 ? JobInterface::STATUS_FAILED : JobInterface::STATUS_COMPLETED);
+            $job->setFinishedAt($this->datetime->now());
         }
 
         return $job;

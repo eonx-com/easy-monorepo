@@ -24,6 +24,25 @@ final class DateTimeGenerator implements DateTimeGeneratorInterface
     }
 
     /**
+     * Generate datetime from given string and optional format.
+     *
+     * @param string $dateTime
+     * @param null|string $format
+     *
+     * @return \DateTime
+     *
+     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
+     */
+    public function fromString(string $dateTime, ?string $format = null): \DateTime
+    {
+        try {
+            return \DateTime::createFromFormat($format ?? self::DATE_FORMAT, $dateTime, $this->timezone);
+        } catch (\Exception $exception) {
+            throw new UnableToGenerateDateTimeException($exception->getMessage(), $exception->getCode(), $exception);
+        }
+    }
+
+    /**
      * Get datetime for now.
      *
      * @return \DateTime
