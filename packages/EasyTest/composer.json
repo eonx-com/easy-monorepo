@@ -5,7 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "symfony/console": "^4.2"
+        "symfony/console": "^4.2",
+        "nette/utils": "^3.1"
     },
     "autoload": {
         "psr-4": {
