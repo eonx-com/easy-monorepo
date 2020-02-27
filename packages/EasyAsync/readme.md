@@ -8,3 +8,13 @@
 ## Documentation
 
 Coming soon...
+
+## Roadmap
+
+[] Add indexes on tables
+[] Fetching job features (per target type, for specific target, per type, ...paginated)
+[] Fetching job logs features (per job)
+[] Delete job feature
+[] Create doctrine migrations
+[] Laravel bridge
+[] Write tests
