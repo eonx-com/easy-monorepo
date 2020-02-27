@@ -5,7 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "ramsey/uuid": "^3.9"
+        "ramsey/uuid": "^3.9",
+        "eonx-com/easy-pagination": "^2.2"
     },
     "require-dev": {
         "doctrine/dbal": "^2.6",
