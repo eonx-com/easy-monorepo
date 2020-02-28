@@ -68,10 +68,9 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
      *
      * @param null|string $from
      * @param null|string $fromAlias
-     * @param null|string $indexBy
      * @param null|\EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
      *
-     * @return \EonX\EasyRepository\Implementations\Doctrine\ORM\Paginators\LengthAwarePaginator
+     * @return \EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator
      */
     protected function createLengthAwarePaginator(
         ?string $from = null,
