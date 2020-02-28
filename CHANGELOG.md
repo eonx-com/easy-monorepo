@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.2.0 - 2020-02-23
+## v2.2.1 - 2020-02-28
+
+### EasyTest
+
+- [#140] Require nette/utils, Thanks to [@ttam]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.2.0] - 2020-02-23
 
 - [#136] Check code coverage as part of CI
 - [#135] Organise phpstan.neon by packages
@@ -1163,3 +1173,5 @@
 [#134]: https://github.com/eonx-com/easy-monorepo/pull/134
 [#133]: https://github.com/eonx-com/easy-monorepo/pull/133
 [v2.1.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.3...v2.1.4
+[#140]: https://github.com/eonx-com/easy-monorepo/pull/140
+[v2.2.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.4...v2.2.0
