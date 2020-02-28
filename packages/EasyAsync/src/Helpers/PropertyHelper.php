@@ -17,7 +17,7 @@ final class PropertyHelper
      */
     public static function getSetterName(string $property): string
     {
-        return \sprintf('set%s', Strings::capitalize($property));
+        return \sprintf('set%s', \str_replace('_', '', Strings::capitalize($property)));
     }
 
     /**

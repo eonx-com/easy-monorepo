@@ -16,5 +16,6 @@ Coming soon...
 - [X] Fetching job logs features (per job)
 - [X] Delete job feature
 - [X] Create doctrine migrations
-- [ ] Laravel bridge
+- [X] Laravel bridge
+- [X] Event for Job completed
 - [ ] Write tests
