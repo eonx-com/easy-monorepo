@@ -88,7 +88,7 @@ final class LengthAwarePaginator extends AbstractLengthAwarePaginator
             ->setFirstResult(($this->start - 1) * $this->size)
             ->setMaxResults($this->size);
 
-        $result = $this->conn->fetchAssoc($queryBuilder->getSQL(), $queryBuilder->getParameters());
+        $result = $this->conn->fetchAll($queryBuilder->getSQL(), $queryBuilder->getParameters());
 
         if ($this->transformer !== null) {
             $result = \array_map($this->transformer, $result);
@@ -114,7 +114,7 @@ final class LengthAwarePaginator extends AbstractLengthAwarePaginator
         $queryBuilder = $this->createQueryBuilder()->select(\sprintf('COUNT(1) as %s', $countAlias));
         $result = $this->conn->fetchAssoc($queryBuilder->getSQL(), $queryBuilder->getParameters());
 
-        return $this->count = (int)($result()[0][$countAlias] ?? 0);
+        return $this->count = (int)($result[$countAlias] ?? 0);
     }
 
     /**
