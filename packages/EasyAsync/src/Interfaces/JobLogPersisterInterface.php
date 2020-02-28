@@ -28,4 +28,13 @@ interface JobLogPersisterInterface
      * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobLogException
      */
     public function persist(JobLogInterface $jobLog): JobLogInterface;
+
+    /**
+     * Remove all job logs for given job.
+     *
+     * @param string $jobId
+     *
+     * @return void
+     */
+    public function removeForJob(string $jobId): void;
 }

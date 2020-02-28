@@ -3,6 +3,9 @@ services:
         autowire: true
         autoconfigure: true
 
+    EonX\EasyAsync\Interfaces\DataCleanerInterface:
+        class: EonX\EasyAsync\Implementations\Doctrine\DBAL\DataCleaner
+
     EonX\EasyAsync\Interfaces\JobLogPersisterInterface:
         class: EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister
         bind:

@@ -123,6 +123,22 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
     }
 
     /**
+     * Remove given job.
+     *
+     * @param \EonX\EasyAsync\Interfaces\JobInterface $job
+     *
+     * @return void
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function remove(JobInterface $job): void
+    {
+        $sql = \sprintf('DELETE FROM %s WHERE id = :jobId', $this->getTableForQuery());
+
+        $this->conn->executeQuery($sql, ['jobId' => $job->getId()]);
+    }
+
+    /**
      * Find one job for given jobId and forUpdate if set.
      *
      * @param string $jobId

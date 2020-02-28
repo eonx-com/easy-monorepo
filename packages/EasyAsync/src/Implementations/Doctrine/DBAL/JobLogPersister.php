@@ -115,6 +115,22 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
     }
 
     /**
+     * Remove all job logs for given job.
+     *
+     * @param string $jobId
+     *
+     * @return void
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function removeForJob(string $jobId): void
+    {
+        $sql = \sprintf('DELETE FROM %s WHERE job_id = :jobId', $this->getTableForQuery());
+
+        $this->conn->executeQuery($sql, ['jobId' => $jobId]);
+    }
+
+    /**
      * Update given job for given job log.
      *
      * @param \EonX\EasyAsync\Interfaces\JobLogInterface $jobLog

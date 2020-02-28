@@ -78,4 +78,13 @@ interface JobPersisterInterface
      * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobException
      */
     public function persist(JobInterface $job): JobInterface;
+
+    /**
+     * Remove given job.
+     *
+     * @param \EonX\EasyAsync\Interfaces\JobInterface $job
+     *
+     * @return void
+     */
+    public function remove(JobInterface $job): void;
 }
