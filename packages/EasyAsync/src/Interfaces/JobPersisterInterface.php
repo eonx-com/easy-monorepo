@@ -47,6 +47,16 @@ interface JobPersisterInterface
     ): LengthAwarePaginatorInterface;
 
     /**
+     * Find paginated list of jobs for given type.
+     *
+     * @param string $type
+     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
+     *
+     * @return \EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface
+     */
+    public function findForType(string $type, StartSizeDataInterface $startSizeData): LengthAwarePaginatorInterface;
+
+    /**
      * Find one job for given jobId and lock it for update.
      *
      * @param string $jobId

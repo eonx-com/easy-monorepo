@@ -12,7 +12,7 @@ Coming soon...
 ## Roadmap
 
 - [X] Add indexes on tables
-- [ ] Fetching job features (per target type, for specific target, per type, ...paginated)
+- [X] Fetching job features (per target type, for specific target, per type, ...paginated)
 - [ ] Fetching job logs features (per job)
 - [ ] Delete job feature
 - [X] Create doctrine migrations

@@ -12,6 +12,7 @@ use EonX\EasyAsync\Interfaces\JobPersisterInterface;
 use EonX\EasyAsync\Interfaces\TargetInterface;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
+use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
 
 final class JobPersister extends AbstractPersister implements JobPersisterInterface
 {
@@ -37,7 +38,8 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
         TargetInterface $target,
         StartSizeDataInterface $startSizeData
     ): LengthAwarePaginatorInterface {
-        return (new LengthAwarePaginator($this->conn, $startSizeData, $this->table))
+        return $this
+            ->createPaginator($startSizeData)
             ->setCriteria(static function (QueryBuilder $queryBuilder) use ($target): void {
                 $queryBuilder
                     ->where('target_type = :targetType')
@@ -56,11 +58,29 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
         TargetInterface $target,
         StartSizeDataInterface $startSizeData
     ): LengthAwarePaginatorInterface {
-        return (new LengthAwarePaginator($this->conn, $startSizeData, $this->table))
+        return $this
+            ->createPaginator($startSizeData)
             ->setCriteria(static function (QueryBuilder $queryBuilder) use ($target): void {
                 $queryBuilder
                     ->where('target_type = :targetType')
                     ->setParameter('targetType', $target->getTargetType());
+            })
+            ->setTransformer(function (array $job): JobInterface {
+                return $this->newJobFromArray($job);
+            });
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findForType(string $type, StartSizeDataInterface $startSizeData): LengthAwarePaginatorInterface
+    {
+        return $this
+            ->createPaginator($startSizeData)
+            ->setCriteria(static function (QueryBuilder $queryBuilder) use ($type): void {
+                $queryBuilder
+                    ->where('type = :type')
+                    ->setParameter('type', $type);
             })
             ->setTransformer(function (array $job): JobInterface {
                 return $this->newJobFromArray($job);
@@ -100,6 +120,18 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
         }
 
         return $job;
+    }
+
+    /**
+     * Create paginator.
+     *
+     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
+     *
+     * @return \EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator
+     */
+    private function createPaginator(StartSizeDataInterface $startSizeData): DoctrineDbalLengthAwarePaginator
+    {
+        return new DoctrineDbalLengthAwarePaginator($this->conn, $this->table, $startSizeData);
     }
 
     /**

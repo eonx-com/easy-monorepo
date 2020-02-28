@@ -8,7 +8,7 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
-use EonX\EasyRepository\Implementations\Doctrine\ORM\Paginators\LengthAwarePaginator;
+use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface as RepoInterface;
 
 abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOrmRepository implements RepoInterface
@@ -40,7 +40,7 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
      */
     public function paginate(?StartSizeDataInterface $startSizeData = null): LengthAwarePaginatorInterface
     {
-        return $this->createLengthAwarePaginator(null, null, null, $startSizeData);
+        return $this->createLengthAwarePaginator(null, null, $startSizeData);
     }
 
     /**
@@ -76,15 +76,13 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
     protected function createLengthAwarePaginator(
         ?string $from = null,
         ?string $fromAlias = null,
-        ?string $indexBy = null,
         ?StartSizeDataInterface $startSizeData = null
-    ): LengthAwarePaginator {
-        return new LengthAwarePaginator(
+    ): DoctrineOrmLengthAwarePaginator {
+        return new DoctrineOrmLengthAwarePaginator(
             $this->manager,
             $startSizeData ?? $this->startSizeData,
             $from ?? $this->getEntityClass(),
-            $fromAlias ?? $this->getEntityAlias(),
-            $indexBy
+            $fromAlias ?? $this->getEntityAlias()
         );
     }
 
