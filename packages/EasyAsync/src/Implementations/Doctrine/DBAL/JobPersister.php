@@ -7,12 +7,12 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use EonX\EasyAsync\Data\Job;
 use EonX\EasyAsync\Exceptions\UnableToFindJobException;
 use EonX\EasyAsync\Exceptions\UnableToPersistJobException;
+use EonX\EasyAsync\Helpers\PropertyHelper;
 use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
 use EonX\EasyAsync\Interfaces\TargetInterface;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
-use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
 
 final class JobPersister extends AbstractPersister implements JobPersisterInterface
 {
@@ -123,18 +123,6 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
     }
 
     /**
-     * Create paginator.
-     *
-     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
-     *
-     * @return \EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator
-     */
-    private function createPaginator(StartSizeDataInterface $startSizeData): DoctrineDbalLengthAwarePaginator
-    {
-        return new DoctrineDbalLengthAwarePaginator($this->conn, $this->table, $startSizeData);
-    }
-
-    /**
      * Find one job for given jobId and forUpdate if set.
      *
      * @param string $jobId
@@ -177,14 +165,10 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
      */
     private function newJobFromArray(array $data): JobInterface
     {
-        foreach (['started_at', 'finished_at'] as $datetime) {
-            if (empty($data[$datetime])) {
-                continue;
-            }
+        $job = Job::fromArray($data);
 
-            $data[$datetime] = $this->datetime->fromString($data[$datetime]);
-        }
+        PropertyHelper::setDatetimeProperties($job, $data, ['started_at', 'finished_at'], $this->datetime);
 
-        return Job::fromArray($data);
+        return $job;
     }
 }

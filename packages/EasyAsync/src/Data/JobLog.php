@@ -3,23 +3,25 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Data;
 
+use EonX\EasyAsync\Helpers\JsonHelper;
+use EonX\EasyAsync\Helpers\PropertyHelper;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Interfaces\TargetInterface;
 
 final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
 {
     /**
-     * @var mixed[]
+     * @var null|mixed[]
      */
     protected $debugInfo;
 
     /**
-     * @var mixed[]
+     * @var null|mixed[]
      */
     protected $failureParams;
 
     /**
-     * @var string
+     * @var null|string
      */
     protected $failureReason;
 
@@ -29,7 +31,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     protected $jobId;
 
     /**
-     * @var mixed[]
+     * @var null|mixed[]
      */
     protected $validationErrors;
 
@@ -46,6 +48,28 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
 
         $this->jobId = $jobId;
         $this->status = self::STATUS_IN_PROGRESS;
+    }
+
+    /**
+     * Create job log from given array.
+     *
+     * @param mixed[] $data
+     *
+     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
+     *
+     * @throws \Nette\Utils\JsonException
+     */
+    public static function fromArray(array $data): JobLogInterface
+    {
+        $jobLog = new static(new Target($data['target_id'], $data['target_type']), $data['type'], $data['job_id']);
+
+        $jobLog->setStatus($data['status']);
+        $jobLog->setId($data['id']);
+
+        PropertyHelper::setJsonProperties($jobLog, $data, ['debug_info', 'failure_params', 'validation_errors']);
+        PropertyHelper::setOptionalProperties($jobLog, $data, ['failure_reason']);
+
+        return $jobLog;
     }
 
     /**
@@ -107,7 +131,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     /**
      * @inheritDoc
      */
-    public function setDebugInfo(array $debugInfo): JobLogInterface
+    public function setDebugInfo(?array $debugInfo = null): JobLogInterface
     {
         $this->debugInfo = $debugInfo;
 
@@ -117,7 +141,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     /**
      * @inheritDoc
      */
-    public function setFailureParams(array $failureParams): JobLogInterface
+    public function setFailureParams(?array $failureParams = null): JobLogInterface
     {
         $this->failureParams = $failureParams;
 
@@ -127,7 +151,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     /**
      * @inheritDoc
      */
-    public function setFailureReason(string $failureReason): JobLogInterface
+    public function setFailureReason(?string $failureReason = null): JobLogInterface
     {
         $this->failureReason = $failureReason;
 
@@ -137,7 +161,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     /**
      * @inheritDoc
      */
-    public function setValidationErrors(array $validationErrors): JobLogInterface
+    public function setValidationErrors(?array $validationErrors = null): JobLogInterface
     {
         $this->validationErrors = $validationErrors;
 
@@ -148,29 +172,19 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
      * Get array representation.
      *
      * @return mixed[]
+     *
+     * @throws \Nette\Utils\JsonException
      */
     public function toArray(): array
     {
         $array = [
-            'debug_info' => $this->jsonEncode($this->getDebugInfo()),
-            'failure_params' => $this->jsonEncode($this->getFailureParams()),
+            'debug_info' => JsonHelper::encode($this->getDebugInfo()),
+            'failure_params' => JsonHelper::encode($this->getFailureParams()),
             'failure_reason' => $this->getFailureReason(),
             'job_id' => $this->getJobId(),
-            'validation_errors' => $this->jsonEncode($this->getValidationErrors())
+            'validation_errors' => JsonHelper::encode($this->getValidationErrors())
         ];
 
         return parent::toArray() + $array;
-    }
-
-    /**
-     * Get json representation of given array.
-     *
-     * @param null|mixed $array
-     *
-     * @return null|string
-     */
-    private function jsonEncode(?array $array = null): ?string
-    {
-        return $array !== null ? \json_encode($array) : null;
     }
 }

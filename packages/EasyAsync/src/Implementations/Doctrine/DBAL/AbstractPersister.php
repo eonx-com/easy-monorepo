@@ -7,6 +7,8 @@ use Doctrine\DBAL\Connection;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
 use EonX\EasyAsync\Interfaces\EasyAsyncDataInterface;
 use EonX\EasyAsync\Interfaces\UuidGeneratorInterface;
+use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
+use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
 
 abstract class AbstractPersister
 {
@@ -48,6 +50,18 @@ abstract class AbstractPersister
         $this->datetime = $datetime;
         $this->table = $table;
         $this->uuid = $uuid;
+    }
+
+    /**
+     * Create paginator.
+     *
+     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
+     *
+     * @return \EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator
+     */
+    protected function createPaginator(StartSizeDataInterface $startSizeData): DoctrineDbalLengthAwarePaginator
+    {
+        return new DoctrineDbalLengthAwarePaginator($this->conn, $this->table, $startSizeData);
     }
 
     /**

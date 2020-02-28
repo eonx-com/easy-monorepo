@@ -4,13 +4,18 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Implementations\Doctrine\DBAL;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Query\QueryBuilder;
+use EonX\EasyAsync\Data\JobLog;
 use EonX\EasyAsync\Exceptions\UnableToPersistJobLogException;
+use EonX\EasyAsync\Helpers\PropertyHelper;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
 use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
 use EonX\EasyAsync\Interfaces\UuidGeneratorInterface;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use Psr\Log\LoggerInterface;
 
 final class JobLogPersister extends AbstractPersister implements JobLogPersisterInterface
@@ -47,6 +52,32 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
 
         $this->jobPersister = $jobPersister;
         $this->logger = $logger;
+    }
+
+    /**
+     * Find paginated list of job logs for given job.
+     *
+     * @param string $jobId
+     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
+     *
+     * @return \EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface
+     */
+    public function findForJob(string $jobId, StartSizeDataInterface $startSizeData): LengthAwarePaginatorInterface
+    {
+        return $this
+            ->createPaginator($startSizeData)
+            ->setCriteria(static function (QueryBuilder $queryBuilder) use ($jobId): void {
+                $queryBuilder
+                    ->where('job_id = :jobId')
+                    ->setParameter('jobId', $jobId);
+            })
+            ->setTransformer(function (array $data): JobLogInterface {
+                $jobLog = JobLog::fromArray($data);
+
+                PropertyHelper::setDatetimeProperties($jobLog, $data, ['started_at', 'finished_at'], $this->datetime);
+
+                return $jobLog;
+            });
     }
 
     /**

@@ -63,37 +63,37 @@ interface JobLogInterface extends EasyAsyncDataInterface
     /**
      * Set debug info.
      *
-     * @param mixed[] $debugInfo
+     * @param null|mixed[] $debugInfo
      *
      * @return \EonX\EasyAsync\Interfaces\JobLogInterface
      */
-    public function setDebugInfo(array $debugInfo): self;
+    public function setDebugInfo(?array $debugInfo = null): self;
 
     /**
      * Set failure params.
      *
-     * @param mixed[] $failureParams
+     * @param null|mixed[] $failureParams
      *
      * @return \EonX\EasyAsync\Interfaces\JobLogInterface
      */
-    public function setFailureParams(array $failureParams): self;
+    public function setFailureParams(?array $failureParams = null): self;
 
     /**
      * Set failure reason.
      *
-     * @param string $failureReason
+     * @param null|string $failureReason
      *
      * @return \EonX\EasyAsync\Interfaces\JobLogInterface
      */
-    public function setFailureReason(string $failureReason): self;
+    public function setFailureReason(?string $failureReason = null): self;
 
     /**
      * Set validation errors.
      *
-     * @param mixed[] $validationErrors
+     * @param null|mixed[] $validationErrors
      *
      * @return \EonX\EasyAsync\Interfaces\JobLogInterface
      */
-    public function setValidationErrors(array $validationErrors): self;
+    public function setValidationErrors(?array $validationErrors = null): self;
 
 }
