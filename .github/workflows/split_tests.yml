@@ -1,0 +1,46 @@
+name: Split Tests
+
+on: [push]
+
+jobs:
+    after_split_testing:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '7.3' ]
+                package:
+                    - EasyApiToken
+                    - EasyAsync
+                    - EasyCfhighlander
+                    - EasyCore
+                    - EasyDecision
+                    - EasyDocker
+                    - EasyEntityChange
+                    - EasyIdentity
+                    - EasyLogging
+                    - EasyPagination
+                    - EasyPipeline
+                    - EasyPsr7Factory
+                    - EasyRepository
+                    - EasySecurity
+                    - EasyTest
+
+        name: Split Tests of ${{ matrix.package }}
+
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   run: |
+                    composer install --no-progress
+                    packages/monorepo-builder/bin/monorepo-builder localize-composer-paths
+                    cd packages/${{ matrix.package_name }}
+                    composer update --no-progress
+
+            -   run: |
+                    cd packages/${{ matrix.package_name }}
+                    vendor/bin/phpunit

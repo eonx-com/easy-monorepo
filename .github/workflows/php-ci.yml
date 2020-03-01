@@ -1,5 +1,7 @@
 name: PHP-CI
+
 on: [push]
+
 jobs:
     # 2nd run with cache + parallel
     coding_standards:
