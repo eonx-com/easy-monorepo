@@ -6,6 +6,7 @@ jobs:
     after_split_testing:
         runs-on: ubuntu-latest
         strategy:
+            fail-fast: false
             matrix:
                 php: [ '7.3' ]
                 package:
@@ -25,7 +26,7 @@ jobs:
                     - EasySecurity
                     - EasyTest
 
-        name: Split Tests of ${{ matrix.package }}
+        name: ${{ matrix.package }}
 
         steps:
             -   uses: eonx-com/actions-checkout@v2
@@ -35,12 +36,17 @@ jobs:
                     php-version: ${{ matrix.php }}
                     coverage: none
 
-            -   run: |
-                    composer install --no-progress
-                    packages/monorepo-builder/bin/monorepo-builder localize-composer-paths
-                    cd packages/${{ matrix.package_name }}
-                    composer update --no-progress
+            -   id: composer-cache
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-            -   run: |
-                    cd packages/${{ matrix.package_name }}
-                    vendor/bin/phpunit
+            -   uses: eonx-com/actions-cache@v1
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ matrix.php }}-comp-
+
+            -   run: composer global require hirak/prestissimo
+            -   run: composer install --prefer-dist --no-progress
+            -   run: vendor/bin/monorepo-builder localize-composer-paths
+            -   run: cd packages/${{ matrix.package }}; composer update --prefer-dist --no-progress
+            -   run: cd packages/${{ matrix.package }}; vendor/bin/phpunit tests
