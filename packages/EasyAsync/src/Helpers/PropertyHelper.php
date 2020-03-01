@@ -39,7 +39,7 @@ final class PropertyHelper
         DateTimeGeneratorInterface $datetime
     ): void {
         foreach ($properties as $property) {
-            if (empty($data[$property]) === false) {
+            if (empty($data[$property] ?? null) === false) {
                 $setter = static::getSetterName($property);
                 $object->$setter($datetime->fromString($data[$property]));
             }

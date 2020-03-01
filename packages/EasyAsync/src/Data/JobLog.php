@@ -85,6 +85,8 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
         $debugInfo = $this->debugInfo ?? [];
         $debugInfo[$name] = $info;
 
+        $this->debugInfo = $debugInfo;
+
         return $this;
     }
 

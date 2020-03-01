@@ -7,6 +7,7 @@
         "php": "^7.1"
     },
     "require-dev": {
+        "eonx-com/easy-api-token": "^2.2",
         "phpunit/phpunit": "^8.4",
         "symfony/symfony": "^4.2"
     },
