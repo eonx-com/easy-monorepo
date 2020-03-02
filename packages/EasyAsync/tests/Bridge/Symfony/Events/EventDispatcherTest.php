@@ -31,7 +31,8 @@ final class EventDispatcherTest extends AbstractTestCase
                     ->once()
                     ->with($event)
                     ->andReturn($event);
-            });
+            }
+        );
 
         $dispatcher = new EventDispatcher($symfonyDispatcher);
 

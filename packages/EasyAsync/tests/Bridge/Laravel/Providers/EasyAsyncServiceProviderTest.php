@@ -109,7 +109,7 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
             JobLogPersisterInterface::class => $implementationServices['job_log_persister'],
             'default_job_persister' => $implementationServices['job_persister'],
             JobPersisterInterface::class => WithEventsJobPersister::class,
-            JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class,
+            JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class
         ];
 
         foreach ($services as $abstract => $concrete) {
