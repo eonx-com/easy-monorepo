@@ -18,13 +18,13 @@ jobs:
                     - EasyDocker
                     - EasyEntityChange
                     - EasyIdentity
-                    - EasyLogging
+                    # - EasyLogging | This package needs more than just test
                     - EasyPagination
                     - EasyPipeline
                     - EasyPsr7Factory
                     - EasyRepository
                     - EasySecurity
-                    - EasyTest
+                    # - EasyTest | Enable after tests written
 
         name: ${{ matrix.package }}
 
