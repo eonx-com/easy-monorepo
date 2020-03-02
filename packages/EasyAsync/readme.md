@@ -18,4 +18,4 @@ Coming soon...
 - [X] Create doctrine migrations
 - [X] Laravel bridge
 - [X] Event for Job completed
-- [ ] Write tests
+- [X] Write tests

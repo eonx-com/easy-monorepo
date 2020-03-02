@@ -8,6 +8,7 @@
 ## Packages
 
 - [EasyApiToken](https://github.com/eonx-com/easy-api-token): Tools to handle API tokens like a pro.
+- [EasyAsync](https://github.com/eonx-com/easy-async): Makes dealing with async processes easier.
 - [EasyCfhighlander](https://github.com/eonx-com/easy-cfhighlander): CLI tool to generate Cfhighlander templates.
 - [EasyDecision](https://github.com/eonx-com/easy-decision): Your most complex decisions made the easiest way.
 - [EasyDocker](https://github.com/eonx-com/easy-docker): CLI tool to generate Docker files.
