@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Factories\Decoders;
 
+use Auth0\SDK\Helpers\Cache\FileSystemCacheHandler;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
 use EonX\EasyApiToken\External\Auth0JwtDriver;
 use EonX\EasyApiToken\External\FirebaseJwtDriver;
@@ -94,12 +95,19 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
      */
     private function createAuth0Driver(array $options): Auth0JwtDriver
     {
+        $cache = null;
+        if (array_key_exists('cache_path', $options) && empty($options['cache_path']) === false) {
+            $cache = new FileSystemCacheHandler($options['cache_path']);
+        }
+
+
         $driver = new Auth0JwtDriver(
             $options['valid_audiences'],
             $options['authorized_iss'],
             $options['private_key'],
             $options['audience_for_encode'] ?? null,
-            $options['allowed_algos'] ?? null
+            $options['allowed_algos'] ?? null,
+            $cache
         );
 
         return $driver;
