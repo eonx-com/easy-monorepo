@@ -17,6 +17,22 @@ parameters:
         - message: '#Parameter \#2 \$key of method EonX\\EasyApiToken\\Tests\\Encoders\\FirebaseJwtTokenEncoderTest::createJwtTokenDecoder\(\) expects resource\|string, bool\|resource\|string given.#'
           path: packages/EasyApiToken/tests/Encoders
 
+        # ---- EasyAsync ----
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
+          path: packages/EasyAsync/src/Bridge/Symfony/DependencyInjection
+
+        - message: '#Method EonX\\EasyAsync\\Generators\\DateTimeGenerator::fromString\(\) should return DateTime but returns DateTime\|false.#'
+          path: packages/EasyAsync/src/Generators
+
+        - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'
+          path: packages/EasyAsync/tests
+
+        - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\)#'
+          path: packages/EasyAsync/tests
+
+        - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
+          path: packages/EasyAsync/tests/Persisters
+
         # ---- EasyCfhighlander ----
         # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'
@@ -60,6 +76,9 @@ parameters:
 
         - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\)#'
           path: packages/EasyPagination/tests
+
+        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\Doctrine(Dbal|Orm)LengthAwarePaginator::doGet(TotalItems|Result)\(\) expects Doctrine\\(ORM|DBAL\\Query)\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given.#'
+        - '#Method EonX\\EasyPagination\\Paginators\\Doctrine(Dbal|Orm)LengthAwarePaginator::createQueryBuilder\(\) never returns Doctrine\\(ORM|DBAL\\Query)\\QueryBuilder so it can be removed from the return typehint.#'
 
         # ---- EasyPipeline ----
         - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
