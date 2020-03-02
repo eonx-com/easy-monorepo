@@ -4,12 +4,18 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Bridge;
 
 use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
+use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
 use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 use EonX\EasyAsync\Interfaces\WithProcessJobLogDataInterface;
 
 trait WithProcessJobLogTrait
 {
+    /**
+     * @var \EonX\EasyAsync\Interfaces\JobLogInterface
+     */
+    private $jobLog;
+
     /**
      * @var \EonX\EasyAsync\Interfaces\JobLogFactoryInterface
      */
@@ -24,6 +30,16 @@ trait WithProcessJobLogTrait
      * @var \EonX\EasyAsync\Interfaces\JobLogUpdaterInterface
      */
     private $jobLogUpdater;
+
+    /**
+     * Get job log.
+     *
+     * @return null|\EonX\EasyAsync\Interfaces\JobLogInterface
+     */
+    public function getJobLog(): ?JobLogInterface
+    {
+        return $this->jobLog;
+    }
 
     /**
      * Set job log persister.
@@ -79,7 +95,7 @@ trait WithProcessJobLogTrait
     protected function processWithJobLog(WithProcessJobLogDataInterface $withData, \Closure $func)
     {
         $data = $withData->getProcessJobLogData();
-        $jobLog = $this->jobLogFactory->create($data->getTarget(), $data->getType(), $data->getJobId());
+        $this->jobLog = $jobLog = $this->jobLogFactory->create($data->getTarget(), $data->getType(), $data->getJobId());
 
         try {
             $this->jobLogUpdater->inProgress($jobLog);

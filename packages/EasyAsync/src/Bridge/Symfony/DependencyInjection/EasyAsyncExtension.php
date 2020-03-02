@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\DependencyInjection;
 
+use EonX\EasyAsync\Exceptions\InvalidImplementationException;
+use EonX\EasyAsync\Interfaces\ImplementationsInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -32,7 +34,12 @@ final class EasyAsyncExtension extends Extension
             $container->setParameter(\sprintf('easy_async_%s', $name), $config[$name]);
         }
 
-        // TODO - Handle invalid implementation
-        $loader->load(\sprintf('implementations/%s.yaml', $config['implementation']));
+        $implementation = $config['implementation'] ?? ImplementationsInterface::IMPLEMENTATION_DOCTRINE;
+
+        if (\in_array($implementation, ImplementationsInterface::IMPLEMENTATIONS, true) === false) {
+            throw new InvalidImplementationException(\sprintf('Implementation "%s" invalid', $implementation));
+        }
+
+        $loader->load(\sprintf('implementations/%s.yaml', $implementation));
     }
 }

@@ -161,7 +161,7 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
         // Job finished
         if ($job->getTotal() === $job->getProcessed()) {
             $job->setStatus($job->getFailed() > 0 ? JobInterface::STATUS_FAILED : JobInterface::STATUS_COMPLETED);
-            $job->setFinishedAt($this->datetime->now());
+            $job->setFinishedAt($jobLog->getFinishedAt());
         }
 
         return $job;

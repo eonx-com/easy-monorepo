@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Bridge\Laravel\Providers;
 
 use EonX\EasyAsync\Bridge\Laravel\Events\EventDispatcher;
+use EonX\EasyAsync\Exceptions\InvalidImplementationException;
 use EonX\EasyAsync\Factories\JobFactory;
 use EonX\EasyAsync\Factories\JobLogFactory;
 use EonX\EasyAsync\Generators\DateTimeGenerator;
@@ -14,6 +15,7 @@ use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister;
 use EonX\EasyAsync\Interfaces\DataCleanerInterface;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
 use EonX\EasyAsync\Interfaces\EventDispatcherInterface;
+use EonX\EasyAsync\Interfaces\ImplementationsInterface;
 use EonX\EasyAsync\Interfaces\JobFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
@@ -43,6 +45,8 @@ final class EasyAsyncServiceProvider extends ServiceProvider
      * Register easy-async services.
      *
      * @return void
+     *
+     * @throws \EonX\EasyAsync\Exceptions\InvalidImplementationException
      */
     public function register(): void
     {
@@ -55,12 +59,19 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             JobLogFactoryInterface::class => JobLogFactory::class,
             UuidGeneratorInterface::class => RamseyUuidGenerator::class,
             'default_job_log_updater' => JobLogUpdater::class,
-            JobPersisterInterface::class => WithEventsJobPersister::class
+            JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class
         ];
 
         foreach ($simples as $abstract => $concrete) {
             $this->app->singleton($abstract, $concrete);
         }
+
+        $this->app->singleton(JobPersisterInterface::class, function (): JobPersisterInterface {
+            return new WithEventsJobPersister(
+                $this->app->get('default_job_persister'),
+                $this->app->get(EventDispatcherInterface::class)
+            );
+        });
 
         $this->app->singleton(JobLogUpdaterInterface::class, function (): JobLogUpdaterInterface {
             return new WithEventsJobLogUpdater(
@@ -69,22 +80,15 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             );
         });
 
-        // Inject decorated job persister
-        $this
-            ->app
-            ->when(WithEventsJobPersister::class)
-            ->needs('$decorated')
-            ->give(function (): JobPersisterInterface {
-                return $this->app->get('default_job_persister');
-            });
+        $implementation = \config('easy-async.implementation', ImplementationsInterface::IMPLEMENTATION_DOCTRINE);
 
-        $implementation = \config('easy-async.implementation', 'doctrine');
-
-        if ($implementation === 'doctrine') {
+        if ($implementation === ImplementationsInterface::IMPLEMENTATION_DOCTRINE) {
             $this->registerDoctrine();
 
             return;
         }
+
+        throw new InvalidImplementationException(\sprintf('Implementation "%s" invalid', $implementation));
     }
 
     /**
@@ -98,7 +102,16 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         $this->app->singleton(JobLogPersisterInterface::class, JobLogPersister::class);
         $this->app->singleton('default_job_persister', JobPersister::class);
 
-        $this->app->when(JobLogPersister::class)->needs('$table')->give(\config('easy-async.job_logs_table'));
-        $this->app->when(JobPersister::class)->needs('$table')->give(\config('easy-async.jobs_table'));
+        $this
+            ->app
+            ->when(JobLogPersister::class)
+            ->needs('$table')
+            ->give(\config('easy-async.job_logs_table', 'easy_async_job_logs'));
+
+        $this
+            ->app
+            ->when(JobPersister::class)
+            ->needs('$table')
+            ->give(\config('easy-async.jobs_table', 'easy_async_jobs'));
     }
 }
