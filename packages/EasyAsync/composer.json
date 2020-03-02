@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.1",
         "ramsey/uuid": "^3.9",
-        "eonx-com/easy-pagination": "^2.3",
+        "eonx-com/easy-pagination": "^2.4",
         "nette/utils": "^3.0"
     },
     "require-dev": {
@@ -28,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.3-dev"
+            "dev-master": "2.4-dev"
         }
     }
 }
