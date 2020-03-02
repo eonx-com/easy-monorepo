@@ -21,7 +21,6 @@
         "symfony/filesystem": "^4.2",
         "symfony/finder": "^4.2",
         "symfony/psr-http-message-bridge": "^1.1",
-        "symplify/autowire-array-parameter": "^7.2",
         "symplify/package-builder": "^7.2",
         "symplify/set-config-resolver": "^7.2",
         "twig/twig": "^2.8",

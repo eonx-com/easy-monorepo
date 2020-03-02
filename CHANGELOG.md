@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v2.2.1 - 2020-02-28
+## v2.3.0 - 2020-03-02
+
+### EasyAsync
+
+- [#143] Create package
+
+### EasyPagination
+
+- [#143] Add Doctrine ORM and DBAL paginators
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.2.1] - 2020-02-28
 
 ### EasyTest
 
@@ -1175,3 +1189,5 @@
 [v2.1.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.3...v2.1.4
 [#140]: https://github.com/eonx-com/easy-monorepo/pull/140
 [v2.2.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.4...v2.2.0
+[#143]: https://github.com/eonx-com/easy-monorepo/pull/143
+[v2.2.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.2.0...v2.2.1
