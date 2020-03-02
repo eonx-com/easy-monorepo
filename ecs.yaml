@@ -1,9 +1,8 @@
-imports:
-    - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/set/psr2.yaml' }
-
 parameters:
     exclude_files:
         - '*/var/*.php'
+    sets:
+        - 'psr2'
     skip:
         PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff.MaxExceeded:
             - 'packages/EasySecurity/src/Context.php'

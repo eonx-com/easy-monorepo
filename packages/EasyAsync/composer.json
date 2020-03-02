@@ -6,14 +6,14 @@
     "require": {
         "php": "^7.1",
         "ramsey/uuid": "^3.9",
-        "eonx-com/easy-pagination": "dev-feature/easy-async-package",
+        "eonx-com/easy-pagination": "^2.3",
         "nette/utils": "^3.0"
     },
     "require-dev": {
         "doctrine/dbal": "^2.6",
         "phpunit/phpunit": "^8.4",
         "symfony/symfony": "^4.2",
-        "mockery/mockery": "^1.3"
+        "mockery/mockery": "^1.2"
     },
     "autoload": {
         "psr-4": {

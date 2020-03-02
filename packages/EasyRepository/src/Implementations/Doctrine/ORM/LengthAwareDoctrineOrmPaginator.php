@@ -6,7 +6,6 @@ namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Paginators\AbstractLengthAwarePaginator;
-use EonX\EasyRepository\Implementations\Doctrine\ORM\Paginators\LengthAwarePaginator;
 
 /**
  * @deprecated since 2.1.5, will be removed in 3.0.0
@@ -30,7 +29,7 @@ final class LengthAwareDoctrineOrmPaginator extends AbstractLengthAwarePaginator
         @\trigger_error(\sprintf(
             '%s is deprecated since 2.1.5 and will be removed in 3.0, use %s instead',
             \get_class($this),
-            LengthAwarePaginator::class
+            'EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator'
         ), \E_USER_DEPRECATED);
 
         $this->doctrinePaginator = $doctrinePaginator;

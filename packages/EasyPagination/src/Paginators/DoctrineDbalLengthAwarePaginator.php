@@ -51,7 +51,7 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
     /**
      * Class using trait must get result from given query builder.
      *
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
+     * @param \Doctrine\DBAL\Query\QueryBuilder $queryBuilder
      *
      * @return mixed[]
      */
@@ -72,7 +72,7 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
      */
     protected function doGetTotalItems(QueryBuilder $queryBuilder, string $countAlias): int
     {
-        $result = $this->conn->fetchAssoc($queryBuilder->getSQL(), $queryBuilder->getParameters());
+        $result = (array)$this->conn->fetchAssoc($queryBuilder->getSQL(), $queryBuilder->getParameters());
 
         return (int)($result[$countAlias] ?? 0);
     }

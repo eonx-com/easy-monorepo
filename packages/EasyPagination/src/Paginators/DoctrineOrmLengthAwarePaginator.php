@@ -24,7 +24,6 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
      * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
      * @param string $from
      * @param string $fromAlias
-     * @param null|string $indexBy
      */
     public function __construct(
         EntityManagerInterface $manager,
@@ -52,7 +51,7 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
     /**
      * Class using trait must get result from given query builder.
      *
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
      *
      * @return mixed[]
      */
@@ -64,7 +63,7 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
     /**
      * Class using trait must define how to get total items.
      *
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
      * @param string $countAlias
      *
      * @return int

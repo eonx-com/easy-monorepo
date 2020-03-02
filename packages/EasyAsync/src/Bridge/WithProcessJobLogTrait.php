@@ -85,14 +85,14 @@ trait WithProcessJobLogTrait
 
     /**
      * @param \EonX\EasyAsync\Interfaces\WithProcessJobLogDataInterface $withData
-     * @param \Closure $func
+     * @param callable $func
      *
      * @return null|mixed
      *
      * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
      * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobLogException
      */
-    protected function processWithJobLog(WithProcessJobLogDataInterface $withData, \Closure $func)
+    protected function processWithJobLog(WithProcessJobLogDataInterface $withData, callable $func)
     {
         $data = $withData->getProcessJobLogData();
         $this->jobLog = $jobLog = $this->jobLogFactory->create($data->getTarget(), $data->getType(), $data->getJobId());
@@ -100,7 +100,7 @@ trait WithProcessJobLogTrait
         try {
             $this->jobLogUpdater->inProgress($jobLog);
 
-            $result = $func();
+            $result = \call_user_func($func);
 
             $this->jobLogUpdater->completed($jobLog);
 
