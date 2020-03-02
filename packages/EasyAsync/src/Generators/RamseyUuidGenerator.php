@@ -20,7 +20,7 @@ final class RamseyUuidGenerator implements UuidGeneratorInterface
     {
         try {
             return Uuid::uuid4()->toString();
-        // @codeCoverageIgnoreStart
+            // @codeCoverageIgnoreStart
         } catch (\Exception $exception) {
             throw new UnableToGenerateUuidException($exception->getMessage(), $exception->getCode(), $exception);
         }

@@ -25,6 +25,7 @@ parameters:
             - 'packages/EasyCore/tests/Bridge/Laravel/CachedConfigurationServiceProviderTest.php'
             - 'packages/EasyLogging/src/Logger.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
+            - 'packages/EasyAsync/src/Helpers/PropertyHelper.php'
         NatePage\Sniffs\Commenting\FunctionCommentSniff.ScalarTypeHintMissing:
             - 'packages/EasyLogging/src/Logger.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'

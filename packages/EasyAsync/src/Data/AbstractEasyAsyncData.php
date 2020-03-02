@@ -58,7 +58,9 @@ abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
     }
 
     /**
-     * @inheritDoc
+     * Get datetime the job finished at.
+     *
+     * @return null|\DateTime
      */
     public function getFinishedAt(): ?\DateTime
     {
@@ -66,7 +68,9 @@ abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
     }
 
     /**
-     * @inheritDoc
+     * Get job id.
+     *
+     * @return null|string
      */
     public function getId(): ?string
     {
@@ -74,7 +78,9 @@ abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
     }
 
     /**
-     * @inheritDoc
+     * Get datetime the job started at.
+     *
+     * @return null|\DateTime
      */
     public function getStartedAt(): ?\DateTime
     {
@@ -82,7 +88,9 @@ abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
     }
 
     /**
-     * @inheritDoc
+     * Get status.
+     *
+     * @return string
      */
     public function getStatus(): string
     {
@@ -90,7 +98,9 @@ abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
     }
 
     /**
-     * @inheritDoc
+     * Get target id.
+     *
+     * @return mixed
      */
     public function getTargetId()
     {
@@ -98,7 +108,9 @@ abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
     }
 
     /**
-     * @inheritDoc
+     * Get target type.
+     *
+     * @return string
      */
     public function getTargetType(): string
     {
@@ -106,7 +118,9 @@ abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
     }
 
     /**
-     * @inheritDoc
+     * Get job type.
+     *
+     * @return string
      */
     public function getType(): string
     {
@@ -126,7 +140,11 @@ abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
     }
 
     /**
-     * @inheritDoc
+     * Set job id.
+     *
+     * @param string $id
+     *
+     * @return void
      */
     public function setId(string $id): void
     {
@@ -146,7 +164,11 @@ abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
     }
 
     /**
-     * @inheritDoc
+     * Set status.
+     *
+     * @param string $status
+     *
+     * @return void
      */
     public function setStatus(string $status): void
     {

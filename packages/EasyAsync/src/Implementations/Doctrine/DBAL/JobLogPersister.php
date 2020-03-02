@@ -137,7 +137,6 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
      * @param \EonX\EasyAsync\Interfaces\JobInterface $job
      *
      * @return \EonX\EasyAsync\Interfaces\JobInterface
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
      */
     private function updateJob(JobLogInterface $jobLog, JobInterface $job): JobInterface
     {

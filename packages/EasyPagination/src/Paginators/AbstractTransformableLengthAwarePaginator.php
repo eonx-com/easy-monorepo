@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Paginators;
 
-use EonX\EasyPagination\Interfaces\TransformableLengthAwarePaginatorInterface;
+use EonX\EasyPagination\Interfaces\TransformableLengthAwarePaginatorInterface as Transformable;
 
-abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthAwarePaginator implements TransformableLengthAwarePaginatorInterface
+abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthAwarePaginator implements Transformable
 {
     /**
      * @var mixed[]
@@ -38,7 +38,7 @@ abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthA
      *
      * @return \EonX\EasyPagination\Interfaces\TransformableLengthAwarePaginatorInterface
      */
-    public function setTransformer(?callable $transformer = null): TransformableLengthAwarePaginatorInterface
+    public function setTransformer(?callable $transformer = null): Transformable
     {
         $this->transformer = $transformer;
 

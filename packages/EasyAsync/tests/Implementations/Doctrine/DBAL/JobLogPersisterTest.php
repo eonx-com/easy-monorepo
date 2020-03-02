@@ -374,8 +374,8 @@ final class JobLogPersisterTest extends AbstractTestCase
      * Get job log persister.
      *
      * @param \Doctrine\DBAL\Connection $conn
-     * @param null|string $table
      * @param null|\EonX\EasyAsync\Interfaces\JobPersisterInterface $jobPersister
+     * @param null|string $table
      *
      * @return \EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister
      */

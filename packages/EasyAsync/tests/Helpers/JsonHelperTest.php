@@ -44,6 +44,8 @@ final class JsonHelperTest extends AbstractTestCase
      * @param null|string $data
      * @param null|mixed[] $expected
      *
+     * @return void
+     *
      * @throws \Nette\Utils\JsonException
      *
      * @dataProvider providerDecode

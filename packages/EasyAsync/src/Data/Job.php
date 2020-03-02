@@ -64,7 +64,9 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
     }
 
     /**
-     * @inheritDoc
+     * Get number of failed job logs.
+     *
+     * @return int
      */
     public function getFailed(): int
     {
@@ -72,7 +74,9 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
     }
 
     /**
-     * @inheritDoc
+     * Get number of processed job logs.
+     *
+     * @return int
      */
     public function getProcessed(): int
     {
@@ -80,7 +84,9 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
     }
 
     /**
-     * @inheritDoc
+     * Get number of succeeded job logs.
+     *
+     * @return int
      */
     public function getSucceeded(): int
     {
@@ -88,7 +94,9 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
     }
 
     /**
-     * @inheritDoc
+     * Get total of job logs to process.
+     *
+     * @return int
      */
     public function getTotal(): int
     {

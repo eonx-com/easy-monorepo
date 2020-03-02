@@ -53,6 +53,8 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
      * @param mixed[] $config
      * @param mixed[] $implementationServices
      *
+     * @return void
+     *
      * @throws \Exception
      *
      * @dataProvider providerLoad

@@ -95,5 +95,4 @@ interface JobLogInterface extends EasyAsyncDataInterface
      * @return \EonX\EasyAsync\Interfaces\JobLogInterface
      */
     public function setValidationErrors(?array $validationErrors = null): self;
-
 }

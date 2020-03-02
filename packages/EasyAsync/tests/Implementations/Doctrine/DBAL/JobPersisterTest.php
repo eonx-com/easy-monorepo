@@ -381,7 +381,8 @@ final class JobPersisterTest extends AbstractTestCase
                     ->once()
                     ->with($sql, ['jobId' => 'jobId'])
                     ->andReturn($expected);
-            });
+            }
+        );
 
         $method = $forUpdate ? 'findOneForUpdate' : 'find';
 

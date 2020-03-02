@@ -13,7 +13,8 @@
         "doctrine/dbal": "^2.6",
         "phpunit/phpunit": "^8.4",
         "symfony/symfony": "^4.2",
-        "mockery/mockery": "^1.2"
+        "mockery/mockery": "^1.2",
+        "laravel/lumen-framework": "^5.5"
     },
     "autoload": {
         "psr-4": {

@@ -32,7 +32,12 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
     }
 
     /**
-     * @inheritDoc
+     * Find paginated list of jobs for given target.
+     *
+     * @param \EonX\EasyAsync\Interfaces\TargetInterface $target
+     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
+     *
+     * @return \EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface
      */
     public function findForTarget(
         TargetInterface $target,
@@ -52,7 +57,12 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
     }
 
     /**
-     * @inheritDoc
+     * Find paginated list of jobs for given target type.
+     *
+     * @param \EonX\EasyAsync\Interfaces\TargetInterface $target
+     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
+     *
+     * @return \EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface
      */
     public function findForTargetType(
         TargetInterface $target,
@@ -71,7 +81,12 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
     }
 
     /**
-     * @inheritDoc
+     * Find paginated list of jobs for given type.
+     *
+     * @param string $type
+     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
+     *
+     * @return \EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface
      */
     public function findForType(string $type, StartSizeDataInterface $startSizeData): LengthAwarePaginatorInterface
     {
