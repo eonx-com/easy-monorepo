@@ -9,19 +9,23 @@
         "packages/EasyTest/bin/easy-test"
     ],
     "require": {
+        "doctrine/orm": "^2.6",
         "eonx-com/externals": "^1.0 || ^2.0",
         "eonx-com/utils": "^1.0",
         "ext-json": "*",
+        "php": "^7.1",
         "psr/event-dispatcher": "^1.0",
+        "ramsey/uuid": "^3.9",
+        "symfony/console": "^4.2",
         "symfony/expression-language": "^4.2",
         "symfony/filesystem": "^4.2",
         "symfony/finder": "^4.2",
         "symfony/psr-http-message-bridge": "^1.1",
+        "symplify/autowire-array-parameter": "^7.2",
         "symplify/package-builder": "^7.2",
+        "symplify/set-config-resolver": "^7.2",
         "twig/twig": "^2.8",
         "zendframework/zend-diactoros": "^2.1",
-        "php": "^7.1",
-        "symplify/set-config-resolver": "^7.2",
         "symplify/autowire-array-parameter": "^7.2",
         "nette/utils": "^3.1"
     },
@@ -29,7 +33,7 @@
         "auth0/auth0-php": "^5.4",
         "bugsnag/bugsnag": "^3.19",
         "bugsnag/bugsnag-laravel": "^2.17",
-        "doctrine/orm": "^2.6",
+        "doctrine/dbal": "^2.6",
         "eonx-com/test-utils": "^0.0.1",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
@@ -38,6 +42,7 @@
         "mikey179/vfsstream": "~1",
         "mockery/mockery": "^1.2",
         "phpspec/prophecy": "~1.0",
+        "phpstan/phpstan": "^0.12.3",
         "phpunit/phpunit": "^8.4",
         "psr/container": "^1.0",
         "symfony/symfony": "^4.2",
@@ -45,13 +50,13 @@
         "symplify/monorepo-builder": "^7.2",
         "symplify/changelog-linker": "^7.2",
         "natepage/sniffs": "^1.1",
-        "phpstan/phpstan": "^0.12.3",
         "sensiolabs/security-checker": "^5.0",
         "symplify/easy-coding-standard": "^7.2"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
+            "EonX\\EasyAsync\\": "packages/EasyAsync/src",
             "EonX\\EasyCfhighlander\\": "packages/EasyCfhighlander/src",
             "EonX\\EasyCore\\": "packages/EasyCore/src",
             "EonX\\EasyDecision\\": "packages/EasyDecision/src",
@@ -70,6 +75,7 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
+            "EonX\\EasyAsync\\Tests\\": "packages/EasyAsync/tests",
             "EonX\\EasyCfhighlander\\Tests\\": "packages/EasyCfhighlander/tests",
             "EonX\\EasyCore\\Tests\\": "packages/EasyCore/tests",
             "EonX\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
@@ -99,7 +105,8 @@
         "eonx-com/easy-entity-change": "self.version",
         "eonx-com/easy-logging": "self.version",
         "eonx-com/easy-security": "self.version",
-        "eonx-com/easy-test": "self.version"
+        "eonx-com/easy-test": "self.version",
+        "eonx-com/easy-async": "self.version"
     },
     "scripts": {
         "check-all": [

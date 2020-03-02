@@ -21,6 +21,7 @@ parameters:
     # for "split" command
     directories_to_repositories:
         packages/EasyApiToken: 'git@github.com:eonx-com/easy-api-token.git'
+        packages/EasyAsync: 'git@github.com:eonx-com/easy-async.git'
         packages/EasyCfhighlander: 'git@github.com:eonx-com/easy-cfhighlander.git'
         packages/EasyCore: 'git@github.com:eonx-com/easy-core.git'
         packages/EasyDecision: 'git@github.com:eonx-com/easy-decision.git'

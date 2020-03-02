@@ -14,7 +14,8 @@
         "zendframework/zend-diactoros": "^2.1",
         "auth0/auth0-php": "^5.4",
         "psr/container": "^1.0",
-        "laravel/lumen-framework": "^5.5"
+        "laravel/lumen-framework": "^5.5",
+        "symfony/symfony": "^4.2"
     },
     "autoload": {
         "psr-4": {

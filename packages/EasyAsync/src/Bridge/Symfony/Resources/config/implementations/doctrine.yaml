@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    EonX\EasyAsync\Interfaces\DataCleanerInterface:
+        class: EonX\EasyAsync\Implementations\Doctrine\DBAL\DataCleaner
+
+    EonX\EasyAsync\Interfaces\JobLogPersisterInterface:
+        class: EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister
+        bind:
+            $table: '%easy_async_job_logs_table%'
+
+    default_job_persister:
+        class: EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister
+        bind:
+            $table: '%easy_async_jobs_table%'
