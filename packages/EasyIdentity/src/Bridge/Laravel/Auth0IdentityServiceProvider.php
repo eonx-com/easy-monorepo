@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyIdentity\Bridge\Laravel;
 
-use Illuminate\Support\ServiceProvider;
 use EonX\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory;
 use EonX\EasyIdentity\Interfaces\IdentityServiceInterface;
+use Illuminate\Support\ServiceProvider;
 
 final class Auth0IdentityServiceProvider extends ServiceProvider
 {
@@ -22,9 +22,7 @@ final class Auth0IdentityServiceProvider extends ServiceProvider
     }
 
     /**
-     * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty.
-     *
-     * Register the services to use Auth0 as identity service.
+     * Register services.
      *
      * @return void
      */
@@ -39,5 +37,3 @@ final class Auth0IdentityServiceProvider extends ServiceProvider
         });
     }
 }
-
-

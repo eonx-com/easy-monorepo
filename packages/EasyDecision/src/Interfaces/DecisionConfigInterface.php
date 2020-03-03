@@ -15,6 +15,13 @@ interface DecisionConfigInterface
     public function getDecisionType(): string;
 
     /**
+     * Get default output if no rules provided.
+     *
+     * @return null|mixed
+     */
+    public function getDefaultOutput();
+
+    /**
      * Get expression language config.
      *
      * @return null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
@@ -42,5 +49,3 @@ interface DecisionConfigInterface
      */
     public function getRuleProviders(): array;
 }
-
-

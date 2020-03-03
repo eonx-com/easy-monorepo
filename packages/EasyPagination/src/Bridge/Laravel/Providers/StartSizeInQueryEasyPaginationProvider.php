@@ -19,5 +19,3 @@ final class StartSizeInQueryEasyPaginationProvider extends AbstractStartSizeEasy
         };
     }
 }
-
-

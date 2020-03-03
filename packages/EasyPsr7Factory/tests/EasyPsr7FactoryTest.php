@@ -56,5 +56,3 @@ class EasyPsr7FactoryTest extends AbstractTestCase
         return new EasyPsr7Factory();
     }
 }
-
-

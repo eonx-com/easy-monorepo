@@ -3,23 +3,37 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Decisions;
 
+use EonX\EasyDecision\Decisions\AffirmativeDecision;
 use EonX\EasyDecision\Decisions\ConsensusDecision;
-use EonX\EasyDecision\Exceptions\EmptyRulesException;
+use EonX\EasyDecision\Decisions\UnanimousDecision;
+use EonX\EasyDecision\Decisions\ValueDecision;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class ConsensusDecisionTest extends AbstractTestCase
 {
     /**
-     * Decision should throw an exception if no rules given.
+     * Decision should return expected name.
      *
      * @return void
      */
-    public function testNoRulesException(): void
+    public function testGetName(): void
     {
-        $this->expectException(EmptyRulesException::class);
+        self::assertEquals('name', (new ConsensusDecision('name'))->getName());
+    }
 
-        (new ConsensusDecision())->addRules([])->make([]);
+    /**
+     * Decision should return expected default output if no rules given.
+     *
+     * @return void
+     */
+    public function testNoRulesDecision(): void
+    {
+        self::assertTrue((new AffirmativeDecision())->addRules([])->make([]));
+        self::assertTrue((new ConsensusDecision())->addRules([])->make([]));
+        self::assertTrue((new UnanimousDecision())->addRules([])->make([]));
+        self::assertEquals(5, (new ValueDecision())->addRules([])->make(['value' => 5]));
+        self::assertEquals(10, (new ValueDecision())->setDefaultOutput(10)->make(['value' => 5]));
     }
 
     /**
@@ -114,5 +128,3 @@ final class ConsensusDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 }
-
-

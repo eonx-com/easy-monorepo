@@ -8,7 +8,7 @@
     },
     "require-dev": {
         "mikey179/vfsstream": "~1",
-        "phpunit/phpunit": "^7.5",
+        "phpunit/phpunit": "^8.4",
         "laravel/lumen-framework": "^5.5",
         "phpspec/prophecy": "~1.0"
     },
@@ -24,7 +24,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "2.4-dev"
         }
     }
 }

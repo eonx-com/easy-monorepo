@@ -6,7 +6,7 @@ namespace EonX\EasyRepository\Tests\Implementation\Doctrine\ORM;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use EonX\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator;
 use EonX\EasyRepository\Tests\AbstractTestCase;
-use Mockery\MockInterface;
+use Mockery\LegacyMockInterface;
 
 final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
 {
@@ -17,7 +17,7 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
      */
     public function testGettersReturnExpectedValues(): void
     {
-        /** @var \Doctrine\ORM\Tools\Pagination\Paginator $doctrinePaginator */
+        /** @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator */
         $doctrinePaginator = $this->mockDoctrinePaginator();
         $paginator = new LengthAwareDoctrineOrmPaginator($doctrinePaginator, 1, 2);
 
@@ -33,11 +33,11 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
     /**
      * Mock doctrine paginator.
      *
-     * @return \Mockery\MockInterface
+     * @return \Mockery\LegacyMockInterface
      */
-    private function mockDoctrinePaginator(): MockInterface
+    private function mockDoctrinePaginator(): LegacyMockInterface
     {
-        return $this->mock(DoctrinePaginator::class, function (MockInterface $paginator): void {
+        return $this->mock(DoctrinePaginator::class, function (LegacyMockInterface $paginator): void {
             $items = [new \stdClass(), new \stdClass(), new \stdClass()]; // 3 items
             $iterator = new \ArrayIterator($items);
 
@@ -46,5 +46,3 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
         });
     }
 }
-
-

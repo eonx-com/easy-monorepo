@@ -21,5 +21,3 @@ interface IdentityUserIdHolderInterface
      */
     public function setIdentityUserId(string $userId): void;
 }
-
-

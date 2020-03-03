@@ -13,5 +13,3 @@ interface IdentityServiceNamesInterface
         self::SERVICE_AUTH0
     ];
 }
-
-

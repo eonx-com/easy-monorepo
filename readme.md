@@ -8,6 +8,7 @@
 ## Packages
 
 - [EasyApiToken](https://github.com/eonx-com/easy-api-token): Tools to handle API tokens like a pro.
+- [EasyAsync](https://github.com/eonx-com/easy-async): Makes dealing with async processes easier.
 - [EasyCfhighlander](https://github.com/eonx-com/easy-cfhighlander): CLI tool to generate Cfhighlander templates.
 - [EasyDecision](https://github.com/eonx-com/easy-decision): Your most complex decisions made the easiest way.
 - [EasyDocker](https://github.com/eonx-com/easy-docker): CLI tool to generate Docker files.
@@ -17,6 +18,8 @@
 - [EasyRepository](https://github.com/eonx-com/easy-repository): An easy way to implement the Repository Design Pattern in your applications.
 - [EasyPagination](https://github.com/eonx-com/easy-pagination): A generic way to handle pagination data from clients.
 - [EasyPsr7Factory](https://github.com/eonx-com/easy-psr7-factory): An easy way to create PSR7 Request/Response from Symfony Request/Response.
+- [EasySecurity](https://github.com/eonx-com/easy-security): Provides security features to be generic across applications.
+- [EasyTest](https://github.com/eonx-com/easy-test): Makes testing easier.
 
 ## Documentation
 

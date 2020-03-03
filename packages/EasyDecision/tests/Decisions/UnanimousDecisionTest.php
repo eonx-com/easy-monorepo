@@ -78,5 +78,3 @@ final class UnanimousDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 }
-
-

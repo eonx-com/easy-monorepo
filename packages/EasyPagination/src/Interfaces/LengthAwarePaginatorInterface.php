@@ -54,5 +54,3 @@ interface LengthAwarePaginatorInterface
      */
     public function hasPreviousPage(): bool;
 }
-
-

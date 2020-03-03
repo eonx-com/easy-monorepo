@@ -101,5 +101,3 @@ final class AffirmativeDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 }
-
-

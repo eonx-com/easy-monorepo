@@ -33,5 +33,3 @@ interface StartSizeConfigInterface
      */
     public function getStartDefault(): int;
 }
-
-

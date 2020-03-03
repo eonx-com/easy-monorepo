@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyIdentity\Tests\Implementations\Auth0;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Psr7\Response;
 use EonX\EasyIdentity\Exceptions\RequiredDataMissingException;
 use EonX\EasyIdentity\Implementations\Auth0\Config;
 use EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider;
 use EonX\EasyIdentity\Tests\AbstractTestCase;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Psr7\Response;
 use Mockery\ExpectationInterface;
 use Mockery\MockInterface;
 
@@ -110,9 +110,3 @@ class ManagementTokenProviderTest extends AbstractTestCase
         ]);
     }
 }
-
-\class_alias(
-    ManagementTokenProviderTest::class,
-    EonX\EasyIdentity\Tests\Implementations\Auth0\ManagementTokenProviderTest::class,
-    false
-);

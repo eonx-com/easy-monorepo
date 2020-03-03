@@ -5,26 +5,35 @@
     "license": "MIT",
     "bin": [
         "packages/EasyCfhighlander/bin/easy-cfhighlander",
-        "packages/EasyDocker/bin/easy-docker"
+        "packages/EasyDocker/bin/easy-docker",
+        "packages/EasyTest/bin/easy-test"
     ],
     "require": {
-        "eonx-com/externals": "^1.0",
-        "eonx-com/utils": "^0.2",
+        "doctrine/orm": "^2.6",
+        "eonx-com/externals": "^1.0 || ^2.0",
+        "eonx-com/utils": "^1.0",
         "ext-json": "*",
         "php": "^7.1",
+        "psr/event-dispatcher": "^1.0",
+        "ramsey/uuid": "^3.9",
+        "symfony/console": "^4.2",
         "symfony/expression-language": "^4.2",
         "symfony/filesystem": "^4.2",
         "symfony/finder": "^4.2",
         "symfony/psr-http-message-bridge": "^1.1",
-        "symplify/package-builder": "^6.1",
+        "symplify/package-builder": "^7.2",
+        "symplify/set-config-resolver": "^7.2",
         "twig/twig": "^2.8",
-        "zendframework/zend-diactoros": "^2.1"
+        "zendframework/zend-diactoros": "^2.1",
+        "symplify/autowire-array-parameter": "^7.2",
+        "nette/utils": "^3.1"
     },
     "require-dev": {
         "auth0/auth0-php": "^5.4",
         "bugsnag/bugsnag": "^3.19",
         "bugsnag/bugsnag-laravel": "^2.17",
-        "doctrine/orm": "^2.6",
+        "doctrine/dbal": "^2.6",
+        "eonx-com/test-utils": "^0.0.1",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
         "laravel-doctrine/orm": "^1.4",
@@ -32,20 +41,21 @@
         "mikey179/vfsstream": "~1",
         "mockery/mockery": "^1.2",
         "phpspec/prophecy": "~1.0",
-        "phpunit/phpunit": "^7.5",
+        "phpstan/phpstan": "^0.12.3",
+        "phpunit/phpunit": "^8.4",
         "psr/container": "^1.0",
         "symfony/symfony": "^4.2",
         "vlucas/phpdotenv": "^3.3",
-        "symplify/monorepo-builder": "^6.1",
-        "symplify/changelog-linker": "^6.1",
+        "symplify/monorepo-builder": "^7.2",
+        "symplify/changelog-linker": "^7.2",
         "natepage/sniffs": "^1.1",
-        "phpstan/phpstan": "^0.11.5",
         "sensiolabs/security-checker": "^5.0",
-        "symplify/easy-coding-standard": "^6.1"
+        "symplify/easy-coding-standard": "^7.2"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
+            "EonX\\EasyAsync\\": "packages/EasyAsync/src",
             "EonX\\EasyCfhighlander\\": "packages/EasyCfhighlander/src",
             "EonX\\EasyCore\\": "packages/EasyCore/src",
             "EonX\\EasyDecision\\": "packages/EasyDecision/src",
@@ -56,12 +66,15 @@
             "EonX\\EasyPagination\\": "packages/EasyPagination/src",
             "EonX\\EasyPipeline\\": "packages/EasyPipeline/src",
             "EonX\\EasyPsr7Factory\\": "packages/EasyPsr7Factory/src",
-            "EonX\\EasyRepository\\": "packages/EasyRepository/src"
+            "EonX\\EasyRepository\\": "packages/EasyRepository/src",
+            "EonX\\EasySecurity\\": "packages/EasySecurity/src",
+            "EonX\\EasyTest\\": "packages/EasyTest/src"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
+            "EonX\\EasyAsync\\Tests\\": "packages/EasyAsync/tests",
             "EonX\\EasyCfhighlander\\Tests\\": "packages/EasyCfhighlander/tests",
             "EonX\\EasyCore\\Tests\\": "packages/EasyCore/tests",
             "EonX\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
@@ -72,7 +85,9 @@
             "EonX\\EasyPagination\\Tests\\": "packages/EasyPagination/tests",
             "EonX\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
             "EonX\\EasyPsr7Factory\\Tests\\": "packages/EasyPsr7Factory/tests",
-            "EonX\\EasyRepository\\Tests\\": "packages/EasyRepository/tests"
+            "EonX\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
+            "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
+            "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests"
         }
     },
     "replace": {
@@ -87,17 +102,26 @@
         "eonx-com/easy-docker": "self.version",
         "eonx-com/easy-core": "self.version",
         "eonx-com/easy-entity-change": "self.version",
-        "eonx-com/easy-logging": "self.version"
+        "eonx-com/easy-logging": "self.version",
+        "eonx-com/easy-security": "self.version",
+        "eonx-com/easy-test": "self.version",
+        "eonx-com/easy-async": "self.version"
     },
     "scripts": {
         "check-all": [
             "@check-ecs",
             "@check-phpstan",
-            "@check-security"
+            "@check-security",
+            "@check-tests"
         ],
         "check-ecs": "vendor/bin/ecs check packages",
+        "check-monorepo": [
+            "@composer validate --strict",
+            "@validate-repo"
+        ],
         "check-phpstan": "vendor/bin/phpstan analyse packages --level=7 --ansi",
         "check-security": "vendor/bin/security-checker security:check",
+        "check-tests": "vendor/bin/phpunit packages --coverage-text",
         "changelog": [
             "vendor/bin/changelog-linker dump-merges --in-packages",
             "vendor/bin/changelog-linker link",
@@ -120,7 +144,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "2.1-dev"
         }
     }
 }

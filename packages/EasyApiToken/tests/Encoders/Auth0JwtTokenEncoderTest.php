@@ -33,7 +33,7 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
                     'subscriptions:finance'
                 ]
             ]
-        ]);
+        ], 'original');
         $token = $encoder->encode($apiToken);
 
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $decodedToken */
@@ -65,7 +65,7 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
     {
         $jwtDriver = $this->createAuth0JwtDriver();
 
-        $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken([]));
+        $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken([], ''));
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
         $token = $this->createJwtTokenDecoder()->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
@@ -93,7 +93,7 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new JwtTokenEncoder($this->createAuth0JwtDriver()))->encode(new BasicAuthEasyApiToken('', ''));
+        (new JwtTokenEncoder($this->createAuth0JwtDriver()))->encode(new BasicAuthEasyApiToken('', '', ''));
     }
 
     /**
@@ -110,7 +110,7 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
 
         $jwtDriver = $this->createAuth0JwtDriver();
 
-        (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken(['scopes' => 1]));
+        (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken(['scopes' => 1], ''));
     }
 
     /**

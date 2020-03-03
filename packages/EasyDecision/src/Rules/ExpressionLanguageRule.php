@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Rules;
 
+use EonX\EasyDecision\Helpers\IfConditionForValue;
 use EonX\EasyDecision\Interfaces\ContextAwareInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
@@ -20,6 +21,16 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     private $expression;
 
     /**
+     * @var null|mixed[]
+     */
+    private $extra;
+
+    /**
+     * @var null|string
+     */
+    private $name;
+
+    /**
      * @var int
      */
     private $priority;
@@ -29,11 +40,15 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
      *
      * @param string $expression
      * @param null|int $priority
+     * @param null|string $name
+     * @param null|mixed[] $extra
      */
-    public function __construct(string $expression, ?int $priority = null)
+    public function __construct(string $expression, ?int $priority = null, ?string $name = null, ?array $extra = null)
     {
         $this->expression = $expression;
         $this->priority = $priority ?? 0;
+        $this->name = $name;
+        $this->extra = $extra;
     }
 
     /**
@@ -57,7 +72,15 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     {
         $input['context'] = $this->context;
 
-        return $this->expressionLanguage->evaluate($this->expression, $input);
+        $output = $this->getOutput($input);
+
+        if ($this->extra === null) {
+            return $output;
+        }
+
+        $this->extra['output'] = $output;
+
+        return $this->extra;
     }
 
     /**
@@ -79,8 +102,20 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
      */
     public function toString(): string
     {
-        return $this->expression;
+        return $this->name ?? $this->expression;
+    }
+
+    /**
+     * Get output for given input, handle if condition for value.
+     *
+     * @param mixed[] $input
+     *
+     * @return mixed
+     */
+    private function getOutput(array $input)
+    {
+        $output = $this->expressionLanguage->evaluate($this->expression, $input);
+
+        return $output instanceof IfConditionForValue ? $output->getValue() : $output;
     }
 }
-
-

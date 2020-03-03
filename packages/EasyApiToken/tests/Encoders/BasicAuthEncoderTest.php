@@ -29,7 +29,7 @@ final class BasicAuthEncoderTest extends AbstractTestCase
         ];
 
         foreach ($tests as $username => $password) {
-            $token = (new BasicAuthEncoder())->encode(new BasicAuthEasyApiToken($username, $password));
+            $token = (new BasicAuthEncoder())->encode(new BasicAuthEasyApiToken($username, $password, 'original'));
 
             self::assertEquals(\base64_encode(\sprintf('%s:%s', $username, $password)), $token);
         }
@@ -62,7 +62,7 @@ final class BasicAuthEncoderTest extends AbstractTestCase
     {
         $this->expectException(UnableToEncodeEasyApiTokenException::class);
 
-        (new BasicAuthEncoder())->encode(new BasicAuthEasyApiToken('username', ''));
+        (new BasicAuthEncoder())->encode(new BasicAuthEasyApiToken('username', '', ''));
     }
 
     /**
@@ -77,6 +77,6 @@ final class BasicAuthEncoderTest extends AbstractTestCase
     {
         $this->expectException(UnableToEncodeEasyApiTokenException::class);
 
-        (new BasicAuthEncoder())->encode(new BasicAuthEasyApiToken('', 'password'));
+        (new BasicAuthEncoder())->encode(new BasicAuthEasyApiToken('', 'password', ''));
     }
 }

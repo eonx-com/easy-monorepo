@@ -24,5 +24,3 @@ trait ExpressionLanguageAwareTrait
         $this->expressionLanguage = $expressionLanguage;
     }
 }
-
-

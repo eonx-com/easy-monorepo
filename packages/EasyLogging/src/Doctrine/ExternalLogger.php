@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Doctrine;
 
-use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
-use EonX\EasyLogging\Interfaces\SqlLoggerInterface;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
+use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
+use EonX\EasyLogging\Interfaces\SqlLoggerInterface;
 
 final class ExternalLogger implements SqlLoggerInterface
 {

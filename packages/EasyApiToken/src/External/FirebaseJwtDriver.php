@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External;
 
-use Firebase\JWT\JWT;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use Firebase\JWT\JWT;
 
 final class FirebaseJwtDriver implements JwtDriverInterface
 {
@@ -26,12 +26,12 @@ final class FirebaseJwtDriver implements JwtDriverInterface
     /**
      * @var string|resource
      */
-    private $publicKey;
+    private $privateKey;
 
     /**
      * @var string|resource
      */
-    private $privateKey;
+    private $publicKey;
 
     /**
      * FirebaseJwtDriver constructor.

@@ -24,5 +24,3 @@ final class RuleProviderStub implements RuleProviderInterface
         ];
     }
 }
-
-

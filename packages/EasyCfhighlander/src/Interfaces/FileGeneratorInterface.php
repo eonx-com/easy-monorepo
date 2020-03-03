@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyCfhighlander\Interfaces;
 
-use EonX\EasyCfhighlander\File\FileStatus;
 use EonX\EasyCfhighlander\File\File;
+use EonX\EasyCfhighlander\File\FileStatus;
 
 interface FileGeneratorInterface
 {

@@ -1,0 +1,52 @@
+name: Split Tests
+
+on: [push]
+
+jobs:
+    after_split_testing:
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                php: [ '7.3' ]
+                package:
+                    - EasyApiToken
+                    - EasyAsync
+                    - EasyCfhighlander
+                    - EasyCore
+                    - EasyDecision
+                    - EasyDocker
+                    - EasyEntityChange
+                    - EasyIdentity
+                    # - EasyLogging | This package needs more than just test
+                    - EasyPagination
+                    - EasyPipeline
+                    - EasyPsr7Factory
+                    - EasyRepository
+                    - EasySecurity
+                    # - EasyTest | Enable after tests written
+
+        name: ${{ matrix.package }}
+
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   id: composer-cache
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            -   uses: eonx-com/actions-cache@v1
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ matrix.php }}-comp-
+
+            -   run: composer global require hirak/prestissimo
+            -   run: composer install --prefer-dist --no-progress
+            -   run: vendor/bin/monorepo-builder localize-composer-paths
+            -   run: cd packages/${{ matrix.package }}; composer update --prefer-dist --no-progress
+            -   run: cd packages/${{ matrix.package }}; vendor/bin/phpunit tests

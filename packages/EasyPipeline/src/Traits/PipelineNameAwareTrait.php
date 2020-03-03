@@ -22,5 +22,3 @@ trait PipelineNameAwareTrait
         $this->pipelineName = $pipelineName;
     }
 }
-
-

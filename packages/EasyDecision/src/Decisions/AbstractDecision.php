@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Decisions;
 
 use EonX\EasyDecision\Context;
+use EonX\EasyDecision\Exceptions\ArrayOutputRequiresOutputKeyException;
 use EonX\EasyDecision\Exceptions\ContextNotSetException;
-use EonX\EasyDecision\Exceptions\EmptyRulesException;
 use EonX\EasyDecision\Exceptions\ReservedContextIndexException;
 use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use EonX\EasyDecision\Interfaces\ContextAwareInterface;
@@ -18,6 +18,9 @@ abstract class AbstractDecision implements DecisionInterface
 {
     /** @var \EonX\EasyDecision\Interfaces\ContextInterface */
     private $context;
+
+    /** @var null|mixed */
+    private $defaultOutput;
 
     /** @var mixed[] */
     private $input;
@@ -35,7 +38,7 @@ abstract class AbstractDecision implements DecisionInterface
      */
     public function __construct(?string $name = null)
     {
-        $this->name = $name;
+        $this->name = $name ?? '<no-name>';
     }
 
     /**
@@ -103,17 +106,11 @@ abstract class AbstractDecision implements DecisionInterface
      *
      * @return mixed
      *
-     * @throws \EonX\EasyDecision\Exceptions\EmptyRulesException
      * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
     public function make(array $input)
     {
-        // Cannot make decision with no rules
-        if (empty($this->rules)) {
-            throw new EmptyRulesException($this->getExceptionMessage('cannot be made with no rules'));
-        }
-
         // Index "context" cannot be used by users to avoid conflicts
         // because context is injected in expression language rules
         if (isset($input['context'])) {
@@ -125,6 +122,11 @@ abstract class AbstractDecision implements DecisionInterface
         $this->input = $input;
         $this->context = $context = new Context(\get_class($this), $input);
 
+        // If no rules provided, return default output
+        if (empty($this->rules)) {
+            return $this->defaultOutput ?? $this->getDefaultOutput($input);
+        }
+
         try {
             // Let children classes handle rules output and define the output
             return $this->processRules($context)->doMake();
@@ -135,6 +137,20 @@ abstract class AbstractDecision implements DecisionInterface
                 $exception
             );
         }
+    }
+
+    /**
+     * Set default output.
+     *
+     * @param null|mixed $defaultOutput
+     *
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function setDefaultOutput($defaultOutput = null): DecisionInterface
+    {
+        $this->defaultOutput = $defaultOutput;
+
+        return $this;
     }
 
     /**
@@ -159,6 +175,15 @@ abstract class AbstractDecision implements DecisionInterface
     abstract protected function doMake();
 
     /**
+     * Get default output to return if no rules provided.
+     *
+     * @param mixed[] $input
+     *
+     * @return mixed
+     */
+    abstract protected function getDefaultOutput(array $input);
+
+    /**
      * Handle rule output.
      *
      * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
@@ -179,6 +204,29 @@ abstract class AbstractDecision implements DecisionInterface
     protected function getExceptionMessage(string $message): string
     {
         return \sprintf('Decision "%s" of type "%s": %s', $this->name, \get_class($this), $message);
+    }
+
+    /**
+     * Get output (value) from given rule output.
+     *
+     * @param string $rule
+     * @param mixed $output
+     *
+     * @return mixed
+     */
+    protected function getOutputFromRule(string $rule, $output)
+    {
+        if (\is_array($output)) {
+            if (isset($output['output']) === false) {
+                throw new ArrayOutputRequiresOutputKeyException($this->getExceptionMessage(
+                    \sprintf('Rule "%s" returned output as array but missing "output" key', $rule)
+                ));
+            }
+
+            $output = $output['output'];
+        }
+
+        return $output;
     }
 
     /**

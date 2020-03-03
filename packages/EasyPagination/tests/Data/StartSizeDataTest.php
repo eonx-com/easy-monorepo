@@ -21,5 +21,3 @@ final class StartSizeDataTest extends AbstractTestCase
         self::assertEquals(10, $paginationData->getSize());
     }
 }
-
-

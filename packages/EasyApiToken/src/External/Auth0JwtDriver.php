@@ -92,7 +92,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
     /**
      * Encode given input to JWT token.
      *
-     * @param mixed[]|object $input
+     * @param mixed[] $input
      *
      * @return string
      */
@@ -107,6 +107,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
             $input['scopes'] ?? [],
             $input['roles'] ?? [],
             $input['sub'] ?? null,
-            $input['lifetime'] ?? null);
+            $input['lifetime'] ?? null
+        );
     }
 }

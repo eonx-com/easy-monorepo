@@ -70,5 +70,3 @@ final class ExpressionLanguageConfig implements ExpressionLanguageConfigInterfac
         return $this->functions;
     }
 }
-
-

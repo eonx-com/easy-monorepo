@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tokens\Factories;
 
-use Exception;
 use EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use Exception;
 
 final class JwtEasyApiTokenFactory implements JwtEasyApiTokenFactoryInterface
 {
@@ -39,7 +39,7 @@ final class JwtEasyApiTokenFactory implements JwtEasyApiTokenFactoryInterface
     public function createFromString(string $token): JwtEasyApiTokenInterface
     {
         try {
-            return new JwtEasyApiToken((array)$this->jwtDriver->decode(\trim($token)));
+            return new JwtEasyApiToken((array)$this->jwtDriver->decode(\trim($token)), $token);
         } catch (Exception $exception) {
             throw new InvalidEasyApiTokenFromRequestException(
                 \sprintf(

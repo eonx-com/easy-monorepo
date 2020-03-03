@@ -9,6 +9,11 @@ use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 final class JwtEasyApiToken implements JwtEasyApiTokenInterface
 {
     /**
+     * @var string
+     */
+    private $original;
+
+    /**
      * @var mixed[]
      */
     private $payload;
@@ -17,20 +22,12 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
      * JwtEasyApiToken constructor.
      *
      * @param mixed[] $payload
+     * @param string $original
      */
-    public function __construct(array $payload)
+    public function __construct(array $payload, string $original)
     {
         $this->payload = $payload;
-    }
-
-    /**
-     * Get token payload.
-     *
-     * @return mixed[]
-     */
-    public function getPayload(): array
-    {
-        return $this->payload;
+        $this->original = $original;
     }
 
     /**
@@ -49,6 +46,26 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
         }
 
         throw new InvalidArgumentException(\sprintf('In "%s", claim "%s" not found', \get_class($this), $claim));
+    }
+
+    /**
+     * Get original string token.
+     *
+     * @return string
+     */
+    public function getOriginalToken(): string
+    {
+        return $this->original;
+    }
+
+    /**
+     * Get token payload.
+     *
+     * @return mixed[]
+     */
+    public function getPayload(): array
+    {
+        return $this->payload;
     }
 
     /**

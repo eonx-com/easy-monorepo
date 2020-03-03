@@ -15,5 +15,3 @@ interface MiddlewareInterface
      */
     public function handle($input, callable $next);
 }
-
-

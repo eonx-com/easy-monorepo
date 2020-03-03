@@ -12,13 +12,17 @@ final class ExpressionLanguageRuleFactory implements ExpressionLanguageRuleFacto
      *
      * @param string $expression
      * @param null|int $priority
+     * @param null|string $name
+     * @param null|mixed[] $extra
      *
      * @return \EonX\EasyDecision\Rules\ExpressionLanguageRule
      */
-    public function create(string $expression, ?int $priority = null): ExpressionLanguageRule
-    {
-        return new ExpressionLanguageRule($expression, $priority);
+    public function create(
+        string $expression,
+        ?int $priority = null,
+        ?string $name = null,
+        ?array $extra = null
+    ): ExpressionLanguageRule {
+        return new ExpressionLanguageRule($expression, $priority, $name, $extra);
     }
 }
-
-

@@ -44,9 +44,3 @@ final class IdentityUserIdHolderStub implements IdentityUserIdHolderInterface
         $this->userId = $userId;
     }
 }
-
-\class_alias(
-    IdentityUserIdHolderStub::class,
-    EonX\EasyIdentity\Tests\Implementations\Stubs\IdentityUserIdHolderStub::class,
-    false
-);

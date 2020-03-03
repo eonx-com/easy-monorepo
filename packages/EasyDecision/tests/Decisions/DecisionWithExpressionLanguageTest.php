@@ -7,11 +7,7 @@ use EonX\EasyDecision\Decisions\ValueDecision;
 use EonX\EasyDecision\Expressions\ExpressionFunction;
 use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
-use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 {
@@ -42,7 +38,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
     public function testSameDecisionWithDifferentInputs(): void
     {
         $rules = [
-            $this->createLanguageRule('add(10)'),
+            $this->createLanguageRule('add(10)', null, 'Add Ten'),
             $this->createLanguageRule('if(name in ["Brad", "Matt"]).then(add(10))'),
             $this->createLanguageRule('if(equal(name, "Matt")).then(add(1000))'),
             $this->createLanguageRule('cap(value, 200)'),
@@ -66,7 +62,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
                 'original' => ['value' => 0, 'name' => 'Nathan', 'extra_param1' => 1],
                 'expected' => 11,
                 'outputs' => [
-                    'add(10)' => 10,
+                    'Add Ten' => 10,
                     'if(name in ["Brad", "Matt"]).then(add(10))' => 10,
                     'if(equal(name, "Matt")).then(add(1000))' => 10,
                     'cap(value, 200)' => 10,
@@ -78,7 +74,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
                 'original' => ['value' => 0, 'name' => 'Brad', 'extra_param1' => 1],
                 'expected' => 21,
                 'outputs' => [
-                    'add(10)' => 10,
+                    'Add Ten' => 10,
                     'if(name in ["Brad", "Matt"]).then(add(10))' => 20,
                     'if(equal(name, "Matt")).then(add(1000))' => 20,
                     'cap(value, 200)' => 20,
@@ -90,7 +86,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
                 'original' => ['value' => 0, 'name' => 'Matt', 'extra_param1' => 1],
                 'expected' => 201,
                 'outputs' => [
-                    'add(10)' => 10,
+                    'Add Ten' => 10,
                     'if(name in ["Brad", "Matt"]).then(add(10))' => 20,
                     'if(equal(name, "Matt")).then(add(1000))' => 1020,
                     'cap(value, 200)' => 200,
@@ -105,25 +101,4 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
             self::assertEquals($test['outputs'], $decision->getContext()->getRuleOutputs());
         }
     }
-
-    /**
-     * Inject expression language in rules.
-     *
-     * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
-     * @param null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
-     *
-     * @return void
-     */
-    private function injectExpressionLanguage(array $rules, ?ExpressionLanguageConfigInterface $config = null): void
-    {
-        $expressionLanguage = $this->createExpressionLanguage($config);
-
-        foreach ($rules as $rule) {
-            if ($rule instanceof ExpressionLanguageAwareInterface) {
-                $rule->setExpressionLanguage($expressionLanguage);
-            }
-        }
-    }
 }
-
-

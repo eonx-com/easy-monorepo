@@ -9,5 +9,3 @@ final class InvalidResponseFromIdentityException extends \RuntimeException imple
 {
     // No body needed.
 }
-
-

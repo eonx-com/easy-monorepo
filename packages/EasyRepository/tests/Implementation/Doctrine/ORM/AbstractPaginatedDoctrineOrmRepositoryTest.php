@@ -7,10 +7,10 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Mockery\MockInterface;
 use EonX\EasyPagination\Data\StartSizeData;
-use EonX\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPaginator;
+use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyRepository\Tests\AbstractTestCase;
+use Mockery\LegacyMockInterface;
 
 final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
 {
@@ -22,7 +22,7 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
     public function testPaginateSetResultsSuccessfully(): void
     {
         /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
-        $registry = $this->mockRegistry(null, function (MockInterface $repository): void {
+        $registry = $this->mockRegistry(null, function (LegacyMockInterface $repository): void {
             $repository
                 ->shouldReceive('getClassName')
                 ->once()
@@ -38,25 +38,30 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
         $repository = new PaginatedDoctrineOrmRepositoryStub($registry, new StartSizeData(1, 10));
         $paginator = $repository->paginate();
 
-        self::assertInstanceOf(LengthAwareDoctrineOrmPaginator::class, $paginator);
+        self::assertInstanceOf(DoctrineOrmLengthAwarePaginator::class, $paginator);
     }
 
     /**
      * Mock queryBuilder and query.
      *
-     * @return \Mockery\MockInterface
+     * @return \Mockery\LegacyMockInterface
      */
-    private function mockQueryBuilderAndQuery(): MockInterface
+    private function mockQueryBuilderAndQuery(): LegacyMockInterface
     {
-        return $this->mock(QueryBuilder::class, function (MockInterface $queryBuilder): void {
+        return $this->mock(QueryBuilder::class, function (LegacyMockInterface $queryBuilder): void {
             /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
-            $entityManager = $this->mock(EntityManagerInterface::class, function (MockInterface $entityManager): void {
-                $entityManager->shouldReceive('getConfiguration')->once()->withNoArgs()->andReturn(new Configuration());
-            });
+            $entityManager = $this->mock(
+                EntityManagerInterface::class,
+                function (LegacyMockInterface $entityManager): void {
+                    $entityManager
+                        ->shouldReceive('getConfiguration')
+                        ->once()
+                        ->withNoArgs()
+                        ->andReturn(new Configuration());
+                }
+            );
 
             $queryBuilder->shouldReceive('getQuery')->once()->withNoArgs()->andReturn(new Query($entityManager));
         });
     }
 }
-
-

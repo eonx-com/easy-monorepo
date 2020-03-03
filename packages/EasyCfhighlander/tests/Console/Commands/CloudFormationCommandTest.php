@@ -33,7 +33,7 @@ final class CloudFormationCommandTest extends AbstractTestCase
 
         $filesNotExisting = [
             '.easy/easy-cfhighlander-manifest.json',
-            '.easy/easy-cfhighlander-params.yaml',
+            '.easy/easy-cfhighlander-params.yaml'
         ];
 
         $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-cfhighlander-manifest.json', '{}');
@@ -96,7 +96,7 @@ final class CloudFormationCommandTest extends AbstractTestCase
 
         $display = $this->executeCommand('cloudformation', $inputs);
 
-        self::assertContains(\sprintf('Generating files in %s:', \realpath(static::$cwd)), $display);
+        self::assertStringContainsString(\sprintf('Generating files in %s:', \realpath(static::$cwd)), $display);
 
         foreach ($files as $file) {
             self::assertTrue($this->getFilesystem()->exists(static::$cwd . '/' . $file));

@@ -1,0 +1,30 @@
+{
+    "name": "eonx-com/easy-security",
+    "description": "Provides security features to be generic across applications",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "eonx-com/easy-api-token": "^2.4",
+        "eonx-com/easy-psr7-factory": "^2.4",
+        "phpunit/phpunit": "^8.4",
+        "symfony/symfony": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasySecurity\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasySecurity\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.4-dev"
+        }
+    }
+}

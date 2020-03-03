@@ -1,9 +1,34 @@
-imports:
-    - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/psr2.yml' }
-
 parameters:
     exclude_files:
         - '*/var/*.php'
+    sets:
+        - 'psr2'
+    skip:
+        PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff.MaxExceeded:
+            - 'packages/EasySecurity/src/Context.php'
+            - 'packages/EasySecurity/src/Interfaces/ContextInterface.php'
+        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingParameterTypeHint:
+            - 'packages/EasyApiToken/src/External/Auth0JwtDriver.php'
+            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
+            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
+            - 'packages/EasyCore/tests/Bridge/Laravel/CachedConfigurationServiceProviderTest.php'
+            - 'packages/EasyLogging/src/Logger.php'
+            - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
+        SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedClassNameInAnnotationSniff.NonFullyQualifiedClassName:
+            - 'packages/EasySecurity/tests/Bridge/Symfony/Stubs/KernelStub.php'
+        SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff.UnusedUse:
+            - 'packages/EasySecurity/tests/Bridge/Symfony/Stubs/KernelStub.php'
+        NatePage\Sniffs\Commenting\FunctionCommentSniff.TypeHintMissing:
+            - 'packages/EasyApiToken/src/External/Auth0JwtDriver.php'
+            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
+            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
+            - 'packages/EasyCore/tests/Bridge/Laravel/CachedConfigurationServiceProviderTest.php'
+            - 'packages/EasyLogging/src/Logger.php'
+            - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
+            - 'packages/EasyAsync/src/Helpers/PropertyHelper.php'
+        NatePage\Sniffs\Commenting\FunctionCommentSniff.ScalarTypeHintMissing:
+            - 'packages/EasyLogging/src/Logger.php'
+            - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
 
 services:
     PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
@@ -13,8 +38,6 @@ services:
 
     SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
     SlevomatCodingStandard\Sniffs\Commenting\EmptyCommentSniff:
-    SlevomatCodingStandard\Sniffs\Commenting\InlineDocCommentDeclarationSniff:
-    SlevomatCodingStandard\Sniffs\ControlStructures\DisallowEqualOperatorsSniff:
     SlevomatCodingStandard\Sniffs\ControlStructures\NewWithParenthesesSniff:
     SlevomatCodingStandard\Sniffs\Exceptions\DeadCatchSniff:
     SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff:
@@ -37,8 +60,6 @@ services:
     SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff:
     SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff:
     SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff:
-    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
-        enableEachParameterAndReturnInspection: 0
 
     NatePage\Sniffs\Arrays\ForbiddenArrayLongSyntaxSniff:
     NatePage\Sniffs\Arrays\ForbiddenArrayTrailingCommaSniff:

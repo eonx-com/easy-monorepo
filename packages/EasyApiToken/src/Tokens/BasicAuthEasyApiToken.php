@@ -10,6 +10,11 @@ final class BasicAuthEasyApiToken implements BasicAuthEasyApiTokenInterface
     /**
      * @var string
      */
+    private $original;
+
+    /**
+     * @var string
+     */
     private $password;
 
     /**
@@ -22,11 +27,33 @@ final class BasicAuthEasyApiToken implements BasicAuthEasyApiTokenInterface
      *
      * @param string $username
      * @param string $password
+     * @param string $original
      */
-    public function __construct(string $username, string $password)
+    public function __construct(string $username, string $password, string $original)
     {
         $this->password = $password;
         $this->username = $username;
+        $this->original = $original;
+    }
+
+    /**
+     * Get original string token.
+     *
+     * @return string
+     */
+    public function getOriginalToken(): string
+    {
+        return $this->original;
+    }
+
+    /**
+     * Get password from payload.
+     *
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
     /**
@@ -40,16 +67,6 @@ final class BasicAuthEasyApiToken implements BasicAuthEasyApiTokenInterface
             'password' => $this->password,
             'username' => $this->username
         ];
-    }
-
-    /**
-     * Get password from payload.
-     *
-     * @return string
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
     }
 
     /**

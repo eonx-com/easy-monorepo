@@ -1,3 +1,5 @@
 # Composer
 composer.lock
 /vendor
+.phpunit.result.cache
+coverage_output.txt

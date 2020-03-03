@@ -87,5 +87,3 @@ final class RuleStub implements RuleInterface
         return $this->name;
     }
 }
-
-

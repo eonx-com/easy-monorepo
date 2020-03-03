@@ -10,6 +10,11 @@ use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
 final class ExternalSqlLogger implements SQLLogger
 {
     /**
+     * @var float
+     */
+    protected $start;
+
+    /**
      * @var \EonX\EasyLogging\Interfaces\ExternalLogClientInterface
      */
     private $client;
@@ -33,11 +38,6 @@ final class ExternalSqlLogger implements SQLLogger
      * @var string
      */
     private $sql;
-
-    /**
-     * @var float
-     */
-    protected $start;
 
     /**
      * DoctrineSqlLogger constructor.

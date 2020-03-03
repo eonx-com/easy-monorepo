@@ -15,6 +15,66 @@ use EonX\EasyDecision\Tests\Stubs\RuleWithNonBlockingErrorStub;
 final class ValueDecisionTest extends AbstractTestCase
 {
     /**
+     * Data provider for testDecisionEntirely.
+     *
+     * @return iterable<mixed>
+     */
+    public function decisionEntirelyProvider(): iterable
+    {
+        yield 'No rules, no default output' => [
+            [],
+            ['value' => 5],
+            5,
+            []
+        ];
+
+        yield 'No rules, explicit default output' => [
+            [],
+            ['value' => 5],
+            10,
+            [],
+            null,
+            10
+        ];
+    }
+
+    /**
+     * Decision behave as expected.
+     *
+     * @param mixed[] $rules
+     * @param mixed[] $input
+     * @param mixed $expectedOutput
+     * @param mixed[] $expectedRulesOutput
+     * @param null|string $name
+     * @param null|mixed $defaultOutput
+     *
+     * @return void
+     *
+     * @dataProvider decisionEntirelyProvider
+     */
+    public function testDecisionEntirely(
+        array $rules,
+        array $input,
+        $expectedOutput,
+        array $expectedRulesOutput,
+        ?string $name = null,
+        $defaultOutput = null
+    ): void {
+        $decision = (new ValueDecision($name))
+            ->addRules($rules)
+            ->setDefaultOutput($defaultOutput);
+
+        $output = $decision->make($input);
+        $context = $decision->getContext();
+
+        self::assertEquals($expectedOutput, $output);
+        self::assertEquals($name ?? '<no-name>', $decision->getName());
+        self::assertEquals(ValueDecision::class, $context->getDecisionType());
+        self::assertEquals($input, $context->getOriginalInput());
+        self::assertEquals($expectedRulesOutput, $context->getRuleOutputs());
+    }
+
+    /**
      * Decision should throw an exception when trying to get context before calling make.
      *
      * @return void
@@ -117,8 +177,7 @@ final class ValueDecisionTest extends AbstractTestCase
      */
     private function getExceptionRule(): RuleInterface
     {
-        return new class implements RuleInterface
-        {
+        return new class implements RuleInterface {
             /**
              * Get priority.
              *
@@ -172,8 +231,7 @@ final class ValueDecisionTest extends AbstractTestCase
      */
     private function getModifyValueRuleInArray(): RuleInterface
     {
-        return new class implements RuleInterface
-        {
+        return new class implements RuleInterface {
             /**
              * Get priority.
              *
@@ -220,5 +278,3 @@ final class ValueDecisionTest extends AbstractTestCase
         };
     }
 }
-
-

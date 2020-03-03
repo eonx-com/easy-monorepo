@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasyRepository\Tests;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
-use Mockery\MockInterface;
+use Mockery\LegacyMockInterface;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
@@ -43,9 +43,9 @@ abstract class AbstractTestCase extends TestCase
      * @param string|object $class
      * @param null|callable $expectations
      *
-     * @return \Mockery\MockInterface
+     * @return \Mockery\LegacyMockInterface
      */
-    protected function mock($class, ?callable $expectations = null): MockInterface
+    protected function mock($class, ?callable $expectations = null): LegacyMockInterface
     {
         $mock = Mockery::mock($class);
 
@@ -62,25 +62,21 @@ abstract class AbstractTestCase extends TestCase
      * @param callable|null $managerExpectations
      * @param callable|null $repositoryExpectations
      *
-     * @return \Mockery\MockInterface
+     * @return \Mockery\LegacyMockInterface
      */
     protected function mockRegistry(
         ?callable $managerExpectations = null,
         ?callable $repositoryExpectations = null
-    ): MockInterface {
-        $registry = $this->mock(
+    ): LegacyMockInterface {
+        return $this->mock(
             ManagerRegistry::class,
-            function (MockInterface $registry) use ($managerExpectations, $repositoryExpectations): void {
-                $manager = $this->mock(ObjectManager::class, $managerExpectations);
+            function (LegacyMockInterface $registry) use ($managerExpectations, $repositoryExpectations): void {
+                $manager = $this->mock(EntityManagerInterface::class, $managerExpectations);
                 $repository = $this->mock(ObjectRepository::class, $repositoryExpectations);
 
                 $manager->shouldReceive('getRepository')->once()->with('my-entity-class')->andReturn($repository);
                 $registry->shouldReceive('getManagerForClass')->once()->with('my-entity-class')->andReturn($manager);
             }
         );
-
-        return $registry;
     }
 }
-
-

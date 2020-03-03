@@ -15,7 +15,7 @@ abstract class AbstractVfsTestCase extends AbstractTestCase
      *
      * @throws \org\bovigo\vfs\vfsStreamException
      */
-    public function setUp()
+    public function setUp(): void
     {
         vfsStreamWrapper::register();
 

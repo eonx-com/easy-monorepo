@@ -36,9 +36,3 @@ class TokenVerifierFactoryTest extends AbstractTestCase
         $this->addToAssertionCount(1);
     }
 }
-
-\class_alias(
-    TokenVerifierFactoryTest::class,
-    EonX\EasyIdentity\Tests\Implementations\Auth0\TokenVerifierFactoryTest::class,
-    false
-);

@@ -2,11 +2,238 @@
 
 <!-- dumped content start -->
 
-## v1.0.0 - 2019-12-11
+## v2.3.0 - 2020-03-02
+
+### EasyAsync
+
+- [#143] Create package
+
+### EasyPagination
+
+- [#143] Add Doctrine ORM and DBAL paginators
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.2.1] - 2020-02-28
+
+### EasyTest
+
+- [#140] Require nette/utils, Thanks to [@ttam]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.2.0] - 2020-02-23
+
+- [#136] Check code coverage as part of CI
+- [#135] Organise phpstan.neon by packages
+
+### EasyCore
+
+- [#134] Feature/clean up lumen cached config
+- [#133] Use env method in config
+
+### EasyPagination
+
+- [#137] Improvements for apps to allow "manual" pagination
+- [#138] Implement better length aware paginator for doctrine orm
+
+### EasyRepository
+
+- [#138] Implement better length aware paginator for doctrine orm
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.1.4] - 2020-02-17
+
+### EasyDecision
+
+- [#132] Rules extra in output
+
+<!-- dumped content end -->
+
+## [v2.1.3] - 2020-02-16
+
+- Fix path to easy-core config file
+
+<!-- dumped content start -->
+
+## [v2.1.2] - 2020-02-16
+
+### EasyCore
+
+- [#131] Simplify usage
+
+### EasyLogging
+
+- [#130] Logger also replace Psr LoggerInterface in app
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.1.1] - 2020-02-16
+
+### EasyLogging
+
+- [#128] Skip easy-logging package itself in introspection
+
+### EasyCore
+
+- [#129] Improve laravel jobs with listeners
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.1.0] - 2020-02-15
+
+- [#126] Feature/upgrade symplify packages
+
+### EasySecurity
+
+- [#127] Create package
+
+### EasyTest
+
+- [#125] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.10] - 2020-02-09
+
+### EasyEntityChange
+
+- [#124] Ensure inserts are reset on each flush, Thanks to [@merk]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.9] - 2020-02-06
+
+### EasyDecision
+
+- [#123] Do not cache decision in factory
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.8] - 2020-02-06
+
+### EasyDecision
+
+- [#122] Implement optional name on expression language rule
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.7] - 2020-02-05
+
+### EasyDecision
+
+- [#121] Fix context exception when decision with no rules
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.6] - 2020-02-05
+
+### EasyDecision
+
+- [#120] Implement default output when no rules provided
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.5] - 2020-01-29
+
+### EasySecurity
+
+- [#119] Make context abstract as each app must define their own context
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.4] - 2020-01-30
+
+- [#117] Clean-up dependencies versions
+
+### EasyApiToken
+
+- [#116] Allow to retrieve original token
+
+### EasySecurity
+
+- [#118] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.3] - 2020-01-17
+
+- [#114] Feature/clean up repo
+
+### EasyDecision
+
+- [#113] POIN-426-update-available-expressions-spelling, Thanks to [@skrut]
+
+### EasyLogging
+
+- [#115] Check shouldReport if the exception is throwable, Thanks to [@merk]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.2] - 2020-01-14
+
+### EasyLogging
+
+- [#112] Fix signature for JsonFormatter::format()
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.1] - 2020-01-14
+
+### EasyLogging
+
+- [#111] Fix formatter format signature
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.0.0] - 2020-01-09
+
+### Search
+
+- [#110] BC BREAK Entity Change now tracks changed properties, Thanks to [@merk]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v1.0.0] - 2019-12-11
 
 - [#102] Migrate to EonX namespaces
 
-## v0.11.2 - 2019-12-16
+## [v0.11.2] - 2019-12-16
 
 ### EasyEntityChange
 
@@ -16,7 +243,7 @@
 
 <!-- dumped content start -->
 
-## v0.11.1 - 2019-12-15
+## [v0.11.1] - 2019-12-15
 
 - Bump utils version to ^1.0
 
@@ -908,3 +1135,59 @@
 [v1.0.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.11.0...v1.0.0
 [v0.11.1]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.11.0...v0.11.1
 [v0.11.0]: https://github.com/loyaltycorp/easy-monorepo/compare/v0.10.11...v0.11.0
+
+[#110]: https://github.com/eonx-com/easy-monorepo/pull/110
+[v0.11.2]: https://github.com/eonx-com/easy-monorepo/compare/v0.11.1...v0.11.2
+
+[#111]: https://github.com/eonx-com/easy-monorepo/pull/111
+[v2.0.0]: https://github.com/eonx-com/easy-monorepo/compare/v1.0.0...v2.0.0
+
+[#112]: https://github.com/eonx-com/easy-monorepo/pull/112
+[v2.0.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.0...v2.0.1
+[#115]: https://github.com/eonx-com/easy-monorepo/pull/115
+[#114]: https://github.com/eonx-com/easy-monorepo/pull/114
+[#113]: https://github.com/eonx-com/easy-monorepo/pull/113
+[@skrut]: https://github.com/skrut
+[v2.0.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.1...v2.0.2
+
+[#118]: https://github.com/eonx-com/easy-monorepo/pull/118
+[#117]: https://github.com/eonx-com/easy-monorepo/pull/117
+[#116]: https://github.com/eonx-com/easy-monorepo/pull/116
+[v2.0.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.3...v2.0.4
+[v2.0.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.2...v2.0.3
+
+[#119]: https://github.com/eonx-com/easy-monorepo/pull/119
+[#120]: https://github.com/eonx-com/easy-monorepo/pull/120
+[v2.0.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.4...v2.0.5
+[#121]: https://github.com/eonx-com/easy-monorepo/pull/121
+[v2.0.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.5...v2.0.6
+[#122]: https://github.com/eonx-com/easy-monorepo/pull/122
+[v2.0.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.6...v2.0.7
+[#123]: https://github.com/eonx-com/easy-monorepo/pull/123
+[v2.0.8]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.7...v2.0.8
+[#124]: https://github.com/eonx-com/easy-monorepo/pull/124
+[v2.0.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.8...v2.0.9
+[#127]: https://github.com/eonx-com/easy-monorepo/pull/127
+[#126]: https://github.com/eonx-com/easy-monorepo/pull/126
+[#125]: https://github.com/eonx-com/easy-monorepo/pull/125
+[v2.0.10]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.9...v2.0.10
+[#129]: https://github.com/eonx-com/easy-monorepo/pull/129
+[#128]: https://github.com/eonx-com/easy-monorepo/pull/128
+[v2.1.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.0.10...v2.1.0
+[#131]: https://github.com/eonx-com/easy-monorepo/pull/131
+[#130]: https://github.com/eonx-com/easy-monorepo/pull/130
+[v2.1.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.0...v2.1.1
+[#132]: https://github.com/eonx-com/easy-monorepo/pull/132
+[v2.1.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.2...v2.1.3
+[v2.1.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.1...v2.1.2
+[#138]: https://github.com/eonx-com/easy-monorepo/pull/138
+[#137]: https://github.com/eonx-com/easy-monorepo/pull/137
+[#136]: https://github.com/eonx-com/easy-monorepo/pull/136
+[#135]: https://github.com/eonx-com/easy-monorepo/pull/135
+[#134]: https://github.com/eonx-com/easy-monorepo/pull/134
+[#133]: https://github.com/eonx-com/easy-monorepo/pull/133
+[v2.1.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.3...v2.1.4
+[#140]: https://github.com/eonx-com/easy-monorepo/pull/140
+[v2.2.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.4...v2.2.0
+[#143]: https://github.com/eonx-com/easy-monorepo/pull/143
+[v2.2.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.2.0...v2.2.1

@@ -66,7 +66,8 @@ return [
     |     'providers' => [
     |          \App\Decisions\MyDecisionRuleProvider::class, -> Instantiated from container
     |          new \App\Decisions\MyDecisionAdditionalRuleProvider()
-    |     ]
+    |     ],
+    |     'default_output' => false, // *optional* Define default output decision returns if no rules provided
     |     *** Optional ***
     |     'expressions' => [
     |          'functions' => [] -> Same logic as global expressions functions

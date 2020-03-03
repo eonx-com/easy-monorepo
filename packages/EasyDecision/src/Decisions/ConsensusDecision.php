@@ -24,6 +24,18 @@ final class ConsensusDecision extends AbstractDecision
     }
 
     /**
+     * Get default output to return if no rules provided.
+     *
+     * @param mixed[] $input
+     *
+     * @return mixed
+     */
+    protected function getDefaultOutput(array $input)
+    {
+        return true;
+    }
+
+    /**
      * Handle rule output.
      *
      * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
@@ -35,20 +47,20 @@ final class ConsensusDecision extends AbstractDecision
     protected function handleRuleOutput(ContextInterface $context, string $rule, $output): void
     {
         // Convert output to boolean
-        $output = (bool)$output;
+        $value = (bool)$this->getOutputFromRule($rule, $output);
 
         // Log output
         $context->addRuleOutput($rule, $output);
 
         // Count true
-        if ($output === true) {
+        if ($value === true) {
             $this->countTrue++;
 
             return;
         }
 
         // Count false
-        if ($output === false) {
+        if ($value === false) {
             $this->countFalse++;
         }
     }

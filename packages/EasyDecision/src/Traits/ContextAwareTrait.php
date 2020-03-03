@@ -24,5 +24,3 @@ trait ContextAwareTrait
         $this->context = $context;
     }
 }
-
-

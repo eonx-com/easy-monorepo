@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRepository\Tests\Implementation\Illuminate;
 
-use Illuminate\Database\Eloquent\Model;
 use EonX\EasyRepository\Tests\AbstractTestCase;
+use Illuminate\Database\Eloquent\Model;
 use Mockery\MockInterface;
 
 final class AbstractEloquentRepositoryTest extends AbstractTestCase
@@ -96,5 +96,3 @@ final class AbstractEloquentRepositoryTest extends AbstractTestCase
         return new EloquentRepositoryStub($expectations);
     }
 }
-
-

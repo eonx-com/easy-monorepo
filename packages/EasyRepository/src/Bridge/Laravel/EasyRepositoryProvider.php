@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRepository\Bridge\Laravel;
 
-use Illuminate\Support\ServiceProvider;
 use EonX\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException;
+use Illuminate\Support\ServiceProvider;
 
 final class EasyRepositoryProvider extends ServiceProvider
 {

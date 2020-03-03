@@ -16,5 +16,3 @@ interface ExpressionFunctionFactoryInterface
      */
     public function create($expressionFunction): ExpressionFunctionInterface;
 }
-
-

@@ -3,15 +3,19 @@ declare(strict_types=1);
 
 use EonX\EasyDocker\HttpKernel\EasyDockerKernel;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symplify\PackageBuilder\Configuration\ConfigFileFinder;
+use Symplify\SetConfigResolver\ConfigResolver;
 
-$configName = 'easy-docker.yaml';
-$configFallback = ['easy-docker.yml'];
 $configs = [];
 
 // Get config
-ConfigFileFinder::detectFromInput($configName, new ArgvInput());
-$configs[] = ConfigFileFinder::provide($configName, $configFallback);
+$inputConfig = (new ConfigResolver())->resolveFromInputWithFallback(new ArgvInput(), [
+    'easy-docker.yaml',
+    'easy-docker.yml'
+]);
+
+if ($inputConfig) {
+    $configs[] = $inputConfig;
+}
 
 $kernel = new EasyDockerKernel();
 $kernel->setConfigs(\array_filter($configs));

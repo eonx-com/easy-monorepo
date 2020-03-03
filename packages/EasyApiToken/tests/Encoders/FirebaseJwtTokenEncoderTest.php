@@ -34,7 +34,7 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
 
             $jwtDriver = $this->createFirebaseJwtDriver($algo, null, $privateKey);
 
-            $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken(static::$tokenPayload));
+            $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken(static::$tokenPayload, ''));
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
             $token = $this->createJwtTokenDecoder($algo, $publicKey)->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
@@ -63,7 +63,7 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new JwtTokenEncoder($this->createFirebaseJwtDriver()))->encode(new BasicAuthEasyApiToken('', ''));
+        (new JwtTokenEncoder($this->createFirebaseJwtDriver()))->encode(new BasicAuthEasyApiToken('', '', ''));
     }
 
     /**
@@ -80,7 +80,7 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
 
         $jwtDriver = $this->createFirebaseJwtDriver('RS256', null, 'different-key');
 
-        (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken([]));
+        (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken([], ''));
     }
 
     /**

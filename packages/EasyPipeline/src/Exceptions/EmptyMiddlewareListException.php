@@ -9,5 +9,3 @@ final class EmptyMiddlewareListException extends \InvalidArgumentException imple
 {
     // No body needed.
 }
-
-

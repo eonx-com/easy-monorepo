@@ -27,8 +27,7 @@ final class RuleWithNonBlockingErrorStub implements RuleInterface
      */
     public function proceed(array $input)
     {
-        throw new class extends \Exception implements NonBlockingRuleErrorInterface
-        {
+        throw new class extends \Exception implements NonBlockingRuleErrorInterface {
             /**
              * Get error output.
              *

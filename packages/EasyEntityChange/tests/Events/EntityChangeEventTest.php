@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyEntityChange\Tests\Events;
 
+use EonX\EasyEntityChange\DataTransferObjects\UpdatedEntity;
 use EonX\EasyEntityChange\Events\EntityChangeEvent;
 use EonX\EasyEntityChange\Tests\AbstractTestCase;
+use stdClass;
 
 /**
  * @covers \EonX\EasyEntityChange\Events\EntityChangeEvent
@@ -12,15 +14,20 @@ use EonX\EasyEntityChange\Tests\AbstractTestCase;
 class EntityChangeEventTest extends AbstractTestCase
 {
     /**
-     * Tests event.
+     * Tests that DTO's constructor and getters are :chefs-kiss:
      *
      * @return void
      */
-    public function testEvent(): void
+    public function testEventCreationAndGetters(): void
     {
-        $event = new EntityChangeEvent(['delete' => ['id']], ['class' => ['hash' => 'id']]);
+        $updatedEntity = new UpdatedEntity(
+            [],
+            stdClass::class,
+            ['id']
+        );
 
-        static::assertSame(['delete' => ['id']], $event->getDeletes());
-        static::assertSame(['class' => ['hash' => 'id']], $event->getUpdates());
+        $event = new EntityChangeEvent([$updatedEntity]);
+
+        self::assertSame([$updatedEntity], $event->getChanges());
     }
 }

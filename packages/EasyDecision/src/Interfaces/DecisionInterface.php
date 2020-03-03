@@ -46,11 +46,19 @@ interface DecisionInterface
      *
      * @return mixed
      *
-     * @throws \EonX\EasyDecision\Exceptions\EmptyRulesException
      * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
     public function make(array $input);
+
+    /**
+     * Set default output.
+     *
+     * @param null|mixed $defaultOutput
+     *
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
+     */
+    public function setDefaultOutput($defaultOutput = null): self;
 
     /**
      * Set decision name.
@@ -61,5 +69,3 @@ interface DecisionInterface
      */
     public function setName(string $name): self;
 }
-
-
