@@ -16,7 +16,7 @@ final class RuleWithExtraOutputStub extends RuleStub implements DecisionOutputFo
      * RuleWithExtraOutputStub constructor.
      *
      * @param string $name
-     * @param $output
+     * @param mixed $output
      * @param null|mixed[] $extra
      * @param null|bool $supports
      * @param null|int $priority

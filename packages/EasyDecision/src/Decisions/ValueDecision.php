@@ -28,7 +28,6 @@ final class ValueDecision extends AbstractDecision
     /**
      * Handle rule output.
      *
-     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
      * @param mixed $output
      *
      * @return void

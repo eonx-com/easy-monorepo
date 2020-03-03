@@ -5,13 +5,13 @@ namespace EonX\EasyDecision\Rules;
 
 use EonX\EasyDecision\Helpers\IfConditionForValue;
 use EonX\EasyDecision\Interfaces\ContextAwareInterface;
-use EonX\EasyDecision\Interfaces\DecisionOutputForRuleAwareInterface;
-use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
+use EonX\EasyDecision\Interfaces\DecisionOutputForRuleAwareInterface as DecisionOutputAware;
+use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface as ExprLangAware;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Traits\ContextAwareTrait;
 use EonX\EasyDecision\Traits\ExpressionLanguageAwareTrait;
 
-final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterface, ExpressionLanguageAwareInterface, DecisionOutputForRuleAwareInterface
+final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterface, ExprLangAware, DecisionOutputAware
 {
     use ContextAwareTrait;
     use ExpressionLanguageAwareTrait;
@@ -53,7 +53,11 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     }
 
     /**
-     * @inheritDoc
+     * Returns rule output for given decision output.
+     *
+     * @param mixed $decisionOutput
+     *
+     * @return mixed
      */
     public function getDecisionOutputForRule($decisionOutput)
     {
