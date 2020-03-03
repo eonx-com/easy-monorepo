@@ -5,7 +5,7 @@ namespace EonX\EasyDecision\Tests\Stubs;
 
 use EonX\EasyDecision\Interfaces\RuleInterface;
 
-final class RuleStub implements RuleInterface
+class RuleStub implements RuleInterface
 {
     /**
      * @var string

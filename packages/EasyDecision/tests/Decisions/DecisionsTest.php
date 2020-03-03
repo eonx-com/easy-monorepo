@@ -5,12 +5,13 @@ namespace EonX\EasyDecision\Tests\Decisions;
 
 use EonX\EasyDecision\Decisions\ConsensusDecision;
 use EonX\EasyDecision\Decisions\ValueDecision;
-use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
+use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Stubs\RuleStub;
+use EonX\EasyDecision\Tests\Stubs\RuleWithExtraOutputStub;
 
 final class DecisionsTest extends AbstractTestCase
 {
@@ -58,30 +59,20 @@ final class DecisionsTest extends AbstractTestCase
         yield 'Consensus with name and extra' => [
             new ConsensusDecision(),
             [
+                new RuleWithExtraOutputStub('Unsupported with extra', false, ['key' => 'value'], false),
                 new RuleStub('Only false', false),
                 new RuleStub('Only true', true),
-                new RuleStub('True in array', ['output' => true, 'key' => 'value'])
+                new RuleWithExtraOutputStub('True with extra', true, ['key' => 'value'])
             ],
             [],
             true,
             [
+                'Unsupported with extra' => ['output' => RuleInterface::OUTPUT_UNSUPPORTED, 'key' => 'value'],
                 'Only false' => false,
                 'Only true' => true,
-                'True in array' => ['output' => true, 'key' => 'value']
+                'True with extra' => ['output' => true, 'key' => 'value']
             ]
         ];
-    }
-
-    /**
-     * Decision should throw exception if rule return array output with no output key.
-     *
-     * @return void
-     */
-    public function testArrayOutputRequiresOutputKeyException(): void
-    {
-        $this->expectException(UnableToMakeDecisionException::class);
-
-        (new ConsensusDecision())->addRules([new RuleStub('No Output', [])])->make([]);
     }
 
     /**

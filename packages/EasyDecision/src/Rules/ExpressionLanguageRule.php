@@ -5,12 +5,13 @@ namespace EonX\EasyDecision\Rules;
 
 use EonX\EasyDecision\Helpers\IfConditionForValue;
 use EonX\EasyDecision\Interfaces\ContextAwareInterface;
+use EonX\EasyDecision\Interfaces\DecisionOutputForRuleAwareInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Traits\ContextAwareTrait;
 use EonX\EasyDecision\Traits\ExpressionLanguageAwareTrait;
 
-final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterface, ExpressionLanguageAwareInterface
+final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterface, ExpressionLanguageAwareInterface, DecisionOutputForRuleAwareInterface
 {
     use ContextAwareTrait;
     use ExpressionLanguageAwareTrait;
@@ -52,6 +53,20 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getDecisionOutputForRule($decisionOutput)
+    {
+        if ($this->extra === null) {
+            return $decisionOutput;
+        }
+
+        $this->extra['output'] = $decisionOutput;
+
+        return $this->extra;
+    }
+
+    /**
      * Get priority.
      *
      * @return int
@@ -72,15 +87,7 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     {
         $input['context'] = $this->context;
 
-        $output = $this->getOutput($input);
-
-        if ($this->extra === null) {
-            return $output;
-        }
-
-        $this->extra['output'] = $output;
-
-        return $this->extra;
+        return $this->getOutput($input);
     }
 
     /**
