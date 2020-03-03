@@ -24,7 +24,7 @@ jobs:
                     - EasyPsr7Factory
                     - EasyRepository
                     - EasySecurity
-                    # - EasyTest | Enable after tests written
+                    - EasyTest
 
         name: ${{ matrix.package }}
 
