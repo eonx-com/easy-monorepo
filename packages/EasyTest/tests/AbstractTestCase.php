@@ -48,6 +48,9 @@ abstract class AbstractTestCase extends TestCase
         $kernel = new EasyTestKernel('test', true);
         $kernel->boot();
 
-        return $this->app = $kernel->getContainer()->get(EasyTestApplication::class);
+        /** @var \Symfony\Component\Console\Application $app */
+        $app = $kernel->getContainer()->get(EasyTestApplication::class);
+
+        return $this->app = $app;
     }
 }

@@ -78,6 +78,8 @@ final class CheckCoverageCommandTest extends AbstractTestCase
      *
      * @throws \Exception
      *
+     * @phpstan-param class-string<\Throwable> $expectedException
+     *
      * @dataProvider providerCheckCoverageExceptions
      */
     public function testCheckCoverageExceptions(array $inputs, string $expectedException): void
