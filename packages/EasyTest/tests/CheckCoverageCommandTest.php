@@ -3,25 +3,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Tests;
 
+use EonX\EasyTest\Exceptions\UnableToLoadCoverageException;
+use EonX\EasyTest\Exceptions\UnableToResolveCoverageException;
+
 final class CheckCoverageCommandTest extends AbstractTestCase
 {
     /**
-     * Check coverage data provider.
+     * DataProvider for testCheckCoverage.
      *
      * @return iterable<mixed>
      */
-    public function checkCoverageProvider(): iterable
+    public function providerCheckCoverage(): iterable
     {
-        yield 'File not found' => [
-            ['file' => 'invalid-file.txt'],
-            '[ERROR] File "invalid-file.txt" not found'
-        ];
-
-        yield 'File but no coverage' => [
-            ['file' => __DIR__ . '/fixtures/no-coverage.txt'],
-            '[ERROR] No coverage found in output'
-        ];
-
         yield 'File but coverage too low' => [
             ['file' => __DIR__ . '/fixtures/coverage-70.txt', '--coverage' => 71],
             '[ERROR] Coverage "70%" is lower than expectation "71%"'
@@ -30,6 +23,29 @@ final class CheckCoverageCommandTest extends AbstractTestCase
         yield 'File and good coverage' => [
             ['file' => __DIR__ . '/fixtures/coverage-70.txt', '--coverage' => 70],
             '[OK] Yeah nah yeah nah yeah!! Good coverage mate! "70%"'
+        ];
+    }
+
+    /**
+     * DataProvider for testCheckCoverageExceptions.
+     *
+     * @return iterable<mixed>
+     */
+    public function providerCheckCoverageExceptions(): iterable
+    {
+        yield 'File not found' => [
+            ['file' => 'invalid-file.txt'],
+            UnableToLoadCoverageException::class
+        ];
+
+        yield 'File but no coverage' => [
+            ['file' => __DIR__ . '/fixtures/no-coverage.txt'],
+            UnableToResolveCoverageException::class
+        ];
+
+        yield 'File and Lines but no coverage' => [
+            ['file' => __DIR__ . '/fixtures/lines-but-no-coverage.txt'],
+            UnableToResolveCoverageException::class
         ];
     }
 
@@ -43,12 +59,33 @@ final class CheckCoverageCommandTest extends AbstractTestCase
      *
      * @throws \Exception
      *
-     * @dataProvider checkCoverageProvider
+     * @dataProvider providerCheckCoverage
      */
     public function testCheckCoverage(array $inputs, string $expectedOutput): void
     {
         $output = $this->executeCommand('check-coverage', $inputs);
 
         self::assertStringContainsString($expectedOutput, $output);
+    }
+
+    /**
+     * Test check-coverage exceptions.
+     *
+     * @param mixed[] $inputs
+     * @param string $expectedException
+     *
+     * @return void
+     *
+     * @throws \Exception
+     *
+     * @dataProvider providerCheckCoverageExceptions
+     *
+     * @phpstan-param class-string<\Throwable> $expectedException
+     */
+    public function testCheckCoverageExceptions(array $inputs, string $expectedException): void
+    {
+        $this->expectException($expectedException);
+
+        $this->executeCommand('check-coverage', $inputs);
     }
 }
