@@ -97,11 +97,7 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
      */
     private function createAuth0Driver(array $options): Auth0JwtDriver
     {
-        $cache = null;
-        if (array_key_exists('cache_path', $options) && empty($options['cache_path']) === false) {
-            $cache = new FileSystemCacheHandler($options['cache_path']);
-        }
-
+        $cache = empty($options['cache_path']) === false ? new FileSystemCacheHandler($options['cache_path']) : null;
 
         $driver = new Auth0JwtDriver(
             $options['valid_audiences'],
