@@ -3,19 +3,34 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Decisions;
 
-use EonX\EasyDecision\Interfaces\ContextInterface;
-
 final class UnanimousDecision extends AbstractDecision
 {
     /** @var bool */
     private $output = true;
 
     /**
+     * Handle rule output.
+     *
+     * @param mixed $output
+     *
+     * @return void
+     */
+    protected function doHandleRuleOutput($output): void
+    {
+        // If at least one false, decision output is false
+        if ((bool)$output === false) {
+            $this->output = false;
+            // No need to keep processing rules because only one false is required to output false
+            $this->context->stopPropagation();
+        }
+    }
+
+    /**
      * Let children classes make the decision.
      *
-     * @return mixed
+     * @return bool
      */
-    protected function doMake()
+    protected function doMake(): bool
     {
         return $this->output;
     }
@@ -23,37 +38,10 @@ final class UnanimousDecision extends AbstractDecision
     /**
      * Get default output to return if no rules provided.
      *
-     * @param mixed[] $input
-     *
-     * @return mixed
+     * @return bool
      */
-    protected function getDefaultOutput(array $input)
+    protected function getDefaultOutput(): bool
     {
         return true;
-    }
-
-    /**
-     * Handle rule output.
-     *
-     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
-     * @param string $rule
-     * @param mixed $output
-     *
-     * @return void
-     */
-    protected function handleRuleOutput(ContextInterface $context, string $rule, $output): void
-    {
-        // Convert output to boolean
-        $value = (bool)$this->getOutputFromRule($rule, $output);
-
-        // Log output
-        $context->addRuleOutput($rule, $output);
-
-        // If at least one false, decision output is false
-        if ($value === false) {
-            $this->output = false;
-            // No need to keep processing rules because only one false is required to output false
-            $context->stopPropagation();
-        }
     }
 }
