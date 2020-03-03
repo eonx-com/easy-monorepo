@@ -4,26 +4,26 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Decisions;
 
 use EonX\EasyDecision\Context;
-use EonX\EasyDecision\Exceptions\ArrayOutputRequiresOutputKeyException;
 use EonX\EasyDecision\Exceptions\ContextNotSetException;
 use EonX\EasyDecision\Exceptions\ReservedContextIndexException;
 use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use EonX\EasyDecision\Interfaces\ContextAwareInterface;
 use EonX\EasyDecision\Interfaces\ContextInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
+use EonX\EasyDecision\Interfaces\DecisionOutputForRuleAwareInterface;
 use EonX\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 
 abstract class AbstractDecision implements DecisionInterface
 {
     /** @var \EonX\EasyDecision\Interfaces\ContextInterface */
-    private $context;
+    protected $context;
+
+    /** @var mixed[] */
+    protected $input;
 
     /** @var null|mixed */
     private $defaultOutput;
-
-    /** @var mixed[] */
-    private $input;
 
     /** @var string */
     private $name;
@@ -124,12 +124,12 @@ abstract class AbstractDecision implements DecisionInterface
 
         // If no rules provided, return default output
         if (empty($this->rules)) {
-            return $this->defaultOutput ?? $this->getDefaultOutput($input);
+            return $this->defaultOutput ?? $this->getDefaultOutput();
         }
 
         try {
             // Let children classes handle rules output and define the output
-            return $this->processRules($context)->doMake();
+            return $this->processRules()->doMake();
         } catch (\Exception $exception) {
             throw new UnableToMakeDecisionException(
                 $this->getExceptionMessage($exception->getMessage()),
@@ -168,6 +168,15 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
+     * Handle rule output.
+     *
+     * @param mixed $output
+     *
+     * @return void
+     */
+    abstract protected function doHandleRuleOutput($output): void;
+
+    /**
      * Let children classes make the decision.
      *
      * @return mixed
@@ -177,22 +186,9 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Get default output to return if no rules provided.
      *
-     * @param mixed[] $input
-     *
      * @return mixed
      */
-    abstract protected function getDefaultOutput(array $input);
-
-    /**
-     * Handle rule output.
-     *
-     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
-     * @param string $rule
-     * @param mixed $output
-     *
-     * @return void
-     */
-    abstract protected function handleRuleOutput(ContextInterface $context, string $rule, $output): void;
+    abstract protected function getDefaultOutput();
 
     /**
      * Get prefixed message for exception.
@@ -207,58 +203,40 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
-     * Get output (value) from given rule output.
+     * Set decision output for given rule on context.
      *
-     * @param string $rule
+     * @param \EonX\EasyDecision\Interfaces\RuleInterface $rule
      * @param mixed $output
-     *
-     * @return mixed
-     */
-    protected function getOutputFromRule(string $rule, $output)
-    {
-        if (\is_array($output)) {
-            if (isset($output['output']) === false) {
-                throw new ArrayOutputRequiresOutputKeyException($this->getExceptionMessage(
-                    \sprintf('Rule "%s" returned output as array but missing "output" key', $rule)
-                ));
-            }
-
-            $output = $output['output'];
-        }
-
-        return $output;
-    }
-
-    /**
-     * Update current input with given one.
-     *
-     * @param mixed[] $input
      *
      * @return void
      */
-    protected function updateInput(array $input): void
+    private function addDecisionOutputForRule(RuleInterface $rule, $output): void
     {
-        $this->input = $input + $this->input;
+        // Allow rules to customise decision output
+        if ($rule instanceof DecisionOutputForRuleAwareInterface) {
+            $output = $rule->getDecisionOutputForRule($output);
+        }
+
+        $this->context->addRuleOutput($rule->toString(), $output);
     }
 
     /**
      * Get sorted rules (priority value 0 is higher than 100).
      *
-     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
-     *
      * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
-    private function getRules(ContextInterface $context): array
+    private function getRules(): array
     {
         // Sort rules by priority
         $rules = $this->rules;
+
         \usort($rules, function (RuleInterface $first, RuleInterface $second): int {
             return $first->getPriority() <=> $second->getPriority();
         });
 
         foreach ($rules as $rule) {
             if ($rule instanceof ContextAwareInterface) {
-                $rule->setContext($context);
+                $rule->setContext($this->context);
             }
         }
 
@@ -268,30 +246,32 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * Process rules for given context.
      *
-     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
-     *
      * @return self
      */
-    private function processRules(ContextInterface $context): self
+    private function processRules(): self
     {
-        foreach ($this->getRules($context) as $rule) {
+        foreach ($this->getRules() as $rule) {
             // If propagation stopped, skip all the rules
-            if ($context->isPropagationStopped()) {
-                $context->addRuleOutput($rule->toString(), RuleInterface::OUTPUT_SKIPPED);
+            if ($this->context->isPropagationStopped()) {
+                $this->addDecisionOutputForRule($rule, RuleInterface::OUTPUT_SKIPPED);
                 continue;
             }
 
             // If rule doesn't support the input
             if ($rule->supports($this->input) === false) {
-                $context->addRuleOutput($rule->toString(), RuleInterface::OUTPUT_UNSUPPORTED);
+                $this->addDecisionOutputForRule($rule, RuleInterface::OUTPUT_UNSUPPORTED);
                 continue;
             }
 
             try {
+                $ruleOutput = $rule->proceed($this->input);
+
+                $this->addDecisionOutputForRule($rule, $ruleOutput);
+
                 // Let children classes handle the rule output
-                $this->handleRuleOutput($context, $rule->toString(), $rule->proceed($this->input));
+                $this->doHandleRuleOutput($ruleOutput);
             } catch (NonBlockingRuleErrorInterface $exception) {
-                $context->addRuleOutput($rule->toString(), $exception->getErrorOutput());
+                $this->addDecisionOutputForRule($rule, $exception->getErrorOutput());
             }
         }
 
