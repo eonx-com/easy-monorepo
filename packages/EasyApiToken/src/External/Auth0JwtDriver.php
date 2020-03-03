@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External;
 
+use Auth0\SDK\Helpers\Cache\CacheHandler;
 use Auth0\SDK\JWTVerifier;
 use EonX\EasyApiToken\External\Auth0\TokenGenerator;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
@@ -25,6 +26,13 @@ final class Auth0JwtDriver implements JwtDriverInterface
     private $authorizedIss;
 
     /**
+     * Replace with PSR cache on upgrade to PHP-Auth0 7.
+     *
+     * @var \Auth0\SDK\Helpers\Cache\CacheHandler
+     */
+    private $cache;
+
+    /**
      * @var string|resource
      */
     private $privateKey;
@@ -42,19 +50,22 @@ final class Auth0JwtDriver implements JwtDriverInterface
      * @param string|resource $privateKey
      * @param null|string $audienceForEncode
      * @param null|string[] $allowedAlgos
+     * @param \Auth0\SDK\Helpers\Cache\CacheHandler|null $cache Optional Cache handler.
      */
     public function __construct(
         array $validAudiences,
         array $authorizedIss,
         $privateKey,
         ?string $audienceForEncode = null,
-        ?array $allowedAlgos = null
+        ?array $allowedAlgos = null,
+        ?CacheHandler $cache = null
     ) {
         $this->validAudiences = $validAudiences;
         $this->authorizedIss = $authorizedIss;
         $this->privateKey = $privateKey;
         $this->audienceForEncode = $audienceForEncode ?? (string)\reset($validAudiences);
         $this->allowedAlgos = $allowedAlgos ?? ['HS256', 'RS256'];
+        $this->cache = $cache;
     }
 
     /**
@@ -69,10 +80,11 @@ final class Auth0JwtDriver implements JwtDriverInterface
     public function decode(string $token)
     {
         $verifier = new JWTVerifier([
+            'authorized_iss' => $this->authorizedIss,
+            'cache' => $this->cache,
             'client_secret' => $this->privateKey,
             'supported_algs' => $this->allowedAlgos,
-            'valid_audiences' => $this->validAudiences,
-            'authorized_iss' => $this->authorizedIss
+            'valid_audiences' => $this->validAudiences
         ]);
 
         return $verifier->verifyAndDecode($token);

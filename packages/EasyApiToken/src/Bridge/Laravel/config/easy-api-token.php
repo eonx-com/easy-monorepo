@@ -16,6 +16,7 @@ return [
         'jwt-header' => [
             'driver' => 'auth0',
             'options' => [
+                'cache_path' => 'path/to/cache', // Cache the JWKS lookup
                 'valid_audiences' => ['id1', 'id2'],
                 'authorized_iss' => ['xyz.auth0', 'abc.goog'],
                 'private_key' => 'someprivatekeystring',
