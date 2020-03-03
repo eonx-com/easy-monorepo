@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.3.0 - 2020-03-02
+## v2.3.1 - 2020-03-03
+
+### EasyApiToken
+
+- [#145] Allow caching for JWKs retrieval, Thanks to [@edwardmurrell-loyaltycorp]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.0] - 2020-03-02
 
 ### EasyAsync
 
@@ -1191,3 +1201,5 @@
 [v2.2.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.1.4...v2.2.0
 [#143]: https://github.com/eonx-com/easy-monorepo/pull/143
 [v2.2.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.2.0...v2.2.1
+[#145]: https://github.com/eonx-com/easy-monorepo/pull/145
+[v2.3.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.2.1...v2.3.0
