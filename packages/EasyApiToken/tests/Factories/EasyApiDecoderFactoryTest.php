@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests\Factories;
 
+use Auth0\SDK\Helpers\Cache\FileSystemCacheHandler;
 use EonX\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
 use EonX\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
@@ -184,6 +185,18 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     'private_key' => 'someprivatekeystring',
                     'valid_audiences' => ['id1', 'id2']
                 ]
+            ],
+            'jwt-by-parameter-auth0-with-cache' => [
+                'type' => 'jwt-param',
+                'driver' => 'auth0',
+                'options' => [
+                    'allowed_algos' => ['HS256', 'RS256'],
+                    'authorized_iss' => ['xyz.auth0', 'abc.goog'],
+                    'cache_path' => 'test/path',
+                    'param' => 'authParam',
+                    'private_key' => 'someprivatekeystring',
+                    'valid_audiences' => ['id1', 'id2']
+                ]
             ]
         ];
 
@@ -247,6 +260,24 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                         'someprivatekeystring',
                         'id1',
                         ['HS256', 'RS256']
+                    )
+                ),
+                'authParam'
+            )
+        ];
+
+        yield 'Jwt Parameter with Auth0, with cache' => [
+            $config,
+            'jwt-by-parameter-auth0-with-cache',
+            new JwtTokenInQueryDecoder(
+                new JwtEasyApiTokenFactory(
+                    new Auth0JwtDriver(
+                        ['id1', 'id2'],
+                        ['xyz.auth0', 'abc.goog'],
+                        'someprivatekeystring',
+                        'id1',
+                        ['HS256', 'RS256'],
+                        new FileSystemCacheHandler('test/path')
                     )
                 ),
                 'authParam'
