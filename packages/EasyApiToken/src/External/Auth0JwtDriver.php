@@ -50,6 +50,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
      * @param string|resource $privateKey
      * @param null|string $audienceForEncode
      * @param null|string[] $allowedAlgos
+     * @param \Auth0\SDK\Helpers\Cache\CacheHandler|null $cache Optional Cache handler.
      */
     public function __construct(
         array $validAudiences,
@@ -79,11 +80,11 @@ final class Auth0JwtDriver implements JwtDriverInterface
     public function decode(string $token)
     {
         $verifier = new JWTVerifier([
+            'authorized_iss' => $this->authorizedIss,
             'cache' => $this->cache,
             'client_secret' => $this->privateKey,
             'supported_algs' => $this->allowedAlgos,
-            'valid_audiences' => $this->validAudiences,
-            'authorized_iss' => $this->authorizedIss,
+            'valid_audiences' => $this->validAudiences
         ]);
 
         return $verifier->verifyAndDecode($token);
