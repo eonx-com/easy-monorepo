@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Tests;
 
-use EonX\EasyTest\Console\Commands\CheckCoverageCommand;
+use EonX\EasyTest\Console\EasyTestApplication;
+use EonX\EasyTest\HttpKernel\EasyTestKernel;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -44,9 +45,9 @@ abstract class AbstractTestCase extends TestCase
             return $this->app;
         }
 
-        $app = new Application();
-        $app->addCommands([new CheckCoverageCommand()]);
+        $kernel = new EasyTestKernel('test', true);
+        $kernel->boot();
 
-        return $this->app = $app;
+        return $this->app = $kernel->getContainer()->get(EasyTestApplication::class);
     }
 }

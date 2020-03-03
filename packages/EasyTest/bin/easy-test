@@ -13,10 +13,10 @@ use EonX\EasyTest\Console\Commands\CheckCoverageCommand;
     ->autoloadProjectAutoloaderFile('/../../autoload.php')
     ->includeDependencyOrRepositoryVendorAutoloadIfExists();
 
-$app = new EasyTestApplication();
-$app->addCommands([new CheckCoverageCommand()]);
+$kernel = new \EonX\EasyTest\HttpKernel\EasyTestKernel('prod', false);
+$kernel->boot();
 
-exit($app->run());
+exit($kernel->getContainer()->get(EasyTestApplication::class)->run());
 
 /**
  * Inspired by https://github.com/symplify/symplify/blob/master/packages/easy-coding-standard/bin/ecs

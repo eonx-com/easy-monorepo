@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    EonX\EasyTest\:
+        resource: '../src'
+        exclude:
+            - '../src/HttpKernel/*'

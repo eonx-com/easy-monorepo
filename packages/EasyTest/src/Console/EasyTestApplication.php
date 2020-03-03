@@ -7,14 +7,20 @@ use Symfony\Component\Console\Application;
 
 final class EasyTestApplication extends Application
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     public const VERSION = '1.0.0';
 
     /**
      * EasyTestApplication constructor.
+     *
+     * @param \Symfony\Component\Console\Command\Command[] $commands
      */
-    public function __construct()
+    public function __construct(array $commands)
     {
         parent::__construct('easy-test', self::VERSION);
+
+        $this->addCommands($commands);
     }
 }
