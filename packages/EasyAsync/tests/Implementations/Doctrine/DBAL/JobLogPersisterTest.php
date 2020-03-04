@@ -90,6 +90,22 @@ final class JobLogPersisterTest extends AbstractTestCase
                 'finished_at' => $now
             ]
         ];
+
+        $jobLog4 = $this->newJobLog();
+        $jobLog4->setStartedAt($now);
+        $jobLog4->setStatus(JobLogInterface::STATUS_IN_PROGRESS);
+
+        yield 'In Progress No Count Update' => [
+            [$jobLog4],
+            new Job(new Target('id', 'type'), 'test', 1),
+            [
+                'status' => JobInterface::STATUS_IN_PROGRESS,
+                'processed' => 0,
+                'failed' => 0,
+                'succeeded' => 0,
+                'started_at' => $now
+            ]
+        ];
     }
 
     /**

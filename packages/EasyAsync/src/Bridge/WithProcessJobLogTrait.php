@@ -100,6 +100,8 @@ trait WithProcessJobLogTrait
         try {
             $this->jobLogUpdater->inProgress($jobLog);
 
+            $this->jobLogPersister->persist($jobLog);
+
             $result = \call_user_func($func);
 
             $this->jobLogUpdater->completed($jobLog);
