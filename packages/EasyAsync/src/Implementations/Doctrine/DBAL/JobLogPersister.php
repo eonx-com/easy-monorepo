@@ -140,13 +140,13 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
      */
     private function updateJob(JobLogInterface $jobLog, JobInterface $job): JobInterface
     {
-        $job->setProcessed($job->getProcessed() + 1);
-
         switch ($jobLog->getStatus()) {
             case JobLogInterface::STATUS_FAILED:
+                $job->setProcessed($job->getProcessed() + 1);
                 $job->setFailed($job->getFailed() + 1);
                 break;
             case JobLogInterface::STATUS_COMPLETED:
+                $job->setProcessed($job->getProcessed() + 1);
                 $job->setSucceeded($job->getSucceeded() + 1);
                 break;
         }
