@@ -11,10 +11,6 @@ use Illuminate\Support\ServiceProvider;
 
 final class BugsnagLoggingServiceProvider extends ServiceProvider
 {
-    /**
-     * Register the services.
-     *
-     */
     public function register(): void
     {
         // Register bugsnag dependencies.

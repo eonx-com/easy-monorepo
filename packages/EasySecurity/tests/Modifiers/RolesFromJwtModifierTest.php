@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 final class RolesFromJwtModifierTest extends AbstractTestCase
 {
     /**
-     * Data provider for modify tests.
-     *
      * @return iterable<mixed>
      */
     public function modifyProvider(): iterable
@@ -63,13 +61,7 @@ final class RolesFromJwtModifierTest extends AbstractTestCase
     }
 
     /**
-     * Test modify.
-     *
-     * @param \EonX\EasySecurity\Interfaces\RolesProviderInterface $rolesProvider
-     * @param null|\EonX\EasySecurity\Interfaces\ContextInterface $context
      * @param null|mixed[] $roles
-     *
-     * @return void
      *
      * @dataProvider modifyProvider
      */

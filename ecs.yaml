@@ -27,18 +27,22 @@ parameters:
             - 'packages/EasyApiToken/src/External/Auth0JwtDriver.php'
             - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
             - 'packages/EasyAsync/src/Helpers/PropertyHelper.php'
+            - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
         SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.UselessAnnotation:
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
             - 'packages/EasyLogging/src/Logger.php'
             - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
             - 'packages/EasyAsync/src/Helpers/PropertyHelper.php'
+            - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
         SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.MissingNativeTypeHint:
             - 'packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php'
             - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
+            - 'packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php'
         SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.UselessAnnotation:
             - 'packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php'
             - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
+            - 'packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php'
 
 services:
     NatePage\Sniffs\Classes\StrictDeclarationFormatSniff:

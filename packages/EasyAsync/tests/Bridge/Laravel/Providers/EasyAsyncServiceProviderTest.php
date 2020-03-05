@@ -32,6 +32,9 @@ use Laravel\Lumen\Application;
 
 final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
 {
+    /**
+     * @return iterable<mixed>
+     */
     public function providerTestServiceProvider(): iterable
     {
         yield 'Doctrine' => [
@@ -58,6 +61,8 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
     }
 
     /**
+     * @param mixed[] $implementationServices
+     *
      * @dataProvider providerTestServiceProvider
      */
     public function testServiceProvider(

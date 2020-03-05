@@ -7,7 +7,9 @@ use EoneoPay\Externals\Logger\Interfaces\LoggerInterface as ExternalsLoggerInter
 
 interface LoggerInterface extends ExternalsLoggerInterface
 {
-    /** @var string[] */
+    /**
+     * @var string[]
+     */
     public const LEVELS = [
         self::LEVEL_ALERT,
         self::LEVEL_CRITICAL,
@@ -20,27 +22,43 @@ interface LoggerInterface extends ExternalsLoggerInterface
         self::LEVEL_WARNING
     ];
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public const LEVEL_ALERT = 'alert';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public const LEVEL_CRITICAL = 'critical';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public const LEVEL_DEBUG = 'debug';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public const LEVEL_EMERGENCY = 'emergency';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public const LEVEL_ERROR = 'error';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public const LEVEL_INFO = 'info';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public const LEVEL_NOTICE = 'notice';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public const LEVEL_WARNING = 'warning';
 }

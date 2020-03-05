@@ -20,23 +20,12 @@ final class ExternalLogger implements SqlLoggerInterface
      */
     private $includeBindings;
 
-    /**
-     * BugsnagLogger constructor.
-     *
-     */
     public function __construct(ExternalLogClientInterface $client, ?bool $includeBindings = null)
     {
         $this->client = $client;
         $this->includeBindings = $includeBindings;
     }
 
-    /**
-     * Register logger.
-     *
-     *
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function register(EntityManagerInterface $em, Configuration $configuration): void
     {
         $logger = new ExternalSqlLogger(

@@ -27,9 +27,6 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
     private $middlewareList;
 
     /**
-     * IlluminatePipeline constructor.
-     *
-     * @param \Illuminate\Contracts\Pipeline\Pipeline $illuminatePipeline
      * @param mixed[] $middlewareList
      *
      * @throws \EonX\EasyPipeline\Exceptions\EmptyMiddlewareListException
@@ -48,11 +45,7 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
     }
 
     /**
-     * Return logs created by each middleware during process.
-     *
      * @return mixed[]
-     *
-     * @throws \EonX\EasyPipeline\Exceptions\PipelineDidntRunException If called before process() is called
      */
     public function getLogs(): array
     {
@@ -60,12 +53,7 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
     }
 
     /**
-     * Log given content for given middleware.
-     *
-     * @param string $middleware
      * @param mixed $content
-     *
-     * @return void
      */
     public function log(string $middleware, $content): void
     {
@@ -77,8 +65,6 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
     }
 
     /**
-     * Process set input through set middleware list and return processed input.
-     *
      * @param mixed $input The input to be processed
      *
      * @return mixed

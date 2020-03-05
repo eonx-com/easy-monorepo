@@ -8,11 +8,6 @@ use EonX\EasySecurity\Role;
 
 final class RoleTest extends AbstractTestCase
 {
-    /**
-     * Test role.
-     *
-     * @return void
-     */
     public function testRole(): void
     {
         $role = new Role('app:role', [

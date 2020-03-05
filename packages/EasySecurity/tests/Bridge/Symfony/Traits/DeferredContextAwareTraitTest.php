@@ -10,11 +10,6 @@ use EonX\EasySecurity\Tests\Bridge\Symfony\Stubs\DeferredContextAwareTraitStub;
 
 final class DeferredContextAwareTraitTest extends AbstractSymfonyTestCase
 {
-    /**
-     * Trait should use deferred context resolver to resolver context.
-     *
-     * @return void
-     */
     public function testResolveContext(): void
     {
         $context = new Context();

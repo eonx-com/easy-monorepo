@@ -15,12 +15,6 @@ final class UserFromJwtModifier extends AbstractContextModifier
      */
     private $userProvider;
 
-    /**
-     * UserFromJwtDataResolver constructor.
-     *
-     * @param \EonX\EasySecurity\Interfaces\UserProviderInterface $userProvider
-     * @param null|int $priority
-     */
     public function __construct(UserProviderInterface $userProvider, ?int $priority = null)
     {
         $this->userProvider = $userProvider;
@@ -28,14 +22,6 @@ final class UserFromJwtModifier extends AbstractContextModifier
         parent::__construct($priority);
     }
 
-    /**
-     * Modify given context for given request.
-     *
-     * @param \EonX\EasySecurity\Interfaces\ContextInterface $context
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return void
-     */
     public function modify(ContextInterface $context, Request $request): void
     {
         $token = $context->getToken();

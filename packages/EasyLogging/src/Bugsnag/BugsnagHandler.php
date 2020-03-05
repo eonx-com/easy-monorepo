@@ -22,10 +22,6 @@ final class BugsnagHandler extends AbstractProcessingHandler
      */
     private $doNotReport = [];
 
-    /**
-     * BugsnagHandler constructor.
-     *
-     */
     public function __construct(ExternalLogClientInterface $client, ?int $level = null, ?bool $bubble = null)
     {
         parent::__construct($level ?? Logger::ERROR, $bubble ?? true);
@@ -34,11 +30,7 @@ final class BugsnagHandler extends AbstractProcessingHandler
     }
 
     /**
-     * Set list of exceptions not to report to bugsnag.
-     *
      * @param string[] $doNoReport
-     *
-     * @return $this
      */
     public function setDoNotReport(array $doNoReport): self
     {
@@ -48,10 +40,7 @@ final class BugsnagHandler extends AbstractProcessingHandler
     }
 
     /**
-     * Writes the record down to the log of the implementing handler
-     *
      * @param mixed[] $record
-     *
      */
     protected function write(array $record): void
     {
@@ -75,10 +64,7 @@ final class BugsnagHandler extends AbstractProcessingHandler
     }
 
     /**
-     * Get common notify callback.
-     *
      * @param mixed[] $record
-     *
      */
     private function getNotifyCallback(array $record): \Closure
     {
@@ -93,11 +79,6 @@ final class BugsnagHandler extends AbstractProcessingHandler
         };
     }
 
-    /**
-     * Check if given throwable should be reported to bugsnag.
-     *
-     *
-     */
     private function shouldReport(\Throwable $throwable): bool
     {
         foreach ($this->doNotReport as $type) {

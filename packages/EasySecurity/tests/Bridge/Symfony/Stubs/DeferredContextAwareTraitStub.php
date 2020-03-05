@@ -11,11 +11,6 @@ final class DeferredContextAwareTraitStub implements DeferredContextAwareInterfa
 {
     use DeferredContextAwareTrait;
 
-    /**
-     * Get context.
-     *
-     * @return \EonX\EasySecurity\Interfaces\ContextInterface
-     */
     public function getContext(): ContextInterface
     {
         return $this->resolveContext();

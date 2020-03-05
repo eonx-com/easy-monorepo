@@ -15,11 +15,6 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
      */
     public const PIPELINES_PREFIX = 'pipeline.';
 
-    /**
-     * Publish configuration file.
-     *
-     * @return void
-     */
     public function boot(): void
     {
         $this->publishes([
@@ -27,13 +22,6 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
         ]);
     }
 
-    /**
-     * Register EasyPipeline services for IlluminatePipeline implementation.
-     *
-     * @return void
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-pipeline.php', 'easy-pipeline');
@@ -42,11 +30,6 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
         $this->registerPipelineFactory();
     }
 
-    /**
-     * Register pipeline factory.
-     *
-     * @return void
-     */
     private function registerPipelineFactory(): void
     {
         $this->app->singleton(
@@ -61,13 +44,6 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
         );
     }
 
-    /**
-     * Register middleware providers into the container.
-     *
-     * @return void
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     private function registerPipelines(): void
     {
         $pipelines = \config('easy-pipeline.pipelines', []);

@@ -29,6 +29,9 @@ final class ClearConfigCommand extends Command
         $this->info('Configuration cache cleared!');
     }
 
+    /**
+     * @param \Laravel\Lumen\Application $laravel
+     */
     public function setLaravel($laravel): void
     {
         $this->cachedConfigPath = $laravel->storagePath('cached_config.php');

@@ -10,7 +10,6 @@ use EonX\EasyLogging\ContextModifiers\EntityValidationFailedExceptionContextModi
 use EonX\EasyLogging\Formatters\SumoJsonFormatter;
 use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
 use EonX\EasyLogging\Interfaces\LoggerInterface;
-use Exception;
 use Laravel\Lumen\Application;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
@@ -22,35 +21,46 @@ use Throwable;
 
 final class Logger implements LoggerInterface
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     public const APPLICATION = 'manage';
 
-    /** @var \Laravel\Lumen\Application */
+    /**
+     * @var \Laravel\Lumen\Application
+     */
     private $app;
 
-    /** @var \Psr\Log\LoggerInterface */
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     private $appLogger;
 
-    /** @var string[] */
+    /**
+     * @var string[]
+     */
     private $bugsnagDoNotReport = [];
 
-    /** @var \Psr\Log\LoggerInterface */
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     private $emergencyLogger;
 
-    /** @var \EonX\EasyLogging\Interfaces\ExceptionContextModifierInterface[] */
+    /**
+     * @var \EonX\EasyLogging\Interfaces\ExceptionContextModifierInterface[]
+     */
     private $exceptionContextModifiers = [];
 
-    /** @var \Monolog\Handler\HandlerInterface[] */
+    /**
+     * @var \Monolog\Handler\HandlerInterface[]
+     */
     private $handlers = [];
 
-    /** @var \Monolog\Processor\ProcessorInterface[] */
+    /**
+     * @var \Monolog\Processor\ProcessorInterface[]
+     */
     private $processors;
 
-    /**
-     * Logger constructor.
-     *
-     * @throws \Exception
-     */
     public function __construct()
     {
         $this->handlers[] = $this->getHandler();
@@ -60,11 +70,6 @@ final class Logger implements LoggerInterface
         }
     }
 
-    /**
-     * Add monolog handler.
-     *
-     *
-     */
     public function addHandler(HandlerInterface $handler): void
     {
         $this->handlers[] = $handler;

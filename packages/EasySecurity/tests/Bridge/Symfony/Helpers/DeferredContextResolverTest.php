@@ -9,11 +9,6 @@ use EonX\EasySecurity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 
 final class DeferredContextResolverTest extends AbstractSymfonyTestCase
 {
-    /**
-     * Helper should return expected context instance from container.
-     *
-     * @return void
-     */
     public function testResolve(): void
     {
         $container = $this->getKernel()->getContainer();

@@ -19,8 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 final class UserFromJwtModifierTest extends AbstractTestCase
 {
     /**
-     * Data provider for modify tests.
-     *
      * @return iterable<mixed>
      */
     public function modifyProvider(): iterable
@@ -71,14 +69,6 @@ final class UserFromJwtModifierTest extends AbstractTestCase
     }
 
     /**
-     * Test UserFromJwtModifier.
-     *
-     * @param \EonX\EasySecurity\Interfaces\UserProviderInterface $userProvider
-     * @param null|\EonX\EasySecurity\Interfaces\ContextInterface $context
-     * @param null|\EonX\EasySecurity\Interfaces\UserInterface $user
-     *
-     * @return void
-     *
      * @dataProvider modifyProvider
      */
     public function testResolve(

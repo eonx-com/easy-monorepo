@@ -22,7 +22,7 @@ final class ParameterResolver implements ParameterResolverInterface
     private $filesystem;
 
     /**
-     * @var callable[]
+     * @var mixed[]
      */
     private $modifiers = [];
 

@@ -14,10 +14,7 @@ use Illuminate\Pipeline\Pipeline;
 final class IlluminatePipelineTest extends AbstractLumenTestCase
 {
     /**
-     * For callable in pipeline tests purposes.
-     *
      * @param mixed $input
-     * @param \Closure $next
      *
      * @return mixed
      */
@@ -27,11 +24,6 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
         return $next($input);
     }
 
-    /**
-     * Pipeline should throw an exception when given middleware list is empty.
-     *
-     * @return void
-     */
     public function testEmptyMiddlewareListException(): void
     {
         $this->expectException(EmptyMiddlewareListException::class);
@@ -39,11 +31,6 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
         new IlluminatePipeline(new Pipeline(), []);
     }
 
-    /**
-     * Pipeline should process input through given middleware list and be able to process multiple times.
-     *
-     * @return void
-     */
     public function testProcessInputThroughMiddlewareListSuccessfullyWithLogs(): void
     {
         $middlewareList = [
@@ -73,12 +60,7 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
     }
 
     /**
-     * Assert given name and logs for the success pipeline case.
-     *
-     * @param string $name
      * @param string[] $logs
-     *
-     * @return void
      */
     private function assertNameAndLogs(string $name, array $logs): void
     {

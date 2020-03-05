@@ -16,21 +16,13 @@ final class LoggerChangeNameMiddleware implements MiddlewareInterface, Middlewar
      */
     private $decorated;
 
-    /**
-     * LoggerChangeNameMiddleware constructor.
-     *
-     * @param \EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware $decorated
-     */
     public function __construct(ChangeNameMiddleware $decorated)
     {
         $this->decorated = $decorated;
     }
 
     /**
-     * Handle given input and pass return through next.
-     *
      * @param mixed $input
-     * @param callable $next
      *
      * @return mixed
      */

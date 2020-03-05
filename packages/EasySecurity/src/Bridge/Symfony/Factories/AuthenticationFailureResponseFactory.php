@@ -17,24 +17,11 @@ final class AuthenticationFailureResponseFactory implements AuthenticationFailur
      */
     private $logger;
 
-    /**
-     * AuthenticationFailureResponseFactory constructor.
-     *
-     * @param \Psr\Log\LoggerInterface $logger
-     */
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
-    /**
-     * Create authentication failure response.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param null|\Symfony\Component\Security\Core\Exception\AuthenticationException $exception
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function create(Request $request, ?AuthenticationException $exception = null): Response
     {
         if ($exception !== null) {

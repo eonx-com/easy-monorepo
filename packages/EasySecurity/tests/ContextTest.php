@@ -15,8 +15,6 @@ use EonX\EasySecurity\Tests\Stubs\UserInterfaceStub;
 final class ContextTest extends AbstractTestCase
 {
     /**
-     * Data provider for testContextGetters.
-     *
      * @return iterable<mixed>
      */
     public function gettersDataProvider(): iterable
@@ -71,8 +69,6 @@ final class ContextTest extends AbstractTestCase
     }
 
     /**
-     * Data provider for testContextHas.
-     *
      * @return iterable<mixed>
      */
     public function hasDataProvider(): iterable
@@ -141,11 +137,6 @@ final class ContextTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * Context should throw an exception if no provider set.
-     *
-     * @return void
-     */
     public function testContextGetProviderOrFail(): void
     {
         $this->expectException(NoProviderInContextException::class);
@@ -153,11 +144,6 @@ final class ContextTest extends AbstractTestCase
         (new Context())->getProviderOrFail();
     }
 
-    /**
-     * Context should throw an exception if no user set.
-     *
-     * @return void
-     */
     public function testContextGetUserOrFail(): void
     {
         $this->expectException(NoUserInContextException::class);
@@ -166,13 +152,7 @@ final class ContextTest extends AbstractTestCase
     }
 
     /**
-     * Test context getters.
-     *
      * @param mixed[] $roles
-     * @param int $countRoles
-     * @param int $countPermissions
-     *
-     * @return void
      *
      * @dataProvider gettersDataProvider
      */
@@ -198,15 +178,7 @@ final class ContextTest extends AbstractTestCase
     }
 
     /**
-     * Test context has methods.
-     *
      * @param mixed[] $roles
-     * @param string $role
-     * @param string $permission
-     * @param bool $hasRole
-     * @param bool $hasPermission
-     *
-     * @return void
      *
      * @dataProvider hasDataProvider
      */

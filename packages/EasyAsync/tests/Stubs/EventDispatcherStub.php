@@ -20,6 +20,9 @@ final class EventDispatcherStub implements EventDispatcherInterface
         return $event;
     }
 
+    /**
+     * @return EasyAsyncEventInterface[]
+     */
     public function getDispatchedEvents(): array
     {
         return $this->dispatched;

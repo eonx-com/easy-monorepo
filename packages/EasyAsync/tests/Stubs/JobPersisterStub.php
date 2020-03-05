@@ -57,6 +57,9 @@ final class JobPersisterStub implements JobPersisterInterface
         return $this->returnForSingle(__FUNCTION__);
     }
 
+    /**
+     * @return string[]
+     */
     public function getMethodCalls(): array
     {
         return $this->calls;

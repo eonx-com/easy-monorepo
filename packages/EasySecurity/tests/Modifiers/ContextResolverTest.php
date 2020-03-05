@@ -19,8 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 final class ContextResolverTest extends AbstractTestCase
 {
     /**
-     * Data provider for setModifier tests.
-     *
      * @return iterable<mixed>
      */
     public function setModifiersProvider(): iterable
@@ -38,11 +36,7 @@ final class ContextResolverTest extends AbstractTestCase
     }
 
     /**
-     * Test setModifiers.
-     *
      * @param mixed[]|iterable<mixed> $modifiers
-     *
-     * @return void
      *
      * @dataProvider setModifiersProvider
      */

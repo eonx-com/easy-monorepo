@@ -77,6 +77,9 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
         }
     }
 
+    /**
+     * @param mixed $objects
+     */
     private function getManagerExpectations(string $method, $objects): \Closure
     {
         return function (MockInterface $manager) use ($method, $objects): void {

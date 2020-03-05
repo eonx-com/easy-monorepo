@@ -9,10 +9,7 @@ use Monolog\Formatter\JsonFormatter;
 final class SumoJsonFormatter extends JsonFormatter
 {
     /**
-     * Utilize jsonFormatter method toJson.
-     *
      * @param mixed[] $record
-     *
      */
     public function format(array $record): string
     {

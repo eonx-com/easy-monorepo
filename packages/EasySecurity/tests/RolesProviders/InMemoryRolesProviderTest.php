@@ -9,8 +9,6 @@ use EonX\EasySecurity\Tests\AbstractTestCase;
 final class InMemoryRolesProviderTest extends AbstractTestCase
 {
     /**
-     * Data provider for getRolesByIdentifiers tests.
-     *
      * @return iterable<mixed>
      */
     public function getRolesByIdentifiersDataProvider(): iterable
@@ -59,8 +57,6 @@ final class InMemoryRolesProviderTest extends AbstractTestCase
     }
 
     /**
-     * Data provider for getRoles tests.
-     *
      * @return iterable<mixed>
      */
     public function getRolesDataProvider(): iterable
@@ -87,12 +83,7 @@ final class InMemoryRolesProviderTest extends AbstractTestCase
     }
 
     /**
-     * Test getRoles method.
-     *
      * @param mixed[] $roles
-     * @param int $count
-     *
-     * @return void
      *
      * @dataProvider getRolesDataProvider
      */
@@ -104,13 +95,8 @@ final class InMemoryRolesProviderTest extends AbstractTestCase
     }
 
     /**
-     * Test getRolesByIdentifiers method.
-     *
      * @param mixed[] $roles
      * @param string|string[] $identifiers
-     * @param int $count
-     *
-     * @return void
      *
      * @dataProvider getRolesByIdentifiersDataProvider
      */

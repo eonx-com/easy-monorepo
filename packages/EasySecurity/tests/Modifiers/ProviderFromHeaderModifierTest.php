@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 final class ProviderFromHeaderModifierTest extends AbstractTestCase
 {
     /**
-     * Data provider for modify tests.
-     *
      * @return iterable<mixed>
      */
     public function modifyProvider(): iterable
@@ -61,15 +59,6 @@ final class ProviderFromHeaderModifierTest extends AbstractTestCase
     }
 
     /**
-     * Test modify.
-     *
-     * @param \EonX\EasySecurity\Interfaces\ProviderProviderInterface $providerProvider
-     * @param null|\Symfony\Component\HttpFoundation\Request $request
-     * @param null|\EonX\EasySecurity\Interfaces\ContextInterface $context
-     * @param null|\EonX\EasySecurity\Interfaces\ProviderInterface $provider
-     *
-     * @return void
-     *
      * @dataProvider modifyProvider
      */
     public function testModify(

@@ -16,11 +16,6 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasySecurityServiceProvider extends ServiceProvider
 {
-    /**
-     * Publish configuration file.
-     *
-     * @return void
-     */
     public function boot(): void
     {
         $this->publishes([
@@ -28,11 +23,6 @@ final class EasySecurityServiceProvider extends ServiceProvider
         ]);
     }
 
-    /**
-     * Register easy-security services.
-     *
-     * @return void
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-security.php', 'easy-security');

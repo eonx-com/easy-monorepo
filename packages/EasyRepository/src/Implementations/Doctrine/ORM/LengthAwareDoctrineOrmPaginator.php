@@ -17,6 +17,9 @@ final class LengthAwareDoctrineOrmPaginator extends AbstractLengthAwarePaginator
      */
     private $doctrinePaginator;
 
+    /**
+     * @param \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator
+     */
     public function __construct(Paginator $doctrinePaginator, int $start, int $size)
     {
         @\trigger_error(\sprintf(

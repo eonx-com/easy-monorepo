@@ -11,6 +11,9 @@ interface ParameterResolverInterface
 
     public function addResolver(string $param, callable $resolver): self;
 
+    /**
+     * @return mixed[]
+     */
     public function resolve(InputInterface $input): array;
 
     public function setCachePathname(string $pathname): self;

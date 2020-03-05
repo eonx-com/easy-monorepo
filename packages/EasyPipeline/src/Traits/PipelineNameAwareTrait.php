@@ -10,13 +10,6 @@ trait PipelineNameAwareTrait
      */
     private $pipelineName;
 
-    /**
-     * Set pipeline name.
-     *
-     * @param string $pipelineName
-     *
-     * @return void
-     */
     public function setPipelineName(string $pipelineName): void
     {
         $this->pipelineName = $pipelineName;

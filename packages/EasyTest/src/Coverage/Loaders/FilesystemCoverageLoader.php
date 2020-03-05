@@ -8,15 +8,6 @@ use EonX\EasyTest\Interfaces\CoverageLoaderInterface;
 
 final class FilesystemCoverageLoader implements CoverageLoaderInterface
 {
-    /**
-     * Load coverage output from given path.
-     *
-     * @param string $path
-     *
-     * @return string
-     *
-     * @throws \EonX\EasyTest\Exceptions\UnableToLoadCoverageException
-     */
     public function load(string $path): string
     {
         if (\file_exists($path)) {

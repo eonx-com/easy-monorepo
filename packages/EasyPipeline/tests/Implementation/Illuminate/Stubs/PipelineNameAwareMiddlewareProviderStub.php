@@ -12,12 +12,7 @@ final class PipelineNameAwareMiddlewareProviderStub implements MiddlewareProvide
     use PipelineNameAwareTrait;
 
     /**
-     * A simple middleware to return the current pipeline name.
-     *
      * @param mixed $input
-     * @param \Closure $next
-     *
-     * @return string
      */
     public function actAsMiddleware($input, \Closure $next): string
     {
@@ -27,8 +22,6 @@ final class PipelineNameAwareMiddlewareProviderStub implements MiddlewareProvide
     }
 
     /**
-     * Return just the middleware defined above.
-     *
      * @return mixed[]
      */
     public function getMiddlewareList(): array

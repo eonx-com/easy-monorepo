@@ -12,21 +12,11 @@ final class ServiceStub
      */
     private $psr7Factory;
 
-    /**
-     * ServiceStub constructor.
-     *
-     * @param \EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface $psr7Factory
-     */
     public function __construct(EasyPsr7FactoryInterface $psr7Factory)
     {
         $this->psr7Factory = $psr7Factory;
     }
 
-    /**
-     * Get psr7Factory.
-     *
-     * @return \EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface
-     */
     public function getPsr7Factory(): EasyPsr7FactoryInterface
     {
         return $this->psr7Factory;

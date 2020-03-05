@@ -13,8 +13,6 @@ final class ProviderInterfaceStub implements ProviderInterface
     private $uniqueId;
 
     /**
-     * UserInterfaceStub constructor.
-     *
      * @param null|int|string $uniqueId
      */
     public function __construct($uniqueId)
@@ -23,8 +21,6 @@ final class ProviderInterfaceStub implements ProviderInterface
     }
 
     /**
-     * Get user id.
-     *
      * @return null|int|string
      */
     public function getUniqueId()

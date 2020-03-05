@@ -9,8 +9,6 @@ use EonX\EasyTest\Exceptions\UnableToResolveCoverageException;
 final class CheckCoverageCommandTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testCheckCoverage.
-     *
      * @return iterable<mixed>
      */
     public function providerCheckCoverage(): iterable
@@ -27,8 +25,6 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     }
 
     /**
-     * DataProvider for testCheckCoverageExceptions.
-     *
      * @return iterable<mixed>
      */
     public function providerCheckCoverageExceptions(): iterable
@@ -50,12 +46,7 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     }
 
     /**
-     * Test check-coverage.
-     *
      * @param mixed[] $inputs
-     * @param string $expectedOutput
-     *
-     * @return void
      *
      * @throws \Exception
      *
@@ -69,12 +60,7 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     }
 
     /**
-     * Test check-coverage exceptions.
-     *
      * @param mixed[] $inputs
-     * @param string $expectedException
-     *
-     * @return void
      *
      * @throws \Exception
      *

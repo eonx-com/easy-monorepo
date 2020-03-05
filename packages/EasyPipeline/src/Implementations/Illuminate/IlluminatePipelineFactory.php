@@ -35,11 +35,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
     private $resolved = [];
 
     /**
-     * IlluminatePipelineFactory constructor.
-     *
-     * @param \Illuminate\Contracts\Container\Container $container
      * @param string[] $pipelines
-     * @param null|string $prefix
      */
     public function __construct(ContainerInterface $container, array $pipelines, ?string $prefix = null)
     {
@@ -48,15 +44,6 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
         $this->prefix = $prefix;
     }
 
-    /**
-     * Create pipeline for given name and input.
-     *
-     * @param string $pipeline The pipeline name
-     *
-     * @return \EonX\EasyPipeline\Interfaces\PipelineInterface
-     *
-     * @throws \EonX\EasyPipeline\Exceptions\PipelineNotFoundException If given pipeline not found
-     */
     public function create(string $pipeline): PipelineInterface
     {
         if (isset($this->resolved[$pipeline])) {
@@ -75,13 +62,6 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
         );
     }
 
-    /**
-     * Create middleware provider for given pipeline.
-     *
-     * @param string $pipeline
-     *
-     * @return \EonX\EasyPipeline\Interfaces\MiddlewareProviderInterface
-     */
     private function createMiddlewareProvider(string $pipeline): MiddlewareProviderInterface
     {
         if (\in_array($pipeline, $this->pipelines, true) === false) {
@@ -106,13 +86,6 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
         ));
     }
 
-    /**
-     * Get pipeline name and take care of prefix if set.
-     *
-     * @param string $pipeline
-     *
-     * @return string
-     */
     private function getPipelineName(string $pipeline): string
     {
         if ($this->prefix === null) {

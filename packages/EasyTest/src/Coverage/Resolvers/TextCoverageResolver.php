@@ -9,15 +9,6 @@ use Nette\Utils\Strings;
 
 final class TextCoverageResolver implements CoverageResolverInterface
 {
-    /**
-     * Resolve coverage for given output.
-     *
-     * @param string $coverageOutput
-     *
-     * @return float
-     *
-     * @throws \EonX\EasyTest\Exceptions\UnableToResolveCoverageException
-     */
     public function resolve(string $coverageOutput): float
     {
         // Lower and remove spaces

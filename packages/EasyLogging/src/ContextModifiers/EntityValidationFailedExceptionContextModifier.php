@@ -9,8 +9,6 @@ use EonX\EasyLogging\Interfaces\ExceptionContextModifierInterface;
 final class EntityValidationFailedExceptionContextModifier implements ExceptionContextModifierInterface
 {
     /**
-     * Modify given context based on given throwable.
-     *
      * @param mixed[] $context
      *
      * @return mixed[]
