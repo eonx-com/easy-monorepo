@@ -12,13 +12,6 @@ trait ContextAwareTrait
      */
     private $context;
 
-    /**
-     * Set context.
-     *
-     * @param \EonX\EasyDecision\Interfaces\ContextInterface $context
-     *
-     * @return void
-     */
     public function setContext(ContextInterface $context): void
     {
         $this->context = $context;

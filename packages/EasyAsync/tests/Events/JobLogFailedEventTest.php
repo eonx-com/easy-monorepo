@@ -10,11 +10,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 
 final class JobLogFailedEventTest extends AbstractTestCase
 {
-    /**
-     * Event should return given job log and throwable.
-     *
-     * @return void
-     */
     public function testGetJobLogAndThrowable(): void
     {
         $jobLog = new JobLog(new Target('id', 'type'), 'test', 'jobId');

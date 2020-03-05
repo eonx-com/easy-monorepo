@@ -8,11 +8,6 @@ use Laravel\Lumen\Console\Kernel;
 
 final class ConfigCommandsTest extends AbstractTestCase
 {
-    /**
-     * Command should create cached_config file.
-     *
-     * @return void
-     */
     public function testCacheAndClearConfig(): void
     {
         /** @var \Laravel\Lumen\Application $app */

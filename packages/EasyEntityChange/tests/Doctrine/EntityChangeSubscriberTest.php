@@ -27,11 +27,6 @@ use stdClass;
  */
 class EntityChangeSubscriberTest extends AbstractTestCase
 {
-    /**
-     * Tests that the listener dispatches for updates.
-     *
-     * @return void
-     */
     public function testListener(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -69,11 +64,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener dispatches for inserts.
-     *
-     * @return void
-     */
     public function testListenerCollection(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -81,9 +71,11 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $entity = new stdClass();
 
-        $unitOfWork = $this->getUnitOfWork(null, null, null, [new ArrayCollection([
-            $entity
-        ])]);
+        $unitOfWork = $this->getUnitOfWork(null, null, null, [
+            new ArrayCollection([
+                $entity
+            ])
+        ]);
         $unitOfWork->expects(self::once())
             ->method('getEntityChangeSet')
             ->with($entity)
@@ -113,11 +105,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener dispatches for deletes.
-     *
-     * @return void
-     */
     public function testListenerDelete(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -150,12 +137,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener does not dispatch if we're not watching
-     * for the change.
-     *
-     * @return void
-     */
     public function testListenerDeleteNotWatching(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -178,12 +159,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener does not dispatch if there are no
-     * changes.
-     *
-     * @return void
-     */
     public function testListenerDoesntDispatchOnEmptyChanges(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -194,11 +169,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertSame([], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener dispatches for inserts.
-     *
-     * @return void
-     */
     public function testListenerInsert(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -248,12 +218,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener does not dispatch if we're not watching
-     * for the change.
-     *
-     * @return void
-     */
     public function testListenerNotWatching(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -277,11 +241,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests subscribed events.
-     *
-     * @return void
-     */
     public function testSubscribedEvents(): void
     {
         $subscriber = new EntityChangeSubscriber(new EventDispatcherStub());
@@ -292,14 +251,10 @@ class EntityChangeSubscriberTest extends AbstractTestCase
     }
 
     /**
-     * Builds the Unit Of Work mock.
-     *
      * @param mixed[]|null $insertions
      * @param mixed[]|null $updates
      * @param mixed[]|null $deletions
      * @param mixed[]|null $collectionUpdates
-     *
-     * @return \PHPUnit\Framework\MockObject\MockObject
      *
      * @phpstan-return \PHPUnit\Framework\MockObject\MockObject&\Doctrine\ORM\UnitOfWork
      */
@@ -326,15 +281,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         return $unitOfWork;
     }
 
-    /**
-     * Calls the subscriber.
-     *
-     * @param \EonX\EasyEntityChange\Doctrine\EntityChangeSubscriber $subscriber
-     * @param \Doctrine\ORM\Mapping\ClassMetadata|null $metadata
-     * @param \Doctrine\ORM\UnitOfWork|null $unitOfWork
-     *
-     * @return void
-     */
     private function callSubscriber(
         EntityChangeSubscriber $subscriber,
         ?ClassMetadata $metadata = null,

@@ -28,12 +28,7 @@ class RuleStub implements RuleInterface
     private $supports;
 
     /**
-     * RuleStub constructor.
-     *
-     * @param string $name
      * @param mixed $output
-     * @param null|bool $supports
-     * @param null|int $priority
      */
     public function __construct(string $name, $output, ?bool $supports = null, ?int $priority = null)
     {
@@ -43,19 +38,12 @@ class RuleStub implements RuleInterface
         $this->priority = $priority ?? 0;
     }
 
-    /**
-     * Get priority.
-     *
-     * @return int
-     */
     public function getPriority(): int
     {
         return $this->priority;
     }
 
     /**
-     * Proceed with input.
-     *
      * @param mixed[] $input
      *
      * @return mixed
@@ -66,22 +54,13 @@ class RuleStub implements RuleInterface
     }
 
     /**
-     * Check if rule supports given input.
-     *
      * @param mixed[] $input
-     *
-     * @return bool
      */
     public function supports(array $input): bool
     {
         return $this->supports;
     }
 
-    /**
-     * Get string representation of the rule.
-     *
-     * @return string
-     */
     public function toString(): string
     {
         return $this->name;

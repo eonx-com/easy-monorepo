@@ -25,9 +25,6 @@ final class BugsnagHandler extends AbstractProcessingHandler
     /**
      * BugsnagHandler constructor.
      *
-     * @param \EonX\EasyLogging\Interfaces\ExternalLogClientInterface $client
-     * @param null|int $level
-     * @param null|bool $bubble
      */
     public function __construct(ExternalLogClientInterface $client, ?int $level = null, ?bool $bubble = null)
     {
@@ -55,7 +52,6 @@ final class BugsnagHandler extends AbstractProcessingHandler
      *
      * @param mixed[] $record
      *
-     * @return void
      */
     protected function write(array $record): void
     {
@@ -83,7 +79,6 @@ final class BugsnagHandler extends AbstractProcessingHandler
      *
      * @param mixed[] $record
      *
-     * @return \Closure
      */
     private function getNotifyCallback(array $record): \Closure
     {
@@ -101,9 +96,7 @@ final class BugsnagHandler extends AbstractProcessingHandler
     /**
      * Check if given throwable should be reported to bugsnag.
      *
-     * @param \Throwable $throwable
      *
-     * @return bool
      */
     private function shouldReport(\Throwable $throwable): bool
     {

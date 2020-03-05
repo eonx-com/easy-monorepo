@@ -22,13 +22,6 @@ final class ExpressionFunction implements ExpressionFunctionInterface
      */
     private $name;
 
-    /**
-     * ExpressionFunction constructor.
-     *
-     * @param string $name
-     * @param callable $evaluator
-     * @param null|string $description
-     */
     public function __construct(string $name, callable $evaluator, ?string $description = null)
     {
         $this->name = $name;
@@ -36,31 +29,16 @@ final class ExpressionFunction implements ExpressionFunctionInterface
         $this->description = $description;
     }
 
-    /**
-     * Get description.
-     *
-     * @return null|string
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * Get callable to evaluate function.
-     *
-     * @return callable
-     */
     public function getEvaluator(): callable
     {
         return $this->evaluator;
     }
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;

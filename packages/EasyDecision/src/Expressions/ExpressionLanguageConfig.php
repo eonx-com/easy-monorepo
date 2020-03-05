@@ -24,9 +24,6 @@ final class ExpressionLanguageConfig implements ExpressionLanguageConfigInterfac
     private $providers;
 
     /**
-     * ExpressionLanguageConfig constructor.
-     *
-     * @param null|\Symfony\Component\ExpressionLanguage\ExpressionLanguage $expressionLanguage
      * @param null|mixed[] $providers
      * @param null|mixed[] $functions
      */
@@ -40,19 +37,12 @@ final class ExpressionLanguageConfig implements ExpressionLanguageConfigInterfac
         $this->functions = $functions;
     }
 
-    /**
-     * Get base expression language instance.
-     *
-     * @return null|\Symfony\Component\ExpressionLanguage\ExpressionLanguage
-     */
     public function getBaseExpressionLanguage(): ?BaseExpressionLanguage
     {
         return $this->expressionLanguage;
     }
 
     /**
-     * Get function providers.
-     *
      * @return null|mixed[]
      */
     public function getFunctionProviders(): ?array
@@ -61,8 +51,6 @@ final class ExpressionLanguageConfig implements ExpressionLanguageConfigInterfac
     }
 
     /**
-     * Get functions.
-     *
      * @return null|mixed[]
      */
     public function getFunctions(): ?array

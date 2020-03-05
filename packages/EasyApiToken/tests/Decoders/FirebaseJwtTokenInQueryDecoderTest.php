@@ -9,13 +9,6 @@ use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenTestCase
 {
-    /**
-     * JwtTokenDecoder should decode token successfully for each algorithms.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     */
     public function testJwtTokenDecodeSuccessfully(): void
     {
         foreach (static::$algos as $algo) {
@@ -50,13 +43,6 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
         }
     }
 
-    /**
-     * JwtTokenInQueryDecoder should return null if query param not set on request.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     */
     public function testNullWhenQueryParamNotSet(): void
     {
         $decoder = new JwtTokenInQueryDecoder(

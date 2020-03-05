@@ -34,13 +34,9 @@ final class FirebaseJwtDriver implements JwtDriverInterface
     private $publicKey;
 
     /**
-     * FirebaseJwtDriver constructor.
-     *
-     * @param string $algo
      * @param string|resource $publicKey
      * @param string|resource $privateKey
      * @param null|mixed[] $allowedAlgos
-     * @param null|int $leeway
      */
     public function __construct(string $algo, $publicKey, $privateKey, ?array $allowedAlgos = null, ?int $leeway = null)
     {
@@ -51,13 +47,6 @@ final class FirebaseJwtDriver implements JwtDriverInterface
         $this->leeway = $leeway;
     }
 
-    /**
-     * Decode JWT token.
-     *
-     * @param string $token
-     *
-     * @return mixed[]|object
-     */
     public function decode(string $token)
     {
         /**
@@ -78,11 +67,7 @@ final class FirebaseJwtDriver implements JwtDriverInterface
     }
 
     /**
-     * Encode given input to JWT token.
-     *
-     * @param mixed[]|object $input
-     *
-     * @return string
+     * @param mixed $input
      */
     public function encode($input): string
     {

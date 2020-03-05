@@ -35,13 +35,6 @@ trait DoctrinePaginatorTrait
      */
     private $select;
 
-    /**
-     * Get total items.
-     *
-     * @return int
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function getTotalItems(): int
     {
         if ($this->count !== null) {
@@ -54,13 +47,6 @@ trait DoctrinePaginatorTrait
         return $this->count = $this->doGetTotalItems($queryBuilder, $countAlias);
     }
 
-    /**
-     * Set criteria.
-     *
-     * @param null|callable $criteria
-     *
-     * @return $this
-     */
     public function setCriteria(?callable $criteria = null): self
     {
         $this->criteria = $criteria;
@@ -68,13 +54,6 @@ trait DoctrinePaginatorTrait
         return $this;
     }
 
-    /**
-     * Set criteria for query to fetch items.
-     *
-     * @param null|callable $getItemsCriteria
-     *
-     * @return $this
-     */
     public function setGetItemsCriteria(?callable $getItemsCriteria = null): self
     {
         $this->getItemsCriteria = $getItemsCriteria;
@@ -83,11 +62,7 @@ trait DoctrinePaginatorTrait
     }
 
     /**
-     * Set select to fetch items.
-     *
      * @param null|mixed $select
-     *
-     * @return $this
      */
     public function setSelect($select = null): self
     {
@@ -97,15 +72,11 @@ trait DoctrinePaginatorTrait
     }
 
     /**
-     * Class using trait must create query builder.
-     *
      * @return \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder
      */
     abstract protected function doCreateQueryBuilder();
 
     /**
-     * Class using trait must get result from given query builder.
-     *
      * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
      *
      * @return mixed[]
@@ -113,18 +84,11 @@ trait DoctrinePaginatorTrait
     abstract protected function doGetResult($queryBuilder): array;
 
     /**
-     * Class using trait must define how to get total items.
-     *
      * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
-     * @param string $countAlias
-     *
-     * @return int
      */
     abstract protected function doGetTotalItems($queryBuilder, string $countAlias): int;
 
     /**
-     * Children classes must implement getItems themselves.
-     *
      * @return mixed[]
      */
     protected function doGetItems(): array
@@ -143,8 +107,6 @@ trait DoctrinePaginatorTrait
     }
 
     /**
-     * Get select.
-     *
      * @return null|mixed|string
      */
     protected function getSelect()
@@ -153,8 +115,6 @@ trait DoctrinePaginatorTrait
     }
 
     /**
-     * Create query builder and apply criteria.
-     *
      * @return \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder
      */
     private function createQueryBuilder()

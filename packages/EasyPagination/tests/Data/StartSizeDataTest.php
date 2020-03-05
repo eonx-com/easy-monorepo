@@ -8,11 +8,6 @@ use EonX\EasyPagination\Tests\AbstractTestCase;
 
 final class StartSizeDataTest extends AbstractTestCase
 {
-    /**
-     * StartSizeData should return identical data as input.
-     *
-     * @return void
-     */
     public function testGettersReturnIdenticalInput(): void
     {
         $paginationData = new StartSizeData(1, 10);

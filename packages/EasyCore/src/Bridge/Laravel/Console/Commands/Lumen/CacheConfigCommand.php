@@ -17,9 +17,6 @@ final class CacheConfigCommand extends Command
      */
     private $cachedConfigPath;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct()
     {
         $this->signature = 'config:cache';
@@ -28,13 +25,6 @@ final class CacheConfigCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * Create configuration cache.
-     *
-     * @return void
-     *
-     * @throws \LogicException
-     */
     public function handle(): void
     {
         $this->call('config:clear');
@@ -55,14 +45,7 @@ final class CacheConfigCommand extends Command
     }
 
     /**
-     * Set the Laravel application instance.
-     *
      * @param \Laravel\Lumen\Application $laravel
-     *
-     * @return void
-     *
-     * @phpcsSuppress SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingParameterTypeHint
-     * @phpcsSuppress NatePage\Sniffs\Commenting\FunctionCommentSniff.TypeHintMissing
      */
     public function setLaravel($laravel): void
     {
@@ -73,14 +56,10 @@ final class CacheConfigCommand extends Command
     }
 
     /**
-     * Get fresh configuration.
-     *
      * @return mixed[]
      */
     private function getFreshConfiguration(): array
     {
-        /** @noinspection UsingInclusionReturnValueInspection */
-        /** @noinspection PhpIncludeInspection */
         $app = require $this->bootstrapPath;
         $app->boot();
 

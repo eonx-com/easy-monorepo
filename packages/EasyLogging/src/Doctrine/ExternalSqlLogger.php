@@ -12,7 +12,7 @@ final class ExternalSqlLogger implements SQLLogger
     /**
      * @var float
      */
-    protected $start;
+    private $start;
 
     /**
      * @var \EonX\EasyLogging\Interfaces\ExternalLogClientInterface
@@ -42,9 +42,6 @@ final class ExternalSqlLogger implements SQLLogger
     /**
      * DoctrineSqlLogger constructor.
      *
-     * @param \EonX\EasyLogging\Interfaces\ExternalLogClientInterface $client
-     * @param string $connectionName
-     * @param null|bool $includeBindings
      */
     public function __construct(
         ExternalLogClientInterface $client,
@@ -65,7 +62,6 @@ final class ExternalSqlLogger implements SQLLogger
      * @param mixed[]|null $params The SQL parameters.
      * @param int[]|string[]|null $types The SQL parameter types.
      *
-     * @return void
      */
     public function startQuery($sql, ?array $params = null, ?array $types = null): void
     {
@@ -83,7 +79,6 @@ final class ExternalSqlLogger implements SQLLogger
     /**
      * Marks the last started query as stopped. This can be used for timing of queries.
      *
-     * @return void
      */
     public function stopQuery(): void
     {
@@ -95,7 +90,7 @@ final class ExternalSqlLogger implements SQLLogger
      *
      * @return mixed
      */
-    protected function getExecutionTimeInMs()
+    private function getExecutionTimeInMs()
     {
         return \number_format((\microtime(true) - $this->start) * 1000, 2);
     }

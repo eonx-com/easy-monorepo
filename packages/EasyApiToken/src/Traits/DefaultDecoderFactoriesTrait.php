@@ -12,8 +12,6 @@ use EonX\EasyApiToken\Factories\Decoders\JwtTokenInQueryDecoderFactory;
 trait DefaultDecoderFactoriesTrait
 {
     /**
-     * Get default decoder factories.
-     *
      * @return string[]
      */
     private function getDefaultDecoderFactories(): array

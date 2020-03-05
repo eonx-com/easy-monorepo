@@ -12,9 +12,6 @@ final class ClearConfigCommand extends Command
      */
     private $cachedConfigPath;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct()
     {
         $this->signature = 'config:clear';
@@ -23,11 +20,6 @@ final class ClearConfigCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * Clear configuration cache.
-     *
-     * @return void
-     */
     public function handle(): void
     {
         if (\file_exists($this->cachedConfigPath)) {
@@ -37,16 +29,6 @@ final class ClearConfigCommand extends Command
         $this->info('Configuration cache cleared!');
     }
 
-    /**
-     * Set the Laravel application instance.
-     *
-     * @param \Laravel\Lumen\Application $laravel
-     *
-     * @return void
-     *
-     * @phpcsSuppress SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingParameterTypeHint
-     * @phpcsSuppress NatePage\Sniffs\Commenting\FunctionCommentSniff.TypeHintMissing
-     */
     public function setLaravel($laravel): void
     {
         $this->cachedConfigPath = $laravel->storagePath('cached_config.php');

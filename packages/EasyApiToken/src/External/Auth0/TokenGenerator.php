@@ -23,12 +23,6 @@ final class TokenGenerator implements TokenGeneratorInterface
      */
     private $secret;
 
-    /**
-     * TokenGenerator constructor.
-     *
-     * @param string|null $audience ID token audience to set.
-     * @param string|null $secret Token encryption secret to encode the token.
-     */
     public function __construct(?string $audience = null, ?string $secret = null)
     {
         $this->audience = $audience;
@@ -36,15 +30,8 @@ final class TokenGenerator implements TokenGeneratorInterface
     }
 
     /**
-     * Create the ID token.
-     *
-     * @param mixed[] $scopes Array of scopes to include.
-     * @param mixed[][]|null $roles Array of roles this token can be used by.
-     * @param string|null $subject Information about JWT subject.
-     * @param int|null $lifetime Lifetime of the token, in seconds.
-     * @param bool|null $secretEncoded True to base64 decode the client secret.
-     *
-     * @return string
+     * @param mixed[] $scopes
+     * @param null|mixed[] $roles
      */
     public function generate(
         array $scopes,

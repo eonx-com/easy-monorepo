@@ -16,8 +16,6 @@ use EonX\EasyPagination\Data\StartSizeData;
 final class WithEventsJobPersisterTest extends AbstractTestCase
 {
     /**
-     * DataProvider for test methods.
-     *
      * @return iterable<mixed>
      */
     public function providerTestMethods(): iterable
@@ -83,17 +81,6 @@ final class WithEventsJobPersisterTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * Test methods.
-     *
-     * @param callable $call
-     * @param string $method
-     * @param null|string $eventClass
-     *
-     * @return void
-     *
-     * @dataProvider providerTestMethods
-     */
     public function testMethods(callable $call, string $method, ?string $eventClass = null): void
     {
         $dispatcher = new EventDispatcherStub();

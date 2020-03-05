@@ -9,13 +9,6 @@ use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCase
 {
-    /**
-     * JwtTokenDecoder should decode token successfully for each algorithms.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     */
     public function testJwtTokenDecodeSuccessfully(): void
     {
         $jwtEasyApiTokenFactory = $this->createJwtEasyApiTokenFactory($this->createAuth0JwtDriver());
@@ -39,13 +32,6 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
         }
     }
 
-    /**
-     * JwtTokenInQueryDecoder should return null if query param not set on request.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     */
     public function testNullWhenQueryParamNotSet(): void
     {
         $decoder = new JwtTokenInQueryDecoder(

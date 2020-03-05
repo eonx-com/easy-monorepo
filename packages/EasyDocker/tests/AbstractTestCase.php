@@ -14,19 +14,18 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected static $cwd = __DIR__ . '/../tmp';
 
-    /** @var \Symfony\Component\Filesystem\Filesystem */
+    /**
+     * @var \Symfony\Component\Filesystem\Filesystem
+     */
     private $filesystem;
 
     /**
-     * Execute command and return display.
-     *
-     * @param string $command
      * @param null|mixed[] $inputs
-     *
-     * @return string
      *
      * @throws \Exception
      */
@@ -42,13 +41,6 @@ abstract class AbstractTestCase extends TestCase
         return $tester->getDisplay();
     }
 
-    /**
-     * Get application.
-     *
-     * @return \EonX\EasyDocker\Console\EasyDockerApplication
-     *
-     * @throws \Exception
-     */
     protected function getApplication(): EasyDockerApplication
     {
         /** @var \Symfony\Component\DependencyInjection\Container $container */
@@ -60,11 +52,6 @@ abstract class AbstractTestCase extends TestCase
         return $app;
     }
 
-    /**
-     * Get filesystem.
-     *
-     * @return \Symfony\Component\Filesystem\Filesystem
-     */
     protected function getFilesystem(): Filesystem
     {
         if ($this->filesystem !== null) {
@@ -74,11 +61,6 @@ abstract class AbstractTestCase extends TestCase
         return $this->filesystem = new Filesystem();
     }
 
-    /**
-     * Create the temporary directory
-     *
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -86,11 +68,6 @@ abstract class AbstractTestCase extends TestCase
         $this->getFilesystem()->mkdir(static::$cwd);
     }
 
-    /**
-     * Remove tmp dir.
-     *
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->getFilesystem()->remove(static::$cwd);

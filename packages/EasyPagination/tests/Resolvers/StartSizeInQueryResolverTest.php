@@ -8,11 +8,6 @@ use EonX\EasyPagination\Tests\AbstractTestCase;
 
 final class StartSizeInQueryResolverTest extends AbstractTestCase
 {
-    /**
-     * StartSizeInQueryResolver should resolve pagination data successfully with custom config.
-     *
-     * @return void
-     */
     public function testCustomConfigResolveSuccessfully(): void
     {
         $config = $this->createConfig('page', null, 'perPage');
@@ -25,11 +20,6 @@ final class StartSizeInQueryResolverTest extends AbstractTestCase
         self::assertEquals(100, $data->getSize());
     }
 
-    /**
-     * StartSizeInQueryResolver should resolve pagination data successfully with string values.
-     *
-     * @return void
-     */
     public function testCustomConfigResolveWithStringAsValuesSuccessfully(): void
     {
         $config = $this->createConfig('page', null, 'perPage');
@@ -42,11 +32,6 @@ final class StartSizeInQueryResolverTest extends AbstractTestCase
         self::assertEquals(50, $data->getSize());
     }
 
-    /**
-     * StartSizeInQueryResolver should return data with defaults if query attribute not set.
-     *
-     * @return void
-     */
     public function testDefaultWhenQueryAttrNotSet(): void
     {
         $config = $this->createConfig();

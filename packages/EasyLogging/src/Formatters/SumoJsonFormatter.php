@@ -13,7 +13,6 @@ final class SumoJsonFormatter extends JsonFormatter
      *
      * @param mixed[] $record
      *
-     * @return string
      */
     public function format(array $record): string
     {

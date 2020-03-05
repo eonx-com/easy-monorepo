@@ -8,13 +8,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 
 final class JobLogTest extends AbstractTestCase
 {
-    /**
-     * Test job log setters and getters.
-     *
-     * @return void
-     *
-     * @throws \Nette\Utils\JsonException
-     */
     public function testJobLog(): void
     {
         $expected = [

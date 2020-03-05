@@ -18,11 +18,6 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyDecisionServiceProvider extends ServiceProvider
 {
-    /**
-     * Publish configuration file.
-     *
-     * @return void
-     */
     public function boot(): void
     {
         $this->publishes([
@@ -30,11 +25,6 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         ]);
     }
 
-    /**
-     * Register EasyDecision services.
-     *
-     * @return void
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-decision.php', 'easy-decision');

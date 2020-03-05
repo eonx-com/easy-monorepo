@@ -25,8 +25,6 @@ use Psr\Log\NullLogger;
 final class JobLogPersisterTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testPersistSuccessfully.
-     *
      * @return iterable<mixed>
      *
      * @throws \Exception
@@ -108,11 +106,6 @@ final class JobLogPersisterTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * Persister should return a paginator of job logs.
-     *
-     * @return void
-     */
     public function testFindForJob(): void
     {
         $queryBuilder = $this->mock(QueryBuilder::class, static function (MockInterface $mock): void {
@@ -217,15 +210,6 @@ final class JobLogPersisterTest extends AbstractTestCase
         self::assertEquals(1, $paginator->getTotalItems());
     }
 
-    /**
-     * Persister should throw exception and rollback db transaction if failed to persist.
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\ConnectionException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobLogException
-     * @throws \Throwable
-     */
     public function testPersistFailed(): void
     {
         $this->expectException(UnableToPersistJobLogException::class);
@@ -258,15 +242,9 @@ final class JobLogPersisterTest extends AbstractTestCase
     }
 
     /**
-     * Persister should successfully persist jobLog and job within db transaction.
-     *
      * @param \EonX\EasyAsync\Interfaces\JobLogInterface[] $jobLogs
-     * @param \EonX\EasyAsync\Interfaces\JobInterface $job
      * @param mixed[] $tests
      *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\ConnectionException
      * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobLogException
      * @throws \Throwable
      *
@@ -317,15 +295,6 @@ final class JobLogPersisterTest extends AbstractTestCase
         self::assertEquals($tests['finished_at'] ?? null, $job->getFinishedAt());
     }
 
-    /**
-     * Persister should call update on existing data.
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\ConnectionException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobLogException
-     * @throws \Throwable
-     */
     public function testPersistUpdateExistingData(): void
     {
         $jobLog = $this->newJobLog();
@@ -366,13 +335,6 @@ final class JobLogPersisterTest extends AbstractTestCase
         $persister->persist($jobLog);
     }
 
-    /**
-     * Persister should query database to remove all jog logs for given jobId.
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function testRemoveForJob(): void
     {
         /** @var \Doctrine\DBAL\Connection $conn */
@@ -386,15 +348,6 @@ final class JobLogPersisterTest extends AbstractTestCase
         $this->getPersister($conn)->removeForJob('jobId');
     }
 
-    /**
-     * Get job log persister.
-     *
-     * @param \Doctrine\DBAL\Connection $conn
-     * @param null|\EonX\EasyAsync\Interfaces\JobPersisterInterface $jobPersister
-     * @param null|string $table
-     *
-     * @return \EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister
-     */
     private function getPersister(
         Connection $conn,
         ?JobPersisterInterface $jobPersister = null,
@@ -410,11 +363,6 @@ final class JobLogPersisterTest extends AbstractTestCase
         );
     }
 
-    /**
-     * Create new job log.
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
-     */
     private function newJobLog(): JobLogInterface
     {
         return new JobLog(new Target('id', 'type'), 'test', 'jobId');

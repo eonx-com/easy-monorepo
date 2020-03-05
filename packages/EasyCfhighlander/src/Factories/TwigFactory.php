@@ -8,11 +8,6 @@ use Twig\Loader\FilesystemLoader;
 
 final class TwigFactory
 {
-    /**
-     * Create twig.
-     *
-     * @return \Twig\Environment
-     */
     public function create(): Environment
     {
         $loader = new FilesystemLoader(__DIR__ . '/../../templates');

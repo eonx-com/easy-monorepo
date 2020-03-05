@@ -9,11 +9,6 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class AffirmativeDecisionTest extends AbstractTestCase
 {
-    /**
-     * Decision should return false if no true rules.
-     *
-     * @return void
-     */
     public function testReturnFalseWhenNoTrue(): void
     {
         $decision = (new AffirmativeDecision())->addRules([
@@ -30,11 +25,6 @@ final class AffirmativeDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 
-    /**
-     * Decision should skip all rules after first true and return true.
-     *
-     * @return void
-     */
     public function testReturnTrueAtFirstTrue(): void
     {
         $decision = (new AffirmativeDecision())->addRules([
@@ -55,11 +45,6 @@ final class AffirmativeDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 
-    /**
-     * Decision should skip only rules after itself.
-     *
-     * @return void
-     */
     public function testReturnTrueInMiddleOfRules(): void
     {
         $decision = (new AffirmativeDecision())->addRules([
@@ -80,11 +65,6 @@ final class AffirmativeDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 
-    /**
-     * Decision should return true and run highest priority first (0 is higher than 100).
-     *
-     * @return void
-     */
     public function testReturnTrueWithPriorities(): void
     {
         $decision = (new AffirmativeDecision())->addRules([

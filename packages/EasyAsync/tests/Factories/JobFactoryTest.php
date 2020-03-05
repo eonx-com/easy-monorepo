@@ -11,8 +11,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 final class JobFactoryTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testCreate.
-     *
      * @return iterable<mixed>
      */
     public function providerCreate(): iterable
@@ -29,17 +27,6 @@ final class JobFactoryTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * Factory should create job with given data.
-     *
-     * @param \EonX\EasyAsync\Interfaces\TargetInterface $target
-     * @param string $type
-     * @param null|int $total
-     *
-     * @return void
-     *
-     * @dataProvider providerCreate
-     */
     public function testCreate(TargetInterface $target, string $type, ?int $total = null): void
     {
         $job = (new JobFactory())->create($target, $type, $total);

@@ -7,10 +7,5 @@ use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
 
 interface ApiKeyEasyApiTokenInterface extends EasyApiTokenInterface
 {
-    /**
-     * Get API key.
-     *
-     * @return string
-     */
     public function getApiKey(): string;
 }

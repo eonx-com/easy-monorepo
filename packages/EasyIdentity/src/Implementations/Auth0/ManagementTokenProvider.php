@@ -18,26 +18,12 @@ class ManagementTokenProvider
      */
     private $config;
 
-    /**
-     * ManagementTokenProvider constructor.
-     *
-     * @param \GuzzleHttp\ClientInterface $client
-     * @param \EonX\EasyIdentity\Implementations\Auth0\Config $config
-     */
     public function __construct(ClientInterface $client, Config $config)
     {
         $this->client = $client;
         $this->config = $config;
     }
 
-    /**
-     * Get token.
-     *
-     * @return string
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
     public function getToken(): string
     {
         $response = $this->client->request('POST', '/oauth/token', [

@@ -17,13 +17,6 @@ final class LengthAwareDoctrineOrmPaginator extends AbstractLengthAwarePaginator
      */
     private $doctrinePaginator;
 
-    /**
-     * LengthAwareDoctrineOrmPaginator constructor.
-     *
-     * @param \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator
-     * @param int $start
-     * @param int $size
-     */
     public function __construct(Paginator $doctrinePaginator, int $start, int $size)
     {
         @\trigger_error(\sprintf(
@@ -38,8 +31,6 @@ final class LengthAwareDoctrineOrmPaginator extends AbstractLengthAwarePaginator
     }
 
     /**
-     * Get current items being paginated.
-     *
      * @return mixed[]
      */
     public function getItems(): array
@@ -47,11 +38,6 @@ final class LengthAwareDoctrineOrmPaginator extends AbstractLengthAwarePaginator
         return \iterator_to_array($this->doctrinePaginator);
     }
 
-    /**
-     * Get total number of paginated items.
-     *
-     * @return int
-     */
     public function getTotalItems(): int
     {
         return $this->doctrinePaginator->count();

@@ -14,7 +14,6 @@ final class BugsnagLoggingServiceProvider extends ServiceProvider
     /**
      * Register the services.
      *
-     * @return void
      */
     public function register(): void
     {

@@ -5,11 +5,6 @@ namespace EonX\EasyCfhighlander\Console\Commands;
 
 final class CodeCommand extends AbstractTemplatesCommand
 {
-    /**
-     * Configure command.
-     *
-     * @return void
-     */
     protected function configure(): void
     {
         $this->setName('code');
@@ -19,8 +14,6 @@ final class CodeCommand extends AbstractTemplatesCommand
     }
 
     /**
-     * Get project files names.
-     *
      * @return string[]
      */
     protected function getProjectFiles(): array
@@ -34,8 +27,6 @@ final class CodeCommand extends AbstractTemplatesCommand
     }
 
     /**
-     * Get simple files names.
-     *
      * @return string[]
      */
     protected function getSimpleFiles(): array
@@ -45,11 +36,6 @@ final class CodeCommand extends AbstractTemplatesCommand
         ];
     }
 
-    /**
-     * Get template prefix.
-     *
-     * @return string
-     */
     protected function getTemplatePrefix(): string
     {
         return 'code';

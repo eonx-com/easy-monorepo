@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyCfhighlander\Console\Commands;
 
-use EoneoPay\Utils\Interfaces\StrInterface;
 use EonX\EasyCfhighlander\File\File;
 use EonX\EasyCfhighlander\File\FileStatus;
 use EonX\EasyCfhighlander\Interfaces\FileGeneratorInterface;
 use EonX\EasyCfhighlander\Interfaces\ManifestGeneratorInterface;
 use EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface;
+use Nette\Utils\Strings;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,24 +43,11 @@ abstract class AbstractTemplatesCommand extends Command
     /** @var \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface */
     private $parameterResolver;
 
-    /** @var \EoneoPay\Utils\Interfaces\StrInterface */
-    private $str;
-
-    /**
-     * AbstractTemplatesCommand constructor.
-     *
-     * @param \EonX\EasyCfhighlander\Interfaces\FileGeneratorInterface $fileGenerator
-     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
-     * @param \EonX\EasyCfhighlander\Interfaces\ManifestGeneratorInterface $manifestGenerator
-     * @param \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface $parameterResolver
-     * @param \EoneoPay\Utils\Interfaces\StrInterface $str
-     */
     public function __construct(
         FileGeneratorInterface $fileGenerator,
         Filesystem $filesystem,
         ManifestGeneratorInterface $manifestGenerator,
-        ParameterResolverInterface $parameterResolver,
-        StrInterface $str
+        ParameterResolverInterface $parameterResolver
     ) {
         parent::__construct();
 
@@ -68,48 +55,25 @@ abstract class AbstractTemplatesCommand extends Command
         $this->filesystem = $filesystem;
         $this->manifestGenerator = $manifestGenerator;
         $this->parameterResolver = $parameterResolver;
-        $this->str = $str;
     }
 
     /**
-     * Get project files names.
-     *
      * @return string[]
      */
     abstract protected function getProjectFiles(): array;
 
     /**
-     * Get simple files names.
-     *
      * @return string[]
      */
     abstract protected function getSimpleFiles(): array;
 
-    /**
-     * Get template prefix.
-     *
-     * @return string
-     */
     abstract protected function getTemplatePrefix(): string;
 
-    /**
-     * Configure command.
-     *
-     * @return void
-     */
     protected function configure(): void
     {
         $this->addOption('cwd', null, InputOption::VALUE_OPTIONAL, 'Current working directory', \getcwd());
     }
 
-    /**
-     * Execute command.
-     *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return null|int
-     */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $style = new SymfonyStyle($input, $output);
@@ -175,11 +139,6 @@ abstract class AbstractTemplatesCommand extends Command
         return self::EXIT_CODE_SUCCESS;
     }
 
-    /**
-     * Get validator for required alphabetic parameters.
-     *
-     * @return \Closure
-     */
     protected function getAlphaParamValidator(): \Closure
     {
         return static function ($answer): string {
@@ -196,22 +155,13 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
-     * Get boolean param as string.
-     *
      * @param null|mixed $param
-     *
-     * @return string
      */
     protected function getBooleanParamAsString($param = null): string
     {
-        return ((bool)($param)) ? 'true' : 'false';
+        return (bool)($param) ? 'true' : 'false';
     }
 
-    /**
-     * Get validator for boolean parameters.
-     *
-     * @return \Closure
-     */
     protected function getBooleanParamValidator(): \Closure
     {
         return static function ($answer): bool {
@@ -230,8 +180,6 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
-     * Get parameter modifiers.
-     *
      * @return iterable<string, callable>
      */
     protected function getParamModifiers(): iterable
@@ -242,10 +190,6 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
-     * Get parameter resolvers.
-     *
-     * @param \Symfony\Component\Console\Style\SymfonyStyle $style
-     *
      * @return iterable<string, callable>
      */
     protected function getParamResolvers(SymfonyStyle $style): iterable
@@ -339,15 +283,6 @@ abstract class AbstractTemplatesCommand extends Command
         };
     }
 
-    /**
-     * Get project file to generate.
-     *
-     * @param string $cwd
-     * @param string $name
-     * @param string $project
-     *
-     * @return \EonX\EasyCfhighlander\File\File
-     */
     protected function getProjectFileToGenerate(string $cwd, string $name, string $project): File
     {
         $filename = \sprintf('%s/%s', $cwd, $name);
@@ -355,11 +290,6 @@ abstract class AbstractTemplatesCommand extends Command
         return new File(\str_replace('project', $project, $filename), $this->getTemplateName($name));
     }
 
-    /**
-     * Get validator for required parameters.
-     *
-     * @return \Closure
-     */
     protected function getRequiredParamValidator(): \Closure
     {
         return static function ($answer): string {
@@ -371,38 +301,16 @@ abstract class AbstractTemplatesCommand extends Command
         };
     }
 
-    /**
-     * Get file to generate for given name.
-     *
-     * @param string $cwd
-     * @param string $name
-     *
-     * @return \EonX\EasyCfhighlander\File\File
-     */
     protected function getSimpleFileToGenerate(string $cwd, string $name): File
     {
         return new File(\sprintf('%s/%s', $cwd, $name), $this->getTemplateName($name));
     }
 
-    /**
-     * Get template name for given template.
-     *
-     * @param string $template
-     *
-     * @return string
-     */
     protected function getTemplateName(string $template): string
     {
         return \sprintf('%s/%s.twig', $this->getTemplatePrefix(), $template);
     }
 
-    /**
-     * Determine if the .easy directory exists
-     *
-     * @param string $cwd
-     *
-     * @return string
-     */
     private function getEasyDirectory(string $cwd): string
     {
         // If easy-cfhighlander* file already exists in cwd, .easy directory will not be used/created
@@ -415,19 +323,14 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
-     * Process file.
-     *
-     * @param \EonX\EasyCfhighlander\File\File $file
      * @param mixed[] $params
-     *
-     * @return \EonX\EasyCfhighlander\File\FileStatus
      */
     private function processFile(File $file, array $params): FileStatus
     {
         foreach (self::CHECKS as $param => $path) {
             $check = (bool)($params[$param] ?? false);
 
-            if ($check === false && $this->str->contains($file->getFilename(), $path)) {
+            if ($check === false && Strings::contains($file->getFilename(), $path)) {
                 return $this->fileGenerator->remove($file);
             }
         }

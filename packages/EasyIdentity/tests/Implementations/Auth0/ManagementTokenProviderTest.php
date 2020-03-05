@@ -17,14 +17,6 @@ use Mockery\MockInterface;
  */
 class ManagementTokenProviderTest extends AbstractTestCase
 {
-    /**
-     * Provider should call Auth0 API to issue a new access token and return it.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
     public function testGetToken(): void
     {
         $config = $this->getConfig();
@@ -40,14 +32,6 @@ class ManagementTokenProviderTest extends AbstractTestCase
         self::assertSame('access_token', $token);
     }
 
-    /**
-     * Provider should call Auth0 API to issue a new access token and throws an exception if invalid response.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
     public function testGetTokenWithMissingTokenInResponse(): void
     {
         $this->expectException(RequiredDataMissingException::class);
@@ -66,13 +50,7 @@ class ManagementTokenProviderTest extends AbstractTestCase
     }
 
     /**
-     * Build the base expectation for the mock for the client.
-     *
-     * @param \Mockery\MockInterface $mock
-     * @param \EonX\EasyIdentity\Implementations\Auth0\Config $config
      * @param null|mixed[] $content
-     *
-     * @return \Mockery\ExpectationInterface
      */
     private function buildBaseExpectation(
         MockInterface $mock,
@@ -95,11 +73,6 @@ class ManagementTokenProviderTest extends AbstractTestCase
             ->andReturn($response);
     }
 
-    /**
-     * Get config.
-     *
-     * @return \EonX\EasyIdentity\Implementations\Auth0\Config
-     */
     private function getConfig(): Config
     {
         return new Config([

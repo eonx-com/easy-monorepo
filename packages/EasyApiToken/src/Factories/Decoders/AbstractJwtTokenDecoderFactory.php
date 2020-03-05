@@ -23,11 +23,7 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
     protected static $jwtDrivers = ['auth0', 'firebase'];
 
     /**
-     * Build api token decoder for given config.
-     *
      * @param null|mixed[] $config
-     *
-     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
@@ -53,22 +49,12 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
     }
 
     /**
-     * Do build decoder factory for children classes.
-     *
-     * @param \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
      * @param mixed[] $config
-     *
-     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      */
     abstract protected function doBuild(JwtDriverInterface $jwtDriver, array $config): EasyApiTokenDecoderInterface;
 
     /**
-     * Build a JWT driver.
-     *
-     * @param string $driver Driver to build, must be one of 'auth0' or 'firebase'.
      * @param mixed[] $options List of options to use to create Driver.
-     *
-     * @return \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
@@ -89,17 +75,13 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
     }
 
     /**
-     * Build a Auth09 JWT Driver.
-     *
      * @param mixed[] $options List of options to pass to Auth0JwtDriver. Keys match constructor parameters.
-     *
-     * @return \EonX\EasyApiToken\External\Auth0JwtDriver
      */
     private function createAuth0Driver(array $options): Auth0JwtDriver
     {
         $cache = empty($options['cache_path']) === false ? new FileSystemCacheHandler($options['cache_path']) : null;
 
-        $driver = new Auth0JwtDriver(
+        return new Auth0JwtDriver(
             $options['valid_audiences'],
             $options['authorized_iss'],
             $options['private_key'],
@@ -107,27 +89,19 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
             $options['allowed_algos'] ?? null,
             $cache
         );
-
-        return $driver;
     }
 
     /**
-     * Build a Firebase JWT Driver.
-     *
      * @param mixed[] $options List of options to pass to FirebaseJwtDriver. Keys match constructor parameters.
-     *
-     * @return \EonX\EasyApiToken\External\FirebaseJwtDriver
      */
     private function createFirebaseDriver(array $options): FirebaseJwtDriver
     {
-        $driver = new FirebaseJwtDriver(
+        return new FirebaseJwtDriver(
             $options['algo'],
             $options['public_key'],
             $options['private_key'],
             $options['allowed_algos'] ?? null,
             $options['leeway'] ?? null
         );
-
-        return $driver;
     }
 }

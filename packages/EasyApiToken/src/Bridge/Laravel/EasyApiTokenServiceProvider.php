@@ -9,11 +9,6 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyApiTokenServiceProvider extends ServiceProvider
 {
-    /**
-     * Publish configuration file.
-     *
-     * @return void
-     */
     public function boot(): void
     {
         $this->publishes([
@@ -21,11 +16,6 @@ final class EasyApiTokenServiceProvider extends ServiceProvider
         ]);
     }
 
-    /**
-     * Register EasyApiToken services.
-     *
-     * @return void
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-api-token.php', 'easy-api-token');

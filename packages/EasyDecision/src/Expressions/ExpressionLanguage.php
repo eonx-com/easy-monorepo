@@ -21,23 +21,11 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
      */
     private $functions = [];
 
-    /**
-     * ExpressionLanguage constructor.
-     *
-     * @param \Symfony\Component\ExpressionLanguage\ExpressionLanguage $expressionLanguage
-     */
     public function __construct(BaseExpressionLanguage $expressionLanguage)
     {
         $this->expressionLanguage = $expressionLanguage;
     }
 
-    /**
-     * Add function to use in expressions.
-     *
-     * @param \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface $function
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
-     */
     public function addFunction(ExpressionFunctionInterface $function): ExpressionLanguageInterface
     {
         $this->expressionLanguage->register($function->getName(), $this->getEmptyCallable(), $function->getEvaluator());
@@ -47,9 +35,6 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     }
 
     /**
-     * Evaluate given expression with given arguments and return output.
-     *
-     * @param string $expression
      * @param null|mixed[] $arguments
      *
      * @return mixed
@@ -60,8 +45,6 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     }
 
     /**
-     * Get list of functions added.
-     *
      * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      */
     public function getFunctions(): array
@@ -70,12 +53,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     }
 
     /**
-     * Validate given expression for given names.
-     *
-     * @param string $expression
      * @param null|string[] $names
-     *
-     * @return bool
      *
      * @throws \EonX\EasyDecision\Exceptions\InvalidExpressionException
      */
@@ -90,11 +68,6 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
         }
     }
 
-    /**
-     * Get empty callable for compiler.
-     *
-     * @return callable
-     */
     private function getEmptyCallable(): callable
     {
         return function (): void {

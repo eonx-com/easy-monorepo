@@ -14,8 +14,6 @@ final class CfhighlanderApplication extends Application
     public const VERSION = '1.0.5';
 
     /**
-     * CfhighlanderApplication constructor.
-     *
      * @param \Symfony\Component\Console\Command\Command[] $commands
      */
     public function __construct(array $commands)

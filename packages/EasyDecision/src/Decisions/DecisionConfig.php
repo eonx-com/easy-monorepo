@@ -39,12 +39,7 @@ final class DecisionConfig implements DecisionConfigInterface
     private $ruleProviders;
 
     /**
-     * DecisionConfig constructor.
-     *
-     * @param string $decisionType
-     * @param string $name
      * @param \EonX\EasyDecision\Interfaces\RuleProviderInterface[] $ruleProviders
-     * @param null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
      * @param null|mixed[] $params
      * @param null|mixed $defaultOutput
      */
@@ -64,19 +59,12 @@ final class DecisionConfig implements DecisionConfigInterface
         $this->defaultOutput = $defaultOutput;
     }
 
-    /**
-     * Get decision type.
-     *
-     * @return string
-     */
     public function getDecisionType(): string
     {
         return $this->decisionType;
     }
 
     /**
-     * Get default output if no rules provided.
-     *
      * @return null|mixed
      */
     public function getDefaultOutput()
@@ -84,29 +72,17 @@ final class DecisionConfig implements DecisionConfigInterface
         return $this->defaultOutput;
     }
 
-    /**
-     * Get expression language config.
-     *
-     * @return null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
-     */
     public function getExpressionLanguageConfig(): ?ExpressionLanguageConfigInterface
     {
         return $this->expressionLanguageConfig;
     }
 
-    /**
-     * Get decision name.
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Get additional params.
-     *
      * @return null|mixed[]
      */
     public function getParams(): ?array
@@ -115,8 +91,6 @@ final class DecisionConfig implements DecisionConfigInterface
     }
 
     /**
-     * Get rules providers.
-     *
      * @return \EonX\EasyDecision\Interfaces\RuleProviderInterface[]
      */
     public function getRuleProviders(): array

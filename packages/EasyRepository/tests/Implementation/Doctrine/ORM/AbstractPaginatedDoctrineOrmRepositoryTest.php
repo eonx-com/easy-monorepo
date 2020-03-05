@@ -14,11 +14,6 @@ use Mockery\LegacyMockInterface;
 
 final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
 {
-    /**
-     * Repository should return paginator for given query successfully.
-     *
-     * @return void
-     */
     public function testPaginateSetResultsSuccessfully(): void
     {
         /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
@@ -41,11 +36,6 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
         self::assertInstanceOf(DoctrineOrmLengthAwarePaginator::class, $paginator);
     }
 
-    /**
-     * Mock queryBuilder and query.
-     *
-     * @return \Mockery\LegacyMockInterface
-     */
     private function mockQueryBuilderAndQuery(): LegacyMockInterface
     {
         return $this->mock(QueryBuilder::class, function (LegacyMockInterface $queryBuilder): void {

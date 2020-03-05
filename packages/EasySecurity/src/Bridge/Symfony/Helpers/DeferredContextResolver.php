@@ -19,28 +19,14 @@ final class DeferredContextResolver implements DeferredContextResolverInterface
      */
     private $contextServiceId;
 
-    /**
-     * DeferredContextResolver constructor.
-     *
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-     * @param string $contextServiceId
-     */
     public function __construct(ContainerInterface $container, string $contextServiceId)
     {
         $this->container = $container;
         $this->contextServiceId = $contextServiceId;
     }
 
-    /**
-     * Resolve context.
-     *
-     * @return \EonX\EasySecurity\Interfaces\ContextInterface
-     */
     public function resolve(): ContextInterface
     {
-        /** @var \EonX\EasySecurity\Interfaces\ContextInterface $context */
-        $context = $this->container->get($this->contextServiceId);
-
-        return $context;
+        return $this->container->get($this->contextServiceId);
     }
 }

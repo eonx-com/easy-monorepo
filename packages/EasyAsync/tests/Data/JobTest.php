@@ -9,11 +9,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 
 final class JobTest extends AbstractTestCase
 {
-    /**
-     * Test job setters and getters.
-     *
-     * @return void
-     */
     public function testJob(): void
     {
         $job = new Job(new Target('id', 'type'), 'test');
@@ -51,11 +46,6 @@ final class JobTest extends AbstractTestCase
         self::assertEquals($expected, $job->toArray());
     }
 
-    /**
-     * Test job fromArray static method.
-     *
-     * @return void
-     */
     public function testJobFromArray(): void
     {
         $expected = [

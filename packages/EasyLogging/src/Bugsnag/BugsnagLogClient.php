@@ -17,7 +17,6 @@ final class BugsnagLogClient implements ExternalLogClientInterface
     /**
      * BugsnagLogger constructor.
      *
-     * @param \Bugsnag\Client $client
      */
     public function __construct(BugsnagClient $client)
     {
@@ -27,7 +26,6 @@ final class BugsnagLogClient implements ExternalLogClientInterface
     /**
      * Clear all recorded breadcrumbs.
      *
-     * @return void
      */
     public function clearBreadcrumbs(): void
     {
@@ -41,7 +39,6 @@ final class BugsnagLogClient implements ExternalLogClientInterface
      * @param null|string $type The type of breadcrumb
      * @param null|mixed[] $metaData Additional information about the breadcrumb
      *
-     * @return void
      */
     public function leaveBreadcrumb(string $name, ?string $type = null, ?array $metaData = null): void
     {
@@ -55,7 +52,6 @@ final class BugsnagLogClient implements ExternalLogClientInterface
      * @param string $message The error message
      * @param null|callable $callback The customization callback
      *
-     * @return void
      */
     public function notifyError(string $name, string $message, ?callable $callback = null): void
     {
@@ -68,7 +64,6 @@ final class BugsnagLogClient implements ExternalLogClientInterface
      * @param \Throwable $throwable The throwable to notify about
      * @param null|callable $callback The customization callback
      *
-     * @return void
      */
     public function notifyException(Throwable $throwable, ?callable $callback = null): void
     {

@@ -12,11 +12,6 @@ use EonX\EasyDecision\Tests\Stubs\RuleProviderStub;
 
 final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
 {
-    /**
-     * Factory should create decision from array config successfully.
-     *
-     * @return void
-     */
     public function testArrayConfigCreateDecisionSuccessfully(): void
     {
         $this->setConfig([
@@ -31,11 +26,6 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         self::assertInstanceOf(AffirmativeDecision::class, $this->getDecisionFactory()->create('my-decision'));
     }
 
-    /**
-     * Factory should throw exception if config array and providers empty.
-     *
-     * @return void
-     */
     public function testArrayConfigEmptyProvidersException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -45,11 +35,6 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $this->getDecisionFactory()->create('my-decision');
     }
 
-    /**
-     * Factory should throw exception if config array and type empty.
-     *
-     * @return void
-     */
     public function testArrayConfigEmptyType(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -66,11 +51,6 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $this->getDecisionFactory()->create('my-decision');
     }
 
-    /**
-     * Factory should create decision successfully and instantiate rule provider from container.
-     *
-     * @return void
-     */
     public function testCreateDecisionSuccessfullyWithRuleProviderFromContainer(): void
     {
         $this->getApplication()->instance(RuleProviderStub::class, new RuleProviderStub());
@@ -87,11 +67,6 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         self::assertInstanceOf(AffirmativeDecision::class, $this->getDecisionFactory()->create('my-decision'));
     }
 
-    /**
-     * Factory should cache resolved decisions and global expression functions.
-     *
-     * @return void
-     */
     public function testCreateWithProviderConfigWithExpressionFunctionsSuccessfully(): void
     {
         $this->getApplication()->instance('minPhpFunctionProvider', new FromPhpExpressionFunctionProvider(['min']));
@@ -112,11 +87,6 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         self::assertEquals($decision->make([]), $differentDecision->make([]));
     }
 
-    /**
-     * Factory should throw exception if decision config provider doesn't implement the right interface.
-     *
-     * @return void
-     */
     public function testDecisionConfigProviderDoesntImplementInterfaceException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -132,11 +102,6 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $this->getDecisionFactory()->create('my-decision');
     }
 
-    /**
-     * Factory should throw exception if config isn't a string, array or instance of config provider interface.
-     *
-     * @return void
-     */
     public function testInvalidConfigTypeException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -146,11 +111,6 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $this->getDecisionFactory()->create('my-decision');
     }
 
-    /**
-     * Factory should throw exception if no config for given decision.
-     *
-     * @return void
-     */
     public function testNoConfigForDecisionException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -159,11 +119,7 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
     }
 
     /**
-     * Set config.
-     *
      * @param mixed[] $config
-     *
-     * @return void
      */
     private function setConfig(array $config): void
     {

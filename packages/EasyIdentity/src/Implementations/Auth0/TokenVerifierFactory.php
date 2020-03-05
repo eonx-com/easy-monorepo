@@ -12,24 +12,11 @@ class TokenVerifierFactory
      */
     private $config;
 
-    /**
-     * TokenVerifierFactory constructor.
-     *
-     * @param \EonX\EasyIdentity\Implementations\Auth0\Config $config
-     */
     public function __construct(Config $config)
     {
         $this->config = $config;
     }
 
-    /**
-     * Create Auth0 Token Verifier for given information.
-     *
-     * @return \Auth0\SDK\JWTVerifier
-     *
-     * @throws \Auth0\SDK\Exception\CoreException
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     */
     public function create(): JWTVerifier
     {
         return new JWTVerifier([

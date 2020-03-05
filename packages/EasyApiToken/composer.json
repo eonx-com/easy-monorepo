@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "eonx-com/utils": "^1.0"
+        "nette/utils": "^3.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.4",

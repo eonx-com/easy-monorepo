@@ -12,13 +12,6 @@ use EonX\EasyAsync\Updaters\JobLogUpdater;
 
 final class JobLogUpdaterTest extends AbstractTestCase
 {
-    /**
-     * Updater should set status to completed and finishedAt to now.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     */
     public function testCompleted(): void
     {
         $jobLog = $this->getJobLog();
@@ -30,13 +23,6 @@ final class JobLogUpdaterTest extends AbstractTestCase
         self::assertInstanceOf(\DateTime::class, $jobLog->getFinishedAt());
     }
 
-    /**
-     * Updater should set status to failed, finishedAt to now and debug info to array with exception.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     */
     public function testFailed(): void
     {
         $jobLog = $this->getJobLog();
@@ -60,13 +46,6 @@ final class JobLogUpdaterTest extends AbstractTestCase
         self::assertEquals($debugInfo, $jobLog->getDebugInfo());
     }
 
-    /**
-     * Updater should set status to completed and finishedAt to now.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     */
     public function testInProgress(): void
     {
         $jobLog = $this->getJobLog();
@@ -78,21 +57,11 @@ final class JobLogUpdaterTest extends AbstractTestCase
         self::assertInstanceOf(\DateTime::class, $jobLog->getStartedAt());
     }
 
-    /**
-     * Get new job log.
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
-     */
     private function getJobLog(): JobLogInterface
     {
         return new JobLog(new Target('id', 'type'), 'test', 'jobId');
     }
 
-    /**
-     * Get job log updater.
-     *
-     * @return \EonX\EasyAsync\Updaters\JobLogUpdater
-     */
     private function getJobLogUpdater(): JobLogUpdater
     {
         return new JobLogUpdater(new DateTimeGenerator());

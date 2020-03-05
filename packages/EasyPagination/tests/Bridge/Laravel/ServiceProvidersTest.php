@@ -22,11 +22,6 @@ final class ServiceProvidersTest extends AbstractTestCase
         StartSizeInQueryEasyPaginationProvider::class => StartSizeInQueryResolver::class
     ];
 
-    /**
-     * Providers should register the expected resolvers.
-     *
-     * @return void
-     */
     public function testRegister(): void
     {
         foreach (static::$providers as $providerClass => $resolverClass) {

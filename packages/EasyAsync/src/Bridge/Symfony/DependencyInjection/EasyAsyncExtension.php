@@ -13,12 +13,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 final class EasyAsyncExtension extends Extension
 {
     /**
-     * Load configuration.
-     *
      * @param mixed[] $configs
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     *
-     * @return void
      *
      * @throws \Exception
      */

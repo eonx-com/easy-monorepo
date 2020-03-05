@@ -32,23 +32,11 @@ final class DecisionFactory implements DecisionFactoryInterface
      */
     private $expressionLanguageFactory;
 
-    /**
-     * DecisionFactory constructor.
-     *
-     * @param \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface $languageFactory
-     */
     public function __construct(ExpressionLanguageFactoryInterface $languageFactory)
     {
         $this->expressionLanguageFactory = $languageFactory;
     }
 
-    /**
-     * Create decision for given config.
-     *
-     * @param \EonX\EasyDecision\Interfaces\DecisionConfigInterface $config
-     *
-     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
-     */
     public function create(DecisionConfigInterface $config): DecisionInterface
     {
         $decision = $this
@@ -79,25 +67,11 @@ final class DecisionFactory implements DecisionFactoryInterface
         return $decision;
     }
 
-    /**
-     * Set container.
-     *
-     * @param \Psr\Container\ContainerInterface $container
-     *
-     * @return void
-     */
     public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
     }
 
-    /**
-     * Get expression language for given config.
-     *
-     * @param \EonX\EasyDecision\Interfaces\DecisionConfigInterface $config
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
-     */
     private function getExpressionLanguage(DecisionConfigInterface $config): ExpressionLanguageInterface
     {
         if ($this->expressionLanguage !== null) {
@@ -109,16 +83,6 @@ final class DecisionFactory implements DecisionFactoryInterface
         );
     }
 
-    /**
-     * Create instance of decision for given type.
-     *
-     * @param string $decisionType
-     *
-     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
-     *
-     * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyDecision\Exceptions\InvalidDecisionException
-     */
     private function instantiateDecision(string $decisionType): DecisionInterface
     {
         $decision = null;

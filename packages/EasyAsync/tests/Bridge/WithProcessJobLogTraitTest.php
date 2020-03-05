@@ -16,8 +16,6 @@ use EonX\EasyAsync\Updaters\JobLogUpdater;
 final class WithProcessJobLogTraitTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testProcessWithJobLog.
-     *
      * @return iterable<mixed>
      */
     public function providerProcessWithJobLog(): iterable
@@ -40,19 +38,6 @@ final class WithProcessJobLogTraitTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * WithProcessJobLog should update job log as expected.
-     *
-     * @param callable $func
-     * @param callable $test
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobLogException
-     *
-     * @dataProvider providerProcessWithJobLog
-     */
     public function testProcessWithJobLog(callable $func, callable $test): void
     {
         $withData = new WithProcessJobLogDataStub();

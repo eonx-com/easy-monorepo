@@ -14,8 +14,6 @@ final class EasyDockerApplication extends Application
     public const VERSION = '1.0.4';
 
     /**
-     * EasyDockerApplication constructor.
-     *
      * @param \Symfony\Component\Console\Command\Command[] $commands
      */
     public function __construct(array $commands)

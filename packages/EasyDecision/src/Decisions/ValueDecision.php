@@ -8,8 +8,6 @@ use EonX\EasyDecision\Exceptions\MissingValueIndexException;
 final class ValueDecision extends AbstractDecision
 {
     /**
-     * Make value decision for given array input.
-     *
      * @param mixed[] $input
      *
      * @return mixed
@@ -26,11 +24,7 @@ final class ValueDecision extends AbstractDecision
     }
 
     /**
-     * Handle rule output.
-     *
      * @param mixed $output
-     *
-     * @return void
      */
     protected function doHandleRuleOutput($output): void
     {
@@ -39,8 +33,6 @@ final class ValueDecision extends AbstractDecision
     }
 
     /**
-     * Let children classes make the decision.
-     *
      * @return mixed
      */
     protected function doMake()
@@ -49,8 +41,6 @@ final class ValueDecision extends AbstractDecision
     }
 
     /**
-     * Get default output to return if no rules provided.
-     *
      * @return mixed
      */
     protected function getDefaultOutput()

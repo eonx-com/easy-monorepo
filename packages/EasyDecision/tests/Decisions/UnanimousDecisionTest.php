@@ -9,11 +9,6 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class UnanimousDecisionTest extends AbstractTestCase
 {
-    /**
-     * Decision should return false when at least one false.
-     *
-     * @return void
-     */
     public function testReturnFalseWhenAtLeastOneFalse(): void
     {
         $decision = (new UnanimousDecision())->addRules([
@@ -34,11 +29,6 @@ final class UnanimousDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 
-    /**
-     * Decision should return when only trues.
-     *
-     * @return void
-     */
     public function testReturnTrueIfOnlyTrues(): void
     {
         $decision = (new UnanimousDecision())->addRules([
@@ -59,11 +49,6 @@ final class UnanimousDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 
-    /**
-     * Decision should return true when only unsupported.
-     *
-     * @return void
-     */
     public function testReturnTrueWhenOnlyUnsupported(): void
     {
         $decision = (new UnanimousDecision())->addRules([

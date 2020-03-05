@@ -31,8 +31,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 final class EasyAsyncExtensionTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testLoad.
-     *
      * @return iterable<mixed>
      */
     public function providerLoad(): iterable
@@ -48,12 +46,8 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
     }
 
     /**
-     * Extension should register expected services.
-     *
      * @param mixed[] $config
      * @param mixed[] $implementationServices
-     *
-     * @return void
      *
      * @throws \Exception
      *
@@ -86,13 +80,6 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
         }
     }
 
-    /**
-     * Extension should throw an exception when given invalid implementation.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testLoadWithInvalidImplementation(): void
     {
         $this->expectException(InvalidImplementationException::class);

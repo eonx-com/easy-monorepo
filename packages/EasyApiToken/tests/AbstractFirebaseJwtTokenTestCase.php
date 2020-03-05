@@ -41,15 +41,9 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
     ];
 
     /**
-     * Create Firebase JWT driver.
-     *
-     * @param null|string $algo
      * @param null|string|resource $publicKey
      * @param null|string|resource $privateKey
      * @param null|string[] $allowedAlgos
-     * @param null|int $leeway
-     *
-     * @return \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface
      */
     protected function createFirebaseJwtDriver(
         ?string $algo = null,
@@ -67,13 +61,6 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
         );
     }
 
-    /**
-     * Create JWT token for given algo.
-     *
-     * @param null|string $algo
-     *
-     * @return string
-     */
     protected function createToken(?string $algo = null): string
     {
         $key = static::$key;

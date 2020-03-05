@@ -29,11 +29,6 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyAsyncServiceProvider extends ServiceProvider
 {
-    /**
-     * Publish configuration file.
-     *
-     * @return void
-     */
     public function boot(): void
     {
         $this->publishes([
@@ -41,13 +36,6 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         ]);
     }
 
-    /**
-     * Register easy-async services.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\InvalidImplementationException
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/easy-async.php', 'easy-async');
@@ -91,11 +79,6 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         throw new InvalidImplementationException(\sprintf('Implementation "%s" invalid', $implementation));
     }
 
-    /**
-     * Register doctrine implementation.
-     *
-     * @return void
-     */
     private function registerDoctrine(): void
     {
         $this->app->singleton(DataCleanerInterface::class, DataCleaner::class);

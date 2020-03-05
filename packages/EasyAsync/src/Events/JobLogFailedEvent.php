@@ -12,13 +12,7 @@ final class JobLogFailedEvent extends AbstractJobLogEvent
      * @var \Throwable
      */
     private $throwable;
-
-    /**
-     * JobLogFailedEvent constructor.
-     *
-     * @param \EonX\EasyAsync\Interfaces\JobLogInterface $jobLog
-     * @param \Throwable $throwable
-     */
+    
     public function __construct(JobLogInterface $jobLog, Throwable $throwable)
     {
         parent::__construct($jobLog);
@@ -26,11 +20,6 @@ final class JobLogFailedEvent extends AbstractJobLogEvent
         $this->throwable = $throwable;
     }
 
-    /**
-     * Get throwable.
-     *
-     * @return \Throwable
-     */
     public function getThrowable(): Throwable
     {
         return $this->throwable;

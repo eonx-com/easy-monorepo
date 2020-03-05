@@ -12,13 +12,6 @@ use EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs\ServiceStub;
 
 final class EasyApiTokenBundleTest extends AbstractTestCase
 {
-    /**
-     * Bundle should register decoder factory as service with expected config.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
-     */
     public function testDecoderFactoryIsRegisteredAsService(): void
     {
         $kernel = new KernelStub();

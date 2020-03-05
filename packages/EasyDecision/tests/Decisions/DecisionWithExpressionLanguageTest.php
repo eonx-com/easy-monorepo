@@ -11,11 +11,6 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 {
-    /**
-     * Decision should modify given input based on expression language rule.
-     *
-     * @return void
-     */
     public function testModifyValueInArray(): void
     {
         $rules = [$this->createLanguageRule('value + 10')];
@@ -30,11 +25,6 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
         self::assertEquals($expected, $decision->make($original));
     }
 
-    /**
-     * Decision should be able to proceed multiple inputs in a row.
-     *
-     * @return void
-     */
     public function testSameDecisionWithDifferentInputs(): void
     {
         $rules = [

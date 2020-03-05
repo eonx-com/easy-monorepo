@@ -15,8 +15,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 final class PropertyHelperTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testGetSetterName.
-     *
      * @return iterable<mixed>
      */
     public function providerGetSetterName(): iterable
@@ -26,8 +24,6 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * DataProvider for testSetDatetimeProperties.
-     *
      * @return iterable<mixed>
      */
     public function providerSetDatetimeProperties(): iterable
@@ -43,8 +39,6 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * DataProvider for testSetIntProperties.
-     *
      * @return iterable<mixed>
      */
     public function providerSetIntProperties(): iterable
@@ -59,8 +53,6 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * DataProvider for testSetJsonProperties.
-     *
      * @return iterable<mixed>
      */
     public function providerSetJsonProperties(): iterable
@@ -75,8 +67,6 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * DataProvider for testSetOptionalProperties.
-     *
      * @return iterable<mixed>
      */
     public function providerSetOptionalProperties(): iterable
@@ -90,29 +80,14 @@ final class PropertyHelperTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * Helper should return expected setter name for given property.
-     *
-     * @param string $property
-     * @param string $setterName
-     *
-     * @return void
-     *
-     * @dataProvider providerGetSetterName
-     */
     public function testGetSetterName(string $property, string $setterName): void
     {
         self::assertEquals($setterName, PropertyHelper::getSetterName($property));
     }
 
     /**
-     * Helper should set datetime properties on job.
-     *
      * @param mixed[] $data
      * @param mixed[] $properties
-     * @param callable $test
-     *
-     * @return void
      *
      * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
      *
@@ -128,13 +103,8 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * Helper should set integer properties on job.
-     *
      * @param mixed[] $data
      * @param mixed[] $properties
-     * @param callable $test
-     *
-     * @return void
      *
      * @dataProvider providerSetIntProperties
      */
@@ -148,13 +118,8 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * Helper should set json properties on job log.
-     *
      * @param mixed[] $data
      * @param mixed[] $properties
-     * @param callable $test
-     *
-     * @return void
      *
      * @throws \Nette\Utils\JsonException
      *
@@ -170,13 +135,8 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * Helper should set optional properties on job log.
-     *
      * @param mixed[] $data
      * @param mixed[] $properties
-     * @param callable $test
-     *
-     * @return void
      *
      * @dataProvider providerSetOptionalProperties
      */

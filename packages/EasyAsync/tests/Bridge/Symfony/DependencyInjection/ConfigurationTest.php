@@ -9,8 +9,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 final class ConfigurationTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testGetConfigTreeBuilder.
-     *
      * @return iterable<mixed>
      */
     public function providerGetConfigTreeBuilder(): iterable
@@ -35,12 +33,8 @@ final class ConfigurationTest extends AbstractTestCase
     }
 
     /**
-     * TreeBuilder should build expected configuration array.
-     *
      * @param mixed[] $value
      * @param mixed[] $expected
-     *
-     * @return void
      *
      * @dataProvider providerGetConfigTreeBuilder
      */

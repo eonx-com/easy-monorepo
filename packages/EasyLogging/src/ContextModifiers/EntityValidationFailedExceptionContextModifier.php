@@ -11,7 +11,6 @@ final class EntityValidationFailedExceptionContextModifier implements ExceptionC
     /**
      * Modify given context based on given throwable.
      *
-     * @param \Throwable $throwable
      * @param mixed[] $context
      *
      * @return mixed[]

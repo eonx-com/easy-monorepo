@@ -23,8 +23,6 @@ final class ExternalLogger implements SqlLoggerInterface
     /**
      * BugsnagLogger constructor.
      *
-     * @param \EonX\EasyLogging\Interfaces\ExternalLogClientInterface $client
-     * @param null|bool $includeBindings
      */
     public function __construct(ExternalLogClientInterface $client, ?bool $includeBindings = null)
     {
@@ -35,10 +33,7 @@ final class ExternalLogger implements SqlLoggerInterface
     /**
      * Register logger.
      *
-     * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Doctrine\ORM\Configuration $configuration
      *
-     * @return void
      *
      * @throws \Doctrine\DBAL\DBALException
      */

@@ -29,13 +29,6 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
      */
     protected $total;
 
-    /**
-     * Job constructor.
-     *
-     * @param \EonX\EasyAsync\Interfaces\TargetInterface $target
-     * @param string $type
-     * @param null|int $total
-     */
     public function __construct(TargetInterface $target, string $type, ?int $total = null)
     {
         parent::__construct($target, $type);
@@ -45,11 +38,7 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
     }
 
     /**
-     * Create job from given array.
-     *
      * @param mixed[] $data
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobInterface
      */
     public static function fromArray(array $data): JobInterface
     {
@@ -63,53 +52,26 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
         return $job;
     }
 
-    /**
-     * Get number of failed job logs.
-     *
-     * @return int
-     */
     public function getFailed(): int
     {
         return $this->failed;
     }
 
-    /**
-     * Get number of processed job logs.
-     *
-     * @return int
-     */
     public function getProcessed(): int
     {
         return $this->processed;
     }
 
-    /**
-     * Get number of succeeded job logs.
-     *
-     * @return int
-     */
     public function getSucceeded(): int
     {
         return $this->succeeded;
     }
 
-    /**
-     * Get total of job logs to process.
-     *
-     * @return int
-     */
     public function getTotal(): int
     {
         return $this->total;
     }
 
-    /**
-     * Set count of failed job logs.
-     *
-     * @param int $failed
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobInterface
-     */
     public function setFailed(int $failed): JobInterface
     {
         $this->failed = $failed;
@@ -117,13 +79,6 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
         return $this;
     }
 
-    /**
-     * Set count of processed job logs.
-     *
-     * @param int $processed
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobInterface
-     */
     public function setProcessed(int $processed): JobInterface
     {
         $this->processed = $processed;
@@ -131,13 +86,6 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
         return $this;
     }
 
-    /**
-     * Set count of succeeded job logs.
-     *
-     * @param int $succeeded
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobInterface
-     */
     public function setSucceeded(int $succeeded): JobInterface
     {
         $this->succeeded = $succeeded;
@@ -146,8 +94,6 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
     }
 
     /**
-     * Get array representation.
-     *
      * @return mixed[]
      */
     public function toArray(): array

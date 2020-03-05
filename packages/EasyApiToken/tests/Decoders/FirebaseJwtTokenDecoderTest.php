@@ -10,13 +10,6 @@ use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
 {
-    /**
-     * JwtTokenDecoder should decode token successfully for each algorithms.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     */
     public function testJwtTokenDecodeSuccessfully(): void
     {
         foreach (static::$algos as $algo) {
@@ -49,13 +42,6 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
         }
     }
 
-    /**
-     * JwtTokenDecoder should return null if Authorization header not set.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     */
     public function testJwtTokenNullIfAuthorizationHeaderNotSet(): void
     {
         $decoder = new JwtTokenDecoder($this->createJwtEasyApiTokenFactory($this->createFirebaseJwtDriver()));
@@ -63,13 +49,6 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
         self::assertNull($decoder->decode($this->createServerRequest()));
     }
 
-    /**
-     * JwtTokenDecoder should return null if Authorization header doesn't start with "Bearer ".
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     */
     public function testJwtTokenNullIfDoesntStartWithBearer(): void
     {
         $decoder = new JwtTokenDecoder($this->createJwtEasyApiTokenFactory($this->createFirebaseJwtDriver()));
@@ -77,13 +56,6 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
         self::assertNull($decoder->decode($this->createServerRequest(['HTTP_AUTHORIZATION' => 'SomethingElse'])));
     }
 
-    /**
-     * JwtTokenDecoder should throw an exception if unable to decode token because token is invalid.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     */
     public function testJwtTokenThrowExceptionIfUnableToDecodeToken(): void
     {
         $this->expectException(InvalidEasyApiTokenFromRequestException::class);

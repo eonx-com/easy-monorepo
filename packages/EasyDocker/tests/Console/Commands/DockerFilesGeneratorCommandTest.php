@@ -7,13 +7,6 @@ use EonX\EasyDocker\Tests\AbstractTestCase;
 
 final class DockerFilesGeneratorCommandTest extends AbstractTestCase
 {
-    /**
-     * Ensure the Dockerfile contains the compose require line if input is true for prestissimo
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testDockerfileContainsPrestissimo(): void
     {
         $filesystem = $this->getFilesystem();
@@ -34,14 +27,6 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
         );
     }
 
-    /**
-     * Ensure the Dockerfile does not contain the compose require line if input is false for prestissimo
-     * This is the inverse of testDockerfileContainsPrestissimo
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testDockerfileDoesNotContainPrestissimo(): void
     {
         $filesystem = $this->getFilesystem();
@@ -62,13 +47,6 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
         );
     }
 
-    /**
-     * Ensure the .easy directory is only used if no existing files are present
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testEasyDirectoryBackwardsCompatibility(): void
     {
         $inputs = [
@@ -94,13 +72,6 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
         }
     }
 
-    /**
-     * Command should generate cloudformation files.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testGenerateDockerFiles(): void
     {
         $inputs = [

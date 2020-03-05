@@ -12,13 +12,6 @@ use EonX\EasyIdentity\Tests\AbstractTestCase;
  */
 class ConfigTest extends AbstractTestCase
 {
-    /**
-     * Config should return the values passed via the constructor.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     */
     public function testGettersReturnExpectedValues(): void
     {
         $expected = [
@@ -36,13 +29,6 @@ class ConfigTest extends AbstractTestCase
         self::assertSame($expected['domain'], $config->getDomain());
     }
 
-    /**
-     * Config should throw an exception when required data missing.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     */
     public function testRequiredDataMissingException(): void
     {
         $config = new Config();

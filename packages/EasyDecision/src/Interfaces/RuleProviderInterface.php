@@ -6,8 +6,6 @@ namespace EonX\EasyDecision\Interfaces;
 interface RuleProviderInterface
 {
     /**
-     * Get rules for optionally given parameters.
-     *
      * @param null|mixed[] $params
      *
      * @return \EonX\EasyDecision\Interfaces\RuleInterface[]

@@ -9,11 +9,6 @@ use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class JwtEasyApiTokenTest extends AbstractTestCase
 {
-    /**
-     * JwtEasyApiToken should return identical payload as input.
-     *
-     * @return void
-     */
     public function getPayloadSuccessfully(): void
     {
         $payload = ['claim' => 'claim'];
@@ -23,13 +18,6 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
         self::assertEquals('original', $token->getOriginalToken());
     }
 
-    /**
-     * JwtEasyApiToken should return expected claim value.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     */
     public function testGetClaimSuccessfully(): void
     {
         $token = new JwtEasyApiToken(['claim' => 'claim'], 'original');
@@ -37,11 +25,6 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
         self::assertEquals('claim', $token->getClaim('claim'));
     }
 
-    /**
-     * JwtEasyApiToken should check successfully if claim exists.
-     *
-     * @return void
-     */
     public function testHasClaimSuccessfully(): void
     {
         $token = new JwtEasyApiToken(['claim' => 'claim'], 'original');
@@ -50,13 +33,6 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
         self::assertFalse($token->hasClaim('invalid'));
     }
 
-    /**
-     * JwtEasyApiToken should throw an exception when getting a claim which doesn't exist.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     */
     public function testInvalidClaimException(): void
     {
         $this->expectException(InvalidArgumentException::class);

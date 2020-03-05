@@ -7,13 +7,6 @@ use EonX\EasyCfhighlander\Tests\AbstractTestCase;
 
 final class CodeCommandTest extends AbstractTestCase
 {
-    /**
-     * Ensure the .easy directory is only used if no existing files are present
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testEasyDirectoryBackwardsCompatibility(): void
     {
         $inputs = [
@@ -46,13 +39,6 @@ final class CodeCommandTest extends AbstractTestCase
         }
     }
 
-    /**
-     * Command should generate cloudformation files.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testGenerateCloudFormationFiles(): void
     {
         $inputs = [

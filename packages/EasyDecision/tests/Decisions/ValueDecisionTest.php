@@ -15,8 +15,6 @@ use EonX\EasyDecision\Tests\Stubs\RuleWithNonBlockingErrorStub;
 final class ValueDecisionTest extends AbstractTestCase
 {
     /**
-     * Data provider for testDecisionEntirely.
-     *
      * @return iterable<mixed>
      */
     public function decisionEntirelyProvider(): iterable
@@ -39,16 +37,11 @@ final class ValueDecisionTest extends AbstractTestCase
     }
 
     /**
-     * Decision behave as expected.
-     *
      * @param mixed[] $rules
      * @param mixed[] $input
      * @param mixed $expectedOutput
      * @param mixed[] $expectedRulesOutput
-     * @param null|string $name
      * @param null|mixed $defaultOutput
-     *
-     * @return void
      *
      * @dataProvider decisionEntirelyProvider
      */
@@ -74,11 +67,6 @@ final class ValueDecisionTest extends AbstractTestCase
         self::assertEquals($expectedRulesOutput, $context->getRuleOutputs());
     }
 
-    /**
-     * Decision should throw an exception when trying to get context before calling make.
-     *
-     * @return void
-     */
     public function testGetContextBeforeMakeException(): void
     {
         $this->expectException(ContextNotSetException::class);
@@ -86,11 +74,6 @@ final class ValueDecisionTest extends AbstractTestCase
         ((new ValueDecision())->addRules([$this->createUnsupportedRule('whatever')]))->getContext();
     }
 
-    /**
-     * Decision should handle gracefully the non blocking error and add the output to the context.
-     *
-     * @return void
-     */
     public function testNonBlockingRuleErrorException(): void
     {
         $decision = (new ValueDecision())->addRule(new RuleWithNonBlockingErrorStub());
@@ -101,11 +84,6 @@ final class ValueDecisionTest extends AbstractTestCase
         self::assertEquals(10, $output);
     }
 
-    /**
-     * Decision should throw an exception when given input is an array and "value" index isn't set.
-     *
-     * @return void
-     */
     public function testNotSetValueInInputArrayException(): void
     {
         $this->expectException(MissingValueIndexException::class);
@@ -115,11 +93,6 @@ final class ValueDecisionTest extends AbstractTestCase
         $decision->make([]);
     }
 
-    /**
-     * Decision should throw an exception when given input is an array and contains the reserved "context" index.
-     *
-     * @return void
-     */
     public function testReservedContextInInputArrayException(): void
     {
         $this->expectException(ReservedContextIndexException::class);
@@ -129,11 +102,6 @@ final class ValueDecisionTest extends AbstractTestCase
         $decision->make(['context' => 'I know it is bad...', 'value' => 'value']);
     }
 
-    /**
-     * Decision should return modified array input.
-     *
-     * @return void
-     */
     public function testReturnModifiedArrayInputSuccessfully(): void
     {
         $modifyRule = $this->getModifyValueRuleInArray();
@@ -156,11 +124,6 @@ final class ValueDecisionTest extends AbstractTestCase
         self::assertEquals($original, $decision->getContext()->getOriginalInput());
     }
 
-    /**
-     * Decision should throw exception if anything goes wrong in rules.
-     *
-     * @return void
-     */
     public function testUnableToMakeDecisionWhenExceptionInRules(): void
     {
         $this->expectException(UnableToMakeDecisionException::class);
@@ -170,27 +133,15 @@ final class ValueDecisionTest extends AbstractTestCase
         $decision->make(['value' => 1]);
     }
 
-    /**
-     * Get rule to throw exception.
-     *
-     * @return \EonX\EasyDecision\Interfaces\RuleInterface
-     */
     private function getExceptionRule(): RuleInterface
     {
-        return new class implements RuleInterface {
-            /**
-             * Get priority.
-             *
-             * @return int
-             */
+        return new class() implements RuleInterface {
             public function getPriority(): int
             {
                 return 0;
             }
 
             /**
-             * Proceed with input.
-             *
              * @param mixed[] $input
              *
              * @return mixed
@@ -201,22 +152,13 @@ final class ValueDecisionTest extends AbstractTestCase
             }
 
             /**
-             * Check if rule supports given input.
-             *
              * @param mixed[] $input
-             *
-             * @return bool
              */
             public function supports(array $input): bool
             {
                 return true;
             }
 
-            /**
-             * Get string representation of the rule.
-             *
-             * @return string
-             */
             public function toString(): string
             {
                 return 'exception';
@@ -224,27 +166,15 @@ final class ValueDecisionTest extends AbstractTestCase
         };
     }
 
-    /**
-     * Get rule to modify value from input.
-     *
-     * @return \EonX\EasyDecision\Interfaces\RuleInterface
-     */
     private function getModifyValueRuleInArray(): RuleInterface
     {
-        return new class implements RuleInterface {
-            /**
-             * Get priority.
-             *
-             * @return int
-             */
+        return new class() implements RuleInterface {
             public function getPriority(): int
             {
                 return 0;
             }
 
             /**
-             * Proceed with input.
-             *
              * @param mixed[] $input
              *
              * @return mixed
@@ -255,22 +185,13 @@ final class ValueDecisionTest extends AbstractTestCase
             }
 
             /**
-             * Check if rule supports given input.
-             *
              * @param mixed[] $input
-             *
-             * @return bool
              */
             public function supports(array $input): bool
             {
                 return isset($input['value']);
             }
 
-            /**
-             * Get string representation of the rule.
-             *
-             * @return string
-             */
             public function toString(): string
             {
                 return 'Add_10_to_value';

@@ -5,15 +5,13 @@ namespace EonX\EasyDecision\Decisions;
 
 final class UnanimousDecision extends AbstractDecision
 {
-    /** @var bool */
+    /**
+     * @var bool
+     */
     private $output = true;
 
     /**
-     * Handle rule output.
-     *
      * @param mixed $output
-     *
-     * @return void
      */
     protected function doHandleRuleOutput($output): void
     {
@@ -25,21 +23,11 @@ final class UnanimousDecision extends AbstractDecision
         }
     }
 
-    /**
-     * Let children classes make the decision.
-     *
-     * @return bool
-     */
     protected function doMake(): bool
     {
         return $this->output;
     }
 
-    /**
-     * Get default output to return if no rules provided.
-     *
-     * @return bool
-     */
     protected function getDefaultOutput(): bool
     {
         return true;

@@ -20,25 +20,12 @@ final class DoctrineClearEmBeforeJobListener
      */
     private $logger;
 
-    /**
-     * DoctrineClearEmBeforeJobListener constructor.
-     *
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
-     * @param null|\Psr\Log\LoggerInterface $logger
-     */
     public function __construct(EntityManagerInterface $entityManager, ?LoggerInterface $logger = null)
     {
         $this->entityManager = $entityManager;
         $this->logger = $logger ?? new NullLogger();
     }
 
-    /**
-     * Clear doctrine entity manager before processing job.
-     *
-     * @param \Illuminate\Queue\Events\JobProcessing $event
-     *
-     * @return void
-     */
     public function handle(JobProcessing $event): void
     {
         $this->logger->info('Clearing em before job', [

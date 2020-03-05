@@ -30,33 +30,16 @@ class SimpleEntity
      */
     private $property;
 
-    /**
-     * Gets id.
-     *
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Gets property.
-     *
-     * @return string
-     */
     public function getProperty(): string
     {
         return $this->property;
     }
 
-    /**
-     * Sets property.
-     *
-     * @param string $property
-     *
-     * @return void
-     */
     public function setProperty(string $property): void
     {
         $this->property = $property;

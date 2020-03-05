@@ -9,21 +9,11 @@ use EonX\EasyApiToken\Tests\AbstractTestCase;
 
 final class ApiKeyAsBasicAuthUsernameDecoderTest extends AbstractTestCase
 {
-    /**
-     * ApiKeyAsBasicAuthUsernameDecoder should return null if Authorization header not set.
-     *
-     * @return void
-     */
     public function testApiKeyAsBasicAuthUsernameNullIfAuthorizationHeaderNotSet(): void
     {
         self::assertNull((new ApiKeyAsBasicAuthUsernameDecoder())->decode($this->createServerRequest()));
     }
 
-    /**
-     * ApiKeyAsBasicAuthUsernameDecoder should return null if Authorization header doesn't start with "Basic ".
-     *
-     * @return void
-     */
     public function testApiKeyAsBasicAuthUsernameNullIfDoesntStartWithBasic(): void
     {
         self::assertNull((new ApiKeyAsBasicAuthUsernameDecoder())->decode($this->createServerRequest([
@@ -31,11 +21,6 @@ final class ApiKeyAsBasicAuthUsernameDecoderTest extends AbstractTestCase
         ])));
     }
 
-    /**
-     * ApiKeyAsBasicAuthUsernameDecoder should return null if Authorization header doesn't contain only api key.
-     *
-     * @return void
-     */
     public function testApiKeyAsBasicAuthUsernameNullIfNotOnlyApiKeyProvided(): void
     {
         $tests = [
@@ -52,11 +37,6 @@ final class ApiKeyAsBasicAuthUsernameDecoderTest extends AbstractTestCase
         }
     }
 
-    /**
-     * ApiKeyAsBasicAuthUsernameDecoder should return ApiKeyEasyApiToken and expected api key.
-     *
-     * @return void
-     */
     public function testApiKeyAsBasicAuthUsernameReturnEasyApiTokenSuccessfully(): void
     {
         // Value in header => [expectedUsername, expectedPassword]

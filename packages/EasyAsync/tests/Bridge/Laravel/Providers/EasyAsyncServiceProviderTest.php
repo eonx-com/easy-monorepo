@@ -32,11 +32,6 @@ use Laravel\Lumen\Application;
 
 final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
 {
-    /**
-     * DataProvider for testServiceProvider.
-     *
-     * @return iterable<mixed>
-     */
     public function providerTestServiceProvider(): iterable
     {
         yield 'Doctrine' => [
@@ -52,11 +47,6 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
         ];
     }
 
-    /**
-     * ServiceProvider should throw exception if invalid implementation given.
-     *
-     * @return void
-     */
     public function testInvalidImplementation(): void
     {
         $this->expectException(InvalidImplementationException::class);
@@ -67,19 +57,6 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
         $app->register(EasyAsyncServiceProvider::class);
     }
 
-    /**
-     * ServiceProvider should register expected services.
-     *
-     * @param string $implementation
-     * @param mixed[] $implementationServices
-     * @param null|callable $dependencies
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     *
-     * @dataProvider providerTestServiceProvider
-     */
     public function testServiceProvider(
         string $implementation,
         array $implementationServices,

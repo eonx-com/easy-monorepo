@@ -8,10 +8,6 @@ use Nette\Utils\Json;
 final class JsonHelper
 {
     /**
-     * Json decode given json.
-     *
-     * @param null|string $json
-     *
      * @return null|mixed[]
      *
      * @throws \Nette\Utils\JsonException
@@ -22,11 +18,7 @@ final class JsonHelper
     }
 
     /**
-     * Json encode given data.
-     *
      * @param null|mixed[] $data
-     *
-     * @return null|string
      *
      * @throws \Nette\Utils\JsonException
      */

@@ -16,38 +16,36 @@ use EonX\EasyDecision\Interfaces\RuleInterface;
 
 abstract class AbstractDecision implements DecisionInterface
 {
-    /** @var \EonX\EasyDecision\Interfaces\ContextInterface */
+    /**
+     * @var \EonX\EasyDecision\Interfaces\ContextInterface
+     */
     protected $context;
 
-    /** @var mixed[] */
+    /**
+     * @var mixed[]
+     */
     protected $input;
 
-    /** @var null|mixed */
+    /**
+     * @var null|mixed
+     */
     private $defaultOutput;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $name;
 
-    /** @var \EonX\EasyDecision\Interfaces\RuleInterface[] */
+    /**
+     * @var \EonX\EasyDecision\Interfaces\RuleInterface[]
+     */
     private $rules = [];
 
-    /**
-     * NewAbstractDecision constructor.
-     *
-     * @param string $name
-     */
     public function __construct(?string $name = null)
     {
         $this->name = $name ?? '<no-name>';
     }
 
-    /**
-     * Add rule.
-     *
-     * @param \EonX\EasyDecision\Interfaces\RuleInterface $rule
-     *
-     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
-     */
     public function addRule(RuleInterface $rule): DecisionInterface
     {
         $this->rules[] = $rule;
@@ -56,11 +54,7 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
-     * Set rules.
-     *
      * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
-     *
-     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function addRules(array $rules): DecisionInterface
     {
@@ -71,13 +65,6 @@ abstract class AbstractDecision implements DecisionInterface
         return $this;
     }
 
-    /**
-     * Get context.
-     *
-     * @return \EonX\EasyDecision\Interfaces\ContextInterface
-     *
-     * @throws \EonX\EasyDecision\Exceptions\ContextNotSetException
-     */
     public function getContext(): ContextInterface
     {
         if ($this->context !== null) {
@@ -89,19 +76,12 @@ abstract class AbstractDecision implements DecisionInterface
         ));
     }
 
-    /**
-     * Get decision name.
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Make value decision for given array input.
-     *
      * @param mixed[] $input
      *
      * @return mixed
@@ -130,7 +110,7 @@ abstract class AbstractDecision implements DecisionInterface
         try {
             // Let children classes handle rules output and define the output
             return $this->processRules()->doMake();
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             throw new UnableToMakeDecisionException(
                 $this->getExceptionMessage($exception->getMessage()),
                 $exception->getCode(),
@@ -140,11 +120,7 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
-     * Set default output.
-     *
      * @param null|mixed $defaultOutput
-     *
-     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function setDefaultOutput($defaultOutput = null): DecisionInterface
     {
@@ -153,13 +129,6 @@ abstract class AbstractDecision implements DecisionInterface
         return $this;
     }
 
-    /**
-     * Set decision name.
-     *
-     * @param string $name
-     *
-     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
-     */
     public function setName(string $name): DecisionInterface
     {
         $this->name = $name;
@@ -168,47 +137,27 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
-     * Handle rule output.
-     *
      * @param mixed $output
-     *
-     * @return void
      */
     abstract protected function doHandleRuleOutput($output): void;
 
     /**
-     * Let children classes make the decision.
-     *
      * @return mixed
      */
     abstract protected function doMake();
 
     /**
-     * Get default output to return if no rules provided.
-     *
      * @return mixed
      */
     abstract protected function getDefaultOutput();
 
-    /**
-     * Get prefixed message for exception.
-     *
-     * @param string $message
-     *
-     * @return string
-     */
     protected function getExceptionMessage(string $message): string
     {
         return \sprintf('Decision "%s" of type "%s": %s', $this->name, \get_class($this), $message);
     }
 
     /**
-     * Set decision output for given rule on context.
-     *
-     * @param \EonX\EasyDecision\Interfaces\RuleInterface $rule
      * @param mixed $output
-     *
-     * @return void
      */
     private function addDecisionOutputForRule(RuleInterface $rule, $output): void
     {
@@ -221,8 +170,6 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
-     * Get sorted rules (priority value 0 is higher than 100).
-     *
      * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
     private function getRules(): array
@@ -243,11 +190,6 @@ abstract class AbstractDecision implements DecisionInterface
         return $rules;
     }
 
-    /**
-     * Process rules for given context.
-     *
-     * @return self
-     */
     private function processRules(): self
     {
         foreach ($this->getRules() as $rule) {

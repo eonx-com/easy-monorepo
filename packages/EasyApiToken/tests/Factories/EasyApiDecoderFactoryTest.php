@@ -31,9 +31,7 @@ use Laravel\Lumen\Application;
 final class EasyApiDecoderFactoryTest extends AbstractTestCase
 {
     /**
-     * Get a list of errors caused by Invalid configurations.
-     *
-     * @return iterable<mixed> List of Configuration array, key to request, and expected error message.
+     * @return iterable<mixed>
      */
     public function getBrokenConfigurations(): iterable
     {
@@ -104,8 +102,6 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     }
 
     /**
-     * Get a list builds for chain decoder.
-     *
      * @return iterable<mixed>
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
@@ -135,8 +131,6 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     }
 
     /**
-     * Get a list of builds for jwt decoders.
-     *
      * @return iterable<mixed>
      */
     public function getJwtBuilds(): iterable
@@ -286,8 +280,6 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     }
 
     /**
-     * Get a list of builds for simple decoders.
-     *
      * @return iterable<mixed>
      */
     public function getSimpleBuilds(): iterable
@@ -312,13 +304,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     }
 
     /**
-     * Test that the requested object graph is built as expected.
-     *
      * @param mixed[] $config Config array to build factory with.
-     * @param string $key Key of configuration to request.
-     * @param \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected Expected decoder object.
-     *
-     * @return void
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      *
@@ -337,22 +323,10 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $this->assertEquals(\spl_object_hash($actual), \spl_object_hash($second));
     }
 
-    /**
-     * Test that the factory handles the container exceptions and returns its own one.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
-     */
     public function testBuildContainerThrows(): void
     {
-        $container = new class extends Application {
-            /**
-             * @noinspection PhpMissingParentCallCommonInspection
-             *
-             * {@inheritdoc}
-             */
-            public function has($id)
+        $container = new class() extends Application {
+            public function has($id): bool
             {
                 throw new \RuntimeException('runtime problems');
             }
@@ -368,13 +342,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     }
 
     /**
-     * Test that the requested object graph is built as expected.
-     *
      * @param mixed[] $config Config array to build factory with.
-     * @param string $key Key of configuration to request.
-     * @param \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $expected Expected decoder object.
-     *
-     * @return void
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      *
@@ -398,13 +366,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     }
 
     /**
-     * Test Exceptions for building invalid configurations.
-     *
      * @param mixed[] $config Config array to build factory with.
-     * @param string $key Key of configuration to request.
-     * @param string $expectedError Expected exception message.
-     *
-     * @return void
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      *

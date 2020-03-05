@@ -12,21 +12,11 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class ConsensusDecisionTest extends AbstractTestCase
 {
-    /**
-     * Decision should return expected name.
-     *
-     * @return void
-     */
     public function testGetName(): void
     {
         self::assertEquals('name', (new ConsensusDecision('name'))->getName());
     }
 
-    /**
-     * Decision should return expected default output if no rules given.
-     *
-     * @return void
-     */
     public function testNoRulesDecision(): void
     {
         self::assertTrue((new AffirmativeDecision())->addRules([])->make([]));
@@ -36,11 +26,6 @@ final class ConsensusDecisionTest extends AbstractTestCase
         self::assertEquals(10, (new ValueDecision())->setDefaultOutput(10)->make(['value' => 5]));
     }
 
-    /**
-     * Decision should return false when more false than true.
-     *
-     * @return void
-     */
     public function testReturnFalseWhenMoreFalseThanTrue(): void
     {
         $decision = (new ConsensusDecision())->addRules([
@@ -61,11 +46,6 @@ final class ConsensusDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 
-    /**
-     * Decision should return true when more true than false.
-     *
-     * @return void
-     */
     public function testReturnTrueWhenMoreTrueThenFalse(): void
     {
         $decision = (new ConsensusDecision())->addRules([
@@ -86,11 +66,6 @@ final class ConsensusDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 
-    /**
-     * Decision should return true when no supported rules.
-     *
-     * @return void
-     */
     public function testReturnTrueWhenNoRulesSupported(): void
     {
         $decision = (new ConsensusDecision())->addRules([$this->createUnsupportedRule('unsupported-1')]);
@@ -101,11 +76,6 @@ final class ConsensusDecisionTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 
-    /**
-     * Decision should return true when same number of true and false.
-     *
-     * @return void
-     */
     public function testReturnTrueWhenSameNumberOfTrueAndFalse(): void
     {
         $decision = (new ConsensusDecision())->addRules([

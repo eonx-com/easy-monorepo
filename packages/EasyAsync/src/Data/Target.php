@@ -18,10 +18,7 @@ final class Target implements TargetInterface
     private $type;
 
     /**
-     * Target constructor.
-     *
      * @param mixed $id
-     * @param string $type
      */
     public function __construct($id, string $type)
     {
@@ -30,8 +27,6 @@ final class Target implements TargetInterface
     }
 
     /**
-     * Get target id.
-     *
      * @return mixed
      */
     public function getTargetId()
@@ -39,11 +34,6 @@ final class Target implements TargetInterface
         return $this->id;
     }
 
-    /**
-     * Get target type.
-     *
-     * @return string
-     */
     public function getTargetType(): string
     {
         return $this->type;

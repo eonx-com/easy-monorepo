@@ -13,11 +13,6 @@ use stdClass;
  */
 class EntityChangeEventTest extends AbstractTestCase
 {
-    /**
-     * Tests that DTO's constructor and getters are :chefs-kiss:
-     *
-     * @return void
-     */
     public function testEventCreationAndGetters(): void
     {
         $updatedEntity = new UpdatedEntity(

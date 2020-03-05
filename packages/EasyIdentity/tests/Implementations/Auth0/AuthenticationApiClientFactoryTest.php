@@ -12,13 +12,6 @@ use EonX\EasyIdentity\Tests\AbstractTestCase;
  */
 class AuthenticationApiClientFactoryTest extends AbstractTestCase
 {
-    /**
-     * Factory should return the expected authentication api client instance.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     */
     public function testCreate(): void
     {
         $config = new Config([

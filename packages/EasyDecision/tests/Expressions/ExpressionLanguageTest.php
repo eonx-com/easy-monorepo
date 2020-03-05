@@ -16,11 +16,6 @@ final class ExpressionLanguageTest extends AbstractTestCase
      */
     private static $expression = '(max(1,2,3,4,5,6) + min(6,5,4,3,2,1) + 3) / (2 - input)';
 
-    /**
-     * ExpressionLanguage should return list of functions added.
-     *
-     * @return void
-     */
     public function testGetFunctions(): void
     {
         $functions = $this->getExpressionLanguage()->getFunctions();
@@ -30,11 +25,6 @@ final class ExpressionLanguageTest extends AbstractTestCase
         self::assertEquals('max', $functions[1]->getName());
     }
 
-    /**
-     * ExpressionLanguage should throw an exception if given expression is invalid for given names.
-     *
-     * @return void
-     */
     public function testValidateInvalidExpression(): void
     {
         $this->expectException(InvalidExpressionException::class);
@@ -42,21 +32,11 @@ final class ExpressionLanguageTest extends AbstractTestCase
         $this->getExpressionLanguage()->validate(static::$expression, ['invalid']);
     }
 
-    /**
-     * ExpressionLanguage should return true if given expression is valid for given names.
-     *
-     * @return void
-     */
     public function testValidateValidExpression(): void
     {
         self::assertTrue($this->getExpressionLanguage()->validate(static::$expression, ['input']));
     }
 
-    /**
-     * Get expression language.
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
-     */
     private function getExpressionLanguage(): ExpressionLanguageInterface
     {
         return $this->getExpressionLanguageFactory()->create(new ExpressionLanguageConfig(null, [

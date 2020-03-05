@@ -28,7 +28,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
     /**
      * Replace with PSR cache on upgrade to PHP-Auth0 7.
      *
-     * @var \Auth0\SDK\Helpers\Cache\CacheHandler
+     * @var null|\Auth0\SDK\Helpers\Cache\CacheHandler
      */
     private $cache;
 
@@ -48,7 +48,6 @@ final class Auth0JwtDriver implements JwtDriverInterface
      * @param string[] $validAudiences
      * @param string[] $authorizedIss
      * @param string|resource $privateKey
-     * @param null|string $audienceForEncode
      * @param null|string[] $allowedAlgos
      * @param \Auth0\SDK\Helpers\Cache\CacheHandler|null $cache Optional Cache handler.
      */
@@ -68,15 +67,6 @@ final class Auth0JwtDriver implements JwtDriverInterface
         $this->cache = $cache;
     }
 
-    /**
-     * Decode JWT token.
-     *
-     * @param string $token
-     *
-     * @return mixed[]|object
-     *
-     * @throws \Auth0\SDK\Exception\CoreException
-     */
     public function decode(string $token)
     {
         $verifier = new JWTVerifier([
@@ -91,11 +81,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
     }
 
     /**
-     * Encode given input to JWT token.
-     *
      * @param mixed[] $input
-     *
-     * @return string
      */
     public function encode($input): string
     {

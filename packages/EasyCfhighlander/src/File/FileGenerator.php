@@ -9,18 +9,16 @@ use Twig\Environment;
 
 final class FileGenerator implements FileGeneratorInterface
 {
-    /** @var \Symfony\Component\Filesystem\Filesystem */
+    /**
+     * @var \Symfony\Component\Filesystem\Filesystem
+     */
     private $filesystem;
 
-    /** @var \Twig\Environment */
+    /**
+     * @var \Twig\Environment
+     */
     private $twig;
 
-    /**
-     * FileGenerator constructor.
-     *
-     * @param \Twig\Environment $twig
-     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
-     */
     public function __construct(Environment $twig, Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
@@ -28,12 +26,7 @@ final class FileGenerator implements FileGeneratorInterface
     }
 
     /**
-     * Generate file for given template and params.
-     *
-     * @param \EonX\EasyCfhighlander\File\File $fileToGenerate
      * @param null|mixed[] $params
-     *
-     * @return \EonX\EasyCfhighlander\File\FileStatus
      *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
@@ -67,13 +60,6 @@ final class FileGenerator implements FileGeneratorInterface
         return new FileStatus($fileToGenerate, $exists ? self::STATUS_UPDATED : self::STATUS_CREATED, $renderedHash);
     }
 
-    /**
-     * Remove given file.
-     *
-     * @param \EonX\EasyCfhighlander\File\File $fileToRemove
-     *
-     * @return \EonX\EasyCfhighlander\File\FileStatus
-     */
     public function remove(File $fileToRemove): FileStatus
     {
         if ($this->filesystem->exists($fileToRemove->getFilename()) === false) {
@@ -85,25 +71,13 @@ final class FileGenerator implements FileGeneratorInterface
         return new FileStatus($fileToRemove, self::STATUS_REMOVED);
     }
 
-    /**
-     * Hash given content.
-     *
-     * @param string $content
-     *
-     * @return string
-     */
     private function hash(string $content): string
     {
         return \md5($content);
     }
 
     /**
-     * Return given template for given params.
-     *
-     * @param string $template
      * @param null|mixed[] $params
-     *
-     * @return string
      *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError

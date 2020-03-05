@@ -9,13 +9,6 @@ use Ramsey\Uuid\Uuid;
 
 final class RamseyUuidGeneratorTest extends AbstractTestCase
 {
-    /**
-     * Generator should generate valid uuid.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateUuidException
-     */
     public function testGenerate(): void
     {
         self::assertTrue(Uuid::isValid((new RamseyUuidGenerator())->generate()));

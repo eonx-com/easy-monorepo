@@ -9,21 +9,11 @@ use EonX\EasyApiToken\Tests\AbstractTestCase;
 
 final class BasicAuthDecoderTest extends AbstractTestCase
 {
-    /**
-     * BasicAuthDecoder should return null if Authorization header not set.
-     *
-     * @return void
-     */
     public function testBasicAuthNullIfAuthorizationHeaderNotSet(): void
     {
         self::assertNull((new BasicAuthDecoder())->decode($this->createServerRequest()));
     }
 
-    /**
-     * BasicAuthDecoder should return null if Authorization header doesn't start with "Basic ".
-     *
-     * @return void
-     */
     public function testBasicAuthNullIfDoesntStartWithBasic(): void
     {
         self::assertNull((new BasicAuthDecoder())->decode($this->createServerRequest([
@@ -31,11 +21,6 @@ final class BasicAuthDecoderTest extends AbstractTestCase
         ])));
     }
 
-    /**
-     * BasicAuthDecoder should return null if Authorization header doesn't contain any username or password.
-     *
-     * @return void
-     */
     public function testBasicAuthNullIfNoUsernameOrPasswordProvided(): void
     {
         $tests = [
@@ -54,11 +39,6 @@ final class BasicAuthDecoderTest extends AbstractTestCase
         }
     }
 
-    /**
-     * BasicAuthDecoder should return BasicAuthToken and expected username and password.
-     *
-     * @return void
-     */
     public function testBasicAuthReturnEasyApiTokenSuccessfully(): void
     {
         // Value in header => [expectedUsername, expectedPassword]

@@ -8,11 +8,6 @@ use EonX\EasyPagination\Tests\AbstractTestCase;
 
 final class StartSizeAsArrayInQueryResolverTest extends AbstractTestCase
 {
-    /**
-     * StartSizeAsArrayInQueryResolver should resolve pagination data successfully with custom config.
-     *
-     * @return void
-     */
     public function testCustomConfigResolveSuccessfully(): void
     {
         $config = $this->createConfig('page', null, 'perPage');
@@ -27,11 +22,6 @@ final class StartSizeAsArrayInQueryResolverTest extends AbstractTestCase
         self::assertEquals(100, $data->getSize());
     }
 
-    /**
-     * StartSizeAsArrayInQueryResolver should resolve pagination data successfully with string values.
-     *
-     * @return void
-     */
     public function testCustomConfigResolveWithStringAsValuesSuccessfully(): void
     {
         $config = $this->createConfig('page', null, 'perPage');
@@ -46,11 +36,6 @@ final class StartSizeAsArrayInQueryResolverTest extends AbstractTestCase
         self::assertEquals(50, $data->getSize());
     }
 
-    /**
-     * StartSizeAsArrayInQueryResolver should return data with defaults if query attribute not an array.
-     *
-     * @return void
-     */
     public function testDefaultWhenQueryAttrNotArray(): void
     {
         $config = $this->createConfig();
@@ -62,11 +47,6 @@ final class StartSizeAsArrayInQueryResolverTest extends AbstractTestCase
         self::assertEquals($config->getSizeDefault(), $data->getSize());
     }
 
-    /**
-     * StartSizeAsArrayInQueryResolver should return data with defaults if query attribute not set.
-     *
-     * @return void
-     */
     public function testDefaultWhenQueryAttrNotSet(): void
     {
         $config = $this->createConfig();

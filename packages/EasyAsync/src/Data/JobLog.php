@@ -35,13 +35,6 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
      */
     protected $validationErrors;
 
-    /**
-     * JobLog constructor.
-     *
-     * @param \EonX\EasyAsync\Interfaces\TargetInterface $target
-     * @param string $type
-     * @param string $jobId
-     */
     public function __construct(TargetInterface $target, string $type, string $jobId)
     {
         parent::__construct($target, $type);
@@ -51,11 +44,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     }
 
     /**
-     * Create job log from given array.
-     *
      * @param mixed[] $data
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
      *
      * @throws \Nette\Utils\JsonException
      */
@@ -73,12 +62,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     }
 
     /**
-     * Add debug info.
-     *
-     * @param string $name
      * @param mixed $info
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
      */
     public function addDebugInfo(string $name, $info): JobLogInterface
     {
@@ -91,8 +75,6 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     }
 
     /**
-     * Get debug info.
-     *
      * @return null|mixed[]
      */
     public function getDebugInfo(): ?array
@@ -101,8 +83,6 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     }
 
     /**
-     * Get failure params.
-     *
      * @return null|mixed[]
      */
     public function getFailureParams(): ?array
@@ -110,29 +90,17 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
         return $this->failureParams;
     }
 
-    /**
-     * Get failure reason, most of the time it would be a translation key.
-     *
-     * @return null|string
-     */
     public function getFailureReason(): ?string
     {
         return $this->failureReason;
     }
 
-    /**
-     * Get job id the log belongs to.
-     *
-     * @return string
-     */
     public function getJobId(): string
     {
         return $this->jobId;
     }
 
     /**
-     * If any validation failed during process, errors can be stored here.
-     *
      * @return null|mixed[]
      */
     public function getValidationErrors(): ?array
@@ -141,11 +109,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     }
 
     /**
-     * Set debug info.
-     *
      * @param null|mixed[] $debugInfo
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
      */
     public function setDebugInfo(?array $debugInfo = null): JobLogInterface
     {
@@ -155,11 +119,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     }
 
     /**
-     * Set failure params.
-     *
      * @param null|mixed[] $failureParams
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
      */
     public function setFailureParams(?array $failureParams = null): JobLogInterface
     {
@@ -168,13 +128,6 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
         return $this;
     }
 
-    /**
-     * Set failure reason.
-     *
-     * @param null|string $failureReason
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
-     */
     public function setFailureReason(?string $failureReason = null): JobLogInterface
     {
         $this->failureReason = $failureReason;
@@ -183,11 +136,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     }
 
     /**
-     * Set validation errors.
-     *
      * @param null|mixed[] $validationErrors
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
      */
     public function setValidationErrors(?array $validationErrors = null): JobLogInterface
     {
@@ -197,8 +146,6 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
     }
 
     /**
-     * Get array representation.
-     *
      * @return mixed[]
      *
      * @throws \Nette\Utils\JsonException

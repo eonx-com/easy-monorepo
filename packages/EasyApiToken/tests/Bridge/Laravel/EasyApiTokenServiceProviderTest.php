@@ -9,11 +9,6 @@ use EonX\EasyApiToken\Tests\AbstractLumenTestCase;
 
 final class EasyApiTokenServiceProviderTest extends AbstractLumenTestCase
 {
-    /**
-     * ServiceProvider should register the expected services.
-     *
-     * @return void
-     */
     public function testRegister(): void
     {
         $app = $this->getApplication();

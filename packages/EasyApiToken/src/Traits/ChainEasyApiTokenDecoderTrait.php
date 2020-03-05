@@ -9,11 +9,7 @@ use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 trait ChainEasyApiTokenDecoderTrait
 {
     /**
-     * Validate given decoder implements the right interface, otherwise throw exception.
-     *
      * @param mixed $decoder
-     *
-     * @return void
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */
@@ -32,11 +28,7 @@ trait ChainEasyApiTokenDecoderTrait
     }
 
     /**
-     * Validate given array of decoders isn't empty, and all of them implement the right interface.
-     *
      * @param mixed[] $decoders
-     *
-     * @return void
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */

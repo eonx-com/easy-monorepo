@@ -12,11 +12,6 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFun
 
 final class ExpressionFunctionFactoryTest extends AbstractTestCase
 {
-    /**
-     * Factory should be able to create expression function from associative array.
-     *
-     * @return void
-     */
     public function testCreateFromAssociativeArraySuccessfully(): void
     {
         $input = [
@@ -32,11 +27,6 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
         self::assertEquals($input['evaluator'], $function->getEvaluator());
     }
 
-    /**
-     * Factory should create function from base expression function.
-     *
-     * @return void
-     */
     public function testCreateFromBaseExpressionFunction(): void
     {
         $baseExpressionFunction = BaseExpressionFunction::fromPhp('max');
@@ -44,11 +34,6 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
         self::assertEquals('max', $this->getFactory()->create($baseExpressionFunction)->getName());
     }
 
-    /**
-     * Factory should be able to create expression function from simple array.
-     *
-     * @return void
-     */
     public function testCreateFromSimpleArraySuccessfully(): void
     {
         $input = [
@@ -64,11 +49,6 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
         self::assertEquals($input[1], $function->getEvaluator());
     }
 
-    /**
-     * Factory should return function as it is if already an ExpressionFunctionInterface.
-     *
-     * @return void
-     */
     public function testInstanceOfExpressionFunctionReturnItAsItIs(): void
     {
         $expressionFunction = new ExpressionFunction('function', function (): void {
@@ -80,11 +60,6 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
         );
     }
 
-    /**
-     * Factory should throw exception if not able to create expression function from given array.
-     *
-     * @return void
-     */
     public function testInvalidArrayInputException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -92,11 +67,6 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
         $this->getFactory()->create([]);
     }
 
-    /**
-     * Factory should throw exception if non-array input given.
-     *
-     * @return void
-     */
     public function testNonArrayInputException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -104,11 +74,6 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
         $this->getFactory()->create('non-array');
     }
 
-    /**
-     * Get expression function factory.
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
-     */
     private function getFactory(): ExpressionFunctionFactoryInterface
     {
         return new ExpressionFunctionFactory();

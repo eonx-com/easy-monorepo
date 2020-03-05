@@ -13,13 +13,8 @@ final class RuleWithExtraOutputStub extends RuleStub implements DecisionOutputFo
     private $extra;
 
     /**
-     * RuleWithExtraOutputStub constructor.
-     *
-     * @param string $name
      * @param mixed $output
      * @param null|mixed[] $extra
-     * @param null|bool $supports
-     * @param null|int $priority
      */
     public function __construct(
         string $name,
@@ -34,8 +29,6 @@ final class RuleWithExtraOutputStub extends RuleStub implements DecisionOutputFo
     }
 
     /**
-     * Returns rule output for given decision output.
-     *
      * @param mixed $decisionOutput
      *
      * @return mixed

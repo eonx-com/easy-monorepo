@@ -8,11 +8,6 @@ use EonX\EasyIdentity\Tests\AbstractTestCase;
 
 final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
 {
-    /**
-     * Factory should create the Auth0IdentityService instance.
-     *
-     * @return void
-     */
     public function testCreate(): void
     {
         $factory = new Auth0IdentityServiceFactory();
@@ -27,14 +22,6 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
         $this->addToAssertionCount(1);
     }
 
-    /**
-     * Test config with empty string.
-     * This can happen when auth0 is not setup in env or has empty values.
-     *
-     * @return void
-     *
-     * @see https://eonx.atlassian.net/browse/PYMT-1020
-     */
     public function testCreateWorksWithEmptyConfig(): void
     {
         $factory = new Auth0IdentityServiceFactory();
