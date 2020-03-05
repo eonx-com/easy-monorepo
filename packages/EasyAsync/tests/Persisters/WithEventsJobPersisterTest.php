@@ -81,6 +81,9 @@ final class WithEventsJobPersisterTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @dataProvider providerTestMethods
+     */
     public function testMethods(callable $call, string $method, ?string $eventClass = null): void
     {
         $dispatcher = new EventDispatcherStub();

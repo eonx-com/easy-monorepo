@@ -22,6 +22,9 @@ final class JobLogFactoryTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @dataProvider providerCreate
+     */
     public function testCreate(TargetInterface $target, string $type, string $jobId): void
     {
         $jobLog = (new JobLogFactory())->create($target, $type, $jobId);

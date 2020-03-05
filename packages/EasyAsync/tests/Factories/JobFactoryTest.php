@@ -27,6 +27,9 @@ final class JobFactoryTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @dataProvider providerCreate
+     */
     public function testCreate(TargetInterface $target, string $type, ?int $total = null): void
     {
         $job = (new JobFactory())->create($target, $type, $total);

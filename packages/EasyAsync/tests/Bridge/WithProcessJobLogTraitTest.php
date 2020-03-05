@@ -38,6 +38,9 @@ final class WithProcessJobLogTraitTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @dataProvider providerProcessWithJobLog
+     */
     public function testProcessWithJobLog(callable $func, callable $test): void
     {
         $withData = new WithProcessJobLogDataStub();

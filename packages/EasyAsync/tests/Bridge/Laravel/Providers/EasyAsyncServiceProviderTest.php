@@ -57,6 +57,9 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
         $app->register(EasyAsyncServiceProvider::class);
     }
 
+    /**
+     * @dataProvider providerTestServiceProvider
+     */
     public function testServiceProvider(
         string $implementation,
         array $implementationServices,

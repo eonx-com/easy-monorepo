@@ -138,6 +138,9 @@ final class JobPersisterTest extends AbstractTestCase
         $this->getPersister($conn)->find('jobId');
     }
 
+    /**
+     * @dataProvider providerListMethods
+     */
     public function testListMethods(callable $callMethod, callable $queryBuilderExpectations): void
     {
         $queryBuilder = $this->mock(QueryBuilder::class, static function (MockInterface $mock): void {

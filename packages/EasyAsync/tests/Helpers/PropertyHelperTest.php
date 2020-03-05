@@ -80,6 +80,9 @@ final class PropertyHelperTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @dataProvider providerGetSetterName
+     */
     public function testGetSetterName(string $property, string $setterName): void
     {
         self::assertEquals($setterName, PropertyHelper::getSetterName($property));
