@@ -49,9 +49,6 @@ parameters:
         - message: '#Access to an undefined property object::\$[\w]+.#'
           path: packages/EasyCore/tests/Http/Middleware
 
-        - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertSame\(\)#'
-          path: packages/EasyCore/tests/Http/Middleware
-
         - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\Providers\\CachedConfigServiceProvider::\$loadedConfigurations.#'
           path: packages/EasyCore/src/Bridge/Laravel/Providers
 
