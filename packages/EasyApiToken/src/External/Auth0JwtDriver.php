@@ -74,7 +74,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
             'cache' => $this->cache,
             'client_secret' => $this->privateKey,
             'supported_algs' => $this->allowedAlgos,
-            'valid_audiences' => $this->validAudiences
+            'valid_audiences' => $this->validAudiences,
         ]);
 
         return $verifier->verifyAndDecode($token);

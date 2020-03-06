@@ -10,7 +10,7 @@ $configs = [];
 // Get config
 $inputConfig = (new ConfigResolver())->resolveFromInputWithFallback(new ArgvInput(), [
     'easy-docker.yaml',
-    'easy-docker.yml'
+    'easy-docker.yml',
 ]);
 
 if ($inputConfig) {

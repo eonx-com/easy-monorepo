@@ -32,7 +32,7 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
         return [
             'project.cfhighlander.rb',
             'project.config.yaml',
-            'project.mappings.yaml'
+            'project.mappings.yaml',
         ];
     }
 
@@ -57,7 +57,7 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
             'redis/redis.cfhighlander.rb',
             'redis/redis.cfndsl.rb',
             'redis/redis.config.yaml',
-            'redis/redis.mappings.yaml'
+            'redis/redis.mappings.yaml',
         ];
     }
 

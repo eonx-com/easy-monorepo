@@ -21,23 +21,23 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
             'roles' => [
                 'https://manage.eonx.com/roles' => [
                     'subscriptions:operator',
-                    'subscriptions:finance'
-                ]
-            ]
+                    'subscriptions:finance',
+                ],
+            ],
         ], 'original');
         $token = $encoder->encode($apiToken);
 
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $decodedToken */
         $decodedToken = $this->createJwtTokenDecoder()->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'Bearer ' . $token
+            'HTTP_AUTHORIZATION' => 'Bearer ' . $token,
         ]));
 
         self::assertInstanceOf(JwtEasyApiToken::class, $decodedToken);
         self::assertTrue($decodedToken->hasClaim('https://manage.eonx.com/roles'));
-        self::assertSame(
+        self::assertEquals(
             [
                 'subscriptions:operator',
-                'subscriptions:finance'
+                'subscriptions:finance',
             ],
             $decodedToken->getClaim('https://manage.eonx.com/roles')
         );
@@ -50,7 +50,7 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
         $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken([], ''));
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
         $token = $this->createJwtTokenDecoder()->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
+            'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString,
         ]));
 
         self::assertInstanceOf(JwtEasyApiToken::class, $token);

@@ -20,6 +20,6 @@ class UpdatedEntityTest extends AbstractTestCase
             ['id']
         );
 
-        self::assertSame(['changed'], $dto->getChangedProperties());
+        self::assertEquals(['changed'], $dto->getChangedProperties());
     }
 }

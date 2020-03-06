@@ -102,7 +102,7 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
             'failed' => $this->getFailed(),
             'processed' => $this->getProcessed(),
             'succeeded' => $this->getSucceeded(),
-            'total' => $this->getTotal()
+            'total' => $this->getTotal(),
         ];
 
         return parent::toArray() + $array;

@@ -16,7 +16,7 @@ final class BasicAuthEncoder implements EasyApiTokenEncoderInterface
         if (($apiToken instanceof BasicAuthEasyApiTokenInterface) === false) {
             throw new InvalidArgumentException(\sprintf(
                 'In "%s", API token expected to be instance of "%s", "%s" given.',
-                \get_class($this),
+                static::class,
                 BasicAuthEasyApiTokenInterface::class,
                 \get_class($apiToken)
             ));
@@ -32,7 +32,7 @@ final class BasicAuthEncoder implements EasyApiTokenEncoderInterface
 
         throw new UnableToEncodeEasyApiTokenException(\sprintf(
             'In "%s", username and/or password empty. Payload: [username => "%s", password => "%s"]',
-            \get_class($this),
+            static::class,
             $username,
             $password
         ));

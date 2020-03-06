@@ -21,7 +21,7 @@ trait ChainEasyApiTokenDecoderTrait
 
         throw new InvalidArgumentException(\sprintf(
             'In "%s", decoder must be an instance of "%s", "%s" given',
-            \get_class($this),
+            static::class,
             EasyApiTokenDecoderInterface::class,
             \gettype($decoder)
         ));
@@ -35,7 +35,7 @@ trait ChainEasyApiTokenDecoderTrait
     private function validateDecoders(array $decoders): void
     {
         if (empty($decoders)) {
-            throw new InvalidArgumentException(\sprintf('In "%s", empty array of decoders given', \get_class($this)));
+            throw new InvalidArgumentException(\sprintf('In "%s", empty array of decoders given', static::class));
         }
 
         foreach ($decoders as $decoder) {

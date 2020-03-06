@@ -44,7 +44,7 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
 
                 return $next($input);
             },
-            [$this, 'actAsMiddleware']
+            [$this, 'actAsMiddleware'],
         ];
 
         $pipeline = new IlluminatePipeline(new Pipeline(), $middlewareList);
@@ -68,8 +68,8 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
         self::assertEquals([
             LoggerChangeNameMiddleware::class => [
                 'Changed name "bob" to "harry"',
-                'Changed name "harry" to "brandon"'
-            ]
+                'Changed name "harry" to "brandon"',
+            ],
         ], $logs);
     }
 }

@@ -17,7 +17,7 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
         'HS384',
         'RS256',
         'RS384',
-        'RS512'
+        'RS512',
     ];
 
     /**
@@ -37,7 +37,7 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
         'iss' => 'stepthefkup.com',
         'aud' => 'stepthefkup.com.au',
         'iat' => 1549340373,
-        'nbf' => 1549340373
+        'nbf' => 1549340373,
     ];
 
     /**

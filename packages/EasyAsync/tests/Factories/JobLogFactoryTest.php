@@ -18,7 +18,7 @@ final class JobLogFactoryTest extends AbstractTestCase
         yield 'Create job log' => [
             new Target('id', 'type'),
             'test',
-            'jobId'
+            'jobId',
         ];
     }
 

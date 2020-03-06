@@ -13,7 +13,7 @@ final class QueueWorkerStoppingListener
      * @var mixed[]
      */
     private static $reasons = [
-        12 => 'Memory exceeded'
+        12 => 'Memory exceeded',
     ];
 
     /**

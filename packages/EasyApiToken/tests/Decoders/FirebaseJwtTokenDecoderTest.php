@@ -28,7 +28,7 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
 
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
             $token = (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken($algo)
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken($algo),
             ]));
 
             $payload = $token->getPayload();
@@ -69,7 +69,7 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
         ));
 
         (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken()
+            'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken(),
         ]));
     }
 }

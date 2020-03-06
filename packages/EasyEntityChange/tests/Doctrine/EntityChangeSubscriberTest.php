@@ -39,7 +39,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
             ->method('getEntityChangeSet')
             ->with($entity)
             ->willReturn([
-                'property' => ['blue', 'red']
+                'property' => ['blue', 'red'],
             ]);
 
         $metadata = $this->createMock(ClassMetadata::class);
@@ -56,7 +56,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
                 ['property'],
                 stdClass::class,
                 ['id' => 'thing']
-            )
+            ),
         ]);
 
         $this->callSubscriber($subscriber, $metadata, $unitOfWork);
@@ -73,14 +73,14 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $unitOfWork = $this->getUnitOfWork(null, null, null, [
             new ArrayCollection([
-                $entity
-            ])
+                $entity,
+            ]),
         ]);
         $unitOfWork->expects(self::once())
             ->method('getEntityChangeSet')
             ->with($entity)
             ->willReturn([
-                'property' => ['green', 'purple']
+                'property' => ['green', 'purple'],
             ]);
 
         $metadata = $this->createMock(ClassMetadata::class);
@@ -97,7 +97,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
                 ['property'],
                 stdClass::class,
                 ['id' => 'seventy']
-            )
+            ),
         ]);
 
         $this->callSubscriber($subscriber, $metadata, $unitOfWork);
@@ -129,7 +129,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
                 stdClass::class,
                 ['id' => 'value'],
                 ['metadata' => 'thing']
-            )
+            ),
         ]);
 
         $this->callSubscriber($subscriber, $metadata, $unitOfWork);
@@ -166,7 +166,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $this->callSubscriber($subscriber);
 
-        self::assertSame([], $dispatcher->getDispatched());
+        self::assertEquals([], $dispatcher->getDispatched());
     }
 
     public function testListenerInsert(): void
@@ -181,7 +181,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
             ->method('getEntityChangeSet')
             ->with($entity)
             ->willReturn([
-                'property' => ['old', 'new']
+                'property' => ['old', 'new'],
             ]);
 
         $metadata = $this->createMock(ClassMetadata::class);
@@ -201,7 +201,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
                 ['property'],
                 stdClass::class,
                 ['id' => 'value']
-            )
+            ),
         ]);
 
         $this->callSubscriber($subscriber, $metadata, $unitOfWork);
@@ -247,7 +247,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $events = $subscriber->getSubscribedEvents();
 
-        self::assertSame([Events::onFlush, Events::postFlush], $events);
+        self::assertEquals([Events::onFlush, Events::postFlush], $events);
     }
 
     /**

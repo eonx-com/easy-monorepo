@@ -31,8 +31,8 @@ class ManagementTokenProvider
                 'audience' => \sprintf('https://%s/api/v2/', $this->config->getDomain()),
                 'client_id' => $this->config->getClientId(),
                 'client_secret' => $this->config->getClientSecret(),
-                'grant_type' => 'client_credentials'
-            ]
+                'grant_type' => 'client_credentials',
+            ],
         ]);
 
         $data = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);

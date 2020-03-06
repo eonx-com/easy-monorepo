@@ -42,7 +42,7 @@ final class ManifestGenerator implements ManifestGeneratorInterface
                     'date' => $now,
                     'hash' => $status->getHash(),
                     'status' => $statusString,
-                    'version' => $version
+                    'version' => $version,
                 ];
             }
         }

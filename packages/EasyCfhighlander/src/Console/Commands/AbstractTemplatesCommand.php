@@ -22,7 +22,7 @@ abstract class AbstractTemplatesCommand extends Command
     /** @var string[] */
     private const CHECKS = [
         'elasticsearch_enabled' => 'elasticsearch',
-        'redis_enabled' => 'redis'
+        'redis_enabled' => 'redis',
     ];
 
     /** @var int */

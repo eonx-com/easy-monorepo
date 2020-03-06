@@ -46,7 +46,7 @@ return [
         | new \App\Decisions\Expressions\MyOwnFunctionsProvider()
         |
         */
-        'providers' => []
+        'providers' => [],
     ],
 
     /*
@@ -85,5 +85,5 @@ return [
     */
     'decisions' => [
         // Your decisions here...
-    ]
+    ],
 ];

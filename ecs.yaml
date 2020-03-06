@@ -4,6 +4,7 @@ parameters:
         - '*/vendor/*.php'
 
     sets:
+        - 'common'
         - 'clean-code'
         - 'php70'
         - 'php71'
@@ -12,7 +13,15 @@ parameters:
         - 'dead-code'
 
     skip:
+        PhpCsFixer\Fixer\CastNotation\CastSpacesFixer: ~
+        PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer: ~
+        PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer: ~
+        PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer: ~
+        PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer: ~
         PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer: ~
+        PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer: ~
+
+        SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff.NullTypeHintNotOnLastPosition: ~
 
         # types: allow mixed
         SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingAnyTypeHint: ~

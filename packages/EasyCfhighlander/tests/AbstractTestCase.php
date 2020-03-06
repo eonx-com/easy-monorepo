@@ -31,7 +31,7 @@ abstract class AbstractTestCase extends TestCase
         $tester->setInputs($inputs ?? []);
         $tester->execute([
             'command' => $command,
-            '--cwd' => static::$cwd
+            '--cwd' => static::$cwd,
         ], ['capture_stderr_separately' => true]);
 
         return $tester->getDisplay();

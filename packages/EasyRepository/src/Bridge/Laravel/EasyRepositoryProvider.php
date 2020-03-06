@@ -11,7 +11,7 @@ final class EasyRepositoryProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/config/easy-repository.php' => \base_path('config/easy-repository.php')
+            __DIR__ . '/config/easy-repository.php' => \base_path('config/easy-repository.php'),
         ]);
     }
 

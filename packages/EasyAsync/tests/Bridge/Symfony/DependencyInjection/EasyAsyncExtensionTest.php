@@ -40,8 +40,8 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
             [
                 'data_cleaner' => DataCleaner::class,
                 'job_log_persister' => JobLogPersister::class,
-                'job_persister' => JobPersister::class
-            ]
+                'job_persister' => JobPersister::class,
+            ],
         ];
     }
 
@@ -71,7 +71,7 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
             JobLogPersisterInterface::class => $implementationServices['job_log_persister'],
             'default_job_persister' => $implementationServices['job_persister'],
             JobPersisterInterface::class => WithEventsJobPersister::class,
-            JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class
+            JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class,
         ];
 
         foreach ($services as $abstract => $concrete) {

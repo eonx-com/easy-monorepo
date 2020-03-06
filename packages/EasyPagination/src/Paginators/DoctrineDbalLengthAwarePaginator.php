@@ -42,7 +42,7 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
     {
         return $this->conn->fetchAll($queryBuilder->getSQL(), $queryBuilder->getParameters());
     }
-    
+
     protected function doGetTotalItems(QueryBuilder $queryBuilder, string $countAlias): int
     {
         $result = (array)$this->conn->fetchAssoc($queryBuilder->getSQL(), $queryBuilder->getParameters());

@@ -22,7 +22,7 @@ final class BasicAuthDecoder implements EasyApiTokenDecoderInterface
         }
 
         $original = $authorization;
-        $authorization = \explode(':', (string)\base64_decode($authorization));
+        $authorization = \explode(':', (string)\base64_decode($authorization, true));
 
         if (empty(\trim($authorization[0] ?? '')) || empty(\trim($authorization[1] ?? ''))) {
             return null; // If Authorization doesn't contain a username AND a password, return null

@@ -157,7 +157,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
             'failure_params' => JsonHelper::encode($this->getFailureParams()),
             'failure_reason' => $this->getFailureReason(),
             'job_id' => $this->getJobId(),
-            'validation_errors' => JsonHelper::encode($this->getValidationErrors())
+            'validation_errors' => JsonHelper::encode($this->getValidationErrors()),
         ];
 
         return parent::toArray() + $array;

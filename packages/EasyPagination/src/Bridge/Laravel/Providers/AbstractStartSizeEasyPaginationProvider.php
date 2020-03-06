@@ -19,13 +19,13 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
         'start_attribute' => 'page',
         'start_default' => 1,
         'size_attribute' => 'perPage',
-        'size_default' => 15
+        'size_default' => 15,
     ];
 
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/pagination.php' => \base_path('config/pagination.php')
+            __DIR__ . '/../config/pagination.php' => \base_path('config/pagination.php'),
         ]);
     }
 

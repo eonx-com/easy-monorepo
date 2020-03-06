@@ -40,7 +40,7 @@ final class ExpressionLanguageTest extends AbstractTestCase
     private function getExpressionLanguage(): ExpressionLanguageInterface
     {
         return $this->getExpressionLanguageFactory()->create(new ExpressionLanguageConfig(null, [
-            new FromPhpExpressionFunctionProvider(['min', 'max'])
+            new FromPhpExpressionFunctionProvider(['min', 'max']),
         ]));
     }
 }

@@ -117,7 +117,7 @@ trait DoctrineOrmRepositoryTrait
         }
 
         foreach ($objects as $object) {
-            $this->manager->$method($object);
+            $this->manager->{$method}($object);
         }
     }
 }

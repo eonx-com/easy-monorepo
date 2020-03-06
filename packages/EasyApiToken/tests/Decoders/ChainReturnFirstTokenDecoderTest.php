@@ -17,7 +17,7 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
     {
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface $token */
         $token = $this->createChainReturnFirstTokenDecoder()->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode('api-key: ')
+            'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode('api-key: '),
         ]));
 
         self::assertInstanceOf(ApiKeyEasyApiTokenInterface::class, $token);
@@ -28,7 +28,7 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
     {
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface $token */
         $token = $this->createChainReturnFirstTokenDecoder()->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode('username:password')
+            'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode('username:password'),
         ]));
 
         self::assertInstanceOf(BasicAuthEasyApiTokenInterface::class, $token);

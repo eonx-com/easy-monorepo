@@ -139,7 +139,7 @@ final class Logger implements LoggerInterface
             $context['response'] = [
                 'headers' => $response->getHeaders(),
                 'status_code' => $response->getStatusCode(),
-                'content' => $response->getContent()
+                'content' => $response->getContent(),
             ];
         }
 
@@ -268,8 +268,8 @@ final class Logger implements LoggerInterface
                 'Illuminate\\',
                 'Laravel\\',
                 'React\\',
-                'Symfony\\'
-            ])
+                'Symfony\\',
+            ]),
         ];
     }
 

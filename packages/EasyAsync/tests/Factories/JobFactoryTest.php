@@ -17,13 +17,13 @@ final class JobFactoryTest extends AbstractTestCase
     {
         yield 'Create job without total' => [
             new Target('id', 'type'),
-            'test'
+            'test',
         ];
 
         yield 'Create job with total' => [
             new Target('id', 'type'),
             'test',
-            100
+            100,
         ];
     }
 

@@ -18,15 +18,15 @@ class ConfigTest extends AbstractTestCase
             'client_id' => 'client_id',
             'client_secret' => 'client_secret',
             'connection' => 'connection',
-            'domain' => 'domain'
+            'domain' => 'domain',
         ];
 
         $config = new Config($expected);
 
-        self::assertSame($expected['client_id'], $config->getClientId());
-        self::assertSame($expected['client_secret'], $config->getClientSecret());
-        self::assertSame($expected['connection'], $config->getConnection());
-        self::assertSame($expected['domain'], $config->getDomain());
+        self::assertEquals($expected['client_id'], $config->getClientId());
+        self::assertEquals($expected['client_secret'], $config->getClientSecret());
+        self::assertEquals($expected['connection'], $config->getConnection());
+        self::assertEquals($expected['domain'], $config->getDomain());
     }
 
     public function testRequiredDataMissingException(): void

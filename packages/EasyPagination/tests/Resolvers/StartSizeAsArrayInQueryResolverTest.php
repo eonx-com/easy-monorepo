@@ -14,8 +14,8 @@ final class StartSizeAsArrayInQueryResolverTest extends AbstractTestCase
         $data = (new StartSizeAsArrayInQueryResolver($config, 'page'))->resolve($this->createServerRequest([
             'page' => [
                 'page' => 5,
-                'perPage' => 100
-            ]
+                'perPage' => 100,
+            ],
         ]));
 
         self::assertEquals(5, $data->getStart());
@@ -28,8 +28,8 @@ final class StartSizeAsArrayInQueryResolverTest extends AbstractTestCase
         $data = (new StartSizeAsArrayInQueryResolver($config, 'page'))->resolve($this->createServerRequest([
             'page' => [
                 'page' => '10',
-                'perPage' => '50'
-            ]
+                'perPage' => '50',
+            ],
         ]));
 
         self::assertEquals(10, $data->getStart());
@@ -40,7 +40,7 @@ final class StartSizeAsArrayInQueryResolverTest extends AbstractTestCase
     {
         $config = $this->createConfig();
         $data = (new StartSizeAsArrayInQueryResolver($config, 'page'))->resolve($this->createServerRequest([
-            'page' => 'im-not-an-array'
+            'page' => 'im-not-an-array',
         ]));
 
         self::assertEquals($config->getStartDefault(), $data->getStart());

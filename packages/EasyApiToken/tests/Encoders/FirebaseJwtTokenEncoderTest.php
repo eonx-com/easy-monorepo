@@ -28,7 +28,7 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
             $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken(static::$tokenPayload, ''));
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
             $token = $this->createJwtTokenDecoder($algo, $publicKey)->decode($this->createServerRequest([
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString,
             ]));
 
             self::assertInstanceOf(JwtEasyApiToken::class, $token);

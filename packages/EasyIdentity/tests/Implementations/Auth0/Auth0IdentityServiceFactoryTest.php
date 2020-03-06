@@ -15,7 +15,7 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
             'client_id' => 'client_id',
             'client_secret' => 'client_secret',
             'connection' => 'connection',
-            'domain' => 'domain'
+            'domain' => 'domain',
         ]);
 
         // If service was instantiated without error then test passes.
@@ -29,7 +29,7 @@ final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
             'client_id' => '',
             'client_secret' => '',
             'connection' => '',
-            'domain' => ''
+            'domain' => '',
         ]);
 
         // assert the above code works without any exception thrown.

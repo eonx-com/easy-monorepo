@@ -34,7 +34,7 @@ final class PropertyHelperTest extends AbstractTestCase
             static function (JobInterface $job): void {
                 self::assertNull($job->getFinishedAt());
                 self::assertInstanceOf(\DateTime::class, $job->getStartedAt());
-            }
+            },
         ];
     }
 
@@ -48,7 +48,7 @@ final class PropertyHelperTest extends AbstractTestCase
             ['failed'],
             static function (JobInterface $job): void {
                 self::assertEquals(10, $job->getFailed());
-            }
+            },
         ];
     }
 
@@ -62,7 +62,7 @@ final class PropertyHelperTest extends AbstractTestCase
             ['debug_info'],
             static function (JobLogInterface $jobLog): void {
                 self::assertEquals(['key' => 'value'], $jobLog->getDebugInfo());
-            }
+            },
         ];
     }
 
@@ -76,7 +76,7 @@ final class PropertyHelperTest extends AbstractTestCase
             ['failure_reason'],
             static function (JobLogInterface $jobLog): void {
                 self::assertEquals('reason', $jobLog->getFailureReason());
-            }
+            },
         ];
     }
 

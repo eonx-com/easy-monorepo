@@ -23,7 +23,7 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
     public function modifyProvider(): iterable
     {
         yield 'No provider resolved because not token' => [
-            new ProviderProviderInterfaceStub()
+            new ProviderProviderInterfaceStub(),
         ];
 
         $context = new Context();
@@ -31,40 +31,40 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
 
         yield 'No provider resolved because token not jwt' => [
             new ProviderProviderInterfaceStub(),
-            $context
+            $context,
         ];
 
         $context->setToken(new JwtEasyApiToken([], 'jwt'));
 
         yield 'No provider resolved because no provider claim' => [
             new ProviderProviderInterfaceStub(),
-            $context
+            $context,
         ];
 
         $context->setToken(new JwtEasyApiToken([ContextInterface::JWT_MANAGE_CLAIM => ['provider' => '']], 'jwt'));
 
         yield 'No provider resolved because provider claim empty' => [
             new ProviderProviderInterfaceStub(),
-            $context
+            $context,
         ];
 
         $context->setToken(new JwtEasyApiToken([
-            ContextInterface::JWT_MANAGE_CLAIM => ['provider' => 'provider-id']
+            ContextInterface::JWT_MANAGE_CLAIM => ['provider' => 'provider-id'],
         ], 'jwt'));
 
         yield 'No provider resolved because provider provider returns null' => [
             new ProviderProviderInterfaceStub(),
-            $context
+            $context,
         ];
 
         $context->setToken(new JwtEasyApiToken([
-            ContextInterface::JWT_MANAGE_CLAIM => ['provider' => 'provider-id']
+            ContextInterface::JWT_MANAGE_CLAIM => ['provider' => 'provider-id'],
         ], 'jwt'));
 
         yield 'Provider resolved' => [
             new ProviderProviderInterfaceStub($provider = new ProviderInterfaceStub('provider-id')),
             $context,
-            $provider
+            $provider,
         ];
     }
 
@@ -80,6 +80,6 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
 
         (new ProviderFromJwtModifier($providerProvider))->modify($context, new Request());
 
-        self::assertSame($provider, $context->getProvider());
+        self::assertEquals($provider, $context->getProvider());
     }
 }

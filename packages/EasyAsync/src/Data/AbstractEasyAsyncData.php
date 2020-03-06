@@ -123,7 +123,7 @@ abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
             'status' => $this->getStatus(),
             'target_id' => $this->getTargetId(),
             'target_type' => $this->getTargetType(),
-            'type' => $this->getType()
+            'type' => $this->getType(),
         ];
     }
 }

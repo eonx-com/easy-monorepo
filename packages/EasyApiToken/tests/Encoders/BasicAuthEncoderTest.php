@@ -17,7 +17,7 @@ final class BasicAuthEncoderTest extends AbstractTestCase
         $tests = [
             'username' => 'password',
             'username ' => ' password ',
-            'username  ' => 'Sp3c|@l_cH\\aracters'
+            'username  ' => 'Sp3c|@l_cH\\aracters',
         ];
 
         foreach ($tests as $username => $password) {

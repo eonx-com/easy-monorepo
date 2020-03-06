@@ -26,7 +26,7 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
             ));
             $decoder = new JwtTokenInQueryDecoder($jwtEasyApiTokenFactory, 'param');
             $request = $this->createServerRequest(null, [
-                'param' => $this->createToken($algo)
+                'param' => $this->createToken($algo),
             ]);
 
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */

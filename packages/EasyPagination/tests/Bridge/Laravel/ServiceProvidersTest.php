@@ -19,7 +19,7 @@ final class ServiceProvidersTest extends AbstractTestCase
      */
     private static $providers = [
         StartSizeAsArrayInQueryEasyPaginationProvider::class => StartSizeAsArrayInQueryResolver::class,
-        StartSizeInQueryEasyPaginationProvider::class => StartSizeInQueryResolver::class
+        StartSizeInQueryEasyPaginationProvider::class => StartSizeInQueryResolver::class,
     ];
 
     public function testRegister(): void

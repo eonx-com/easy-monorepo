@@ -24,7 +24,7 @@ final class ApiKeyAsBasicAuthUsernameEncoderTest extends AbstractTestCase
         $tests = [
             'apikey',
             'api-key',
-            'Sp3c|@l_cH\\aracters'
+            'Sp3c|@l_cH\\aracters',
         ];
 
         foreach ($tests as $test) {

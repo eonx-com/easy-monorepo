@@ -22,7 +22,7 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
      * @var string
      */
     private $queryParam;
-    
+
     public function __construct(JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory, string $queryParam)
     {
         $this->jwtApiTokenFactory = $jwtApiTokenFactory;

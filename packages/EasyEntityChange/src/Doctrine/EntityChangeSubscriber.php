@@ -70,7 +70,7 @@ final class EntityChangeSubscriber implements EventSubscriber
     {
         return [
             Events::onFlush,
-            Events::postFlush
+            Events::postFlush,
         ];
     }
 
@@ -194,7 +194,7 @@ final class EntityChangeSubscriber implements EventSubscriber
         if (\count($entityIds) === 0) {
             $this->inserts[] = [
                 new UpdatedEntity($changedProperties, $className, $entityIds),
-                $entity
+                $entity,
             ];
 
             return;

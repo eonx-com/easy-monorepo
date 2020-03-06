@@ -29,7 +29,7 @@ final class JwtEasyApiTokenFactory implements JwtEasyApiTokenFactoryInterface
             throw new InvalidEasyApiTokenFromRequestException(
                 \sprintf(
                     'Decoder "%s" unable to decode token. Message: %s',
-                    \get_class($this),
+                    static::class,
                     $exception->getMessage()
                 ),
                 $exception->getCode(),

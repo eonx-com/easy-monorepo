@@ -17,13 +17,13 @@ final class CachedConfigServiceProviderTest extends AbstractTestCase
         yield 'Has cached config' => [
             __DIR__ . '/../fixtures/cached_config/has_cached_config',
             'cached-connection',
-            'database.connection'
+            'database.connection',
         ];
 
         yield 'Has no cached config' => [
             __DIR__ . '/../fixtures/cached_config/has_no_cached_config',
             'not-cached-connection',
-            'database.connection'
+            'database.connection',
         ];
     }
 

@@ -29,7 +29,7 @@ class ManagementTokenProviderTest extends AbstractTestCase
         $provider = new ManagementTokenProvider($client, $config);
         $token = $provider->getToken();
 
-        self::assertSame('access_token', $token);
+        self::assertEquals('access_token', $token);
     }
 
     public function testGetTokenWithMissingTokenInResponse(): void
@@ -46,7 +46,7 @@ class ManagementTokenProviderTest extends AbstractTestCase
         $provider = new ManagementTokenProvider($client, $config);
         $token = $provider->getToken();
 
-        self::assertSame('access_token', $token);
+        self::assertEquals('access_token', $token);
     }
 
     /**
@@ -67,8 +67,8 @@ class ManagementTokenProviderTest extends AbstractTestCase
                     'audience' => \sprintf('https://%s/api/v2/', $config->getDomain()),
                     'client_id' => $config->getClientId(),
                     'client_secret' => $config->getClientSecret(),
-                    'grant_type' => 'client_credentials'
-                ]
+                    'grant_type' => 'client_credentials',
+                ],
             ])
             ->andReturn($response);
     }
@@ -79,7 +79,7 @@ class ManagementTokenProviderTest extends AbstractTestCase
             'client_id' => 'client_id',
             'client_secret' => 'client_secret',
             'connection' => 'connection',
-            'domain' => 'domain'
+            'domain' => 'domain',
         ]);
     }
 }

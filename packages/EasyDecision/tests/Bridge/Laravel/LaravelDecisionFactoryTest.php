@@ -18,9 +18,9 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
             'decisions' => [
                 'my-decision' => [
                     'providers' => [new RuleProviderStub()],
-                    'type' => AffirmativeDecision::class
-                ]
-            ]
+                    'type' => AffirmativeDecision::class,
+                ],
+            ],
         ]);
 
         self::assertInstanceOf(AffirmativeDecision::class, $this->getDecisionFactory()->create('my-decision'));
@@ -43,9 +43,9 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
             'decisions' => [
                 'my-decision' => [
                     'providers' => 'my-provider',
-                    'type' => ''
-                ]
-            ]
+                    'type' => '',
+                ],
+            ],
         ]);
 
         $this->getDecisionFactory()->create('my-decision');
@@ -59,9 +59,9 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
             'decisions' => [
                 'my-decision' => [
                     'providers' => RuleProviderStub::class,
-                    'type' => AffirmativeDecision::class
-                ]
-            ]
+                    'type' => AffirmativeDecision::class,
+                ],
+            ],
         ]);
 
         self::assertInstanceOf(AffirmativeDecision::class, $this->getDecisionFactory()->create('my-decision'));
@@ -74,8 +74,8 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $this->setConfig([
             'decisions' => [
                 'my-decision' => new DecisionConfigProviderStub(),
-                'my-decision-different' => new DecisionConfigProviderStub()
-            ]
+                'my-decision-different' => new DecisionConfigProviderStub(),
+            ],
         ]);
 
         $decisionFactory = $this->getDecisionFactory();
@@ -83,7 +83,7 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $decisionAgain = $decisionFactory->create('my-decision');
         $differentDecision = $decisionFactory->create('my-decision-different');
 
-        self::assertNotEquals(\spl_object_hash($decision), \spl_object_hash($decisionAgain));
+        self::assertNotSame(\spl_object_hash($decision), \spl_object_hash($decisionAgain));
         self::assertEquals($decision->make([]), $differentDecision->make([]));
     }
 
@@ -95,8 +95,8 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
 
         $this->setConfig([
             'decisions' => [
-                'my-decision' => 'MyDecisionConfigProvider'
-            ]
+                'my-decision' => 'MyDecisionConfigProvider',
+            ],
         ]);
 
         $this->getDecisionFactory()->create('my-decision');

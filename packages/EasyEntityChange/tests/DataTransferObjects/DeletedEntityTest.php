@@ -20,6 +20,6 @@ class DeletedEntityTest extends AbstractTestCase
             ['metadata']
         );
 
-        self::assertSame(['metadata'], $dto->getMetadata());
+        self::assertEquals(['metadata'], $dto->getMetadata());
     }
 }

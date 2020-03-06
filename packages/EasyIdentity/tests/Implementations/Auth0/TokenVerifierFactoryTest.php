@@ -18,7 +18,7 @@ class TokenVerifierFactoryTest extends AbstractTestCase
             'client_id' => 'client_id',
             'client_secret' => 'client_secret',
             'connection' => 'connection',
-            'domain' => 'domain'
+            'domain' => 'domain',
         ]);
 
         $verifier = new TokenVerifierFactory($config);

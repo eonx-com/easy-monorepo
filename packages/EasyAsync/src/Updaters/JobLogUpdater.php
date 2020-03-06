@@ -34,7 +34,7 @@ final class JobLogUpdater implements JobLogUpdaterInterface
             'code' => $throwable->getCode(),
             'file' => $throwable->getFile(),
             'line' => $throwable->getLine(),
-            'trace' => $throwable->getTraceAsString()
+            'trace' => $throwable->getTraceAsString(),
         ]);
     }
 

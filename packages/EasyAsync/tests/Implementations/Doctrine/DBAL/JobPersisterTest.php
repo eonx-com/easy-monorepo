@@ -50,7 +50,7 @@ final class JobPersisterTest extends AbstractTestCase
                     ->once()
                     ->with(['targetType' => 'type', 'targetId' => 'id'])
                     ->andReturnSelf();
-            }
+            },
         ];
 
         yield 'findForTargetType' => [
@@ -71,7 +71,7 @@ final class JobPersisterTest extends AbstractTestCase
                     ->once()
                     ->with('targetType', 'type')
                     ->andReturnSelf();
-            }
+            },
         ];
 
         yield 'findForType' => [
@@ -92,7 +92,7 @@ final class JobPersisterTest extends AbstractTestCase
                     ->once()
                     ->with('type', 'test')
                     ->andReturnSelf();
-            }
+            },
         ];
     }
 
@@ -222,8 +222,8 @@ final class JobPersisterTest extends AbstractTestCase
                         'total' => 1,
                         'processed' => 0,
                         'failed' => 0,
-                        'succeeded' => 0
-                    ]
+                        'succeeded' => 0,
+                    ],
                 ]);
         });
 
@@ -300,7 +300,7 @@ final class JobPersisterTest extends AbstractTestCase
             'failed' => 0,
             'succeeded' => 0,
             'type' => 'test',
-            'status' => JobInterface::STATUS_SCHEDULED
+            'status' => JobInterface::STATUS_SCHEDULED,
         ];
 
         /** @var \Doctrine\DBAL\Connection $conn */
@@ -324,7 +324,7 @@ final class JobPersisterTest extends AbstractTestCase
         $method = $forUpdate ? 'findOneForUpdate' : 'find';
 
         /** @var \EonX\EasyAsync\Interfaces\JobInterface $job */
-        $job = $this->getPersister($conn)->$method('jobId');
+        $job = $this->getPersister($conn)->{$method}('jobId');
 
         self::assertEquals($expected['id'], $job->getId());
         self::assertEquals($expected['target_id'], $job->getTargetId());

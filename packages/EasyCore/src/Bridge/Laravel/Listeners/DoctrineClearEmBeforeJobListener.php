@@ -31,7 +31,7 @@ final class DoctrineClearEmBeforeJobListener
         $this->logger->info('Clearing em before job', [
             'connection' => $event->connectionName,
             'job_id' => $event->job->getJobId(),
-            'job_name' => $event->job->getName()
+            'job_name' => $event->job->getName(),
         ]);
 
         $this->entityManager->clear();

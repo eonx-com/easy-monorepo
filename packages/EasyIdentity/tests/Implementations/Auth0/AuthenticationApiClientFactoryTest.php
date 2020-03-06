@@ -17,7 +17,7 @@ class AuthenticationApiClientFactoryTest extends AbstractTestCase
         $config = new Config([
             'client_id' => 'client_id',
             'client_secret' => 'client_secret',
-            'domain' => 'domain'
+            'domain' => 'domain',
         ]);
 
         $factory = new AuthenticationApiClientFactory($config);

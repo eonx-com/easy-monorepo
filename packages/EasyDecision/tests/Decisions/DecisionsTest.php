@@ -25,7 +25,7 @@ final class DecisionsTest extends AbstractTestCase
             [],
             ['value' => 5],
             5,
-            []
+            [],
         ];
 
         yield 'Simple rule' => [
@@ -33,7 +33,7 @@ final class DecisionsTest extends AbstractTestCase
             [$this->createLanguageRule('add(5)')],
             ['value' => 5],
             10,
-            ['add(5)' => 10]
+            ['add(5)' => 10],
         ];
 
         yield 'Rules with name and extra' => [
@@ -42,7 +42,7 @@ final class DecisionsTest extends AbstractTestCase
                 $this->createLanguageRule('add(5)'),
                 $this->createLanguageRule('add(10)', null, 'Add 10'),
                 $this->createLanguageRule('add(20)', null, null, ['key' => 'value']),
-                $this->createLanguageRule('add(30)', null, 'Add 30', ['key1' => 'value1'])
+                $this->createLanguageRule('add(30)', null, 'Add 30', ['key1' => 'value1']),
             ],
             ['value' => 5],
             70,
@@ -50,8 +50,8 @@ final class DecisionsTest extends AbstractTestCase
                 'add(5)' => 10,
                 'Add 10' => 20,
                 'add(20)' => ['output' => 40, 'key' => 'value'],
-                'Add 30' => ['output' => 70, 'key1' => 'value1']
-            ]
+                'Add 30' => ['output' => 70, 'key1' => 'value1'],
+            ],
         ];
 
         yield 'Consensus with name and extra' => [
@@ -60,7 +60,7 @@ final class DecisionsTest extends AbstractTestCase
                 new RuleWithExtraOutputStub('Unsupported with extra', false, ['key' => 'value'], false),
                 new RuleStub('Only false', false),
                 new RuleStub('Only true', true),
-                new RuleWithExtraOutputStub('True with extra', true, ['key' => 'value'])
+                new RuleWithExtraOutputStub('True with extra', true, ['key' => 'value']),
             ],
             [],
             true,
@@ -68,8 +68,8 @@ final class DecisionsTest extends AbstractTestCase
                 'Unsupported with extra' => ['output' => RuleInterface::OUTPUT_UNSUPPORTED, 'key' => 'value'],
                 'Only false' => false,
                 'Only true' => true,
-                'True with extra' => ['output' => true, 'key' => 'value']
-            ]
+                'True with extra' => ['output' => true, 'key' => 'value'],
+            ],
         ];
     }
 

@@ -21,12 +21,12 @@ final class CloudFormationCommandTest extends AbstractTestCase
             'aws_dev_account', // dev_account
             '599070804856', // ops_account
             'aws_prod_account', // prod_account
-            'true' // cli_enabled
+            'true', // cli_enabled
         ];
 
         $filesNotExisting = [
             '.easy/easy-cfhighlander-manifest.json',
-            '.easy/easy-cfhighlander-params.yaml'
+            '.easy/easy-cfhighlander-params.yaml',
         ];
 
         $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-cfhighlander-manifest.json', '{}');
@@ -56,7 +56,7 @@ final class CloudFormationCommandTest extends AbstractTestCase
             'aws_dev_account', // dev_account
             '599070804856', // ops_account
             'aws_prod_account', // prod_account
-            'true' // cli_enabled
+            'true', // cli_enabled
         ];
 
         $files = [
@@ -77,7 +77,7 @@ final class CloudFormationCommandTest extends AbstractTestCase
             'redis/redis.cfhighlander.rb',
             'redis/redis.cfndsl.rb',
             'redis/redis.config.yaml',
-            'redis/redis.mappings.yaml'
+            'redis/redis.mappings.yaml',
         ];
 
         $display = $this->executeCommand('cloudformation', $inputs);

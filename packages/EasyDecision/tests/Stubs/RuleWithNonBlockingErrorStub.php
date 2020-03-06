@@ -23,7 +23,6 @@ final class RuleWithNonBlockingErrorStub implements RuleInterface
         throw new class() extends \Exception implements NonBlockingRuleErrorInterface {
             /**
              * Get error output.
-             *
              */
             public function getErrorOutput(): string
             {

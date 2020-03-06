@@ -23,7 +23,7 @@ class TokenVerifierFactory
             'client_secret' => $this->config->getClientSecret(),
             'supported_algs' => ['RS256'],
             'valid_audiences' => [$this->config->getClientId()],
-            'authorized_iss' => [\sprintf('https://%s/', $this->config->getDomain())]
+            'authorized_iss' => [\sprintf('https://%s/', $this->config->getDomain())],
         ]);
     }
 }

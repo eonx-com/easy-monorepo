@@ -21,7 +21,7 @@ trait DefaultDecoderFactoriesTrait
             'chain' => ChainReturnFirstTokenDecoderFactory::class,
             'jwt-header' => JwtTokenDecoderFactory::class,
             'jwt-param' => JwtTokenInQueryDecoderFactory::class,
-            'user-apikey' => ApiKeyAsBasicAuthUsernameDecoderFactory::class
+            'user-apikey' => ApiKeyAsBasicAuthUsernameDecoderFactory::class,
         ];
     }
 }

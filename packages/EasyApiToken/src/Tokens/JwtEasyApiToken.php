@@ -38,7 +38,7 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
             return $this->payload[$claim];
         }
 
-        throw new InvalidArgumentException(\sprintf('In "%s", claim "%s" not found', \get_class($this), $claim));
+        throw new InvalidArgumentException(\sprintf('In "%s", claim "%s" not found', static::class, $claim));
     }
 
     public function getOriginalToken(): string

@@ -38,49 +38,49 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         yield 'Empty configuration' => [
             [],
             'nothing',
-            'No decoder configured for key: "nothing".'
+            'No decoder configured for key: "nothing".',
         ];
 
         yield 'Error is thrown when a non-existent key is requested.' => [
             ['onething' => ['type' => 'basic']],
             'some_other_thing',
-            'No decoder configured for key: "some_other_thing".'
+            'No decoder configured for key: "some_other_thing".',
         ];
 
         yield 'Error because no type set and no default factories for decoder' => [
             ['fake-basic' => []],
             'fake-basic',
-            'No "type" or default factory configured for decoder "fake-basic".'
+            'No "type" or default factory configured for decoder "fake-basic".',
         ];
 
         yield 'Test that an error is thrown when a non-existent decoder type is configured.' => [
             ['xxx' => ['type' => 'yyy', 'driver' => 'auth0', 'options' => []]],
             'xxx',
-            'Unable to instantiate the factory "yyy" for decoder "xxx".'
+            'Unable to instantiate the factory "yyy" for decoder "xxx".',
         ];
 
         yield 'Expect chain driver with no list to return error.' => [
             ['chain-thing' => ['type' => 'chain']],
             'chain-thing',
-            '"list" is required and must be an array for decoder "chain-thing".'
+            '"list" is required and must be an array for decoder "chain-thing".',
         ];
 
         yield 'Expect error for missing options supplied for JWT driver.' => [
             ['rad' => ['type' => 'jwt-header', 'driver' => 'auth0']],
             'rad',
-            '"options" is required and must be an array for decoder "rad".'
+            '"options" is required and must be an array for decoder "rad".',
         ];
 
         yield 'Expect error for invalid jwt driver.' => [
             ['foobar' => ['type' => 'jwt-header', 'driver' => 'GOOGLE', 'options' => ['not-empty']]],
             'foobar',
-            '"driver" value "GOOGLE" is invalid. Valid drivers: ["auth0", "firebase"].'
+            '"driver" value "GOOGLE" is invalid. Valid drivers: ["auth0", "firebase"].',
         ];
 
         yield 'Expect error for missing jwt driver' => [
             ['something' => ['type' => 'jwt-header', 'options' => []]],
             'something',
-            '"driver" is required and must be a string for decoder "something".'
+            '"driver" is required and must be a string for decoder "something".',
         ];
 
         yield 'Expect error for missing param' => [
@@ -92,12 +92,12 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                         'valid_audiences' => ['id1', 'id2'],
                         'authorized_iss' => ['xyz.auth0', 'abc.goog'],
                         'private_key' => 'someprivatekeystring',
-                        'allowed_algos' => ['HS256', 'RS256']
-                    ]
-                ]
+                        'allowed_algos' => ['HS256', 'RS256'],
+                    ],
+                ],
             ],
             'foobar',
-            '"param" is required and must be an string for decoder "foobar".'
+            '"param" is required and must be an string for decoder "foobar".',
         ];
     }
 
@@ -113,11 +113,11 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                 'type' => 'chain',
                 'list' => [
                     'api',
-                    'pass'
-                ]
+                    'pass',
+                ],
             ],
             'api' => ['type' => 'user-apikey'],
-            'pass' => ['type' => 'basic']
+            'pass' => ['type' => 'basic'],
         ];
 
         yield 'Build API Chain' => [
@@ -125,8 +125,8 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
             'chain-key',
             new ChainReturnFirstTokenDecoder([
                 new ApiKeyAsBasicAuthUsernameDecoder(),
-                new BasicAuthDecoder()
-            ])
+                new BasicAuthDecoder(),
+            ]),
         ];
     }
 
@@ -143,8 +143,8 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     'valid_audiences' => ['id1', 'id2'],
                     'authorized_iss' => ['xyz.auth0', 'abc.goog'],
                     'private_key' => 'someprivatekeystring',
-                    'allowed_algos' => ['HS256', 'RS256']
-                ]
+                    'allowed_algos' => ['HS256', 'RS256'],
+                ],
             ],
             'jwt-by-parameter' => [
                 'type' => 'jwt-param',
@@ -155,8 +155,8 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     'leeway' => 15,
                     'param' => 'authParam',
                     'private_key' => 'someprivatekeystring',
-                    'public_key' => 'somepublickeystring'
-                ]
+                    'public_key' => 'somepublickeystring',
+                ],
             ],
             'jwt-by-header-firebase' => [
                 'type' => 'jwt-header',
@@ -166,8 +166,8 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     'allowed_algos' => ['HS256', 'RS256'],
                     'leeway' => 15,
                     'private_key' => 'someprivatekeystring',
-                    'public_key' => 'somepublickeystring'
-                ]
+                    'public_key' => 'somepublickeystring',
+                ],
             ],
             'jwt-by-parameter-auth0' => [
                 'type' => 'jwt-param',
@@ -177,8 +177,8 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     'authorized_iss' => ['xyz.auth0', 'abc.goog'],
                     'param' => 'authParam',
                     'private_key' => 'someprivatekeystring',
-                    'valid_audiences' => ['id1', 'id2']
-                ]
+                    'valid_audiences' => ['id1', 'id2'],
+                ],
             ],
             'jwt-by-parameter-auth0-with-cache' => [
                 'type' => 'jwt-param',
@@ -189,9 +189,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     'cache_path' => 'test/path',
                     'param' => 'authParam',
                     'private_key' => 'someprivatekeystring',
-                    'valid_audiences' => ['id1', 'id2']
-                ]
-            ]
+                    'valid_audiences' => ['id1', 'id2'],
+                ],
+            ],
         ];
 
         yield 'Jwt Header' => [
@@ -207,7 +207,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                         ['HS256', 'RS256']
                     )
                 )
-            )
+            ),
         ];
 
         yield 'Jwt Parameter' => [
@@ -224,7 +224,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     )
                 ),
                 'authParam'
-            )
+            ),
         ];
 
         yield 'Jwt Header with Firebase' => [
@@ -240,7 +240,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                         15
                     )
                 )
-            )
+            ),
         ];
 
         yield 'Jwt Parameter with Auth0' => [
@@ -257,7 +257,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     )
                 ),
                 'authParam'
-            )
+            ),
         ];
 
         yield 'Jwt Parameter with Auth0, with cache' => [
@@ -275,7 +275,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                     )
                 ),
                 'authParam'
-            )
+            ),
         ];
     }
 
@@ -287,19 +287,19 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         yield 'Simple API Key' => [
             ['apiconfig' => ['type' => 'user-apikey']],
             'apiconfig',
-            new ApiKeyAsBasicAuthUsernameDecoder()
+            new ApiKeyAsBasicAuthUsernameDecoder(),
         ];
 
         yield 'Simple Basic Auth decoder' => [
             ['something' => ['type' => 'basic']],
             'something',
-            new BasicAuthDecoder()
+            new BasicAuthDecoder(),
         ];
 
         yield 'Simple Basic Auth decoder using default factory' => [
             ['basic' => null],
             'basic',
-            new BasicAuthDecoder()
+            new BasicAuthDecoder(),
         ];
     }
 

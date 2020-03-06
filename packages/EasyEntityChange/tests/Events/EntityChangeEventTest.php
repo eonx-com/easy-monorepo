@@ -23,6 +23,6 @@ class EntityChangeEventTest extends AbstractTestCase
 
         $event = new EntityChangeEvent([$updatedEntity]);
 
-        self::assertSame([$updatedEntity], $event->getChanges());
+        self::assertEquals([$updatedEntity], $event->getChanges());
     }
 }

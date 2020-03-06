@@ -100,7 +100,7 @@ abstract class AbstractDecision implements DecisionInterface
         }
 
         $this->input = $input;
-        $this->context = $context = new Context(\get_class($this), $input);
+        $this->context = $context = new Context(static::class, $input);
 
         // If no rules provided, return default output
         if (empty($this->rules)) {
@@ -153,7 +153,7 @@ abstract class AbstractDecision implements DecisionInterface
 
     protected function getExceptionMessage(string $message): string
     {
-        return \sprintf('Decision "%s" of type "%s": %s', $this->name, \get_class($this), $message);
+        return \sprintf('Decision "%s" of type "%s": %s', $this->name, static::class, $message);
     }
 
     /**

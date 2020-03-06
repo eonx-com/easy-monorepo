@@ -23,6 +23,6 @@ interface ContextInterface
     public function getRuleOutputs(): array;
 
     public function isPropagationStopped(): bool;
-    
+
     public function stopPropagation(): self;
 }

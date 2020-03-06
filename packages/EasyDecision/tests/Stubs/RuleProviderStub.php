@@ -18,7 +18,7 @@ final class RuleProviderStub implements RuleProviderInterface
         return [
             new RuleStub('true-1', true),
             new ExpressionLanguageRule('value === 1'),
-            new ExpressionLanguageRule('value < 2')
+            new ExpressionLanguageRule('value < 2'),
         ];
     }
 }

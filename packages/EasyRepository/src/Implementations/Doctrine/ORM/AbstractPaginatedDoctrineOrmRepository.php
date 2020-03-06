@@ -62,9 +62,9 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
     ): LengthAwarePaginatorInterface {
         @\trigger_error(\sprintf(
             '%s::%s() is deprecated since 2.1.5 and will be removed in 3.0, use %s::%s() instead',
-            \get_class($this),
+            static::class,
             __METHOD__,
-            \get_class($this),
+            static::class,
             'createLengthAwarePaginator'
         ), \E_USER_DEPRECATED);
 

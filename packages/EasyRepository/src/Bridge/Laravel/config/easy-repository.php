@@ -20,5 +20,5 @@ return [
     */
     'repositories' => [
         // Define your repositories here...
-    ]
+    ],
 ];

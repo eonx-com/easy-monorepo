@@ -19,7 +19,7 @@ interface LoggerInterface extends ExternalsLoggerInterface
         self::LEVEL_INFO,
         self::LEVEL_INFO,
         self::LEVEL_NOTICE,
-        self::LEVEL_WARNING
+        self::LEVEL_WARNING,
     ];
 
     /**

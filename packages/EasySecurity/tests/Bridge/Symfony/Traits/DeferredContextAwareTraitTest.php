@@ -20,7 +20,7 @@ final class DeferredContextAwareTraitTest extends AbstractSymfonyTestCase
         $stub = new DeferredContextAwareTraitStub();
         $stub->setDeferredContextResolver(new DeferredContextResolver($container, 'service-id'));
 
-        self::assertSame($context, $stub->getContext());
-        self::assertSame($context, $stub->getContext());
+        self::assertEquals($context, $stub->getContext());
+        self::assertEquals($context, $stub->getContext());
     }
 }

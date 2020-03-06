@@ -32,7 +32,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/easy-async.php' => \base_path('config/easy-async.php')
+            __DIR__ . '/../config/easy-async.php' => \base_path('config/easy-async.php'),
         ]);
     }
 
@@ -47,7 +47,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             JobLogFactoryInterface::class => JobLogFactory::class,
             UuidGeneratorInterface::class => RamseyUuidGenerator::class,
             'default_job_log_updater' => JobLogUpdater::class,
-            JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class
+            JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class,
         ];
 
         foreach ($simples as $abstract => $concrete) {

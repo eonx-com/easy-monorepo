@@ -22,6 +22,6 @@ trait MiddlewareLoggerAwareTrait
      */
     private function log($content, ?string $middleware = null): void
     {
-        $this->logger->log($middleware ?? \get_class($this), $content);
+        $this->logger->log($middleware ?? static::class, $content);
     }
 }

@@ -16,7 +16,7 @@ interface FileGeneratorInterface
         self::STATUS_REMOVED,
         self::STATUS_SKIPPED_IDENTICAL,
         self::STATUS_SKIPPED_NO_FILE,
-        self::STATUS_UPDATED
+        self::STATUS_UPDATED,
     ];
 
     /**
@@ -25,7 +25,7 @@ interface FileGeneratorInterface
     public const STATUSES_TO_TRIGGER_MANIFEST = [
         self::STATUS_CREATED,
         self::STATUS_REMOVED,
-        self::STATUS_UPDATED
+        self::STATUS_UPDATED,
     ];
 
     /**

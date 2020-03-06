@@ -45,8 +45,8 @@ final class JobLogPersisterTest extends AbstractTestCase
                 'processed' => 1,
                 'failed' => 0,
                 'succeeded' => 1,
-                'started_at' => $now
-            ]
+                'started_at' => $now,
+            ],
         ];
 
         $jobLog = $this->newJobLog();
@@ -61,8 +61,8 @@ final class JobLogPersisterTest extends AbstractTestCase
                 'processed' => 1,
                 'failed' => 1,
                 'succeeded' => 0,
-                'started_at' => $now
-            ]
+                'started_at' => $now,
+            ],
         ];
 
         $jobLog1 = $this->newJobLog();
@@ -85,8 +85,8 @@ final class JobLogPersisterTest extends AbstractTestCase
                 'failed' => 2,
                 'succeeded' => 1,
                 'started_at' => $now,
-                'finished_at' => $now
-            ]
+                'finished_at' => $now,
+            ],
         ];
 
         $jobLog4 = $this->newJobLog();
@@ -101,8 +101,8 @@ final class JobLogPersisterTest extends AbstractTestCase
                 'processed' => 0,
                 'failed' => 0,
                 'succeeded' => 0,
-                'started_at' => $now
-            ]
+                'started_at' => $now,
+            ],
         ];
     }
 
@@ -196,8 +196,8 @@ final class JobLogPersisterTest extends AbstractTestCase
                         'type' => 'test',
                         'target_id' => 'id',
                         'target_type' => 'type',
-                        'status' => JobLogInterface::STATUS_COMPLETED
-                    ]
+                        'status' => JobLogInterface::STATUS_COMPLETED,
+                    ],
                 ]);
         });
 

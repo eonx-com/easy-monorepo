@@ -24,7 +24,7 @@ final class LengthAwareDoctrineOrmPaginator extends AbstractLengthAwarePaginator
     {
         @\trigger_error(\sprintf(
             '%s is deprecated since 2.1.5 and will be removed in 3.0, use %s instead',
-            \get_class($this),
+            static::class,
             'EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator'
         ), \E_USER_DEPRECATED);
 

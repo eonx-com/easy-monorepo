@@ -46,7 +46,7 @@ final class BasicAuthEasyApiToken implements BasicAuthEasyApiTokenInterface
     {
         return [
             'password' => $this->password,
-            'username' => $this->username
+            'username' => $this->username,
         ];
     }
 

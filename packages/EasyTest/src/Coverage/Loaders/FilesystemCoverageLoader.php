@@ -14,6 +14,6 @@ final class FilesystemCoverageLoader implements CoverageLoaderInterface
             return \file_get_contents($path) ?: '';
         }
 
-        throw new UnableToLoadCoverageException(\sprintf('[%s] Given path "%s" not found', \get_class($this), $path));
+        throw new UnableToLoadCoverageException(\sprintf('[%s] Given path "%s" not found', static::class, $path));
     }
 }

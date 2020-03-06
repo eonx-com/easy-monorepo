@@ -12,7 +12,7 @@ final class JobLogFailedEvent extends AbstractJobLogEvent
      * @var \Throwable
      */
     private $throwable;
-    
+
     public function __construct(JobLogInterface $jobLog, Throwable $throwable)
     {
         parent::__construct($jobLog);

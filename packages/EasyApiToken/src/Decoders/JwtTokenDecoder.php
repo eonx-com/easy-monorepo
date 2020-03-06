@@ -22,7 +22,7 @@ final class JwtTokenDecoder implements EasyApiTokenDecoderInterface
     {
         $this->jwtApiTokenFactory = $jwtApiTokenFactory;
     }
-    
+
     public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Bearer', $request);

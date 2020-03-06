@@ -22,7 +22,7 @@ final class ProviderFromHeaderModifierTest extends AbstractTestCase
     public function modifyProvider(): iterable
     {
         yield 'No provider resolved because no header' => [
-            new ProviderProviderInterfaceStub()
+            new ProviderProviderInterfaceStub(),
         ];
 
         $request = new Request();
@@ -30,7 +30,7 @@ final class ProviderFromHeaderModifierTest extends AbstractTestCase
 
         yield 'No provider resolved because header empty' => [
             new ProviderProviderInterfaceStub(),
-            $request
+            $request,
         ];
 
         $request = new Request();
@@ -38,7 +38,7 @@ final class ProviderFromHeaderModifierTest extends AbstractTestCase
 
         yield 'No provider resolved because no permission' => [
             new ProviderProviderInterfaceStub(),
-            $request
+            $request,
         ];
 
         $context = new Context();
@@ -47,14 +47,14 @@ final class ProviderFromHeaderModifierTest extends AbstractTestCase
         yield 'No provider resolved because provider provider returns null' => [
             new ProviderProviderInterfaceStub(),
             $request,
-            $context
+            $context,
         ];
 
         yield 'Provider resolved' => [
             new ProviderProviderInterfaceStub($provider = new ProviderInterfaceStub('provider-id')),
             $request,
             $context,
-            $provider
+            $provider,
         ];
     }
 
@@ -71,6 +71,6 @@ final class ProviderFromHeaderModifierTest extends AbstractTestCase
 
         (new ProviderFromHeaderModifier($providerProvider))->modify($context, $request ?? new Request());
 
-        self::assertSame($provider, $context->getProvider());
+        self::assertEquals($provider, $context->getProvider());
     }
 }

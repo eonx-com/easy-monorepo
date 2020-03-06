@@ -22,7 +22,7 @@ final class CodeCommand extends AbstractTemplatesCommand
             'project.cfhighlander.rb',
             'project.config.yaml',
             'project-schema.cfhighlander.rb',
-            'project-schema.config.yaml'
+            'project-schema.config.yaml',
         ];
     }
 
@@ -32,7 +32,7 @@ final class CodeCommand extends AbstractTemplatesCommand
     protected function getSimpleFiles(): array
     {
         return [
-            'Jenkinsfile'
+            'Jenkinsfile',
         ];
     }
 

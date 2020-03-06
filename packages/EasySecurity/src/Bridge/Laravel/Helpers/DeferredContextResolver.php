@@ -24,7 +24,7 @@ final class DeferredContextResolver implements DeferredContextResolverInterface
         $this->container = $container;
         $this->contextServiceId = $contextServiceId;
     }
-    
+
     public function resolve(): ContextInterface
     {
         return $this->container->get($this->contextServiceId);

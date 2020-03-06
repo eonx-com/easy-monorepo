@@ -29,7 +29,7 @@ final class PropertyHelper
         foreach ($properties as $property) {
             if (empty($data[$property] ?? null) === false) {
                 $setter = static::getSetterName($property);
-                $object->$setter($datetime->fromString($data[$property]));
+                $object->{$setter}($datetime->fromString($data[$property]));
             }
         }
     }
@@ -43,7 +43,7 @@ final class PropertyHelper
     {
         foreach ($properties as $property) {
             $setter = static::getSetterName($property);
-            $object->$setter((int)($data[$property] ?? 0));
+            $object->{$setter}((int)($data[$property] ?? 0));
         }
     }
 
@@ -58,7 +58,7 @@ final class PropertyHelper
     {
         foreach ($properties as $property) {
             $setter = static::getSetterName($property);
-            $object->$setter(JsonHelper::decode($data[$property] ?? null));
+            $object->{$setter}(JsonHelper::decode($data[$property] ?? null));
         }
     }
 
@@ -72,7 +72,7 @@ final class PropertyHelper
         foreach ($properties as $property) {
             if (isset($data[$property])) {
                 $setter = static::getSetterName($property);
-                $object->$setter($data[$property]);
+                $object->{$setter}($data[$property]);
             }
         }
     }

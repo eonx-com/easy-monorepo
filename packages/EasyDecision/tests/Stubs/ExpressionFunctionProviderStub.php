@@ -26,7 +26,7 @@ final class ExpressionFunctionProviderStub implements ExpressionFunctionProvider
     {
         return [
             $this->functionFactory->create(BaseExpressionFunction::fromPhp('max')),
-            $this->functionFactory->create(BaseExpressionFunction::fromPhp('min'))
+            $this->functionFactory->create(BaseExpressionFunction::fromPhp('min')),
         ];
     }
 }

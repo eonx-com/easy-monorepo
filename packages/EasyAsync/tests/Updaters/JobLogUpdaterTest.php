@@ -35,8 +35,8 @@ final class JobLogUpdaterTest extends AbstractTestCase
                 'code' => $throwable->getCode(),
                 'file' => $throwable->getFile(),
                 'line' => $throwable->getLine(),
-                'trace' => $throwable->getTraceAsString()
-            ]
+                'trace' => $throwable->getTraceAsString(),
+            ],
         ];
 
         $updater->failed($jobLog, $throwable);

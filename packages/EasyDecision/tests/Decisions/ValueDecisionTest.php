@@ -23,7 +23,7 @@ final class ValueDecisionTest extends AbstractTestCase
             [],
             ['value' => 5],
             5,
-            []
+            [],
         ];
 
         yield 'No rules, explicit default output' => [
@@ -32,7 +32,7 @@ final class ValueDecisionTest extends AbstractTestCase
             10,
             [],
             null,
-            10
+            10,
         ];
     }
 
@@ -80,7 +80,7 @@ final class ValueDecisionTest extends AbstractTestCase
 
         $output = $decision->make(['value' => 10]);
 
-        self::assertSame(['non-blocking-error' => 'non-blocking-error'], $decision->getContext()->getRuleOutputs());
+        self::assertEquals(['non-blocking-error' => 'non-blocking-error'], $decision->getContext()->getRuleOutputs());
         self::assertEquals(10, $output);
     }
 
@@ -108,7 +108,7 @@ final class ValueDecisionTest extends AbstractTestCase
 
         $decision = (new ValueDecision())->addRules([
             $this->createUnsupportedRule('unsupported-1'),
-            $modifyRule
+            $modifyRule,
         ]);
 
         $original = ['value' => 0];
@@ -116,7 +116,7 @@ final class ValueDecisionTest extends AbstractTestCase
 
         $expectedRuleOutput = [
             'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
-            $modifyRule->toString() => 10
+            $modifyRule->toString() => 10,
         ];
 
         self::assertEquals($expected, $decision->make($original));

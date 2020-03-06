@@ -71,7 +71,7 @@ final class CachedConfigServiceProvider extends ServiceProvider
     {
         $this->commands([
             CacheConfigCommand::class,
-            ClearConfigCommand::class
+            ClearConfigCommand::class,
         ]);
     }
 }

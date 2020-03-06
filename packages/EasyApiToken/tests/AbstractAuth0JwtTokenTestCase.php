@@ -23,7 +23,7 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
      */
     protected static $tokenPayload = [
         'scopes' => [],
-        'aud' => 'my-identifier'
+        'aud' => 'my-identifier',
     ];
 
     /**

@@ -27,7 +27,7 @@ final class JwtTokenEncoder implements EasyApiTokenEncoderInterface
         if (($apiToken instanceof JwtEasyApiTokenInterface) === false) {
             throw new InvalidArgumentException(\sprintf(
                 'In "%s", API token expected to be instance of "%s", "%s" given.',
-                \get_class($this),
+                static::class,
                 JwtEasyApiTokenInterface::class,
                 \get_class($apiToken)
             ));
@@ -39,7 +39,7 @@ final class JwtTokenEncoder implements EasyApiTokenEncoderInterface
             throw new UnableToEncodeEasyApiTokenException(
                 \sprintf(
                     'In "%s", unable to encode token. Reason: %s',
-                    \get_class($this),
+                    static::class,
                     $exception->getMessage()
                 ),
                 $exception->getCode(),

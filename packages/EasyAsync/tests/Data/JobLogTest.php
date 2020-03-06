@@ -22,7 +22,7 @@ final class JobLogTest extends AbstractTestCase
             'debug_info' => null,
             'failure_params' => null,
             'failure_reason' => 'failure_reason',
-            'validation_errors' => null
+            'validation_errors' => null,
         ];
 
         $jobLog = JobLog::fromArray($expected);

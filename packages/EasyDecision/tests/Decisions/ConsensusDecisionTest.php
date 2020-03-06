@@ -32,14 +32,14 @@ final class ConsensusDecisionTest extends AbstractTestCase
             $this->createTrueRule('true-1'),
             $this->createFalseRule('false-1'),
             $this->createFalseRule('false-2'),
-            $this->createUnsupportedRule('unsupported-1')
+            $this->createUnsupportedRule('unsupported-1'),
         ]);
 
         $expected = [
             'true-1' => true,
             'false-1' => false,
             'false-2' => false,
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED
+            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
         ];
 
         self::assertFalse($decision->make([]));
@@ -52,14 +52,14 @@ final class ConsensusDecisionTest extends AbstractTestCase
             $this->createTrueRule('true-1'),
             $this->createTrueRule('true-2'),
             $this->createFalseRule('false-1'),
-            $this->createUnsupportedRule('unsupported-1')
+            $this->createUnsupportedRule('unsupported-1'),
         ]);
 
         $expected = [
             'true-1' => true,
             'true-2' => true,
             'false-1' => false,
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED
+            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
         ];
 
         self::assertTrue($decision->make([]));
@@ -83,7 +83,7 @@ final class ConsensusDecisionTest extends AbstractTestCase
             $this->createTrueRule('true-2'),
             $this->createFalseRule('false-1'),
             $this->createFalseRule('false-2'),
-            $this->createUnsupportedRule('unsupported-1')
+            $this->createUnsupportedRule('unsupported-1'),
         ]);
 
         $expected = [
@@ -91,7 +91,7 @@ final class ConsensusDecisionTest extends AbstractTestCase
             'true-2' => true,
             'false-1' => false,
             'false-2' => false,
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED
+            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
         ];
 
         self::assertTrue($decision->make([]));

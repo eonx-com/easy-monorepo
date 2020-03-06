@@ -72,7 +72,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
 
         $this->getServiceForUsersMethod($identityUserService, $management)->createUser($identityUser);
 
-        self::assertSame(
+        self::assertEquals(
             'identity-id',
             $identityUserService->getIdentityUserId($identityUser, IdentityServiceNamesInterface::SERVICE_AUTH0)
         );
@@ -277,7 +277,7 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             'client_id' => 'client_id',
             'client_secret' => 'client_secret',
             'connection' => 'connection',
-            'domain' => 'domain'
+            'domain' => 'domain',
         ]);
     }
 

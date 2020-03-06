@@ -24,49 +24,49 @@ final class WithEventsJobPersisterTest extends AbstractTestCase
             static function (WithEventsJobPersister $persister): void {
                 $persister->find('jobId');
             },
-            'find'
+            'find',
         ];
 
         yield 'findForTarget' => [
             static function (WithEventsJobPersister $persister): void {
                 $persister->findForTarget(new Target('id', 'type'), new StartSizeData(1, 15));
             },
-            'findForTarget'
+            'findForTarget',
         ];
 
         yield 'findForTargetType' => [
             static function (WithEventsJobPersister $persister): void {
                 $persister->findForTargetType(new Target('id', 'type'), new StartSizeData(1, 15));
             },
-            'findForTargetType'
+            'findForTargetType',
         ];
 
         yield 'findForType' => [
             static function (WithEventsJobPersister $persister): void {
                 $persister->findForType('type', new StartSizeData(1, 15));
             },
-            'findForType'
+            'findForType',
         ];
 
         yield 'findOneForUpdate' => [
             static function (WithEventsJobPersister $persister): void {
                 $persister->findOneForUpdate('jobId');
             },
-            'findOneForUpdate'
+            'findOneForUpdate',
         ];
 
         yield 'remove' => [
             static function (WithEventsJobPersister $persister): void {
                 $persister->remove(new Job(new Target('id', 'type'), 'test'));
             },
-            'remove'
+            'remove',
         ];
 
         yield 'persist no event' => [
             static function (WithEventsJobPersister $persister): void {
                 $persister->persist(new Job(new Target('id', 'type'), 'test'));
             },
-            'persist'
+            'persist',
         ];
 
         yield 'persist with event' => [
@@ -77,7 +77,7 @@ final class WithEventsJobPersisterTest extends AbstractTestCase
                 $persister->persist($job);
             },
             'persist',
-            JobCompletedEvent::class
+            JobCompletedEvent::class,
         ];
     }
 

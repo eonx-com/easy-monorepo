@@ -24,14 +24,14 @@ final class ContextResolverTest extends AbstractTestCase
     public function setModifiersProvider(): iterable
     {
         yield 'Filter non context modifier' => [
-            [new stdClass()]
+            [new stdClass()],
         ];
 
         yield 'Resolve successfully' => [
             [
                 new RolesFromJwtModifier(new InMemoryRolesProviderStub()),
-                new ProviderFromJwtModifier(new ProviderProviderInterfaceStub())
-            ]
+                new ProviderFromJwtModifier(new ProviderProviderInterfaceStub()),
+            ],
         ];
     }
 

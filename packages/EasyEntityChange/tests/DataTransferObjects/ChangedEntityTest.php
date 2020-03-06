@@ -20,7 +20,7 @@ class ChangedEntityTest extends AbstractTestCase
             ['id']
         );
 
-        self::assertSame(stdClass::class, $dto->getClass());
-        self::assertSame(['id'], $dto->getIds());
+        self::assertEquals(stdClass::class, $dto->getClass());
+        self::assertEquals(['id'], $dto->getIds());
     }
 }

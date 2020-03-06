@@ -25,7 +25,7 @@ final class WithProcessJobLogTraitTest extends AbstractTestCase
             },
             static function (JobLogInterface $jobLog): void {
                 self::assertEquals(JobLogInterface::STATUS_COMPLETED, $jobLog->getStatus());
-            }
+            },
         ];
 
         yield 'Failed' => [
@@ -34,7 +34,7 @@ final class WithProcessJobLogTraitTest extends AbstractTestCase
             },
             static function (JobLogInterface $jobLog): void {
                 self::assertEquals(JobLogInterface::STATUS_FAILED, $jobLog->getStatus());
-            }
+            },
         ];
     }
 

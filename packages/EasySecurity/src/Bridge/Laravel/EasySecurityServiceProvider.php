@@ -19,7 +19,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/config/easy-security.php' => \base_path('config/easy-security.php')
+            __DIR__ . '/config/easy-security.php' => \base_path('config/easy-security.php'),
         ]);
     }
 

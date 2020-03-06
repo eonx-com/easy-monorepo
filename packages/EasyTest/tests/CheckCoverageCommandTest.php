@@ -15,12 +15,12 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     {
         yield 'File but coverage too low' => [
             ['file' => __DIR__ . '/fixtures/coverage-70.txt', '--coverage' => 71],
-            '[ERROR] Coverage "70%" is lower than expectation "71%"'
+            '[ERROR] Coverage "70%" is lower than expectation "71%"',
         ];
 
         yield 'File and good coverage' => [
             ['file' => __DIR__ . '/fixtures/coverage-70.txt', '--coverage' => 70],
-            '[OK] Yeah nah yeah nah yeah!! Good coverage mate! "70%"'
+            '[OK] Yeah nah yeah nah yeah!! Good coverage mate! "70%"',
         ];
     }
 
@@ -31,17 +31,17 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     {
         yield 'File not found' => [
             ['file' => 'invalid-file.txt'],
-            UnableToLoadCoverageException::class
+            UnableToLoadCoverageException::class,
         ];
 
         yield 'File but no coverage' => [
             ['file' => __DIR__ . '/fixtures/no-coverage.txt'],
-            UnableToResolveCoverageException::class
+            UnableToResolveCoverageException::class,
         ];
 
         yield 'File and Lines but no coverage' => [
             ['file' => __DIR__ . '/fixtures/lines-but-no-coverage.txt'],
-            UnableToResolveCoverageException::class
+            UnableToResolveCoverageException::class,
         ];
     }
 

@@ -22,7 +22,7 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
             $this->equal(),
             $this->if(),
             $this->multiply(),
-            $this->subtract()
+            $this->subtract(),
         ];
     }
 

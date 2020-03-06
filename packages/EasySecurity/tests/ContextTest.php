@@ -23,48 +23,48 @@ final class ContextTest extends AbstractTestCase
             [
                 new Role('app:role', [
                     new Permission('perm1'),
-                    new Permission('perm2')
-                ])
+                    new Permission('perm2'),
+                ]),
             ],
             1,
-            2
+            2,
         ];
 
         yield '2 roles 3 permissions because duplicates' => [
             [
                 new Role('app:role', [
                     new Permission('perm1'),
-                    new Permission('perm2')
+                    new Permission('perm2'),
                 ]),
                 new Role('app:role1', [
                     new Permission('perm1'),
-                    new Permission('perm3')
-                ])
+                    new Permission('perm3'),
+                ]),
             ],
             2,
-            3
+            3,
         ];
 
         yield '1 role 1 permission because non role given' => [
             [
                 new Role('app:role', [
-                    new Permission('perm1')
+                    new Permission('perm1'),
                 ]),
-                new \stdClass()
+                new \stdClass(),
             ],
             1,
-            1
+            1,
         ];
 
         yield '2 roles 1 permission because string role given' => [
             [
                 new Role('app:role', [
-                    new Permission('perm1')
+                    new Permission('perm1'),
                 ]),
-                'string:role'
+                'string:role',
             ],
             2,
-            1
+            1,
         ];
     }
 
@@ -76,64 +76,64 @@ final class ContextTest extends AbstractTestCase
         yield 'No role No permission' => [
             [
                 new Role('app:role', [
-                    new Permission('perm1')
-                ])
+                    new Permission('perm1'),
+                ]),
             ],
             'app:role1',
             'perm2',
             false,
-            false
+            false,
         ];
 
         yield 'Yes role No permission' => [
             [
                 new Role('app:role', [
-                    new Permission('perm1')
-                ])
+                    new Permission('perm1'),
+                ]),
             ],
             'app:role',
             'perm2',
             true,
-            false
+            false,
         ];
 
         yield 'No role Yes permission' => [
             [
                 new Role('app:role1', [
-                    new Permission('perm2')
-                ])
+                    new Permission('perm2'),
+                ]),
             ],
             'app:role',
             'perm2',
             false,
-            true
+            true,
         ];
 
         yield 'Yes role Yes permission' => [
             [
                 new Role('app:role', [
-                    new Permission('perm1')
-                ])
+                    new Permission('perm1'),
+                ]),
             ],
             'app:role',
             'perm1',
             true,
-            true
+            true,
         ];
 
         yield 'Yes role Yes permission with multiple roles' => [
             [
                 new Role('app:role', [
-                    new Permission('perm1')
+                    new Permission('perm1'),
                 ]),
                 new Role('app:role1', [
-                    new Permission('perm2')
-                ])
+                    new Permission('perm2'),
+                ]),
             ],
             'app:role',
             'perm2',
             true,
-            true
+            true,
         ];
     }
 
@@ -172,9 +172,9 @@ final class ContextTest extends AbstractTestCase
         self::assertCount($countRoles, $context->getRoles());
         self::assertCount($countPermissions, $permissions);
         self::assertEquals($permissions, $context->getPermissions());
-        self::assertSame($token, $context->getToken());
-        self::assertSame($provider, $context->getProvider());
-        self::assertSame($user, $context->getUser());
+        self::assertEquals($token, $context->getToken());
+        self::assertEquals($provider, $context->getProvider());
+        self::assertEquals($user, $context->getUser());
     }
 
     /**

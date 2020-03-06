@@ -16,7 +16,7 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
 
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
         $token = (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken()
+            'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken(),
         ]));
 
         $payload = $token->getPayload();
@@ -50,7 +50,7 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
         $jwtEasyApiTokenFactory = $this->createJwtEasyApiTokenFactory($this->createAuth0JwtDriver());
 
         (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'Bearer WeirdTokenHere'
+            'HTTP_AUTHORIZATION' => 'Bearer WeirdTokenHere',
         ]));
     }
 }

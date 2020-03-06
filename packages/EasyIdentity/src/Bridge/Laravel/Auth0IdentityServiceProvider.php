@@ -12,7 +12,7 @@ final class Auth0IdentityServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/config/easy-identity.php' => \base_path('config/easy-identity.php')
+            __DIR__ . '/config/easy-identity.php' => \base_path('config/easy-identity.php'),
         ]);
     }
 

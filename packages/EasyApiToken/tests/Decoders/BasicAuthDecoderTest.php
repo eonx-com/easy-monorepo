@@ -17,7 +17,7 @@ final class BasicAuthDecoderTest extends AbstractTestCase
     public function testBasicAuthNullIfDoesntStartWithBasic(): void
     {
         self::assertNull((new BasicAuthDecoder())->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'SomethingElse'
+            'HTTP_AUTHORIZATION' => 'SomethingElse',
         ])));
     }
 
@@ -29,12 +29,12 @@ final class BasicAuthDecoderTest extends AbstractTestCase
             ' : ',
             'username',
             'username:',
-            ':password'
+            ':password',
         ];
 
         foreach ($tests as $test) {
             self::assertNull((new BasicAuthDecoder())->decode($this->createServerRequest([
-                'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode($test)
+                'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode($test),
             ])));
         }
     }
@@ -45,13 +45,13 @@ final class BasicAuthDecoderTest extends AbstractTestCase
         $tests = [
             'username:password' => ['username', 'password'],
             'username : password ' => ['username', 'password'],
-            'username:Sp3c|@l_cH\\aracters' => ['username', 'Sp3c|@l_cH\\aracters']
+            'username:Sp3c|@l_cH\\aracters' => ['username', 'Sp3c|@l_cH\\aracters'],
         ];
 
         foreach ($tests as $test => $expected) {
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface $token */
             $token = (new BasicAuthDecoder())->decode($this->createServerRequest([
-                'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test))
+                'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test)),
             ]));
 
             self::assertInstanceOf(BasicAuthEasyApiTokenInterface::class, $token);

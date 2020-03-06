@@ -46,7 +46,7 @@ abstract class AbstractTestCase extends TestCase
     {
         return ServerRequestFactory::fromGlobals(null, $query);
     }
-    
+
     protected function getApplication(): Application
     {
         if ($this->app !== null) {

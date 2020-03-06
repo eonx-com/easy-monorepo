@@ -24,7 +24,7 @@ final class JobTest extends AbstractTestCase
             'id' => null,
             'started_at' => null,
             'status' => 'scheduled',
-            'type' => 'test'
+            'type' => 'test',
         ];
 
         self::assertEquals(0, $job->getFailed());
@@ -59,7 +59,7 @@ final class JobTest extends AbstractTestCase
             'id' => 'jobId',
             'started_at' => null,
             'status' => 'scheduled',
-            'type' => 'test'
+            'type' => 'test',
         ];
 
         $job = Job::fromArray($expected);

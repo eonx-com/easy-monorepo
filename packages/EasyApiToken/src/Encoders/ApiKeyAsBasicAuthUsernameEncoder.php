@@ -16,7 +16,7 @@ final class ApiKeyAsBasicAuthUsernameEncoder implements EasyApiTokenEncoderInter
         if (($apiToken instanceof ApiKeyEasyApiTokenInterface) === false) {
             throw new InvalidArgumentException(\sprintf(
                 'In "%s", API token expected to be instance of "%s", "%s" given.',
-                \get_class($this),
+                static::class,
                 ApiKeyEasyApiTokenInterface::class,
                 \get_class($apiToken)
             ));
@@ -29,6 +29,6 @@ final class ApiKeyAsBasicAuthUsernameEncoder implements EasyApiTokenEncoderInter
             return \base64_encode($apiKey);
         }
 
-        throw new UnableToEncodeEasyApiTokenException(\sprintf('In "%s", api key empty.', \get_class($this)));
+        throw new UnableToEncodeEasyApiTokenException(\sprintf('In "%s", api key empty.', static::class));
     }
 }

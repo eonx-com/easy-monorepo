@@ -18,7 +18,7 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/config/easy-pipeline.php' => \base_path('config/easy-pipeline.php')
+            __DIR__ . '/config/easy-pipeline.php' => \base_path('config/easy-pipeline.php'),
         ]);
     }
 
