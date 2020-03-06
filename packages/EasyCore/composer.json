@@ -7,10 +7,11 @@
         "php": "^7.1"
     },
     "require-dev": {
-        "mikey179/vfsstream": "~1",
         "phpunit/phpunit": "^8.4",
         "laravel/lumen-framework": "^5.5",
-        "phpspec/prophecy": "~1.0"
+        "phpspec/prophecy": "~1.0",
+        "api-platform/core": "^2.5",
+        "mockery/mockery": "^1.2"
     },
     "autoload": {
         "psr-4": {
