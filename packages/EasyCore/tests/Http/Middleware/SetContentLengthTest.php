@@ -16,11 +16,6 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
  */
 final class SetContentLengthTest extends AbstractTestCase
 {
-    /**
-     * Test handle successfully.
-     *
-     * @return void
-     */
     public function testHandleSucceeds(): void
     {
         $middleware = new SetContentLength();
@@ -42,8 +37,8 @@ final class SetContentLengthTest extends AbstractTestCase
 
         $actualResult = $middleware->handle($request, $next);
 
-        self::assertSame($actualResult, $response);
-        self::assertSame($response->forRequest, $request);
+        self::assertEquals($actualResult, $response);
+        self::assertEquals($response->forRequest, $request);
         $responseProphecy->getContent()->shouldHaveBeenCalledOnce();
         $headersProphecy->set('Content-Length', 7)->shouldHaveBeenCalledOnce();
     }

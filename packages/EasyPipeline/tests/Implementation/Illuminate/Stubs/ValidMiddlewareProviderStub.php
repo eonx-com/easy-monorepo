@@ -8,8 +8,6 @@ use EonX\EasyPipeline\Interfaces\MiddlewareProviderInterface;
 final class ValidMiddlewareProviderStub implements MiddlewareProviderInterface
 {
     /**
-     * Get middleware list, middleware could be anything your container can resolve.
-     *
      * @return mixed[]
      */
     public function getMiddlewareList(): array

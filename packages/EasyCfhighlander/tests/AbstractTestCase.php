@@ -21,12 +21,7 @@ abstract class AbstractTestCase extends TestCase
     private $filesystem;
 
     /**
-     * Execute command and return display.
-     *
-     * @param string $command
      * @param null|mixed[] $inputs
-     *
-     * @return string
      *
      * @throws \Exception
      */
@@ -36,19 +31,12 @@ abstract class AbstractTestCase extends TestCase
         $tester->setInputs($inputs ?? []);
         $tester->execute([
             'command' => $command,
-            '--cwd' => static::$cwd
+            '--cwd' => static::$cwd,
         ], ['capture_stderr_separately' => true]);
 
         return $tester->getDisplay();
     }
 
-    /**
-     * Get application.
-     *
-     * @return \EonX\EasyCfhighlander\Console\CfhighlanderApplication
-     *
-     * @throws \Exception
-     */
     protected function getApplication(): CfhighlanderApplication
     {
         /** @var \Symfony\Component\DependencyInjection\Container $container */
@@ -60,11 +48,6 @@ abstract class AbstractTestCase extends TestCase
         return $app;
     }
 
-    /**
-     * Get filesystem.
-     *
-     * @return \Symfony\Component\Filesystem\Filesystem
-     */
     protected function getFilesystem(): Filesystem
     {
         if ($this->filesystem !== null) {
@@ -74,11 +57,6 @@ abstract class AbstractTestCase extends TestCase
         return $this->filesystem = new Filesystem();
     }
 
-    /**
-     * Remove tmp dir.
-     *
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->getFilesystem()->remove(static::$cwd);

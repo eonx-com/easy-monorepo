@@ -1,77 +1,60 @@
 parameters:
     exclude_files:
         - '*/var/*.php'
+        - '*/vendor/*.php'
+
     sets:
-        - 'psr2'
+        - 'common'
+        - 'clean-code'
+        - 'php70'
+        - 'php71'
+        - 'psr12'
+        - 'types'
+        - 'dead-code'
+
     skip:
-        PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff.MaxExceeded:
-            - 'packages/EasySecurity/src/Context.php'
-            - 'packages/EasySecurity/src/Interfaces/ContextInterface.php'
-        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingParameterTypeHint:
-            - 'packages/EasyApiToken/src/External/Auth0JwtDriver.php'
+        PhpCsFixer\Fixer\CastNotation\CastSpacesFixer: ~
+        PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer: ~
+        PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer: ~
+        PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer: ~
+        PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer: ~
+        PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer: ~
+        PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer: ~
+
+        SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff.NullTypeHintNotOnLastPosition: ~
+
+        # types: allow mixed
+        SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingAnyTypeHint: ~
+        SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.MissingTraversableTypeHintSpecification: ~
+        SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingTraversableTypeHintSpecification: ~
+        SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.MissingAnyTypeHint: ~
+
+        SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingNativeTypeHint:
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
-            - 'packages/EasyCore/tests/Bridge/Laravel/CachedConfigurationServiceProviderTest.php'
             - 'packages/EasyLogging/src/Logger.php'
-            - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
-        SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedClassNameInAnnotationSniff.NonFullyQualifiedClassName:
-            - 'packages/EasySecurity/tests/Bridge/Symfony/Stubs/KernelStub.php'
-        SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff.UnusedUse:
-            - 'packages/EasySecurity/tests/Bridge/Symfony/Stubs/KernelStub.php'
-        NatePage\Sniffs\Commenting\FunctionCommentSniff.TypeHintMissing:
             - 'packages/EasyApiToken/src/External/Auth0JwtDriver.php'
-            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
-            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
-            - 'packages/EasyCore/tests/Bridge/Laravel/CachedConfigurationServiceProviderTest.php'
-            - 'packages/EasyLogging/src/Logger.php'
-            - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
+            - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
             - 'packages/EasyAsync/src/Helpers/PropertyHelper.php'
-        NatePage\Sniffs\Commenting\FunctionCommentSniff.ScalarTypeHintMissing:
-            - 'packages/EasyLogging/src/Logger.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
+        SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.UselessAnnotation:
+            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
+            - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
+            - 'packages/EasyLogging/src/Logger.php'
+            - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
+            - 'packages/EasyAsync/src/Helpers/PropertyHelper.php'
+            - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
+        SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.MissingNativeTypeHint:
+            - 'packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php'
+            - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
+            - 'packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php'
+        SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.UselessAnnotation:
+            - 'packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php'
+            - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
+            - 'packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php'
 
 services:
-    PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
-        absoluteLineLimit: 120
-    PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowShortOpenTagSniff:
-    PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff:
-
-    SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
-    SlevomatCodingStandard\Sniffs\Commenting\EmptyCommentSniff:
-    SlevomatCodingStandard\Sniffs\ControlStructures\NewWithParenthesesSniff:
-    SlevomatCodingStandard\Sniffs\Exceptions\DeadCatchSniff:
-    SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff:
-    SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff:
-    SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedClassNameInAnnotationSniff:
-    SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalConstantsSniff:
-    SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalFunctionsSniff:
-    SlevomatCodingStandard\Sniffs\Namespaces\MultipleUsesPerLineSniff:
-    SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff:
-        searchAnnotations: 1
-    SlevomatCodingStandard\Sniffs\Namespaces\UseDoesNotStartWithBackslashSniff:
-    SlevomatCodingStandard\Sniffs\Namespaces\UseSpacingSniff:
-        linesCountBeforeFirstUse: 1
-        linesCountBetweenUseTypes: 0
-        linesCountAfterLastUse: 1
-    SlevomatCodingStandard\Sniffs\Classes\EmptyLinesAroundClassBracesSniff:
-        linesCountAfterOpeningBrace: 0
-        linesCountBeforeClosingBrace: 0
-    SlevomatCodingStandard\Sniffs\TypeHints\LongTypeHintsSniff:
-    SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff:
-    SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff:
-    SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff:
-
-    NatePage\Sniffs\Arrays\ForbiddenArrayLongSyntaxSniff:
-    NatePage\Sniffs\Arrays\ForbiddenArrayTrailingCommaSniff:
-    NatePage\Sniffs\Classes\RequireStrictDeclarationSniff:
     NatePage\Sniffs\Classes\StrictDeclarationFormatSniff:
-    NatePage\Sniffs\Commenting\AnnotationSortingSniff:
-        alwaysTopAnnotations:
-            - '@param'
-            - '@return'
-            - '@throws'
-    NatePage\Sniffs\Commenting\DocCommentSpacingSniff:
-    NatePage\Sniffs\Commenting\FunctionCommentSniff:
     NatePage\Sniffs\ControlStructures\NoElseSniff:
     NatePage\Sniffs\ControlStructures\NoNotOperatorSniff:
     NatePage\Sniffs\ControlStructures\YodaConditionSniff:

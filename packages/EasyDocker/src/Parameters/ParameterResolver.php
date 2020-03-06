@@ -11,25 +11,26 @@ use Symplify\PackageBuilder\Parameter\ParameterProvider;
 
 final class ParameterResolver implements ParameterResolverInterface
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     private $cacheFile;
 
-    /** @var \Symfony\Component\Filesystem\Filesystem */
+    /**
+     * @var \Symfony\Component\Filesystem\Filesystem
+     */
     private $filesystem;
 
-    /** @var \Symplify\PackageBuilder\Parameter\ParameterProvider */
+    /**
+     * @var \Symplify\PackageBuilder\Parameter\ParameterProvider
+     */
     private $parameterProvider;
 
-    /** @var callable[] */
+    /**
+     * @var callable[]
+     */
     private $resolvers = [];
 
-    /**
-     * ParameterResolver constructor.
-     *
-     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
-     * @param \Symplify\PackageBuilder\Parameter\ParameterProvider $parameterProvider
-     * @param null|string $cacheFile
-     */
     public function __construct(Filesystem $filesystem, ParameterProvider $parameterProvider, ?string $cacheFile = null)
     {
         $this->filesystem = $filesystem;
@@ -37,14 +38,6 @@ final class ParameterResolver implements ParameterResolverInterface
         $this->cacheFile = $cacheFile ?? __DIR__ . '/../../var/last_params.yaml';
     }
 
-    /**
-     * Add resolver callable for given param name.
-     *
-     * @param string $param
-     * @param callable $resolver
-     *
-     * @return \EonX\EasyDocker\Interfaces\ParameterResolverInterface
-     */
     public function addResolver(string $param, callable $resolver): ParameterResolverInterface
     {
         $this->resolvers[$param] = $resolver;
@@ -53,10 +46,6 @@ final class ParameterResolver implements ParameterResolverInterface
     }
 
     /**
-     * Resolve parameters.
-     *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     *
      * @return mixed[]
      */
     public function resolve(InputInterface $input): array
@@ -78,13 +67,6 @@ final class ParameterResolver implements ParameterResolverInterface
         return $params;
     }
 
-    /**
-     * Set cache pathname to use to store previous parameters.
-     *
-     * @param string $pathname
-     *
-     * @return \EonX\EasyDocker\Interfaces\ParameterResolverInterface
-     */
     public function setCachePathname(string $pathname): ParameterResolverInterface
     {
         $this->cacheFile = $pathname;
@@ -93,8 +75,6 @@ final class ParameterResolver implements ParameterResolverInterface
     }
 
     /**
-     * Resolve default parameters from cache and config files.
-     *
      * @return mixed[]
      */
     private function resolveDefaultParameters(): array

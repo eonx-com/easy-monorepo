@@ -13,23 +13,14 @@ final class UserProviderInterfaceStub implements UserProviderInterface
      */
     private $user;
 
-    /**
-     * UserProviderInterfaceStub constructor.
-     *
-     * @param null|\EonX\EasySecurity\Interfaces\UserInterface $user
-     */
     public function __construct(?UserInterface $user = null)
     {
         $this->user = $user;
     }
 
     /**
-     * Get user for given uniqueId and data.
-     *
      * @param int|string $uniqueId
      * @param mixed[] $data
-     *
-     * @return null|\EonX\EasySecurity\Interfaces\UserInterface
      */
     public function getUser($uniqueId, array $data): ?UserInterface
     {

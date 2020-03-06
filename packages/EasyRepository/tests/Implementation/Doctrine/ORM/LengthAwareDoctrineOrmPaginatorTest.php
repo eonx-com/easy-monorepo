@@ -10,11 +10,6 @@ use Mockery\LegacyMockInterface;
 
 final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
 {
-    /**
-     * Paginator should return expected values from getters.
-     *
-     * @return void
-     */
     public function testGettersReturnExpectedValues(): void
     {
         /** @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator */
@@ -30,11 +25,6 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
         self::assertFalse($paginator->hasPreviousPage());
     }
 
-    /**
-     * Mock doctrine paginator.
-     *
-     * @return \Mockery\LegacyMockInterface
-     */
     private function mockDoctrinePaginator(): LegacyMockInterface
     {
         return $this->mock(DoctrinePaginator::class, function (LegacyMockInterface $paginator): void {

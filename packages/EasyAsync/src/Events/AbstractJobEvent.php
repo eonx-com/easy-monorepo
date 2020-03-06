@@ -13,21 +13,11 @@ abstract class AbstractJobEvent implements EasyAsyncEventInterface
      */
     private $job;
 
-    /**
-     * AbstractJobEvent constructor.
-     *
-     * @param \EonX\EasyAsync\Interfaces\JobInterface $job
-     */
     public function __construct(JobInterface $job)
     {
         $this->job = $job;
     }
 
-    /**
-     * Get job.
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobInterface
-     */
     public function getJob(): JobInterface
     {
         return $this->job;

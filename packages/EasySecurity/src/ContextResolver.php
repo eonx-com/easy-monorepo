@@ -34,11 +34,6 @@ final class ContextResolver implements ContextResolverInterface
     private $tokenDecoder;
 
     /**
-     * ContextResolver constructor.
-     *
-     * @param \EonX\EasySecurity\Interfaces\ContextInterface $context
-     * @param \EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface $psr7Factory
-     * @param \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface $tokenDecoder
      * @param mixed[]|iterable<mixed> $contextModifiers
      */
     public function __construct(
@@ -54,13 +49,6 @@ final class ContextResolver implements ContextResolverInterface
         $this->setContextModifiers($contextModifiers);
     }
 
-    /**
-     * Resolve context for given request.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \EonX\EasySecurity\Interfaces\ContextInterface
-     */
     public function resolve(Request $request): ContextInterface
     {
         $this->context->setToken($this->tokenDecoder->decode($this->psr7Factory->createRequest($request)));
@@ -73,11 +61,7 @@ final class ContextResolver implements ContextResolverInterface
     }
 
     /**
-     * Filter and sort by priority context modifiers.
-     *
      * @param mixed[]|iterable<mixed> $modifiers
-     *
-     * @return void
      */
     private function setContextModifiers(iterable $modifiers): void
     {

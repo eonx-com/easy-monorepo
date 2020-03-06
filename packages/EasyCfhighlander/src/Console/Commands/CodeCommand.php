@@ -5,11 +5,6 @@ namespace EonX\EasyCfhighlander\Console\Commands;
 
 final class CodeCommand extends AbstractTemplatesCommand
 {
-    /**
-     * Configure command.
-     *
-     * @return void
-     */
     protected function configure(): void
     {
         $this->setName('code');
@@ -19,8 +14,6 @@ final class CodeCommand extends AbstractTemplatesCommand
     }
 
     /**
-     * Get project files names.
-     *
      * @return string[]
      */
     protected function getProjectFiles(): array
@@ -29,27 +22,20 @@ final class CodeCommand extends AbstractTemplatesCommand
             'project.cfhighlander.rb',
             'project.config.yaml',
             'project-schema.cfhighlander.rb',
-            'project-schema.config.yaml'
+            'project-schema.config.yaml',
         ];
     }
 
     /**
-     * Get simple files names.
-     *
      * @return string[]
      */
     protected function getSimpleFiles(): array
     {
         return [
-            'Jenkinsfile'
+            'Jenkinsfile',
         ];
     }
 
-    /**
-     * Get template prefix.
-     *
-     * @return string
-     */
     protected function getTemplatePrefix(): string
     {
         return 'code';

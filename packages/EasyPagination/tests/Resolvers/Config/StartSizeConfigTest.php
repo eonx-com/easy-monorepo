@@ -8,11 +8,6 @@ use EonX\EasyPagination\Tests\AbstractTestCase;
 
 final class StartSizeConfigTest extends AbstractTestCase
 {
-    /**
-     * StartSizeConfig should return identical data as input.
-     *
-     * @return void
-     */
     public function testGettersReturnIdenticalInput(): void
     {
         $config = new StartSizeConfig('number', 10, 'size', 100);

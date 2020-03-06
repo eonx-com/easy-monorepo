@@ -17,37 +17,24 @@ final class AuthenticationFailureResponseFactory implements AuthenticationFailur
      */
     private $logger;
 
-    /**
-     * AuthenticationFailureResponseFactory constructor.
-     *
-     * @param \Psr\Log\LoggerInterface $logger
-     */
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
-    /**
-     * Create authentication failure response.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param null|\Symfony\Component\Security\Core\Exception\AuthenticationException $exception
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function create(Request $request, ?AuthenticationException $exception = null): Response
     {
         if ($exception !== null) {
             $this->logger->info('Authentication exception', [
                 'message' => $exception->getMessageKey(),
-                'data' => $exception->getMessageData()
+                'data' => $exception->getMessageData(),
             ]);
         }
 
         $data = [
             'message' => 'Unauthorized',
             'code' => JsonResponse::HTTP_UNAUTHORIZED,
-            'sub_code' => 0
+            'sub_code' => 0,
         ];
 
         return new JsonResponse($data, JsonResponse::HTTP_UNAUTHORIZED);

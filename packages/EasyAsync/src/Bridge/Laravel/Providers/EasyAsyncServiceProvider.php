@@ -29,25 +29,13 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyAsyncServiceProvider extends ServiceProvider
 {
-    /**
-     * Publish configuration file.
-     *
-     * @return void
-     */
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/easy-async.php' => \base_path('config/easy-async.php')
+            __DIR__ . '/../config/easy-async.php' => \base_path('config/easy-async.php'),
         ]);
     }
 
-    /**
-     * Register easy-async services.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\InvalidImplementationException
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/easy-async.php', 'easy-async');
@@ -59,7 +47,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             JobLogFactoryInterface::class => JobLogFactory::class,
             UuidGeneratorInterface::class => RamseyUuidGenerator::class,
             'default_job_log_updater' => JobLogUpdater::class,
-            JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class
+            JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class,
         ];
 
         foreach ($simples as $abstract => $concrete) {
@@ -91,11 +79,6 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         throw new InvalidImplementationException(\sprintf('Implementation "%s" invalid', $implementation));
     }
 
-    /**
-     * Register doctrine implementation.
-     *
-     * @return void
-     */
     private function registerDoctrine(): void
     {
         $this->app->singleton(DataCleanerInterface::class, DataCleaner::class);

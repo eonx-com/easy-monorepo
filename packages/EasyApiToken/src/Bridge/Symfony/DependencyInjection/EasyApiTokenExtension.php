@@ -12,14 +12,8 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 final class EasyApiTokenExtension extends Extension
 {
     /**
-     * Loads a specific configuration.
-     *
      * @param mixed[] $configs
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      *
-     * @return void
-     *
-     * @throws \InvalidArgumentException When provided tag is not defined in this extension
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

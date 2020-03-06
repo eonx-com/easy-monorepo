@@ -10,11 +10,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 
 final class JobCompletedEventTest extends AbstractTestCase
 {
-    /**
-     * Event should return given job.
-     *
-     * @return void
-     */
     public function testGetJob(): void
     {
         $job = new Job(new Target('id', 'type'), 'test');

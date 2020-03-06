@@ -9,11 +9,6 @@ use Illuminate\Pagination\LengthAwarePaginator as IlluminateLengthAwarePaginator
 
 class LengthAwarePaginatorTest extends AbstractTestCase
 {
-    /**
-     * Paginator should return expected output data based on input data.
-     *
-     * @return void
-     */
     public function testGetters(): void
     {
         $items = [];

@@ -21,8 +21,6 @@ use Mockery\MockInterface;
 final class JobPersisterTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testListMethods.
-     *
      * @return iterable<mixed>
      */
     public function providerListMethods(): iterable
@@ -52,7 +50,7 @@ final class JobPersisterTest extends AbstractTestCase
                     ->once()
                     ->with(['targetType' => 'type', 'targetId' => 'id'])
                     ->andReturnSelf();
-            }
+            },
         ];
 
         yield 'findForTargetType' => [
@@ -73,7 +71,7 @@ final class JobPersisterTest extends AbstractTestCase
                     ->once()
                     ->with('targetType', 'type')
                     ->andReturnSelf();
-            }
+            },
         ];
 
         yield 'findForType' => [
@@ -94,38 +92,20 @@ final class JobPersisterTest extends AbstractTestCase
                     ->once()
                     ->with('type', 'test')
                     ->andReturnSelf();
-            }
+            },
         ];
     }
 
-    /**
-     * Persister should return a job instance based on data from database, for update.
-     *
-     * @return void
-     */
     public function testFindForUpdateSuccessfully(): void
     {
         $this->doTestFindJob(true);
     }
 
-    /**
-     * Persister should return a job instance based on data from database.
-     *
-     * @return void
-     */
     public function testFindSuccessfully(): void
     {
         $this->doTestFindJob();
     }
 
-    /**
-     * Persister should throw exception if connection throws exception.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToFindJobException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     */
     public function testFindThrowsExceptionForConnectionException(): void
     {
         $this->expectException(UnableToFindJobException::class);
@@ -142,14 +122,6 @@ final class JobPersisterTest extends AbstractTestCase
         $this->getPersister($conn)->find('jobId');
     }
 
-    /**
-     * Persister should throw exception when fetch result not an array.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToFindJobException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     */
     public function testFindThrowsExceptionForNonArray(): void
     {
         $this->expectException(UnableToFindJobException::class);
@@ -167,13 +139,6 @@ final class JobPersisterTest extends AbstractTestCase
     }
 
     /**
-     * Persister should return paginated lists from database.
-     *
-     * @param callable $callMethod
-     * @param callable $queryBuilderExpectations
-     *
-     * @return void
-     *
      * @dataProvider providerListMethods
      */
     public function testListMethods(callable $callMethod, callable $queryBuilderExpectations): void
@@ -257,8 +222,8 @@ final class JobPersisterTest extends AbstractTestCase
                         'total' => 1,
                         'processed' => 0,
                         'failed' => 0,
-                        'succeeded' => 0
-                    ]
+                        'succeeded' => 0,
+                    ],
                 ]);
         });
 
@@ -271,13 +236,6 @@ final class JobPersisterTest extends AbstractTestCase
         self::assertInstanceOf(JobInterface::class, $paginator->getItems()[0]);
     }
 
-    /**
-     * Persister should successfully persist given job into the database.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobException
-     */
     public function testPersistSuccessfully(): void
     {
         /** @var \Doctrine\DBAL\Connection $conn */
@@ -296,13 +254,6 @@ final class JobPersisterTest extends AbstractTestCase
         self::assertNotNull($job->getId());
     }
 
-    /**
-     * Persister should throw exception when connection throws exception.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobException
-     */
     public function testPersistThrowException(): void
     {
         $this->expectException(UnableToPersistJobException::class);
@@ -319,13 +270,6 @@ final class JobPersisterTest extends AbstractTestCase
         $this->getPersister($conn)->persist(new Job(new Target('id', 'type'), 'test'));
     }
 
-    /**
-     * Persister should successfully remove given job from database.
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function testRemoveSuccessfully(): void
     {
         /** @var \Doctrine\DBAL\Connection $conn */
@@ -343,13 +287,6 @@ final class JobPersisterTest extends AbstractTestCase
         $this->getPersister($conn)->remove($job);
     }
 
-    /**
-     * Test find job.
-     *
-     * @param null|bool $forUpdate
-     *
-     * @return void
-     */
     private function doTestFindJob(?bool $forUpdate = null): void
     {
         $forUpdate = $forUpdate ?? false;
@@ -363,7 +300,7 @@ final class JobPersisterTest extends AbstractTestCase
             'failed' => 0,
             'succeeded' => 0,
             'type' => 'test',
-            'status' => JobInterface::STATUS_SCHEDULED
+            'status' => JobInterface::STATUS_SCHEDULED,
         ];
 
         /** @var \Doctrine\DBAL\Connection $conn */
@@ -387,7 +324,7 @@ final class JobPersisterTest extends AbstractTestCase
         $method = $forUpdate ? 'findOneForUpdate' : 'find';
 
         /** @var \EonX\EasyAsync\Interfaces\JobInterface $job */
-        $job = $this->getPersister($conn)->$method('jobId');
+        $job = $this->getPersister($conn)->{$method}('jobId');
 
         self::assertEquals($expected['id'], $job->getId());
         self::assertEquals($expected['target_id'], $job->getTargetId());
@@ -400,14 +337,6 @@ final class JobPersisterTest extends AbstractTestCase
         self::assertEquals($expected['type'], $job->getType());
     }
 
-    /**
-     * Get job persister.
-     *
-     * @param \Doctrine\DBAL\Connection $conn
-     * @param null|string $table
-     *
-     * @return \EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister
-     */
     private function getPersister(Connection $conn, ?string $table = null): JobPersister
     {
         return new JobPersister($conn, new DateTimeGenerator(), new RamseyUuidGenerator(), $table ?? 'jobs');

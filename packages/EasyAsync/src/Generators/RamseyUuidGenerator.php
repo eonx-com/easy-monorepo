@@ -9,19 +9,12 @@ use Ramsey\Uuid\Uuid;
 
 final class RamseyUuidGenerator implements UuidGeneratorInterface
 {
-    /**
-     * Generate UUID V4.
-     *
-     * @return string
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateUuidException
-     */
     public function generate(): string
     {
         try {
             return Uuid::uuid4()->toString();
             // @codeCoverageIgnoreStart
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             throw new UnableToGenerateUuidException($exception->getMessage(), $exception->getCode(), $exception);
         }
         // @codeCoverageIgnoreEnd

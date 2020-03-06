@@ -18,8 +18,6 @@ abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthA
     private $transformer;
 
     /**
-     * Get current items being paginated.
-     *
      * @return mixed[]
      */
     public function getItems(): array
@@ -31,13 +29,6 @@ abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthA
         return $this->transformedItems = $this->transformItems($this->doGetItems());
     }
 
-    /**
-     * Set transformer to transform each item.
-     *
-     * @param null|callable $transformer
-     *
-     * @return \EonX\EasyPagination\Interfaces\TransformableLengthAwarePaginatorInterface
-     */
     public function setTransformer(?callable $transformer = null): Transformable
     {
         $this->transformer = $transformer;
@@ -46,15 +37,11 @@ abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthA
     }
 
     /**
-     * Children classes must implement getItems themselves.
-     *
      * @return mixed[]
      */
     abstract protected function doGetItems(): array;
 
     /**
-     * Transform given items if transformer set.
-     *
      * @param mixed[] $items
      *
      * @return mixed[]

@@ -6,20 +6,12 @@ namespace EonX\EasyApiToken\External\Interfaces;
 interface JwtDriverInterface
 {
     /**
-     * Decode JWT token.
-     *
-     * @param string $token
-     *
-     * @return mixed[]|object
+     * @return mixed
      */
     public function decode(string $token);
 
     /**
-     * Encode given input to JWT token.
-     *
-     * @param mixed[]|object $input
-     *
-     * @return string
+     * @param mixed $input
      */
     public function encode($input): string;
 }

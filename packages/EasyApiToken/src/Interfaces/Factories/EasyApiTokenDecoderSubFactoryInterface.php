@@ -8,11 +8,7 @@ use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 interface EasyApiTokenDecoderSubFactoryInterface
 {
     /**
-     * Build api token decoder for given config.
-     *
      * @param null|mixed[] $config
-     *
-     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */

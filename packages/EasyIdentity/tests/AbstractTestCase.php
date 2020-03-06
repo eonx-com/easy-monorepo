@@ -14,12 +14,7 @@ use PHPUnit\Framework\TestCase;
 abstract class AbstractTestCase extends TestCase
 {
     /**
-     * Create mock for given class and apply expectations if given.
-     *
      * @param string|object $class
-     * @param null|callable $expectations
-     *
-     * @return \Mockery\LegacyMockInterface
      */
     protected function mock($class, ?callable $expectations = null): LegacyMockInterface
     {

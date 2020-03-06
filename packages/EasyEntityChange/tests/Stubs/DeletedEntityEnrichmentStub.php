@@ -16,8 +16,6 @@ class DeletedEntityEnrichmentStub implements DeletedEntityEnrichmentInterface
     private $metadata;
 
     /**
-     * Constructor
-     *
      * @param mixed[][] $metadata
      */
     public function __construct(array $metadata)
@@ -26,7 +24,7 @@ class DeletedEntityEnrichmentStub implements DeletedEntityEnrichmentInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return mixed[]
      */
     public function getMetadata(object $entity): array
     {

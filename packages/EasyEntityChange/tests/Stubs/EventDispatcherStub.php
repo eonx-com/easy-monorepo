@@ -25,20 +25,13 @@ final class EventDispatcherStub implements EventDispatcherInterface
     private $returns = [];
 
     /**
-     * Add a return value for dispatch.
-     *
      * @param mixed[]|null $return
-     *
-     * @return void
      */
     public function addReturn(?array $return = null): void
     {
         $this->returns[] = $return;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function dispatch(object $event): object
     {
         $this->dispatched[] = $event;
@@ -47,8 +40,6 @@ final class EventDispatcherStub implements EventDispatcherInterface
     }
 
     /**
-     * Dispatched events.
-     *
      * @return mixed[]
      */
     public function getDispatched(): array

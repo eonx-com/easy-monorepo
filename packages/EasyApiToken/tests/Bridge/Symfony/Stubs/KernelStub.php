@@ -12,21 +12,11 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
-    /**
-     * KernelStub constructor.
-     */
     public function __construct()
     {
         parent::__construct('test', true);
     }
 
-    /**
-     * You can modify the container here before it is dumped to PHP code.
-     *
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     *
-     * @return void
-     */
     public function process(ContainerBuilder $container): void
     {
         $container
@@ -36,24 +26,13 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     }
 
     /**
-     * Returns an array of bundles to register.
-     *
-     * @return iterable|\Symfony\Component\HttpKernel\Bundle\BundleInterface[] An iterable of bundle instances
+     * @return iterable<\Symfony\Component\HttpKernel\Bundle\BundleInterface>
      */
     public function registerBundles(): iterable
     {
         yield new EasyApiTokenBundle();
     }
 
-    /**
-     * Loads the container configuration.
-     *
-     * @param \Symfony\Component\Config\Loader\LoaderInterface $loader
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__ . '/config.yaml');

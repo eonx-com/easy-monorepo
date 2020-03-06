@@ -7,11 +7,6 @@ use EonX\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOr
 
 final class PaginatedDoctrineOrmRepositoryStub extends AbstractPaginatedDoctrineOrmRepository
 {
-    /**
-     * Get entity class managed by the repository.
-     *
-     * @return string
-     */
     protected function getEntityClass(): string
     {
         return 'my-entity-class';

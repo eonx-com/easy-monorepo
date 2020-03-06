@@ -5,10 +5,5 @@ namespace EonX\EasyDecision\Interfaces;
 
 interface NonBlockingRuleErrorInterface
 {
-    /**
-     * Get error output.
-     *
-     * @return string
-     */
     public function getErrorOutput(): string;
 }

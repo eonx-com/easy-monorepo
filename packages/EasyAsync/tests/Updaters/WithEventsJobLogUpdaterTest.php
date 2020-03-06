@@ -18,13 +18,6 @@ use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
 
 final class WithEventsJobLogUpdaterTest extends AbstractTestCase
 {
-    /**
-     * Updater should set status to completed and finishedAt to now.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     */
     public function testCompleted(): void
     {
         $jobLog = $this->getJobLog();
@@ -39,13 +32,6 @@ final class WithEventsJobLogUpdaterTest extends AbstractTestCase
         self::assertInstanceOf(JobLogCompletedEvent::class, $dispatcher->getDispatchedEvents()[0]);
     }
 
-    /**
-     * Updater should set status to failed, finishedAt to now and debug info to array with exception.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     */
     public function testFailed(): void
     {
         $jobLog = $this->getJobLog();
@@ -59,8 +45,8 @@ final class WithEventsJobLogUpdaterTest extends AbstractTestCase
                 'code' => $throwable->getCode(),
                 'file' => $throwable->getFile(),
                 'line' => $throwable->getLine(),
-                'trace' => $throwable->getTraceAsString()
-            ]
+                'trace' => $throwable->getTraceAsString(),
+            ],
         ];
 
         $updater->failed($jobLog, $throwable);
@@ -72,13 +58,6 @@ final class WithEventsJobLogUpdaterTest extends AbstractTestCase
         self::assertInstanceOf(JobLogFailedEvent::class, $dispatcher->getDispatchedEvents()[0]);
     }
 
-    /**
-     * Updater should set status to completed and finishedAt to now.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     */
     public function testInProgress(): void
     {
         $jobLog = $this->getJobLog();
@@ -93,23 +72,11 @@ final class WithEventsJobLogUpdaterTest extends AbstractTestCase
         self::assertInstanceOf(JobLogInProgressEvent::class, $dispatcher->getDispatchedEvents()[0]);
     }
 
-    /**
-     * Get new job log.
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
-     */
     private function getJobLog(): JobLogInterface
     {
         return new JobLog(new Target('id', 'type'), 'test', 'jobId');
     }
 
-    /**
-     * Get job log updater.
-     *
-     * @param \EonX\EasyAsync\Interfaces\EventDispatcherInterface $dispatcher
-     *
-     * @return \EonX\EasyAsync\Updaters\WithEventsJobLogUpdater
-     */
     private function getJobLogUpdater(EventDispatcherInterface $dispatcher): WithEventsJobLogUpdater
     {
         return new WithEventsJobLogUpdater($dispatcher, new JobLogUpdater(new DateTimeGenerator()));

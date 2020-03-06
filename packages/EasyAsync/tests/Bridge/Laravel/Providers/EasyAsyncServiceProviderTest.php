@@ -33,8 +33,6 @@ use Laravel\Lumen\Application;
 final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
 {
     /**
-     * DataProvider for testServiceProvider.
-     *
      * @return iterable<mixed>
      */
     public function providerTestServiceProvider(): iterable
@@ -44,19 +42,14 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
             [
                 'data_cleaner' => DataCleaner::class,
                 'job_log_persister' => JobLogPersister::class,
-                'job_persister' => JobPersister::class
+                'job_persister' => JobPersister::class,
             ],
             static function (Application $app): void {
                 $app->instance(Connection::class, new Connection([], new Driver()));
-            }
+            },
         ];
     }
 
-    /**
-     * ServiceProvider should throw exception if invalid implementation given.
-     *
-     * @return void
-     */
     public function testInvalidImplementation(): void
     {
         $this->expectException(InvalidImplementationException::class);
@@ -68,15 +61,7 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
     }
 
     /**
-     * ServiceProvider should register expected services.
-     *
-     * @param string $implementation
      * @param mixed[] $implementationServices
-     * @param null|callable $dependencies
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\DBALException
      *
      * @dataProvider providerTestServiceProvider
      */
@@ -109,7 +94,7 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
             JobLogPersisterInterface::class => $implementationServices['job_log_persister'],
             'default_job_persister' => $implementationServices['job_persister'],
             JobPersisterInterface::class => WithEventsJobPersister::class,
-            JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class
+            JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class,
         ];
 
         foreach ($services as $abstract => $concrete) {

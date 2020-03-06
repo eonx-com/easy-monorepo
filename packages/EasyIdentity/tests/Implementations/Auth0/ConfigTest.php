@@ -12,37 +12,23 @@ use EonX\EasyIdentity\Tests\AbstractTestCase;
  */
 class ConfigTest extends AbstractTestCase
 {
-    /**
-     * Config should return the values passed via the constructor.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     */
     public function testGettersReturnExpectedValues(): void
     {
         $expected = [
             'client_id' => 'client_id',
             'client_secret' => 'client_secret',
             'connection' => 'connection',
-            'domain' => 'domain'
+            'domain' => 'domain',
         ];
 
         $config = new Config($expected);
 
-        self::assertSame($expected['client_id'], $config->getClientId());
-        self::assertSame($expected['client_secret'], $config->getClientSecret());
-        self::assertSame($expected['connection'], $config->getConnection());
-        self::assertSame($expected['domain'], $config->getDomain());
+        self::assertEquals($expected['client_id'], $config->getClientId());
+        self::assertEquals($expected['client_secret'], $config->getClientSecret());
+        self::assertEquals($expected['connection'], $config->getConnection());
+        self::assertEquals($expected['domain'], $config->getDomain());
     }
 
-    /**
-     * Config should throw an exception when required data missing.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     */
     public function testRequiredDataMissingException(): void
     {
         $config = new Config();

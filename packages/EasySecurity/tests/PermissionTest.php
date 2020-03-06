@@ -7,11 +7,6 @@ use EonX\EasySecurity\Permission;
 
 final class PermissionTest extends AbstractTestCase
 {
-    /**
-     * Test permission.
-     *
-     * @return void
-     */
     public function testPermission(): void
     {
         $permission = new Permission('perm');

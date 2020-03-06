@@ -11,8 +11,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 final class JobLogFactoryTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testCreate.
-     *
      * @return iterable<mixed>
      */
     public function providerCreate(): iterable
@@ -20,19 +18,11 @@ final class JobLogFactoryTest extends AbstractTestCase
         yield 'Create job log' => [
             new Target('id', 'type'),
             'test',
-            'jobId'
+            'jobId',
         ];
     }
 
     /**
-     * Factory should create job log with given data.
-     *
-     * @param \EonX\EasyAsync\Interfaces\TargetInterface $target
-     * @param string $type
-     * @param string $jobId
-     *
-     * @return void
-     *
      * @dataProvider providerCreate
      */
     public function testCreate(TargetInterface $target, string $type, string $jobId): void

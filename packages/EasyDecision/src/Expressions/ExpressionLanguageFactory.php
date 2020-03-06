@@ -15,23 +15,11 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
      */
     private $functionFactory;
 
-    /**
-     * ExpressionLanguageFactory constructor.
-     *
-     * @param \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface $functionFactory
-     */
     public function __construct(ExpressionFunctionFactoryInterface $functionFactory)
     {
         $this->functionFactory = $functionFactory;
     }
 
-    /**
-     * Create expression language for given config.
-     *
-     * @param \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
-     *
-     * @return \EonX\EasyDecision\Expressions\ExpressionLanguage
-     */
     public function create(ExpressionLanguageConfigInterface $config): ExpressionLanguage
     {
         $expressionLanguage = new ExpressionLanguage(
@@ -51,11 +39,6 @@ final class ExpressionLanguageFactory implements ExpressionLanguageFactoryInterf
         return $expressionLanguage;
     }
 
-    /**
-     * Create base expression language instance.
-     *
-     * @return \Symfony\Component\ExpressionLanguage\ExpressionLanguage
-     */
     private function createBaseExpressionLanguage(): BaseExpressionLanguage
     {
         return new BaseExpressionLanguage();

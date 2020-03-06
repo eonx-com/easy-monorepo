@@ -18,14 +18,10 @@ final class ChainReturnFirstTokenDecoderFactory implements SubFactory, MasterAwa
     use MasterDecoderFactoryAwareTrait;
 
     /**
-     * Build api token decoder for given config.
-     *
      * @param null|mixed[] $config
      *
-     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     public function build(?array $config = null): EasyApiTokenDecoderInterface
     {

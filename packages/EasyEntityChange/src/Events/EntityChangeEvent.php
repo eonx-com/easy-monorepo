@@ -21,8 +21,6 @@ final class EntityChangeEvent implements EasyEntityChangeEventInterface
     private $changes;
 
     /**
-     * Constructor
-     *
      * @param \EonX\EasyEntityChange\DataTransferObjects\ChangedEntity[] $changes
      */
     public function __construct(array $changes)

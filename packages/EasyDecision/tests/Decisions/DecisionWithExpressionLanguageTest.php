@@ -11,11 +11,6 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 {
-    /**
-     * Decision should modify given input based on expression language rule.
-     *
-     * @return void
-     */
     public function testModifyValueInArray(): void
     {
         $rules = [$this->createLanguageRule('value + 10')];
@@ -30,11 +25,6 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
         self::assertEquals($expected, $decision->make($original));
     }
 
-    /**
-     * Decision should be able to proceed multiple inputs in a row.
-     *
-     * @return void
-     */
     public function testSameDecisionWithDifferentInputs(): void
     {
         $rules = [
@@ -43,14 +33,14 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
             $this->createLanguageRule('if(equal(name, "Matt")).then(add(1000))'),
             $this->createLanguageRule('cap(value, 200)'),
             $this->createLanguageRule('if(extra_param1 > 10).then(add(extra_param1))'),
-            $this->createLanguageRule('if(extra_param1 > 10).else(add(extra_param1))')
+            $this->createLanguageRule('if(extra_param1 > 10).else(add(extra_param1))'),
         ];
 
         $providers = [new ValueExpressionFunctionProvider()];
         $functions = [
             new ExpressionFunction('cap', function ($arguments, $value, $max) {
                 return \min($value, $max);
-            })
+            }),
         ];
 
         $this->injectExpressionLanguage($rules, new ExpressionLanguageConfig(null, $providers, $functions));
@@ -67,8 +57,8 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
                     'if(equal(name, "Matt")).then(add(1000))' => 10,
                     'cap(value, 200)' => 10,
                     'if(extra_param1 > 10).then(add(extra_param1))' => 10,
-                    'if(extra_param1 > 10).else(add(extra_param1))' => 11
-                ]
+                    'if(extra_param1 > 10).else(add(extra_param1))' => 11,
+                ],
             ],
             [
                 'original' => ['value' => 0, 'name' => 'Brad', 'extra_param1' => 1],
@@ -79,8 +69,8 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
                     'if(equal(name, "Matt")).then(add(1000))' => 20,
                     'cap(value, 200)' => 20,
                     'if(extra_param1 > 10).then(add(extra_param1))' => 20,
-                    'if(extra_param1 > 10).else(add(extra_param1))' => 21
-                ]
+                    'if(extra_param1 > 10).else(add(extra_param1))' => 21,
+                ],
             ],
             [
                 'original' => ['value' => 0, 'name' => 'Matt', 'extra_param1' => 1],
@@ -91,9 +81,9 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
                     'if(equal(name, "Matt")).then(add(1000))' => 1020,
                     'cap(value, 200)' => 200,
                     'if(extra_param1 > 10).then(add(extra_param1))' => 200,
-                    'if(extra_param1 > 10).else(add(extra_param1))' => 201
-                ]
-            ]
+                    'if(extra_param1 > 10).else(add(extra_param1))' => 201,
+                ],
+            ],
         ];
 
         foreach ($tests as $test) {

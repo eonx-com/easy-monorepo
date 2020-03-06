@@ -12,28 +12,16 @@ trait MiddlewareLoggerAwareTrait
      */
     private $logger;
 
-    /**
-     * Set middleware logger.
-     *
-     * @param \EonX\EasyPipeline\Interfaces\MiddlewareLoggerInterface $logger
-     *
-     * @return void
-     */
     public function setLogger(MiddlewareLoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
 
     /**
-     * Log given content.
-     *
      * @param mixed $content Content to log
-     * @param null|string $middleware Default to current class
-     *
-     * @return void
      */
     private function log($content, ?string $middleware = null): void
     {
-        $this->logger->log($middleware ?? \get_class($this), $content);
+        $this->logger->log($middleware ?? static::class, $content);
     }
 }

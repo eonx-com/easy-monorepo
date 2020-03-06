@@ -34,10 +34,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     private $globalExpressionFunctions;
 
     /**
-     * ExpressionLanguageConfigFactory constructor.
-     *
      * @param mixed[] $config
-     * @param \Psr\Container\ContainerInterface $container
      */
     public function __construct(array $config, ContainerInterface $container)
     {
@@ -45,13 +42,6 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
         $this->container = $container;
     }
 
-    /**
-     * Create expression language config for given decision.
-     *
-     * @param string $decision
-     *
-     * @return null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
-     */
     public function create(string $decision): ?ExpressionLanguageConfigInterface
     {
         $expressions = $this->getDecisionExpressions($decision);
@@ -66,10 +56,6 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     }
 
     /**
-     * Get decision expressions config.
-     *
-     * @param string $decision
-     *
      * @return mixed[]
      */
     private function getDecisionExpressions(string $decision): array
@@ -91,11 +77,6 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
         return \compact('functions', 'providers');
     }
 
-    /**
-     * Get expression function factory.
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
-     */
     private function getExpressionFunctionFactory(): ExpressionFunctionFactoryInterface
     {
         if ($this->expressionFunctionFactory !== null) {
@@ -106,11 +87,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     }
 
     /**
-     * Get expression function provider.
-     *
      * @param mixed $provider
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
      */
     private function getExpressionFunctionProvider($provider): ExpressionFunctionProviderInterface
     {
@@ -122,8 +99,6 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     }
 
     /**
-     * Get expression functions for given functions and providers.
-     *
      * @param mixed[] $functions
      * @param mixed[] $providers
      *
@@ -148,8 +123,6 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     }
 
     /**
-     * Get global expression functions.
-     *
      * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      */
     private function getGlobalExpressionFunctions(): array

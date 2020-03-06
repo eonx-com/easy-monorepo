@@ -14,11 +14,6 @@ use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ValidMiddlewareProvi
 
 final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
 {
-    /**
-     * Factory should create pipeline successfully and cache it to return it if asked again.
-     *
-     * @return void
-     */
     public function testCreatePipelineSuccessfullyWithPrefixAndCacheResolved(): void
     {
         $prefix = EasyIlluminatePipelineServiceProvider::PIPELINES_PREFIX;
@@ -33,11 +28,6 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
         self::assertEquals(\spl_object_hash($pipeline), \spl_object_hash($factory->create('pipeline')));
     }
 
-    /**
-     * Factory should throw an exception if resolved middleware provider doesn't implement the expected interface.
-     *
-     * @return void
-     */
     public function testInvalidMiddlewareProviderForInvalidInterface(): void
     {
         $this->expectException(InvalidMiddlewareProviderException::class);
@@ -48,11 +38,6 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
         (new IlluminatePipelineFactory($app, ['pipeline']))->create('pipeline');
     }
 
-    /**
-     * Factory should set the name of the pipeline on PipelineNameAware providers.
-     *
-     * @return void
-     */
     public function testPipelineNameAwareMiddlewareSetsName(): void
     {
         $app = $this->getApplication();
@@ -63,11 +48,6 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
         self::assertEquals('test-pipeline', $pipeline->process('test-'));
     }
 
-    /**
-     * Factory should throw an exception if given pipeline isn't set in mapping.
-     *
-     * @return void
-     */
     public function testPipelineNotFoundException(): void
     {
         $this->expectException(PipelineNotFoundException::class);

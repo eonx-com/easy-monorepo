@@ -16,8 +16,6 @@ use EonX\EasyAsync\Updaters\JobLogUpdater;
 final class WithProcessJobLogTraitTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testProcessWithJobLog.
-     *
      * @return iterable<mixed>
      */
     public function providerProcessWithJobLog(): iterable
@@ -27,7 +25,7 @@ final class WithProcessJobLogTraitTest extends AbstractTestCase
             },
             static function (JobLogInterface $jobLog): void {
                 self::assertEquals(JobLogInterface::STATUS_COMPLETED, $jobLog->getStatus());
-            }
+            },
         ];
 
         yield 'Failed' => [
@@ -36,21 +34,11 @@ final class WithProcessJobLogTraitTest extends AbstractTestCase
             },
             static function (JobLogInterface $jobLog): void {
                 self::assertEquals(JobLogInterface::STATUS_FAILED, $jobLog->getStatus());
-            }
+            },
         ];
     }
 
     /**
-     * WithProcessJobLog should update job log as expected.
-     *
-     * @param callable $func
-     * @param callable $test
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobLogException
-     *
      * @dataProvider providerProcessWithJobLog
      */
     public function testProcessWithJobLog(callable $func, callable $test): void

@@ -27,11 +27,6 @@ use stdClass;
  */
 class EntityChangeSubscriberTest extends AbstractTestCase
 {
-    /**
-     * Tests that the listener dispatches for updates.
-     *
-     * @return void
-     */
     public function testListener(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -44,7 +39,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
             ->method('getEntityChangeSet')
             ->with($entity)
             ->willReturn([
-                'property' => ['blue', 'red']
+                'property' => ['blue', 'red'],
             ]);
 
         $metadata = $this->createMock(ClassMetadata::class);
@@ -61,7 +56,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
                 ['property'],
                 stdClass::class,
                 ['id' => 'thing']
-            )
+            ),
         ]);
 
         $this->callSubscriber($subscriber, $metadata, $unitOfWork);
@@ -69,11 +64,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener dispatches for inserts.
-     *
-     * @return void
-     */
     public function testListenerCollection(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -81,14 +71,16 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $entity = new stdClass();
 
-        $unitOfWork = $this->getUnitOfWork(null, null, null, [new ArrayCollection([
-            $entity
-        ])]);
+        $unitOfWork = $this->getUnitOfWork(null, null, null, [
+            new ArrayCollection([
+                $entity,
+            ]),
+        ]);
         $unitOfWork->expects(self::once())
             ->method('getEntityChangeSet')
             ->with($entity)
             ->willReturn([
-                'property' => ['green', 'purple']
+                'property' => ['green', 'purple'],
             ]);
 
         $metadata = $this->createMock(ClassMetadata::class);
@@ -105,7 +97,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
                 ['property'],
                 stdClass::class,
                 ['id' => 'seventy']
-            )
+            ),
         ]);
 
         $this->callSubscriber($subscriber, $metadata, $unitOfWork);
@@ -113,11 +105,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener dispatches for deletes.
-     *
-     * @return void
-     */
     public function testListenerDelete(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -142,7 +129,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
                 stdClass::class,
                 ['id' => 'value'],
                 ['metadata' => 'thing']
-            )
+            ),
         ]);
 
         $this->callSubscriber($subscriber, $metadata, $unitOfWork);
@@ -150,12 +137,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener does not dispatch if we're not watching
-     * for the change.
-     *
-     * @return void
-     */
     public function testListenerDeleteNotWatching(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -178,12 +159,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener does not dispatch if there are no
-     * changes.
-     *
-     * @return void
-     */
     public function testListenerDoesntDispatchOnEmptyChanges(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -191,14 +166,9 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $this->callSubscriber($subscriber);
 
-        self::assertSame([], $dispatcher->getDispatched());
+        self::assertEquals([], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener dispatches for inserts.
-     *
-     * @return void
-     */
     public function testListenerInsert(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -211,7 +181,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
             ->method('getEntityChangeSet')
             ->with($entity)
             ->willReturn([
-                'property' => ['old', 'new']
+                'property' => ['old', 'new'],
             ]);
 
         $metadata = $this->createMock(ClassMetadata::class);
@@ -231,7 +201,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
                 ['property'],
                 stdClass::class,
                 ['id' => 'value']
-            )
+            ),
         ]);
 
         $this->callSubscriber($subscriber, $metadata, $unitOfWork);
@@ -248,12 +218,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([$expectedEvent], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the listener does not dispatch if we're not watching
-     * for the change.
-     *
-     * @return void
-     */
     public function testListenerNotWatching(): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -277,29 +241,20 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         self::assertEquals([], $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests subscribed events.
-     *
-     * @return void
-     */
     public function testSubscribedEvents(): void
     {
         $subscriber = new EntityChangeSubscriber(new EventDispatcherStub());
 
         $events = $subscriber->getSubscribedEvents();
 
-        self::assertSame([Events::onFlush, Events::postFlush], $events);
+        self::assertEquals([Events::onFlush, Events::postFlush], $events);
     }
 
     /**
-     * Builds the Unit Of Work mock.
-     *
      * @param mixed[]|null $insertions
      * @param mixed[]|null $updates
      * @param mixed[]|null $deletions
      * @param mixed[]|null $collectionUpdates
-     *
-     * @return \PHPUnit\Framework\MockObject\MockObject
      *
      * @phpstan-return \PHPUnit\Framework\MockObject\MockObject&\Doctrine\ORM\UnitOfWork
      */
@@ -326,15 +281,6 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         return $unitOfWork;
     }
 
-    /**
-     * Calls the subscriber.
-     *
-     * @param \EonX\EasyEntityChange\Doctrine\EntityChangeSubscriber $subscriber
-     * @param \Doctrine\ORM\Mapping\ClassMetadata|null $metadata
-     * @param \Doctrine\ORM\UnitOfWork|null $unitOfWork
-     *
-     * @return void
-     */
     private function callSubscriber(
         EntityChangeSubscriber $subscriber,
         ?ClassMetadata $metadata = null,

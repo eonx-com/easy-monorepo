@@ -10,13 +10,6 @@ trait DecoderNameAwareTrait
      */
     protected $decoderName;
 
-    /**
-     * Set decoder name.
-     *
-     * @param string $decoderName
-     *
-     * @return void
-     */
     public function setDecoderName(string $decoderName): void
     {
         $this->decoderName = $decoderName;

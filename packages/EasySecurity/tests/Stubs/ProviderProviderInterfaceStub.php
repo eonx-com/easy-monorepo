@@ -13,22 +13,13 @@ final class ProviderProviderInterfaceStub implements ProviderProviderInterface
      */
     private $provider;
 
-    /**
-     * ProviderProviderInterfaceStub constructor.
-     *
-     * @param null|\EonX\EasySecurity\Interfaces\ProviderInterface $provider
-     */
     public function __construct(?ProviderInterface $provider = null)
     {
         $this->provider = $provider;
     }
-    
+
     /**
-     * Get provider for given uniqueId.
-     *
      * @param int|string $uniqueId
-     *
-     * @return null|\EonX\EasySecurity\Interfaces\ProviderInterface
      */
     public function getProvider($uniqueId): ?ProviderInterface
     {

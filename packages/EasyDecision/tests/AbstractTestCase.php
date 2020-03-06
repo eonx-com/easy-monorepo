@@ -32,41 +32,19 @@ abstract class AbstractTestCase extends TestCase
      */
     private $languageRuleFactory;
 
-    /**
-     * Create expression language for given config.
-     *
-     * @param null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
-     */
     protected function createExpressionLanguage(
         ?ExpressionLanguageConfigInterface $config = null
     ): ExpressionLanguageInterface {
         return $this->getExpressionLanguageFactory()->create($config ?? new ExpressionLanguageConfig());
     }
 
-    /**
-     * Create rule which returns false.
-     *
-     * @param string $name
-     * @param null|int $priority
-     *
-     * @return \EonX\EasyDecision\Interfaces\RuleInterface
-     */
     protected function createFalseRule(string $name, ?int $priority = null): RuleInterface
     {
         return new RuleStub($name, false, null, $priority);
     }
 
     /**
-     * Create expression language rule.
-     *
-     * @param string $expression
-     * @param null|int $priority
-     * @param null|string $name
      * @param null|mixed[] $extra
-     *
-     * @return \EonX\EasyDecision\Interfaces\RuleInterface
      */
     protected function createLanguageRule(
         string $expression,
@@ -77,37 +55,16 @@ abstract class AbstractTestCase extends TestCase
         return $this->getLanguageRuleFactory()->create($expression, $priority, $name, $extra);
     }
 
-    /**
-     * Create rule which returns true.
-     *
-     * @param string $name
-     * @param null|int $priority
-     *
-     * @return \EonX\EasyDecision\Interfaces\RuleInterface
-     */
     protected function createTrueRule(string $name, ?int $priority = null): RuleInterface
     {
         return new RuleStub($name, true, null, $priority);
     }
 
-    /**
-     * Create rule which will be unsupported.
-     *
-     * @param string $name
-     * @param null|int $priority
-     *
-     * @return \EonX\EasyDecision\Interfaces\RuleInterface
-     */
     protected function createUnsupportedRule(string $name, ?int $priority = null): RuleInterface
     {
         return new RuleStub($name, null, false, $priority);
     }
 
-    /**
-     * Get expression language factory.
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
-     */
     protected function getExpressionLanguageFactory(): ExpressionLanguageFactoryInterface
     {
         if ($this->expressionLanguageFactory !== null) {
@@ -118,12 +75,7 @@ abstract class AbstractTestCase extends TestCase
     }
 
     /**
-     * Inject expression language in rules.
-     *
      * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
-     * @param null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface $config
-     *
-     * @return void
      */
     protected function injectExpressionLanguage(array $rules, ?ExpressionLanguageConfigInterface $config = null): void
     {
@@ -136,11 +88,6 @@ abstract class AbstractTestCase extends TestCase
         }
     }
 
-    /**
-     * Get expression language rule factory.
-     *
-     * @return \EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface
-     */
     private function getLanguageRuleFactory(): ExpressionLanguageRuleFactoryInterface
     {
         if ($this->languageRuleFactory !== null) {

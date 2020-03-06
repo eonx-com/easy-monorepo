@@ -1,21 +1,23 @@
+includes:
+    - 'vendor/symplify/phpstan-extensions/config/config.neon'
+
 parameters:
     excludes_analyse:
         - packages/*/var/*
+        - packages/*/vendor/*
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Parameter \#1 \$app of class [A-Z][\w\\]+ constructor expects Illuminate\\(Contracts\\)?Foundation\\Application, Laravel\\Lumen\\Application given.#'
+        - '#Method "(.*?)\(\)" returns bool type, so the name should start with is/has/was#'
 
         # ---- EasyApiToken ----
-        - message: '#Parameter \#2 \$publicKey of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource\|string\|null, bool\|resource\|string given.#'
-          path: packages/EasyApiToken/tests/Decoders
+        - message: '#Parameter \#[0-9] \$(.*?) of method EonX\\EasyApiToken\\Tests\\Encoders\\FirebaseJwtTokenEncoderTest::createJwtTokenDecoder\(\) expects resource\|string\|null, resource\|string\|false given.#'
+          path: packages/EasyApiToken/tests
 
-        - message: '#Parameter \#3 \$privateKey of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource\|string\|null, bool\|resource\|string given.#'
-          path: packages/EasyApiToken/tests/Encoders
-
-        - message: '#Parameter \#2 \$key of method EonX\\EasyApiToken\\Tests\\Encoders\\FirebaseJwtTokenEncoderTest::createJwtTokenDecoder\(\) expects resource\|string, bool\|resource\|string given.#'
-          path: packages/EasyApiToken/tests/Encoders
+        - message: '#Parameter \#[0-9] \$(.*?) of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource\|string\|null, resource\|string\|false given#'
+          path: packages/EasyApiToken/tests
 
         # ---- EasyAsync ----
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
@@ -33,12 +35,18 @@ parameters:
         - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
           path: packages/EasyAsync/tests/Persisters
 
+        - message: '#Cannot call method format\(\) on DateTime\|null#'
+          path: packages/EasyAsync/src/Data/AbstractEasyAsyncData.php
+
+        - message: '#Parameter \#1 \$(finished|started)At of method EonX\\EasyAsync\\Interfaces\\EasyAsyncDataInterface\:\:set(Finished|Started)At\(\) expects DateTime, DateTime\|null given#'
+          path: packages/EasyAsync/src/Implementations/Doctrine/DBAL/JobLogPersister.php
+
+        - message: '#Method EonX\\EasyAsync\\Bridge\\Symfony\\Events\\EventDispatcher\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
+          path: packages/EasyAsync/src/Bridge/Symfony/Events/EventDispatcher.php
+
         # ---- EasyCfhighlander ----
         # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'
-          path: packages/EasyCore/tests/Http/Middleware
-
-        - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertSame\(\)#'
           path: packages/EasyCore/tests/Http/Middleware
 
         - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\Providers\\CachedConfigServiceProvider::\$loadedConfigurations.#'
@@ -79,6 +87,7 @@ parameters:
 
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\Doctrine(Dbal|Orm)LengthAwarePaginator::doGet(TotalItems|Result)\(\) expects Doctrine\\(ORM|DBAL\\Query)\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given.#'
         - '#Method EonX\\EasyPagination\\Paginators\\Doctrine(Dbal|Orm)LengthAwarePaginator::createQueryBuilder\(\) never returns Doctrine\\(ORM|DBAL\\Query)\\QueryBuilder so it can be removed from the return typehint.#'
+        - '#Parameter \#2 \$alias of method Doctrine\\ORM\\QueryBuilder\:\:from\(\) expects string, string\|null given#'
 
         # ---- EasyPipeline ----
         - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
@@ -110,12 +119,21 @@ parameters:
         - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
           path: packages/EasyRepository/tests
 
+        - message: '#Cannot call method getRepository\(\) on Doctrine\\Persistence\\ObjectManager\|null#'
+          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractDoctrineOrmRepository.php
+
         # ---- EasySecurity ----
+        - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Helpers\\DeferredContextResolver\:\:resolve\(\) should return EonX\\EasySecurity\\Interfaces\\ContextInterface but returns object\|null#'
+          path: packages/EasySecurity/src/Bridge/Symfony/Helpers/DeferredContextResolver.php
+
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
           path: packages/EasySecurity/src/Bridge/Symfony/DependencyInjection
 
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\PermissionInterface\|string>, array<int, EonX\\EasySecurity\\Permission\|stdClass\|string> given.#'
           path: packages/EasySecurity/tests
+
+        - message: '#Parameter \#1 \$roles of method EonX\\EasySecurity\\Interfaces\\ContextInterface\:\:setRoles\(\) expects array<EonX\\EasySecurity\\Interfaces\\RoleInterface\|string\>\|EonX\\EasySecurity\\Interfaces\\RoleInterface\|string, \(array<EonX\\EasySecurity\\Interfaces\\RoleInterface\>\)\|null given#'
+          path: packages/EasySecurity/src/Modifiers/RolesFromJwtModifier.php
 
         # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'

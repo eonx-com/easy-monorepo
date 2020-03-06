@@ -16,9 +16,6 @@ final class IfConditionForValue
     private $value;
 
     /**
-     * IfConditionForValue constructor.
-     *
-     * @param bool $condition
      * @param mixed $value
      */
     public function __construct(bool $condition, $value)
@@ -28,13 +25,9 @@ final class IfConditionForValue
     }
 
     /**
-     * Set current value to given value if condition is false.
-     *
      * @param mixed $value
-     *
-     * @return $this
      */
-    public function else($value)
+    public function else($value): self
     {
         if ($this->condition === false) {
             $this->value = $value;
@@ -44,8 +37,6 @@ final class IfConditionForValue
     }
 
     /**
-     * Get value.
-     *
      * @return mixed
      */
     public function getValue()
@@ -54,13 +45,9 @@ final class IfConditionForValue
     }
 
     /**
-     * Set current value to given value if condition is true.
-     *
      * @param mixed $value
-     *
-     * @return $this
      */
-    public function then($value)
+    public function then($value): self
     {
         if ($this->condition === true) {
             $this->value = $value;

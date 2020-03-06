@@ -17,14 +17,6 @@ use Mockery\MockInterface;
  */
 class ManagementTokenProviderTest extends AbstractTestCase
 {
-    /**
-     * Provider should call Auth0 API to issue a new access token and return it.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
     public function testGetToken(): void
     {
         $config = $this->getConfig();
@@ -37,17 +29,9 @@ class ManagementTokenProviderTest extends AbstractTestCase
         $provider = new ManagementTokenProvider($client, $config);
         $token = $provider->getToken();
 
-        self::assertSame('access_token', $token);
+        self::assertEquals('access_token', $token);
     }
 
-    /**
-     * Provider should call Auth0 API to issue a new access token and throws an exception if invalid response.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
     public function testGetTokenWithMissingTokenInResponse(): void
     {
         $this->expectException(RequiredDataMissingException::class);
@@ -62,17 +46,11 @@ class ManagementTokenProviderTest extends AbstractTestCase
         $provider = new ManagementTokenProvider($client, $config);
         $token = $provider->getToken();
 
-        self::assertSame('access_token', $token);
+        self::assertEquals('access_token', $token);
     }
 
     /**
-     * Build the base expectation for the mock for the client.
-     *
-     * @param \Mockery\MockInterface $mock
-     * @param \EonX\EasyIdentity\Implementations\Auth0\Config $config
      * @param null|mixed[] $content
-     *
-     * @return \Mockery\ExpectationInterface
      */
     private function buildBaseExpectation(
         MockInterface $mock,
@@ -89,24 +67,19 @@ class ManagementTokenProviderTest extends AbstractTestCase
                     'audience' => \sprintf('https://%s/api/v2/', $config->getDomain()),
                     'client_id' => $config->getClientId(),
                     'client_secret' => $config->getClientSecret(),
-                    'grant_type' => 'client_credentials'
-                ]
+                    'grant_type' => 'client_credentials',
+                ],
             ])
             ->andReturn($response);
     }
 
-    /**
-     * Get config.
-     *
-     * @return \EonX\EasyIdentity\Implementations\Auth0\Config
-     */
     private function getConfig(): Config
     {
         return new Config([
             'client_id' => 'client_id',
             'client_secret' => 'client_secret',
             'connection' => 'connection',
-            'domain' => 'domain'
+            'domain' => 'domain',
         ]);
     }
 }

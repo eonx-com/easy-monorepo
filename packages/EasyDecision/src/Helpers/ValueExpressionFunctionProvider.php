@@ -12,8 +12,6 @@ use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
 final class ValueExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
     /**
-     * Get list of functions.
-     *
      * @return mixed[]
      */
     public function getFunctions(): array
@@ -24,15 +22,10 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
             $this->equal(),
             $this->if(),
             $this->multiply(),
-            $this->subtract()
+            $this->subtract(),
         ];
     }
 
-    /**
-     * Add given value to value from input.
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
-     */
     private function add(): ExpressionFunctionInterface
     {
         return new ExpressionFunction('add', function ($arguments, $value) {
@@ -42,11 +35,6 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
         }, 'Add given argument to value from input');
     }
 
-    /**
-     * Divide by value the value from input.
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
-     */
     private function divide(): ExpressionFunctionInterface
     {
         return new ExpressionFunction('divide', function ($arguments, $value) {
@@ -60,11 +48,6 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
         }, 'Divide value from input by the given argument, cannot divide by 0');
     }
 
-    /**
-     * Check if given target strictly equal given value.
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
-     */
     private function equal(): ExpressionFunctionInterface
     {
         return new ExpressionFunction('equal', function ($arguments, $target, $value) {
@@ -72,11 +55,6 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
         }, 'Check if the 2 given arguments are equal');
     }
 
-    /**
-     * Create if condition.
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
-     */
     private function if(): ExpressionFunctionInterface
     {
         return new ExpressionFunction('if', function ($arguments, $condition) {
@@ -86,11 +64,6 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
         }, 'Create if condition allowing usage of ".then()" and/or "else()"');
     }
 
-    /**
-     * Multiply by value the value from input.
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
-     */
     private function multiply(): ExpressionFunctionInterface
     {
         return new ExpressionFunction('multiply', function ($arguments, $value) {
@@ -100,11 +73,6 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
         }, 'Multiply value from input by the given argument');
     }
 
-    /**
-     * Subtract given value from value from input.
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
-     */
     private function subtract(): ExpressionFunctionInterface
     {
         return new ExpressionFunction('subtract', function ($arguments, $value) {
@@ -115,11 +83,7 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
     }
 
     /**
-     * Validate given argument have "value" index.
-     *
      * @param mixed[] $arguments
-     *
-     * @return void
      */
     private function validateArguments(array $arguments): void
     {

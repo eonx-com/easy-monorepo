@@ -9,23 +9,13 @@ use Illuminate\Support\ServiceProvider;
 
 final class Auth0IdentityServiceProvider extends ServiceProvider
 {
-    /**
-     * Publish configuration file.
-     *
-     * @return void
-     */
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/config/easy-identity.php' => \base_path('config/easy-identity.php')
+            __DIR__ . '/config/easy-identity.php' => \base_path('config/easy-identity.php'),
         ]);
     }
 
-    /**
-     * Register services.
-     *
-     * @return void
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-identity.php', 'easy-identity');

@@ -10,12 +10,7 @@ use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 trait DataResolverTrait
 {
     /**
-     * Create page pagination data for given data and configuration.
-     *
-     * @param \EonX\EasyPagination\Interfaces\StartSizeConfigInterface $config
      * @param mixed $data
-     *
-     * @return \EonX\EasyPagination\Interfaces\StartSizeDataInterface
      */
     private function createStartSizeData(StartSizeConfigInterface $config, $data): StartSizeDataInterface
     {

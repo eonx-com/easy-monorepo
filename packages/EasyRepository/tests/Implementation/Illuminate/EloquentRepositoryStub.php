@@ -14,11 +14,6 @@ final class EloquentRepositoryStub extends AbstractEloquentRepository
      */
     private $modelExpectations;
 
-    /**
-     * EloquentRepositoryStub constructor.
-     *
-     * @param null|callable $modelExpectations
-     */
     public function __construct(?callable $modelExpectations = null)
     {
         $this->modelExpectations = $modelExpectations;
@@ -26,11 +21,6 @@ final class EloquentRepositoryStub extends AbstractEloquentRepository
         parent::__construct();
     }
 
-    /**
-     * Get the eloquent model to use.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
     protected function getModel(): Model
     {
         $mock = \Mockery::mock(Model::class);

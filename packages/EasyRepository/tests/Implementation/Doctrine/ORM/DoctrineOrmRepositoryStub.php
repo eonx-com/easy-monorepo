@@ -7,11 +7,6 @@ use EonX\EasyRepository\Implementations\Doctrine\ORM\AbstractDoctrineOrmReposito
 
 final class DoctrineOrmRepositoryStub extends AbstractDoctrineOrmRepository
 {
-    /**
-     * Get entity class managed by the repository.
-     *
-     * @return string
-     */
     protected function getEntityClass(): string
     {
         return 'my-entity-class';

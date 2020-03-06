@@ -6,8 +6,6 @@ namespace EonX\EasyDecision\Interfaces;
 interface DecisionOutputForRuleAwareInterface
 {
     /**
-     * Returns rule output for given decision output.
-     *
      * @param mixed $decisionOutput
      *
      * @return mixed

@@ -12,13 +12,6 @@ trait MasterDecoderFactoryAwareTrait
      */
     private $factory;
 
-    /**
-     * Set master factory.
-     *
-     * @param \EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface $factory
-     *
-     * @return void
-     */
     public function setMasterFactory(EasyApiTokenDecoderFactoryInterface $factory): void
     {
         $this->factory = $factory;

@@ -14,14 +14,6 @@ use Mockery\MockInterface;
  */
 class ManagementApiClientFactoryTest extends AbstractTestCase
 {
-    /**
-     * Factory should request a management token and return the expected instance of management api client.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
     public function testCreate(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider $tokenProvider */

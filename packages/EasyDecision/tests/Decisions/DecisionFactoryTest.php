@@ -14,11 +14,6 @@ use EonX\EasyDecision\Tests\Stubs\RuleProviderStub;
 
 final class DecisionFactoryTest extends AbstractTestCase
 {
-    /**
-     * Factory should create expected decision with expected rules.
-     *
-     * @return void
-     */
     public function testCreateDecisionSuccessfully(): void
     {
         $config = new DecisionConfig(
@@ -33,7 +28,7 @@ final class DecisionFactoryTest extends AbstractTestCase
         $expected = [
             'true-1' => true,
             'value === 1' => true,
-            'value < 2' => true
+            'value < 2' => true,
         ];
 
         self::assertTrue($decision->make(['value' => 1]));
@@ -41,11 +36,6 @@ final class DecisionFactoryTest extends AbstractTestCase
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }
 
-    /**
-     * Factory should throw exception if instantiated decision does not implement DecisionInterface.
-     *
-     * @return void
-     */
     public function testInvalidDecisionInMappingException(): void
     {
         $this->expectException(InvalidDecisionException::class);
@@ -55,11 +45,6 @@ final class DecisionFactoryTest extends AbstractTestCase
         (new DecisionFactory($this->getExpressionLanguageFactory()))->create($config);
     }
 
-    /**
-     * Factory should throw an exception if invalid rule provider provided.
-     *
-     * @return void
-     */
     public function testInvalidRuleProviderException(): void
     {
         $this->expectException(InvalidRuleProviderException::class);
@@ -69,11 +54,6 @@ final class DecisionFactoryTest extends AbstractTestCase
         (new DecisionFactory($this->getExpressionLanguageFactory()))->create($config);
     }
 
-    /**
-     * Factory should throw exception if given decision type isn't in mapping.
-     *
-     * @return void
-     */
     public function testNotInMappingDecisionException(): void
     {
         $this->expectException(InvalidDecisionException::class);

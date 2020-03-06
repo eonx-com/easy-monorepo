@@ -32,13 +32,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
      */
     private $config;
 
-    /**
-     * Service should throw exception if response structure is invalid.
-     *
-     * @return void
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
     public function testCreateUserInvalidResponseException(): void
     {
         $this->expectException(InvalidResponseFromIdentityException::class);
@@ -58,14 +51,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $this->getServiceForUsersMethod($identityUserService, $management)->createUser($identityUser);
     }
 
-    /**
-     * Service should call Auth0 to create user for given data.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
     public function testCreateUserSuccessfully(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
@@ -87,21 +72,12 @@ class Auth0IdentityServiceTest extends AbstractTestCase
 
         $this->getServiceForUsersMethod($identityUserService, $management)->createUser($identityUser);
 
-        self::assertSame(
+        self::assertEquals(
             'identity-id',
             $identityUserService->getIdentityUserId($identityUser, IdentityServiceNamesInterface::SERVICE_AUTH0)
         );
     }
 
-    /**
-     * Service should call token verifier to validate the given token.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \Auth0\SDK\Exception\CoreException
-     * @throws \Auth0\SDK\Exception\InvalidTokenException
-     */
     public function testDecodeToken(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory */
@@ -126,15 +102,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         self::assertEquals(['expected'], $service->decodeToken('token'));
     }
 
-    /**
-     * Service should call Auth0 to delete user for given id.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     */
     public function testDeleteUser(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
@@ -160,15 +127,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $this->getServiceForUsersMethod($identityUserService, $management)->deleteUser($identityUser);
     }
 
-    /**
-     * Service should call Auth0 to get user for given id.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     */
     public function testGetUser(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
@@ -196,13 +154,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         );
     }
 
-    /**
-     * Identity service should throw exception if no identity user id on given user.
-     *
-     * @return void
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
     public function testGetUserNoIdentityUserIdException(): void
     {
         $this->expectException(NoIdentityUserIdException::class);
@@ -218,15 +169,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $this->getServiceForUsersMethod($identityUserService, $management)->getUser($identityUser);
     }
 
-    /**
-     * Test login user with exception and response content from auth api.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\LoginFailedException
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \Auth0\SDK\Exception\ApiException
-     */
     public function testLoginUserWithExceptionAuthResponse(): void
     {
         $this->expectException(LoginFailedException::class);
@@ -264,15 +206,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $service->loginUser($identityUser);
     }
 
-    /**
-     * Test login user with exception and no response from auth api.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\LoginFailedException
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \Auth0\SDK\Exception\ApiException
-     */
     public function testLoginUserWithExceptionNullAuthResponse(): void
     {
         $this->expectException(LoginFailedException::class);
@@ -301,15 +234,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $service->loginUser($identityUser);
     }
 
-    /**
-     * Service should call Auth0 to update user for given id and data.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
     public function testUpdateUser(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
@@ -343,11 +267,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         self::assertEquals($expected, $identityUserService->getIdentityToArray($identityUser, $service));
     }
 
-    /**
-     * Get config.
-     *
-     * @return \EonX\EasyIdentity\Implementations\Auth0\Config
-     */
     private function getConfig(): Config
     {
         if ($this->config !== null) {
@@ -358,18 +277,10 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             'client_id' => 'client_id',
             'client_secret' => 'client_secret',
             'connection' => 'connection',
-            'domain' => 'domain'
+            'domain' => 'domain',
         ]);
     }
 
-    /**
-     * Instantiate service for simple users method test.
-     *
-     * @param \EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface $identityUserService
-     * @param \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management
-     *
-     * @return \EonX\EasyIdentity\Implementations\Auth0\Auth0IdentityService
-     */
     private function getServiceForUsersMethod(
         IdentityUserServiceInterface $identityUserService,
         ManagementApiClientFactory $management
@@ -383,13 +294,6 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         );
     }
 
-    /**
-     * Mock management factory to return users with expectations from given closure.
-     *
-     * @param \Closure $closure
-     *
-     * @return \Mockery\LegacyMockInterface
-     */
     private function mockManagementForUsersClient(Closure $closure): LegacyMockInterface
     {
         $users = $this->mock(Users::class, $closure);

@@ -10,7 +10,7 @@ $configs = [];
 // Get config
 $inputConfig = (new ConfigResolver())->resolveFromInputWithFallback(new ArgvInput(), [
     'easy-cfhighlander.yaml',
-    'easy-cfhighlander.yml'
+    'easy-cfhighlander.yml',
 ]);
 
 if ($inputConfig) {

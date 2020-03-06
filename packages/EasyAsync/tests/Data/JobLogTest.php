@@ -8,13 +8,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 
 final class JobLogTest extends AbstractTestCase
 {
-    /**
-     * Test job log setters and getters.
-     *
-     * @return void
-     *
-     * @throws \Nette\Utils\JsonException
-     */
     public function testJobLog(): void
     {
         $expected = [
@@ -29,7 +22,7 @@ final class JobLogTest extends AbstractTestCase
             'debug_info' => null,
             'failure_params' => null,
             'failure_reason' => 'failure_reason',
-            'validation_errors' => null
+            'validation_errors' => null,
         ];
 
         $jobLog = JobLog::fromArray($expected);
