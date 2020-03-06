@@ -10,11 +10,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 
 final class JobLogInProgressEventTest extends AbstractTestCase
 {
-    /**
-     * Event should return given job log.
-     *
-     * @return void
-     */
     public function testGetJobLog(): void
     {
         $jobLog = new JobLog(new Target('id', 'type'), 'test', 'jobId');

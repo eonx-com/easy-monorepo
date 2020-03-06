@@ -22,9 +22,6 @@ abstract class ChangedEntity
     private $ids;
 
     /**
-     * Constructor
-     *
-     * @param string $class
      * @param mixed[] $ids
      *
      * @phpstan-param class-string $class
@@ -36,10 +33,6 @@ abstract class ChangedEntity
     }
 
     /**
-     * Returns the class of the entity who has been changed.
-     *
-     * @return string
-     *
      * @phpstan-return class-string
      */
     public function getClass(): string
@@ -48,8 +41,6 @@ abstract class ChangedEntity
     }
 
     /**
-     * Returns an array of id properties returned by ClassMetadata.
-     *
      * @return mixed[]
      */
     public function getIds(): array

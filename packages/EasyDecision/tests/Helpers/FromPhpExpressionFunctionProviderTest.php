@@ -8,11 +8,6 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class FromPhpExpressionFunctionProviderTest extends AbstractTestCase
 {
-    /**
-     * Provider should create expression functions from php functions names.
-     *
-     * @return void
-     */
     public function testGetFunctions(): void
     {
         $phpFunctions = ['max', 'min', 'spl_object_hash', 'is_array'];

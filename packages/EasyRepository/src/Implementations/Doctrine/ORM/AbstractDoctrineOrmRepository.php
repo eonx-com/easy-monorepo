@@ -10,11 +10,6 @@ abstract class AbstractDoctrineOrmRepository implements DatabaseRepositoryInterf
 {
     use DoctrineOrmRepositoryTrait;
 
-    /**
-     * AbstractDoctrineOrmRepository constructor.
-     *
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         $entityClass = $this->getEntityClass();
@@ -23,10 +18,5 @@ abstract class AbstractDoctrineOrmRepository implements DatabaseRepositoryInterf
         $this->repository = $this->manager->getRepository($entityClass);
     }
 
-    /**
-     * Get entity class managed by the repository.
-     *
-     * @return string
-     */
     abstract protected function getEntityClass(): string;
 }

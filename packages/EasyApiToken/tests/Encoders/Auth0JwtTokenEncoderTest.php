@@ -13,15 +13,6 @@ use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
 {
-    /**
-     * Test creating a token with roles.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     */
     public function testCreateTokenWithRoles(): void
     {
         $jwtDriver = $this->createAuth0JwtDriver();
@@ -30,37 +21,28 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
             'roles' => [
                 'https://manage.eonx.com/roles' => [
                     'subscriptions:operator',
-                    'subscriptions:finance'
-                ]
-            ]
+                    'subscriptions:finance',
+                ],
+            ],
         ], 'original');
         $token = $encoder->encode($apiToken);
 
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $decodedToken */
         $decodedToken = $this->createJwtTokenDecoder()->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'Bearer ' . $token
+            'HTTP_AUTHORIZATION' => 'Bearer ' . $token,
         ]));
 
         self::assertInstanceOf(JwtEasyApiToken::class, $decodedToken);
         self::assertTrue($decodedToken->hasClaim('https://manage.eonx.com/roles'));
-        self::assertSame(
+        self::assertEquals(
             [
                 'subscriptions:operator',
-                'subscriptions:finance'
+                'subscriptions:finance',
             ],
             $decodedToken->getClaim('https://manage.eonx.com/roles')
         );
     }
 
-    /**
-     * JwtTokenEncoder should encode tokens JwtTokenDecoder can decode.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
-     */
     public function testJwtTokenEncodeSuccessfully(): void
     {
         $jwtDriver = $this->createAuth0JwtDriver();
@@ -68,7 +50,7 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
         $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken([], ''));
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
         $token = $this->createJwtTokenDecoder()->decode($this->createServerRequest([
-            'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
+            'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString,
         ]));
 
         self::assertInstanceOf(JwtEasyApiToken::class, $token);
@@ -81,14 +63,6 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
         }
     }
 
-    /**
-     * JwtTokenEncoder should throw an exception if given token isn't a JWT token.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
-     */
     public function testJwtTokenInvalidTokenException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -96,14 +70,6 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
         (new JwtTokenEncoder($this->createAuth0JwtDriver()))->encode(new BasicAuthEasyApiToken('', '', ''));
     }
 
-    /**
-     * JwtTokenEncoder should throw an exception if anything goes wrong while encoding token.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
-     */
     public function testJwtTokenUnableToEncodeException(): void
     {
         $this->expectException(UnableToEncodeEasyApiTokenException::class);
@@ -113,11 +79,6 @@ final class Auth0JwtTokenEncoderTest extends AbstractAuth0JwtTokenTestCase
         (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken(['scopes' => 1], ''));
     }
 
-    /**
-     * Create JwtTokenDecoder.
-     *
-     * @return \EonX\EasyApiToken\Decoders\JwtTokenDecoder
-     */
     private function createJwtTokenDecoder(): JwtTokenDecoder
     {
         return new JwtTokenDecoder($this->createJwtEasyApiTokenFactory($this->createAuth0JwtDriver()));

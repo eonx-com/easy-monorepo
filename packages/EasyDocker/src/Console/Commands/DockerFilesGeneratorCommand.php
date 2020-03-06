@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyDocker\Console\Commands;
 
-use EoneoPay\Utils\Interfaces\StrInterface;
 use EonX\EasyDocker\Interfaces\FileGeneratorInterface;
 use EonX\EasyDocker\Interfaces\ManifestGeneratorInterface;
 use EonX\EasyDocker\Interfaces\ParameterResolverInterface;
@@ -12,40 +11,28 @@ use Symfony\Component\Finder\Finder;
 
 final class DockerFilesGeneratorCommand extends AbstractTemplatesCommand
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     private const TEMPLATES = __DIR__ . '/../../../templates';
 
-    /** @var \Symfony\Component\Finder\Finder */
+    /**
+     * @var \Symfony\Component\Finder\Finder
+     */
     private $finder;
 
-    /**
-     * DockerFilesGeneratorCommand constructor.
-     *
-     * @param \EonX\EasyDocker\Interfaces\FileGeneratorInterface $fileGenerator
-     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
-     * @param \Symfony\Component\Finder\Finder $finder
-     * @param \EonX\EasyDocker\Interfaces\ManifestGeneratorInterface $manifestGenerator
-     * @param \EonX\EasyDocker\Interfaces\ParameterResolverInterface $parameterResolver
-     * @param \EoneoPay\Utils\Interfaces\StrInterface $str
-     */
     public function __construct(
         FileGeneratorInterface $fileGenerator,
         Filesystem $filesystem,
         Finder $finder,
         ManifestGeneratorInterface $manifestGenerator,
-        ParameterResolverInterface $parameterResolver,
-        StrInterface $str
+        ParameterResolverInterface $parameterResolver
     ) {
         $this->finder = $finder;
 
-        parent::__construct($fileGenerator, $filesystem, $manifestGenerator, $parameterResolver, $str);
+        parent::__construct($fileGenerator, $filesystem, $manifestGenerator, $parameterResolver);
     }
 
-    /**
-     * Configure command.
-     *
-     * @return void
-     */
     protected function configure(): void
     {
         $this->setName('generate');
@@ -55,8 +42,6 @@ final class DockerFilesGeneratorCommand extends AbstractTemplatesCommand
     }
 
     /**
-     * Get simple files names. Simple files are the one which don't require the filename to change.
-     *
      * @return string[]
      */
     protected function getSimpleFiles(): array

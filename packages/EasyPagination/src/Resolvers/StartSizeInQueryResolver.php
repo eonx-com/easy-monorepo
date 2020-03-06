@@ -18,23 +18,11 @@ final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
      */
     private $config;
 
-    /**
-     * StartSizeInQueryResolver constructor.
-     *
-     * @param \EonX\EasyPagination\Interfaces\StartSizeConfigInterface $config
-     */
     public function __construct(StartSizeConfigInterface $config)
     {
         $this->config = $config;
     }
 
-    /**
-     * Resolve pagination data for given request.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     *
-     * @return \EonX\EasyPagination\Interfaces\StartSizeDataInterface
-     */
     public function resolve(ServerRequestInterface $request): StartSizeDataInterface
     {
         return $this->createStartSizeData($this->config, $request->getQueryParams());

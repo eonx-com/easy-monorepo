@@ -15,12 +15,6 @@ final class RolesFromJwtModifier extends AbstractContextModifier
      */
     private $rolesProvider;
 
-    /**
-     * RolesFromApiTokenDataResolver constructor.
-     *
-     * @param \EonX\EasySecurity\Interfaces\RolesProviderInterface $rolesProvider
-     * @param null|int $priority
-     */
     public function __construct(RolesProviderInterface $rolesProvider, ?int $priority = null)
     {
         $this->rolesProvider = $rolesProvider;
@@ -28,14 +22,6 @@ final class RolesFromJwtModifier extends AbstractContextModifier
         parent::__construct($priority);
     }
 
-    /**
-     * Modify given context for given request.
-     *
-     * @param \EonX\EasySecurity\Interfaces\ContextInterface $context
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return void
-     */
     public function modify(ContextInterface $context, Request $request): void
     {
         $token = $context->getToken();

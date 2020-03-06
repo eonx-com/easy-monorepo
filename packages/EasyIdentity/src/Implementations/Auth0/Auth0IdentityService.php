@@ -33,15 +33,6 @@ final class Auth0IdentityService extends AbstractIdentityService
      */
     private $tokenVerifierFactory;
 
-    /**
-     * Auth0IdentityService constructor.
-     *
-     * @param \EonX\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory
-     * @param \EonX\EasyIdentity\Implementations\Auth0\Config $config
-     * @param \EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface $identityUserService
-     * @param \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $managementFactory
-     * @param \EonX\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory
-     */
     public function __construct(
         AuthenticationApiClientFactory $authFactory,
         Config $config,
@@ -57,17 +48,6 @@ final class Auth0IdentityService extends AbstractIdentityService
         $this->tokenVerifierFactory = $tokenVerifierFactory;
     }
 
-    /**
-     * Create user for given data.
-     *
-     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
-     *
-     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
-     *
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \EonX\EasyIdentity\Exceptions\InvalidResponseFromIdentityException
-     */
     public function createUser(IdentityUserInterface $user): IdentityUserInterface
     {
         $data = $this->getIdentityToArray($user);
@@ -85,10 +65,6 @@ final class Auth0IdentityService extends AbstractIdentityService
     }
 
     /**
-     * Validate and decode given token and return decoded version.
-     *
-     * @param string $token
-     *
      * @return mixed
      *
      * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
@@ -100,34 +76,11 @@ final class Auth0IdentityService extends AbstractIdentityService
         return $this->tokenVerifierFactory->create()->verifyAndDecode($token);
     }
 
-    /**
-     * Delete user for given id.
-     *
-     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
-     *
-     * @return void
-     *
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \EonX\EasyIdentity\Exceptions\NoIdentityUserIdException
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     */
     public function deleteUser(IdentityUserInterface $user): void
     {
         $this->managementFactory->create()->users->delete($this->getIdentityUserId($user));
     }
 
-    /**
-     * Get user information for given id.
-     *
-     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
-     *
-     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
-     *
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \EonX\EasyIdentity\Exceptions\NoIdentityUserIdException
-     */
     public function getUser(IdentityUserInterface $user): IdentityUserInterface
     {
         $identityUser = $this->managementFactory->create()->users->get($this->getIdentityUserId($user));
@@ -141,15 +94,6 @@ final class Auth0IdentityService extends AbstractIdentityService
         return $user;
     }
 
-    /**
-     * Login given user.
-     *
-     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
-     *
-     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
-     *
-     * @throws \Auth0\SDK\Exception\ApiException
-     */
     public function loginUser(IdentityUserInterface $user): IdentityUserInterface
     {
         $data = $this->getIdentityToArray($user);
@@ -163,12 +107,7 @@ final class Auth0IdentityService extends AbstractIdentityService
     }
 
     /**
-     * Update user for given id with given data.
-     *
-     * @param \EonX\EasyIdentity\Interfaces\IdentityUserInterface $user
      * @param mixed[] $data
-     *
-     * @return \EonX\EasyIdentity\Interfaces\IdentityUserInterface
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -188,23 +127,11 @@ final class Auth0IdentityService extends AbstractIdentityService
         return $user;
     }
 
-    /**
-     * Get service name.
-     *
-     * @return string
-     */
     protected function getServiceName(): string
     {
         return IdentityServiceNamesInterface::SERVICE_AUTH0;
     }
 
-    /**
-     * Get message for given request exception when trying to login.
-     *
-     * @param \GuzzleHttp\Exception\RequestException $exception
-     *
-     * @return string
-     */
     private function getLoginExceptionMessage(RequestException $exception): string
     {
         $response = $exception->getResponse();

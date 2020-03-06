@@ -9,7 +9,7 @@ interface ImplementationsInterface
      * @var string[]
      */
     public const IMPLEMENTATIONS = [
-        self::IMPLEMENTATION_DOCTRINE
+        self::IMPLEMENTATION_DOCTRINE,
     ];
 
     /**

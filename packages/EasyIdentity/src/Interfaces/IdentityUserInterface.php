@@ -5,4 +5,5 @@ namespace EonX\EasyIdentity\Interfaces;
 
 interface IdentityUserInterface
 {
+    // No body needed.
 }

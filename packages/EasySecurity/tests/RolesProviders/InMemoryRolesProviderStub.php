@@ -13,8 +13,6 @@ final class InMemoryRolesProviderStub extends AbstractInMemoryRolesProvider
     private $rolesToInit;
 
     /**
-     * InMemoryRolesProviderStub constructor.
-     *
      * @param null|\EonX\EasySecurity\Interfaces\RoleInterface[] $rolesToInit
      */
     public function __construct(?array $rolesToInit = null)
@@ -23,8 +21,6 @@ final class InMemoryRolesProviderStub extends AbstractInMemoryRolesProvider
     }
 
     /**
-     * Init roles.
-     *
      * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
      */
     protected function initRoles(): array

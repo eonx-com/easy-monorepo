@@ -18,16 +18,6 @@ use ReflectionMethod;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * Convert protected/private method to public.
-     *
-     * @param string $className
-     * @param string $methodName
-     *
-     * @return \ReflectionMethod
-     *
-     * @throws \ReflectionException
-     */
     protected function getMethodAsPublic(string $className, string $methodName): ReflectionMethod
     {
         $class = new ReflectionClass($className);
@@ -38,12 +28,7 @@ abstract class AbstractTestCase extends TestCase
     }
 
     /**
-     * Create mock for given class and apply expectations if given.
-     *
      * @param string|object $class
-     * @param null|callable $expectations
-     *
-     * @return \Mockery\LegacyMockInterface
      */
     protected function mock($class, ?callable $expectations = null): LegacyMockInterface
     {
@@ -56,14 +41,6 @@ abstract class AbstractTestCase extends TestCase
         return $mock;
     }
 
-    /**
-     * Mock Doctrine manager registry for given manager and repository expectations.
-     *
-     * @param callable|null $managerExpectations
-     * @param callable|null $repositoryExpectations
-     *
-     * @return \Mockery\LegacyMockInterface
-     */
     protected function mockRegistry(
         ?callable $managerExpectations = null,
         ?callable $repositoryExpectations = null

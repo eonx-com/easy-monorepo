@@ -13,8 +13,6 @@ final class EasyTestApplication extends Application
     public const VERSION = '1.0.0';
 
     /**
-     * EasyTestApplication constructor.
-     *
      * @param \Symfony\Component\Console\Command\Command[] $commands
      */
     public function __construct(array $commands)

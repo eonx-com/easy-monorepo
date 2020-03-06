@@ -37,8 +37,6 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
     private $resolved = [];
 
     /**
-     * EasyApiTokenDecoderFactory constructor.
-     *
      * @param mixed[] $config
      * @param null|string[] $defaultFactories
      */
@@ -48,15 +46,6 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
         $this->defaultFactories = $defaultFactories ?? $this->getDefaultDecoderFactories();
     }
 
-    /**
-     * Build a named TokenFactory.
-     *
-     * @param string $decoder Key of configuration found in the configuration.
-     *
-     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
-     */
     public function build(string $decoder): EasyApiTokenDecoderInterface
     {
         if (isset($this->resolved[$decoder])) {
@@ -80,25 +69,13 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
         return $this->resolved[$decoder] = $subFactory->build($config);
     }
 
-    /**
-     * Set PSR container.
-     *
-     * @param \Psr\Container\ContainerInterface $container
-     *
-     * @return void
-     */
     public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
     }
 
     /**
-     * Get sub-factory class.
-     *
-     * @param string $decoder
      * @param mixed[] $config
-     *
-     * @return string
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
@@ -124,12 +101,7 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
     }
 
     /**
-     * Instantiate sub-factory.
-     *
-     * @param string $decoder
      * @param mixed[] $config
-     *
-     * @return \EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
@@ -145,7 +117,7 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
             if (\class_exists($factoryClass)) {
                 return new $factoryClass();
             }
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             throw new InvalidConfigurationException(\sprintf(
                 'Unable to instantiate the factory "%s" for decoder "%s": %s',
                 $factoryClass,

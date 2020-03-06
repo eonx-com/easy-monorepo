@@ -26,13 +26,6 @@ final class EntityChangeSubscriber implements EventSubscriber
     private $changes = [];
 
     /**
-     * Stores an array of entities that are to be inserted that may not yet have primary ids.
-     *
-     * @var mixed[]
-     */
-    private $inserts = [];
-
-    /**
      * @var \EonX\EasyEntityChange\Interfaces\DeletedEntityEnrichmentInterface|null
      */
     private $deleteEnrichment;
@@ -43,6 +36,13 @@ final class EntityChangeSubscriber implements EventSubscriber
     private $dispatcher;
 
     /**
+     * Stores an array of entities that are to be inserted that may not yet have primary ids.
+     *
+     * @var mixed[]
+     */
+    private $inserts = [];
+
+    /**
      * Stores an array of class names we're watching for updates. If null, we will watch for
      * any changes, if an array, we will only dispatch when we see a change of the given classes.
      *
@@ -51,11 +51,7 @@ final class EntityChangeSubscriber implements EventSubscriber
     private $watchedClasses;
 
     /**
-     * Constructor.
-     *
-     * @param \Psr\EventDispatcher\EventDispatcherInterface $dispatcher
-     * @param \EonX\EasyEntityChange\Interfaces\DeletedEntityEnrichmentInterface|null $deleteEnrichment
-     * @param string[]|null $watchedClasses
+     * @param null|string[] $watchedClasses
      */
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -68,26 +64,16 @@ final class EntityChangeSubscriber implements EventSubscriber
     }
 
     /**
-     * Subscribed Events.
-     *
      * @return string[]
      */
     public function getSubscribedEvents(): array
     {
         return [
             Events::onFlush,
-            Events::postFlush
+            Events::postFlush,
         ];
     }
 
-    /**
-     * Takes all entities that are updated or modified in a flush and
-     * prepares them for a search index update.
-     *
-     * @param \Doctrine\ORM\Event\OnFlushEventArgs $eventArgs
-     *
-     * @return void
-     */
     public function onFlush(OnFlushEventArgs $eventArgs): void
     {
         // Reset the changes array. This listener is intentionally stateful and we start
@@ -117,13 +103,6 @@ final class EntityChangeSubscriber implements EventSubscriber
         }
     }
 
-    /**
-     * Dispatches jobs for search index updates.
-     *
-     * @param \Doctrine\ORM\Event\PostFlushEventArgs $args
-     *
-     * @return void
-     */
     public function postFlush(PostFlushEventArgs $args): void
     {
         // If we had no changes, no event needs to be dispatched.
@@ -145,14 +124,100 @@ final class EntityChangeSubscriber implements EventSubscriber
     }
 
     /**
-     * Takes any changes that were detected from objects that had no identifiers and re-queries
-     * for identifiers.
-     *
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
-     *
-     * @return void
+     * @return string[]
      */
-    protected function processInserts(EntityManagerInterface $entityManager): void
+    private function calculateChangedProperties(object $entity, UnitOfWork $unitOfWork): array
+    {
+        $changeSet = $unitOfWork->getEntityChangeSet($entity);
+
+        // Returns the keys of the change set that represent all changed properties on the entity.
+        return \array_keys($changeSet);
+    }
+
+    /**
+     * @param mixed $entity
+     */
+    private function flagForDelete($entity, EntityManagerInterface $entityManager): void
+    {
+        $metadata = $entityManager->getClassMetadata(\get_class($entity));
+
+        /**
+         * Resolve the proper class name to use when talking about this entity, which isn't going to
+         * be the proxy class name.
+         *
+         * The name returned by ClassMetadata is a class string, which isnt annotated as such in
+         * doctrine.
+         *
+         * @phpstan-var class-string
+         */
+        $className = $metadata->getName();
+
+        // If we're not watching for changes for the class, there's nothing to flag.
+        if ($this->isWatched($className) === false) {
+            return;
+        }
+
+        $ids = $metadata->getIdentifierValues($entity);
+
+        $metadata = $this->deleteEnrichment instanceof DeletedEntityEnrichmentInterface === true
+            ? $this->deleteEnrichment->getMetadata($entity)
+            : [];
+
+        $this->changes[] = new DeletedEntity($className, $ids, $metadata);
+    }
+
+    private function flagForUpdate(object $entity, EntityManagerInterface $entityManager): void
+    {
+        $metadata = $entityManager->getClassMetadata(\get_class($entity));
+
+        /**
+         * Resolve the proper class name to use when talking about this entity, which isn't going to
+         * be the proxy class name.
+         *
+         * The name returned by ClassMetadata is a class string, which isnt annotated as such in
+         * doctrine.
+         *
+         * @phpstan-var class-string
+         */
+        $className = $metadata->getName();
+
+        // If we're not watching for changes for the class, there's nothing to flag.
+        if ($this->isWatched($className) === false) {
+            return;
+        }
+
+        $entityIds = $metadata->getIdentifierValues($entity);
+        $changedProperties = $this->calculateChangedProperties($entity, $entityManager->getUnitOfWork());
+
+        // If we dont have any ids for the object we will store the DTO in a separate array to be re-processed
+        // after the flush.
+        if (\count($entityIds) === 0) {
+            $this->inserts[] = [
+                new UpdatedEntity($changedProperties, $className, $entityIds),
+                $entity,
+            ];
+
+            return;
+        }
+
+        $this->changes[] = new UpdatedEntity($changedProperties, $className, $entityIds);
+    }
+
+    /**
+     * @phpstan-param class-string $className
+     */
+    private function isWatched(string $className): bool
+    {
+        // If the watched array is null, we are not watching for anything specific and will emit
+        // events for all classes.
+        if ($this->watchedClasses === null) {
+            return true;
+        }
+
+        return \in_array($className, $this->watchedClasses, true) === true;
+    }
+
+    private function processInserts(EntityManagerInterface $entityManager): void
     {
         foreach ($this->inserts as $insert) {
             $dto = $insert[0] ?? null;
@@ -186,125 +251,5 @@ final class EntityChangeSubscriber implements EventSubscriber
                 $ids
             );
         }
-    }
-
-    /**
-     * Attempts to discover any changed properties from the doctrine UnitOfWork.
-     *
-     * @param object $entity
-     * @param \Doctrine\ORM\UnitOfWork $unitOfWork
-     *
-     * @return string[]
-     */
-    private function calculateChangedProperties(object $entity, UnitOfWork $unitOfWork): array
-    {
-        $changeset = $unitOfWork->getEntityChangeSet($entity);
-
-        // Returns the keys of the change set that represent all changed properties on the entity.
-        return \array_keys($changeset);
-    }
-
-    /**
-     * Collects actual deleted entities so they can be processed into relevant information
-     * for queue workers to handle.
-     *
-     * @param mixed $entity
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
-     *
-     * @return void
-     */
-    private function flagForDelete($entity, EntityManagerInterface $entityManager): void
-    {
-        $metadata = $entityManager->getClassMetadata(\get_class($entity));
-
-        /**
-         * Resolve the proper class name to use when talking about this entity, which isn't going to
-         * be the proxy class name.
-         *
-         * The name returned by ClassMetadata is a class string, which isnt annotated as such in
-         * doctrine.
-         *
-         * @phpstan-var class-string
-         */
-        $className = $metadata->getName();
-
-        // If we're not watching for changes for the class, there's nothing to flag.
-        if ($this->isWatched($className) === false) {
-            return;
-        }
-
-        $ids = $metadata->getIdentifierValues($entity);
-
-        $metadata = $this->deleteEnrichment instanceof DeletedEntityEnrichmentInterface === true
-            ? $this->deleteEnrichment->getMetadata($entity)
-            : [];
-
-        $this->changes[] = new DeletedEntity($className, $ids, $metadata);
-    }
-
-    /**
-     * Flags the entity for update if the search manager indicates that
-     * it is searchable.
-     *
-     * @param object $entity
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
-     *
-     * @return void
-     */
-    private function flagForUpdate(object $entity, EntityManagerInterface $entityManager): void
-    {
-        $metadata = $entityManager->getClassMetadata(\get_class($entity));
-
-        /**
-         * Resolve the proper class name to use when talking about this entity, which isn't going to
-         * be the proxy class name.
-         *
-         * The name returned by ClassMetadata is a class string, which isnt annotated as such in
-         * doctrine.
-         *
-         * @phpstan-var class-string
-         */
-        $className = $metadata->getName();
-
-        // If we're not watching for changes for the class, there's nothing to flag.
-        if ($this->isWatched($className) === false) {
-            return;
-        }
-
-        $entityIds = $metadata->getIdentifierValues($entity);
-        $changedProperties = $this->calculateChangedProperties($entity, $entityManager->getUnitOfWork());
-
-        // If we dont have any ids for the object we will store the DTO in a separate array to be re-processed
-        // after the flush.
-        if (\count($entityIds) === 0) {
-            $this->inserts[] = [
-                new UpdatedEntity($changedProperties, $className, $entityIds),
-                $entity
-            ];
-
-            return;
-        }
-
-        $this->changes[] = new UpdatedEntity($changedProperties, $className, $entityIds);
-    }
-
-    /**
-     * Checks if the class name is in our array of watched classes.
-     *
-     * @param string $className
-     *
-     * @return bool
-     *
-     * @phpstan-param class-string $className
-     */
-    private function isWatched(string $className): bool
-    {
-        // If the watched array is null, we are not watching for anything specific and will emit
-        // events for all classes.
-        if ($this->watchedClasses === null) {
-            return true;
-        }
-
-        return \in_array($className, $this->watchedClasses, true) === true;
     }
 }

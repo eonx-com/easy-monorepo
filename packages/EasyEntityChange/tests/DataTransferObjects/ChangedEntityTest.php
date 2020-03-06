@@ -12,11 +12,6 @@ use stdClass;
  */
 class ChangedEntityTest extends AbstractTestCase
 {
-    /**
-     * Tests that DTO's constructor and getters are :chefs-kiss:
-     *
-     * @return void
-     */
     public function testDtoCreationAndGetters(): void
     {
         $dto = new UpdatedEntity(
@@ -25,7 +20,7 @@ class ChangedEntityTest extends AbstractTestCase
             ['id']
         );
 
-        self::assertSame(stdClass::class, $dto->getClass());
-        self::assertSame(['id'], $dto->getIds());
+        self::assertEquals(stdClass::class, $dto->getClass());
+        self::assertEquals(['id'], $dto->getIds());
     }
 }

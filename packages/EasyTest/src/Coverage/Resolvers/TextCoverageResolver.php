@@ -9,15 +9,6 @@ use Nette\Utils\Strings;
 
 final class TextCoverageResolver implements CoverageResolverInterface
 {
-    /**
-     * Resolve coverage for given output.
-     *
-     * @param string $coverageOutput
-     *
-     * @return float
-     *
-     * @throws \EonX\EasyTest\Exceptions\UnableToResolveCoverageException
-     */
     public function resolve(string $coverageOutput): float
     {
         // Lower and remove spaces
@@ -26,7 +17,7 @@ final class TextCoverageResolver implements CoverageResolverInterface
         if (Strings::contains($output, 'lines:') === false) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output does not contain "lines:"',
-                \get_class($this)
+                static::class
             ));
         }
 
@@ -38,7 +29,7 @@ final class TextCoverageResolver implements CoverageResolverInterface
 
         throw new UnableToResolveCoverageException(\sprintf(
             '[%s] Could not match any coverage number in output',
-            \get_class($this)
+            static::class
         ));
     }
 }

@@ -9,11 +9,7 @@ use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 trait ChainEasyApiTokenDecoderTrait
 {
     /**
-     * Validate given decoder implements the right interface, otherwise throw exception.
-     *
      * @param mixed $decoder
-     *
-     * @return void
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */
@@ -25,25 +21,21 @@ trait ChainEasyApiTokenDecoderTrait
 
         throw new InvalidArgumentException(\sprintf(
             'In "%s", decoder must be an instance of "%s", "%s" given',
-            \get_class($this),
+            static::class,
             EasyApiTokenDecoderInterface::class,
             \gettype($decoder)
         ));
     }
 
     /**
-     * Validate given array of decoders isn't empty, and all of them implement the right interface.
-     *
      * @param mixed[] $decoders
-     *
-     * @return void
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */
     private function validateDecoders(array $decoders): void
     {
         if (empty($decoders)) {
-            throw new InvalidArgumentException(\sprintf('In "%s", empty array of decoders given', \get_class($this)));
+            throw new InvalidArgumentException(\sprintf('In "%s", empty array of decoders given', static::class));
         }
 
         foreach ($decoders as $decoder) {

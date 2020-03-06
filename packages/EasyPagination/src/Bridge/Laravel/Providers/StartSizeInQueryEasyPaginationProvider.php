@@ -7,11 +7,6 @@ use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
 
 final class StartSizeInQueryEasyPaginationProvider extends AbstractStartSizeEasyPaginationProvider
 {
-    /**
-     * Get closure to instantiate the implementation of StartSizeDataResolverInterface.
-     *
-     * @return \Closure
-     */
     protected function getResolverClosure(): \Closure
     {
         return function (): StartSizeInQueryResolver {

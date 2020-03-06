@@ -6,10 +6,7 @@ namespace EonX\EasyPipeline\Interfaces;
 interface MiddlewareInterface
 {
     /**
-     * Handle given input and pass return through next.
-     *
      * @param mixed $input
-     * @param callable $next
      *
      * @return mixed
      */

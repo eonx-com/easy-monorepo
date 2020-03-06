@@ -11,11 +11,6 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class EasyPsr7FactoryTest extends AbstractTestCase
 {
-    /**
-     * Factory should create the right request with the values of the original.
-     *
-     * @return void
-     */
     public function testCreateRequest(): void
     {
         $psr7Factory = $this->getFactory();
@@ -31,11 +26,6 @@ class EasyPsr7FactoryTest extends AbstractTestCase
         self::assertEquals('/', $psrRequest->getRequestTarget());
     }
 
-    /**
-     * Factory should create the right response from the original.
-     *
-     * @return void
-     */
     public function testCreateResponse(): void
     {
         $psr7Factory = $this->getFactory();
@@ -46,11 +36,6 @@ class EasyPsr7FactoryTest extends AbstractTestCase
         self::assertInstanceOf(SymfonyResponse::class, $symfonyResponse);
     }
 
-    /**
-     * Get PSR-7 factory.
-     *
-     * @return \EonX\EasyPsr7Factory\EasyPsr7Factory
-     */
     private function getFactory(): EasyPsr7Factory
     {
         return new EasyPsr7Factory();

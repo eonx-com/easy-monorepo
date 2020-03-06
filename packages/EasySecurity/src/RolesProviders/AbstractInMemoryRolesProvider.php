@@ -14,8 +14,6 @@ abstract class AbstractInMemoryRolesProvider implements RolesProviderInterface
     private $roles;
 
     /**
-     * Get roles.
-     *
      * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
      */
     public function getRoles(): array
@@ -30,8 +28,6 @@ abstract class AbstractInMemoryRolesProvider implements RolesProviderInterface
     }
 
     /**
-     * Get list of roles for given identifiers.
-     *
      * @param string|string[] $identifiers
      *
      * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
@@ -56,8 +52,6 @@ abstract class AbstractInMemoryRolesProvider implements RolesProviderInterface
     }
 
     /**
-     * Init roles.
-     *
      * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
      */
     abstract protected function initRoles(): array;

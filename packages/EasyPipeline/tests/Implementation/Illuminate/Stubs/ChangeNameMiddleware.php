@@ -12,21 +12,13 @@ final class ChangeNameMiddleware implements MiddlewareInterface
      */
     private $changeTo;
 
-    /**
-     * ChangeNameMiddleware constructor.
-     *
-     * @param string $changeTo
-     */
     public function __construct(string $changeTo)
     {
         $this->changeTo = $changeTo;
     }
 
     /**
-     * Handle given input and pass return through next.
-     *
      * @param mixed $input
-     * @param callable $next
      *
      * @return mixed
      */

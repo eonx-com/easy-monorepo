@@ -18,8 +18,6 @@ final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
     private $decoders;
 
     /**
-     * ChainReturnFirstTokenDecoder constructor.
-     *
      * @param mixed[] $decoders
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
@@ -31,13 +29,6 @@ final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
         $this->decoders = $decoders;
     }
 
-    /**
-     * Decode API token for given request.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     *
-     * @return null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface
-     */
     public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
     {
         foreach ($this->decoders as $decoder) {

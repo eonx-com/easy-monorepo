@@ -12,20 +12,12 @@ use EonX\EasyApiToken\Tokens\BasicAuthEasyApiToken;
 
 final class BasicAuthEncoderTest extends AbstractTestCase
 {
-    /**
-     * BasicAuthEncoder should encode successfully basic auth api token.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
-     */
     public function testBasicAuthEncodeSuccessfully(): void
     {
         $tests = [
             'username' => 'password',
             'username ' => ' password ',
-            'username  ' => 'Sp3c|@l_cH\\aracters'
+            'username  ' => 'Sp3c|@l_cH\\aracters',
         ];
 
         foreach ($tests as $username => $password) {
@@ -35,14 +27,6 @@ final class BasicAuthEncoderTest extends AbstractTestCase
         }
     }
 
-    /**
-     * BasicAuthEncoder should throw exception if given token isn't instance of BasicAuthEasyApiTokenInterface.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
-     */
     public function testInvalidTokenException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -50,14 +34,6 @@ final class BasicAuthEncoderTest extends AbstractTestCase
         (new BasicAuthEncoder())->encode(new ApiKeyEasyApiToken(''));
     }
 
-    /**
-     * BasicAuthEncoder should throw exception if password empty in given token.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
-     */
     public function testUnableToEncodePasswordEmptyException(): void
     {
         $this->expectException(UnableToEncodeEasyApiTokenException::class);
@@ -65,14 +41,6 @@ final class BasicAuthEncoderTest extends AbstractTestCase
         (new BasicAuthEncoder())->encode(new BasicAuthEasyApiToken('username', '', ''));
     }
 
-    /**
-     * BasicAuthEncoder should throw exception if username empty in given token.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
-     */
     public function testUnableToEncodeUsernameEmptyException(): void
     {
         $this->expectException(UnableToEncodeEasyApiTokenException::class);

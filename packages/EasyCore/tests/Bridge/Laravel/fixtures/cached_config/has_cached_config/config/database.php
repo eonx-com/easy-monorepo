@@ -2,5 +2,5 @@
 declare(strict_types=1);
 
 return [
-    'connection' => 'not-cached-connection'
+    'connection' => 'not-cached-connection',
 ];

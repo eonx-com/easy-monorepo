@@ -7,13 +7,6 @@ use EonX\EasyCfhighlander\Tests\AbstractTestCase;
 
 final class CloudFormationCommandTest extends AbstractTestCase
 {
-    /**
-     * Ensure the .easy directory is only used if no existing files are present
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testEasyDirectoryBackwardsCompatibility(): void
     {
         $inputs = [
@@ -28,12 +21,12 @@ final class CloudFormationCommandTest extends AbstractTestCase
             'aws_dev_account', // dev_account
             '599070804856', // ops_account
             'aws_prod_account', // prod_account
-            'true' // cli_enabled
+            'true', // cli_enabled
         ];
 
         $filesNotExisting = [
             '.easy/easy-cfhighlander-manifest.json',
-            '.easy/easy-cfhighlander-params.yaml'
+            '.easy/easy-cfhighlander-params.yaml',
         ];
 
         $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-cfhighlander-manifest.json', '{}');
@@ -49,13 +42,6 @@ final class CloudFormationCommandTest extends AbstractTestCase
         }
     }
 
-    /**
-     * Command should generate cloudformation files.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testGenerateCloudFormationFiles(): void
     {
         $inputs = [
@@ -70,7 +56,7 @@ final class CloudFormationCommandTest extends AbstractTestCase
             'aws_dev_account', // dev_account
             '599070804856', // ops_account
             'aws_prod_account', // prod_account
-            'true' // cli_enabled
+            'true', // cli_enabled
         ];
 
         $files = [
@@ -91,7 +77,7 @@ final class CloudFormationCommandTest extends AbstractTestCase
             'redis/redis.cfhighlander.rb',
             'redis/redis.cfndsl.rb',
             'redis/redis.config.yaml',
-            'redis/redis.mappings.yaml'
+            'redis/redis.mappings.yaml',
         ];
 
         $display = $this->executeCommand('cloudformation', $inputs);

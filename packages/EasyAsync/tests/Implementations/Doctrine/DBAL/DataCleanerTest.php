@@ -15,14 +15,6 @@ use Mockery\MockInterface;
 
 final class DataCleanerTest extends AbstractTestCase
 {
-    /**
-     * Cleaner should throw exception and rollback db transaction if failed.
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\ConnectionException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToRemoveJobException
-     */
     public function testRemoveFailed(): void
     {
         $this->expectException(UnableToRemoveJobException::class);
@@ -49,14 +41,6 @@ final class DataCleanerTest extends AbstractTestCase
         $cleaner->remove(new Job(new Target('id', 'type'), 'test'));
     }
 
-    /**
-     * Cleaner should remove job and associated jog logs within db transaction.
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\ConnectionException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToRemoveJobException
-     */
     public function testRemoveSuccessfully(): void
     {
         /** @var \Doctrine\DBAL\Connection $conn */

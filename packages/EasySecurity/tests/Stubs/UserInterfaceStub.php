@@ -13,8 +13,6 @@ final class UserInterfaceStub implements UserInterface
     private $uniqueId;
 
     /**
-     * UserInterfaceStub constructor.
-     *
      * @param null|int|string $uniqueId
      */
     public function __construct($uniqueId)
@@ -23,8 +21,6 @@ final class UserInterfaceStub implements UserInterface
     }
 
     /**
-     * Get user id.
-     *
      * @return null|int|string
      */
     public function getUniqueId()

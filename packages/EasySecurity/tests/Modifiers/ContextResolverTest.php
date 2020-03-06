@@ -19,30 +19,24 @@ use Symfony\Component\HttpFoundation\Request;
 final class ContextResolverTest extends AbstractTestCase
 {
     /**
-     * Data provider for setModifier tests.
-     *
      * @return iterable<mixed>
      */
     public function setModifiersProvider(): iterable
     {
         yield 'Filter non context modifier' => [
-            [new stdClass()]
+            [new stdClass()],
         ];
 
         yield 'Resolve successfully' => [
             [
                 new RolesFromJwtModifier(new InMemoryRolesProviderStub()),
-                new ProviderFromJwtModifier(new ProviderProviderInterfaceStub())
-            ]
+                new ProviderFromJwtModifier(new ProviderProviderInterfaceStub()),
+            ],
         ];
     }
 
     /**
-     * Test setModifiers.
-     *
      * @param mixed[]|iterable<mixed> $modifiers
-     *
-     * @return void
      *
      * @dataProvider setModifiersProvider
      */

@@ -12,24 +12,11 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
      */
     private $app;
 
-    /**
-     * Assert given abstract is an instance of concrete in the application container.
-     *
-     * @param string $concrete
-     * @param string $abstract
-     *
-     * @return void
-     */
     protected function assertInstanceInApp(string $concrete, string $abstract): void
     {
         self::assertInstanceOf($concrete, $this->getApplication()->get($abstract));
     }
 
-    /**
-     * Get lumen application.
-     *
-     * @return \Laravel\Lumen\Application
-     */
     protected function getApplication(): Application
     {
         if ($this->app !== null) {

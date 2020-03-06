@@ -18,9 +18,6 @@ final class DeletedEntity extends ChangedEntity
     private $metadata;
 
     /**
-     * Constructor
-     *
-     * @param string $class
      * @param mixed[] $ids
      * @param mixed[] $metadata
      *

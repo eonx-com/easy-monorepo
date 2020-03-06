@@ -12,21 +12,11 @@ final class ServiceStub
      */
     private $decoderFactory;
 
-    /**
-     * ServiceStub constructor.
-     *
-     * @param \EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface $decoderFactory
-     */
     public function __construct(EasyApiTokenDecoderFactoryInterface $decoderFactory)
     {
         $this->decoderFactory = $decoderFactory;
     }
 
-    /**
-     * Get decoder factory.
-     *
-     * @return \EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface
-     */
     public function getDecoderFactory(): EasyApiTokenDecoderFactoryInterface
     {
         return $this->decoderFactory;

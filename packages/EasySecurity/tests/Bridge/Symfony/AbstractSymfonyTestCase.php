@@ -14,11 +14,6 @@ abstract class AbstractSymfonyTestCase extends AbstractTestCase
      */
     private $kernel;
 
-    /**
-     * Get kernel.
-     *
-     * @return \Symfony\Component\HttpKernel\KernelInterface
-     */
     protected function getKernel(): KernelInterface
     {
         if ($this->kernel !== null) {

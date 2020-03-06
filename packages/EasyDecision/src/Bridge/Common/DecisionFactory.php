@@ -36,11 +36,7 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $expressionLanguageConfigFactory;
 
     /**
-     * DecisionFactory constructor.
-     *
      * @param mixed[] $config
-     * @param \Psr\Container\ContainerInterface $container
-     * @param \EonX\EasyDecision\Interfaces\DecisionFactoryInterface $decorated
      */
     public function __construct(array $config, ContainerInterface $container, BaseDecisionFactoryInterface $decorated)
     {
@@ -50,12 +46,7 @@ final class DecisionFactory implements DecisionFactoryInterface
     }
 
     /**
-     * Create decision for given decision name.
-     *
-     * @param string $decision
      * @param mixed[]|null $params
-     *
-     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     public function create(string $decision, ?array $params = null): DecisionInterface
     {
@@ -82,15 +73,9 @@ final class DecisionFactory implements DecisionFactoryInterface
     }
 
     /**
-     * Do create decision.
-     *
-     * @param string $decision
-     * @param string $type
      * @param mixed[] $providers
      * @param mixed[]|null $params
      * @param null|mixed $defaultOutput
-     *
-     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     private function doCreate(
         string $decision,
@@ -112,13 +97,8 @@ final class DecisionFactory implements DecisionFactoryInterface
     }
 
     /**
-     * Do create decision for given config.
-     *
-     * @param string $decision
      * @param mixed[] $config
      * @param mixed[]|null $params
-     *
-     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
      */
     private function doCreateForConfig(string $decision, array $config, ?array $params = null): DecisionInterface
     {
@@ -139,13 +119,8 @@ final class DecisionFactory implements DecisionFactoryInterface
     }
 
     /**
-     * Do create decision for given config provider.
-     *
-     * @param string $decision
      * @param mixed $configProvider
-     * @param mixed[]|null $params
-     *
-     * @return \EonX\EasyDecision\Interfaces\DecisionInterface
+     * @param null|mixed[] $params
      */
     private function doCreateForConfigProvider(
         string $decision,
@@ -174,11 +149,6 @@ final class DecisionFactory implements DecisionFactoryInterface
         ));
     }
 
-    /**
-     * Get expression language config factory.
-     *
-     * @return \EonX\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface
-     */
     private function getExpressionLanguageConfigFactory(): ExpressionLanguageConfigFactoryInterface
     {
         if ($this->expressionLanguageConfigFactory !== null) {
@@ -191,8 +161,6 @@ final class DecisionFactory implements DecisionFactoryInterface
     }
 
     /**
-     * Get rule providers.
-     *
      * @param mixed[] $providers
      *
      * @return \EonX\EasyDecision\Interfaces\RuleProviderInterface[]

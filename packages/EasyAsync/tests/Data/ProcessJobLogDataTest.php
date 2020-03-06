@@ -9,11 +9,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 
 final class ProcessJobLogDataTest extends AbstractTestCase
 {
-    /**
-     * Test process job log data setters and getters.
-     *
-     * @return void
-     */
     public function testProcessJobLogData(): void
     {
         $target = new Target('id', 'type');

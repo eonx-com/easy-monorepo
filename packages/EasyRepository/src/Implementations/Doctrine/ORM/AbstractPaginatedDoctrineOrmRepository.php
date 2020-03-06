@@ -18,12 +18,6 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
      */
     private $startSizeData;
 
-    /**
-     * AbstractPaginatedDoctrineOrmRepository constructor.
-     *
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
-     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
-     */
     public function __construct(ManagerRegistry $registry, StartSizeDataInterface $startSizeData)
     {
         $this->startSizeData = $startSizeData;
@@ -31,26 +25,11 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
         parent::__construct($registry);
     }
 
-    /**
-     * Return a paginated list of objects managed by the repository.
-     *
-     * @param null|\EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
-     *
-     * @return \EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface
-     */
     public function paginate(?StartSizeDataInterface $startSizeData = null): LengthAwarePaginatorInterface
     {
         return $this->createLengthAwarePaginator(null, null, $startSizeData);
     }
 
-    /**
-     * Add pagination to given query.
-     *
-     * @param \Doctrine\ORM\Query $query
-     * @param null|\EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
-     *
-     * @return void
-     */
     protected function addPaginationToQuery(Query $query, ?StartSizeDataInterface $startSizeData = null): void
     {
         $startSizeData = $startSizeData ?? $this->startSizeData;
@@ -63,15 +42,6 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
             ->setMaxResults($size);
     }
 
-    /**
-     * Create length aware paginator.
-     *
-     * @param null|string $from
-     * @param null|string $fromAlias
-     * @param null|\EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
-     *
-     * @return \EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator
-     */
     protected function createLengthAwarePaginator(
         ?string $from = null,
         ?string $fromAlias = null,
@@ -85,17 +55,6 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
         );
     }
 
-    /**
-     * Create paginator for given query.
-     *
-     * @param \Doctrine\ORM\Query $query
-     * @param null|\EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
-     * @param null|bool $fetchJoinCollection
-     *
-     * @return \EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface
-     *
-     * @deprecated since 2.1.5, will be removed in 3.0.0
-     */
     protected function doPaginate(
         Query $query,
         ?StartSizeDataInterface $startSizeData = null,
@@ -103,9 +62,9 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
     ): LengthAwarePaginatorInterface {
         @\trigger_error(\sprintf(
             '%s::%s() is deprecated since 2.1.5 and will be removed in 3.0, use %s::%s() instead',
-            \get_class($this),
+            static::class,
             __METHOD__,
-            \get_class($this),
+            static::class,
             'createLengthAwarePaginator'
         ), \E_USER_DEPRECATED);
 

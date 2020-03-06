@@ -12,12 +12,7 @@ use EonX\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 final class JwtTokenInQueryDecoderFactory extends AbstractJwtTokenDecoderFactory
 {
     /**
-     * Do build decoder factory for children classes.
-     *
-     * @param \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
      * @param mixed[] $config
-     *
-     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */

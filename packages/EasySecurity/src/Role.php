@@ -29,11 +29,7 @@ final class Role implements RoleInterface
     private $permissions;
 
     /**
-     * Role constructor.
-     *
-     * @param string $identifier
      * @param string[]|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
-     * @param null|string $name
      * @param null|mixed[] $metadata
      */
     public function __construct(string $identifier, array $permissions, ?string $name = null, ?array $metadata = null)
@@ -45,29 +41,17 @@ final class Role implements RoleInterface
         $this->setPermissions($permissions);
     }
 
-    /**
-     * Get string representation of role.
-     *
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * Get identifier.
-     *
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
     /**
-     * Get metadata.
-     *
      * @return mixed[]
      */
     public function getMetadata(): array
@@ -75,19 +59,12 @@ final class Role implements RoleInterface
         return $this->metadata;
     }
 
-    /**
-     * Get name.
-     *
-     * @return null|string
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * Get permissions.
-     *
      * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
      */
     public function getPermissions(): array
@@ -96,11 +73,7 @@ final class Role implements RoleInterface
     }
 
     /**
-     * Set permissions.
-     *
      * @param mixed[] $permissions
-     *
-     * @return void
      */
     private function setPermissions(array $permissions): void
     {

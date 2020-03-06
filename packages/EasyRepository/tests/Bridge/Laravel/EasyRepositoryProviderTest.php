@@ -11,13 +11,6 @@ use EonX\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository2Stub;
 
 final class EasyRepositoryProviderTest extends AbstractLumenTestCase
 {
-    /**
-     * Provider should throw exception when no repositories to register.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
-     */
     public function testEmptyRepositoriesListException(): void
     {
         $this->expectException(EmptyRepositoriesListException::class);
@@ -28,19 +21,12 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
         (new EasyRepositoryProvider($app))->register();
     }
 
-    /**
-     * Provider should call the application to bind all the repositories with their interfaces.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyRepository\Bridge\Laravel\Exceptions\EmptyRepositoriesListException
-     */
     public function testRegisterRepositoriesSuccessfully(): void
     {
         $app = $this->getApplication();
         \config()->set('easy-repository.repositories', [
             'interface-1' => Repository1Stub::class,
-            'interface-2' => Repository2Stub::class
+            'interface-2' => Repository2Stub::class,
         ]);
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */

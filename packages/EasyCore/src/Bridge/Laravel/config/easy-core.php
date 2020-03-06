@@ -10,5 +10,5 @@ return [
     /**
      * Add a listener to log when a queue worker stops.
      */
-    'log_queue_worker_stop' => \env('EASY_CORE_LOG_QUEUE_WORKER_STOP', true)
+    'log_queue_worker_stop' => \env('EASY_CORE_LOG_QUEUE_WORKER_STOP', true),
 ];

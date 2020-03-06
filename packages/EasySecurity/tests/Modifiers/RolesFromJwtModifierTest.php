@@ -17,14 +17,12 @@ use Symfony\Component\HttpFoundation\Request;
 final class RolesFromJwtModifierTest extends AbstractTestCase
 {
     /**
-     * Data provider for modify tests.
-     *
      * @return iterable<mixed>
      */
     public function modifyProvider(): iterable
     {
         yield 'No role resolved because not token' => [
-            new InMemoryRolesProviderStub()
+            new InMemoryRolesProviderStub(),
         ];
 
         $context = new Context();
@@ -32,44 +30,38 @@ final class RolesFromJwtModifierTest extends AbstractTestCase
 
         yield 'No role resolved because token not jwt' => [
             new InMemoryRolesProviderStub(),
-            $context
+            $context,
         ];
 
         $context->setToken(new JwtEasyApiToken([], 'jwt'));
 
         yield 'No role resolved because no roles in token' => [
             new InMemoryRolesProviderStub(),
-            $context
+            $context,
         ];
 
         $context->setToken(new JwtEasyApiToken([
-            ContextInterface::JWT_MANAGE_CLAIM => ['roles' => ['app:role']]
+            ContextInterface::JWT_MANAGE_CLAIM => ['roles' => ['app:role']],
         ], 'jwt'));
 
         yield 'No role resolved because provider return empty array' => [
             new InMemoryRolesProviderStub(),
-            $context
+            $context,
         ];
 
         $context->setToken(new JwtEasyApiToken([
-            ContextInterface::JWT_MANAGE_CLAIM => ['roles' => ['app:role']]
+            ContextInterface::JWT_MANAGE_CLAIM => ['roles' => ['app:role']],
         ], 'jwt'));
 
         yield 'Roles resolved' => [
             new InMemoryRolesProviderStub([new Role('app:role', [])]),
             $context,
-            ['app:role' => new Role('app:role', [])]
+            ['app:role' => new Role('app:role', [])],
         ];
     }
 
     /**
-     * Test modify.
-     *
-     * @param \EonX\EasySecurity\Interfaces\RolesProviderInterface $rolesProvider
-     * @param null|\EonX\EasySecurity\Interfaces\ContextInterface $context
      * @param null|mixed[] $roles
-     *
-     * @return void
      *
      * @dataProvider modifyProvider
      */

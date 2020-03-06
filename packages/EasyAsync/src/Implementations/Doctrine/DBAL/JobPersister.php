@@ -16,29 +16,11 @@ use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 
 final class JobPersister extends AbstractPersister implements JobPersisterInterface
 {
-    /**
-     * Find one job for given jobId.
-     *
-     * @param string $jobId
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobInterface
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToFindJobException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     */
     public function find(string $jobId): JobInterface
     {
         return $this->findOneJob($jobId);
     }
 
-    /**
-     * Find paginated list of jobs for given target.
-     *
-     * @param \EonX\EasyAsync\Interfaces\TargetInterface $target
-     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
-     *
-     * @return \EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface
-     */
     public function findForTarget(
         TargetInterface $target,
         StartSizeDataInterface $startSizeData
@@ -56,14 +38,6 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
             });
     }
 
-    /**
-     * Find paginated list of jobs for given target type.
-     *
-     * @param \EonX\EasyAsync\Interfaces\TargetInterface $target
-     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
-     *
-     * @return \EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface
-     */
     public function findForTargetType(
         TargetInterface $target,
         StartSizeDataInterface $startSizeData
@@ -80,14 +54,6 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
             });
     }
 
-    /**
-     * Find paginated list of jobs for given type.
-     *
-     * @param string $type
-     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
-     *
-     * @return \EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface
-     */
     public function findForType(string $type, StartSizeDataInterface $startSizeData): LengthAwarePaginatorInterface
     {
         return $this
@@ -102,50 +68,22 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
             });
     }
 
-    /**
-     * Find one job for given jobId and lock it for update.
-     *
-     * @param string $jobId
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobInterface
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToFindJobException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     */
     public function findOneForUpdate(string $jobId): JobInterface
     {
         return $this->findOneJob($jobId, true);
     }
 
-    /**
-     * Persist given job.
-     *
-     * @param \EonX\EasyAsync\Interfaces\JobInterface $job
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobInterface
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobException
-     */
     public function persist(JobInterface $job): JobInterface
     {
         try {
             $this->doPersist($job);
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             throw new UnableToPersistJobException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
         return $job;
     }
 
-    /**
-     * Remove given job.
-     *
-     * @param \EonX\EasyAsync\Interfaces\JobInterface $job
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function remove(JobInterface $job): void
     {
         $sql = \sprintf('DELETE FROM %s WHERE id = :jobId', $this->getTableForQuery());
@@ -153,28 +91,17 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
         $this->conn->executeQuery($sql, ['jobId' => $job->getId()]);
     }
 
-    /**
-     * Find one job for given jobId and forUpdate if set.
-     *
-     * @param string $jobId
-     * @param null|bool $forUpdate
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobInterface
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToFindJobException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     */
     private function findOneJob(string $jobId, ?bool $forUpdate = null): JobInterface
     {
         $sql = \sprintf(
             'SELECT * FROM %s WHERE id = :jobId%s',
             $this->getTableForQuery(),
-            ($forUpdate ?? false) ? ' FOR UPDATE' : ''
+            $forUpdate ?? false ? ' FOR UPDATE' : ''
         );
 
         try {
             $data = $this->conn->fetchAssoc($sql, \compact('jobId'));
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             throw new UnableToFindJobException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
@@ -186,11 +113,7 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
     }
 
     /**
-     * Create new job for given data.
-     *
      * @param mixed[] $data
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobInterface
      *
      * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
      */

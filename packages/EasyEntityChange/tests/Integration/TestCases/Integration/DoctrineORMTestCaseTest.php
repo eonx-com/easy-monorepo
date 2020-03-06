@@ -16,29 +16,12 @@ use Eonx\TestUtils\TestCases\Integration\DoctrineORMTestCase;
  */
 class DoctrineORMTestCaseTest extends DoctrineORMTestCase
 {
-    /**
-     * SetUp.
-     *
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->markTestSkipped('Skip until fix utils');
-    }
-
-    /**
-     * Tests that the entity change event fires when doctrine really calls the subscriber.
-     *
-     * @return void
-     */
     public function testEntityChangeEventIsDispatchedWithDbId(): void
     {
         $expectedDispatches = [
             new EntityChangeEvent([
-                new UpdatedEntity(['property'], SimpleEntity::class, ['id' => 1])
-            ])
+                new UpdatedEntity(['property'], SimpleEntity::class, ['id' => 1]),
+            ]),
         ];
 
         $dispatcher = new EventDispatcherStub();
@@ -55,17 +38,12 @@ class DoctrineORMTestCaseTest extends DoctrineORMTestCase
         self::assertEquals($expectedDispatches, $dispatcher->getDispatched());
     }
 
-    /**
-     * Tests that the entity change event fires when doctrine really calls the subscriber.
-     *
-     * @return void
-     */
     public function testEntityChangeEventIsDispatchedWithProvidedId(): void
     {
         $expectedDispatches = [
             new EntityChangeEvent([
-                new UpdatedEntity(['id', 'property'], ProvidedIdEntity::class, ['id' => 'uuid'])
-            ])
+                new UpdatedEntity(['id', 'property'], ProvidedIdEntity::class, ['id' => 'uuid']),
+            ]),
         ];
 
         $dispatcher = new EventDispatcherStub();
@@ -80,5 +58,12 @@ class DoctrineORMTestCaseTest extends DoctrineORMTestCase
         $entityManager->flush();
 
         self::assertEquals($expectedDispatches, $dispatcher->getDispatched());
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->markTestSkipped('Skip until fix utils');
     }
 }

@@ -34,14 +34,6 @@ final class DataCleaner implements DataCleanerInterface
      */
     private $logger;
 
-    /**
-     * DataCleaner constructor.
-     *
-     * @param \Doctrine\DBAL\Connection $conn
-     * @param \EonX\EasyAsync\Interfaces\JobLogPersisterInterface $jobLogPersister
-     * @param \EonX\EasyAsync\Interfaces\JobPersisterInterface $jobPersister
-     * @param null|\Psr\Log\LoggerInterface $logger
-     */
     public function __construct(
         Connection $conn,
         JobLogPersisterInterface $jobLogPersister,
@@ -54,23 +46,13 @@ final class DataCleaner implements DataCleanerInterface
         $this->logger = $logger ?? new NullLogger();
     }
 
-    /**
-     * Remove given job and all its job logs.
-     *
-     * @param \EonX\EasyAsync\Interfaces\JobInterface $job
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\ConnectionException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToRemoveJobException
-     */
     public function remove(JobInterface $job): void
     {
         $this->conn->beginTransaction();
 
         try {
             $this->jobPersister->remove($job);
-            $this->jobLogPersister->removeForJob($job->getId());
+            $this->jobLogPersister->removeForJob((string)$job->getId());
 
             $this->conn->commit();
         } catch (\Throwable $throwable) {

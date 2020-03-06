@@ -10,11 +10,6 @@ use EonX\EasyPsr7Factory\Tests\AbstractTestCase;
 
 final class EasyPsr7FactoryServiceProviderTest extends AbstractTestCase
 {
-    /**
-     * Provider should register the expected services.
-     *
-     * @return void
-     */
     public function testRegisterExpectedServices(): void
     {
         $app = new \Laravel\Lumen\Application(__DIR__);

@@ -19,8 +19,6 @@ trait DoctrineOrmRepositoryTrait
     protected $repository;
 
     /**
-     * Get all the objects managed by the repository.
-     *
      * @return object[]
      */
     public function all(): array
@@ -28,32 +26,18 @@ trait DoctrineOrmRepositoryTrait
         return $this->repository->findAll();
     }
 
-    /**
-     * Starts a transaction on the underlying database connection.
-     *
-     * @return void
-     */
     public function beginTransaction(): void
     {
         $this->manager->beginTransaction();
     }
 
-    /**
-     * Commits a transaction on the underlying database connection.
-     *
-     * @return void
-     */
     public function commit(): void
     {
         $this->manager->commit();
     }
 
     /**
-     * Delete given object(s).
-     *
      * @param object|object[] $object
-     *
-     * @return void
      */
     public function delete($object): void
     {
@@ -61,45 +45,27 @@ trait DoctrineOrmRepositoryTrait
     }
 
     /**
-     * Find object for given identifier, return null if not found.
-     *
      * @param int|string $identifier
      *
      * @return null|object
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      */
     public function find($identifier)
     {
         return $this->repository->find($identifier);
     }
 
-    /**
-     * Synchronise in-memory changes to database.
-     *
-     * @return void
-     */
     public function flush(): void
     {
         $this->manager->flush();
     }
 
-    /**
-     * Performs a rollback on the underlying database connection.
-     *
-     * @return void
-     */
     public function rollback(): void
     {
         $this->manager->rollback();
     }
 
     /**
-     * Save given object(s).
-     *
      * @param object|object[] $object The object or list of objects to save
-     *
-     * @return void
      */
     public function save($object): void
     {
@@ -107,12 +73,6 @@ trait DoctrineOrmRepositoryTrait
     }
 
     /**
-     * Executes a function in a transaction.
-     * If an exception occurs during execution of the function or flushing or transaction commit,
-     * the transaction is rolled back, the EntityManager closed and the exception re-thrown.
-     *
-     * @param \Closure $func
-     *
      * @return mixed
      *
      * @throws \Throwable
@@ -135,24 +95,11 @@ trait DoctrineOrmRepositoryTrait
         }
     }
 
-    /**
-     * Create query builder from ORM repository.
-     *
-     * @param null|string $alias
-     * @param null|string $indexBy
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
     protected function createQueryBuilder(?string $alias = null, ?string $indexBy = null): QueryBuilder
     {
         return $this->repository->createQueryBuilder($alias ?? $this->getEntityAlias(), $indexBy);
     }
 
-    /**
-     * Get entity alias.
-     *
-     * @return string
-     */
     protected function getEntityAlias(): string
     {
         $exploded = \explode('\\', $this->repository->getClassName());
@@ -161,12 +108,7 @@ trait DoctrineOrmRepositoryTrait
     }
 
     /**
-     * Call given method on the manager for given object(s).
-     *
-     * @param string $method
      * @param object|object[] $objects
-     *
-     * @return void
      */
     private function callManagerMethodForObjects(string $method, $objects): void
     {
@@ -175,7 +117,7 @@ trait DoctrineOrmRepositoryTrait
         }
 
         foreach ($objects as $object) {
-            $this->manager->$method($object);
+            $this->manager->{$method}($object);
         }
     }
 }

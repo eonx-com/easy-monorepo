@@ -10,17 +10,6 @@ final class WithProcessJobLogTraitStub
 {
     use WithProcessJobLogTrait;
 
-    /**
-     * Process given func with given withData.
-     *
-     * @param \EonX\EasyAsync\Interfaces\WithProcessJobLogDataInterface $withData
-     * @param callable $func
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
-     * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobLogException
-     */
     public function process(WithProcessJobLogDataInterface $withData, callable $func): void
     {
         $this->processWithJobLog($withData, $func);

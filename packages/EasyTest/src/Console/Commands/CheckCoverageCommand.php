@@ -24,12 +24,6 @@ final class CheckCoverageCommand extends Command
      */
     private $coverageResolver;
 
-    /**
-     * CheckCoverageCommand constructor.
-     *
-     * @param \EonX\EasyTest\Interfaces\CoverageLoaderInterface $coverageLoader
-     * @param \EonX\EasyTest\Interfaces\CoverageResolverInterface $coverageResolver
-     */
     public function __construct(CoverageLoaderInterface $coverageLoader, CoverageResolverInterface $coverageResolver)
     {
         $this->coverageLoader = $coverageLoader;
@@ -38,11 +32,6 @@ final class CheckCoverageCommand extends Command
         parent::__construct(null);
     }
 
-    /**
-     * Configure command.
-     *
-     * @return void
-     */
     protected function configure(): void
     {
         $this
@@ -61,17 +50,6 @@ final class CheckCoverageCommand extends Command
             );
     }
 
-    /**
-     * Check coverage.
-     *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return int
-     *
-     * @throws \EonX\EasyTest\Exceptions\UnableToLoadCoverageException
-     * @throws \EonX\EasyTest\Exceptions\UnableToResolveCoverageException
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $style = new SymfonyStyle($input, $output);

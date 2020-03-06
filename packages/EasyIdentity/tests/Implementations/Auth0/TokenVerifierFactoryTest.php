@@ -12,21 +12,13 @@ use EonX\EasyIdentity\Tests\AbstractTestCase;
  */
 class TokenVerifierFactoryTest extends AbstractTestCase
 {
-    /**
-     * Factory should create the expected token verifier instance.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyIdentity\Exceptions\RequiredDataMissingException
-     * @throws \Auth0\SDK\Exception\CoreException
-     */
     public function testCreate(): void
     {
         $config = new Config([
             'client_id' => 'client_id',
             'client_secret' => 'client_secret',
             'connection' => 'connection',
-            'domain' => 'domain'
+            'domain' => 'domain',
         ]);
 
         $verifier = new TokenVerifierFactory($config);

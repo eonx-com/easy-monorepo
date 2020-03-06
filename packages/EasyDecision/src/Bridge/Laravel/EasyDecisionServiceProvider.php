@@ -18,23 +18,13 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyDecisionServiceProvider extends ServiceProvider
 {
-    /**
-     * Publish configuration file.
-     *
-     * @return void
-     */
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/config/easy-decision.php' => \base_path('config/easy-decision.php')
+            __DIR__ . '/config/easy-decision.php' => \base_path('config/easy-decision.php'),
         ]);
     }
 
-    /**
-     * Register EasyDecision services.
-     *
-     * @return void
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-decision.php', 'easy-decision');

@@ -10,12 +10,7 @@ use GuzzleHttp\ClientInterface;
 final class Auth0IdentityServiceFactory
 {
     /**
-     * Create the Auth0 Identity service.
-     *
      * @param mixed[] $configData
-     * @param null|\GuzzleHttp\ClientInterface $client
-     *
-     * @return \EonX\EasyIdentity\Implementations\Auth0\Auth0IdentityService
      */
     public function create(array $configData, ?ClientInterface $client = null): Auth0IdentityService
     {
@@ -36,13 +31,6 @@ final class Auth0IdentityServiceFactory
         );
     }
 
-    /**
-     * Create base uri from config.
-     *
-     * @param \EonX\EasyIdentity\Implementations\Auth0\Config $config
-     *
-     * @return string
-     */
     private function createBaseUri(Config $config): string
     {
         return $config->getDomain() === '' ? '' : \sprintf('https://%s', $config->getDomain());

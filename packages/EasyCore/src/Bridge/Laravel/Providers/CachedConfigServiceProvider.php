@@ -17,12 +17,6 @@ final class CachedConfigServiceProvider extends ServiceProvider
      */
     private $cachedConfigPath;
 
-    /**
-     * CachedConfigurationServiceProvider constructor.
-     *
-     * @param \Laravel\Lumen\Application $app
-     * @param null|string $cachedConfigPath
-     */
     public function __construct(Application $app, ?string $cachedConfigPath = null)
     {
         $this->cachedConfigPath = $cachedConfigPath ?? $app->storagePath('cached_config.php');
@@ -31,11 +25,6 @@ final class CachedConfigServiceProvider extends ServiceProvider
         parent::__construct($app);
     }
 
-    /**
-     * Register the services.
-     *
-     * @return void
-     */
     public function register(): void
     {
         $this->registerCommands();
@@ -52,7 +41,7 @@ final class CachedConfigServiceProvider extends ServiceProvider
             $app->instance('config', new Repository($items));
 
             // Update loadedConfigurations on app to avoid any call to configure() to look into filesystem again
-            foreach ($items as $name => $value) {
+            foreach (\array_keys($items) as $name) {
                 (function ($name): void {
                     /** @noinspection PhpUndefinedFieldInspection */
                     $this->loadedConfigurations[$name] = true;
@@ -69,8 +58,6 @@ final class CachedConfigServiceProvider extends ServiceProvider
     }
 
     /**
-     * Get config files.
-     *
      * @return \Symfony\Component\Finder\SplFileInfo[]
      */
     private function getConfigFiles(): array
@@ -80,16 +67,11 @@ final class CachedConfigServiceProvider extends ServiceProvider
         return $finder->hasResults() ? \iterator_to_array($finder) : [];
     }
 
-    /**
-     * Register commands.
-     *
-     * @return void
-     */
     private function registerCommands(): void
     {
         $this->commands([
             CacheConfigCommand::class,
-            ClearConfigCommand::class
+            ClearConfigCommand::class,
         ]);
     }
 }

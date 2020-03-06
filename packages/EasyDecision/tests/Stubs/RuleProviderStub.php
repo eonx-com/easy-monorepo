@@ -9,8 +9,6 @@ use EonX\EasyDecision\Rules\ExpressionLanguageRule;
 final class RuleProviderStub implements RuleProviderInterface
 {
     /**
-     * Get rules.
-     *
      * @param mixed[]|null $params
      *
      * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
@@ -20,7 +18,7 @@ final class RuleProviderStub implements RuleProviderInterface
         return [
             new RuleStub('true-1', true),
             new ExpressionLanguageRule('value === 1'),
-            new ExpressionLanguageRule('value < 2')
+            new ExpressionLanguageRule('value < 2'),
         ];
     }
 }

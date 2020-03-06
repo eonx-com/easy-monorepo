@@ -15,8 +15,6 @@ final class FromPhpExpressionFunctionProvider implements ExpressionFunctionProvi
     private $phpFunctions;
 
     /**
-     * FromPhpExpressionFunctionProvider constructor.
-     *
      * @param string[] $phpFunctions
      */
     public function __construct(array $phpFunctions)
@@ -25,8 +23,6 @@ final class FromPhpExpressionFunctionProvider implements ExpressionFunctionProvi
     }
 
     /**
-     * Get list of functions.
-     *
      * @return mixed[]
      */
     public function getFunctions(): array
