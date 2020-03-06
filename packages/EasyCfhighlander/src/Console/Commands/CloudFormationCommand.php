@@ -5,11 +5,6 @@ namespace EonX\EasyCfhighlander\Console\Commands;
 
 final class CloudFormationCommand extends AbstractTemplatesCommand
 {
-    /**
-     * Configure command.
-     *
-     * @return void
-     */
     protected function configure(): void
     {
         $this->setName('cloudformation');
@@ -19,8 +14,6 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
     }
 
     /**
-     * Get param modifiers.
-     *
      * @return iterable<mixed>
      */
     protected function getParamModifiers(): iterable
@@ -32,8 +25,6 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
     }
 
     /**
-     * Get project files names.
-     *
      * @return string[]
      */
     protected function getProjectFiles(): array
@@ -41,13 +32,11 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
         return [
             'project.cfhighlander.rb',
             'project.config.yaml',
-            'project.mappings.yaml'
+            'project.mappings.yaml',
         ];
     }
 
     /**
-     * Get simple files names.
-     *
      * @return string[]
      */
     protected function getSimpleFiles(): array
@@ -68,15 +57,10 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
             'redis/redis.cfhighlander.rb',
             'redis/redis.cfndsl.rb',
             'redis/redis.config.yaml',
-            'redis/redis.mappings.yaml'
+            'redis/redis.mappings.yaml',
         ];
     }
 
-    /**
-     * Get template prefix.
-     *
-     * @return string
-     */
     protected function getTemplatePrefix(): string
     {
         return 'cloudformation';

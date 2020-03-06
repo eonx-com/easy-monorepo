@@ -31,62 +31,27 @@ trait WithProcessJobLogTrait
      */
     private $jobLogUpdater;
 
-    /**
-     * Get job log.
-     *
-     * @return null|\EonX\EasyAsync\Interfaces\JobLogInterface
-     */
     public function getJobLog(): ?JobLogInterface
     {
         return $this->jobLog;
     }
 
-    /**
-     * Set job log persister.
-     *
-     * @param \EonX\EasyAsync\Interfaces\JobLogPersisterInterface $jobLogPersister
-     *
-     * @return void
-     *
-     * @required
-     */
     public function setJobLogPersister(JobLogPersisterInterface $jobLogPersister): void
     {
         $this->jobLogPersister = $jobLogPersister;
     }
 
-    /**
-     * Set job log updater.
-     *
-     * @param \EonX\EasyAsync\Interfaces\JobLogUpdaterInterface $jobLogUpdater
-     *
-     * @return void
-     *
-     * @required
-     */
     public function setJobLogUpdater(JobLogUpdaterInterface $jobLogUpdater): void
     {
         $this->jobLogUpdater = $jobLogUpdater;
     }
 
-    /**
-     * Set job log factory.
-     *
-     * @param \EonX\EasyAsync\Interfaces\JobLogFactoryInterface $jobLogFactory
-     *
-     * @return void
-     *
-     * @required
-     */
     public function setJogLogFactory(JobLogFactoryInterface $jobLogFactory): void
     {
         $this->jobLogFactory = $jobLogFactory;
     }
 
     /**
-     * @param \EonX\EasyAsync\Interfaces\WithProcessJobLogDataInterface $withData
-     * @param callable $func
-     *
      * @return null|mixed
      *
      * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException

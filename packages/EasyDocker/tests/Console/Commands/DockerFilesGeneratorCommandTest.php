@@ -7,13 +7,6 @@ use EonX\EasyDocker\Tests\AbstractTestCase;
 
 final class DockerFilesGeneratorCommandTest extends AbstractTestCase
 {
-    /**
-     * Ensure the Dockerfile contains the compose require line if input is true for prestissimo
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testDockerfileContainsPrestissimo(): void
     {
         $filesystem = $this->getFilesystem();
@@ -22,7 +15,7 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'false',
             'false',
             'false',
-            'true' // prestissimo
+            'true', // prestissimo
         ];
 
         $this->executeCommand('generate', $inputs);
@@ -34,14 +27,6 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
         );
     }
 
-    /**
-     * Ensure the Dockerfile does not contain the compose require line if input is false for prestissimo
-     * This is the inverse of testDockerfileContainsPrestissimo
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testDockerfileDoesNotContainPrestissimo(): void
     {
         $filesystem = $this->getFilesystem();
@@ -50,7 +35,7 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'false',
             'false',
             'false',
-            'false' // prestissimo
+            'false', // prestissimo
         ];
 
         $this->executeCommand('generate', $inputs);
@@ -62,13 +47,6 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
         );
     }
 
-    /**
-     * Ensure the .easy directory is only used if no existing files are present
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testEasyDirectoryBackwardsCompatibility(): void
     {
         $inputs = [
@@ -76,12 +54,12 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'true',
             'true',
             'true',
-            'false'
+            'false',
         ];
 
         $filesNotExisting = [
             '.easy/easy-docker-manifest.json',
-            '.easy/easy-docker-params.yaml'
+            '.easy/easy-docker-params.yaml',
         ];
 
         $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-docker-manifest.json', '{}');
@@ -94,13 +72,6 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
         }
     }
 
-    /**
-     * Command should generate cloudformation files.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testGenerateDockerFiles(): void
     {
         $inputs = [
@@ -108,7 +79,7 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'true',
             'true',
             'true',
-            'false'
+            'false',
         ];
 
         $files = [
@@ -133,7 +104,7 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'docker/readme.md',
             'docker-compose.dev.yml',
             'docker-compose.local.yml',
-            'docker-compose.yml'
+            'docker-compose.yml',
         ];
 
         $this->executeCommand('generate', $inputs);

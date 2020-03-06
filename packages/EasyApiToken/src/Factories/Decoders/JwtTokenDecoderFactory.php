@@ -11,12 +11,7 @@ use EonX\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
 final class JwtTokenDecoderFactory extends AbstractJwtTokenDecoderFactory
 {
     /**
-     * Do build decoder factory for children classes.
-     *
-     * @param \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
      * @param mixed[] $config
-     *
-     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      */
     protected function doBuild(JwtDriverInterface $jwtDriver, array $config): EasyApiTokenDecoderInterface
     {

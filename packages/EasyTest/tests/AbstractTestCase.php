@@ -17,12 +17,7 @@ abstract class AbstractTestCase extends TestCase
     private $app;
 
     /**
-     * Execute command and return display.
-     *
-     * @param string $command
      * @param null|mixed[] $inputs
-     *
-     * @return string
      *
      * @throws \Exception
      */
@@ -34,11 +29,6 @@ abstract class AbstractTestCase extends TestCase
         return $tester->getDisplay();
     }
 
-    /**
-     * Get application.
-     *
-     * @return \Symfony\Component\Console\Application
-     */
     private function getApplication(): Application
     {
         if ($this->app !== null) {

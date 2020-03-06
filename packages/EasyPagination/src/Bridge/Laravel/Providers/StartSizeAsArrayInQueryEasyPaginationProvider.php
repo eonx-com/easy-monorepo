@@ -8,17 +8,10 @@ use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
 final class StartSizeAsArrayInQueryEasyPaginationProvider extends AbstractStartSizeEasyPaginationProvider
 {
     /**
-     * Default query attribute used if app config not set.
-     *
      * @var string
      */
     private static $defaultQueryAttr = 'page';
 
-    /**
-     * Get closure to instantiate the implementation of StartSizeDataResolverInterface.
-     *
-     * @return \Closure
-     */
     protected function getResolverClosure(): \Closure
     {
         return function (): StartSizeAsArrayInQueryResolver {

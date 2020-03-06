@@ -9,11 +9,6 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyPsr7FactoryServiceProvider extends ServiceProvider
 {
-    /**
-     * Register EasyEasyPsr7Factory service.
-     *
-     * @return void
-     */
     public function register(): void
     {
         $this->app->bind(EasyPsr7FactoryInterface::class, EasyPsr7Factory::class);

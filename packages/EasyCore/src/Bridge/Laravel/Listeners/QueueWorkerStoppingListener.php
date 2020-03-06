@@ -13,7 +13,7 @@ final class QueueWorkerStoppingListener
      * @var mixed[]
      */
     private static $reasons = [
-        12 => 'Memory exceeded'
+        12 => 'Memory exceeded',
     ];
 
     /**
@@ -21,23 +21,11 @@ final class QueueWorkerStoppingListener
      */
     private $logger;
 
-    /**
-     * QueueWorkerStoppingListener constructor.
-     *
-     * @param null|\Psr\Log\LoggerInterface $logger
-     */
     public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = $logger ?? new NullLogger();
     }
 
-    /**
-     * Output worker stopping event with status.
-     *
-     * @param \Illuminate\Queue\Events\WorkerStopping $event
-     *
-     * @return void
-     */
     public function handle(WorkerStopping $event): void
     {
         $reason = static::$reasons[$event->status] ?? null;

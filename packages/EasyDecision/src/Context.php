@@ -28,9 +28,6 @@ final class Context implements ContextInterface
     private $ruleOutputs = [];
 
     /**
-     * Context constructor.
-     *
-     * @param string $decisionType
      * @param mixed[] $input
      */
     public function __construct(string $decisionType, array $input)
@@ -40,12 +37,7 @@ final class Context implements ContextInterface
     }
 
     /**
-     * Add output for given rule.
-     *
-     * @param string $rule
      * @param mixed $output
-     *
-     * @return \EonX\EasyDecision\Interfaces\ContextInterface
      */
     public function addRuleOutput(string $rule, $output): ContextInterface
     {
@@ -54,19 +46,12 @@ final class Context implements ContextInterface
         return $this;
     }
 
-    /**
-     * Get decision type.
-     *
-     * @return string
-     */
     public function getDecisionType(): string
     {
         return $this->decisionType;
     }
 
     /**
-     * Get original input.
-     *
      * @return mixed[]
      */
     public function getOriginalInput(): array
@@ -75,8 +60,6 @@ final class Context implements ContextInterface
     }
 
     /**
-     * Get all rules outputs in an associative array.
-     *
      * @return mixed[]
      */
     public function getRuleOutputs(): array
@@ -84,21 +67,11 @@ final class Context implements ContextInterface
         return $this->ruleOutputs;
     }
 
-    /**
-     * Check if propagation stopped.
-     *
-     * @return bool
-     */
     public function isPropagationStopped(): bool
     {
         return $this->propagationStopped;
     }
 
-    /**
-     * Stop propagation, all rules after propagation has been stopped will be skipped.
-     *
-     * @return \EonX\EasyDecision\Interfaces\ContextInterface
-     */
     public function stopPropagation(): ContextInterface
     {
         $this->propagationStopped = true;

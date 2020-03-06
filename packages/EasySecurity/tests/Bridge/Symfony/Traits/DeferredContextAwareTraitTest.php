@@ -10,11 +10,6 @@ use EonX\EasySecurity\Tests\Bridge\Symfony\Stubs\DeferredContextAwareTraitStub;
 
 final class DeferredContextAwareTraitTest extends AbstractSymfonyTestCase
 {
-    /**
-     * Trait should use deferred context resolver to resolver context.
-     *
-     * @return void
-     */
     public function testResolveContext(): void
     {
         $context = new Context();
@@ -25,7 +20,7 @@ final class DeferredContextAwareTraitTest extends AbstractSymfonyTestCase
         $stub = new DeferredContextAwareTraitStub();
         $stub->setDeferredContextResolver(new DeferredContextResolver($container, 'service-id'));
 
-        self::assertSame($context, $stub->getContext());
-        self::assertSame($context, $stub->getContext());
+        self::assertEquals($context, $stub->getContext());
+        self::assertEquals($context, $stub->getContext());
     }
 }

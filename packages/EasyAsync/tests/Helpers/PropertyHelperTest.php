@@ -15,8 +15,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 final class PropertyHelperTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testGetSetterName.
-     *
      * @return iterable<mixed>
      */
     public function providerGetSetterName(): iterable
@@ -26,8 +24,6 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * DataProvider for testSetDatetimeProperties.
-     *
      * @return iterable<mixed>
      */
     public function providerSetDatetimeProperties(): iterable
@@ -38,13 +34,11 @@ final class PropertyHelperTest extends AbstractTestCase
             static function (JobInterface $job): void {
                 self::assertNull($job->getFinishedAt());
                 self::assertInstanceOf(\DateTime::class, $job->getStartedAt());
-            }
+            },
         ];
     }
 
     /**
-     * DataProvider for testSetIntProperties.
-     *
      * @return iterable<mixed>
      */
     public function providerSetIntProperties(): iterable
@@ -54,13 +48,11 @@ final class PropertyHelperTest extends AbstractTestCase
             ['failed'],
             static function (JobInterface $job): void {
                 self::assertEquals(10, $job->getFailed());
-            }
+            },
         ];
     }
 
     /**
-     * DataProvider for testSetJsonProperties.
-     *
      * @return iterable<mixed>
      */
     public function providerSetJsonProperties(): iterable
@@ -70,13 +62,11 @@ final class PropertyHelperTest extends AbstractTestCase
             ['debug_info'],
             static function (JobLogInterface $jobLog): void {
                 self::assertEquals(['key' => 'value'], $jobLog->getDebugInfo());
-            }
+            },
         ];
     }
 
     /**
-     * DataProvider for testSetOptionalProperties.
-     *
      * @return iterable<mixed>
      */
     public function providerSetOptionalProperties(): iterable
@@ -86,18 +76,11 @@ final class PropertyHelperTest extends AbstractTestCase
             ['failure_reason'],
             static function (JobLogInterface $jobLog): void {
                 self::assertEquals('reason', $jobLog->getFailureReason());
-            }
+            },
         ];
     }
 
     /**
-     * Helper should return expected setter name for given property.
-     *
-     * @param string $property
-     * @param string $setterName
-     *
-     * @return void
-     *
      * @dataProvider providerGetSetterName
      */
     public function testGetSetterName(string $property, string $setterName): void
@@ -106,13 +89,8 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * Helper should set datetime properties on job.
-     *
      * @param mixed[] $data
      * @param mixed[] $properties
-     * @param callable $test
-     *
-     * @return void
      *
      * @throws \EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException
      *
@@ -128,13 +106,8 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * Helper should set integer properties on job.
-     *
      * @param mixed[] $data
      * @param mixed[] $properties
-     * @param callable $test
-     *
-     * @return void
      *
      * @dataProvider providerSetIntProperties
      */
@@ -148,13 +121,8 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * Helper should set json properties on job log.
-     *
      * @param mixed[] $data
      * @param mixed[] $properties
-     * @param callable $test
-     *
-     * @return void
      *
      * @throws \Nette\Utils\JsonException
      *
@@ -170,13 +138,8 @@ final class PropertyHelperTest extends AbstractTestCase
     }
 
     /**
-     * Helper should set optional properties on job log.
-     *
      * @param mixed[] $data
      * @param mixed[] $properties
-     * @param callable $test
-     *
-     * @return void
      *
      * @dataProvider providerSetOptionalProperties
      */

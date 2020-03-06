@@ -9,8 +9,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 final class ConfigurationTest extends AbstractTestCase
 {
     /**
-     * DataProvider for testGetConfigTreeBuilder.
-     *
      * @return iterable<mixed>
      */
     public function providerGetConfigTreeBuilder(): iterable
@@ -20,8 +18,8 @@ final class ConfigurationTest extends AbstractTestCase
             [
                 'implementation' => 'doctrine',
                 'jobs_table' => 'easy_async_jobs',
-                'job_logs_table' => 'easy_async_job_logs'
-            ]
+                'job_logs_table' => 'easy_async_job_logs',
+            ],
         ];
 
         yield 'Custom implementation' => [
@@ -29,18 +27,14 @@ final class ConfigurationTest extends AbstractTestCase
             [
                 'implementation' => 'custom',
                 'jobs_table' => 'easy_async_jobs',
-                'job_logs_table' => 'easy_async_job_logs'
-            ]
+                'job_logs_table' => 'easy_async_job_logs',
+            ],
         ];
     }
 
     /**
-     * TreeBuilder should build expected configuration array.
-     *
      * @param mixed[] $value
      * @param mixed[] $expected
-     *
-     * @return void
      *
      * @dataProvider providerGetConfigTreeBuilder
      */

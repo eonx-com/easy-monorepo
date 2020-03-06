@@ -13,15 +13,6 @@ use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
 {
-    /**
-     * JwtTokenEncoder should encode tokens JwtTokenDecoder can decode.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
-     */
     public function testJwtTokenEncodeSuccessfully(): void
     {
         foreach (static::$algos as $algo) {
@@ -37,7 +28,7 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
             $tokenString = (new JwtTokenEncoder($jwtDriver))->encode(new JwtEasyApiToken(static::$tokenPayload, ''));
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
             $token = $this->createJwtTokenDecoder($algo, $publicKey)->decode($this->createServerRequest([
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $tokenString,
             ]));
 
             self::assertInstanceOf(JwtEasyApiToken::class, $token);
@@ -51,14 +42,6 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
         }
     }
 
-    /**
-     * JwtTokenEncoder should throw an exception if given token isn't a JWT token.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
-     */
     public function testJwtTokenInvalidTokenException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -66,14 +49,6 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
         (new JwtTokenEncoder($this->createFirebaseJwtDriver()))->encode(new BasicAuthEasyApiToken('', '', ''));
     }
 
-    /**
-     * JwtTokenEncoder should throw an exception if anything goes wrong while encoding token.
-     *
-     * @return void
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException
-     */
     public function testJwtTokenUnableToEncodeException(): void
     {
         $this->expectException(UnableToEncodeEasyApiTokenException::class);
@@ -84,12 +59,7 @@ final class FirebaseJwtTokenEncoderTest extends AbstractFirebaseJwtTokenTestCase
     }
 
     /**
-     * Create JwtTokenDecoder.
-     *
-     * @param string $algo
-     * @param string|resource $key
-     *
-     * @return \EonX\EasyApiToken\Decoders\JwtTokenDecoder
+     * @param null|string|resource $key
      */
     private function createJwtTokenDecoder(string $algo, $key): JwtTokenDecoder
     {

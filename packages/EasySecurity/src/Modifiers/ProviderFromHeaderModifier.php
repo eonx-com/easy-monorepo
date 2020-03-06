@@ -24,14 +24,6 @@ final class ProviderFromHeaderModifier extends AbstractContextModifier
      */
     private $providerProvider;
 
-    /**
-     * ProviderFromHeaderDataResolver constructor.
-     *
-     * @param \EonX\EasySecurity\Interfaces\ProviderProviderInterface $providerProvider
-     * @param null|int $priority
-     * @param null|string $headerName
-     * @param null|string $permission
-     */
     public function __construct(
         ProviderProviderInterface $providerProvider,
         ?int $priority = null,
@@ -45,14 +37,6 @@ final class ProviderFromHeaderModifier extends AbstractContextModifier
         parent::__construct($priority);
     }
 
-    /**
-     * Modify given context for given request.
-     *
-     * @param \EonX\EasySecurity\Interfaces\ContextInterface $context
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return void
-     */
     public function modify(ContextInterface $context, Request $request): void
     {
         $header = $request->headers->get($this->headerName);

@@ -9,11 +9,6 @@ use EonX\EasyAsync\Tests\Stubs\WithProcessJobLogDataStub;
 
 final class WithProcessJobLogDataTraitTest extends AbstractTestCase
 {
-    /**
-     * Trait should return given values.
-     *
-     * @return void
-     */
     public function testTrait(): void
     {
         $stub = new WithProcessJobLogDataStub();

@@ -19,10 +19,7 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
     private $payload;
 
     /**
-     * JwtEasyApiToken constructor.
-     *
      * @param mixed[] $payload
-     * @param string $original
      */
     public function __construct(array $payload, string $original)
     {
@@ -31,10 +28,6 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
     }
 
     /**
-     * Get value for given claim.
-     *
-     * @param string $claim
-     *
      * @return mixed
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException If claim not found on token
@@ -45,22 +38,15 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
             return $this->payload[$claim];
         }
 
-        throw new InvalidArgumentException(\sprintf('In "%s", claim "%s" not found', \get_class($this), $claim));
+        throw new InvalidArgumentException(\sprintf('In "%s", claim "%s" not found', static::class, $claim));
     }
 
-    /**
-     * Get original string token.
-     *
-     * @return string
-     */
     public function getOriginalToken(): string
     {
         return $this->original;
     }
 
     /**
-     * Get token payload.
-     *
      * @return mixed[]
      */
     public function getPayload(): array
@@ -68,13 +54,6 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
         return $this->payload;
     }
 
-    /**
-     * Check if token has given claim.
-     *
-     * @param string $claim
-     *
-     * @return bool
-     */
     public function hasClaim(string $claim): bool
     {
         return isset($this->payload[$claim]);

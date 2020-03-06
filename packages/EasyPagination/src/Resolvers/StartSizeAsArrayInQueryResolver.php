@@ -25,25 +25,12 @@ final class StartSizeAsArrayInQueryResolver implements StartSizeDataResolverInte
      */
     private $queryAttr;
 
-    /**
-     * StartSizeAsArrayInQueryResolver constructor.
-     *
-     * @param \EonX\EasyPagination\Interfaces\StartSizeConfigInterface $config
-     * @param string $queryAttr
-     */
     public function __construct(StartSizeConfigInterface $config, string $queryAttr)
     {
         $this->config = $config;
         $this->queryAttr = $queryAttr;
     }
 
-    /**
-     * Resolve page pagination data for given request.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     *
-     * @return \EonX\EasyPagination\Interfaces\StartSizeDataInterface
-     */
     public function resolve(ServerRequestInterface $request): StartSizeDataInterface
     {
         $query = $request->getQueryParams();

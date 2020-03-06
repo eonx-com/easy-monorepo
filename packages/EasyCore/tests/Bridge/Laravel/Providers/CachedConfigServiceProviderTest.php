@@ -10,8 +10,6 @@ use Laravel\Lumen\Application;
 final class CachedConfigServiceProviderTest extends AbstractTestCase
 {
     /**
-     * GetCachedConfig data provider.
-     *
      * @return iterable<mixed>
      */
     public function dataProviderGetCachedConfig(): iterable
@@ -19,24 +17,18 @@ final class CachedConfigServiceProviderTest extends AbstractTestCase
         yield 'Has cached config' => [
             __DIR__ . '/../fixtures/cached_config/has_cached_config',
             'cached-connection',
-            'database.connection'
+            'database.connection',
         ];
 
         yield 'Has no cached config' => [
             __DIR__ . '/../fixtures/cached_config/has_no_cached_config',
             'not-cached-connection',
-            'database.connection'
+            'database.connection',
         ];
     }
 
     /**
-     * Test cached config service provider.
-     *
-     * @param string $basePath
      * @param mixed $expectedConfig
-     * @param string $configKey
-     *
-     * @return void
      *
      * @dataProvider dataProviderGetCachedConfig
      */

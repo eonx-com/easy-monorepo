@@ -29,43 +29,21 @@ class ProvidedIdEntity
      */
     private $property;
 
-    /**
-     * Constructor
-     *
-     * @param string $id
-     */
     public function __construct(string $id)
     {
         $this->id = $id;
     }
 
-    /**
-     * Gets id.
-     *
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * Gets property.
-     *
-     * @return string
-     */
     public function getProperty(): string
     {
         return $this->property;
     }
 
-    /**
-     * Sets property.
-     *
-     * @param string $property
-     *
-     * @return void
-     */
     public function setProperty(string $property): void
     {
         $this->property = $property;

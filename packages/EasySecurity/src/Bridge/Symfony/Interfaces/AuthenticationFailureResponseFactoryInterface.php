@@ -9,13 +9,5 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 interface AuthenticationFailureResponseFactoryInterface
 {
-    /**
-     * Create authentication failure response.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param null|\Symfony\Component\Security\Core\Exception\AuthenticationException $exception
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function create(Request $request, ?AuthenticationException $exception = null): Response;
 }

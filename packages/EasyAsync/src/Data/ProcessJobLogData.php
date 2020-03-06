@@ -23,13 +23,6 @@ final class ProcessJobLogData implements ProcessJobLogDataInterface
      */
     private $type;
 
-    /**
-     * ProcessJobLogData constructor.
-     *
-     * @param string $jobId
-     * @param \EonX\EasyAsync\Interfaces\TargetInterface $target
-     * @param string $type
-     */
     public function __construct(string $jobId, TargetInterface $target, string $type)
     {
         $this->jobId = $jobId;
@@ -37,31 +30,16 @@ final class ProcessJobLogData implements ProcessJobLogDataInterface
         $this->type = $type;
     }
 
-    /**
-     * Get job id.
-     *
-     * @return string
-     */
     public function getJobId(): string
     {
         return $this->jobId;
     }
 
-    /**
-     * Get target.
-     *
-     * @return \EonX\EasyAsync\Interfaces\TargetInterface
-     */
     public function getTarget(): TargetInterface
     {
         return $this->target;
     }
 
-    /**
-     * Get type.
-     *
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;

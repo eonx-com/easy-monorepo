@@ -10,7 +10,6 @@ use EonX\EasyLogging\ContextModifiers\EntityValidationFailedExceptionContextModi
 use EonX\EasyLogging\Formatters\SumoJsonFormatter;
 use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
 use EonX\EasyLogging\Interfaces\LoggerInterface;
-use Exception;
 use Laravel\Lumen\Application;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
@@ -22,35 +21,46 @@ use Throwable;
 
 final class Logger implements LoggerInterface
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     public const APPLICATION = 'manage';
 
-    /** @var \Laravel\Lumen\Application */
+    /**
+     * @var \Laravel\Lumen\Application
+     */
     private $app;
 
-    /** @var \Psr\Log\LoggerInterface */
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     private $appLogger;
 
-    /** @var string[] */
+    /**
+     * @var string[]
+     */
     private $bugsnagDoNotReport = [];
 
-    /** @var \Psr\Log\LoggerInterface */
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     private $emergencyLogger;
 
-    /** @var \EonX\EasyLogging\Interfaces\ExceptionContextModifierInterface[] */
+    /**
+     * @var \EonX\EasyLogging\Interfaces\ExceptionContextModifierInterface[]
+     */
     private $exceptionContextModifiers = [];
 
-    /** @var \Monolog\Handler\HandlerInterface[] */
+    /**
+     * @var \Monolog\Handler\HandlerInterface[]
+     */
     private $handlers = [];
 
-    /** @var \Monolog\Processor\ProcessorInterface[] */
+    /**
+     * @var \Monolog\Processor\ProcessorInterface[]
+     */
     private $processors;
 
-    /**
-     * Logger constructor.
-     *
-     * @throws \Exception
-     */
     public function __construct()
     {
         $this->handlers[] = $this->getHandler();
@@ -60,13 +70,6 @@ final class Logger implements LoggerInterface
         }
     }
 
-    /**
-     * Add monolog handler.
-     *
-     * @param \Monolog\Handler\HandlerInterface $handler
-     *
-     * @return void
-     */
     public function addHandler(HandlerInterface $handler): void
     {
         $this->handlers[] = $handler;
@@ -75,8 +78,6 @@ final class Logger implements LoggerInterface
     /**
      * @param string $message
      * @param null|mixed[] $context
-     *
-     * @return void
      */
     public function alert($message, ?array $context = null): void
     {
@@ -86,8 +87,6 @@ final class Logger implements LoggerInterface
     /**
      * @param string $message
      * @param null|mixed[] $context
-     *
-     * @return void
      */
     public function critical($message, ?array $context = null): void
     {
@@ -97,8 +96,6 @@ final class Logger implements LoggerInterface
     /**
      * @param string $message
      * @param null|mixed[] $context
-     *
-     * @return void
      */
     public function debug($message, ?array $context = null): void
     {
@@ -108,8 +105,6 @@ final class Logger implements LoggerInterface
     /**
      * @param string $message
      * @param null|mixed[] $context
-     *
-     * @return void
      */
     public function emergency($message, ?array $context = null): void
     {
@@ -119,8 +114,6 @@ final class Logger implements LoggerInterface
     /**
      * @param string $message
      * @param null|mixed[] $context
-     *
-     * @return void
      */
     public function error($message, ?array $context = null): void
     {
@@ -128,7 +121,7 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param null|mixed[] $context
      */
     public function exception(Throwable $exception, ?string $level = null, ?array $context = null): void
     {
@@ -146,7 +139,7 @@ final class Logger implements LoggerInterface
             $context['response'] = [
                 'headers' => $response->getHeaders(),
                 'status_code' => $response->getStatusCode(),
-                'content' => $response->getContent()
+                'content' => $response->getContent(),
             ];
         }
 
@@ -160,8 +153,6 @@ final class Logger implements LoggerInterface
     /**
      * @param string $message
      * @param null|mixed[] $context
-     *
-     * @return void
      */
     public function info($message, ?array $context = null): void
     {
@@ -169,11 +160,9 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * @param mixed $level
+     * @param string $level
      * @param string $message
      * @param null|mixed[] $context
-     *
-     * @return void
      */
     public function log($level, $message, ?array $context = null): void
     {
@@ -183,7 +172,7 @@ final class Logger implements LoggerInterface
             if (\is_callable($callable) === true) {
                 $callable($message, $context ?? []);
             }
-        } catch (Exception $exception) {
+        } catch (\Throwable $exception) {
             /** @noinspection ForgottenDebugOutputInspection This is only a fallback if logger is unavailable */
             \error_log($exception->getMessage());
         }
@@ -192,21 +181,12 @@ final class Logger implements LoggerInterface
     /**
      * @param string $message
      * @param null|mixed[] $context
-     *
-     * @return void
      */
     public function notice($message, ?array $context = null): void
     {
         $this->log('notice', $message, $context ?? []);
     }
 
-    /**
-     * Set app.
-     *
-     * @param \Laravel\Lumen\Application $app
-     *
-     * @return void
-     */
     public function setApp(Application $app): void
     {
         foreach ([ExternalsLoggerInterface::class, 'logger', PsrLoggerInterface::class] as $serviceId) {
@@ -217,11 +197,7 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * Set exception classes not to report to bugsnag.
-     *
      * @param string[] $doNotReport
-     *
-     * @return void
      */
     public function setBugsnagDoNotReport(array $doNotReport): void
     {
@@ -229,11 +205,7 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * Set exception context modifiers.
-     *
      * @param \EonX\EasyLogging\Interfaces\ExceptionContextModifierInterface[] $modifiers
-     *
-     * @return void
      */
     public function setExceptionContextModifiers(array $modifiers): void
     {
@@ -241,11 +213,7 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * Set processors.
-     *
      * @param \Monolog\Processor\ProcessorInterface[] $processors
-     *
-     * @return void
      */
     public function setProcessors(array $processors): void
     {
@@ -255,21 +223,12 @@ final class Logger implements LoggerInterface
     /**
      * @param string $message
      * @param null|mixed[] $context
-     *
-     * @return void
      */
     public function warning($message, ?array $context = null): void
     {
         $this->log('warning', $message, $context ?? []);
     }
 
-    /**
-     * Get logger that requires app for DI.
-     *
-     * @return \Psr\Log\LoggerInterface
-     *
-     * @throws \Exception
-     */
     private function getAppLogger(): PsrLoggerInterface
     {
         if ($this->appLogger !== null) {
@@ -291,8 +250,6 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * Get default processors.
-     *
      * @return \Monolog\Processor\ProcessorInterface[]
      */
     private function getDefaultProcessors(): array
@@ -311,18 +268,11 @@ final class Logger implements LoggerInterface
                 'Illuminate\\',
                 'Laravel\\',
                 'React\\',
-                'Symfony\\'
-            ])
+                'Symfony\\',
+            ]),
         ];
     }
 
-    /**
-     * Get emergency logger that doesn't need app.
-     *
-     * @return \Psr\Log\LoggerInterface
-     *
-     * @throws \Exception
-     */
     private function getEmergencyLogger(): PsrLoggerInterface
     {
         if ($this->emergencyLogger !== null) {
@@ -336,13 +286,6 @@ final class Logger implements LoggerInterface
         );
     }
 
-    /**
-     * Get stream handler.
-     *
-     * @return \Monolog\Handler\HandlerInterface
-     *
-     * @throws \Exception
-     */
     private function getHandler(): HandlerInterface
     {
         $handler = new StreamHandler('php://stderr');
@@ -351,19 +294,8 @@ final class Logger implements LoggerInterface
         return $handler;
     }
 
-    /**
-     * Get logger.
-     *
-     * @return \Psr\Log\LoggerInterface
-     *
-     * @throws \Exception
-     */
     private function getLogger(): PsrLoggerInterface
     {
-        if ($this->app === null) {
-            return $this->getEmergencyLogger();
-        }
-
-        return $this->getAppLogger();
+        return $this->app === null ? $this->getEmergencyLogger() : $this->getAppLogger();
     }
 }

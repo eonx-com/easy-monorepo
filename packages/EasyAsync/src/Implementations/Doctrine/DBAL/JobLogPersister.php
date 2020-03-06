@@ -30,16 +30,6 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
      */
     private $logger;
 
-    /**
-     * JobLogPersister constructor.
-     *
-     * @param \Doctrine\DBAL\Connection $conn
-     * @param \EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface $dateTime
-     * @param \EonX\EasyAsync\Interfaces\UuidGeneratorInterface $uuid
-     * @param \EonX\EasyAsync\Interfaces\JobPersisterInterface $jobPersister
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param string $table
-     */
     public function __construct(
         Connection $conn,
         DateTimeGeneratorInterface $dateTime,
@@ -54,14 +44,6 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
         $this->logger = $logger;
     }
 
-    /**
-     * Find paginated list of job logs for given job.
-     *
-     * @param string $jobId
-     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
-     *
-     * @return \EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface
-     */
     public function findForJob(string $jobId, StartSizeDataInterface $startSizeData): LengthAwarePaginatorInterface
     {
         return $this
@@ -80,17 +62,6 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
             });
     }
 
-    /**
-     * Persist given job log.
-     *
-     * @param \EonX\EasyAsync\Interfaces\JobLogInterface $jobLog
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobLogInterface
-     *
-     * @throws \EonX\EasyAsync\Exceptions\UnableToPersistJobLogException
-     * @throws \Doctrine\DBAL\ConnectionException
-     * @throws \Throwable
-     */
     public function persist(JobLogInterface $jobLog): JobLogInterface
     {
         $this->conn->beginTransaction();
@@ -114,15 +85,6 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
         return $jobLog;
     }
 
-    /**
-     * Remove all job logs for given job.
-     *
-     * @param string $jobId
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function removeForJob(string $jobId): void
     {
         $sql = \sprintf('DELETE FROM %s WHERE job_id = :jobId', $this->getTableForQuery());
@@ -130,14 +92,6 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
         $this->conn->executeQuery($sql, ['jobId' => $jobId]);
     }
 
-    /**
-     * Update given job for given job log.
-     *
-     * @param \EonX\EasyAsync\Interfaces\JobLogInterface $jobLog
-     * @param \EonX\EasyAsync\Interfaces\JobInterface $job
-     *
-     * @return \EonX\EasyAsync\Interfaces\JobInterface
-     */
     private function updateJob(JobLogInterface $jobLog, JobInterface $job): JobInterface
     {
         switch ($jobLog->getStatus()) {

@@ -9,11 +9,6 @@ use EonX\EasySecurity\Interfaces\ContextInterface;
 
 final class ContextFactoryInterfaceStub implements ContextFactoryInterface
 {
-    /**
-     * Create context.
-     *
-     * @return \EonX\EasySecurity\Interfaces\ContextInterface
-     */
     public function create(): ContextInterface
     {
         return new Context();

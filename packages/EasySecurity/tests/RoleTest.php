@@ -8,17 +8,12 @@ use EonX\EasySecurity\Role;
 
 final class RoleTest extends AbstractTestCase
 {
-    /**
-     * Test role.
-     *
-     * @return void
-     */
     public function testRole(): void
     {
         $role = new Role('app:role', [
             new Permission('perm'),
             'perm-as-string',
-            new \stdClass()
+            new \stdClass(),
         ]);
 
         self::assertEquals('app:role', $role->getIdentifier());

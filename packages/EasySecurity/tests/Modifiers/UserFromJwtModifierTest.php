@@ -19,14 +19,12 @@ use Symfony\Component\HttpFoundation\Request;
 final class UserFromJwtModifierTest extends AbstractTestCase
 {
     /**
-     * Data provider for modify tests.
-     *
      * @return iterable<mixed>
      */
     public function modifyProvider(): iterable
     {
         yield 'No user resolved because no token given' => [
-            new UserProviderInterfaceStub()
+            new UserProviderInterfaceStub(),
         ];
 
         $context = new Context();
@@ -34,51 +32,43 @@ final class UserFromJwtModifierTest extends AbstractTestCase
 
         yield 'No user resolved because token not jwt' => [
             new UserProviderInterfaceStub(),
-            $context
+            $context,
         ];
 
         $context->setToken(new JwtEasyApiToken([], 'jwt'));
 
         yield 'No user resolved because no sub claim' => [
             new UserProviderInterfaceStub(),
-            $context
+            $context,
         ];
 
         $context->setToken(new JwtEasyApiToken(['sub' => ''], 'jwt'));
 
         yield 'No user resolved because sub claim empty' => [
             new UserProviderInterfaceStub(),
-            $context
+            $context,
         ];
 
         $context->setToken(new JwtEasyApiToken(['sub' => 'user-id'], 'jwt'));
 
         yield 'No user resolved because provider returned null' => [
             new UserProviderInterfaceStub(),
-            $context
+            $context,
         ];
 
         $context->setToken(new JwtEasyApiToken([
             'sub' => 'user-id',
-            ContextInterface::JWT_MANAGE_CLAIM => new stdClass() // To cover getClaimSafely
+            ContextInterface::JWT_MANAGE_CLAIM => new stdClass(), // To cover getClaimSafely
         ], 'jwt'));
 
         yield 'User resolved' => [
             new UserProviderInterfaceStub($user = new UserInterfaceStub('user-id')),
             $context,
-            $user
+            $user,
         ];
     }
 
     /**
-     * Test UserFromJwtModifier.
-     *
-     * @param \EonX\EasySecurity\Interfaces\UserProviderInterface $userProvider
-     * @param null|\EonX\EasySecurity\Interfaces\ContextInterface $context
-     * @param null|\EonX\EasySecurity\Interfaces\UserInterface $user
-     *
-     * @return void
-     *
      * @dataProvider modifyProvider
      */
     public function testResolve(
@@ -91,7 +81,7 @@ final class UserFromJwtModifierTest extends AbstractTestCase
 
         $modifier->modify($context, new Request());
 
-        self::assertSame($user, $context->getUser());
+        self::assertEquals($user, $context->getUser());
         self::assertEquals(0, $modifier->getPriority());
     }
 }

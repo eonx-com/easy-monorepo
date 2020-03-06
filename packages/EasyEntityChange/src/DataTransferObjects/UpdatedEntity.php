@@ -15,10 +15,7 @@ final class UpdatedEntity extends ChangedEntity
     private $changedProperties;
 
     /**
-     * Constructor
-     *
      * @param string[] $changedProperties
-     * @param string $class
      * @param mixed[] $ids
      *
      * @phpstan-param class-string $class
@@ -31,8 +28,6 @@ final class UpdatedEntity extends ChangedEntity
     }
 
     /**
-     * Returns an array of changed properties for the object.
-     *
      * @return string[]
      */
     public function getChangedProperties(): array

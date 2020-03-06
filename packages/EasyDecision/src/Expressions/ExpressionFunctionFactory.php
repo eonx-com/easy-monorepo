@@ -11,11 +11,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFun
 final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterface
 {
     /**
-     * Create expression function for given value.
-     *
      * @param mixed $expressionFunction
-     *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface
      */
     public function create($expressionFunction): ExpressionFunctionInterface
     {

@@ -23,12 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
 final class EasySecurityExtension extends Extension
 {
     /**
-     * Load config and services.
-     *
      * @param mixed[] $configs
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     *
-     * @return void
      *
      * @throws \Exception
      */
@@ -50,12 +45,7 @@ final class EasySecurityExtension extends Extension
     }
 
     /**
-     * Register context.
-     *
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @param mixed[] $config
-     *
-     * @return void
      */
     private function registerContext(ContainerBuilder $container, array $config): void
     {
@@ -68,12 +58,7 @@ final class EasySecurityExtension extends Extension
     }
 
     /**
-     * Register context resolver.
-     *
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @param mixed[] $config
-     *
-     * @return void
      */
     private function registerContextResolver(ContainerBuilder $container, array $config): void
     {
@@ -91,12 +76,7 @@ final class EasySecurityExtension extends Extension
     }
 
     /**
-     * Register deferred context resolver.
-     *
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @param mixed[] $config
-     *
-     * @return void
      */
     private function registerDeferredContextResolver(ContainerBuilder $container, array $config): void
     {

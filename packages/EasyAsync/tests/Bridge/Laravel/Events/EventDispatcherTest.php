@@ -13,11 +13,6 @@ use Mockery\MockInterface;
 
 final class EventDispatcherTest extends AbstractTestCase
 {
-    /**
-     * EventDispatcher should dispatch given event and return it.
-     *
-     * @return void
-     */
     public function testDispatch(): void
     {
         $event = new JobCompletedEvent(new Job(new Target('id', 'type'), 'test'));

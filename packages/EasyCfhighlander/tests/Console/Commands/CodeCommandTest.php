@@ -7,13 +7,6 @@ use EonX\EasyCfhighlander\Tests\AbstractTestCase;
 
 final class CodeCommandTest extends AbstractTestCase
 {
-    /**
-     * Ensure the .easy directory is only used if no existing files are present
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testEasyDirectoryBackwardsCompatibility(): void
     {
         $inputs = [
@@ -28,12 +21,12 @@ final class CodeCommandTest extends AbstractTestCase
             'aws_dev_account', // dev_account
             '599070804856', // ops_account
             'aws_prod_account', // prod_account
-            'true' // cli_enabled
+            'true', // cli_enabled
         ];
 
         $filesNotExisting = [
             '.easy/easy-cfhighlander-manifest.json',
-            '.easy/easy-cfhighlander-params.yaml'
+            '.easy/easy-cfhighlander-params.yaml',
         ];
 
         $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-cfhighlander-manifest.json', '{}');
@@ -46,13 +39,6 @@ final class CodeCommandTest extends AbstractTestCase
         }
     }
 
-    /**
-     * Command should generate cloudformation files.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
     public function testGenerateCloudFormationFiles(): void
     {
         $inputs = [
@@ -67,7 +53,7 @@ final class CodeCommandTest extends AbstractTestCase
             'aws_dev_account', // dev_account
             '599070804856', // ops_account
             'aws_prod_account', // prod_account
-            'true' // cli_enabled
+            'true', // cli_enabled
         ];
 
         $files = [
@@ -75,7 +61,7 @@ final class CodeCommandTest extends AbstractTestCase
             'project.cfhighlander.rb',
             'project.config.yaml',
             'project-schema.cfhighlander.rb',
-            'project-schema.config.yaml'
+            'project-schema.config.yaml',
         ];
 
         $display = $this->executeCommand('code', $inputs);

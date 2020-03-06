@@ -18,24 +18,20 @@ class IdentityUserService implements IdentityUserServiceInterface
      */
     private $identityValues = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentityToArray(IdentityUserInterface $user, string $service): array
     {
         return $this->identityValues[$service] ?? [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentityUserId(IdentityUserInterface $user, string $service)
     {
         return $this->identityIds[$service] ?? null;
     }
 
     /**
-     * {@inheritdoc}
+     * @param null|mixed $default
+     *
+     * @return null|mixed
      */
     public function getIdentityValue(IdentityUserInterface $user, string $service, string $key, $default = null)
     {
@@ -43,7 +39,7 @@ class IdentityUserService implements IdentityUserServiceInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $id
      */
     public function setIdentityUserId(IdentityUserInterface $user, string $service, $id): void
     {
@@ -51,7 +47,7 @@ class IdentityUserService implements IdentityUserServiceInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
      */
     public function setIdentityValue(IdentityUserInterface $user, string $service, string $key, $value): void
     {

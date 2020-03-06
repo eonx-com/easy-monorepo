@@ -8,11 +8,6 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 
 final class TargetTest extends AbstractTestCase
 {
-    /**
-     * Target should return given values.
-     *
-     * @return void
-     */
     public function testTarget(): void
     {
         $target = new Target('id', 'type');

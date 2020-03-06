@@ -5,11 +5,15 @@ namespace EonX\EasyIdentity\Interfaces;
 
 interface IdentityServiceNamesInterface
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     public const SERVICE_AUTH0 = 'auth0';
 
-    /** @var string[] */
+    /**
+     * @var string[]
+     */
     public const SERVICES = [
-        self::SERVICE_AUTH0
+        self::SERVICE_AUTH0,
     ];
 }

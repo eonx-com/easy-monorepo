@@ -14,24 +14,19 @@ final class ExpressionFunctionProviderStub implements ExpressionFunctionProvider
      */
     private $functionFactory;
 
-    /**
-     * ExpressionFunctionProviderStub constructor.
-     */
     public function __construct()
     {
         $this->functionFactory = new ExpressionFunctionFactory();
     }
 
     /**
-     * Get list of functions.
-     *
      * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
      */
     public function getFunctions(): array
     {
         return [
             $this->functionFactory->create(BaseExpressionFunction::fromPhp('max')),
-            $this->functionFactory->create(BaseExpressionFunction::fromPhp('min'))
+            $this->functionFactory->create(BaseExpressionFunction::fromPhp('min')),
         ];
     }
 }

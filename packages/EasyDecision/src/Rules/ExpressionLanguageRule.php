@@ -37,11 +37,6 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     private $priority;
 
     /**
-     * ExpressionLanguageRule constructor.
-     *
-     * @param string $expression
-     * @param null|int $priority
-     * @param null|string $name
      * @param null|mixed[] $extra
      */
     public function __construct(string $expression, ?int $priority = null, ?string $name = null, ?array $extra = null)
@@ -53,8 +48,6 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     }
 
     /**
-     * Returns rule output for given decision output.
-     *
      * @param mixed $decisionOutput
      *
      * @return mixed
@@ -70,19 +63,12 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
         return $this->extra;
     }
 
-    /**
-     * Get priority.
-     *
-     * @return int
-     */
     public function getPriority(): int
     {
         return $this->priority;
     }
 
     /**
-     * Proceed with input.
-     *
      * @param mixed[] $input
      *
      * @return mixed
@@ -95,30 +81,19 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     }
 
     /**
-     * Check if rule supports given input.
-     *
      * @param mixed[] $input
-     *
-     * @return bool
      */
     public function supports(array $input): bool
     {
         return true;
     }
 
-    /**
-     * Get string representation of the rule.
-     *
-     * @return string
-     */
     public function toString(): string
     {
         return $this->name ?? $this->expression;
     }
 
     /**
-     * Get output for given input, handle if condition for value.
-     *
      * @param mixed[] $input
      *
      * @return mixed

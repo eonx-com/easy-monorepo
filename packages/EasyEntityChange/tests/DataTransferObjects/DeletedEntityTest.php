@@ -12,11 +12,6 @@ use stdClass;
  */
 class DeletedEntityTest extends AbstractTestCase
 {
-    /**
-     * Tests that DTO's constructor and getters are :chefs-kiss:
-     *
-     * @return void
-     */
     public function testDtoCreationAndGetters(): void
     {
         $dto = new DeletedEntity(
@@ -25,6 +20,6 @@ class DeletedEntityTest extends AbstractTestCase
             ['metadata']
         );
 
-        self::assertSame(['metadata'], $dto->getMetadata());
+        self::assertEquals(['metadata'], $dto->getMetadata());
     }
 }

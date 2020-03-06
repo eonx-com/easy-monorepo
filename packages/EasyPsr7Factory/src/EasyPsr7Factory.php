@@ -29,12 +29,6 @@ final class EasyPsr7Factory implements EasyPsr7FactoryInterface
      */
     private $httpMessage;
 
-    /**
-     * EasyEasyPsr7Factory constructor.
-     *
-     * @param \Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface|null $httpFoundation
-     * @param \Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface|null $httpMessage
-     */
     public function __construct(
         ?HttpFoundationFactoryInterface $httpFoundation = null,
         ?HttpMessageFactoryInterface $httpMessage = null
@@ -48,25 +42,11 @@ final class EasyPsr7Factory implements EasyPsr7FactoryInterface
         );
     }
 
-    /**
-     * Create PSR-7 request from Symfony request.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Psr\Http\Message\ServerRequestInterface
-     */
     public function createRequest(Request $request): ServerRequestInterface
     {
         return $this->httpMessage->createRequest($request);
     }
 
-    /**
-     * Create Symfony response from PSR-7 response.
-     *
-     * @param \Psr\Http\Message\ResponseInterface $response
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function createResponse(ResponseInterface $response): Response
     {
         return $this->httpFoundation->createResponse($response);

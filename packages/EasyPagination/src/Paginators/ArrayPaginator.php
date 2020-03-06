@@ -18,11 +18,7 @@ final class ArrayPaginator extends AbstractLengthAwarePaginator
     private $total;
 
     /**
-     * ArrayPaginator constructor.
-     *
      * @param mixed[] $items
-     * @param int $total
-     * @param \EonX\EasyPagination\Interfaces\StartSizeDataInterface $startSizeData
      */
     public function __construct(array $items, int $total, StartSizeDataInterface $startSizeData)
     {
@@ -33,8 +29,6 @@ final class ArrayPaginator extends AbstractLengthAwarePaginator
     }
 
     /**
-     * Get current items being paginated.
-     *
      * @return mixed[]
      */
     public function getItems(): array
@@ -42,11 +36,6 @@ final class ArrayPaginator extends AbstractLengthAwarePaginator
         return $this->items;
     }
 
-    /**
-     * Get total number of paginated items.
-     *
-     * @return int
-     */
     public function getTotalItems(): int
     {
         return $this->total;

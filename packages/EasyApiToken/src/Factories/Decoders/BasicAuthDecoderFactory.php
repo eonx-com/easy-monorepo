@@ -10,11 +10,7 @@ use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterfac
 final class BasicAuthDecoderFactory implements EasyApiTokenDecoderSubFactoryInterface
 {
     /**
-     * Build api token decoder for given config.
-     *
      * @param null|mixed[] $config
-     *
-     * @return \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
      */
     public function build(?array $config = null): EasyApiTokenDecoderInterface
     {

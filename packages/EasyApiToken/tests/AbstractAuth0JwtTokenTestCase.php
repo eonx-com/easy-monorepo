@@ -23,7 +23,7 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
      */
     protected static $tokenPayload = [
         'scopes' => [],
-        'aud' => 'my-identifier'
+        'aud' => 'my-identifier',
     ];
 
     /**
@@ -32,15 +32,10 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
     protected static $validAudiences = ['my-identifier'];
 
     /**
-     * Create Auth0 JWT driver.
-     *
      * @param null|string[] $validAudiences
      * @param null|string[] $authorizedIss
      * @param null|string|resource $key
-     * @param null|string $audienceForEncode
      * @param null|string[] $allowedAlgos
-     *
-     * @return \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface
      */
     protected function createAuth0JwtDriver(
         ?array $validAudiences = null,
@@ -58,11 +53,6 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
         );
     }
 
-    /**
-     * Create JWT token for given algo.
-     *
-     * @return string
-     */
     protected function createToken(): string
     {
         return $this->createAuth0JwtDriver(null, null, static::$key)->encode([]);

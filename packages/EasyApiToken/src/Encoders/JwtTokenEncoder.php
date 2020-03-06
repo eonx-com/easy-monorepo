@@ -17,32 +17,17 @@ final class JwtTokenEncoder implements EasyApiTokenEncoderInterface
      */
     private $jwtDriver;
 
-    /**
-     * JwtTokenEncoder constructor.
-     *
-     * @param \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface $jwtDriver
-     */
     public function __construct(JwtDriverInterface $jwtDriver)
     {
         $this->jwtDriver = $jwtDriver;
     }
 
-    /**
-     * Return encoded string representation of given API token.
-     *
-     * @param \EonX\EasyApiToken\Interfaces\EasyApiTokenInterface $apiToken
-     *
-     * @return string
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException If given apiToken not supported
-     * @throws \EonX\EasyApiToken\Exceptions\UnableToEncodeEasyApiTokenException If encoding fails
-     */
     public function encode(EasyApiTokenInterface $apiToken): string
     {
         if (($apiToken instanceof JwtEasyApiTokenInterface) === false) {
             throw new InvalidArgumentException(\sprintf(
                 'In "%s", API token expected to be instance of "%s", "%s" given.',
-                \get_class($this),
+                static::class,
                 JwtEasyApiTokenInterface::class,
                 \get_class($apiToken)
             ));
@@ -54,7 +39,7 @@ final class JwtTokenEncoder implements EasyApiTokenEncoderInterface
             throw new UnableToEncodeEasyApiTokenException(
                 \sprintf(
                     'In "%s", unable to encode token. Reason: %s',
-                    \get_class($this),
+                    static::class,
                     $exception->getMessage()
                 ),
                 $exception->getCode(),

@@ -13,11 +13,6 @@ use stdClass;
  */
 class EntityChangeEventTest extends AbstractTestCase
 {
-    /**
-     * Tests that DTO's constructor and getters are :chefs-kiss:
-     *
-     * @return void
-     */
     public function testEventCreationAndGetters(): void
     {
         $updatedEntity = new UpdatedEntity(
@@ -28,6 +23,6 @@ class EntityChangeEventTest extends AbstractTestCase
 
         $event = new EntityChangeEvent([$updatedEntity]);
 
-        self::assertSame([$updatedEntity], $event->getChanges());
+        self::assertEquals([$updatedEntity], $event->getChanges());
     }
 }

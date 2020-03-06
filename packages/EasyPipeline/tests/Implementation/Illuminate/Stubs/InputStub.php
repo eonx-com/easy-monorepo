@@ -10,33 +10,16 @@ final class InputStub
      */
     private $name;
 
-    /**
-     * InputStub constructor.
-     *
-     * @param string $initialName
-     */
     public function __construct(string $initialName)
     {
         $this->name = $initialName;
     }
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return \EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\InputStub
-     */
     public function setName(string $name): self
     {
         $this->name = $name;

@@ -13,13 +13,6 @@ final class EventDispatcherStub implements EventDispatcherInterface
      */
     private $dispatched = [];
 
-    /**
-     * Dispatch given event.
-     *
-     * @param \EonX\EasyAsync\Interfaces\EasyAsyncEventInterface $event
-     *
-     * @return \EonX\EasyAsync\Interfaces\EasyAsyncEventInterface
-     */
     public function dispatch(EasyAsyncEventInterface $event): EasyAsyncEventInterface
     {
         $this->dispatched[] = $event;
@@ -28,9 +21,7 @@ final class EventDispatcherStub implements EventDispatcherInterface
     }
 
     /**
-     * Get dispatched events.
-     *
-     * @return \EonX\EasyAsync\Interfaces\EasyAsyncEventInterface[]
+     * @return EasyAsyncEventInterface[]
      */
     public function getDispatchedEvents(): array
     {

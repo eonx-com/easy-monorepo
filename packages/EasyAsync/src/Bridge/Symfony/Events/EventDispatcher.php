@@ -14,28 +14,13 @@ final class EventDispatcher implements EventDispatcherInterface
      */
     private $decorated;
 
-    /**
-     * EventDispatcher constructor.
-     *
-     * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $decorated
-     */
     public function __construct(SymfonyEventDispatcherInterface $decorated)
     {
         $this->decorated = $decorated;
     }
 
-    /**
-     * Dispatch given event.
-     *
-     * @param \EonX\EasyAsync\Interfaces\EasyAsyncEventInterface $event
-     *
-     * @return \EonX\EasyAsync\Interfaces\EasyAsyncEventInterface
-     */
     public function dispatch(EasyAsyncEventInterface $event): EasyAsyncEventInterface
     {
-        /** @var \EonX\EasyAsync\Interfaces\EasyAsyncEventInterface $event */
-        $event = $this->decorated->dispatch($event);
-
-        return $event;
+        return $this->decorated->dispatch($event);
     }
 }

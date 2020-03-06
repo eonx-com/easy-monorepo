@@ -14,11 +14,6 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
      */
     private $app;
 
-    /**
-     * Get lumen application.
-     *
-     * @return \Laravel\Lumen\Application
-     */
     protected function getApplication(): Application
     {
         if ($this->app !== null) {
@@ -33,11 +28,6 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         return $this->app = $app;
     }
 
-    /**
-     * Get laravel decision factory.
-     *
-     * @return \EonX\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface
-     */
     protected function getDecisionFactory(): DecisionFactoryInterface
     {
         return $this->getApplication()->make(DecisionFactoryInterface::class);

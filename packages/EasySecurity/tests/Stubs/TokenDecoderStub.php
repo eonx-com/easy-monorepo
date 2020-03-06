@@ -14,23 +14,11 @@ final class TokenDecoderStub implements EasyApiTokenDecoderInterface
      */
     private $token;
 
-    /**
-     * TokenDecoderStub constructor.
-     *
-     * @param null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface $token
-     */
     public function __construct(?EasyApiTokenInterface $token = null)
     {
         $this->token = $token;
     }
 
-    /**
-     * Decode API token for given request.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     *
-     * @return null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface
-     */
     public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
     {
         return $this->token;

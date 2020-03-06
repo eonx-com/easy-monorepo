@@ -15,31 +15,17 @@ abstract class AbstractContextModifier implements ContextModifierInterface
      */
     private $priority;
 
-    /**
-     * AbstractContextDataResolver constructor.
-     *
-     * @param null|int $priority
-     */
     public function __construct(?int $priority = null)
     {
         $this->priority = $priority;
     }
 
-    /**
-     * Get priority.
-     *
-     * @return int
-     */
     public function getPriority(): int
     {
         return $this->priority ?? 0;
     }
 
     /**
-     * Get claim from token handling exception if claim doesn't exist and convert stdClass to array.
-     *
-     * @param \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token
-     * @param string $claim
      * @param null|mixed $default
      *
      * @return null|mixed

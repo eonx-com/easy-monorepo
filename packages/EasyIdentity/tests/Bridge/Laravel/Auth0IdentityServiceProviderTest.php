@@ -10,11 +10,6 @@ use EonX\EasyIdentity\Tests\AbstractLumenTestCase;
 
 final class Auth0IdentityServiceProviderTest extends AbstractLumenTestCase
 {
-    /**
-     * Provider should register the Auth0 identity service under the generic interface.
-     *
-     * @return void
-     */
     public function testRegister(): void
     {
         /** @var \Illuminate\Contracts\Foundation\Application $app */
