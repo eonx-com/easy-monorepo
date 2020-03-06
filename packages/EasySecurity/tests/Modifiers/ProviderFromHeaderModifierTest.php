@@ -58,6 +58,14 @@ final class ProviderFromHeaderModifierTest extends AbstractTestCase
             $context,
             $provider
         ];
+
+        yield 'Provider resolved with multiple headers' => [
+            new ProviderProviderInterfaceStub($provider = new ProviderInterfaceStub('provider-id')),
+            $request,
+            $context,
+            $provider,
+            ['provider', 'custom-header', 'x-provider-id']
+        ];
     }
 
     /**
@@ -67,6 +75,7 @@ final class ProviderFromHeaderModifierTest extends AbstractTestCase
      * @param null|\Symfony\Component\HttpFoundation\Request $request
      * @param null|\EonX\EasySecurity\Interfaces\ContextInterface $context
      * @param null|\EonX\EasySecurity\Interfaces\ProviderInterface $provider
+     * @param null|string|string[] $headerNames
      *
      * @return void
      *
@@ -76,11 +85,13 @@ final class ProviderFromHeaderModifierTest extends AbstractTestCase
         ProviderProviderInterface $providerProvider,
         ?Request $request = null,
         ?ContextInterface $context = null,
-        ?ProviderInterface $provider = null
+        ?ProviderInterface $provider = null,
+        $headerNames = null
     ): void {
         $context = $context ?? new Context();
+        $modifier = new ProviderFromHeaderModifier($providerProvider, null, $headerNames);
 
-        (new ProviderFromHeaderModifier($providerProvider))->modify($context, $request ?? new Request());
+        $modifier->modify($context, $request ?? new Request());
 
         self::assertSame($provider, $context->getProvider());
     }
