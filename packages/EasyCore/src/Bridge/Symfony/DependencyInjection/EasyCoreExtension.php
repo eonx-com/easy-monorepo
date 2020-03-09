@@ -20,7 +20,7 @@ final class EasyCoreExtension extends Extension
      *
      * @throws \Exception
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
@@ -32,6 +32,11 @@ final class EasyCoreExtension extends Extension
         $this->registerPermissionExpressionFunctionProvider($config, $container);
     }
 
+    /**
+     * @param mixed[] $config
+     *
+     * @throws \Exception
+     */
     private function registerCustomPagination(array $config, LoaderInterface $loader): void
     {
         if (($config['api_platform']['custom_pagination'] ?? false) === false) {
@@ -52,6 +57,9 @@ final class EasyCoreExtension extends Extension
         $loader->load('easy_async_listeners.yaml');
     }
 
+    /**
+     * @param mixed[] $config
+     */
     private function registerPermissionExpressionFunctionProvider(array $config, ContainerBuilder $container): void
     {
         $targets = $config['security']['permissions_targets'] ?? [];

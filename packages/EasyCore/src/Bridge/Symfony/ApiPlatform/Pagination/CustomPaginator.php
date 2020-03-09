@@ -8,7 +8,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
 final class CustomPaginator implements CustomPaginatorInterface
 {
     /**
-     * @var \ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator
+     * @var \ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator<mixed>
      */
     private $decorated;
 
@@ -41,7 +41,7 @@ final class CustomPaginator implements CustomPaginatorInterface
             'hasPreviousPage' => $hasPreviousPage,
             'itemsPerPage' => $this->decorated->getItemsPerPage(),
             'totalItems' => $this->decorated->getTotalItems(),
-            'totalPages' => $this->decorated->getLastPage()
+            'totalPages' => $this->decorated->getLastPage(),
         ];
     }
 }

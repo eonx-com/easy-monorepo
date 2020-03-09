@@ -43,7 +43,7 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
         return [
             new ExpressionFunction(
                 'permission',
-                function () {
+                function (): void {
                 },
                 function ($params, string $permission): string {
                     if (isset($this->cached[$permission])) {
@@ -64,7 +64,7 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
                         \sprintf('Constant for permission "%s" not found', $permission)
                     );
                 }
-            )
+            ),
         ];
     }
 }

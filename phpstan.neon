@@ -5,6 +5,7 @@ parameters:
     excludes_analyse:
         - packages/*/var/*
         - packages/*/vendor/*
+        - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
@@ -51,6 +52,12 @@ parameters:
 
         - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\Providers\\CachedConfigServiceProvider::\$loadedConfigurations.#'
           path: packages/EasyCore/src/Bridge/Laravel/Providers
+
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
+        - message: '#Parameter \#1 \$connOrDsn of class Symfony\\Component\\Lock\\Store\\PdoStore constructor expects Doctrine\\DBAL\\Connection\|PDO\|string, object given#'
+          path: packages/EasyCore/src/Lock/LockService.php
 
         # ---- EasyDecision ----
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'

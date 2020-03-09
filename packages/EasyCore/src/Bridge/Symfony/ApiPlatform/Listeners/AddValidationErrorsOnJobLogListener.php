@@ -19,7 +19,7 @@ final class AddValidationErrorsOnJobLogListener
                 /** @var \Symfony\Component\Validator\ConstraintViolationInterface $violation */
                 $errors[$violation->getPropertyPath()] = [
                     'message' => $violation->getMessageTemplate(),
-                    'parameters' => $violation->getParameters()
+                    'parameters' => $violation->getParameters(),
                 ];
             }
         }

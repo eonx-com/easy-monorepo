@@ -21,25 +21,25 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
     {
         yield 'Group not added, both type and name invalid' => [
             ['operation_type' => 'invalid', 'collection_operation_name' => 'invalid'],
-            false
+            false,
         ];
 
         yield 'Group not added, type invalid' => [
             ['operation_type' => 'invalid', 'item_operation_name' => CustomPaginatorInterface::OPERATION_NAME],
-            false
+            false,
         ];
 
         yield 'Group not added, name invalid' => [
             ['operation_type' => CustomPaginatorInterface::OPERATION_TYPE, 'collection_operation_name' => 'invalid'],
-            false
+            false,
         ];
 
         yield 'Group added' => [
             [
                 'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
-                'collection_operation_name' => CustomPaginatorInterface::OPERATION_NAME
+                'collection_operation_name' => CustomPaginatorInterface::OPERATION_NAME,
             ],
-            true
+            true,
         ];
     }
 
@@ -55,7 +55,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
         $contextBuilder = new SerializerContextBuilder($this->getApiPlatformSerializerContextBuilder($context));
 
         $context = $contextBuilder->createFromRequest(new Request(), true, $context);
-        $inArray = \in_array(CustomPaginatorInterface::SERIALIZER_GROUP, $context['groups'] ?? []);
+        $inArray = \in_array(CustomPaginatorInterface::SERIALIZER_GROUP, $context['groups'] ?? [], true);
 
         self::assertEquals($groupAdded, $inArray);
     }
