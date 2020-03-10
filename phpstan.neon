@@ -135,6 +135,22 @@ parameters:
         - message: '#Cannot call method getRepository\(\) on Doctrine\\Persistence\\ObjectManager\|null#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractDoctrineOrmRepository.php
 
+        # ---- EasySchedule ----
+        - message: '#Parameter \#1 \$var of function count expects array\|Countable, EonX\\EasySchedule\\Interfaces\\EventInterface given#'
+          path: packages/EasySchedule/src/Bridge/Symfony/DataCollector/ScheduleDataCollector.php
+
+        - message: '#Parameter \#1 \$app of method EonX\\EasySchedule\\Interfaces\\ScheduleInterface\:\:setApplication\(\) expects Symfony\\Component\\Console\\Application, Symfony\\Component\\Console\\Application\|null given#'
+          path: packages/EasySchedule/src/Command/ScheduleRunCommand.php
+
+        - message: '#Cannot cast Symfony\\Component\\Console\\Input\\InputInterface to string#'
+          path: packages/EasySchedule/src/Event.php
+
+        - message: '#Array \(array<EonX\\EasySchedule\\Interfaces\\EventInterface\>\) does not accept array#'
+          path: packages/EasySchedule/src/Bridge/Symfony/TraceableSchedule.php
+
+        - message: '#Cannot access an offset on array\|EonX\\EasySchedule\\Interfaces\\EventInterface#'
+          path: packages/EasySchedule/src/Bridge/Symfony/TraceableSchedule.php
+
         # ---- EasySecurity ----
         - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Helpers\\DeferredContextResolver\:\:resolve\(\) should return EonX\\EasySecurity\\Interfaces\\ContextInterface but returns object\|null#'
           path: packages/EasySecurity/src/Bridge/Symfony/Helpers/DeferredContextResolver.php

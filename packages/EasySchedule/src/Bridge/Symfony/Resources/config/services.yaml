@@ -1,0 +1,19 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    EonX\EasySchedule\Command\ScheduleRunCommand: ~
+
+    EonX\EasySchedule\Bridge\Symfony\DataCollector\ScheduleDataCollector:
+        tags:
+            -   name: data_collector
+                template: '@Schedule/Collector/schedule_collector.html.twig'
+                id: !php/const EonX\EasySchedule\Bridge\Symfony\DataCollector\ScheduleDataCollector::NAME
+
+    EonX\EasySchedule\Interfaces\ScheduleInterface:
+        class: EonX\EasySchedule\Schedule
+
+    EonX\EasySchedule\Interfaces\ScheduleRunnerInterface:
+        class: EonX\EasySchedule\ScheduleRunner
