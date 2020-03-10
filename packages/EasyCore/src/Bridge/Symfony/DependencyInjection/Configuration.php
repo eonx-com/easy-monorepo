@@ -19,14 +19,6 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('custom_pagination')->defaultValue(true)->end()
                     ->end()
                 ->end()
-                ->arrayNode('security')
-                    ->children()
-                        ->arrayNode('permissions_targets')
-                            ->scalarPrototype()->end()
-                            ->beforeNormalization()->castToArray()->end()
-                        ->end()
-                    ->end()
-                ->end()
             ->end();
 
         return $treeBuilder;

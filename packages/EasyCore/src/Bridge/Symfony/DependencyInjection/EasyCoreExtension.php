@@ -8,10 +8,8 @@ use EonX\EasyCore\Bridge\Symfony\Security\PermissionExpressionFunctionProvider;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\DependencyInjection\Reference;
 
 final class EasyCoreExtension extends Extension
 {
@@ -29,7 +27,6 @@ final class EasyCoreExtension extends Extension
 
         $this->registerCustomPagination($config, $loader);
         $this->registerEasyAsyncListeners($container, $loader);
-        $this->registerPermissionExpressionFunctionProvider($config, $container);
     }
 
     /**
@@ -55,25 +52,5 @@ final class EasyCoreExtension extends Extension
         }
 
         $loader->load('easy_async_listeners.yaml');
-    }
-
-    /**
-     * @param mixed[] $config
-     */
-    private function registerPermissionExpressionFunctionProvider(array $config, ContainerBuilder $container): void
-    {
-        $targets = $config['security']['permissions_targets'] ?? [];
-
-        if (empty($targets) || $container->has('security.expression_language') === false) {
-            return;
-        }
-
-        $class = PermissionExpressionFunctionProvider::class;
-        $provider = new Definition($class, [$targets]);
-
-        $container->setDefinition($class, $provider);
-
-        $exprLanguage = $container->getDefinition('security.expression_language');
-        $exprLanguage->addMethodCall('registerProvider', [new Reference($class)]);
     }
 }

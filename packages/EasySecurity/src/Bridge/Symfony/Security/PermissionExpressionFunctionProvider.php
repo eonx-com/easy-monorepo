@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Bridge\Symfony\Security;
+namespace EonX\EasySecurity\Bridge\Symfony\Security;
 
 use EonX\EasyCore\Bridge\Symfony\Exceptions\PermissionConstantNotFoundException;
 use Psr\Log\LoggerInterface;
