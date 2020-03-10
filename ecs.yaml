@@ -2,6 +2,7 @@ parameters:
     exclude_files:
         - '*/var/*.php'
         - '*/vendor/*.php'
+        - 'packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php'
 
     sets:
         - 'common'
