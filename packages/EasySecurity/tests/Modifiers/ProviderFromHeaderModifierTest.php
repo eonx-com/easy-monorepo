@@ -62,7 +62,7 @@ final class ProviderFromHeaderModifierTest extends AbstractTestCase
             $request,
             $context,
             $provider,
-            ['provider', 'custom-header', 'x-provider-id']
+            ['provider', 'custom-header', 'x-provider-id'],
         ];
     }
 

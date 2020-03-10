@@ -23,7 +23,7 @@ final class ProviderFromHeaderModifier extends AbstractContextModifier
      * @var \EonX\EasySecurity\Interfaces\ProviderProviderInterface
      */
     private $providerProvider;
-  
+
     /**
      * @param null|string|string[] $headerNames
      */
