@@ -52,7 +52,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
     {
         $context = \array_merge($context, ['resource_class' => 'class']);
 
-        $contextBuilder = new SerializerContextBuilder($this->getApiPlatformSerializerContextBuilder($context));
+        $contextBuilder = new SerializerContextBuilder($this->getApiPlatformSerializerContextBuilder());
 
         $context = $contextBuilder->createFromRequest(new Request(), true, $context);
         $inArray = \in_array(CustomPaginatorInterface::SERIALIZER_GROUP, $context['groups'] ?? [], true);
@@ -60,7 +60,8 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
         self::assertEquals($groupAdded, $inArray);
     }
 
-    private function getApiPlatformSerializerContextBuilder(array $context): ApiPlatformSerializerContextBuilder
+
+    private function getApiPlatformSerializerContextBuilder(): ApiPlatformSerializerContextBuilder
     {
         /** @var \ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface $metadataFactory */
         $metadataFactory = $this->mock(

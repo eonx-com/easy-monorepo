@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
-use EonX\EasyCore\Bridge\Symfony\Security\PermissionExpressionFunctionProvider;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

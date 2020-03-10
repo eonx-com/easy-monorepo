@@ -12,6 +12,9 @@ final class CustomPaginator implements CustomPaginatorInterface
      */
     private $decorated;
 
+    /**
+     * @param \ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator<mixed> $decorated
+     */
     public function __construct(Paginator $decorated)
     {
         $this->decorated = $decorated;

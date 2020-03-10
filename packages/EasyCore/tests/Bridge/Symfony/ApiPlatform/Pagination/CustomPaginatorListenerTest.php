@@ -53,6 +53,9 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
         self::assertEquals($isCustomPaginator, $event->getControllerResult() instanceof CustomPaginatorInterface);
     }
 
+    /**
+     * @return \ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator<mixed>
+     */
     private function getApiPlatformPaginator(): Paginator
     {
         /** @var \Doctrine\ORM\EntityManagerInterface $manager */

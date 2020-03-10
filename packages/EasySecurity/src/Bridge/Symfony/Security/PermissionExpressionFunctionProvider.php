@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Security;
 
-use EonX\EasyCore\Bridge\Symfony\Exceptions\PermissionConstantNotFoundException;
+use EonX\EasySecurity\Bridge\Symfony\Exceptions\PermissionConstantNotFoundException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
