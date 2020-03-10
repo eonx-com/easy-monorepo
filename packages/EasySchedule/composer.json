@@ -1,0 +1,32 @@
+{
+    "name": "eonx-com/easy-schedule",
+    "description": "Provides the Command Scheduling logic of Laravel in a Symfony Console application",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "nesbot/carbon": "^2.22",
+        "dragonmantank/cron-expression": "^2.3",
+        "symfony/console": "^4.2",
+        "eonx-com/core": "^2.2"
+    },
+    "require-dev": {
+        "symfony/symfony": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasySchedule\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasySchedule\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.4-dev"
+        }
+    }
+}

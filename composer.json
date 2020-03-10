@@ -11,6 +11,8 @@
     "require": {
         "doctrine/orm": "^2.6",
         "eonx-com/externals": "^1.0 || ^2.0",
+        "nesbot/carbon": "^2.22",
+        "dragonmantank/cron-expression": "^2.3",
         "ext-json": "*",
         "php": "^7.1",
         "psr/event-dispatcher": "^1.0",
@@ -69,6 +71,7 @@
             "EonX\\EasyPsr7Factory\\": "packages/EasyPsr7Factory/src",
             "EonX\\EasyRepository\\": "packages/EasyRepository/src",
             "EonX\\EasySecurity\\": "packages/EasySecurity/src",
+            "EonX\\EasySchedule\\": "packages/EasySchedule/src",
             "EonX\\EasyTest\\": "packages/EasyTest/src"
         }
     },
@@ -88,6 +91,7 @@
             "EonX\\EasyPsr7Factory\\Tests\\": "packages/EasyPsr7Factory/tests",
             "EonX\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
+            "EonX\\EasySchedule\\Tests\\": "packages/EasySchedule/tests",
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests"
         }
     },
@@ -106,6 +110,7 @@
         "eonx-com/easy-logging": "self.version",
         "eonx-com/easy-security": "self.version",
         "eonx-com/easy-test": "self.version",
+        "eonx-com/easy-schedule": "self.version",
         "eonx-com/easy-async": "self.version"
     },
     "scripts": {
