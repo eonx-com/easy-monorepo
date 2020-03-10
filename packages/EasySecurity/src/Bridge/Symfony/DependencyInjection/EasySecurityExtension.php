@@ -7,6 +7,7 @@ use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextAwareInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface;
+use EonX\EasySecurity\Bridge\Symfony\Interfaces\ParametersInterface;
 use EonX\EasySecurity\Bridge\TagsInterface;
 use EonX\EasySecurity\Interfaces\ContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
@@ -33,6 +34,9 @@ final class EasySecurityExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
+
+        // Set permissions locations parameter
+        $container->setParameter(ParametersInterface::PERMISSIONS_LOCATIONS, $config['permissions_locations'] ?? []);
 
         // Register context modifiers for auto tagging
         $container

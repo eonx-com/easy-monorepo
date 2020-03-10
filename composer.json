@@ -28,6 +28,7 @@
         "nette/utils": "^3.1"
     },
     "require-dev": {
+        "api-platform/core": "^2.5",
         "auth0/auth0-php": "^5.4",
         "bugsnag/bugsnag": "^3.19",
         "bugsnag/bugsnag-laravel": "^2.17",
