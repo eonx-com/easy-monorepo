@@ -2,7 +2,39 @@
 
 <!-- dumped content start -->
 
-## v2.3.1 - 2020-03-03
+## v2.3.2 - 2020-03-10
+
+- [#151] Update coding standards
+
+### EasyDecision
+
+- [#148] Make adding extra in output consistent
+
+### EasyAsync
+
+- [#149] Persist jobLog when status is in progress, Thanks to [@dextercampos]
+
+### EasyCore
+
+- [#155] Migrate core bundle for Symfony
+
+### EasySchedule
+
+- [#156] Created package
+
+### EasySecurity
+
+- [#152] Allow to resolve provider from multiple headers
+
+### EasyTest
+
+- [#147] Prepare for multi coverage formats
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.1] - 2020-03-03
 
 ### EasyApiToken
 
@@ -1203,3 +1235,12 @@
 [v2.2.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.2.0...v2.2.1
 [#145]: https://github.com/eonx-com/easy-monorepo/pull/145
 [v2.3.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.2.1...v2.3.0
+[#156]: https://github.com/eonx-com/easy-monorepo/pull/156
+[#155]: https://github.com/eonx-com/easy-monorepo/pull/155
+[#152]: https://github.com/eonx-com/easy-monorepo/pull/152
+[#151]: https://github.com/eonx-com/easy-monorepo/pull/151
+[#149]: https://github.com/eonx-com/easy-monorepo/pull/149
+[#148]: https://github.com/eonx-com/easy-monorepo/pull/148
+[#147]: https://github.com/eonx-com/easy-monorepo/pull/147
+[v2.3.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.0...v2.3.1
+[@dextercampos]: https://github.com/dextercampos
