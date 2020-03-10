@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 final class ProviderFromHeaderModifier extends AbstractContextModifier
 {
     /**
-     * @var string
+     * @var string[]
      */
-    private $headerName;
+    private $headerNames;
 
     /**
      * @var string
@@ -24,14 +24,17 @@ final class ProviderFromHeaderModifier extends AbstractContextModifier
      */
     private $providerProvider;
 
+    /**
+     * @param null|string|string[] $headerNames
+     */
     public function __construct(
         ProviderProviderInterface $providerProvider,
         ?int $priority = null,
-        ?string $headerName = null,
+        $headerNames = null,
         ?string $permission = null
     ) {
         $this->providerProvider = $providerProvider;
-        $this->headerName = $headerName ?? 'X-Provider-Id';
+        $this->headerNames = (array)($headerNames ?? ['Provider-Id', 'X-Provider-Id']);
         $this->permission = $permission ?? 'provider:switch';
 
         parent::__construct($priority);
@@ -39,7 +42,7 @@ final class ProviderFromHeaderModifier extends AbstractContextModifier
 
     public function modify(ContextInterface $context, Request $request): void
     {
-        $header = $request->headers->get($this->headerName);
+        $header = $this->getHeaderValue($request);
 
         // If header empty, skip
         if (empty($header)) {
@@ -52,5 +55,18 @@ final class ProviderFromHeaderModifier extends AbstractContextModifier
         }
 
         $context->setProvider($this->providerProvider->getProvider($header));
+    }
+
+    private function getHeaderValue(Request $request): ?string
+    {
+        foreach ($this->headerNames as $headerName) {
+            $header = $request->headers->get($headerName);
+
+            if (empty($header) === false) {
+                return $header;
+            }
+        }
+
+        return null;
     }
 }
