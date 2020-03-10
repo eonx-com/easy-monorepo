@@ -60,7 +60,6 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
         self::assertEquals($groupAdded, $inArray);
     }
 
-
     private function getApiPlatformSerializerContextBuilder(): ApiPlatformSerializerContextBuilder
     {
         /** @var \ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface $metadataFactory */

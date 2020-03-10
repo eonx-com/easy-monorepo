@@ -12,7 +12,8 @@
         "phpspec/prophecy": "~1.0",
         "api-platform/core": "^2.5",
         "doctrine/orm": "^2.6",
-        "mockery/mockery": "^1.2"
+        "mockery/mockery": "^1.2",
+        "symfony/symfony": "^4.2"
     },
     "autoload": {
         "psr-4": {

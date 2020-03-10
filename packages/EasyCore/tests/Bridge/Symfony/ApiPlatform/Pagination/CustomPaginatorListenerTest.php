@@ -66,7 +66,7 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
         $query = new Query($manager);
         $query->setFirstResult(1)->setMaxResults(15);
 
-        /** @var \Doctrine\ORM\Tools\Pagination\Paginator $doctrinePaginator */
+        /** @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator */
         $doctrinePaginator = $this->mock(
             DoctrinePaginator::class,
             static function (MockInterface $mock) use ($query): void {
