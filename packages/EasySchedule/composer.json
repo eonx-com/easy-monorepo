@@ -3,7 +3,7 @@
     "description": "Provides the Command Scheduling logic of Laravel in a Symfony Console application",
     "license": "MIT",
     "require": {
-        "php": "^7.3",
+        "php": "^7.1",
         "nesbot/carbon": "^2.22",
         "dragonmantank/cron-expression": "^2.3",
         "symfony/console": "^4.2",
