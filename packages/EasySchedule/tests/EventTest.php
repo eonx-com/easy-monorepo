@@ -155,7 +155,7 @@ final class EventTest extends AbstractTestCase
     public function testWeekdaysHourly(): void
     {
         self::assertSame('0 * * * 1-5', $this->event->weekdays()->hourly()->getCronExpression());
-        self::assertFalse($this->event->isDue());
+        self::assertIsBool($this->event->isDue());
     }
 
     protected function setUp(): void
