@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyEntityChange\Tests;
 
-use Eonx\TestUtils\TestCases\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -11,6 +11,6 @@ use Eonx\TestUtils\TestCases\UnitTestCase;
  *
  * @coversNothing
  */
-abstract class AbstractTestCase extends UnitTestCase
+abstract class AbstractTestCase extends TestCase
 {
 }
