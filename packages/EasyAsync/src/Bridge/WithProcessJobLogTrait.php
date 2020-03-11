@@ -36,16 +36,25 @@ trait WithProcessJobLogTrait
         return $this->jobLog;
     }
 
+    /**
+     * @required
+     */
     public function setJobLogPersister(JobLogPersisterInterface $jobLogPersister): void
     {
         $this->jobLogPersister = $jobLogPersister;
     }
 
+    /**
+     * @required
+     */
     public function setJobLogUpdater(JobLogUpdaterInterface $jobLogUpdater): void
     {
         $this->jobLogUpdater = $jobLogUpdater;
     }
 
+    /**
+     * @required
+     */
     public function setJogLogFactory(JobLogFactoryInterface $jobLogFactory): void
     {
         $this->jobLogFactory = $jobLogFactory;
