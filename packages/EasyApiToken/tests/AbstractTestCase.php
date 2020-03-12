@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests;
 
+use EonX\EasyPsr7Factory\EasyPsr7Factory;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\ServerRequestFactory;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -19,6 +20,12 @@ abstract class AbstractTestCase extends TestCase
      */
     protected function createServerRequest(?array $server = null, ?array $query = null): ServerRequestInterface
     {
-        return ServerRequestFactory::fromGlobals($server ?? [], $query ?? []);
+        $server = $server ?? [];
+
+        if (empty($server['HTTP_HOST'])) {
+            $server['HTTP_HOST'] = 'eonx.com';
+        }
+
+        return (new EasyPsr7Factory())->createRequest(new Request($query ?? [], [], [], [], [], $server));
     }
 }
