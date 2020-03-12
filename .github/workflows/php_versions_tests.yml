@@ -35,12 +35,12 @@ jobs:
                     coverage: none
 
             -   run: composer install --prefer-dist --no-progress # Install with stable php version
+            -   run: vendor/bin/monorepo-builder localize-composer-paths
 
             -   uses: eonx-com/actions-setup-php@v1
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: none
 
-            -   run: vendor/bin/monorepo-builder localize-composer-paths
             -   run: cd packages/${{ matrix.package }}; composer update --prefer-dist --no-progress
             -   run: cd packages/${{ matrix.package }}; vendor/bin/phpunit tests
