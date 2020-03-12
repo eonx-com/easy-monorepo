@@ -30,9 +30,9 @@ jobs:
             -   uses: eonx-com/actions-checkout@v2
 
             -   uses: eonx-com/actions-setup-php@v1
-                        with:
-                            php-version: 7.3
-                            coverage: none
+                with:
+                    php-version: 7.3
+                    coverage: none
 
             -   run: composer install --prefer-dist --no-progress # Install with stable php version
 
