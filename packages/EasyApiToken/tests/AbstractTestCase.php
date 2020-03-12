@@ -5,6 +5,7 @@ namespace EonX\EasyApiToken\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Zend\Diactoros\ServerRequestFactory;
 
 /**
@@ -20,5 +21,17 @@ abstract class AbstractTestCase extends TestCase
     protected function createServerRequest(?array $server = null, ?array $query = null): ServerRequestInterface
     {
         return ServerRequestFactory::fromGlobals($server ?? [], $query ?? []);
+    }
+
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
     }
 }
