@@ -12,17 +12,14 @@ jobs:
                 package: # Contains only package not requiring eonoepay externals package
                     - EasyApiToken
                     - EasyAsync
-                    - EasyCfhighlander
                     - EasyCore
                     - EasyDecision
-                    - EasyDocker
                     - EasyIdentity
                     - EasyPagination
                     - EasyPipeline
                     - EasyPsr7Factory
                     - EasyRepository
                     - EasySecurity
-                    - EasyTest
 
         name: ${{ matrix.package }} - PHP${{ matrix.php }}
 

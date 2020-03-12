@@ -6,6 +6,7 @@ namespace EonX\EasySecurity\Modifiers;
 use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
 use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 use EonX\EasySecurity\Interfaces\ContextModifierInterface;
+use Nette\Utils\Json;
 use stdClass;
 
 abstract class AbstractContextModifier implements ContextModifierInterface
@@ -29,6 +30,8 @@ abstract class AbstractContextModifier implements ContextModifierInterface
      * @param null|mixed $default
      *
      * @return null|mixed
+     *
+     * @throws \Nette\Utils\JsonException
      */
     protected function getClaimSafely(JwtEasyApiTokenInterface $token, string $claim, $default = null)
     {
@@ -36,7 +39,7 @@ abstract class AbstractContextModifier implements ContextModifierInterface
             $claim = $token->getClaim($claim);
 
             if ($claim instanceof stdClass) {
-                $claim = \json_decode(\json_encode($claim, \JSON_THROW_ON_ERROR), true, \JSON_THROW_ON_ERROR);
+                $claim = Json::decode(Json::encode($claim), Json::FORCE_ARRAY);
             }
 
             return $claim;
