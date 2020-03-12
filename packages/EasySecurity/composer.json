@@ -4,12 +4,13 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "nette/utils": "^3.1"
     },
     "require-dev": {
         "eonx-com/easy-api-token": "^2.4",
         "eonx-com/easy-psr7-factory": "^2.4",
-        "phpunit/phpunit": "^8.4",
+        "phpunit/phpunit": "^7.5 || ^8.4",
         "symfony/symfony": "^4.2"
     },
     "autoload": {
