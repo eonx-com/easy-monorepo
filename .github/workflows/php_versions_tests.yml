@@ -8,9 +8,23 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ '7.1', '7.2', '7.3' ]
+                php: [ '7.1', '7.2', '7.4' ] # 7.3 already done in split_tests
+                package: # Contains only package not requiring eonoepay externals package
+                    - EasyApiToken
+                    - EasyAsync
+                    - EasyCfhighlander
+                    - EasyCore
+                    - EasyDecision
+                    - EasyDocker
+                    - EasyIdentity
+                    - EasyPagination
+                    - EasyPipeline
+                    - EasyPsr7Factory
+                    - EasyRepository
+                    - EasySecurity
+                    - EasyTest
 
-        name: Tests For PHP${{ matrix.php }}
+        name: ${{ matrix.package }} - PHP${{ matrix.php }}
 
         steps:
             -   uses: eonx-com/actions-checkout@v2
@@ -21,5 +35,6 @@ jobs:
                     coverage: none
 
             -   run: composer install --prefer-dist --no-progress
-
-            -   run: composer check-tests
+            -   run: vendor/bin/monorepo-builder localize-composer-paths
+            -   run: cd packages/${{ matrix.package }}; composer update --prefer-dist --no-progress
+            -   run: cd packages/${{ matrix.package }}; vendor/bin/phpunit tests
