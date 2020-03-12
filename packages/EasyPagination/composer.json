@@ -8,7 +8,7 @@
     },
     "require-dev": {
         "eonx-com/easy-psr7-factory": "^2.4",
-        "phpunit/phpunit": "^8.4",
+        "phpunit/phpunit": "^7.5 || ^8.4",
         "laravel/lumen-framework": "^5.5",
         "vlucas/phpdotenv": "^3.3"
     },
