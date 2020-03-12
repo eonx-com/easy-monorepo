@@ -9,8 +9,6 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyApiTokenServiceProvider extends ServiceProvider
 {
-    // What's a service provider....!? @ttam
-
     public function boot(): void
     {
         $this->publishes([
