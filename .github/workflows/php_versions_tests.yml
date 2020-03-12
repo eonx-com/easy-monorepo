@@ -30,11 +30,17 @@ jobs:
             -   uses: eonx-com/actions-checkout@v2
 
             -   uses: eonx-com/actions-setup-php@v1
+                        with:
+                            php-version: 7.3
+                            coverage: none
+
+            -   run: composer install --prefer-dist --no-progress # Install with stable php version
+
+            -   uses: eonx-com/actions-setup-php@v1
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: none
 
-            -   run: composer install --prefer-dist --no-progress
             -   run: vendor/bin/monorepo-builder localize-composer-paths
             -   run: cd packages/${{ matrix.package }}; composer update --prefer-dist --no-progress
             -   run: cd packages/${{ matrix.package }}; vendor/bin/phpunit tests
