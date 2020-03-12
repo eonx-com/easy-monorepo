@@ -14,7 +14,7 @@
         "nesbot/carbon": "^2.22",
         "dragonmantank/cron-expression": "^2.3",
         "ext-json": "*",
-        "php": "^7.1",
+        "php": "^7.1 || ^8.0",
         "psr/event-dispatcher": "^1.0",
         "ramsey/uuid": "^3.9",
         "symfony/console": "^4.2",
