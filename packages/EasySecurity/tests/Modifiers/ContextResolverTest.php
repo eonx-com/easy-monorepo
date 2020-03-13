@@ -50,7 +50,7 @@ final class ContextResolverTest extends AbstractTestCase
         );
 
         self::assertInstanceOf(ContextInterface::class, $resolver->resolve(
-            new Request([], [], [], [], [], ['HTTP_HOST' => 'google.com'])
+            new Request([], [], [], [], [], ['HTTP_HOST' => 'eonx.com'])
         ));
     }
 }
