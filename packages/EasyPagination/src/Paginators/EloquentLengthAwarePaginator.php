@@ -87,7 +87,7 @@ class EloquentLengthAwarePaginator extends AbstractTransformableLengthAwarePagin
             \call_user_func($this->getItemsCriteria, $queryBuilder);
         }
 
-        $queryBuilder->forPage(($this->start - 1) * $this->size, $this->size);
+        $queryBuilder->forPage($this->start, $this->size);
 
         return \iterator_to_array($queryBuilder->get($this->getSelect())->getIterator());
     }
