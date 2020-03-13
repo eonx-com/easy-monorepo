@@ -7,6 +7,7 @@ use EonX\EasyPsr7Factory\EasyPsr7Factory;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -27,5 +28,17 @@ abstract class AbstractTestCase extends TestCase
         }
 
         return (new EasyPsr7Factory())->createRequest(new Request($query ?? [], [], [], [], [], $server));
+    }
+
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
     }
 }
