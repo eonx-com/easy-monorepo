@@ -6,8 +6,8 @@ namespace EonX\EasyApiToken\Tests;
 use EonX\EasyPsr7Factory\EasyPsr7Factory;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
