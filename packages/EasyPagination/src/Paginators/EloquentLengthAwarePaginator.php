@@ -49,7 +49,7 @@ class EloquentLengthAwarePaginator extends AbstractTransformableLengthAwarePagin
             return $this->count;
         }
 
-        return $this->createQueryBuilder()->count(\implode(',', $this->getSelect()));
+        return $this->count = $this->createQueryBuilder()->count(\implode(',', $this->getSelect()));
     }
 
     public function setCriteria(?callable $criteria = null): self
