@@ -33,7 +33,7 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
         $expected = [
             'key' => 'value',
             'subClaim' => [
-                'key1' => 'value1'
+                'key1' => 'value1',
             ],
         ];
 
