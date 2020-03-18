@@ -34,7 +34,7 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
             'key' => 'value',
             'subClaim' => [
                 'key1' => 'value1'
-            ]
+            ],
         ];
 
         self::assertEquals($expected, $token->getClaimForceArray('claim'));
