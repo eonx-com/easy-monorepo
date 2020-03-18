@@ -5,6 +5,8 @@ namespace EonX\EasyApiToken\Tokens;
 
 use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
 use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
+use Nette\Utils\Json;
+use stdClass;
 
 final class JwtEasyApiToken implements JwtEasyApiTokenInterface
 {
@@ -39,6 +41,25 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
         }
 
         throw new InvalidArgumentException(\sprintf('In "%s", claim "%s" not found', static::class, $claim));
+    }
+
+    /**
+     * Will convert stdClass to array.
+     *
+     * @return mixed
+     *
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \Nette\Utils\JsonException
+     */
+    public function getClaimForceArray(string $claim)
+    {
+        $claim = $this->getClaim($claim);
+
+        if ($claim instanceof stdClass) {
+            $claim = Json::decode(Json::encode($claim), Json::FORCE_ARRAY);
+        }
+
+        return $claim;
     }
 
     public function getOriginalToken(): string

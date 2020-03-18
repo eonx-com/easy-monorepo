@@ -14,5 +14,12 @@ interface JwtEasyApiTokenInterface extends EasyApiTokenInterface
      */
     public function getClaim(string $claim);
 
+    /**
+     * Will convert stdClass to array.
+     *
+     * @return mixed
+     */
+    public function getClaimForceArray(string $claim);
+
     public function hasClaim(string $claim): bool;
 }

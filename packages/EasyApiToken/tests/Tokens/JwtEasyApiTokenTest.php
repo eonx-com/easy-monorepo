@@ -9,13 +9,35 @@ use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
 final class JwtEasyApiTokenTest extends AbstractTestCase
 {
-    public function getPayloadSuccessfully(): void
+    public function testGetClaimForceArraySuccessfully(): void
     {
-        $payload = ['claim' => 'claim'];
-        $token = new JwtEasyApiToken($payload, 'original');
+        $claim = new \stdClass();
+        $token = new JwtEasyApiToken(['claim' => $claim], 'original');
 
-        self::assertEquals($payload, $token->getPayload());
-        self::assertEquals('original', $token->getOriginalToken());
+        self::assertEquals($claim, $token->getClaim('claim'));
+        self::assertEquals([], $token->getClaimForceArray('claim'));
+    }
+
+    public function testGetClaimForceArrayWithProperties(): void
+    {
+        $claim = new \stdClass();
+        $claim->key = 'value';
+
+        $subClaim = new \stdClass();
+        $subClaim->key1 = 'value1';
+
+        $claim->subClaim = $subClaim;
+
+        $token = new JwtEasyApiToken(['claim' => $claim], 'original');
+
+        $expected = [
+            'key' => 'value',
+            'subClaim' => [
+                'key1' => 'value1',
+            ],
+        ];
+
+        self::assertEquals($expected, $token->getClaimForceArray('claim'));
     }
 
     public function testGetClaimSuccessfully(): void
@@ -23,6 +45,15 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
         $token = new JwtEasyApiToken(['claim' => 'claim'], 'original');
 
         self::assertEquals('claim', $token->getClaim('claim'));
+    }
+
+    public function testGetPayloadSuccessfully(): void
+    {
+        $payload = ['claim' => 'claim'];
+        $token = new JwtEasyApiToken($payload, 'original');
+
+        self::assertEquals($payload, $token->getPayload());
+        self::assertEquals('original', $token->getOriginalToken());
     }
 
     public function testHasClaimSuccessfully(): void
