@@ -55,7 +55,7 @@
         "symplify/easy-coding-standard": "^7.2",
         "symplify/phpstan-extensions": "^7.2",
         "slevomat/coding-standard": "^6.1",
-        "symplify/easy-coding-standard-tester": "^6.1 || ^7.2"
+        "symplify/easy-coding-standard-tester": "^7.2"
     },
     "autoload": {
         "psr-4": {
