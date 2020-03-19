@@ -59,8 +59,12 @@ parameters:
             - 'packages/EasySchedule/src/Schedule.php'
 
 services:
-    NatePage\Sniffs\Classes\StrictDeclarationFormatSniff:
-    NatePage\Sniffs\ControlStructures\NoElseSniff:
-    NatePage\Sniffs\ControlStructures\NoNotOperatorSniff:
-    NatePage\Sniffs\ControlStructures\YodaConditionSniff:
-    NatePage\Sniffs\Namespaces\PSR4Sniff:
+    PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff: ~
+    PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer:
+        equal: false
+        identical: false
+        less_and_greater: false
+
+    EonX\EasyStandards\Sniffs\ControlStructures\NoElseSniff: ~
+    EonX\EasyStandards\Sniffs\ControlStructures\NoNotOperatorSniff: ~
+    EonX\EasyStandards\Sniffs\Namespaces\Psr4Sniff: ~
