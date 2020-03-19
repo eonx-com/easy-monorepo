@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Sniffs\Namespaces;
@@ -58,7 +59,7 @@ final class Psr4Sniff implements Sniff
             return;
         }
 
-        $this->addError($stackPtr);
+        $this->addError((int)$stackPtr);
     }
 
     /**
@@ -69,18 +70,11 @@ final class Psr4Sniff implements Sniff
         return [\T_CLASS, \T_INTERFACE, \T_TRAIT];
     }
 
-    /**
-     * Add error for namespace violation.
-     *
-     * @param int $openPointer
-     *
-     * @return void
-     */
     private function addError(int $openPointer): void
     {
         if ($this->code === self::CODE_NO_COMPOSER_AUTOLOAD_DEFINED) {
             $message = \sprintf('No autoload entries found in %s.', $this->composerJsonPath);
-            $this->phpcsFile->addError($message, $this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
+            $this->phpcsFile->addError($message, (int)$this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
 
             return;
         }
@@ -90,7 +84,7 @@ final class Psr4Sniff implements Sniff
             NamespaceHelper::findCurrentNamespaceName($this->phpcsFile, $openPointer)
         );
 
-        $this->phpcsFile->addError($message, $this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
+        $this->phpcsFile->addError($message, (int)$this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
     }
 
     /**
@@ -106,12 +100,12 @@ final class Psr4Sniff implements Sniff
 
         $composerFile = $basePath . $this->composerJsonPath;
 
-        return self::$composerContents = \json_decode(\file_get_contents($composerFile), true);
+        return self::$composerContents = \json_decode((string)\file_get_contents($composerFile), true);
     }
 
     private function isPsr4Compliant(string $classFqn, ?bool $isDev = null): bool
     {
-        $psr4s = $this->getComposerContents()[\sprintf('autoload%s', ($isDev === true) ? '-dev' : '')]['psr-4'] ?? [];
+        $psr4s = $this->getComposerContents()[\sprintf('autoload%s', $isDev === true ? '-dev' : '')]['psr-4'] ?? [];
 
         if (empty($psr4s) === true) {
             $this->code = self::CODE_NO_COMPOSER_AUTOLOAD_DEFINED;
