@@ -20,6 +20,7 @@ jobs:
                     - EasyPsr7Factory
                     - EasyRepository
                     - EasySecurity
+                    - EasyStandard
 
         name: ${{ matrix.package }} - PHP${{ matrix.php }}
 
