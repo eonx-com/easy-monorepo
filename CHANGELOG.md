@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.3.4 - 2020-03-19
+## v2.3.5 - 2020-03-19
+
+### EasyStandard
+
+- [#171] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.4] - 2020-03-19
 
 ### EasyPagination
 
@@ -1304,3 +1314,5 @@
 [@whitesource-bolt-for-github]: https://github.com/whitesource-bolt-for-github
 [#169]: https://github.com/eonx-com/easy-monorepo/pull/169
 [v2.3.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.2...v2.3.3
+[#171]: https://github.com/eonx-com/easy-monorepo/pull/171
+[v2.3.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.3...v2.3.4
