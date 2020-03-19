@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests;
 
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
+use EonX\EasyPsr7Factory\EasyPsr7Factory;
 use Laravel\Lumen\Application;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 use Zend\Diactoros\ServerRequestFactory;
 
 /**
@@ -45,7 +47,9 @@ abstract class AbstractTestCase extends TestCase
      */
     protected function createServerRequest(?array $query = null): ServerRequestInterface
     {
-        return ServerRequestFactory::fromGlobals(null, $query);
+        $server = ['HTTP_HOST' => 'eonx.com'];
+        
+        return (new EasyPsr7Factory())->createRequest(new Request($query ?? [], [], [], [], [], $server));
     }
 
     protected function getApplication(): Application
