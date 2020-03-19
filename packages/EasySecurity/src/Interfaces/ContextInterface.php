@@ -8,11 +8,6 @@ use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
 interface ContextInterface
 {
     /**
-     * @var string
-     */
-    public const JWT_MANAGE_CLAIM = 'https://eonx.com/user';
-
-    /**
      * @param string|string[]|\EonX\EasySecurity\Interfaces\PermissionInterface|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
      */
     public function addPermissions($permissions): void;
