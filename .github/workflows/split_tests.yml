@@ -24,6 +24,7 @@ jobs:
                     - EasyPsr7Factory
                     - EasyRepository
                     - EasySecurity
+                    - EasyStandard
                     - EasyTest
 
         name: ${{ matrix.package }}

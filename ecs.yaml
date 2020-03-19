@@ -39,6 +39,9 @@ parameters:
             - 'packages/EasyAsync/src/Helpers/PropertyHelper.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
             - 'packages/EasyCore/tests/Stubs/LockStub.php'
+            - 'packages/EasyStandard/src/Sniffs/ControlStructures/NoElseSniff.php'
+            - 'packages/EasyStandard/src/Sniffs/ControlStructures/NoNotOperatorSniff.php'
+            - 'packages/EasyStandard/src/Sniffs/Namespaces/Psr4Sniff.php'
         SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.UselessAnnotation:
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
@@ -47,6 +50,9 @@ parameters:
             - 'packages/EasyAsync/src/Helpers/PropertyHelper.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
             - 'packages/EasyCore/tests/Stubs/LockStub.php'
+            - 'packages/EasyStandard/src/Sniffs/ControlStructures/NoElseSniff.php'
+            - 'packages/EasyStandard/src/Sniffs/ControlStructures/NoNotOperatorSniff.php'
+            - 'packages/EasyStandard/src/Sniffs/Namespaces/Psr4Sniff.php'
         SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.MissingNativeTypeHint:
             - 'packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php'
             - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
@@ -59,8 +65,12 @@ parameters:
             - 'packages/EasySchedule/src/Schedule.php'
 
 services:
-    NatePage\Sniffs\Classes\StrictDeclarationFormatSniff:
-    NatePage\Sniffs\ControlStructures\NoElseSniff:
-    NatePage\Sniffs\ControlStructures\NoNotOperatorSniff:
-    NatePage\Sniffs\ControlStructures\YodaConditionSniff:
-    NatePage\Sniffs\Namespaces\PSR4Sniff:
+    PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff: ~
+    PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer:
+        equal: false
+        identical: false
+        less_and_greater: false
+
+    EonX\EasyStandard\Sniffs\ControlStructures\NoElseSniff: ~
+    EonX\EasyStandard\Sniffs\ControlStructures\NoNotOperatorSniff: ~
+    EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff: ~
