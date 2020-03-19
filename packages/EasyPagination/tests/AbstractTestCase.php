@@ -7,6 +7,7 @@ use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
 use Laravel\Lumen\Application;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Zend\Diactoros\ServerRequestFactory;
 
 /**
@@ -58,5 +59,17 @@ abstract class AbstractTestCase extends TestCase
         $app->instance(ServerRequestInterface::class, $this->createServerRequest());
 
         return $app;
+    }
+
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
     }
 }

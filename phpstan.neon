@@ -98,6 +98,12 @@ parameters:
         - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\)#'
           path: packages/EasyPagination/tests
 
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyPagination/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
+        - message: '#Parameter \#1 \$request of method EonX\\EasyPsr7Factory\\Interfaces\\EasyPsr7FactoryInterface\:\:createRequest\(\) expects Symfony\\Component\\HttpFoundation\\Request, Symfony\\Component\\HttpFoundation\\Request\|null given#'
+          path: packages/EasyPagination/src/Bridge/Symfony/Factories/ServerRequestFactory.php
+
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\Doctrine(Dbal|Orm)LengthAwarePaginator::doGet(TotalItems|Result)\(\) expects Doctrine\\(ORM|DBAL\\Query)\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given.#'
         - '#Method EonX\\EasyPagination\\Paginators\\Doctrine(Dbal|Orm)LengthAwarePaginator::createQueryBuilder\(\) never returns Doctrine\\(ORM|DBAL\\Query)\\QueryBuilder so it can be removed from the return typehint.#'
         - '#Parameter \#2 \$alias of method Doctrine\\ORM\\QueryBuilder\:\:from\(\) expects string, string\|null given#'

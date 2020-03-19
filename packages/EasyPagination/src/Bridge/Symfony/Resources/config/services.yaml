@@ -1,0 +1,36 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Request / ServerRequest
+    EonX\EasyPagination\Bridge\Symfony\Factories\ServerRequestFactory: ~
+
+    easy_pagination.server_request:
+        class: Psr\Http\Message\ServerRequestInterface
+        factory: '@EonX\EasyPagination\Bridge\Symfony\Factories\ServerRequestFactory'
+
+    # Config
+    EonX\EasyPagination\Bridge\Symfony\Factories\StartSizeConfigFactory:
+        arguments:
+            $config: '%easy_pagination.start_size_config%'
+
+    EonX\EasyPagination\Interfaces\StartSizeConfigInterface:
+        class: EonX\EasyPagination\Resolvers\Config\StartSizeConfig
+        factory: '@EonX\EasyPagination\Bridge\Symfony\Factories\StartSizeConfigFactory'
+
+    # Data
+    EonX\EasyPagination\Bridge\Symfony\Factories\StartSizeDataFactory:
+        arguments:
+            $request: '@easy_pagination.server_request'
+
+    EonX\EasyPagination\Interfaces\StartSizeDataInterface:
+        class: EonX\EasyPagination\Data\StartSizeData
+        factory: '@EonX\EasyPagination\Bridge\Symfony\Factories\StartSizeDataFactory'
+
+    # Resolvers
+    EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver:
+        arguments:
+            $queryAttr: '%easy_pagination.array_in_query_attr%'
+
+    EonX\EasyPagination\Resolvers\StartSizeInQueryResolver: ~
