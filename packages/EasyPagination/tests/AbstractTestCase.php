@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
-use Zend\Diactoros\ServerRequestFactory;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
