@@ -2,7 +2,44 @@
 
 <!-- dumped content start -->
 
-## v2.3.2 - 2020-03-10
+## v2.3.3 - 2020-03-19
+
+- [#164] Configure WhiteSource Bolt for GitHub, Thanks to [@whitesource-bolt-for-github][bot]
+- [#159] Make sure main packages are running on PHP7.1 to 7.4
+
+### EasyApiToken
+
+- [#166] Implement getClaimForceArray on JwtEasyApiToken
+
+### EasyAsync
+
+- [#157] Implement messenger middleware for process job log
+
+### EasyCore
+
+- [#158] Implement messenger middleware for process with lock
+
+### EasySecurity
+
+- [#167] Make claim a config instead of constant
+
+### EasyApiToken
+
+- [#163] Remove deprecated code
+
+### EasyPsr7Factory
+
+- [#160] Remove deprecated code
+
+### Unknown Package
+
+- [#161] Remove var directory created by Symfony during tests
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.2] - 2020-03-10
 
 - [#151] Update coding standards
 
@@ -1244,3 +1281,14 @@
 [#147]: https://github.com/eonx-com/easy-monorepo/pull/147
 [v2.3.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.0...v2.3.1
 [@dextercampos]: https://github.com/dextercampos
+[#167]: https://github.com/eonx-com/easy-monorepo/pull/167
+[#166]: https://github.com/eonx-com/easy-monorepo/pull/166
+[#164]: https://github.com/eonx-com/easy-monorepo/pull/164
+[#163]: https://github.com/eonx-com/easy-monorepo/pull/163
+[#161]: https://github.com/eonx-com/easy-monorepo/pull/161
+[#160]: https://github.com/eonx-com/easy-monorepo/pull/160
+[#159]: https://github.com/eonx-com/easy-monorepo/pull/159
+[#158]: https://github.com/eonx-com/easy-monorepo/pull/158
+[#157]: https://github.com/eonx-com/easy-monorepo/pull/157
+[v2.3.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.1...v2.3.2
+[@whitesource-bolt-for-github]: https://github.com/whitesource-bolt-for-github
