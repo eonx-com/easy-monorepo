@@ -10,7 +10,8 @@
         "eonx-com/easy-psr7-factory": "^2.4",
         "phpunit/phpunit": "^7.5 || ^8.4",
         "laravel/lumen-framework": "^5.5",
-        "vlucas/phpdotenv": "^3.3"
+        "vlucas/phpdotenv": "^3.3",
+        "symfony/symfony": "^4.2"
     },
     "autoload": {
         "psr-4": {
