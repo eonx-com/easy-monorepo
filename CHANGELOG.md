@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.3.3 - 2020-03-19
+## v2.3.4 - 2020-03-19
+
+### EasyPagination
+
+- [#169] Create Symfony bridge
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.3] - 2020-03-19
 
 - [#164] Configure WhiteSource Bolt for GitHub, Thanks to [@whitesource-bolt-for-github][bot]
 - [#159] Make sure main packages are running on PHP7.1 to 7.4
@@ -1292,3 +1302,5 @@
 [#157]: https://github.com/eonx-com/easy-monorepo/pull/157
 [v2.3.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.1...v2.3.2
 [@whitesource-bolt-for-github]: https://github.com/whitesource-bolt-for-github
+[#169]: https://github.com/eonx-com/easy-monorepo/pull/169
+[v2.3.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.2...v2.3.3
