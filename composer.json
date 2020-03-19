@@ -50,7 +50,6 @@
         "vlucas/phpdotenv": "^3.3",
         "symplify/monorepo-builder": "^7.2",
         "symplify/changelog-linker": "^7.2",
-        "natepage/sniffs": "^1.1",
         "sensiolabs/security-checker": "^5.0",
         "symplify/easy-coding-standard": "^7.2",
         "symplify/phpstan-extensions": "^7.2",
