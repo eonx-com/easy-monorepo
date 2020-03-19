@@ -58,7 +58,7 @@ final class UserFromJwtModifierTest extends AbstractTestCase
 
         $context->setToken(new JwtEasyApiToken([
             'sub' => 'user-id',
-            ContextInterface::JWT_MANAGE_CLAIM => new stdClass(), // To cover getClaimSafely
+            static::$mainJwtClaim => new stdClass(), // To cover getClaimSafely
         ], 'jwt'));
 
         yield 'User resolved' => [
@@ -77,7 +77,7 @@ final class UserFromJwtModifierTest extends AbstractTestCase
         ?UserInterface $user = null
     ): void {
         $context = $context ?? new Context();
-        $modifier = new UserFromJwtModifier($userProvider);
+        $modifier = new UserFromJwtModifier($userProvider, static::$mainJwtClaim);
 
         $modifier->modify($context, new Request());
 
