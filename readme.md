@@ -20,6 +20,7 @@
 - [EasyPsr7Factory](https://github.com/eonx-com/easy-psr7-factory): An easy way to create PSR7 Request/Response from Symfony Request/Response.
 - [EasySchedule](https://github.com/eonx-com/easy-schedule): Provides the Command Scheduling logic of Laravel in a Symfony Console application.
 - [EasySecurity](https://github.com/eonx-com/easy-security): Provides security features to be generic across applications.
+- [EasyStandard](https://github.com/eonx-com/easy-standard): Centralised source of coding standard classes.
 - [EasyTest](https://github.com/eonx-com/easy-test): Makes testing easier.
 
 ## Documentation

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use EonX\EasyCore\Bridge\Laravel\Providers\CachedConfigServiceProvider;
