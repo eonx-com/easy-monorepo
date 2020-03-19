@@ -5,21 +5,26 @@ namespace EonX\EasySecurity\Modifiers;
 
 use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
+use EonX\EasySecurity\Interfaces\JwtClaimFetcherInterface;
 use EonX\EasySecurity\Interfaces\ProviderProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class ProviderFromJwtModifier extends AbstractContextModifier
+final class ProviderFromJwtModifier extends AbstractFromJwtContextModifier
 {
     /**
      * @var \EonX\EasySecurity\Interfaces\ProviderProviderInterface
      */
     private $providerProvider;
 
-    public function __construct(ProviderProviderInterface $providerProvider, ?int $priority = null)
-    {
+    public function __construct(
+        ProviderProviderInterface $providerProvider,
+        ?string $jwtClaim = null,
+        ?int $priority = null,
+        ?JwtClaimFetcherInterface $jwtClaimFetcher = null
+    ) {
         $this->providerProvider = $providerProvider;
 
-        parent::__construct($priority);
+        parent::__construct($jwtClaim, $priority, $jwtClaimFetcher);
     }
 
     public function modify(ContextInterface $context, Request $request): void
@@ -33,8 +38,7 @@ final class ProviderFromJwtModifier extends AbstractContextModifier
 
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
 
-        $user = $this->getClaimSafely($token, ContextInterface::JWT_MANAGE_CLAIM, []);
-        $providerId = $user['provider'] ?? null;
+        $providerId = $this->getMainClaim($token)['provider'] ?? null;
 
         // If no providerId given in token, skip
         if (empty($providerId)) {

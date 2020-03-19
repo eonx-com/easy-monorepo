@@ -29,8 +29,8 @@ final class ContextResolverTest extends AbstractTestCase
 
         yield 'Resolve successfully' => [
             [
-                new RolesFromJwtModifier(new InMemoryRolesProviderStub()),
-                new ProviderFromJwtModifier(new ProviderProviderInterfaceStub()),
+                new RolesFromJwtModifier(new InMemoryRolesProviderStub(), static::$mainJwtClaim),
+                new ProviderFromJwtModifier(new ProviderProviderInterfaceStub(), static::$mainJwtClaim),
             ],
         ];
     }
