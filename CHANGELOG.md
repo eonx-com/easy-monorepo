@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.3.5 - 2020-03-19
+## v2.3.6 - 2020-03-20
+
+### EasyStandard
+
+- [#172] Add missing sniffs from natepage/sniffs
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.5] - 2020-03-19
 
 ### EasyStandard
 
@@ -1316,3 +1326,5 @@
 [v2.3.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.2...v2.3.3
 [#171]: https://github.com/eonx-com/easy-monorepo/pull/171
 [v2.3.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.3...v2.3.4
+[#172]: https://github.com/eonx-com/easy-monorepo/pull/172
+[v2.3.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.4...v2.3.5
