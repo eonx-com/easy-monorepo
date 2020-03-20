@@ -39,9 +39,7 @@ parameters:
             - 'packages/EasyAsync/src/Helpers/PropertyHelper.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
             - 'packages/EasyCore/tests/Stubs/LockStub.php'
-            - 'packages/EasyStandard/src/Sniffs/ControlStructures/NoElseSniff.php'
-            - 'packages/EasyStandard/src/Sniffs/ControlStructures/NoNotOperatorSniff.php'
-            - 'packages/EasyStandard/src/Sniffs/Namespaces/Psr4Sniff.php'
+            - 'packages/EasyStandard/src/Sniffs/*'
         SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.UselessAnnotation:
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
@@ -50,9 +48,7 @@ parameters:
             - 'packages/EasyAsync/src/Helpers/PropertyHelper.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php'
             - 'packages/EasyCore/tests/Stubs/LockStub.php'
-            - 'packages/EasyStandard/src/Sniffs/ControlStructures/NoElseSniff.php'
-            - 'packages/EasyStandard/src/Sniffs/ControlStructures/NoNotOperatorSniff.php'
-            - 'packages/EasyStandard/src/Sniffs/Namespaces/Psr4Sniff.php'
+            - 'packages/EasyStandard/src/Sniffs/*'
         SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.MissingNativeTypeHint:
             - 'packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php'
             - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'

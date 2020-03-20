@@ -14,7 +14,7 @@ final class NoNotOperatorSniffTest extends AbstractCheckerTestCase
      */
     public function providerTestSniff(): iterable
     {
-        yield [__DIR__ . '/../fixtures/NoNotOperatorSniffTest.php.inc'];
+        yield [__DIR__ . '/../../fixtures/Sniffs/ControlStructures/NoNotOperatorSniffTest.php.inc'];
     }
 
     /**
