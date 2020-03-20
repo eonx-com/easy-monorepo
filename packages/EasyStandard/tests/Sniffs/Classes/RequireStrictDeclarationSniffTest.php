@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyStandard\Tests\Sniffs\Namespaces;
+namespace EonX\EasyStandard\Tests\Sniffs\Classes;
 
-use EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff;
+use EonX\EasyStandard\Sniffs\Classes\RequireStrictDeclarationSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 
-final class Psr4SniffTest extends AbstractCheckerTestCase
+final class RequireStrictDeclarationSniffTest extends AbstractCheckerTestCase
 {
     /**
      * @return iterable<mixed>
      */
     public function providerTestSniff(): iterable
     {
-        yield [__DIR__ . '/../../fixtures/Sniffs/Namespaces/Psr4SniffTest.php.inc'];
+        yield [__DIR__ . '/../../fixtures/Sniffs/Classes/RequireStrictDeclarationSniffTest.php.inc'];
     }
 
     /**
@@ -27,6 +27,6 @@ final class Psr4SniffTest extends AbstractCheckerTestCase
 
     protected function getCheckerClass(): string
     {
-        return Psr4Sniff::class;
+        return RequireStrictDeclarationSniff::class;
     }
 }
