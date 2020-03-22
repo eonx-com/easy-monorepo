@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs;

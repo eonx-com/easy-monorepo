@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Modifiers;
@@ -29,8 +30,8 @@ final class ContextResolverTest extends AbstractTestCase
 
         yield 'Resolve successfully' => [
             [
-                new RolesFromJwtModifier(new InMemoryRolesProviderStub()),
-                new ProviderFromJwtModifier(new ProviderProviderInterfaceStub()),
+                new RolesFromJwtModifier(new InMemoryRolesProviderStub(), static::$mainJwtClaim),
+                new ProviderFromJwtModifier(new ProviderProviderInterfaceStub(), static::$mainJwtClaim),
             ],
         ];
     }
@@ -50,7 +51,7 @@ final class ContextResolverTest extends AbstractTestCase
         );
 
         self::assertInstanceOf(ContextInterface::class, $resolver->resolve(
-            new Request([], [], [], [], [], ['HTTP_HOST' => 'google.com'])
+            new Request([], [], [], [], [], ['HTTP_HOST' => 'eonx.com'])
         ));
     }
 }

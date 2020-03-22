@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests;
@@ -12,6 +13,11 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    /**
+     * @var string
+     */
+    protected static $mainJwtClaim = 'https://eonx.com/user';
+
     protected function tearDown(): void
     {
         $fs = new Filesystem();
