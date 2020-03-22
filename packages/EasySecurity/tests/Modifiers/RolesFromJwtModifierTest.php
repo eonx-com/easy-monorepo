@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Modifiers;
@@ -41,7 +42,7 @@ final class RolesFromJwtModifierTest extends AbstractTestCase
         ];
 
         $context->setToken(new JwtEasyApiToken([
-            ContextInterface::JWT_MANAGE_CLAIM => ['roles' => ['app:role']],
+            static::$mainJwtClaim => ['roles' => ['app:role']],
         ], 'jwt'));
 
         yield 'No role resolved because provider return empty array' => [
@@ -50,7 +51,7 @@ final class RolesFromJwtModifierTest extends AbstractTestCase
         ];
 
         $context->setToken(new JwtEasyApiToken([
-            ContextInterface::JWT_MANAGE_CLAIM => ['roles' => ['app:role']],
+            static::$mainJwtClaim => ['roles' => ['app:role']],
         ], 'jwt'));
 
         yield 'Roles resolved' => [
@@ -72,7 +73,7 @@ final class RolesFromJwtModifierTest extends AbstractTestCase
     ): void {
         $context = $context ?? new Context();
 
-        (new RolesFromJwtModifier($rolesProvider))->modify($context, new Request());
+        (new RolesFromJwtModifier($rolesProvider, static::$mainJwtClaim))->modify($context, new Request());
 
         self::assertEquals($roles ?? [], $context->getRoles());
     }

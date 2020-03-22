@@ -50,10 +50,11 @@
         "vlucas/phpdotenv": "^3.3",
         "symplify/monorepo-builder": "^7.2",
         "symplify/changelog-linker": "^7.2",
-        "natepage/sniffs": "^1.1",
         "sensiolabs/security-checker": "^5.0",
         "symplify/easy-coding-standard": "^7.2",
-        "symplify/phpstan-extensions": "^7.2"
+        "symplify/phpstan-extensions": "^7.2",
+        "slevomat/coding-standard": "^6.1",
+        "symplify/easy-coding-standard-tester": "^7.2"
     },
     "autoload": {
         "psr-4": {
@@ -72,6 +73,7 @@
             "EonX\\EasyRepository\\": "packages/EasyRepository/src",
             "EonX\\EasySecurity\\": "packages/EasySecurity/src",
             "EonX\\EasySchedule\\": "packages/EasySchedule/src",
+            "EonX\\EasyStandard\\": "packages/EasyStandard/src",
             "EonX\\EasyTest\\": "packages/EasyTest/src"
         }
     },
@@ -92,6 +94,7 @@
             "EonX\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
             "EonX\\EasySchedule\\Tests\\": "packages/EasySchedule/tests",
+            "EonX\\EasyStandard\\Tests\\": "packages/EasyStandard/tests",
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests"
         }
     },
@@ -111,6 +114,7 @@
         "eonx-com/easy-security": "self.version",
         "eonx-com/easy-test": "self.version",
         "eonx-com/easy-schedule": "self.version",
+        "eonx-com/easy-standard": "self.version",
         "eonx-com/easy-async": "self.version"
     },
     "scripts": {
@@ -120,7 +124,7 @@
             "@check-security",
             "@check-tests"
         ],
-        "check-ecs": "vendor/bin/ecs check packages",
+        "check-ecs": "vendor/bin/ecs check packages --clear-cache",
         "check-monorepo": [
             "@composer validate --strict",
             "@validate-repo"

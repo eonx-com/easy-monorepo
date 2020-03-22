@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyPsr7Factory\Tests;
@@ -15,7 +16,7 @@ class EasyPsr7FactoryTest extends AbstractTestCase
     {
         $psr7Factory = $this->getFactory();
 
-        $uri = 'google.com';
+        $uri = 'eonx.com';
         $value = 'value-query-1';
 
         $symfonyRequest = new Request(['query1' => $value], [], [], [], [], ['HTTP_HOST' => $uri]);
