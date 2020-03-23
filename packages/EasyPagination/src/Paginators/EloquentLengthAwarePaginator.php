@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Paginators;
@@ -7,7 +8,7 @@ use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class EloquentLengthAwarePaginator extends AbstractTransformableLengthAwarePaginator
+final class EloquentLengthAwarePaginator extends AbstractTransformableLengthAwarePaginator
 {
     /**
      * @var int
