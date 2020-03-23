@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Paginators;
@@ -11,12 +12,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Mockery\MockInterface;
 
-class EloquentLengthAwarePaginatorTest extends AbstractTestCase
+final class EloquentLengthAwarePaginatorTest extends AbstractTestCase
 {
     public function testGetItems(): void
     {
         /** @var \Illuminate\Database\Eloquent\Builder $builder */
-        $builder = $this->mock(Builder::class, static function (MockInterface $mock) {
+        $builder = $this->mock(Builder::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('count')
                 ->atLeast()
                 ->once()
@@ -41,7 +42,7 @@ class EloquentLengthAwarePaginatorTest extends AbstractTestCase
                     [
                         'id' => 2,
                         'name' => 'Name Two',
-                    ]
+                    ],
                 ]));
         });
 
@@ -54,7 +55,7 @@ class EloquentLengthAwarePaginatorTest extends AbstractTestCase
     public function testGetItemsWithCriteria(): void
     {
         /** @var \Illuminate\Database\Eloquent\Builder $builder */
-        $builder = $this->mock(Builder::class, static function (MockInterface $mock) {
+        $builder = $this->mock(Builder::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('count')
                 ->atLeast()
                 ->once()
@@ -85,7 +86,7 @@ class EloquentLengthAwarePaginatorTest extends AbstractTestCase
                 ]));
         });
 
-        $criteria = static function (Builder $builder) {
+        $criteria = static function (Builder $builder): void {
             $builder->where('id', '=', 2);
         };
 
@@ -99,7 +100,7 @@ class EloquentLengthAwarePaginatorTest extends AbstractTestCase
     public function testGetItemsWithGetItemsCriteria(): void
     {
         /** @var \Illuminate\Database\Eloquent\Builder $builder */
-        $builder = $this->mock(Builder::class, static function (MockInterface $mock) {
+        $builder = $this->mock(Builder::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('count')
                 ->atLeast()
                 ->once()
@@ -130,8 +131,8 @@ class EloquentLengthAwarePaginatorTest extends AbstractTestCase
                 ]));
         });
 
-        $criteria = static function (Builder $builder) {
-              $builder->where('id', '=', 2);
+        $criteria = static function (Builder $builder): void {
+            $builder->where('id', '=', 2);
         };
 
         $paginator = new EloquentLengthAwarePaginator($this->mockModel($builder), new StartSizeData(1, 15));
@@ -144,7 +145,7 @@ class EloquentLengthAwarePaginatorTest extends AbstractTestCase
     public function testGetTotalItems(): void
     {
         /** @var \Illuminate\Database\Eloquent\Builder $builder */
-        $builder = $this->mock(Builder::class, static function (MockInterface $mock) {
+        $builder = $this->mock(Builder::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('count')
                 ->atLeast()
                 ->once()
@@ -162,7 +163,7 @@ class EloquentLengthAwarePaginatorTest extends AbstractTestCase
     private function mockModel(Builder $builder): Model
     {
         /** @var \Illuminate\Database\Eloquent\Model $model */
-        $model = $this->mock(Model::class, static function (MockInterface $mock) use ($builder) {
+        $model = $this->mock(Model::class, static function (MockInterface $mock) use ($builder): void {
             $mock->shouldReceive('newQuery')
                 ->atLeast()
                 ->once()
