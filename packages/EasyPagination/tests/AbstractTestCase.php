@@ -7,6 +7,7 @@ namespace EonX\EasyPagination\Tests;
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
 use EonX\EasyPsr7Factory\EasyPsr7Factory;
 use Laravel\Lumen\Application;
+use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -65,6 +66,20 @@ abstract class AbstractTestCase extends TestCase
         return $app;
     }
 
+    /**
+     * @param mixed $target
+     */
+    protected function mock($target, ?callable $expectations = null): MockInterface
+    {
+        $mock = \Mockery::mock($target);
+
+        if ($expectations !== null) {
+            \call_user_func($expectations, $mock);
+        }
+
+        return $mock;
+    }
+
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -73,6 +88,10 @@ abstract class AbstractTestCase extends TestCase
         if ($fs->exists($var)) {
             $fs->remove($var);
         }
+
+        $this->addToAssertionCount(\Mockery::getContainer()->mockery_getExpectationCount());
+
+        \Mockery::close();
 
         parent::tearDown();
     }
