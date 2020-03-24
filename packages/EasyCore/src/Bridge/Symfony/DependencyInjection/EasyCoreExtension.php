@@ -4,16 +4,26 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
+use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class EasyCoreExtension extends Extension
 {
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
+     */
+    private $container;
+
+    /**
+     * @var \Symfony\Component\Config\Loader\LoaderInterface
+     */
+    private $loader;
+
     /**
      * @param mixed[] $configs
      *
@@ -25,13 +35,27 @@ final class EasyCoreExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
-
+      
         $container
             ->registerForAutoconfiguration(EventListenerInterface::class)
             ->addTag('kernel.event_listener');
 
-        $this->registerCustomPagination($config, $loader);
-        $this->registerEasyAsyncListeners($container, $loader);
+        $this->container = $container;
+        $this->loader = $loader;
+
+        $this->registerCustomPagination($config);
+
+        $this->loadIfBundleExists('easy_async_listeners.yaml', EasyAsyncBundle::class);
+        $this->loadIfBundleExists('iri_converter.yaml', ApiPlatformBundle::class);
+    }
+
+    private function loadIfBundleExists(string $resource, string $bundle): void
+    {
+        if (\in_array($bundle, $this->container->getParameter('kernel.bundles'), true) === false) {
+            return;
+        }
+
+        $this->loader->load($resource);
     }
 
     /**
@@ -39,23 +63,12 @@ final class EasyCoreExtension extends Extension
      *
      * @throws \Exception
      */
-    private function registerCustomPagination(array $config, LoaderInterface $loader): void
+    private function registerCustomPagination(array $config): void
     {
         if (($config['api_platform']['custom_pagination'] ?? false) === false) {
             return;
         }
 
-        if (\class_exists('ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator') === true) {
-            $loader->load('pagination.yaml');
-        }
-    }
-
-    private function registerEasyAsyncListeners(ContainerBuilder $container, LoaderInterface $loader): void
-    {
-        if (\in_array(EasyAsyncBundle::class, $container->getParameter('kernel.bundles'), true) === false) {
-            return;
-        }
-
-        $loader->load('easy_async_listeners.yaml');
+        $this->loadIfBundleExists('pagination.yaml', ApiPlatformBundle::class);
     }
 }
