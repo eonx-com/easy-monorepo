@@ -6,6 +6,7 @@ namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
+use EonX\EasyCore\Bridge\Symfony\Interfaces\DoctrineEntityEventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\DoctrineEventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
@@ -41,6 +42,10 @@ final class EasyCoreExtension extends Extension
         $container
             ->registerForAutoconfiguration(EventListenerInterface::class)
             ->addTag('kernel.event_listener');
+
+        $container
+            ->registerForAutoconfiguration(DoctrineEntityEventListenerInterface::class)
+            ->addTag(TagsInterface::DOCTRINE_AUTOCONFIG_ENTITY_EVENT_LISTENER);
 
         $container
             ->registerForAutoconfiguration(DoctrineEventListenerInterface::class)
