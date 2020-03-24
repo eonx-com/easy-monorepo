@@ -6,7 +6,9 @@ namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
+use EonX\EasyCore\Bridge\Symfony\Interfaces\DoctrineEventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
+use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -35,10 +37,14 @@ final class EasyCoreExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
-      
+
         $container
             ->registerForAutoconfiguration(EventListenerInterface::class)
             ->addTag('kernel.event_listener');
+
+        $container
+            ->registerForAutoconfiguration(DoctrineEventListenerInterface::class)
+            ->addTag(TagsInterface::DOCTRINE_AUTOCONFIG_EVENT_LISTENER);
 
         $this->container = $container;
         $this->loader = $loader;
