@@ -6,9 +6,7 @@ namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
-use EonX\EasyCore\Bridge\Symfony\Interfaces\DoctrineEntityEventListenerInterface;
-use EonX\EasyCore\Bridge\Symfony\Interfaces\DoctrineEventListenerInterface;
-use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
+use EonX\EasyCore\Bridge\Symfony\Interfaces\DependencyInjection\Event\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -39,21 +37,10 @@ final class EasyCoreExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
 
-        $container
-            ->registerForAutoconfiguration(EventListenerInterface::class)
-            ->addTag('kernel.event_listener');
-
-        $container
-            ->registerForAutoconfiguration(DoctrineEntityEventListenerInterface::class)
-            ->addTag(TagsInterface::DOCTRINE_AUTOCONFIG_ENTITY_EVENT_LISTENER);
-
-        $container
-            ->registerForAutoconfiguration(DoctrineEventListenerInterface::class)
-            ->addTag(TagsInterface::DOCTRINE_AUTOCONFIG_EVENT_LISTENER);
-
         $this->container = $container;
         $this->loader = $loader;
 
+        $this->registerListenersForAutoconfig($container);
         $this->registerCustomPagination($config);
 
         $this->loadIfBundleExists('easy_async_listeners.yaml', EasyAsyncBundle::class);
@@ -81,5 +68,12 @@ final class EasyCoreExtension extends Extension
         }
 
         $this->loadIfBundleExists('pagination.yaml', ApiPlatformBundle::class);
+    }
+
+    private function registerListenersForAutoconfig(ContainerBuilder $container): void
+    {
+        $container
+            ->registerForAutoconfiguration(EventListenerInterface::class)
+            ->addTag(TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
     }
 }

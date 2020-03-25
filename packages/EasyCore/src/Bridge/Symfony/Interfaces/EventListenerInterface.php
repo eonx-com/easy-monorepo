@@ -1,10 +1,12 @@
 <?php
-
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Bridge\Symfony\Interfaces;
+namespace EonX\EasyCore\Bridge\Symfony\Interfaces\DependencyInjection\Event;
 
 interface EventListenerInterface
 {
-    // Marker for all event listeners for auto-configure.
+    /**
+     * @return \EonX\EasyCore\Bridge\Symfony\Interfaces\DependencyInjection\EventTagInterface[]
+     */
+    public function registerEvents(): array;
 }

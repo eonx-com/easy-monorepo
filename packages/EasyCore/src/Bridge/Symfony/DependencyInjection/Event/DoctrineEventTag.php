@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection\Doctrine;
+namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection\Event\Doctrine;
 
-final class EventDefinition
+use EonX\EasyCore\Bridge\Symfony\Interfaces\DependencyInjection\EventTagInterface;
+
+final class DoctrineEventTag implements EventTagInterface
 {
     /**
      * @var null|string
@@ -33,22 +35,30 @@ final class EventDefinition
         $this->lazy = $lazy;
     }
 
-    public function getArguments(): array
+    /**
+     * @return mixed[]
+     */
+    public function getAttributes(): array
     {
-        $arguments = ['event' => $this->event];
+        $attr = ['event' => $this->event];
 
         if ($this->priority) {
-            $arguments['priority'] = $this->priority;
+            $attr['priority'] = $this->priority;
         }
 
         if ($this->connection) {
-            $arguments['connection'] = $this->connection;
+            $attr['connection'] = $this->connection;
         }
 
         if ($this->lazy) {
-            $arguments['lazy'] = 'true';
+            $attr['lazy'] = 'true';
         }
 
-        return $arguments;
+        return $attr;
+    }
+
+    public function getName(): string
+    {
+        return 'doctrine.event_listener';
     }
 }

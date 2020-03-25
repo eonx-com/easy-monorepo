@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection\Doctrine;
+namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection\Event\Doctrine;
 
-final class EntityEventDefinition
+use EonX\EasyCore\Bridge\Symfony\Interfaces\DependencyInjection\EventTagInterface;
+
+final class DoctrineEntityEventTag implements EventTagInterface
 {
     /**
      * @var null|string
@@ -32,34 +34,42 @@ final class EntityEventDefinition
 
     public function __construct(
         string $event,
+        string $entity,
         ?string $method = null,
-        ?string $entity = null,
         ?string $entityManager = null,
         ?bool $lazy = null
     ) {
         $this->event = $event;
-        $this->method = $method;
         $this->entity = $entity;
+        $this->method = $method;
         $this->entityManager = $entityManager;
         $this->lazy = $lazy;
     }
 
-    public function getArguments(string $defaultEntity): array
+    /**
+     * @return mixed[]
+     */
+    public function getAttributes(): array
     {
-        $arguments = ['event' => $this->event, 'entity' => $this->entity ?? $defaultEntity];
+        $attr = ['event' => $this->event, 'entity' => $this->entity];
 
         if ($this->entityManager) {
-            $arguments['entity_manager'] = $this->entityManager;
+            $attr['entity_manager'] = $this->entityManager;
         }
 
         if ($this->method) {
-            $arguments['method'] = $this->method;
+            $attr['method'] = $this->method;
         }
 
         if ($this->lazy) {
-            $arguments['lazy'] = 'true';
+            $attr['lazy'] = 'true';
         }
 
-        return $arguments;
+        return $attr;
+    }
+
+    public function getName(): string
+    {
+        return 'doctrine.orm.entity_listener';
     }
 }
