@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Bridge\Symfony\Interfaces\DependencyInjection\Event;
+namespace EonX\EasyCore\Bridge\Symfony\Interfaces\DependencyInjection;
 
 interface EventListenerInterface
 {

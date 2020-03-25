@@ -22,7 +22,7 @@ final class KernelEventTag implements EventTagInterface
      */
     private $priority;
 
-    public function __construct(?int $priority = null, ?string $event = null, ?string $method = null)
+    public function __construct(?string $event = null, ?string $method = null, ?int $priority = null)
     {
         $this->priority = $priority;
         $this->event = $event;
