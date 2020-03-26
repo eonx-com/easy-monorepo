@@ -17,7 +17,8 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('api_platform')
                     ->children()
-                        ->booleanNode('custom_pagination')->defaultValue(true)->end()
+                        ->booleanNode('custom_pagination_enabled')->defaultValue(true)->end()
+                        ->booleanNode('simple_data_persister_enabled')->defaultValue(true)->end()
                     ->end()
                 ->end()
             ->end();

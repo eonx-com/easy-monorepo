@@ -22,6 +22,9 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
         foreach ($persisterIds as $persisterId) {
             $def = $container->getDefinition($persisterId);
 
+            // Simple persisters must be public for the chain persister to get them from the container
+            $def->setPublic(true);
+
             /** @var \EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface $instance */
             $instance = $container->getReflectionClass($def->getClass())->newInstanceWithoutConstructor();
 
