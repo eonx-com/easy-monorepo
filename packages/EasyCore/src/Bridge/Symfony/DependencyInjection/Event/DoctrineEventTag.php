@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection\Event\Doctrine;
+namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection\Event;
 
 use EonX\EasyCore\Bridge\Symfony\Interfaces\DependencyInjection\EventTagInterface;
 

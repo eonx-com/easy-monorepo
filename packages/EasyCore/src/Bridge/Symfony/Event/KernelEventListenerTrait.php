@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\Event;
@@ -12,8 +13,6 @@ trait KernelEventListenerTrait
      */
     public function registerEvents(): array
     {
-        return [
-            new KernelEventTag()
-        ];
+        return [new KernelEventTag()];
     }
 }
