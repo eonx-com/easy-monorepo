@@ -6,6 +6,7 @@ namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
 use Symfony\Component\Config\FileLocator;
@@ -41,10 +42,12 @@ final class EasyCoreExtension extends Extension
         $this->loader = $loader;
 
         $this->registerListenersForAutoconfig($container);
+        $this->registerSimpleDataPersistersForAutoconfig($container);
         $this->registerCustomPagination($config);
 
         $this->loadIfBundleExists('easy_async_listeners.yaml', EasyAsyncBundle::class);
-        $this->loadIfBundleExists('iri_converter.yaml', ApiPlatformBundle::class);
+        $this->loadIfBundleExists('api_platform_iri_converter.yaml', ApiPlatformBundle::class);
+        $this->loadIfBundleExists('api_platform_simple_data_persister.yaml', ApiPlatformBundle::class);
     }
 
     private function loadIfBundleExists(string $resource, string $bundle): void
@@ -75,5 +78,13 @@ final class EasyCoreExtension extends Extension
         $container
             ->registerForAutoconfiguration(EventListenerInterface::class)
             ->addTag(TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
+    }
+
+    private function registerSimpleDataPersistersForAutoconfig(ContainerBuilder $container): void
+    {
+        $container
+            ->registerForAutoconfiguration(SimpleDataPersisterInterface::class)
+            ->setPublic(true)
+            ->addTag(TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG);
     }
 }
