@@ -1,4 +1,4 @@
 services:
     EonX\EasyCore\Bridge\Symfony\ApiPlatform\Routing\IriConverter:
         decorates: api_platform.iri_converter
-        arguments: ['@App\Api\ApiPlatform\IriConverter.inner']
+        arguments: ['@EonX\EasyCore\Bridge\Symfony\ApiPlatform\Routing\IriConverter.inner']

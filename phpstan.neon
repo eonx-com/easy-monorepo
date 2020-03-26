@@ -68,6 +68,9 @@ parameters:
         - message: '#Method EonX\\EasyCore\\Tests\\AbstractTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
           path: packages/EasyCore/tests/AbstractTestCase.php
 
+        - message: '#Cannot call method newInstanceWithoutConstructor\(\) on ReflectionClass\|null#'
+          path: packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Compiler/AutoConfigureEventListenersPass.php
+
         # ---- EasyDecision ----
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDecision/src/Decisions

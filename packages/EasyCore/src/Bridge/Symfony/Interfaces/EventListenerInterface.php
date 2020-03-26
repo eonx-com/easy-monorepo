@@ -6,5 +6,8 @@ namespace EonX\EasyCore\Bridge\Symfony\Interfaces;
 
 interface EventListenerInterface
 {
-    // Marker for all event listeners for auto-configure.
+    /**
+     * @return \EonX\EasyCore\Bridge\Symfony\Interfaces\DependencyInjection\EventTagInterface[]
+     */
+    public function registerEvents(): array;
 }
