@@ -1,0 +1,7 @@
+services:
+    EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\ChainSimpleDataPersister:
+        decorates: api_platform.data_persister
+        arguments:
+            - '@container'
+            - '@EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\ChainSimpleDataPersister.inner'
+            - null
