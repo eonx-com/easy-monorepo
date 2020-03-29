@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
@@ -70,6 +71,9 @@ final class ChainSimpleDataPersister implements DataPersisterInterface
             : $this->decorated->supports($data);
     }
 
+    /**
+     * @param mixed $data
+     */
     private function getDataPersister($data): ?DataPersisterInterface
     {
         if (\is_object($data) === false) {
