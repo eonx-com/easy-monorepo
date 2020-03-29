@@ -6,6 +6,7 @@ namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
 use Symfony\Component\Config\FileLocator;
@@ -40,11 +41,27 @@ final class EasyCoreExtension extends Extension
         $this->container = $container;
         $this->loader = $loader;
 
-        $this->registerListenersForAutoconfig($container);
-        $this->registerCustomPagination($config);
+        $this->autoconfigTag(EventListenerInterface::class, TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
+        $this->autoconfigTag(SimpleDataPersisterInterface::class, TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG);
 
         $this->loadIfBundleExists('easy_async_listeners.yaml', EasyAsyncBundle::class);
-        $this->loadIfBundleExists('iri_converter.yaml', ApiPlatformBundle::class);
+        $this->loadIfBundleExists('api_platform/iri_converter.yaml', ApiPlatformBundle::class);
+
+        if ($config['api_platform']['custom_pagination'] ?? false) {
+            $this->loadIfBundleExists('api_platform/pagination.yaml', ApiPlatformBundle::class);
+        }
+
+        if ($config['api_platform']['simple_data_persister'] ?? false) {
+            $this->loadIfBundleExists('api_platform/simple_data_persister.yaml', ApiPlatformBundle::class);
+        }
+    }
+
+    /**
+     * @param null|mixed[] $attributes
+     */
+    private function autoconfigTag(string $interface, string $tag, ?array $attributes = null): void
+    {
+        $this->container->registerForAutoconfiguration($interface)->addTag($tag, $attributes ?? []);
     }
 
     private function loadIfBundleExists(string $resource, string $bundle): void
@@ -54,26 +71,5 @@ final class EasyCoreExtension extends Extension
         }
 
         $this->loader->load($resource);
-    }
-
-    /**
-     * @param mixed[] $config
-     *
-     * @throws \Exception
-     */
-    private function registerCustomPagination(array $config): void
-    {
-        if (($config['api_platform']['custom_pagination'] ?? false) === false) {
-            return;
-        }
-
-        $this->loadIfBundleExists('pagination.yaml', ApiPlatformBundle::class);
-    }
-
-    private function registerListenersForAutoconfig(ContainerBuilder $container): void
-    {
-        $container
-            ->registerForAutoconfiguration(EventListenerInterface::class)
-            ->addTag(TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
     }
 }

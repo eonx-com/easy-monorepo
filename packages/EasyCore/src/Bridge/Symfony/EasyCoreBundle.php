@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony;
 
+use EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler\ApiPlatformSimpleDataPersisterPass;
 use EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler\AutoConfigureEventListenersPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,10 +16,8 @@ final class EasyCoreBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(
-            new AutoConfigureEventListenersPass(),
-            PassConfig::TYPE_BEFORE_OPTIMIZATION,
-            10 // To be executed before Doctrine passes
-        );
+        // To be executed before Doctrine passes
+        $container->addCompilerPass(new AutoConfigureEventListenersPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
+        $container->addCompilerPass(new ApiPlatformSimpleDataPersisterPass());
     }
 }
