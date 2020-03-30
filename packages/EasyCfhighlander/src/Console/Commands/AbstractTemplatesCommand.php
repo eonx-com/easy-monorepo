@@ -201,26 +201,26 @@ abstract class AbstractTemplatesCommand extends Command
 
         // Project name
         yield 'project' => function (array $params) use ($style, $required): string {
-            return $style->ask('Project name', $params['project'] ?? null, $required);
+            return $style->ask('Project name', $this->getAsStringOrNull($params['project'] ?? null), $required);
         };
 
         // Database name
         yield 'db_name' => function (array $params) use ($style, $alpha): string {
-            return $style->ask('Database name', $params['db_name'] ?? null, $alpha);
+            return $style->ask('Database name', $this->getAsStringOrNull($params['db_name'] ?? null), $alpha);
         };
 
         // Database username
         yield 'db_username' => function (array $params) use ($style, $alpha): string {
             return $style->ask(
                 'Database username',
-                $params['db_username'] ?? $params['db_name'] ?? null,
+                $this->getAsStringOrNull($params['db_username'] ?? $params['db_name'] ?? null),
                 $alpha
             );
         };
 
         // DNS domain
         yield 'dns_domain' => function (array $params) use ($style, $required): string {
-            return $style->ask('DNS domain', $params['dns_domain'] ?? null, $required);
+            return $style->ask('DNS domain', $this->getAsStringOrNull($params['dns_domain'] ?? null), $required);
         };
 
         // Redis enabled
@@ -245,7 +245,7 @@ abstract class AbstractTemplatesCommand extends Command
         yield 'ssm_prefix' => function (array $params) use ($style, $alpha): string {
             return $style->ask(
                 'SSM Prefix',
-                $params['ssm_prefix'] ?? $params['project'] ?? null,
+                $this->getAsStringOrNull($params['ssm_prefix'] ?? $params['project'] ?? null),
                 $alpha
             );
         };
@@ -254,24 +254,28 @@ abstract class AbstractTemplatesCommand extends Command
         yield 'sqs_queue' => function (array $params) use ($style, $alpha): string {
             return $style->ask(
                 'SQS Queue',
-                $params['sqs_queue'] ?? $params['project'] ?? null,
+                $this->getAsStringOrNull($params['sqs_queue'] ?? $params['project'] ?? null),
                 $alpha
             );
         };
 
         // AWS DEV Account
         yield 'dev_account' => function (array $params) use ($style, $required): string {
-            return $style->ask('AWS DEV Account', $params['dev_account'] ?? null, $required);
+            return $style->ask('AWS DEV Account', $this->getAsStringOrNull($params['dev_account'] ?? null), $required);
         };
 
         // AWS OPS Account
         yield 'ops_account' => function (array $params) use ($style, $required): string {
-            return $style->ask('AWS OPS Account', $params['ops_account'] ?? null, $required);
+            return $style->ask('AWS OPS Account', $this->getAsStringOrNull($params['ops_account'] ?? null), $required);
         };
 
         // AWS PROD Account
         yield 'prod_account' => function (array $params) use ($style, $required): string {
-            return $style->ask('AWS PROD Account', $params['prod_account'] ?? null, $required);
+            return $style->ask(
+                'AWS PROD Account',
+                $this->getAsStringOrNull($params['prod_account'] ?? null),
+                $required
+            );
         };
 
         // CLI ECS Task (on EC2)
@@ -310,6 +314,14 @@ abstract class AbstractTemplatesCommand extends Command
     protected function getTemplateName(string $template): string
     {
         return \sprintf('%s/%s.twig', $this->getTemplatePrefix(), $template);
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private function getAsStringOrNull($value): ?string
+    {
+        return $value === null ? null : (string)$value;
     }
 
     private function getEasyDirectory(string $cwd): string
