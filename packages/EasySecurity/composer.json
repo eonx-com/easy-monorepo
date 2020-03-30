@@ -11,7 +11,7 @@
         "eonx-com/easy-api-token": "^2.4",
         "eonx-com/easy-psr7-factory": "^2.4",
         "phpunit/phpunit": "^7.5 || ^8.4",
-        "symfony/symfony": "^4.2"
+        "symfony/symfony": "^4.2 || ^5.0"
     },
     "autoload": {
         "psr-4": {

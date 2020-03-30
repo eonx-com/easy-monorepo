@@ -150,6 +150,14 @@ abstract class AbstractTemplatesCommand extends Command
     }
 
     /**
+     * @param mixed $value
+     */
+    private function getAsStringOrNull($value): ?string
+    {
+        return $value === null ? null : (string)$value;
+    }
+
+    /**
      * @param null|mixed $param
      */
     private function getBooleanParamAsString($param = null): string
@@ -195,7 +203,7 @@ abstract class AbstractTemplatesCommand extends Command
 
         // Project Name
         yield 'project' => function (array $params) use ($style, $required): string {
-            return $style->ask('Project Name', $params['project'] ?? null, $required);
+            return $style->ask('Project Name', $this->getAsStringOrNull($params['project'] ?? null), $required);
         };
 
         // Elasticsearch enabled
@@ -225,7 +233,7 @@ abstract class AbstractTemplatesCommand extends Command
             );
         };
 
-        // Newrelic
+        // Pretissimo (Parallel dependencies install)
         yield 'prestissimo' => function (array $params) use ($style, $boolean): bool {
             return $style->ask(
                 'Install prestissimo plugin for composer?',
