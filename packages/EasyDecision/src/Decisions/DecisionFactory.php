@@ -4,46 +4,89 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Decisions;
 
+use EonX\EasyDecision\Configurators\AddRulesConfigurator;
+use EonX\EasyDecision\Configurators\SetDefaultOutputConfigurator;
+use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
+use EonX\EasyDecision\Configurators\SetNameConfigurator;
 use EonX\EasyDecision\Exceptions\InvalidDecisionException;
 use EonX\EasyDecision\Exceptions\InvalidRuleProviderException;
+use EonX\EasyDecision\Expressions\ExpressionLanguage;
 use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
+use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
-use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 use EonX\EasyDecision\Interfaces\RuleProviderInterface;
 use Psr\Container\ContainerInterface;
 
 final class DecisionFactory implements DecisionFactoryInterface
 {
     /**
+     * @var \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
+     */
+    private $configurators;
+
+    /**
      * @var \Psr\Container\ContainerInterface
      */
     private $container;
 
     /**
-     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface
      */
     private $expressionLanguage;
 
     /**
-     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
+     * @var null|\EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface
      */
     private $expressionLanguageFactory;
 
-    public function __construct(ExpressionLanguageFactoryInterface $languageFactory)
-    {
+    /**
+     * @param null|iterable<mixed> $configurators
+     */
+    public function __construct(
+        ?ExpressionLanguageFactoryInterface $languageFactory = null,
+        ?iterable $configurators = null
+    ) {
+        if ($languageFactory !== null) {
+            @\trigger_error(\sprintf(
+                'Passing %s in %s constructor is deprecated since 2.3.7 and will be removed in 3.0. Use a %s instead',
+                ExpressionLanguageFactoryInterface::class,
+                static::class,
+                DecisionConfiguratorInterface::class
+            ), \E_USER_DEPRECATED);
+        }
+
         $this->expressionLanguageFactory = $languageFactory;
+        $this->configurators = $this->getConfiguratorsAsArray($configurators);
     }
 
+    /**
+     * @deprecated since 2.3.7
+     */
     public function create(DecisionConfigInterface $config): DecisionInterface
     {
-        $decision = $this
-            ->instantiateDecision($config->getDecisionType())
-            ->setName($config->getName())
-            ->setDefaultOutput($config->getDefaultOutput());
+        @\trigger_error(\sprintf(
+            '%s::%s() is deprecated since 2.3.7 and will be removed in 3.0, use one of %s methods instead',
+            static::class,
+            __METHOD__,
+            \implode(', ', [
+                'createAffirmativeDecision',
+                'createConsensusDecision',
+                'createUnanimousDecision',
+                'createValueDecision',
+            ])
+        ), \E_USER_DEPRECATED);
+
+        $decision = $this->instantiateDecision($config->getDecisionType());
+
+        $this->configurators[] = new SetNameConfigurator($config->getName());
+        $this->configurators[] = new SetDefaultOutputConfigurator($config->getDefaultOutput());
+        $this->configurators[] = new SetExpressionLanguageConfigurator($this->getExpressionLanguage($config));
+
+        $params = $config->getParams();
 
         foreach ($config->getRuleProviders() as $provider) {
             if (($provider instanceof RuleProviderInterface) === false) {
@@ -54,36 +97,94 @@ final class DecisionFactory implements DecisionFactoryInterface
                 ));
             }
 
-            $params = $config->getParams();
-
-            foreach ($provider->getRules($params) as $rule) {
-                if ($rule instanceof ExpressionLanguageAwareInterface) {
-                    $rule->setExpressionLanguage($this->getExpressionLanguage($config));
-                }
-
-                $decision->addRule($rule);
-            }
+            $this->configurators[] = new AddRulesConfigurator($provider->getRules($params));
         }
 
-        return $decision;
+        return $this->configureDecision($decision);
     }
 
+    public function createAffirmativeDecision(?string $name = null): DecisionInterface
+    {
+        return $this->configureDecision(new AffirmativeDecision($name));
+    }
+
+    public function createConsensusDecision(?string $name = null): DecisionInterface
+    {
+        return $this->configureDecision(new ConsensusDecision($name));
+    }
+
+    public function createUnanimousDecision(?string $name = null): DecisionInterface
+    {
+        return $this->configureDecision(new UnanimousDecision($name));
+    }
+
+    public function createValueDecision(?string $name = null): DecisionInterface
+    {
+        return $this->configureDecision(new ValueDecision($name));
+    }
+
+    /**
+     * @deprecated since 2.3.7
+     */
     public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
     }
 
+    private function configureDecision(DecisionInterface $decision): DecisionInterface
+    {
+        // Sort configurators by priority
+        $configurators = $this->configurators;
+
+        \usort(
+            $configurators,
+            static function (DecisionConfiguratorInterface $first, DecisionConfiguratorInterface $second): int {
+                return $first->getPriority() <=> $second->getPriority();
+            }
+        );
+
+        foreach ($this->configurators as $configurator) {
+            $configurator->configure($decision);
+        }
+
+        return $decision;
+    }
+
+    /**
+     * @param null|iterable<mixed> $configurators
+     *
+     * @return \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
+     */
+    private function getConfiguratorsAsArray(?iterable $configurators = null): array
+    {
+        if ($configurators === null) {
+            return [];
+        }
+
+        return $configurators instanceof \Traversable ? \iterator_to_array($configurators) : $configurators;
+    }
+
+    /**
+     * @deprecated since 2.3.7
+     */
     private function getExpressionLanguage(DecisionConfigInterface $config): ExpressionLanguageInterface
     {
         if ($this->expressionLanguage !== null) {
             return $this->expressionLanguage;
         }
 
-        return $this->expressionLanguage = $this->expressionLanguageFactory->create(
-            $config->getExpressionLanguageConfig() ?? new ExpressionLanguageConfig()
-        );
+        if ($this->expressionLanguageFactory !== null) {
+            return $this->expressionLanguage = $this->expressionLanguageFactory->create(
+                $config->getExpressionLanguageConfig() ?? new ExpressionLanguageConfig()
+            );
+        }
+
+        return new ExpressionLanguage();
     }
 
+    /**
+     * @deprecated since 2.3.7
+     */
     private function instantiateDecision(string $decisionType): DecisionInterface
     {
         $decision = null;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDecision\Tests\Expressions;
+namespace EonX\EasyDecision\Expressions\Tests;
 
 use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Tests\AbstractTestCase;

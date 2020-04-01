@@ -7,15 +7,16 @@ namespace EonX\EasyDecision\Tests;
 use EonX\EasyDecision\Expressions\ExpressionFunctionFactory;
 use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
-use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageConfigInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
+use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Rules\ExpressionLanguageRuleFactory;
 use EonX\EasyDecision\Tests\Stubs\RuleStub;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -24,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 abstract class AbstractTestCase extends TestCase
 {
     /**
-     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageFactoryInterface
+     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface
      */
     private $expressionLanguageFactory;
 
@@ -75,18 +76,23 @@ abstract class AbstractTestCase extends TestCase
         return $this->expressionLanguageFactory = new ExpressionLanguageFactory(new ExpressionFunctionFactory());
     }
 
-    /**
-     * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
-     */
-    protected function injectExpressionLanguage(array $rules, ?ExpressionLanguageConfigInterface $config = null): void
-    {
-        $expressionLanguage = $this->createExpressionLanguage($config);
+    protected function injectExpressionLanguage(
+        DecisionInterface $decision,
+        ?ExpressionLanguageConfigInterface $config = null
+    ): void {
+        $decision->setExpressionLanguage($this->createExpressionLanguage($config));
+    }
 
-        foreach ($rules as $rule) {
-            if ($rule instanceof ExpressionLanguageAwareInterface) {
-                $rule->setExpressionLanguage($expressionLanguage);
-            }
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
         }
+
+        parent::tearDown();
     }
 
     private function getLanguageRuleFactory(): ExpressionLanguageRuleFactoryInterface

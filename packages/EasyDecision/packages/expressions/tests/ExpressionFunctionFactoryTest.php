@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDecision\Tests\Expressions;
+namespace EonX\EasyDecision\Expressions\Tests;
 
 use EonX\EasyDecision\Exceptions\InvalidArgumentException;
 use EonX\EasyDecision\Expressions\ExpressionFunction;
 use EonX\EasyDecision\Expressions\ExpressionFunctionFactory;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionFactoryInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 

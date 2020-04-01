@@ -1,0 +1,6 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    EonX\EasyDecision\Tests\Bridge\Symfony\Stubs\Configurators\WithValueRulesConfigurator: ~

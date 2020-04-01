@@ -14,6 +14,9 @@ use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\RuleProviderInterface;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @deprecated since 2.3.7
+ */
 final class DecisionFactory implements DecisionFactoryInterface
 {
     /**

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Interfaces;
 
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
+
 interface DecisionInterface
 {
     public function addRule(RuleInterface $rule): self;
@@ -14,6 +16,8 @@ interface DecisionInterface
     public function addRules(array $rules): self;
 
     public function getContext(): ContextInterface;
+
+    public function getExpressionLanguage(): ?ExpressionLanguageInterface;
 
     public function getName(): string;
 
@@ -31,6 +35,8 @@ interface DecisionInterface
      * @param null|mixed $defaultOutput
      */
     public function setDefaultOutput($defaultOutput = null): self;
+
+    public function setExpressionLanguage(ExpressionLanguageInterface $expressionLanguage): self;
 
     public function setName(string $name): self;
 }

@@ -5,6 +5,16 @@ declare(strict_types=1);
 return [
     /*
     |--------------------------------------------------------------------------
+    | Use Expression Language
+    |--------------------------------------------------------------------------
+    |
+    | ExpressionLanguage will automatically be injected in all decisions when true.
+    |
+    */
+    'use_expression_language' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Expression Language
     |--------------------------------------------------------------------------
     |
@@ -40,7 +50,7 @@ return [
         | directly from here or return the service locator of your provider.
         |
         | Your providers must implement:
-        | \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface
+        | \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionProviderInterface
         |
         | Example:
         | \App\Decisions\Expressions\MyOwnFunctionsProvider::class, -> Instantiate from container

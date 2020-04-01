@@ -7,11 +7,14 @@ namespace EonX\EasyDecision\Bridge\Common;
 use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionConfigProviderInterface;
 use EonX\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
 use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionFactoryInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionProviderInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageConfigInterface;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @deprecated since 2.3.7
+ */
 final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigFactoryInterface
 {
     /**
@@ -25,12 +28,12 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     private $container;
 
     /**
-     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
+     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionFactoryInterface
      */
     private $expressionFunctionFactory;
 
     /**
-     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface[]
      */
     private $globalExpressionFunctions;
 
@@ -103,7 +106,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
      * @param mixed[] $functions
      * @param mixed[] $providers
      *
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @return \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface[]
      */
     private function getExpressionFunctions(array $functions, array $providers): array
     {
@@ -124,7 +127,7 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
     }
 
     /**
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @return \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface[]
      */
     private function getGlobalExpressionFunctions(): array
     {

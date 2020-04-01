@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Interfaces;
 
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 
 interface ExpressionLanguageAwareInterface
 {

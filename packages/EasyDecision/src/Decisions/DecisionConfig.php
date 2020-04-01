@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Decisions;
 
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageConfigInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
 
+/**
+ * @deprecated since 2.3.7
+ */
 final class DecisionConfig implements DecisionConfigInterface
 {
     /**
@@ -20,7 +23,7 @@ final class DecisionConfig implements DecisionConfigInterface
     private $defaultOutput;
 
     /**
-     * @var null|\EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface
+     * @var null|\EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageConfigInterface
      */
     private $expressionLanguageConfig;
 

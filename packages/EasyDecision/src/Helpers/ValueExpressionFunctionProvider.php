@@ -7,8 +7,8 @@ namespace EonX\EasyDecision\Helpers;
 use EonX\EasyDecision\Exceptions\InvalidArgumentException;
 use EonX\EasyDecision\Exceptions\MissingValueIndexException;
 use EonX\EasyDecision\Expressions\ExpressionFunction;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionProviderInterface;
 
 final class ValueExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {

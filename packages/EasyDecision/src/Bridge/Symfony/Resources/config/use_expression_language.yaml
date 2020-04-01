@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface:
+        class: EonX\EasyDecision\Expressions\ExpressionLanguage
+        factory: ['@EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface', 'create']
+
+    EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator: ~
