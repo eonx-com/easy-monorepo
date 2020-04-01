@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Expressions;
 
 use EonX\EasyDecision\Exceptions\InvalidArgumentException;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionFactoryInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
+/**
+ * @deprecated since 2.3.7
+ */
 final class ExpressionFunctionFactory implements ExpressionFunctionFactoryInterface
 {
     /**

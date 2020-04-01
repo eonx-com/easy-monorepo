@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Helpers;
 
 use EonX\EasyDecision\Expressions\ExpressionFunction;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionProviderInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
 final class FromPhpExpressionFunctionProvider implements ExpressionFunctionProviderInterface

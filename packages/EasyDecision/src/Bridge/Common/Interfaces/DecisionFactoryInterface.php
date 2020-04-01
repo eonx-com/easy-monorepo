@@ -6,6 +6,9 @@ namespace EonX\EasyDecision\Bridge\Common\Interfaces;
 
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 
+/**
+ * @deprecated since 2.3.7
+ */
 interface DecisionFactoryInterface
 {
     /**

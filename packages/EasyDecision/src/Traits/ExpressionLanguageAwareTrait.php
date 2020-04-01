@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Traits;
 
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 
 trait ExpressionLanguageAwareTrait
 {
     /**
-     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageInterface
+     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface
      */
     private $expressionLanguage;
 

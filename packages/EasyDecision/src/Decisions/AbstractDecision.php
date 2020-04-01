@@ -6,12 +6,15 @@ namespace EonX\EasyDecision\Decisions;
 
 use EonX\EasyDecision\Context;
 use EonX\EasyDecision\Exceptions\ContextNotSetException;
+use EonX\EasyDecision\Exceptions\ExpressionLanguageNotSetOnDecisionException;
 use EonX\EasyDecision\Exceptions\ReservedContextIndexException;
 use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 use EonX\EasyDecision\Interfaces\ContextAwareInterface;
 use EonX\EasyDecision\Interfaces\ContextInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\DecisionOutputForRuleAwareInterface;
+use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use EonX\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 
@@ -31,6 +34,11 @@ abstract class AbstractDecision implements DecisionInterface
      * @var null|mixed
      */
     private $defaultOutput;
+
+    /**
+     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface
+     */
+    private $expressionLanguage;
 
     /**
      * @var string
@@ -75,6 +83,11 @@ abstract class AbstractDecision implements DecisionInterface
         throw new ContextNotSetException($this->getExceptionMessage(
             'You cannot called getContext() before decision has been made'
         ));
+    }
+
+    public function getExpressionLanguage(): ?ExpressionLanguageInterface
+    {
+        return $this->expressionLanguage;
     }
 
     public function getName(): string
@@ -130,6 +143,13 @@ abstract class AbstractDecision implements DecisionInterface
         return $this;
     }
 
+    public function setExpressionLanguage(ExpressionLanguageInterface $expressionLanguage): DecisionInterface
+    {
+        $this->expressionLanguage = $expressionLanguage;
+
+        return $this;
+    }
+
     public function setName(string $name): DecisionInterface
     {
         $this->name = $name;
@@ -170,6 +190,17 @@ abstract class AbstractDecision implements DecisionInterface
         $this->context->addRuleOutput($rule->toString(), $output);
     }
 
+    private function getExpressionLanguageForRule(): ExpressionLanguageInterface
+    {
+        if ($this->expressionLanguage !== null) {
+            return $this->expressionLanguage;
+        }
+
+        throw new ExpressionLanguageNotSetOnDecisionException(
+            'Expression language not set, to use it in your rules you must set it on the decision instance'
+        );
+    }
+
     /**
      * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
@@ -185,6 +216,10 @@ abstract class AbstractDecision implements DecisionInterface
         foreach ($rules as $rule) {
             if ($rule instanceof ContextAwareInterface) {
                 $rule->setContext($this->context);
+            }
+
+            if ($rule instanceof ExpressionLanguageAwareInterface) {
+                $rule->setExpressionLanguage($this->getExpressionLanguageForRule());
             }
         }
 

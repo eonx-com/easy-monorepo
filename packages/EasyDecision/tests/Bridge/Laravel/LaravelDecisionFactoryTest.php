@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Tests\Bridge\Laravel;
 
 use EonX\EasyDecision\Decisions\AffirmativeDecision;
+use EonX\EasyDecision\Decisions\ValueDecision;
 use EonX\EasyDecision\Exceptions\InvalidArgumentException;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 use EonX\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
+use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Tests\AbstractLumenTestCase;
 use EonX\EasyDecision\Tests\Stubs\DecisionConfigProviderStub;
 use EonX\EasyDecision\Tests\Stubs\RuleProviderStub;
@@ -66,6 +69,15 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         ]);
 
         self::assertInstanceOf(AffirmativeDecision::class, $this->getDecisionFactory()->create('my-decision'));
+    }
+
+    public function testCreateDecisionWithConfigurators(): void
+    {
+        $factory = $this->getApplication()->get(DecisionFactoryInterface::class);
+        $decision = $factory->createValueDecision();
+
+        self::assertInstanceOf(ValueDecision::class, $decision);
+        self::assertInstanceOf(ExpressionLanguageInterface::class, $decision->getExpressionLanguage());
     }
 
     public function testCreateWithProviderConfigWithExpressionFunctionsSuccessfully(): void

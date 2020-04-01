@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Tests\Stubs;
 
 use EonX\EasyDecision\Expressions\ExpressionFunctionFactory;
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionProviderInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionProviderInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
 final class ExpressionFunctionProviderStub implements ExpressionFunctionProviderInterface
 {
     /**
-     * @var \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionFactoryInterface
+     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionFactoryInterface
      */
     private $functionFactory;
 
@@ -21,7 +21,7 @@ final class ExpressionFunctionProviderStub implements ExpressionFunctionProvider
     }
 
     /**
-     * @return \EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface[]
+     * @return \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface[]
      */
     public function getFunctions(): array
     {

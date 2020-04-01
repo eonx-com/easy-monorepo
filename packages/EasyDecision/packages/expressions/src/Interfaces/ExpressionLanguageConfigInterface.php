@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDecision\Interfaces\Expressions;
+namespace EonX\EasyDecision\Expressions\Interfaces;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 
+/**
+ * @deprecated since 2.3.7
+ */
 interface ExpressionLanguageConfigInterface
 {
     public function getBaseExpressionLanguage(): ?BaseExpressionLanguage;
