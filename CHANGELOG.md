@@ -2,7 +2,34 @@
 
 <!-- dumped content start -->
 
-## v2.3.6 - 2020-03-20
+## v2.3.7 - 2020-04-01
+
+- [#181] Update dependencies to work with Symfony 5
+
+### EasyPagination
+
+- [#162] Add eloquent length aware paginator, Thanks to [@cainseing]
+
+### EasyCore
+
+- [#180] Enhance api platform
+- [#176] Auto configure doctrine listeners
+- [#174] Symfony bridge auto configure listeners
+- [#173] No IRI item for api platform
+
+### EasyDecision
+
+- [#183] Implement Collector pattern to improve DX
+
+### EasyLogging
+
+- [#182] setApp method registers the EasyLogging interface, Thanks to [@egor-dev]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.6] - 2020-03-20
 
 ### EasyStandard
 
@@ -1328,3 +1355,13 @@
 [v2.3.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.3...v2.3.4
 [#172]: https://github.com/eonx-com/easy-monorepo/pull/172
 [v2.3.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.4...v2.3.5
+[#183]: https://github.com/eonx-com/easy-monorepo/pull/183
+[#182]: https://github.com/eonx-com/easy-monorepo/pull/182
+[#181]: https://github.com/eonx-com/easy-monorepo/pull/181
+[#180]: https://github.com/eonx-com/easy-monorepo/pull/180
+[#176]: https://github.com/eonx-com/easy-monorepo/pull/176
+[#174]: https://github.com/eonx-com/easy-monorepo/pull/174
+[#173]: https://github.com/eonx-com/easy-monorepo/pull/173
+[#162]: https://github.com/eonx-com/easy-monorepo/pull/162
+[v2.3.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.5...v2.3.6
+[@cainseing]: https://github.com/cainseing
