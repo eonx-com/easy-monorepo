@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Expressions;
 
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionFunctionInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface;
 
 final class ExpressionFunction implements ExpressionFunctionInterface
 {

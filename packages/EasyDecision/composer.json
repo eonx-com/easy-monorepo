@@ -13,12 +13,14 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyDecision\\": "src"
+            "EonX\\EasyDecision\\": "src",
+            "EonX\\EasyDecision\\Expressions\\": "packages/expressions/src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyDecision\\Tests\\": "tests"
+            "EonX\\EasyDecision\\Tests\\": "tests",
+            "EonX\\EasyDecision\\Expressions\\Tests\\": "packages/expressions/tests"
         }
     },
     "extra": {

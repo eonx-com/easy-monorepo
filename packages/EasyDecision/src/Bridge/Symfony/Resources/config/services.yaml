@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    EonX\EasyDecision\Interfaces\DecisionFactoryInterface:
+        class: EonX\EasyDecision\Decisions\DecisionFactory
+        arguments:
+            $configurators: !tagged_iterator 'easy_decision.decision_configurator'
+
+    EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface:
+        class: EonX\EasyDecision\Expressions\ExpressionLanguageFactory
+
+    EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface:
+        class: EonX\EasyDecision\Rules\ExpressionLanguageRuleFactory

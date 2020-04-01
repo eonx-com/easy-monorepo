@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Interfaces;
 
-use EonX\EasyDecision\Interfaces\Expressions\ExpressionLanguageConfigInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageConfigInterface;
 
+/**
+ * @deprecated since 2.3.7
+ */
 interface DecisionConfigInterface
 {
     public function getDecisionType(): string;

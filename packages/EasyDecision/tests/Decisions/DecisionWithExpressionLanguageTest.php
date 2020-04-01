@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Tests\Decisions;
 
 use EonX\EasyDecision\Decisions\ValueDecision;
+use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use EonX\EasyDecision\Expressions\ExpressionFunction;
 use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
@@ -12,13 +13,20 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 
 final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 {
+    public function testExceptionIfExpressionLanguageNotSet(): void
+    {
+        $this->expectException(UnableToMakeDecisionException::class);
+        $this->expectExceptionMessage('Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": Expression language not set, to use it in your rules you must set it on the decision instance');
+
+        (new ValueDecision())->addRule($this->createLanguageRule('value + 10'))->make(['value' => 1]);
+    }
+
     public function testModifyValueInArray(): void
     {
         $rules = [$this->createLanguageRule('value + 10')];
-
-        $this->injectExpressionLanguage($rules);
-
         $decision = (new ValueDecision())->addRules($rules);
+
+        $this->injectExpressionLanguage($decision);
 
         $original = ['value' => 1];
         $expected = 11;
@@ -44,9 +52,9 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
             }),
         ];
 
-        $this->injectExpressionLanguage($rules, new ExpressionLanguageConfig(null, $providers, $functions));
-
         $decision = (new ValueDecision())->addRules($rules);
+
+        $this->injectExpressionLanguage($decision, new ExpressionLanguageConfig(null, $providers, $functions));
 
         $tests = [
             [
