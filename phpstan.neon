@@ -96,6 +96,15 @@ parameters:
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyDecision/src/Bridge/Symfony/DependencyInjection/Configuration.php
 
+        - message: '#Cannot call method getFunctions\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
+          path: packages/EasyDecision/tests/Bridge/Symfony/EasyDecisionBundleTest.php
+
+        - message: '#Cannot call method addFunction\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
+          path: packages/EasyDecision/tests/Bridge/Symfony/Stubs/Configurators/NameRestrictedExpressionFunctionConfigurator.php
+
+        - message: '#Cannot call method addFunction\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
+          path: packages/EasyDecision/tests/Bridge/Symfony/Stubs/Configurators/TypeRestrictedExpressionFunctionConfigurator.php
+
         # ---- EasyDocker ----
         # ---- EasyEntityChange ----
         # ---- EasyIdentity ----

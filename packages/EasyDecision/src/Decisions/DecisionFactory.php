@@ -18,6 +18,7 @@ use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
+use EonX\EasyDecision\Interfaces\RestrictedDecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\RuleProviderInterface;
 use Psr\Container\ContainerInterface;
 
@@ -143,7 +144,12 @@ final class DecisionFactory implements DecisionFactoryInterface
             }
         );
 
-        foreach ($this->configurators as $configurator) {
+        foreach ($configurators as $configurator) {
+            if ($configurator instanceof RestrictedDecisionConfiguratorInterface
+                && $configurator->supports($decision) === false) {
+                continue;
+            }
+
             $configurator->configure($decision);
         }
 
@@ -161,7 +167,15 @@ final class DecisionFactory implements DecisionFactoryInterface
             return [];
         }
 
-        return $configurators instanceof \Traversable ? \iterator_to_array($configurators) : $configurators;
+        if ($configurators instanceof \Traversable) {
+            $configurators = \iterator_to_array($configurators);
+        }
+
+        $filter = static function ($item): bool {
+            return $item instanceof DecisionConfiguratorInterface;
+        };
+
+        return \array_filter($configurators, $filter);
     }
 
     /**
