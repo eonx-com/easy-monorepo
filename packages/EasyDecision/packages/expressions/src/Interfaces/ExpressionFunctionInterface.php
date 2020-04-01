@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDecision\Interfaces\Expressions;
+namespace EonX\EasyDecision\Expressions\Interfaces;
 
 interface ExpressionFunctionInterface
 {

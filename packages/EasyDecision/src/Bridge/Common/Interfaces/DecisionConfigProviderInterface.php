@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Bridge\Common\Interfaces;
 
+/**
+ * @deprecated since 2.3.7
+ */
 interface DecisionConfigProviderInterface
 {
     public function getDecisionType(): string;

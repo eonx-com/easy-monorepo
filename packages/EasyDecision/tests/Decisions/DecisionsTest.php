@@ -90,7 +90,7 @@ final class DecisionsTest extends AbstractTestCase
         array $expectedRulesOutput
     ): void {
         $this->injectExpressionLanguage(
-            $rules,
+            $decision,
             new ExpressionLanguageConfig(null, [new ValueExpressionFunctionProvider()])
         );
 

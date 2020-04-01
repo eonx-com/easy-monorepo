@@ -93,6 +93,9 @@ parameters:
         - message: "#Offset 'fn' does not exist on array\\(string\\).#"
           path: packages/EasyDecision/src/Helpers
 
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyDecision/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
         # ---- EasyDocker ----
         # ---- EasyEntityChange ----
         # ---- EasyIdentity ----
