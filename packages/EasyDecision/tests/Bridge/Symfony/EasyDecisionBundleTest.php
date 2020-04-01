@@ -72,6 +72,50 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             },
             [__DIR__ . '/Fixtures/value_with_rules_and_expression_language.yaml'],
         ];
+
+        yield 'Value decision with name restricted configurator supported' => [
+            $this->getCreateValueDecision('restricted'),
+            static function (DecisionInterface $decision): void {
+                self::assertInstanceOf(ValueDecision::class, $decision);
+
+                $functions = $decision->getExpressionLanguage()->getFunctions();
+
+                self::assertCount(1, $functions);
+                self::assertEquals('restricted', $functions[0]->getName());
+            },
+            [__DIR__ . '/Fixtures/value_with_name_restricted_expression_function.yaml'],
+        ];
+
+        yield 'Value decision with name restricted configurator not supported' => [
+            $this->getCreateValueDecision('not-restricted'),
+            static function (DecisionInterface $decision): void {
+                self::assertInstanceOf(ValueDecision::class, $decision);
+                self::assertEmpty($decision->getExpressionLanguage()->getFunctions());
+            },
+            [__DIR__ . '/Fixtures/value_with_name_restricted_expression_function.yaml'],
+        ];
+
+        yield 'Decision with type restricted configurator supported' => [
+            $this->getCreateValueDecision(),
+            static function (DecisionInterface $decision): void {
+                self::assertInstanceOf(ValueDecision::class, $decision);
+
+                $functions = $decision->getExpressionLanguage()->getFunctions();
+
+                self::assertCount(1, $functions);
+                self::assertEquals('restricted', $functions[0]->getName());
+            },
+            [__DIR__ . '/Fixtures/value_with_type_restricted_expression_function.yaml'],
+        ];
+
+        yield 'Decision with type restricted configurator not supported' => [
+            $this->getCreateUnanimousDecision(),
+            static function (DecisionInterface $decision): void {
+                self::assertInstanceOf(UnanimousDecision::class, $decision);
+                self::assertEmpty($decision->getExpressionLanguage()->getFunctions());
+            },
+            [__DIR__ . '/Fixtures/value_with_type_restricted_expression_function.yaml'],
+        ];
     }
 
     /**
