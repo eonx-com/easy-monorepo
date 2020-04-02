@@ -8,8 +8,9 @@ use Closure;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
+use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
-use Psr\Http\Message\ServerRequestInterface;
 
 abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
 {
@@ -52,15 +53,15 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
         );
     }
 
-    protected function createServerRequest(): ServerRequestInterface
-    {
-        return $this->app->make(ServerRequestInterface::class);
-    }
-
     private function getDataClosure(): Closure
     {
         return function (): StartSizeDataInterface {
-            return $this->app->get(StartSizeDataResolverInterface::class)->resolve($this->createServerRequest());
+            /** @var \EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface $psr7Factory */
+            $psr7Factory = $this->app->get(EasyPsr7FactoryInterface::class);
+
+            return $this->app->get(StartSizeDataResolverInterface::class)->resolve(
+                $psr7Factory->createRequest($this->app->get(Request::class))
+            );
         };
     }
 }
