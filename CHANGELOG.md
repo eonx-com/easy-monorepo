@@ -2,7 +2,25 @@
 
 <!-- dumped content start -->
 
-## v2.3.7 - 2020-04-01
+## v2.3.8 - 2020-04-02
+
+### EasyDecision
+
+- [#188] Implement restricted decision configurator
+
+### EasyPagination
+
+- [#191] Use psr7factory to create server request in laravel
+
+### EasyStandards
+
+- [#189] Implement sniff to avoid public properties in classes
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.7] - 2020-04-01
 
 - [#181] Update dependencies to work with Symfony 5
 
@@ -1365,3 +1383,7 @@
 [#162]: https://github.com/eonx-com/easy-monorepo/pull/162
 [v2.3.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.5...v2.3.6
 [@cainseing]: https://github.com/cainseing
+[#191]: https://github.com/eonx-com/easy-monorepo/pull/191
+[#189]: https://github.com/eonx-com/easy-monorepo/pull/189
+[#188]: https://github.com/eonx-com/easy-monorepo/pull/188
+[v2.3.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.6...v2.3.7
