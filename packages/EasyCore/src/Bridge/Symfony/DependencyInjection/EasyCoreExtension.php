@@ -47,11 +47,11 @@ final class EasyCoreExtension extends Extension
         $this->loadIfBundleExists('easy_async_listeners.yaml', EasyAsyncBundle::class);
         $this->loadIfBundleExists('api_platform/iri_converter.yaml', ApiPlatformBundle::class);
 
-        if ($config['api_platform']['custom_pagination'] ?? false) {
+        if ($config['api_platform']['custom_pagination_enabled'] ?? false) {
             $this->loadIfBundleExists('api_platform/pagination.yaml', ApiPlatformBundle::class);
         }
 
-        if ($config['api_platform']['simple_data_persister'] ?? false) {
+        if ($config['api_platform']['simple_data_persister_enabled'] ?? false) {
             $this->loadIfBundleExists('api_platform/simple_data_persister.yaml', ApiPlatformBundle::class);
         }
     }
