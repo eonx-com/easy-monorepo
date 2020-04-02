@@ -12,6 +12,7 @@ use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
 use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
 use EonX\EasyPagination\Tests\AbstractTestCase;
+use Illuminate\Http\Request;
 
 final class ServiceProvidersTest extends AbstractTestCase
 {
@@ -28,6 +29,10 @@ final class ServiceProvidersTest extends AbstractTestCase
         foreach (static::$providers as $providerClass => $resolverClass) {
             /** @var \Illuminate\Contracts\Foundation\Application $app */
             $app = $this->getApplication();
+
+            $server = ['HTTP_HOST' => 'eonx.com'];
+            $app->instance(Request::class, new Request($query ?? [], [], [], [], [], $server));
+
             /** @var \Illuminate\Support\ServiceProvider $provider */
             $provider = new $providerClass($app);
 

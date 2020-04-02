@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests;
 
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
+use EonX\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider;
 use EonX\EasyPsr7Factory\EasyPsr7Factory;
 use Laravel\Lumen\Application;
 use Mockery\MockInterface;
@@ -60,8 +61,7 @@ abstract class AbstractTestCase extends TestCase
         }
 
         $app = $this->app = new Application(__DIR__);
-
-        $app->instance(ServerRequestInterface::class, $this->createServerRequest());
+        $app->register(EasyPsr7FactoryServiceProvider::class);
 
         return $app;
     }
