@@ -22,13 +22,14 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
         EntityManagerInterface $manager,
         StartSizeDataInterface $startSizeData,
         string $from,
-        string $fromAlias
+        string $fromAlias,
+        ?string $path = null
     ) {
         $this->from = $from;
         $this->fromAlias = $fromAlias;
         $this->manager = $manager;
 
-        parent::__construct($startSizeData);
+        parent::__construct($startSizeData, $path);
     }
 
     protected function doCreateQueryBuilder(): QueryBuilder

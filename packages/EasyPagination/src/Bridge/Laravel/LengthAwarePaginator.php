@@ -37,6 +37,16 @@ final class LengthAwarePaginator implements LengthAwarePaginatorInterface
         return $this->illuminatePaginator->perPage();
     }
 
+    public function getNextPageUrl(): ?string
+    {
+        return $this->illuminatePaginator->nextPageUrl();
+    }
+
+    public function getPreviousPageUrl(): ?string
+    {
+        return $this->illuminatePaginator->previousPageUrl();
+    }
+
     public function getTotalItems(): int
     {
         return $this->illuminatePaginator->total();

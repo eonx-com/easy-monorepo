@@ -15,6 +15,10 @@ interface LengthAwarePaginatorInterface
 
     public function getItemsPerPage(): int;
 
+    public function getNextPageUrl(): ?string;
+
+    public function getPreviousPageUrl(): ?string;
+
     public function getTotalItems(): int;
 
     public function getTotalPages(): int;

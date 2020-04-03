@@ -21,12 +21,12 @@ final class ArrayPaginator extends AbstractLengthAwarePaginator
     /**
      * @param mixed[] $items
      */
-    public function __construct(array $items, int $total, StartSizeDataInterface $startSizeData)
+    public function __construct(array $items, int $total, StartSizeDataInterface $startSizeData, ?string $path = null)
     {
         $this->items = $items;
         $this->total = $total;
 
-        parent::__construct($startSizeData);
+        parent::__construct($startSizeData, $path);
     }
 
     /**

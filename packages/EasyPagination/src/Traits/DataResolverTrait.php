@@ -16,7 +16,12 @@ trait DataResolverTrait
     private function createStartSizeData(StartSizeConfigInterface $config, $data): StartSizeDataInterface
     {
         if (\is_array($data) === false) {
-            return new StartSizeData($config->getStartDefault(), $config->getSizeDefault());
+            return new StartSizeData(
+                $config->getStartDefault(),
+                $config->getSizeDefault(),
+                $config->getStartAttribute(),
+                $config->getSizeAttribute()
+            );
         }
 
         $start = empty($data[$config->getStartAttribute()])
@@ -27,6 +32,6 @@ trait DataResolverTrait
             ? $config->getSizeDefault()
             : (int)$data[$config->getSizeAttribute()];
 
-        return new StartSizeData($start, $size);
+        return new StartSizeData($start, $size, $config->getStartAttribute(), $config->getSizeAttribute());
     }
 }

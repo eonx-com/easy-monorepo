@@ -37,11 +37,12 @@ final class EloquentLengthAwarePaginator extends AbstractTransformableLengthAwar
 
     public function __construct(
         Model $model,
-        StartSizeDataInterface $startSizeData
+        StartSizeDataInterface $startSizeData,
+        ?string $path = null
     ) {
         $this->model = $model;
 
-        parent::__construct($startSizeData);
+        parent::__construct($startSizeData, $path);
     }
 
     public function getTotalItems(): int
