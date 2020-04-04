@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Bridge\Symfony;
 
+use EonX\EasyPagination\Interfaces\StartSizeDataFactoryInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
@@ -71,6 +72,23 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         $kernel->boot();
 
         self::assertInstanceOf($instance, $kernel->getContainer()->get(StartSizeDataResolverInterface::class));
+    }
+
+    public function testStartSizeDataFactory(): void
+    {
+        $kernel = new KernelStub(__DIR__ . '/fixtures/data/in_query_page_perPage_1_15.yaml');
+        KernelStub::setRequest($this->createRequest());
+        $kernel->boot();
+
+        $factory = $kernel->getContainer()->get(StartSizeDataFactoryInterface::class);
+        $startSizeData = $factory->create();
+
+        self::assertInstanceOf(StartSizeDataInterface::class, $startSizeData);
+        self::assertEquals(1, $startSizeData->getStart());
+        self::assertEquals(15, $startSizeData->getSize());
+        self::assertEquals('page', $startSizeData->getStartAttribute());
+        self::assertEquals('perPage', $startSizeData->getSizeAttribute());
+        self::assertEquals('http://eonx.com/', $startSizeData->getUrl());
     }
 
     /**

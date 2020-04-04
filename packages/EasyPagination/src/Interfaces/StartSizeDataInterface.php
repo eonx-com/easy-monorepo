@@ -13,4 +13,6 @@ interface StartSizeDataInterface
     public function getStart(): int;
 
     public function getStartAttribute(): string;
+
+    public function getUrl(): string;
 }

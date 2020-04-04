@@ -20,46 +20,42 @@ final class ArrayPaginatorTest extends AbstractTestCase
             10,
             new StartSizeData(1, 5),
             null,
-            '/?page=2&perPage=5'
+            '/?page=2&perPage=5',
         ];
 
         yield 'Prev: yes, Next: yes' => [
             10,
             new StartSizeData(2, 2),
             '/?page=1&perPage=2',
-            '/?page=3&perPage=2'
+            '/?page=3&perPage=2',
         ];
 
         yield 'Prev: yes, Next: yes (with query)' => [
             10,
-            new StartSizeData(2, 2),
+            new StartSizeData(2, 2, null, null, '/?arr=1'),
             '/?arr=1&page=1&perPage=2',
             '/?arr=1&page=3&perPage=2',
-            '/?arr=1'
         ];
 
         yield 'Prev: yes, Next: yes (with fragment)' => [
             10,
-            new StartSizeData(2, 2),
+            new StartSizeData(2, 2, null, null, '/#frag'),
             '/?page=1&perPage=2#frag',
             '/?page=3&perPage=2#frag',
-            '/#frag'
         ];
 
         yield 'Prev: yes, Next: yes (with query, fragment)' => [
             10,
-            new StartSizeData(2, 2),
+            new StartSizeData(2, 2, null, null, '/?myAttr=1#frag'),
             '/?myAttr=1&page=1&perPage=2#frag',
             '/?myAttr=1&page=3&perPage=2#frag',
-            '/?myAttr=1#frag'
         ];
 
         yield 'Prev: yes, Next: yes (with scheme, host, query, fragment)' => [
             10,
-            new StartSizeData(2, 2),
+            new StartSizeData(2, 2, null, null, 'http://eonx.com/?myAttr=1#frag'),
             'http://eonx.com/?myAttr=1&page=1&perPage=2#frag',
             'http://eonx.com/?myAttr=1&page=3&perPage=2#frag',
-            'http://eonx.com/?myAttr=1#frag'
         ];
     }
 
@@ -67,7 +63,7 @@ final class ArrayPaginatorTest extends AbstractTestCase
     {
         $this->expectException(InvalidPathException::class);
 
-        $paginator = new ArrayPaginator([], 10, new StartSizeData(1, 2), 'http:///');
+        $paginator = new ArrayPaginator([], 10, new StartSizeData(1, 2, null, null, 'http:///'));
         $paginator->getNextPageUrl();
     }
 
@@ -86,10 +82,9 @@ final class ArrayPaginatorTest extends AbstractTestCase
         int $total,
         StartSizeData $data,
         ?string $previousUrl = null,
-        ?string $nextUrl = null,
-        ?string $path = null
+        ?string $nextUrl = null
     ): void {
-        $paginator = new ArrayPaginator([], $total, $data, $path);
+        $paginator = new ArrayPaginator([], $total, $data);
 
         self::assertEquals($previousUrl, $paginator->getPreviousPageUrl());
         self::assertEquals($nextUrl, $paginator->getNextPageUrl());

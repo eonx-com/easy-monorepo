@@ -22,10 +22,9 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
         Connection $conn,
         string $from,
         StartSizeDataInterface $startSizeData,
-        ?string $fromAlias = null,
-        ?string $path = null
+        ?string $fromAlias = null
     ) {
-        parent::__construct($startSizeData, $path);
+        parent::__construct($startSizeData);
 
         $this->conn = $conn;
         $this->from = $from;

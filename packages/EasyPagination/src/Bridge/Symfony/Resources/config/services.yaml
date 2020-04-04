@@ -28,6 +28,10 @@ services:
         class: EonX\EasyPagination\Data\StartSizeData
         factory: '@EonX\EasyPagination\Bridge\Symfony\Factories\StartSizeDataFactory'
 
+    # Data Factory to be used by apps
+    EonX\EasyPagination\Interfaces\StartSizeDataFactoryInterface:
+        class: EonX\EasyPagination\Factories\StartSizeDataFactory
+
     # Resolvers
     EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver:
         arguments:

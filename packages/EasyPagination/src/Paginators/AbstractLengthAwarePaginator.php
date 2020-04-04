@@ -11,52 +11,28 @@ use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 abstract class AbstractLengthAwarePaginator implements LengthAwarePaginatorInterface
 {
     /**
-     * @var string
+     * @var \EonX\EasyPagination\Interfaces\StartSizeDataInterface
      */
-    protected $path;
+    protected $paginationData;
 
     /**
      * @var int
      */
-    protected $size;
+    private $totalPages;
 
-    /**
-     * @var string
-     */
-    protected $sizeAttr;
-
-    /**
-     * @var int
-     */
-    protected $start;
-
-    /**
-     * @var string
-     */
-    protected $startAttr;
-
-    /**
-     * @var int
-     */
-    protected $totalPages;
-
-    public function __construct(StartSizeDataInterface $startSizeData, ?string $path = null)
+    public function __construct(StartSizeDataInterface $startSizeData)
     {
-        $this->start = $startSizeData->getStart();
-        $this->startAttr = $startSizeData->getStartAttribute();
-        $this->size = $startSizeData->getSize();
-        $this->sizeAttr = $startSizeData->getSizeAttribute();
-        $this->path = $path ?? '/';
+        $this->paginationData = $startSizeData;
     }
 
     public function getCurrentPage(): int
     {
-        return $this->start;
+        return $this->paginationData->getStart();
     }
 
     public function getItemsPerPage(): int
     {
-        return $this->size;
+        return $this->paginationData->getSize();
     }
 
     public function getNextPageUrl(): ?string
@@ -90,10 +66,13 @@ abstract class AbstractLengthAwarePaginator implements LengthAwarePaginatorInter
 
     private function getUrl(int $start): string
     {
-        $urlArr = \parse_url($this->path);
+        $urlArr = \parse_url($this->paginationData->getUrl());
 
         if ($urlArr === false) {
-            throw new InvalidPathException(\sprintf('Given path "%s" is invalid and cannot be parsed', $this->path));
+            throw new InvalidPathException(\sprintf(
+                'Given path "%s" is invalid and cannot be parsed',
+                $this->paginationData->getUrl()
+            ));
         }
 
         return \sprintf(
@@ -104,11 +83,14 @@ abstract class AbstractLengthAwarePaginator implements LengthAwarePaginatorInter
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     private function parseQuery(int $start, ?string $query = null): array
     {
         $default = [
-            $this->startAttr => $start,
-            $this->sizeAttr => $this->size
+            $this->paginationData->getStartAttribute() => $start,
+            $this->paginationData->getSizeAttribute() => $this->paginationData->getSize(),
         ];
 
         if ($query === null) {
@@ -120,6 +102,9 @@ abstract class AbstractLengthAwarePaginator implements LengthAwarePaginatorInter
         return \array_merge($array, $default);
     }
 
+    /**
+     * @param mixed[] $urlArr
+     */
     private function parseUrl(array $urlArr): string
     {
         $url = [];

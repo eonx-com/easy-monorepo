@@ -28,12 +28,23 @@ final class StartSizeData implements StartSizeDataInterface
      */
     private $startAttribute;
 
-    public function __construct(int $start, int $size, ?string $startAttribute = null, ?string $sizeAttribute = null)
-    {
+    /**
+     * @var string
+     */
+    private $url;
+
+    public function __construct(
+        int $start,
+        int $size,
+        ?string $startAttribute = null,
+        ?string $sizeAttribute = null,
+        ?string $url = null
+    ) {
         $this->start = $start;
         $this->size = $size;
         $this->startAttribute = $startAttribute ?? 'page';
         $this->sizeAttribute = $sizeAttribute ?? 'perPage';
+        $this->url = $url ?? '/';
     }
 
     public function getSize(): int
@@ -54,5 +65,10 @@ final class StartSizeData implements StartSizeDataInterface
     public function getStartAttribute(): string
     {
         return $this->startAttribute;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
     }
 }
