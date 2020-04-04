@@ -8,7 +8,7 @@ use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 abstract class AbstractDataPersister implements DataPersisterInterface
 {
     /**
-     * @var \ApiPlatform\Core\DataPersister\DataPersisterInterface
+     * @var mixed
      */
     protected $dataPersister;
 
