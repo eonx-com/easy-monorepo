@@ -15,9 +15,9 @@ abstract class AbstractDataPersister implements DataPersisterInterface
     /**
      * AbstractDataPersister constructor.
      *
-     * @param \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister
+     * @param mixed $dataPersister
      */
-    public function __construct(DataPersisterInterface $dataPersister)
+    public function __construct($dataPersister)
     {
         $this->dataPersister = $dataPersister;
     }
