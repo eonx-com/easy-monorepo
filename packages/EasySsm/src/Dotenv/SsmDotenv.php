@@ -9,11 +9,21 @@ use EonX\EasySsm\Services\Dotenv\SsmDotenvInterface;
 
 final class SsmDotenv
 {
-    public function loadEnv(?string $path = null): void
+    /**
+     * @var \EonX\EasySsm\HttpKernel\EasySsmKernel
+     */
+    private $kernel;
+
+    public function __construct(?EasySsmKernel $kernel = null)
     {
-        $kernel = new EasySsmKernel([__DIR__ . '/../../config/dotenv_loader.yaml']);
+        $kernel = $kernel ?? new EasySsmKernel([__DIR__ . '/../../config/dotenv_loader.yaml']);
         $kernel->boot();
 
-        $kernel->getContainer()->get(SsmDotenvInterface::class)->loadEnv($path);
+        $this->kernel = $kernel;
+    }
+
+    public function loadEnv(?string $path = null): void
+    {
+        $this->kernel->getContainer()->get(SsmDotenvInterface::class)->loadEnv($path);
     }
 }

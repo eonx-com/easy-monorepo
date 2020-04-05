@@ -45,7 +45,7 @@ final class CredentialsProvider implements CredentialsProviderInterface
         }
 
         if (isset($credentials['key']) === false || isset($credentials['secret']) === false) {
-            $credentials['profile'] = $this->getProfile();
+            $return['profile'] = $this->getProfile();
         }
 
         return $return;

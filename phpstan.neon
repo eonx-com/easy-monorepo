@@ -209,6 +209,16 @@ parameters:
         - message: '#Parameter \#1 \$path of method EonX\\EasySsm\\Services\\Dotenv\\SsmDotenvInterface\:\:loadEnv\(\) expects string\|null, array<string\>\|bool\|string\|null given#'
           path: packages/EasySsm/src/Console/Commands/ExportEnvsCommand.php
 
+        # ---- EasySsm ----
+        - message: '#Parameter \#1 \$stream of class Symfony\\Component\\Console\\Output\\StreamOutput constructor expects resource, resource\|false given#'
+          path: packages/EasySsm/tests/Services/Dotenv/Loaders/ConsoleOutputLoaderTest.php
+
+        - message: '#Return type \(array\) of method EonX\\EasySsm\\Tests\\Stubs\\BaseSsmClientStub\:\:getPaginator\(\) should be compatible with return type \(Aws\\ResultPaginator\) of method Aws\\Aws(Client|ClientInterface)\:\:getPaginator\(\)#'
+          path: packages/EasySsm/tests/Stubs/BaseSsmClientStub.php
+
+        - message: '#Return type \(void\) of method EonX\\EasySsm\\Tests\\Stubs\\BaseSsmClientStub\:\:(delete|put)Parameter\(\) should be compatible with return type \(Aws\\Result\) of method Aws\\Ssm\\SsmClient\:\:(delete|put)Parameter\(\)#'
+          path: packages/EasySsm/tests/Stubs/BaseSsmClientStub.php
+
         # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
           path: packages/EasyTest/src/Console/Commands
