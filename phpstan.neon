@@ -206,6 +206,9 @@ parameters:
         - message: '#Parameter \#1 \$roles of method EonX\\EasySecurity\\Interfaces\\ContextInterface\:\:setRoles\(\) expects array<EonX\\EasySecurity\\Interfaces\\RoleInterface\|string\>\|EonX\\EasySecurity\\Interfaces\\RoleInterface\|string, \(array<EonX\\EasySecurity\\Interfaces\\RoleInterface\>\)\|null given#'
           path: packages/EasySecurity/src/Modifiers/RolesFromJwtModifier.php
 
+        - message: '#Parameter \#1 \$path of method EonX\\EasySsm\\Services\\Dotenv\\SsmDotenvInterface\:\:loadEnv\(\) expects string\|null, array<string\>\|bool\|string\|null given#'
+          path: packages/EasySsm/src/Console/Commands/ExportEnvsCommand.php
+
         # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
           path: packages/EasyTest/src/Console/Commands
