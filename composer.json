@@ -6,6 +6,7 @@
     "bin": [
         "packages/EasyCfhighlander/bin/easy-cfhighlander",
         "packages/EasyDocker/bin/easy-docker",
+        "packages/EasySsm/bin/easy-ssm",
         "packages/EasyTest/bin/easy-test"
     ],
     "require": {
@@ -18,6 +19,7 @@
         "psr/event-dispatcher": "^1.0",
         "ramsey/uuid": "^3.9",
         "symfony/console": "^4.2 || ^5.0",
+        "symfony/dotenv": "^4.2 || ^5.0",
         "symfony/expression-language": "^4.2 || ^5.0",
         "symfony/filesystem": "^4.2 || ^5.0",
         "symfony/finder": "^4.2 || ^5.0",
@@ -27,7 +29,8 @@
         "twig/twig": "^2.8",
         "nyholm/psr7": "^1.1",
         "symplify/autowire-array-parameter": "^7.2",
-        "nette/utils": "^3.1"
+        "nette/utils": "^3.1",
+        "aws/aws-sdk-php": "^3.134"
     },
     "require-dev": {
         "api-platform/core": "^2.5",
@@ -47,7 +50,6 @@
         "phpunit/phpunit": "^7.5 || ^8.4",
         "psr/container": "^1.0",
         "symfony/symfony": "^4.2 || ^5.0",
-        "vlucas/phpdotenv": "^3.3",
         "symplify/monorepo-builder": "^7.2",
         "symplify/changelog-linker": "^7.2",
         "sensiolabs/security-checker": "^5.0",
@@ -74,6 +76,7 @@
             "EonX\\EasyRepository\\": "packages/EasyRepository/src",
             "EonX\\EasySecurity\\": "packages/EasySecurity/src",
             "EonX\\EasySchedule\\": "packages/EasySchedule/src",
+            "EonX\\EasySsm\\": "packages/EasySsm/src",
             "EonX\\EasyStandard\\": "packages/EasyStandard/src",
             "EonX\\EasyTest\\": "packages/EasyTest/src"
         }
@@ -96,6 +99,7 @@
             "EonX\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
             "EonX\\EasySchedule\\Tests\\": "packages/EasySchedule/tests",
+            "EonX\\EasySsm\\Tests\\": "packages/EasySsm/tests",
             "EonX\\EasyStandard\\Tests\\": "packages/EasyStandard/tests",
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests"
         }
@@ -116,6 +120,7 @@
         "eonx-com/easy-security": "self.version",
         "eonx-com/easy-test": "self.version",
         "eonx-com/easy-schedule": "self.version",
+        "eonx-com/easy-ssm": "self.version",
         "eonx-com/easy-standard": "self.version",
         "eonx-com/easy-async": "self.version"
     },
