@@ -7,9 +7,6 @@ use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\AbstractDataPersister
 
 final class DataPersisterStub extends AbstractDataPersister
 {
-    /**
-     * @inheritDoc
-     */
     protected function getApiResourceClass(): string
     {
         return EntityStub::class;

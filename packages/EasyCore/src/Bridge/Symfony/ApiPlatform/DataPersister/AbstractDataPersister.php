@@ -10,45 +10,34 @@ abstract class AbstractDataPersister implements DataPersisterInterface
     /**
      * @var mixed
      */
-    protected $dataPersister;
+    protected $decorated;
 
-    /**
-     * AbstractDataPersister constructor.
-     *
-     * @param mixed $dataPersister
-     */
-    public function __construct($dataPersister)
+    public function __construct(DataPersisterInterface $decorated)
     {
-        $this->dataPersister = $dataPersister;
+        $this->decorated = $decorated;
     }
 
     /**
-     * Persists the data.
-     *
      * @param mixed $data
      *
      * @return object|void
      */
     public function persist($data)
     {
-        return $this->dataPersister->persist($data);
+        return $this->decorated->persist($data);
     }
 
     /**
-     * Removes the data.
-     *
      * @param mixed $data
      *
      * @return mixed
      */
     public function remove($data)
     {
-        return $this->dataPersister->remove($data);
+        return $this->decorated->remove($data);
     }
 
     /**
-     * Is the data supported by the persister?
-     *
      * @param mixed $data
      *
      * @return bool
@@ -61,8 +50,6 @@ abstract class AbstractDataPersister implements DataPersisterInterface
     }
 
     /**
-     * Returns entity class name.
-     *
      * @return string
      */
     abstract protected function getApiResourceClass(): string;

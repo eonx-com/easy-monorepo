@@ -7,9 +7,6 @@ use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\AbstractContextDataPe
 
 final class ContextDataPersisterStub extends AbstractContextDataPersister
 {
-    /**
-     * @inheritDoc
-     */
     protected function getApiResourceClass(): string
     {
         return EntityStub::class;

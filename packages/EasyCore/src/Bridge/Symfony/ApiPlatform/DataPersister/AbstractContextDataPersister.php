@@ -10,51 +10,38 @@ abstract class AbstractContextDataPersister implements ContextAwareDataPersister
     /**
      * @var mixed
      */
-    protected $dataPersister;
+    protected $decorated;
 
-    /**
-     * AbstractContextDataPersister constructor.
-     *
-     * @param mixed $dataPersister
-     */
-    public function __construct($dataPersister)
+    public function __construct(ContextAwareDataPersisterInterface $decorated)
     {
-        $this->dataPersister = $dataPersister;
+        $this->decorated = $decorated;
     }
 
     /**
-     * Persist the data.
-     *
      * @param mixed $data
      * @param null|mixed[] $context
      *
-     * @return object|void
+     * @return object
      */
     public function persist($data, ?array $context = null)
     {
-        return $this->dataPersister->persist($data, $context);
+        return $this->decorated->persist($data, $context ?? []);
     }
 
     /**
-     * Removes the data.
-     *
      * @param mixed $data
      * @param null|mixed[] $context
      *
-     * @return mixed
+     * @return object
      */
     public function remove($data, ?array $context = null)
     {
-        return $this->dataPersister->remove($data, $context);
+        return $this->decorated->remove($data, $context ?? []);
     }
 
     /**
-     * Check if supported entity.
-     *
      * @param mixed $data
      * @param null|mixed[] $context
-     *
-     * @return bool
      */
     public function supports($data, ?array $context = null): bool
     {
@@ -63,10 +50,5 @@ abstract class AbstractContextDataPersister implements ContextAwareDataPersister
         return $data instanceof $entity;
     }
 
-    /**
-     * Returns entity class name.
-     *
-     * @return string
-     */
     abstract protected function getApiResourceClass(): string;
 }
