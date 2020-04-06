@@ -29,12 +29,21 @@ final class ExportEnvsCommand extends AbstractCommand
         $this
             ->setName('export-envs')
             ->setDescription('Export SSM parameters to env variables')
+            ->addOption(
+                'strict',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Determine if command should fail in case parameters cannot be fetched from SSM'
+            )
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'SSM path to get the params from');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->ssmDotenv->loadEnv($input->getOption('path') ?? null);
+        $strict = $input->getOption('strict') ?? null ? (bool)$input->getOption('strict') : false;
+        $path = $input->getOption('path') ?? null ? (string)$input->getOption('path') : null;
+
+        $this->ssmDotenv->setStrict($strict)->loadEnv($path);
 
         return 0;
     }

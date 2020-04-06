@@ -16,11 +16,17 @@ final class SsmClientStub implements SsmClientInterface
     private $parameters;
 
     /**
+     * @var bool
+     */
+    private $throws;
+
+    /**
      * @param null|\EonX\EasySsm\Services\Aws\Data\SsmParameter[] $parameters
      */
-    public function __construct(?array $parameters = null)
+    public function __construct(?array $parameters = null, ?bool $throws = null)
     {
         $this->parameters = $this->formatParameters($parameters ?? []);
+        $this->throws = $throws ?? false;
     }
 
     public function applyDiff(Diff $diff): void
@@ -29,9 +35,15 @@ final class SsmClientStub implements SsmClientInterface
 
     /**
      * @return \EonX\EasySsm\Services\Aws\Data\SsmParameter[]
+     *
+     * @throws \Exception
      */
     public function getAllParameters(?string $path = null): array
     {
+        if ($this->throws) {
+            throw new \Exception('something went wrong');
+        }
+
         return $this->parameters;
     }
 

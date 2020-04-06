@@ -206,9 +206,6 @@ parameters:
         - message: '#Parameter \#1 \$roles of method EonX\\EasySecurity\\Interfaces\\ContextInterface\:\:setRoles\(\) expects array<EonX\\EasySecurity\\Interfaces\\RoleInterface\|string\>\|EonX\\EasySecurity\\Interfaces\\RoleInterface\|string, \(array<EonX\\EasySecurity\\Interfaces\\RoleInterface\>\)\|null given#'
           path: packages/EasySecurity/src/Modifiers/RolesFromJwtModifier.php
 
-        - message: '#Parameter \#1 \$path of method EonX\\EasySsm\\Services\\Dotenv\\SsmDotenvInterface\:\:loadEnv\(\) expects string\|null, array<string\>\|bool\|string\|null given#'
-          path: packages/EasySsm/src/Console/Commands/ExportEnvsCommand.php
-
         # ---- EasySsm ----
         - message: '#Parameter \#1 \$stream of class Symfony\\Component\\Console\\Output\\StreamOutput constructor expects resource, resource\|false given#'
           path: packages/EasySsm/tests/Services/Dotenv/Loaders/ConsoleOutputLoaderTest.php
@@ -218,6 +215,9 @@ parameters:
 
         - message: '#Return type \(void\) of method EonX\\EasySsm\\Tests\\Stubs\\BaseSsmClientStub\:\:(delete|put)Parameter\(\) should be compatible with return type \(Aws\\Result\) of method Aws\\Ssm\\SsmClient\:\:(delete|put)Parameter\(\)#'
           path: packages/EasySsm/tests/Stubs/BaseSsmClientStub.php
+
+        - message: '#Cannot cast array<string\>\|bool\|string\|null to string#'
+          path: packages/EasySsm/src/Console/Commands/ExportEnvsCommand.php
 
         # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
