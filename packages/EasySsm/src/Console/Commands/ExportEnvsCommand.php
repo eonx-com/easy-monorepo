@@ -40,6 +40,8 @@ final class ExportEnvsCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $output->writeln(\print_r($this->awsCredentials->getCredentials(), true));
+
         $strict = $input->getOption('strict') ?? null ? (bool)$input->getOption('strict') : false;
         $path = $input->getOption('path') ?? null ? (string)$input->getOption('path') : null;
 

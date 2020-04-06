@@ -67,7 +67,7 @@ abstract class AbstractCommand extends Command
     /**
      * @var \EonX\EasySsm\Services\Aws\CredentialsProviderInterface
      */
-    private $awsCredentials;
+    protected $awsCredentials;
 
     public function __construct(
         CredentialsProviderInterface $awsCredentials,
