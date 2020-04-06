@@ -7,6 +7,7 @@ namespace EonX\EasySsm\Helpers;
 use EonX\EasySsm\Services\Aws\Data\SsmParameter;
 use EonX\EasySsm\Services\Dotenv\Data\EnvData;
 use EonX\EasySsm\Services\Parameters\Data\Diff;
+use Nette\Utils\Strings;
 
 final class Parameters
 {
@@ -94,6 +95,9 @@ final class Parameters
     public function removePathFromName(array $parameters, string $path): array
     {
         $array = [];
+
+        // Make sure the path ends with a slash to prevent to export env vars starting with slash
+        $path = Strings::endsWith($path, '/') ? $path : \sprintf('%s/', $path);
 
         foreach ($parameters as $parameter) {
             $array[] = new SsmParameter(
