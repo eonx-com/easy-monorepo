@@ -10,11 +10,6 @@ use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\EntityStub;
 
 final class AbstractDataPersisterTest extends AbstractSymfonyTestCase
 {
-    /**
-     * Should persist.
-     *
-     * @return void
-     */
     public function testPersist(): void
     {
         $entity = new EntityStub();
@@ -29,11 +24,6 @@ final class AbstractDataPersisterTest extends AbstractSymfonyTestCase
         ))->persist($entity));
     }
 
-    /**
-     * Should remove.
-     *
-     * @return void
-     */
     public function testRemove(): void
     {
         $entity = new EntityStub();
@@ -48,11 +38,6 @@ final class AbstractDataPersisterTest extends AbstractSymfonyTestCase
         ))->remove($entity));
     }
 
-    /**
-     * Should support.
-     *
-     * @return void
-     */
     public function testSupports(): void
     {
         self::assertTrue((new DataPersisterStub(
