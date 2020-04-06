@@ -9,7 +9,7 @@
 
 ### Require package (Composer)
 
-We recommend to use [Composer][3] to manage your dependencies. You can require this package as follows:
+We recommend to use [Composer][1] to manage your dependencies. You can require this package as follows:
 
 ```bash
 $ composer require --dev eonx-com/easy-test

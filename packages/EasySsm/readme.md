@@ -9,7 +9,7 @@
 
 ### Require package (Composer)
 
-We recommend to use [Composer][3] to manage your dependencies. You can require this package as follows:
+We recommend to use [Composer][1] to manage your dependencies. You can require this package as follows:
 
 ```bash
 $ composer require eonx-com/easy-ssm
@@ -17,12 +17,12 @@ $ composer require eonx-com/easy-ssm
 
 ### Commands
 
-- *apply:* Apply local changes to remote AWS ParameterStore
-- *diff:* Resolve diff between local parameters and AWS ParameterStore
-- *export-envs:* Fetch parameters from AWS ParameterStore and output shell syntax to export them as env variables
-- *init:* Initialise local parameters from AWS ParameterStore
-- *local-apply:* Apply changes locally when "*_old" file has been generated
-- *local-diff:* Resolve diff locally when "*_old" file has been generated
+- _apply:_ Apply local changes to remote AWS ParameterStore
+- _diff:_ Resolve diff between local parameters and AWS ParameterStore
+- _export-envs:_ Fetch parameters from AWS ParameterStore and output shell syntax to export them as env variables
+- _init:_ Initialise local parameters from AWS ParameterStore
+- _local-apply:_ Apply changes locally when "*_old" file has been generated
+- _local-diff:_ Resolve diff locally when "*_old" file has been generated
 
 ### Dotenv integration
 
