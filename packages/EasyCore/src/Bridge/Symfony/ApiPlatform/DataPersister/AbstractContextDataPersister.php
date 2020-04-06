@@ -17,32 +17,16 @@ abstract class AbstractContextDataPersister implements ContextAwareDataPersister
         $this->decorated = $decorated;
     }
 
-    /**
-     * @param mixed $data
-     * @param null|mixed[] $context
-     *
-     * @return object
-     */
     public function persist($data, ?array $context = null)
     {
         return $this->decorated->persist($data, $context ?? []);
     }
 
-    /**
-     * @param mixed $data
-     * @param null|mixed[] $context
-     *
-     * @return object
-     */
     public function remove($data, ?array $context = null)
     {
         return $this->decorated->remove($data, $context ?? []);
     }
 
-    /**
-     * @param mixed $data
-     * @param null|mixed[] $context
-     */
     public function supports($data, ?array $context = null): bool
     {
         $entity = $this->getApiResourceClass();
