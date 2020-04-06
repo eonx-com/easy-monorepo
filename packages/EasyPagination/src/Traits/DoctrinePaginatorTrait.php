@@ -101,8 +101,8 @@ trait DoctrinePaginatorTrait
         }
 
         $queryBuilder
-            ->setFirstResult(($this->start - 1) * $this->size)
-            ->setMaxResults($this->size);
+            ->setFirstResult(($this->paginationData->getStart() - 1) * $this->paginationData->getSize())
+            ->setMaxResults($this->paginationData->getSize());
 
         return $this->doGetResult($queryBuilder);
     }

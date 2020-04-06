@@ -35,10 +35,8 @@ final class EloquentLengthAwarePaginator extends AbstractTransformableLengthAwar
      */
     private $select;
 
-    public function __construct(
-        Model $model,
-        StartSizeDataInterface $startSizeData
-    ) {
+    public function __construct(Model $model, StartSizeDataInterface $startSizeData)
+    {
         $this->model = $model;
 
         parent::__construct($startSizeData);
@@ -88,7 +86,7 @@ final class EloquentLengthAwarePaginator extends AbstractTransformableLengthAwar
             \call_user_func($this->getItemsCriteria, $queryBuilder);
         }
 
-        $queryBuilder->forPage($this->start, $this->size);
+        $queryBuilder->forPage($this->paginationData->getStart(), $this->paginationData->getSize());
 
         return \iterator_to_array($queryBuilder->get($this->getSelect())->getIterator());
     }

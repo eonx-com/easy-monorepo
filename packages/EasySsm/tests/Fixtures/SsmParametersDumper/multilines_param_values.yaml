@@ -1,0 +1,8 @@
+not_secure: |
+    my
+    multiline
+    value
+secure: !secure |
+    my
+    multiline
+    value
