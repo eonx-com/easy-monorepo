@@ -2,7 +2,18 @@
 
 <!-- dumped content start -->
 
-## v2.3.9 - 2020-04-06
+## v2.3.10 - 2020-04-06
+
+### EasySsm
+
+- [#199] Handle incomplete SSM path, quote env export and add column
+- [#198] Add strict option and logging support
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.9] - 2020-04-06
 
 ### EasyCore
 
@@ -1411,3 +1422,6 @@
 [#193]: https://github.com/eonx-com/easy-monorepo/pull/193
 [#192]: https://github.com/eonx-com/easy-monorepo/pull/192
 [v2.3.8]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.7...v2.3.8
+[#199]: https://github.com/eonx-com/easy-monorepo/pull/199
+[#198]: https://github.com/eonx-com/easy-monorepo/pull/198
+[v2.3.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.8...v2.3.9
