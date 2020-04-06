@@ -18,7 +18,6 @@ final class CredentialsProviderTest extends AbstractTestCase
             [
                 'version' => 'latest',
                 'region' => 'ap-southeast-2',
-                'profile' => 'default',
             ],
         ];
 

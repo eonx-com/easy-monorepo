@@ -24,7 +24,9 @@ final class ConsoleOutputLoader extends AbstractEnvLoader
     protected function doLoadEnv(array $envs): void
     {
         foreach ($envs as $env) {
-            $this->output->writeln(\sprintf('export %s=%s', $env->getName(), $env->getValue()));
+            $value = \str_replace("'", "'\\''", $env->getValue());
+
+            $this->output->writeln(\sprintf('export %s=\'%s\';', $env->getName(), $value));
         }
     }
 }
