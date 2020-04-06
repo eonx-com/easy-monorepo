@@ -18,7 +18,7 @@ final class ConsoleOutputLoaderTest extends AbstractTestCase
     {
         yield '1 env data' => [
             [new EnvData('env', 'value')],
-            "export env=value\n",
+            "export env='value';\n",
         ];
 
         yield '2 env data' => [
@@ -26,7 +26,17 @@ final class ConsoleOutputLoaderTest extends AbstractTestCase
                 new EnvData('env', 'value'),
                 new EnvData('env2', 'value'),
             ],
-            "export env=value\nexport env2=value\n",
+            "export env='value';\nexport env2='value';\n",
+        ];
+
+        yield 'quoted env value' => [
+            [new EnvData('env', "valu'e")],
+            "export env='valu'\''e';\n",
+        ];
+
+        yield 'multiline env value' => [
+            [new EnvData('env', "value\nnewline\n")],
+            "export env='value\nnewline\n';\n",
         ];
     }
 
