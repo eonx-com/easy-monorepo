@@ -2,7 +2,26 @@
 
 <!-- dumped content start -->
 
-## v2.3.8 - 2020-04-02
+## v2.3.9 - 2020-04-06
+
+### EasyCore
+
+- [#193] Non-existent service "container" updated to "service_container" from simple_data_persister.yaml, Thanks to [@AlbertLabarento]
+- [#192] Sync DI\Configuration to DI\EasyCoreExtension api_platform configuration keys, Thanks to [@AlbertLabarento]
+
+### EasyPagination
+
+- [#196] Implement next/previous pages url
+
+### EasySsm
+
+- [#197] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.8] - 2020-04-02
 
 ### EasyDecision
 
@@ -1387,3 +1406,8 @@
 [#189]: https://github.com/eonx-com/easy-monorepo/pull/189
 [#188]: https://github.com/eonx-com/easy-monorepo/pull/188
 [v2.3.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.6...v2.3.7
+[#197]: https://github.com/eonx-com/easy-monorepo/pull/197
+[#196]: https://github.com/eonx-com/easy-monorepo/pull/196
+[#193]: https://github.com/eonx-com/easy-monorepo/pull/193
+[#192]: https://github.com/eonx-com/easy-monorepo/pull/192
+[v2.3.8]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.7...v2.3.8
