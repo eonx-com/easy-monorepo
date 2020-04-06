@@ -1,0 +1,26 @@
+{
+    "name": "eonx-com/easy-ssm",
+    "description": "CLI tool to interact with AWS ParameterStore in a convenient way",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "symplify/package-builder": "^7.2",
+        "symplify/autowire-array-parameter": "^7.2",
+        "aws/aws-sdk-php": "^3.134",
+        "nette/utils": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasySsm\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasySsm\\Tests\\": "tests"
+        }
+    },
+    "bin": [
+        "bin/easy-ssm"
+    ]
+}
