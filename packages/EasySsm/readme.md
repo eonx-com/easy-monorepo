@@ -17,12 +17,12 @@ $ composer require eonx-com/easy-ssm
 
 ### Commands
 
-- _apply:_ Apply local changes to remote AWS ParameterStore
-- _diff:_ Resolve diff between local parameters and AWS ParameterStore
-- _export-envs:_ Fetch parameters from AWS ParameterStore and output shell syntax to export them as env variables
-- _init:_ Initialise local parameters from AWS ParameterStore
-- _local-apply:_ Apply changes locally when "*_old" file has been generated
-- _local-diff:_ Resolve diff locally when "*_old" file has been generated
+- **apply:** Apply local changes to remote AWS ParameterStore
+- **diff:** Resolve diff between local parameters and AWS ParameterStore
+- **export-envs:** Fetch parameters from AWS ParameterStore and output shell syntax to export them as env variables
+- **init:** Initialise local parameters from AWS ParameterStore
+- **local-apply:** Apply changes locally when "*_old" file has been generated
+- **local-diff:** Resolve diff locally when "*_old" file has been generated
 
 ### Dotenv integration
 
