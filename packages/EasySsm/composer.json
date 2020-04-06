@@ -1,6 +1,6 @@
 {
     "name": "eonx-com/easy-ssm",
-    "description": "CLI to interact easily and safely with AWS SSM parameters store",
+    "description": "CLI tool to interact with AWS ParameterStore in a convenient way",
     "type": "library",
     "license": "MIT",
     "require": {
