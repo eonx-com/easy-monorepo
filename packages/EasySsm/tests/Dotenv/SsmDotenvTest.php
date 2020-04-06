@@ -17,7 +17,7 @@ final class SsmDotenvTest extends AbstractTestCase
             __DIR__ . '/../Fixtures/Config/stub_ssm_client.yaml',
         ]);
 
-        (new SsmDotenv($kernel))->loadEnv();
+        (new SsmDotenv(null, $kernel))->loadEnv();
 
         self::assertEquals('value', $_ENV['param']);
         self::assertEquals('value', $_SERVER['param']);
