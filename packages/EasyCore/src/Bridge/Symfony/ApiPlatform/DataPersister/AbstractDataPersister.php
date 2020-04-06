@@ -7,7 +7,10 @@ use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 
 abstract class AbstractDataPersister implements DataPersisterInterface
 {
-    protected $decorated;
+    /**
+     * @var \ApiPlatform\Core\DataPersister\DataPersisterInterface
+     */
+    private $decorated;
 
     public function __construct(DataPersisterInterface $decorated)
     {
