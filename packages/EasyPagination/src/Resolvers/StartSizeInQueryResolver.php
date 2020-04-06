@@ -26,6 +26,6 @@ final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
 
     public function resolve(ServerRequestInterface $request): StartSizeDataInterface
     {
-        return $this->createStartSizeData($this->config, $request->getQueryParams());
+        return $this->createStartSizeData($this->config, $request->getQueryParams(), $request);
     }
 }

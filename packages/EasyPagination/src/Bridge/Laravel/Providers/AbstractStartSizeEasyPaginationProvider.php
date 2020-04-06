@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Bridge\Laravel\Providers;
 
 use Closure;
+use EonX\EasyPagination\Factories\StartSizeDataFactory;
+use EonX\EasyPagination\Interfaces\StartSizeDataFactoryInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
@@ -35,8 +37,9 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/pagination.php', 'pagination');
 
-        $this->app->bind(StartSizeDataResolverInterface::class, $this->getResolverClosure());
-        $this->app->bind(StartSizeDataInterface::class, $this->getDataClosure());
+        $this->app->singleton(StartSizeDataResolverInterface::class, $this->getResolverClosure());
+        $this->app->singleton(StartSizeDataInterface::class, $this->getDataClosure());
+        $this->app->singleton(StartSizeDataFactoryInterface::class, StartSizeDataFactory::class);
     }
 
     abstract protected function getResolverClosure(): Closure;
