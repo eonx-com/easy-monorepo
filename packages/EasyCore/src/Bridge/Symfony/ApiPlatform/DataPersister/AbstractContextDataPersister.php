@@ -7,9 +7,6 @@ use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 
 abstract class AbstractContextDataPersister implements ContextAwareDataPersisterInterface
 {
-    /**
-     * @var mixed
-     */
     protected $decorated;
 
     public function __construct(ContextAwareDataPersisterInterface $decorated)

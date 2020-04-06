@@ -7,9 +7,6 @@ use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 
 abstract class AbstractDataPersister implements DataPersisterInterface
 {
-    /**
-     * @var mixed
-     */
     protected $decorated;
 
     public function __construct(DataPersisterInterface $decorated)
