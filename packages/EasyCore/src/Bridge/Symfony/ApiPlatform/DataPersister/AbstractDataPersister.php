@@ -46,8 +46,5 @@ abstract class AbstractDataPersister implements DataPersisterInterface
         return $data instanceof $entity;
     }
 
-    /**
-     * @return string
-     */
     abstract protected function getApiResourceClass(): string;
 }
