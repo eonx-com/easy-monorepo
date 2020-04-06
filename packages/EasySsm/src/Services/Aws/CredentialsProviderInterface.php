@@ -11,5 +11,5 @@ interface CredentialsProviderInterface
      */
     public function getCredentials(): array;
 
-    public function getProfile(): string;
+    public function getProfile(): ?string;
 }

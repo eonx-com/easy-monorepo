@@ -54,4 +54,29 @@ final class SsmDotenvTest extends AbstractTestCase
 
         self::assertEquals($expected, $envLoader->getLoadedEnvs());
     }
+
+    public function testThrowsWithStrictFalse(): void
+    {
+        $envLoader = new EnvLoaderStub();
+        $ssmClient = new SsmClientStub(null, true);
+        $ssmPathResolver = new SsmPathResolver();
+
+        $ssmDotenv = new SsmDotenv($ssmClient, $ssmPathResolver, new Parameters(), $envLoader);
+        $ssmDotenv->setStrict(false)->loadEnv();
+
+        self::assertEmpty($envLoader->getLoadedEnvs());
+    }
+
+    public function testThrowsWithStrictTrue(): void
+    {
+        $this->expectException(\Throwable::class);
+        $this->expectExceptionMessage('something went wrong');
+
+        $envLoader = new EnvLoaderStub();
+        $ssmClient = new SsmClientStub(null, true);
+        $ssmPathResolver = new SsmPathResolver();
+
+        $ssmDotenv = new SsmDotenv($ssmClient, $ssmPathResolver, new Parameters(), $envLoader);
+        $ssmDotenv->setStrict(true)->loadEnv();
+    }
 }

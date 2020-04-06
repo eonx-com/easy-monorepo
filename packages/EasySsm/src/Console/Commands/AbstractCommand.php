@@ -97,7 +97,7 @@ abstract class AbstractCommand extends Command
 
     protected function getAwsProfile(): string
     {
-        return $this->awsCredentials->getProfile();
+        return $this->awsCredentials->getProfile() ?? 'default';
     }
 
     protected function getFilename(): string

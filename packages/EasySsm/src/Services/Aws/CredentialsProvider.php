@@ -44,8 +44,10 @@ final class CredentialsProvider implements CredentialsProviderInterface
             $return['credentials'] = $credentials;
         }
 
-        if (isset($credentials['key']) === false || isset($credentials['secret']) === false) {
-            $return['profile'] = $this->getProfile();
+        $profile = $this->getProfile();
+
+        if (isset($return['credentials']) === false && empty($profile) === false) {
+            $return['profile'] = $profile;
         }
 
         return $return;
@@ -53,7 +55,7 @@ final class CredentialsProvider implements CredentialsProviderInterface
 
     public function getProfile(): string
     {
-        return (string)$this->getCredential('profile', 'AWS_PROFILE', 'default');
+        return (string)$this->getCredential('profile', 'AWS_PROFILE');
     }
 
     /**
