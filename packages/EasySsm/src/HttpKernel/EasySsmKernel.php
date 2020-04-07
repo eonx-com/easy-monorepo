@@ -44,8 +44,6 @@ final class EasySsmKernel extends Kernel implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         foreach ($container->getDefinitions() as $def) {
-            \var_dump($def->getClass());
-
             $def->setPublic(true);
         }
     }
