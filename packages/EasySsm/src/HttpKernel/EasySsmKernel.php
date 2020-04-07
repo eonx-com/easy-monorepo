@@ -33,12 +33,12 @@ final class EasySsmKernel extends Kernel implements CompilerPassInterface
 
     public function getCacheDir(): string
     {
-        return $this->getProjectDir() . '/var/kernel/' . $this->getUniqueKernelKey();
+        return \sys_get_temp_dir() . '/easy_ssm';
     }
 
     public function getLogDir(): string
     {
-        return $this->getProjectDir() . '/var/kernel/' . $this->getUniqueKernelKey() . '_logs';
+        return \sys_get_temp_dir() . '/easy_ssm_logs';
     }
 
     public function process(ContainerBuilder $container): void

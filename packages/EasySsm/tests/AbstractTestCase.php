@@ -43,8 +43,16 @@ abstract class AbstractTestCase extends TestCase
     {
         $fs = new Filesystem();
 
-        if ($fs->exists(static::$cwd)) {
-            $fs->remove(static::$cwd);
+        $toRemove = [
+            static::$cwd,
+            \sys_get_temp_dir() . '/easy_ssm',
+            \sys_get_temp_dir() . '/easy_ssm_logs',
+        ];
+
+        foreach ($toRemove as $path) {
+            if ($fs->exists($path)) {
+                $fs->remove($path);
+            }
         }
 
         parent::tearDown();

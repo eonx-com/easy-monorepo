@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Symfony\ApiPlatform\DataPersister;
@@ -19,9 +20,11 @@ final class AbstractDataPersisterTest extends AbstractSymfonyTestCase
             ->shouldBeCalledOnce()
             ->hasReturnVoid();
 
-        self::assertNull((new DataPersisterStub(
-            $dataPersister->reveal()
-        ))->persist($entity));
+        $dataPersister = $dataPersister->reveal();
+
+        /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
+
+        self::assertNull((new DataPersisterStub($dataPersister))->persist($entity));
     }
 
     public function testRemove(): void
@@ -33,15 +36,19 @@ final class AbstractDataPersisterTest extends AbstractSymfonyTestCase
             ->shouldBeCalledOnce()
             ->hasReturnVoid();
 
-        self::assertNull((new DataPersisterStub(
-            $dataPersister->reveal()
-        ))->remove($entity));
+        $dataPersister = $dataPersister->reveal();
+
+        /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
+
+        self::assertNull((new DataPersisterStub($dataPersister))->remove($entity));
     }
 
     public function testSupports(): void
     {
-        self::assertTrue((new DataPersisterStub(
-            $this->prophesize(DataPersisterInterface::class)->reveal()
-        ))->supports(new EntityStub()));
+        $dataPersister = $this->prophesize(DataPersisterInterface::class)->reveal();
+
+        /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
+
+        self::assertTrue((new DataPersisterStub($dataPersister))->supports(new EntityStub()));
     }
 }

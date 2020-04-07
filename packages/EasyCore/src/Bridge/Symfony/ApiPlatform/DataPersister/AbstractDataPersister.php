@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
@@ -17,16 +18,29 @@ abstract class AbstractDataPersister implements DataPersisterInterface
         $this->decorated = $decorated;
     }
 
+    /**
+     * @param mixed $data
+     *
+     * @return object|void
+     */
     public function persist($data)
     {
         return $this->decorated->persist($data);
     }
 
+    /**
+     * @param mixed $data
+     *
+     * @return object|void
+     */
     public function remove($data)
     {
         return $this->decorated->remove($data);
     }
 
+    /**
+     * @param mixed $data
+     */
     public function supports($data): bool
     {
         $entity = $this->getApiResourceClass();
