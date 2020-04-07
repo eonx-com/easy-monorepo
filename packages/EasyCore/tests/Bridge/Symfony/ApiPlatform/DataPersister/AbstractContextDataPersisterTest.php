@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Symfony\ApiPlatform\DataPersister;
@@ -20,9 +21,11 @@ final class AbstractContextDataPersisterTest extends AbstractSymfonyTestCase
             ->shouldBeCalledOnce()
             ->hasReturnVoid();
 
-        self::assertNull((new ContextDataPersisterStub(
-            $dataPersister->reveal()
-        ))->persist($entity, $context));
+        $dataPersister = $dataPersister->reveal();
+
+        /** @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface $dataPersister */
+
+        self::assertNull((new ContextDataPersisterStub($dataPersister))->persist($entity, $context));
     }
 
     public function testRemove(): void
@@ -35,15 +38,19 @@ final class AbstractContextDataPersisterTest extends AbstractSymfonyTestCase
             ->shouldBeCalledOnce()
             ->hasReturnVoid();
 
-        self::assertNull((new ContextDataPersisterStub(
-            $dataPersister->reveal()
-        ))->remove($entity, $context));
+        $dataPersister = $dataPersister->reveal();
+
+        /** @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface $dataPersister */
+
+        self::assertNull((new ContextDataPersisterStub($dataPersister))->remove($entity, $context));
     }
 
     public function testSupports(): void
     {
-        self::assertTrue((new ContextDataPersisterStub(
-            $this->prophesize(ContextAwareDataPersisterInterface::class)->reveal()
-        ))->supports(new EntityStub(), []));
+        $dataPersister = $this->prophesize(ContextAwareDataPersisterInterface::class)->reveal();
+
+        /** @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface $dataPersister */
+
+        self::assertTrue((new ContextDataPersisterStub($dataPersister))->supports(new EntityStub(), []));
     }
 }
