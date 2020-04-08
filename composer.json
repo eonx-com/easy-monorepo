@@ -160,6 +160,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
+        "eonx_docs": {
+            "ignore": true
+        },
         "branch-alias": {
             "dev-master": "2.1-dev"
         }
