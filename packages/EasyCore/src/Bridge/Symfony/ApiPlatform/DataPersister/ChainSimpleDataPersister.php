@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
 
-use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class ChainSimpleDataPersister implements DataPersisterInterface
+final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterface
 {
     /**
-     * @var \ApiPlatform\Core\DataPersister\DataPersisterInterface[]
+     * @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface[]
      */
     private $cache = [];
 
@@ -20,7 +20,7 @@ final class ChainSimpleDataPersister implements DataPersisterInterface
     private $container;
 
     /**
-     * @var \ApiPlatform\Core\DataPersister\DataPersisterInterface
+     * @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface
      */
     private $decorated;
 
@@ -32,7 +32,7 @@ final class ChainSimpleDataPersister implements DataPersisterInterface
     /**
      * @param mixed[] $persisters
      */
-    public function __construct(ContainerInterface $container, DataPersisterInterface $decorated, array $persisters)
+    public function __construct(ContainerInterface $container, ContextAwareDataPersisterInterface $decorated, array $persisters)
     {
         $this->container = $container;
         $this->decorated = $decorated;
@@ -44,37 +44,37 @@ final class ChainSimpleDataPersister implements DataPersisterInterface
      *
      * @return mixed
      */
-    public function persist($data)
+    public function persist($data, ?array $context = null)
     {
         return $this->getDataPersister($data)
-            ? $this->getDataPersister($data)->persist($data)
-            : $this->decorated->persist($data);
+            ? $this->getDataPersister($data)->persist($data, $context ?? [])
+            : $this->decorated->persist($data, $context ?? []);
     }
 
     /**
      * @param mixed $data
      */
-    public function remove($data): void
+    public function remove($data, ?array $context = null): void
     {
         $this->getDataPersister($data)
-            ? $this->getDataPersister($data)->remove($data)
-            : $this->decorated->remove($data);
+            ? $this->getDataPersister($data)->remove($data, $context ?? [])
+            : $this->decorated->remove($data, $context ?? []);
     }
 
     /**
      * @param mixed $data
      */
-    public function supports($data): bool
+    public function supports($data, ?array $context = null): bool
     {
         return $this->getDataPersister($data)
-            ? $this->getDataPersister($data)->supports($data)
-            : $this->decorated->supports($data);
+            ? $this->getDataPersister($data)->supports($data, $context ?? [])
+            : $this->decorated->supports($data, $context ?? []);
     }
 
     /**
      * @param mixed $data
      */
-    private function getDataPersister($data): ?DataPersisterInterface
+    private function getDataPersister($data): ?ContextAwareDataPersisterInterface
     {
         if (\is_object($data) === false) {
             return null;
