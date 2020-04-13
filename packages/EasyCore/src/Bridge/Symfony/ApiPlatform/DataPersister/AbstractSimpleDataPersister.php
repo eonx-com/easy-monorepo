@@ -21,6 +21,8 @@ abstract class AbstractSimpleDataPersister implements SimpleDataPersisterInterfa
      */
     public function supports($data): bool
     {
-        return \is_object($data) && \get_class($data) === $this->getApiResourceClass();
+        $apiResourceClass = $this->getApiResourceClass();
+
+        return $data instanceof $apiResourceClass;
     }
 }
