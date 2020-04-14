@@ -13,6 +13,7 @@ use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 
 final class ApiResourceAndSimpleDataPersisterMaker extends AbstractMaker
 {
@@ -29,6 +30,20 @@ final class ApiResourceAndSimpleDataPersisterMaker extends AbstractMaker
                 'name',
                 InputArgument::REQUIRED,
                 'The name of the ApiResource class (e.g. <fg=yellow>EwalletTransfer</>)'
+            )
+            ->addOption(
+                'resource-namespace',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The namespace for the ApiResource class',
+                'Api\\Resource\\'
+            )
+            ->addOption(
+                'persister-namespace',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The namespace for the SimpleDataPersister class',
+                'Api\\DataPersister\\'
             );
     }
 
@@ -39,16 +54,28 @@ final class ApiResourceAndSimpleDataPersisterMaker extends AbstractMaker
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
-        $resourceClassNameDetails = $generator->createClassNameDetails($input->getArgument('name'), 'Api\\Resource\\');
-        $resourcePath = $generator->generateClass(
-            $resourceClassNameDetails->getFullName(),
-            __DIR__ . '/../../Resources/skeleton/api_resource.tpl.php',
-            [
-                'snakeCaseName' => Str::asSnakeCase($resourceClassNameDetails->getShortName())
-            ]
+        $resourceClassNameDetails = $generator->createClassNameDetails(
+            $input->getArgument('name'),
+            $input->getOption('resource-namespace')
         );
 
-        $io->success(\sprintf('Generated %s', $resourcePath));
+        $resourceTpl = __DIR__ . '/../../Resources/skeleton/api_resource.tpl.php';
+        $resourceVars = ['snakeCaseName' => Str::asSnakeCase($resourceClassNameDetails->getShortName())];
+
+        $persisterName = \sprintf('%sPersister', $resourceClassNameDetails->getShortName());
+        $persisterClassNameDetails = $generator->createClassNameDetails(
+            $persisterName,
+            $input->getOption('persister-namespace')
+        );
+        $persisterTpl = __DIR__ . '/../../Resources/skeleton/simple_data_persister.tpl.php';
+        $persisterVars = [
+            'resourceFcqn' => $resourceClassNameDetails->getFullName(),
+            'resourceShortName' => $resourceClassNameDetails->getShortName(),
+        ];
+
+        $generator->generateClass($resourceClassNameDetails->getFullName(), $resourceTpl, $resourceVars);
+        $generator->generateClass($persisterClassNameDetails->getFullName(), $persisterTpl, $persisterVars);
+        $generator->writeChanges();
     }
 
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
