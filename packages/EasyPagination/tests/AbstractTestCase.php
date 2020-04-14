@@ -54,13 +54,13 @@ abstract class AbstractTestCase extends TestCase
         return (new EasyPsr7Factory())->createRequest(new Request($query ?? [], [], [], [], [], $server));
     }
 
-    protected function getApplication(): Application
+    protected function getApplication(?bool $pretendInConsole = null): Application
     {
         if ($this->app !== null) {
             return $this->app;
         }
 
-        $app = $this->app = new Application(__DIR__);
+        $app = $this->app = $this->createApplication($pretendInConsole);
         $app->register(EasyPsr7FactoryServiceProvider::class);
 
         return $app;
@@ -94,5 +94,26 @@ abstract class AbstractTestCase extends TestCase
         \Mockery::close();
 
         parent::tearDown();
+    }
+
+    private function createApplication(?bool $pretendInConsole = null): Application
+    {
+        return new class(__DIR__, $pretendInConsole) extends Application {
+            /**
+             * @var null|bool
+             */
+            private $runningInConsole;
+
+            public function __construct(?string $basePath = null, ?bool $runningInConsole = null)
+            {
+                parent::__construct($basePath);
+                $this->runningInConsole = $runningInConsole;
+            }
+
+            public function runningInConsole()
+            {
+                return $this->runningInConsole ?? false;
+            }
+        };
     }
 }
