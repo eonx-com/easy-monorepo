@@ -7,6 +7,7 @@ namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\Routing;
 use ApiPlatform\Core\Api\IriConverterInterface;
 use ApiPlatform\Core\Api\UrlGeneratorInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\NoIriItemInterface;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SelfProvidedIriItemInterface;
 
 final class IriConverter implements IriConverterInterface
 {
@@ -25,6 +26,10 @@ final class IriConverter implements IriConverterInterface
      */
     public function getIriFromItem($item, ?int $referenceType = null): string
     {
+        if ($item instanceof SelfProvidedIriItemInterface) {
+            return $item->getIri();
+        }
+
         if ($item instanceof NoIriItemInterface) {
             return '__iri_not_supported';
         }
