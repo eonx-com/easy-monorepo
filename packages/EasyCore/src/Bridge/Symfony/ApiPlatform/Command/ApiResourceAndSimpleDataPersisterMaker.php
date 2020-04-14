@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\Command;
@@ -54,19 +55,19 @@ final class ApiResourceAndSimpleDataPersisterMaker extends AbstractMaker
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
-        $resourceClassNameDetails = $generator->createClassNameDetails(
-            $input->getArgument('name'),
-            $input->getOption('resource-namespace')
-        );
+        /** @var string $name */
+        $name = $input->getArgument('name');
+        /** @var string $resourceNamespace */
+        $resourceNamespace = $input->getOption('resource-namespace');
+        /** @var string $persisterNamespace */
+        $persisterNamespace = $input->getOption('persister-namespace');
 
+        $resourceClassNameDetails = $generator->createClassNameDetails($name, $resourceNamespace);
         $resourceTpl = __DIR__ . '/../../Resources/skeleton/api_resource.tpl.php';
         $resourceVars = ['snakeCaseName' => Str::asSnakeCase($resourceClassNameDetails->getShortName())];
 
         $persisterName = \sprintf('%sPersister', $resourceClassNameDetails->getShortName());
-        $persisterClassNameDetails = $generator->createClassNameDetails(
-            $persisterName,
-            $input->getOption('persister-namespace')
-        );
+        $persisterClassNameDetails = $generator->createClassNameDetails($persisterName, $persisterNamespace);
         $persisterTpl = __DIR__ . '/../../Resources/skeleton/simple_data_persister.tpl.php';
         $persisterVars = [
             'resourceFcqn' => $resourceClassNameDetails->getFullName(),
