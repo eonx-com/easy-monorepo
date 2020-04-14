@@ -9,6 +9,7 @@ use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
+use Symfony\Bundle\MakerBundle\MakerBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -44,15 +45,16 @@ final class EasyCoreExtension extends Extension
         $this->autoconfigTag(EventListenerInterface::class, TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
         $this->autoconfigTag(SimpleDataPersisterInterface::class, TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG);
 
-        $this->loadIfBundleExists('easy_async_listeners.yaml', EasyAsyncBundle::class);
-        $this->loadIfBundleExists('api_platform/iri_converter.yaml', ApiPlatformBundle::class);
+        $this->loadIfBundlesExists('easy_async_listeners.yaml', EasyAsyncBundle::class);
+        $this->loadIfBundlesExists('api_platform/iri_converter.yaml', ApiPlatformBundle::class);
+        $this->loadIfBundlesExists('api_platform/maker_commands.yaml', [ApiPlatformBundle::class, MakerBundle::class]);
 
         if ($config['api_platform']['custom_pagination_enabled'] ?? false) {
-            $this->loadIfBundleExists('api_platform/pagination.yaml', ApiPlatformBundle::class);
+            $this->loadIfBundlesExists('api_platform/pagination.yaml', ApiPlatformBundle::class);
         }
 
         if ($config['api_platform']['simple_data_persister_enabled'] ?? false) {
-            $this->loadIfBundleExists('api_platform/simple_data_persister.yaml', ApiPlatformBundle::class);
+            $this->loadIfBundlesExists('api_platform/simple_data_persister.yaml', ApiPlatformBundle::class);
         }
     }
 
@@ -64,10 +66,17 @@ final class EasyCoreExtension extends Extension
         $this->container->registerForAutoconfiguration($interface)->addTag($tag, $attributes ?? []);
     }
 
-    private function loadIfBundleExists(string $resource, string $bundle): void
+    /**
+     * @param string|string[] $bundles
+     *
+     * @throws \Exception
+     */
+    private function loadIfBundlesExists(string $resource, $bundles): void
     {
-        if (\in_array($bundle, $this->container->getParameter('kernel.bundles'), true) === false) {
-            return;
+        foreach ((array)$bundles as $bundle) {
+            if (\in_array($bundle, $this->container->getParameter('kernel.bundles'), true) === false) {
+                return;
+            }
         }
 
         $this->loader->load($resource);
