@@ -2,7 +2,28 @@
 
 <!-- dumped content start -->
 
-## v2.3.10 - 2020-04-06
+## v2.3.11 - 2020-04-14
+
+### EasyCore
+
+- [#204] Add maker command for simple ApiResource and DataPersister
+- [#195] Added AbstractDataPersister and AbstractContextDataPersister, Thanks to [@AlbertLabarento]
+- [#202] Implement SelfProvidedIriItemInterface
+- [#201] ChainSimpleDataPersister decorates ContextAwareDataPersisterInterface, Thanks to [@AlbertLabarento]
+
+### EasyPagination
+
+- [#203] Fix request for Laravel in console, Thanks to [@dextercampos]
+
+### EasySsm
+
+- [#200] Fix kernel cache/logs dirs for docker
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.10] - 2020-04-06
 
 ### EasySsm
 
@@ -1425,3 +1446,10 @@
 [#199]: https://github.com/eonx-com/easy-monorepo/pull/199
 [#198]: https://github.com/eonx-com/easy-monorepo/pull/198
 [v2.3.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.8...v2.3.9
+[#204]: https://github.com/eonx-com/easy-monorepo/pull/204
+[#203]: https://github.com/eonx-com/easy-monorepo/pull/203
+[#202]: https://github.com/eonx-com/easy-monorepo/pull/202
+[#201]: https://github.com/eonx-com/easy-monorepo/pull/201
+[#200]: https://github.com/eonx-com/easy-monorepo/pull/200
+[#195]: https://github.com/eonx-com/easy-monorepo/pull/195
+[v2.3.10]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.9...v2.3.10
