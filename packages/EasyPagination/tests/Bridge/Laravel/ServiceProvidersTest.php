@@ -26,12 +26,26 @@ final class ServiceProvidersTest extends AbstractTestCase
 
     public function testRegister(): void
     {
+        $this->registerProviders();
+    }
+
+    public function testRegisterInConsoleApplication(): void
+    {
+        $this->registerProviders(true);
+    }
+
+    private function registerProviders(?bool $pretendInConsole = null): void
+    {
         foreach (static::$providers as $providerClass => $resolverClass) {
             /** @var \Illuminate\Contracts\Foundation\Application $app */
-            $app = $this->getApplication();
+            $app = $this->getApplication($pretendInConsole);
 
             $server = ['HTTP_HOST' => 'eonx.com'];
-            $app->instance(Request::class, new Request($query ?? [], [], [], [], [], $server));
+
+            $app->instance(
+                $pretendInConsole === true ? 'request' : Request::class,
+                new Request($query ?? [], [], [], [], [], $server)
+            );
 
             /** @var \Illuminate\Support\ServiceProvider $provider */
             $provider = new $providerClass($app);
