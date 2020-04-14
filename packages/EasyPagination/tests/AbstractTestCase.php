@@ -98,14 +98,21 @@ abstract class AbstractTestCase extends TestCase
 
     private function createApplication(?bool $pretendInConsole = null): Application
     {
-        if ($pretendInConsole === null | $pretendInConsole === false) {
-            new Application(__DIR__);
-        }
+        return new class(__DIR__, $pretendInConsole) extends Application {
+            /**
+             * @var null|bool
+             */
+            private $runningInConsole;
 
-        return new class(__DIR__) extends Application {
+            public function __construct(?string $basePath = null, ?bool $runningInConsole = null)
+            {
+                parent::__construct($basePath);
+                $this->runningInConsole = $runningInConsole;
+            }
+
             public function runningInConsole()
             {
-                return true;
+                return $this->runningInConsole ?? false;
             }
         };
     }

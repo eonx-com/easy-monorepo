@@ -41,7 +41,11 @@ final class ServiceProvidersTest extends AbstractTestCase
             $app = $this->getApplication($pretendInConsole);
 
             $server = ['HTTP_HOST' => 'eonx.com'];
-            $app->instance(Request::class, new Request($query ?? [], [], [], [], [], $server));
+
+            $app->instance(
+                $pretendInConsole === true ? 'request' : Request::class,
+                new Request($query ?? [], [], [], [], [], $server)
+            );
 
             /** @var \Illuminate\Support\ServiceProvider $provider */
             $provider = new $providerClass($app);
