@@ -59,6 +59,14 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
     private function getDataClosure(): Closure
     {
         return function (): StartSizeDataInterface {
+            if ($this->app->runningInConsole() === true) {
+                /**
+                 * When running in console, a request instance is created and bound to `request` alias.
+                 * @see \Laravel\Lumen\Console\Kernel::setRequestForConsole
+                 */
+                $this->app->alias('request', Request::class);
+            }
+
             /** @var \EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface $psr7Factory */
             $psr7Factory = $this->app->get(EasyPsr7FactoryInterface::class);
 
