@@ -9,6 +9,7 @@ parameters:
         - packages/*/var/*
         - packages/*/vendor/*
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
+        - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'

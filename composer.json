@@ -56,7 +56,8 @@
         "symplify/easy-coding-standard": "^7.2",
         "symplify/phpstan-extensions": "^7.2",
         "slevomat/coding-standard": "^6.1",
-        "symplify/easy-coding-standard-tester": "^7.2"
+        "symplify/easy-coding-standard-tester": "^7.2",
+        "symfony/maker-bundle": "^1.15"
     },
     "autoload": {
         "psr-4": {
