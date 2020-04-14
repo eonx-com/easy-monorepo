@@ -63,8 +63,21 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
             $psr7Factory = $this->app->get(EasyPsr7FactoryInterface::class);
 
             return $this->app->get(StartSizeDataResolverInterface::class)->resolve(
-                $psr7Factory->createRequest($this->app->get(Request::class))
+                $psr7Factory->createRequest($this->getRequest())
             );
         };
+    }
+
+    private function getRequest(): Request
+    {
+        if ($this->app->runningInConsole() === true) {
+            /**
+             * When running in console, a request instance is created and bound to `request` alias.
+             * @see \Laravel\Lumen\Console\Kernel::setRequestForConsole
+             */
+            return $this->app->get('request');
+        }
+
+        return $this->app->get(Request::class);
     }
 }
