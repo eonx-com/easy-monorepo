@@ -32,6 +32,6 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
             $persisters[$instance->getApiResourceClass()] = $persisterId;
         }
 
-        $container->getDefinition(ChainSimpleDataPersister::class)->replaceArgument(2, $persisters);
+        $container->getDefinition(ChainSimpleDataPersister::class)->replaceArgument(3, $persisters);
     }
 }

@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
+use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Event\DataPersisterResolvedEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterface
 {
     /**
-     * @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface[]
+     * @var \ApiPlatform\Core\DataPersister\DataPersisterInterface[]
      */
     private $cache = [];
 
@@ -25,6 +28,11 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
     private $decorated;
 
     /**
+     * @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
      * @var mixed[]
      */
     private $persisters;
@@ -32,10 +40,15 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
     /**
      * @param mixed[] $persisters
      */
-    public function __construct(ContainerInterface $container, ContextAwareDataPersisterInterface $decorated, array $persisters)
-    {
+    public function __construct(
+        ContainerInterface $container,
+        ContextAwareDataPersisterInterface $decorated,
+        EventDispatcherInterface $dispatcher,
+        array $persisters
+    ) {
         $this->container = $container;
         $this->decorated = $decorated;
+        $this->dispatcher = $dispatcher;
         $this->persisters = $persisters;
     }
 
@@ -47,9 +60,15 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
      */
     public function persist($data, ?array $context = null)
     {
-        return $this->getDataPersister($data)
-            ? $this->getDataPersister($data)->persist($data, $context ?? [])
-            : $this->decorated->persist($data, $context ?? []);
+        $persister = $this->getDataPersister($data);
+
+        if ($persister) {
+            return $persister instanceof ContextAwareDataPersisterInterface
+                ? $persister->persist($data, $context ?? [])
+                : $persister->persist($data);
+        }
+
+        return $this->decorated->persist($data, $context ?? []);
     }
 
     /**
@@ -58,9 +77,17 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
      */
     public function remove($data, ?array $context = null): void
     {
-        $this->getDataPersister($data)
-            ? $this->getDataPersister($data)->remove($data, $context ?? [])
-            : $this->decorated->remove($data, $context ?? []);
+        $persister = $this->getDataPersister($data);
+
+        if ($persister) {
+            $persister instanceof ContextAwareDataPersisterInterface
+                ? $persister->remove($data, $context ?? [])
+                : $persister->remove($data);
+
+            return;
+        }
+
+        $this->decorated->remove($data, $context ?? []);
     }
 
     /**
@@ -69,15 +96,21 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
      */
     public function supports($data, ?array $context = null): bool
     {
-        return $this->getDataPersister($data)
-            ? $this->getDataPersister($data)->supports($data, $context ?? [])
-            : $this->decorated->supports($data, $context ?? []);
+        $persister = $this->getDataPersister($data);
+
+        if ($persister) {
+            return $persister instanceof ContextAwareDataPersisterInterface
+                ? $persister->supports($data, $context ?? [])
+                : $persister->supports($data);
+        }
+
+        return $this->decorated->supports($data, $context ?? []);
     }
 
     /**
      * @param mixed $data
      */
-    private function getDataPersister($data): ?ContextAwareDataPersisterInterface
+    private function getDataPersister($data): ?DataPersisterInterface
     {
         if (\is_object($data) === false) {
             return null;
@@ -93,6 +126,11 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
             return null;
         }
 
-        return $this->cache[$class] = $this->container->get($this->persisters[$class]);
+        /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
+        $dataPersister = $this->container->get($this->persisters[$class]);
+
+        $this->dispatcher->dispatch(new DataPersisterResolvedEvent($dataPersister));
+
+        return $this->cache[$class] = $dataPersister;
     }
 }
