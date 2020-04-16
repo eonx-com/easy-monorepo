@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v2.3.11 - 2020-04-14
+## v2.3.12 - 2020-04-16
+
+### EasyStandard
+
+- [#205] Add AvoidPrivateConstructorSniff, Thanks to [@ttam]
+
+### EasyCore
+
+- [#206] Allow Request attributes to be injected in DataPersisters
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.11] - 2020-04-14
 
 ### EasyCore
 
@@ -1453,3 +1467,6 @@
 [#200]: https://github.com/eonx-com/easy-monorepo/pull/200
 [#195]: https://github.com/eonx-com/easy-monorepo/pull/195
 [v2.3.10]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.9...v2.3.10
+[#206]: https://github.com/eonx-com/easy-monorepo/pull/206
+[#205]: https://github.com/eonx-com/easy-monorepo/pull/205
+[v2.3.11]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.10...v2.3.11
