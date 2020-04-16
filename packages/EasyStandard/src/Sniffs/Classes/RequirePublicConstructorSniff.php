@@ -7,7 +7,7 @@ namespace EonX\EasyStandard\Sniffs\Classes;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-final class AvoidPrivateConstructorSniff implements Sniff
+final class RequirePublicConstructorSniff implements Sniff
 {
     /**
      * @param int $stackPtr
@@ -21,8 +21,8 @@ final class AvoidPrivateConstructorSniff implements Sniff
         }
 
         $properties = $phpcsFile->getMethodProperties($stackPtr);
-        if ($properties['scope'] === 'private') {
-            $phpcsFile->addError('Private constructors should be avoided', $stackPtr, 'AvoidPrivateConstructors');
+        if ($properties['scope'] !== 'public') {
+            $phpcsFile->addError('Non-public constructors should be avoided', $stackPtr, 'RequirePublicConstructor');
         }
     }
 
