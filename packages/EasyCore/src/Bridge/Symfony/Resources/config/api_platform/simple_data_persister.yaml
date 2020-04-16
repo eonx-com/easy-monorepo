@@ -8,5 +8,6 @@ services:
             - null
 
     EonX\EasyCore\Bridge\Symfony\ApiPlatform\Listeners\ResolveRequestAttributesListener:
+        autoconfigure: true
         arguments:
             - '@request_stack'
