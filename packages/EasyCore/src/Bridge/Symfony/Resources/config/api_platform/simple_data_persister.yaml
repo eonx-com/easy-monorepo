@@ -4,4 +4,9 @@ services:
         arguments:
             - '@service_container'
             - '@EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\ChainSimpleDataPersister.inner'
+            - '@event_dispatcher'
             - null
+
+    EonX\EasyCore\Bridge\Symfony\ApiPlatform\Listeners\ResolveRequestAttributesListener:
+        arguments:
+            - '@request_stack'
