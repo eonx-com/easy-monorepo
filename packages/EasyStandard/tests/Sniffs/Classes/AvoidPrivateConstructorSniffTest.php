@@ -14,7 +14,7 @@ final class AvoidPrivateConstructorSniffTest extends AbstractCheckerTestCase
      */
     public function providerTestSniff(): iterable
     {
-        yield [__DIR__ . '/../../fixtures/Sniffs/Classes/AvoidPrivateConstructorsSniffTest.php.inc'];
+        yield [__DIR__ . '/../../fixtures/Sniffs/Classes/AvoidPrivateConstructorSniffTest.php.inc'];
     }
 
     /**
