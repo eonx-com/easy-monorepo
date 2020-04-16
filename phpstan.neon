@@ -72,17 +72,17 @@ parameters:
         - message: '#Cannot call method newInstanceWithoutConstructor\(\) on ReflectionClass\|null#'
           path: packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Compiler/AutoConfigureEventListenersPass.php
 
-        - message: '#Cannot call method (persist|remove|supports)\(\) on ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\|null#'
-          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/ChainSimpleDataPersister.php
-
-        - message: '#Array \(array<ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\>\) does not accept object\|null#'
-          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/ChainSimpleDataPersister.php
-
-        - message: '#Method EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\DataPersister\\ChainSimpleDataPersister\:\:getDataPersister\(\) should return ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\|null but returns object\|null#'
-          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/ChainSimpleDataPersister.php
-
         - message: '#Cannot call method newInstanceWithoutConstructor\(\) on ReflectionClass\|null#'
           path: packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Compiler/ApiPlatformSimpleDataPersisterPass.php
+
+        - message: '#PHPDoc tag @var for variable \$dataPersister has invalid type EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Traits\\RequestAttributesAwareTrait#'
+          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
+
+        - message: "#Parameter \\#2 \\$controller of method Symfony\\\\Component\\\\HttpKernel\\\\Controller\\\\ArgumentResolverInterface\\:\\:getArguments\\(\\) expects callable\\(\\)\\: mixed, array\\(ApiPlatform\\\\Core\\\\DataPersister\\\\DataPersisterInterface, 'setRequestAttributes'\\) given#"
+          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
+
+        - message: '#Call to method setRequestAttributes\(\) on an unknown class EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Traits\\RequestAttributesAwareTrait#'
+          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
 
         # ---- EasyDecision ----
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
