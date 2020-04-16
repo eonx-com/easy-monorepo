@@ -113,7 +113,7 @@ final class ResolveRequestAttributesListener implements EventListenerInterface
         $alternatives = $this->findAlternatives($dataPersister);
 
         if (empty($alternatives) === false) {
-            $message .= \sprintf(' Did you mean one of the followings: "%s"', \implode('", "', $alternatives));
+            $message .= \sprintf(' Did you mean one of the following: "%s"', \implode('", "', $alternatives));
         }
 
         return new RequestAttributesSetterNotFoundException($message);
