@@ -41,6 +41,7 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
 
     /**
      * @param mixed $data
+     * @param null|mixed[] $context
      *
      * @return mixed
      */
@@ -53,6 +54,7 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
 
     /**
      * @param mixed $data
+     * @param null|mixed[] $context
      */
     public function remove($data, ?array $context = null): void
     {
@@ -63,6 +65,7 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
 
     /**
      * @param mixed $data
+     * @param null|mixed[] $context
      */
     public function supports($data, ?array $context = null): bool
     {

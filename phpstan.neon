@@ -9,6 +9,7 @@ parameters:
         - packages/*/var/*
         - packages/*/vendor/*
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
+        - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
@@ -71,13 +72,13 @@ parameters:
         - message: '#Cannot call method newInstanceWithoutConstructor\(\) on ReflectionClass\|null#'
           path: packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Compiler/AutoConfigureEventListenersPass.php
 
-        - message: '#Cannot call method (persist|remove|supports)\(\) on ApiPlatform\\Core\\DataPersister\\DataPersisterInterface\|null#'
+        - message: '#Cannot call method (persist|remove|supports)\(\) on ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\|null#'
           path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/ChainSimpleDataPersister.php
 
-        - message: '#Array \(array<ApiPlatform\\Core\\DataPersister\\DataPersisterInterface\>\) does not accept object\|null#'
+        - message: '#Array \(array<ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\>\) does not accept object\|null#'
           path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/ChainSimpleDataPersister.php
 
-        - message: '#Method EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\DataPersister\\ChainSimpleDataPersister\:\:getDataPersister\(\) should return ApiPlatform\\Core\\DataPersister\\DataPersisterInterface\|null but returns object\|null#'
+        - message: '#Method EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\DataPersister\\ChainSimpleDataPersister\:\:getDataPersister\(\) should return ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\|null but returns object\|null#'
           path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/ChainSimpleDataPersister.php
 
         - message: '#Cannot call method newInstanceWithoutConstructor\(\) on ReflectionClass\|null#'
