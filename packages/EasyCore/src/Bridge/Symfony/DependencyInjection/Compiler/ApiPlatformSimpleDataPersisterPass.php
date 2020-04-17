@@ -13,7 +13,7 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if ($container->has(ChainSimpleDataPersister::class) === false) {
+        if ($container->hasDefinition(ChainSimpleDataPersister::class) === false) {
             return;
         }
 
@@ -32,6 +32,22 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
             $persisters[$instance->getApiResourceClass()] = $persisterId;
         }
 
-        $container->getDefinition(ChainSimpleDataPersister::class)->replaceArgument(3, $persisters);
+        $coreDef = $container->getDefinition(ChainSimpleDataPersister::class);
+        $coreDef->replaceArgument(3, $persisters);
+
+        // Make sure to handle decoration priority properly when in debug mode
+        $traceable = 'debug.api_platform.data_persister';
+
+        if ($container->hasDefinition($traceable) === false) {
+            return;
+        }
+
+        $traceableDef = $container->getDefinition($traceable);
+
+        $traceableDecoration = $traceableDef->getDecoratedService() ?? [];
+        $coreDecoration = $coreDef->getDecoratedService() ?? [];
+
+        $traceableDef->setDecoratedService($traceableDecoration[0] ?? null, $traceableDecoration[1] ?? null, 2);
+        $coreDef->setDecoratedService($coreDecoration[0] ?? null, $coreDecoration[1] ?? null, 1);
     }
 }
