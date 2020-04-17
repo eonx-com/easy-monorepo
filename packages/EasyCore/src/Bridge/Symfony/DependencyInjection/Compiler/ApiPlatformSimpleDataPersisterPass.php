@@ -38,7 +38,7 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
         // Make sure to handle decoration priority properly when in debug mode
         $traceable = 'debug.api_platform.data_persister';
 
-        if ($container->hasDefinition($traceable)) {
+        if ($container->hasDefinition($traceable) === false) {
             return;
         }
 
