@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v2.3.12 - 2020-04-16
+## v2.3.13 - 2020-04-17
+
+### EasyCore
+
+- [#209] Hotfix data persister decoration priority
+
+### EasyStandard
+
+- [#208] - Change constructor visibility to public only, Thanks to [@ttam]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.12] - 2020-04-16
 
 ### EasyStandard
 
@@ -1470,3 +1484,6 @@
 [#206]: https://github.com/eonx-com/easy-monorepo/pull/206
 [#205]: https://github.com/eonx-com/easy-monorepo/pull/205
 [v2.3.11]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.10...v2.3.11
+[#209]: https://github.com/eonx-com/easy-monorepo/pull/209
+[#208]: https://github.com/eonx-com/easy-monorepo/pull/208
+[v2.3.12]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.11...v2.3.12
