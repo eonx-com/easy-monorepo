@@ -1,7 +1,7 @@
 {
     "name": "eonx-com/easy-core",
     "description": "Provides core features for Lumen applications",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "MIT",
     "require": {
         "php": "^7.1"

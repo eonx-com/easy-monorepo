@@ -1,7 +1,7 @@
 {
     "name": "eonx-com/easy-decision",
     "description": "Your most complex decisions taken the easiest way",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "MIT",
     "require": {
         "php": "^7.1",

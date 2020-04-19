@@ -1,7 +1,7 @@
 {
     "name": "eonx-com/easy-async",
     "description": "Makes dealing with async processes easier",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "MIT",
     "require": {
         "php": "^7.1",

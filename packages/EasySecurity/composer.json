@@ -1,7 +1,7 @@
 {
     "name": "eonx-com/easy-security",
     "description": "Provides security features to be generic across applications",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "MIT",
     "require": {
         "php": "^7.1",
