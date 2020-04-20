@@ -47,7 +47,7 @@ final class TraceableChainSimpleDataPersister implements ContextAwareDataPersist
      */
     public function remove($data, ?array $context = null): void
     {
-        return $this->decorated->remove($data, $context);
+        $this->decorated->remove($data, $context);
     }
 
     /**
