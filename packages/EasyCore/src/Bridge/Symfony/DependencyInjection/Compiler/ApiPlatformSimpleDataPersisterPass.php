@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler;
 
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\ChainSimpleDataPersister;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\TraceableChainSimpleDataPersister;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -35,19 +36,14 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
         $coreDef = $container->getDefinition(ChainSimpleDataPersister::class);
         $coreDef->replaceArgument(2, $persisters);
 
-        // Make sure to handle decoration priority properly when in debug mode
-        $traceable = 'debug.api_platform.data_persister';
+        // Override traceable chain data persister in debug
+        $coreTraceable = 'debug.api_platform.data_persister';
+        $traceable = TraceableChainSimpleDataPersister::class;
 
-        if ($container->hasDefinition($traceable) === false) {
+        if ($container->hasDefinition($coreTraceable) === false || $container->hasDefinition($traceable) === false) {
             return;
         }
 
-        $traceableDef = $container->getDefinition($traceable);
-
-        $traceableDecoration = $traceableDef->getDecoratedService() ?? [];
-        $coreDecoration = $coreDef->getDecoratedService() ?? [];
-
-        $traceableDef->setDecoratedService($traceableDecoration[0] ?? null, $traceableDecoration[1] ?? null, 2);
-        $coreDef->setDecoratedService($coreDecoration[0] ?? null, $coreDecoration[1] ?? null, 1);
+        $container->setDefinition($coreTraceable, $container->getDefinition($traceable));
     }
 }
