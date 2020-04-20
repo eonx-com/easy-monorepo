@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\DataCollector\RequestDataCollector as BaseRequestDataCollector;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\TraceableChainSimpleDataPersister;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -12,7 +14,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 final class RequestDataCollector extends DataCollector
 {
     /**
-     * @var \EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\TraceableChainSimpleDataPersister
+     * @var TraceableChainSimpleDataPersister|DataPersisterInterface
      */
     private $dataPersister;
 
@@ -27,7 +29,7 @@ final class RequestDataCollector extends DataCollector
         $this->dataPersister = $dataPersister;
     }
 
-    public function collect(Request $request, Response $response, \Throwable $exception = null): void
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         $this->decorated->collect($request, $response, $exception);
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
@@ -8,7 +9,7 @@ use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 final class TraceableChainSimpleDataPersister implements ContextAwareDataPersisterInterface
 {
     /**
-     * @var \EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\ChainSimpleDataPersister
+     * @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface
      */
     private $decorated;
 
@@ -38,7 +39,7 @@ final class TraceableChainSimpleDataPersister implements ContextAwareDataPersist
      */
     public function persist($data, ?array $context = null)
     {
-        return $this->decorated->persist($data, $context);
+        return $this->decorated->persist($data, $context ?? []);
     }
 
     /**
@@ -47,7 +48,7 @@ final class TraceableChainSimpleDataPersister implements ContextAwareDataPersist
      */
     public function remove($data, ?array $context = null): void
     {
-        $this->decorated->remove($data, $context);
+        $this->decorated->remove($data, $context ?? []);
     }
 
     /**
