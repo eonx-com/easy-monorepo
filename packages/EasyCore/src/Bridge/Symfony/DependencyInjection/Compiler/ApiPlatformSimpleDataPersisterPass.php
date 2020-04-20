@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler;
 
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\ChainSimpleDataPersister;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\DoctrineOrmDataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -14,6 +15,7 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         $originalId = 'api_platform.data_persister';
+        $originalDoctrineOrm = 'api_platform.doctrine.orm.data_persister';
 
         if ($container->hasDefinition($originalId) === false
             || $container->getDefinition($originalId)->getClass() !== ChainSimpleDataPersister::class) {
@@ -37,5 +39,11 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
 
         $coreDef = $container->getDefinition($originalId);
         $coreDef->replaceArgument(2, $persisters);
+
+        if ($container->hasDefinition($originalDoctrineOrm) === false) {
+            return;
+        }
+
+        $container->setAlias(DoctrineOrmDataPersisterInterface::class, $originalDoctrineOrm);
     }
 }
