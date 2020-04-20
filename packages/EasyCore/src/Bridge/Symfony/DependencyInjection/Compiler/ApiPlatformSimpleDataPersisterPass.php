@@ -33,7 +33,7 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
         }
 
         $coreDef = $container->getDefinition(ChainSimpleDataPersister::class);
-        $coreDef->replaceArgument(3, $persisters);
+        $coreDef->replaceArgument(2, $persisters);
 
         // Make sure to handle decoration priority properly when in debug mode
         $traceable = 'debug.api_platform.data_persister';
