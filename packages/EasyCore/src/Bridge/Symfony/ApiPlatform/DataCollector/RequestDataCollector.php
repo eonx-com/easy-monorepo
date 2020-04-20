@@ -27,30 +27,103 @@ final class RequestDataCollector extends DataCollector
         $this->dataPersister = $dataPersister;
     }
 
-    public function __call(string $name, array $arguments)
-    {
-        return $this->decorated->{$name}(...$arguments);
-    }
-
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         $this->decorated->collect($request, $response, $exception);
 
-        $this->data['dataPersisters'] = $this->dataPersister->getPersistersResponse();
+        // Use Reflection to get data from decorated collector...
+        $reflection = new \ReflectionProperty(\get_class($this->decorated), 'data');
+        $reflection->setAccessible(true);
+
+        $this->data = $reflection->getValue($this->decorated);
+
+        $this->data['dataPersisters'] = ['responses' => $this->dataPersister->getPersistersResponse() ?? []];
     }
 
+    /**
+     * @return mixed[]
+     */
+    public function getAcceptableContentTypes(): array
+    {
+        return $this->data['acceptable_content_types'] ?? [];
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getCollectionDataProviders(): array
+    {
+        return $this->data['dataProviders']['collection'] ?? ['context' => [], 'responses' => []];
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getCounters(): array
+    {
+        return $this->data['counters'] ?? [];
+    }
+
+    /**
+     * @return mixed[]
+     */
     public function getDataPersisters(): array
     {
         return $this->data['dataPersisters'] ?? ['responses' => []];
     }
 
+    /**
+     * @return mixed[]
+     */
+    public function getFilters(): array
+    {
+        return $this->data['filters'] ?? [];
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getItemDataProviders(): array
+    {
+        return $this->data['dataProviders']['item'] ?? ['context' => [], 'responses' => []];
+    }
+
     public function getName(): string
     {
-        return $this->decorated->getName();
+        return 'api_platform.data_collector.request';
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getRequestAttributes(): array
+    {
+        return $this->data['request_attributes'] ?? [];
+    }
+
+    public function getResourceClass(): ?string
+    {
+        return $this->data['resource_class'] ?? null;
+    }
+
+    /**
+     * @return null|mixed[]
+     */
+    public function getResourceMetadata(): ?array
+    {
+        return $this->data['resource_metadata'] ?? null;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getSubresourceDataProviders(): array
+    {
+        return $this->data['dataProviders']['subresource'] ?? ['context' => [], 'responses' => []];
     }
 
     public function reset(): void
     {
-        $this->decorated->reset();
+        $this->data = [];
     }
 }

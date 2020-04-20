@@ -28,7 +28,7 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
     private $dispatcher;
 
     /**
-     * @var iterable<\ApiPlatform\Core\DataPersister\DataPersisterInterface>
+     * @var \Traversable<\ApiPlatform\Core\DataPersister\DataPersisterInterface>
      */
     private $persisters;
 
@@ -53,11 +53,17 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
         $this->persisters = $persisters;
     }
 
+    /**
+     * @return \ApiPlatform\Core\DataPersister\DataPersisterInterface[]
+     */
     public function getDataPersisters(): array
     {
-        return $this->persisters;
+        return \iterator_to_array($this->persisters);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getSimpleDataPersisters(): array
     {
         return $this->simplePersisters;
