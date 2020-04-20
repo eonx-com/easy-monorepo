@@ -3,9 +3,9 @@ services:
         decorates: api_platform.data_persister
         arguments:
             - '@service_container'
-            - '@EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\ChainSimpleDataPersister.inner'
             - '@event_dispatcher'
             - null
+            - !tagged_iterator api_platform.data_persister
 
     EonX\EasyCore\Bridge\Symfony\ApiPlatform\Listeners\ResolveRequestAttributesListener:
         autoconfigure: true
