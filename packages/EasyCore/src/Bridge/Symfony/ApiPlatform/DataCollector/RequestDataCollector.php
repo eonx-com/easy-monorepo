@@ -107,9 +107,9 @@ final class RequestDataCollector extends DataCollector
     }
 
     /**
-     * @return null|mixed[]
+     * @return null|mixed
      */
-    public function getResourceMetadata(): ?array
+    public function getResourceMetadata()
     {
         return $this->data['resource_metadata'] ?? null;
     }
