@@ -1,6 +1,6 @@
 services:
-    EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\ChainSimpleDataPersister:
-        decorates: api_platform.data_persister
+    api_platform.data_persister:
+        class: EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\ChainSimpleDataPersister
         arguments:
             - '@service_container'
             - '@event_dispatcher'

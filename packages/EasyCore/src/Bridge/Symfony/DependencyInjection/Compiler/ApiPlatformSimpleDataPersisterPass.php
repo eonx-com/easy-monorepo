@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler;
 
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\ChainSimpleDataPersister;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\TraceableChainSimpleDataPersister;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -14,7 +13,10 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if ($container->hasDefinition(ChainSimpleDataPersister::class) === false) {
+        $originalId = 'api_platform.data_persister';
+
+        if ($container->hasDefinition($originalId) === false
+            || $container->getDefinition($originalId)->getClass() !== ChainSimpleDataPersister::class) {
             return;
         }
 
@@ -33,17 +35,7 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
             $persisters[$instance->getApiResourceClass()] = $persisterId;
         }
 
-        $coreDef = $container->getDefinition(ChainSimpleDataPersister::class);
+        $coreDef = $container->getDefinition($originalId);
         $coreDef->replaceArgument(2, $persisters);
-
-        // Override traceable chain data persister in debug
-        $coreTraceable = 'debug.api_platform.data_persister';
-        $traceable = TraceableChainSimpleDataPersister::class;
-
-        if ($container->hasDefinition($coreTraceable) === false || $container->hasDefinition($traceable) === false) {
-            return;
-        }
-
-        $container->setDefinition($coreTraceable, $container->getDefinition($traceable));
     }
 }

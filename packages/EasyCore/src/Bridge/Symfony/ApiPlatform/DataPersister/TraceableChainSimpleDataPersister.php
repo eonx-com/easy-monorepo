@@ -17,12 +17,19 @@ final class TraceableChainSimpleDataPersister implements ContextAwareDataPersist
         $this->decorated = $decorated;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function supports($data, array $context = []): bool
+    public function getPersistersResponse(): array
     {
-        return $this->decorated->supports($data, $context);
+        $array = [];
+
+        foreach ($this->decorated->getSimpleDataPersisters() as $persister) {
+            $array[\get_class($persister)] = false;
+        }
+
+        foreach ($this->decorated->getDataPersisters() as $persister) {
+            $array[\get_class($persister)] = false;
+        }
+
+        return $array;
     }
 
     /**
@@ -39,5 +46,13 @@ final class TraceableChainSimpleDataPersister implements ContextAwareDataPersist
     public function remove($data, array $context = [])
     {
         return $this->decorated->remove($data, $context);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function supports($data, array $context = []): bool
+    {
+        return $this->decorated->supports($data, $context);
     }
 }

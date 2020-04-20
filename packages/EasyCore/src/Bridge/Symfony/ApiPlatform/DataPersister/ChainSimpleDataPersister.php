@@ -53,6 +53,16 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
         $this->persisters = $persisters;
     }
 
+    public function getDataPersisters(): array
+    {
+        return $this->persisters;
+    }
+
+    public function getSimpleDataPersisters(): array
+    {
+        return $this->simplePersisters;
+    }
+
     /**
      * @param mixed $data
      * @param null|mixed[] $context
