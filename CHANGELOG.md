@@ -2,7 +2,23 @@
 
 <!-- dumped content start -->
 
-## v2.3.13 - 2020-04-17
+## v2.3.14 - 2020-04-21
+
+### EasyCore
+
+- [#212] [ApiPlatform] No properties api resource
+- [#211] [ApiPlatform] Improve data persister features
+- [#210] Registered ProcessWithLockMiddleware to container, Thanks to [@buddyshontogan]
+
+### EasySecurity
+
+- [#210] Fixed Registration for argument $targets for PermissionExpressionFunctionProvider, Thanks to [@buddyshontogan]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.13] - 2020-04-17
 
 ### EasyCore
 
@@ -1487,3 +1503,8 @@
 [#209]: https://github.com/eonx-com/easy-monorepo/pull/209
 [#208]: https://github.com/eonx-com/easy-monorepo/pull/208
 [v2.3.12]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.11...v2.3.12
+[#212]: https://github.com/eonx-com/easy-monorepo/pull/212
+[#211]: https://github.com/eonx-com/easy-monorepo/pull/211
+[#210]: https://github.com/eonx-com/easy-monorepo/pull/210
+[v2.3.13]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.12...v2.3.13
+[@buddyshontogan]: https://github.com/buddyshontogan
