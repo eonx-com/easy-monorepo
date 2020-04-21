@@ -201,8 +201,8 @@ parameters:
           path: packages/EasySchedule/src/Bridge/Symfony/TraceableSchedule.php
 
         # ---- EasySecurity ----
-        - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Helpers\\DeferredContextResolver\:\:resolve\(\) should return EonX\\EasySecurity\\Interfaces\\ContextInterface but returns object\|null#'
-          path: packages/EasySecurity/src/Bridge/Symfony/Helpers/DeferredContextResolver.php
+        - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Helpers\\DeferredSecurityContextResolver\:\:resolve\(\) should return EonX\\EasySecurity\\Interfaces\\SecurityContextInterface but returns object\|null#'
+          path: packages/EasySecurity/src/Bridge/Symfony/Helpers/DeferredSecurityContextResolver.php
 
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
           path: packages/EasySecurity/src/Bridge/Symfony/DependencyInjection

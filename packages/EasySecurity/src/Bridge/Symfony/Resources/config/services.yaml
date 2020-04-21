@@ -8,11 +8,13 @@ services:
     EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface:
         class: EonX\EasySecurity\Bridge\Symfony\Factories\AuthenticationFailureResponseFactory
 
-    EonX\EasySecurity\Interfaces\ContextFactoryInterface:
-        class: EonX\EasySecurity\ContextFactory
+    EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface:
+        class: EonX\EasySecurity\SecurityContextFactory
 
-    EonX\EasySecurity\Interfaces\ContextResolverInterface:
-        class: EonX\EasySecurity\ContextResolver
+    EonX\EasySecurity\Interfaces\SecurityContextResolverInterface:
+        class: EonX\EasySecurity\SecurityContextResolver
 
-    EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface:
-        class: EonX\EasySecurity\Bridge\Symfony\Helpers\DeferredContextResolver
+    EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredSecurityContextResolverInterface:
+        class: EonX\EasySecurity\Bridge\Symfony\Helpers\DeferredSecurityContextResolver
+
+    EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface: '@EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredSecurityContextResolverInterface'
