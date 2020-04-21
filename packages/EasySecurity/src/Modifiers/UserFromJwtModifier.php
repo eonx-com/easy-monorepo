@@ -10,6 +10,9 @@ use EonX\EasySecurity\Interfaces\JwtClaimFetcherInterface;
 use EonX\EasySecurity\Interfaces\UserProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @deprecated Since 2.4, will be removed in 3.0.
+ */
 final class UserFromJwtModifier extends AbstractFromJwtContextModifier
 {
     /**
