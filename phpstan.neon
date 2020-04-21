@@ -72,9 +72,6 @@ parameters:
         - message: '#Cannot call method newInstanceWithoutConstructor\(\) on ReflectionClass\|null#'
           path: packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Compiler/AutoConfigureEventListenersPass.php
 
-        - message: '#Cannot call method newInstanceWithoutConstructor\(\) on ReflectionClass\|null#'
-          path: packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Compiler/ApiPlatformSimpleDataPersisterPass.php
-
         - message: '#PHPDoc tag @var for variable \$dataPersister has invalid type EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Traits\\RequestAttributesAwareTrait#'
           path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
 
@@ -83,6 +80,15 @@ parameters:
 
         - message: '#Call to method setRequestAttributes\(\) on an unknown class EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Traits\\RequestAttributesAwareTrait#'
           path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
+
+        - message: '#Call to an undefined method ApiPlatform\\Core\\DataPersister\\DataPersisterInterface\:\:getPersistersResponse\(\)#'
+          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataCollector/RequestDataCollector.php
+
+        - message: '#Method EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\DataPersister\\ChainSimpleDataPersister\:\:getSimpleDataPersister\(\) should return ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\|null but returns object\|null#'
+          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/ChainSimpleDataPersister.php
+
+        - message: '#Call to an undefined method ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\:\:(getSimpleDataPersisters|getDataPersisters)\(\)#'
+          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/TraceableChainSimpleDataPersister.php
 
         # ---- EasyDecision ----
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'

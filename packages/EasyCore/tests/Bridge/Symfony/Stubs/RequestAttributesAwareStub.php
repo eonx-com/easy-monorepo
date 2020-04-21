@@ -31,10 +31,11 @@ final class RequestAttributesAwareStub extends AbstractSimpleDataPersister
 
     /**
      * @param mixed $data
+     * @param null|mixed[] $context
      *
      * @return mixed
      */
-    public function persist($data)
+    public function persist($data, ?array $context = null)
     {
         return $data;
     }

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\DoctrineOrmDataPersisterInterface;
 
-abstract class AbstractContextDataPersister implements ContextAwareDataPersisterInterface
+final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterface
 {
     /**
      * @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface
@@ -22,7 +23,7 @@ abstract class AbstractContextDataPersister implements ContextAwareDataPersister
      * @param mixed $data
      * @param null|mixed[] $context
      *
-     * @return object|void
+     * @return mixed
      */
     public function persist($data, ?array $context = null)
     {
@@ -32,12 +33,10 @@ abstract class AbstractContextDataPersister implements ContextAwareDataPersister
     /**
      * @param mixed $data
      * @param null|mixed[] $context
-     *
-     * @return object|void
      */
-    public function remove($data, ?array $context = null)
+    public function remove($data, ?array $context = null): void
     {
-        return $this->decorated->remove($data, $context ?? []);
+        $this->decorated->remove($data, $context ?? []);
     }
 
     /**
@@ -46,10 +45,6 @@ abstract class AbstractContextDataPersister implements ContextAwareDataPersister
      */
     public function supports($data, ?array $context = null): bool
     {
-        $entity = $this->getApiResourceClass();
-
-        return $data instanceof $entity;
+        return $this->decorated->supports($data, $context ?? []);
     }
-
-    abstract protected function getApiResourceClass(): string;
 }
