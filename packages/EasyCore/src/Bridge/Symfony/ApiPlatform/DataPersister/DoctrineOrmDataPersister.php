@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
@@ -9,7 +10,7 @@ use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\DoctrineOrmDataPersister
 final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterface
 {
     /**
-     * @var \ApiPlatform\Core\Bridge\Doctrine\Common\DataPersister
+     * @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface
      */
     private $decorated;
 
@@ -26,7 +27,7 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
      */
     public function persist($data, ?array $context = null)
     {
-        return $this->decorated->persist($data, $context);
+        return $this->decorated->persist($data, $context ?? []);
     }
 
     /**
@@ -35,7 +36,7 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
      */
     public function remove($data, ?array $context = null): void
     {
-        $this->decorated->remove($data, $context);
+        $this->decorated->remove($data, $context ?? []);
     }
 
     /**
@@ -44,6 +45,6 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
      */
     public function supports($data, ?array $context = null): bool
     {
-        return $this->decorated->supports($data, $context);
+        return $this->decorated->supports($data, $context ?? []);
     }
 }
