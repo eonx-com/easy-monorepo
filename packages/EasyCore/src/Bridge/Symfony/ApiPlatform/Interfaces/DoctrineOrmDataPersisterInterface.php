@@ -6,7 +6,7 @@ namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 
-interface SimpleDataPersisterInterface extends ContextAwareDataPersisterInterface
+interface DoctrineOrmDataPersisterInterface extends ContextAwareDataPersisterInterface
 {
-    public function getApiResourceClass(): string;
+    // Used for DI.
 }

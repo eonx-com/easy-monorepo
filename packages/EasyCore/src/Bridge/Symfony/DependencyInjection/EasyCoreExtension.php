@@ -56,6 +56,10 @@ final class EasyCoreExtension extends Extension
         if ($config['api_platform']['simple_data_persister_enabled'] ?? false) {
             $this->loadIfBundlesExists('api_platform/simple_data_persister.yaml', ApiPlatformBundle::class);
         }
+
+        if ($container->hasParameter('kernel.debug') && $container->getParameter('kernel.debug')) {
+            $loader->load('api_platform/debug.yaml');
+        }
     }
 
     /**
