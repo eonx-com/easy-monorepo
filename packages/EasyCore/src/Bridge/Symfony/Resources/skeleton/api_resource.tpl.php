@@ -10,8 +10,8 @@ use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\NoIriItemInterface;
  * @ApiResource(
  *     collectionOperations={"post"},
  *     itemOperations={},
- *     normalizationContext={"groups"={"<?= $snakeCaseName ?>:read"}},
- *     denormalizationContext={"groups"={"<?= $snakeCaseName ?>:write"}}
+ *     normalizationContext={"groups"={"<?= $snakeCaseName ?>:write"}},
+ *     denormalizationContext={"groups"={"<?= $snakeCaseName ?>:read"}}
  * )
  */
 final class <?= $class_name ?> implements NoIriItemInterface

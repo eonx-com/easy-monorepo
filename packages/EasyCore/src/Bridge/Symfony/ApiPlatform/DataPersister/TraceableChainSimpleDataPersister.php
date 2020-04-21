@@ -81,6 +81,8 @@ final class TraceableChainSimpleDataPersister implements ContextAwareDataPersist
         }
 
         foreach ($this->decorated->getDataPersisters() as $persister) {
+            /** @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface $persister */
+            
             $class = \get_class($persister);
 
             if (isset($this->persisterResponse[$class])) {
