@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Symfony\Stubs;
@@ -56,7 +57,7 @@ final class ContextAwareDataPersisterStub implements ContextAwareDataPersisterIn
      * @param mixed $data
      * @param null|mixed[] $context
      */
-    public function supports($data, array $context = []): bool
+    public function supports($data, ?array $context = null): bool
     {
         $this->calls['supports'] = [$data, $context];
 
