@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.3.14 - 2020-04-21
+## v2.3.15 - 2020-04-21
+
+### EasySecurity
+
+- [#213] Fix targets argument name for permission expression fu…
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.14] - 2020-04-21
 
 ### EasyCore
 
@@ -1508,3 +1518,5 @@
 [#210]: https://github.com/eonx-com/easy-monorepo/pull/210
 [v2.3.13]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.12...v2.3.13
 [@buddyshontogan]: https://github.com/buddyshontogan
+[#213]: https://github.com/eonx-com/easy-monorepo/pull/213
+[v2.3.14]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.13...v2.3.14
