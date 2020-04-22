@@ -68,8 +68,8 @@ use Symfony\Component\ExpressionLanguage\Expression;
 public function index()
 {
     $this->denyAccessUnlessGranted(new Expression(
-        -"is_granted(constant('\\App\\Security\\Interfaces\\PermissionInterface::PERMISSION_OBJECT_CREATE'), object)"
-        +"is_granted(permission('PERMISSION_OBJECT_CREATE'), object)"
+-        "is_granted(constant('\\App\\Security\\Interfaces\\PermissionInterface::PERMISSION_OBJECT_CREATE'), object)"
++        "is_granted(permission('PERMISSION_OBJECT_CREATE'), object)"
     ));
 
     // ...
