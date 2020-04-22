@@ -10,13 +10,17 @@ weight: 0
  
 This is what this package is all about!
 
-## Dependencies
+<br>
+
+### Dependencies
 
 This package has dependencies on the following packages, please see their documentation directly:
 - [EasyApiToken][1]
 - [EasyPsr7Factory][2]
 
-## Require package (Composer)
+<br>
+
+### Require package (Composer)
 
 The recommended way to install this package is to use [Composer][3]:
 
