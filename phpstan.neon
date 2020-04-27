@@ -114,6 +114,31 @@ parameters:
 
         # ---- EasyDocker ----
         # ---- EasyEntityChange ----
+        # ---- EasyErrorHandler ----
+        - message: '#Method EonX\\EasyErrorHandler\\Interfaces\\ValidationExceptionInterface\:\:setErrors\(\) has no return typehint specified#'
+          path: packages/EasyErrorHandler/src/Interfaces/ValidationExceptionInterface.php
+
+        - message: '#Method EonX\\EasyErrorHandler\\Interfaces\\TranslatableExceptionInterface\:\:setUserMessageParams\(\) has no return typehint specified#'
+          path: packages/EasyErrorHandler/src/Interfaces/TranslatableExceptionInterface.php
+
+        - message: '#Method EonX\\EasyErrorHandler\\Interfaces\\TranslatableExceptionInterface\:\:setUserMessage\(\) has no return typehint specified#'
+          path: packages/EasyErrorHandler/src/Interfaces/TranslatableExceptionInterface.php
+
+        - message: '#Method EonX\\EasyErrorHandler\\Interfaces\\TranslatableExceptionInterface\:\:setMessageParams\(\) has no return typehint specified#'
+          path: packages/EasyErrorHandler/src/Interfaces/TranslatableExceptionInterface.php
+
+        - message: '#Method EonX\\EasyErrorHandler\\Interfaces\\SubCodeAwareExceptionInterface\:\:setSubCode\(\) has no return typehint specified#'
+          path: packages/EasyErrorHandler/src/Interfaces/SubCodeAwareExceptionInterface.php
+
+        - message: '#Method EonX\\EasyErrorHandler\\Interfaces\\StatusCodeAwareExceptionInterface\:\:setStatusCode\(\) has no return typehint specified#'
+          path: packages/EasyErrorHandler/src/Interfaces/StatusCodeAwareExceptionInterface.php
+
+        - message: '#Method EonX\\EasyErrorHandler\\Interfaces\\LogLevelAwareExceptionInterface\:\:setLogLevel\(\) has no return typehint specified#'
+          path: packages/EasyErrorHandler/src/Interfaces/LogLevelAwareExceptionInterface.php
+
+        - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
+          path: packages/EasyErrorHandler/tests
+
         # ---- EasyIdentity ----
         - message: '#Access to an undefined property Mockery\\LegacyMockInterface::\$users.#'
           path: packages/EasyIdentity/tests/Implementations/Auth0
