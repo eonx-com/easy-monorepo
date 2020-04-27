@@ -225,22 +225,20 @@ class Handler implements ExceptionHandler
         $exceptionMessageKey = $responseFields['exception']['message'] ?? 'message';
         $exceptionTraceKey = $responseFields['exception']['trace'] ?? 'trace';
 
-        $extendedResponseData = $this->getShortResponseData($exception);
-        $extendedResponseData += [
-            $exceptionKey => [
-                $exceptionClassKey => \get_class($exception),
-                $exceptionFileKey => $exception->getFile(),
-                $exceptionLineKey => $exception->getLine(),
-                $exceptionMessageKey => $this->determineExceptionMessage($exception),
-                $exceptionTraceKey => \collect($exception->getTrace())->map(
-                    static function ($trace) {
-                        return IlluminateArr::except($trace, ['args']);
-                    }
-                )->all(),
-            ],
-        ];
-
-        return $extendedResponseData;
+        return $this->getShortResponseData($exception) +
+            [
+                $exceptionKey => [
+                    $exceptionClassKey => \get_class($exception),
+                    $exceptionFileKey => $exception->getFile(),
+                    $exceptionLineKey => $exception->getLine(),
+                    $exceptionMessageKey => $this->determineExceptionMessage($exception),
+                    $exceptionTraceKey => \collect($exception->getTrace())->map(
+                        static function ($trace) {
+                            return IlluminateArr::except($trace, ['args']);
+                        }
+                    )->all(),
+                ],
+            ];
     }
 
     /**
