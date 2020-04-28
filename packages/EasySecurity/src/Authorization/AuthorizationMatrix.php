@@ -3,11 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Authorization;
 
+use EonX\EasySecurity\Authorization\Helpers\AuthorizationMatrixFormatter;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
-use EonX\EasySecurity\Interfaces\PermissionInterface;
-use EonX\EasySecurity\Interfaces\RoleInterface;
-use EonX\EasySecurity\Permission;
-use EonX\EasySecurity\Role;
 
 final class AuthorizationMatrix implements AuthorizationMatrixInterface
 {
@@ -33,7 +30,7 @@ final class AuthorizationMatrix implements AuthorizationMatrixInterface
     {
         $this->reset();
 
-        foreach ($this->transformPermissions($permissions) as $permission) {
+        foreach (AuthorizationMatrixFormatter::formatPermissions($permissions) as $permission) {
             $this->permissions[$permission->getIdentifier()] = $permission;
         }
 
@@ -47,7 +44,7 @@ final class AuthorizationMatrix implements AuthorizationMatrixInterface
     {
         $this->reset();
 
-        foreach ($this->transformRoles($roles) as $role) {
+        foreach (AuthorizationMatrixFormatter::formatRoles($roles) as $role) {
             $this->roles[$role->getIdentifier()] = $role;
         }
 
@@ -134,40 +131,6 @@ final class AuthorizationMatrix implements AuthorizationMatrixInterface
     public function isRole(string $role): bool
     {
         return isset($this->getRoles()[$role]);
-    }
-
-    /**
-     * @param string[]|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
-     *
-     * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
-     */
-    public function transformPermissions(array $permissions): array
-    {
-        $filter = static function ($permission): bool {
-            return \is_string($permission) || $permission instanceof PermissionInterface;
-        };
-        $map = static function ($permission): PermissionInterface {
-            return \is_string($permission) ? new Permission($permission) : $permission;
-        };
-
-        return \array_map($map, \array_filter($permissions, $filter));
-    }
-
-    /**
-     * @param string[]|\EonX\EasySecurity\Interfaces\RoleInterface[] $permissions
-     *
-     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
-     */
-    public function transformRoles(array $roles): array
-    {
-        $filter = static function ($role): bool {
-            return \is_string($role) || $role instanceof RoleInterface;
-        };
-        $map = static function ($role): RoleInterface {
-            return \is_string($role) ? new Role($role, []) : $role;
-        };
-
-        return \array_map($map, \array_filter($roles, $filter));
     }
 
     private function reset(): void

@@ -42,18 +42,4 @@ interface AuthorizationMatrixInterface
     public function isPermission(string $permission): bool;
 
     public function isRole(string $role): bool;
-
-    /**
-     * @param string[]|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
-     *
-     * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
-     */
-    public function transformPermissions(array $permissions): array;
-
-    /**
-     * @param string[]|\EonX\EasySecurity\Interfaces\RoleInterface[] $permissions
-     *
-     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
-     */
-    public function transformRoles(array $roles): array;
 }
