@@ -10,9 +10,4 @@ interface StatusCodeAwareExceptionInterface
      * Returns the HTTP response status code of an exception.
      */
     public function getStatusCode(): int;
-
-    /**
-     * Sets the HTTP response status code for an exception.
-     */
-    public function setStatusCode(int $statusCode);
 }

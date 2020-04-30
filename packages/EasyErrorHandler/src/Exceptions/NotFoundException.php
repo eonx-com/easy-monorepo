@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions;
 
-class NotFoundException extends BaseException
+abstract class NotFoundException extends BaseException
 {
     /**
      * @var int

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions;
 
-class ForbiddenException extends BaseException
+abstract class ForbiddenException extends BaseException
 {
     /**
      * @var int

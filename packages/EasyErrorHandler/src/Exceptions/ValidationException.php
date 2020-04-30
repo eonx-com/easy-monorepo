@@ -22,7 +22,9 @@ abstract class ValidationException extends BadRequestException implements Valida
     }
 
     /**
-     * {@inheritdoc}
+     * Sets validation errors.
+     *
+     * @param mixed[] $errors
      */
     public function setErrors(array $errors): self
     {

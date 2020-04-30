@@ -96,7 +96,7 @@ abstract class BaseException extends Exception implements
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the log level for an exception.
      */
     public function setLogLevel(string $logLevel): self
     {
@@ -106,7 +106,9 @@ abstract class BaseException extends Exception implements
     }
 
     /**
-     * {@inheritdoc}
+     * Sets an exception message parameters.
+     *
+     * @param mixed[] $messageParams
      */
     public function setMessageParams(array $messageParams): self
     {
@@ -116,7 +118,7 @@ abstract class BaseException extends Exception implements
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the HTTP response status code for an exception.
      */
     public function setStatusCode(int $statusCode): self
     {
@@ -126,7 +128,7 @@ abstract class BaseException extends Exception implements
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the sub code for an exception.
      */
     public function setSubCode(int $subCode): self
     {
@@ -136,7 +138,7 @@ abstract class BaseException extends Exception implements
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the user-friendly message.
      */
     public function setUserMessage(?string $userMessage = null): self
     {
@@ -146,7 +148,9 @@ abstract class BaseException extends Exception implements
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the user-friendly message parameters.
+     *
+     * @param mixed[] $userMessageParams
      */
     public function setUserMessageParams(array $userMessageParams): self
     {

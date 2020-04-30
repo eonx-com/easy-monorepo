@@ -12,11 +12,4 @@ interface ValidationExceptionInterface
      * @return mixed[]
      */
     public function getErrors(): array;
-
-    /**
-     * Sets validation errors.
-     *
-     * @param mixed[] $errors
-     */
-    public function setErrors(array $errors);
 }

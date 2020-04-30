@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Bridge\Laravel\Handler;
 
+use DomainException;
 use EoneoPay\ApiFormats\EncoderGuesser;
 use EoneoPay\ApiFormats\Encoders\XmlEncoder;
 use EoneoPay\ApiFormats\External\Libraries\Psr7\Psr7Factory;
@@ -14,12 +15,14 @@ use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stubs\LoggerStub;
 use EonX\EasyErrorHandler\Tests\Stubs\ValidationExceptionStub;
 use EonX\EasyLogging\Interfaces\LoggerInterface;
+use Exception;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Http\Request;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator as ContractedTranslator;
 use LogicException;
 use Mockery\MockInterface;
+use RuntimeException;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
@@ -27,6 +30,32 @@ use Symfony\Component\Console\Output\BufferedOutput;
  */
 final class HandlerTest extends AbstractTestCase
 {
+    /**
+     * @return mixed[]
+     *
+     * @see testShouldReportReturnsExpectedResult
+     */
+    public function provideExceptionsForShouldReport(): array
+    {
+        return [
+            'Exception is in the dont report list' => [
+                'dontReport' => [LogicException::class],
+                'exception' => new LogicException(),
+                'shouldReport' => false,
+            ],
+            'Parent exception is in the dont report list' => [
+                'dontReport' => [LogicException::class],
+                'exception' => new DomainException(),
+                'shouldReport' => false,
+            ],
+            'Exception is not in the dont report list' => [
+                'dontReport' => [LogicException::class],
+                'exception' => new RuntimeException(),
+                'shouldReport' => true,
+            ],
+        ];
+    }
+
     public function testRenderForConsoleDoesNotShowTranslationIfItEqualsToOriginalMessage(): void
     {
         $handler = new Handler(
@@ -428,8 +457,16 @@ final class HandlerTest extends AbstractTestCase
         self::assertTrue(true);
     }
 
-    public function testShouldReportReturnsFalseIfExceptionIsInDontReportList(): void
-    {
+    /**
+     * @param string[] $dontReport
+     *
+     * @dataProvider provideExceptionsForShouldReport
+     */
+    public function testShouldReportReturnsExpectedResult(
+        array $dontReport,
+        Exception $exception,
+        bool $shouldReport
+    ): void {
         $handler = new Handler(
             new EncoderGuesser([]),
             new Psr7Factory(),
@@ -437,28 +474,11 @@ final class HandlerTest extends AbstractTestCase
             $this->createTranslator(),
             new LoggerStub()
         );
-        $this->getPropertyAsPublic($handler, 'dontReport')->setValue($handler, [LogicException::class]);
-        $exception = new LogicException();
+        $this->getPropertyAsPublic($handler, 'dontReport')->setValue($handler, $dontReport);
 
         $result = $handler->shouldReport($exception);
 
-        self::assertFalse($result);
-    }
-
-    public function testShouldReportReturnsTrueIfExceptionIsNotInDontReportList(): void
-    {
-        $handler = new Handler(
-            new EncoderGuesser([]),
-            new Psr7Factory(),
-            new ConfigRepository(),
-            $this->createTranslator(),
-            new LoggerStub()
-        );
-        $exception = new LogicException();
-
-        $result = $handler->shouldReport($exception);
-
-        self::assertTrue($result);
+        self::assertSame($shouldReport, $result);
     }
 
     private function createConfigRepositoryWithDebug(): ConfigRepository

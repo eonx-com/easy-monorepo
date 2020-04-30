@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions;
 
-class ConflictException extends BaseException
+abstract class ConflictException extends BaseException
 {
     /**
      * @var int

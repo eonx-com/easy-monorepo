@@ -130,9 +130,15 @@ class Handler implements ExceptionHandler
     /**
      * {@inheritdoc}
      */
-    public function shouldReport(Exception $e): bool
+    public function shouldReport(Exception $exception): bool
     {
-        return \in_array(\get_class($e), $this->dontReport, true) === false;
+        foreach ($this->dontReport as $type) {
+            if ($exception instanceof $type) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

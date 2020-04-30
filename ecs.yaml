@@ -56,12 +56,6 @@ parameters:
             - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
             - 'packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php'
             - 'packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Routing/IriConverter.php'
-        SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint:
-            - 'packages/EasyErrorHandler/src/Interfaces/ValidationExceptionInterface.php'
-            - 'packages/EasyErrorHandler/src/Interfaces/TranslatableExceptionInterface.php'
-            - 'packages/EasyErrorHandler/src/Interfaces/SubCodeAwareExceptionInterface.php'
-            - 'packages/EasyErrorHandler/src/Interfaces/StatusCodeAwareExceptionInterface.php'
-            - 'packages/EasyErrorHandler/src/Interfaces/LogLevelAwareExceptionInterface.php'
         SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.UselessAnnotation:
             - 'packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php'
             - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
@@ -73,6 +67,7 @@ parameters:
             - 'packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php'
         SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff.ReferencedGeneralException:
             - 'packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php'
+            - 'packages/EasyErrorHandler/tests/Bridge/Laravel/Handler/HandlerTest.php'
 
 services:
     PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff: ~
