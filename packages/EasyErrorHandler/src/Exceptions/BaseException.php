@@ -106,7 +106,7 @@ abstract class BaseException extends Exception implements
     }
 
     /**
-     * Sets an exception message parameters.
+     * Sets the exception message parameters.
      *
      * @param mixed[] $messageParams
      */
