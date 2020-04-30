@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.3.15 - 2020-04-21
+## v2.3.16 - 2020-04-28
+
+### EasyCore
+
+- [#215] Allow setRequestAttributes to be set anywhere in the inheritance chain
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.15] - 2020-04-21
 
 ### EasySecurity
 
@@ -1520,3 +1530,5 @@
 [@buddyshontogan]: https://github.com/buddyshontogan
 [#213]: https://github.com/eonx-com/easy-monorepo/pull/213
 [v2.3.14]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.13...v2.3.14
+[#215]: https://github.com/eonx-com/easy-monorepo/pull/215
+[v2.3.15]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.14...v2.3.15
