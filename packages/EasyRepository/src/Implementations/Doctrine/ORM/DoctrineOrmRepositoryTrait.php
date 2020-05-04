@@ -35,11 +35,6 @@ trait DoctrineOrmRepositoryTrait
         $this->manager->beginTransaction();
     }
 
-    public function close(): void
-    {
-        $this->manager->close();
-    }
-
     public function commit(): void
     {
         $this->manager->commit();
@@ -98,7 +93,7 @@ trait DoctrineOrmRepositoryTrait
             return $return ?? true;
         } catch (Throwable $exception) {
             if ($exception instanceof ORMException || $exception instanceof DBALException) {
-                $this->close();
+                $this->manager->close();
             }
 
             $this->rollback();
