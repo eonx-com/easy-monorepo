@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Cache\Repository;
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Queue\Events\JobExceptionOccurred;
+use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -60,5 +61,36 @@ final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
         $emProphecy->isOpen()->shouldHaveBeenCalledOnce();
         $cacheProphecy->forever('illuminate:queue:restart', Carbon::now()->getTimestamp())->shouldHaveBeenCalledOnce();
         $loggerProphecy->info($logMessage, $logData)->shouldHaveBeenCalledOnce();
+    }
+
+    /**
+     * Test `handle` with opened EntityManager succeeds.
+     *
+     * @return void
+     */
+    public function testHandleWithOpenedEmSucceeds(): void
+    {
+        /** @var \Illuminate\Contracts\Queue\Job $job */
+        $job = $this->prophesize(Job::class)->reveal();
+        $emProphecy = $this->prophesize(EntityManagerInterface::class);
+        $emProphecy->isOpen()->willReturn(true);
+        /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
+        $entityManager = $emProphecy->reveal();
+        $cacheProphecy = $this->prophesize(Repository::class);
+        /** @var \Illuminate\Cache\Repository $cache */
+        $cache = $this->prophesize(Repository::class)->reveal();
+        $loggerProphecy = $this->prophesize(LoggerInterface::class);
+        /** @var \Psr\Log\LoggerInterface $logger */
+        $logger = $loggerProphecy->reveal();
+        $listener = new DoctrineRestartQueueOnEmCloseListener($entityManager, $cache, $logger);
+
+        $listener->handle(new JobExceptionOccurred('connectionName', $job, new Exception('some-message')));
+
+        $emProphecy->isOpen()->shouldHaveBeenCalledOnce();
+
+        $cacheProphecy->forever(Argument::any(), Argument::any())->shouldNotHaveBeenCalled();
+        /** @var mixed[] $infoData */
+        $infoData = Argument::any();
+        $loggerProphecy->info(Argument::any(), $infoData)->shouldNotHaveBeenCalled();
     }
 }

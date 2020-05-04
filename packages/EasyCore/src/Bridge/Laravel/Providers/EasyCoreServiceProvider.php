@@ -22,7 +22,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
 
         $this->clearDoctrineEmBeforeJob();
         $this->logQueueWorkerStopping();
-        $this->restartQueue();
+        $this->restartQueueOnEmClose();
     }
 
     public function register(): void
@@ -48,12 +48,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
         $this->app->get('events')->listen(WorkerStopping::class, QueueWorkerStoppingListener::class);
     }
 
-    /**
-     * Restarts Queue.
-     *
-     * @return void
-     */
-    private function restartQueue(): void
+    private function restartQueueOnEmClose(): void
     {
         if ((bool)\config('easy-core.restart_queue_on_doctrine_em_close', true) === false) {
             return;
