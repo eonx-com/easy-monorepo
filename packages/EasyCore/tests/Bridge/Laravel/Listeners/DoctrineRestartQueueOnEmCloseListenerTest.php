@@ -64,11 +64,11 @@ final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
     }
 
     /**
-     * Test `handle` with opened EntityManager succeeds.
+     * Test `handle` with open EntityManager succeeds.
      *
      * @return void
      */
-    public function testHandleWithOpenedEmSucceeds(): void
+    public function testHandleWithOpenEmSucceeds(): void
     {
         /** @var \Illuminate\Contracts\Queue\Job $job */
         $job = $this->prophesize(Job::class)->reveal();
@@ -87,7 +87,6 @@ final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
         $listener->handle(new JobExceptionOccurred('connectionName', $job, new Exception('some-message')));
 
         $emProphecy->isOpen()->shouldHaveBeenCalledOnce();
-
         $cacheProphecy->forever(Argument::any(), Argument::any())->shouldNotHaveBeenCalled();
         /** @var mixed[] $infoData */
         $infoData = Argument::any();
