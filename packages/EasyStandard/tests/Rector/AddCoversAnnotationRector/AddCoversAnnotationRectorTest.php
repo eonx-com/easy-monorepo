@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Rector\AddCoversAnnotationRector;
@@ -17,7 +18,7 @@ final class AddCoversAnnotationRectorTest extends AbstractRectorTestCase
     /**
      * Provides test examples.
      *
-     * @return \Iterator
+     * @return Iterator<array>
      */
     public function provideData(): Iterator
     {
@@ -26,10 +27,6 @@ final class AddCoversAnnotationRectorTest extends AbstractRectorTestCase
 
     /**
      * Tests Rector rule.
-     *
-     * @param string $file
-     *
-     * @return void
      *
      * @dataProvider provideData()
      */

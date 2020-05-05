@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Rector\AddSeeAnnotationRector;
 
-use Iterator;
 use EonX\EasyStandard\Rector\AddSeeAnnotationRector;
+use Iterator;
 use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
 
 /**
@@ -17,7 +18,7 @@ final class AddSeeAnnotationRectorTest extends AbstractRectorTestCase
     /**
      * Provides test examples.
      *
-     * @return \Iterator
+     * @return Iterator<array>
      */
     public function provideData(): Iterator
     {
@@ -26,10 +27,6 @@ final class AddSeeAnnotationRectorTest extends AbstractRectorTestCase
 
     /**
      * Tests Rector rule.
-     *
-     * @param string $file
-     *
-     * @return void
      *
      * @dataProvider provideData()
      */

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Sniffs\Exceptions;
@@ -20,8 +21,6 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests exception without message succeeds.
-     *
-     * @return void
      */
     public function testExceptionWithoutMessageSucceeds(): void
     {
@@ -30,8 +29,6 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests hardcoded message fails.
-     *
-     * @return void
      */
     public function testHardcodedMessageFails(): void
     {
@@ -40,8 +37,6 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests message with `exception.` prefix succeeds.
-     *
-     * @return void
      */
     public function testMessageWithExceptionPrefixSucceeds(): void
     {
@@ -50,8 +45,6 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests multiline exception succeeds.
-     *
-     * @return void
      */
     public function testMultilineExceptionSucceeds(): void
     {
@@ -60,8 +53,6 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests throw variable succeeds.
-     *
-     * @return void
      */
     public function testThrowVariableSucceeds(): void
     {
@@ -70,17 +61,12 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests throw exception with variable message succeeds.
-     *
-     * @return void
      */
     public function testVariableMessageSucceeds(): void
     {
         $this->doTestCorrectFile(self::FIXTURES_DIR . '/correct/variableMessage.php.inc');
     }
 
-    /**
-     * @return string
-     */
     protected function getCheckerClass(): string
     {
         return ThrowExceptionMessageSniff::class;

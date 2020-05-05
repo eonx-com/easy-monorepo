@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Rector;
@@ -29,8 +30,6 @@ final class AddSeeAnnotationRector extends AbstractPHPUnitRector
 
     /**
      * From this method documentation is generated.
-     *
-     * @return \Rector\Core\RectorDefinition\RectorDefinition
      */
     public function getDefinition(): RectorDefinition
     {
@@ -97,13 +96,8 @@ PHP
 
     /**
      * Checks dataProvider method has `@see` annotation with test method name.
-     *
-     * @param \PhpParser\Node\Stmt\ClassMethod|null $dataProviderMethod
-     * @param string $testMethodName
-     *
-     * @return void
      */
-    private function checkDataProviderMethod(?ClassMethod $dataProviderMethod, string $testMethodName): void
+    private function checkDataProviderMethod(ClassMethod $dataProviderMethod, string $testMethodName): void
     {
         /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $dataProviderDocs */
         $dataProviderDocs = $dataProviderMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
@@ -128,11 +122,6 @@ PHP
 
     /**
      * Checks test method.
-     *
-     * @param \PhpParser\Node\Stmt\Class_ $class
-     * @param \PhpParser\Node\Stmt\ClassMethod $classMethod
-     *
-     * @return void
      */
     private function checkTestMethod(Class_ $class, ClassMethod $classMethod): void
     {
@@ -158,10 +147,6 @@ PHP
 
     /**
      * Checks test methods with @dataProvider.
-     *
-     * @param \PhpParser\Node\Stmt\Class_ $class
-     *
-     * @return void
      */
     private function checkTestMethodsWithDataProvider(Class_ $class): void
     {
@@ -176,10 +161,6 @@ PHP
 
     /**
      * Creates `@see` PHPDoc tag.
-     *
-     * @param string $testMethod
-     *
-     * @return \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode
      */
     private function createSeePhpDocTagNode(string $testMethod): PhpDocTagNode
     {
@@ -188,10 +169,6 @@ PHP
 
     /**
      * Returns true if method should be skipped.
-     *
-     * @param \PhpParser\Node\Stmt\ClassMethod $classMethod
-     *
-     * @return bool
      */
     private function shouldSkipMethod(ClassMethod $classMethod): bool
     {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Sniffs\ControlStructures;
@@ -32,10 +33,8 @@ final class ArrangeActAssertSniff implements Sniff
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
-     *
-     * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         if ($this->shouldSkip($phpcsFile, $stackPtr)) {
             return;
@@ -44,6 +43,10 @@ final class ArrangeActAssertSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         $openTokenPosition = TokenHelper::findNext($phpcsFile, [\T_OPEN_CURLY_BRACKET], $stackPtr);
+        if ($openTokenPosition === null) {
+            return;
+        }
+
         $closeTokenPosition = $tokens[$openTokenPosition]['bracket_closer'];
 
         if ($this->isSingleLineMethod($phpcsFile, $openTokenPosition, $closeTokenPosition) === true) {
@@ -71,7 +74,7 @@ final class ArrangeActAssertSniff implements Sniff
 
         $method = FunctionHelper::getName($phpcsFile, $stackPtr);
         $phpcsFile->addErrorOnLine(
-            "Test method must conform to AAA. Allowed amount of empty lines is 1 or 2." .
+            'Test method must conform to AAA. Allowed amount of empty lines is 1 or 2.' .
             " Method [{$method}] has [{$emptyLines}] empty lines.",
             $tokens[$stackPtr]['line'],
             'ArrangeActAssertSniff'
@@ -96,14 +99,12 @@ final class ArrangeActAssertSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $openTokenPosition
      * @param int $closeTokenPosition
-     *
-     * @return bool
      */
-    private function isSingleLineMethod(File $phpcsFile, int $openTokenPosition, int $closeTokenPosition)
+    private function isSingleLineMethod(File $phpcsFile, int $openTokenPosition, int $closeTokenPosition): bool
     {
         $semicolons = TokenHelper::findNextAll($phpcsFile, [\T_SEMICOLON], $openTokenPosition, $closeTokenPosition);
 
-        return (count($semicolons) === 1);
+        return count($semicolons) === 1;
     }
 
     /**
@@ -111,12 +112,14 @@ final class ArrangeActAssertSniff implements Sniff
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
-     *
-     * @return bool
      */
     private function shouldSkip(File $phpcsFile, int $stackPtr): bool
     {
         $classFqn = NamespaceHelper::findCurrentNamespaceName($phpcsFile, $stackPtr);
+
+        if ($classFqn === null) {
+            return true;
+        }
 
         if (StringHelper::startsWith($classFqn, $this->testNamespace) === false) {
             return true;

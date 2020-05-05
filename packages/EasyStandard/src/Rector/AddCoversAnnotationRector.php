@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Rector;
@@ -102,10 +103,6 @@ PHP
 
     /**
      * Creates `@covers` PHPDoc tag.
-     *
-     * @param string $className
-     *
-     * @return \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode
      */
     private function createCoversPhpDocTagNode(string $className): PhpDocTagNode
     {
@@ -114,10 +111,6 @@ PHP
 
     /**
      * Resolves covered class name.
-     *
-     * @param string $className
-     *
-     * @return string|null
      */
     private function resolveCoveredClassName(string $className): ?string
     {
@@ -132,10 +125,6 @@ PHP
 
     /**
      * Returns true if class should be skipped.
-     *
-     * @param \PhpParser\Node\Stmt\Class_ $class
-     *
-     * @return bool
      */
     private function shouldSkipClass(Class_ $class): bool
     {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Sniffs\Exceptions;
@@ -15,8 +16,6 @@ final class ThrowExceptionMessageSniff implements Sniff
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
-     *
-     * @return void
      */
     public function process(File $phpcsFile, $stackPtr): void
     {

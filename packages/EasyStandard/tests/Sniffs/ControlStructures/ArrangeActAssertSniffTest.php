@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Sniffs\ControlStructures;
@@ -20,8 +21,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests class with no test namespace succeeds.
-     *
-     * @return void
      */
     public function testClassWithNoTestNamespaceSucceeds(): void
     {
@@ -30,8 +29,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests methods with correct amount of empty lines succeeds.
-     *
-     * @return void
      */
     public function testCorrectEmptyLinesSucceeds(): void
     {
@@ -40,8 +37,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests method with excessive empty lines fails.
-     *
-     * @return void
      */
     public function testExcessiveEmptyLinesFails(): void
     {
@@ -50,8 +45,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests inline comment succeeds.
-     *
-     * @return void
      */
     public function testInlineCommentSucceeds(): void
     {
@@ -60,8 +53,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests line with comment succeeds, because comment is not an effective line.
-     *
-     * @return void
      */
     public function testLineWithCommentSucceeds(): void
     {
@@ -70,8 +61,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests method with inner curly brackets succeeds.
-     *
-     * @return void
      */
     public function testMethodWithInnerCurlyBracketsSucceeds(): void
     {
@@ -80,8 +69,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests method with no empty lines fails.
-     *
-     * @return void
      */
     public function testNoEmptyLinesFails(): void
     {
@@ -90,8 +77,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests no test method succeeds.
-     *
-     * @return void
      */
     public function testNoTestMethodSucceeds(): void
     {
@@ -100,8 +85,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests one line test method succeeds.
-     *
-     * @return void
      */
     public function testOneLineTestMethodSucceeds(): void
     {
@@ -110,17 +93,12 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Test method with multiline succeeds.
-     *
-     * @return void
      */
     public function testOneMultiLineSucceeds(): void
     {
         $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/oneMultiLine.php.inc');
     }
 
-    /**
-     * @return string
-     */
     protected function getCheckerClass(): string
     {
         return ArrangeActAssertSniff::class;

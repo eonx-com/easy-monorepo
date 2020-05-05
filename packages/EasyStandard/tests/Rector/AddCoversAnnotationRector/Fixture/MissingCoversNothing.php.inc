@@ -9,6 +9,7 @@ class SomethingTest extends TestCase
 
 }
 ?>
+
 -----
 <?php
 
@@ -24,3 +25,4 @@ class SomethingTest extends TestCase
 
 }
 ?>
+

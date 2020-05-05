@@ -10,6 +10,7 @@ class AddCoversAnnotationRectorTest extends TestCase
 
 }
 ?>
+
 -----
 <?php
 declare(strict_types=1);
@@ -26,3 +27,4 @@ class AddCoversAnnotationRectorTest extends TestCase
 
 }
 ?>
+

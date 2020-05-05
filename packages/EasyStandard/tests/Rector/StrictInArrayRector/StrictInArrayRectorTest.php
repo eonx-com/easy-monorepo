@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Rector\StrictInArrayRector;
 
 use EonX\EasyStandard\Rector\StrictInArrayRector;
-use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
 use Iterator;
+use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
 
 /**
  * @covers \EonX\EasyStandard\Rector\StrictInArrayRector
@@ -17,7 +18,7 @@ final class StrictInArrayRectorTest extends AbstractRectorTestCase
     /**
      * Provides test examples.
      *
-     * @return \Iterator
+     * @return Iterator<array>
      */
     public function provideData(): Iterator
     {
@@ -26,10 +27,6 @@ final class StrictInArrayRectorTest extends AbstractRectorTestCase
 
     /**
      * Tests Rector rule.
-     *
-     * @param string $file
-     *
-     * @return void
      *
      * @dataProvider provideData()
      */
