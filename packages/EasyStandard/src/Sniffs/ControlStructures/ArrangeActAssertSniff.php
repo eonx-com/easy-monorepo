@@ -68,17 +68,18 @@ final class ArrangeActAssertSniff implements Sniff
             $currentTokenPosition = $nextTokenPosition;
         }
 
-        if (\in_array($emptyLines, self::ALLOWED_SPACES_COUNT, true)) {
-            return;
+        if (\in_array($emptyLines, self::ALLOWED_SPACES_COUNT, true) === false) {
+            $method = FunctionHelper::getName($phpcsFile, $stackPtr);
+            $phpcsFile->addErrorOnLine(
+                \sprintf(
+                    'Test method must conform to AAA. Allowed amount of empty lines is between [%s].',
+                    \implode(', ', self::ALLOWED_SPACES_COUNT)
+                ) .
+                " Method [{$method}] has [{$emptyLines}] empty lines.",
+                $tokens[$stackPtr]['line'],
+                'ArrangeActAssertSniff'
+            );
         }
-
-        $method = FunctionHelper::getName($phpcsFile, $stackPtr);
-        $phpcsFile->addErrorOnLine(
-            'Test method must conform to AAA. Allowed amount of empty lines is 1 or 2.' .
-            " Method [{$method}] has [{$emptyLines}] empty lines.",
-            $tokens[$stackPtr]['line'],
-            'ArrangeActAssertSniff'
-        );
     }
 
     /**
@@ -127,10 +128,6 @@ final class ArrangeActAssertSniff implements Sniff
 
         $functionName = FunctionHelper::getName($phpcsFile, $stackPtr);
 
-        if (StringHelper::startsWith($functionName, $this->testMethodPrefix) === false) {
-            return true;
-        }
-
-        return false;
+        return StringHelper::startsWith($functionName, $this->testMethodPrefix) === false;
     }
 }
