@@ -51,7 +51,7 @@ class MultipleTags extends TestCase
      */
     public function testAdd2(int $first, int $second, int $result): void
     {
-        $actualResult = $first + $second;
+        $actualResult = $second + $first;
 
         self::assertSame($result, $actualResult);
     }
@@ -115,7 +115,7 @@ class MultipleTags extends TestCase
      */
     public function testAdd2(int $first, int $second, int $result): void
     {
-        $actualResult = $first + $second;
+        $actualResult = $second + $first;
 
         self::assertSame($result, $actualResult);
     }

@@ -1,8 +1,10 @@
 <?php
-in_array('value', []);
+$result = in_array('value', []);
+echo $result;
 ?>
 
 -----
 <?php
-in_array('value', [], true);
+$result = in_array('value', [], true);
+echo $result;
 ?>

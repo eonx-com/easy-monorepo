@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Quality\Ecs\ArrangeActAssertSniff\Correct;
 
-use App\Repositories\Interfaces\ProviderRuleRepositoryInterface;
 use Mockery\MockInterface;
 
 final class TestClass
@@ -21,6 +20,7 @@ final class TestClass
                     ->andReturn([]);
             }
         );
+        $array = $ruleRepository->someMethod();
 
         $actualResult = 2 + 2;
 

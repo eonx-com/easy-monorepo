@@ -116,8 +116,6 @@ PHP
         if (Strings::match($dataProviderDocs->getOriginalContent(), '/(@see ' . $testMethodName . ')(.*?)/') === null) {
             $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
         }
-
-        return;
     }
 
     /**
