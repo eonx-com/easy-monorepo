@@ -7,10 +7,16 @@ namespace EonX\EasyStandard\Sniffs\Exceptions;
 use Nette\Utils\Strings;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class ThrowExceptionMessageSniff implements Sniff
 {
+    /**
+     * @var string[]
+     */
+    public $validPrefixes = [];
+
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -33,21 +39,40 @@ final class ThrowExceptionMessageSniff implements Sniff
         $messageTokenPosition = TokenHelper::findNextEffective($phpcsFile, $openParenthesisToken + 1);
         $messageToken = $tokens[$messageTokenPosition];
 
-        if ($messageToken['code'] === \T_VARIABLE) {
+        if (\in_array($messageToken['code'], Tokens::$stringTokens, true) === false) {
             return;
         }
 
-        if ($messageToken['code'] === \T_CLOSE_PARENTHESIS) {
+        if ($this->startsWithValidPrefix(\trim($messageToken['content'], "'\"")) === true) {
             return;
         }
 
-        if (Strings::startsWith($messageToken['content'], "'exceptions.") === false) {
-            $phpcsFile->addErrorOnLine(
-                "Exception message must be either a variable or a translation message, started with ['exceptions.']",
-                $tokens[$stackPtr]['line'],
-                'ThrowExceptionMessageSniff'
-            );
+        $phpcsFile->addErrorOnLine(
+            \sprintf(
+                'Exception message must be either a variable or a translation message, started with one of [%s]',
+                \implode(', ', $this->validPrefixes)
+            ),
+            $tokens[$stackPtr]['line'],
+            'ThrowExceptionMessageSniff'
+        );
+    }
+
+    /**
+     * Does the message start with valid prefix.
+     *
+     * @param string $message
+     */
+    private function startsWithValidPrefix(string $message): bool
+    {
+        foreach ($this->validPrefixes as $validPrefix) {
+            if (Strings::startsWith($message, $validPrefix) === true) {
+                echo '[return true]';
+                return true;
+            }
         }
+
+        echo '[return false]';
+        return false;
     }
 
     /**

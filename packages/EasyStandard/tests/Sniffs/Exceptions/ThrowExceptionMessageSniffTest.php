@@ -36,11 +36,11 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * Tests message with `exception.` prefix succeeds.
+     * Tests message with valid prefix succeeds.
      */
-    public function testMessageWithExceptionPrefixSucceeds(): void
+    public function testMessageWithValidPrefixSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/correct/exceptionPrefix.php.inc');
+        $this->doTestCorrectFile(self::FIXTURES_DIR . '/correct/validPrefix.php.inc');
     }
 
     /**
@@ -70,5 +70,12 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
     protected function getCheckerClass(): string
     {
         return ThrowExceptionMessageSniff::class;
+    }
+
+    protected function getCheckerConfiguration(): array
+    {
+        return [
+            'validPrefixes' => ['exceptions.'],
+        ];
     }
 }
