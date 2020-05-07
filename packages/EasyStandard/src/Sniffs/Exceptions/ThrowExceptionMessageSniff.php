@@ -66,12 +66,10 @@ final class ThrowExceptionMessageSniff implements Sniff
     {
         foreach ($this->validPrefixes as $validPrefix) {
             if (Strings::startsWith($message, $validPrefix) === true) {
-                echo '[return true]';
                 return true;
             }
         }
 
-        echo '[return false]';
         return false;
     }
 
