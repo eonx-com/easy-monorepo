@@ -8,8 +8,8 @@
         "nette/utils": "^3.1"
     },
     "require-dev": {
-        "eonx-com/easy-api-token": "^2.4",
-        "eonx-com/easy-psr7-factory": "^2.4",
+        "eonx-com/easy-api-token": "^2.3.17",
+        "eonx-com/easy-psr7-factory": "^2.3.17",
         "phpunit/phpunit": "^7.5 || ^8.4",
         "symfony/symfony": "^4.2 || ^5.0"
     },
