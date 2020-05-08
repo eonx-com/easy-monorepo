@@ -1,7 +1,7 @@
 {
     "name": "eonx-com/easy-monorepo",
     "type": "library",
-    "description": "The packages to step the f*k up in your projects",
+    "description": "Reusable packages to make PHP projects easier to create/maintain",
     "license": "MIT",
     "bin": [
         "packages/EasyCfhighlander/bin/easy-cfhighlander",
@@ -163,7 +163,8 @@
     "prefer-stable": true,
     "extra": {
         "eonx_docs": {
-            "ignore": true
+            "finder_pattern": "readme.md",
+            "finder_depth": 0
         },
         "branch-alias": {
             "dev-master": "2.1-dev"
