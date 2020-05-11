@@ -16,6 +16,9 @@ final class NameRestrictedExpressionFunctionConfigurator extends AbstractNameRes
         }));
     }
 
+    /**
+     * @return string[]
+     */
     protected function getNames(): array
     {
         return ['restricted'];
