@@ -14,5 +14,8 @@ abstract class AbstractNameRestrictedConfigurator extends AbstractConfigurator i
         return \in_array($decision->getName(), $this->getNames(), true);
     }
 
+    /**
+     * @return string[]
+     */
     abstract protected function getNames(): array;
 }
