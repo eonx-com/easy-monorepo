@@ -22,9 +22,6 @@ use Psr\Log\LoggerInterface;
  */
 final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
 {
-    /**
-     * Test `handle` succeeds.
-     */
     public function testHandleSucceeds(): void
     {
         $jobProphecy = $this->prophesize(Job::class);
@@ -61,9 +58,6 @@ final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
         $loggerProphecy->info($logMessage, $logData)->shouldHaveBeenCalledOnce();
     }
 
-    /**
-     * Test `handle` with open EntityManager succeeds.
-     */
     public function testHandleWithOpenEmSucceeds(): void
     {
         /** @var \Illuminate\Contracts\Queue\Job $job */

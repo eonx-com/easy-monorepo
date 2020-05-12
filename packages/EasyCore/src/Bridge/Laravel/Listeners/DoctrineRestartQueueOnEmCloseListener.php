@@ -30,9 +30,6 @@ final class DoctrineRestartQueueOnEmCloseListener
      */
     private $logger;
 
-    /**
-     * DoctrineRestartQueueOnEmCloseListener constructor.
-     */
     public function __construct(EntityManagerInterface $entityManager, Cache $cache, ?LoggerInterface $logger = null)
     {
         $this->entityManager = $entityManager;
@@ -40,9 +37,6 @@ final class DoctrineRestartQueueOnEmCloseListener
         $this->logger = $logger ?? new NullLogger();
     }
 
-    /**
-     * Handles JobExceptionOccurred event.
-     */
     public function handle(JobExceptionOccurred $event): void
     {
         if ($this->entityManager->isOpen() === false) {
