@@ -1,6 +1,6 @@
 {
     "name": "eonx-com/easy-api-token",
-    "description": "Tools to handle API tokens like a pro",
+    "description": "Make your API accept multiple authentication strategies in a convenient way (Basic, ApiKey, JWT, ...)",
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
