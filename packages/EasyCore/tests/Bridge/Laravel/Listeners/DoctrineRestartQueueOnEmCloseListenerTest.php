@@ -24,8 +24,6 @@ final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
 {
     /**
      * Test `handle` succeeds.
-     *
-     * @return void
      */
     public function testHandleSucceeds(): void
     {
@@ -65,8 +63,6 @@ final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
 
     /**
      * Test `handle` with open EntityManager succeeds.
-     *
-     * @return void
      */
     public function testHandleWithOpenEmSucceeds(): void
     {

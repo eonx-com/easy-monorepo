@@ -32,10 +32,6 @@ final class DoctrineRestartQueueOnEmCloseListener
 
     /**
      * DoctrineRestartQueueOnEmCloseListener constructor.
-     *
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
-     * @param \Illuminate\Contracts\Cache\Repository $cache
-     * @param \Psr\Log\LoggerInterface|null $logger
      */
     public function __construct(EntityManagerInterface $entityManager, Cache $cache, ?LoggerInterface $logger = null)
     {
@@ -46,8 +42,6 @@ final class DoctrineRestartQueueOnEmCloseListener
 
     /**
      * Handles JobExceptionOccurred event.
-     *
-     * @param \Illuminate\Queue\Events\JobExceptionOccurred $event
      */
     public function handle(JobExceptionOccurred $event): void
     {
