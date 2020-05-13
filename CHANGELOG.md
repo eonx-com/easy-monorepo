@@ -2,7 +2,92 @@
 
 <!-- dumped content start -->
 
-## v2.3.10 - 2020-04-06
+## v2.3.16 - 2020-04-28
+
+### EasyCore
+
+- [#215] Allow setRequestAttributes to be set anywhere in the inheritance chain
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.15] - 2020-04-21
+
+### EasySecurity
+
+- [#213] Fix targets argument name for permission expression fu…
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.14] - 2020-04-21
+
+### EasyCore
+
+- [#212] [ApiPlatform] No properties api resource
+- [#211] [ApiPlatform] Improve data persister features
+- [#210] Registered ProcessWithLockMiddleware to container, Thanks to [@buddyshontogan]
+
+### EasySecurity
+
+- [#210] Fixed Registration for argument $targets for PermissionExpressionFunctionProvider, Thanks to [@buddyshontogan]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.13] - 2020-04-17
+
+### EasyCore
+
+- [#209] Hotfix data persister decoration priority
+
+### EasyStandard
+
+- [#208] - Change constructor visibility to public only, Thanks to [@ttam]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.12] - 2020-04-16
+
+### EasyStandard
+
+- [#205] Add AvoidPrivateConstructorSniff, Thanks to [@ttam]
+
+### EasyCore
+
+- [#206] Allow Request attributes to be injected in DataPersisters
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.11] - 2020-04-14
+
+### EasyCore
+
+- [#204] Add maker command for simple ApiResource and DataPersister
+- [#195] Added AbstractDataPersister and AbstractContextDataPersister, Thanks to [@AlbertLabarento]
+- [#202] Implement SelfProvidedIriItemInterface
+- [#201] ChainSimpleDataPersister decorates ContextAwareDataPersisterInterface, Thanks to [@AlbertLabarento]
+
+### EasyPagination
+
+- [#203] Fix request for Laravel in console, Thanks to [@dextercampos]
+
+### EasySsm
+
+- [#200] Fix kernel cache/logs dirs for docker
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.10] - 2020-04-06
 
 ### EasySsm
 
@@ -1425,3 +1510,25 @@
 [#199]: https://github.com/eonx-com/easy-monorepo/pull/199
 [#198]: https://github.com/eonx-com/easy-monorepo/pull/198
 [v2.3.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.8...v2.3.9
+[#204]: https://github.com/eonx-com/easy-monorepo/pull/204
+[#203]: https://github.com/eonx-com/easy-monorepo/pull/203
+[#202]: https://github.com/eonx-com/easy-monorepo/pull/202
+[#201]: https://github.com/eonx-com/easy-monorepo/pull/201
+[#200]: https://github.com/eonx-com/easy-monorepo/pull/200
+[#195]: https://github.com/eonx-com/easy-monorepo/pull/195
+[v2.3.10]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.9...v2.3.10
+[#206]: https://github.com/eonx-com/easy-monorepo/pull/206
+[#205]: https://github.com/eonx-com/easy-monorepo/pull/205
+[v2.3.11]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.10...v2.3.11
+[#209]: https://github.com/eonx-com/easy-monorepo/pull/209
+[#208]: https://github.com/eonx-com/easy-monorepo/pull/208
+[v2.3.12]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.11...v2.3.12
+[#212]: https://github.com/eonx-com/easy-monorepo/pull/212
+[#211]: https://github.com/eonx-com/easy-monorepo/pull/211
+[#210]: https://github.com/eonx-com/easy-monorepo/pull/210
+[v2.3.13]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.12...v2.3.13
+[@buddyshontogan]: https://github.com/buddyshontogan
+[#213]: https://github.com/eonx-com/easy-monorepo/pull/213
+[v2.3.14]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.13...v2.3.14
+[#215]: https://github.com/eonx-com/easy-monorepo/pull/215
+[v2.3.15]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.14...v2.3.15

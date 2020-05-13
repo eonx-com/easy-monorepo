@@ -1,7 +1,7 @@
 {
     "name": "eonx-com/easy-api-token",
     "description": "Tools to handle API tokens like a pro",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "MIT",
     "require": {
         "php": "^7.1",

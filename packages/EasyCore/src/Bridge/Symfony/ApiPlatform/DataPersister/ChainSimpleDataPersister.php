@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
+use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Event\DataPersisterResolvedEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterface
 {
     /**
-     * @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface[]
+     * @var \ApiPlatform\Core\DataPersister\DataPersisterInterface
      */
-    private $cache = [];
+    private $cached;
 
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
@@ -20,76 +23,150 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
     private $container;
 
     /**
-     * @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface
+     * @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
      */
-    private $decorated;
+    private $dispatcher;
 
     /**
-     * @var mixed[]
+     * @var iterable<\ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface>
      */
     private $persisters;
 
     /**
-     * @param mixed[] $persisters
+     * @var mixed[]
      */
-    public function __construct(ContainerInterface $container, ContextAwareDataPersisterInterface $decorated, array $persisters)
-    {
+    private $simplePersisters;
+
+    /**
+     * @param mixed[] $simplePersisters
+     * @param iterable<\ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface> $persisters
+     */
+    public function __construct(
+        ContainerInterface $container,
+        EventDispatcherInterface $dispatcher,
+        array $simplePersisters,
+        iterable $persisters
+    ) {
         $this->container = $container;
-        $this->decorated = $decorated;
+        $this->dispatcher = $dispatcher;
+        $this->simplePersisters = $simplePersisters;
         $this->persisters = $persisters;
     }
 
     /**
+     * @return \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface[]
+     */
+    public function getDataPersisters(): array
+    {
+        return $this->persisters instanceof \Traversable ? \iterator_to_array($this->persisters) : $this->persisters;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getSimpleDataPersisters(): array
+    {
+        return $this->simplePersisters;
+    }
+
+    /**
      * @param mixed $data
+     * @param null|mixed[] $context
      *
      * @return mixed
      */
     public function persist($data, ?array $context = null)
     {
-        return $this->getDataPersister($data)
-            ? $this->getDataPersister($data)->persist($data, $context ?? [])
-            : $this->decorated->persist($data, $context ?? []);
+        $persister = $this->getDataPersister($data);
+
+        if ($persister === null) {
+            return $data;
+        }
+
+        return $persister instanceof ContextAwareDataPersisterInterface
+            ? $persister->persist($data, $context ?? [])
+            : $persister->persist($data);
     }
 
     /**
      * @param mixed $data
+     * @param null|mixed[] $context
      */
     public function remove($data, ?array $context = null): void
     {
-        $this->getDataPersister($data)
-            ? $this->getDataPersister($data)->remove($data, $context ?? [])
-            : $this->decorated->remove($data, $context ?? []);
+        $persister = $this->getDataPersister($data);
+
+        if ($persister === null) {
+            return;
+        }
+
+        $persister instanceof ContextAwareDataPersisterInterface
+            ? $persister->remove($data, $context ?? [])
+            : $persister->remove($data);
     }
 
     /**
      * @param mixed $data
+     * @param null|mixed[] $context
      */
     public function supports($data, ?array $context = null): bool
     {
-        return $this->getDataPersister($data)
-            ? $this->getDataPersister($data)->supports($data, $context ?? [])
-            : $this->decorated->supports($data, $context ?? []);
+        $persister = $this->getDataPersister($data);
+
+        if ($persister === null) {
+            return false;
+        }
+
+        return $persister instanceof ContextAwareDataPersisterInterface
+            ? $persister->supports($data, $context ?? [])
+            : $persister->supports($data);
+    }
+
+    /**
+     * @param mixed $data
+     * @param null|mixed[] $context
+     */
+    private function getCoreDataPersister($data, ?array $context = null): ?DataPersisterInterface
+    {
+        foreach ($this->persisters as $persister) {
+            if ($persister->supports($data, $context ?? [])) {
+                return $persister;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param mixed $data
+     * @param null|mixed[] $context
+     */
+    private function getDataPersister($data, ?array $context = null): ?DataPersisterInterface
+    {
+        if ($this->cached !== null) {
+            return $this->cached;
+        }
+
+        $dataPersister = $this->getSimpleDataPersister($data) ?? $this->getCoreDataPersister($data, $context);
+
+        if ($dataPersister === null) {
+            return null;
+        }
+
+        $this->dispatcher->dispatch(new DataPersisterResolvedEvent($dataPersister));
+
+        return $this->cached = $dataPersister;
     }
 
     /**
      * @param mixed $data
      */
-    private function getDataPersister($data): ?ContextAwareDataPersisterInterface
+    private function getSimpleDataPersister($data): ?ContextAwareDataPersisterInterface
     {
-        if (\is_object($data) === false) {
+        if (\is_object($data) === false || isset($this->simplePersisters[$class = \get_class($data)]) === false) {
             return null;
         }
 
-        $class = \get_class($data);
-
-        if (isset($this->cache[$class])) {
-            return $this->cache[$class];
-        }
-
-        if (isset($this->persisters[$class]) === false) {
-            return null;
-        }
-
-        return $this->cache[$class] = $this->container->get($this->persisters[$class]);
+        return $this->container->get($this->simplePersisters[$class]);
     }
 }

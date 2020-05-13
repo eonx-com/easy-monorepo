@@ -1,0 +1,12 @@
+services:
+    debug.api_platform.data_persister:
+        class: EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\TraceableChainSimpleDataPersister
+        decorates: api_platform.data_persister
+        arguments:
+            - '@debug.api_platform.data_persister.inner'
+
+    EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector\RequestDataCollector:
+        decorates: api_platform.data_collector.request
+        arguments:
+            - '@EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector\RequestDataCollector.inner'
+            - '@api_platform.data_persister'

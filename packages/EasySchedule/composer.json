@@ -1,6 +1,7 @@
 {
     "name": "eonx-com/easy-schedule",
     "description": "Provides the Command Scheduling logic of Laravel in a Symfony Console application",
+    "type": "symfony-bundle",
     "license": "MIT",
     "require": {
         "php": "^7.1",

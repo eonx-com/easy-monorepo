@@ -10,17 +10,21 @@ abstract class AbstractSimpleDataPersister implements SimpleDataPersisterInterfa
 {
     /**
      * @param mixed $data
+     * @param null|mixed[] $context
      */
-    public function remove($data): void
+    public function remove($data, ?array $context = null): void
     {
         // Not supported by default in simple data persister.
     }
 
     /**
      * @param mixed $data
+     * @param null|mixed[] $context
      */
-    public function supports($data): bool
+    public function supports($data, ?array $context = null): bool
     {
-        return \is_object($data) && \get_class($data) === $this->getApiResourceClass();
+        $apiResourceClass = $this->getApiResourceClass();
+
+        return $data instanceof $apiResourceClass;
     }
 }

@@ -6,3 +6,5 @@ services:
 
     EonX\EasyCore\Lock\LockServiceInterface:
         class: EonX\EasyCore\Lock\LockService
+
+    EonX\EasyCore\Bridge\Symfony\Messenger\ProcessWithLockMiddleware: null

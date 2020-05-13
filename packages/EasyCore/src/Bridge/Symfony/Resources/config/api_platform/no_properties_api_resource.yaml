@@ -1,0 +1,6 @@
+services:
+    EonX\EasyCore\Bridge\Symfony\ApiPlatform\Metadata\NoPropertiesPropertyNameCollectionFactory:
+        decorates: api_platform.metadata.property.name_collection_factory.property_info
+        decoration_priority: -20
+        arguments:
+            - '@EonX\EasyCore\Bridge\Symfony\ApiPlatform\Metadata\NoPropertiesPropertyNameCollectionFactory.inner'

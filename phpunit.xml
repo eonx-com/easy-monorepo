@@ -15,6 +15,7 @@
             <directory>packages/*/packages/*/src</directory>
             <exclude>
                 <directory>packages/*/src/Bridge/Laravel/config</directory>
+                <directory>packages/EasyCore/src/Bridge/Symfony/Resources/skeleton</directory>
             </exclude>
         </whitelist>
     </filter>
