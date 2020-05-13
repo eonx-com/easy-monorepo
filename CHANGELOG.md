@@ -2,7 +2,23 @@
 
 <!-- dumped content start -->
 
-## v2.3.17 - 2020-05-08
+## v2.4.0 - 2020-05-13
+
+- [#222] Fix ecs and phpstan issues, Thanks to [@skrut]
+
+### EasyStandard
+
+- [#221] Add FunctionCommentSniff from NatePage\Sniffs package, Thanks to [@BOB41K1987]
+
+### EasyDecision
+
+- [#220] Update AbstractNameRestrictedConfigurator to use an array of names, Thanks to [@skrut]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.17] - 2020-05-08
 
 ### EasyCore
 
@@ -1561,3 +1577,7 @@
 [v2.3.16]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.15...v2.3.16
 [@evannamon]: https://github.com/evannamon
 [@BOB41K1987]: https://github.com/BOB41K1987
+[#222]: https://github.com/eonx-com/easy-monorepo/pull/222
+[#221]: https://github.com/eonx-com/easy-monorepo/pull/221
+[#220]: https://github.com/eonx-com/easy-monorepo/pull/220
+[v2.3.17]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.16...v2.3.17
