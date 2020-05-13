@@ -15,10 +15,14 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected static $cwd = __DIR__ . '/../tmp';
 
-    /** @var \Symfony\Component\Filesystem\Filesystem */
+    /**
+     * @var \Symfony\Component\Filesystem\Filesystem
+     */
     private $filesystem;
 
     /**
