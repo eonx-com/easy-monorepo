@@ -1,14 +1,14 @@
-<div align="center">
-    <h1>EonX - EasyCore</h1>
-    <p>Provides core features for Lumen applications.</p>
-</div>
+---eonx_docs---
+title: Introduction
+weight: 0
+---eonx_docs---
 
----
+### Require package (Composer)
 
-## Roadmap
+The recommended way to install this package is to use [Composer][1]:
 
-## Documentation
+```bash
+$ composer require eonx-com/easy-core
+```
 
-## Laravel / Lumen
-
-- [Installation](docs/laravel_install.md)
+[1]: https://getcomposer.org/

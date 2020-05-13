@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Laravel\Providers;
 
 use EonX\EasyCore\Bridge\Laravel\Listeners\DoctrineClearEmBeforeJobListener;
+use EonX\EasyCore\Bridge\Laravel\Listeners\DoctrineRestartQueueOnEmCloseListener;
 use EonX\EasyCore\Bridge\Laravel\Listeners\QueueWorkerStoppingListener;
+use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Events\WorkerStopping;
 use Illuminate\Support\ServiceProvider;
@@ -20,6 +22,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
 
         $this->clearDoctrineEmBeforeJob();
         $this->logQueueWorkerStopping();
+        $this->restartQueueOnEmClose();
     }
 
     public function register(): void
@@ -43,5 +46,14 @@ final class EasyCoreServiceProvider extends ServiceProvider
         }
 
         $this->app->get('events')->listen(WorkerStopping::class, QueueWorkerStoppingListener::class);
+    }
+
+    private function restartQueueOnEmClose(): void
+    {
+        if ((bool)\config('easy-core.restart_queue_on_doctrine_em_close', true) === false) {
+            return;
+        }
+
+        $this->app->get('events')->listen(JobExceptionOccurred::class, DoctrineRestartQueueOnEmCloseListener::class);
     }
 }

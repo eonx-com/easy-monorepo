@@ -8,13 +8,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 interface CustomPaginatorInterface
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     public const OPERATION_NAME = 'get';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public const OPERATION_TYPE = 'collection';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public const SERIALIZER_GROUP = 'resource:pagination';
 
     /**
