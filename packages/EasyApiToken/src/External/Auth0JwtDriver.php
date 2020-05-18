@@ -34,7 +34,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
     private $cache;
 
     /**
-     * @var string|resource
+     * @var null|string|resource
      */
     private $privateKey;
 
@@ -48,14 +48,14 @@ final class Auth0JwtDriver implements JwtDriverInterface
      *
      * @param string[] $validAudiences
      * @param string[] $authorizedIss
-     * @param string|resource $privateKey
+     * @param null|string|resource $privateKey
      * @param null|string[] $allowedAlgos
      * @param \Auth0\SDK\Helpers\Cache\CacheHandler|null $cache Optional Cache handler.
      */
     public function __construct(
         array $validAudiences,
         array $authorizedIss,
-        $privateKey,
+        $privateKey = null,
         ?string $audienceForEncode = null,
         ?array $allowedAlgos = null,
         ?CacheHandler $cache = null
