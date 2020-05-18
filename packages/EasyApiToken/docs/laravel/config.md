@@ -51,10 +51,10 @@ return [
         'jwt-header' => [
             'driver' => 'auth0',
             'options' => [
-                'cache_path' => 'path/to/cache',
+                'cache_path' => 'path/to/cache', // Optional
                 'valid_audiences' => ['id1', 'id2'],
                 'authorized_iss' => ['xyz.auth0', 'abc.goog'],
-                'private_key' => 'someprivatekeystring',
+                'private_key' => 'someprivatekeystring', // Required only for HS256
                 'allowed_algos' => ['HS256', 'RS256'],
             ]
         ],
