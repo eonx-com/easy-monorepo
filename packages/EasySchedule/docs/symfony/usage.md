@@ -1,29 +1,7 @@
-<div align="center">
-    <h1>EonX - EasySchedule</h1>
-    <p>Provides the Command Scheduling logic of Laravel in a Symfony Console application.</p>
-</div>
-
----
-
-## Installation In Symfony
-
-```bash
-$ composer require eonx-com/easy-schedule
-```
-
-Until a recipe is created for this bundle you will need to register it manually:
-
-```php
-// config/bundles.php
-
-return [
-    // Other bundles...
-    
-    EonX\EasySchedule\Bridge\Symfony\ScheduleBundle::class => ['all' => true],
-];
-```
-
-## Usage In Symfony
+---eonx_docs---
+title: Usage
+weight: 1001
+---eonx_docs---
 
 ### Register Your Scheduled Commands
 
