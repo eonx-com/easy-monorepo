@@ -11,7 +11,9 @@ final class CfhighlanderApplication extends Application
 {
     use HelpfulApplicationTrait;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public const VERSION = '1.0.5';
 
     /**

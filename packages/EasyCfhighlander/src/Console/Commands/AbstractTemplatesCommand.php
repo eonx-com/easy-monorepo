@@ -20,28 +20,42 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractTemplatesCommand extends Command
 {
-    /** @var string[] */
+    /**
+     * @var string[]
+     */
     private const CHECKS = [
         'elasticsearch_enabled' => 'elasticsearch',
         'redis_enabled' => 'redis',
     ];
 
-    /** @var int */
+    /**
+     * @var int
+     */
     public const EXIT_CODE_ERROR = 1;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     public const EXIT_CODE_SUCCESS = 0;
 
-    /** @var \EonX\EasyCfhighlander\Interfaces\FileGeneratorInterface */
+    /**
+     * @var \EonX\EasyCfhighlander\Interfaces\FileGeneratorInterface
+     */
     private $fileGenerator;
 
-    /** @var \Symfony\Component\Filesystem\Filesystem */
+    /**
+     * @var \Symfony\Component\Filesystem\Filesystem
+     */
     private $filesystem;
 
-    /** @var \EonX\EasyCfhighlander\Interfaces\ManifestGeneratorInterface */
+    /**
+     * @var \EonX\EasyCfhighlander\Interfaces\ManifestGeneratorInterface
+     */
     private $manifestGenerator;
 
-    /** @var \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface */
+    /**
+     * @var \EonX\EasyCfhighlander\Interfaces\ParameterResolverInterface
+     */
     private $parameterResolver;
 
     public function __construct(

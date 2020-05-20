@@ -85,7 +85,7 @@ abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, Deco
         return new Auth0JwtDriver(
             $options['valid_audiences'],
             $options['authorized_iss'],
-            $options['private_key'],
+            $options['private_key'] ?? null, // Required only for HS256
             $options['audience_for_encode'] ?? null,
             $options['allowed_algos'] ?? null,
             $cache

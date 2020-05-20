@@ -8,7 +8,7 @@ use EonX\EasySchedule\Bridge\Symfony\DependencyInjection\Compiler\SchedulePass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class ScheduleBundle extends Bundle
+final class EasyScheduleBundle extends Bundle
 {
     /**
      * {@inheritDoc}

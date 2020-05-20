@@ -3,6 +3,7 @@ parameters:
         - '*/var/*.php'
         - '*/vendor/*.php'
         - 'packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php'
+        - 'packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php'
 
     sets:
         - 'common'

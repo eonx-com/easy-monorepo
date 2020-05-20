@@ -2,7 +2,55 @@
 
 <!-- dumped content start -->
 
-## v2.3.16 - 2020-04-28
+## v2.4.1 - 2020-05-18
+
+### EasyApiToken
+
+- [#226] Nullable Auth0 private key
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.0] - 2020-05-13
+
+- [#222] Fix ecs and phpstan issues, Thanks to [@skrut]
+
+### EasyStandard
+
+- [#221] Add FunctionCommentSniff from NatePage\Sniffs package, Thanks to [@BOB41K1987]
+
+### EasyDecision
+
+- [#220] Update AbstractNameRestrictedConfigurator to use an array of names, Thanks to [@skrut]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.17] - 2020-05-08
+
+### EasyCore
+
+- [#216] Added listener for worker restart on EM close, Thanks to [@skrut]
+
+### EasyStandard
+
+- [#218] Added new rectors and sniffs, Thanks to [@BOB41K1987]
+
+### EasyRepository
+
+- [#217] Updated transactional method to close only on Doctrine exceptions, Thanks to [@skrut]
+
+### EasySchedule
+
+- [#219] Fix dependencies for eonx-com/easy-core, Thanks to [@evannamon]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.3.16] - 2020-04-28
 
 ### EasyCore
 
@@ -1532,3 +1580,16 @@
 [v2.3.14]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.13...v2.3.14
 [#215]: https://github.com/eonx-com/easy-monorepo/pull/215
 [v2.3.15]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.14...v2.3.15
+[#219]: https://github.com/eonx-com/easy-monorepo/pull/219
+[#218]: https://github.com/eonx-com/easy-monorepo/pull/218
+[#217]: https://github.com/eonx-com/easy-monorepo/pull/217
+[#216]: https://github.com/eonx-com/easy-monorepo/pull/216
+[v2.3.16]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.15...v2.3.16
+[@evannamon]: https://github.com/evannamon
+[@BOB41K1987]: https://github.com/BOB41K1987
+[#222]: https://github.com/eonx-com/easy-monorepo/pull/222
+[#221]: https://github.com/eonx-com/easy-monorepo/pull/221
+[#220]: https://github.com/eonx-com/easy-monorepo/pull/220
+[v2.3.17]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.16...v2.3.17
+[#226]: https://github.com/eonx-com/easy-monorepo/pull/226
+[v2.4.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.17...v2.4.0
