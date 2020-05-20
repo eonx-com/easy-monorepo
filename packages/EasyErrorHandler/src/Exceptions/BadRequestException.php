@@ -14,5 +14,5 @@ abstract class BadRequestException extends BaseException
     /**
      * @var string
      */
-    protected $userMessage = 'Bad request.';
+    protected $userMessage = 'easy-error-handler::messages.bad_request';
 }

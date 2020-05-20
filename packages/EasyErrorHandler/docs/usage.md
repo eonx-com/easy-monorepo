@@ -1,39 +1,7 @@
-<div align="center">
-    <h1>EonX - EasyErrorHandler</h1>
-    <p>Provides customizable ready-to-use error handler for Lumen applications.</p>
-</div>
-
----
-
-This document describes the steps to install this package into a [Laravel][1] and/or [Lumen][2] application.
-
-# Require package (Composer)
-
-Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
-
-```bash
-$ composer require eonx-com/easy-error-handler
-```
-
-# Usage
-
-### Requirements
-
-In order to use the package's error handler you must:
-- Have [the API Formats package][4] installed in your application with:
-    - `\EoneoPay\ApiFormats\Bridge\Laravel\Providers\ApiFormatsServiceProvider` registered in your `bootstrap/app.php`
-    - `\EoneoPay\ApiFormats\Bridge\Laravel\Middlewares\ApiFormatsMiddleware` registered in your `bootstrap/app.php`
-
-- Have [the EasyLogging package][5] installed in your application and have a bound implementation of `\EonX\EasyLogging\Interfaces\LoggerInterface::class`
-
-- Bind the handler in `bootstrap/app.php`:
-    ```php
-    $app->singleton(\Illuminate\Contracts\Debug\ExceptionHandler::class, \EonX\EasyErrorHandler\Bridge\Laravel\Handler\Handler::class);
-    ```
-
-### Configuration
-
-The package allows you to configure error response field names. Just copy `src/Bridge/Laravel/config/easy-error-handler.php` to your config directory and adjust it for your needs (you can leave only the fields you want to override).
+---eonx_docs---
+title: Usage
+weight: 2
+---eonx_docs---
 
 ### Create an exception
 
@@ -58,7 +26,7 @@ By default, an `application/json` response will look like this (note: `violation
 }
 ```
 
-Set the `APP_DEBUG` env variable to `true` to see a more verbose response, for example:
+Set the `EASY_ERROR_HANDLER_USE_EXTENDED_RESPONSE` env variable to `true` to see a more verbose response, for example:
 
 ```json
 {
@@ -89,6 +57,7 @@ Set the `APP_DEBUG` env variable to `true` to see a more verbose response, for e
 The `message` field (see the examples above) is designed to be used as a user-friendly message (without any sensitive details, as opposed to `exception.message`).
 By default, it is set to `Oops, something went wrong.`. However, you can control it:
 - You can override `\EonX\Exceptions\Handler\BaseException::$userMessage` in your exception class
+- You can change the translation of the default message in `resources/lang/vendor/easy-error-handler/en/messages.php`
 - Alternatively, you can pass your own message (and translation parameters, if needed) right from your application code, for example:
 ```php
 throw (new EntityNotFoundException(...))
@@ -118,9 +87,3 @@ throw (new TestException(...))->setLogLevel(LoggerInterface::LEVEL_CRITICAL);
 Create your own handler extending `\EonX\EasyErrorHandler\Bridge\Laravel\Handler\Handler` and override anything you need, for example:
 - The `\EonX\EasyErrorHandler\Bridge\Laravel\Handler\Handler::getResponseStatusCode` protected method with your custom status code determining logic
 - The `\EonX\EasyErrorHandler\Bridge\Laravel\Handler\Handler::$dontReport` protected property with your own list of non-reported exceptions
-
-[1]: https://laravel.com/
-[2]: https://lumen.laravel.com/
-[3]: https://getcomposer.org/
-[4]: https://github.com/eonx-com/apiformats
-[5]: https://github.com/eonx-com/easy-logging

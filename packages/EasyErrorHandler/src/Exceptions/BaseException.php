@@ -40,7 +40,7 @@ abstract class BaseException extends Exception implements
     /**
      * @var string|null
      */
-    protected $userMessage;
+    protected $userMessage = 'easy-error-handler::messages.default_user_message';
 
     /**
      * @var mixed[]

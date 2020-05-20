@@ -8,7 +8,6 @@ use DomainException;
 use EoneoPay\ApiFormats\EncoderGuesser;
 use EoneoPay\ApiFormats\Encoders\XmlEncoder;
 use EoneoPay\ApiFormats\External\Libraries\Psr7\Psr7Factory;
-use EoneoPay\Externals\Bridge\Laravel\Translator;
 use EonX\EasyErrorHandler\Bridge\Laravel\Handler\Handler;
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
@@ -19,7 +18,7 @@ use Exception;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Http\Request;
 use Illuminate\Translation\ArrayLoader;
-use Illuminate\Translation\Translator as ContractedTranslator;
+use Illuminate\Translation\Translator;
 use LogicException;
 use Mockery\MockInterface;
 use RuntimeException;
@@ -85,9 +84,27 @@ final class HandlerTest extends AbstractTestCase
         $output = new BufferedOutput();
         $expectedMessage = \sprintf('Translated exception message: %s', $message);
 
-        $handler->renderForConsole($output, new \Exception('test.message'));
+        $handler->renderForConsole($output, new BaseExceptionStub('test.message'));
 
         self::assertStringContainsString($expectedMessage, $output->fetch());
+    }
+
+    public function testRenderForConsoleShowsExceptionWithoutTranslation(): void
+    {
+        $message = 'Exception message.';
+        $handler = new Handler(
+            new EncoderGuesser([]),
+            new Psr7Factory(),
+            new ConfigRepository(),
+            $this->createTranslator(),
+            new LoggerStub()
+        );
+        $output = new BufferedOutput();
+
+        $handler->renderForConsole($output, new \Exception($message));
+
+        self::assertStringContainsString($message, $output->fetch());
+        self::assertStringNotContainsString('Translated exception message', $output->fetch());
     }
 
     public function testRenderForConsoleShowsValidationExceptionWithFailures(): void
@@ -140,7 +157,7 @@ final class HandlerTest extends AbstractTestCase
         $response = $handler->render(new Request(), new \Exception());
 
         $content = \json_decode((string)$response->getContent(), true);
-        self::assertSame('Oops, something went wrong.', $content['message']);
+        self::assertSame('easy-error-handler::messages.default_user_message', $content['message']);
     }
 
     public function testRenderReturnsExtendedResponseOnDebug(): void
@@ -148,7 +165,7 @@ final class HandlerTest extends AbstractTestCase
         $handler = new Handler(
             new EncoderGuesser([]),
             new Psr7Factory(),
-            $this->createConfigRepositoryWithDebug(),
+            $this->createConfigRepositoryWithExtendedErrorResponse(),
             $this->createTranslator(),
             new LoggerStub()
         );
@@ -166,7 +183,7 @@ final class HandlerTest extends AbstractTestCase
         $handler = new Handler(
             new EncoderGuesser([]),
             new Psr7Factory(),
-            $this->createConfigRepositoryWithDebug(),
+            $this->createConfigRepositoryWithExtendedErrorResponse(),
             $this->createTranslator($translations),
             new LoggerStub()
         );
@@ -190,7 +207,7 @@ final class HandlerTest extends AbstractTestCase
         $handler = new Handler(
             new EncoderGuesser([]),
             new Psr7Factory(),
-            $this->createConfigRepositoryWithDebug(),
+            $this->createConfigRepositoryWithExtendedErrorResponse(),
             $this->createTranslator($translations),
             new LoggerStub()
         );
@@ -212,7 +229,7 @@ final class HandlerTest extends AbstractTestCase
         $handler = new Handler(
             new EncoderGuesser([], $defaultEncoder),
             new Psr7Factory(),
-            $this->createConfigRepositoryWithDebug(),
+            $this->createConfigRepositoryWithExtendedErrorResponse(),
             $this->createTranslator(),
             new LoggerStub()
         );
@@ -229,7 +246,7 @@ final class HandlerTest extends AbstractTestCase
         $handler = new Handler(
             new EncoderGuesser([]),
             new Psr7Factory(),
-            $this->createConfigRepositoryWithDebug(),
+            $this->createConfigRepositoryWithExtendedErrorResponse(),
             $this->createTranslator(),
             new LoggerStub()
         );
@@ -481,9 +498,9 @@ final class HandlerTest extends AbstractTestCase
         self::assertSame($shouldReport, $result);
     }
 
-    private function createConfigRepositoryWithDebug(): ConfigRepository
+    private function createConfigRepositoryWithExtendedErrorResponse(): ConfigRepository
     {
-        return new ConfigRepository(['app' => ['debug' => true]]);
+        return new ConfigRepository(['easy-error-handler' => ['use_extended_response' => true]]);
     }
 
     /**
@@ -491,11 +508,10 @@ final class HandlerTest extends AbstractTestCase
      */
     private function createTranslator(?array $translations = null): Translator
     {
-        return new Translator(
-            new ContractedTranslator(
-                (new ArrayLoader())->addMessages('en', 'test', $translations ?? []),
-                'en'
-            )
-        );
+        $locale = 'en';
+
+        $loader = (new ArrayLoader())->addMessages($locale, 'test', $translations ?? []);
+
+        return new Translator($loader, $locale);
     }
 }

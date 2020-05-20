@@ -14,5 +14,5 @@ abstract class ConflictException extends BaseException
     /**
      * @var string
      */
-    protected $userMessage = 'Conflict.';
+    protected $userMessage = 'easy-error-handler::messages.conflict';
 }

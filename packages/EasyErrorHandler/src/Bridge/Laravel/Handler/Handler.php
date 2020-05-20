@@ -9,7 +9,6 @@ use EoneoPay\ApiFormats\Bridge\Laravel\Traits\LaravelResponseTrait;
 use EoneoPay\ApiFormats\External\Interfaces\Psr7\Psr7FactoryInterface;
 use EoneoPay\ApiFormats\Interfaces\EncoderGuesserInterface;
 use EoneoPay\ApiFormats\Interfaces\EncoderInterface;
-use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\LogLevelAwareExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\StatusCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\SubCodeAwareExceptionInterface;
@@ -20,6 +19,7 @@ use Exception;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr as IlluminateArr;
@@ -34,7 +34,7 @@ class Handler implements ExceptionHandler
     /**
      * @var string
      */
-    protected $defaultUserMessage = 'Oops, something went wrong.';
+    protected const DEFAULT_USER_MESSAGE = 'easy-error-handler::messages.default_user_message';
 
     /**
      * @var string[]
@@ -62,18 +62,15 @@ class Handler implements ExceptionHandler
     private $psr7Factory;
 
     /**
-     * @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface
+     * @var \Illuminate\Contracts\Translation\Translator
      */
     private $translator;
 
-    /**
-     * Handler constructor.
-     */
     public function __construct(
         EncoderGuesserInterface $encoderGuesser,
         Psr7FactoryInterface $psr7Factory,
         Repository $config,
-        TranslatorInterface $translator,
+        Translator $translator,
         LoggerInterface $logger
     ) {
         $this->encoderGuesser = $encoderGuesser;
@@ -153,7 +150,7 @@ class Handler implements ExceptionHandler
             $userMessageParams = $exception->getUserMessageParams();
         }
 
-        return $this->translateMessage($userMessage ?? $this->defaultUserMessage, $userMessageParams);
+        return $this->translateMessage($userMessage ?? self::DEFAULT_USER_MESSAGE, $userMessageParams);
     }
 
     /**
@@ -193,7 +190,7 @@ class Handler implements ExceptionHandler
      */
     protected function useExtendedResponse(): bool
     {
-        return $this->config->get('app.debug', false) === true;
+        return $this->config->get('easy-error-handler.use_extended_response', false) === true;
     }
 
     /**
@@ -201,10 +198,11 @@ class Handler implements ExceptionHandler
      */
     private function determineExceptionMessage(Exception $exception): string
     {
-        $message = $exception->getMessage();
-        $params = $exception instanceof TranslatableExceptionInterface ? $exception->getMessageParams() : [];
+        if ($exception instanceof TranslatableExceptionInterface === false) {
+            return $exception->getMessage();
+        }
 
-        return $this->translateMessage($message, $params);
+        return $this->translateMessage($exception->getMessage(), $exception->getMessageParams());
     }
 
     /**

@@ -3,6 +3,12 @@
 declare(strict_types=1);
 
 return [
+
+    /**
+     * Use extended error response with exception message, trace, etc.
+     */
+    'use_extended_response' => \env('EASY_ERROR_HANDLER_USE_EXTENDED_RESPONSE', false),
+
     /*
     |--------------------------------------------------------------------------
     | Error response
