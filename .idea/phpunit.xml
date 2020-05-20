@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PHPUnit">
+    <option name="directories">
+      <list>
+        <option value="$PROJECT_DIR$/packages/EasySsm/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyCore/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyTest/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyAsync/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyDocker/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyLogging/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyApiToken/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyDecision/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyIdentity/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyPipeline/tests" />
+        <option value="$PROJECT_DIR$/packages/EasySchedule/tests" />
+        <option value="$PROJECT_DIR$/packages/EasySecurity/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyStandard/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyPagination/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyRepository/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyPsr7Factory/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyCfhighlander/tests" />
+        <option value="$PROJECT_DIR$/packages/EasyEntityChange/tests" />
+      </list>
+    </option>
+  </component>
+</project>

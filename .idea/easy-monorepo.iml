@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasySchedule/tests" isTestSource="true" packagePrefix="EonX\EasySchedule\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyDocker/src" isTestSource="false" packagePrefix="EonX\EasyDocker\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyLogging/tests" isTestSource="true" packagePrefix="EonX\EasyLogging\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyTest/tests" isTestSource="true" packagePrefix="EonX\EasyTest\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyIdentity/src" isTestSource="false" packagePrefix="EonX\EasyIdentity\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyTest/src" isTestSource="false" packagePrefix="EonX\EasyTest\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyStandard/src" isTestSource="false" packagePrefix="EonX\EasyStandard\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyAsync/tests" isTestSource="true" packagePrefix="EonX\EasyAsync\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyRepository/tests" isTestSource="true" packagePrefix="EonX\EasyRepository\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyCore/tests" isTestSource="true" packagePrefix="EonX\EasyCore\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyDocker/tests" isTestSource="true" packagePrefix="EonX\EasyDocker\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyStandard/tests" isTestSource="true" packagePrefix="EonX\EasyStandard\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyPipeline/src" isTestSource="false" packagePrefix="EonX\EasyPipeline\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyIdentity/tests" isTestSource="true" packagePrefix="EonX\EasyIdentity\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyApiToken/src" isTestSource="false" packagePrefix="EonX\EasyApiToken\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasySecurity/tests" isTestSource="true" packagePrefix="EonX\EasySecurity\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasySchedule/src" isTestSource="false" packagePrefix="EonX\EasySchedule\" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyDecision/packages/expressions/tests" isTestSource="true" packagePrefix="EonX\EasyDecision\Expressions\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyAsync/src" isTestSource="false" packagePrefix="EonX\EasyAsync\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasySsm/src" isTestSource="false" packagePrefix="EonX\EasySsm\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyCfhighlander/tests" isTestSource="true" packagePrefix="EonX\EasyCfhighlander\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyLogging/src" isTestSource="false" packagePrefix="EonX\EasyLogging\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyApiToken/tests" isTestSource="true" packagePrefix="EonX\EasyApiToken\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasySecurity/src" isTestSource="false" packagePrefix="EonX\EasySecurity\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyPsr7Factory/src" isTestSource="false" packagePrefix="EonX\EasyPsr7Factory\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyEntityChange/tests" isTestSource="true" packagePrefix="EonX\EasyEntityChange\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyPsr7Factory/tests" isTestSource="true" packagePrefix="EonX\EasyPsr7Factory\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyDecision/packages/expressions/src" isTestSource="false" packagePrefix="EonX\EasyDecision\Expressions\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyPipeline/tests" isTestSource="true" packagePrefix="EonX\EasyPipeline\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasySsm/tests" isTestSource="true" packagePrefix="EonX\EasySsm\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyDecision/src" isTestSource="false" packagePrefix="EonX\EasyDecision\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyEntityChange/src" isTestSource="false" packagePrefix="EonX\EasyEntityChange\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyPagination/tests" isTestSource="true" packagePrefix="EonX\EasyPagination\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyDecision/tests" isTestSource="true" packagePrefix="EonX\EasyDecision\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyCore/src" isTestSource="false" packagePrefix="EonX\EasyCore\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyRepository/src" isTestSource="false" packagePrefix="EonX\EasyRepository\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyCfhighlander/src" isTestSource="false" packagePrefix="EonX\EasyCfhighlander\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/EasyPagination/src" isTestSource="false" packagePrefix="EonX\EasyPagination\" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/api-platform/core" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/auth0/auth0-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/aws/aws-sdk-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bugsnag/bugsnag" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bugsnag/bugsnag-laravel" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bugsnag/bugsnag-psr-logger" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/annotations" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/collections" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/common" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/dbal" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/event-manager" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/inflector" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/lexer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/orm" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/persistence" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/reflection" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/dragonmantank/cron-expression" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/egulias/email-validator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/eonx-com/externals" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/eonx-com/test-utils" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/eonx-com/utils" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/fig/link-util" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/firebase/php-jwt" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/friendsofphp/php-cs-fixer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/hamcrest/hamcrest-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/auth" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/broadcasting" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/bus" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/config" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/console" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/container" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/database" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/encryption" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/events" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/filesystem" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/hashing" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/http" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/log" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/pagination" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/pipeline" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/queue" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/routing" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/session" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/support" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/translation" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/validation" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/view" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/jean85/pretty-package-versions" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/jetbrains/phpstorm-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/justinrainbow/json-schema" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-diactoros" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-zendframework-bridge" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel-doctrine/orm" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/lumen-framework" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mikey179/vfsstream" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mockery/mockery" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mtdowling/jmespath.php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/deep-copy" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nesbot/carbon" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nette/finder" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nette/robot-loader" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nette/utils" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nikic/fast-route" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nikic/php-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nyholm/psr7" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ondram/ci-detector" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/opis/closure" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phar-io/manifest" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phar-io/version" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-cs-fixer/diff" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/message-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-common" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/type-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpoption/phpoption" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpspec/prophecy" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpstan/phpdoc-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpstan/phpstan" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpstan/phpstan-phpunit" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-code-coverage" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-file-iterator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-text-template" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-timer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-token-stream" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/phpunit" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/container" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/event-dispatcher" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-client" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-message" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/link" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ralouphie/getallheaders" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ramsey/uuid" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rector/rector" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/code-unit-reverse-lookup" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/comparator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/diff" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/environment" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/exporter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/global-state" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/object-enumerator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/object-reflector" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/recursion-context" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/resource-operations" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/type" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/version" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/seld/jsonlint" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/seld/phar-utils" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sensiolabs/security-checker" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/slevomat/coding-standard" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/squizlabs/php_codesniffer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/maker-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-intl-icu" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-intl-idn" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php70" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php72" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php73" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/psr-http-message-bridge" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/symfony" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/auto-bind-parameter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/autowire-array-parameter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/changelog-linker" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/coding-standard" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/composer-json-manipulator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/console-color-diff" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/easy-coding-standard" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/easy-coding-standard-tester" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/monorepo-builder" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/package-builder" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/parameter-name-guard" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/phpstan-extensions" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/set-config-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/smart-file-system" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/theseer/tokenizer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/tracy/tracy" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/vlucas/phpdotenv" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/willdurand/negotiation" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
