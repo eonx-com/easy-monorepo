@@ -71,11 +71,14 @@ PHP
      */
     public function refactor(Node $node): ?Node
     {
-        if ($node->cond instanceof BooleanNot) {
-            $conditionNode = $node->cond->expr;
+        /** @var \PhpParser\Node\Stmt\If_|\PhpParser\Node\Stmt\ElseIf_ $ifNode */
+        $ifNode = $node;
+
+        if ($ifNode->cond instanceof BooleanNot) {
+            $conditionNode = $ifNode->cond->expr;
             $isNegated = true;
         } else {
-            $conditionNode = $node->cond;
+            $conditionNode = $ifNode->cond;
             $isNegated = false;
         }
 
@@ -83,15 +86,9 @@ PHP
             return null;
         }
 
-        $newConditionNode = $this->getNewConditionNode($isNegated, $conditionNode);
+        $ifNode->cond = $this->getNewConditionNode($isNegated, $conditionNode);
 
-        if ($newConditionNode === null) {
-            return null;
-        }
-
-        $node->cond = $newConditionNode;
-
-        return $node;
+        return $ifNode;
     }
 
     /**
@@ -102,8 +99,12 @@ PHP
     private function getNewConditionNode(bool $isNegated, Expr $expr): Expr
     {
         if ($isNegated === false) {
-            $left = $expr->left;
-            $right = $expr->right;
+            /** @var \PhpParser\Node\Expr\BinaryOp\Identical $identicalExpr */
+            $identicalExpr = $expr;
+
+            $left = $identicalExpr->left;
+            /** @var \PhpParser\Node\Expr\ConstFetch $right */
+            $right = $identicalExpr->right;
 
             if ($this->isValidNotNegated($left, $right) && (\mb_strtolower((string)$right->name) === 'true')) {
                 return $left;
@@ -120,8 +121,8 @@ PHP
     /**
      * Returns true if left and right is valid not negated nodes.
      *
-     * @param mixed[] $left
-     * @param mixed[] $right
+     * @param mixed $left
+     * @param mixed $right
      *
      * @return bool
      */
