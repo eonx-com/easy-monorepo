@@ -35,7 +35,7 @@ final class ServerRequestFactory
     private function getRequest(): Request
     {
         // Fake request when running in console
-        if (isset($_ENV['SHELL_VERBOSITY'])) {
+        if (\getenv('LINES') && \getenv('COLUMNS')) {
             return new Request([], [], [], [], [], ['HTTP_HOST' => 'eonx.com']);
         }
 
