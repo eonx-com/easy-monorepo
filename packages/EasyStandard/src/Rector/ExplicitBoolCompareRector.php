@@ -74,12 +74,12 @@ PHP
         /** @var \PhpParser\Node\Stmt\If_|\PhpParser\Node\Stmt\ElseIf_ $ifNode */
         $ifNode = $node;
 
+        $conditionNode = $ifNode->cond;
+        $isNegated = false;
+
         if ($ifNode->cond instanceof BooleanNot) {
             $conditionNode = $ifNode->cond->expr;
             $isNegated = true;
-        } else {
-            $conditionNode = $ifNode->cond;
-            $isNegated = false;
         }
 
         if ($this->isStaticType($conditionNode, BooleanType::class) === false) {
@@ -93,8 +93,6 @@ PHP
 
     /**
      * Returns new condition node.
-     *
-     * @return \PhpParser\Node\Expr
      */
     private function getNewConditionNode(bool $isNegated, Expr $expr): Expr
     {
@@ -123,14 +121,10 @@ PHP
      *
      * @param mixed $left
      * @param mixed $right
-     *
-     * @return bool
      */
     private function isValidNotNegated($left, $right): bool
     {
-        return (
-            ($left instanceof FuncCall || $left instanceof MethodCall || $left instanceof Instanceof_) &&
-            ($right instanceof Expr\ConstFetch)
-        );
+        return ($left instanceof FuncCall || $left instanceof MethodCall || $left instanceof Instanceof_) &&
+            ($right instanceof Expr\ConstFetch);
     }
 }
