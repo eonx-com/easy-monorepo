@@ -168,7 +168,7 @@ class Handler implements ExceptionHandler
      */
     protected function getResponseData(Exception $exception): array
     {
-        return $this->useExtendedResponse() ?
+        return $this->isExtendedResponse() ?
             $this->getExtendedResponseData($exception) :
             $this->getShortResponseData($exception);
     }
@@ -188,7 +188,7 @@ class Handler implements ExceptionHandler
     /**
      * Checks whether the extended response should be used.
      */
-    protected function useExtendedResponse(): bool
+    protected function isExtendedResponse(): bool
     {
         return $this->config->get('easy-error-handler.use_extended_response', false) === true;
     }
