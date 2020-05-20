@@ -6,6 +6,7 @@ namespace EonX\EasyPagination\Bridge\Symfony\Factories;
 
 use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class ServerRequestFactory
@@ -28,6 +29,16 @@ final class ServerRequestFactory
 
     public function __invoke(): ServerRequestInterface
     {
-        return $this->psr7Factory->createRequest($this->requestStack->getMasterRequest());
+        return $this->psr7Factory->createRequest($this->getRequest());
+    }
+
+    private function getRequest(): Request
+    {
+        // Fake request when running in console
+        if (\getenv('LINES') && \getenv('COLUMNS')) {
+            return new Request([], [], [], [], [], ['HTTP_HOST' => 'eonx.com']);
+        }
+
+        return $this->requestStack->getMasterRequest();
     }
 }
