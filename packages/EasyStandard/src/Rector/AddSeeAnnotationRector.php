@@ -103,7 +103,7 @@ PHP
         $dataProviderDocs = $dataProviderMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
 
         if ($dataProviderDocs->hasByName(self::SEE_TAG) === false) {
-            if ($dataProviderDocs->isEmpty() === false) {
+            if ($dataProviderDocs->getPhpDocNode()->children !== []) {
                 $emptyLine = new AttributeAwarePhpDocTagNode('', new GenericTagValueNode(''));
                 $dataProviderDocs->addPhpDocTagNode($emptyLine);
             }
