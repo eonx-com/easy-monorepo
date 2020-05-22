@@ -27,4 +27,3 @@ class AddCoversAnnotationRectorTest extends TestCase
 
 }
 ?>
-

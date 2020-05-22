@@ -2,7 +2,42 @@
 
 <!-- dumped content start -->
 
-## v2.4.0 - 2020-05-13
+## v2.4.3 - 2020-05-21
+
+### EasyStandard
+
+- [#231] Add ExplicitBoolCompareRector, Thanks to [@skrut]
+- [#232] Update rector/rector to the latest version ^0.7, Thanks to [@BOB41K1987]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.2] - 2020-05-20
+
+### EasyPagination
+
+- [#230] Fake request in symfony console
+
+### EasySchedule
+
+- [#228] Rename bundle + improve docs
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.1] - 2020-05-18
+
+### EasyApiToken
+
+- [#226] Nullable Auth0 private key
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.0] - 2020-05-13
 
 - [#222] Fix ecs and phpstan issues, Thanks to [@skrut]
 
@@ -1581,3 +1616,11 @@
 [#221]: https://github.com/eonx-com/easy-monorepo/pull/221
 [#220]: https://github.com/eonx-com/easy-monorepo/pull/220
 [v2.3.17]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.16...v2.3.17
+[#226]: https://github.com/eonx-com/easy-monorepo/pull/226
+[v2.4.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.3.17...v2.4.0
+[#230]: https://github.com/eonx-com/easy-monorepo/pull/230
+[#228]: https://github.com/eonx-com/easy-monorepo/pull/228
+[v2.4.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.0...v2.4.1
+[#232]: https://github.com/eonx-com/easy-monorepo/pull/232
+[#231]: https://github.com/eonx-com/easy-monorepo/pull/231
+[v2.4.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.1...v2.4.2
