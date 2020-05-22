@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class ScheduleExtension extends Extension
+final class EasyScheduleExtension extends Extension
 {
     /**
      * @param mixed[] $configs
