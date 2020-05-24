@@ -6,9 +6,12 @@ namespace EonX\EasySecurity\Bridge\Laravel;
 
 use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
+use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\Laravel\Helpers\DeferredContextResolver;
 use EonX\EasySecurity\Bridge\Laravel\Interfaces\DeferredContextResolverInterface;
 use EonX\EasySecurity\Bridge\TagsInterface;
+use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
+use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
@@ -30,6 +33,20 @@ final class EasySecurityServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config/easy-security.php', 'easy-security');
 
         $contextServiceId = \config('easy-security.context_service_id');
+
+        // Authorization
+        $this->app->singleton(
+            AuthorizationMatrixFactoryInterface::class,
+            function (): AuthorizationMatrixFactoryInterface {
+                return new AuthorizationMatrixFactory(
+                    \iterator_to_array($this->app->tagged(TagsInterface::TAG_ROLES_PROVIDER)),
+                    \iterator_to_array($this->app->tagged(TagsInterface::TAG_ROLES_PROVIDER)),
+                );
+            }
+        );
+        $this->app->singleton(AuthorizationMatrixInterface::class, function (): AuthorizationMatrixInterface {
+            return $this->app->get(AuthorizationMatrixFactoryInterface::class)->create();
+        });
 
         $this->app->singleton($contextServiceId, function (): SecurityContextInterface {
             return $this->app->get(SecurityContextFactoryInterface::class)->create();

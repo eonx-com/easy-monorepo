@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Tests;
 
 use EonX\EasyPsr7Factory\EasyPsr7Factory;
+use EonX\EasySecurity\Authorization\AuthorizationMatrix;
 use EonX\EasySecurity\Configurators\RolesFromJwtConfigurator;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Modifiers\ProviderFromJwtModifier;
@@ -49,6 +50,7 @@ final class SecurityContextResolverTest extends AbstractTestCase
     public function testSetModifier(iterable $modifiers, iterable $configurators): void
     {
         $resolver = new SecurityContextResolver(
+            new AuthorizationMatrix([], []),
             new SecurityContext(),
             new EasyPsr7Factory(),
             new TokenDecoderStub(),

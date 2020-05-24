@@ -6,6 +6,7 @@ namespace EonX\EasySecurity\Bridge\Symfony\Factories;
 
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +19,9 @@ final class AuthenticationFailureResponseFactory implements AuthenticationFailur
      */
     private $logger;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(?LoggerInterface $logger = null)
     {
-        $this->logger = $logger;
+        $this->logger = $logger ?? new NullLogger();
     }
 
     public function create(Request $request, ?AuthenticationException $exception = null): Response

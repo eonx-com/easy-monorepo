@@ -170,12 +170,12 @@ final class SecurityContextTest extends AbstractTestCase
         $context->setUser($user);
         $permissions = $context->getPermissions();
 
-        // Add a permission
+        // Override permissions
         $context->setPermissions(['my-permission']);
 
         self::assertCount($countRoles, $context->getRoles());
         self::assertCount($countPermissions, $permissions);
-        self::assertCount($countPermissions + 1, $context->getPermissions());
+        self::assertCount(1, $context->getPermissions());
         self::assertEquals($token, $context->getToken());
         self::assertEquals($provider, $context->getProvider());
         self::assertEquals($provider, $context->getProviderOrFail());

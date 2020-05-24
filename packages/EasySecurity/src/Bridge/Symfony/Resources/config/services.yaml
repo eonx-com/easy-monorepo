@@ -3,7 +3,14 @@ services:
         autowire: true
         autoconfigure: true
 
-    EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator: ~
+    # Authorization
+    EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface:
+        class: EonX\EasySecurity\Authorization\AuthorizationMatrixFactory
+
+    EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface:
+        factory: ['@EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface', 'create']
+
+    EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator: null
 
     EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface:
         class: EonX\EasySecurity\Bridge\Symfony\Factories\AuthenticationFailureResponseFactory
@@ -18,3 +25,7 @@ services:
         class: EonX\EasySecurity\Bridge\Symfony\Helpers\DeferredSecurityContextResolver
 
     EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface: '@EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredSecurityContextResolverInterface'
+
+    # Voters
+    EonX\EasySecurity\Bridge\Symfony\Security\Voters\PermissionVoter: null
+    EonX\EasySecurity\Bridge\Symfony\Security\Voters\RoleVoter: null

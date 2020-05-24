@@ -21,27 +21,32 @@ final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInte
     /**
      * AuthorizationMatrixFactory constructor.
      *
-     * @param null|\EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface[] $rolesProviders
-     * @param null|\EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface[] $permissionsProviders
+     * @param \EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface[] $rolesProviders
+     * @param \EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface[] $permissionsProviders
      */
-    public function __construct(?array $rolesProviders = null, ?array $permissionsProviders = null)
+    public function __construct(array $rolesProviders, array $permissionsProviders)
     {
-        $this->rolesProviders = $rolesProviders ?? [];
-        $this->permissionsProviders = $permissionsProviders ?? [];
+        $this->rolesProviders = $rolesProviders;
+        $this->permissionsProviders = $permissionsProviders;
     }
 
     public function create(): AuthorizationMatrixInterface
     {
-        $matrix = new AuthorizationMatrix();
+        $permissions = [];
+        $roles = [];
 
         foreach ($this->rolesProviders as $rolesProvider) {
-            $matrix->addRoles($rolesProvider->getRoles());
+            foreach ($rolesProvider->getRoles() as $role) {
+                $roles[] = $role;
+            }
         }
 
         foreach ($this->permissionsProviders as $permissionsProvider) {
-            $matrix->addPermissions($permissionsProvider->getPermissions());
+            foreach ($permissionsProvider->getPermissions() as $permission) {
+                $permissions[] = $permission;
+            }
         }
 
-        return $matrix;
+        return new AuthorizationMatrix($roles, $permissions);
     }
 }

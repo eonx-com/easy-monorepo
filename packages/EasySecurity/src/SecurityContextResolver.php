@@ -6,6 +6,7 @@ namespace EonX\EasySecurity;
 
 use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
+use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\ContextModifierInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface as ConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
@@ -45,12 +46,15 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
      * @param mixed[]|iterable<mixed> $contextConfigurators
      */
     public function __construct(
+        AuthorizationMatrixInterface $authorizationMatrix,
         SecurityContextInterface $context,
         EasyPsr7FactoryInterface $psr7Factory,
         EasyApiTokenDecoderInterface $tokenDecoder,
         iterable $contextModifiers,
         iterable $contextConfigurators
     ) {
+        $context->setAuthorizationMatrix($authorizationMatrix);
+
         $this->context = $context;
         $this->psr7Factory = $psr7Factory;
         $this->tokenDecoder = $tokenDecoder;

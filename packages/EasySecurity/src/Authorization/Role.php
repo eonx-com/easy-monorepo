@@ -30,15 +30,19 @@ class Role implements RoleInterface
     private $permissions;
 
     /**
-     * @param string[]|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
+     * @param null|string[]|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
      * @param null|mixed[] $metadata
      */
-    public function __construct(string $identifier, array $permissions, ?string $name = null, ?array $metadata = null)
-    {
+    public function __construct(
+        string $identifier,
+        ?array $permissions = null,
+        ?string $name = null,
+        ?array $metadata = null
+    ) {
         $this->identifier = $identifier;
         $this->name = $name;
         $this->metadata = $metadata ?? [];
-        $this->permissions = AuthorizationMatrixFormatter::formatPermissions($permissions);
+        $this->permissions = AuthorizationMatrixFormatter::formatPermissions($permissions ?? []);
     }
 
     public function __toString(): string

@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Authorization\Helpers;
 
-use EonX\EasySecurity\Interfaces\PermissionInterface;
-use EonX\EasySecurity\Interfaces\RoleInterface;
-use EonX\EasySecurity\Permission;
-use EonX\EasySecurity\Role;
+use EonX\EasySecurity\Authorization\Permission;
+use EonX\EasySecurity\Authorization\Role;
+use EonX\EasySecurity\Interfaces\Authorization\PermissionInterface;
+use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
 
 final class AuthorizationMatrixFormatter
 {
     /**
-     * @param string[]|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
      *
-     * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
     public static function formatPermissions(array $permissions): array
     {
@@ -28,9 +28,9 @@ final class AuthorizationMatrixFormatter
     }
 
     /**
-     * @param string[]|\EonX\EasySecurity\Interfaces\RoleInterface[] $permissions
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
      *
-     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
     public static function formatRoles(array $roles): array
     {

@@ -23,32 +23,15 @@ final class AuthorizationMatrix implements AuthorizationMatrixInterface
      */
     private $roles = [];
 
-    /**
-     * @param string[]|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
-     */
-    public function addPermissions(array $permissions): AuthorizationMatrixInterface
+    public function __construct(array $roles, array $permissions)
     {
-        $this->reset();
-
-        foreach (AuthorizationMatrixFormatter::formatPermissions($permissions) as $permission) {
-            $this->permissions[$permission->getIdentifier()] = $permission;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param string[]|\EonX\EasySecurity\Interfaces\RoleInterface[] $roles
-     */
-    public function addRoles(array $roles): AuthorizationMatrixInterface
-    {
-        $this->reset();
-
         foreach (AuthorizationMatrixFormatter::formatRoles($roles) as $role) {
             $this->roles[$role->getIdentifier()] = $role;
         }
 
-        return $this;
+        foreach (AuthorizationMatrixFormatter::formatPermissions($permissions) as $permission) {
+            $this->permissions[$permission->getIdentifier()] = $permission;
+        }
     }
 
     /**
@@ -131,10 +114,5 @@ final class AuthorizationMatrix implements AuthorizationMatrixInterface
     public function isRole(string $role): bool
     {
         return isset($this->getRoles()[$role]);
-    }
-
-    private function reset(): void
-    {
-        $this->cachePermissions = null;
     }
 }

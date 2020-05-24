@@ -6,16 +6,6 @@ namespace EonX\EasySecurity\Interfaces\Authorization;
 interface AuthorizationMatrixInterface
 {
     /**
-     * @param string[]|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
-     */
-    public function addPermissions(array $permissions): self;
-
-    /**
-     * @param string[]|\EonX\EasySecurity\Interfaces\RoleInterface[] $roles
-     */
-    public function addRoles(array $roles): self;
-
-    /**
      * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
      */
     public function getPermissions(): array;

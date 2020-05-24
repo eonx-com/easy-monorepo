@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Interfaces;
 
 use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 
 interface SecurityContextInterface extends ContextInterface
 {
@@ -17,6 +18,8 @@ interface SecurityContextInterface extends ContextInterface
      * @param string|string[]|\EonX\EasySecurity\Interfaces\RoleInterface|\EonX\EasySecurity\Interfaces\RoleInterface[] $roles
      */
     public function addRoles($roles): void;
+
+    public function getAuthorizationMatrix(): AuthorizationMatrixInterface;
 
     /**
      * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
@@ -41,6 +44,8 @@ interface SecurityContextInterface extends ContextInterface
     public function hasPermission(string $permission): bool;
 
     public function hasRole(string $role): bool;
+
+    public function setAuthorizationMatrix(AuthorizationMatrixInterface $authorizationMatrix): void;
 
     /**
      * @param string|string[]|\EonX\EasySecurity\Interfaces\PermissionInterface|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
