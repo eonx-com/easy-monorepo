@@ -7,6 +7,9 @@ namespace EonX\EasySecurity\Authorization;
 use EonX\EasySecurity\Authorization\Helpers\AuthorizationMatrixFormatter;
 use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
 
+/**
+ * Not final on purpose for BC compatibility until 3.0.
+ */
 class Role implements RoleInterface
 {
     /**
@@ -25,12 +28,12 @@ class Role implements RoleInterface
     private $name;
 
     /**
-     * @var \EonX\EasySecurity\Interfaces\PermissionInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
     private $permissions;
 
     /**
-     * @param null|string[]|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
+     * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
      * @param null|mixed[] $metadata
      */
     public function __construct(
@@ -69,7 +72,7 @@ class Role implements RoleInterface
     }
 
     /**
-     * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
     public function getPermissions(): array
     {

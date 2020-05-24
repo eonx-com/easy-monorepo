@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Laravel\Fixtures\Providers;
@@ -22,7 +23,7 @@ final class RolesAndPermissionsServiceProvider extends ServiceProvider
 
         $this->app->tag([RolesAndPermissionsProviderStub::class], [
             TagsInterface::TAG_ROLES_PROVIDER,
-            TagsInterface::TAG_PERMISSIONS_PROVIDER
+            TagsInterface::TAG_PERMISSIONS_PROVIDER,
         ]);
     }
 }

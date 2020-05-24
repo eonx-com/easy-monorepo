@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Authorization;
@@ -26,7 +27,7 @@ final class AuthorizationMatrixTest extends AbstractTestCase
                 self::assertEmpty($matrix->getPermissionsByIdentifiers(['permission']));
                 self::assertFalse($matrix->isRole('role'));
                 self::assertFalse($matrix->isPermission('permission'));
-            }
+            },
         ];
 
         yield '1 role with 1 permission' => [
@@ -38,7 +39,7 @@ final class AuthorizationMatrixTest extends AbstractTestCase
                 self::assertTrue($matrix->isRole('role'));
                 self::assertTrue($matrix->isPermission('permission'));
             },
-            [new Role('role', [new Permission('permission')])]
+            [new Role('role', [new Permission('permission')])],
         ];
 
         yield '2 roles with 1 permission + 1 permission' => [
@@ -56,7 +57,7 @@ final class AuthorizationMatrixTest extends AbstractTestCase
             ],
             [
                 new Permission('permission3'),
-            ]
+            ],
         ];
     }
 
@@ -70,7 +71,7 @@ final class AuthorizationMatrixTest extends AbstractTestCase
     {
         $factory = new AuthorizationMatrixFactory(
             [new AuthorizationRolesProviderStub($roles)],
-            [new AuthorizationPermissionsProviderStub($permissions)]
+            [new AuthorizationPermissionsProviderStub($permissions)],
         );
 
         $test($factory->create());

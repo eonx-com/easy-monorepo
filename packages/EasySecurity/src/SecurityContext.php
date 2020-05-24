@@ -173,7 +173,7 @@ class SecurityContext implements SecurityContextInterface
     }
 
     /**
-     * @param $mixed $permissions
+     * @param mixed $permissions
      */
     public function setPermissions($permissions): void
     {

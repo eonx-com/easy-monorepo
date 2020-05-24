@@ -36,7 +36,7 @@ final class SecurityContextResolverTest extends AbstractTestCase
                 new ProviderFromJwtModifier(new ProviderProviderInterfaceStub(), static::$mainJwtClaim),
             ],
             [
-                new RolesFromJwtConfigurator(static::$mainJwtClaim, new InMemoryRolesProviderStub()),
+                new RolesFromJwtConfigurator(static::$mainJwtClaim),
             ],
         ];
     }

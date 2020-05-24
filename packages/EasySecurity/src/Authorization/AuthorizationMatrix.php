@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Authorization;
@@ -9,20 +10,26 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 final class AuthorizationMatrix implements AuthorizationMatrixInterface
 {
     /**
-     * @var null|\EonX\EasySecurity\Interfaces\PermissionInterface[]
+     * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
     private $cachePermissions;
 
     /**
-     * @var \EonX\EasySecurity\Interfaces\PermissionInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
     private $permissions = [];
 
     /**
-     * @var \EonX\EasySecurity\Interfaces\RoleInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
     private $roles = [];
 
+    /**
+     * AuthorizationMatrix constructor.
+     *
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
+     */
     public function __construct(array $roles, array $permissions)
     {
         foreach (AuthorizationMatrixFormatter::formatRoles($roles) as $role) {
@@ -35,7 +42,7 @@ final class AuthorizationMatrix implements AuthorizationMatrixInterface
     }
 
     /**
-     * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
     public function getPermissions(): array
     {
@@ -61,7 +68,7 @@ final class AuthorizationMatrix implements AuthorizationMatrixInterface
     /**
      * @param string[] $identifiers
      *
-     * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
     public function getPermissionsByIdentifiers(array $identifiers): array
     {
@@ -79,7 +86,7 @@ final class AuthorizationMatrix implements AuthorizationMatrixInterface
     }
 
     /**
-     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
     public function getRoles(): array
     {
@@ -89,7 +96,7 @@ final class AuthorizationMatrix implements AuthorizationMatrixInterface
     /**
      * @param string[] $identifiers
      *
-     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
     public function getRolesByIdentifiers(array $identifiers): array
     {

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\RolesProviders;
 
-use EonX\EasySecurity\Interfaces\RoleInterface;
+use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
 use EonX\EasySecurity\Interfaces\RolesProviderInterface;
 
 abstract class AbstractInMemoryRolesProvider implements RolesProviderInterface
 {
     /**
-     * @var \EonX\EasySecurity\Interfaces\RoleInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
     private $roles;
 
     /**
-     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
     public function getRoles(): array
     {

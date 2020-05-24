@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Tests;
+namespace EonX\EasySecurity\Tests\Authorization;
 
-use EonX\EasySecurity\Permission;
-use EonX\EasySecurity\Role;
+use EonX\EasySecurity\Authorization\Permission;
+use EonX\EasySecurity\Authorization\Role;
+use EonX\EasySecurity\Tests\AbstractTestCase;
 
 final class RoleTest extends AbstractTestCase
 {

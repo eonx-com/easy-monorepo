@@ -18,7 +18,7 @@ interface RoleInterface extends \EonX\EasySecurity\Interfaces\RoleInterface
     public function getName(): ?string;
 
     /**
-     * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
     public function getPermissions(): array;
 }

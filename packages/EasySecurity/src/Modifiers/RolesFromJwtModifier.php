@@ -44,6 +44,10 @@ final class RolesFromJwtModifier extends AbstractFromJwtContextModifier
 
         $roles = $this->rolesProvider->getRolesByIdentifiers($this->getMainClaim($token)['roles'] ?? []);
 
-        $context->setRoles(empty($roles) === false ? $roles : null);
+        if (empty($roles)) {
+            return;
+        }
+
+        $context->setRoles($roles);
     }
 }

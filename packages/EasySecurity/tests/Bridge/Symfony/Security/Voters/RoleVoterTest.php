@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Symfony\Security\Voters;
@@ -23,14 +24,14 @@ final class RoleVoterTest extends AbstractTestCase
             new AuthorizationMatrix([], []),
             new SecurityContext(),
             'role',
-            VoterInterface::ACCESS_ABSTAIN
+            VoterInterface::ACCESS_ABSTAIN,
         ];
 
         yield 'Denied because role not on context' => [
             new AuthorizationMatrix(['role'], []),
             new SecurityContext(),
             'role',
-            VoterInterface::ACCESS_DENIED
+            VoterInterface::ACCESS_DENIED,
         ];
 
         $securityContext = new SecurityContext();
@@ -40,7 +41,7 @@ final class RoleVoterTest extends AbstractTestCase
             new AuthorizationMatrix(['role'], []),
             $securityContext,
             'role',
-            VoterInterface::ACCESS_GRANTED
+            VoterInterface::ACCESS_GRANTED,
         ];
     }
 
