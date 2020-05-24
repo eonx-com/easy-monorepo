@@ -9,13 +9,14 @@ parameters:
         - packages/*/var/*
         - packages/*/vendor/*
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
+        - packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php
         - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Parameter \#1 \$app of class [A-Z][\w\\]+ constructor expects Illuminate\\(Contracts\\)?Foundation\\Application, Laravel\\Lumen\\Application given.#'
-        - '#Method "(.*?)\(\)" returns bool type, so the name should start with is/has/was#'
+        - '#Method "\S+\(\)" returns bool type, so the name should start with is/has/was#'
 
         # ---- EasyApiToken ----
         - message: '#Parameter \#[0-9] \$(.*?) of method EonX\\EasyApiToken\\Tests\\Encoders\\FirebaseJwtTokenEncoderTest::createJwtTokenDecoder\(\) expects resource\|string\|null, resource\|string\|false given.#'
@@ -73,9 +74,6 @@ parameters:
           path: packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Compiler/AutoConfigureEventListenersPass.php
 
         - message: '#PHPDoc tag @var for variable \$dataPersister has invalid type EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Traits\\RequestAttributesAwareTrait#'
-          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
-
-        - message: "#Parameter \\#2 \\$controller of method Symfony\\\\Component\\\\HttpKernel\\\\Controller\\\\ArgumentResolverInterface\\:\\:getArguments\\(\\) expects callable\\(\\)\\: mixed, array\\(ApiPlatform\\\\Core\\\\DataPersister\\\\DataPersisterInterface, 'setRequestAttributes'\\) given#"
           path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
 
         - message: '#Call to method setRequestAttributes\(\) on an unknown class EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Traits\\RequestAttributesAwareTrait#'
@@ -140,9 +138,6 @@ parameters:
 
         - message: '#Parameter \#1 \$request of method EonX\\EasyPsr7Factory\\Interfaces\\EasyPsr7FactoryInterface\:\:createRequest\(\) expects Symfony\\Component\\HttpFoundation\\Request, Symfony\\Component\\HttpFoundation\\Request\|null given#'
           path: packages/EasyPagination/src/Bridge/Symfony/Factories/ServerRequestFactory.php
-
-        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:(count|forPage)\(\)#'
-          path: packages/EasyPagination/src/Paginators/EloquentLengthAwarePaginator.php
 
         - message: '#Method EonX\\EasyPagination\\Tests\\AbstractTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
           path: packages/EasyPagination/tests/AbstractTestCase.php

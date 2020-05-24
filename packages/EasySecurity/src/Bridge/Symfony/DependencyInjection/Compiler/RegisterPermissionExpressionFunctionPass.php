@@ -24,7 +24,7 @@ final class RegisterPermissionExpressionFunctionPass implements CompilerPassInte
 
         $providerClass = PermissionExpressionFunctionProvider::class;
         $providerDef = new Definition($providerClass);
-        $providerDef->setArgument('$locations', $locations);
+        $providerDef->setArgument('$targets', $locations);
 
         $container->setDefinition($providerClass, $providerDef);
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\Listeners;
 
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Event\DataPersisterResolvedEvent;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Traits\RequestAttributesAwareTrait;
 use EonX\EasyCore\Bridge\Symfony\Event\KernelEventListenerTrait;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -39,14 +38,15 @@ final class ResolveRequestAttributesListener implements EventListenerInterface
         }
 
         $dataPersister = $event->getDataPersister();
+        $method = 'setRequestAttributes';
 
-        if (\in_array(RequestAttributesAwareTrait::class, \class_uses($dataPersister), true) === false) {
+        if (\method_exists($dataPersister, $method) === false) {
             return;
         }
 
         /** @var \EonX\EasyCore\Bridge\Symfony\ApiPlatform\Traits\RequestAttributesAwareTrait $dataPersister */
 
-        $args = $this->argumentResolver->getArguments($this->request, [$dataPersister, 'setRequestAttributes']);
+        $args = $this->argumentResolver->getArguments($this->request, [$dataPersister, $method]);
 
         $dataPersister->setRequestAttributes(...$args);
     }

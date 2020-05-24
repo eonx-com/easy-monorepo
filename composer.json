@@ -1,7 +1,7 @@
 {
     "name": "eonx-com/easy-monorepo",
     "type": "library",
-    "description": "The packages to step the f*k up in your projects",
+    "description": "Reusable packages to make PHP projects easier to create/maintain",
     "license": "MIT",
     "bin": [
         "packages/EasyCfhighlander/bin/easy-cfhighlander",
@@ -57,7 +57,8 @@
         "symplify/phpstan-extensions": "^7.2",
         "slevomat/coding-standard": "^6.1",
         "symplify/easy-coding-standard-tester": "^7.2",
-        "symfony/maker-bundle": "^1.15"
+        "symfony/maker-bundle": "^1.15",
+        "rector/rector": "^0.7"
     },
     "autoload": {
         "psr-4": {
@@ -162,7 +163,8 @@
     "prefer-stable": true,
     "extra": {
         "eonx_docs": {
-            "ignore": true
+            "finder_pattern": "readme.md",
+            "finder_depth": 0
         },
         "branch-alias": {
             "dev-master": "2.1-dev"
