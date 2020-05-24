@@ -25,7 +25,3 @@ services:
         class: EonX\EasySecurity\Bridge\Symfony\Helpers\DeferredSecurityContextResolver
 
     EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface: '@EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredSecurityContextResolverInterface'
-
-    # Voters
-    EonX\EasySecurity\Bridge\Symfony\Security\Voters\PermissionVoter: null
-    EonX\EasySecurity\Bridge\Symfony\Security\Voters\RoleVoter: null

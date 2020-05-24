@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Security\Voters;
 
+use EonX\EasySecurity\Interfaces\ProviderRestrictedInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-final class PermissionVoter extends Voter
+final class ProviderVoter extends Voter
 {
     /**
      * @var \EonX\EasySecurity\Interfaces\SecurityContextInterface
@@ -26,15 +27,27 @@ final class PermissionVoter extends Voter
      */
     protected function supports($attribute, $subject): bool
     {
-        return $this->securityContext->getAuthorizationMatrix()->isPermission((string)$attribute);
+        if (($subject instanceof ProviderRestrictedInterface) === false) {
+            return false;
+        }
+
+        /** @var \EonX\EasySecurity\Interfaces\ProviderRestrictedInterface $subject */
+
+        return $subject->getRestrictedProviderUniqueId() !== null;
     }
 
     /**
      * @param string $attribute
-     * @param mixed $subject
+     * @param \EonX\EasySecurity\Interfaces\ProviderRestrictedInterface $subject
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        return $this->securityContext->hasPermission((string)$attribute);
+        $provider = $this->securityContext->getProvider();
+
+        if ($provider === null) {
+            return false; // AccessDenied if no provider on context
+        }
+
+        return $provider->getUniqueId() === $subject->getRestrictedProviderUniqueId();
     }
 }

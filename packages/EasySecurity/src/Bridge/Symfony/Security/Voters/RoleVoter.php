@@ -21,8 +21,8 @@ final class RoleVoter extends Voter
     }
 
     /**
-     * @param string $attribute
-     * @param mixed $subject
+     * @param string $attribute An attribute
+     * @param mixed $subject The subject to secure, e.g. an object the user wants to access or any other PHP type
      */
     protected function supports($attribute, $subject): bool
     {

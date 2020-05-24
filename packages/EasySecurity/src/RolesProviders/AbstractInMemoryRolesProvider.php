@@ -7,6 +7,10 @@ namespace EonX\EasySecurity\RolesProviders;
 use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
 use EonX\EasySecurity\Interfaces\RolesProviderInterface;
 
+/**
+ * @deprecated Since 2.4, will be removed in 3.0. Use \EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface
+ *     instead.
+ */
 abstract class AbstractInMemoryRolesProvider implements RolesProviderInterface
 {
     /**

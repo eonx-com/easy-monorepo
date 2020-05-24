@@ -9,6 +9,9 @@ use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredSecurityContextAwareInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredSecurityContextResolverInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\ParametersInterface;
+use EonX\EasySecurity\Bridge\Symfony\Security\Voters\PermissionVoter;
+use EonX\EasySecurity\Bridge\Symfony\Security\Voters\ProviderVoter;
+use EonX\EasySecurity\Bridge\Symfony\Security\Voters\RoleVoter;
 use EonX\EasySecurity\Bridge\TagsInterface;
 use EonX\EasySecurity\Interfaces\ContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
@@ -55,6 +58,7 @@ final class EasySecurityExtension extends Extension
         $this->registerContextResolver($container, $config);
         $this->registerDeferredContextResolver($container, $config);
         $this->registerContext($container, $config);
+        $this->registerVoters($container, $config);
     }
 
     /**
@@ -108,5 +112,27 @@ final class EasySecurityExtension extends Extension
                 'setDeferredContextResolver',
                 [new Reference(DeferredSecurityContextResolverInterface::class)]
             );
+    }
+
+    /**
+     * @param mixed[] $config
+     */
+    private function registerVoters(ContainerBuilder $container, array $config): void
+    {
+        $voters = [
+            'permission' => PermissionVoter::class,
+            'provider' => ProviderVoter::class,
+            'role' => RoleVoter::class,
+        ];
+
+        foreach ($voters as $name => $class) {
+            $configName = \sprintf('%s_enabled', $name);
+
+            if (($config['voters'][$configName] ?? false) === false) {
+                continue;
+            }
+
+            $container->setDefinition($class, (new Definition($class))->setAutowired(true)->setAutoconfigured(true));
+        }
     }
 }

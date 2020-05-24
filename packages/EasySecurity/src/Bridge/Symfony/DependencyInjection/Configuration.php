@@ -21,6 +21,13 @@ final class Configuration implements ConfigurationInterface
                     ->scalarPrototype()->end()
                     ->beforeNormalization()->castToArray()->end()
                 ->end()
+                ->arrayNode('voters')
+                    ->children()
+                        ->booleanNode('permission_enabled')->defaultFalse()->end()
+                        ->booleanNode('provider_enabled')->defaultFalse()->end()
+                        ->booleanNode('role_enabled')->defaultFalse()->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
