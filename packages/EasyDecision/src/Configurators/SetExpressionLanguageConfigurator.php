@@ -22,7 +22,7 @@ final class SetExpressionLanguageConfigurator extends AbstractConfigurator
 
     public function __construct(
         ExpressionLanguageFactoryInterface $exprLangFactory,
-        ExpressionLanguageConfigInterface $config = null,
+        ?ExpressionLanguageConfigInterface $config = null,
         ?int $priority = null
     )
     {
