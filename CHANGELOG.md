@@ -2,7 +2,25 @@
 
 <!-- dumped content start -->
 
-## v2.4.3 - 2020-05-21
+## v2.4.4 - 2020-05-25
+
+### EasyDecision
+
+- [#237] Use ExpressionLanguageFactory in SetExpressionLanguageConfigurator, Thanks to [@skrut]
+
+### EasyErrorHandler
+
+- [#214] Create package, Thanks to [@egor-dev]
+
+### EasySchedule
+
+- [#234] Renamed ScheduleExtension to match with EasyScheduleBundle, Thanks to [@albertlabarentojr]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.3] - 2020-05-21
 
 ### EasyStandard
 
@@ -1624,3 +1642,8 @@
 [#232]: https://github.com/eonx-com/easy-monorepo/pull/232
 [#231]: https://github.com/eonx-com/easy-monorepo/pull/231
 [v2.4.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.1...v2.4.2
+[#237]: https://github.com/eonx-com/easy-monorepo/pull/237
+[#234]: https://github.com/eonx-com/easy-monorepo/pull/234
+[#214]: https://github.com/eonx-com/easy-monorepo/pull/214
+[v2.4.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.2...v2.4.3
+[@albertlabarentojr]: https://github.com/albertlabarentojr
