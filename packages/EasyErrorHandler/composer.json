@@ -1,6 +1,6 @@
 {
     "name": "eonx-com/easy-error-handler",
-    "description": "Provides customizable ready-to-use error handler for Lumen applications",
+    "description": "Provides customizable ready-to-use error handler for applications",
     "type": "library",
     "license": "MIT",
     "require": {
