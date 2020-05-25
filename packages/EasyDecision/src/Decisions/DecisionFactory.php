@@ -10,10 +10,8 @@ use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
 use EonX\EasyDecision\Configurators\SetNameConfigurator;
 use EonX\EasyDecision\Exceptions\InvalidDecisionException;
 use EonX\EasyDecision\Exceptions\InvalidRuleProviderException;
-use EonX\EasyDecision\Expressions\ExpressionLanguage;
 use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
-use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
@@ -33,11 +31,6 @@ final class DecisionFactory implements DecisionFactoryInterface
      * @var \Psr\Container\ContainerInterface
      */
     private $container;
-
-    /**
-     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface
-     */
-    private $expressionLanguage;
 
     /**
      * @var null|\EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface
@@ -178,24 +171,6 @@ final class DecisionFactory implements DecisionFactoryInterface
         };
 
         return \array_filter($configurators, $filter);
-    }
-
-    /**
-     * @deprecated since 2.3.7
-     */
-    private function getExpressionLanguage(DecisionConfigInterface $config): ExpressionLanguageInterface
-    {
-        if ($this->expressionLanguage !== null) {
-            return $this->expressionLanguage;
-        }
-
-        if ($this->expressionLanguageFactory !== null) {
-            return $this->expressionLanguage = $this->expressionLanguageFactory->create(
-                $config->getExpressionLanguageConfig() ?? new ExpressionLanguageConfig()
-            );
-        }
-
-        return new ExpressionLanguage();
     }
 
     /**
