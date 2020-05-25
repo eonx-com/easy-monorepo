@@ -85,8 +85,10 @@ final class DecisionFactory implements DecisionFactoryInterface
 
         $this->configurators[] = new SetNameConfigurator($config->getName());
         $this->configurators[] = new SetDefaultOutputConfigurator($config->getDefaultOutput());
-        $this->configurators[] = new SetExpressionLanguageConfigurator($this->getExpressionLanguage($config));
-
+        $this->configurators[] = new SetExpressionLanguageConfigurator(
+            $this->expressionLanguageFactory,
+            $config->getExpressionLanguageConfig() ?? new ExpressionLanguageConfig()
+        );
         $params = $config->getParams();
 
         foreach ($config->getRuleProviders() as $provider) {
