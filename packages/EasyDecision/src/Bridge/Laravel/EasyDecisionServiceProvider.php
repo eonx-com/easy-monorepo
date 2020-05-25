@@ -36,7 +36,7 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         if (\config('easy-decision.use_expression_language', false)) {
             $this->app->bind(SetExpressionLanguageConfigurator::class, function (): SetExpressionLanguageConfigurator {
                 return new SetExpressionLanguageConfigurator(
-                    $this->app->make(ExpressionLanguageFactoryInterface::class)->create()
+                    $this->app->make(ExpressionLanguageFactoryInterface::class)
                 );
             });
 
