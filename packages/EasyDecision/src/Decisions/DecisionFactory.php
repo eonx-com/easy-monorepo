@@ -10,7 +10,6 @@ use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
 use EonX\EasyDecision\Configurators\SetNameConfigurator;
 use EonX\EasyDecision\Exceptions\InvalidDecisionException;
 use EonX\EasyDecision\Exceptions\InvalidRuleProviderException;
-use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
@@ -76,9 +75,12 @@ final class DecisionFactory implements DecisionFactoryInterface
 
         $decision = $this->instantiateDecision($config->getDecisionType());
 
+        /** @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface $exprLangFactory */
+        $exprLangFactory = $this->expressionLanguageFactory;
+
         $this->configurators[] = new SetNameConfigurator($config->getName());
         $this->configurators[] = new SetDefaultOutputConfigurator($config->getDefaultOutput());
-        $this->configurators[] = new SetExpressionLanguageConfigurator($this->expressionLanguageFactory);
+        $this->configurators[] = new SetExpressionLanguageConfigurator($exprLangFactory);
         $params = $config->getParams();
 
         foreach ($config->getRuleProviders() as $provider) {
