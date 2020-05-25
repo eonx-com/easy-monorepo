@@ -1,0 +1,36 @@
+{
+    "name": "eonx-com/easy-error-handler",
+    "description": "Provides customizable ready-to-use error handler for Lumen applications",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "nesbot/carbon": "^2.22",
+        "eonx-com/easy-logging": "^2.3",
+        "eonx-com/apiformats": "^1.0",
+        "illuminate/support": "^5.5",
+        "symfony/console": "^4.2 || ^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5 || ^8.4",
+        "mockery/mockery": "^1.2",
+        "laravel/lumen-framework": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasyErrorHandler\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasyErrorHandler\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.5-dev"
+        }
+    }
+}
