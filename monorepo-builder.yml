@@ -27,6 +27,7 @@ parameters:
         packages/EasyDecision: 'git@github.com:eonx-com/easy-decision.git'
         packages/EasyDocker: 'git@github.com:eonx-com/easy-docker.git'
         packages/EasyEntityChange: 'git@github.com:eonx-com/easy-entity-change.git'
+        packages/EasyErrorHandler: 'git@github.com:eonx-com/easy-error-handler.git'
         packages/EasyIdentity: 'git@github.com:eonx-com/easy-identity.git'
         packages/EasyLogging: 'git@github.com:eonx-com/easy-logging.git'
         packages/EasyPipeline: 'git@github.com:eonx-com/easy-pipeline.git'
