@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.5 - 2020-05-27
+## v2.4.6 - 2020-05-27
+
+### EasySchedule
+
+- [#239] Fix data collector templates for real
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.5] - 2020-05-27
 
 ### EasySchedule
 
@@ -1659,3 +1669,5 @@
 [@albertlabarentojr]: https://github.com/albertlabarentojr
 [#238]: https://github.com/eonx-com/easy-monorepo/pull/238
 [v2.4.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.3...v2.4.4
+[#239]: https://github.com/eonx-com/easy-monorepo/pull/239
+[v2.4.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.4...v2.4.5
