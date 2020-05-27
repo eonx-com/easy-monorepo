@@ -9,7 +9,7 @@ services:
     EonX\EasySchedule\Bridge\Symfony\DataCollector\ScheduleDataCollector:
         tags:
             -   name: data_collector
-                template: '@Schedule/Collector/schedule_collector.html.twig'
+                template: '@EasyScheduleBundle:Collector:schedule_collector.html.twig'
                 id: !php/const EonX\EasySchedule\Bridge\Symfony\DataCollector\ScheduleDataCollector::NAME
 
     EonX\EasySchedule\Interfaces\ScheduleInterface:
