@@ -73,10 +73,11 @@ final class ProcessJobLogMiddlewareTest extends AbstractTestCase
      */
     public function testProcessWithJobLog(Envelope $envelope, callable $func, callable $test): void
     {
-        $middleware = new ProcessJobLogMiddleware();
-        $middleware->setJogLogFactory(new JobLogFactory());
-        $middleware->setJobLogPersister(new JobLogPersisterStub());
-        $middleware->setJobLogUpdater(new JobLogUpdater(new DateTimeGenerator()));
+        $middleware = new ProcessJobLogMiddleware(
+            new JobLogFactory(),
+            new JobLogUpdater(new DateTimeGenerator()),
+            new JobLogPersisterStub()
+        );
 
         $iterator = new \ArrayIterator([$middleware, new MessengerMiddlewareStub($func)]);
 

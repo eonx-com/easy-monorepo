@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Bridge\Symfony\Messenger;
 
 use EonX\EasyAsync\Bridge\WithProcessJobLogTrait;
+use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
+use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
+use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 use EonX\EasyAsync\Interfaces\WithProcessJobLogDataInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
@@ -14,6 +17,16 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 final class ProcessJobLogMiddleware implements MiddlewareInterface
 {
     use WithProcessJobLogTrait;
+
+    public function __construct(
+        JobLogFactoryInterface $jobLogFactory,
+        JobLogUpdaterInterface $jobLogUpdater,
+        JobLogPersisterInterface $jobLogPersister
+    ) {
+        $this->setJogLogFactory($jobLogFactory);
+        $this->setJobLogUpdater($jobLogUpdater);
+        $this->setJobLogPersister($jobLogPersister);
+    }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
