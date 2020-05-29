@@ -18,16 +18,6 @@ final class ProcessJobLogMiddleware implements MiddlewareInterface
 {
     use WithProcessJobLogTrait;
 
-    public function __construct(
-        JobLogFactoryInterface $jobLogFactory,
-        JobLogUpdaterInterface $jobLogUpdater,
-        JobLogPersisterInterface $jobLogPersister
-    ) {
-        $this->setJogLogFactory($jobLogFactory);
-        $this->setJobLogUpdater($jobLogUpdater);
-        $this->setJobLogPersister($jobLogPersister);
-    }
-
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         if ($this->shouldSkip($envelope)) {

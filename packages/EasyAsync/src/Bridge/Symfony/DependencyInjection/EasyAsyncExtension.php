@@ -47,11 +47,12 @@ final class EasyAsyncExtension extends Extension
 
         // Register middleware if messenger present
         if (\class_exists(MessengerPass::class)) {
-            $container->setDefinition(ProcessJobLogMiddleware::class, new Definition(ProcessJobLogMiddleware::class, [
-                new Reference(JobLogFactoryInterface::class),
-                new Reference(JobLogUpdaterInterface::class),
-                new Reference(JobLogPersisterInterface::class),
-            ]));
+            $jobLogMidDef = new Definition(ProcessJobLogMiddleware::class);
+            $jobLogMidDef->addMethodCall('setJogLogFactory', [new Reference(JobLogFactoryInterface::class)]);
+            $jobLogMidDef->addMethodCall('setJobLogPersister', [new Reference(JobLogPersisterInterface::class)]);
+            $jobLogMidDef->addMethodCall('setJobLogUpdater', [new Reference(JobLogUpdaterInterface::class)]);
+
+            $container->setDefinition(ProcessJobLogMiddleware::class, $jobLogMidDef);
         }
     }
 }
