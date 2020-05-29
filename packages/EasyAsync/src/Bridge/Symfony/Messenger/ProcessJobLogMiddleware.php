@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Bridge\Symfony\Messenger;
 
 use EonX\EasyAsync\Bridge\WithProcessJobLogTrait;
-use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
-use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
-use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 use EonX\EasyAsync\Interfaces\WithProcessJobLogDataInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
