@@ -13,18 +13,9 @@ final class CredentialsProvider implements CredentialsProviderInterface
      */
     private $awsCredentialsProvider;
 
-    /**
-     * @var mixed[]
-     */
-    private $credentials;
-
-    /**
-     * @param null|mixed[] $credentials
-     */
-    public function __construct(AwsCredentialsProviderInterface $awsCredentialsProvider, ?array $credentials = null)
+    public function __construct(AwsCredentialsProviderInterface $awsCredentialsProvider)
     {
         $this->awsCredentialsProvider = $awsCredentialsProvider;
-        $this->credentials = $credentials ?? [];
     }
 
     /**
@@ -33,8 +24,8 @@ final class CredentialsProvider implements CredentialsProviderInterface
     public function getCredentials(): array
     {
         $return = [
-            'version' => $this->getCredential('version', 'AWS_VERSION', 'latest'),
-            'region' => $this->getCredential('region', 'AWS_REGION', 'ap-southeast-2'),
+            'version' => $this->getCredential('AWS_VERSION', 'latest'),
+            'region' => $this->getCredential('AWS_REGION', 'ap-southeast-2'),
         ];
 
         $awsCredentials = $this->awsCredentialsProvider->getCredentials();
@@ -62,14 +53,14 @@ final class CredentialsProvider implements CredentialsProviderInterface
 
     public function getProfile(): string
     {
-        return (string)$this->getCredential('profile', 'AWS_PROFILE');
+        return (string)$this->getCredential('AWS_PROFILE');
     }
 
     /**
      * @return mixed
      */
-    private function getCredential(string $name, string $env, ?string $default = null)
+    private function getCredential(string $env, ?string $default = null)
     {
-        return $this->credentials[$name] ?? \getenv($env) ?: $default;
+        return \getenv($env) ?: $default;
     }
 }

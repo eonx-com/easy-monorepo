@@ -1,5 +1,0 @@
-services:
-    EonX\EasyAwsCredentialsFinder\Tests\Bridge\Symfony\Stubs\FilesystemFactoryStub: null
-
-    Symfony\Component\Filesystem\Filesystem:
-        factory: ['@EonX\EasyAwsCredentialsFinder\Tests\Bridge\Symfony\Stubs\FilesystemFactoryStub', 'create']

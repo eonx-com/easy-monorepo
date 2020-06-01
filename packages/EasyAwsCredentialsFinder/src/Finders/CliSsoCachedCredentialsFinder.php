@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyAwsCredentialsFinder\Finders;
@@ -74,17 +75,25 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
         return null;
     }
 
+    /**
+     * @param mixed[] $ssoConfig
+     */
     private function getCacheKey(array $ssoConfig): string
     {
+        $args = [];
+
         foreach (static::$ssoConfigs as $snake => $studly) {
             $args[$studly] = $ssoConfig[$snake];
         }
 
         \ksort($args);
 
-        return \sha1(\utf8_encode(\json_encode($args, \JSON_UNESCAPED_SLASHES)));
+        return \sha1(\utf8_encode((string)\json_encode($args, \JSON_UNESCAPED_SLASHES)));
     }
 
+    /**
+     * @return null|mixed[]
+     */
     private function getSsoConfig(): ?array
     {
         $config = $this->configProvider->getCurrentProfileConfig();
@@ -104,7 +113,7 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
 
     private function parseCredentials(string $filename): AwsCredentialsInterface
     {
-        $contents = \json_decode(\file_get_contents($filename), true);
+        $contents = \json_decode((string)\file_get_contents($filename), true);
 
         // Assume Expiration is always there, if not then the cli changed its logic
         $expiration = new Carbon($contents['Credentials']['Expiration']);
@@ -113,7 +122,7 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
         if ($expiration->isPast()) {
             $this->refreshCliCache();
 
-            $contents = \json_decode(\file_get_contents($filename), true);
+            $contents = \json_decode((string)\file_get_contents($filename), true);
             $expiration = new Carbon($contents['Credentials']['Expiration']);
         }
 

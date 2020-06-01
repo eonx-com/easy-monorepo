@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyAwsCredentialsFinder\Helpers;
@@ -8,6 +9,9 @@ use Symfony\Component\Process\Process;
 
 final class ProcessRunner implements ProcessRunnerInterface
 {
+    /**
+     * @param string[] $cmd
+     */
     public function run(array $cmd): string
     {
         $process = new Process($cmd);

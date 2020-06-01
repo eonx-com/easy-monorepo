@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyAwsCredentialsFinder\Tests\Bridge\Symfony\Stubs;
@@ -27,7 +28,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
             $alias->setPublic(true);
         }
 
-        foreach ($container->getDefinitions() as $id => $def) {
+        foreach ($container->getDefinitions() as $def) {
             $def->setPublic(true);
         }
     }

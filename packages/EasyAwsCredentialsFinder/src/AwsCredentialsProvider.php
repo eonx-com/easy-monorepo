@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyAwsCredentialsFinder;
@@ -21,7 +22,7 @@ final class AwsCredentialsProvider implements AwsCredentialsProviderInterface
      */
     public function __construct(array $finders)
     {
-        $this->finders = $finders;
+        $this->setFinders($finders);
     }
 
     public function getCredentials(): AwsCredentialsInterface
@@ -46,7 +47,7 @@ final class AwsCredentialsProvider implements AwsCredentialsProviderInterface
             return $finder instanceof AwsCredentialsFinderInterface;
         });
 
-        \usort($rules, function (AwsCredentialsFinderInterface $first, AwsCredentialsFinderInterface $second): int {
+        \usort($finders, function (AwsCredentialsFinderInterface $first, AwsCredentialsFinderInterface $second): int {
             return $first->getPriority() <=> $second->getPriority();
         });
 
