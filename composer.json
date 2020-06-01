@@ -23,6 +23,7 @@
         "symfony/expression-language": "^4.2 || ^5.0",
         "symfony/filesystem": "^4.2 || ^5.0",
         "symfony/finder": "^4.2 || ^5.0",
+        "symfony/process": "^4.2 || ^5.0",
         "symfony/psr-http-message-bridge": "^1.1",
         "symplify/package-builder": "^7.2",
         "symplify/set-config-resolver": "^7.2",
@@ -65,6 +66,7 @@
         "psr-4": {
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
             "EonX\\EasyAsync\\": "packages/EasyAsync/src",
+            "EonX\\EasyAwsCredentialsFinder\\": "packages/EasyAwsCredentialsFinder/src",
             "EonX\\EasyCfhighlander\\": "packages/EasyCfhighlander/src",
             "EonX\\EasyCore\\": "packages/EasyCore/src",
             "EonX\\EasyDecision\\": "packages/EasyDecision/src",
@@ -89,6 +91,7 @@
         "psr-4": {
             "EonX\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
             "EonX\\EasyAsync\\Tests\\": "packages/EasyAsync/tests",
+            "EonX\\EasyAwsCredentialsFinder\\Tests\\": "packages/EasyAwsCredentialsFinder/tests",
             "EonX\\EasyCfhighlander\\Tests\\": "packages/EasyCfhighlander/tests",
             "EonX\\EasyCore\\Tests\\": "packages/EasyCore/tests",
             "EonX\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
