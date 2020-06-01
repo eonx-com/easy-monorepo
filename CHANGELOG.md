@@ -2,7 +2,27 @@
 
 <!-- dumped content start -->
 
-## v2.4.6 - 2020-05-27
+## v2.4.8 - 2020-06-01
+
+### EasyAwsCredentialsFinder
+
+- [#242] Fix dependencies
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.7] - 2020-06-01
+
+### EasyAwsCredentialsFinder
+
+- [#241] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.6] - 2020-05-27
 
 ### EasySchedule
 
@@ -1671,3 +1691,7 @@
 [v2.4.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.3...v2.4.4
 [#239]: https://github.com/eonx-com/easy-monorepo/pull/239
 [v2.4.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.4...v2.4.5
+[#241]: https://github.com/eonx-com/easy-monorepo/pull/241
+[v2.4.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.5...v2.4.6
+[#242]: https://github.com/eonx-com/easy-monorepo/pull/242
+[v2.4.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.6...v2.4.7
