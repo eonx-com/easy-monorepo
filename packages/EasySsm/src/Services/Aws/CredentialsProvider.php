@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace EonX\EasySsm\Services\Aws;
 
+use EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsProviderInterface;
+
 final class CredentialsProvider implements CredentialsProviderInterface
 {
     /**
-     * @var mixed[]
+     * @var \EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsProviderInterface
      */
-    private $credentials;
+    private $awsCredentialsProvider;
 
-    /**
-     * @param null|mixed[] $credentials
-     */
-    public function __construct(?array $credentials = null)
+    public function __construct(AwsCredentialsProviderInterface $awsCredentialsProvider)
     {
-        $this->credentials = $credentials ?? [];
+        $this->awsCredentialsProvider = $awsCredentialsProvider;
     }
 
     /**
@@ -25,18 +24,17 @@ final class CredentialsProvider implements CredentialsProviderInterface
     public function getCredentials(): array
     {
         $return = [
-            'version' => $this->getCredential('version', 'AWS_VERSION', 'latest'),
-            'region' => $this->getCredential('region', 'AWS_REGION', 'ap-southeast-2'),
+            'version' => $this->getCredential('AWS_VERSION', 'latest'),
+            'region' => $this->getCredential('AWS_REGION', 'ap-southeast-2'),
         ];
 
+        $awsCredentials = $this->awsCredentialsProvider->getCredentials();
         $credentials = [];
-        $creds = ['key' => 'AWS_KEY', 'secret' => 'AWS_SECRET', 'token' => 'AWS_TOKEN'];
+        $creds = ['key' => 'getAccessKeyId', 'secret' => 'getSecretKey', 'token' => 'getSessionToken'];
 
-        foreach ($creds as $name => $env) {
-            $value = $this->getCredential($name, $env);
-
-            if (empty($value) === false) {
-                $credentials[$name] = $value;
+        foreach ($creds as $name => $getter) {
+            if (empty($awsCredentials->{$getter}()) === false) {
+                $credentials[$name] = $awsCredentials->{$getter}();
             }
         }
 
@@ -55,14 +53,14 @@ final class CredentialsProvider implements CredentialsProviderInterface
 
     public function getProfile(): string
     {
-        return (string)$this->getCredential('profile', 'AWS_PROFILE');
+        return (string)$this->getCredential('AWS_PROFILE');
     }
 
     /**
      * @return mixed
      */
-    private function getCredential(string $name, string $env, ?string $default = null)
+    private function getCredential(string $env, ?string $default = null)
     {
-        return $this->credentials[$name] ?? \getenv($env) ?: $default;
+        return \getenv($env) ?: $default;
     }
 }
