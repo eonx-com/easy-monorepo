@@ -140,9 +140,6 @@ parameters:
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyPagination/src/Bridge/Symfony/DependencyInjection/Configuration.php
 
-        - message: '#Parameter \#1 \$request of method EonX\\EasyPsr7Factory\\Interfaces\\EasyPsr7FactoryInterface\:\:createRequest\(\) expects Symfony\\Component\\HttpFoundation\\Request, Symfony\\Component\\HttpFoundation\\Request\|null given#'
-          path: packages/EasyPagination/src/Bridge/Symfony/Factories/ServerRequestFactory.php
-
         - message: '#Method EonX\\EasyPagination\\Tests\\AbstractTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
           path: packages/EasyPagination/tests/AbstractTestCase.php
 
