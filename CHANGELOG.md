@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.7 - 2020-06-01
+## v2.4.8 - 2020-06-01
+
+### EasyAwsCredentialsFinder
+
+- [#242] Fix dependencies
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.7] - 2020-06-01
 
 ### EasyAwsCredentialsFinder
 
@@ -1683,3 +1693,5 @@
 [v2.4.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.4...v2.4.5
 [#241]: https://github.com/eonx-com/easy-monorepo/pull/241
 [v2.4.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.5...v2.4.6
+[#242]: https://github.com/eonx-com/easy-monorepo/pull/242
+[v2.4.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.6...v2.4.7
