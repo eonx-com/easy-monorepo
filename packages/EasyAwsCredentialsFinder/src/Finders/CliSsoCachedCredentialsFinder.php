@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyAwsCredentialsFinder\Finders;
 
+use Carbon\Carbon;
 use EonX\EasyAwsCredentialsFinder\AwsCredentials;
 use EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsInterface;
 use EonX\EasyAwsCredentialsFinder\Interfaces\Helpers\AwsConfigurationProviderInterface;
@@ -15,9 +16,9 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
      * @var string[]
      */
     private static $ssoConfigs = [
-        'start_url' => 'startUrl',
-        'role_name' => 'roleName',
-        'account_id' => 'accountId',
+        'sso_start_url' => 'startUrl',
+        'sso_role_name' => 'roleName',
+        'sso_account_id' => 'accountId',
     ];
 
     /**
@@ -64,7 +65,7 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
         }
 
         // Cache file doesn't exist, let's use the aws cli to generate it
-        $this->processRunner->run(['aws', 's3', 'ls']);
+        $this->refreshCliCache();
 
         if ($this->filesystem->exists($filename)) {
             return $this->parseCredentials($filename);
@@ -105,9 +106,15 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
     {
         $contents = \json_decode(\file_get_contents($filename), true);
 
-        $expiration = $contents['Credentials']['Expiration'] ?? null;
-        if (empty($expiration) === false) {
-            $expiration = new \DateTime($expiration);
+        // Assume Expiration is always there, if not then the cli changed its logic
+        $expiration = new Carbon($contents['Credentials']['Expiration']);
+
+        // Refresh cli cache because credentials expired
+        if ($expiration->isPast()) {
+            $this->refreshCliCache();
+
+            $contents = \json_decode(\file_get_contents($filename), true);
+            $expiration = new Carbon($contents['Credentials']['Expiration']);
         }
 
         return new AwsCredentials(
@@ -116,5 +123,10 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
             $contents['Credentials']['SessionToken'] ?? null,
             $expiration,
         );
+    }
+
+    private function refreshCliCache(): void
+    {
+        $this->processRunner->run(['aws', 's3', 'ls']);
     }
 }

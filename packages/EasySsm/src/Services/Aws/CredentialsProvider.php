@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace EonX\EasySsm\Services\Aws;
 
+use EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsProviderInterface;
+
 final class CredentialsProvider implements CredentialsProviderInterface
 {
+    /**
+     * @var \EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsProviderInterface
+     */
+    private $awsCredentialsProvider;
+
     /**
      * @var mixed[]
      */
@@ -14,8 +21,9 @@ final class CredentialsProvider implements CredentialsProviderInterface
     /**
      * @param null|mixed[] $credentials
      */
-    public function __construct(?array $credentials = null)
+    public function __construct(AwsCredentialsProviderInterface $awsCredentialsProvider, ?array $credentials = null)
     {
+        $this->awsCredentialsProvider = $awsCredentialsProvider;
         $this->credentials = $credentials ?? [];
     }
 
@@ -29,14 +37,13 @@ final class CredentialsProvider implements CredentialsProviderInterface
             'region' => $this->getCredential('region', 'AWS_REGION', 'ap-southeast-2'),
         ];
 
+        $awsCredentials = $this->awsCredentialsProvider->getCredentials();
         $credentials = [];
-        $creds = ['key' => 'AWS_KEY', 'secret' => 'AWS_SECRET', 'token' => 'AWS_TOKEN'];
+        $creds = ['key' => 'getAccessKeyId', 'secret' => 'getSecretKey', 'token' => 'getSessionToken'];
 
-        foreach ($creds as $name => $env) {
-            $value = $this->getCredential($name, $env);
-
-            if (empty($value) === false) {
-                $credentials[$name] = $value;
+        foreach ($creds as $name => $getter) {
+            if (empty($awsCredentials->{$getter}()) === false) {
+                $credentials[$name] = $awsCredentials->{$getter}();
             }
         }
 

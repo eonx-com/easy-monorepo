@@ -8,7 +8,8 @@
         "symplify/package-builder": "^7.2",
         "symplify/autowire-array-parameter": "^7.2",
         "aws/aws-sdk-php": "^3.134",
-        "nette/utils": "^3.1"
+        "nette/utils": "^3.1",
+        "eonx-com/easy-aws-credentials-finder": "dev-feature/aws-credentials-finder"
     },
     "autoload": {
         "psr-4": {
