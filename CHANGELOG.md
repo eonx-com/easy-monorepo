@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v2.4.8 - 2020-06-01
+## v2.4.9 - 2020-06-01
+
+### EasyAsync
+
+- [#240] Set JobLog dependencies to ProcessJobLogMiddleware, Thanks to [@albertlabarentojr]
+
+### EasyCore
+
+- [#243] Fix Symfony default config and debug for simple data persi…
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.8] - 2020-06-01
 
 ### EasyAwsCredentialsFinder
 
@@ -1695,3 +1709,6 @@
 [v2.4.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.5...v2.4.6
 [#242]: https://github.com/eonx-com/easy-monorepo/pull/242
 [v2.4.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.6...v2.4.7
+[#243]: https://github.com/eonx-com/easy-monorepo/pull/243
+[#240]: https://github.com/eonx-com/easy-monorepo/pull/240
+[v2.4.8]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.7...v2.4.8
