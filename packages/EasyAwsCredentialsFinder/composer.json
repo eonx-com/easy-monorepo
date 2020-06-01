@@ -8,7 +8,8 @@
         "symfony/process": "^4.2 || ^5.0",
         "symplify/package-builder": "^7.2",
         "symplify/autowire-array-parameter": "^7.2",
-        "aws/aws-sdk-php": "^3.134"
+        "aws/aws-sdk-php": "^3.134",
+        "nesbot/carbon": "^2.22"
     },
     "require-dev": {
         "symfony/symfony": "^4.2 || ^5.0"
