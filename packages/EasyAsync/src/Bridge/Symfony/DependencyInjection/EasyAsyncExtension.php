@@ -7,11 +7,15 @@ namespace EonX\EasyAsync\Bridge\Symfony\DependencyInjection;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\ProcessJobLogMiddleware;
 use EonX\EasyAsync\Exceptions\InvalidImplementationException;
 use EonX\EasyAsync\Interfaces\ImplementationsInterface;
+use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
+use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
+use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyAsyncExtension extends Extension
@@ -43,7 +47,12 @@ final class EasyAsyncExtension extends Extension
 
         // Register middleware if messenger present
         if (\class_exists(MessengerPass::class)) {
-            $container->setDefinition(ProcessJobLogMiddleware::class, new Definition(ProcessJobLogMiddleware::class));
+            $jobLogMidDef = new Definition(ProcessJobLogMiddleware::class);
+            $jobLogMidDef->addMethodCall('setJogLogFactory', [new Reference(JobLogFactoryInterface::class)]);
+            $jobLogMidDef->addMethodCall('setJobLogPersister', [new Reference(JobLogPersisterInterface::class)]);
+            $jobLogMidDef->addMethodCall('setJobLogUpdater', [new Reference(JobLogUpdaterInterface::class)]);
+
+            $container->setDefinition(ProcessJobLogMiddleware::class, $jobLogMidDef);
         }
     }
 }
