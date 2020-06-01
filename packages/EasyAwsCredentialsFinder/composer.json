@@ -22,5 +22,10 @@
         "psr-4": {
             "EonX\\EasyAwsCredentialsFinder\\Tests\\": "tests"
         }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.5-dev"
+        }
     }
 }

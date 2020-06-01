@@ -174,7 +174,7 @@
             "finder_depth": 0
         },
         "branch-alias": {
-            "dev-master": "2.1-dev"
+            "dev-master": "2.5-dev"
         }
     }
 }
