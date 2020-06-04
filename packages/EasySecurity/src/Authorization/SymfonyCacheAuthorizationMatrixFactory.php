@@ -47,4 +47,9 @@ final class SymfonyCacheAuthorizationMatrixFactory implements AuthorizationMatri
             return $this->decorated->create();
         });
     }
+
+    public function getDecorated(): AuthorizationMatrixFactoryInterface
+    {
+        return $this->decorated;
+    }
 }

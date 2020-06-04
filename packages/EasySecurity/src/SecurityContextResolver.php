@@ -63,6 +63,14 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
         $this->setContextConfigurators($contextConfigurators);
     }
 
+    /**
+     * @return \EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface[]
+     */
+    public function getContextConfigurators(): array
+    {
+        return $this->contextConfigurators;
+    }
+
     public function resolve(Request $request): SecurityContextInterface
     {
         $this->context->setToken($this->tokenDecoder->decode($this->psr7Factory->createRequest($request)));

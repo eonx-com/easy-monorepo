@@ -50,4 +50,20 @@ final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInte
 
         return new AuthorizationMatrix($roles, $permissions);
     }
+
+    /**
+     * @return \EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface[]
+     */
+    public function getPermissionsProviders(): array
+    {
+        return $this->permissionsProviders;
+    }
+
+    /**
+     * @return \EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface[]
+     */
+    public function getRolesProviders(): array
+    {
+        return $this->rolesProviders;
+    }
 }

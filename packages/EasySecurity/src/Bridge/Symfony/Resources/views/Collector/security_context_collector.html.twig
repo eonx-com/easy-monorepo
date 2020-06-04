@@ -19,7 +19,140 @@
 {% endblock %}
 
 {% block panel %}
-    <h2>EasySecurity</h2>
+    <div class="sf-tabs">
+        <div class="tab">
+            <h3 class="tab-title">Security Context</h3>
+            <div class="tab-content">
+                <h2>Token</h2>
 
+                {% if collector.token %}
+                    <div class="card">
+                        {{ dump(collector.token) }}
+                    </div>
+                {% else %}
+                    <div class="empty">
+                        <p>There is no security token.</p>
+                    </div>
+                {% endif %}
 
+                <h2>Permissions</h2>
+
+                {% if collector.permissions %}
+                    <div class="card">
+                        {{ dump(collector.permissions) }}
+                    </div>
+                {% else %}
+                    <div class="empty">
+                        <p>There is no permission.</p>
+                    </div>
+                {% endif %}
+
+                <h2>Roles</h2>
+
+                {% if collector.roles %}
+                    <div class="card">
+                        {{ dump(collector.roles) }}
+                    </div>
+                {% else %}
+                    <div class="empty">
+                        <p>There is no role.</p>
+                    </div>
+                {% endif %}
+
+                <h2>Provider</h2>
+
+                {% if collector.provider %}
+                    <div class="card">
+                        {{ dump(collector.provider) }}
+                    </div>
+                {% else %}
+                    <div class="empty">
+                        <p>There is no provider.</p>
+                    </div>
+                {% endif %}
+
+                <h2>User</h2>
+
+                {% if collector.user %}
+                    <div class="card">
+                        {{ dump(collector.user) }}
+                    </div>
+                {% else %}
+                    <div class="empty">
+                        <p>There is no user.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="tab {% if collector.securityContextConfigurators|length == 0 %}disabled{% endif %}">
+            <h3 class="tab-title">Configurators</h3>
+            <div class="tab-content">
+                {% if collector.securityContextConfigurators %}
+                    <table>
+                        <tbody>
+                        {% for configurator in collector.securityContextConfigurators %}
+                            <tr>
+                                <td>
+                                    {{ dump(configurator) }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="empty">
+                        There is no security context configurator.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="tab">
+            <h3 class="tab-title">Authorization Matrix</h3>
+            <div class="tab-content">
+                <div class="card">
+                    {{ dump(collector.authorizationMatrix) }}
+                </div>
+
+                <h2>Roles Providers</h2>
+
+                {% if collector.rolesProviders %}
+                    <table>
+                        <tbody>
+                        {% for rolesProvider in collector.rolesProviders %}
+                            <tr>
+                                <td>
+                                    {{ dump(rolesProvider) }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="empty">
+                        There is no roles provider.
+                    </div>
+                {% endif %}
+
+                <h2>Permissions Providers</h2>
+
+                {% if collector.permissionsProviders %}
+                    <table>
+                        <tbody>
+                        {% for permissionsProvider in collector.permissionsProviders %}
+                            <tr>
+                                <td>
+                                    {{ dump(permissionsProvider) }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="empty">
+                        There is no permissions provider.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
