@@ -7,8 +7,6 @@ namespace EonX\EasyDecision\Providers;
 final class ConfigMappingProvider extends AbstractMappingProvider
 {
     /**
-     * ConfigMappingProvider constructor.
-     *
      * @param string[] $decisionsConfig
      */
     public function __construct(array $decisionsConfig)
@@ -17,8 +15,6 @@ final class ConfigMappingProvider extends AbstractMappingProvider
     }
 
     /**
-     * Sets types mapping.
-     *
      * @param string[] $decisionsConfig
      */
     private function setTypesMapping(array $decisionsConfig): void

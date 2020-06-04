@@ -80,10 +80,6 @@ final class EasyDecisionServiceProvider extends ServiceProvider
             }
         );
 
-        $this->app->singleton(MappingProviderInterface::class, static function (): MappingProviderInterface {
-            return new ConfigMappingProvider(\config('easy-decision.type_mapping', []));
-        });
-
         $this->app->singleton(DecisionFactoryInterface::class, function (): DecisionFactoryInterface {
             @\trigger_error(\sprintf(
                 'Using %s is deprecated since 2.3.7 and will be removed in 3.0, use %s instead',

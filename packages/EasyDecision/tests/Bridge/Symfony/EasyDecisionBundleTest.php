@@ -120,9 +120,6 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * Tests trying to use configuration with nonexistent decision class throws InvalidConfigurationException.
-     */
     public function testConfigurationWithNonexistentDecisionClassThrowsInvalidConfigurationException(): void
     {
         $this->expectException(InvalidConfigurationException::class);
@@ -135,9 +132,6 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         $kernel->boot();
     }
 
-    /**
-     * Tests trying to create non configured decision by name throws InvalidMappingException.
-     */
     public function testCreateByNameDecisionThrowsInvalidMappingException(): void
     {
         $this->expectException(InvalidMappingException::class);

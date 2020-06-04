@@ -14,9 +14,6 @@ abstract class AbstractMappingProvider implements MappingProviderInterface
      */
     protected $typesMapping = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDecisionType(string $name): string
     {
         if (empty($this->typesMapping[$name]) === true) {
