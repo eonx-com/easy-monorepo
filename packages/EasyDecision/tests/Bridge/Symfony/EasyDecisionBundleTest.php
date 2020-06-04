@@ -145,7 +145,6 @@ final class EasyDecisionBundleTest extends AbstractTestCase
 
         $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.yaml']);
         $kernel->boot();
-
         $factory = $kernel->getContainer()->get(DecisionFactoryInterface::class);
 
         $factory->createByName('non-configured-decision');
