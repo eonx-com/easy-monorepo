@@ -7,6 +7,7 @@ namespace EonX\EasyDecision\Tests\Bridge\Laravel;
 use EonX\EasyDecision\Decisions\AffirmativeDecision;
 use EonX\EasyDecision\Decisions\ValueDecision;
 use EonX\EasyDecision\Exceptions\InvalidArgumentException;
+use EonX\EasyDecision\Exceptions\InvalidMappingException;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 use EonX\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
@@ -53,6 +54,29 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         ]);
 
         $this->getDecisionFactory()->create('my-decision');
+    }
+
+    public function testCreateDecisionByNameThrowsInvalidMappingException(): void
+    {
+        $this->expectException(InvalidMappingException::class);
+        $this->expectErrorMessage('The "some-decision" decision type is not configured');
+        $factory = $this->getApplication()->get(DecisionFactoryInterface::class);
+
+        $factory->createByName('some-decision');
+    }
+
+    public function testCreateDecisionByNameSucceeds(): void
+    {
+        $this->setConfig([
+            'type_mapping' => [
+                'some-decision' => ValueDecision::class,
+            ],
+        ]);
+        $factory = $this->getApplication()->get(DecisionFactoryInterface::class);
+
+        $decision = $factory->createByName('some-decision');
+
+        self::assertInstanceOf(ValueDecision::class, $decision);
     }
 
     public function testCreateDecisionSuccessfullyWithRuleProviderFromContainer(): void

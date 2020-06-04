@@ -6,6 +6,8 @@ namespace EonX\EasyDecision\Bridge\Symfony\DependencyInjection;
 
 use EonX\EasyDecision\Bridge\Interfaces\TagsInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
+use EonX\EasyDecision\Interfaces\MappingProviderInterface;
+use EonX\EasyDecision\Providers\ConfigMappingProvider;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -32,5 +34,9 @@ final class EasyDecisionExtension extends Extension
         $container
             ->registerForAutoconfiguration(DecisionConfiguratorInterface::class)
             ->addTag(TagsInterface::DECISION_CONFIGURATOR);
+
+        $container
+            ->autowire(MappingProviderInterface::class, ConfigMappingProvider::class)
+            ->setArgument('$decisionsConfig', $config['type_mapping'] ?? []);
     }
 }

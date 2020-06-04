@@ -16,6 +16,7 @@ use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
+use EonX\EasyDecision\Interfaces\MappingProviderInterface;
 use EonX\EasyDecision\Interfaces\RestrictedDecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\RuleProviderInterface;
 use Psr\Container\ContainerInterface;
@@ -38,9 +39,15 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $expressionLanguageFactory;
 
     /**
+     * @var \EonX\EasyDecision\Interfaces\MappingProviderInterface
+     */
+    private $mappingProvider;
+
+    /**
      * @param null|iterable<mixed> $configurators
      */
     public function __construct(
+        MappingProviderInterface $mappingProvider,
         ?ExpressionLanguageFactoryInterface $languageFactory = null,
         ?iterable $configurators = null
     ) {
@@ -53,6 +60,7 @@ final class DecisionFactory implements DecisionFactoryInterface
             ), \E_USER_DEPRECATED);
         }
 
+        $this->mappingProvider = $mappingProvider;
         $this->expressionLanguageFactory = $languageFactory;
         $this->configurators = $this->getConfiguratorsAsArray($configurators);
     }
@@ -172,9 +180,6 @@ final class DecisionFactory implements DecisionFactoryInterface
         return \array_filter($configurators, $filter);
     }
 
-    /**
-     * @deprecated since 2.3.7
-     */
     private function instantiateDecision(string $decisionType): DecisionInterface
     {
         $decision = null;
@@ -200,5 +205,12 @@ final class DecisionFactory implements DecisionFactoryInterface
             $decisionType,
             DecisionInterface::class
         ));
+    }
+
+    public function createByName(string $name): DecisionInterface
+    {
+        return $this->instantiateDecision(
+            $this->mappingProvider->getDecisionType($name)
+        );
     }
 }

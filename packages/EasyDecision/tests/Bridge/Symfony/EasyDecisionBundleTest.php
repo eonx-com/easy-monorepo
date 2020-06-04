@@ -8,11 +8,13 @@ use EonX\EasyDecision\Decisions\AffirmativeDecision;
 use EonX\EasyDecision\Decisions\ConsensusDecision;
 use EonX\EasyDecision\Decisions\UnanimousDecision;
 use EonX\EasyDecision\Decisions\ValueDecision;
+use EonX\EasyDecision\Exceptions\InvalidMappingException;
 use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Bridge\Symfony\Stubs\KernelStub;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 final class EasyDecisionBundleTest extends AbstractTestCase
 {
@@ -25,7 +27,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             $this->getCreateAffirmativeDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(AffirmativeDecision::class, $decision);
-                self::assertEquals('<no-name>', $decision->getName());
+                self::assertSame('<no-name>', $decision->getName());
             },
         ];
 
@@ -33,7 +35,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             $this->getCreateConsensusDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ConsensusDecision::class, $decision);
-                self::assertEquals('<no-name>', $decision->getName());
+                self::assertSame('<no-name>', $decision->getName());
             },
         ];
 
@@ -41,7 +43,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             $this->getCreateUnanimousDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(UnanimousDecision::class, $decision);
-                self::assertEquals('<no-name>', $decision->getName());
+                self::assertSame('<no-name>', $decision->getName());
             },
         ];
 
@@ -49,8 +51,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             $this->getCreateValueDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
-                self::assertEquals('<no-name>', $decision->getName());
-                self::assertEquals(1, $decision->make(['value' => 1]));
+                self::assertSame('<no-name>', $decision->getName());
+                self::assertSame(1, $decision->make(['value' => 1]));
             },
         ];
 
@@ -58,8 +60,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             $this->getCreateValueDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
-                self::assertEquals('my-value-decision', $decision->getName());
-                self::assertEquals(1, $decision->make(['value' => 1]));
+                self::assertSame('my-value-decision', $decision->getName());
+                self::assertSame(1, $decision->make(['value' => 1]));
             },
             [__DIR__ . '/Fixtures/value_with_name.yaml'],
         ];
@@ -68,7 +70,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             $this->getCreateValueDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
-                self::assertEquals(11, $decision->make(['value' => 1]));
+                self::assertSame(11, $decision->make(['value' => 1]));
             },
             [__DIR__ . '/Fixtures/value_with_rules_and_expression_language.yaml'],
         ];
@@ -81,7 +83,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
                 $functions = $decision->getExpressionLanguage()->getFunctions();
 
                 self::assertCount(1, $functions);
-                self::assertEquals('restricted', $functions[0]->getName());
+                self::assertSame('restricted', $functions[0]->getName());
             },
             [__DIR__ . '/Fixtures/value_with_name_restricted_expression_function.yaml'],
         ];
@@ -103,7 +105,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
                 $functions = $decision->getExpressionLanguage()->getFunctions();
 
                 self::assertCount(1, $functions);
-                self::assertEquals('restricted', $functions[0]->getName());
+                self::assertSame('restricted', $functions[0]->getName());
             },
             [__DIR__ . '/Fixtures/value_with_type_restricted_expression_function.yaml'],
         ];
@@ -116,6 +118,48 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             },
             [__DIR__ . '/Fixtures/value_with_type_restricted_expression_function.yaml'],
         ];
+    }
+
+    /**
+     * Tests trying to use configuration with nonexistent decision class throws InvalidConfigurationException.
+     */
+    public function testConfigurationWithNonexistentDecisionClassThrowsInvalidConfigurationException(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage(
+            'Invalid configuration for path "easy_decision.type_mapping.decision":' .
+            ' Class "NonExistentDecisionClass" does not exist.'
+        );
+
+        $kernel = new KernelStub([__DIR__ . '/Fixtures/type_mapping_configuration_with_nonexistent_decision_class.yaml']);
+        $kernel->boot();
+    }
+
+    /**
+     * Tests trying to create non configured decision by name throws InvalidMappingException.
+     */
+    public function testCreateByNameDecisionThrowsInvalidMappingException(): void
+    {
+        $this->expectException(InvalidMappingException::class);
+        $this->expectExceptionMessage('The "non-configured-decision" decision type is not configured');
+
+        $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.yaml']);
+        $kernel->boot();
+
+        $factory = $kernel->getContainer()->get(DecisionFactoryInterface::class);
+
+        $factory->createByName('non-configured-decision');
+    }
+
+    public function testCreateByNameDecisionSucceeds(): void
+    {
+        $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.yaml']);
+        $kernel->boot();
+        $factory = $kernel->getContainer()->get(DecisionFactoryInterface::class);
+
+        $decision = $factory->createByName('global_event_value_decision');
+
+        self::assertInstanceOf(ValueDecision::class, $decision);
     }
 
     /**

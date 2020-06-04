@@ -17,6 +17,8 @@ use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionFactoryInterface;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface as BaseDecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
+use EonX\EasyDecision\Interfaces\MappingProviderInterface;
+use EonX\EasyDecision\Providers\ConfigMappingProvider;
 use EonX\EasyDecision\Rules\ExpressionLanguageRuleFactory;
 use Illuminate\Support\ServiceProvider;
 
@@ -43,8 +45,16 @@ final class EasyDecisionServiceProvider extends ServiceProvider
             $this->app->tag(SetExpressionLanguageConfigurator::class, [TagsInterface::DECISION_CONFIGURATOR]);
         }
 
+        $this->app->singleton(MappingProviderInterface::class, static function (): MappingProviderInterface {
+            return new ConfigMappingProvider(\config('easy-decision.type_mapping', []));
+        });
+
         $this->app->singleton(BaseDecisionFactoryInterface::class, function (): BaseDecisionFactoryInterface {
-            return new BaseDecisionFactory(null, $this->app->tagged(TagsInterface::DECISION_CONFIGURATOR));
+            return new BaseDecisionFactory(
+                $this->app->make(MappingProviderInterface::class),
+                null,
+                $this->app->tagged(TagsInterface::DECISION_CONFIGURATOR)
+            );
         });
 
         $this->app->singleton(ExpressionLanguageRuleFactoryInterface::class, ExpressionLanguageRuleFactory::class);
@@ -70,6 +80,10 @@ final class EasyDecisionServiceProvider extends ServiceProvider
             }
         );
 
+        $this->app->singleton(MappingProviderInterface::class, static function (): MappingProviderInterface {
+            return new ConfigMappingProvider(\config('easy-decision.type_mapping', []));
+        });
+
         $this->app->singleton(DecisionFactoryInterface::class, function (): DecisionFactoryInterface {
             @\trigger_error(\sprintf(
                 'Using %s is deprecated since 2.3.7 and will be removed in 3.0, use %s instead',
@@ -78,6 +92,7 @@ final class EasyDecisionServiceProvider extends ServiceProvider
             ), \E_USER_DEPRECATED);
 
             $baseFactory = new BaseDecisionFactory(
+                $this->app->make(MappingProviderInterface::class),
                 $this->app->make(ExpressionLanguageFactoryInterface::class)
             );
 
