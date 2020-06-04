@@ -1,0 +1,25 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% if collector.events|length > 0 or collector.providers|length > 0 %}
+        {% set icon %}
+            {{ include('@EasySecurity/Icon/lock.svg') }}
+        {% endset %}
+
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': profiler_url }) }}
+    {% endif %}
+{% endblock %}
+
+{% block menu %}
+    {# This left-hand menu appears when using the full-screen profiler. #}
+    <span class="label">
+        <span class="icon">{{ include('@EasySecurity/Icon/lock.svg') }}</span>
+        <strong>EasySecurity</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>EasySecurity</h2>
+
+
+{% endblock %}

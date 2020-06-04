@@ -25,3 +25,10 @@ services:
         class: EonX\EasySecurity\Bridge\Symfony\Helpers\DeferredSecurityContextResolver
 
     EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface: '@EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredSecurityContextResolverInterface'
+
+    # DataCollector
+    EonX\EasySecurity\Bridge\Symfony\DataCollector\SecurityContextDataCollector:
+        tags:
+            -   name: data_collector
+                template: '@EasySecurity/Collector/security_context_collector.html.twig'
+                id: !php/const EonX\EasySecurity\Bridge\Symfony\DataCollector\SecurityContextDataCollector::NAME
