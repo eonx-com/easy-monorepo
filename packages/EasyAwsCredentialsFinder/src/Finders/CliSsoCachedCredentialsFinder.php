@@ -14,15 +14,6 @@ use Symfony\Component\Filesystem\Filesystem;
 final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
 {
     /**
-     * @var string[]
-     */
-    private static $ssoConfigs = [
-        'sso_start_url' => 'startUrl',
-        'sso_role_name' => 'roleName',
-        'sso_account_id' => 'accountId',
-    ];
-
-    /**
      * @var \EonX\EasyAwsCredentialsFinder\Interfaces\Helpers\AwsConfigurationProviderInterface
      */
     private $configProvider;
@@ -52,13 +43,13 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
 
     public function findCredentials(): ?AwsCredentialsInterface
     {
-        $ssoConfig = $this->getSsoConfig();
+        $ssoConfig = $this->configProvider->getCurrentProfileSsoConfig();
 
         if ($ssoConfig === null) {
             return null;
         }
 
-        $cacheKey = $this->getCacheKey($ssoConfig);
+        $cacheKey = $this->configProvider->computeCliCredentialsSsoCacheKey($ssoConfig);
         $filename = $this->configProvider->getCliPath(\sprintf('cli/cache/%s.json', $cacheKey));
 
         if ($this->filesystem->exists($filename)) {
@@ -73,42 +64,6 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
         }
 
         return null;
-    }
-
-    /**
-     * @param mixed[] $ssoConfig
-     */
-    private function getCacheKey(array $ssoConfig): string
-    {
-        $args = [];
-
-        foreach (static::$ssoConfigs as $snake => $studly) {
-            $args[$studly] = $ssoConfig[$snake];
-        }
-
-        \ksort($args);
-
-        return \sha1(\utf8_encode((string)\json_encode($args, \JSON_UNESCAPED_SLASHES)));
-    }
-
-    /**
-     * @return null|mixed[]
-     */
-    private function getSsoConfig(): ?array
-    {
-        $config = $this->configProvider->getCurrentProfileConfig();
-
-        if ($config === null) {
-            return null;
-        }
-
-        foreach (\array_keys(static::$ssoConfigs) as $ssoConfig) {
-            if (isset($config[$ssoConfig]) === false) {
-                return null;
-            }
-        }
-
-        return $config;
     }
 
     private function parseCredentials(string $filename): AwsCredentialsInterface
