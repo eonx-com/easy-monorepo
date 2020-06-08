@@ -56,10 +56,26 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         $this->getDecisionFactory()->create('my-decision');
     }
 
-    public function testCreateDecisionByNameThrowsInvalidMappingException(): void
+    public function testCreateDecisionByNameThrowsInvalidMappingExceptionIfDecisionIsNotConfigured(): void
     {
         $this->expectException(InvalidMappingException::class);
-        $this->expectExceptionMessage('The "some-decision" decision type is not configured');
+        $this->expectExceptionMessage('Decision for name "some-decision" is not configured');
+        $factory = $this->getApplication()->get(DecisionFactoryInterface::class);
+
+        $factory->createByName('some-decision');
+    }
+
+    public function testCreateDecisionByNameThrowsInvalidMappingExceptionIfClassIsNotValid(): void
+    {
+        $this->setConfig([
+            'type_mapping' => [
+                'some-decision' => 'NonexistentClass',
+            ],
+        ]);
+        $this->expectException(InvalidMappingException::class);
+        $this->expectExceptionMessage(
+            'Decision class "NonexistentClass" for name "some-decision" is not a valid classname'
+        );
         $factory = $this->getApplication()->get(DecisionFactoryInterface::class);
 
         $factory->createByName('some-decision');

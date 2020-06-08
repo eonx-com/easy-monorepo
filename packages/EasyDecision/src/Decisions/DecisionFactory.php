@@ -180,6 +180,9 @@ final class DecisionFactory implements DecisionFactoryInterface
         return \array_filter($configurators, $filter);
     }
 
+    /**
+     * @deprecated since 2.3.7
+     */
     private function instantiateDecision(string $decisionType): DecisionInterface
     {
         $decision = null;
@@ -209,8 +212,8 @@ final class DecisionFactory implements DecisionFactoryInterface
 
     public function createByName(string $name): DecisionInterface
     {
-        return $this->instantiateDecision(
-            $this->mappingProvider->getDecisionType($name)
-        );
+        $decision = $this->mappingProvider->getDecisionType($name);
+
+        return $this->configureDecision(new $decision());
     }
 }

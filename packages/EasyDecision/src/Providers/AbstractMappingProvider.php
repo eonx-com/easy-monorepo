@@ -17,9 +17,31 @@ abstract class AbstractMappingProvider implements MappingProviderInterface
     public function getDecisionType(string $name): string
     {
         if (empty($this->typesMapping[$name]) === true) {
-            throw new InvalidMappingException(\sprintf('The "%s" decision type is not configured', $name));
+            throw new InvalidMappingException(\sprintf('Decision for name "%s" is not configured', $name));
+        }
+
+        if (\class_exists($this->typesMapping[$name]) === false) {
+            throw new InvalidMappingException(
+                \sprintf(
+                    'Decision class "%s" for name "%s" is not a valid classname',
+                    $this->typesMapping[$name],
+                    $name
+                )
+            );
         }
 
         return $this->typesMapping[$name];
+    }
+
+    /**
+     * @param string[] $decisionsConfig
+     */
+    protected function setTypesMapping(array $decisionsConfig): void
+    {
+        foreach ($decisionsConfig as $name => $config) {
+            if (\is_string($name) && \is_string($config)) {
+                $this->typesMapping[$name] = $config;
+            }
+        }
     }
 }

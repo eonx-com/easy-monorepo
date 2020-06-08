@@ -135,7 +135,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
     public function testCreateByNameDecisionThrowsInvalidMappingException(): void
     {
         $this->expectException(InvalidMappingException::class);
-        $this->expectExceptionMessage('The "non-configured-decision" decision type is not configured');
+        $this->expectExceptionMessage('Decision for name "non-configured-decision" is not configured');
 
         $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.yaml']);
         $kernel->boot();
