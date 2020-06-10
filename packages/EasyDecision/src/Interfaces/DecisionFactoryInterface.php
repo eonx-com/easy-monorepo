@@ -15,6 +15,8 @@ interface DecisionFactoryInterface
 
     public function createAffirmativeDecision(?string $name = null): DecisionInterface;
 
+    public function createByName(string $name): DecisionInterface;
+
     public function createConsensusDecision(?string $name = null): DecisionInterface;
 
     public function createUnanimousDecision(?string $name = null): DecisionInterface;
