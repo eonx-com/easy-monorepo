@@ -16,6 +16,7 @@ you can look [there][1].
 - [EasyDecision](https://github.com/eonx-com/easy-decision): Your most complex decisions made the easiest way.
 - [EasyDocker](https://github.com/eonx-com/easy-docker): CLI tool to generate Docker files.
 - [EasyEntityChange](https://github.com/eonx-com/easy-entity-change): Provides an easy way to hook up logic in your entities lifecycle.
+- [EasyErrorHandler](https://github.com/eonx-com/easy-error-handler): Provides customizable ready-to-use error handler for applications.
 - [EasyIdentity](https://github.com/eonx-com/easy-identity): Tools to handle authentication like a pro.
 - [EasyPipeline](https://github.com/eonx-com/easy-pipeline): An easy way to implement the Pipeline Design Pattern in your applications.
 - [EasyRepository](https://github.com/eonx-com/easy-repository): An easy way to implement the Repository Design Pattern in your applications.

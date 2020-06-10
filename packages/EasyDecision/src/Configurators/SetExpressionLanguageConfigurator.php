@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Configurators;
 
-use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
+use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 
 final class SetExpressionLanguageConfigurator extends AbstractConfigurator
 {
     /**
-     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface
+     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface
      */
-    private $expressionLanguage;
+    private $exprLangFactory;
 
-    public function __construct(ExpressionLanguageInterface $expressionLanguage, ?int $priority = null)
+    public function __construct(ExpressionLanguageFactoryInterface $exprLangFactory, ?int $priority = null)
     {
-        $this->expressionLanguage = $expressionLanguage;
+        $this->exprLangFactory = $exprLangFactory;
 
         parent::__construct($priority);
     }
@@ -27,6 +27,6 @@ final class SetExpressionLanguageConfigurator extends AbstractConfigurator
             return;
         }
 
-        $decision->setExpressionLanguage($this->expressionLanguage);
+        $decision->setExpressionLanguage($this->exprLangFactory->create());
     }
 }

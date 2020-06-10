@@ -112,6 +112,10 @@ parameters:
 
         # ---- EasyDocker ----
         # ---- EasyEntityChange ----
+        # ---- EasyErrorHandler ----
+        - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
+          path: packages/EasyErrorHandler/tests
+
         # ---- EasyIdentity ----
         - message: '#Access to an undefined property Mockery\\LegacyMockInterface::\$users.#'
           path: packages/EasyIdentity/tests/Implementations/Auth0
@@ -135,7 +139,7 @@ parameters:
 
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyPagination/src/Bridge/Symfony/DependencyInjection/Configuration.php
-
+          
         - message: '#Method EonX\\EasyPagination\\Bridge\\Symfony\\Factories\\ServerRequestFactory\:\:getRequest\(\) should return Symfony\\Component\\HttpFoundation\\Request but returns Symfony\\Component\\HttpFoundation\\Request\|null#'
           path: packages/EasyPagination/src/Bridge/Symfony/Factories/ServerRequestFactory.php
 

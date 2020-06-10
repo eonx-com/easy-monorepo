@@ -68,6 +68,11 @@ parameters:
             - 'packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Routing/IriConverter.php'
         SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff.UselessVariable:
             - 'packages/EasySchedule/src/Schedule.php'
+        SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff.WriteOnlyProperty:
+            - 'packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php'
+        SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff.ReferencedGeneralException:
+            - 'packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php'
+            - 'packages/EasyErrorHandler/tests/Bridge/Laravel/Handler/HandlerTest.php'
 
 services:
     PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff: ~
