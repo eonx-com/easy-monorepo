@@ -8,3 +8,4 @@ services:
         exclude:
             - '../../../../../src/Bridge/*'
             - '../../../../../src/AwsCredentials.php'
+            - '../../../../../src/AwsSsoAccessToken.php'

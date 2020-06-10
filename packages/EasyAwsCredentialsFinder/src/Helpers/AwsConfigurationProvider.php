@@ -9,6 +9,39 @@ use EonX\EasyAwsCredentialsFinder\Interfaces\Helpers\AwsConfigurationProviderInt
 
 final class AwsConfigurationProvider extends AbstractConfigurationProvider implements AwsConfigurationProviderInterface
 {
+    /**
+     * @var string[]
+     */
+    private static $ssoConfigs = [
+        'sso_start_url' => 'startUrl',
+        'sso_role_name' => 'roleName',
+        'sso_account_id' => 'accountId',
+    ];
+
+    /**
+     * @param mixed[] $ssoConfigs
+     */
+    public function computeCliCredentialsSsoCacheKey(array $ssoConfigs): string
+    {
+        $args = [];
+
+        foreach (static::$ssoConfigs as $snake => $studly) {
+            $args[$studly] = $ssoConfigs[$snake] ?? '';
+        }
+
+        \ksort($args);
+
+        return \sha1(\utf8_encode((string)\json_encode($args, \JSON_UNESCAPED_SLASHES)));
+    }
+
+    /**
+     * @param mixed[] $ssoConfigs
+     */
+    public function computeSsoAccessTokenCacheKey(array $ssoConfigs): string
+    {
+        return \sha1(\utf8_encode($ssoConfigs['sso_start_url'] ?? ''));
+    }
+
     public function getCliPath(?string $path = null): string
     {
         $home = static::getHomeDir();
@@ -40,6 +73,26 @@ final class AwsConfigurationProvider extends AbstractConfigurationProvider imple
         }
 
         return null;
+    }
+
+    /**
+     * @return null|mixed[]
+     */
+    public function getCurrentProfileSsoConfig(): ?array
+    {
+        $config = $this->getCurrentProfileConfig();
+
+        if ($config === null) {
+            return null;
+        }
+
+        foreach (\array_keys(static::$ssoConfigs) as $ssoConfig) {
+            if (isset($config[$ssoConfig]) === false) {
+                return null;
+            }
+        }
+
+        return $config;
     }
 
     /**

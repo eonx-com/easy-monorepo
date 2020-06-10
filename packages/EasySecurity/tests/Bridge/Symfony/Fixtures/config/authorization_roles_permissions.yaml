@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    EonX\EasySecurity\Tests\Stubs\RolesAndPermissionsProviderStub:
+        arguments:
+            $roles:
+                - role
+            $permissions:
+                - permission
