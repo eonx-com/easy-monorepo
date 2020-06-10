@@ -6,6 +6,9 @@ namespace EonX\EasySecurity\Interfaces;
 
 use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
 
+/**
+ * @deprecated Since 2.4, will be removed in 3.0, use EonX\EasySecurity\Interfaces\SecurityContextInterface instead
+ */
 interface ContextInterface
 {
     /**

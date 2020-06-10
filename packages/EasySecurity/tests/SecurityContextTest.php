@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Tests;
 
 use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
-use EonX\EasySecurity\Context;
 use EonX\EasySecurity\Exceptions\NoProviderInContextException;
 use EonX\EasySecurity\Exceptions\NoUserInContextException;
 use EonX\EasySecurity\Permission;
 use EonX\EasySecurity\Role;
+use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\UserInterfaceStub;
 
-final class ContextTest extends AbstractTestCase
+final class SecurityContextTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
@@ -142,14 +142,14 @@ final class ContextTest extends AbstractTestCase
     {
         $this->expectException(NoProviderInContextException::class);
 
-        (new Context())->getProviderOrFail();
+        (new SecurityContext())->getProviderOrFail();
     }
 
     public function testContextGetUserOrFail(): void
     {
         $this->expectException(NoUserInContextException::class);
 
-        (new Context())->getUserOrFail();
+        (new SecurityContext())->getUserOrFail();
     }
 
     /**
@@ -163,19 +163,24 @@ final class ContextTest extends AbstractTestCase
         $provider = new ProviderInterfaceStub('uniqueId');
         $user = new UserInterfaceStub('uniqueId');
 
-        $context = new Context();
+        $context = new SecurityContext();
         $context->setToken($token);
         $context->setProvider($provider);
         $context->setRoles($roles);
         $context->setUser($user);
         $permissions = $context->getPermissions();
 
+        // Override permissions
+        $context->setPermissions(['my-permission']);
+
         self::assertCount($countRoles, $context->getRoles());
         self::assertCount($countPermissions, $permissions);
-        self::assertEquals($permissions, $context->getPermissions());
+        self::assertCount(1, $context->getPermissions());
         self::assertEquals($token, $context->getToken());
         self::assertEquals($provider, $context->getProvider());
+        self::assertEquals($provider, $context->getProviderOrFail());
         self::assertEquals($user, $context->getUser());
+        self::assertEquals($user, $context->getUserOrFail());
     }
 
     /**
@@ -190,7 +195,7 @@ final class ContextTest extends AbstractTestCase
         bool $hasRole,
         bool $hasPermission
     ): void {
-        $context = new Context();
+        $context = new SecurityContext();
         $context->setRoles($roles);
 
         self::assertEquals($hasRole, $context->hasRole($role));

@@ -9,5 +9,20 @@ interface TagsInterface
     /**
      * @var string
      */
+    public const TAG_CONTEXT_CONFIGURATOR = 'easy_security.context_configurator';
+
+    /**
+     * @var string
+     */
     public const TAG_CONTEXT_MODIFIER = 'easy_security.context_modifier';
+
+    /**
+     * @var string
+     */
+    public const TAG_PERMISSIONS_PROVIDER = 'easy_security.permissions_provider';
+
+    /**
+     * @var string
+     */
+    public const TAG_ROLES_PROVIDER = 'easy_security.roles_provider';
 }

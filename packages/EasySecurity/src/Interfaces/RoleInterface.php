@@ -4,21 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Interfaces;
 
+/**
+ * @deprecated Since 2.4, will be removed in 3.0. Use \EonX\EasySecurity\Interfaces\Authorization\RoleInterface
+ *     instead.
+ */
 interface RoleInterface
 {
-    public function __toString(): string;
-
-    public function getIdentifier(): string;
-
-    /**
-     * @return mixed[]
-     */
-    public function getMetadata(): array;
-
-    public function getName(): ?string;
-
-    /**
-     * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
-     */
-    public function getPermissions(): array;
+    // No body needed.
 }
