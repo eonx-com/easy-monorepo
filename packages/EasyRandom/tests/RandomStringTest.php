@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests;
 
+use EonX\EasyRandom\Exceptions\InvalidAlphabetException;
+use EonX\EasyRandom\Exceptions\InvalidAlphabetNameException;
 use EonX\EasyRandom\Exceptions\InvalidRandomStringException;
 use EonX\EasyRandom\Interfaces\RandomStringInterface;
 use EonX\EasyRandom\RandomGenerator;
@@ -19,23 +21,37 @@ final class RandomStringTest extends AbstractTestCase
     {
         yield 'Default configs' => [];
 
-        yield 'Exclude symbols' => [
-            null,
-            static function (RandomStringInterface $randomString): void {
-                $randomString->exclude(RandomStringInterface::SYMBOL);
-            },
-            static function (string $randomString): void {
-                self::assertAlphabetExcluded(RandomStringInterface::SYMBOL, $randomString);
-            }
-        ];
+        foreach (RandomStringInterface::ALPHABET_NAMES as $name) {
+            yield \sprintf('Exclude %s', $name) => [
+                null,
+                static function (RandomStringInterface $randomString) use ($name): void {
+                    $randomString->{\sprintf('exclude%s', \ucfirst($name))}();
+                },
+                static function (string $randomString) use ($name): void {
+                    self::assertAlphabetExcluded($name, $randomString);
+                }
+            ];
 
-        yield 'Exclude vowels' => [
+            yield \sprintf('Include only %s', $name) => [
+                null,
+                static function (RandomStringInterface $randomString) use ($name): void {
+                    $randomString
+                        ->clear()
+                        ->{\sprintf('include%s', \ucfirst($name))}();
+                },
+                static function (string $randomString) use ($name): void {
+                    self::assertIncludesOnly(RandomStringInterface::ALPHABETS[$name], $randomString);
+                }
+            ];
+        }
+
+        yield 'Override alphabet' => [
             null,
             static function (RandomStringInterface $randomString): void {
-                $randomString->exclude(RandomStringInterface::VOWEL);
+                $randomString->alphabet('EONX');
             },
             static function (string $randomString): void {
-                self::assertAlphabetExcluded(RandomStringInterface::VOWEL, $randomString);
+                self::assertIncludesOnly('EONX', $randomString);
             }
         ];
 
@@ -55,6 +71,26 @@ final class RandomStringTest extends AbstractTestCase
                 self::assertAlphabetExcluded(RandomStringInterface::VOWEL, $randomString);
             }
         ];
+    }
+
+    public function testInvalidAlphabetExceptionThrown(): void
+    {
+        $this->expectException(InvalidAlphabetException::class);
+
+        (new RandomGenerator())
+            ->randomString(8)
+            ->alphabet('')
+            ->__toString();
+    }
+
+    public function testInvalidAlphabetNameExceptionThrown(): void
+    {
+        $this->expectException(InvalidAlphabetNameException::class);
+
+        (new RandomGenerator())
+            ->randomString(8)
+            ->exclude('invalid')
+            ->__toString();
     }
 
     public function testInvalidRandomStringExceptionThrown(): void
@@ -98,10 +134,17 @@ final class RandomStringTest extends AbstractTestCase
         }
     }
 
-    private static function assertAlphabetExcluded(string $alphabet, string $randomString): void
+    private static function assertAlphabetExcluded(string $alphabetName, string $randomString): void
     {
-        foreach (\str_split(RandomStringInterface::ALPHABETS[$alphabet]) as $char) {
+        foreach (\str_split(RandomStringInterface::ALPHABETS[$alphabetName]) as $char) {
             self::assertEquals(0, \strpos($randomString, $char));
         }
+    }
+
+    private static function assertIncludesOnly(string $alphabet, string $randomString): void
+    {
+        $alphabet = \preg_quote($alphabet, '#');
+
+        self::assertEquals(0, \preg_match(\sprintf('#[^%s]#', $alphabet), $randomString));
     }
 }

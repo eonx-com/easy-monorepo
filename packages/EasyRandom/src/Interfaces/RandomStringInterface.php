@@ -36,14 +36,46 @@ interface RandomStringInterface
 
     public function __toString(): string;
 
+    public function alphabet(string $alphabet): self;
+
+    public function clear(): self;
+
     /**
      * @param \EonX\EasyRandom\Interfaces\RandomStringConstraintInterface[] $constraints
      */
     public function constraints(array $constraints): self;
 
-    public function exclude(string $alphabet): self;
+    public function exclude(string $alphabetName): self;
 
-    public function include(string $alphabet): self;
+    public function excludeAmbiguous(): self;
+
+    public function excludeLowercase(): self;
+
+    public function excludeNumeric(): self;
+
+    public function excludeSimilar(): self;
+
+    public function excludeSymbol(): self;
+
+    public function excludeUppercase(): self;
+
+    public function excludeVowel(): self;
+
+    public function include(string $alphabetName): self;
+
+    public function includeAmbiguous(): self;
+
+    public function includeLowercase(): self;
+
+    public function includeNumeric(): self;
+
+    public function includeSimilar(): self;
+
+    public function includeSymbol(): self;
+
+    public function includeUppercase(): self;
+
+    public function includeVowel(): self;
 
     public function maxAttempts(int $maxAttempts): self;
 
