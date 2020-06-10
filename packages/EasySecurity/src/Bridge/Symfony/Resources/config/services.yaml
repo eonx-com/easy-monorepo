@@ -6,6 +6,9 @@ services:
     # Authorization
     EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface:
         class: EonX\EasySecurity\Authorization\AuthorizationMatrixFactory
+        arguments:
+            $rolesProviders: !tagged_iterator easy_security.roles_provider
+            $permissionsProviders: !tagged_iterator easy_security.permissions_provider
 
     EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface:
         factory: ['@EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface', 'create']

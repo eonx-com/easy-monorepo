@@ -39,8 +39,8 @@ final class EasySecurityServiceProvider extends ServiceProvider
             AuthorizationMatrixFactoryInterface::class,
             function (): AuthorizationMatrixFactoryInterface {
                 return new AuthorizationMatrixFactory(
-                    \iterator_to_array($this->app->tagged(TagsInterface::TAG_ROLES_PROVIDER)),
-                    \iterator_to_array($this->app->tagged(TagsInterface::TAG_ROLES_PROVIDER)),
+                    $this->app->tagged(TagsInterface::TAG_ROLES_PROVIDER),
+                    $this->app->tagged(TagsInterface::TAG_PERMISSIONS_PROVIDER)
                 );
             }
         );

@@ -13,6 +13,8 @@ use EonX\EasySecurity\Bridge\Symfony\Security\Voters\PermissionVoter;
 use EonX\EasySecurity\Bridge\Symfony\Security\Voters\ProviderVoter;
 use EonX\EasySecurity\Bridge\Symfony\Security\Voters\RoleVoter;
 use EonX\EasySecurity\Bridge\TagsInterface;
+use EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface;
+use EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface;
 use EonX\EasySecurity\Interfaces\ContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\ContextModifierInterface;
@@ -44,6 +46,14 @@ final class EasySecurityExtension extends Extension
 
         // Set permissions locations parameter
         $container->setParameter(ParametersInterface::PERMISSIONS_LOCATIONS, $config['permissions_locations'] ?? []);
+
+        // Register roles/permissions providers for auto tagging
+        $container
+            ->registerForAutoconfiguration(RolesProviderInterface::class)
+            ->addTag(TagsInterface::TAG_ROLES_PROVIDER);
+        $container
+            ->registerForAutoconfiguration(PermissionsProviderInterface::class)
+            ->addTag(TagsInterface::TAG_PERMISSIONS_PROVIDER);
 
         // Register context modifiers for auto tagging
         $container

@@ -6,6 +6,9 @@ namespace EonX\EasySecurity\Authorization;
 
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
+use EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface;
+use EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface;
+use Traversable;
 
 final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
 {
@@ -20,15 +23,16 @@ final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInte
     private $rolesProviders;
 
     /**
-     * AuthorizationMatrixFactory constructor.
-     *
-     * @param \EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface[] $rolesProviders
-     * @param \EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface[] $permissionsProviders
+     * @param iterable<\EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface> $rolesProviders
+     * @param iterable<\EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface> $permissionsProviders
      */
-    public function __construct(array $rolesProviders, array $permissionsProviders)
+    public function __construct(iterable $rolesProviders, iterable $permissionsProviders)
     {
-        $this->rolesProviders = $rolesProviders;
-        $this->permissionsProviders = $permissionsProviders;
+        $this->rolesProviders = $this->filterProviders($rolesProviders, RolesProviderInterface::class);
+        $this->permissionsProviders = $this->filterProviders(
+            $permissionsProviders,
+            PermissionsProviderInterface::class
+        );
     }
 
     public function create(): AuthorizationMatrixInterface
@@ -65,5 +69,21 @@ final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInte
     public function getRolesProviders(): array
     {
         return $this->rolesProviders;
+    }
+
+    /**
+     * @param iterable<mixed> $providers
+     *
+     * @return mixed[]
+     */
+    private function filterProviders(iterable $providers, string $class): array
+    {
+        $filter = static function ($provider) use ($class): bool {
+            return $provider instanceof $class;
+        };
+
+        $providers = $providers instanceof Traversable ? \iterator_to_array($providers) : (array)$providers;
+
+        return \array_filter($providers, $filter);
     }
 }
