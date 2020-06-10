@@ -12,6 +12,9 @@ use EonX\EasySecurity\Interfaces\ContextResolverInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Traversable;
 
+/**
+ * @deprecated Since 2.4, will be removed in 3.0. Use SecurityContextResolver instead.
+ */
 final class ContextResolver implements ContextResolverInterface
 {
     /**
