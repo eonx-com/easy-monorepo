@@ -214,6 +214,6 @@ final class DecisionFactory implements DecisionFactoryInterface
     {
         $decision = $this->mappingProvider->getDecisionType($name);
 
-        return $this->configureDecision(new $decision());
+        return $this->configureDecision(new $decision($name));
     }
 }
