@@ -97,4 +97,21 @@ return [
     'decisions' => [
         // Your decisions here...
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Decision type mapping
+    |--------------------------------------------------------------------------
+    |
+    | Here you will define your decision type mapping to be able to use
+    | \EonX\EasyDecision\Interfaces\DecisionFactoryInterface::createByName
+    |
+    | Example:
+    |
+    | 'my-decision' => \EonX\EasyDecision\Decisions\UnanimousDecision::class
+    |
+    */
+    'type_mapping' => [
+        // Your decision type mapping here...
+    ],
 ];
