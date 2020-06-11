@@ -139,7 +139,7 @@ parameters:
 
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyPagination/src/Bridge/Symfony/DependencyInjection/Configuration.php
-          
+
         - message: '#Method EonX\\EasyPagination\\Bridge\\Symfony\\Factories\\ServerRequestFactory\:\:getRequest\(\) should return Symfony\\Component\\HttpFoundation\\Request but returns Symfony\\Component\\HttpFoundation\\Request\|null#'
           path: packages/EasyPagination/src/Bridge/Symfony/Factories/ServerRequestFactory.php
 
@@ -158,6 +158,13 @@ parameters:
           path: packages/EasyPipeline/tests
 
         # ---- EasyPsr7Factory ----
+        # ---- EasyRandom ----
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyRandom/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
+        - message: '#Access to an undefined property EonX\\EasyRandom\\Interfaces\\RandomGeneratorInterface\:\:\$uuidV4Generator#'
+          path: packages/EasyRandom/tests/Bridge/Symfony/EasyRandomBundleTest.php
+
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
           path: packages/EasyRepository/src/Implementations/Illuminate
