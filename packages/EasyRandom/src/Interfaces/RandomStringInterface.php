@@ -23,15 +23,21 @@ interface RandomStringInterface
         self::SIMILAR,
         self::SYMBOL,
         self::UPPERCASE,
-        self::VOWEL
+        self::VOWEL,
     ];
 
     public const AMBIGUOUS = 'ambiguous';
+
     public const LOWERCASE = 'lowercase';
+
     public const NUMERIC = 'numeric';
+
     public const SIMILAR = 'similar';
+
     public const SYMBOL = 'symbol';
+
     public const UPPERCASE = 'uppercase';
+
     public const VOWEL = 'vowel';
 
     public function __toString(): string;

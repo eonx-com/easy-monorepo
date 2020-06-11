@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Symfony\Security\Voters;
 
-use EonX\EasySecurity\Authorization\AuthorizationMatrix;
-use EonX\EasySecurity\Bridge\Symfony\Security\Voters\PermissionVoter;
 use EonX\EasySecurity\Bridge\Symfony\Security\Voters\ProviderVoter;
-use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\AbstractTestCase;
@@ -52,7 +49,7 @@ final class ProviderVoterTest extends AbstractTestCase
     }
 
     /**
-     * @var mixed $subject
+     * @param mixed $subject
      *
      * @dataProvider providerTestVoter
      */

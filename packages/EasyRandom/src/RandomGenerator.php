@@ -11,17 +11,7 @@ final class RandomGenerator implements RandomGeneratorInterface
 {
     public function randomInteger(?int $min = null, ?int $max = null): int
     {
-        $min = $min ?? 0;
-        $max = $max ?? \PHP_INT_MAX;
-
-        try {
-            return \random_int($min, $max);
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $throwable) {
-            // It's unlikely exception will be thrown as system is running *nix
-            return \mt_rand($min, $max);
-            // @codeCoverageIgnoreEnd
-        }
+        return \random_int($min ?? 0, $max ?? \PHP_INT_MAX);
     }
 
     public function randomString(int $length): RandomStringInterface

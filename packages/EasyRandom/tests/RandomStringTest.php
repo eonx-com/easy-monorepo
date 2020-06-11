@@ -29,7 +29,7 @@ final class RandomStringTest extends AbstractTestCase
                 },
                 static function (string $randomString) use ($name): void {
                     self::assertAlphabetExcluded($name, $randomString);
-                }
+                },
             ];
 
             yield \sprintf('Include only %s', $name) => [
@@ -41,7 +41,7 @@ final class RandomStringTest extends AbstractTestCase
                 },
                 static function (string $randomString) use ($name): void {
                     self::assertIncludesOnly(RandomStringInterface::ALPHABETS[$name], $randomString);
-                }
+                },
             ];
         }
 
@@ -52,7 +52,7 @@ final class RandomStringTest extends AbstractTestCase
             },
             static function (string $randomString): void {
                 self::assertIncludesOnly('EONX', $randomString);
-            }
+            },
         ];
 
         yield 'User friendly' => [
@@ -69,7 +69,7 @@ final class RandomStringTest extends AbstractTestCase
                 self::assertAlphabetExcluded(RandomStringInterface::SYMBOL, $randomString);
                 self::assertAlphabetExcluded(RandomStringInterface::SIMILAR, $randomString);
                 self::assertAlphabetExcluded(RandomStringInterface::VOWEL, $randomString);
-            }
+            },
         ];
     }
 
