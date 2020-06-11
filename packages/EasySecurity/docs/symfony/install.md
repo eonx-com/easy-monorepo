@@ -5,7 +5,7 @@ is_section: true
 section_icon: fab fa-symfony
 ---eonx_docs---
 
-## Register Bundle
+### Register Bundle
 
 If you're using [Symfony Flex][1], this step has been done automatically for you. If not, you can register the bundle
 yourself:
