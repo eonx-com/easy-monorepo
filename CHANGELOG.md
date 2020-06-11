@@ -2,7 +2,29 @@
 
 <!-- dumped content start -->
 
-## v2.4.9 - 2020-06-01
+## v2.4.10 - 2020-06-11
+
+### EasyAwsCredentialsFinder
+
+- [#247] Implement SSO access token provider
+
+### EasyDecision
+
+- [#246] Implement decision types mapping, Thanks to [@BOB41K1987]
+
+### EasyRandom
+
+- [#249] Create package
+
+### EasySecurity
+
+- [#248] Big refactoring
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.9] - 2020-06-01
 
 ### EasyAsync
 
@@ -1712,3 +1734,8 @@
 [#243]: https://github.com/eonx-com/easy-monorepo/pull/243
 [#240]: https://github.com/eonx-com/easy-monorepo/pull/240
 [v2.4.8]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.7...v2.4.8
+[#249]: https://github.com/eonx-com/easy-monorepo/pull/249
+[#248]: https://github.com/eonx-com/easy-monorepo/pull/248
+[#247]: https://github.com/eonx-com/easy-monorepo/pull/247
+[#246]: https://github.com/eonx-com/easy-monorepo/pull/246
+[v2.4.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.8...v2.4.9

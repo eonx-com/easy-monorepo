@@ -35,6 +35,7 @@ parameters:
         packages/EasyRepository: 'git@github.com:eonx-com/easy-repository.git'
         packages/EasyPagination: 'git@github.com:eonx-com/easy-pagination.git'
         packages/EasyPsr7Factory: 'git@github.com:eonx-com/easy-psr7-factory.git'
+        packages/EasyRandom: 'git@github.com:eonx-com/easy-random.git'
         packages/EasySchedule: 'git@github.com:eonx-com/easy-schedule.git'
         packages/EasySecurity: 'git@github.com:eonx-com/easy-security.git'
         packages/EasySsm: 'git@github.com:eonx-com/easy-ssm.git'
