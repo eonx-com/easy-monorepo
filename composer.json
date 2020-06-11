@@ -25,6 +25,7 @@
         "symfony/finder": "^4.2 || ^5.0",
         "symfony/process": "^4.2 || ^5.0",
         "symfony/string": "^4.2 || ^5.0",
+        "symfony/uid": "^4.2 || ^5.0",
         "symfony/psr-http-message-bridge": "^1.1",
         "symplify/package-builder": "^7.2",
         "symplify/set-config-resolver": "^7.2",
