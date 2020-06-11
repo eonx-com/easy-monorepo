@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.1",
         "nesbot/carbon": "^2.22",
-        "eonx-com/easy-logging": "^2.4.10",
+        "eonx-com/easy-logging": "^2.5",
         "eonx-com/apiformats": "^1.0",
         "illuminate/support": "^5.5",
         "symfony/console": "^4.2 || ^5.0"
