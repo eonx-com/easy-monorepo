@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyAwsCredentialsFinder;
@@ -18,7 +19,7 @@ final class AwsSsoAccessTokenProvider implements AwsSsoAccessTokenProviderInterf
      */
     private static $mustBeEqual = [
         'startUrl' => 'sso_start_url',
-        'region' => 'sso_region'
+        'region' => 'sso_region',
     ];
 
     /**

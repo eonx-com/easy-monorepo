@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Bridge\Symfony\DataCollector;
 
 use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use EonX\EasySecurity\Authorization\AuthorizationMatrix;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\SymfonyCacheAuthorizationMatrixFactory;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;

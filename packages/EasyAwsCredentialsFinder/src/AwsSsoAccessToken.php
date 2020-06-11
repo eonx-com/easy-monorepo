@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyAwsCredentialsFinder;
@@ -27,14 +28,6 @@ final class AwsSsoAccessToken implements AwsSsoAccessTokenInterface
      */
     private $startUrl;
 
-    /**
-     * AwsSsoAccessToken constructor.
-     *
-     * @param string $accessToken
-     * @param \DateTimeInterface $expiration
-     * @param string $region
-     * @param string $startUrl
-     */
     public function __construct(string $accessToken, \DateTimeInterface $expiration, string $region, string $startUrl)
     {
         $this->accessToken = $accessToken;
