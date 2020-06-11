@@ -5,7 +5,7 @@ is_section: true
 section_icon: fab fa-laravel
 ---eonx_docs---
 
-## Package Service Provider
+### Package Service Provider
 
 Once the package required, you must tell your application to use it. Laravel uses service providers to do so, if you are
 not familiar with this concept make sure to have a look at the [documentation][1].
@@ -20,11 +20,11 @@ not familiar with this concept make sure to have a look at the [documentation][1
 ],
 ```
 
-### Lumen Actions Required
+#### Lumen Actions Required
 
 To install this package in a Lumen application the procedures are a bit different.
 
-#### Register Service Provider
+##### Register Service Provider
 
 In a Lumen application you must explicitly tell the application to register the package's service provider as following:
 
