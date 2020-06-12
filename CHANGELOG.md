@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.10 - 2020-06-11
+## v2.4.11 - 2020-06-12
+
+### EasySecurity
+
+- [#250] Fix Symfony bridge
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.10] - 2020-06-11
 
 ### EasyAwsCredentialsFinder
 
@@ -1739,3 +1749,5 @@
 [#247]: https://github.com/eonx-com/easy-monorepo/pull/247
 [#246]: https://github.com/eonx-com/easy-monorepo/pull/246
 [v2.4.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.8...v2.4.9
+[#250]: https://github.com/eonx-com/easy-monorepo/pull/250
+[v2.4.10]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.9...v2.4.10
