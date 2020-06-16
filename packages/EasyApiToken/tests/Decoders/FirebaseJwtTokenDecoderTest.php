@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Decoders;
 
 use EonX\EasyApiToken\Decoders\JwtTokenDecoder;
-use EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
 use EonX\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase;
 use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
@@ -57,10 +56,8 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
         self::assertNull($decoder->decode($this->createServerRequest(['HTTP_AUTHORIZATION' => 'SomethingElse'])));
     }
 
-    public function testJwtTokenThrowExceptionIfUnableToDecodeToken(): void
+    public function testJwtTokenReturnNullIfUnableToDecodeToken(): void
     {
-        $this->expectException(InvalidEasyApiTokenFromRequestException::class);
-
         $jwtEasyApiTokenFactory = $this->createJwtEasyApiTokenFactory($this->createFirebaseJwtDriver(
             null,
             'different-key',
@@ -69,8 +66,10 @@ final class FirebaseJwtTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
             2
         ));
 
-        (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
+        $token = (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken(),
         ]));
+
+        self::assertNull($token);
     }
 }
