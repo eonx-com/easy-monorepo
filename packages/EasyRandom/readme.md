@@ -73,6 +73,8 @@ $uuidV4 = $randomGenerator->uuidV4();
 
 #### In Symfony configure your preferred UUID V4 generator
 
+To make this possible, the bundle will register the built-in generators as services.
+
 - symfony_uuid4
 - ramsey_uuid4
 
