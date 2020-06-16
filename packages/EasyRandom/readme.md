@@ -75,8 +75,8 @@ $uuidV4 = $randomGenerator->uuidV4();
 
 To make this possible, the bundle will register the built-in generators as services.
 
-- symfony_uuid4
-- ramsey_uuid4
+- *symfony_uuid4* alias for `EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator`
+- *ramsey_uuid4* alias for `EonX\EasyRandom\UuidV4\RamseyUuidV4Generator`
 
 ```yaml
 easy_random:
