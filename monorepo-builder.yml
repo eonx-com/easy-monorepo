@@ -22,6 +22,7 @@ parameters:
     directories_to_repositories:
         packages/EasyApiToken: 'git@github.com:eonx-com/easy-api-token.git'
         packages/EasyAsync: 'git@github.com:eonx-com/easy-async.git'
+        packages/EasyAwsCredentialsFinder: 'git@github.com:eonx-com/easy-aws-credentials-finder.git'
         packages/EasyCfhighlander: 'git@github.com:eonx-com/easy-cfhighlander.git'
         packages/EasyCore: 'git@github.com:eonx-com/easy-core.git'
         packages/EasyDecision: 'git@github.com:eonx-com/easy-decision.git'
@@ -34,6 +35,7 @@ parameters:
         packages/EasyRepository: 'git@github.com:eonx-com/easy-repository.git'
         packages/EasyPagination: 'git@github.com:eonx-com/easy-pagination.git'
         packages/EasyPsr7Factory: 'git@github.com:eonx-com/easy-psr7-factory.git'
+        packages/EasyRandom: 'git@github.com:eonx-com/easy-random.git'
         packages/EasySchedule: 'git@github.com:eonx-com/easy-schedule.git'
         packages/EasySecurity: 'git@github.com:eonx-com/easy-security.git'
         packages/EasySsm: 'git@github.com:eonx-com/easy-ssm.git'

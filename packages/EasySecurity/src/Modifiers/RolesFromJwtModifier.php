@@ -10,6 +10,9 @@ use EonX\EasySecurity\Interfaces\JwtClaimFetcherInterface;
 use EonX\EasySecurity\Interfaces\RolesProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @deprecated Since 2.4, will be removed in 3.0.
+ */
 final class RolesFromJwtModifier extends AbstractFromJwtContextModifier
 {
     /**
@@ -41,6 +44,10 @@ final class RolesFromJwtModifier extends AbstractFromJwtContextModifier
 
         $roles = $this->rolesProvider->getRolesByIdentifiers($this->getMainClaim($token)['roles'] ?? []);
 
-        $context->setRoles(empty($roles) === false ? $roles : null);
+        if (empty($roles)) {
+            return;
+        }
+
+        $context->setRoles($roles);
     }
 }

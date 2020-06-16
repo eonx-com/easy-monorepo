@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Bridge\Laravel\Helpers;
 
 use EonX\EasySecurity\Bridge\Laravel\Interfaces\DeferredContextResolverInterface;
-use EonX\EasySecurity\Interfaces\ContextInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use Illuminate\Contracts\Container\Container;
 
 final class DeferredContextResolver implements DeferredContextResolverInterface
@@ -26,7 +26,7 @@ final class DeferredContextResolver implements DeferredContextResolverInterface
         $this->contextServiceId = $contextServiceId;
     }
 
-    public function resolve(): ContextInterface
+    public function resolve(): SecurityContextInterface
     {
         return $this->container->get($this->contextServiceId);
     }

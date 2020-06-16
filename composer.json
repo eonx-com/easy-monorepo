@@ -23,6 +23,9 @@
         "symfony/expression-language": "^4.2 || ^5.0",
         "symfony/filesystem": "^4.2 || ^5.0",
         "symfony/finder": "^4.2 || ^5.0",
+        "symfony/process": "^4.2 || ^5.0",
+        "symfony/string": "^4.2 || ^5.0",
+        "symfony/uid": "^4.2 || ^5.0",
         "symfony/psr-http-message-bridge": "^1.1",
         "symplify/package-builder": "^7.2",
         "symplify/set-config-resolver": "^7.2",
@@ -65,6 +68,7 @@
         "psr-4": {
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
             "EonX\\EasyAsync\\": "packages/EasyAsync/src",
+            "EonX\\EasyAwsCredentialsFinder\\": "packages/EasyAwsCredentialsFinder/src",
             "EonX\\EasyCfhighlander\\": "packages/EasyCfhighlander/src",
             "EonX\\EasyCore\\": "packages/EasyCore/src",
             "EonX\\EasyDecision\\": "packages/EasyDecision/src",
@@ -77,6 +81,7 @@
             "EonX\\EasyPagination\\": "packages/EasyPagination/src",
             "EonX\\EasyPipeline\\": "packages/EasyPipeline/src",
             "EonX\\EasyPsr7Factory\\": "packages/EasyPsr7Factory/src",
+            "EonX\\EasyRandom\\": "packages/EasyRandom/src",
             "EonX\\EasyRepository\\": "packages/EasyRepository/src",
             "EonX\\EasySecurity\\": "packages/EasySecurity/src",
             "EonX\\EasySchedule\\": "packages/EasySchedule/src",
@@ -89,6 +94,7 @@
         "psr-4": {
             "EonX\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
             "EonX\\EasyAsync\\Tests\\": "packages/EasyAsync/tests",
+            "EonX\\EasyAwsCredentialsFinder\\Tests\\": "packages/EasyAwsCredentialsFinder/tests",
             "EonX\\EasyCfhighlander\\Tests\\": "packages/EasyCfhighlander/tests",
             "EonX\\EasyCore\\Tests\\": "packages/EasyCore/tests",
             "EonX\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
@@ -101,6 +107,7 @@
             "EonX\\EasyPagination\\Tests\\": "packages/EasyPagination/tests",
             "EonX\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
             "EonX\\EasyPsr7Factory\\Tests\\": "packages/EasyPsr7Factory/tests",
+            "EonX\\EasyRandom\\Tests\\": "packages/EasyRandom/tests",
             "EonX\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
             "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
             "EonX\\EasySchedule\\Tests\\": "packages/EasySchedule/tests",
@@ -114,6 +121,7 @@
         "eonx-com/easy-repository": "self.version",
         "eonx-com/easy-pagination": "self.version",
         "eonx-com/easy-psr7-factory": "self.version",
+        "eonx-com/easy-random": "self.version",
         "eonx-com/easy-pipeline": "self.version",
         "eonx-com/easy-identity": "self.version",
         "eonx-com/easy-decision": "self.version",
@@ -171,7 +179,7 @@
             "finder_depth": 0
         },
         "branch-alias": {
-            "dev-master": "2.1-dev"
+            "dev-master": "2.5-dev"
         }
     }
 }

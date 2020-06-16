@@ -7,6 +7,9 @@ namespace EonX\EasySecurity\Bridge\Symfony\Traits;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredContextResolverInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 
+/**
+ * @deprecated Since 2.4, will be removed in 3.0. Use DeferredSecurityContextAwareTrait instead.
+ */
 trait DeferredContextAwareTrait
 {
     /**

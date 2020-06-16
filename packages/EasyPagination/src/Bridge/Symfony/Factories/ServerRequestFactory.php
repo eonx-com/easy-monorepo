@@ -32,13 +32,18 @@ final class ServerRequestFactory
         return $this->psr7Factory->createRequest($this->getRequest());
     }
 
+    private function getFakeRequest(): Request
+    {
+        return new Request([], [], [], [], [], ['HTTP_HOST' => 'eonx.com']);
+    }
+
     private function getRequest(): Request
     {
         // Fake request when running in console
         if (\getenv('LINES') && \getenv('COLUMNS')) {
-            return new Request([], [], [], [], [], ['HTTP_HOST' => 'eonx.com']);
+            return $this->getFakeRequest();
         }
 
-        return $this->requestStack->getMasterRequest();
+        return $this->requestStack->getMasterRequest() ?? $this->getFakeRequest();
     }
 }

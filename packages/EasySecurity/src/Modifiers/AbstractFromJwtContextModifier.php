@@ -8,6 +8,9 @@ use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
 use EonX\EasySecurity\Interfaces\JwtClaimFetcherInterface;
 use EonX\EasySecurity\JwtClaimFetcher;
 
+/**
+ * @deprecated Since 2.4, will be removed in 3.0.
+ */
 abstract class AbstractFromJwtContextModifier extends AbstractContextModifier
 {
     /**

@@ -140,7 +140,7 @@ parameters:
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyPagination/src/Bridge/Symfony/DependencyInjection/Configuration.php
 
-        - message: '#Parameter \#1 \$request of method EonX\\EasyPsr7Factory\\Interfaces\\EasyPsr7FactoryInterface\:\:createRequest\(\) expects Symfony\\Component\\HttpFoundation\\Request, Symfony\\Component\\HttpFoundation\\Request\|null given#'
+        - message: '#Method EonX\\EasyPagination\\Bridge\\Symfony\\Factories\\ServerRequestFactory\:\:getRequest\(\) should return Symfony\\Component\\HttpFoundation\\Request but returns Symfony\\Component\\HttpFoundation\\Request\|null#'
           path: packages/EasyPagination/src/Bridge/Symfony/Factories/ServerRequestFactory.php
 
         - message: '#Method EonX\\EasyPagination\\Tests\\AbstractTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
@@ -158,6 +158,13 @@ parameters:
           path: packages/EasyPipeline/tests
 
         # ---- EasyPsr7Factory ----
+        # ---- EasyRandom ----
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyRandom/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
+        - message: '#Access to an undefined property EonX\\EasyRandom\\Interfaces\\RandomGeneratorInterface\:\:\$uuidV4Generator#'
+          path: packages/EasyRandom/tests/Bridge/Symfony/EasyRandomBundleTest.php
+
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
           path: packages/EasyRepository/src/Implementations/Illuminate
@@ -200,17 +207,17 @@ parameters:
           path: packages/EasySchedule/src/Bridge/Symfony/TraceableSchedule.php
 
         # ---- EasySecurity ----
-        - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Helpers\\DeferredContextResolver\:\:resolve\(\) should return EonX\\EasySecurity\\Interfaces\\ContextInterface but returns object\|null#'
-          path: packages/EasySecurity/src/Bridge/Symfony/Helpers/DeferredContextResolver.php
+        - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Helpers\\DeferredSecurityContextResolver\:\:resolve\(\) should return EonX\\EasySecurity\\Interfaces\\SecurityContextInterface but returns object\|null#'
+          path: packages/EasySecurity/src/Bridge/Symfony/Helpers/DeferredSecurityContextResolver.php
 
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
           path: packages/EasySecurity/src/Bridge/Symfony/DependencyInjection
 
-        - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\PermissionInterface\|string>, array<int, EonX\\EasySecurity\\Permission\|stdClass\|string> given.#'
-          path: packages/EasySecurity/tests
+        - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
+          path: packages/EasySecurity/tests/Authorization/RoleTest.php
 
-        - message: '#Parameter \#1 \$roles of method EonX\\EasySecurity\\Interfaces\\ContextInterface\:\:setRoles\(\) expects array<EonX\\EasySecurity\\Interfaces\\RoleInterface\|string\>\|EonX\\EasySecurity\\Interfaces\\RoleInterface\|string, \(array<EonX\\EasySecurity\\Interfaces\\RoleInterface\>\)\|null given#'
-          path: packages/EasySecurity/src/Modifiers/RolesFromJwtModifier.php
+        - message: '#Parameter \#1 \$it of function iterator_to_array expects Traversable, iterable given#'
+          path: packages/EasySecurity/src/Bridge/Laravel/EasySecurityServiceProvider.php
 
         # ---- EasySsm ----
         - message: '#Parameter \#1 \$stream of class Symfony\\Component\\Console\\Output\\StreamOutput constructor expects resource, resource\|false given#'

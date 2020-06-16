@@ -2,7 +2,73 @@
 
 <!-- dumped content start -->
 
-## v2.4.6 - 2020-05-27
+## v2.4.11 - 2020-06-12
+
+### EasySecurity
+
+- [#250] Fix Symfony bridge
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.10] - 2020-06-11
+
+### EasyAwsCredentialsFinder
+
+- [#247] Implement SSO access token provider
+
+### EasyDecision
+
+- [#246] Implement decision types mapping, Thanks to [@BOB41K1987]
+
+### EasyRandom
+
+- [#249] Create package
+
+### EasySecurity
+
+- [#248] Big refactoring
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.9] - 2020-06-01
+
+### EasyAsync
+
+- [#240] Set JobLog dependencies to ProcessJobLogMiddleware, Thanks to [@albertlabarentojr]
+
+### EasyCore
+
+- [#243] Fix Symfony default config and debug for simple data persi…
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.8] - 2020-06-01
+
+### EasyAwsCredentialsFinder
+
+- [#242] Fix dependencies
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.7] - 2020-06-01
+
+### EasyAwsCredentialsFinder
+
+- [#241] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.6] - 2020-05-27
 
 ### EasySchedule
 
@@ -1671,3 +1737,17 @@
 [v2.4.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.3...v2.4.4
 [#239]: https://github.com/eonx-com/easy-monorepo/pull/239
 [v2.4.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.4...v2.4.5
+[#241]: https://github.com/eonx-com/easy-monorepo/pull/241
+[v2.4.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.5...v2.4.6
+[#242]: https://github.com/eonx-com/easy-monorepo/pull/242
+[v2.4.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.6...v2.4.7
+[#243]: https://github.com/eonx-com/easy-monorepo/pull/243
+[#240]: https://github.com/eonx-com/easy-monorepo/pull/240
+[v2.4.8]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.7...v2.4.8
+[#249]: https://github.com/eonx-com/easy-monorepo/pull/249
+[#248]: https://github.com/eonx-com/easy-monorepo/pull/248
+[#247]: https://github.com/eonx-com/easy-monorepo/pull/247
+[#246]: https://github.com/eonx-com/easy-monorepo/pull/246
+[v2.4.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.8...v2.4.9
+[#250]: https://github.com/eonx-com/easy-monorepo/pull/250
+[v2.4.10]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.9...v2.4.10

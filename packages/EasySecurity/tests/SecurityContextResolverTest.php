@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Tests\Modifiers;
+namespace EonX\EasySecurity\Tests;
 
 use EonX\EasyPsr7Factory\EasyPsr7Factory;
-use EonX\EasySecurity\Context;
-use EonX\EasySecurity\ContextResolver;
+use EonX\EasySecurity\Authorization\AuthorizationMatrix;
+use EonX\EasySecurity\Configurators\RolesFromJwtConfigurator;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Modifiers\ProviderFromJwtModifier;
 use EonX\EasySecurity\Modifiers\RolesFromJwtModifier;
-use EonX\EasySecurity\Tests\AbstractTestCase;
+use EonX\EasySecurity\SecurityContext;
+use EonX\EasySecurity\SecurityContextResolver;
 use EonX\EasySecurity\Tests\RolesProviders\InMemoryRolesProviderStub;
 use EonX\EasySecurity\Tests\Stubs\ProviderProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\TokenDecoderStub;
 use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 
-final class ContextResolverTest extends AbstractTestCase
+final class SecurityContextResolverTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
@@ -26,6 +27,7 @@ final class ContextResolverTest extends AbstractTestCase
     {
         yield 'Filter non context modifier' => [
             [new stdClass()],
+            [],
         ];
 
         yield 'Resolve successfully' => [
@@ -33,21 +35,27 @@ final class ContextResolverTest extends AbstractTestCase
                 new RolesFromJwtModifier(new InMemoryRolesProviderStub(), static::$mainJwtClaim),
                 new ProviderFromJwtModifier(new ProviderProviderInterfaceStub(), static::$mainJwtClaim),
             ],
+            [
+                new RolesFromJwtConfigurator(static::$mainJwtClaim),
+            ],
         ];
     }
 
     /**
      * @param mixed[]|iterable<mixed> $modifiers
+     * @param mixed[]|iterable<mixed> $configurators
      *
      * @dataProvider setModifiersProvider
      */
-    public function testSetModifier(iterable $modifiers): void
+    public function testSetModifier(iterable $modifiers, iterable $configurators): void
     {
-        $resolver = new ContextResolver(
-            new Context(),
+        $resolver = new SecurityContextResolver(
+            new AuthorizationMatrix([], []),
+            new SecurityContext(),
             new EasyPsr7Factory(),
             new TokenDecoderStub(),
-            $modifiers
+            $modifiers,
+            $configurators
         );
 
         self::assertInstanceOf(ContextInterface::class, $resolver->resolve(
