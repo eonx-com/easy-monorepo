@@ -28,14 +28,10 @@ a service and, then set the service id into the bundle configuration.
 
 #### Register UUID V4 generator as a service
 
-```yaml
-# config/services.yaml
+By default, this package will register the built-in supported implementations as services:
 
-services:
-    # ...
-
-    EonX\EasyRandom\UuidV4\RamseyUuidV4Generator: null # That's it nothing else needed
-```
+- *easy_random.ramsey_uuid4* alias for `EonX\EasyRandom\UuidV4\RamseyUuidV4Generator`
+- *easy_random.symfony_uuid4* alias for `EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator`
 
 #### Set the service id into the bundle configuration
 
