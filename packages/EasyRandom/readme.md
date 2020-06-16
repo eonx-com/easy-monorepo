@@ -71,18 +71,6 @@ $randomGenerator = (new \EonX\EasyRandom\RandomGenerator())->setUuidV4Generator(
 $uuidV4 = $randomGenerator->uuidV4();
 ```
 
-#### In Symfony configure your preferred UUID V4 generator
-
-To make this possible, the bundle will register the built-in generators as services.
-
-- *symfony_uuid4* alias for `EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator`
-- *ramsey_uuid4* alias for `EonX\EasyRandom\UuidV4\RamseyUuidV4Generator`
-
-```yaml
-easy_random:
-    uuid_v4_generator: 'easy_random.symfony_uuid4'
-```
-
 [1]: https://getcomposer.org/
 [2]: https://symfony.com/doc/current/components/uid.html
 [3]: https://github.com/ramsey/uuid
