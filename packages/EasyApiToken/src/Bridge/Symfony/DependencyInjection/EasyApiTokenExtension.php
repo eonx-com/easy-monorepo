@@ -29,9 +29,8 @@ final class EasyApiTokenExtension extends Extension
             if (isset($config['decoders'])) {
                 $decoders = $config['decoders'];
             }
-            if (isset($config['default_factories'])) {
-                $defaultFactories = $config['default_factories'];
-            }
+
+            $defaultFactories = $config['default_factories'] ?? null;
         }
 
         $definition = $container->getDefinition(EasyApiTokenDecoderFactoryInterface::class);
