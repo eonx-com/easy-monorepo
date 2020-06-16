@@ -2,7 +2,7 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        private: true
+        public: false
 
     EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator: ~
     EonX\EasyRandom\UuidV4\RamseyUuidV4Generator: ~
