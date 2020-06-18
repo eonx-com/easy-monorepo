@@ -87,11 +87,22 @@
             <div class="tab-content">
                 {% if collector.securityContextConfigurators %}
                     <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
                         <tbody>
                         {% for configurator in collector.securityContextConfigurators %}
+                            {%- set link = configurator.filename|file_link(1) -%}
+
                             <tr>
                                 <td>
-                                    {{ dump(configurator) }}
+                                    <a href="{{ link }}" title="{{ configurator.filename }}">{{ configurator.class }}</a>
+                                </td>
+                                <td>
+                                    {{ configurator.priority }}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -115,11 +126,22 @@
 
                 {% if collector.rolesProviders %}
                     <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Roles</th>
+                            </tr>
+                        </thead>
                         <tbody>
                         {% for rolesProvider in collector.rolesProviders %}
+                            {%- set link = rolesProvider.filename|file_link(1) -%}
+
                             <tr>
                                 <td>
-                                    {{ dump(rolesProvider) }}
+                                    <a href="{{ link }}" title="{{ rolesProvider.filename }}">{{ rolesProvider.class }}</a>
+                                </td>
+                                <td>
+                                    {{ dump(rolesProvider.roles) }}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -135,11 +157,22 @@
 
                 {% if collector.permissionsProviders %}
                     <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Permissions</th>
+                            </tr>
+                        </thead>
                         <tbody>
                         {% for permissionsProvider in collector.permissionsProviders %}
+                            {%- set link = permissionsProvider.filename|file_link(1) -%}
+
                             <tr>
                                 <td>
-                                    {{ dump(permissionsProvider) }}
+                                    <a href="{{ link }}" title="{{ permissionsProvider.filename }}">{{ permissionsProvider.class }}</a>
+                                </td>
+                                <td>
+                                    {{ dump(permissionsProvider.permissions) }}
                                 </td>
                             </tr>
                         {% endfor %}

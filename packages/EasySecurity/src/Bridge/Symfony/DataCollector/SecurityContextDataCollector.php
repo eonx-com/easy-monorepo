@@ -53,13 +53,13 @@ final class SecurityContextDataCollector extends DataCollector
     public function collect(Request $request, Response $response, ?\Throwable $throwable = null): void
     {
         $this->data['authorization_matrix'] = $this->securityContext->getAuthorizationMatrix();
-        $this->data['context_configurators'] = $this->resolveContextConfigurators();
         $this->data['permissions'] = $this->securityContext->getPermissions();
         $this->data['roles'] = $this->securityContext->getRoles();
         $this->data['provider'] = $this->securityContext->getProvider();
         $this->data['user'] = $this->securityContext->getUser();
         $this->data['token'] = $this->securityContext->getToken();
 
+        $this->setContextConfigurators();
         $this->setRolesPermissionsProviders();
     }
 
@@ -121,29 +121,56 @@ final class SecurityContextDataCollector extends DataCollector
         $this->data = [];
     }
 
-    private function resolveContextConfigurators(): array
+    private function setContextConfigurators(): void
     {
+        $this->data['context_configurators'] = [];
+
         if ($this->securityContextResolver instanceof SecurityContextResolver === false) {
-            return [];
+            return;
         }
 
-        return $this->securityContextResolver->getContextConfigurators();
+        foreach ($this->securityContextResolver->getContextConfigurators() as $contextConfigurator) {
+            $reflection = new \ReflectionClass($contextConfigurator);
+
+            $this->data['context_configurators'][] = [
+                'class' => $reflection->getName(),
+                'filename' => $reflection->getFileName(),
+                'priority' => $contextConfigurator->getPriority(),
+            ];
+        }
     }
 
     private function setRolesPermissionsProviders(): void
     {
+        $this->data['roles_providers'] = [];
+        $this->data['permissions_providers'] = [];
+
         $factory = $this->authorizationMatrixFactory instanceof SymfonyCacheAuthorizationMatrixFactory
             ? $this->authorizationMatrixFactory->getDecorated()
             : $this->authorizationMatrixFactory;
 
         if ($factory instanceof AuthorizationMatrixFactory === false) {
-            $this->data['roles_providers'] = [];
-            $this->data['permissions_providers'] = [];
-
             return;
         }
 
-        $this->data['roles_providers'] = $factory->getRolesProviders();
-        $this->data['permissions_providers'] = $factory->getPermissionsProviders();
+        foreach ($factory->getRolesProviders() as $rolesProvider) {
+            $reflection = new \ReflectionClass($rolesProvider);
+
+            $this->data['roles_providers'][] = [
+                'class' => $reflection->getName(),
+                'filename' => $reflection->getFileName(),
+                'roles' => $rolesProvider->getRoles(),
+            ];
+        }
+
+        foreach ($factory->getPermissionsProviders() as $permissionsProvider) {
+            $reflection = new \ReflectionClass($permissionsProvider);
+
+            $this->data['permissions_providers'][] = [
+                'class' => $reflection->getName(),
+                'filename' => $reflection->getFileName(),
+                'permissions' => $permissionsProvider->getPermissions(),
+            ];
+        }
     }
 }
