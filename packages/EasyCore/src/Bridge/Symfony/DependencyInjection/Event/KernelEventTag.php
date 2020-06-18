@@ -11,6 +11,11 @@ final class KernelEventTag implements EventTagInterface
     /**
      * @var null|string
      */
+    private $dispatcher;
+
+    /**
+     * @var null|string
+     */
     private $event;
 
     /**
@@ -23,11 +28,16 @@ final class KernelEventTag implements EventTagInterface
      */
     private $priority;
 
-    public function __construct(?string $event = null, ?string $method = null, ?int $priority = null)
-    {
+    public function __construct(
+        ?string $event = null,
+        ?string $method = null,
+        ?int $priority = null,
+        ?string $dispatcher = null
+    ) {
         $this->priority = $priority;
         $this->event = $event;
         $this->method = $method;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -47,6 +57,10 @@ final class KernelEventTag implements EventTagInterface
 
         if ($this->priority) {
             $attr['priority'] = $this->priority;
+        }
+
+        if ($this->dispatcher) {
+            $attr['dispatcher'] = $this->dispatcher;
         }
 
         return $attr;
