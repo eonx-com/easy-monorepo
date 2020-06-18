@@ -2,7 +2,25 @@
 
 <!-- dumped content start -->
 
-## v2.4.11 - 2020-06-12
+## v2.4.12 - 2020-06-18
+
+### EasyApiToken
+
+- [#252] Update JwtDecoder to return null if not able to decode…
+
+### EasyRandom
+
+- [#251] Register UuidV4 generators, Thanks to [@albertlabarentojr]
+
+### EasySecurity
+
+- [#254] Fix Symfony data collector
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.11] - 2020-06-12
 
 ### EasySecurity
 
@@ -1751,3 +1769,7 @@
 [v2.4.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.8...v2.4.9
 [#250]: https://github.com/eonx-com/easy-monorepo/pull/250
 [v2.4.10]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.9...v2.4.10
+[#254]: https://github.com/eonx-com/easy-monorepo/pull/254
+[#252]: https://github.com/eonx-com/easy-monorepo/pull/252
+[#251]: https://github.com/eonx-com/easy-monorepo/pull/251
+[v2.4.11]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.10...v2.4.11
