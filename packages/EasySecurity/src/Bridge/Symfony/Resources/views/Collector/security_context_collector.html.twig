@@ -1,13 +1,11 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
-    {% if collector.events|length > 0 or collector.providers|length > 0 %}
-        {% set icon %}
-            {{ include('@EasySecurity/Icon/lock.svg') }}
-        {% endset %}
+    {% set icon %}
+        {{ include('@EasySecurity/Icon/lock.svg') }}
+    {% endset %}
 
-        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': profiler_url }) }}
-    {% endif %}
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': profiler_url }) }}
 {% endblock %}
 
 {% block menu %}
