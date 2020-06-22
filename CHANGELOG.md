@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v2.4.12 - 2020-06-18
+## v2.4.13 - 2020-06-22
+
+### EasyCore
+
+- [#255] Add dispatcher attribute to kernel event tag
+
+### EasyPagination
+
+- [#256] Allow to reset transformer on paginator
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.12] - 2020-06-18
 
 ### EasyApiToken
 
@@ -1773,3 +1787,6 @@
 [#252]: https://github.com/eonx-com/easy-monorepo/pull/252
 [#251]: https://github.com/eonx-com/easy-monorepo/pull/251
 [v2.4.11]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.10...v2.4.11
+[#256]: https://github.com/eonx-com/easy-monorepo/pull/256
+[#255]: https://github.com/eonx-com/easy-monorepo/pull/255
+[v2.4.12]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.11...v2.4.12
