@@ -22,12 +22,12 @@ final class InheritDocRector extends AbstractRector
     /**
      * @var string
      */
-    private const INHERITDOC_INCORRECT_COMMENT = '{@inheritdoc}';
+    private const INHERITDOC_INCORRECT_ANNOTATION = '{@inheritdoc}';
 
     /**
      * @var string
      */
-    private const INHERITDOC_CORRECT_COMMENT = '{@inheritDoc}';
+    private const INHERITDOC_CORRECT_ANNOTATION = '{@inheritDoc}';
 
     public function getNodeTypes(): array
     {
@@ -46,8 +46,8 @@ final class InheritDocRector extends AbstractRector
         $children = $dataProviderDocs->getPhpDocNode()->children;
 
         foreach ($children as $key => $child) {
-            if ($child->getAttribute('original_content') === self::INHERITDOC_INCORRECT_COMMENT) {
-                $children[$key]->text = self::INHERITDOC_CORRECT_COMMENT;
+            if ($child->getAttribute('original_content') === self::INHERITDOC_INCORRECT_ANNOTATION) {
+                $children[$key]->text = self::INHERITDOC_CORRECT_ANNOTATION;
             }
         }
 
