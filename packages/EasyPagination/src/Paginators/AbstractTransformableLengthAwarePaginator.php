@@ -14,6 +14,11 @@ abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthA
     private $transformedItems;
 
     /**
+     * @var mixed[]
+     */
+    private $items;
+
+    /**
      * @var null|callable
      */
     private $transformer;
@@ -27,12 +32,18 @@ abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthA
             return $this->transformedItems;
         }
 
-        return $this->transformedItems = $this->transformItems($this->doGetItems());
+        // Cache items so we don't trigger SQL queries when transformer reset
+        if ($this->items === null) {
+            $this->items = $this->doGetItems();
+        }
+
+        return $this->transformedItems = $this->transformItems($this->items);
     }
 
     public function setTransformer(?callable $transformer = null): Transformable
     {
         $this->transformer = $transformer;
+        $this->transformedItems = null; // Reset transformed items
 
         return $this;
     }
