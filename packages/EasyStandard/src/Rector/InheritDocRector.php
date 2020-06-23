@@ -12,11 +12,6 @@ use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
-/**
- * @codeCoverageIgnore
- *
- * @SuppressWarnings("unused") Class is used by Rector
- */
 final class InheritDocRector extends AbstractRector
 {
     /**
