@@ -37,15 +37,15 @@ final class UselessSingleAnnotationRector extends AbstractRector
         /** @var \PhpParser\Node\Stmt\ClassMethod $classMethod */
         $classMethod = $node;
 
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $dataProviderDocs */
-        $dataProviderDocs = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
+        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
+        $phpDocInfo = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
 
         /** @var AttributeAwareNodeInterface[] $children */
-        $children = $dataProviderDocs->getPhpDocNode()->children;
+        $children = $phpDocInfo->getPhpDocNode()->children;
 
         if (\count($children) === 1 &&
             \in_array($children[0]->getAttribute('original_content'), $this->annotations, true)) {
-            $dataProviderDocs->getPhpDocNode()->children = [];
+            $phpDocInfo->getPhpDocNode()->children = [];
         }
 
         return $classMethod;
@@ -54,7 +54,7 @@ final class UselessSingleAnnotationRector extends AbstractRector
     public function getDefinition(): RectorDefinition
     {
         return new RectorDefinition(
-            'Removes PHPDoc completely if {@inheritDoc} is the only annotation presented.',
+            'Removes PHPDoc completely if it contains only useless single annotation.',
             [
                 new CodeSample(
                     <<<'PHP'

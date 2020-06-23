@@ -39,11 +39,11 @@ final class InheritDocRector extends AbstractRector
         /** @var \PhpParser\Node\Stmt\ClassMethod $classMethod */
         $classMethod = $node;
 
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $dataProviderDocs */
-        $dataProviderDocs = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
+        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
+        $phpDocInfo = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
 
         /** @var AttributeAwarePhpDocTextNode[] $children */
-        $children = $dataProviderDocs->getPhpDocNode()->children;
+        $children = $phpDocInfo->getPhpDocNode()->children;
 
         foreach ($children as $key => $child) {
             if ($child->getAttribute('original_content') === self::INHERITDOC_INCORRECT_ANNOTATION) {
@@ -51,7 +51,7 @@ final class InheritDocRector extends AbstractRector
             }
         }
 
-        $dataProviderDocs->getPhpDocNode()->children = $children;
+        $phpDocInfo->getPhpDocNode()->children = $children;
 
         return $classMethod;
     }
