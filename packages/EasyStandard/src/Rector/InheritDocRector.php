@@ -61,13 +61,13 @@ final class InheritDocRector extends AbstractRector
 /**
  * {@inheritdoc}
 */
-public function provideSomeData(): array
+public function someMethod(): array
 {
 }
 PHP
                     ,
                     <<<'PHP'
-public function provideSomeData(): array
+public function someMethod(): array
 {
 }
 PHP

@@ -61,13 +61,13 @@ final class UselessSingleAnnotationRector extends AbstractRector
 /**
  * {@inheritDoc}
 */
-public function provideSomeData(): array
+public function someMethod(): array
 {
 }
 PHP
                     ,
                     <<<'PHP'
-public function provideSomeData(): array
+public function someMethod(): array
 {
 }
 PHP
