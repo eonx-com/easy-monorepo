@@ -28,6 +28,7 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         return [
             'Starts with zero' => ['00043145470'],
             'Contains letter' => ['1234567890a'],
+            'Contains special symbols' => ['1234(678900'],
         ];
     }
 
@@ -138,8 +139,6 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * Tests `validate` throws UnexpectedTypeException.
-     *
      * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
      */
     public function testValidateThrowsUnexpectedTypeException(): void
@@ -271,7 +270,7 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
             $mock
                 ->shouldReceive('addViolation')
                 ->once()
-                ->withAnyArgs()
+                ->withNoArgs()
                 ->andReturnSelf();
         });
 
