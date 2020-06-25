@@ -9,6 +9,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use EonX\EasyCore\Doctrine\Type\DateTimeMicrosecondsType;
 use EonX\EasyCore\Tests\AbstractTestCase;
+use DateTime;
 
 /**
  * @covers \EonX\EasyCore\Doctrine\Type\DateTimeMicrosecondsType
@@ -18,9 +19,9 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     /**
      * @return mixed[]
      */
-    public function provideDatabaseValues(): array
+    public function provideConvertToDatabaseValues(): array
     {
-        $datetime = new \DateTime();
+        $datetime = new DateTime();
 
         return [
             'null value' => [null, null],
@@ -43,9 +44,9 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     /**
      * @return mixed[]
      */
-    public function providePHPValues(): array
+    public function provideConvertToPHPValues(): array
     {
-        $datetime = new \DateTime();
+        $datetime = new DateTime();
         $milliseconds = $datetime->format('u');
 
         return [
@@ -74,7 +75,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
      *
      * @throws \Doctrine\DBAL\Types\ConversionException
      *
-     * @dataProvider provideDatabaseValues
+     * @dataProvider provideConvertToDatabaseValues
      */
     public function testConvertToDatabaseValueSucceeds($value, ?string $expectedValue): void
     {
@@ -115,7 +116,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     /**
      * @param mixed $value
      *
-     * @dataProvider providePHPValues
+     * @dataProvider provideConvertToPHPValues
      */
     public function testConvertToPHPValueSucceeds($value, ?DateTimeInterface $expectedValue): void
     {

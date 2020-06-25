@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Decoders;
 
 use EonX\EasyApiToken\Decoders\JwtTokenDecoder;
-use EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
 use EonX\EasyApiToken\Tests\AbstractAuth0JwtTokenTestCase;
 use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 

@@ -47,21 +47,17 @@ final class DateTimeMicrosecondsType extends Type
             return $value;
         }
 
-        $val = DateTime::createFromFormat('Y-m-d H:i:s.u', $value);
+        $val = DateTime::createFromFormat('Y-m-d H:i:s.u', $value) ?: \date_create($value);
 
-        if ($val === false) {
-            $val = \date_create($value);
+        if ($val !== false) {
+            return $val;
         }
 
-        if ($val === false) {
-            throw ConversionException::conversionFailedFormat(
-                $value,
-                $this->getName(),
-                'Y-m-d H:i:s.u'
-            );
-        }
-
-        return $val;
+        throw ConversionException::conversionFailedFormat(
+            $value,
+            $this->getName(),
+            'Y-m-d H:i:s.u'
+        );
     }
 
     public function getName(): string
