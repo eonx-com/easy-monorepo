@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Doctrine\Type;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use EonX\EasyCore\Doctrine\Type\DateTimeMicrosecondsType;
 use EonX\EasyCore\Tests\AbstractTestCase;
-use DateTime;
 
 /**
  * @covers \EonX\EasyCore\Doctrine\Type\DateTimeMicrosecondsType

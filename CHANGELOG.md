@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v2.4.13 - 2020-06-22
+## v2.4.14 - 2020-06-25
+
+### EasyAwsCredentialsFinder
+
+- [#259] Return empty configuration if file doesn't…
+
+### EasyStandard
+
+- [#257] Implement rector for fixing inheritdoc annotations, Thanks to [@BOB41K1987]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.13] - 2020-06-22
 
 ### EasyCore
 
@@ -1790,3 +1804,6 @@
 [#256]: https://github.com/eonx-com/easy-monorepo/pull/256
 [#255]: https://github.com/eonx-com/easy-monorepo/pull/255
 [v2.4.12]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.11...v2.4.12
+[#259]: https://github.com/eonx-com/easy-monorepo/pull/259
+[#257]: https://github.com/eonx-com/easy-monorepo/pull/257
+[v2.4.13]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.12...v2.4.13
