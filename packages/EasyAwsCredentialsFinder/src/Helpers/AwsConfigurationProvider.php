@@ -100,7 +100,13 @@ final class AwsConfigurationProvider extends AbstractConfigurationProvider imple
      */
     private function parseConfig(?string $path = null): array
     {
-        $parsed = \Aws\parse_ini_file($this->getCliPath($path ?? 'config'), true);
+        $filename = $this->getCliPath($path ?? 'config');
+
+        if (\is_file($filename) === false) {
+            return [];
+        }
+
+        $parsed = \Aws\parse_ini_file($filename, true);
 
         return \is_array($parsed) ? $parsed : [];
     }
