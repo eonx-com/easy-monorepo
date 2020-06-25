@@ -12,7 +12,13 @@ use Doctrine\DBAL\Types\Type;
 
 final class DateTimeMicrosecondsType extends Type
 {
-    private const TYPENAME = 'datetime';
+    private const TYPE_NAME = 'datetime';
+
+    public const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
+
+    public const FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
+
+    public const FORMAT_DB_DATETIME = 'DATETIME(6)';
 
     /**
      * @param mixed $value
@@ -26,7 +32,7 @@ final class DateTimeMicrosecondsType extends Type
         }
 
         if ($value instanceof DateTimeInterface) {
-            return $value->format('Y-m-d H:i:s.u');
+            return $value->format(self::FORMAT_PHP_DATETIME);
         }
 
         throw ConversionException::conversionFailedInvalidType(
@@ -41,13 +47,13 @@ final class DateTimeMicrosecondsType extends Type
      *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?DateTimeInterface
+    public function convertToPhpValue($value, AbstractPlatform $platform): ?DateTimeInterface
     {
         if ($value === null || $value instanceof DateTimeInterface) {
             return $value;
         }
 
-        $val = DateTime::createFromFormat('Y-m-d H:i:s.u', $value) ?: \date_create($value);
+        $val = DateTime::createFromFormat(self::FORMAT_PHP_DATETIME, $value) ?: \date_create($value);
 
         if ($val !== false) {
             return $val;
@@ -56,21 +62,24 @@ final class DateTimeMicrosecondsType extends Type
         throw ConversionException::conversionFailedFormat(
             $value,
             $this->getName(),
-            'Y-m-d H:i:s.u'
+            self::FORMAT_PHP_DATETIME
         );
     }
 
     public function getName(): string
     {
-        return self::TYPENAME;
+        return self::TYPE_NAME;
     }
 
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
+    /**
+     * @param mixed[] $fieldDeclaration
+     */
+    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         if (isset($fieldDeclaration['version']) && $fieldDeclaration['version'] === true) {
-            return 'TIMESTAMP';
+            return self::FORMAT_DB_TIMESTAMP;
         }
 
-        return 'DATETIME(6)';
+        return self::FORMAT_DB_DATETIME;
     }
 }

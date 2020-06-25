@@ -8,6 +8,7 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Type;
 use EonX\EasyCore\Doctrine\Type\DateTimeMicrosecondsType;
 use EonX\EasyCore\Tests\AbstractTestCase;
 
@@ -25,7 +26,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 
         return [
             'null value' => [null, null],
-            'datetime value' => [$datetime, $datetime->format('Y-m-d H:i:s.u')],
+            'datetime value' => [$datetime, $datetime->format(DateTimeMicrosecondsType::FORMAT_PHP_DATETIME)],
         ];
     }
 
@@ -35,9 +36,9 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     public function provideFieldDeclarationValues(): array
     {
         return [
-            'no version' => [[], 'DATETIME(6)'],
-            'version=false' => [['version' => false], 'DATETIME(6)'],
-            'version=true' => [['version' => true], 'TIMESTAMP'],
+            'no version' => [[], DateTimeMicrosecondsType::FORMAT_DB_DATETIME],
+            'version=false' => [['version' => false], DateTimeMicrosecondsType::FORMAT_DB_DATETIME],
+            'version=true' => [['version' => true], DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP],
         ];
     }
 
@@ -52,14 +53,15 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
         return [
             'null value' => [null, null],
             'DateTimeInterface object' => [$datetime, $datetime],
-            'datetime string with milliseconds' => [$datetime->format('Y-m-d H:i:s.u'), $datetime],
+            'datetime string with milliseconds' => [$datetime->format(DateTimeMicrosecondsType::FORMAT_PHP_DATETIME), $datetime],
             'datetime string' => [$datetime->format('Y-m-d H:i:s'), (clone $datetime)->modify("-{$milliseconds} microsecond")],
         ];
     }
 
     public function testConvertToDatabaseValueThrowsConversionException(): void
     {
-        $type = new DateTimeMicrosecondsType();
+        /** @var \EonX\EasyCore\Doctrine\Type\DateTimeMicrosecondsType $type */
+        $type = Type::getType('datetime');
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->mock(AbstractPlatform::class);
         $value = 'some-ineligible-value';
@@ -70,16 +72,25 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
         $type->convertToDatabaseValue($value, $platform);
     }
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Type::overrideType('datetime', DateTimeMicrosecondsType::class);
+    }
+
     /**
      * @param mixed $value
      *
+     * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Types\ConversionException
      *
      * @dataProvider provideConvertToDatabaseValues
      */
     public function testConvertToDatabaseValueSucceeds($value, ?string $expectedValue): void
     {
-        $type = new DateTimeMicrosecondsType();
+        /** @var \EonX\EasyCore\Doctrine\Type\DateTimeMicrosecondsType $type */
+        $type = Type::getType('datetime');
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->mock(AbstractPlatform::class);
 
@@ -90,7 +101,8 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 
     public function testGetNameSucceeds(): void
     {
-        $type = new DateTimeMicrosecondsType();
+        /** @var \EonX\EasyCore\Doctrine\Type\DateTimeMicrosecondsType $type */
+        $type = Type::getType('datetime');
 
         $name = $type->getName();
 
@@ -101,14 +113,17 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
      * @dataProvider provideFieldDeclarationValues
      *
      * @param mixed[] $fieldDeclaration
+     *
+     * @throws \Doctrine\DBAL\DBALException
      */
-    public function testGetSQLDeclarationSucceeds(array $fieldDeclaration, string $declaration): void
+    public function testGetSqlDeclarationSucceeds(array $fieldDeclaration, string $declaration): void
     {
-        $type = new DateTimeMicrosecondsType();
+        /** @var \EonX\EasyCore\Doctrine\Type\DateTimeMicrosecondsType $type */
+        $type = Type::getType('datetime');
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->mock(AbstractPlatform::class);
 
-        $actualDeclaration = $type->getSQLDeclaration($fieldDeclaration, $platform);
+        $actualDeclaration = $type->getSqlDeclaration($fieldDeclaration, $platform);
 
         self::assertSame($declaration, $actualDeclaration);
     }
@@ -116,22 +131,26 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     /**
      * @param mixed $value
      *
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Types\ConversionException
      * @dataProvider provideConvertToPHPValues
      */
-    public function testConvertToPHPValueSucceeds($value, ?DateTimeInterface $expectedValue): void
+    public function testConvertToPhpValueSucceeds($value, ?DateTimeInterface $expectedValue): void
     {
-        $type = new DateTimeMicrosecondsType();
+        /** @var \EonX\EasyCore\Doctrine\Type\DateTimeMicrosecondsType $type */
+        $type = Type::getType('datetime');
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->mock(AbstractPlatform::class);
 
-        $phpValue = $type->convertToPHPValue($value, $platform);
+        $phpValue = $type->convertToPhpValue($value, $platform);
 
         self::assertEquals($expectedValue, $phpValue);
     }
 
-    public function testConvertToPHPValueThrowsConversionException(): void
+    public function testConvertToPhpValueThrowsConversionException(): void
     {
-        $type = new DateTimeMicrosecondsType();
+        /** @var \EonX\EasyCore\Doctrine\Type\DateTimeMicrosecondsType $type */
+        $type = Type::getType('datetime');
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->mock(AbstractPlatform::class);
         $value = 'some-ineligible-value';
@@ -139,6 +158,6 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
         $this->expectExceptionMessage('Could not convert database value "some-ineligible-value" ' .
             'to Doctrine Type datetime. Expected format: Y-m-d H:i:s.u');
 
-        $type->convertToPHPValue($value, $platform);
+        $type->convertToPhpValue($value, $platform);
     }
 }
