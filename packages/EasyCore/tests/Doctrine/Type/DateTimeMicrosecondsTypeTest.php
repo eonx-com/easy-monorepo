@@ -45,7 +45,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     /**
      * @return mixed[]
      */
-    public function provideConvertToPHPValues(): array
+    public function provideConvertToPhpValues(): array
     {
         $datetime = new DateTime();
         $milliseconds = $datetime->format('u');
@@ -70,13 +70,6 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
             "of type 'string' to type 'datetime'. Expected one of the following types: null, DateTime");
 
         $type->convertToDatabaseValue($value, $platform);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Type::overrideType('datetime', DateTimeMicrosecondsType::class);
     }
 
     /**
@@ -133,7 +126,8 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
      *
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Types\ConversionException
-     * @dataProvider provideConvertToPHPValues
+     *
+     * @dataProvider provideConvertToPhpValues
      */
     public function testConvertToPhpValueSucceeds($value, ?DateTimeInterface $expectedValue): void
     {
@@ -159,5 +153,12 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
             'to Doctrine Type datetime. Expected format: Y-m-d H:i:s.u');
 
         $type->convertToPhpValue($value, $platform);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Type::overrideType('datetime', DateTimeMicrosecondsType::class);
     }
 }
