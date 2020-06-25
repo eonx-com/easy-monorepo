@@ -60,7 +60,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     public function testConvertToDatabaseValueThrowsConversionException(): void
     {
         $type = new DateTimeMicrosecondsType();
-        /** @var AbstractPlatform $platform */
+        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->mock(AbstractPlatform::class);
         $value = 'some-ineligible-value';
         $this->expectException(ConversionException::class);
@@ -80,7 +80,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     public function testConvertToDatabaseValueSucceeds($value, ?string $expectedValue): void
     {
         $type = new DateTimeMicrosecondsType();
-        /** @var AbstractPlatform $platform */
+        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->mock(AbstractPlatform::class);
 
         $databaseValue = $type->convertToDatabaseValue($value, $platform);
@@ -105,7 +105,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     public function testGetSQLDeclarationSucceeds(array $fieldDeclaration, string $declaration): void
     {
         $type = new DateTimeMicrosecondsType();
-        /** @var AbstractPlatform $platform */
+        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->mock(AbstractPlatform::class);
 
         $actualDeclaration = $type->getSQLDeclaration($fieldDeclaration, $platform);
@@ -121,7 +121,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     public function testConvertToPHPValueSucceeds($value, ?DateTimeInterface $expectedValue): void
     {
         $type = new DateTimeMicrosecondsType();
-        /** @var AbstractPlatform $platform */
+        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->mock(AbstractPlatform::class);
 
         $phpValue = $type->convertToPHPValue($value, $platform);
@@ -132,7 +132,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     public function testConvertToPHPValueThrowsConversionException(): void
     {
         $type = new DateTimeMicrosecondsType();
-        /** @var AbstractPlatform $platform */
+        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->mock(AbstractPlatform::class);
         $value = 'some-ineligible-value';
         $this->expectException(ConversionException::class);
