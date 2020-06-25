@@ -12,7 +12,7 @@ use Doctrine\DBAL\Types\Type;
 
 final class DateTimeMicrosecondsType extends Type
 {
-    private const TYPE_NAME = 'datetime';
+    public const TYPE_NAME = 'datetime';
 
     public const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
 
