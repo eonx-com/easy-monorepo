@@ -20,6 +20,11 @@ final class Abn extends Constraint
     /**
      * @var string
      */
+    public const LEADING_ZERO_ERROR = 'LEADING_ZERO_ERROR';
+
+    /**
+     * @var string
+     */
     public const MODULUS_CALCULATION_FAILED_ERROR = 'MODULUS_CALCULATION_FAILED_ERROR';
 
     /**

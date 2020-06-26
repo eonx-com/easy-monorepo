@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\Validator\Constraints;
 
-use EoneoPay\Utils\Exceptions\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 /**
@@ -33,8 +33,6 @@ final class AbnValidator extends ConstraintValidator
 
     /**
      * Validates an Australian Business Number.
-     *
-     * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
      */
     public function validate($value, Constraint $constraint): void
     {
@@ -50,7 +48,7 @@ final class AbnValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        $abn = (string) $value;
+        $abn = (string)$value;
 
         if (\strlen($abn) !== self::ABN_LENGTH) {
             $this->context->buildViolation($constraint->message)
@@ -60,9 +58,17 @@ final class AbnValidator extends ConstraintValidator
             return;
         }
 
-        if (\ctype_digit($abn) === false || (int)$abn[0] === 0) {
+        if (\ctype_digit($abn) === false) {
             $this->context->buildViolation($constraint->message)
                 ->setCode(Abn::INVALID_CHARACTERS_ERROR)
+                ->addViolation();
+
+            return;
+        }
+
+        if ((int)$abn[0] === 0) {
+            $this->context->buildViolation($constraint->message)
+                ->setCode(Abn::LEADING_ZERO_ERROR)
                 ->addViolation();
 
             return;

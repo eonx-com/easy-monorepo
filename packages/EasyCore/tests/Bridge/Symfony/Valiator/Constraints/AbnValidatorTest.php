@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Symfony\Valiator\Constraints;
 
-use EoneoPay\Utils\Exceptions\UnexpectedTypeException;
 use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Abn;
 use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\AbnValidator;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Mockery\MockInterface;
 use stdClass;
-use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
@@ -21,12 +21,11 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class AbnValidatorTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return mixed[]
+     * @return string[][]
      */
     public function provideAbnWithInvalidCharacters(): array
     {
         return [
-            'Starts with zero' => ['00043145470'],
             'Contains letter' => ['1234567890a'],
             'Contains special symbols' => ['1234(678900'],
         ];
@@ -44,16 +43,16 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return string[][]
      */
-    public function provideValidABN(): array
+    public function provideValidAbn(): array
     {
         return [
-            'Valid ABN #1' => ['53004085616'],
-            'Valid ABN #2' => ['28043145470'],
-            'Valid ABN #3' => ['53004085616'],
-            'Valid ABN #4' => ['91724684688'],
-            'Valid ABN #5' => ['10000000000'],
+            'Valid Abn #1' => ['53004085616'],
+            'Valid Abn #2' => ['28043145470'],
+            'Valid Abn #3' => ['53004085616'],
+            'Valid Abn #4' => ['91724684688'],
+            'Valid Abn #5' => ['10000000000'],
         ];
     }
 
@@ -71,20 +70,18 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
     /**
      * @return string[][]
      */
-    public function provideInvalidABN(): array
+    public function provideInvalidAbn(): array
     {
         return [
-            'Invalid ABN #1' => ['10043145470'],
-            'Invalid ABN #2' => ['53004085615'],
-            'Invalid ABN #3' => ['53004085615'],
-            'Invalid ABN #4' => ['10000000001'],
+            'Invalid Abn #1' => ['10043145470'],
+            'Invalid Abn #2' => ['53004085615'],
+            'Invalid Abn #3' => ['53004085615'],
+            'Invalid Abn #4' => ['10000000001'],
         ];
     }
 
     /**
-     * @dataProvider provideValidABN
-     *
-     * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
+     * @dataProvider provideValidAbn
      */
     public function testValidateSucceedsWithValidAbn(string $abn): void
     {
@@ -98,15 +95,12 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
-     */
     public function testValidateSucceedsWithObjectToString(): void
     {
         $class = new class() {
             public function __toString()
             {
-                return '53004085616'; // Valid ABN
+                return '53004085616'; // Valid Abn
             }
         };
         $validator = new AbnValidator();
@@ -123,8 +117,6 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
      * @dataProvider provideValidEmptyValues
      *
      * @param mixed $abn
-     *
-     * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
      */
     public function testValidateSucceedsWithEmptyValue($abn): void
     {
@@ -138,25 +130,22 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
-     */
     public function testValidateThrowsUnexpectedTypeException(): void
     {
         $validator = new AbnValidator();
-        $constraint = new NotNull();
+        $constraint = new class() extends Constraint {
+        };
         $abn = 'some-abn';
         $this->expectException(UnexpectedTypeException::class);
-        $this->expectExceptionMessage('Unexpected type "Symfony\Component\Validator\Constraints\NotNull" found, ' .
-            'expected "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Abn"');
+        $this->expectExceptionMessage(
+            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Abn"'
+        );
 
         $validator->validate($abn, $constraint);
     }
 
     /**
      * @param mixed $abn
-     *
-     * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
      *
      * @dataProvider provideUnexpectedValues
      */
@@ -170,9 +159,6 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $validator->validate($abn, $constraint);
     }
 
-    /**
-     * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
-     */
     public function testValidateThrowsUnexpectedValueExceptionIfObjectGiven(): void
     {
         $abn = new stdClass();
@@ -184,9 +170,6 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $validator->validate($abn, $constraint);
     }
 
-    /**
-     * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
-     */
     public function testValidateThrowsUnexpectedValueExceptionIfNumberGiven(): void
     {
         $abn = 53004085616;
@@ -198,9 +181,6 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $validator->validate($abn, $constraint);
     }
 
-    /**
-     * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
-     */
     public function testValidateFailsWithInvalidLengthError(): void
     {
         $validator = new AbnValidator();
@@ -216,8 +196,6 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
-     *
      * @dataProvider provideAbnWithInvalidCharacters
      */
     public function testValidateFailsWithInvalidCharactersError(string $abn): void
@@ -233,10 +211,22 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $this->expectNotToPerformAssertions();
     }
 
+    public function testValidateFailsWithLeadingZeroError(): void
+    {
+        $abn = '03004085616';
+        $validator = new AbnValidator();
+        $constraint = new Abn();
+        $violationBuilder = $this->mockConstraintViolationBuilder(Abn::LEADING_ZERO_ERROR);
+        $context = $this->mockExecutionContextWithBuildViolation($constraint->message, $violationBuilder);
+        $validator->initialize($context);
+
+        $validator->validate($abn, $constraint);
+
+        $this->expectNotToPerformAssertions();
+    }
+
     /**
-     * @throws \EoneoPay\Utils\Exceptions\UnexpectedTypeException
-     *
-     * @dataProvider provideInvalidABN
+     * @dataProvider provideInvalidAbn
      */
     public function testValidateFailsWithModulusCalculationFailedError(string $abn): void
     {
