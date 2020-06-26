@@ -2,7 +2,18 @@
 
 <!-- dumped content start -->
 
-## v2.4.14 - 2020-06-25
+## v2.4.15 - 2020-06-26
+
+### EasySsm
+
+- [#263] Add way to skip export-env command
+- [#262] Add command to dump env vars to php file
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.14] - 2020-06-25
 
 ### EasyAwsCredentialsFinder
 
@@ -1807,3 +1818,6 @@
 [#259]: https://github.com/eonx-com/easy-monorepo/pull/259
 [#257]: https://github.com/eonx-com/easy-monorepo/pull/257
 [v2.4.13]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.12...v2.4.13
+[#263]: https://github.com/eonx-com/easy-monorepo/pull/263
+[#262]: https://github.com/eonx-com/easy-monorepo/pull/262
+[v2.4.14]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.13...v2.4.14
