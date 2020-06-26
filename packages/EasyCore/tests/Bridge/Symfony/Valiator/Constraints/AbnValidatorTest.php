@@ -50,9 +50,8 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         return [
             'Valid Abn #1' => ['53004085616'],
             'Valid Abn #2' => ['28043145470'],
-            'Valid Abn #3' => ['53004085616'],
-            'Valid Abn #4' => ['91724684688'],
-            'Valid Abn #5' => ['10000000000'],
+            'Valid Abn #3' => ['91724684688'],
+            'Valid Abn #4' => ['10000000000'],
         ];
     }
 
