@@ -10,6 +10,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class DumpEnvCommand extends AbstractCommand
 {
+    /**
+     * @var string[]
+     */
+    private static $excludes = [
+        '_',
+        'argc',
+        'argv',
+        'DOCUMENT_ROOT',
+        'HOME',
+        'PATH_TRANSLATED',
+        'PWD',
+        'REQUEST_TIME_FLOAT',
+        'REQUEST_TIME',
+        'SCRIPT_NAME',
+        'SCRIPT_FILENAME',
+        'SHLVL',
+        'SHELL_VERBOSITY',
+    ];
+
     protected function configure(): void
     {
         $this
@@ -23,13 +42,6 @@ final class DumpEnvCommand extends AbstractCommand
                 \sprintf('%s/.env.local.php', \getcwd())
             )
             ->addOption(
-                'includes',
-                'i',
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Env vars to include from $_SERVER',
-                []
-            )
-            ->addOption(
                 'excludes',
                 'e',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
@@ -40,9 +52,8 @@ final class DumpEnvCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $includes = $input->getOption('includes');
         $excludes = $input->getOption('excludes');
-        $vars = \var_export($this->loadEnv($includes, $excludes), true);
+        $vars = \var_export($this->loadEnv($excludes), true);
 
         $contents = <<<EOF
 <?php
@@ -67,17 +78,12 @@ EOF;
      *
      * @return mixed[]
      */
-    private function loadEnv(array $includes, array $excludes): array
+    private function loadEnv(array $excludes): array
     {
         $env = $_ENV;
+        $env += $_SERVER;
 
-        foreach ($includes as $include) {
-            if (isset($_SERVER[$include])) {
-                $env[$include] = $_SERVER[$include];
-            }
-        }
-
-        foreach ($excludes as $exclude) {
+        foreach (\array_merge(static::$excludes, $excludes) as $exclude) {
             unset($env[$exclude]);
         }
 
