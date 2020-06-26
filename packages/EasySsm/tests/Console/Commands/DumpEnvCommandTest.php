@@ -13,7 +13,7 @@ final class DumpEnvCommandTest extends AbstractTestCase
         $_SERVER['server_test'] = 'value';
         $_ENV['env_test'] = 'value';
 
-        $options = ['-i' => ['server_test'], '-e' => ['env_test']];
+        $options = ['-e' => ['env_test']];
 
         $this->executeCommand('dump-env', null, [
             __DIR__ . '/../../../config/console_loader.yaml',
