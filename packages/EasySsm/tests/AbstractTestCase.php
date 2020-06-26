@@ -27,14 +27,17 @@ abstract class AbstractTestCase extends TestCase
      *
      * @throws \Exception
      */
-    protected function executeCommand(string $command, ?array $inputs = null, ?array $configs = null): string
+    protected function executeCommand(string $command, ?array $inputs = null, ?array $configs = null, ?array $argsOpts = null): string
     {
         $kernel = new EasySsmKernel($configs ?? []);
         $kernel->boot();
 
+        $argsOpts = $argsOpts ?? [];
+        $argsOpts['command'] = $command;
+
         $tester = new CommandTester($kernel->getContainer()->get(EasySsmApplication::class)->find($command));
         $tester->setInputs($inputs ?? []);
-        $tester->execute(['command' => $command], ['capture_stderr_separately' => true]);
+        $tester->execute($argsOpts, ['capture_stderr_separately' => true]);
 
         return $tester->getDisplay();
     }
@@ -47,6 +50,7 @@ abstract class AbstractTestCase extends TestCase
             static::$cwd,
             \sys_get_temp_dir() . '/easy_ssm',
             \sys_get_temp_dir() . '/easy_ssm_logs',
+            '.env.local.php',
         ];
 
         foreach ($toRemove as $path) {
