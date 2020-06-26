@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.15 - 2020-06-26
+## v2.4.16 - 2020-06-26
+
+### EasySsm
+
+- [#264] Make dump-env command easier to implement
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.15] - 2020-06-26
 
 ### EasySsm
 
@@ -1821,3 +1831,5 @@
 [#263]: https://github.com/eonx-com/easy-monorepo/pull/263
 [#262]: https://github.com/eonx-com/easy-monorepo/pull/262
 [v2.4.14]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.13...v2.4.14
+[#264]: https://github.com/eonx-com/easy-monorepo/pull/264
+[v2.4.15]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.14...v2.4.15
