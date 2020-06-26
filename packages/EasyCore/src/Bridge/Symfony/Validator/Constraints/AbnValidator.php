@@ -50,25 +50,10 @@ final class AbnValidator extends ConstraintValidator
 
         $abn = (string)$value;
 
-        if (\strlen($abn) !== self::ABN_LENGTH) {
+        $violationCode = $this->getViolationCode($abn);
+        if ($violationCode !== null) {
             $this->context->buildViolation($constraint->message)
-                ->setCode(Abn::INVALID_LENGTH_ERROR)
-                ->addViolation();
-
-            return;
-        }
-
-        if (\ctype_digit($abn) === false) {
-            $this->context->buildViolation($constraint->message)
-                ->setCode(Abn::INVALID_CHARACTERS_ERROR)
-                ->addViolation();
-
-            return;
-        }
-
-        if ((int)$abn[0] === 0) {
-            $this->context->buildViolation($constraint->message)
-                ->setCode(Abn::LEADING_ZERO_ERROR)
+                ->setCode($violationCode)
                 ->addViolation();
 
             return;
@@ -85,5 +70,18 @@ final class AbnValidator extends ConstraintValidator
                 ->setCode(Abn::MODULUS_CALCULATION_FAILED_ERROR)
                 ->addViolation();
         }
+    }
+
+    private function getViolationCode(string $abn): ?string
+    {
+        if (\strlen($abn) !== self::ABN_LENGTH) {
+            return Abn::INVALID_LENGTH_ERROR;
+        }
+
+        if (\ctype_digit($abn) === false) {
+            return Abn::INVALID_CHARACTERS_ERROR;
+        }
+
+        return (int)$abn[0] === 0 ? Abn::LEADING_ZERO_ERROR : null;
     }
 }
