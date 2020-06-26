@@ -43,24 +43,15 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @return string[][]
+     * @return mixed[]
      */
-    public function provideValidAbn(): array
+    public function provideValidAbnValues(): array
     {
         return [
             'Valid Abn #1' => ['53004085616'],
             'Valid Abn #2' => ['28043145470'],
             'Valid Abn #3' => ['91724684688'],
             'Valid Abn #4' => ['10000000000'],
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function provideValidEmptyValues(): array
-    {
-        return [
             'Empty string' => [''],
             'Null value' => [null],
         ];
@@ -69,7 +60,7 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
     /**
      * @return string[][]
      */
-    public function provideInvalidAbn(): array
+    public function provideInvalidAbnValues(): array
     {
         return [
             'Invalid Abn #1' => ['10043145470'],
@@ -80,9 +71,11 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @dataProvider provideValidAbn
+     * @param mixed $abn
+     *
+     * @dataProvider provideValidAbnValues
      */
-    public function testValidateSucceedsWithValidAbn(string $abn): void
+    public function testValidateSucceedsWithValidAbn($abn): void
     {
         $validator = new AbnValidator();
         $constraint = new Abn();
@@ -108,23 +101,6 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $validator->initialize($context);
 
         $validator->validate($class, $constraint);
-
-        $this->expectNotToPerformAssertions();
-    }
-
-    /**
-     * @dataProvider provideValidEmptyValues
-     *
-     * @param mixed $abn
-     */
-    public function testValidateSucceedsWithEmptyValue($abn): void
-    {
-        $validator = new AbnValidator();
-        $constraint = new Abn();
-        $context = $this->mockExecutionContextWithoutCalls();
-        $validator->initialize($context);
-
-        $validator->validate($abn, $constraint);
 
         $this->expectNotToPerformAssertions();
     }
@@ -225,7 +201,7 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @dataProvider provideInvalidAbn
+     * @dataProvider provideInvalidAbnValues
      */
     public function testValidateFailsWithModulusCalculationFailedError(string $abn): void
     {
