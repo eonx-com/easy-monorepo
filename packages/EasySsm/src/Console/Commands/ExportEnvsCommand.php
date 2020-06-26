@@ -40,11 +40,23 @@ final class ExportEnvsCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        // Useful for local dev
+        if ($this->shouldSkip()) {
+            return 0;
+        }
+
         $strict = $input->getOption('strict') ?? null ? (bool)$input->getOption('strict') : false;
         $path = $input->getOption('path') ?? null ? (string)$input->getOption('path') : null;
 
         $this->ssmDotenv->setStrict($strict)->loadEnv($path);
 
         return 0;
+    }
+
+    private function shouldSkip(): bool
+    {
+        $name = 'EASY_SSM_SKIP';
+
+        return isset($_ENV[$name]) || isset($_SERVER[$name]) || \getenv($name);
     }
 }
