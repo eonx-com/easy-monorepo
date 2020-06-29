@@ -28,10 +28,11 @@ final class JobLogUpdaterTest extends AbstractTestCase
     {
         $jobLog = $this->getJobLog();
         $updater = $this->getJobLogUpdater();
-        $throwable = new \Exception();
+        $throwable = new \Exception('test_message');
 
         $debugInfo = [
             'exception' => [
+                'message' => 'test_message',
                 'class' => \get_class($throwable),
                 'code' => $throwable->getCode(),
                 'file' => $throwable->getFile(),
@@ -42,6 +43,7 @@ final class JobLogUpdaterTest extends AbstractTestCase
 
         $updater->failed($jobLog, $throwable);
 
+        self::assertEquals(JobLogInterface::MSG_FAILED_BECAUSE_EXCEPTION, $jobLog->getFailureReason());
         self::assertEquals(JobLogInterface::STATUS_FAILED, $jobLog->getStatus());
         self::assertInstanceOf(\DateTime::class, $jobLog->getFinishedAt());
         self::assertEquals($debugInfo, $jobLog->getDebugInfo());
