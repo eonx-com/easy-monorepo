@@ -2,7 +2,22 @@
 
 <!-- dumped content start -->
 
-## v2.4.16 - 2020-06-26
+## v2.4.17 - 2020-06-29
+
+### EasyAsync
+
+- [#265] Add throwable message to debug info when joblog fails
+
+### EasyCore
+
+- [#260] Add DateTimeMicroseconds custom Doctrine type, Thanks to [@BOB41K1987]
+- [#258] Implement ABN validator in EasyCore package, Thanks to [@BOB41K1987]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.16] - 2020-06-26
 
 ### EasySsm
 
@@ -1833,3 +1848,7 @@
 [v2.4.14]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.13...v2.4.14
 [#264]: https://github.com/eonx-com/easy-monorepo/pull/264
 [v2.4.15]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.14...v2.4.15
+[#265]: https://github.com/eonx-com/easy-monorepo/pull/265
+[#260]: https://github.com/eonx-com/easy-monorepo/pull/260
+[#258]: https://github.com/eonx-com/easy-monorepo/pull/258
+[v2.4.16]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.15...v2.4.16
