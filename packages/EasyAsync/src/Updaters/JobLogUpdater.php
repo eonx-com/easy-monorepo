@@ -28,9 +28,11 @@ final class JobLogUpdater implements JobLogUpdaterInterface
 
     public function failed(JobLogInterface $jobLog, \Throwable $throwable): void
     {
+        $jobLog->setFailureReason(JobLogInterface::MSG_FAILED_BECAUSE_EXCEPTION);
         $jobLog->setStatus(JobLogInterface::STATUS_FAILED);
         $jobLog->setFinishedAt($this->datetime->now());
         $jobLog->addDebugInfo('exception', [
+            'message' => $throwable->getMessage(),
             'class' => \get_class($throwable),
             'code' => $throwable->getCode(),
             'file' => $throwable->getFile(),
