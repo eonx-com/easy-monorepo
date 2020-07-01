@@ -8,6 +8,7 @@ use EonX\EasyCore\Http\Middleware\SetContentLength;
 use EonX\EasyCore\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
@@ -17,6 +18,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
  */
 final class SetContentLengthTest extends AbstractTestCase
 {
+    use ProphecyTrait;
+
     public function testHandleSucceeds(): void
     {
         $middleware = new SetContentLength();

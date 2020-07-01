@@ -12,6 +12,19 @@ services:
             - '../src/Services/Dotenv/Loaders/*'
             - '../src/Services/Parameters/Data/*'
 
+    # Factories
+    EonX\EasySsm\Helpers\Arr:
+        factory: ['@EonX\EasySsm\Factories\ArrFactory', 'create']
+
+    Symfony\Component\Filesystem\Filesystem:
+        factory: ['@EonX\EasySsm\Factories\FilesystemFactory', 'create']
+
+    EonX\EasySsm\Helpers\Parameters:
+        factory: ['@EonX\EasySsm\Factories\ParametersHelperFactory', 'create']
+
+    Aws\Ssm\SsmClient:
+        factory: ['@EonX\EasySsm\Factories\SsmClientFactory', 'create']
+
     EonX\EasySsm\Services\Dotenv\SsmDotenvInterface:
         class: EonX\EasySsm\Services\Dotenv\SsmDotenv
         public: true

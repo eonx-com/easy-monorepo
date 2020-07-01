@@ -38,10 +38,11 @@ final class WithEventsJobLogUpdaterTest extends AbstractTestCase
         $jobLog = $this->getJobLog();
         $dispatcher = new EventDispatcherStub();
         $updater = $this->getJobLogUpdater($dispatcher);
-        $throwable = new \Exception();
+        $throwable = new \Exception('test-message');
 
         $debugInfo = [
             'exception' => [
+                'message' => 'test-message',
                 'class' => \get_class($throwable),
                 'code' => $throwable->getCode(),
                 'file' => $throwable->getFile(),

@@ -322,9 +322,9 @@ final class HandlerTest extends AbstractTestCase
         );
 
         $response = $handler->render(new Request(), new \Exception());
-
         $content = \json_decode((string)$response->getContent(), true);
-        self::assertRegExp('/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/', $content['time']);
+
+        self::assertMatchesRegularExpression('/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/', $content['time']);
     }
 
     public function testRenderReturnsResponseWithValidationErrors(): void

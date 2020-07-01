@@ -13,6 +13,7 @@ use Illuminate\Cache\Repository;
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -22,6 +23,8 @@ use Psr\Log\LoggerInterface;
  */
 final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
 {
+    use ProphecyTrait;
+
     public function testHandleSucceeds(): void
     {
         $jobProphecy = $this->prophesize(Job::class);

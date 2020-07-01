@@ -68,8 +68,6 @@ final class EasySsmKernel extends Kernel implements CompilerPassInterface
 
     protected function build(ContainerBuilder $container): void
     {
-        $container
-            ->addCompilerPass(new AutoReturnFactoryCompilerPass())
-            ->addCompilerPass(new AutowireArrayParameterCompilerPass());
+        $container->addCompilerPass(new AutowireArrayParameterCompilerPass());
     }
 }

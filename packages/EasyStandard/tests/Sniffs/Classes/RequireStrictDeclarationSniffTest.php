@@ -6,6 +6,7 @@ namespace EonX\EasyStandard\Tests\Sniffs\Classes;
 
 use EonX\EasyStandard\Sniffs\Classes\RequireStrictDeclarationSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class RequireStrictDeclarationSniffTest extends AbstractCheckerTestCase
 {
@@ -22,7 +23,7 @@ final class RequireStrictDeclarationSniffTest extends AbstractCheckerTestCase
      */
     public function testSniff(string $file): void
     {
-        $this->doTestWrongFile($file);
+        $this->doTestFileInfo(new SmartFileInfo($file));
     }
 
     protected function getCheckerClass(): string

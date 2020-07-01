@@ -7,6 +7,7 @@ namespace EonX\EasyStandard\Tests\Rector\UselessSingleAnnotationRector;
 use EonX\EasyStandard\Rector\UselessSingleAnnotationRector;
 use Iterator;
 use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyStandard\Rector\UselessSingleAnnotationRector
@@ -30,9 +31,9 @@ final class UselessSingleAnnotationRectorTest extends AbstractRectorTestCase
      *
      * @dataProvider provideData()
      */
-    public function testRule(string $file): void
+    public function testRule(SmartFileInfo $file): void
     {
-        $this->doTestFile($file);
+        $this->doTestFileInfo($file);
     }
 
     /**
