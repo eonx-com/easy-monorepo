@@ -7,10 +7,11 @@ namespace EonX\EasyCore\Doctrine\Type;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Types\ConversionException;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\DateTimeType;
 
-final class DateTimeMicrosecondsType extends Type
+final class DateTimeMicrosecondsType extends DateTimeType
 {
     /**
      * @var string
@@ -26,6 +27,11 @@ final class DateTimeMicrosecondsType extends Type
      * @var string
      */
     public const FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
+
+    /**
+     * @var string
+     */
+    public const FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
 
     /**
      * @var string
@@ -88,6 +94,10 @@ final class DateTimeMicrosecondsType extends Type
      */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
+        if ($platform instanceof PostgreSqlPlatform) {
+            return self::FORMAT_DB_TIMESTAMP_WO_TIMEZONE;
+        }
+
         if (isset($fieldDeclaration['version']) && $fieldDeclaration['version'] === true) {
             return self::FORMAT_DB_TIMESTAMP;
         }
