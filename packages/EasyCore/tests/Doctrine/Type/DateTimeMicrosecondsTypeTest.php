@@ -38,12 +38,36 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     public function provideFieldDeclarationValues(): array
     {
         return [
-            'mysql' => [MySqlPlatform::class, [], 'DATETIME(6)'],
-            'mysql, with version = true' => [MySqlPlatform::class, ['version' => true], 'TIMESTAMP'],
-            'mysql, with version = false' => [MySqlPlatform::class, ['version' => false], 'DATETIME(6)'],
-            'postgresql' => [PostgreSqlPlatform::class, [], 'TIMESTAMP(6) WITHOUT TIME ZONE'],
-            'postgresql, with version = true' => [PostgreSqlPlatform::class, ['version' => true], 'TIMESTAMP(6) WITHOUT TIME ZONE'],
-            'postgresql, with version = false' => [PostgreSqlPlatform::class, ['version' => false], 'TIMESTAMP(6) WITHOUT TIME ZONE'],
+            'mysql' => [
+                MySqlPlatform::class,
+                [],
+                'DATETIME(6)',
+            ],
+            'mysql, with version = true' => [
+                MySqlPlatform::class,
+                ['version' => true],
+                DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP,
+            ],
+            'mysql, with version = false' => [
+                MySqlPlatform::class,
+                ['version' => false],
+                DateTimeMicrosecondsType::FORMAT_DB_DATETIME,
+            ],
+            'postgresql' => [
+                PostgreSqlPlatform::class,
+                [],
+                DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
+            ],
+            'postgresql, with version = true' => [
+                PostgreSqlPlatform::class,
+                ['version' => true],
+                DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
+            ],
+            'postgresql, with version = false' => [
+                PostgreSqlPlatform::class,
+                ['version' => false],
+                DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
+            ],
         ];
     }
 
