@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Persisters;
 
 use EonX\EasyAsync\Events\JobCompletedEvent;
-use EonX\EasyAsync\Interfaces\EventDispatcherInterface;
 use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
 use EonX\EasyAsync\Interfaces\TargetInterface;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 
@@ -20,7 +20,7 @@ final class WithEventsJobPersister implements JobPersisterInterface
     private $decorated;
 
     /**
-     * @var \EonX\EasyAsync\Interfaces\EventDispatcherInterface
+     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
      */
     private $eventDispatcher;
 

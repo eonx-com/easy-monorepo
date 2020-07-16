@@ -63,7 +63,6 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
 
         $services = [
             DateTimeGeneratorInterface::class => DateTimeGenerator::class,
-            EventDispatcherInterface::class => EventDispatcher::class,
             JobFactoryInterface::class => JobFactory::class,
             JobLogFactoryInterface::class => JobLogFactory::class,
             UuidGeneratorInterface::class => RamseyUuidGenerator::class,
