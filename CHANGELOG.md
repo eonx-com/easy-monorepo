@@ -2,7 +2,25 @@
 
 <!-- dumped content start -->
 
-## v2.4.17 - 2020-06-29
+## v2.4.18 - 2020-07-16
+
+### EasyDecision
+
+- [#276] Allow decision to exit early when propagation stopped
+
+### EasyEventDispatcher
+
+- [#279] Create package
+
+### EasySsm
+
+- [#266] Handle parameters with namespace as name
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.17] - 2020-06-29
 
 ### EasyAsync
 
@@ -1852,3 +1870,7 @@
 [#260]: https://github.com/eonx-com/easy-monorepo/pull/260
 [#258]: https://github.com/eonx-com/easy-monorepo/pull/258
 [v2.4.16]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.15...v2.4.16
+[#279]: https://github.com/eonx-com/easy-monorepo/pull/279
+[#276]: https://github.com/eonx-com/easy-monorepo/pull/276
+[#266]: https://github.com/eonx-com/easy-monorepo/pull/266
+[v2.4.17]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.16...v2.4.17
