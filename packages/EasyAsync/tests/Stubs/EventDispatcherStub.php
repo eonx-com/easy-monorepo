@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Tests\Stubs;
 
 use EonX\EasyAsync\Interfaces\EasyAsyncEventInterface;
-use EonX\EasyAsync\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class EventDispatcherStub implements EventDispatcherInterface
 {
@@ -14,7 +14,7 @@ final class EventDispatcherStub implements EventDispatcherInterface
      */
     private $dispatched = [];
 
-    public function dispatch(EasyAsyncEventInterface $event): EasyAsyncEventInterface
+    public function dispatch($event): EasyAsyncEventInterface
     {
         $this->dispatched[] = $event;
 

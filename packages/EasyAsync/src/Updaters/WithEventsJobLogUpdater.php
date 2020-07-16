@@ -7,9 +7,9 @@ namespace EonX\EasyAsync\Updaters;
 use EonX\EasyAsync\Events\JobLogCompletedEvent;
 use EonX\EasyAsync\Events\JobLogFailedEvent;
 use EonX\EasyAsync\Events\JobLogInProgressEvent;
-use EonX\EasyAsync\Interfaces\EventDispatcherInterface;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class WithEventsJobLogUpdater implements JobLogUpdaterInterface
 {
@@ -19,7 +19,7 @@ final class WithEventsJobLogUpdater implements JobLogUpdaterInterface
     private $decorated;
 
     /**
-     * @var \EonX\EasyAsync\Interfaces\EventDispatcherInterface
+     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
      */
     private $dispatcher;
 
