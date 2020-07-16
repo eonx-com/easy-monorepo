@@ -11,7 +11,7 @@
         "phpunit/phpunit": "^7.5 || ^8.4",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
-        "eonx-com/easy-psr7-factory": "^2.4.18",
+        "eonx-com/easy-psr7-factory": "^2.5",
         "auth0/auth0-php": "^5.4",
         "psr/container": "^1.0",
         "laravel/lumen-framework": "^5.5",
