@@ -6,9 +6,6 @@ services:
     EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface:
         class: EonX\EasyAsync\Generators\DateTimeGenerator
 
-    EonX\EasyAsync\Interfaces\EventDispatcherInterface:
-        class: EonX\EasyAsync\Bridge\Symfony\Events\EventDispatcher
-
     EonX\EasyAsync\Interfaces\JobFactoryInterface:
         class: EonX\EasyAsync\Factories\JobFactory
 
