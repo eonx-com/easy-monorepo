@@ -12,7 +12,7 @@ having to think about the event dispatcher used by each of our projects.
 The recommended way to install this package is to use [Composer][1]:
 
 ```bash
-$ composer require eonx-com/easy-event-dispatcher
+$ composer require eonx-com/easy-webhooks
 ```
 
 [1]: https://getcomposer.org/

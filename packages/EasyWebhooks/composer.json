@@ -6,6 +6,7 @@
     "require": {
         "php": "^7.1",
         "eonx-com/easy-random": "^2.4",
+        "nesbot/carbon": "^2.22",
         "symfony/http-client": "^4.2 || ^5.0"
     },
     "require-dev": {
