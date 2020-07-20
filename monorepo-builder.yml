@@ -30,6 +30,7 @@ parameters:
         packages/EasyErrorHandler: 'git@github.com:eonx-com/easy-error-handler.git'
         packages/EasyEventDispatcher: 'git@github.com:eonx-com/easy-event-dispatcher.git'
         packages/EasyIdentity: 'git@github.com:eonx-com/easy-identity.git'
+        packages/EasyLock: 'git@github.com:eonx-com/easy-lock.git'
         packages/EasyLogging: 'git@github.com:eonx-com/easy-logging.git'
         packages/EasyPipeline: 'git@github.com:eonx-com/easy-pipeline.git'
         packages/EasyRepository: 'git@github.com:eonx-com/easy-repository.git'
