@@ -2,7 +2,25 @@
 
 <!-- dumped content start -->
 
-## v2.4.18 - 2020-07-16
+## v2.4.19 - 2020-07-20
+
+### EasyCore
+
+- [#278] Add DateTimeMicrosecondsType support for PostgreSQL, Thanks to [@BOB41K1987]
+
+### EasyAsync
+
+- [#280] Use easy-event-dispatcher
+
+### EasyLock
+
+- [#281] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.18] - 2020-07-16
 
 ### EasyDecision
 
@@ -1874,3 +1892,7 @@
 [#276]: https://github.com/eonx-com/easy-monorepo/pull/276
 [#266]: https://github.com/eonx-com/easy-monorepo/pull/266
 [v2.4.17]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.16...v2.4.17
+[#281]: https://github.com/eonx-com/easy-monorepo/pull/281
+[#280]: https://github.com/eonx-com/easy-monorepo/pull/280
+[#278]: https://github.com/eonx-com/easy-monorepo/pull/278
+[v2.4.18]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.17...v2.4.18
