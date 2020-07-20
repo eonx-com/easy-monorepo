@@ -1,0 +1,2 @@
+easy_webhooks:
+    use_default_configurators: false

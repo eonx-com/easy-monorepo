@@ -23,6 +23,7 @@
         "symfony/expression-language": "^4.2 || ^5.0",
         "symfony/filesystem": "^4.2 || ^5.0",
         "symfony/finder": "^4.2 || ^5.0",
+        "symfony/http-client": "^4.2 || ^5.0",
         "symfony/process": "^4.2 || ^5.0",
         "symfony/string": "^4.2 || ^5.0",
         "symfony/uid": "^4.2 || ^5.0",
@@ -88,7 +89,8 @@
             "EonX\\EasySchedule\\": "packages/EasySchedule/src",
             "EonX\\EasySsm\\": "packages/EasySsm/src",
             "EonX\\EasyStandard\\": "packages/EasyStandard/src",
-            "EonX\\EasyTest\\": "packages/EasyTest/src"
+            "EonX\\EasyTest\\": "packages/EasyTest/src",
+            "EonX\\EasyWebhooks\\": "packages/EasyWebhooks/src"
         }
     },
     "autoload-dev": {
@@ -115,7 +117,8 @@
             "EonX\\EasySchedule\\Tests\\": "packages/EasySchedule/tests",
             "EonX\\EasySsm\\Tests\\": "packages/EasySsm/tests",
             "EonX\\EasyStandard\\Tests\\": "packages/EasyStandard/tests",
-            "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests"
+            "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests",
+            "EonX\\EasyWebhooks\\Tests\\": "packages/EasyWebhooks/tests"
         }
     },
     "replace": {
@@ -132,13 +135,15 @@
         "eonx-com/easy-core": "self.version",
         "eonx-com/easy-entity-change": "self.version",
         "eonx-com/easy-error-handler": "self.version",
+        "eonx-com/easy-event-dispatcher": "self.version",
         "eonx-com/easy-logging": "self.version",
         "eonx-com/easy-security": "self.version",
         "eonx-com/easy-test": "self.version",
         "eonx-com/easy-schedule": "self.version",
         "eonx-com/easy-ssm": "self.version",
         "eonx-com/easy-standard": "self.version",
-        "eonx-com/easy-async": "self.version"
+        "eonx-com/easy-async": "self.version",
+        "eonx-com/easy-webhooks": "self.version"
     },
     "scripts": {
         "check-all": [
