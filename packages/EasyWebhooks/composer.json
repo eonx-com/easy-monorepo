@@ -1,6 +1,6 @@
 {
-    "name": "eonx-com/easy-event-dispatcher",
-    "description": "Framework agnostic event dispatcher",
+    "name": "eonx-com/easy-webhooks",
+    "description": "Sending webhooks has never been so easy (persistence, retry, async)",
     "type": "library",
     "license": "MIT",
     "require": {

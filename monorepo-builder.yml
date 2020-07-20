@@ -41,3 +41,4 @@ parameters:
         packages/EasySsm: 'git@github.com:eonx-com/easy-ssm.git'
         packages/EasyStandard: 'git@github.com:eonx-com/easy-standard.git'
         packages/EasyTest: 'git@github.com:eonx-com/easy-test.git'
+        packages/EasyWebhooks: 'git@github.com:eonx-com/easy-webhooks.git'
