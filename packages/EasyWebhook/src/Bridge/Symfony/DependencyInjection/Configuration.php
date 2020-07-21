@@ -19,7 +19,7 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('async')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('enabled')->defaultFalse()->end()
+                        ->booleanNode('enabled')->defaultTrue()->end()
                         ->scalarNode('bus')->defaultValue('messenger.bus.default')->end()
                     ->end()
                 ->end()

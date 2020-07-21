@@ -13,7 +13,7 @@ use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultHandlerInterface;
 use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use EonX\EasyWebhook\Interfaces\WebhookStoreInterface;
-use EonX\EasyWebhook\RetryStrategies\NullWebhookRetryStrategy;
+use EonX\EasyWebhook\RetryStrategies\MultiplierWebhookRetryStrategy;
 use EonX\EasyWebhook\Stores\NullWebhookStore;
 use EonX\EasyWebhook\WebhookClient;
 use EonX\EasyWebhook\WebhookResultHandler;
@@ -37,7 +37,7 @@ return static function (ContainerConfigurator $container): void {
         ->factory([ref(HttpClientFactoryInterface::class), 'create']);
 
     // Webhook Retry Strategy (Default)
-    $services->set(WebhookRetryStrategyInterface::class, NullWebhookRetryStrategy::class);
+    $services->set(WebhookRetryStrategyInterface::class, MultiplierWebhookRetryStrategy::class);
 
     // Webhook Result Handler
     $services->set(WebhookResultHandlerInterface::class, WebhookResultHandler::class);

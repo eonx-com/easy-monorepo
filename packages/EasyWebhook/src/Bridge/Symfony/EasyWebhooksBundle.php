@@ -15,6 +15,6 @@ final class EasyWebhooksBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new AddMessengerMiddlewarePass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
+        $container->addCompilerPass(new AddMessengerMiddlewarePass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10);
     }
 }
