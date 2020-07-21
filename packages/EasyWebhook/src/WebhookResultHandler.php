@@ -49,6 +49,9 @@ final class WebhookResultHandler implements WebhookResultHandlerInterface
         // Merge extra so each of them is separate column
         $data = \array_merge($webhook->getExtra() ?? [], $webhook->toArray());
 
+        // Add class to be able to instantiate when fetching from store
+        $data['class'] = \get_class($webhook);
+
         if ($response !== null) {
             $data['response'] = [
                 'content' => $response->getContent(),

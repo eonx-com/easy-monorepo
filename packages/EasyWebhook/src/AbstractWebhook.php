@@ -13,7 +13,7 @@ abstract class AbstractWebhook implements WebhookInterface
     /**
      * @var string[]
      */
-    private static $setters = [
+    protected static $setters = [
         'current_attempt' => 'setCurrentAttempt',
         'http_options' => 'setHttpClientOptions',
         'max_attempt' => 'setMaxAttempt',
@@ -102,7 +102,7 @@ abstract class AbstractWebhook implements WebhookInterface
         $webhook = new static();
 
         foreach (static::$setters as $name => $setter) {
-            if ($data[$name] !== null) {
+            if (($data[$name] ?? null) !== null) {
                 $webhook->{$setter}($data[$name]);
             }
         }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Bridge\Laravel;
 
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
+use EonX\EasyWebhook\Bridge\Laravel\Jobs\AsyncWebhookClient;
 use EonX\EasyWebhook\Configurators\BodyFormatterWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\MethodWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\SignatureWebhookConfigurator;
@@ -21,6 +22,7 @@ use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stores\NullWebhookStore;
 use EonX\EasyWebhook\WebhookClient;
 use EonX\EasyWebhook\WebhookResultHandler;
+use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -93,6 +95,19 @@ final class EasyWebhooksServiceProvider extends ServiceProvider
 
         // Webhook Store (Default)
         $this->app->singleton(WebhookStoreInterface::class, NullWebhookStore::class);
+
+        if (\config('easy-webhooks.send_async', true)) {
+            $this->app->extend(
+                WebhookClientInterface::class,
+                function (WebhookClientInterface $client): WebhookClientInterface {
+                    return new AsyncWebhookClient(
+                        $this->app->make(Dispatcher::class),
+                        $client,
+                        $this->app->make(WebhookStoreInterface::class)
+                    );
+                }
+            );
+        }
     }
 
     private function registerSignatureServices(): void

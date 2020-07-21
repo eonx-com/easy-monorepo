@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyLock;
 
 use Closure;
+use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\Interfaces\WithLockDataInterface;
 
 trait ProcessWithLockTrait
