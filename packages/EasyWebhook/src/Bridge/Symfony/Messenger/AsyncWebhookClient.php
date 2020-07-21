@@ -6,7 +6,9 @@ namespace EonX\EasyWebhook\Bridge\Symfony\Messenger;
 
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
+use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\Interfaces\WebhookStoreInterface;
+use EonX\EasyWebhook\WebhookResult;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class AsyncWebhookClient implements WebhookClientInterface
@@ -33,14 +35,16 @@ final class AsyncWebhookClient implements WebhookClientInterface
         $this->store = $store;
     }
 
-    public function sendWebhook(WebhookInterface $webhook): void
+    public function sendWebhook(WebhookInterface $webhook): WebhookResultInterface
     {
         if ($webhook->isSendNow()) {
-            $this->client->sendWebhook($webhook);
-
-            return;
+            return $this->client->sendWebhook($webhook);
         }
-        
-        $this->bus->dispatch(new SendWebhookMessage($this->store->store($webhook->toArray(), $webhook->getId())));
+
+        $webhook->setId($this->store->store($webhook->toArray(), $webhook->getId()));
+
+        $this->bus->dispatch(new SendWebhookMessage($webhook->getId()));
+
+        return new WebhookResult($webhook);
     }
 }

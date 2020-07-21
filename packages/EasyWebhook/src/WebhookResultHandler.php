@@ -7,26 +7,19 @@ namespace EonX\EasyWebhook;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultHandlerInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
-use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use EonX\EasyWebhook\Interfaces\WebhookStoreInterface;
 use EonX\EasyWebhook\RetryStrategies\NullWebhookRetryStrategy;
 
 final class WebhookResultHandler implements WebhookResultHandlerInterface
 {
     /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface
-     */
-    private $retryStrategy;
-
-    /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookStoreInterface
      */
     private $store;
 
-    public function __construct(WebhookStoreInterface $store, ?WebhookRetryStrategyInterface $retryStrategy = null)
+    public function __construct(WebhookStoreInterface $store)
     {
         $this->store = $store;
-        $this->retryStrategy = $retryStrategy ?? new NullWebhookRetryStrategy();
     }
 
     public function handle(WebhookResultInterface $webhookResult): void
@@ -42,8 +35,11 @@ final class WebhookResultHandler implements WebhookResultHandlerInterface
                 $webhook->setStatus(WebhookInterface::STATUS_SUCCESS);
                 break;
             case false:
-                $webhook->setStatus($this->retryStrategy->failedStatus($webhook));
-                $webhook->setRetryAfter($this->retryStrategy->retryAfter($webhook));
+                $webhook->setStatus(
+                    $webhook->getCurrentAttempt() >= $webhook->getMaxAttempt()
+                        ? WebhookInterface::STATUS_FAILED
+                        : WebhookInterface::STATUS_FAILED_PENDING_RETRY
+                );
         }
 
         // Merge extra so each of them is separate column

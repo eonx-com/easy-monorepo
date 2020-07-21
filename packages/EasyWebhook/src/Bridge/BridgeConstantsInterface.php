@@ -19,6 +19,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_BUS = 'easy_webhooks.bus';
+
+    /**
+     * @var string
+     */
     public const PARAM_METHOD = 'easy_webhooks.method';
 
     /**

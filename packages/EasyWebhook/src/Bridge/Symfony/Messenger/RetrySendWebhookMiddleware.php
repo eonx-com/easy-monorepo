@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+namespace EonX\EasyWebhook\Bridge\Symfony\Messenger;
+
+use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
+use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
+use Symfony\Component\Messenger\Middleware\StackInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Messenger\Stamp\ReceivedStamp;
+use Symfony\Component\Messenger\Transport\TransportInterface;
+
+final class RetrySendWebhookMiddleware implements MiddlewareInterface
+{
+    /**
+     * @var \Psr\Container\ContainerInterface
+     */
+    private $container;
+
+    /**
+     * @var \EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface
+     */
+    private $retryStrategy;
+
+    public function __construct(ContainerInterface $container, WebhookRetryStrategyInterface $retryStrategy)
+    {
+        $this->container = $container;
+        $this->retryStrategy = $retryStrategy;
+    }
+
+    public function handle(Envelope $envelope, StackInterface $stack): Envelope
+    {
+        $envelope = $stack->next()->handle($envelope, $stack);
+
+        // Skip if not webhook message
+        if (($envelope->getMessage() instanceof SendWebhookMessage) === false) {
+            return $envelope;
+        }
+
+        $stamp = $envelope->last(ReceivedStamp::class);
+        $result = $envelope->getMessage()->getResult();
+
+        // Skip if message not received or not result set
+        if (($stamp instanceof ReceivedStamp) === false || ($result instanceof WebhookResultInterface) === false) {
+            return $envelope;
+        }
+
+        // Retry if result not successful and webhook is retryable
+        if ($result->isSuccessful() === false && $this->retryStrategy->isRetryable($result->getWebhook())) {
+            $delay = $this->retryStrategy->getWaitingTime($result->getWebhook());
+
+            $this->getTransport($stamp->getTransportName())->send($envelope->with(new DelayStamp($delay)));
+        }
+
+        return $envelope;
+    }
+
+    private function getTransport(string $transportName): TransportInterface
+    {
+        return $this->container->get($transportName);
+    }
+}

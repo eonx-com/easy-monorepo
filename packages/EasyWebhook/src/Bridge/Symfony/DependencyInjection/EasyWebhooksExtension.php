@@ -54,7 +54,9 @@ final class EasyWebhooksExtension extends Extension
             $loader->load('signature.php');
         }
 
-        if (\class_exists(MessengerPass::class) && ($config['send_async'] ?? true)) {
+        if (\class_exists(MessengerPass::class) && ($config['async']['enabled'] ?? true)) {
+            $container->setParameter(BridgeConstantsInterface::PARAM_BUS, $config['async']['bus']);
+
             $loader->load('messenger_client.php');
         }
     }

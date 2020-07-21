@@ -10,6 +10,7 @@ use EonX\EasyLock\Interfaces\WithLockDataInterface;
 use EonX\EasyLock\LockData;
 use EonX\EasyLock\ProcessWithLockTrait;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
+use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use EonX\EasyWebhook\Interfaces\WebhookStoreInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -37,20 +38,25 @@ final class SendWebhookJob implements ShouldQueue, WithLockDataInterface
     }
 
     public function handle(
+        LockServiceInterface $lockService,
         WebhookClientInterface $client,
-        WebhookStoreInterface $store,
-        LockServiceInterface $lockService
+        WebhookRetryStrategyInterface $retryStrategy,
+        WebhookStoreInterface $store
     ): void {
         $this->setLockService($lockService);
 
-        $this->processWithLock($this, function () use ($client, $store): void {
+        $this->processWithLock($this, function () use ($client, $retryStrategy, $store): void {
             $webhook = $store->find($this->webhookId);
 
             if ($webhook === null) {
                 return;
             }
 
-            $client->sendWebhook($webhook->setSendNow(true));
+            $result = $client->sendWebhook($webhook->setSendNow(true));
+
+            if ($result->isSuccessful() === false && $retryStrategy->isRetryable($webhook)) {
+                $this->release($retryStrategy->getWaitingTime($webhook) / 1000);
+            }
         });
     }
 }

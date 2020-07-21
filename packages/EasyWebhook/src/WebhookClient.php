@@ -12,6 +12,7 @@ use EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface;
 use EonX\EasyWebhook\Interfaces\WebhookDataInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultHandlerInterface;
+use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -45,7 +46,7 @@ final class WebhookClient implements WebhookClientInterface
         $this->configurators = $this->filterConfigurators($configurators);
     }
 
-    public function sendWebhook(WebhookInterface $webhook): void
+    public function sendWebhook(WebhookInterface $webhook): WebhookResultInterface
     {
         foreach ($this->configurators as $configurator) {
             $configurator->configure($webhook);
@@ -62,7 +63,7 @@ final class WebhookClient implements WebhookClientInterface
             $response = $this->httpClient->request($method, $url, $webhook->getHttpClientOptions() ?? []);
             $response->getContent(); // Trigger exception on bad response
 
-            $this->resultHandler->handle(new WebhookResult($webhook, $response));
+            $result = new WebhookResult($webhook, $response);
         } catch (\Throwable $throwable) {
             $response = null;
 
@@ -70,8 +71,12 @@ final class WebhookClient implements WebhookClientInterface
                 $response = $throwable->getResponse();
             }
 
-            $this->resultHandler->handle(new WebhookResult($webhook, $response, $throwable));
+            $result = new WebhookResult($webhook, $response, $throwable);
         }
+
+        $this->resultHandler->handle($result);
+
+        return $result;
     }
 
     /**

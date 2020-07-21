@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests;
 
-use _HumbugBox69342eed62ce\Nette\Neon\Exception;
-use Doctrine\DBAL\DriverManager;
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyWebhook\Configurators\BodyFormatterWebhookConfigurator;
@@ -17,40 +15,13 @@ use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\RetryStrategies\ExponentialWebhookRetryStrategy;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stores\ArrayWebhookStore;
-use EonX\EasyWebhook\Stores\DoctrineDbalWebhookStore;
 use EonX\EasyWebhook\Tests\Stubs\HttpClientStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookClient;
 use EonX\EasyWebhook\WebhookResultHandler;
-use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class WebhookClientTest extends AbstractTestCase
 {
-    public function testStoreFunctional(): void
-    {
-        $store = new DoctrineDbalWebhookStore(DriverManager::getConnection([
-            'url' => 'mysql://qr-connect:qr-connect@127.0.0.1:3306/qr-connect',
-        ]), (new RandomGenerator())->setUuidV4Generator(new RamseyUuidV4Generator()));
-
-        $httpClient = $this->createMock(HttpClientInterface::class);
-        $httpClient
-            ->expects($this->once())
-            ->method('request')
-            ->willThrowException(new Exception());
-
-        $client = new WebhookClient($httpClient, new WebhookResultHandler($store, new ExponentialWebhookRetryStrategy()), [
-            new BodyFormatterWebhookConfigurator(new JsonFormatter())
-        ]);
-
-        $client->sendWebhook(
-            Webhook::create('https://b4896ded89653135c1cabc582ca4fa6b.m.pipedream.net', ['name' => 'Nathan'])
-                ->setMaxAttempt(5)
-        );
-
-        self::assertTrue(true);
-    }
-
     /**
      * @return iterable<mixed>
      */

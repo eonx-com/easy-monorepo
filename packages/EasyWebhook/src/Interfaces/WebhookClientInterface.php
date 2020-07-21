@@ -6,5 +6,5 @@ namespace EonX\EasyWebhook\Interfaces;
 
 interface WebhookClientInterface
 {
-    public function sendWebhook(WebhookInterface $webhook): void;
+    public function sendWebhook(WebhookInterface $webhook): WebhookResultInterface;
 }
