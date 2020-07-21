@@ -47,8 +47,6 @@ interface WebhookInterface
 
     public function getMethod(): ?string;
 
-    public function getRetryAfter(): ?\DateTimeInterface;
-
     public function getSecret(): ?string;
 
     public function getStatus(): string;
@@ -72,11 +70,6 @@ interface WebhookInterface
     public function setMaxAttempt(int $maxAttempt): self;
 
     public function setMethod(string $method): self;
-
-    /**
-     * @param null|string|\DateTimeInterface $retryAfter
-     */
-    public function setRetryAfter($retryAfter = null): self;
 
     public function setSecret(string $secret): self;
 

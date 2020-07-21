@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook;
 
-use Carbon\Carbon;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
-use EonX\EasyWebhook\Interfaces\WebhookStoreInterface;
 
 abstract class AbstractWebhook implements WebhookInterface
 {
@@ -18,7 +16,6 @@ abstract class AbstractWebhook implements WebhookInterface
         'http_options' => 'setHttpClientOptions',
         'max_attempt' => 'setMaxAttempt',
         'method' => 'setMethod',
-        'retry_after' => 'setRetryAfter',
         'status' => 'setStatus',
         'url' => 'setUrl',
     ];
@@ -57,11 +54,6 @@ abstract class AbstractWebhook implements WebhookInterface
      * @var null|string
      */
     private $method;
-
-    /**
-     * @var null|\DateTimeInterface
-     */
-    private $retryAfter;
 
     /**
      * @var null|string
@@ -154,11 +146,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this->method;
     }
 
-    public function getRetryAfter(): ?\DateTimeInterface
-    {
-        return $this->retryAfter;
-    }
-
     public function getSecret(): ?string
     {
         return $this->secret;
@@ -244,20 +231,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    /**
-     * @param null|string|\DateTimeInterface $retryAfter
-     */
-    public function setRetryAfter($retryAfter = null): WebhookInterface
-    {
-        if (\is_string($retryAfter)) {
-            $retryAfter = Carbon::createFromFormat(WebhookStoreInterface::DATETIME_FORMAT, $retryAfter, 'UTC');
-        }
-
-        $this->retryAfter = $retryAfter;
-
-        return $this;
-    }
-
     public function setSecret(string $secret): WebhookInterface
     {
         $this->secret = $secret;
@@ -293,7 +266,6 @@ abstract class AbstractWebhook implements WebhookInterface
             'http_options' => $this->getHttpClientOptions(),
             'max_attempt' => $this->getMaxAttempt(),
             'method' => $this->getMethod(),
-            'retry_after' => $this->getRetryAfter(),
             'status' => $this->getStatus(),
             'url' => $this->getUrl(),
         ];
