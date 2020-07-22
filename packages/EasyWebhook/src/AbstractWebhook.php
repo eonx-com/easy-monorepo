@@ -11,6 +11,14 @@ abstract class AbstractWebhook implements WebhookInterface
     /**
      * @var string[]
      */
+    protected static $integers = [
+        'current_attempt',
+        'max_attempt',
+    ];
+
+    /**
+     * @var string[]
+     */
     protected static $setters = [
         'body' => 'setBody',
         'current_attempt' => 'setCurrentAttempt',
@@ -96,7 +104,13 @@ abstract class AbstractWebhook implements WebhookInterface
 
         foreach (static::$setters as $name => $setter) {
             if (($data[$name] ?? null) !== null) {
-                $webhook->{$setter}($data[$name]);
+                $value = $data[$name];
+
+                if (\in_array($name, static::$integers, true)) {
+                    $value = (int)$value;
+                }
+
+                $webhook->{$setter}($value);
             }
         }
 
