@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Stores;
 
+use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
