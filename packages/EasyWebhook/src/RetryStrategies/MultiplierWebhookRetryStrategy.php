@@ -51,7 +51,7 @@ class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterface
 
     public function getWaitingTime(WebhookInterface $webhook): int
     {
-        $delay = $this->delayMilliseconds * \pow($this->multiplier, $webhook->getCurrentAttempt());
+        $delay = (int)($this->delayMilliseconds * \pow($this->multiplier, $webhook->getCurrentAttempt()));
 
         return $delay > $this->maxDelayMilliseconds && $this->maxDelayMilliseconds !== null
             ? $this->maxDelayMilliseconds
