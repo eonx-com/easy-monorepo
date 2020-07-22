@@ -1,3 +1,3 @@
-easy_webhooks:
+easy_webhook:
     signature:
         enabled: true

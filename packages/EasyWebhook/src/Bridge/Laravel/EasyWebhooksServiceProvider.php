@@ -15,8 +15,8 @@ use EonX\EasyWebhook\Interfaces\HttpClientFactoryInterface;
 use EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultHandlerInterface;
-use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
+use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use EonX\EasyWebhook\RetryStrategies\NullWebhookRetryStrategy;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stores\NullWebhookResultStore;
@@ -31,21 +31,21 @@ final class EasyWebhooksServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/config/easy-webhooks.php' => \base_path('config/easy-webhooks.php'),
+            __DIR__ . '/config/easy-webhook.php' => \base_path('config/easy-webhook.php'),
         ]);
     }
 
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/config/easy-webhooks.php', 'easy-webhooks');
+        $this->mergeConfigFrom(__DIR__ . '/config/easy-webhook.php', 'easy-webhook');
 
         $this->registerDefaultServices();
 
-        if (\config('easy-webhooks.use_default_configurators', true)) {
+        if (\config('easy-webhook.use_default_configurators', true)) {
             $this->registerDefaultConfigurators();
         }
 
-        if (\config('easy-webhooks.signature.enabled', false)) {
+        if (\config('easy-webhook.signature.enabled', false)) {
             $this->registerSignatureServices();
         }
     }
@@ -101,7 +101,7 @@ final class EasyWebhooksServiceProvider extends ServiceProvider
         // Webhook Store (Default)
         $this->app->singleton(WebhookResultStoreInterface::class, NullWebhookResultStore::class);
 
-        if (\config('easy-webhooks.send_async', true)) {
+        if (\config('easy-webhook.send_async', true)) {
             $this->app->extend(
                 WebhookClientInterface::class,
                 function (WebhookClientInterface $client): WebhookClientInterface {
@@ -121,9 +121,9 @@ final class EasyWebhooksServiceProvider extends ServiceProvider
 
         $this->app->singleton(SignatureWebhookConfigurator::class, function (): SignatureWebhookConfigurator {
             return new SignatureWebhookConfigurator(
-                $this->app->make(\config('easy-webhooks.signature.signer')),
-                \config('easy-webhooks.signature.secret'),
-                \config('easy-webhooks.signature.signature_header'),
+                $this->app->make(\config('easy-webhook.signature.signer')),
+                \config('easy-webhook.signature.secret'),
+                \config('easy-webhook.signature.signature_header'),
                 BridgeConstantsInterface::DEFAULT_CONFIGURATOR_PRIORITY + 1
             );
         });

@@ -1,4 +1,4 @@
-easy_webhooks:
+easy_webhook:
     signature:
         enabled: true
         signature_header: X-My-Header

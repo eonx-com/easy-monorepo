@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Bridge\Symfony\Stubs;
 
-use EonX\EasyWebhook\Bridge\Symfony\EasyWebhooksBundle;
-use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use EonX\EasyWebhook\Bridge\Symfony\EasyWebhookBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -48,7 +47,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyWebhooksBundle();
+        yield new EasyWebhookBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class EasyWebhooksBundle extends Bundle
+final class EasyWebhookBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {

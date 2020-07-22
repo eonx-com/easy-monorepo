@@ -12,7 +12,7 @@ final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('easy_webhooks');
+        $treeBuilder = new TreeBuilder('easy_webhook');
 
         $treeBuilder->getRootNode()
             ->children()

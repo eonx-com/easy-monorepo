@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
-final class EasyWebhooksExtension extends Extension
+final class EasyWebhookExtension extends Extension
 {
     /**
      * @var string[]
