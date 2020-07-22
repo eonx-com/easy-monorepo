@@ -53,6 +53,9 @@ final class RetrySendWebhookMiddleware implements MiddlewareInterface
         if ($result->isSuccessful() === false && $this->retryStrategy->isRetryable($result->getWebhook())) {
             $delay = $this->retryStrategy->getWaitingTime($result->getWebhook());
 
+            // Set result to null before sending back the message
+            $envelope->getMessage()->setResult(null);
+
             $this->getTransport($stamp->getTransportName())->send($envelope->with(new DelayStamp($delay)));
         }
 

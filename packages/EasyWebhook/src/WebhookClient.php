@@ -74,9 +74,7 @@ final class WebhookClient implements WebhookClientInterface
             $result = new WebhookResult($webhook, $response, $throwable);
         }
 
-        $this->resultHandler->handle($result);
-
-        return $result;
+        return $this->resultHandler->handle($result);
     }
 
     /**

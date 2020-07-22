@@ -12,6 +12,7 @@ abstract class AbstractWebhook implements WebhookInterface
      * @var string[]
      */
     protected static $setters = [
+        'body' => 'setBody',
         'current_attempt' => 'setCurrentAttempt',
         'http_options' => 'setHttpClientOptions',
         'max_attempt' => 'setMaxAttempt',

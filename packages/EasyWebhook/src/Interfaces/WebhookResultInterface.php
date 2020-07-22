@@ -7,11 +7,11 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 interface WebhookResultInterface
 {
-    public function isSuccessful(): bool;
-
     public function getResponse(): ?ResponseInterface;
 
     public function getThrowable(): ?\Throwable;
 
     public function getWebhook(): WebhookInterface;
+
+    public function isSuccessful(): bool;
 }

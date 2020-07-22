@@ -14,7 +14,7 @@ use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\RetryStrategies\ExponentialWebhookRetryStrategy;
 use EonX\EasyWebhook\Signers\Rs256Signer;
-use EonX\EasyWebhook\Stores\ArrayWebhookStore;
+use EonX\EasyWebhook\Stores\ArrayWebhookResultStore;
 use EonX\EasyWebhook\Tests\Stubs\HttpClientStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookClient;
@@ -131,8 +131,8 @@ final class WebhookClientTest extends AbstractTestCase
         self::assertEquals($httpClientOptions, $httpClient->getOptions());
     }
 
-    private function getArrayStore(): ArrayWebhookStore
+    private function getArrayStore(): ArrayWebhookResultStore
     {
-        return new ArrayWebhookStore((new RandomGenerator())->setUuidV4Generator(new RamseyUuidV4Generator()));
+        return new ArrayWebhookResultStore((new RandomGenerator())->setUuidV4Generator(new RamseyUuidV4Generator()));
     }
 }

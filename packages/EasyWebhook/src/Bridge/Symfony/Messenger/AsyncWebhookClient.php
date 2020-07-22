@@ -7,7 +7,7 @@ namespace EonX\EasyWebhook\Bridge\Symfony\Messenger;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
-use EonX\EasyWebhook\Interfaces\WebhookStoreInterface;
+use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\WebhookResult;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -24,12 +24,15 @@ final class AsyncWebhookClient implements WebhookClientInterface
     private $client;
 
     /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookStoreInterface
+     * @var \EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface
      */
     private $store;
 
-    public function __construct(MessageBusInterface $bus, WebhookClientInterface $client, WebhookStoreInterface $store)
-    {
+    public function __construct(
+        MessageBusInterface $bus,
+        WebhookClientInterface $client,
+        WebhookResultStoreInterface $store
+    ) {
         $this->bus = $bus;
         $this->client = $client;
         $this->store = $store;
@@ -41,10 +44,10 @@ final class AsyncWebhookClient implements WebhookClientInterface
             return $this->client->sendWebhook($webhook);
         }
 
-        $webhook->setId($this->store->store($webhook->toArray(), $webhook->getId()));
+        $result = $this->store->store(new WebhookResult($webhook));
 
         $this->bus->dispatch(new SendWebhookMessage($webhook->getId()));
 
-        return new WebhookResult($webhook);
+        return $result;
     }
 }

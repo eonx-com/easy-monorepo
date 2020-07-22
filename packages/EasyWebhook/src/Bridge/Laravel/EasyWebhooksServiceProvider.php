@@ -16,10 +16,10 @@ use EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultHandlerInterface;
 use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
-use EonX\EasyWebhook\Interfaces\WebhookStoreInterface;
+use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\RetryStrategies\NullWebhookRetryStrategy;
 use EonX\EasyWebhook\Signers\Rs256Signer;
-use EonX\EasyWebhook\Stores\NullWebhookStore;
+use EonX\EasyWebhook\Stores\NullWebhookResultStore;
 use EonX\EasyWebhook\WebhookClient;
 use EonX\EasyWebhook\WebhookResultHandler;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -65,6 +65,11 @@ final class EasyWebhooksServiceProvider extends ServiceProvider
                 BridgeConstantsInterface::DEFAULT_CONFIGURATOR_PRIORITY
             );
         });
+
+        $this->app->tag(
+            [BodyFormatterWebhookConfigurator::class, MethodWebhookConfigurator::class],
+            [BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR]
+        );
     }
 
     private function registerDefaultServices(): void
@@ -94,7 +99,7 @@ final class EasyWebhooksServiceProvider extends ServiceProvider
         });
 
         // Webhook Store (Default)
-        $this->app->singleton(WebhookStoreInterface::class, NullWebhookStore::class);
+        $this->app->singleton(WebhookResultStoreInterface::class, NullWebhookResultStore::class);
 
         if (\config('easy-webhooks.send_async', true)) {
             $this->app->extend(
@@ -103,7 +108,7 @@ final class EasyWebhooksServiceProvider extends ServiceProvider
                     return new AsyncWebhookClient(
                         $this->app->make(Dispatcher::class),
                         $client,
-                        $this->app->make(WebhookStoreInterface::class)
+                        $this->app->make(WebhookResultStoreInterface::class)
                     );
                 }
             );

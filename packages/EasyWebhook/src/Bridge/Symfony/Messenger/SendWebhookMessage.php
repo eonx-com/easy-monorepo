@@ -41,7 +41,7 @@ final class SendWebhookMessage implements WithLockDataInterface
         return $this->webhookId;
     }
 
-    public function setResult(WebhookResultInterface $result): self
+    public function setResult(?WebhookResultInterface $result = null): self
     {
         $this->result = $result;
 

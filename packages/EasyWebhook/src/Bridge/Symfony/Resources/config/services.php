@@ -12,9 +12,9 @@ use EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultHandlerInterface;
 use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
-use EonX\EasyWebhook\Interfaces\WebhookStoreInterface;
+use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\RetryStrategies\MultiplierWebhookRetryStrategy;
-use EonX\EasyWebhook\Stores\NullWebhookStore;
+use EonX\EasyWebhook\Stores\NullWebhookResultStore;
 use EonX\EasyWebhook\WebhookClient;
 use EonX\EasyWebhook\WebhookResultHandler;
 use Symfony\Component\HttpClient\HttpClient;
@@ -49,5 +49,5 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$httpClient', ref(BridgeConstantsInterface::HTTP_CLIENT));
 
     // Webhook Store (Default)
-    $services->set(WebhookStoreInterface::class, NullWebhookStore::class);
+    $services->set(WebhookResultStoreInterface::class, NullWebhookResultStore::class);
 };

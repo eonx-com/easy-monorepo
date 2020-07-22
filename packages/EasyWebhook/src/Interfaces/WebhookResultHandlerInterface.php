@@ -6,5 +6,5 @@ namespace EonX\EasyWebhook\Interfaces;
 
 interface WebhookResultHandlerInterface
 {
-    public function handle(WebhookResultInterface $webhookResult): void;
+    public function handle(WebhookResultInterface $webhookResult): WebhookResultInterface;
 }
