@@ -11,7 +11,9 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
+use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
 final class RetrySendWebhookMiddleware implements MiddlewareInterface
@@ -53,10 +55,17 @@ final class RetrySendWebhookMiddleware implements MiddlewareInterface
         if ($result->isSuccessful() === false && $this->retryStrategy->isRetryable($result->getWebhook())) {
             $delay = $this->retryStrategy->getWaitingTime($result->getWebhook());
 
-            // Set result to null before sending back the message
-            $envelope->getMessage()->setResult(null);
+            $retryEnvelope = $envelope
+                ->withoutAll(HandledStamp::class)
+                ->with(
+                    new DelayStamp($delay),
+                    new RedeliveryStamp($result->getWebhook()->getCurrentAttempt())
+                );
 
-            $this->getTransport($stamp->getTransportName())->send($envelope->with(new DelayStamp($delay)));
+            // Set result to null before sending back the message
+            $retryEnvelope->getMessage()->setResult(null);
+
+            $this->getTransport($stamp->getTransportName())->send($retryEnvelope);
         }
 
         return $envelope;

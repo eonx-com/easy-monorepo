@@ -18,6 +18,7 @@ final class WebhooksMigration
                 `throwable` LONGTEXT DEFAULT NULL COMMENT "(DC2Type:json)",
                 `current_attempt` int(11) DEFAULT 0 NOT NULL,
                 `max_attempt` int(11) DEFAULT 0 NOT NULL,
+                `class` varchar(191) NOT NULL,
                 `created_at` datetime DEFAULT NULL,
                 `updated_at` datetime DEFAULT NULL,
                 PRIMARY KEY (`id`)
