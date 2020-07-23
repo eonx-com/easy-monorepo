@@ -9,6 +9,7 @@ use Doctrine\DBAL\Connection;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
+use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
 use Nette\Utils\Json;
 
@@ -48,7 +49,7 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
 
         $class = $data['class'] ?? Webhook::class;
 
-        return (new WebhookResult($class::fromArray($data)->setId($id)));
+        return (new WebhookResult($class::fromArray($data)->id($id)));
     }
 
     public function store(WebhookResultInterface $result): WebhookResultInterface

@@ -17,7 +17,7 @@ use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultHandlerInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
-use EonX\EasyWebhook\RetryStrategies\NullWebhookRetryStrategy;
+use EonX\EasyWebhook\RetryStrategies\MultiplierWebhookRetryStrategy;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stores\NullWebhookResultStore;
 use EonX\EasyWebhook\WebhookClient;
@@ -84,7 +84,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         });
 
         // Webhook Retry Strategy (Default)
-        $this->app->singleton(WebhookRetryStrategyInterface::class, NullWebhookRetryStrategy::class);
+        $this->app->singleton(WebhookRetryStrategyInterface::class, MultiplierWebhookRetryStrategy::class);
 
         // Webhook Result Handler
         $this->app->singleton(WebhookResultHandlerInterface::class, WebhookResultHandler::class);
