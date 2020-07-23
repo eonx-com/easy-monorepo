@@ -26,7 +26,7 @@ use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class EasyWebhooksServiceProvider extends ServiceProvider
+final class EasyWebhookServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
