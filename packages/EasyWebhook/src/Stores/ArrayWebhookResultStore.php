@@ -46,7 +46,7 @@ final class ArrayWebhookResultStore implements WebhookResultStoreInterface
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
         if ($result->getWebhook()->getId() === null) {
-            $result->getWebhook()->setId($this->random->uuidV4());
+            $result->getWebhook()->id($this->random->uuidV4());
         }
 
         return $this->results[$result->getWebhook()->getId()] = $result;

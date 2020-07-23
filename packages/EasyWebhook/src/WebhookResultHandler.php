@@ -25,14 +25,14 @@ final class WebhookResultHandler implements WebhookResultHandlerInterface
     public function handle(WebhookResultInterface $webhookResult): WebhookResultInterface
     {
         $webhook = $webhookResult->getWebhook();
-        $webhook->setCurrentAttempt($webhook->getCurrentAttempt() + 1);
+        $webhook->currentAttempt($webhook->getCurrentAttempt() + 1);
 
         switch ($webhookResult->isSuccessful()) {
             case true:
-                $webhook->setStatus(WebhookInterface::STATUS_SUCCESS);
+                $webhook->status(WebhookInterface::STATUS_SUCCESS);
                 break;
             case false:
-                $webhook->setStatus(
+                $webhook->status(
                     $webhook->getCurrentAttempt() >= $webhook->getMaxAttempt()
                         ? WebhookInterface::STATUS_FAILED
                         : WebhookInterface::STATUS_FAILED_PENDING_RETRY

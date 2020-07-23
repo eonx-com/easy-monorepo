@@ -20,13 +20,13 @@ abstract class AbstractWebhook implements WebhookInterface
      * @var string[]
      */
     protected static $setters = [
-        'body' => 'setBody',
-        'current_attempt' => 'setCurrentAttempt',
-        'http_options' => 'setHttpClientOptions',
-        'max_attempt' => 'setMaxAttempt',
-        'method' => 'setMethod',
-        'status' => 'setStatus',
-        'url' => 'setUrl',
+        'body' => 'body',
+        'current_attempt' => 'currentAttempt',
+        'http_options' => 'httpClientOptions',
+        'max_attempt' => 'maxAttempt',
+        'method' => 'method',
+        'status' => 'status',
+        'url' => 'url',
     ];
 
     /**
@@ -89,10 +89,10 @@ abstract class AbstractWebhook implements WebhookInterface
      */
     public static function create(string $url, ?array $body = null, ?string $method = null): WebhookInterface
     {
-        $webhook = (new static())->setUrl($url)->setMethod($method ?? self::DEFAULT_METHOD);
+        $webhook = (new static())->url($url)->method($method ?? self::DEFAULT_METHOD);
 
         if ($body !== null) {
-            $webhook->setBody($body);
+            $webhook->body($body);
         }
 
         return $webhook;
@@ -115,6 +115,30 @@ abstract class AbstractWebhook implements WebhookInterface
         }
 
         return $webhook;
+    }
+
+    /**
+     * @param mixed[] $body
+     */
+    public function body(array $body): WebhookInterface
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+    public function currentAttempt(int $currentAttempt): WebhookInterface
+    {
+        $this->currentAttempt = $currentAttempt;
+
+        return $this;
+    }
+
+    public function extra(array $extra): WebhookInterface
+    {
+        $this->extra = $extra;
+
+        return $this;
     }
 
     /**
@@ -176,9 +200,43 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this->url;
     }
 
+    /**
+     * @param mixed[] $options
+     */
+    public function httpClientOptions(array $options): WebhookInterface
+    {
+        $this->httpClientOptions = $options;
+
+        return $this;
+    }
+
+    public function id(string $id): WebhookInterface
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function isSendNow(): bool
     {
         return $this->sendNow ?? false;
+    }
+
+    public function maxAttempt(int $maxAttempt): WebhookInterface
+    {
+        $this->maxAttempt = $maxAttempt;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed[] $extra
+     */
+    public function mergeExtra(array $extra): WebhookInterface
+    {
+        $this->extra = \array_merge_recursive($this->extra ?? [], $extra);
+
+        return $this;
     }
 
     /**
@@ -191,85 +249,30 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $body
-     */
-    public function setBody(array $body): WebhookInterface
-    {
-        $this->body = $body;
-
-        return $this;
-    }
-
-    public function setCurrentAttempt(int $currentAttempt): WebhookInterface
-    {
-        $this->currentAttempt = $currentAttempt;
-
-        return $this;
-    }
-
-    public function setExtra(array $extra): WebhookInterface
-    {
-        $this->extra = $extra;
-
-        return $this;
-    }
-
-    /**
-     * @param mixed[] $options
-     */
-    public function setHttpClientOptions(array $options): WebhookInterface
-    {
-        $this->httpClientOptions = $options;
-
-        return $this;
-    }
-
-    public function setId(string $id): WebhookInterface
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    public function setMaxAttempt(int $maxAttempt): WebhookInterface
-    {
-        $this->maxAttempt = $maxAttempt;
-
-        return $this;
-    }
-
-    public function setMethod(string $method): WebhookInterface
+    public function method(string $method): WebhookInterface
     {
         $this->method = $method;
 
         return $this;
     }
 
-    public function setSecret(string $secret): WebhookInterface
+    public function secret(string $secret): WebhookInterface
     {
         $this->secret = $secret;
 
         return $this;
     }
 
-    public function setSendNow(bool $sendNow): WebhookInterface
+    public function sendNow(?bool $sendNow = null): WebhookInterface
     {
-        $this->sendNow = $sendNow;
+        $this->sendNow = $sendNow ?? true;
 
         return $this;
     }
 
-    public function setStatus(string $status): WebhookInterface
+    public function status(string $status): WebhookInterface
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function setUrl(string $url): WebhookInterface
-    {
-        $this->url = $url;
 
         return $this;
     }
@@ -284,5 +287,12 @@ abstract class AbstractWebhook implements WebhookInterface
             'status' => $this->getStatus(),
             'url' => $this->getUrl(),
         ];
+    }
+
+    public function url(string $url): WebhookInterface
+    {
+        $this->url = $url;
+
+        return $this;
     }
 }

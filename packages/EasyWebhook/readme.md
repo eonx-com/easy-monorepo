@@ -51,10 +51,10 @@ final class MyService
 
         // Create webhook using fluent setters
         $webhook = (new Webhook())
-            ->setUrl('https://eonx.com/webhook')
-            ->setBody(['event' => 'showcase'])
-            ->setMethod('PUT')
-            ->setMaxAttempt(5);
+            ->url('https://eonx.com/webhook')
+            ->body(['event' => 'showcase'])
+            ->method('PUT')
+            ->maxAttempt(5);
 
         // Send the webhook
         $this->webhookClient->sendWebhook($webhook);

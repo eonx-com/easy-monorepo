@@ -28,7 +28,7 @@ final class WebhookClientTest extends AbstractTestCase
     public function providerTestSend(): iterable
     {
         yield 'Simple URL' => [
-            (new Webhook())->setUrl('https://eonx.com'),
+            (new Webhook())->url('https://eonx.com'),
             null,
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
@@ -37,8 +37,8 @@ final class WebhookClientTest extends AbstractTestCase
 
         yield 'Method from Webhook has priority' => [
             (new Webhook())
-                ->setUrl('https://eonx.com')
-                ->setMethod('PUT'),
+                ->url('https://eonx.com')
+                ->method('PUT'),
             [new MethodWebhookConfigurator('PATCH')],
             'PUT',
             'https://eonx.com',
@@ -47,8 +47,8 @@ final class WebhookClientTest extends AbstractTestCase
 
         yield 'Body formatter with header' => [
             (new Webhook())
-                ->setUrl('https://eonx.com')
-                ->setBody(['key' => 'value']),
+                ->url('https://eonx.com')
+                ->body(['key' => 'value']),
             [new BodyFormatterWebhookConfigurator(new JsonFormatter())],
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
@@ -61,7 +61,7 @@ final class WebhookClientTest extends AbstractTestCase
         ];
 
         yield 'Configurator priorities run higher last' => [
-            (new Webhook())->setUrl('https://eonx.com'),
+            (new Webhook())->url('https://eonx.com'),
             [
                 new MethodWebhookConfigurator('PATCH', 200),
                 new MethodWebhookConfigurator('PUT', 100),
@@ -72,7 +72,7 @@ final class WebhookClientTest extends AbstractTestCase
         ];
 
         yield 'Configurators as Traversable' => [
-            (new Webhook())->setUrl('https://eonx.com'),
+            (new Webhook())->url('https://eonx.com'),
             new \EmptyIterator(),
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
@@ -81,8 +81,8 @@ final class WebhookClientTest extends AbstractTestCase
 
         yield 'RS256 Signature' => [
             (new Webhook())
-                ->setUrl('https://eonx.com')
-                ->setBody(['key' => 'value']),
+                ->url('https://eonx.com')
+                ->body(['key' => 'value']),
             [
                 new BodyFormatterWebhookConfigurator(new JsonFormatter()),
                 new SignatureWebhookConfigurator(new Rs256Signer(), 'my-secret'),

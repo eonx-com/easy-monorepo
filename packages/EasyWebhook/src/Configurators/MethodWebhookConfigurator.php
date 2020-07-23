@@ -26,6 +26,6 @@ final class MethodWebhookConfigurator extends AbstractWebhookConfigurator
             return;
         }
 
-        $webhook->setMethod($this->method);
+        $webhook->method($this->method);
     }
 }

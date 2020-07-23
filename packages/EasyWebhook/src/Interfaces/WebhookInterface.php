@@ -31,6 +31,12 @@ interface WebhookInterface
      */
     public const STATUS_SUCCESS = 'success';
 
+    public function body(array $body): self;
+
+    public function currentAttempt(int $currentAttempt): self;
+
+    public function extra(array $extra): self;
+
     public static function fromArray(array $data): WebhookInterface;
 
     public function getBody(): ?array;
@@ -53,31 +59,27 @@ interface WebhookInterface
 
     public function getUrl(): ?string;
 
+    public function httpClientOptions(array $options): self;
+
+    public function id(string $id): self;
+
     public function isSendNow(): bool;
+
+    public function maxAttempt(int $maxAttempt): self;
+
+    public function mergeExtra(array $extra): self;
 
     public function mergeHttpClientOptions(array $options): self;
 
-    public function setBody(array $body): self;
+    public function method(string $method): self;
 
-    public function setCurrentAttempt(int $currentAttempt): self;
+    public function secret(string $secret): self;
 
-    public function setExtra(array $extra): self;
+    public function sendNow(?bool $sendNow = null): self;
 
-    public function setHttpClientOptions(array $options): self;
-
-    public function setId(string $id): self;
-
-    public function setMaxAttempt(int $maxAttempt): self;
-
-    public function setMethod(string $method): self;
-
-    public function setSecret(string $secret): self;
-
-    public function setSendNow(bool $sendNow): self;
-
-    public function setStatus(string $status): self;
-
-    public function setUrl(string $url): self;
+    public function status(string $status): self;
 
     public function toArray(): array;
+
+    public function url(string $url): self;
 }

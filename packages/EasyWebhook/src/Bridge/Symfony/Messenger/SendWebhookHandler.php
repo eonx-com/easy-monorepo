@@ -44,6 +44,6 @@ final class SendWebhookHandler implements MessageHandlerInterface
             return;
         }
 
-        $message->setResult($this->client->sendWebhook($result->getWebhook()->setSendNow(true)));
+        $message->setResult($this->client->sendWebhook($result->getWebhook()->sendNow(true)));
     }
 }
