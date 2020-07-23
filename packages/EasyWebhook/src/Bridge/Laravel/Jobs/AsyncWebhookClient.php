@@ -26,7 +26,9 @@ final class AsyncWebhookClient extends AbstractAsyncWebhookClient
 
     protected function sendAsync(WebhookResultInterface $result): WebhookResultInterface
     {
-        $this->bus->dispatch(new SendWebhookJob($result->getWebhook()->getId()));
+        $webhook = $result->getWebhook();
+
+        $this->bus->dispatch(new SendWebhookJob($webhook->getId(), $webhook->getMaxAttempt()));
 
         return $result;
     }

@@ -23,13 +23,19 @@ final class SendWebhookJob implements ShouldQueue, WithLockDataInterface
     use ProcessWithLockTrait;
 
     /**
+     * @var int
+     */
+    public $tries;
+
+    /**
      * @var string
      */
     private $webhookId;
 
-    public function __construct(string $webhookId)
+    public function __construct(string $webhookId, ?int $tries = null)
     {
         $this->webhookId = $webhookId;
+        $this->tries = $tries ?? 1;
     }
 
     public function getLockData(): LockDataInterface
