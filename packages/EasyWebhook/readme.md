@@ -71,7 +71,7 @@ If not set the default method of a webhook is `POST`.
 ### Send webhooks asynchronously
 
 By default, this package will send webhooks asynchronously if possible. This logic can be changed for every webhook
-at the configuration level by setting `send_async = false`. It can also be change for specific webhook using the 
+at the configuration level by setting `send_async = false`. It can also be changed for specific webhook using the 
 `sendNow()` method.
 
 ```php
