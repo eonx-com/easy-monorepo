@@ -46,7 +46,7 @@ final class WithEventsWebhookClient implements WebhookClientInterface
                 $event = new SuccessWebhookEvent($result);
         }
 
-        if ($event === null) {
+        if ($event !== null) {
             $this->dispatcher->dispatch($event);
         }
 
