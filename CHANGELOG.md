@@ -2,7 +2,25 @@
 
 <!-- dumped content start -->
 
-## v2.4.19 - 2020-07-20
+## v2.4.20 - 2020-07-24
+
+### EasyErrorHandler
+
+- [#282] Support illuminate support version to 6.0, Thanks to [@skrut]
+
+### EasyLock
+
+- [#284] Make laravel bridge consistent
+
+### EasyWebhook
+
+- [#283] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.19] - 2020-07-20
 
 ### EasyCore
 
@@ -1896,3 +1914,7 @@
 [#280]: https://github.com/eonx-com/easy-monorepo/pull/280
 [#278]: https://github.com/eonx-com/easy-monorepo/pull/278
 [v2.4.18]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.17...v2.4.18
+[#284]: https://github.com/eonx-com/easy-monorepo/pull/284
+[#283]: https://github.com/eonx-com/easy-monorepo/pull/283
+[#282]: https://github.com/eonx-com/easy-monorepo/pull/282
+[v2.4.19]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.18...v2.4.19
