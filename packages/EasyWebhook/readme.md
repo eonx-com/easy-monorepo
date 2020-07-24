@@ -80,6 +80,12 @@ $webhookClient->sendWebhook(Webhook::create('https://eonx.com')->sendNow());
 
 <br>
 
+### Retry Strategy
+
+By default, this package uses a retry-strategy which will increase the delay between retries exponentially. To modify
+the retry-strategy simply override the `EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface` service with your
+own implementation, or the default one with different arguments.
+
 ### Webhook Configurators
 
 This package has concept of webhook configurators which are used every time a webhook is sent. This mechanism is used
