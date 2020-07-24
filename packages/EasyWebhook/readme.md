@@ -3,9 +3,7 @@ title: Introduction
 weight: 0
 ---eonx_docs---
 
-The purpose of this package isn't to be used within a project by the application as there is no point in creating
-another level of abstraction in that case BUT only to allow eonx-com packages to dispatch events without
-having to think about the event dispatcher used by each of our projects.
+Send webhooks asynchronously, retry if it fails, and persist them into the store of your choice, all that out of the box!
 
 ### Require package (Composer)
 
