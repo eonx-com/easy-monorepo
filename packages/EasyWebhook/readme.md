@@ -137,4 +137,12 @@ This package comes with a Doctrine DBAL store implementation you can use by simp
 This store will persist each extra information on the webhook as a separate column.
 :::
 
+### Events
+
+Events containing the webhook result are dispatched so you can have business logic associated to it:
+
+- `EonX\EasyWebhook\Events\SuccessWebhookEvent`: dispatched when webhook sent successfully 
+- `EonX\EasyWebhook\Events\FailedWebhookEvent`: dispatched when webhook failed and is waiting to be retried 
+- `EonX\EasyWebhook\Events\FinalFailedWebhookEvent`: dispatched when webhook failed and cannot be retried anymore 
+
 [1]: https://getcomposer.org/
