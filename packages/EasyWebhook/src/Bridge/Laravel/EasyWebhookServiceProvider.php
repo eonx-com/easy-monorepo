@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Laravel;
 
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
 use EonX\EasyWebhook\Bridge\Laravel\Jobs\AsyncWebhookClient;
 use EonX\EasyWebhook\Configurators\BodyFormatterWebhookConfigurator;
@@ -22,6 +23,7 @@ use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stores\NullWebhookResultStore;
 use EonX\EasyWebhook\WebhookClient;
 use EonX\EasyWebhook\WebhookResultHandler;
+use EonX\EasyWebhook\WithEventsWebhookClient;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -91,11 +93,13 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
         // Webhook Client
         $this->app->singleton(WebhookClientInterface::class, function (): WebhookClientInterface {
-            return new WebhookClient(
+            $client = new WebhookClient(
                 $this->app->make(BridgeConstantsInterface::HTTP_CLIENT),
                 $this->app->make(WebhookResultHandlerInterface::class),
                 $this->app->tagged(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR)
             );
+
+            return new WithEventsWebhookClient($client, $this->app->make(EventDispatcherInterface::class));
         });
 
         // Webhook Store (Default)
