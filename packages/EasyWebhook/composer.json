@@ -1,0 +1,34 @@
+{
+    "name": "eonx-com/easy-webhook",
+    "description": "Sending webhooks has never been so easy (persistence, retry, async)",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "eonx-com/easy-event-dispatcher": "^2.4",
+        "eonx-com/easy-lock": "^2.4",
+        "eonx-com/easy-random": "^2.4",
+        "nesbot/carbon": "^2.22",
+        "symfony/http-client": "^4.2 || ^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5 || ^8.4",
+        "laravel/lumen-framework": "^5.5",
+        "symfony/symfony": "^4.2 || ^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasyWebhook\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasyWebhook\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.5-dev"
+        }
+    }
+}
