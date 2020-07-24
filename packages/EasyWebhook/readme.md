@@ -137,6 +137,8 @@ This package comes with a Doctrine DBAL store implementation you can use by simp
 This store will persist each extra information on the webhook as a separate column.
 :::
 
+<br>
+
 ### Events
 
 Events containing the webhook result are dispatched so you can have business logic associated to it:
