@@ -6,6 +6,7 @@ namespace EonX\EasyLock\Tests\Bridge\Laravel;
 
 use Doctrine\DBAL\DriverManager;
 use EonX\EasyEventDispatcher\Tests\AbstractTestCase;
+use EonX\EasyLock\Bridge\BridgeConstantsInterface;
 use EonX\EasyLock\Bridge\Laravel\EasyLockServiceProvider;
 use Laravel\Lumen\Application;
 
@@ -24,9 +25,10 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
 
         $app = new Application(__DIR__);
         $app->register(EasyLockServiceProvider::class);
-        $app->instance('in_memory_connection', DriverManager::getConnection(['url' => 'sqlite:///:memory:']));
-
-        \config(['easy-lock.connection' => 'in_memory_connection']);
+        $app->instance(
+            BridgeConstantsInterface::SERVICE_CONNECTION,
+            DriverManager::getConnection(['url' => 'sqlite:///:memory:'])
+        );
 
         return $this->app = $app;
     }
