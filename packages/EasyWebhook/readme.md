@@ -15,12 +15,16 @@ The recommended way to install this package is to use [Composer][1]:
 $ composer require eonx-com/easy-webhook
 ```
 
+<br>
+
 ### Usage
 
 The webhook client to send webhooks is automatically registered within the service container, so you can use 
 dependency injection to access the fully configured client easily.
 
 ```php
+// MyService.php
+
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Webhook;
 
@@ -64,6 +68,8 @@ final class MyService
 
 If not set the default method of a webhook is `POST`.
 
+<br>
+
 ### Send webhooks asynchronously
 
 By default, this package will send webhooks asynchronously if possible. This logic can be changed for every webhook
@@ -74,6 +80,8 @@ at the configuration level by setting `send_async = false`. It can also be chang
 $webhookClient->sendWebhook(Webhook::create('https://eonx.com')->sendNow());
 ``` 
 
+<br>
+
 ### Webhook Configurators
 
 This package has concept of webhook configurators which are used every time a webhook is sent. This mechanism is used
@@ -82,7 +90,9 @@ every webhooks before sending them.
 
 A webhook configurator is a service implementing `EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface`. 
 
-::: tip
+<p style="display: none;"></p>
+
+::: tip | Tip
 Depends on the framework used by the application, the configurators might be automatically injected in the webhook 
 client or you might have to manually tag them when registering them.
 :::
@@ -112,6 +122,8 @@ final class MyCustomHeaderWebhookConfigurator extends AbstractWebhookConfigurato
 }
 ```
 
+<br>
+
 ### Webhook Result store
 
 This package allows you to store webhook results within the persisting layer of your choice. By default, it will not
@@ -120,7 +132,9 @@ store them anywhere.
 To change the storing logic, simply override the `EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface` service 
 with you own.
 
-::: tip
+<p style="display: none;"></p>
+
+::: tip | Tip
 This package comes with a Doctrine DBAL store implementation you can use by simply providing it with your own connection.
 This store will persist each extra information on the webhook as a separate column.
 :::

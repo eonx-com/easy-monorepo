@@ -1,3 +1,7 @@
+---eonx_docs---
+ignore: true
+---eonx_docs---
+
 # MySQL Migrations
 
 ## Webhooks
