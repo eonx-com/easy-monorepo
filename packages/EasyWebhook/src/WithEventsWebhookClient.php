@@ -30,6 +30,11 @@ final class WithEventsWebhookClient implements WebhookClientInterface
         $this->dispatcher = $dispatcher;
     }
 
+    public function configure(WebhookInterface $webhook): WebhookInterface
+    {
+        return $this->decorated->configure($webhook);
+    }
+
     public function sendWebhook(WebhookInterface $webhook): WebhookResultInterface
     {
         $event = null;

@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook;
 
-use EonX\EasyWebhook\Exceptions\InvalidWebhookMethodException;
 use EonX\EasyWebhook\Exceptions\InvalidWebhookUrlException;
-use EonX\EasyWebhook\Interfaces\WebhookClientConfigInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface;
-use EonX\EasyWebhook\Interfaces\WebhookDataInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultHandlerInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
@@ -46,11 +43,22 @@ final class WebhookClient implements WebhookClientInterface
         $this->configurators = $this->filterConfigurators($configurators);
     }
 
-    public function sendWebhook(WebhookInterface $webhook): WebhookResultInterface
+    public function configure(WebhookInterface $webhook): WebhookInterface
     {
+        if ($webhook->isConfigured()) {
+            return $webhook;
+        }
+
         foreach ($this->configurators as $configurator) {
             $configurator->configure($webhook);
         }
+
+        return $webhook->configured(true);
+    }
+
+    public function sendWebhook(WebhookInterface $webhook): WebhookResultInterface
+    {
+        $webhook = $this->configure($webhook);
 
         $method = $webhook->getMethod() ?? WebhookInterface::DEFAULT_METHOD;
         $url = $webhook->getUrl();
