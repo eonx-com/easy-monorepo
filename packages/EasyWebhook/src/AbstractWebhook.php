@@ -35,6 +35,11 @@ abstract class AbstractWebhook implements WebhookInterface
     private $body;
 
     /**
+     * @var null|boolean
+     */
+    private $configured;
+
+    /**
      * @var null|int
      */
     private $currentAttempt;
@@ -127,6 +132,13 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
+    public function configured(?bool $configured = null): WebhookInterface
+    {
+        $this->configured = $configured ?? true;
+
+        return $this;
+    }
+
     public function currentAttempt(int $currentAttempt): WebhookInterface
     {
         $this->currentAttempt = $currentAttempt;
@@ -215,6 +227,11 @@ abstract class AbstractWebhook implements WebhookInterface
         $this->id = $id;
 
         return $this;
+    }
+
+    public function isConfigured(): bool
+    {
+        return $this->configured ?? false;
     }
 
     public function isSendNow(): bool

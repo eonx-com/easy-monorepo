@@ -30,8 +30,15 @@ abstract class AbstractAsyncWebhookClient implements WebhookClientInterface
         $this->store = $store;
     }
 
+    public function configure(WebhookInterface $webhook): WebhookInterface
+    {
+        return $this->client->configure($webhook);
+    }
+
     public function sendWebhook(WebhookInterface $webhook): WebhookResultInterface
     {
+        $webhook = $this->configure($webhook);
+        
         if ($webhook->isSendNow()) {
             return $this->client->sendWebhook($webhook);
         }
