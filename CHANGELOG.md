@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.20 - 2020-07-24
+## v2.4.21 - 2020-07-26
+
+### EasyWebhook
+
+- [#285] Make sure webhook are always configured
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.20] - 2020-07-24
 
 ### EasyErrorHandler
 
@@ -1918,3 +1928,5 @@
 [#283]: https://github.com/eonx-com/easy-monorepo/pull/283
 [#282]: https://github.com/eonx-com/easy-monorepo/pull/282
 [v2.4.19]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.18...v2.4.19
+[#285]: https://github.com/eonx-com/easy-monorepo/pull/285
+[v2.4.20]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.19...v2.4.20
