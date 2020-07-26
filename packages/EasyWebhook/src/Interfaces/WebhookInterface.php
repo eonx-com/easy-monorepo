@@ -33,6 +33,8 @@ interface WebhookInterface
 
     public function body(array $body): self;
 
+    public function configured(?bool $configured = null): self;
+
     public function currentAttempt(int $currentAttempt): self;
 
     public function extra(array $extra): self;
@@ -61,6 +63,8 @@ interface WebhookInterface
 
     public function httpClientOptions(array $options): self;
 
+    public function isConfigured(): bool;
+    
     public function id(string $id): self;
 
     public function isSendNow(): bool;

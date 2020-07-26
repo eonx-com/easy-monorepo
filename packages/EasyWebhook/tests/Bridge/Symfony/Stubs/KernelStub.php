@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Bridge\Symfony\Stubs;
 
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyWebhook\Bridge\Symfony\EasyWebhookBundle;
+use EonX\EasyWebhook\Tests\Stubs\EventDispatcherStub;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -31,6 +33,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        $container->setDefinition(EventDispatcherInterface::class, new Definition(EventDispatcherStub::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
 
         foreach ($container->getAliases() as $alias) {
