@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Configurators;
 
-use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\JwtInterface;
 use EonX\EasySecurity\Interfaces\JwtClaimFetcherInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\JwtClaimFetcher;
@@ -33,11 +33,11 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
     {
         $token = $context->getToken();
 
-        if ($token instanceof JwtEasyApiTokenInterface === false) {
+        if ($token instanceof JwtInterface === false) {
             return;
         }
 
-        /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
+        /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtInterface $token */
 
         $this->doConfigure($context, $request, $token);
     }
@@ -50,7 +50,7 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
     abstract protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        JwtEasyApiTokenInterface $token
+        JwtInterface $token
     ): void;
 
     /**
@@ -58,7 +58,7 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
      *
      * @return mixed
      */
-    protected function getClaim(JwtEasyApiTokenInterface $token, string $claim, $default = null)
+    protected function getClaim(JwtInterface $token, string $claim, $default = null)
     {
         return $this->getJwtClaimFetcher()->getClaim($token, $claim, $default);
     }
@@ -68,7 +68,7 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
      *
      * @return mixed[]
      */
-    protected function getMainClaim(JwtEasyApiTokenInterface $token, ?array $default = null): array
+    protected function getMainClaim(JwtInterface $token, ?array $default = null): array
     {
         return $this->getJwtClaimFetcher()->getArrayClaim($token, $this->jwtClaim, $default);
     }

@@ -6,7 +6,7 @@ namespace EonX\EasyApiToken\Tests\Decoders;
 
 use EonX\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use EonX\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase;
-use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Tokens\Jwt;
 
 final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenTestCase
 {
@@ -30,12 +30,12 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
                 'param' => $this->createToken($algo),
             ]);
 
-            /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
+            /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtInterface $token */
             $token = $decoder->decode($request);
 
             $payload = $token->getPayload();
 
-            self::assertInstanceOf(JwtEasyApiToken::class, $token);
+            self::assertInstanceOf(Jwt::class, $token);
 
             foreach (static::$tokenPayload as $key => $value) {
                 self::assertArrayHasKey($key, $payload);

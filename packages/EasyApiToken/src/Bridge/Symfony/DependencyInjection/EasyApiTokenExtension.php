@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Bridge\Symfony\DependencyInjection;
 
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

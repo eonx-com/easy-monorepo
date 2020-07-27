@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tokens;
 
-use EonX\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\BasicAuthInterface;
 
-final class BasicAuthEasyApiToken implements BasicAuthEasyApiTokenInterface
+final class BasicAuth implements BasicAuthInterface
 {
     /**
      * @var string
@@ -56,3 +56,5 @@ final class BasicAuthEasyApiToken implements BasicAuthEasyApiTokenInterface
         return $this->username;
     }
 }
+
+\class_alias(BasicAuth::class, BasicAuthEasyApiToken::class);

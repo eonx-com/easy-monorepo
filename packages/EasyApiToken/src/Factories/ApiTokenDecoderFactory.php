@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Factories;
 
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderSubFactoryInterface;
 use EonX\EasyApiToken\Interfaces\Factories\MasterDecoderFactoryAwareInterface;
 use EonX\EasyApiToken\Traits\DefaultDecoderFactoriesTrait;
 use Psr\Container\ContainerInterface;
 
-class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
+class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
 {
     use DefaultDecoderFactoriesTrait;
 
@@ -47,7 +47,7 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
         $this->defaultFactories = $defaultFactories ?? $this->getDefaultDecoderFactories();
     }
 
-    public function build(string $decoder): EasyApiTokenDecoderInterface
+    public function build(string $decoder): ApiTokenDecoderInterface
     {
         if (isset($this->resolved[$decoder])) {
             return $this->resolved[$decoder];
@@ -106,7 +106,7 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    private function instantiateSubFactory(string $decoder, array $config): EasyApiTokenDecoderSubFactoryInterface
+    private function instantiateSubFactory(string $decoder, array $config): ApiTokenDecoderSubFactoryInterface
     {
         $factoryClass = $this->getSubFactoryClass($decoder, $config);
 
@@ -134,3 +134,5 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
         ));
     }
 }
+
+\class_alias(ApiTokenDecoderFactory::class, EasyApiTokenDecoderFactory::class);

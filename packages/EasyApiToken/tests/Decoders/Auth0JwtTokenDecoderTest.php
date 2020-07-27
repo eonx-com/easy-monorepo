@@ -6,7 +6,7 @@ namespace EonX\EasyApiToken\Tests\Decoders;
 
 use EonX\EasyApiToken\Decoders\JwtTokenDecoder;
 use EonX\EasyApiToken\Tests\AbstractAuth0JwtTokenTestCase;
-use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Tokens\Jwt;
 
 final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
 {
@@ -14,14 +14,14 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
     {
         $jwtEasyApiTokenFactory = $this->createJwtEasyApiTokenFactory($this->createAuth0JwtDriver());
 
-        /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
+        /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtInterface $token */
         $token = (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken(),
         ]));
 
         $payload = $token->getPayload();
 
-        self::assertInstanceOf(JwtEasyApiToken::class, $token);
+        self::assertInstanceOf(Jwt::class, $token);
 
         foreach (static::$tokenPayload as $key => $value) {
             self::assertArrayHasKey($key, $payload);

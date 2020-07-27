@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\DependencyInjection;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredSecurityContextAwareInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\DeferredSecurityContextResolverInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\ParametersInterface;
@@ -96,11 +96,11 @@ final class EasySecurityExtension extends Extension
         $def = $container->getDefinition(SecurityContextResolverInterface::class);
 
         // Use EasyApiToken package directly to build decoder
-        $tokenDecoderDef = (new Definition(EasyApiTokenDecoderInterface::class))
-            ->setFactory([new Reference(EasyApiTokenDecoderFactoryInterface::class), 'build'])
+        $tokenDecoderDef = (new Definition(ApiTokenDecoderInterface::class))
+            ->setFactory([new Reference(ApiTokenDecoderFactoryInterface::class), 'build'])
             ->setArguments([$config['token_decoder']]);
 
-        $container->setDefinition(EasyApiTokenDecoderInterface::class, $tokenDecoderDef);
+        $container->setDefinition(ApiTokenDecoderInterface::class, $tokenDecoderDef);
 
         $def->setArgument('$contextModifiers', new TaggedIteratorArgument(TagsInterface::TAG_CONTEXT_MODIFIER));
         $def->setArgument('$contextConfigurators', new TaggedIteratorArgument(TagsInterface::TAG_CONTEXT_CONFIGURATOR));

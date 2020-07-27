@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Configurators;
 
-use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
+use EonX\EasyApiToken\Tokens\ApiKey;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\PermissionFromApiKeyConfiguratorStub;
@@ -24,7 +24,7 @@ final class AbstractFromApiKeyConfiguratorTest extends AbstractTestCase
     public function testPermissionSetWhenApiKeyToken(): void
     {
         $context = new SecurityContext();
-        $context->setToken(new ApiKeyEasyApiToken('api-key'));
+        $context->setToken(new ApiKey('api-key'));
 
         $configurator = new PermissionFromApiKeyConfiguratorStub('my-permission');
         $configurator->configure($context, new Request());
