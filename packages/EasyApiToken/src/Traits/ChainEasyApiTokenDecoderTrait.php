@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Traits;
 
 use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 
 trait ChainEasyApiTokenDecoderTrait
 {
@@ -16,14 +16,14 @@ trait ChainEasyApiTokenDecoderTrait
      */
     private function validateDecoder($decoder): void
     {
-        if ($decoder instanceof EasyApiTokenDecoderInterface) {
+        if ($decoder instanceof ApiTokenDecoderInterface) {
             return;
         }
 
         throw new InvalidArgumentException(\sprintf(
             'In "%s", decoder must be an instance of "%s", "%s" given',
             static::class,
-            EasyApiTokenDecoderInterface::class,
+            ApiTokenDecoderInterface::class,
             \gettype($decoder)
         ));
     }

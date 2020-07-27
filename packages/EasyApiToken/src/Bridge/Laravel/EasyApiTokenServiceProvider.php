@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Bridge\Laravel;
 
-use EonX\EasyApiToken\Factories\EasyApiTokenDecoderFactory;
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface as DecoderFactoryInterface;
+use EonX\EasyApiToken\Factories\ApiTokenDecoderFactory;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface as DecoderFactoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyApiTokenServiceProvider extends ServiceProvider
@@ -22,7 +22,7 @@ final class EasyApiTokenServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config/easy-api-token.php', 'easy-api-token');
 
         $this->app->singleton(DecoderFactoryInterface::class, function (): DecoderFactoryInterface {
-            return new EasyApiTokenDecoderFactory(
+            return new ApiTokenDecoderFactory(
                 \config('easy-api-token.decoders', []),
                 \config('easy-api-token.factories', null)
             );

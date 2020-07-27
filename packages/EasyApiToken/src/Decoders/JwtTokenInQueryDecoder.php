@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Decoders;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface;
 use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
+final class JwtTokenInQueryDecoder implements ApiTokenDecoderInterface
 {
     use EasyApiTokenDecoderTrait;
 
     /**
-     * @var \EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface
+     * @var \EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface
      */
     private $jwtApiTokenFactory;
 
@@ -24,13 +24,13 @@ final class JwtTokenInQueryDecoder implements EasyApiTokenDecoderInterface
      */
     private $queryParam;
 
-    public function __construct(JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory, string $queryParam)
+    public function __construct(JwtFactoryInterface $jwtApiTokenFactory, string $queryParam)
     {
         $this->jwtApiTokenFactory = $jwtApiTokenFactory;
         $this->queryParam = $queryParam;
     }
 
-    public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
+    public function decode(ServerRequestInterface $request): ?ApiTokenInterface
     {
         $jwtToken = $this->getQueryParam($this->queryParam, $request);
 

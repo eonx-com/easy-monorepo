@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests;
 
-use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
+use EonX\EasyApiToken\Tokens\ApiKey;
 use EonX\EasySecurity\Exceptions\NoProviderInContextException;
 use EonX\EasySecurity\Exceptions\NoUserInContextException;
 use EonX\EasySecurity\Permission;
@@ -159,7 +159,7 @@ final class SecurityContextTest extends AbstractTestCase
      */
     public function testContextGetters(array $roles, int $countRoles, int $countPermissions): void
     {
-        $token = new ApiKeyEasyApiToken('api-key');
+        $token = new ApiKey('api-key');
         $provider = new ProviderInterfaceStub('uniqueId');
         $user = new UserInterfaceStub('uniqueId');
 

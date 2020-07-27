@@ -6,5 +6,5 @@ namespace EonX\EasyApiToken\Interfaces\Factories;
 
 interface MasterDecoderFactoryAwareInterface
 {
-    public function setMasterFactory(EasyApiTokenDecoderFactoryInterface $factory): void;
+    public function setMasterFactory(ApiTokenDecoderFactoryInterface $factory): void;
 }

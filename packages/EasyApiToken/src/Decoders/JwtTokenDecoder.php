@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Decoders;
 
 use EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface;
 use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-final class JwtTokenDecoder implements EasyApiTokenDecoderInterface
+final class JwtTokenDecoder implements ApiTokenDecoderInterface
 {
     use EasyApiTokenDecoderTrait;
 
     /**
-     * @var \EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface
+     * @var \EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface
      */
     private $jwtApiTokenFactory;
 
@@ -27,13 +27,13 @@ final class JwtTokenDecoder implements EasyApiTokenDecoderInterface
      */
     private $logger;
 
-    public function __construct(JwtEasyApiTokenFactoryInterface $jwtApiTokenFactory, ?LoggerInterface $logger = null)
+    public function __construct(JwtFactoryInterface $jwtApiTokenFactory, ?LoggerInterface $logger = null)
     {
         $this->jwtApiTokenFactory = $jwtApiTokenFactory;
         $this->logger = $logger ?? new NullLogger();
     }
 
-    public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
+    public function decode(ServerRequestInterface $request): ?ApiTokenInterface
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Bearer', $request);
 

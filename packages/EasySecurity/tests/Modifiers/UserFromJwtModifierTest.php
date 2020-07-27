@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Modifiers;
 
-use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
-use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Tokens\ApiKey;
+use EonX\EasyApiToken\Tokens\Jwt;
 use EonX\EasySecurity\Context;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
@@ -29,35 +29,35 @@ final class UserFromJwtModifierTest extends AbstractTestCase
         ];
 
         $context = new Context();
-        $context->setToken(new ApiKeyEasyApiToken('api-key'));
+        $context->setToken(new ApiKey('api-key'));
 
         yield 'No user resolved because token not jwt' => [
             new UserProviderInterfaceStub(),
             $context,
         ];
 
-        $context->setToken(new JwtEasyApiToken([], 'jwt'));
+        $context->setToken(new Jwt([], 'jwt'));
 
         yield 'No user resolved because no sub claim' => [
             new UserProviderInterfaceStub(),
             $context,
         ];
 
-        $context->setToken(new JwtEasyApiToken(['sub' => ''], 'jwt'));
+        $context->setToken(new Jwt(['sub' => ''], 'jwt'));
 
         yield 'No user resolved because sub claim empty' => [
             new UserProviderInterfaceStub(),
             $context,
         ];
 
-        $context->setToken(new JwtEasyApiToken(['sub' => 'user-id'], 'jwt'));
+        $context->setToken(new Jwt(['sub' => 'user-id'], 'jwt'));
 
         yield 'No user resolved because provider returned null' => [
             new UserProviderInterfaceStub(),
             $context,
         ];
 
-        $context->setToken(new JwtEasyApiToken([
+        $context->setToken(new Jwt([
             'sub' => 'user-id',
             static::$mainJwtClaim => new stdClass(), // To cover getClaimSafely
         ], 'jwt'));

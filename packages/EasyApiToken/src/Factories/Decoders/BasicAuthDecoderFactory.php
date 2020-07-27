@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Factories\Decoders;
 
 use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderSubFactoryInterface;
 
-final class BasicAuthDecoderFactory implements EasyApiTokenDecoderSubFactoryInterface
+final class BasicAuthDecoderFactory implements ApiTokenDecoderSubFactoryInterface
 {
     /**
      * @param null|mixed[] $config
      */
-    public function build(?array $config = null): EasyApiTokenDecoderInterface
+    public function build(?array $config = null): ApiTokenDecoderInterface
     {
         return new BasicAuthDecoder();
     }

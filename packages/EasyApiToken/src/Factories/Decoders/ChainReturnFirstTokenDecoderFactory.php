@@ -6,9 +6,9 @@ namespace EonX\EasyApiToken\Factories\Decoders;
 
 use EonX\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface as SubFactory;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderSubFactoryInterface as SubFactory;
 use EonX\EasyApiToken\Interfaces\Factories\MasterDecoderFactoryAwareInterface as MasterAware;
 use EonX\EasyApiToken\Traits\DecoderNameAwareTrait;
 use EonX\EasyApiToken\Traits\MasterDecoderFactoryAwareTrait;
@@ -24,7 +24,7 @@ final class ChainReturnFirstTokenDecoderFactory implements SubFactory, MasterAwa
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    public function build(?array $config = null): EasyApiTokenDecoderInterface
+    public function build(?array $config = null): ApiTokenDecoderInterface
     {
         if ($config === null || empty($config['list'] ?? []) || \is_array($config['list']) === false) {
             throw new InvalidConfigurationException(\sprintf(

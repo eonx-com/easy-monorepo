@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Decoders;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyApiToken\Traits\ChainEasyApiTokenDecoderTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
+final class ChainReturnFirstTokenDecoder implements ApiTokenDecoderInterface
 {
     use ChainEasyApiTokenDecoderTrait;
 
     /**
-     * @var \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface[]
+     * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface[]
      */
     private $decoders;
 
@@ -30,7 +30,7 @@ final class ChainReturnFirstTokenDecoder implements EasyApiTokenDecoderInterface
         $this->decoders = $decoders;
     }
 
-    public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
+    public function decode(ServerRequestInterface $request): ?ApiTokenInterface
     {
         foreach ($this->decoders as $decoder) {
             $token = $decoder->decode($request);

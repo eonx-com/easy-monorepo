@@ -6,11 +6,11 @@ namespace EonX\EasyApiToken\Tokens\Factories;
 
 use EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
-use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
-use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
-use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\JwtInterface;
+use EonX\EasyApiToken\Tokens\Jwt;
 
-final class JwtEasyApiTokenFactory implements JwtEasyApiTokenFactoryInterface
+final class JwtFactory implements JwtFactoryInterface
 {
     /**
      * @var \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface
@@ -22,10 +22,10 @@ final class JwtEasyApiTokenFactory implements JwtEasyApiTokenFactoryInterface
         $this->jwtDriver = $jwtDriver;
     }
 
-    public function createFromString(string $token): JwtEasyApiTokenInterface
+    public function createFromString(string $token): JwtInterface
     {
         try {
-            return new JwtEasyApiToken((array)$this->jwtDriver->decode(\trim($token)), $token);
+            return new Jwt((array)$this->jwtDriver->decode(\trim($token)), $token);
         } catch (\Throwable $exception) {
             throw new InvalidEasyApiTokenFromRequestException(
                 \sprintf(
@@ -39,3 +39,5 @@ final class JwtEasyApiTokenFactory implements JwtEasyApiTokenFactoryInterface
         }
     }
 }
+
+\class_alias(JwtFactory::class, JwtEasyApiTokenFactory::class);
