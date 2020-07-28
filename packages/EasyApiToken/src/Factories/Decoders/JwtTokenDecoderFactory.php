@@ -14,8 +14,11 @@ final class JwtTokenDecoderFactory extends AbstractJwtTokenDecoderFactory
     /**
      * @param mixed[] $config
      */
-    protected function doBuild(JwtDriverInterface $jwtDriver, array $config): ApiTokenDecoderInterface
-    {
-        return new JwtTokenDecoder(new JwtFactory($jwtDriver));
+    protected function doBuild(
+        JwtDriverInterface $jwtDriver,
+        array $config,
+        ?string $name = null
+    ): ApiTokenDecoderInterface {
+        return new JwtTokenDecoder(new JwtFactory($jwtDriver), null, $name);
     }
 }

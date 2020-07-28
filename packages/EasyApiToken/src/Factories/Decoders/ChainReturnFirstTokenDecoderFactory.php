@@ -24,7 +24,7 @@ final class ChainReturnFirstTokenDecoderFactory implements SubFactory, MasterAwa
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    public function build(?array $config = null): ApiTokenDecoderInterface
+    public function build(?array $config = null, ?string $name = null): ApiTokenDecoderInterface
     {
         if ($config === null || empty($config['list'] ?? []) || \is_array($config['list']) === false) {
             throw new InvalidConfigurationException(\sprintf(
@@ -39,6 +39,6 @@ final class ChainReturnFirstTokenDecoderFactory implements SubFactory, MasterAwa
             $decoders[] = $this->factory->build($decoder);
         }
 
-        return new ChainReturnFirstTokenDecoder($decoders);
+        return new ChainReturnFirstTokenDecoder($decoders, $name);
     }
 }

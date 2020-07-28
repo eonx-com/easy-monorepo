@@ -6,132 +6,62 @@ namespace EonX\EasyApiToken\Factories;
 
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderProviderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
-use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderSubFactoryInterface;
-use EonX\EasyApiToken\Interfaces\Factories\MasterDecoderFactoryAwareInterface;
-use EonX\EasyApiToken\Traits\DefaultDecoderFactoriesTrait;
-use Psr\Container\ContainerInterface;
 
 class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
 {
-    use DefaultDecoderFactoriesTrait;
-
     /**
-     * @var mixed[]
+     * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface[]
      */
-    private $config;
-
-    /**
-     * @var \Psr\Container\ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var string[]
-     */
-    private $defaultFactories;
-
-    /**
-     * @var mixed[]
-     */
-    private $resolved = [];
+    private $decoders;
 
     /**
      * @param mixed[] $config
      * @param null|string[] $defaultFactories
      */
-    public function __construct(array $config, ?array $defaultFactories = null)
+    public function __construct(iterable $decoderProviders)
     {
-        $this->config = $config;
-        $this->defaultFactories = $defaultFactories ?? $this->getDefaultDecoderFactories();
+        $this->setDecoders($decoderProviders);
     }
 
     public function build(string $decoder): ApiTokenDecoderInterface
     {
-        if (isset($this->resolved[$decoder])) {
-            return $this->resolved[$decoder];
+        if (isset($this->decoders[$decoder])) {
+            return $this->decoders[$decoder];
         }
 
-        if (empty($this->config) || \array_key_exists($decoder, $this->config) === false) {
-            throw new InvalidConfigurationException(\sprintf('No decoder configured for key: "%s".', $decoder));
-        }
-
-        $config = $this->config[$decoder] ?? [];
-        $subFactory = $this->instantiateSubFactory($decoder, $config);
-
-        if ($subFactory instanceof DecoderNameAwareInterface) {
-            $subFactory->setDecoderName($decoder);
-        }
-        if ($subFactory instanceof MasterDecoderFactoryAwareInterface) {
-            $subFactory->setMasterFactory($this);
-        }
-
-        return $this->resolved[$decoder] = $subFactory->build($config);
-    }
-
-    public function setContainer(ContainerInterface $container): void
-    {
-        $this->container = $container;
+        throw new InvalidConfigurationException(\sprintf('No decoder configured for key: "%s".', $decoder));
     }
 
     /**
-     * @param mixed[] $config
+     * @param iterable<mixed> $collection
      *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @return mixed[]
      */
-    private function getSubFactoryClass(string $decoder, array $config): string
+    private function filter(iterable $collection, string $class): array
     {
-        // If explicit type is set, use it
-        if (empty($config['type']) === false && \is_string($config['type'])) {
-            $type = $config['type'];
+        $collection = $collection instanceof \Traversable ? \iterator_to_array($collection) : (array)$collection;
 
-            // Allow type to be alias of default factory
-            return empty($this->defaultFactories[$type]) === false ? $this->defaultFactories[$type] : $type;
-        }
-
-        // Default to factory for decoder
-        if (empty($this->defaultFactories[$decoder]) === false) {
-            return $this->defaultFactories[$decoder];
-        }
-
-        throw new InvalidConfigurationException(\sprintf(
-            'No "type" or default factory configured for decoder "%s".',
-            $decoder
-        ));
+        return \array_filter($collection, static function ($item) use ($class): bool {
+            return $item instanceof $class;
+        });
     }
 
     /**
-     * @param mixed[] $config
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @param iterable<mixed> $providers
      */
-    private function instantiateSubFactory(string $decoder, array $config): ApiTokenDecoderSubFactoryInterface
+    private function setDecoders(iterable $providers): void
     {
-        $factoryClass = $this->getSubFactoryClass($decoder, $config);
+        $decoders = [];
 
-        try {
-            if ($this->container !== null && $this->container->has($factoryClass)) {
-                return $this->container->get($factoryClass);
+        foreach ($this->filter($providers, ApiTokenDecoderProviderInterface::class) as $provider) {
+            foreach ($this->filter($provider->getDecoders(), ApiTokenDecoderInterface::class) as $decoder) {
+                $decoders[$decoder->getName()] = $decoder;
             }
-
-            if (\class_exists($factoryClass)) {
-                return new $factoryClass();
-            }
-        } catch (\Throwable $exception) {
-            throw new InvalidConfigurationException(\sprintf(
-                'Unable to instantiate the factory "%s" for decoder "%s": %s',
-                $factoryClass,
-                $decoder,
-                $exception->getMessage()
-            ), $exception->getCode(), $exception);
         }
 
-        throw new InvalidConfigurationException(\sprintf(
-            'Unable to instantiate the factory "%s" for decoder "%s".',
-            $factoryClass,
-            $decoder
-        ));
+        $this->decoders = $decoders;
     }
 }
 

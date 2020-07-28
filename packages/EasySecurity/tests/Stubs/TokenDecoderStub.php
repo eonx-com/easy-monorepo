@@ -24,4 +24,9 @@ final class TokenDecoderStub implements ApiTokenDecoderInterface
     {
         return $this->token;
     }
+
+    public function getName(): string
+    {
+        return 'decoder';
+    }
 }

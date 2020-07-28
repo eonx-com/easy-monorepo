@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Decoders;
 
-use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface;
 use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class JwtTokenInQueryDecoder implements ApiTokenDecoderInterface
+final class JwtTokenInQueryDecoder extends AbstractApiTokenDecoder
 {
     use EasyApiTokenDecoderTrait;
 
@@ -24,10 +23,12 @@ final class JwtTokenInQueryDecoder implements ApiTokenDecoderInterface
      */
     private $queryParam;
 
-    public function __construct(JwtFactoryInterface $jwtApiTokenFactory, string $queryParam)
+    public function __construct(JwtFactoryInterface $jwtApiTokenFactory, string $queryParam, ?string $name = null)
     {
         $this->jwtApiTokenFactory = $jwtApiTokenFactory;
         $this->queryParam = $queryParam;
+
+        parent::__construct($name ?? self::NAME_JWT_PARAM);
     }
 
     public function decode(ServerRequestInterface $request): ?ApiTokenInterface

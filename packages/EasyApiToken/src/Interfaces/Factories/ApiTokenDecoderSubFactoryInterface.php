@@ -13,7 +13,7 @@ interface ApiTokenDecoderSubFactoryInterface
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    public function build(?array $config = null): ApiTokenDecoderInterface;
+    public function build(?array $config = null, ?string $name = null): ApiTokenDecoderInterface;
 }
 
 \class_alias(ApiTokenDecoderSubFactoryInterface::class, EasyApiTokenDecoderSubFactoryInterface::class);

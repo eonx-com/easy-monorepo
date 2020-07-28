@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Decoders;
 
 use EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
-use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface;
 use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
@@ -13,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-final class JwtTokenDecoder implements ApiTokenDecoderInterface
+final class JwtTokenDecoder extends AbstractApiTokenDecoder
 {
     use EasyApiTokenDecoderTrait;
 
@@ -27,10 +26,15 @@ final class JwtTokenDecoder implements ApiTokenDecoderInterface
      */
     private $logger;
 
-    public function __construct(JwtFactoryInterface $jwtApiTokenFactory, ?LoggerInterface $logger = null)
-    {
+    public function __construct(
+        JwtFactoryInterface $jwtApiTokenFactory,
+        ?LoggerInterface $logger = null,
+        ?string $name = null
+    ) {
         $this->jwtApiTokenFactory = $jwtApiTokenFactory;
         $this->logger = $logger ?? new NullLogger();
+
+        parent::__construct($name ?? self::NAME_JWT_HEADER);
     }
 
     public function decode(ServerRequestInterface $request): ?ApiTokenInterface
