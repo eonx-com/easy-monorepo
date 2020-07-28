@@ -13,8 +13,8 @@ final class BasicAuthDecoderFactory implements ApiTokenDecoderSubFactoryInterfac
     /**
      * @param null|mixed[] $config
      */
-    public function build(?array $config = null): ApiTokenDecoderInterface
+    public function build(?array $config = null, ?string $name = null): ApiTokenDecoderInterface
     {
-        return new BasicAuthDecoder();
+        return new BasicAuthDecoder($name);
     }
 }

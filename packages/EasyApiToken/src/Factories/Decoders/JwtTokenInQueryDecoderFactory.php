@@ -17,8 +17,11 @@ final class JwtTokenInQueryDecoderFactory extends AbstractJwtTokenDecoderFactory
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    protected function doBuild(JwtDriverInterface $jwtDriver, array $config): ApiTokenDecoderInterface
-    {
+    protected function doBuild(
+        JwtDriverInterface $jwtDriver,
+        array $config,
+        ?string $name = null
+    ): ApiTokenDecoderInterface {
         $param = $config['options']['param'] ?? '';
 
         if (empty($param) || \is_string($param) === false) {
@@ -28,6 +31,6 @@ final class JwtTokenInQueryDecoderFactory extends AbstractJwtTokenDecoderFactory
             ));
         }
 
-        return new JwtTokenInQueryDecoder(new JwtFactory($jwtDriver), $param);
+        return new JwtTokenInQueryDecoder(new JwtFactory($jwtDriver), $param, $name);
     }
 }

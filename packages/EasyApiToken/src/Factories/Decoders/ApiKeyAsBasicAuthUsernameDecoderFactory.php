@@ -13,8 +13,8 @@ final class ApiKeyAsBasicAuthUsernameDecoderFactory implements ApiTokenDecoderSu
     /**
      * @param null|mixed[] $config
      */
-    public function build(?array $config = null): ApiTokenDecoderInterface
+    public function build(?array $config = null, ?string $name = null): ApiTokenDecoderInterface
     {
-        return new ApiKeyAsBasicAuthUsernameDecoder();
+        return new ApiKeyAsBasicAuthUsernameDecoder($name);
     }
 }

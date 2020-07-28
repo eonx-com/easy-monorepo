@@ -13,9 +13,10 @@ use EonX\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
 use EonX\EasyApiToken\External\Auth0JwtDriver;
 use EonX\EasyApiToken\External\FirebaseJwtDriver;
-use EonX\EasyApiToken\Factories\Decoders\BasicAuthDecoderFactory;
 use EonX\EasyApiToken\Factories\ApiTokenDecoderFactory;
+use EonX\EasyApiToken\Factories\Decoders\BasicAuthDecoderFactory;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
+use EonX\EasyApiToken\Providers\FromConfigDecoderProvider;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
 use EonX\EasyApiToken\Tokens\Factories\JwtFactory;
 use Laravel\Lumen\Application;
@@ -39,7 +40,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         yield 'Empty configuration' => [
             [],
             'nothing',
-            'No decoder configured for key: "nothing".',
+            'No decoders configured',
         ];
 
         yield 'Error is thrown when a non-existent key is requested.' => [
@@ -125,9 +126,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
             $config,
             'chain-key',
             new ChainReturnFirstTokenDecoder([
-                new ApiKeyAsBasicAuthUsernameDecoder(),
-                new BasicAuthDecoder(),
-            ]),
+                new ApiKeyAsBasicAuthUsernameDecoder('api'),
+                new BasicAuthDecoder('pass'),
+            ], 'chain-key'),
         ];
     }
 
@@ -207,7 +208,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                         'id1',
                         ['HS256', 'RS256']
                     )
-                )
+                ),
+                null,
+                'jwt-by-header'
             ),
         ];
 
@@ -224,7 +227,8 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                         15
                     )
                 ),
-                'authParam'
+                'authParam',
+                'jwt-by-parameter'
             ),
         ];
 
@@ -240,7 +244,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                         ['HS256', 'RS256'],
                         15
                     )
-                )
+                ),
+                null,
+                'jwt-by-header-firebase'
             ),
         ];
 
@@ -257,7 +263,8 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                         ['HS256', 'RS256']
                     )
                 ),
-                'authParam'
+                'authParam',
+                'jwt-by-parameter-auth0'
             ),
         ];
 
@@ -275,7 +282,8 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
                         new FileSystemCacheHandler('test/path')
                     )
                 ),
-                'authParam'
+                'authParam',
+                'jwt-by-parameter-auth0-with-cache'
             ),
         ];
     }
@@ -288,13 +296,13 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         yield 'Simple API Key' => [
             ['apiconfig' => ['type' => 'user-apikey']],
             'apiconfig',
-            new ApiKeyAsBasicAuthUsernameDecoder(),
+            new ApiKeyAsBasicAuthUsernameDecoder('apiconfig'),
         ];
 
         yield 'Simple Basic Auth decoder' => [
             ['something' => ['type' => 'basic']],
             'something',
-            new BasicAuthDecoder(),
+            new BasicAuthDecoder('something'),
         ];
 
         yield 'Simple Basic Auth decoder using default factory' => [
@@ -315,7 +323,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      */
     public function testBuild(array $config, string $key, ApiTokenDecoderInterface $expected): void
     {
-        $factory = new ApiTokenDecoderFactory($config);
+        $factory = new ApiTokenDecoderFactory([new FromConfigDecoderProvider($config)]);
 
         $actual = $factory->build($key);
         $second = $factory->build($key);
@@ -336,8 +344,10 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('runtime problems');
 
-        $factory = new ApiTokenDecoderFactory(['basic' => []]);
-        $factory->setContainer($container);
+        $provider = new FromConfigDecoderProvider(['basic' => []]);
+        $provider->setContainer($container);
+
+        $factory = new ApiTokenDecoderFactory([$provider]);
 
         $factory->build('basic');
     }
@@ -356,8 +366,10 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $container = new Application();
         $container->bind(BasicAuthDecoderFactory::class, BasicAuthDecoderFactory::class);
 
-        $factory = new ApiTokenDecoderFactory($config);
-        $factory->setContainer($container);
+        $provider = new FromConfigDecoderProvider($config);
+        $provider->setContainer($container);
+
+        $factory = new ApiTokenDecoderFactory([$provider]);
 
         $actual = $factory->build($key);
         $second = $factory->build($key);
@@ -375,11 +387,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      */
     public function testInvalidConfigurationErrors(array $config, string $key, string $expectedError): void
     {
-        $factory = new ApiTokenDecoderFactory($config);
-
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage($expectedError);
 
-        $factory->build($key);
+        (new ApiTokenDecoderFactory([new FromConfigDecoderProvider($config)]))->build($key);
     }
 }

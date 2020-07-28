@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Decoders;
 
-use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyApiToken\Tokens\BasicAuth;
 use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class BasicAuthDecoder implements ApiTokenDecoderInterface
+final class BasicAuthDecoder extends AbstractApiTokenDecoder
 {
     use EasyApiTokenDecoderTrait;
+
+    public function __construct(?string $name = null)
+    {
+        parent::__construct($name ?? self::NAME_BASIC);
+    }
 
     public function decode(ServerRequestInterface $request): ?ApiTokenInterface
     {
