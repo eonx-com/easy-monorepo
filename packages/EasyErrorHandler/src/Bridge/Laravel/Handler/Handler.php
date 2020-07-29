@@ -325,6 +325,9 @@ class Handler implements ExceptionHandler
      */
     private function translateMessage(string $message, array $parameters): string
     {
-        return $this->translator->trans(\trim($message), $parameters);
+        // TODO: rework after upgrading all the illuminate and laravel packages to ^6.0
+        $method = \method_exists($this->translator, 'trans') ? 'trans' : 'get';
+
+        return $this->translator->{$method}(\trim($message), $parameters);
     }
 }
