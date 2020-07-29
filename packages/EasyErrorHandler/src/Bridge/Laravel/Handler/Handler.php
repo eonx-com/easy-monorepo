@@ -325,6 +325,6 @@ class Handler implements ExceptionHandler
      */
     private function translateMessage(string $message, array $parameters): string
     {
-        return $this->translator->trans(\trim($message), $parameters);
+        return $this->translator->get(\trim($message), $parameters);
     }
 }

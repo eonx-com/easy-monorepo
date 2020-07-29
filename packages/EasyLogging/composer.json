@@ -8,7 +8,7 @@
         "eonx-com/externals": "^1.0 || ^2.0"
     },
     "require-dev": {
-        "laravel/lumen-framework": "^5.5",
+        "laravel/lumen-framework": "^5.5 || ^6.0",
         "laravel-doctrine/orm": "^1.4",
         "bugsnag/bugsnag": "^3.19",
         "bugsnag/bugsnag-laravel": "^2.17"

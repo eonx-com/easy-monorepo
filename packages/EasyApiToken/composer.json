@@ -14,7 +14,7 @@
         "eonx-com/easy-psr7-factory": "^2.5",
         "auth0/auth0-php": "^5.4",
         "psr/container": "^1.0",
-        "laravel/lumen-framework": "^5.5",
+        "laravel/lumen-framework": "^5.5 || ^6.0",
         "symfony/dependency-injection": "^4.2 || ^5.0",
         "symfony/config": "^4.2 || ^5.0",
         "symfony/yaml": "^4.2 || ^5.0"
