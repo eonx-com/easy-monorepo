@@ -6,6 +6,7 @@ namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
+use EonX\EasyCore\Bridge\BridgeConstantsInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
@@ -13,7 +14,9 @@ use Symfony\Bundle\MakerBundle\MakerBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use function in_array;
 
 final class EasyCoreExtension extends Extension
 {
@@ -28,19 +31,25 @@ final class EasyCoreExtension extends Extension
     private $loader;
 
     /**
+     * @var \Symfony\Component\Config\Loader\LoaderInterface
+     */
+    private $phpLoader;
+
+    /**
      * @param mixed[] $configs
      *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration(new Configuration(), $configs);
-
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yaml');
-
         $this->container = $container;
-        $this->loader = $loader;
+
+        $config = $this->processConfiguration(new Configuration(), $configs);
+        $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
+        $this->loader = $loader = new YamlFileLoader($container, $fileLocator);
+        $this->phpLoader = $phpLoader = new PhpFileLoader($container, $fileLocator);
+
+        $loader->load('services.yaml');
 
         $this->autoconfigTag(EventListenerInterface::class, TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
         $this->autoconfigTag(SimpleDataPersisterInterface::class, TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG);
@@ -65,6 +74,15 @@ final class EasyCoreExtension extends Extension
                 $loader->load('api_platform/debug.yaml');
             }
         }
+
+        if ($config['search']['enabled'] ?? false) {
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_ELASTICSEARCH_HOST,
+                $config['search']['elasticsearch_host']
+            );
+            
+            $phpLoader->load('search.php');
+        }
     }
 
     /**
@@ -83,7 +101,7 @@ final class EasyCoreExtension extends Extension
     private function loadIfBundlesExists(string $resource, $bundles): void
     {
         foreach ((array)$bundles as $bundle) {
-            if (\in_array($bundle, $this->container->getParameter('kernel.bundles'), true) === false) {
+            if (in_array($bundle, $this->container->getParameter('kernel.bundles'), true) === false) {
                 return;
             }
         }
