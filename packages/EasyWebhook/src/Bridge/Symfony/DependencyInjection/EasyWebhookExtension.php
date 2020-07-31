@@ -59,5 +59,9 @@ final class EasyWebhookExtension extends Extension
 
             $loader->load('messenger_client.php');
         }
+
+        if ($container->hasParameter('kernel.debug') && $container->getParameter('kernel.debug')) {
+            $loader->load('debug.php');
+        }
     }
 }
