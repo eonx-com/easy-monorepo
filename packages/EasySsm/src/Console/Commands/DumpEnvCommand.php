@@ -89,6 +89,8 @@ EOF;
             unset($env[$exclude]);
         }
 
+        \ksort($env);
+
         return $env;
     }
 }
