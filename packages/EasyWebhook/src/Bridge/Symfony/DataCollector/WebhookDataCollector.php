@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Bridge\Symfony\DataCollector;
 
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
+use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -85,6 +86,14 @@ final class WebhookDataCollector extends DataCollector
             return;
         }
 
-        $this->data['webhook_results'] = $this->webhookClient->getResults();
+        $map = static function (WebhookResultInterface $result): array {
+            return [
+                'webhook' => $result->getWebhook(),
+                'response' => $result->getResponse()->getInfo(),
+                'throwable' => $result->getThrowable(),
+            ];
+        };
+
+        $this->data['webhook_results'] = \array_map($map, $this->webhookClient->getResults());
     }
 }
