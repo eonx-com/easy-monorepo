@@ -2,7 +2,26 @@
 
 <!-- dumped content start -->
 
-## v2.4.21 - 2020-07-26
+## v2.4.22 - 2020-07-31
+
+### EasyErrorHandler
+
+- [#287] Added exception traits, Thanks to [@skrut]
+- [#289] Adapted ErrorHandler for using both contract versions, Thanks to [@skrut]
+
+### EasyWebhook
+
+- [#291] Add Symfony Profiler support
+
+### EasySsm
+
+- [#292] Sort alphabetically dumped env vars
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.21] - 2020-07-26
 
 ### EasyWebhook
 
@@ -1930,3 +1949,8 @@
 [v2.4.19]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.18...v2.4.19
 [#285]: https://github.com/eonx-com/easy-monorepo/pull/285
 [v2.4.20]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.19...v2.4.20
+[#292]: https://github.com/eonx-com/easy-monorepo/pull/292
+[#291]: https://github.com/eonx-com/easy-monorepo/pull/291
+[#289]: https://github.com/eonx-com/easy-monorepo/pull/289
+[#287]: https://github.com/eonx-com/easy-monorepo/pull/287
+[v2.4.21]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.20...v2.4.21
