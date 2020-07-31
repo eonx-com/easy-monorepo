@@ -21,6 +21,5 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(AsyncWebhookClient::class)
-        ->decorate(WebhookClientInterface::class, null, 2)
-        ->arg('$client', ref(\sprintf('%s.inner', AsyncWebhookClient::class)));
+        ->decorate(WebhookClientInterface::class, null, 2);
 };
