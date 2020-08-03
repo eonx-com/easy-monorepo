@@ -11,7 +11,7 @@ use EonX\EasyDecision\Providers\ConfigMappingProvider;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PHPFileLoader;
 
 final class EasyDecisionExtension extends Extension
 {
@@ -24,11 +24,11 @@ final class EasyDecisionExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yaml');
+        $loader = new PHPFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.php');
 
         if ($config['use_expression_language'] ?? false) {
-            $loader->load('use_expression_language.yaml');
+            $loader->load('use_expression_language.php');
         }
 
         $container
