@@ -1,6 +1,0 @@
-services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-
-    EonX\EasyCore\Bridge\Symfony\ApiPlatform\Command\ApiResourceAndSimpleDataPersisterMaker: ~
