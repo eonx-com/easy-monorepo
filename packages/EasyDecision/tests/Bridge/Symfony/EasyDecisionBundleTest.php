@@ -63,7 +63,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
                 self::assertSame('my-value-decision', $decision->getName());
                 self::assertSame(1, $decision->make(['value' => 1]));
             },
-            [__DIR__ . '/Fixtures/value_with_name.yaml'],
+            [__DIR__ . '/Fixtures/value_with_name.php'],
         ];
 
         yield 'Value decision with rules configurator' => [
@@ -72,7 +72,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
                 self::assertInstanceOf(ValueDecision::class, $decision);
                 self::assertSame(11, $decision->make(['value' => 1]));
             },
-            [__DIR__ . '/Fixtures/value_with_rules_and_expression_language.yaml'],
+            [__DIR__ . '/Fixtures/value_with_rules_and_expression_language.php'],
         ];
 
         yield 'Value decision with name restricted configurator supported' => [
@@ -85,7 +85,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
                 self::assertCount(1, $functions);
                 self::assertSame('restricted', $functions[0]->getName());
             },
-            [__DIR__ . '/Fixtures/value_with_name_restricted_expression_function.yaml'],
+            [__DIR__ . '/Fixtures/value_with_name_restricted_expression_function.php'],
         ];
 
         yield 'Value decision with name restricted configurator not supported' => [
@@ -94,7 +94,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
                 self::assertInstanceOf(ValueDecision::class, $decision);
                 self::assertEmpty($decision->getExpressionLanguage()->getFunctions());
             },
-            [__DIR__ . '/Fixtures/value_with_name_restricted_expression_function.yaml'],
+            [__DIR__ . '/Fixtures/value_with_name_restricted_expression_function.php'],
         ];
 
         yield 'Decision with type restricted configurator supported' => [
@@ -107,7 +107,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
                 self::assertCount(1, $functions);
                 self::assertSame('restricted', $functions[0]->getName());
             },
-            [__DIR__ . '/Fixtures/value_with_type_restricted_expression_function.yaml'],
+            [__DIR__ . '/Fixtures/value_with_type_restricted_expression_function.php'],
         ];
 
         yield 'Decision with type restricted configurator not supported' => [
@@ -116,7 +116,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
                 self::assertInstanceOf(UnanimousDecision::class, $decision);
                 self::assertEmpty($decision->getExpressionLanguage()->getFunctions());
             },
-            [__DIR__ . '/Fixtures/value_with_type_restricted_expression_function.yaml'],
+            [__DIR__ . '/Fixtures/value_with_type_restricted_expression_function.php'],
         ];
     }
 
@@ -128,7 +128,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             ' Class "NonExistentDecisionClass" does not exist.'
         );
 
-        $kernel = new KernelStub([__DIR__ . '/Fixtures/type_mapping_configuration_with_nonexistent_decision_class.yaml']);
+        $kernel = new KernelStub([__DIR__ . '/Fixtures/type_mapping_configuration_with_nonexistent_decision_class.php']);
         $kernel->boot();
     }
 
@@ -137,7 +137,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         $this->expectException(InvalidMappingException::class);
         $this->expectExceptionMessage('Decision for name "non-configured-decision" is not configured');
 
-        $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.yaml']);
+        $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.php']);
         $kernel->boot();
         $factory = $kernel->getContainer()->get(DecisionFactoryInterface::class);
 
@@ -146,7 +146,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
 
     public function testCreateByNameDecisionSucceeds(): void
     {
-        $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.yaml']);
+        $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.php']);
         $kernel->boot();
         $factory = $kernel->getContainer()->get(DecisionFactoryInterface::class);
 
@@ -177,8 +177,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         $this->expectExceptionMessage('Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": Expression language not set, to use it in your rules you must set it on the decision instance');
 
         $kernel = new KernelStub([
-            __DIR__ . '/Fixtures/disable_expression_language.yaml',
-            __DIR__ . '/Fixtures/value_with_rules_and_expression_language.yaml',
+            __DIR__ . '/Fixtures/disable_expression_language.php',
+            __DIR__ . '/Fixtures/value_with_rules_and_expression_language.php',
         ]);
 
         $kernel->boot();
