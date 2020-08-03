@@ -62,7 +62,8 @@
         "symplify/easy-coding-standard-tester": "^8.0",
         "symfony/maker-bundle": "^1.15",
         "rector/rector": "^0.7",
-        "phpspec/prophecy-phpunit": "^2.0"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "migrify/config-transformer": "^0.3.20"
     },
     "autoload": {
         "psr-4": {
