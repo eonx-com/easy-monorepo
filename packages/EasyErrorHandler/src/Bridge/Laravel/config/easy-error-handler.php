@@ -7,10 +7,7 @@ return [
     /**
      * Use extended error response with exception message, trace, etc.
      */
-    'use_extended_response' => \filter_var(
-        \env('EASY_ERROR_HANDLER_USE_EXTENDED_RESPONSE', false),
-        \FILTER_VALIDATE_BOOLEAN
-    ),
+    'use_extended_response' => \env('EASY_ERROR_HANDLER_USE_EXTENDED_RESPONSE', false),
 
     /*
     |--------------------------------------------------------------------------

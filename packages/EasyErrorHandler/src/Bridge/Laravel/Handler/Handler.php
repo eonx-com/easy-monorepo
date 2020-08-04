@@ -190,7 +190,12 @@ class Handler implements ExceptionHandler
      */
     protected function isExtendedResponse(): bool
     {
-        return $this->config->get('easy-error-handler.use_extended_response', false) === true;
+        $useExtendedResponse = \filter_var(
+            $this->config->get('easy-error-handler.use_extended_response', false),
+            \FILTER_VALIDATE_BOOLEAN
+        );
+
+        return $useExtendedResponse === true;
     }
 
     /**
