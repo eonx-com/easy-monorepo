@@ -43,7 +43,16 @@ trait DoctrinePaginatorTrait
         }
 
         $countAlias = \sprintf('_count%s', $this->fromAlias ? \sprintf('_%s', $this->fromAlias) : '');
-        $queryBuilder = $this->createQueryBuilder()->select(\sprintf('COUNT(1) as %s', $countAlias));
+
+        $queryBuilder = $this->createQueryBuilder()->select(
+            \sprintf(
+                'COUNT(DISTINCT %s) as %s', // Need to distinct to remove duplicates caused by joins.
+                $this->fromAlias,
+                $countAlias
+            )
+        );
+
+        $queryBuilder->resetDQLPart('groupBy'); // Reset groupBy to remove issue when counting.
 
         return $this->count = $this->doGetTotalItems($queryBuilder, $countAlias);
     }
