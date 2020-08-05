@@ -36,27 +36,6 @@ trait DoctrinePaginatorTrait
      */
     private $select;
 
-    public function getTotalItems(): int
-    {
-        if ($this->count !== null) {
-            return $this->count;
-        }
-
-        $countAlias = \sprintf('_count%s', $this->fromAlias ? \sprintf('_%s', $this->fromAlias) : '');
-
-        $queryBuilder = $this->createQueryBuilder()->select(
-            \sprintf(
-                'COUNT(DISTINCT %s) as %s', // Need to distinct to remove duplicates caused by joins.
-                $this->fromAlias,
-                $countAlias
-            )
-        );
-
-        $queryBuilder->resetDQLPart('groupBy'); // Reset groupBy to remove issue when counting.
-
-        return $this->count = $this->doGetTotalItems($queryBuilder, $countAlias);
-    }
-
     public function setCriteria(?callable $criteria = null): self
     {
         $this->criteria = $criteria;

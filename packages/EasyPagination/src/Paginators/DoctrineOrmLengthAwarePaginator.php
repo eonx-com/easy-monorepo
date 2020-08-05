@@ -31,6 +31,27 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
         parent::__construct($startSizeData);
     }
 
+    public function getTotalItems(): int
+    {
+        if ($this->count !== null) {
+            return $this->count;
+        }
+
+        $countAlias = \sprintf('_count%s', $this->fromAlias ? \sprintf('_%s', $this->fromAlias) : '');
+
+        $queryBuilder = $this->createQueryBuilder()->select(
+            \sprintf(
+                'COUNT(DISTINCT %s) as %s', // Need to distinct to remove duplicates caused by joins.
+                $this->fromAlias,
+                $countAlias
+            )
+        );
+
+        $queryBuilder->resetDQLPart('groupBy'); // Reset groupBy to remove issue when counting.
+
+        return $this->count = $this->doGetTotalItems($queryBuilder, $countAlias);
+    }
+
     protected function doCreateQueryBuilder(): QueryBuilder
     {
         return $this->manager->createQueryBuilder();
