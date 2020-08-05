@@ -49,7 +49,7 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
 
         $queryBuilder->resetDQLPart('groupBy'); // Reset groupBy to remove issue when counting.
 
-        return $this->count = $this->doGetTotalItems($queryBuilder, $countAlias);
+        return $this->count = (int)($queryBuilder->getQuery()->getResult()[0][$countAlias] ?? 0);
     }
 
     protected function doCreateQueryBuilder(): QueryBuilder
@@ -63,10 +63,5 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
     protected function doGetResult(QueryBuilder $queryBuilder): array
     {
         return $queryBuilder->getQuery()->getResult();
-    }
-
-    protected function doGetTotalItems(QueryBuilder $queryBuilder, string $countAlias): int
-    {
-        return (int)($queryBuilder->getQuery()->getResult()[0][$countAlias] ?? 0);
     }
 }

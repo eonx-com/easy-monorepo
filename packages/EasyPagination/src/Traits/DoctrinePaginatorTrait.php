@@ -73,11 +73,6 @@ trait DoctrinePaginatorTrait
     abstract protected function doGetResult($queryBuilder): array;
 
     /**
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
-     */
-    abstract protected function doGetTotalItems($queryBuilder, string $countAlias): int;
-
-    /**
      * @return mixed[]
      */
     protected function doGetItems(): array
