@@ -8,7 +8,7 @@
         "nesbot/carbon": "^2.22",
         "dragonmantank/cron-expression": "^2.3",
         "symfony/console": "^4.2 || ^5.0",
-        "eonx-com/easy-core": "^2.5"
+        "eonx-com/easy-core": "^2.4.24"
     },
     "require-dev": {
         "symfony/symfony": "^4.2 || ^5.0"
