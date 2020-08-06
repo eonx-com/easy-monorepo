@@ -15,6 +15,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->exclude([
             __DIR__ . '/../../../../../src/Bridge/*',
             __DIR__ . '/../../../../../src/AwsCredentials.php',
-            __DIR__ . '/../../../../../src/AwsSsoAccessToken.php'
+            __DIR__ . '/../../../../../src/AwsSsoAccessToken.php',
         ]);
 };

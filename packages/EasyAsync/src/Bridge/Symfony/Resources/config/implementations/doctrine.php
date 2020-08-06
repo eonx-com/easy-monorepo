@@ -19,7 +19,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(DataCleanerInterface::class, DataCleaner::class);
 
     $services->set(JobLogPersisterInterface::class, JobLogPersister::class)
-        ->bind('$table','%easy_async_job_logs_table%');
+        ->bind('$table', '%easy_async_job_logs_table%');
 
     $services->set('default_job_persister', JobPersister::class)
         ->bind('$table', '%easy_async_jobs_table%');

@@ -22,8 +22,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ScheduleDataCollector::class)
         ->tag('data_collector', [
             'template' => '@EasySchedule/Collector/schedule_collector.html.twig',
-            'id' => 'schedule.schedule_collector'
-    ]);
+            'id' => 'schedule.schedule_collector',
+        ]);
 
     $services->set(ScheduleInterface::class, Schedule::class);
 

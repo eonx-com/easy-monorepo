@@ -14,9 +14,9 @@ use EonX\EasySsm\Services\Dotenv\SsmDotenvInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 use Symfony\Component\Filesystem\Filesystem;
 use Symplify\PackageBuilder\Parameter\ParameterProvider;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -31,7 +31,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/../src/Services/Aws/Data/*',
             __DIR__ . '/../src/Services/Dotenv/Data/*',
             __DIR__ . '/../src/Services/Dotenv/Loaders/*',
-            __DIR__ . '/../src/Services/Parameters/Data/*'
+            __DIR__ . '/../src/Services/Parameters/Data/*',
         ]);
 
     $services->set(Arr::class)
