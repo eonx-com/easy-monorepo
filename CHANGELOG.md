@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v2.4.22 - 2020-07-31
+## v2.4.23 - 2020-08-05
+
+### EasyLock
+
+- [#299] Allow to use stamp to lock in messenger
+
+### EasySsm
+
+- [#293] Implement verbosity for dump-envs
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.22] - 2020-07-31
 
 ### EasyErrorHandler
 
@@ -1954,3 +1968,6 @@
 [#289]: https://github.com/eonx-com/easy-monorepo/pull/289
 [#287]: https://github.com/eonx-com/easy-monorepo/pull/287
 [v2.4.21]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.20...v2.4.21
+[#299]: https://github.com/eonx-com/easy-monorepo/pull/299
+[#293]: https://github.com/eonx-com/easy-monorepo/pull/293
+[v2.4.22]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.21...v2.4.22
