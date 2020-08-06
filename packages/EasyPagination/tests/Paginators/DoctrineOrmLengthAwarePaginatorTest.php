@@ -29,8 +29,6 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractTestCase
                     ->with('table', 't')
                     ->andReturnSelf();
 
-                $mock->shouldReceive('resetDQLPart')->once()->with('groupBy')->andReturnSelf();
-
                 $query = $this->mock(AbstractQuery::class, function (MockInterface $mock): void {
                     $mock->shouldReceive('getResult')->once()->withNoArgs()->andReturn([['_count_t' => 3]]);
                 });

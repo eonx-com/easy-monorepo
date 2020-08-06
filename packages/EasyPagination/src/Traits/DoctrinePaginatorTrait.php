@@ -36,6 +36,21 @@ trait DoctrinePaginatorTrait
      */
     private $select;
 
+    public function getTotalItems(): int
+    {
+        if ($this->count !== null) {
+            return $this->count;
+        }
+
+        $fromAlias = $this->getFromAlias();
+        $countAlias = \sprintf('_count_%s', $fromAlias);
+        $sql = \sprintf('COUNT(DISTINCT %s) as %s', $fromAlias, $countAlias);
+
+        $queryBuilder = $this->createQueryBuilder()->select($sql);
+
+        return $this->count = $this->doGetTotalItems($queryBuilder, $countAlias);
+    }
+
     public function setCriteria(?callable $criteria = null): self
     {
         $this->criteria = $criteria;
@@ -73,6 +88,11 @@ trait DoctrinePaginatorTrait
     abstract protected function doGetResult($queryBuilder): array;
 
     /**
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
+     */
+    abstract protected function doGetTotalItems($queryBuilder, string $countAlias): int;
+
+    /**
      * @return mixed[]
      */
     protected function doGetItems(): array
@@ -88,6 +108,19 @@ trait DoctrinePaginatorTrait
             ->setMaxResults($this->paginationData->getSize());
 
         return $this->doGetResult($queryBuilder);
+    }
+
+    protected function getFromAlias(): string
+    {
+        if ($this->fromAlias !== null) {
+            return $this->fromAlias;
+        }
+        if (\is_string($this->select)) {
+            return \substr($this->select, 0, 2);
+        }
+
+        // Not sure about this one...
+        return '1';
     }
 
     /**

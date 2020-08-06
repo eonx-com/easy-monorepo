@@ -31,20 +31,6 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
         $this->fromAlias = $fromAlias;
     }
 
-    public function getTotalItems(): int
-    {
-        if ($this->count !== null) {
-            return $this->count;
-        }
-
-        $countAlias = \sprintf('_count%s', $this->fromAlias ? \sprintf('_%s', $this->fromAlias) : '');
-        $queryBuilder = $this->createQueryBuilder()->select(\sprintf('COUNT(1) as %s', $countAlias));
-
-        $result = (array)$this->conn->fetchAssoc($queryBuilder->getSQL(), $queryBuilder->getParameters());
-
-        return $this->count = (int)($result[$countAlias] ?? 0);
-    }
-
     protected function doCreateQueryBuilder(): QueryBuilder
     {
         return $this->conn->createQueryBuilder();
@@ -56,5 +42,12 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
     protected function doGetResult(QueryBuilder $queryBuilder): array
     {
         return $this->conn->fetchAll($queryBuilder->getSQL(), $queryBuilder->getParameters());
+    }
+
+    protected function doGetTotalItems(QueryBuilder $queryBuilder, string $countAlias): int
+    {
+        $result = (array)$this->conn->fetchAssoc($queryBuilder->getSQL(), $queryBuilder->getParameters());
+
+        return (int)($result[$countAlias] ?? 0);
     }
 }
