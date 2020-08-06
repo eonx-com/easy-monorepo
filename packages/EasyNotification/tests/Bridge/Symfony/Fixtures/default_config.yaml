@@ -1,0 +1,10 @@
+services:
+    EonX\EasyNotification\Interfaces\ConfigFinderInterface:
+        class: EonX\EasyNotification\Tests\Bridge\Symfony\Stubs\ConfigFinderStub
+        arguments:
+            $config:
+                algorithm: 'RS256'
+                externalId: 'ABCDE'
+                queueRegion: 'ap-southeast-2'
+                queueUrl: 'http://sqs.queue'
+                secret: 'my-secret'
