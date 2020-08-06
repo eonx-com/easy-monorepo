@@ -2,7 +2,25 @@
 
 <!-- dumped content start -->
 
-## v2.4.23 - 2020-08-05
+## v2.4.24 - 2020-08-06
+
+### EasyErrorHandler
+
+- [#295] Added type casting in config, Thanks to [@skrut]
+
+### EasySecurity
+
+- [#300] Add symfony fake user
+
+### EasyPagination
+
+- [#298] Fix total items count for doctrine orm, Thanks to [@jordancachero]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.23] - 2020-08-05
 
 ### EasyLock
 
@@ -1971,3 +1989,8 @@
 [#299]: https://github.com/eonx-com/easy-monorepo/pull/299
 [#293]: https://github.com/eonx-com/easy-monorepo/pull/293
 [v2.4.22]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.21...v2.4.22
+[#300]: https://github.com/eonx-com/easy-monorepo/pull/300
+[#298]: https://github.com/eonx-com/easy-monorepo/pull/298
+[#295]: https://github.com/eonx-com/easy-monorepo/pull/295
+[v2.4.23]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.22...v2.4.23
+[@jordancachero]: https://github.com/jordancachero
