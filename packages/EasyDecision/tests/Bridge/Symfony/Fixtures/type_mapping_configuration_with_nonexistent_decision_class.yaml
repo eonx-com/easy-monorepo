@@ -1,3 +1,0 @@
-easy_decision:
-    type_mapping:
-        decision: NonExistentDecisionClass
