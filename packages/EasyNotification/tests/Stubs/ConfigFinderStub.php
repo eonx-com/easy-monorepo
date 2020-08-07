@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyNotification\Tests\Bridge\Symfony\Stubs;
+namespace EonX\EasyNotification\Tests\Stubs;
 
 use EonX\EasyNotification\Config\Config;
 use EonX\EasyNotification\Interfaces\ConfigFinderInterface;
@@ -10,6 +10,11 @@ use EonX\EasyNotification\Interfaces\ConfigInterface;
 
 final class ConfigFinderStub implements ConfigFinderInterface
 {
+    /**
+     * @var int
+     */
+    private $called = 0;
+
     /**
      * @var mixed[]
      */
@@ -25,6 +30,13 @@ final class ConfigFinderStub implements ConfigFinderInterface
 
     public function find(): ConfigInterface
     {
+        $this->called++;
+
         return Config::fromArray($this->config);
+    }
+
+    public function getCalled(): int
+    {
+        return $this->called;
     }
 }

@@ -1,6 +1,11 @@
+easy_notification:
+    api_key: 'lkjfelwkjfew'
+    api_url: 'http://eonx.com'
+    provider: 'ABCDE'
+
 services:
     EonX\EasyNotification\Interfaces\ConfigFinderInterface:
-        class: EonX\EasyNotification\Tests\Bridge\Symfony\Stubs\ConfigFinderStub
+        class: EonX\EasyNotification\Tests\Stubs\ConfigFinderStub
         arguments:
             $config:
                 algorithm: 'RS256'

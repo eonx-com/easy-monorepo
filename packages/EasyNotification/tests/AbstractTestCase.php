@@ -13,6 +13,17 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    /**
+     * @var string[]
+     */
+    protected static $defaultConfig = [
+        'algorithm' => 'sha256',
+        'externalId' => 'my-provider',
+        'queueRegion' => 'ap-southeast-2',
+        'queueUrl' => 'https://sqs.my-queue',
+        'secret' => 'my-secret',
+    ];
+
     protected function tearDown(): void
     {
         $fs = new Filesystem();
