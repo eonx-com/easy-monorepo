@@ -1,0 +1,27 @@
+name: Split Tests
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    split_packages:
+        runs-on: ubuntu-latest
+        name: Split code into packages
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v1
+                with:
+                    php-version: 7.3
+                    coverage: none
+
+            -   name: Resolve commit message
+                run: echo "::set-env name=commit::$(git log --format=%B -n 1 ${{ github.sha }})"
+
+            -   if: contains(env.commit, '[SPLIT]')
+                run: composer install --prefer-dist --no-progress # Install with stable php version
+
+            -   if: contains(env.commit, '[SPLIT]')
+                run: composer split
