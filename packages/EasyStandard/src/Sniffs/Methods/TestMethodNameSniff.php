@@ -64,11 +64,11 @@ final class TestMethodNameSniff implements Sniff
         /** @var string $classFqn */
         $classFqn = NamespaceHelper::findCurrentNamespaceName($phpcsFile, $stackPtr);
 
-        $allowedPatterns = $this->getAllowedPatternsForFqn($classFqn);
-        foreach ($allowedPatterns as $allowedPattern) {
-            if (\preg_match($allowedPattern, $methodName) !== 1) {
+        $permittedPatterns = $this->getPermittedPatternsForFqn($classFqn);
+        foreach ($permittedPatterns as $permittedPattern) {
+            if (\preg_match($permittedPattern, $methodName) !== 1) {
                 $phpcsFile->addErrorOnLine(
-                    \sprintf('Method name [%s] must conform with regex [%s]', $methodName, $allowedPattern),
+                    \sprintf('Method name [%s] must conform with regex [%s]', $methodName, $permittedPattern),
                     $tokens[$stackPtr]['line'],
                     'TestMethodNameSniff'
                 );
@@ -104,7 +104,7 @@ final class TestMethodNameSniff implements Sniff
      *
      * @return string[]
      */
-    private function getAllowedPatternsForFqn(string $classFqn): array
+    private function getPermittedPatternsForFqn(string $classFqn): array
     {
         foreach ($this->permitted as $permittedPattern) {
             if (\preg_match($permittedPattern['namespace'], $classFqn) === 1) {
