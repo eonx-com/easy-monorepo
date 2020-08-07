@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Search;
 
 use Elasticsearch\Client;
+use stdClass;
 
 final class ElasticsearchSearchService implements SearchServiceInterface
 {
@@ -47,7 +48,7 @@ final class ElasticsearchSearchService implements SearchServiceInterface
             'body' => [
                 'query' => [
                     'bool' => [
-                        'must' => $query ?? ['match_all' => []],
+                        'must' => $query ?? ['match_all' => new stdClass()],
                         'filter' => [
                             ['terms' => [$accessTokensProperty => $accessTokens ?? 'anonymous']],
                         ],
