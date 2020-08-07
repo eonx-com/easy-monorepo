@@ -1,9 +1,0 @@
-easy_decision:
-    use_expression_language: true
-
-services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-
-    EonX\EasyDecision\Tests\Bridge\Symfony\Stubs\Configurators\TypeRestrictedExpressionFunctionConfigurator: ~
