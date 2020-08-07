@@ -21,6 +21,7 @@ final class Configuration implements ConfigurationInterface
                 ->integerNode('config_expires_after')
                     ->defaultValue(BridgeConstantsInterface::CONFIG_CACHE_EXPIRES_AFTER)
                 ->end()
+                ->scalarNode('provider')->info('Provider external id')->end()
             ->end();
 
         return $treeBuilder;

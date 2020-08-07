@@ -7,14 +7,23 @@ namespace EonX\EasyNotification\Queue\Configurators;
 use EonX\EasyNotification\Interfaces\ConfigInterface;
 use EonX\EasyNotification\Interfaces\MessageInterface;
 use EonX\EasyNotification\Interfaces\QueueMessageInterface;
+use EonX\EasyNotification\Messages\RealTimeMessage;
+use Nette\Utils\Json;
 
-final class BodyConfigurator extends AbstractQueueMessageConfigurator
+final class RealTimeBodyConfigurator extends AbstractQueueMessageConfigurator
 {
     public function configure(
         ConfigInterface $config,
         QueueMessageInterface $queueMessage,
         MessageInterface $message
     ): QueueMessageInterface {
-        return $queueMessage->setBody($message->getBody());
+        if (($message instanceof RealTimeMessage) === false) {
+            return $queueMessage;
+        }
+
+        return $queueMessage->setBody(Json::encode([
+            'body' => $message->getBody(),
+            'topics' => $message->getTopics(),
+        ]));
     }
 }

@@ -13,6 +13,16 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyNotificationExtension extends Extension
 {
+    /**
+     * @var string[]
+     */
+    private static $configToParam = [
+        'api_key' => BridgeConstantsInterface::PARAM_API_KEY,
+        'api_url' => BridgeConstantsInterface::PARAM_API_URL,
+        'config_expires_after' => BridgeConstantsInterface::PARAM_CONFIG_CACHE_EXPIRES_AFTER,
+        'provider' => BridgeConstantsInterface::PARAM_PROVIDER_EXTERNAL_ID,
+    ];
+
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
@@ -24,9 +34,8 @@ final class EasyNotificationExtension extends Extension
             ->registerForAutoconfiguration(QueueMessageConfiguratorInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_QUEUE_MESSAGE_CONFIGURATOR);
 
-        $container->setParameter(
-            BridgeConstantsInterface::PARAM_CONFIG_CACHE_EXPIRES_AFTER,
-            $config['config_expires_after']
-        );
+        foreach (static::$configToParam as $configName => $param) {
+            $container->setParameter($param, $config[$configName]);
+        }
     }
 }

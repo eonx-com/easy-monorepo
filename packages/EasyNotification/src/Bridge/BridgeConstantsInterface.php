@@ -24,7 +24,22 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_API_KEY = 'easy_notification.param.api_key';
+
+    /**
+     * @var string
+     */
+    public const PARAM_API_URL = 'easy_notification.param.api_url';
+
+    /**
+     * @var string
+     */
     public const PARAM_CONFIG_CACHE_EXPIRES_AFTER = 'easy_notification.param.config_cache_expires_after';
+
+    /**
+     * @var string
+     */
+    public const PARAM_PROVIDER_EXTERNAL_ID = 'easy_notification.param.provider_external_id';
 
     /**
      * @var string

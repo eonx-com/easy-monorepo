@@ -18,6 +18,11 @@ final class QueueMessage implements QueueMessageInterface
      */
     private $headers = [];
 
+    /**
+     * @var string
+     */
+    private $queueUrl;
+
     public function addHeader(string $name, string $value): QueueMessageInterface
     {
         $this->headers[$name] = $value;
@@ -38,9 +43,21 @@ final class QueueMessage implements QueueMessageInterface
         return $this->headers;
     }
 
+    public function getQueueUrl(): string
+    {
+        return $this->queueUrl;
+    }
+
     public function setBody(string $body): QueueMessageInterface
     {
         $this->body = $body;
+
+        return $this;
+    }
+
+    public function setQueueUrl(string $queueUrl): QueueMessageInterface
+    {
+        $this->queueUrl = $queueUrl;
 
         return $this;
     }

@@ -15,6 +15,11 @@ use EonX\EasyNotification\Interfaces\NotificationClientInterface;
 use EonX\EasyNotification\Interfaces\QueueTransportInterface;
 use EonX\EasyNotification\Interfaces\SqsClientFactoryInterface;
 use EonX\EasyNotification\NotificationClient;
+use EonX\EasyNotification\Queue\Configurators\ProviderHeaderConfigurator;
+use EonX\EasyNotification\Queue\Configurators\QueueUrlConfigurator;
+use EonX\EasyNotification\Queue\Configurators\RealTimeBodyConfigurator;
+use EonX\EasyNotification\Queue\Configurators\SignatureConfigurator;
+use EonX\EasyNotification\Queue\Configurators\TypeConfigurator;
 use EonX\EasyNotification\Queue\SqsClientFactory;
 use EonX\EasyNotification\Queue\SqsQueueTransport;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -26,7 +31,11 @@ return static function (ContainerConfigurator $container): void {
         ->autowire();
 
     // Config + ConfigFinder
-    $services->set(ConfigFinderInterface::class, ConfigFinder::class);
+    $services
+        ->set(ConfigFinderInterface::class, ConfigFinder::class)
+        ->arg('$apiKey', '%' . BridgeConstantsInterface::PARAM_API_KEY . '%')
+        ->arg('$apiUrl', '%' . BridgeConstantsInterface::PARAM_API_URL . '%')
+        ->arg('$providerExternalId', '%' . BridgeConstantsInterface::PARAM_PROVIDER_EXTERNAL_ID . '%');
 
     $services->set(BridgeConstantsInterface::SERVICE_CONFIG_CACHE, ArrayAdapter::class);
 
@@ -44,6 +53,13 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(NotificationClientInterface::class, NotificationClient::class)
         ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_QUEUE_MESSAGE_CONFIGURATOR));
+
+    // Configurators
+    $services->set(RealTimeBodyConfigurator::class);
+    $services->set(ProviderHeaderConfigurator::class);
+    $services->set(QueueUrlConfigurator::class);
+    $services->set(TypeConfigurator::class);
+    $services->set(SignatureConfigurator::class);
 
     // SQS Queue
     $services->set(SqsClientFactoryInterface::class, SqsClientFactory::class);
