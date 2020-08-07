@@ -2,7 +2,49 @@
 
 <!-- dumped content start -->
 
-## v2.4.22 - 2020-07-31
+## v2.4.25 - 2020-08-07
+
+### EasyNotification
+
+- [#301] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.24] - 2020-08-06
+
+### EasyErrorHandler
+
+- [#295] Added type casting in config, Thanks to [@skrut]
+
+### EasySecurity
+
+- [#300] Add symfony fake user
+
+### EasyPagination
+
+- [#298] Fix total items count for doctrine orm, Thanks to [@jordancachero]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.23] - 2020-08-05
+
+### EasyLock
+
+- [#299] Allow to use stamp to lock in messenger
+
+### EasySsm
+
+- [#293] Implement verbosity for dump-envs
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.22] - 2020-07-31
 
 ### EasyErrorHandler
 
@@ -1954,3 +1996,13 @@
 [#289]: https://github.com/eonx-com/easy-monorepo/pull/289
 [#287]: https://github.com/eonx-com/easy-monorepo/pull/287
 [v2.4.21]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.20...v2.4.21
+[#299]: https://github.com/eonx-com/easy-monorepo/pull/299
+[#293]: https://github.com/eonx-com/easy-monorepo/pull/293
+[v2.4.22]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.21...v2.4.22
+[#300]: https://github.com/eonx-com/easy-monorepo/pull/300
+[#298]: https://github.com/eonx-com/easy-monorepo/pull/298
+[#295]: https://github.com/eonx-com/easy-monorepo/pull/295
+[v2.4.23]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.22...v2.4.23
+[@jordancachero]: https://github.com/jordancachero
+[#301]: https://github.com/eonx-com/easy-monorepo/pull/301
+[v2.4.24]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.23...v2.4.24
