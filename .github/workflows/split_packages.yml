@@ -1,4 +1,4 @@
-name: Split Tests
+name: Split Packages
 
 on:
     push:
