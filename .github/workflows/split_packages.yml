@@ -9,6 +9,8 @@ jobs:
     split_packages:
         runs-on: ubuntu-latest
         name: Split code into packages
+        env:
+            GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
