@@ -1,0 +1,82 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Aws\Sqs\SqsClient;
+use EonX\EasyNotification\Bridge\BridgeConstantsInterface;
+use EonX\EasyNotification\Config\CacheConfigFinder;
+use EonX\EasyNotification\Config\Config;
+use EonX\EasyNotification\Config\ConfigFinder;
+use EonX\EasyNotification\Interfaces\ConfigFinderInterface;
+use EonX\EasyNotification\Interfaces\ConfigInterface;
+use EonX\EasyNotification\Interfaces\NotificationClientInterface;
+use EonX\EasyNotification\Interfaces\QueueTransportInterface;
+use EonX\EasyNotification\Interfaces\SqsClientFactoryInterface;
+use EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface;
+use EonX\EasyNotification\NotificationClient;
+use EonX\EasyNotification\Queue\Configurators\ProviderHeaderConfigurator;
+use EonX\EasyNotification\Queue\Configurators\QueueUrlConfigurator;
+use EonX\EasyNotification\Queue\Configurators\RealTimeBodyConfigurator;
+use EonX\EasyNotification\Queue\Configurators\SignatureConfigurator;
+use EonX\EasyNotification\Queue\Configurators\TypeConfigurator;
+use EonX\EasyNotification\Queue\SqsClientFactory;
+use EonX\EasyNotification\Queue\SqsQueueTransport;
+use EonX\EasyNotification\Subscribe\SubscribeInfoFinder;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+
+return static function (ContainerConfigurator $container): void {
+    $services = $container->services();
+    $services->defaults()
+        ->autoconfigure()
+        ->autowire();
+
+    // SubscribeInfoFinder
+    $services
+        ->set(SubscribeInfoFinderInterface::class, SubscribeInfoFinder::class)
+        ->arg('$apiKey', '%' . BridgeConstantsInterface::PARAM_API_KEY . '%')
+        ->arg('$apiUrl', '%' . BridgeConstantsInterface::PARAM_API_URL . '%');
+
+    // Config + ConfigFinder
+    $services
+        ->set(ConfigFinderInterface::class, ConfigFinder::class)
+        ->arg('$apiKey', '%' . BridgeConstantsInterface::PARAM_API_KEY . '%')
+        ->arg('$apiUrl', '%' . BridgeConstantsInterface::PARAM_API_URL . '%')
+        ->arg('$providerExternalId', '%' . BridgeConstantsInterface::PARAM_PROVIDER_EXTERNAL_ID . '%');
+
+    $services->set(BridgeConstantsInterface::SERVICE_CONFIG_CACHE, ArrayAdapter::class);
+
+    $services
+        ->set(CacheConfigFinder::class)
+        ->decorate(ConfigFinderInterface::class)
+        ->arg('$cache', ref(BridgeConstantsInterface::SERVICE_CONFIG_CACHE))
+        ->arg('$expiresAfter', '%' . BridgeConstantsInterface::PARAM_CONFIG_CACHE_EXPIRES_AFTER . '%');
+
+    $services
+        ->set(ConfigInterface::class, Config::class)
+        ->factory([ref(ConfigFinderInterface::class), 'find']);
+
+    // Client
+    $services
+        ->set(NotificationClientInterface::class, NotificationClient::class)
+        ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_QUEUE_MESSAGE_CONFIGURATOR));
+
+    // Configurators
+    $services->set(RealTimeBodyConfigurator::class);
+    $services->set(ProviderHeaderConfigurator::class);
+    $services->set(QueueUrlConfigurator::class);
+    $services->set(TypeConfigurator::class);
+    $services->set(SignatureConfigurator::class);
+
+    // SQS Queue
+    $services->set(SqsClientFactoryInterface::class, SqsClientFactory::class);
+
+    $services
+        ->set(BridgeConstantsInterface::SERVICE_SQS_CLIENT, SqsClient::class)
+        ->factory([ref(SqsClientFactoryInterface::class), 'create']);
+
+    $services
+        ->set(QueueTransportInterface::class, SqsQueueTransport::class)
+        ->arg('$sqs', ref(BridgeConstantsInterface::SERVICE_SQS_CLIENT));
+};
