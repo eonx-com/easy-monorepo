@@ -14,6 +14,7 @@ use EonX\EasyNotification\Interfaces\ConfigInterface;
 use EonX\EasyNotification\Interfaces\NotificationClientInterface;
 use EonX\EasyNotification\Interfaces\QueueTransportInterface;
 use EonX\EasyNotification\Interfaces\SqsClientFactoryInterface;
+use EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface;
 use EonX\EasyNotification\NotificationClient;
 use EonX\EasyNotification\Queue\Configurators\ProviderHeaderConfigurator;
 use EonX\EasyNotification\Queue\Configurators\QueueUrlConfigurator;
@@ -22,6 +23,7 @@ use EonX\EasyNotification\Queue\Configurators\SignatureConfigurator;
 use EonX\EasyNotification\Queue\Configurators\TypeConfigurator;
 use EonX\EasyNotification\Queue\SqsClientFactory;
 use EonX\EasyNotification\Queue\SqsQueueTransport;
+use EonX\EasyNotification\Subscribe\SubscribeInfoFinder;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 return static function (ContainerConfigurator $container): void {
@@ -29,6 +31,12 @@ return static function (ContainerConfigurator $container): void {
     $services->defaults()
         ->autoconfigure()
         ->autowire();
+
+    // SubscribeInfoFinder
+    $services
+        ->set(SubscribeInfoFinderInterface::class, SubscribeInfoFinder::class)
+        ->arg('$apiKey', '%' . BridgeConstantsInterface::PARAM_API_KEY . '%')
+        ->arg('$apiUrl', '%' . BridgeConstantsInterface::PARAM_API_URL . '%');
 
     // Config + ConfigFinder
     $services
