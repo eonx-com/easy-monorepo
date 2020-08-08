@@ -103,6 +103,9 @@ abstract class AbstractWebhook implements WebhookInterface
         return $webhook;
     }
 
+    /**
+     * @param mixed[] $data
+     */
     public static function fromArray(array $data): WebhookInterface
     {
         $webhook = new static();
@@ -146,6 +149,9 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
+    /**
+     * @param mixed[] $extra
+     */
     public function extra(array $extra): WebhookInterface
     {
         $this->extra = $extra;
@@ -294,6 +300,9 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function toArray(): array
     {
         return [

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Stubs;
 
 use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Component\HttpClient\Response\ResponseStream;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\ResponseStreamInterface;
@@ -31,6 +32,9 @@ final class HttpClientStub implements HttpClientInterface
         return $this->method;
     }
 
+    /**
+     * @return null|mixed[]
+     */
     public function getOptions(): ?array
     {
         return $this->options;
@@ -62,6 +66,11 @@ final class HttpClientStub implements HttpClientInterface
      */
     public function stream($responses, ?float $timeout = null): ResponseStreamInterface
     {
-        // No body needed.
+        return new ResponseStream($this->getGenerator());
+    }
+
+    private function getGenerator(): \Generator
+    {
+        yield 'stream';
     }
 }

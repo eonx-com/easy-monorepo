@@ -21,7 +21,7 @@ final class ConfigFinderStub implements ConfigFinderInterface
     private $config;
 
     /**
-     * @var mixed[] $config
+     * @param mixed[] $config
      */
     public function __construct(array $config)
     {

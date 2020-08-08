@@ -23,6 +23,11 @@ final class EasyNotificationExtension extends Extension
         'provider' => BridgeConstantsInterface::PARAM_PROVIDER_EXTERNAL_ID,
     ];
 
+    /**
+     * @param mixed[] $configs
+     *
+     * @throws \Exception
+     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);

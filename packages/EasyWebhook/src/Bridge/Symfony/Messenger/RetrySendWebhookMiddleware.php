@@ -62,8 +62,11 @@ final class RetrySendWebhookMiddleware implements MiddlewareInterface
                     new RedeliveryStamp($result->getWebhook()->getCurrentAttempt())
                 );
 
+            /** @var \EonX\EasyWebhook\Bridge\Symfony\Messenger\SendWebhookMessage $message */
+            $message = $retryEnvelope->getMessage();
+
             // Set result to null before sending back the message
-            $retryEnvelope->getMessage()->setResult(null);
+            $message->setResult(null);
 
             $this->getTransport($stamp->getTransportName())->send($retryEnvelope);
         }

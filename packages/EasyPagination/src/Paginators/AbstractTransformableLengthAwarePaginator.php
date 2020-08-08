@@ -9,7 +9,7 @@ use EonX\EasyPagination\Interfaces\TransformableLengthAwarePaginatorInterface as
 abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthAwarePaginator implements Transformable
 {
     /**
-     * @var mixed[]
+     * @var null|mixed[]
      */
     private $transformedItems;
 

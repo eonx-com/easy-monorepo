@@ -22,15 +22,18 @@ abstract class AbstractMessage implements MessageInterface
         $this->body = $body;
     }
 
-    public function getBody(): string
-    {
-        return Json::encode($this->body);
-    }
-
+    /**
+     * @param mixed[] $body
+     */
     public function body(array $body): MessageInterface
     {
         $this->body = $body;
 
         return $this;
+    }
+
+    public function getBody(): string
+    {
+        return Json::encode($this->body);
     }
 }
