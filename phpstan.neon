@@ -50,6 +50,9 @@ parameters:
         - message: '#Method EonX\\EasyAsync\\Bridge\\Symfony\\Events\\EventDispatcher\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
           path: packages/EasyAsync/src/Bridge/Symfony/Events/EventDispatcher.php
 
+        - message: '#Method EonX\\EasyAsync\\Tests\\Stubs\\EventDispatcherStub\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
+          path: packages/EasyAsync/tests/Stubs/EventDispatcherStub.php
+
         # ---- EasyCfhighlander ----
         # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'

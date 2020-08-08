@@ -45,7 +45,7 @@ final class AwsSsoAccessTokenProvider implements AwsSsoAccessTokenProviderInterf
 
     public function getSsoAccessToken(): AwsSsoAccessTokenInterface
     {
-        $ssoConfigs = $this->configProvider->getCurrentProfileSsoConfig();
+        $ssoConfigs = $this->configProvider->getCurrentProfileSsoConfig() ?? [];
         $ssoCacheKey = $this->configProvider->computeSsoAccessTokenCacheKey($ssoConfigs);
 
         $filename = $this->configProvider->getCliPath(\sprintf('sso/cache/%s.json', $ssoCacheKey));
