@@ -10,14 +10,14 @@ use Nette\Utils\Json;
 abstract class AbstractMessage implements MessageInterface
 {
     /**
-     * @var mixed[]
+     * @var null|mixed[]
      */
     private $body;
 
     /**
-     * @param string[] $body
+     * @param null|string[] $body
      */
-    public function __construct(array $body)
+    public function __construct(?array $body = null)
     {
         $this->body = $body;
     }
@@ -25,5 +25,12 @@ abstract class AbstractMessage implements MessageInterface
     public function getBody(): string
     {
         return Json::encode($this->body);
+    }
+
+    public function body(array $body): MessageInterface
+    {
+        $this->body = $body;
+
+        return $this;
     }
 }
