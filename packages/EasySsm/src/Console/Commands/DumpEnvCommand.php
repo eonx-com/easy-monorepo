@@ -54,8 +54,8 @@ final class DumpEnvCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $excludes = $input->getOption('excludes');
         /** @var string[] $excludes */
+        $excludes = $input->getOption('excludes');
         $envs = $this->loadEnv($excludes);
         $vars = \var_export($envs, true);
 
