@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasyLock\Tests\Bridge\Laravel;
 
 use Doctrine\DBAL\DriverManager;
-use EonX\EasyLock\Tests\AbstractTestCase;
 use EonX\EasyLock\Bridge\BridgeConstantsInterface;
 use EonX\EasyLock\Bridge\Laravel\EasyLockServiceProvider;
+use EonX\EasyLock\Tests\AbstractTestCase;
 use Laravel\Lumen\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractTestCase

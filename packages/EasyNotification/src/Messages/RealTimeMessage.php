@@ -28,9 +28,9 @@ final class RealTimeMessage extends AbstractMessage
      * @param null|mixed[] $body
      * @param null|string[] $topics
      */
-    public static function create(?array $body = null, ?array $topics = null): RealTimeMessage
+    public static function create(?array $body = null, ?array $topics = null): self
     {
-        return (new static($body, $topics));
+        return new static($body, $topics);
     }
 
     /**
