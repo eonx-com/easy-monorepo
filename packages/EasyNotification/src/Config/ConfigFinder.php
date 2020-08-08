@@ -8,6 +8,7 @@ use EonX\EasyNotification\Interfaces\ConfigFinderInterface;
 use EonX\EasyNotification\Interfaces\ConfigInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 use function Symfony\Component\String\u;
 
 final class ConfigFinder implements ConfigFinderInterface
