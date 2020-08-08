@@ -43,8 +43,6 @@ jobs:
             -   run: composer global require hirak/prestissimo
             -   run: composer install --prefer-dist --no-progress
 
-            -   run: ls -la vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Loader
-
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
                 shell: bash
