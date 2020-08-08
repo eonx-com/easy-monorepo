@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-use EonX\EasyAsync\Bridge\Symfony\Events\EventDispatcher;
 use EonX\EasyAsync\Factories\JobFactory;
 use EonX\EasyAsync\Factories\JobLogFactory;
 use EonX\EasyAsync\Generators\DateTimeGenerator;
 use EonX\EasyAsync\Generators\RamseyUuidGenerator;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
-use EonX\EasyAsync\Interfaces\EventDispatcherInterface;
 use EonX\EasyAsync\Interfaces\JobFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
@@ -27,8 +25,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services->set(DateTimeGeneratorInterface::class, DateTimeGenerator::class);
-
-    $services->set(EventDispatcherInterface::class, EventDispatcher::class);
 
     $services->set(JobFactoryInterface::class, JobFactory::class);
 
