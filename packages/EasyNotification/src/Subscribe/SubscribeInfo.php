@@ -24,7 +24,7 @@ final class SubscribeInfo implements SubscribeInfoInterface
     private $url;
 
     /**
-     * @var string[] $topics
+     * @param string[] $topics
      */
     public function __construct(string $jwt, array $topics, string $url)
     {
@@ -34,7 +34,7 @@ final class SubscribeInfo implements SubscribeInfoInterface
     }
 
     /**
-     * @var mixed[] $info
+     * @param mixed[] $info
      */
     public static function fromArray(array $info): SubscribeInfoInterface
     {

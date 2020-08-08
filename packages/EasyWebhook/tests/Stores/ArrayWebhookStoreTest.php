@@ -19,6 +19,10 @@ final class ArrayWebhookStoreTest extends AbstractTestCase
 
         $result = $store->store(new WebhookResult(Webhook::fromArray(['method' => 'PUT', 'https://eonx.com'])));
 
-        self::assertInstanceOf(Webhook::class, $store->find($result->getWebhook()->getId())->getWebhook());
+        if ($result === null) {
+            return;
+        }
+
+        self::assertInstanceOf(Webhook::class, $store->find((string)$result->getWebhook()->getId())->getWebhook());
     }
 }

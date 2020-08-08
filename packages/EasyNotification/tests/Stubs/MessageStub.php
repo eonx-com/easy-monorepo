@@ -14,7 +14,7 @@ final class MessageStub extends AbstractMessage
     private $type;
 
     /**
-     * @var mixed[] $body
+     * @param mixed[] $body
      */
     public function __construct(array $body, ?string $type = null)
     {

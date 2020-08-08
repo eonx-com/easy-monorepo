@@ -73,11 +73,17 @@ final class SecurityContextDataCollector extends DataCollector
         return self::NAME;
     }
 
+    /**
+     * @return \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
+     */
     public function getPermissions(): array
     {
         return $this->data['permissions'] ?? [];
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getPermissionsProviders(): array
     {
         return $this->data['permissions_providers'];
@@ -88,11 +94,17 @@ final class SecurityContextDataCollector extends DataCollector
         return $this->data['provider'] ?? null;
     }
 
+    /**
+     * @return \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
+     */
     public function getRoles(): array
     {
         return $this->data['roles'] ?? [];
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getRolesProviders(): array
     {
         return $this->data['roles_providers'];

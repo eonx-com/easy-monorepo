@@ -31,22 +31,40 @@ interface WebhookInterface
      */
     public const STATUS_SUCCESS = 'success';
 
+    /**
+     * @param mixed[] $body
+     */
     public function body(array $body): self;
 
     public function configured(?bool $configured = null): self;
 
     public function currentAttempt(int $currentAttempt): self;
 
+    /**
+     * @param mixed[] $extra
+     */
     public function extra(array $extra): self;
 
+    /**
+     * @param mixed[] $data
+     */
     public static function fromArray(array $data): self;
 
+    /**
+     * @return null|mixed[]
+     */
     public function getBody(): ?array;
 
     public function getCurrentAttempt(): int;
 
+    /**
+     * @return null|mixed[]
+     */
     public function getExtra(): ?array;
 
+    /**
+     * @return null|mixed[]
+     */
     public function getHttpClientOptions(): ?array;
 
     public function getId(): ?string;
@@ -61,6 +79,9 @@ interface WebhookInterface
 
     public function getUrl(): ?string;
 
+    /**
+     * @param mixed[] $options
+     */
     public function httpClientOptions(array $options): self;
 
     public function id(string $id): self;
@@ -71,8 +92,14 @@ interface WebhookInterface
 
     public function maxAttempt(int $maxAttempt): self;
 
+    /**
+     * @param mixed[] $extra
+     */
     public function mergeExtra(array $extra): self;
 
+    /**
+     * @param mixed[] $options
+     */
     public function mergeHttpClientOptions(array $options): self;
 
     public function method(string $method): self;
@@ -83,6 +110,9 @@ interface WebhookInterface
 
     public function status(string $status): self;
 
+    /**
+     * @return mixed[]
+     */
     public function toArray(): array;
 
     public function url(string $url): self;

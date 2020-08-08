@@ -30,6 +30,9 @@ final class SqsClientStub extends SqsClient
         return $this->calls;
     }
 
+    /**
+     * @param null|mixed[] $args
+     */
     public function sendMessage(?array $args = null): void
     {
         $this->calls[] = $args ?? [];

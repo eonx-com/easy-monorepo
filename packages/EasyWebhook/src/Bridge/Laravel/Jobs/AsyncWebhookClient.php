@@ -28,7 +28,9 @@ final class AsyncWebhookClient extends AbstractAsyncWebhookClient
     {
         $webhook = $result->getWebhook();
 
-        $this->bus->dispatch(new SendWebhookJob($webhook->getId(), $webhook->getMaxAttempt()));
+        if ($webhook->getId() !== null) {
+            $this->bus->dispatch(new SendWebhookJob($webhook->getId(), $webhook->getMaxAttempt()));
+        }
 
         return $result;
     }

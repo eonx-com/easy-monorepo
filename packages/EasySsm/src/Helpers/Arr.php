@@ -34,7 +34,7 @@ final class Arr
         $return = [];
 
         foreach ($flattened as $key => $value) {
-            $key = \str_replace('/__base__', '', $key);
+            $key = \str_replace('/__base__', '', (string)$key);
 
             $return[$key] = $value;
         }
