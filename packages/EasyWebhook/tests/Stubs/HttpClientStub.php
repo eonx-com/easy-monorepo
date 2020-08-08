@@ -60,7 +60,7 @@ final class HttpClientStub implements HttpClientInterface
      *     HTTP client
      * @param float|null $timeout The idle timeout before yielding timeout chunks
      */
-    public function stream($responses, float $timeout = null): ResponseStreamInterface
+    public function stream($responses, ?float $timeout = null): ResponseStreamInterface
     {
         // No body needed.
     }
