@@ -23,9 +23,6 @@ final class FakeUser implements UserInterface, SymfonyUserInterface
         // Do nothing.
     }
 
-    /**
-     * @return null
-     */
     public function getPassword()
     {
         return null;
@@ -39,9 +36,6 @@ final class FakeUser implements UserInterface, SymfonyUserInterface
         return [];
     }
 
-    /**
-     * @return null
-     */
     public function getSalt()
     {
         return null;

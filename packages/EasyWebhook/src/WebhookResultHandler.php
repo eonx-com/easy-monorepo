@@ -8,7 +8,6 @@ use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultHandlerInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
-use EonX\EasyWebhook\RetryStrategies\NullWebhookRetryStrategy;
 
 final class WebhookResultHandler implements WebhookResultHandlerInterface
 {

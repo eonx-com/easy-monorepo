@@ -39,7 +39,7 @@ interface WebhookInterface
 
     public function extra(array $extra): self;
 
-    public static function fromArray(array $data): WebhookInterface;
+    public static function fromArray(array $data): self;
 
     public function getBody(): ?array;
 
@@ -63,9 +63,9 @@ interface WebhookInterface
 
     public function httpClientOptions(array $options): self;
 
-    public function isConfigured(): bool;
-    
     public function id(string $id): self;
+
+    public function isConfigured(): bool;
 
     public function isSendNow(): bool;
 

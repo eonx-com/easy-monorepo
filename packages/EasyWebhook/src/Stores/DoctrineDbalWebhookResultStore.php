@@ -49,7 +49,7 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
 
         $class = $data['class'] ?? Webhook::class;
 
-        return (new WebhookResult($class::fromArray($data)->id($id)));
+        return new WebhookResult($class::fromArray($data)->id($id));
     }
 
     public function store(WebhookResultInterface $result): WebhookResultInterface
@@ -79,6 +79,8 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
      * @param mixed[] $data
      *
      * @return mixed[]
+     *
+     * @throws \Nette\Utils\JsonException
      */
     private function formatData(array $data): array
     {
