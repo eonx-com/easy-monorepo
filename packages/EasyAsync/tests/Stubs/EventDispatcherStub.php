@@ -10,7 +10,7 @@ use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 final class EventDispatcherStub implements EventDispatcherInterface
 {
     /**
-     * @var \EonX\EasyAsync\Interfaces\EasyAsyncEventInterface[]
+     * @var object[]|\EonX\EasyAsync\Interfaces\EasyAsyncEventInterface[]
      */
     private $dispatched = [];
 
@@ -22,7 +22,7 @@ final class EventDispatcherStub implements EventDispatcherInterface
     }
 
     /**
-     * @return EasyAsyncEventInterface[]
+     * @return object[]|EasyAsyncEventInterface[]
      */
     public function getDispatchedEvents(): array
     {
