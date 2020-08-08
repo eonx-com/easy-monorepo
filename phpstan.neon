@@ -47,9 +47,6 @@ parameters:
         - message: '#Parameter \#1 \$(finished|started)At of method EonX\\EasyAsync\\Interfaces\\EasyAsyncDataInterface\:\:set(Finished|Started)At\(\) expects DateTime, DateTime\|null given#'
           path: packages/EasyAsync/src/Implementations/Doctrine/DBAL/JobLogPersister.php
 
-        - message: '#Method EonX\\EasyAsync\\Bridge\\Symfony\\Events\\EventDispatcher\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
-          path: packages/EasyAsync/src/Bridge/Symfony/Events/EventDispatcher.php
-
         - message: '#Method EonX\\EasyAsync\\Tests\\Stubs\\EventDispatcherStub\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
           path: packages/EasyAsync/tests/Stubs/EventDispatcherStub.php
 

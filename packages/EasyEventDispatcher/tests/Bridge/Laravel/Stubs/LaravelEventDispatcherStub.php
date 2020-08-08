@@ -23,7 +23,7 @@ final class LaravelEventDispatcherStub implements Dispatcher
     {
         $this->dispatched[] = $event;
 
-        return $event;
+        return [$event];
     }
 
     /**
