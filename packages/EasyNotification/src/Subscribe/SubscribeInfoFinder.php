@@ -8,6 +8,7 @@ use EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface;
 use EonX\EasyNotification\Interfaces\SubscribeInfoInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 use function Symfony\Component\String\u;
 
 final class SubscribeInfoFinder implements SubscribeInfoFinderInterface
