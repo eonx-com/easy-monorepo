@@ -40,6 +40,8 @@ jobs:
                     key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
                     restore-keys: ${{ matrix.php }}-comp-
 
+            -   run: ls -la vendor/symfony
+
             -   run: composer global require hirak/prestissimo
             -   run: composer install --prefer-dist --no-progress
 
