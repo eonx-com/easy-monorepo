@@ -3,7 +3,7 @@ includes:
 
 parameters:
     autoload_files:
-        - %currentWorkingDirectory%/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Loader/PhpFilerLoader.php
+        - vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Loader/PhpFilerLoader.php
     bootstrapFiles:
         - %currentWorkingDirectory%/tests/bootstrap.php
 
