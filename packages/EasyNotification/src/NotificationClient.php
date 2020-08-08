@@ -29,7 +29,7 @@ final class NotificationClient implements NotificationClientInterface
     private $transport;
 
     /**
-     * @var iterable<mixed> $configurators
+     * @param iterable<mixed> $configurators
      */
     public function __construct(ConfigInterface $config, iterable $configurators, QueueTransportInterface $transport)
     {

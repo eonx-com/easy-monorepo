@@ -69,6 +69,9 @@ final class HttpClientStub implements HttpClientInterface
         return new ResponseStream($this->getGenerator());
     }
 
+    /**
+     * @return \Generator<string>
+     */
     private function getGenerator(): \Generator
     {
         yield 'stream';
