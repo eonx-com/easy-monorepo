@@ -40,10 +40,7 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
             return $envelope->getMessage();
         }
 
-        /** @var null|\EonX\EasyLock\Interfaces\WithLockDataInterface $stamp */
-        $stamp = $envelope->last(WithLockDataStamp::class);
-
-        return $stamp;
+        return $envelope->last(WithLockDataStamp::class);
     }
 
     private function shouldSkip(Envelope $envelope): bool
