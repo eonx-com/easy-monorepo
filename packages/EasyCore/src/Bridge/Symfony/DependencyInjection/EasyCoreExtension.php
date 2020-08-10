@@ -65,6 +65,14 @@ final class EasyCoreExtension extends Extension
                 $loader->load('api_platform/debug.php');
             }
         }
+
+        // Aliases for custom collection operations HTTP methods
+        foreach ($config['custom_collection_operations_methods'] as $method) {
+            $container->setAlias(
+                \sprintf('api_platform.action.%s_collection', \strtolower($method)),
+                'api_platform.action.placeholder'
+            );
+        }
     }
 
     /**
