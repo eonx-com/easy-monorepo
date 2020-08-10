@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.28 - 2020-08-10
+## v2.4.29 - 2020-08-10
+
+### EasyCore
+
+- [#307] Set alias to public for custom collection operations actions
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.28] - 2020-08-10
 
 ### EasyCore
 
@@ -2050,3 +2060,5 @@
 [v2.4.26]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.25...v2.4.26
 [#306]: https://github.com/eonx-com/easy-monorepo/pull/306
 [v2.4.27]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.26...v2.4.27
+[#307]: https://github.com/eonx-com/easy-monorepo/pull/307
+[v2.4.28]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.27...v2.4.28
