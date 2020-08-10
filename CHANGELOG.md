@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.29 - 2020-08-10
+## v2.4.30 - 2020-08-10
+
+### EasySecurity
+
+- [#308] Make sure authorization matrix is always set
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.29] - 2020-08-10
 
 ### EasyCore
 
@@ -2062,3 +2072,5 @@
 [v2.4.27]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.26...v2.4.27
 [#307]: https://github.com/eonx-com/easy-monorepo/pull/307
 [v2.4.28]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.27...v2.4.28
+[#308]: https://github.com/eonx-com/easy-monorepo/pull/308
+[v2.4.29]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.28...v2.4.29
