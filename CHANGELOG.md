@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v2.4.26 - 2020-08-10
+## v2.4.27 - 2020-08-10
+
+### EasyCore
+
+- [#305] Set aliases for custom http methods for collection operations
+
+### EasyLock
+
+- [#304] Fix default value for connection
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.26] - 2020-08-10
 
 - [#296] Migrate symfony services config to php, Thanks to [@BOB41K1987]
 
@@ -2021,3 +2035,6 @@
 [#303]: https://github.com/eonx-com/easy-monorepo/pull/303
 [#296]: https://github.com/eonx-com/easy-monorepo/pull/296
 [v2.4.25]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.24...v2.4.25
+[#305]: https://github.com/eonx-com/easy-monorepo/pull/305
+[#304]: https://github.com/eonx-com/easy-monorepo/pull/304
+[v2.4.26]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.25...v2.4.26
