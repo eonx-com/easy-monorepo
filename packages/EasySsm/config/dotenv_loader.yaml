@@ -1,7 +1,0 @@
-services:
-    _defaults:
-        autoconfigure: true
-        autowire: true
-        
-    EonX\EasySsm\Services\Dotenv\EnvLoaderInterface:
-        class: EonX\EasySsm\Services\Dotenv\Loaders\DotenvLoader

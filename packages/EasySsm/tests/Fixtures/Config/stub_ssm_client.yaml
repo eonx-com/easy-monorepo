@@ -1,6 +1,0 @@
-services:
-    EonX\EasySsm\Services\Aws\SsmClientInterface:
-        class: EonX\EasySsm\Tests\Stubs\SsmClientStub
-        arguments:
-            $parameters:
-                - { name: param, type: string, value: value}

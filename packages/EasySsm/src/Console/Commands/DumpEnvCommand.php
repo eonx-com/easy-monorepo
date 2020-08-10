@@ -54,6 +54,7 @@ final class DumpEnvCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @var string[] $excludes */
         $excludes = $input->getOption('excludes');
         $envs = $this->loadEnv($excludes);
         $vars = \var_export($envs, true);
@@ -82,6 +83,7 @@ return ${vars};
 
 EOF;
 
+        /** @var string $filename */
         $filename = $input->getOption('filename');
         $this->filesystem->dumpFile($filename, $contents);
 
@@ -91,7 +93,6 @@ EOF;
     }
 
     /**
-     * @param string[] $includes
      * @param string[] $excludes
      *
      * @return mixed[]

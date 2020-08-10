@@ -14,6 +14,7 @@ final class EasyEventDispatcherBundleTest extends AbstractSymfonyTestCase
     public function testDispatchInSymfony(): void
     {
         $container = $this->getKernel()->getContainer();
+        /** @var \EonX\EasyEventDispatcher\Tests\Bridge\Symfony\Stubs\SymfonyEventDispatcherStub $symfonyDispatcher */
         $symfonyDispatcher = $container->get(SymfonyEventDispatcherInterface::class);
         $easyDispatcher = $container->get(EventDispatcherInterface::class);
         $event = new EventStub();

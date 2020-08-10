@@ -13,7 +13,7 @@ use Symfony\Bundle\MakerBundle\MakerBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyCoreExtension extends Extension
 {
@@ -36,8 +36,8 @@ final class EasyCoreExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yaml');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.php');
 
         $this->container = $container;
         $this->loader = $loader;
@@ -45,24 +45,24 @@ final class EasyCoreExtension extends Extension
         $this->autoconfigTag(EventListenerInterface::class, TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
         $this->autoconfigTag(SimpleDataPersisterInterface::class, TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG);
 
-        $this->loadIfBundlesExists('easy_async_listeners.yaml', EasyAsyncBundle::class);
-        $this->loadIfBundlesExists('api_platform/iri_converter.yaml', ApiPlatformBundle::class);
-        $this->loadIfBundlesExists('api_platform/maker_commands.yaml', [ApiPlatformBundle::class, MakerBundle::class]);
+        $this->loadIfBundlesExists('easy_async_listeners.php', EasyAsyncBundle::class);
+        $this->loadIfBundlesExists('api_platform/iri_converter.php', ApiPlatformBundle::class);
+        $this->loadIfBundlesExists('api_platform/maker_commands.php', [ApiPlatformBundle::class, MakerBundle::class]);
 
         if ($config['api_platform']['custom_pagination_enabled'] ?? false) {
-            $this->loadIfBundlesExists('api_platform/pagination.yaml', ApiPlatformBundle::class);
+            $this->loadIfBundlesExists('api_platform/pagination.php', ApiPlatformBundle::class);
         }
 
         if ($config['api_platform']['no_properties_api_resource_enabled'] ?? false) {
-            $this->loadIfBundlesExists('api_platform/no_properties_api_resource.yaml', ApiPlatformBundle::class);
+            $this->loadIfBundlesExists('api_platform/no_properties_api_resource.php', ApiPlatformBundle::class);
         }
 
         if ($config['api_platform']['simple_data_persister_enabled'] ?? false) {
-            $this->loadIfBundlesExists('api_platform/simple_data_persister.yaml', ApiPlatformBundle::class);
+            $this->loadIfBundlesExists('api_platform/simple_data_persister.php', ApiPlatformBundle::class);
 
             // This debug file is only for when simple data persister is enabled
             if ($container->hasParameter('kernel.debug') && $container->getParameter('kernel.debug')) {
-                $loader->load('api_platform/debug.yaml');
+                $loader->load('api_platform/debug.php');
             }
         }
     }

@@ -12,7 +12,7 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 final class SendWebhookMessage implements WithLockDataInterface
 {
     /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookResultInterface
+     * @var null|\EonX\EasyWebhook\Interfaces\WebhookResultInterface
      */
     private $result;
 

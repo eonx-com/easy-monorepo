@@ -36,9 +36,11 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
 
     private function getLockData(Envelope $envelope): ?WithLockDataInterface
     {
-        return $envelope->getMessage() instanceof WithLockDataInterface
-            ? $envelope->getMessage()
-            : $envelope->last(WithLockDataStamp::class);
+        if ($envelope->getMessage() instanceof WithLockDataInterface) {
+            return $envelope->getMessage();
+        }
+
+        return $envelope->last(WithLockDataStamp::class);
     }
 
     private function shouldSkip(Envelope $envelope): bool

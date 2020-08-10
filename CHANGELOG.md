@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.24 - 2020-08-06
+## v2.4.25 - 2020-08-07
+
+### EasyNotification
+
+- [#301] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.24] - 2020-08-06
 
 ### EasyErrorHandler
 
@@ -1994,3 +2004,5 @@
 [#295]: https://github.com/eonx-com/easy-monorepo/pull/295
 [v2.4.23]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.22...v2.4.23
 [@jordancachero]: https://github.com/jordancachero
+[#301]: https://github.com/eonx-com/easy-monorepo/pull/301
+[v2.4.24]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.23...v2.4.24
