@@ -67,7 +67,7 @@ final class EasyCoreExtension extends Extension
         }
 
         // Aliases for custom collection operations HTTP methods
-        foreach ($config['custom_collection_operations_methods'] as $method) {
+        foreach (['PATCH', 'PUT'] as $method) {
             $container->setAlias(
                 \sprintf('api_platform.action.%s_collection', \strtolower($method)),
                 'api_platform.action.placeholder'
