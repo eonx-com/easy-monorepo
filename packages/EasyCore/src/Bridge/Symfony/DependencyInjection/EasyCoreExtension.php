@@ -68,10 +68,8 @@ final class EasyCoreExtension extends Extension
 
         // Aliases for custom collection operations HTTP methods
         foreach (['PATCH', 'PUT'] as $method) {
-            $container->setAlias(
-                \sprintf('api_platform.action.%s_collection', \strtolower($method)),
-                'api_platform.action.placeholder'
-            );
+            $alias = \sprintf('api_platform.action.%s_collection', \strtolower($method));
+            $container->setAlias($alias, 'api_platform.action.placeholder')->setPublic(true);
         }
     }
 
