@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.27 - 2020-08-10
+## v2.4.28 - 2020-08-10
+
+### EasyCore
+
+- [#306] Do not use config for custom methods
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.27] - 2020-08-10
 
 ### EasyCore
 
@@ -2038,3 +2048,5 @@
 [#305]: https://github.com/eonx-com/easy-monorepo/pull/305
 [#304]: https://github.com/eonx-com/easy-monorepo/pull/304
 [v2.4.26]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.25...v2.4.26
+[#306]: https://github.com/eonx-com/easy-monorepo/pull/306
+[v2.4.27]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.26...v2.4.27
