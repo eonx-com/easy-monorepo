@@ -2,7 +2,19 @@
 
 <!-- dumped content start -->
 
-## v2.4.25 - 2020-08-07
+## v2.4.26 - 2020-08-10
+
+- [#296] Migrate symfony services config to php, Thanks to [@BOB41K1987]
+
+### EasyRepository
+
+- [#303] Add getClassMetadata to DoctrineOrmRepositoryTrait
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.25] - 2020-08-07
 
 ### EasyNotification
 
@@ -2006,3 +2018,6 @@
 [@jordancachero]: https://github.com/jordancachero
 [#301]: https://github.com/eonx-com/easy-monorepo/pull/301
 [v2.4.24]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.23...v2.4.24
+[#303]: https://github.com/eonx-com/easy-monorepo/pull/303
+[#296]: https://github.com/eonx-com/easy-monorepo/pull/296
+[v2.4.25]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.24...v2.4.25
