@@ -52,7 +52,7 @@ final class TestMethodNameSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr): void
     {
-        // Ignore methods names that doesn't start with testMethodPrefix
+        // Ignore method names that don't start with testMethodPrefix
         $this->ignored[] = '/^(?!' . \preg_quote($this->testMethodPrefix, '/') . ').*/';
 
         $tokens = $phpcsFile->getTokens();
