@@ -1,9 +1,9 @@
-<div align="center">
-    <h1>EonX - EasyRepository</h1>
-    <p>Provides an easy way to implement the Repository Design Pattern in your applications.</p>
-</div>
-
----
+---eonx_docs---
+title: Laravel/Lumen
+weight: 2000
+is_section: true
+section_icon: fab fa-laravel
+---eonx_docs---
 
 This document describes the steps to install this package into a [Laravel][1] and/or [Lumen][2] application.
 
