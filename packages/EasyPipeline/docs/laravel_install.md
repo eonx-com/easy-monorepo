@@ -1,9 +1,7 @@
-<div align="center">
-    <h1>EonX - EasyPipeline</h1>
-    <p>Provides an easy and powerful way to implement pipelines for anything.</p>
-</div>
-
----
+---eonx_docs---
+title: Installation
+weight: 1
+---eonx_docs---
 
 This document describes the steps to install this package into a [Laravel][1] and/or [Lumen][2] application.
 
@@ -14,6 +12,8 @@ Laravel uses [Composer][3] to manage its dependencies. You can require this pack
 ```bash
 $ composer require eonx/easy-pipeline
 ```
+
+<br>
 
 # Service Provider
 
@@ -33,6 +33,8 @@ automatically. Make sure to register it:
 ],
 ```
 
+<br>
+
 # Config
 
 To allow this package to work with your own pipelines you must let it know about your pipelines and 
@@ -44,16 +46,21 @@ update it with your own pipelines list.
 return [
     'pipelines' => [
         'pipeline-1' => \App\Pipelines\Pipeline1MiddlewareProvider::class,
-        'pipeline-2' => \App\Pipelines\Pipeline2MiddlewareProvider::class
-    ]
+        'pipeline-2' => \App\Pipelines\Pipeline2MiddlewareProvider::class,
+    ],
+];
 ```
 
 Pipelines list must be an associative array where the keys are the names of your pipelines 
 and the values the class of your middleware provider for each pipeline.
 
+<br>
+
 # Lumen Actions Required
 
 To install this package in a Lumen application the procedures are a bit different.
+
+<br>
 
 ## Register Service Provider
 
@@ -69,6 +76,8 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 $app->register(\EonX\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider::class);
 ```
 
+<br>
+
 ## Add Config
 
 In a Lumen application you must explicitly tell the application to add the package's config as following:
@@ -83,13 +92,15 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 $app->configure('easy-pipeline');
 ```
 
+<br>
+
 # Usage
 
 Prior to be able to use the pipelines in your application you will need create your middleware providers for each
 of your pipeline, for more information please have a look at the [documentation](middleware_providers.md).
 
 That's it you're all setup! You're now able to use your pipelines anywhere you want, using dependency
-injection or service locator (we strongly recommend to use the first one haha). To do so, you need to use the 
+injection or service locator (we strongly recommend using the first one haha). To do so, you need to use the 
 `EonX\EasyPipeline\Interfaces\PipelineFactoryInterface` to create your pipelines and their middleware list.
 
 ```php
