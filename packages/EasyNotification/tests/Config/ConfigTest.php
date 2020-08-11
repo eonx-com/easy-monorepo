@@ -15,6 +15,8 @@ final class ConfigTest extends AbstractTestCase
         $config = Config::fromArray($default);
 
         self::assertEquals($default['algorithm'], $config->getAlgorithm());
+        self::assertEquals($default['apiKey'], $config->getApiKey());
+        self::assertEquals($default['apiUrl'], $config->getApiUrl());
         self::assertEquals($default['externalId'], $config->getProviderExternalId());
         self::assertEquals($default['queueRegion'], $config->getQueueRegion());
         self::assertEquals($default['queueUrl'], $config->getQueueUrl());
