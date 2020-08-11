@@ -18,8 +18,8 @@ final class ConfigFinderTest extends AbstractTestCase
         $responses = [new MockResponse(Json::encode($defaultConfig))];
         $httpClient = new MockHttpClient($responses);
 
-        $configFinder = new ConfigFinder('my-api-key', 'https://api.com', $defaultConfig['externalId'], $httpClient);
-        $config = $configFinder->find();
+        $configFinder = new ConfigFinder('https://api.com', $httpClient);
+        $config = $configFinder->find('my-api-key', $defaultConfig['externalId']);
 
         self::assertEquals($defaultConfig['algorithm'], $config->getAlgorithm());
         self::assertEquals($defaultConfig['externalId'], $config->getProviderExternalId());

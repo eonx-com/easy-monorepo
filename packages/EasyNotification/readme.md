@@ -18,12 +18,11 @@ $ composer require eonx-com/easy-notification
 
 ### Configuration
 
-In order to send notifications to EonX Notification service, you need to create a Provider or reuse an existing one,
-and add the required credentials into your application:
+In order to send notifications using the EonX Notification service, you need to register a Provider within that service.
+Once the Provider created, set the API URL the Provider is registered against and keep the Provider API key and external
+ID handy as they will be required to send messages.
 
-- `api_key`: The API key you can retrieve from the EonX Notification service
-- `api_url`: The URL of the Eonx Notification service you're willing to use
-- `provider`: Your Provider External ID from the EonX Notification service
+See the configuration section for your framework of choice. (coming soon...)
 
 <br>
 
@@ -39,22 +38,37 @@ this client into your own classes and send notifications:
 namespace App\Listener;
 
 use App\Entity\User;
-use EonX\EasyNotification\Interfaces\NotificationClientInterface;use EonX\EasyNotification\Messages\RealTimeMessage;
+use EonX\EasyNotification\Interfaces\ConfigFinderInterface;
+use EonX\EasyNotification\Interfaces\NotificationClientInterface;
+use EonX\EasyNotification\Messages\RealTimeMessage;
 
 final class UserCreatedListener
 {
+    /**
+     * @var \EonX\EasyNotification\Interfaces\ConfigFinderInterface
+     */
+    private $configFinder;
+
     /**
      * @var \EonX\EasyNotification\Interfaces\NotificationClientInterface
      */
     private $client;
 
-    public function __construct(NotificationClientInterface $client)
+    public function __construct(ConfigFinderInterface $configFinder, NotificationClientInterface $client)
     {
+        $this->configFinder = $configFinder;
         $this->client = $client;
     }
 
     public function created(User $user): void
     {
+        /**
+         * In real use case, those values should come from configuration.
+         *
+         * For multi-tenancies application, it is a best practice to store those values against each tenancy.
+         */
+        $config = $this->configFinder->find('my-api-key', 'my-provider-external-id');
+
         /**
          * Topics are "channels" to send notifications to.
          * Every clients subscribing to any of the topics will then receive the notification.
@@ -70,7 +84,7 @@ final class UserCreatedListener
             'body' => \sprintf('We are to have you onboard %s', $user->getUsername()),
         ];
 
-        $this->client->send(RealTimeMessage::create($body, $topics)); // Send real time message
+        $this->client->send($config, RealTimeMessage::create($body, $topics)); // Send real time message
     }
 }
 ```

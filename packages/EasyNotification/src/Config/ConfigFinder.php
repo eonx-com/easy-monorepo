@@ -16,11 +16,6 @@ final class ConfigFinder implements ConfigFinderInterface
     /**
      * @var string
      */
-    private $apiKey;
-
-    /**
-     * @var string
-     */
     private $apiUrl;
 
     /**
@@ -28,31 +23,20 @@ final class ConfigFinder implements ConfigFinderInterface
      */
     private $httpClient;
 
-    /**
-     * @var string
-     */
-    private $providerExternalId;
-
-    public function __construct(
-        string $apiKey,
-        string $apiUrl,
-        string $providerExternalId,
-        ?HttpClientInterface $httpClient = null
-    ) {
-        $this->apiKey = $apiKey;
+    public function __construct(string $apiUrl, ?HttpClientInterface $httpClient = null)
+    {
         $this->apiUrl = $apiUrl;
-        $this->providerExternalId = $providerExternalId;
         $this->httpClient = $httpClient ?? HttpClient::create();
     }
 
-    public function find(): ConfigInterface
+    public function find(string $apiKey, string $providerExternalId): ConfigInterface
     {
         $options = [
-            'auth_basic' => [$this->apiKey],
+            'auth_basic' => [$apiKey],
             'headers' => ['Accept' => 'application/json'],
         ];
 
-        $url = \sprintf('%sproviders/%s', u($this->apiUrl)->ensureEnd('/'), $this->providerExternalId);
+        $url = \sprintf('%sproviders/%s', u($this->apiUrl)->ensureEnd('/'), $providerExternalId);
         $response = $this->httpClient->request('GET', $url, $options)->toArray();
 
         return Config::fromArray($response);
