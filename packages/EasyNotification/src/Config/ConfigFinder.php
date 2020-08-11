@@ -8,7 +8,6 @@ use EonX\EasyNotification\Interfaces\ConfigFinderInterface;
 use EonX\EasyNotification\Interfaces\ConfigInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-
 use function Symfony\Component\String\u;
 
 final class ConfigFinder implements ConfigFinderInterface
@@ -39,6 +38,6 @@ final class ConfigFinder implements ConfigFinderInterface
         $url = \sprintf('%sproviders/%s', u($this->apiUrl)->ensureEnd('/'), $providerExternalId);
         $response = $this->httpClient->request('GET', $url, $options)->toArray();
 
-        return Config::fromArray($response);
+        return Config::fromArray($response + ['apiKey' => $apiKey, 'apiUrl' => $this->apiUrl]);
     }
 }

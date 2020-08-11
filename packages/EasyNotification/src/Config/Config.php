@@ -6,12 +6,24 @@ namespace EonX\EasyNotification\Config;
 
 use EonX\EasyNotification\Interfaces\ConfigInterface;
 
+use function Symfony\Component\String\u;
+
 final class Config implements ConfigInterface
 {
     /**
      * @var string
      */
     private $algorithm;
+
+    /**
+     * @var string
+     */
+    private $apiKey;
+
+    /**
+     * @var string
+     */
+    private $apiUrl;
 
     /**
      * @var string
@@ -35,12 +47,16 @@ final class Config implements ConfigInterface
 
     public function __construct(
         string $algorithm,
+        string $apiKey,
+        string $apiUrl,
         string $providerExternalId,
         string $queueRegion,
         string $queueUrl,
         string $secret
     ) {
         $this->algorithm = $algorithm;
+        $this->apiKey = $apiKey;
+        $this->apiUrl = $apiUrl;
         $this->providerExternalId = $providerExternalId;
         $this->queueRegion = $queueRegion;
         $this->queueUrl = $queueUrl;
@@ -54,6 +70,8 @@ final class Config implements ConfigInterface
     {
         return new static(
             $config['algorithm'],
+            $config['apiKey'],
+            $config['apiUrl'],
             $config['externalId'],
             $config['queueRegion'],
             $config['queueUrl'],
@@ -64,6 +82,16 @@ final class Config implements ConfigInterface
     public function getAlgorithm(): string
     {
         return $this->algorithm;
+    }
+
+    public function getApiKey(): string
+    {
+        return $this->apiKey;
+    }
+
+    public function getApiUrl(): string
+    {
+        return u($this->apiUrl)->ensureEnd('/')->toString();
     }
 
     public function getProviderExternalId(): string

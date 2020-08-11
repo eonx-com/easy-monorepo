@@ -9,6 +9,30 @@ final class RealTimeMessage extends AbstractMessage
     /**
      * @var string[]
      */
+    public const STATUSES = [
+        self::STATUS_ON_FLY,
+        self::STATUS_READ,
+        self::STATUS_RECEIVED,
+    ];
+
+    /**
+     * @var string
+     */
+    public const STATUS_ON_FLY = 'on_fly';
+
+    /**
+     * @var string
+     */
+    public const STATUS_READ = 'read';
+
+    /**
+     * @var string
+     */
+    public const STATUS_RECEIVED = 'received';
+
+    /**
+     * @var string[]
+     */
     private $topics;
 
     /**
@@ -31,6 +55,11 @@ final class RealTimeMessage extends AbstractMessage
     public static function create(?array $body = null, ?array $topics = null): self
     {
         return new static($body, $topics);
+    }
+
+    public static function isStatusValid(string $status): bool
+    {
+        return \in_array($status, self::STATUSES, true);
     }
 
     /**
