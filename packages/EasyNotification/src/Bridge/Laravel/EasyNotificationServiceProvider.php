@@ -11,6 +11,7 @@ use EonX\EasyNotification\Config\ConfigFinder;
 use EonX\EasyNotification\Interfaces\ConfigFinderInterface;
 use EonX\EasyNotification\Interfaces\ConfigInterface;
 use EonX\EasyNotification\Interfaces\NotificationClientInterface;
+use EonX\EasyNotification\Interfaces\QueueTransportFactoryInterface;
 use EonX\EasyNotification\Interfaces\QueueTransportInterface;
 use EonX\EasyNotification\Interfaces\SqsClientFactoryInterface;
 use EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface;
@@ -22,6 +23,7 @@ use EonX\EasyNotification\Queue\Configurators\SignatureConfigurator;
 use EonX\EasyNotification\Queue\Configurators\TypeConfigurator;
 use EonX\EasyNotification\Queue\SqsClientFactory;
 use EonX\EasyNotification\Queue\SqsQueueTransport;
+use EonX\EasyNotification\Queue\SqsQueueTransportFactory;
 use EonX\EasyNotification\Subscribe\SubscribeInfoFinder;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -52,11 +54,7 @@ final class EasyNotificationServiceProvider extends ServiceProvider
 
         // Config + ConfigFinder
         $this->app->singleton(ConfigFinderInterface::class, function (): ConfigFinderInterface {
-            return new ConfigFinder(
-                \config('easy-notification.api_key'),
-                \config('easy-notification.api_url'),
-                \config('easy-notification.provider')
-            );
+            return new ConfigFinder(\config('easy-notification.api_url'));
         });
 
         $this->app->singleton(BridgeConstantsInterface::SERVICE_CONFIG_CACHE, ArrayAdapter::class);
@@ -75,24 +73,16 @@ final class EasyNotificationServiceProvider extends ServiceProvider
             }
         );
 
-        $this->app->singleton(ConfigInterface::class, function (): ConfigInterface {
-            return $this->app->make(ConfigFinderInterface::class)->find();
-        });
-
         // SubscribeInfoFinder
         $this->app->singleton(SubscribeInfoFinderInterface::class, function (): SubscribeInfoFinderInterface {
-            return new SubscribeInfoFinder(
-                \config('easy-notification.api_key'),
-                \config('easy-notification.api_url')
-            );
+            return new SubscribeInfoFinder(\config('easy-notification.api_url'));
         });
 
         // Client
         $this->app->singleton(NotificationClientInterface::class, function (): NotificationClientInterface {
             return new NotificationClient(
-                $this->app->make(ConfigInterface::class),
                 $this->app->tagged(BridgeConstantsInterface::TAG_QUEUE_MESSAGE_CONFIGURATOR),
-                $this->app->make(QueueTransportInterface::class)
+                $this->app->make(QueueTransportFactoryInterface::class)
             );
         });
 
@@ -103,14 +93,6 @@ final class EasyNotificationServiceProvider extends ServiceProvider
         }
 
         // SQS Queue
-        $this->app->singleton(SqsClientFactoryInterface::class, SqsClientFactory::class);
-
-        $this->app->singleton(BridgeConstantsInterface::SERVICE_SQS_CLIENT, function (): SqsClient {
-            return $this->app->make(SqsClientFactoryInterface::class)->create();
-        });
-
-        $this->app->singleton(QueueTransportInterface::class, function (): QueueTransportInterface {
-            return new SqsQueueTransport($this->app->make(BridgeConstantsInterface::SERVICE_SQS_CLIENT));
-        });
+        $this->app->singleton(QueueTransportFactoryInterface::class, SqsQueueTransportFactory::class);
     }
 }

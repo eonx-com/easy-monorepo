@@ -6,5 +6,5 @@ namespace EonX\EasyNotification\Interfaces;
 
 interface NotificationClientInterface
 {
-    public function send(MessageInterface $message): void;
+    public function send(ConfigInterface $config, MessageInterface $message): void;
 }

@@ -8,16 +8,10 @@ use EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface;
 use EonX\EasyNotification\Interfaces\SubscribeInfoInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-
 use function Symfony\Component\String\u;
 
 final class SubscribeInfoFinder implements SubscribeInfoFinderInterface
 {
-    /**
-     * @var string
-     */
-    private $apiKey;
-
     /**
      * @var string
      */
@@ -28,9 +22,8 @@ final class SubscribeInfoFinder implements SubscribeInfoFinderInterface
      */
     private $httpClient;
 
-    public function __construct(string $apiKey, string $apiUrl, ?HttpClientInterface $httpClient = null)
+    public function __construct(string $apiUrl, ?HttpClientInterface $httpClient = null)
     {
-        $this->apiKey = $apiKey;
         $this->apiUrl = $apiUrl;
         $this->httpClient = $httpClient ?? HttpClient::create();
     }
@@ -44,15 +37,15 @@ final class SubscribeInfoFinder implements SubscribeInfoFinderInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function find(array $topics): SubscribeInfoInterface
+    public function find(string $apiKey, string $providerExternalId, array $topics): SubscribeInfoInterface
     {
         $options = [
-            'auth_basic' => [$this->apiKey],
+            'auth_basic' => [$apiKey],
             'headers' => ['Accept' => 'application/json'],
             'json' => ['topics' => $topics],
         ];
 
-        $url = \sprintf('%s%s', u($this->apiUrl)->ensureEnd('/'), 'subscribe_infos');
+        $url = \sprintf('%sproviders/%s/%s', u($this->apiUrl)->ensureEnd('/'), $providerExternalId, 'subscribe_infos');
         $response = $this->httpClient->request('POST', $url, $options)->toArray();
 
         return SubscribeInfo::fromArray($response);

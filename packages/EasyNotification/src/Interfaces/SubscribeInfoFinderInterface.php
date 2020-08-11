@@ -9,5 +9,5 @@ interface SubscribeInfoFinderInterface
     /**
      * @param string[] $topics
      */
-    public function find(array $topics): SubscribeInfoInterface;
+    public function find(string $apiKey, string $providerExternalId, array $topics): SubscribeInfoInterface;
 }

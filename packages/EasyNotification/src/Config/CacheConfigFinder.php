@@ -34,14 +34,17 @@ final class CacheConfigFinder implements ConfigFinderInterface
         $this->expiresAfter = $expiresAfter ?? BridgeConstantsInterface::CONFIG_CACHE_EXPIRES_AFTER;
     }
 
-    public function find(): ConfigInterface
+    public function find(string $apiKey, string $providerExternalId): ConfigInterface
     {
         $key = BridgeConstantsInterface::CONFIG_CACHE_KEY;
 
-        return $this->cache->get($key, function (ItemInterface $item): ConfigInterface {
-            $item->expiresAfter($this->expiresAfter);
+        return $this->cache->get(
+            $key,
+            function (ItemInterface $item) use ($apiKey, $providerExternalId): ConfigInterface {
+                $item->expiresAfter($this->expiresAfter);
 
-            return $this->decorated->find();
-        });
+                return $this->decorated->find($apiKey, $providerExternalId);
+            }
+        );
     }
 }

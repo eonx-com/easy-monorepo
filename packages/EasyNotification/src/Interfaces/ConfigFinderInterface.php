@@ -6,5 +6,5 @@ namespace EonX\EasyNotification\Interfaces;
 
 interface ConfigFinderInterface
 {
-    public function find(): ConfigInterface;
+    public function find(string $apiKey, string $providerExternalId): ConfigInterface;
 }

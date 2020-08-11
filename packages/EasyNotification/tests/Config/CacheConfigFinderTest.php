@@ -13,11 +13,12 @@ final class CacheConfigFinderTest extends AbstractTestCase
 {
     public function testCachePreventCallingDecoratedFinder(): void
     {
-        $stub = new ConfigFinderStub(static::$defaultConfig);
+        $defaultConfig = static::$defaultConfig;
+        $stub = new ConfigFinderStub($defaultConfig);
         $cacheFinder = new CacheConfigFinder(new ArrayAdapter(), $stub);
 
-        $cacheFinder->find();
-        $cacheFinder->find();
+        $cacheFinder->find('my-api-key', $defaultConfig['externalId']);
+        $cacheFinder->find('my-api-key', $defaultConfig['externalId']);
 
         self::assertEquals(1, $stub->getCalled());
     }
