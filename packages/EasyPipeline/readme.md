@@ -3,8 +3,6 @@ title: Introduction
 weight: 0
 ---eonx_docs---
 
-# Documentation
-
 ## Middleware and MiddlewareProviders
 
 - [Middleware](docs/middlewares.md)
