@@ -20,6 +20,8 @@ return [
 ];
 ```
 
+<br>
+
 ### UUID V4 Generator
 
 In the case you want to generate UUID V4 in your application, you will need to set the UUID V4 generator of your choice
