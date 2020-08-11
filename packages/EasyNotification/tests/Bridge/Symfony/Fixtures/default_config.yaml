@@ -6,7 +6,7 @@ services:
         class: EonX\EasyNotification\Tests\Stubs\ConfigFinderStub
         arguments:
             $config:
-                algorithm: 'RS256'
+                algorithm: 'sha256'
                 externalId: 'ABCDE'
                 queueRegion: 'ap-southeast-2'
                 queueUrl: 'http://sqs.queue'
