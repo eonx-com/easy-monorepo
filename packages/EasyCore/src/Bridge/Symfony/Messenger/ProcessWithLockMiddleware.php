@@ -11,12 +11,20 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
+/**
+ * @deprecated Since 2.4.31. Will be remove in 3.0. Use eonx-com/easy-lock package instead.
+ */
 final class ProcessWithLockMiddleware implements MiddlewareInterface
 {
     use ProcessWithLockTrait;
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
+        @\trigger_error(\sprintf(
+            '%s is deprecated since 2.4.31 and will be removed in 3.0, Use eonx-com/easy-lock package instead.',
+            static::class,
+        ), \E_USER_DEPRECATED);
+
         if ($this->shouldSkip($envelope)) {
             return $stack->next()->handle($envelope, $stack);
         }
