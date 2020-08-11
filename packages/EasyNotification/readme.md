@@ -26,6 +26,22 @@ See the configuration section for your framework of choice. (coming soon...)
 
 <br>
 
+### CacheConfigFinder
+
+This package will automatically send API requests to the EonX Notification service to fetch the configuration for your
+ApiKey and Provider. This will ensure your application has the latest configuration, however, this configuration can
+easily be cached as it doesn't change often.
+
+This is why this package provides you with a `EonX\EasyNotification\Config\CacheConfigFinder` to decorate the default
+config finder service and cache the found config.
+
+The `EonX\EasyNotification\Config\CacheConfigFinder` implementation relies on the [Symfony Cache Component][2] so you 
+will need to make sure it is installed in your project.
+
+See how to override the config caching within your framework of choice section.
+
+<br>
+
 ### Usage
 
 Once configured this package will fetch the required configuration from the EonX Notification service and register
@@ -84,9 +100,12 @@ final class UserCreatedListener
             'body' => \sprintf('We are to have you onboard %s', $user->getUsername()),
         ];
 
-        $this->client->send($config, RealTimeMessage::create($body, $topics)); // Send real time message
+        $this->client
+             ->withConfig($config) // Set config for next send
+             ->send(RealTimeMessage::create($body, $topics)); // Send real time message
     }
 }
 ```
 
 [1]: https://getcomposer.org/
+[2]: https://symfony.com/doc/current/components/cache.html

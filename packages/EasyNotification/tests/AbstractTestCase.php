@@ -18,6 +18,8 @@ abstract class AbstractTestCase extends TestCase
      */
     protected static $defaultConfig = [
         'algorithm' => 'sha256',
+        'apiKey' => 'my-api-key',
+        'apiUrl' => 'http://eonx.com/',
         'externalId' => 'my-provider',
         'queueRegion' => 'ap-southeast-2',
         'queueUrl' => 'https://sqs.my-queue',
