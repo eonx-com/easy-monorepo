@@ -7,13 +7,7 @@
 
 This document describes the steps to install this package into a [Laravel][1] and/or [Lumen][2] application.
 
-# Require package (Composer)
-
-Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
-
-```bash
-$ composer require eonx/easy-repository
-```
+<br>
 
 # Service Provider
 
@@ -32,6 +26,8 @@ automatically. Make sure to register it:
     \EonX\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class
 ],
 ```
+
+<br>
 
 # Config
 
@@ -52,6 +48,8 @@ and the values the concrete class of your repositories. The keys of this array c
 we strongly recommend you to use the [FQCN][5] of the interface your repository implements this way you can use
 [autowiring][6] for your dependency injection.
 
+<br>
+
 # Lumen Actions Required
 
 To install this package in a Lumen application the procedures are a bit different.
@@ -70,6 +68,8 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 $app->register(\EonX\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class);
 ```
 
+<br>
+
 ## Add Config
 
 In a Lumen application you must explicitly tell the application to add the package's config as following:
@@ -83,6 +83,8 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 $app->configure('easy-repository');
 ```
+
+<br>
 
 # Usage
 
@@ -101,7 +103,6 @@ $app->make(\App\Repositories\PostRepositoryInterface::class); // Will be your co
 
 [1]: https://laravel.com/
 [2]: https://lumen.laravel.com/
-[3]: https://getcomposer.org/
 [4]: https://laravel.com/docs/5.7/providers
 [5]: https://en.wikipedia.org/wiki/Fully_qualified_name
 [6]: http://php-di.org/doc/autowiring.html
