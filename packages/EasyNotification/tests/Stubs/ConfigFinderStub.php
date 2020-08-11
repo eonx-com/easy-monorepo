@@ -28,7 +28,7 @@ final class ConfigFinderStub implements ConfigFinderInterface
         $this->config = $config;
     }
 
-    public function find(): ConfigInterface
+    public function find(string $apiKey, string $providerExternalId): ConfigInterface
     {
         $this->called++;
 

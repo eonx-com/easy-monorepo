@@ -24,11 +24,6 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_API_KEY = 'easy_notification.param.api_key';
-
-    /**
-     * @var string
-     */
     public const PARAM_API_URL = 'easy_notification.param.api_url';
 
     /**
@@ -39,17 +34,7 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_PROVIDER_EXTERNAL_ID = 'easy_notification.param.provider_external_id';
-
-    /**
-     * @var string
-     */
     public const SERVICE_CONFIG_CACHE = 'easy_notification.config_cache';
-
-    /**
-     * @var string
-     */
-    public const SERVICE_SQS_CLIENT = 'easy_notification.sqs_client';
 
     /**
      * @var string

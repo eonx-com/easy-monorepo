@@ -1,7 +1,5 @@
 easy_notification:
-    api_key: 'lkjfelwkjfew'
     api_url: 'http://eonx.com'
-    provider: 'ABCDE'
 
 services:
     EonX\EasyNotification\Interfaces\ConfigFinderInterface:

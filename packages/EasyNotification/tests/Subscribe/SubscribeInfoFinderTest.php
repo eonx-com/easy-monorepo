@@ -22,9 +22,9 @@ final class SubscribeInfoFinderTest extends AbstractTestCase
             'url' => 'https://subscribe.com',
         ]));
         $httpClient = new MockHttpClient([$response]);
-        $finder = new SubscribeInfoFinder('my-api-key', 'https://my-url.com', $httpClient);
+        $finder = new SubscribeInfoFinder('https://my-url.com', $httpClient);
 
-        $subscribeInfo = $finder->find(['/nathan']);
+        $subscribeInfo = $finder->find('my-api-key', 'my-provider', ['/nathan']);
 
         self::assertEquals('my-jwt', $subscribeInfo->getJwt());
         self::assertEquals(['/nathan'], $subscribeInfo->getTopics());

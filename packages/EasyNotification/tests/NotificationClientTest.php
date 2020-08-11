@@ -11,7 +11,7 @@ use EonX\EasyNotification\Queue\Configurators\ProviderHeaderConfigurator;
 use EonX\EasyNotification\Queue\Configurators\QueueUrlConfigurator;
 use EonX\EasyNotification\Queue\Configurators\RealTimeBodyConfigurator;
 use EonX\EasyNotification\Queue\Configurators\TypeConfigurator;
-use EonX\EasyNotification\Queue\SqsQueueTransport;
+use EonX\EasyNotification\Tests\Bridge\Symfony\Stubs\SqsQueueTransportFactoryStub;
 use EonX\EasyNotification\Tests\Stubs\SqsClientStub;
 
 final class NotificationClientTest extends AbstractTestCase
@@ -20,10 +20,10 @@ final class NotificationClientTest extends AbstractTestCase
     {
         $config = Config::fromArray(static::$defaultConfig);
         $stub = new SqsClientStub();
-        $transport = new SqsQueueTransport($stub);
-        $client = new NotificationClient($config, $this->getConfigurators(), $transport);
+        $transportFactory = new SqsQueueTransportFactoryStub($stub);
+        $client = new NotificationClient($this->getConfigurators(), $transportFactory);
 
-        $client->send(RealTimeMessage::create(['name' => 'nathan'], ['topic']));
+        $client->send($config, RealTimeMessage::create(['name' => 'nathan'], ['topic']));
 
         $expected = [
             'QueueUrl' => static::$defaultConfig['queueUrl'],
