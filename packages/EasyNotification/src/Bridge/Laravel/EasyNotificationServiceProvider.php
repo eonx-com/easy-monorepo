@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Bridge\Laravel;
 
-use Aws\Sqs\SqsClient;
 use EonX\EasyNotification\Bridge\BridgeConstantsInterface;
 use EonX\EasyNotification\Config\CacheConfigFinder;
 use EonX\EasyNotification\Config\ConfigFinder;
 use EonX\EasyNotification\Interfaces\ConfigFinderInterface;
-use EonX\EasyNotification\Interfaces\ConfigInterface;
 use EonX\EasyNotification\Interfaces\NotificationClientInterface;
 use EonX\EasyNotification\Interfaces\QueueTransportFactoryInterface;
-use EonX\EasyNotification\Interfaces\QueueTransportInterface;
-use EonX\EasyNotification\Interfaces\SqsClientFactoryInterface;
 use EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface;
 use EonX\EasyNotification\NotificationClient;
 use EonX\EasyNotification\Queue\Configurators\ProviderHeaderConfigurator;
 use EonX\EasyNotification\Queue\Configurators\QueueUrlConfigurator;
 use EonX\EasyNotification\Queue\Configurators\RealTimeBodyConfigurator;
 use EonX\EasyNotification\Queue\Configurators\SignatureConfigurator;
+use EonX\EasyNotification\Queue\Configurators\SlackBodyConfigurator;
 use EonX\EasyNotification\Queue\Configurators\TypeConfigurator;
-use EonX\EasyNotification\Queue\SqsClientFactory;
-use EonX\EasyNotification\Queue\SqsQueueTransport;
 use EonX\EasyNotification\Queue\SqsQueueTransportFactory;
 use EonX\EasyNotification\Subscribe\SubscribeInfoFinder;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +30,7 @@ final class EasyNotificationServiceProvider extends ServiceProvider
      */
     protected static $configurators = [
         RealTimeBodyConfigurator::class,
+        SlackBodyConfigurator::class,
         ProviderHeaderConfigurator::class,
         QueueUrlConfigurator::class,
         TypeConfigurator::class,

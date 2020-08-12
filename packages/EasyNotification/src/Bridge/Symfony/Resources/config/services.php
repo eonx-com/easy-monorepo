@@ -16,6 +16,7 @@ use EonX\EasyNotification\Queue\Configurators\ProviderHeaderConfigurator;
 use EonX\EasyNotification\Queue\Configurators\QueueUrlConfigurator;
 use EonX\EasyNotification\Queue\Configurators\RealTimeBodyConfigurator;
 use EonX\EasyNotification\Queue\Configurators\SignatureConfigurator;
+use EonX\EasyNotification\Queue\Configurators\SlackBodyConfigurator;
 use EonX\EasyNotification\Queue\Configurators\TypeConfigurator;
 use EonX\EasyNotification\Queue\SqsQueueTransportFactory;
 use EonX\EasyNotification\Subscribe\SubscribeInfoFinder;
@@ -52,6 +53,7 @@ return static function (ContainerConfigurator $container): void {
 
     // Configurators
     $services->set(RealTimeBodyConfigurator::class);
+    $services->set(SlackBodyConfigurator::class);
     $services->set(ProviderHeaderConfigurator::class);
     $services->set(QueueUrlConfigurator::class);
     $services->set(TypeConfigurator::class);

@@ -36,4 +36,14 @@ abstract class AbstractMessage implements MessageInterface
     {
         return Json::encode($this->body);
     }
+
+    /**
+     * @param mixed[] $body
+     */
+    public function mergeBody(array $body): MessageInterface
+    {
+        $this->body = \array_merge($this->body ?? [], $body);
+
+        return $this;
+    }
 }
