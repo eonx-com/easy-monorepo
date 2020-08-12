@@ -11,6 +11,11 @@ interface MessageInterface
      */
     public const TYPE_REAL_TIME = 'real_time';
 
+    /**
+     * @var string
+     */
+    public const TYPE_SLACK = 'slack';
+
     public function getBody(): string;
 
     public function getType(): string;

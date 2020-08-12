@@ -10,10 +10,12 @@ use EonX\EasyNotification\Interfaces\MessageInterface;
 use EonX\EasyNotification\Interfaces\QueueMessageConfiguratorInterface;
 use EonX\EasyNotification\Interfaces\QueueMessageInterface;
 use EonX\EasyNotification\Messages\RealTimeMessage;
+use EonX\EasyNotification\Messages\SlackMessage;
 use EonX\EasyNotification\Queue\Configurators\ProviderHeaderConfigurator;
 use EonX\EasyNotification\Queue\Configurators\QueueUrlConfigurator;
 use EonX\EasyNotification\Queue\Configurators\RealTimeBodyConfigurator;
 use EonX\EasyNotification\Queue\Configurators\SignatureConfigurator;
+use EonX\EasyNotification\Queue\Configurators\SlackBodyConfigurator;
 use EonX\EasyNotification\Queue\Configurators\TypeConfigurator;
 use EonX\EasyNotification\Queue\QueueMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
@@ -104,6 +106,27 @@ final class ConfiguratorsTest extends AbstractTestCase
                 );
             },
             (new QueueMessage())->setBody('my-body'),
+        ];
+
+        yield 'SlackBody with not Slack message' => [
+            new SlackBodyConfigurator(),
+            Config::fromArray(static::$defaultConfig),
+            new MessageStub([]),
+            static function (QueueMessageInterface $queueMessage, TestCase $testCase): void {
+                $testCase->expectException(TypeError::class);
+                $queueMessage->getBody();
+            },
+        ];
+
+        yield 'SlackBody' => [
+            new SlackBodyConfigurator(),
+            Config::fromArray(static::$defaultConfig),
+            new SlackMessage('channel', 'text'),
+            static function (QueueMessageInterface $queueMessage): void {
+                $expected = '{"channel":"channel","text":"text"}';
+
+                self::assertEquals($expected, $queueMessage->getBody());
+            },
         ];
     }
 
