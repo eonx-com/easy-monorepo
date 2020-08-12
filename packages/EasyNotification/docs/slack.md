@@ -75,6 +75,8 @@ final class UserCreatedListener
 }
 ```
 
+<br>
+
 ### Advanced Formatted Slack Message
 
 Slack offers a great panel of advanced formatting when sending messages. Checkout the [Block Kit Builder][3] to see
