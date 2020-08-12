@@ -7,5 +7,6 @@ final class NotPermittedMethodName
 {
     public function testmethod(): void
     {
+        // No body needed here
     }
 }

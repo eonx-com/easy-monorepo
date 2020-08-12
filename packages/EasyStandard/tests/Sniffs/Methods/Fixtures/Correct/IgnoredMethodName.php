@@ -7,5 +7,6 @@ final class IgnoredMethodName
 {
     public function testIgnoredMethodNameSuccessful(): void
     {
+        // No body needed here
     }
 }

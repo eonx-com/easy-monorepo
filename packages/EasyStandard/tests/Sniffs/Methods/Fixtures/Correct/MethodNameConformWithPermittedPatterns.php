@@ -7,5 +7,6 @@ final class MethodNameConformWithPermittedPatterns
 {
     public function testCreateSucceeds(): void
     {
+        // No body needed here
     }
 }

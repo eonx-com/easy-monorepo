@@ -7,5 +7,6 @@ final class NamespaceDoesNotHaveForbiddenPatterns
 {
     public function testmethod(): void
     {
+        // No body needed here
     }
 }

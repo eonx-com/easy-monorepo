@@ -7,5 +7,6 @@ final class MethodNameDoesNotConformWithForbiddenPatterns
 {
     public function testShowSucceeds(): void
     {
+        // No body needed here
     }
 }
