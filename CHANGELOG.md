@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.31 - 2020-08-13
+## v2.4.32 - 2020-08-13
+
+### EasyNotification
+
+- [#315] Remove symfony/string because requires php72
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.31] - 2020-08-13
 
 ### EasyNotification
 
@@ -2087,7 +2097,8 @@
 [#308]: https://github.com/eonx-com/easy-monorepo/pull/308
 [v2.4.29]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.28...v2.4.29
 [#314]: https://github.com/eonx-com/easy-monorepo/pull/314
-[#313]: https://github.com/eonx-com/easy-monorepo/pull/313
 [#312]: https://github.com/eonx-com/easy-monorepo/pull/312
 [#310]: https://github.com/eonx-com/easy-monorepo/pull/310
 [v2.4.30]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.29...v2.4.30
+[#315]: https://github.com/eonx-com/easy-monorepo/pull/315
+[v2.4.31]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.30...v2.4.31
