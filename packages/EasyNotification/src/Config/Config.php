@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Config;
 
+use EonX\EasyNotification\Helpers\StringHelper;
 use EonX\EasyNotification\Interfaces\ConfigInterface;
-
-use function Symfony\Component\String\u;
 
 final class Config implements ConfigInterface
 {
@@ -91,7 +90,7 @@ final class Config implements ConfigInterface
 
     public function getApiUrl(): string
     {
-        return u($this->apiUrl)->ensureEnd('/')->toString();
+        return StringHelper::ensureEnd($this->apiUrl, '/');
     }
 
     public function getProviderExternalId(): string
