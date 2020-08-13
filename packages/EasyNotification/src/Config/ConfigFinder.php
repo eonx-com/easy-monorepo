@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Config;
 
+use EonX\EasyNotification\Helpers\StringHelper;
 use EonX\EasyNotification\Interfaces\ConfigFinderInterface;
 use EonX\EasyNotification\Interfaces\ConfigInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use function Symfony\Component\String\u;
 
 final class ConfigFinder implements ConfigFinderInterface
 {
@@ -35,7 +35,7 @@ final class ConfigFinder implements ConfigFinderInterface
             'headers' => ['Accept' => 'application/json'],
         ];
 
-        $url = \sprintf('%sproviders/%s', u($this->apiUrl)->ensureEnd('/'), $providerExternalId);
+        $url = \sprintf('%sproviders/%s', StringHelper::ensureEnd($this->apiUrl, '/'), $providerExternalId);
         $response = $this->httpClient->request('GET', $url, $options)->toArray();
 
         return Config::fromArray($response + ['apiKey' => $apiKey, 'apiUrl' => $this->apiUrl]);
