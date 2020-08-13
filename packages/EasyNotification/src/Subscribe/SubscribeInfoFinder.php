@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Subscribe;
 
+use EonX\EasyNotification\Helpers\StringHelper;
 use EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface;
 use EonX\EasyNotification\Interfaces\SubscribeInfoInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use function Symfony\Component\String\u;
 
 final class SubscribeInfoFinder implements SubscribeInfoFinderInterface
 {
@@ -45,7 +45,12 @@ final class SubscribeInfoFinder implements SubscribeInfoFinderInterface
             'json' => ['topics' => $topics],
         ];
 
-        $url = \sprintf('%sproviders/%s/%s', u($this->apiUrl)->ensureEnd('/'), $providerExternalId, 'subscribe_infos');
+        $url = \sprintf(
+            '%sproviders/%s/subscribe_infos',
+            StringHelper::ensureEnd($this->apiUrl, '/'),
+            $providerExternalId
+        );
+
         $response = $this->httpClient->request('POST', $url, $options)->toArray();
 
         return SubscribeInfo::fromArray($response);
