@@ -161,7 +161,9 @@ final class NotificationClient implements NotificationClientInterface
         ]);
 
         try {
-            return $this->httpClient->request($method, $this->config->getApiUrl() . $path, $options)->toArray();
+            $response = $this->httpClient->request($method, $this->config->getApiUrl() . $path, $options);
+
+            return $response->getContent() !== '' ? $response->toArray() : [];
         } catch (\Throwable $throwable) {
             throw new ApiRequestFailedException(
                 \sprintf('API Request failed: %s', $throwable->getMessage()),
