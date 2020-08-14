@@ -46,7 +46,7 @@ final class SubscribeInfoFinder implements SubscribeInfoFinderInterface
         ];
 
         $url = \sprintf(
-            '%sproviders/%s/subscribe_infos',
+            '%sproviders/%s/subscribe-info',
             StringHelper::ensureEnd($this->apiUrl, '/'),
             $providerExternalId
         );
