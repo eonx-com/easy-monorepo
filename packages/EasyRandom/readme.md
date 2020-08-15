@@ -11,6 +11,8 @@ Do you need to generate random and unique values? This package is for you!
 
 All the randomness you need!
 
+<br>
+
 ### Require package (Composer)
 
 The recommended way to install this package is to use [Composer][1]:
@@ -18,6 +20,8 @@ The recommended way to install this package is to use [Composer][1]:
 ```bash
 $ composer require eonx-com/easy-random
 ```
+
+<br>
 
 ### Usage
 
@@ -27,6 +31,8 @@ $ composer require eonx-com/easy-random
 // Will generate a random integer between 0 and 20 (both included)
 $myNumber = (new \EonX\EasyRandom\RandomGenerator())->randomInteger(0, 20);
 ```
+
+<br>
 
 ### Strings
 
@@ -56,6 +62,8 @@ $reference = (new \EonX\EasyRandom\RandomGenerator())
     ->userFriendly();
 ```
 
+<br>
+
 ### UUID V4
 
 The random generator allows you to generate UUID V4, to do so, you will need to set the UUID V4 generator of your choice
@@ -69,18 +77,6 @@ $uuidV4Generator = new \EonX\EasyRandom\UuidV4\RamseyUuidV4Generator();
 $randomGenerator = (new \EonX\EasyRandom\RandomGenerator())->setUuidV4Generator($uuidV4Generator);
 
 $uuidV4 = $randomGenerator->uuidV4();
-```
-
-#### In Symfony configure your preferred UUID V4 generator
-
-To make this possible, the bundle will register the built-in generators as services.
-
-- *symfony_uuid4* alias for `EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator`
-- *ramsey_uuid4* alias for `EonX\EasyRandom\UuidV4\RamseyUuidV4Generator`
-
-```yaml
-easy_random:
-    uuid_v4_generator: 'easy_random.symfony_uuid4'
 ```
 
 [1]: https://getcomposer.org/
