@@ -11,6 +11,8 @@ Do you need to generate random and unique values? This package is for you!
 
 All the randomness you need!
 
+<br>
+
 ### Require package (Composer)
 
 The recommended way to install this package is to use [Composer][1]:
@@ -18,6 +20,8 @@ The recommended way to install this package is to use [Composer][1]:
 ```bash
 $ composer require eonx-com/easy-random
 ```
+
+<br>
 
 ### Usage
 
@@ -27,6 +31,8 @@ $ composer require eonx-com/easy-random
 // Will generate a random integer between 0 and 20 (both included)
 $myNumber = (new \EonX\EasyRandom\RandomGenerator())->randomInteger(0, 20);
 ```
+
+<br>
 
 ### Strings
 
@@ -55,6 +61,8 @@ $reference = (new \EonX\EasyRandom\RandomGenerator())
     ->randomString(16)
     ->userFriendly();
 ```
+
+<br>
 
 ### UUID V4
 

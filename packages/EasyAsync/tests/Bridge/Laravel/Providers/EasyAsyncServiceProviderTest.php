@@ -6,7 +6,6 @@ namespace EonX\EasyAsync\Tests\Bridge\Laravel\Providers;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\PDOSqlite\Driver;
-use EonX\EasyAsync\Bridge\Laravel\Events\EventDispatcher;
 use EonX\EasyAsync\Bridge\Laravel\Providers\EasyAsyncServiceProvider;
 use EonX\EasyAsync\Exceptions\InvalidImplementationException;
 use EonX\EasyAsync\Factories\JobFactory;
@@ -18,7 +17,6 @@ use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister;
 use EonX\EasyAsync\Interfaces\DataCleanerInterface;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
-use EonX\EasyAsync\Interfaces\EventDispatcherInterface;
 use EonX\EasyAsync\Interfaces\JobFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
@@ -55,10 +53,14 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
     {
         $this->expectException(InvalidImplementationException::class);
 
+        /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->createApplication();
         $app->get('config')->set('easy-async.implementation', 'invalid');
 
-        $app->register(EasyAsyncServiceProvider::class);
+        $provider = new EasyAsyncServiceProvider($app);
+
+        $provider->boot();
+        $provider->register();
     }
 
     /**
@@ -78,15 +80,8 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
             \call_user_func($dependencies, $app);
         }
 
-        /** @var \Illuminate\Contracts\Foundation\Application $app */
-        $serviceProvider = new EasyAsyncServiceProvider($app);
-        $serviceProvider->boot();
-
-        $app->register($serviceProvider);
-
         $services = [
             DateTimeGeneratorInterface::class => DateTimeGenerator::class,
-            EventDispatcherInterface::class => EventDispatcher::class,
             JobFactoryInterface::class => JobFactory::class,
             JobLogFactoryInterface::class => JobLogFactory::class,
             UuidGeneratorInterface::class => RamseyUuidGenerator::class,

@@ -1,4 +1,0 @@
-services:
-    EonX\EasyCore\Bridge\Symfony\ApiPlatform\Listeners\AddValidationErrorsOnJobLogListener:
-        tags:
-            - { name: kernel.event_listener, event: EonX\EasyAsync\Events\JobLogFailedEvent }

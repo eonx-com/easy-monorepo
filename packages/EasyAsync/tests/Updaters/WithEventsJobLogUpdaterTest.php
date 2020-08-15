@@ -10,12 +10,12 @@ use EonX\EasyAsync\Events\JobLogCompletedEvent;
 use EonX\EasyAsync\Events\JobLogFailedEvent;
 use EonX\EasyAsync\Events\JobLogInProgressEvent;
 use EonX\EasyAsync\Generators\DateTimeGenerator;
-use EonX\EasyAsync\Interfaces\EventDispatcherInterface;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyAsync\Tests\Stubs\EventDispatcherStub;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class WithEventsJobLogUpdaterTest extends AbstractTestCase
 {
@@ -47,6 +47,7 @@ final class WithEventsJobLogUpdaterTest extends AbstractTestCase
                 'file' => $throwable->getFile(),
                 'line' => $throwable->getLine(),
                 'trace' => $throwable->getTraceAsString(),
+                'message' => $throwable->getMessage(),
             ],
         ];
 

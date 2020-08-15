@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Tests\Bridge\Symfony\DependencyInjection;
 
 use EonX\EasyAsync\Bridge\Symfony\DependencyInjection\EasyAsyncExtension;
-use EonX\EasyAsync\Bridge\Symfony\Events\EventDispatcher;
 use EonX\EasyAsync\Exceptions\InvalidImplementationException;
 use EonX\EasyAsync\Factories\JobFactory;
 use EonX\EasyAsync\Factories\JobLogFactory;
@@ -16,7 +15,6 @@ use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister;
 use EonX\EasyAsync\Interfaces\DataCleanerInterface;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
-use EonX\EasyAsync\Interfaces\EventDispatcherInterface;
 use EonX\EasyAsync\Interfaces\JobFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
@@ -63,7 +61,6 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
 
         $services = [
             DateTimeGeneratorInterface::class => DateTimeGenerator::class,
-            EventDispatcherInterface::class => EventDispatcher::class,
             JobFactoryInterface::class => JobFactory::class,
             JobLogFactoryInterface::class => JobLogFactory::class,
             UuidGeneratorInterface::class => RamseyUuidGenerator::class,

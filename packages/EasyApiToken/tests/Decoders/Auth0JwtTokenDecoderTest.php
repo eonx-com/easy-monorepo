@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Decoders;
 
 use EonX\EasyApiToken\Decoders\JwtTokenDecoder;
-use EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
 use EonX\EasyApiToken\Tests\AbstractAuth0JwtTokenTestCase;
 use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
 
@@ -44,14 +43,14 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
         self::assertNull($decoder->decode($this->createServerRequest(['HTTP_AUTHORIZATION' => 'SomethingElse'])));
     }
 
-    public function testJwtTokenThrowExceptionIfUnableToDecodeToken(): void
+    public function testJwtTokenReturnNullIfUnableToDecodeToken(): void
     {
-        $this->expectException(InvalidEasyApiTokenFromRequestException::class);
-
         $jwtEasyApiTokenFactory = $this->createJwtEasyApiTokenFactory($this->createAuth0JwtDriver());
 
-        (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
+        $token = (new JwtTokenDecoder($jwtEasyApiTokenFactory))->decode($this->createServerRequest([
             'HTTP_AUTHORIZATION' => 'Bearer WeirdTokenHere',
         ]));
+
+        self::assertNull($token);
     }
 }

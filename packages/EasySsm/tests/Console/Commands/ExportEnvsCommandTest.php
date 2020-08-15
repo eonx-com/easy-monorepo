@@ -11,8 +11,8 @@ final class ExportEnvsCommandTest extends AbstractTestCase
     public function testExportEnvs(): void
     {
         $output = $this->executeCommand('export-envs', null, [
-            __DIR__ . '/../../../config/console_loader.yaml',
-            __DIR__ . '/../../Fixtures/Config/stub_ssm_client.yaml',
+            __DIR__ . '/../../../config/console_loader.php',
+            __DIR__ . '/../../Fixtures/Config/stub_ssm_client.php',
         ]);
 
         // TODO - Have a look at getting the output from container

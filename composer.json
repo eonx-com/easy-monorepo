@@ -18,11 +18,13 @@
         "php": "^7.1",
         "psr/event-dispatcher": "^1.0",
         "ramsey/uuid": "^3.9",
+        "symfony/cache": "^4.2 || ^5.0",
         "symfony/console": "^4.2 || ^5.0",
         "symfony/dotenv": "^4.2 || ^5.0",
         "symfony/expression-language": "^4.2 || ^5.0",
         "symfony/filesystem": "^4.2 || ^5.0",
         "symfony/finder": "^4.2 || ^5.0",
+        "symfony/http-client": "^4.2 || ^5.0",
         "symfony/process": "^4.2 || ^5.0",
         "symfony/string": "^4.2 || ^5.0",
         "symfony/uid": "^4.2 || ^5.0",
@@ -34,7 +36,8 @@
         "symplify/autowire-array-parameter": "^7.2",
         "nette/utils": "^3.1",
         "aws/aws-sdk-php": "^3.134",
-        "eonx-com/apiformats": "^1.0"
+        "eonx-com/apiformats": "^1.0",
+        "illuminate/support": "^5.5 || ^6.0"
     },
     "require-dev": {
         "api-platform/core": "^2.5",
@@ -76,8 +79,11 @@
             "EonX\\EasyDocker\\": "packages/EasyDocker/src",
             "EonX\\EasyEntityChange\\": "packages/EasyEntityChange/src",
             "EonX\\EasyErrorHandler\\": "packages/EasyErrorHandler/src",
+            "EonX\\EasyEventDispatcher\\": "packages/EasyEventDispatcher/src",
             "EonX\\EasyIdentity\\": "packages/EasyIdentity/src",
+            "EonX\\EasyLock\\": "packages/EasyLock/src",
             "EonX\\EasyLogging\\": "packages/EasyLogging/src",
+            "EonX\\EasyNotification\\": "packages/EasyNotification/src",
             "EonX\\EasyPagination\\": "packages/EasyPagination/src",
             "EonX\\EasyPipeline\\": "packages/EasyPipeline/src",
             "EonX\\EasyPsr7Factory\\": "packages/EasyPsr7Factory/src",
@@ -87,7 +93,8 @@
             "EonX\\EasySchedule\\": "packages/EasySchedule/src",
             "EonX\\EasySsm\\": "packages/EasySsm/src",
             "EonX\\EasyStandard\\": "packages/EasyStandard/src",
-            "EonX\\EasyTest\\": "packages/EasyTest/src"
+            "EonX\\EasyTest\\": "packages/EasyTest/src",
+            "EonX\\EasyWebhook\\": "packages/EasyWebhook/src"
         }
     },
     "autoload-dev": {
@@ -102,8 +109,11 @@
             "EonX\\EasyDocker\\Tests\\": "packages/EasyDocker/tests",
             "EonX\\EasyEntityChange\\Tests\\": "packages/EasyEntityChange/tests",
             "EonX\\EasyErrorHandler\\Tests\\": "packages/EasyErrorHandler/tests",
+            "EonX\\EasyEventDispatcher\\Tests\\": "packages/EasyEventDispatcher/tests",
             "EonX\\EasyIdentity\\Tests\\": "packages/EasyIdentity/tests",
+            "EonX\\EasyLock\\Tests\\": "packages/EasyLock/tests",
             "EonX\\EasyLogging\\Tests\\": "packages/EasyLogging/tests",
+            "EonX\\EasyNotification\\Tests\\": "packages/EasyNotification/tests",
             "EonX\\EasyPagination\\Tests\\": "packages/EasyPagination/tests",
             "EonX\\EasyPipeline\\Tests\\": "packages/EasyPipeline/tests",
             "EonX\\EasyPsr7Factory\\Tests\\": "packages/EasyPsr7Factory/tests",
@@ -113,7 +123,8 @@
             "EonX\\EasySchedule\\Tests\\": "packages/EasySchedule/tests",
             "EonX\\EasySsm\\Tests\\": "packages/EasySsm/tests",
             "EonX\\EasyStandard\\Tests\\": "packages/EasyStandard/tests",
-            "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests"
+            "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests",
+            "EonX\\EasyWebhook\\Tests\\": "packages/EasyWebhook/tests"
         }
     },
     "replace": {
@@ -124,19 +135,22 @@
         "eonx-com/easy-random": "self.version",
         "eonx-com/easy-pipeline": "self.version",
         "eonx-com/easy-identity": "self.version",
+        "eonx-com/easy-lock": "self.version",
         "eonx-com/easy-decision": "self.version",
         "eonx-com/easy-cfhighlander": "self.version",
         "eonx-com/easy-docker": "self.version",
         "eonx-com/easy-core": "self.version",
         "eonx-com/easy-entity-change": "self.version",
         "eonx-com/easy-error-handler": "self.version",
+        "eonx-com/easy-event-dispatcher": "self.version",
         "eonx-com/easy-logging": "self.version",
         "eonx-com/easy-security": "self.version",
         "eonx-com/easy-test": "self.version",
         "eonx-com/easy-schedule": "self.version",
         "eonx-com/easy-ssm": "self.version",
         "eonx-com/easy-standard": "self.version",
-        "eonx-com/easy-async": "self.version"
+        "eonx-com/easy-async": "self.version",
+        "eonx-com/easy-webhook": "self.version"
     },
     "scripts": {
         "check-all": [

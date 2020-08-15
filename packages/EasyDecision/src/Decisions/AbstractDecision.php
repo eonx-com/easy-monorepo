@@ -36,6 +36,11 @@ abstract class AbstractDecision implements DecisionInterface
     private $defaultOutput;
 
     /**
+     * @var bool
+     */
+    private $exitOnPropagationStopped = false;
+
+    /**
      * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface
      */
     private $expressionLanguage;
@@ -143,6 +148,13 @@ abstract class AbstractDecision implements DecisionInterface
         return $this;
     }
 
+    public function setExitOnPropagationStopped(?bool $exit = null): DecisionInterface
+    {
+        $this->exitOnPropagationStopped = $exit ?? true;
+
+        return $this;
+    }
+
     public function setExpressionLanguage(ExpressionLanguageInterface $expressionLanguage): DecisionInterface
     {
         $this->expressionLanguage = $expressionLanguage;
@@ -231,6 +243,11 @@ abstract class AbstractDecision implements DecisionInterface
         foreach ($this->getRules() as $rule) {
             // If propagation stopped, skip all the rules
             if ($this->context->isPropagationStopped()) {
+                // If exit on propagation stopped true, stop processing rules
+                if ($this->exitOnPropagationStopped) {
+                    break;
+                }
+
                 $this->addDecisionOutputForRule($rule, RuleInterface::OUTPUT_SKIPPED);
                 continue;
             }

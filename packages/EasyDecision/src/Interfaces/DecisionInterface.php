@@ -36,6 +36,8 @@ interface DecisionInterface
      */
     public function setDefaultOutput($defaultOutput = null): self;
 
+    public function setExitOnPropagationStopped(?bool $exit = null): self;
+
     public function setExpressionLanguage(ExpressionLanguageInterface $expressionLanguage): self;
 
     public function setName(string $name): self;

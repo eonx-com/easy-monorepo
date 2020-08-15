@@ -11,6 +11,7 @@ use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Tests\Stubs\RuleStopPropagationStub;
 use EonX\EasyDecision\Tests\Stubs\RuleStub;
 use EonX\EasyDecision\Tests\Stubs\RuleWithExtraOutputStub;
 
@@ -70,6 +71,21 @@ final class DecisionsTest extends AbstractTestCase
                 'Only false' => false,
                 'Only true' => true,
                 'True with extra' => ['output' => true, 'key' => 'value'],
+            ],
+        ];
+
+        yield 'Exit on propagation stopped' => [
+            (new ValueDecision())->setExitOnPropagationStopped(),
+            [
+                $this->createLanguageRule('add(5)'),
+                new RuleStopPropagationStub('exit-on-propagation-stopped', 10, true),
+                $this->createLanguageRule('add(10)'),
+            ],
+            ['value' => 5],
+            10,
+            [
+                'add(5)' => 10,
+                'exit-on-propagation-stopped' => 10,
             ],
         ];
     }

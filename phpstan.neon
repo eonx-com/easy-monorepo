@@ -2,7 +2,7 @@ includes:
     - 'vendor/symplify/phpstan-extensions/config/config.neon'
 
 parameters:
-    autoload_files:
+    bootstrapFiles:
         - %currentWorkingDirectory%/tests/bootstrap.php
 
     excludes_analyse:
@@ -47,8 +47,8 @@ parameters:
         - message: '#Parameter \#1 \$(finished|started)At of method EonX\\EasyAsync\\Interfaces\\EasyAsyncDataInterface\:\:set(Finished|Started)At\(\) expects DateTime, DateTime\|null given#'
           path: packages/EasyAsync/src/Implementations/Doctrine/DBAL/JobLogPersister.php
 
-        - message: '#Method EonX\\EasyAsync\\Bridge\\Symfony\\Events\\EventDispatcher\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
-          path: packages/EasyAsync/src/Bridge/Symfony/Events/EventDispatcher.php
+        - message: '#Method EonX\\EasyAsync\\Tests\\Stubs\\EventDispatcherStub\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
+          path: packages/EasyAsync/tests/Stubs/EventDispatcherStub.php
 
         # ---- EasyCfhighlander ----
         # ---- EasyCore ----
@@ -127,6 +127,17 @@ parameters:
         - message: '#Call to method getErrors\(\) on an unknown class App\\Exceptions\\EntityValidationFailedException.#'
           path: packages/EasyLogging/src/ContextModifiers
 
+        # ---- EasyLock ----
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyLock/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
+        - message: '#Method EonX\\EasyLock\\Bridge\\Symfony\\Messenger\\ProcessWithLockMiddleware\:\:getLockData\(\) should return EonX\\EasyLock\\Interfaces\\WithLockDataInterface\|null but returns Symfony\\Component\\Messenger\\Stamp\\StampInterface\|null#'
+          path: packages/EasyLock/src/Bridge/Symfony/Messenger/ProcessWithLockMiddleware.php
+
+        # ---- EasyNotification ---
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyNotification/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
         # ---- EasyPagination ----
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
           path: packages/EasyPagination/tests/Bridge/Laravel
@@ -139,9 +150,6 @@ parameters:
 
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyPagination/src/Bridge/Symfony/DependencyInjection/Configuration.php
-
-        - message: '#Method EonX\\EasyPagination\\Bridge\\Symfony\\Factories\\ServerRequestFactory\:\:getRequest\(\) should return Symfony\\Component\\HttpFoundation\\Request but returns Symfony\\Component\\HttpFoundation\\Request\|null#'
-          path: packages/EasyPagination/src/Bridge/Symfony/Factories/ServerRequestFactory.php
 
         - message: '#Method EonX\\EasyPagination\\Tests\\AbstractTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
           path: packages/EasyPagination/tests/AbstractTestCase.php
@@ -216,17 +224,11 @@ parameters:
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
           path: packages/EasySecurity/tests/Authorization/RoleTest.php
 
-        - message: '#Parameter \#1 \$it of function iterator_to_array expects Traversable, iterable given#'
-          path: packages/EasySecurity/src/Bridge/Laravel/EasySecurityServiceProvider.php
-
         # ---- EasySsm ----
         - message: '#Parameter \#1 \$stream of class Symfony\\Component\\Console\\Output\\StreamOutput constructor expects resource, resource\|false given#'
           path: packages/EasySsm/tests/Services/Dotenv/Loaders/ConsoleOutputLoaderTest.php
 
         - message: '#Return type \(array\) of method EonX\\EasySsm\\Tests\\Stubs\\BaseSsmClientStub\:\:getPaginator\(\) should be compatible with return type \(Aws\\ResultPaginator\) of method Aws\\Aws(Client|ClientInterface)\:\:getPaginator\(\)#'
-          path: packages/EasySsm/tests/Stubs/BaseSsmClientStub.php
-
-        - message: '#Return type \(void\) of method EonX\\EasySsm\\Tests\\Stubs\\BaseSsmClientStub\:\:(delete|put)Parameter\(\) should be compatible with return type \(Aws\\Result\) of method Aws\\Ssm\\SsmClient\:\:(delete|put)Parameter\(\)#'
           path: packages/EasySsm/tests/Stubs/BaseSsmClientStub.php
 
         - message: '#Cannot cast array<string\>\|bool\|string\|null to string#'
@@ -238,3 +240,10 @@ parameters:
 
         - message: '#Cannot cast array<string>\|string\|null to string.#'
           path: packages/EasyTest/src/Console/Commands
+
+        # ---- EasyWebhook ----
+        - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
+          path: packages/EasyWebhook/src/AbstractWebhook.php
+
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyWebhook/src/Bridge/Symfony/DependencyInjection/Configuration.php
