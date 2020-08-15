@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Decisions;
 
-use EonX\EasyDecision\Context;
+use EonX\EasyDecision\DecisionContext;
 use EonX\EasyDecision\Exceptions\ContextNotSetException;
 use EonX\EasyDecision\Exceptions\ExpressionLanguageNotSetOnDecisionException;
 use EonX\EasyDecision\Exceptions\ReservedContextIndexException;
 use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 use EonX\EasyDecision\Interfaces\ContextAwareInterface;
-use EonX\EasyDecision\Interfaces\ContextInterface;
+use EonX\EasyDecision\Interfaces\DecisionContextInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\DecisionOutputForRuleAwareInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
@@ -21,7 +21,7 @@ use EonX\EasyDecision\Interfaces\RuleInterface;
 abstract class AbstractDecision implements DecisionInterface
 {
     /**
-     * @var \EonX\EasyDecision\Interfaces\ContextInterface
+     * @var \EonX\EasyDecision\Interfaces\DecisionContextInterface
      */
     protected $context;
 
@@ -79,7 +79,7 @@ abstract class AbstractDecision implements DecisionInterface
         return $this;
     }
 
-    public function getContext(): ContextInterface
+    public function getContext(): DecisionContextInterface
     {
         if ($this->context !== null) {
             return $this->context;
@@ -119,7 +119,7 @@ abstract class AbstractDecision implements DecisionInterface
         }
 
         $this->input = $input;
-        $this->context = $context = new Context(static::class, $input);
+        $this->context = $context = new DecisionContext(static::class, $input);
 
         // If no rules provided, return default output
         if (empty($this->rules)) {

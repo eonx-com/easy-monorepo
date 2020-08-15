@@ -15,7 +15,7 @@ interface DecisionInterface
      */
     public function addRules(array $rules): self;
 
-    public function getContext(): ContextInterface;
+    public function getContext(): DecisionContextInterface;
 
     public function getExpressionLanguage(): ?ExpressionLanguageInterface;
 

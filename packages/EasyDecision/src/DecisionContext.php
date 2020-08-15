@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision;
 
-use EonX\EasyDecision\Interfaces\ContextInterface;
+use EonX\EasyDecision\Interfaces\DecisionContextInterface;
 
-final class Context implements ContextInterface
+final class DecisionContext implements DecisionContextInterface
 {
     /**
      * @var string
@@ -40,7 +40,7 @@ final class Context implements ContextInterface
     /**
      * @param mixed $output
      */
-    public function addRuleOutput(string $rule, $output): ContextInterface
+    public function addRuleOutput(string $rule, $output): DecisionContextInterface
     {
         $this->ruleOutputs[$rule] = $output;
 
@@ -73,7 +73,7 @@ final class Context implements ContextInterface
         return $this->propagationStopped;
     }
 
-    public function stopPropagation(): ContextInterface
+    public function stopPropagation(): DecisionContextInterface
     {
         $this->propagationStopped = true;
 

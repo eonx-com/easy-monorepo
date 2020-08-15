@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Interfaces;
 
-interface ContextInterface
+interface DecisionContextInterface
 {
     /**
      * @param mixed $output
