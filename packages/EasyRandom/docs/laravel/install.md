@@ -20,8 +20,6 @@ not familiar with this concept make sure to have a look at the [documentation][1
 ],
 ```
 
-<br>
-
 #### Lumen Actions Required
 
 To install this package in a Lumen application the procedures are a bit different.
@@ -39,8 +37,6 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 $app->register(\EonX\EasyRandom\Bridge\Laravel\EasyRandomServiceProvider::class);
 ```
-
-<br>
 
 ### UUID V4 Generator
 
