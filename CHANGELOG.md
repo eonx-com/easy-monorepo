@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.32 - 2020-08-13
+## v2.4.33 - 2020-08-17
+
+### EasyNotification
+
+- [#316] Fix API URLs + Handle empty responses
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.32] - 2020-08-13
 
 ### EasyNotification
 
@@ -2102,3 +2112,5 @@
 [v2.4.30]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.29...v2.4.30
 [#315]: https://github.com/eonx-com/easy-monorepo/pull/315
 [v2.4.31]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.30...v2.4.31
+[#316]: https://github.com/eonx-com/easy-monorepo/pull/316
+[v2.4.32]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.31...v2.4.32
