@@ -8,7 +8,7 @@ use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 
 interface ApiTokenDecoderFactoryInterface
 {
-    public function build(string $decoder): ApiTokenDecoderInterface;
+    public function build(?string $decoder = null): ApiTokenDecoderInterface;
 
     public function buildDefault(): ApiTokenDecoderInterface;
 }

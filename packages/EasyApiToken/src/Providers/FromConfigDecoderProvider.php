@@ -65,8 +65,12 @@ final class FromConfigDecoderProvider extends AbstractApiTokenDecoderProvider im
         parent::__construct($priority);
     }
 
-    public function build(string $decoder): ApiTokenDecoderInterface
+    public function build(?string $decoder = null): ApiTokenDecoderInterface
     {
+        if ($decoder === null) {
+            return $this->buildDefault();
+        }
+
         if (isset($this->resolved[$decoder])) {
             return $this->resolved[$decoder];
         }

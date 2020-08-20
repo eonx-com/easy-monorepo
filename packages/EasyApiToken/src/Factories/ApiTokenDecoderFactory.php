@@ -31,8 +31,12 @@ class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
         $this->setDecoders($decoderProviders);
     }
 
-    public function build(string $decoder): ApiTokenDecoderInterface
+    public function build(?string $decoder = null): ApiTokenDecoderInterface
     {
+        if ($decoder === null) {
+            return $this->buildDefault();
+        }
+
         if (isset($this->decoders[$decoder])) {
             return $this->decoders[$decoder];
         }
