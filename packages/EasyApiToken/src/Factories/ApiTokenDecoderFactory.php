@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Factories;
 
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
+use EonX\EasyApiToken\Exceptions\InvalidDefaultDecoderException;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderProviderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
@@ -15,6 +16,11 @@ class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
      * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface[]
      */
     private $decoders;
+
+    /**
+     * @var string
+     */
+    private $defaultDecoder;
 
     /**
      * @param mixed[] $config
@@ -34,6 +40,15 @@ class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
         throw new InvalidConfigurationException(\sprintf('No decoder configured for key: "%s".', $decoder));
     }
 
+    public function buildDefault(): ApiTokenDecoderInterface
+    {
+        if ($this->defaultDecoder !== null) {
+            return $this->build($this->defaultDecoder);
+        }
+
+        throw new InvalidDefaultDecoderException('No default decoder set');
+    }
+
     /**
      * @param iterable<mixed> $collection
      *
@@ -43,9 +58,23 @@ class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
     {
         $collection = $collection instanceof \Traversable ? \iterator_to_array($collection) : (array)$collection;
 
-        return \array_filter($collection, static function ($item) use ($class): bool {
+        $collection = \array_filter($collection, static function ($item) use ($class): bool {
             return $item instanceof $class;
         });
+
+        if ($class === ApiTokenDecoderProviderInterface::class) {
+            \usort(
+                $collection,
+                static function (
+                    ApiTokenDecoderProviderInterface $first,
+                    ApiTokenDecoderProviderInterface $second
+                ): int {
+                    return $first->getPriority() <=> $second->getPriority();
+                }
+            );
+        }
+
+        return $collection;
     }
 
     /**
@@ -58,6 +87,10 @@ class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
         foreach ($this->filter($providers, ApiTokenDecoderProviderInterface::class) as $provider) {
             foreach ($this->filter($provider->getDecoders(), ApiTokenDecoderInterface::class) as $decoder) {
                 $decoders[$decoder->getName()] = $decoder;
+            }
+
+            if ($provider->getDefaultDecoder() !== null) {
+                $this->defaultDecoder = $provider->getDefaultDecoder();
             }
         }
 

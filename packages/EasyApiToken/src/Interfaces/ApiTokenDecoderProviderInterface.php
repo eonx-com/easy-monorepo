@@ -10,4 +10,8 @@ interface ApiTokenDecoderProviderInterface
      * @return iterable<\EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface>
      */
     public function getDecoders(): iterable;
+
+    public function getDefaultDecoder(): ?string;
+
+    public function getPriority(): int;
 }

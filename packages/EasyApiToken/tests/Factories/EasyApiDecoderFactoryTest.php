@@ -11,6 +11,7 @@ use EonX\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
 use EonX\EasyApiToken\Decoders\JwtTokenDecoder;
 use EonX\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
+use EonX\EasyApiToken\Exceptions\InvalidDefaultDecoderException;
 use EonX\EasyApiToken\External\Auth0JwtDriver;
 use EonX\EasyApiToken\External\FirebaseJwtDriver;
 use EonX\EasyApiToken\Factories\ApiTokenDecoderFactory;
@@ -391,5 +392,13 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $this->expectExceptionMessage($expectedError);
 
         (new ApiTokenDecoderFactory([new FromConfigDecoderProvider($config)]))->build($key);
+    }
+
+    public function testNoDefaultDecoderSetException(): void
+    {
+        $this->expectException(InvalidDefaultDecoderException::class);
+        $this->expectExceptionMessage('No default decoder set');
+
+        (new ApiTokenDecoderFactory([]))->buildDefault();
     }
 }

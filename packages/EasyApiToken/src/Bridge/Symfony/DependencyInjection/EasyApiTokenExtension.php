@@ -30,18 +30,26 @@ final class EasyApiTokenExtension extends Extension
         // Resolve config
         $decoders = [];
         $defaultFactories = null;
+        $defaultDecoder = null;
 
         foreach ($configs as $config) {
             if (isset($config['decoders'])) {
                 $decoders = $config['decoders'];
             }
 
-            $defaultFactories = $config['default_factories'] ?? null;
+            if (isset($config['default_decoder'])) {
+                $defaultDecoder = $config['default_decoder'];
+            }
+
+            if (isset($config['default_factories'])) {
+                $defaultFactories = $config['default_factories'];
+            }
         }
 
         if (empty($decoders) === false) {
             $container->setParameter(BridgeConstantsInterface::PARAM_DECODERS, $decoders);
             $container->setParameter(BridgeConstantsInterface::PARAM_DEFAULT_FACTORIES, $defaultFactories);
+            $container->setParameter(BridgeConstantsInterface::PARAM_DEFAULT_DECODER, $defaultDecoder);
 
             $loader->load('from_config_provider.php');
         }

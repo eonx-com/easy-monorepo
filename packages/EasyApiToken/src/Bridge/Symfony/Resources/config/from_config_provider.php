@@ -16,5 +16,6 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(FromConfigDecoderProvider::class)
         ->arg('$config', '%' . BridgeConstantsInterface::PARAM_DECODERS . '%')
-        ->arg('$defaultFactories', '%' . BridgeConstantsInterface::PARAM_DEFAULT_FACTORIES . '%');
+        ->arg('$defaultFactories', '%' . BridgeConstantsInterface::PARAM_DEFAULT_FACTORIES . '%')
+        ->arg('$defaultDecoder', '%' . BridgeConstantsInterface::PARAM_DEFAULT_DECODER . '%');
 };

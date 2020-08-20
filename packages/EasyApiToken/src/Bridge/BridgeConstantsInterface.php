@@ -14,6 +14,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_DEFAULT_DECODER = 'easy_api_token.default_decoder';
+
+    /**
+     * @var string
+     */
     public const PARAM_DEFAULT_FACTORIES = 'easy_api_token.default_factories';
 
     /**

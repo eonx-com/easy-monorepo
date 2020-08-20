@@ -9,6 +9,8 @@ use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 interface ApiTokenDecoderFactoryInterface
 {
     public function build(string $decoder): ApiTokenDecoderInterface;
+
+    public function buildDefault(): ApiTokenDecoderInterface;
 }
 
 \class_alias(ApiTokenDecoderFactoryInterface::class, EasyApiTokenDecoderFactoryInterface::class);
