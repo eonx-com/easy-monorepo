@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Sniffs\Methods;
@@ -19,11 +20,11 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
     private const FIXTURES_DIR = __DIR__ . '/Fixtures';
 
     /**
-     * Tests process not permitted method name fails.
+     * Tests process not allowed method name fails.
      */
-    public function testProcessNotPermittedMethodNameFails(): void
+    public function testProcessNotAllowedMethodNameFails(): void
     {
-        $this->doTestWrongFile(self::FIXTURES_DIR . '/Wrong/NotPermittedMethodName.php');
+        $this->doTestWrongFile(self::FIXTURES_DIR . '/Wrong/NotAllowedMethodName.php');
     }
 
     /**
@@ -53,21 +54,21 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * Tests process a method name succeeds if the namespace does not have permitted patterns.
+     * Tests process a method name succeeds if the namespace does not have allowed patterns.
      */
-    public function testProcessSucceedsIfNamespaceDoesNotHavePermittedPatterns(): void
+    public function testProcessSucceedsIfNamespaceDoesNotHaveAllowedPatterns(): void
     {
         $this->doTestCorrectFile(
-            self::FIXTURES_DIR . '/Correct/AnotherNamespace/NamespaceDoesNotHavePermittedPatterns.php'
+            self::FIXTURES_DIR . '/Correct/AnotherNamespace/NamespaceDoesNotHaveAllowedPatterns.php'
         );
     }
 
     /**
-     * Tests process succeeds if a method name conform with permitted patterns.
+     * Tests process succeeds if a method name conform with allowed patterns.
      */
-    public function testProcessSucceedsIfMethodNameConformWithPermittedPatterns(): void
+    public function testProcessSucceedsIfMethodNameConformWithAllowedPatterns(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/MethodNameConformWithPermittedPatterns.php');
+        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/MethodNameConformsWithAllowedPatterns.php');
     }
 
     /**
@@ -86,6 +87,15 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
     protected function getCheckerConfiguration(): array
     {
         return [
+            'allowed' => [
+                [
+                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\Fixtures\\\(Correct|Wrong)$/',
+                    'patterns' => [
+                        '/test[A-Z]/',
+                        '/test.+(Succeeds|Fails|ThrowsException|DoesNothing)/',
+                    ],
+                ],
+            ],
             'forbidden' => [
                 [
                     'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\Fixtures\\\(Correct|Wrong)$/',
@@ -97,15 +107,6 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
             ],
             'ignored' => [
                 '/testIgnoredMethodNameSuccessful/',
-            ],
-            'permitted' => [
-                [
-                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\Fixtures\\\(Correct|Wrong)$/',
-                    'patterns' => [
-                        '/test[A-Z]/',
-                        '/test.+(Succeeds|Fails|ThrowsException|DoesNothing)/',
-                    ],
-                ],
             ],
             'testMethodPrefix' => 'test',
         ];
