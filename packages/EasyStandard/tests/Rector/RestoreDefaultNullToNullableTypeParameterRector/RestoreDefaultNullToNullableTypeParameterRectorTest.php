@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Rector\RestoreDefaultNullToNullableTypeParameterRector;
@@ -26,10 +27,6 @@ final class RestoreDefaultNullToNullableTypeParameterRectorTest extends Abstract
 
     /**
      * Tests Rector rule.
-     *
-     * @param string $file
-     *
-     * @return void
      *
      * @dataProvider provideData()
      */

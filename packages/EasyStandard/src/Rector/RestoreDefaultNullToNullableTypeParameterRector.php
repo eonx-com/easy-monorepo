@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\NullableType;
+use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\RectorDefinition\CodeSample;
@@ -53,7 +55,7 @@ PHP
      */
     public function refactor(Node $node): ?Node
     {
-        if (!$this->isAtLeastPhpVersion(PhpVersionFeature::TYPED_PROPERTIES)) {
+        if ($this->isAtLeastPhpVersion(PhpVersionFeature::TYPED_PROPERTIES) === false) {
             return null;
         }
 
@@ -68,7 +70,7 @@ PHP
         return $node;
     }
 
-    private function shouldSkip(Node\Param $param): bool
+    private function shouldSkip(Param $param): bool
     {
         if ($param->type instanceof NullableType === false) {
             return true;
