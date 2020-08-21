@@ -11,7 +11,6 @@ use PhpParser\Node\Stmt\ClassMethod;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
-use Rector\Core\ValueObject\PhpVersionFeature;
 
 final class RestoreDefaultNullToNullableTypeParameterRector extends AbstractRector
 {
