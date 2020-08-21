@@ -65,7 +65,10 @@ final class EasySecurityExtension extends Extension
         }
 
         $container->setDefinition($contextServiceId, (new Definition(SecurityContext::class))->setPublic(true));
-        $container->setAlias(SecurityContextInterface::class, $contextServiceId);
+
+        if ($contextServiceId !== SecurityContextInterface::class) {
+            $container->setAlias(SecurityContextInterface::class, $contextServiceId);
+        }
 
         foreach (static::$voters as $name => $class) {
             $configName = \sprintf('%s_enabled', $name);
