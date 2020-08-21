@@ -4,7 +4,7 @@ class SecondParameterMissingDefaultValue
 {
     public function __construct(string $param, ?string $value)
     {
-        // no code needed
+        echo $param, $value;
     }
 }
 
@@ -17,7 +17,7 @@ class SecondParameterMissingDefaultValue
 {
     public function __construct(string $param, ?string $value = null)
     {
-        // no code needed
+        echo $param, $value;
     }
 }
 
