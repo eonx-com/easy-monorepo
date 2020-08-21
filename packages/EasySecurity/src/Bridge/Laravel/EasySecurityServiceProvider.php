@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Laravel;
 
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\DeferredSecurityContextProvider;
@@ -15,6 +16,7 @@ use EonX\EasySecurity\MainSecurityContextConfigurator;
 use EonX\EasySecurity\SecurityContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class EasySecurityServiceProvider extends ServiceProvider
 {
@@ -65,8 +67,22 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
     private function registerSecurityContext(string $contextServiceId): void
     {
-        // Use container to inject constructor arguments :)
-        $this->app->singleton(MainSecurityContextConfigurator::class);
+        $this->app->singleton(MainSecurityContextConfigurator::class, function (): MainSecurityContextConfigurator {
+            $apiTokenDecoder = $this->app->make(EasyApiTokenDecoderFactoryInterface::class)->build(
+                \config('easy-security.token_decoder', null)
+            );
+            $apiToken = $apiTokenDecoder->decode($this->app->make(ServerRequestInterface::class));
+
+            $mainConfigurator = new MainSecurityContextConfigurator(
+                $this->app->make(AuthorizationMatrixInterface::class),
+                $this->app->make(Request::class),
+                $apiToken
+            );
+
+            return $mainConfigurator
+                ->withConfigurators($this->app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR))
+                ->withModifiers($this->app->tagged(BridgeConstantsInterface::TAG_CONTEXT_MODIFIER));
+        });
 
         $this->app->singleton($contextServiceId, function (): SecurityContextInterface {
             return new SecurityContext();
@@ -76,12 +92,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
             /** @var \EonX\EasySecurity\MainSecurityContextConfigurator $configurator */
             $configurator = $this->app->make(MainSecurityContextConfigurator::class);
 
-            $configurator
-                ->withConfigurators($this->app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR))
-                ->withModifiers($this->app->tagged(BridgeConstantsInterface::TAG_CONTEXT_MODIFIER))
-                ->withTokenDecoder(\config('easy-security.token_decoder', null));
-
-            return $configurator->configure($securityContext, $this->app->make(Request::class));
+            return $configurator->configure($securityContext);
         };
 
         $this->app->extend($contextServiceId, $extend);

@@ -12,6 +12,7 @@ use EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface;
 use EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface;
 use EonX\EasySecurity\Interfaces\ContextModifierInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\SecurityContext;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -64,6 +65,7 @@ final class EasySecurityExtension extends Extension
         }
 
         $container->setDefinition($contextServiceId, (new Definition(SecurityContext::class))->setPublic(true));
+        $container->setAlias(SecurityContextInterface::class, $contextServiceId);
 
         foreach (static::$voters as $name => $class) {
             $configName = \sprintf('%s_enabled', $name);

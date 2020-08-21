@@ -6,5 +6,5 @@ use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 
 return [
     'context_service_id' => SecurityContextInterface::class,
-    'token_decoder' => 'chain',
+    'token_decoder' => null,
 ];

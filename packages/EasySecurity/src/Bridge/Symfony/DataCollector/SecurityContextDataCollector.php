@@ -11,9 +11,8 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterfa
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
-use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
-use EonX\EasySecurity\SecurityContextResolver;
+use EonX\EasySecurity\MainSecurityContextConfigurator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -36,17 +35,17 @@ final class SecurityContextDataCollector extends DataCollector
     private $securityContext;
 
     /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
+     * @var \EonX\EasySecurity\MainSecurityContextConfigurator
      */
-    private $securityContextResolver;
+    private $securityContextConfigurator;
 
     public function __construct(
         AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
-        SecurityContextResolverInterface $securityContextResolver,
+        MainSecurityContextConfigurator $securityContextConfigurator,
         SecurityContextInterface $securityContext
     ) {
         $this->authorizationMatrixFactory = $authorizationMatrixFactory;
-        $this->securityContextResolver = $securityContextResolver;
+        $this->securityContextConfigurator = $securityContextConfigurator;
         $this->securityContext = $securityContext;
     }
 
@@ -137,11 +136,11 @@ final class SecurityContextDataCollector extends DataCollector
     {
         $this->data['context_configurators'] = [];
 
-        if ($this->securityContextResolver instanceof SecurityContextResolver === false) {
+        if ($this->securityContextConfigurator instanceof MainSecurityContextConfigurator === false) {
             return;
         }
 
-        foreach ($this->securityContextResolver->getContextConfigurators() as $contextConfigurator) {
+        foreach ($this->securityContextConfigurator->getContextConfigurators() as $contextConfigurator) {
             $reflection = new \ReflectionClass($contextConfigurator);
 
             $this->data['context_configurators'][] = [

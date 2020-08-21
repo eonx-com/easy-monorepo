@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
-use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
+use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\ContextModifierInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface as ConfiguratorInterface;
@@ -14,6 +13,11 @@ use Traversable;
 
 final class MainSecurityContextConfigurator
 {
+    /**
+     * @var null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface
+     */
+    private $apiToken;
+
     /**
      * @var \EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface
      */
@@ -30,36 +34,24 @@ final class MainSecurityContextConfigurator
     private $modifiers = [];
 
     /**
-     * @var \EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface
+     * @var \Symfony\Component\HttpFoundation\Request
      */
-    private $psr7Factory;
-
-    /**
-     * @var null|string
-     */
-    private $tokenDecoder;
-
-    /**
-     * @var \EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface
-     */
-    private $tokenDecoderFactory;
+    private $request;
 
     public function __construct(
         AuthorizationMatrixInterface $authorizationMatrix,
-        EasyApiTokenDecoderFactoryInterface $tokenDecoderFactory,
-        EasyPsr7FactoryInterface $psr7Factory
+        Request $request,
+        ?EasyApiTokenInterface $apiToken = null
     ) {
+        $this->apiToken = $apiToken;
         $this->authorizationMatrix = $authorizationMatrix;
-        $this->tokenDecoderFactory = $tokenDecoderFactory;
-        $this->psr7Factory = $psr7Factory;
+        $this->request = $request;
     }
 
-    public function configure(SecurityContextInterface $securityContext, Request $request): SecurityContextInterface
+    public function configure(SecurityContextInterface $securityContext): SecurityContextInterface
     {
         $securityContext->setAuthorizationMatrix($this->authorizationMatrix);
-        $securityContext->setToken(
-            $this->tokenDecoderFactory->build($this->tokenDecoder)->decode($this->psr7Factory->createRequest($request))
-        );
+        $securityContext->setToken($this->apiToken);
 
         if (empty($this->modifiers) === false) {
             @\trigger_error(
@@ -72,15 +64,23 @@ final class MainSecurityContextConfigurator
             );
 
             foreach ($this->modifiers as $modifier) {
-                $modifier->modify($securityContext, $request);
+                $modifier->modify($securityContext, $this->request);
             }
         }
 
         foreach ($this->configurators as $configurator) {
-            $configurator->configure($securityContext, $request);
+            $configurator->configure($securityContext, $this->request);
         }
 
         return $securityContext;
+    }
+
+    /**
+     * @return \EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface[]
+     */
+    public function getContextConfigurators(): array
+    {
+        return $this->configurators;
     }
 
     /**
@@ -125,13 +125,6 @@ final class MainSecurityContextConfigurator
         \usort($modifiers, $sort);
 
         $this->modifiers = $modifiers;
-
-        return $this;
-    }
-
-    public function withTokenDecoder(?string $tokenDecoder = null): self
-    {
-        $this->tokenDecoder = $tokenDecoder;
 
         return $this;
     }
