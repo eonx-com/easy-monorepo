@@ -10,6 +10,9 @@ use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\JwtInterface;
 use EonX\EasyApiToken\Tokens\Jwt;
 
+/**
+ * @deprecated since 2.4. Will be removed in 3.0. Use JwtDriverInterface directly.
+ */
 final class JwtFactory implements JwtFactoryInterface
 {
     /**

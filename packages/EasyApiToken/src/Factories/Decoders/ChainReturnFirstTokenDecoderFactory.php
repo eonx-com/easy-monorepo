@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Factories\Decoders;
 
-use EonX\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
+use EonX\EasyApiToken\Decoders\ChainDecoder;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
@@ -13,6 +13,9 @@ use EonX\EasyApiToken\Interfaces\Factories\MasterDecoderFactoryAwareInterface as
 use EonX\EasyApiToken\Traits\DecoderNameAwareTrait;
 use EonX\EasyApiToken\Traits\MasterDecoderFactoryAwareTrait;
 
+/**
+ * @deprecated since 2.4. Will be removed in 3.0. Use ApiTokenDecoderProvider instead.
+ */
 final class ChainReturnFirstTokenDecoderFactory implements SubFactory, MasterAware, DecoderNameAwareInterface
 {
     use DecoderNameAwareTrait;
@@ -39,6 +42,6 @@ final class ChainReturnFirstTokenDecoderFactory implements SubFactory, MasterAwa
             $decoders[] = $this->factory->build($decoder);
         }
 
-        return new ChainReturnFirstTokenDecoder($decoders, $name);
+        return new ChainDecoder($decoders, $name);
     }
 }

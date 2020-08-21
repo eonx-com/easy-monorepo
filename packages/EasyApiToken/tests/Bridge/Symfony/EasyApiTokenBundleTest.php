@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Bridge\Symfony;
 
 use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
-use EonX\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
+use EonX\EasyApiToken\Decoders\ChainDecoder;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
@@ -25,7 +25,7 @@ final class EasyApiTokenBundleTest extends AbstractTestCase
         $stub = $container->get(ServiceStub::class);
         $decoderFactory = $stub->getDecoderFactory();
 
-        self::assertInstanceOf(ChainReturnFirstTokenDecoder::class, $decoderFactory->build('chain'));
+        self::assertInstanceOf(ChainDecoder::class, $decoderFactory->build('chain'));
         self::assertInstanceOf(BasicAuthDecoder::class, $decoderFactory->build('basic'));
         self::assertInstanceOf(BasicAuthDecoder::class, $container->get(ApiTokenDecoderInterface::class));
 

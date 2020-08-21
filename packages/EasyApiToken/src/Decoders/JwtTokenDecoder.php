@@ -12,6 +12,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
+/**
+ * @deprecated since 2.4. Will be removed in 3.0. Use EonX\EasyApiToken\Decoders\BearerTokenDecoder instead.
+ */
 final class JwtTokenDecoder extends AbstractApiTokenDecoder
 {
     use EasyApiTokenDecoderTrait;
@@ -31,6 +34,15 @@ final class JwtTokenDecoder extends AbstractApiTokenDecoder
         ?LoggerInterface $logger = null,
         ?string $name = null
     ) {
+        @\trigger_error(
+            \sprintf(
+                'Using %s is deprecated since 2.4 and will be removed in 3.0. Use %s instead',
+                JwtTokenDecoder::class,
+                BearerTokenDecoder::class
+            ),
+            \E_USER_DEPRECATED
+        );
+        
         $this->jwtApiTokenFactory = $jwtApiTokenFactory;
         $this->logger = $logger ?? new NullLogger();
 

@@ -9,17 +9,17 @@ use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 abstract class AbstractApiTokenDecoder implements ApiTokenDecoderInterface
 {
     /**
-     * @var string
+     * @var null|string
      */
     private $name;
 
-    public function __construct(string $name)
+    public function __construct(?string $name = null)
     {
         $this->name = $name;
     }
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->name ?? self::class;
     }
 }

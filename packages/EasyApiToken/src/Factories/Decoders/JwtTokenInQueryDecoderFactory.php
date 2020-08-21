@@ -10,6 +10,9 @@ use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Tokens\Factories\JwtFactory;
 
+/**
+ * @deprecated since 2.4. Will be removed in 3.0. Use ApiTokenDecoderProvider instead.
+ */
 final class JwtTokenInQueryDecoderFactory extends AbstractJwtTokenDecoderFactory
 {
     /**

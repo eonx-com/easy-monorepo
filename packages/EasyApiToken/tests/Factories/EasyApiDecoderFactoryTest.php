@@ -7,7 +7,7 @@ namespace EonX\EasyApiToken\Tests\Factories;
 use Auth0\SDK\Helpers\Cache\FileSystemCacheHandler;
 use EonX\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
-use EonX\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
+use EonX\EasyApiToken\Decoders\ChainDecoder;
 use EonX\EasyApiToken\Decoders\JwtTokenDecoder;
 use EonX\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
@@ -126,7 +126,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         yield 'Build API Chain' => [
             $config,
             'chain-key',
-            new ChainReturnFirstTokenDecoder([
+            new ChainDecoder([
                 new ApiKeyAsBasicAuthUsernameDecoder('api'),
                 new BasicAuthDecoder('pass'),
             ], 'chain-key'),

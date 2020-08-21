@@ -14,6 +14,9 @@ use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderSubFactoryInterface as
 use EonX\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
 use EonX\EasyApiToken\Traits\DecoderNameAwareTrait;
 
+/**
+ * @deprecated since 2.4. Will be removed in 3.0. Use ApiTokenDecoderProvider instead.
+ */
 abstract class AbstractJwtTokenDecoderFactory implements DecoderSubFactory, DecoderNameAwareInterface
 {
     use DecoderNameAwareTrait;

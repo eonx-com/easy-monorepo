@@ -8,7 +8,7 @@ use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyApiToken\Traits\ChainEasyApiTokenDecoderTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class ChainReturnFirstTokenDecoder extends AbstractApiTokenDecoder
+final class ChainDecoder extends AbstractApiTokenDecoder
 {
     use ChainEasyApiTokenDecoderTrait;
 
@@ -44,3 +44,5 @@ final class ChainReturnFirstTokenDecoder extends AbstractApiTokenDecoder
         return null;
     }
 }
+
+\class_alias(ChainDecoder::class, ChainReturnFirstTokenDecoder::class);

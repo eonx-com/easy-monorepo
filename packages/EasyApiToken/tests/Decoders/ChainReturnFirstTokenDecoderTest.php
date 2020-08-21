@@ -6,7 +6,7 @@ namespace EonX\EasyApiToken\Tests\Decoders;
 
 use EonX\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
-use EonX\EasyApiToken\Decoders\ChainReturnFirstTokenDecoder;
+use EonX\EasyApiToken\Decoders\ChainDecoder;
 use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
 use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\BasicAuthInterface;
@@ -46,18 +46,18 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new ChainReturnFirstTokenDecoder([]);
+        new ChainDecoder([]);
     }
 
     public function testInvalidDecoderException(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new ChainReturnFirstTokenDecoder(['invalid-decoder']);
+        new ChainDecoder(['invalid-decoder']);
     }
 
-    private function createChainReturnFirstTokenDecoder(): ChainReturnFirstTokenDecoder
+    private function createChainReturnFirstTokenDecoder(): ChainDecoder
     {
-        return new ChainReturnFirstTokenDecoder([new BasicAuthDecoder(), new ApiKeyAsBasicAuthUsernameDecoder()]);
+        return new ChainDecoder([new BasicAuthDecoder(), new ApiKeyAsBasicAuthUsernameDecoder()]);
     }
 }

@@ -9,6 +9,9 @@ use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface;
 use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * @deprecated since 2.4. Will be removed in 3.0.
+ */
 final class JwtTokenInQueryDecoder extends AbstractApiTokenDecoder
 {
     use EasyApiTokenDecoderTrait;
