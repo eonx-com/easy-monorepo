@@ -21,23 +21,23 @@ final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
         return [
             'data is string' => [
                 '',
-                true
+                true,
             ],
             'data is array' => [
                 [],
-                true
+                true,
             ],
             'data is bool' => [
                 true,
-                false
+                false,
             ],
             'data is numeric' => [
                 123,
-                false
+                false,
             ],
             'data is object' => [
                 new stdClass(),
-                false
+                false,
             ],
         ];
     }
