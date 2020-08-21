@@ -17,7 +17,7 @@ final class RestoreDefaultNullToNullableTypeParameterRector extends AbstractRect
 {
     public function getDefinition(): RectorDefinition
     {
-        return new RectorDefinition('Add null default to parameters with PHP 7.4 nullable type', [
+        return new RectorDefinition('Add null default to function arguments with PHP 7.1 nullable type', [
             new CodeSample(
                 <<<'PHP'
 class SomeClass
@@ -55,7 +55,7 @@ PHP
      */
     public function refactor(Node $node): ?Node
     {
-        if ($this->isAtLeastPhpVersion(PhpVersionFeature::TYPED_PROPERTIES) === false) {
+        if ($this->isAtLeastPhpVersion('7.1') === false) {
             return null;
         }
 
