@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.34 - 2020-08-20
+## v2.4.35 - 2020-08-21
+
+### EasyPsr7Factory
+
+- [#322] Register ServerRequestInterface into container
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.34] - 2020-08-20
 
 ### EasyStandard
 
@@ -2126,3 +2136,5 @@
 [v2.4.32]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.31...v2.4.32
 [#302]: https://github.com/eonx-com/easy-monorepo/pull/302
 [v2.4.33]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.32...v2.4.33
+[#322]: https://github.com/eonx-com/easy-monorepo/pull/322
+[v2.4.34]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.33...v2.4.34
