@@ -7,15 +7,12 @@ namespace EonX\EasyApiToken\Decoders;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyApiToken\Tokens\Jwt;
-use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\HttpFoundation\Request;
 
 final class BearerTokenDecoder extends AbstractApiTokenDecoder
 {
-    use EasyApiTokenDecoderTrait;
-
     /**
      * @var \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface
      */
@@ -34,7 +31,7 @@ final class BearerTokenDecoder extends AbstractApiTokenDecoder
         parent::__construct($name);
     }
 
-    public function decode(ServerRequestInterface $request): ?ApiTokenInterface
+    public function decode(Request $request): ?ApiTokenInterface
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Bearer', $request);
 

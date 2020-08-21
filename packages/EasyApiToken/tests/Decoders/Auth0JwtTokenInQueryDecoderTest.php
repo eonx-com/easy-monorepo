@@ -16,7 +16,7 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
 
         $decoder = new JwtTokenInQueryDecoder($jwtEasyApiTokenFactory, 'param');
 
-        $request = $this->createServerRequest(null, [
+        $request = $this->createRequest(null, [
             'param' => $this->createToken(),
         ]);
 
@@ -42,6 +42,6 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
             'param'
         );
 
-        self::assertNull($decoder->decode($this->createServerRequest()));
+        self::assertNull($decoder->decode($this->createRequest()));
     }
 }

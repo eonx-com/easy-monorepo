@@ -6,19 +6,16 @@ namespace EonX\EasyApiToken\Decoders;
 
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyApiToken\Tokens\BasicAuth;
-use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
-use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 final class BasicAuthDecoder extends AbstractApiTokenDecoder
 {
-    use EasyApiTokenDecoderTrait;
-
     public function __construct(?string $name = null)
     {
         parent::__construct($name ?? self::NAME_BASIC);
     }
 
-    public function decode(ServerRequestInterface $request): ?ApiTokenInterface
+    public function decode(Request $request): ?ApiTokenInterface
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Basic', $request);
 

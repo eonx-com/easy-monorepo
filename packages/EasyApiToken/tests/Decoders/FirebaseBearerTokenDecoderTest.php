@@ -27,7 +27,7 @@ final class FirebaseBearerTokenDecoderTest extends AbstractFirebaseJwtTokenTestC
             );
 
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtInterface $token */
-            $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createServerRequest([
+            $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createRequest([
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken($algo),
             ]));
 
@@ -46,14 +46,14 @@ final class FirebaseBearerTokenDecoderTest extends AbstractFirebaseJwtTokenTestC
     {
         $decoder = new BearerTokenDecoder($this->createFirebaseJwtDriver());
 
-        self::assertNull($decoder->decode($this->createServerRequest()));
+        self::assertNull($decoder->decode($this->createRequest()));
     }
 
     public function testJwtTokenNullIfDoesntStartWithBearer(): void
     {
         $decoder = new BearerTokenDecoder($this->createFirebaseJwtDriver());
 
-        self::assertNull($decoder->decode($this->createServerRequest(['HTTP_AUTHORIZATION' => 'SomethingElse'])));
+        self::assertNull($decoder->decode($this->createRequest(['HTTP_AUTHORIZATION' => 'SomethingElse'])));
     }
 
     public function testJwtTokenReturnNullIfUnableToDecodeToken(): void
@@ -66,7 +66,7 @@ final class FirebaseBearerTokenDecoderTest extends AbstractFirebaseJwtTokenTestC
             2
         );
 
-        $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createServerRequest([
+        $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken(),
         ]));
 

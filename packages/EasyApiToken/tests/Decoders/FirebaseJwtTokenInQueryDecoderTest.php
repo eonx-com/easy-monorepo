@@ -26,7 +26,7 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
                 [$algo]
             ));
             $decoder = new JwtTokenInQueryDecoder($jwtEasyApiTokenFactory, 'param');
-            $request = $this->createServerRequest(null, [
+            $request = $this->createRequest(null, [
                 'param' => $this->createToken($algo),
             ]);
 
@@ -53,6 +53,6 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
             'param'
         );
 
-        self::assertNull($decoder->decode($this->createServerRequest()));
+        self::assertNull($decoder->decode($this->createRequest()));
     }
 }

@@ -6,6 +6,9 @@ namespace EonX\EasyApiToken\Interfaces\Factories;
 
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 
+/**
+ * @deprecated since 2.4. Will be removed in 3.0.
+ */
 interface ApiTokenDecoderSubFactoryInterface
 {
     /**

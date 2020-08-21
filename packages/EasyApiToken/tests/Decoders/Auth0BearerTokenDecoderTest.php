@@ -15,7 +15,7 @@ final class Auth0BearerTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
         $jwtDriver = $this->createAuth0JwtDriver();
 
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtInterface $token */
-        $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createServerRequest([
+        $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken(),
         ]));
 
@@ -33,21 +33,21 @@ final class Auth0BearerTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
     {
         $decoder = new BearerTokenDecoder($this->createAuth0JwtDriver());
 
-        self::assertNull($decoder->decode($this->createServerRequest()));
+        self::assertNull($decoder->decode($this->createRequest()));
     }
 
     public function testJwtTokenNullIfDoesntStartWithBearer(): void
     {
         $decoder = new BearerTokenDecoder($this->createAuth0JwtDriver());
 
-        self::assertNull($decoder->decode($this->createServerRequest(['HTTP_AUTHORIZATION' => 'SomethingElse'])));
+        self::assertNull($decoder->decode($this->createRequest(['HTTP_AUTHORIZATION' => 'SomethingElse'])));
     }
 
     public function testJwtTokenReturnNullIfUnableToDecodeToken(): void
     {
         $jwtDriver = $this->createAuth0JwtDriver();
 
-        $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createServerRequest([
+        $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => 'Bearer WeirdTokenHere',
         ]));
 

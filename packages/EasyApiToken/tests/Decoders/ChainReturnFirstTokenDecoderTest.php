@@ -7,7 +7,6 @@ namespace EonX\EasyApiToken\Tests\Decoders;
 use EonX\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
 use EonX\EasyApiToken\Decoders\ChainDecoder;
-use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
 use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\BasicAuthInterface;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
@@ -17,7 +16,7 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
     public function testChainFirstApiKeyTokenSuccessfully(): void
     {
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface $token */
-        $token = $this->createChainReturnFirstTokenDecoder()->decode($this->createServerRequest([
+        $token = $this->createChainReturnFirstTokenDecoder()->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode('api-key: '),
         ]));
 
@@ -28,7 +27,7 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
     public function testChainFirstBasicAuthTokenSuccessfully(): void
     {
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\BasicAuthInterface $token */
-        $token = $this->createChainReturnFirstTokenDecoder()->decode($this->createServerRequest([
+        $token = $this->createChainReturnFirstTokenDecoder()->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode('username:password'),
         ]));
 
@@ -39,21 +38,7 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
 
     public function testChainFirstNullIfNoDecoderCouldDecoderToken(): void
     {
-        self::assertNull($this->createChainReturnFirstTokenDecoder()->decode($this->createServerRequest()));
-    }
-
-    public function testEmptyDecodersArrayException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        new ChainDecoder([]);
-    }
-
-    public function testInvalidDecoderException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        new ChainDecoder(['invalid-decoder']);
+        self::assertNull($this->createChainReturnFirstTokenDecoder()->decode($this->createRequest()));
     }
 
     private function createChainReturnFirstTokenDecoder(): ChainDecoder

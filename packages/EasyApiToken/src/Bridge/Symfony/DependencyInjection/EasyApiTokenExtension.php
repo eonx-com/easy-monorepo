@@ -47,6 +47,12 @@ final class EasyApiTokenExtension extends Extension
         }
 
         if (empty($decoders) === false) {
+            @\trigger_error(\sprintf(
+                'Defining ApiTokenDecoders using a config file is deprecated since 2.4 and will be removed in 3.0. 
+                Use %s instead.',
+                ApiTokenDecoderProviderInterface::class
+            ), \E_USER_NOTICE);
+
             $container->setParameter(BridgeConstantsInterface::PARAM_DECODERS, $decoders);
             $container->setParameter(BridgeConstantsInterface::PARAM_DEFAULT_FACTORIES, $defaultFactories);
             $container->setParameter(BridgeConstantsInterface::PARAM_DEFAULT_DECODER, $defaultDecoder);

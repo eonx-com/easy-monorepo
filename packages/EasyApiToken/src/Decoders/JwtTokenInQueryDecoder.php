@@ -6,16 +6,13 @@ namespace EonX\EasyApiToken\Decoders;
 
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface;
-use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
-use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @deprecated since 2.4. Will be removed in 3.0.
  */
 final class JwtTokenInQueryDecoder extends AbstractApiTokenDecoder
 {
-    use EasyApiTokenDecoderTrait;
-
     /**
      * @var \EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface
      */
@@ -34,9 +31,9 @@ final class JwtTokenInQueryDecoder extends AbstractApiTokenDecoder
         parent::__construct($name ?? self::NAME_JWT_PARAM);
     }
 
-    public function decode(ServerRequestInterface $request): ?ApiTokenInterface
+    public function decode(Request $request): ?ApiTokenInterface
     {
-        $jwtToken = $this->getQueryParam($this->queryParam, $request);
+        $jwtToken = $request->query->get($this->queryParam);
 
         if (empty($jwtToken)) {
             return null;

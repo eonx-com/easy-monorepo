@@ -12,12 +12,12 @@ final class ApiKeyDecoderTest extends AbstractTestCase
 {
     public function testApiKeyNullIfAuthorizationHeaderNotSet(): void
     {
-        self::assertNull((new ApiKeyDecoder())->decode($this->createServerRequest()));
+        self::assertNull((new ApiKeyDecoder())->decode($this->createRequest()));
     }
 
     public function testApiKeyNullIfDoesntStartWithBasic(): void
     {
-        self::assertNull((new ApiKeyDecoder())->decode($this->createServerRequest([
+        self::assertNull((new ApiKeyDecoder())->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => 'SomethingElse',
         ])));
     }
@@ -32,7 +32,7 @@ final class ApiKeyDecoderTest extends AbstractTestCase
         ];
 
         foreach ($tests as $test) {
-            self::assertNull((new ApiKeyDecoder())->decode($this->createServerRequest([
+            self::assertNull((new ApiKeyDecoder())->decode($this->createRequest([
                 'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode($test),
             ])));
         }
@@ -50,7 +50,7 @@ final class ApiKeyDecoderTest extends AbstractTestCase
 
         foreach ($tests as $test => $expected) {
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface $token */
-            $token = (new ApiKeyDecoder())->decode($this->createServerRequest([
+            $token = (new ApiKeyDecoder())->decode($this->createRequest([
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test)),
             ]));
 
