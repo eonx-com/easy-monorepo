@@ -28,6 +28,14 @@ final class TrimStringsTest extends AbstractTestCase
                 '  123  ',
                 '  456  ',
             ],
+            'recursion_with_2_level' => [
+                'recursion' => [
+                    '  abc  ',
+                    '  ZXY  ',
+                ],
+                '  123  ',
+                '  456  ',
+            ],
         ]);
         $symfonyRequest->server->set('REQUEST_METHOD', 'GET');
         $request = Request::createFromBase($symfonyRequest);
@@ -41,6 +49,14 @@ final class TrimStringsTest extends AbstractTestCase
                 '123',
                 '456',
             ], $request->get('recursion'));
+            self::assertSame([
+                'recursion' => [
+                    'abc',
+                    'ZXY',
+                ],
+                '123',
+                '456',
+            ], $request->get('recursion_with_2_level'));
         });
     }
 }
