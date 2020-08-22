@@ -6,5 +6,5 @@ namespace EonX\EasyDecision\Interfaces;
 
 interface ContextAwareInterface
 {
-    public function setContext(DecisionContextInterface $context): void;
+    public function setContext(ContextInterface $context): void;
 }

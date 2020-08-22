@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Bridge\Symfony\DataCollector;
 
-use EonX\EasyDecision\Interfaces\DecisionContextInterface;
+use EonX\EasyDecision\Interfaces\ContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -16,11 +16,11 @@ final class DecisionContextDataCollector extends DataCollector
     public const NAME = 'easy_decision.decision_context_collector';
 
     /**
-     * @var \EonX\EasyDecision\Interfaces\DecisionContextInterface
+     * @var \EonX\EasyDecision\Interfaces\ContextInterface
      */
     private $decisionContext;
 
-    public function __construct(DecisionContextInterface $decisionContext)
+    public function __construct(ContextInterface $decisionContext)
     {
         $this->decisionContext = $decisionContext;
     }
