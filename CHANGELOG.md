@@ -2,7 +2,37 @@
 
 <!-- dumped content start -->
 
-## v2.4.32 - 2020-08-13
+## v2.4.35 - 2020-08-21
+
+### EasyPsr7Factory
+
+- [#322] Register ServerRequestInterface into container
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.34] - 2020-08-20
+
+### EasyStandard
+
+- [#302] Add ecs sniff for test method names validation, Thanks to [@BOB41K1987]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.33] - 2020-08-17
+
+### EasyNotification
+
+- [#316] Fix API URLs + Handle empty responses
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.32] - 2020-08-13
 
 ### EasyNotification
 
@@ -2102,3 +2132,9 @@
 [v2.4.30]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.29...v2.4.30
 [#315]: https://github.com/eonx-com/easy-monorepo/pull/315
 [v2.4.31]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.30...v2.4.31
+[#316]: https://github.com/eonx-com/easy-monorepo/pull/316
+[v2.4.32]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.31...v2.4.32
+[#302]: https://github.com/eonx-com/easy-monorepo/pull/302
+[v2.4.33]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.32...v2.4.33
+[#322]: https://github.com/eonx-com/easy-monorepo/pull/322
+[v2.4.34]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.33...v2.4.34

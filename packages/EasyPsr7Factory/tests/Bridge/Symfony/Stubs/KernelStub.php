@@ -9,21 +9,46 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
-    public function __construct()
+    /**
+     * @var null|string[]
+     */
+    private $configs;
+
+    /**
+     * @var null|\Symfony\Component\HttpFoundation\Request
+     */
+    private $request;
+
+    /**
+     * @param null|string[] $configs
+     */
+    public function __construct(string $environment, bool $debug, ?array $configs = null, ?Request $request = null)
     {
-        parent::__construct('test', true);
+        $this->configs = $configs;
+        $this->request = $request;
+
+        parent::__construct($environment, $debug);
     }
 
     public function process(ContainerBuilder $container): void
     {
-        $container
-            ->setDefinition(ServiceStub::class, new Definition(ServiceStub::class))
-            ->setAutowired(true)
-            ->setPublic(true);
+        $requestStackDef = new Definition(RequestStack::class);
+
+        if ($this->request !== null) {
+            $requestStackDef->addMethodCall('push', [$this->request]);
+        }
+
+        $container->setDefinition(RequestStack::class, $requestStackDef);
+
+        foreach ($container->getDefinitions() as $def) {
+            $def->setPublic(true);
+        }
     }
 
     /**
