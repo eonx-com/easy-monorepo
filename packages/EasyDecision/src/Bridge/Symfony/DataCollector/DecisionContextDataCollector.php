@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 final class DecisionContextDataCollector extends DataCollector
 {
     /**
-     * @const string
+     * @var string
      */
     public const NAME = 'easy_decision.decision_context_collector';
 

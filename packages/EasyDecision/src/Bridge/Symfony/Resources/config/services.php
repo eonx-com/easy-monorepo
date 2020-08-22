@@ -3,9 +3,11 @@
 declare(strict_types=1);
 
 use EonX\EasyDecision\Bridge\Symfony\DataCollector\DecisionContextDataCollector;
+use EonX\EasyDecision\ContextAggregator;
 use EonX\EasyDecision\Decisions\DecisionFactory;
 use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
+use EonX\EasyDecision\Interfaces\ContextAggregatorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
 use EonX\EasyDecision\Rules\ExpressionLanguageRuleFactory;
@@ -20,8 +22,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
+    $services->set(ContextAggregatorInterface::class, ContextAggregator::class);
+
     $services->set(DecisionFactoryInterface::class, DecisionFactory::class)
         ->arg('$configurators', tagged_iterator('easy_decision.decision_configurator'));
+
 
     $services->set(ExpressionLanguageFactoryInterface::class, ExpressionLanguageFactory::class);
 
