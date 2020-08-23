@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Interfaces;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 
 /**
  * @deprecated Since 2.4, will be removed in 3.0, use EonX\EasySecurity\Interfaces\SecurityContextInterface instead
@@ -35,7 +35,7 @@ interface ContextInterface
      */
     public function getRoles(): array;
 
-    public function getToken(): ?EasyApiTokenInterface;
+    public function getToken(): ?ApiTokenInterface;
 
     public function getUser(): ?UserInterface;
 
@@ -57,7 +57,7 @@ interface ContextInterface
      */
     public function setRoles($roles): void;
 
-    public function setToken(?EasyApiTokenInterface $token = null): void;
+    public function setToken(?ApiTokenInterface $token = null): void;
 
     public function setUser(?UserInterface $user = null): void;
 }

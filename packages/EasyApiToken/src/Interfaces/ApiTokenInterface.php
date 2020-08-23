@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Interfaces;
 
-interface EasyApiTokenInterface
+interface ApiTokenInterface
 {
     public function getOriginalToken(): string;
 
@@ -13,3 +13,5 @@ interface EasyApiTokenInterface
      */
     public function getPayload(): array;
 }
+
+\class_alias(ApiTokenInterface::class, EasyApiTokenInterface::class);
