@@ -4,8 +4,23 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge;
 
-interface TagsInterface
+interface BridgeConstantsInterface
 {
+    /**
+     * @var string
+     */
+    public const PARAM_CONTEXT_SERVICE_ID = 'easy_security.context_service_id';
+
+    /**
+     * @var string
+     */
+    public const PARAM_PERMISSIONS_LOCATIONS = 'easy_security.permissions_locations';
+
+    /**
+     * @var string
+     */
+    public const PARAM_TOKEN_DECODER = 'easy_security.token_decoder';
+
     /**
      * @var string
      */

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Laravel;
 
+use EonX\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider;
+use EonX\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider;
 use EonX\EasySecurity\Bridge\Laravel\EasySecurityServiceProvider;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use Laravel\Lumen\Application;
@@ -17,17 +19,26 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
 
     /**
      * @param null|string[] $providers
+     * @param null|mixed[] $config
      */
-    protected function getApplication(?array $providers = null): Application
+    protected function getApplication(?array $providers = null, ?array $config = null): Application
     {
         if ($this->app !== null) {
             return $this->app;
         }
 
         $app = new Application(__DIR__);
-        $app->register(EasySecurityServiceProvider::class);
 
-        foreach ($providers ?? [] as $provider) {
+        if ($config !== null) {
+            \config($config);
+        }
+
+        $providers = \array_merge($providers ?? [], [
+            EasyApiTokenServiceProvider::class,
+            EasySecurityServiceProvider::class,
+        ]);
+
+        foreach ($providers as $provider) {
             $app->register($provider);
         }
 
