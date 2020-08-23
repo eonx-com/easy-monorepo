@@ -14,7 +14,10 @@ interface ApiTokenDecoderInterface
     public const NAME_JWT_PARAM = 'jwt-param';
     public const NAME_USER_APIKEY = 'user-apikey';
 
-    public function decode(Request $request): ?ApiTokenInterface;
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
+     */
+    public function decode($request): ?ApiTokenInterface;
 
     public function getName(): string;
 }

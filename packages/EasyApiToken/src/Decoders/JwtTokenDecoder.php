@@ -9,7 +9,6 @@ use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @deprecated since 2.4. Will be removed in 3.0. Use EonX\EasyApiToken\Decoders\BearerTokenDecoder instead.
@@ -46,7 +45,10 @@ final class JwtTokenDecoder extends AbstractApiTokenDecoder
         parent::__construct($name ?? self::NAME_JWT_HEADER);
     }
 
-    public function decode(Request $request): ?ApiTokenInterface
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
+     */
+    public function decode($request): ?ApiTokenInterface
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Bearer', $request);
 
