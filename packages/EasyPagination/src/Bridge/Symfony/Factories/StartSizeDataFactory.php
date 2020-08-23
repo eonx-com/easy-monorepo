@@ -6,28 +6,44 @@ namespace EonX\EasyPagination\Bridge\Symfony\Factories;
 
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class StartSizeDataFactory
 {
     /**
-     * @var \Psr\Http\Message\ServerRequestInterface
+     * @var \Symfony\Component\HttpFoundation\RequestStack
      */
-    private $request;
+    private $requestStack;
 
     /**
      * @var \EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface
      */
     private $resolver;
 
-    public function __construct(ServerRequestInterface $request, StartSizeDataResolverInterface $resolver)
+    public function __construct(RequestStack $requestStack, StartSizeDataResolverInterface $resolver)
     {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->resolver = $resolver;
     }
 
     public function __invoke(): StartSizeDataInterface
     {
-        return $this->resolver->resolve($this->request);
+        return $this->resolver->resolve($this->getRequest());
+    }
+
+    private function getFakeRequest(): Request
+    {
+        return new Request([], [], [], [], [], ['HTTP_HOST' => 'eonx.com']);
+    }
+
+    private function getRequest(): Request
+    {
+        // Fake request when running in console
+        if (\getenv('LINES') && \getenv('COLUMNS')) {
+            return $this->getFakeRequest();
+        }
+
+        return $this->requestStack->getMasterRequest() ?? $this->getFakeRequest();
     }
 }

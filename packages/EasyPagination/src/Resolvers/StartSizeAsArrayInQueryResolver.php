@@ -32,8 +32,15 @@ final class StartSizeAsArrayInQueryResolver implements StartSizeDataResolverInte
         $this->queryAttr = $queryAttr;
     }
 
-    public function resolve(ServerRequestInterface $request): StartSizeDataInterface
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
+     */
+    public function resolve($request): StartSizeDataInterface
     {
-        return $this->createStartSizeData($this->config, $request->getQueryParams()[$this->queryAttr] ?? [], $request);
+        $queryAttr = $request instanceof ServerRequestInterface
+            ? $request->getQueryParams()[$this->queryAttr] ?? []
+            : $request->query->get($this->queryAttr, []);
+
+        return $this->createStartSizeData($this->config, $queryAttr, $request);
     }
 }

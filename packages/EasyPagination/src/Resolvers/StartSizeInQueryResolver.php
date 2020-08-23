@@ -24,8 +24,15 @@ final class StartSizeInQueryResolver implements StartSizeDataResolverInterface
         $this->config = $config;
     }
 
-    public function resolve(ServerRequestInterface $request): StartSizeDataInterface
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
+     */
+    public function resolve($request): StartSizeDataInterface
     {
-        return $this->createStartSizeData($this->config, $request->getQueryParams(), $request);
+        $queryParams = $request instanceof ServerRequestInterface
+            ? $request->getQueryParams()
+            : $request->query->all();
+
+        return $this->createStartSizeData($this->config, $queryParams, $request);
     }
 }
