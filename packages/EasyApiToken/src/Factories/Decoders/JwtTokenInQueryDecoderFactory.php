@@ -7,9 +7,12 @@ namespace EonX\EasyApiToken\Factories\Decoders;
 use EonX\EasyApiToken\Decoders\JwtTokenInQueryDecoder;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use EonX\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
+use EonX\EasyApiToken\Tokens\Factories\JwtFactory;
 
+/**
+ * @deprecated since 2.4. Will be removed in 3.0. Use ApiTokenDecoderProvider instead.
+ */
 final class JwtTokenInQueryDecoderFactory extends AbstractJwtTokenDecoderFactory
 {
     /**
@@ -17,8 +20,11 @@ final class JwtTokenInQueryDecoderFactory extends AbstractJwtTokenDecoderFactory
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    protected function doBuild(JwtDriverInterface $jwtDriver, array $config): EasyApiTokenDecoderInterface
-    {
+    protected function doBuild(
+        JwtDriverInterface $jwtDriver,
+        array $config,
+        ?string $name = null
+    ): ApiTokenDecoderInterface {
         $param = $config['options']['param'] ?? '';
 
         if (empty($param) || \is_string($param) === false) {
@@ -28,6 +34,6 @@ final class JwtTokenInQueryDecoderFactory extends AbstractJwtTokenDecoderFactory
             ));
         }
 
-        return new JwtTokenInQueryDecoder(new JwtEasyApiTokenFactory($jwtDriver), $param);
+        return new JwtTokenInQueryDecoder(new JwtFactory($jwtDriver), $param, $name);
     }
 }

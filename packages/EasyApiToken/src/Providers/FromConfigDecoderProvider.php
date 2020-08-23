@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyApiToken\Factories;
+namespace EonX\EasyApiToken\Providers;
 
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderSubFactoryInterface;
 use EonX\EasyApiToken\Interfaces\Factories\DecoderNameAwareInterface;
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface;
 use EonX\EasyApiToken\Interfaces\Factories\MasterDecoderFactoryAwareInterface;
 use EonX\EasyApiToken\Traits\DefaultDecoderFactoriesTrait;
 use Psr\Container\ContainerInterface;
 
-class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
+final class FromConfigDecoderProvider extends AbstractApiTokenDecoderProvider implements ApiTokenDecoderFactoryInterface
 {
     use DefaultDecoderFactoriesTrait;
 
@@ -28,6 +28,11 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
     private $container;
 
     /**
+     * @var null|string
+     */
+    private $defaultDecoder;
+
+    /**
      * @var string[]
      */
     private $defaultFactories;
@@ -40,15 +45,32 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
     /**
      * @param mixed[] $config
      * @param null|string[] $defaultFactories
+     *
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    public function __construct(array $config, ?array $defaultFactories = null)
-    {
+    public function __construct(
+        array $config,
+        ?array $defaultFactories = null,
+        ?string $defaultDecoder = null,
+        ?int $priority = null
+    ) {
+        if (empty($config)) {
+            throw new InvalidConfigurationException('No decoders configured');
+        }
+
         $this->config = $config;
         $this->defaultFactories = $defaultFactories ?? $this->getDefaultDecoderFactories();
+        $this->defaultDecoder = $defaultDecoder;
+
+        parent::__construct($priority);
     }
 
-    public function build(string $decoder): EasyApiTokenDecoderInterface
+    public function build(?string $decoder = null): ApiTokenDecoderInterface
     {
+        if ($decoder === null) {
+            return $this->buildDefault();
+        }
+
         if (isset($this->resolved[$decoder])) {
             return $this->resolved[$decoder];
         }
@@ -67,7 +89,29 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
             $subFactory->setMasterFactory($this);
         }
 
-        return $this->resolved[$decoder] = $subFactory->build($config);
+        return $this->resolved[$decoder] = $subFactory->build($config, $decoder);
+    }
+
+    public function buildDefault(): ApiTokenDecoderInterface
+    {
+        return $this->build($this->defaultDecoder);
+    }
+
+    /**
+     * @return iterable<\EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface>
+     *
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
+     */
+    public function getDecoders(): iterable
+    {
+        foreach (\array_keys($this->config) as $decoder) {
+            yield $this->build($decoder);
+        }
+    }
+
+    public function getDefaultDecoder(): ?string
+    {
+        return $this->defaultDecoder;
     }
 
     public function setContainer(ContainerInterface $container): void
@@ -106,7 +150,7 @@ class EasyApiTokenDecoderFactory implements EasyApiTokenDecoderFactoryInterface
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
-    private function instantiateSubFactory(string $decoder, array $config): EasyApiTokenDecoderSubFactoryInterface
+    private function instantiateSubFactory(string $decoder, array $config): ApiTokenDecoderSubFactoryInterface
     {
         $factoryClass = $this->getSubFactoryClass($decoder, $config);
 

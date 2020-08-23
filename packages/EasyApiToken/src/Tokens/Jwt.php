@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tokens;
 
 use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
-use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\JwtInterface;
 use Nette\Utils\Json;
 use stdClass;
 
-final class JwtEasyApiToken implements JwtEasyApiTokenInterface
+final class Jwt implements JwtInterface
 {
     /**
      * @var string
@@ -81,3 +81,5 @@ final class JwtEasyApiToken implements JwtEasyApiTokenInterface
         return isset($this->payload[$claim]);
     }
 }
+
+\class_alias(Jwt::class, JwtEasyApiToken::class);

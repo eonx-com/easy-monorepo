@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\DataCollector;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\SymfonyCacheAuthorizationMatrixFactory;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
@@ -118,7 +118,7 @@ final class SecurityContextDataCollector extends DataCollector
         return $this->data['context_configurators'] ?? [];
     }
 
-    public function getToken(): ?EasyApiTokenInterface
+    public function getToken(): ?ApiTokenInterface
     {
         return $this->data['token'] ?? null;
     }

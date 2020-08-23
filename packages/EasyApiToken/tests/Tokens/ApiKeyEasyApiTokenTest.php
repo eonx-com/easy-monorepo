@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Tokens;
 
 use EonX\EasyApiToken\Tests\AbstractTestCase;
-use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
+use EonX\EasyApiToken\Tokens\ApiKey;
 
 final class ApiKeyEasyApiTokenTest extends AbstractTestCase
 {
@@ -22,8 +22,8 @@ final class ApiKeyEasyApiTokenTest extends AbstractTestCase
         self::assertEquals($token->getApiKey(), $token->getPayload()['api_key']);
     }
 
-    private function createApiKeyEasyApiToken(): ApiKeyEasyApiToken
+    private function createApiKeyEasyApiToken(): ApiKey
     {
-        return new ApiKeyEasyApiToken('api-key');
+        return new ApiKey('api-key');
     }
 }

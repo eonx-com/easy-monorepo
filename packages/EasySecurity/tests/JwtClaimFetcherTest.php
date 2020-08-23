@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests;
 
-use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Tokens\Jwt;
 use EonX\EasySecurity\JwtClaimFetcher;
 
 final class JwtClaimFetcherTest extends AbstractTestCase
@@ -15,7 +15,7 @@ final class JwtClaimFetcherTest extends AbstractTestCase
 
         self::assertEquals(
             'default',
-            $jwtClaimFetcher->getClaim(new JwtEasyApiToken([], 'original'), 'claim', 'default')
+            $jwtClaimFetcher->getClaim(new Jwt([], 'original'), 'claim', 'default')
         );
     }
 }

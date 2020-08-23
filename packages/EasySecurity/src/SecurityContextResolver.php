@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\ContextModifierInterface;
@@ -37,7 +37,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
     private $psr7Factory;
 
     /**
-     * @var \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
+     * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface
      */
     private $tokenDecoder;
 
@@ -49,7 +49,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
         AuthorizationMatrixInterface $authorizationMatrix,
         SecurityContextInterface $context,
         EasyPsr7FactoryInterface $psr7Factory,
-        EasyApiTokenDecoderInterface $tokenDecoder,
+        ApiTokenDecoderInterface $tokenDecoder,
         iterable $contextModifiers,
         iterable $contextConfigurators
     ) {
