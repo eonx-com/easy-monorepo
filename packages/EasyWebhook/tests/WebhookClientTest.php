@@ -12,7 +12,6 @@ use EonX\EasyWebhook\Configurators\SignatureWebhookConfigurator;
 use EonX\EasyWebhook\Exceptions\InvalidWebhookUrlException;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
-use EonX\EasyWebhook\RetryStrategies\ExponentialWebhookRetryStrategy;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stores\ArrayWebhookResultStore;
 use EonX\EasyWebhook\Tests\Stubs\HttpClientStub;

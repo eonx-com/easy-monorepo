@@ -1,11 +1,7 @@
-<div align="center">
-    <h1>EonX - EasyPipeline</h1>
-    <p>Provides an easy and powerful way to implement pipelines for anything.</p>
-</div>
-
----
-
-# Documentation
+---eonx_docs---
+title: Introduction
+weight: 0
+---eonx_docs---
 
 ## Middleware and MiddlewareProviders
 

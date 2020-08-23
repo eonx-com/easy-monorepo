@@ -13,8 +13,8 @@ final class SsmDotenvTest extends AbstractTestCase
     public function testLoadEnv(): void
     {
         $kernel = new EasySsmKernel([
-            __DIR__ . '/../../config/dotenv_loader.yaml',
-            __DIR__ . '/../Fixtures/Config/stub_ssm_client.yaml',
+            __DIR__ . '/../../config/dotenv_loader.php',
+            __DIR__ . '/../Fixtures/Config/stub_ssm_client.php',
         ]);
 
         (new SsmDotenv(null, $kernel))->loadEnv();

@@ -56,6 +56,14 @@ final class WebhookClient implements WebhookClientInterface
         return $webhook->configured(true);
     }
 
+    /**
+     * @return \EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface[]
+     */
+    public function getConfigurators(): array
+    {
+        return $this->configurators;
+    }
+
     public function sendWebhook(WebhookInterface $webhook): WebhookResultInterface
     {
         $webhook = $this->configure($webhook);

@@ -15,7 +15,7 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->scalarNode('connection')->defaultValue('doctrine.orm.default.connection')->end()
+                ->scalarNode('connection')->defaultValue('doctrine.dbal.default_connection')->end()
             ->end();
 
         return $treeBuilder;

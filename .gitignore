@@ -4,3 +4,6 @@ composer.lock
 /.idea
 .phpunit.result.cache
 coverage_output.txt
+
+# env
+.env.local.php

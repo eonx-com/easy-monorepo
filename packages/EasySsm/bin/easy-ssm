@@ -14,7 +14,7 @@ use EonX\EasySsm\Console\EasySsmApplication;
     ->autoloadProjectAutoloaderFile('/../../autoload.php')
     ->includeDependencyOrRepositoryVendorAutoloadIfExists();
 
-$kernel = new \EonX\EasySsm\HttpKernel\EasySsmKernel([__DIR__ . '/../config/console_loader.yaml']);
+$kernel = new \EonX\EasySsm\HttpKernel\EasySsmKernel([__DIR__ . '/../config/console_loader.php']);
 $kernel->boot();
 
 $container = $kernel->getContainer();

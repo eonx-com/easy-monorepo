@@ -1,17 +1,19 @@
-<div align="center">
-    <h1>EonX - EasyRepository</h1>
-    <p>Provides an easy way to implement the Repository Design Pattern in your applications.</p>
-</div>
-
----
+---eonx_docs---
+title: Doctrine ORM
+weight: 2001
+---eonx_docs---
 
 This document describes the steps to use this package into a [Laravel][1] and/or [Lumen][2] application with the
 [Doctrine ORM][3] implementation.
+
+<br>
 
 # Install With Doctrine ORM
 
 For this package install please refer to the related [documentation](laravel_install.md). Regarding Doctrine ORM, we
 strongly recommend you to use the [Laravel Doctrine ORM package][4], please refer to its documentation for its install.
+
+<br>
 
 # Usage
 
@@ -69,6 +71,8 @@ final class PostRepository extends AbstractDoctrineRepository implements PostRep
      }
 }
 ```
+
+<br>
 
 ## AbstractPaginatedDoctrineOrmRepository
 

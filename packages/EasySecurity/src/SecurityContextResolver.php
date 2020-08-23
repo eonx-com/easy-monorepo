@@ -53,6 +53,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
         iterable $contextModifiers,
         iterable $contextConfigurators
     ) {
+        // TODO - Remove in 3.0
         $context->setAuthorizationMatrix($authorizationMatrix);
 
         $this->context = $context;

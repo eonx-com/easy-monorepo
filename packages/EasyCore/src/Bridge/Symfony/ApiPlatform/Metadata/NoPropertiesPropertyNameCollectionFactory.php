@@ -8,6 +8,9 @@ use ApiPlatform\Core\Metadata\Property\Factory\PropertyNameCollectionFactoryInte
 use ApiPlatform\Core\Metadata\Property\PropertyNameCollection;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\NoPropertiesApiResourceInterface;
 
+/**
+ * @deprecated Since 2.4, will be removed in 3.0. This is now supported by api-platform itself.
+ */
 final class NoPropertiesPropertyNameCollectionFactory implements PropertyNameCollectionFactoryInterface
 {
     /**
@@ -18,6 +21,11 @@ final class NoPropertiesPropertyNameCollectionFactory implements PropertyNameCol
     public function __construct(PropertyNameCollectionFactoryInterface $decorated)
     {
         $this->decorated = $decorated;
+
+        @\trigger_error(\sprintf(
+            '%s is deprecated since 2.4.26 and will be removed in 3.0, This is now supported by api-platform itself.',
+            static::class,
+        ), \E_USER_DEPRECATED);
     }
 
     /**

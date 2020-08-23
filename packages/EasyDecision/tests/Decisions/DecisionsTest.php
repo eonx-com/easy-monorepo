@@ -79,13 +79,13 @@ final class DecisionsTest extends AbstractTestCase
             [
                 $this->createLanguageRule('add(5)'),
                 new RuleStopPropagationStub('exit-on-propagation-stopped', 10, true),
-                $this->createLanguageRule('add(10)')
+                $this->createLanguageRule('add(10)'),
             ],
             ['value' => 5],
             10,
             [
                 'add(5)' => 10,
-                'exit-on-propagation-stopped' => 10
+                'exit-on-propagation-stopped' => 10,
             ],
         ];
     }
