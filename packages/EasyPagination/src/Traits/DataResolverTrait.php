@@ -8,17 +8,27 @@ use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Interfaces\StartSizeConfigInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 trait DataResolverTrait
 {
     /**
      * @param mixed $data
+     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
      */
     private function createStartSizeData(
         StartSizeConfigInterface $config,
         $data,
-        ServerRequestInterface $request
+        $request
     ): StartSizeDataInterface {
+        if ($request instanceof ServerRequestInterface) {
+            @\trigger_error(\sprintf(
+                'Passing $request as %s is deprecated since 2.4 and will not be supported in 3.0. Use %s instead.',
+                ServerRequestInterface::class,
+                Request::class
+            ), \E_USER_DEPRECATED);
+        }
+
         if (\is_array($data) === false) {
             return new StartSizeData(
                 $config->getStartDefault(),
