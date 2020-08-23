@@ -6,6 +6,7 @@ namespace EonX\EasyLogging;
 
 use EonX\EasyLogging\Interfaces\Config\HandlerConfigInterface;
 use EonX\EasyLogging\Interfaces\Config\HandlerConfigProviderInterface;
+use EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface;
 use EonX\EasyLogging\Interfaces\Config\LoggingConfigInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
@@ -28,6 +29,11 @@ final class LoggerFactory implements LoggerFactoryInterface
     private $handlerConfigs = [];
 
     /**
+     * @var \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface[]
+     */
+    private $loggerConfigurators = [];
+
+    /**
      * @var \Psr\Log\LoggerInterface[]
      */
     private $loggers = [];
@@ -37,17 +43,8 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private $processorConfigs = [];
 
-    /**
-     * @param iterable<mixed> $handlerConfigProviders
-     * @param null|iterable<mixed> $processorConfigProviders
-     */
-    public function __construct(
-        iterable $handlerConfigProviders,
-        ?iterable $processorConfigProviders = null,
-        ?string $defaultChannel = null
-    ) {
-        $this->setHandlerConfigs($handlerConfigProviders);
-        $this->setProcessorConfigs($processorConfigProviders);
+    public function __construct(?string $defaultChannel = null)
+    {
         $this->defaultChannel = $defaultChannel ?? self::DEFAULT_CHANNEL;
     }
 
@@ -61,7 +58,59 @@ final class LoggerFactory implements LoggerFactoryInterface
 
         $logger = new Logger($channel, $this->getHandlers($channel), $this->getProcessors($channel));
 
+        foreach ($this->getLoggerConfigurators($channel) as $configurator) {
+            $configurator->configure($logger);
+        }
+
         return $this->loggers[$channel] = $logger;
+    }
+
+    /**
+     * @param iterable<mixed> $handlerConfigProviders
+     */
+    public function setHandlerConfigProviders(iterable $handlerConfigProviders): LoggerFactoryInterface
+    {
+        foreach ($this->filterIterable($handlerConfigProviders, HandlerConfigProviderInterface::class) as $provider) {
+            $configs = $this->filterIterable($provider->handlers(), HandlerConfigInterface::class);
+
+            foreach ($configs as $config) {
+                $this->handlerConfigs[] = $config;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param iterable<mixed> $loggerConfigurators
+     */
+    public function setLoggerConfigurators(iterable $loggerConfigurators): LoggerFactoryInterface
+    {
+        $this->loggerConfigurators = $this->filterIterable($loggerConfigurators, LoggerConfiguratorInterface::class);
+
+        return $this;
+    }
+
+    /**
+     * @param null|iterable<mixed> $processorConfigProviders
+     */
+    public function setProcessorConfigProviders(?iterable $processorConfigProviders = null): LoggerFactoryInterface
+    {
+        if ($processorConfigProviders === null) {
+            return $this;
+        }
+
+        $filtered = $this->filterIterable($processorConfigProviders, ProcessorConfigProviderInterface::class);
+
+        foreach ($filtered as $provider) {
+            $configs = $this->filterIterable($provider->processors(), ProcessorConfigInterface::class);
+
+            foreach ($configs as $config) {
+                $this->processorConfigs[] = $config;
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -72,7 +121,12 @@ final class LoggerFactory implements LoggerFactoryInterface
     private function filterAndSortConfigs(array $configs, string $channel): array
     {
         $filter = function (LoggingConfigInterface $config) use ($channel): bool {
-            return \in_array($channel, $config->channels() ?? [$this->defaultChannel], true);
+            // If no channels set, applies to all channels
+            if ($config->channels() === null) {
+                return true;
+            }
+
+            return \in_array($channel, $config->channels(), true);
         };
 
         return $this->sortConfigs(\array_filter($configs, $filter));
@@ -107,6 +161,14 @@ final class LoggerFactory implements LoggerFactoryInterface
     }
 
     /**
+     * @return \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface[]
+     */
+    private function getLoggerConfigurators(string $channel): array
+    {
+        return $this->filterAndSortConfigs($this->loggerConfigurators, $channel);
+    }
+
+    /**
      * @return \Monolog\Processor\ProcessorInterface[]
      */
     private function getProcessors(string $channel): array
@@ -116,38 +178,6 @@ final class LoggerFactory implements LoggerFactoryInterface
         };
 
         return \array_map($map, $this->filterAndSortConfigs($this->processorConfigs, $channel));
-    }
-
-    /**
-     * @param iterable<mixed> $providers
-     */
-    private function setHandlerConfigs(iterable $providers): void
-    {
-        foreach ($this->filterIterable($providers, HandlerConfigProviderInterface::class) as $provider) {
-            $configs = $this->filterIterable($provider->handlers(), HandlerConfigInterface::class);
-
-            foreach ($configs as $config) {
-                $this->handlerConfigs[] = $config;
-            }
-        }
-    }
-
-    /**
-     * @param iterable<mixed> $providers
-     */
-    private function setProcessorConfigs(?iterable $providers = null): void
-    {
-        if ($providers === null) {
-            return;
-        }
-
-        foreach ($this->filterIterable($providers, ProcessorConfigProviderInterface::class) as $provider) {
-            $configs = $this->filterIterable($provider->processors(), ProcessorConfigInterface::class);
-
-            foreach ($configs as $config) {
-                $this->processorConfigs[] = $config;
-            }
-        }
     }
 
     /**
