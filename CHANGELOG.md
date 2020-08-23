@@ -2,7 +2,25 @@
 
 <!-- dumped content start -->
 
-## v2.4.36 - 2020-08-23
+## v2.4.37 - 2020-08-23
+
+### EasyStandard
+
+- [#321] Add RestoreDefaultNullToNullableTypeParameterRector, Thanks to [@BOB41K1987]
+
+### EasyPagination
+
+- [#327] Remove PSR7 support
+
+### EasySecurity
+
+- [#326] Simplify setup + remove psr7 support
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.36] - 2020-08-23
 
 ### EasyApiToken
 
@@ -2150,3 +2168,7 @@
 [v2.4.34]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.33...v2.4.34
 [#286]: https://github.com/eonx-com/easy-monorepo/pull/286
 [v2.4.35]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.34...v2.4.35
+[#327]: https://github.com/eonx-com/easy-monorepo/pull/327
+[#326]: https://github.com/eonx-com/easy-monorepo/pull/326
+[#321]: https://github.com/eonx-com/easy-monorepo/pull/321
+[v2.4.36]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.35...v2.4.36
