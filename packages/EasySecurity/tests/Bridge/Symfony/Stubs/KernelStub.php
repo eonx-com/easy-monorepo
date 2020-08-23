@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Tests\Bridge\Symfony\Stubs;
 
 use EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenBundle;
-use EonX\EasyPsr7Factory\Bridge\Symfony\EasyPsr7FactoryBundle;
 use EonX\EasySecurity\Bridge\Symfony\EasySecurityBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -59,7 +58,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyPsr7FactoryBundle();
         yield new EasyApiTokenBundle();
         yield new EasySecurityBundle();
     }

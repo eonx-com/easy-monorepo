@@ -35,7 +35,6 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
 
         $providers = \array_merge($providers ?? [], [
             EasyApiTokenServiceProvider::class,
-            EasyPsr7FactoryServiceProvider::class,
             EasySecurityServiceProvider::class,
         ]);
 
