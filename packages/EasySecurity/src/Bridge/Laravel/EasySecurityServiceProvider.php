@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Laravel;
 
-use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
-use EonX\EasySecurity\Bridge\Laravel\Helpers\DeferredContextResolver;
-use EonX\EasySecurity\Bridge\Laravel\Interfaces\DeferredContextResolverInterface;
-use EonX\EasySecurity\Bridge\TagsInterface;
+use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
+use EonX\EasySecurity\DeferredSecurityContextProvider;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
-use EonX\EasySecurity\Interfaces\ContextInterface;
-use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
+use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
-use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
-use EonX\EasySecurity\SecurityContextResolver;
+use EonX\EasySecurity\MainSecurityContextConfigurator;
+use EonX\EasySecurity\SecurityContext;
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
 final class EasySecurityServiceProvider extends ServiceProvider
@@ -34,50 +32,67 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $contextServiceId = \config('easy-security.context_service_id');
 
-        // Authorization
+        $this->registerAuthorizationMatrix();
+        $this->registerSecurityContext($contextServiceId);
+        $this->registerDeferredSecurityContextProvider($contextServiceId);
+    }
+
+    private function registerAuthorizationMatrix(): void
+    {
         $this->app->singleton(
             AuthorizationMatrixFactoryInterface::class,
             function (): AuthorizationMatrixFactoryInterface {
                 return new AuthorizationMatrixFactory(
-                    $this->app->tagged(TagsInterface::TAG_ROLES_PROVIDER),
-                    $this->app->tagged(TagsInterface::TAG_PERMISSIONS_PROVIDER)
+                    $this->app->tagged(BridgeConstantsInterface::TAG_ROLES_PROVIDER),
+                    $this->app->tagged(BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER)
                 );
             }
         );
+
         $this->app->singleton(AuthorizationMatrixInterface::class, function (): AuthorizationMatrixInterface {
             return $this->app->get(AuthorizationMatrixFactoryInterface::class)->create();
         });
+    }
+
+    private function registerDeferredSecurityContextProvider(string $contextServiceId): void
+    {
+        $this->app->singleton(
+            DeferredSecurityContextProviderInterface::class,
+            function () use ($contextServiceId): DeferredSecurityContextProviderInterface {
+                return new DeferredSecurityContextProvider($this->app, $contextServiceId);
+            }
+        );
+    }
+
+    private function registerSecurityContext(string $contextServiceId): void
+    {
+        $this->app->singleton(MainSecurityContextConfigurator::class, function (): MainSecurityContextConfigurator {
+            $request = $this->app->make(Request::class);
+            $apiTokenDecoderFactory = $this->app->make(ApiTokenDecoderFactoryInterface::class);
+            $apiTokenDecoder = $apiTokenDecoderFactory->build(\config('easy-security.token_decoder', null));
+
+            $mainConfigurator = new MainSecurityContextConfigurator(
+                $this->app->make(AuthorizationMatrixInterface::class),
+                $request,
+                $apiTokenDecoder->decode($request)
+            );
+
+            return $mainConfigurator
+                ->withConfigurators($this->app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR))
+                ->withModifiers($this->app->tagged(BridgeConstantsInterface::TAG_CONTEXT_MODIFIER));
+        });
 
         $this->app->singleton($contextServiceId, function (): SecurityContextInterface {
-            return $this->app->get(SecurityContextFactoryInterface::class)->create();
+            return new SecurityContext();
         });
-        $this->app->alias($contextServiceId, ContextInterface::class);
-        $this->app->alias($contextServiceId, SecurityContextInterface::class);
 
-        $this->app->singleton(SecurityContextResolverInterface::class, SecurityContextResolver::class);
-        $this->app
-            ->when(SecurityContextResolver::class)
-            ->needs('$contextModifiers')
-            ->give(function (): iterable {
-                return $this->app->tagged(TagsInterface::TAG_CONTEXT_MODIFIER);
-            });
-        $this->app
-            ->when(SecurityContextResolver::class)
-            ->needs('$contextConfigurators')
-            ->give(function (): iterable {
-                return $this->app->tagged(TagsInterface::TAG_CONTEXT_CONFIGURATOR);
-            });
+        $extend = function (SecurityContextInterface $securityContext): SecurityContextInterface {
+            /** @var \EonX\EasySecurity\MainSecurityContextConfigurator $configurator */
+            $configurator = $this->app->make(MainSecurityContextConfigurator::class);
 
-        $this->app->singleton(DeferredContextResolverInterface::class, DeferredContextResolver::class);
-        $this->app
-            ->when(DeferredContextResolver::class)
-            ->needs('$contextServiceId')
-            ->give($contextServiceId);
+            return $configurator->configure($securityContext);
+        };
 
-        $this->app->singleton(ApiTokenDecoderInterface::class, function (): ApiTokenDecoderInterface {
-            return $this->app->get(ApiTokenDecoderFactoryInterface::class)->build(
-                \config('easy-security.token_decoder')
-            );
-        });
+        $this->app->extend($contextServiceId, $extend);
     }
 }
