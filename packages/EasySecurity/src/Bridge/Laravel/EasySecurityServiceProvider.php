@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Laravel;
 
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\DeferredSecurityContextProvider;
@@ -16,7 +16,6 @@ use EonX\EasySecurity\MainSecurityContextConfigurator;
 use EonX\EasySecurity\SecurityContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
-use Psr\Http\Message\ServerRequestInterface;
 
 final class EasySecurityServiceProvider extends ServiceProvider
 {
@@ -68,15 +67,14 @@ final class EasySecurityServiceProvider extends ServiceProvider
     private function registerSecurityContext(string $contextServiceId): void
     {
         $this->app->singleton(MainSecurityContextConfigurator::class, function (): MainSecurityContextConfigurator {
-            $apiTokenDecoder = $this->app->make(EasyApiTokenDecoderFactoryInterface::class)->build(
-                \config('easy-security.token_decoder', null)
-            );
-            $apiToken = $apiTokenDecoder->decode($this->app->make(ServerRequestInterface::class));
+            $request = $this->app->make(Request::class);
+            $apiTokenDecoderFactory = $this->app->make(ApiTokenDecoderFactoryInterface::class);
+            $apiTokenDecoder = $apiTokenDecoderFactory->build(\config('easy-security.token_decoder', null));
 
             $mainConfigurator = new MainSecurityContextConfigurator(
                 $this->app->make(AuthorizationMatrixInterface::class),
-                $this->app->make(Request::class),
-                $apiToken
+                $request,
+                $apiTokenDecoder->decode($request)
             );
 
             return $mainConfigurator

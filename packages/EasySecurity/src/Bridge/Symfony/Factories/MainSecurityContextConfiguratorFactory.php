@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Factories;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\MainSecurityContextConfigurator;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,9 +13,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class MainSecurityContextConfiguratorFactory
 {
     /**
-     * @var null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface
+     * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface
      */
-    private $apiToken;
+    private $apiTokenDecoder;
 
     /**
      * @var \EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface
@@ -29,20 +29,22 @@ final class MainSecurityContextConfiguratorFactory
 
     public function __construct(
         AuthorizationMatrixInterface $authorizationMatrix,
-        RequestStack $requestStack,
-        ?EasyApiTokenInterface $apiToken = null
+        ApiTokenDecoderInterface $apiTokenDecoder,
+        RequestStack $requestStack
     ) {
         $this->authorizationMatrix = $authorizationMatrix;
+        $this->apiTokenDecoder = $apiTokenDecoder;
         $this->requestStack = $requestStack;
-        $this->apiToken = $apiToken;
     }
 
     public function __invoke(): MainSecurityContextConfigurator
     {
+        $request = $this->getRequest();
+
         return new MainSecurityContextConfigurator(
             $this->authorizationMatrix,
-            $this->getRequest(),
-            $this->apiToken
+            $request,
+            $this->apiTokenDecoder->decode($request)
         );
     }
 

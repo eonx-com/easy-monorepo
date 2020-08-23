@@ -3,8 +3,7 @@
 declare(strict_types=1);
 
 use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\Symfony\DataCollector\SecurityContextDataCollector;
@@ -15,7 +14,6 @@ use EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\MainSecurityContextConfigurator;
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
@@ -41,17 +39,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // MainSecurityContextConfigurator
     $services
         ->set('easy_security.api_token_decoder', EasyApiTokenDecoderInterface::class)
-        ->factory([ref(EasyApiTokenDecoderFactoryInterface::class), 'build'])
+        ->factory([ref(ApiTokenDecoderFactoryInterface::class), 'build'])
         ->args(['%' . BridgeConstantsInterface::PARAM_TOKEN_DECODER . '%']);
 
     $services
-        ->set('easy_security.api_token', EasyApiTokenInterface::class)
-        ->factory([ref('easy_security.api_token_decoder'), 'decode'])
-        ->args([ref(ServerRequestInterface::class)]);
-
-    $services
         ->set(MainSecurityContextConfiguratorFactory::class)
-        ->arg('$apiToken', ref('easy_security.api_token'));
+        ->arg('$apiTokenDecoder', ref('easy_security.api_token_decoder'));
 
     $services
         ->set(MainSecurityContextConfigurator::class)
