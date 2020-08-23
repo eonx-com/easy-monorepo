@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Factories\Decoders;
 
 use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderSubFactoryInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderSubFactoryInterface;
 
-final class BasicAuthDecoderFactory implements EasyApiTokenDecoderSubFactoryInterface
+/**
+ * @deprecated since 2.4. Will be removed in 3.0. Use ApiTokenDecoderProvider instead.
+ */
+final class BasicAuthDecoderFactory implements ApiTokenDecoderSubFactoryInterface
 {
     /**
      * @param null|mixed[] $config
      */
-    public function build(?array $config = null): EasyApiTokenDecoderInterface
+    public function build(?array $config = null, ?string $name = null): ApiTokenDecoderInterface
     {
-        return new BasicAuthDecoder();
+        return new BasicAuthDecoder($name);
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Tokens;
 
 use EonX\EasyApiToken\Tests\AbstractTestCase;
-use EonX\EasyApiToken\Tokens\BasicAuthEasyApiToken;
+use EonX\EasyApiToken\Tokens\BasicAuth;
 
 final class BasicAuthEasyApiTokenTest extends AbstractTestCase
 {
@@ -28,8 +28,8 @@ final class BasicAuthEasyApiTokenTest extends AbstractTestCase
         self::assertEquals('username', $this->createBasicAuthEasyApiToken()->getUsername());
     }
 
-    private function createBasicAuthEasyApiToken(): BasicAuthEasyApiToken
+    private function createBasicAuthEasyApiToken(): BasicAuth
     {
-        return new BasicAuthEasyApiToken('username', 'password', 'original');
+        return new BasicAuth('username', 'password', 'original');
     }
 }

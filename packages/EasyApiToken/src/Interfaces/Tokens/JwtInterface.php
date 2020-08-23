@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Interfaces\Tokens;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 
-interface JwtEasyApiTokenInterface extends EasyApiTokenInterface
+interface JwtInterface extends ApiTokenInterface
 {
     /**
      * @return mixed
@@ -24,3 +24,5 @@ interface JwtEasyApiTokenInterface extends EasyApiTokenInterface
 
     public function hasClaim(string $claim): bool;
 }
+
+\class_alias(JwtInterface::class, JwtEasyApiTokenInterface::class);

@@ -20,6 +20,15 @@ abstract class AbstractTestCase extends TestCase
      * @param null|mixed[] $server
      * @param null|mixed[] $query
      */
+    protected function createRequest(?array $server = null, ?array $query = null): Request
+    {
+        return new Request($query ?? [], [], [], [], [], $server ?? []);
+    }
+
+    /**
+     * @param null|mixed[] $server
+     * @param null|mixed[] $query
+     */
     protected function createServerRequest(?array $server = null, ?array $query = null): ServerRequestInterface
     {
         $server = $server ?? [];
@@ -28,7 +37,7 @@ abstract class AbstractTestCase extends TestCase
             $server['HTTP_HOST'] = 'eonx.com';
         }
 
-        return (new EasyPsr7Factory())->createRequest(new Request($query ?? [], [], [], [], [], $server));
+        return (new EasyPsr7Factory())->createRequest($this->createRequest($server, $query));
     }
 
     protected function tearDown(): void

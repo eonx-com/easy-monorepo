@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Decoders;
 
 use EonX\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
-use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
 
 final class ApiKeyAsBasicAuthUsernameDecoderTest extends AbstractTestCase
@@ -49,12 +49,12 @@ final class ApiKeyAsBasicAuthUsernameDecoderTest extends AbstractTestCase
         ];
 
         foreach ($tests as $test => $expected) {
-            /** @var \EonX\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface $token */
+            /** @var \EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface $token */
             $token = (new ApiKeyAsBasicAuthUsernameDecoder())->decode($this->createServerRequest([
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test)),
             ]));
 
-            self::assertInstanceOf(ApiKeyEasyApiTokenInterface::class, $token);
+            self::assertInstanceOf(ApiKeyInterface::class, $token);
             self::assertEquals($expected[0], $token->getPayload()['api_key']);
         }
     }
