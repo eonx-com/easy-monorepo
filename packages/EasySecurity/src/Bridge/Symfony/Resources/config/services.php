@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\Symfony\DataCollector\SecurityContextDataCollector;
@@ -39,7 +39,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // MainSecurityContextConfigurator
     $services
         ->set('easy_security.api_token_decoder', EasyApiTokenDecoderInterface::class)
-        ->factory([ref(ApiTokenDecoderFactoryInterface::class), 'build'])
+        ->factory([ref(EasyApiTokenDecoderFactoryInterface::class), 'build'])
         ->args(['%' . BridgeConstantsInterface::PARAM_TOKEN_DECODER . '%']);
 
     $services
