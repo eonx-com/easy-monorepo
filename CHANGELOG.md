@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.35 - 2020-08-21
+## v2.4.36 - 2020-08-23
+
+### EasyApiToken
+
+- [#286] From config to PHP, Rename classes, Remove encoders
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.35] - 2020-08-21
 
 ### EasyPsr7Factory
 
@@ -2138,3 +2148,5 @@
 [v2.4.33]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.32...v2.4.33
 [#322]: https://github.com/eonx-com/easy-monorepo/pull/322
 [v2.4.34]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.33...v2.4.34
+[#286]: https://github.com/eonx-com/easy-monorepo/pull/286
+[v2.4.35]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.34...v2.4.35
