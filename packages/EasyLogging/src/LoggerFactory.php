@@ -14,7 +14,6 @@ use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use Monolog\Processor\ProcessorInterface;
-use Psr\Log\LoggerInterface;
 
 final class LoggerFactory implements LoggerFactoryInterface
 {
@@ -49,10 +48,10 @@ final class LoggerFactory implements LoggerFactoryInterface
     ) {
         $this->setHandlerConfigs($handlerConfigProviders);
         $this->setProcessorConfigs($processorConfigProviders);
-        $this->defaultChannel = $defaultChannel ?? 'app';
+        $this->defaultChannel = $defaultChannel ?? self::DEFAULT_CHANNEL;
     }
 
-    public function create(?string $channel = null): LoggerInterface
+    public function create(?string $channel = null): Logger
     {
         $channel = $channel ?? $this->defaultChannel;
 
