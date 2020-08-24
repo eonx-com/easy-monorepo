@@ -110,11 +110,11 @@ final class TrimStringsRecursiveTest extends AbstractTestCase
     /**
      * @param mixed $data
      * @param mixed[]  $except
-     * @param mixed[] $expectedResult
+     * @param mixed $expectedResult
      *
      * @dataProvider provideDataForClean
      */
-    public function testCleanSucceeds($data, array $except, array $expectedResult): void
+    public function testCleanSucceeds($data, array $except, $expectedResult): void
     {
         $cleaner = new TrimStringsRecursive();
 
