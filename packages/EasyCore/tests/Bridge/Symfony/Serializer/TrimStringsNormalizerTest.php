@@ -18,7 +18,7 @@ final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
      *
      * @see testSupportsDenormalizationSucceeds
      */
-    public function dataProviderForSupportsDenormalization(): array
+    public function provideDataForSupportsDenormalization(): array
     {
         return [
             'data is string' => [
@@ -47,7 +47,7 @@ final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
     /**
      * @param mixed $data
      *
-     * @dataProvider dataProviderForSupportsDenormalization
+     * @dataProvider provideDataForSupportsDenormalization
      */
     public function testSupportsDenormalizationSucceeds($data, bool $expectedResult): void
     {
