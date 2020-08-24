@@ -9,7 +9,7 @@
         "symplify/autowire-array-parameter": "^7.2",
         "aws/aws-sdk-php": "^3.134",
         "nette/utils": "^3.1",
-        "eonx-com/easy-aws-credentials-finder": "^2.4.37"
+        "eonx-com/easy-aws-credentials-finder": "^2.4.38"
     },
     "autoload": {
         "psr-4": {
