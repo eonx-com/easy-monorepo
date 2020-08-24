@@ -11,6 +11,9 @@ use Monolog\Logger;
 use Psr\Log\LogLevel;
 use Throwable;
 
+/**
+ * @deprecated since 2.4, will be removed in 3.0. Bugsnag implementation will be reworked.
+ */
 final class BugsnagHandler extends AbstractProcessingHandler
 {
     /**

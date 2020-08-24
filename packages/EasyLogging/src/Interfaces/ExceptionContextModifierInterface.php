@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Interfaces;
 
+/**
+ * @deprecated since 2.4, will be removed in 3.0. Use Monolog\Processor\ProcessorInterface instead.
+ */
 interface ExceptionContextModifierInterface
 {
     /**
