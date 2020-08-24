@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.37 - 2020-08-23
+## v2.4.38 - 2020-08-24
+
+### EasyLogging
+
+- [#328] Implement LoggerFactory
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.37] - 2020-08-23
 
 ### EasyStandard
 
@@ -2172,3 +2182,5 @@
 [#326]: https://github.com/eonx-com/easy-monorepo/pull/326
 [#321]: https://github.com/eonx-com/easy-monorepo/pull/321
 [v2.4.36]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.35...v2.4.36
+[#328]: https://github.com/eonx-com/easy-monorepo/pull/328
+[v2.4.37]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.36...v2.4.37
