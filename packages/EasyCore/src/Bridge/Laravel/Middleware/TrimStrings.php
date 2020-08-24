@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Laravel\Middleware;
 
+use EonX\EasyCore\Tests\Helpers\CleanerInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -14,7 +15,18 @@ final class TrimStrings
      *
      * @var mixed[]
      */
-    private $except = [];
+    private $except;
+
+    /**
+     * @var CleanerInterface
+     */
+    private $cleaner;
+
+    public function __construct(CleanerInterface $cleaner, array $except = [])
+    {
+        $this->cleaner = $cleaner;
+        $this->except = $except;
+    }
 
     /**
      * Handle an incoming request.
@@ -47,50 +59,6 @@ final class TrimStrings
      */
     private function cleanParameterBag(ParameterBag $bag): void
     {
-        $bag->replace($this->cleanArray($bag->all()));
-    }
-
-    /**
-     * Clean the data in the given array.
-     *
-     * @return mixed[]
-     */
-    private function cleanArray(array $data, string $keyPrefix = ''): array
-    {
-        return \collect($data)->map(function ($value, $key) use ($keyPrefix) {
-            return $this->cleanValue($keyPrefix . $key, $value);
-        })->all();
-    }
-
-    /**
-     * Clean the given value.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    private function cleanValue(string $key, $value)
-    {
-        if (\is_array($value)) {
-            return $this->cleanArray($value, $key . '.');
-        }
-
-        return $this->transform($key, $value);
-    }
-
-    /**
-     * Transform the given value.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    private function transform(string $key, $value)
-    {
-        if (\in_array($key, $this->except, true)) {
-            return $value;
-        }
-
-        return \is_string($value) ? \trim($value) : $value;
+        $bag->replace($this->cleaner->clean($bag->all(), $this->except));
     }
 }

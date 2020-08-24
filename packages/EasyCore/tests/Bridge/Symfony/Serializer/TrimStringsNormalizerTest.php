@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Symfony\Serializer;
 
-use EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsNormalizer;
+use EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsDenormalizer;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
+use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\DenormalizerInterfaceStub;
+use EonX\EasyCore\Tests\Helpers\CleanerInterface;
 use stdClass;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -49,8 +51,9 @@ final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
      */
     public function testSupportsDenormalizationSucceeds($data, bool $expectedResult): void
     {
+        $cleaner = $this->prophesize(CleanerInterface::class);
         $decorated = $this->prophesize(DenormalizerInterface::class);
-        $normalizer = new TrimStringsNormalizer($decorated->reveal());
+        $normalizer = new TrimStringsDenormalizer($decorated->reveal(), $cleaner->reveal());
 
         $result = $normalizer->supportsDenormalization($data, 'no-matter');
 
@@ -62,57 +65,20 @@ final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
      */
     public function testDenormalizeSucceeds(): void
     {
-        $data = [
-            'abc' => '  123  ',
-            'xyz' => '  456  ',
-            'foo' => '  abc  ',
-            'bar' => '  ZXY  ',
-            'integer' => 123,
-            'recursion' => [
-                '  123  ',
-                '  456  ',
-                'null' => null,
-            ],
-            'recursion_with_2_level' => [
-                'recursion' => [
-                    '  abc  ',
-                    '  ZXY  ',
-                    'object' => new stdClass(),
-                ],
-                '  123  ',
-                '  456  ',
-            ],
-        ];
+        $data = ['abc' => '  123  '];
         $type = 'no-matter';
         $format = null;
         $context = [];
-        $expectedData = [
-            'abc' => '123',
-            'xyz' => '456',
-            'foo' => 'abc',
-            'bar' => 'ZXY',
-            'integer' => 123,
-            'recursion' => [
-                '123',
-                '456',
-                'null' => null,
-            ],
-            'recursion_with_2_level' => [
-                'recursion' => [
-                    'abc',
-                    'ZXY',
-                    'object' => new stdClass(),
-                ],
-                '123',
-                '456',
-            ],
-        ];
-        $decorated = $this->prophesize(DenormalizerInterface::class);
-        $decorated->denormalize($expectedData, $type, $format, $context)->willReturn($expectedData);
-        $normalizer = new TrimStringsNormalizer($decorated->reveal());
+        $except = ['some-key'];
+        $expectedData = ['abc' => '123'];
+        $cleaner = $this->prophesize(CleanerInterface::class);
+        $cleaner->clean($data, $except)->willReturn($expectedData);
+        $decorated = new DenormalizerInterfaceStub();
+        $normalizer = new TrimStringsDenormalizer($decorated, $cleaner->reveal(), $except);
 
-        $normalizer->denormalize($data, $type, $format, $context);
+        $result = $normalizer->denormalize($data, $type, $format, $context);
 
-        $decorated->denormalize($expectedData, $type, $format, $context)->shouldHaveBeenCalledOnce();
+        self::assertSame($expectedData, $result);
+        $cleaner->clean($data, $except)->shouldHaveBeenCalledOnce();
     }
 }

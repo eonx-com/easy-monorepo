@@ -4,20 +4,31 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\Serializer;
 
+use EonX\EasyCore\Tests\Helpers\CleanerInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * @SuppressWarnings(PHPMD.UnusedFormalParameter) Method signatures are defined by parent
  */
-final class TrimStringsNormalizer implements DenormalizerInterface
+final class TrimStringsDenormalizer implements DenormalizerInterface
 {
+    /**
+     * @var \EonX\EasyCore\Tests\Helpers\CleanerInterface
+     */
+    private $cleaner;
+
     /**
      * @var \Symfony\Component\Serializer\Normalizer\DenormalizerInterface
      */
     private $decorated;
 
-    public function __construct(DenormalizerInterface $decorated)
+    /**
+     * @var mixed[]
+     */
+    private $except;
+
+    public function __construct(DenormalizerInterface $decorated, CleanerInterface $cleaner, array $except = [])
     {
         if ($decorated instanceof DenormalizerInterface === false) {
             throw new InvalidArgumentException(
@@ -25,12 +36,14 @@ final class TrimStringsNormalizer implements DenormalizerInterface
             );
         }
 
+        $this->cleaner = $cleaner;
         $this->decorated = $decorated;
+        $this->except = $except;
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $data = $this->clean($data);
+        $data = $this->cleaner->clean($data, $this->except);
 
         return $this->decorated->denormalize($data, $type, $format, $context);
     }
@@ -38,51 +51,5 @@ final class TrimStringsNormalizer implements DenormalizerInterface
     public function supportsDenormalization($data, $type, $format = null): bool
     {
         return \is_string($data) || \is_array($data);
-    }
-
-    /**
-     * @param mixed $data
-     *
-     * @return mixed
-     */
-    private function clean($data)
-    {
-        if ((\is_string($data) || \is_array($data)) !== true) {
-            return $data;
-        }
-
-        if (\is_array($data) === false) {
-            return $this->transform($data);
-        }
-
-        return $this->cleanArray($data);
-    }
-
-    /**
-     * Clean the given value.
-     *
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     */
-    private function cleanArray(array $data): array
-    {
-        foreach ($data as $key => $value) {
-            $data[$key] = $this->clean($value);
-        }
-
-        return $data;
-    }
-
-    /**
-     * Transform the given value.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    private function transform($value)
-    {
-        return \is_string($value) ? \trim($value) : $value;
     }
 }
