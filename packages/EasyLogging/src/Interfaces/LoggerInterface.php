@@ -6,6 +6,9 @@ namespace EonX\EasyLogging\Interfaces;
 
 use EoneoPay\Externals\Logger\Interfaces\LoggerInterface as ExternalsLoggerInterface;
 
+/**
+ * @deprecated since 2.4, will be removed in 3.0. No need to decorated monolog logger.
+ */
 interface LoggerInterface extends ExternalsLoggerInterface
 {
     /**
