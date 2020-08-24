@@ -1,0 +1,30 @@
+{
+    "name": "eonx-com/easy-bugsnag",
+    "description": "Ease integrating bugsnag in your PHP projects",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5 || ^8.4",
+        "laravel/lumen-framework": "^5.5",
+        "bugsnag/bugsnag": "^3.0",
+        "symfony/symfony": "^4.2 || ^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasyLogging\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasyLogging\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.5-dev"
+        }
+    }
+}
