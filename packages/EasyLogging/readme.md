@@ -36,6 +36,20 @@ $console = $loggerFactory->create('console'); // Create logger for console chann
 
 <br>
 
+### Usage in Framework
+
+The different bridge provided by this package will by default register the logger for your default channel in the 
+service container under the following service ids:
+
+- `Psr\Log\LoggerInterface`
+- `logger`
+
+You can then use dependency injection anywhere you like!
+
+<br>
+
+### Logger Configuration
+
 The `LoggerFactoryInterface` allows you to set different collections of "config providers", each config can define:
 
 - **channels:** if defined the config will be applied only to given channels, if `null` the config will be applied
@@ -94,6 +108,8 @@ final class StreamHandlerConfigProvider implements HandlerConfigProviderInterfac
     }
 }
 ```
+
+<br>
 
 ###### ProcessorConfig
 

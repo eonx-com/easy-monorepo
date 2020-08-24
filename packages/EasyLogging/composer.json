@@ -1,6 +1,6 @@
 {
     "name": "eonx-com/easy-logging",
-    "description": "Centralise logging logic for our lumen projects",
+    "description": "Create and configure Monolog Loggers easily",
     "type": "library",
     "license": "MIT",
     "require": {
