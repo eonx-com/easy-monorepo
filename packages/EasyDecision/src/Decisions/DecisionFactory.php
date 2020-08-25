@@ -12,8 +12,7 @@ use EonX\EasyDecision\Exceptions\InvalidDecisionException;
 use EonX\EasyDecision\Exceptions\InvalidRuleProviderException;
 use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
-use EonX\EasyDecision\Interfaces\ContextAggregatorAwareInterface;
-use EonX\EasyDecision\Interfaces\ContextAggregatorInterface;
+use EonX\EasyDecision\Interfaces\DecisionAggregatorInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
@@ -36,9 +35,9 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $container;
 
     /**
-     * @var \EonX\EasyDecision\Interfaces\ContextAggregatorInterface
+     * @var \EonX\EasyDecision\Interfaces\DecisionAggregatorInterface
      */
-    private $contextAggregator;
+    private $decisionAggregator;
 
     /**
      * @var null|\EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface
@@ -54,7 +53,7 @@ final class DecisionFactory implements DecisionFactoryInterface
      * @param null|iterable<mixed> $configurators
      */
     public function __construct(
-        ContextAggregatorInterface $contextAggregator,
+        DecisionAggregatorInterface $decisionAggregator,
         MappingProviderInterface $mappingProvider,
         ?ExpressionLanguageFactoryInterface $languageFactory = null,
         ?iterable $configurators = null
@@ -68,7 +67,7 @@ final class DecisionFactory implements DecisionFactoryInterface
             ), \E_USER_DEPRECATED);
         }
 
-        $this->contextAggregator = $contextAggregator;
+        $this->decisionAggregator = $decisionAggregator;
         $this->mappingProvider = $mappingProvider;
         $this->expressionLanguageFactory = $languageFactory;
         $this->configurators = $this->getConfiguratorsAsArray($configurators);
@@ -111,6 +110,8 @@ final class DecisionFactory implements DecisionFactoryInterface
 
             $this->configurators[] = new AddRulesConfigurator($provider->getRules($params));
         }
+
+        $this->decisionAggregator->addDecisionRuleProviders($decision, $config->getRuleProviders());
 
         return $this->configureDecision($decision);
     }
@@ -171,9 +172,8 @@ final class DecisionFactory implements DecisionFactoryInterface
             $configurator->configure($decision);
         }
 
-        if ($decision instanceof ContextAggregatorAwareInterface) {
-            $decision->setContextAggregator($this->contextAggregator);
-        }
+        $this->decisionAggregator->addDecision($decision);
+        $this->decisionAggregator->addDecisionConfigurators($decision, $configurators);
 
         return $decision;
     }

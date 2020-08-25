@@ -5,25 +5,23 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Decisions;
 
 use EonX\EasyDecision\Context;
+use EonX\EasyDecision\Data\DecisionDataFlow;
 use EonX\EasyDecision\Exceptions\ContextNotSetException;
 use EonX\EasyDecision\Exceptions\ExpressionLanguageNotSetOnDecisionException;
 use EonX\EasyDecision\Exceptions\ReservedContextIndexException;
 use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
-use EonX\EasyDecision\Interfaces\ContextAggregatorAwareInterface;
 use EonX\EasyDecision\Interfaces\ContextAwareInterface;
 use EonX\EasyDecision\Interfaces\ContextInterface;
+use EonX\EasyDecision\Interfaces\DecisionDataFlowAwareInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\DecisionOutputForRuleAwareInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use EonX\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
-use EonX\EasyDecision\Traits\ContextAggregatorAwareTrait;
 
-abstract class AbstractDecision implements DecisionInterface, ContextAggregatorAwareInterface
+abstract class AbstractDecision implements DecisionInterface, DecisionDataFlowAwareInterface
 {
-    use ContextAggregatorAwareTrait;
-
     /**
      * @var \EonX\EasyDecision\Interfaces\ContextInterface
      */
@@ -53,6 +51,11 @@ abstract class AbstractDecision implements DecisionInterface, ContextAggregatorA
      * @var string
      */
     private $name;
+
+    /**
+     * @var \EonX\EasyDecision\Interfaces\RuleInterface[]
+     */
+    private $processedRules = [];
 
     /**
      * @var \EonX\EasyDecision\Interfaces\RuleInterface[]
@@ -94,6 +97,17 @@ abstract class AbstractDecision implements DecisionInterface, ContextAggregatorA
         ));
     }
 
+    public function getDataFlow(): DecisionDataFlow
+    {
+        return new DecisionDataFlow(
+            $this->getContext()->getOriginalInput(),
+            $this->rules,
+            $this->processedRules,
+            $this->defaultOutput,
+            $this->getContext()->getRuleOutputs()
+        );
+    }
+
     public function getExpressionLanguage(): ?ExpressionLanguageInterface
     {
         return $this->expressionLanguage;
@@ -124,10 +138,6 @@ abstract class AbstractDecision implements DecisionInterface, ContextAggregatorA
 
         $this->input = $input;
         $this->context = $context = new Context(static::class, $input);
-
-        if ($this->contextAggregator !== null) {
-            $this->contextAggregator->addContext($context);
-        }
 
         // If no rules provided, return default output
         if (empty($this->rules)) {
@@ -268,6 +278,8 @@ abstract class AbstractDecision implements DecisionInterface, ContextAggregatorA
 
             try {
                 $ruleOutput = $rule->proceed($this->input);
+
+                $this->processedRules[] = $rule;
 
                 $this->addDecisionOutputForRule($rule, $ruleOutput);
 
