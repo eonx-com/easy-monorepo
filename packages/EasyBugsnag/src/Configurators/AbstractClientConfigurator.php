@@ -6,7 +6,7 @@ namespace EonX\EasyBugsnag\Configurators;
 
 use EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface;
 
-abstract class AbstractConfigurator implements ClientConfiguratorInterface
+abstract class AbstractClientConfigurator implements ClientConfiguratorInterface
 {
     /**
      * @var int

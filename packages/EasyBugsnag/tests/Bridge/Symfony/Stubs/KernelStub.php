@@ -8,10 +8,18 @@ use EonX\EasyBugsnag\Bridge\Symfony\EasyBugsnagBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
+    /**
+     * @var null|\Symfony\Component\HttpFoundation\Request
+     */
+    private static $request;
+
     /**
      * @var string[]
      */
@@ -27,8 +35,29 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         parent::__construct('test', true);
     }
 
+    public static function createRequestStack(): RequestStack
+    {
+        $requestStack = new RequestStack();
+
+        if (static::$request !== null) {
+            $requestStack->push(static::$request);
+        }
+
+        return $requestStack;
+    }
+
+    public static function setRequest(Request $request): void
+    {
+        static::$request = $request;
+    }
+
     public function process(ContainerBuilder $container): void
     {
+        $requestStackDef = new Definition(RequestStack::class);
+        $requestStackDef->setFactory([static::class, 'createRequestStack']);
+
+        $container->setDefinition(RequestStack::class, $requestStackDef);
+
         foreach ($container->getAliases() as $alias) {
             $alias->setPublic(true);
         }

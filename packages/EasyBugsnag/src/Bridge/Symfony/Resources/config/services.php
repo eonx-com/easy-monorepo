@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Bugsnag\Client;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
+use EonX\EasyBugsnag\Bridge\Symfony\Configurators\PathsConfigurator;
+use EonX\EasyBugsnag\Bridge\Symfony\Request\SymfonyRequestResolver;
 use EonX\EasyBugsnag\Bridge\Symfony\Shutdown\ShutdownStrategyListener;
 use EonX\EasyBugsnag\ClientFactory;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
@@ -19,16 +21,25 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure()
         ->autowire();
 
+    // Configurators
+    $services
+        ->set(PathsConfigurator::class)
+        ->args(['%kernel.project_dir%']);
+
     // Client Factory + Client
     $services
         ->set(ClientFactoryInterface::class, ClientFactory::class)
         ->call('setConfigurators', [tagged_iterator(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR)])
+        ->call('setRequestResolver', [ref(SymfonyRequestResolver::class)])
         ->call('setShutdownStrategy', [ref(ShutdownStrategyListener::class)]);
 
     $services
         ->set(Client::class)
         ->factory([ref(ClientFactoryInterface::class), 'create'])
         ->args(['%' . BridgeConstantsInterface::PARAM_API_KEY . '%']);
+
+    // Request Resolver
+    $services->set(SymfonyRequestResolver::class);
 
     // Shutdown Strategy
     $services
