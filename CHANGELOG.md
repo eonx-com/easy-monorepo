@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.38 - 2020-08-24
+## v2.4.39 - 2020-08-26
+
+### EasyCore
+
+- [#290] Move search service to easy-core
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.38] - 2020-08-24
 
 ### EasyLogging
 
@@ -2184,3 +2194,5 @@
 [v2.4.36]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.35...v2.4.36
 [#328]: https://github.com/eonx-com/easy-monorepo/pull/328
 [v2.4.37]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.36...v2.4.37
+[#290]: https://github.com/eonx-com/easy-monorepo/pull/290
+[v2.4.38]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.37...v2.4.38
