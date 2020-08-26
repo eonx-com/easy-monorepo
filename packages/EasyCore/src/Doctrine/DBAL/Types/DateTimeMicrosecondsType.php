@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Doctrine\Type;
+namespace EonX\EasyCore\Doctrine\DBAL\Types;
 
 use DateTime;
 use DateTimeInterface;
@@ -16,12 +16,7 @@ final class DateTimeMicrosecondsType extends DateTimeType
     /**
      * @var string
      */
-    public const TYPE_NAME = 'datetime';
-
-    /**
-     * @var string
-     */
-    public const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
+    public const FORMAT_DB_DATETIME = 'DATETIME(6)';
 
     /**
      * @var string
@@ -36,7 +31,12 @@ final class DateTimeMicrosecondsType extends DateTimeType
     /**
      * @var string
      */
-    public const FORMAT_DB_DATETIME = 'DATETIME(6)';
+    public const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
+
+    /**
+     * @var string
+     */
+    public const TYPE_NAME = 'datetime';
 
     /**
      * @param mixed $value
