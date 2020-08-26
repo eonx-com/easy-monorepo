@@ -7,32 +7,38 @@ namespace EonX\EasyCore\Bridge\Laravel\Providers;
 use EonX\EasyCore\Bridge\Laravel\Listeners\DoctrineClearEmBeforeJobListener;
 use EonX\EasyCore\Bridge\Laravel\Listeners\DoctrineRestartQueueOnEmCloseListener;
 use EonX\EasyCore\Bridge\Laravel\Listeners\QueueWorkerStoppingListener;
+use EonX\EasyCore\Search\ElasticsearchSearchServiceFactory;
+use EonX\EasyCore\Search\SearchServiceFactoryInterface;
+use EonX\EasyCore\Search\SearchServiceInterface;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Events\WorkerStopping;
 use Illuminate\Support\ServiceProvider;
+use function base_path;
+use function config;
 
 final class EasyCoreServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/easy-core.php' => \base_path('config/easy-core.php'),
+            __DIR__ . '/../config/easy-core.php' => base_path('config/easy-core.php'),
         ]);
-
-        $this->clearDoctrineEmBeforeJob();
-        $this->logQueueWorkerStopping();
-        $this->restartQueueOnEmClose();
     }
 
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/easy-core.php', 'easy-core');
+
+        $this->clearDoctrineEmBeforeJob();
+        $this->logQueueWorkerStopping();
+        $this->restartQueueOnEmClose();
+        $this->search();
     }
 
     private function clearDoctrineEmBeforeJob(): void
     {
-        if ((bool)\config('easy-core.clear_doctrine_em_before_job', false) === false) {
+        if ((bool)config('easy-core.clear_doctrine_em_before_job', false) === false) {
             return;
         }
 
@@ -41,7 +47,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
 
     private function logQueueWorkerStopping(): void
     {
-        if ((bool)\config('easy-core.log_queue_worker_stop', true) === false) {
+        if ((bool)config('easy-core.log_queue_worker_stop', true) === false) {
             return;
         }
 
@@ -50,10 +56,25 @@ final class EasyCoreServiceProvider extends ServiceProvider
 
     private function restartQueueOnEmClose(): void
     {
-        if ((bool)\config('easy-core.restart_queue_on_doctrine_em_close', true) === false) {
+        if ((bool)config('easy-core.restart_queue_on_doctrine_em_close', true) === false) {
             return;
         }
 
         $this->app->get('events')->listen(JobExceptionOccurred::class, DoctrineRestartQueueOnEmCloseListener::class);
+    }
+
+    private function search(): void
+    {
+        if ((bool)config('easy-core.search.enabled', false) === false) {
+            return;
+        }
+
+        $this->app->singleton(SearchServiceFactoryInterface::class, function (): SearchServiceFactoryInterface {
+            return new ElasticsearchSearchServiceFactory(config('easy-core.search.elasticsearch_host'));
+        });
+
+        $this->app->singleton(SearchServiceInterface::class, function (): SearchServiceInterface {
+            return $this->app->make(SearchServiceFactoryInterface::class)->create();
+        });
     }
 }

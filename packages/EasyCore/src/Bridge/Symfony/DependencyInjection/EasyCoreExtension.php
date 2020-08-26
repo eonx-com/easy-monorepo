@@ -6,6 +6,7 @@ namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
+use EonX\EasyCore\Bridge\BridgeConstantsInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
@@ -38,7 +39,7 @@ final class EasyCoreExtension extends Extension
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
-
+      
         $this->container = $container;
         $this->loader = $loader;
 
@@ -65,7 +66,16 @@ final class EasyCoreExtension extends Extension
                 $loader->load('api_platform/debug.php');
             }
         }
-
+      
+        if ($config['search']['enabled'] ?? false) {
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_ELASTICSEARCH_HOST,
+                $config['search']['elasticsearch_host']
+            );
+            
+            $loader->load('search.php');
+        }
+      
         // Aliases for custom collection operations HTTP methods
         foreach (['PATCH', 'PUT'] as $method) {
             $alias = \sprintf('api_platform.action.%s_collection', \strtolower($method));
