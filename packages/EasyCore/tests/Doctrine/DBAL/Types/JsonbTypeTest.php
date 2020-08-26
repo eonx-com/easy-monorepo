@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use EonX\EasyCore\Doctrine\DBAL\Types\JsonbType;
 use EonX\EasyCore\Tests\AbstractTestCase;
+use Mockery\MockInterface;
 
 /**
  * @covers \EonX\EasyCore\Doctrine\DBAL\Types\JsonbType
@@ -19,9 +20,26 @@ final class JsonbTypeTest extends AbstractTestCase
      * @return mixed[]
      *
      * @see testConvertToDatabaseValueSucceeds
-     * @see testConvertToPhpValueSucceeds
      */
     public function provideConvertToDatabaseValues(): array
+    {
+        return \array_merge(
+            $this->provideConvertToPhpValues(),
+            [
+                'object phpValue' => [
+                    'phpValue' => (object)['property' => 'value'],
+                    'postgresValue' => '{"property":"value"}',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @return mixed[]
+     *
+     * @see testConvertToPhpValueSucceeds
+     */
+    public function provideConvertToPhpValues(): array
     {
         return [
             'null phpValue' => [
@@ -44,7 +62,7 @@ final class JsonbTypeTest extends AbstractTestCase
                 'phpValue' => 'a string value',
                 'postgresValue' => '"a string value"',
             ],
-            'array og integers phpValue' => [
+            'array of integers phpValue' => [
                 'phpValue' => [681, 1185, 1878, 1989],
                 'postgresValue' => '[681,1185,1878,1989]',
             ],
@@ -62,7 +80,7 @@ final class JsonbTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param array|float|int|string|null $phpValue
+     * @param mixed $phpValue
      *
      * @throws \Doctrine\DBAL\Types\ConversionException
      * @throws \Doctrine\DBAL\DBALException
@@ -93,7 +111,8 @@ final class JsonbTypeTest extends AbstractTestCase
         $platform = $this->mock(AbstractPlatform::class);
         $value = \urldecode('some bad utf string %C4');
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage("Could not convert PHP type 'string' to 'json', as an " .
+        $this->expectExceptionMessage(
+            "Could not convert PHP type 'string' to 'json', as an " .
             "'Malformed UTF-8 characters, possibly incorrectly encoded' error was triggered by the serialization"
         );
 
@@ -101,12 +120,12 @@ final class JsonbTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param array|float|int|string|null $phpValue
+     * @param mixed $phpValue
      *
      * @throws \Doctrine\DBAL\Types\ConversionException
      * @throws \Doctrine\DBAL\DBALException
      *
-     * @dataProvider provideConvertToDatabaseValues
+     * @dataProvider provideConvertToPhpValues
      */
     public function testConvertToPhpValueSucceeds($phpValue, ?string $postgresValue): void
     {
@@ -132,9 +151,7 @@ final class JsonbTypeTest extends AbstractTestCase
         $platform = $this->mock(AbstractPlatform::class);
         $value = 'ineligible-value';
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage('Could not convert database value "ineligible-value" ' .
-            'to Doctrine Type jsonb');
-
+        $this->expectExceptionMessage('Could not convert database value "ineligible-value" to Doctrine Type jsonb');
         $type->convertToPHPValue($value, $platform);
     }
 
@@ -157,17 +174,21 @@ final class JsonbTypeTest extends AbstractTestCase
     {
         /** @var \EonX\EasyCore\Doctrine\DBAL\Types\JsonbType $type */
         $type = Type::getType(JsonbType::TYPE_NAME);
-        $platform = $this->prophesize(AbstractPlatform::class);
-
-        $platform->getDoctrineTypeMapping($type::TYPE_NAME)
-            ->shouldBeCalled()
-            ->withArguments([$type::TYPE_NAME])
-            ->willReturn($type::TYPE_NAME);
-
-        self::assertSame(
-            $type::TYPE_NAME,
-            $type->getSQLDeclaration([], $platform->reveal())
+        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
+        $platform = $this->mock(
+            AbstractPlatform::class,
+            static function (MockInterface $mock) use ($type): void {
+                $mock
+                    ->shouldReceive('getDoctrineTypeMapping')
+                    ->once()
+                    ->with($type::TYPE_NAME)
+                    ->andReturns($type::TYPE_NAME);
+            }
         );
+
+        $result = $type->getSQLDeclaration([], $platform);
+
+        self::assertSame($type::TYPE_NAME, $result);
     }
 
     /**

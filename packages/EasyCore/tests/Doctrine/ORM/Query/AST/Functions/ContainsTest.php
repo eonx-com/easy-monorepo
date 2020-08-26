@@ -28,7 +28,8 @@ final class ContainsTest extends AbstractTestCase
         $contains = new Contains($parameter);
         $inputParameter = new InputParameter($parameterValue);
         /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalker */
-        $sqlWalker = $this->mock(SqlWalker::class,
+        $sqlWalker = $this->mock(
+            SqlWalker::class,
             static function (MockInterface $mock) use ($contains, $parameter, $inputParameter, $parameterValue): void {
                 $mock
                     ->shouldReceive('walkFunction')
@@ -41,7 +42,8 @@ final class ContainsTest extends AbstractTestCase
                     ->once()
                     ->with($inputParameter)
                     ->andReturn($parameterValue);
-            });
+            }
+        );
         $this->mock(Node::class, static function (MockInterface $mock) use ($sqlWalker, $parameter): void {
             $mock
                 ->shouldReceive('dispatch')
@@ -54,7 +56,7 @@ final class ContainsTest extends AbstractTestCase
 
         $result = $contains->getSql($sqlWalker);
 
-        self::assertSame("($parameter @> $parameterValue)", $result);
+        self::assertSame("(${parameter} @> ${parameterValue})", $result);
     }
 
     /**
@@ -71,10 +73,11 @@ final class ContainsTest extends AbstractTestCase
         $this->expectNotToPerformAssertions();
     }
 
-    private function mockParser($contains, $inputParameter): Parser
+    private function mockParser(Contains $contains, InputParameter $inputParameter): Parser
     {
         /** @var \Doctrine\ORM\Query\Parser $parser */
-        $parser = $this->mock(Parser::class,
+        $parser = $this->mock(
+            Parser::class,
             static function (MockInterface $mock) use ($contains, $inputParameter): void {
                 $mock
                     ->shouldReceive('match')
@@ -107,7 +110,8 @@ final class ContainsTest extends AbstractTestCase
                     ->shouldReceive('match')
                     ->once()
                     ->with(Lexer::T_CLOSE_PARENTHESIS);
-            });
+            }
+        );
 
         return $parser;
     }
