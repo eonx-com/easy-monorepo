@@ -15,6 +15,8 @@ The recommended way to install this package is to use [Composer][1]:
 $ composer require eonx-com/easy-lock
 ```
 
+<br>
+
 ### Usage
 
 The Symfony Lock component has an excellent [documentation][2] and we recommend referring to it.

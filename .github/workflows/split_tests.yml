@@ -18,7 +18,7 @@ jobs:
                     - EasyDocker
                     - EasyEntityChange
                     - EasyIdentity
-                    # - EasyLogging | This package needs more than just test
+                    - EasyLogging
                     - EasyPagination
                     - EasyPipeline
                     - EasyPsr7Factory

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Interfaces;
 
-use Psr\Http\Message\ServerRequestInterface;
-
 interface StartSizeDataResolverInterface
 {
-    public function resolve(ServerRequestInterface $request): StartSizeDataInterface;
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
+     */
+    public function resolve($request): StartSizeDataInterface;
 }

@@ -11,7 +11,7 @@ use EonX\EasyLock\Interfaces\WithLockDataInterface;
 trait ProcessWithLockTrait
 {
     /**
-     * @var \EonX\EasyCore\Lock\LockServiceInterface
+     * @var \EonX\EasyLock\Interfaces\LockServiceInterface
      */
     private $lockService;
 

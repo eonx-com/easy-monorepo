@@ -17,13 +17,13 @@ final class LaravelEventDispatcherStub implements Dispatcher
      * @param object $event
      * @param mixed $payload
      *
-     * @return object
+     * @return null|mixed[]
      */
     public function dispatch($event, $payload = null, $halt = null)
     {
         $this->dispatched[] = $event;
 
-        return $event;
+        return [$event];
     }
 
     /**

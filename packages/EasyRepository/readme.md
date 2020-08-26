@@ -1,13 +1,18 @@
-<div align="center">
-    <h1>EonX - EasyRepository</h1>
-    <p>Provides an easy way to implement the Repository Design Pattern in your applications.</p>
-</div>
+---eonx_docs---
+title: Introduction
+weight: 0
+---eonx_docs---
 
----
+Provides an easy way to implement the Repository Design Pattern in your applications.
 
-# Documentation
+<br>
 
-## Laravel / Lumen
+# Require package (Composer)
 
-- [Installation](docs/laravel_install.md)
-- [Installation with Doctrine ORM](docs/laravel_doctrine_orm_install.md)
+Laravel uses [Composer][1] to manage its dependencies. You can require this package as following:
+
+```bash
+$ composer require eonx/easy-repository
+```
+
+[1]: https://getcomposer.org/

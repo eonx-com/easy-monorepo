@@ -4,17 +4,32 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Decoders;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
-use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
-use Psr\Http\Message\ServerRequestInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
+use EonX\EasyApiToken\Tokens\ApiKey;
 
-final class ApiKeyAsBasicAuthUsernameDecoder implements EasyApiTokenDecoderInterface
+/**
+ * @deprecated since 2.4. Will be removed in 3.0. Use EonX\EasyApiToken\Decoders\ApiKeyDecoder instead.
+ */
+final class ApiKeyAsBasicAuthUsernameDecoder extends AbstractApiTokenDecoder
 {
-    use EasyApiTokenDecoderTrait;
+    public function __construct(?string $name = null)
+    {
+        @\trigger_error(
+            \sprintf(
+                'Using %s is deprecated since 2.4 and will be removed in 3.0. Use %s instead',
+                ApiKeyAsBasicAuthUsernameDecoder::class,
+                ApiKeyDecoder::class
+            ),
+            \E_USER_DEPRECATED
+        );
 
-    public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
+        parent::__construct($name ?? self::NAME_USER_APIKEY);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
+     */
+    public function decode($request): ?ApiTokenInterface
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Basic', $request);
 
@@ -28,6 +43,6 @@ final class ApiKeyAsBasicAuthUsernameDecoder implements EasyApiTokenDecoderInter
             return null; // If Authorization doesn't contain ONLY a username, return null
         }
 
-        return new ApiKeyEasyApiToken(\trim($authorization[0]));
+        return new ApiKey(\trim($authorization[0]));
     }
 }

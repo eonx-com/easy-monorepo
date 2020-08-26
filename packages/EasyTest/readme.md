@@ -1,11 +1,7 @@
-<div align="center">
-    <h1>EonX - EasyTest</h1>
-    <p>Makes testing easier.</p>
-</div>
-
----
-
-## Documentation
+---eonx_docs---
+title: Introduction
+weight: 0
+---eonx_docs---
 
 ### Require package (Composer)
 
@@ -14,6 +10,8 @@ We recommend to use [Composer][1] to manage your dependencies. You can require t
 ```bash
 $ composer require --dev eonx-com/easy-test
 ```
+
+<br>
 
 ### Check coverage
 

@@ -1,11 +1,14 @@
-<div align="center">
-    <h1>EonX - EasyStandard</h1>
-    <p>Centralised source of coding standard classes.</p>
-</div>
+---eonx_docs---
+title: Introduction
+weight: 0
+---eonx_docs---
 
----
+This package is a way to centralise reusable classes used for coding standards. It contains:
 
-## Documentation
+- [Rectors][2]
+- [Sniffs][3]
+
+<br>
 
 ### Require package (Composer)
 
@@ -16,3 +19,5 @@ $ composer require --dev eonx/easy-standard
 ```
 
 [1]: https://getcomposer.org/
+[2]: https://github.com/rectorphp/rector
+[3]: https://github.com/squizlabs/PHP_CodeSniffer

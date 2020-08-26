@@ -8,6 +8,9 @@ use Bugsnag\Client as BugsnagClient;
 use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
 use Throwable;
 
+/**
+ * @deprecated since 2.4, will be removed in 3.0. Bugsnag implementation will be reworked.
+ */
 final class BugsnagLogClient implements ExternalLogClientInterface
 {
     /**
