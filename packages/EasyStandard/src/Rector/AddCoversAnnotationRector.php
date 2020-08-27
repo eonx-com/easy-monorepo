@@ -10,6 +10,7 @@ use PhpParser\Node\Stmt\Class_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
+use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractPHPUnitRector;
 use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
@@ -20,7 +21,7 @@ use Rector\NodeTypeResolver\Node\AttributeKey;
  *
  * @SuppressWarnings("unused") Class is used by Rector
  */
-final class AddCoversAnnotationRector extends AbstractPHPUnitRector
+final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements ConfigurableRectorInterface
 {
     /**
      * @var string[]
@@ -150,5 +151,10 @@ PHP
         }
 
         return $shouldSkip;
+    }
+
+    public function configure(array $configuration): void
+    {
+        // TODO: Implement configure() method.
     }
 }

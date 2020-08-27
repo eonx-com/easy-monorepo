@@ -15,7 +15,7 @@ class SecondParameterMissingDefaultValue
 
 class SecondParameterMissingDefaultValue
 {
-    private function someMethod(string $param, ?string $value): void
+    private function someMethod(string $param, ?string $value = null): void
     {
         echo $param, $value;
     }

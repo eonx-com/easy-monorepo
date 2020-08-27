@@ -7,6 +7,7 @@ namespace EonX\EasyStandard\Tests\Rector\InheritDocRector;
 use EonX\EasyStandard\Rector\InheritDocRector;
 use Iterator;
 use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyStandard\Rector\InheritDocRector
@@ -30,9 +31,9 @@ final class InheritDocRectorTest extends AbstractRectorTestCase
      *
      * @dataProvider provideData()
      */
-    public function testRule(string $file): void
+    public function test(SmartFileInfo $fileInfo): void
     {
-        $this->doTestFile($file);
+        $this->doTestFileInfo($fileInfo);
     }
 
     /**
