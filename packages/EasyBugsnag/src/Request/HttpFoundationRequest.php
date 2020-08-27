@@ -40,18 +40,24 @@ final class HttpFoundationRequest implements RequestInterface
     {
         $content = $this->request->getContent();
 
-        if (Strings::contains($this->request->getContentType() ?? '', 'json')) {
+        if (Strings::contains((string)($this->request->getContentType() ?? ''), 'json')) {
             $content = \json_decode($content) ?? $content;
         }
 
-        return [
+        $request = [
+            'client_ip' => $this->request->getClientIp(),
             'url' => $this->request->getUri(),
             'method' => $this->request->getMethod(),
-            'headers' => $this->request->headers->all(),
+            'headers' => $this->formatHeaders($this->request),
             'query' => $this->request->query->all(),
-            'request' => $this->request->request->all(),
             'content' => $content,
         ];
+
+        if (\count($this->request->request->all()) > 0) {
+            $request['request'] = $this->request->request->all();
+        }
+
+        return ['request' => $request];
     }
 
     /**
@@ -74,5 +80,19 @@ final class HttpFoundationRequest implements RequestInterface
     public function isRequest(): bool
     {
         return true;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function formatHeaders(Request $request): array
+    {
+        return \array_map(static function ($header) {
+            if (\is_array($header) === false || \count($header) > 1) {
+                return $header;
+            }
+
+            return \reset($header);
+        }, $request->headers->all());
     }
 }
