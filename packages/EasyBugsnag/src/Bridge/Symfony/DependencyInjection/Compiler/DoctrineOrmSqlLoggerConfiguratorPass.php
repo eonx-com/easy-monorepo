@@ -47,7 +47,7 @@ final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterfac
         $connections = $this->getParam(
             $container,
             BridgeConstantsInterface::PARAM_DOCTRINE_DBAL_CONNECTIONS,
-            'default'
+            ['default']
         );
 
         // Define parent definition for bugsnag sql logger
@@ -56,7 +56,7 @@ final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterfac
             (new Definition(SqlLogger::class, [new Reference(Client::class)]))->setAbstract(true)
         );
 
-        foreach (\explode('|', $connections) as $conn) {
+        foreach ($connections as $conn) {
             $bugsnagSqlLoggerId = \sprintf(self::BUGSNAG_SQL_LOGGER_PATTERN, $conn);
             $chainLoggerId = \sprintf(self::DBAL_CHAIN_LOGGER_PATTERN, $conn);
             $connId = \sprintf(self::DBAL_CONNECTION_PATTERN, $conn);
