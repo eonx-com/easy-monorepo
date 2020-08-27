@@ -152,6 +152,7 @@ final class JsonbTypeTest extends AbstractTestCase
         $value = 'ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert database value "ineligible-value" to Doctrine Type jsonb');
+        
         $type->convertToPHPValue($value, $platform);
     }
 
@@ -162,6 +163,7 @@ final class JsonbTypeTest extends AbstractTestCase
     {
         /** @var \EonX\EasyCore\Doctrine\DBAL\Types\JsonbType $type */
         $type = Type::getType(JsonbType::TYPE_NAME);
+
         $name = $type->getName();
 
         self::assertSame(JsonbType::TYPE_NAME, $name);
