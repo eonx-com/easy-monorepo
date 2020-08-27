@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Bridge\Laravel;
 
 use Bugsnag\Client;
-use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
-use EonX\EasyBugsnag\Bridge\Doctrine\DBAL\SqlLoggerConfigurator;
+use EonX\EasyBugsnag\Bridge\Laravel\Doctrine\SqlOrmLogger;
 use EonX\EasyBugsnag\Bridge\Laravel\Request\LaravelRequestResolver;
 use EonX\EasyBugsnag\ClientFactory;
 use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
@@ -15,6 +14,7 @@ use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use LaravelDoctrine\ORM\Loggers\Logger;
 
 final class EasyBugsnagServiceProvider extends ServiceProvider
 {
@@ -74,19 +74,11 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     private function registerDoctrineOrm(): void
     {
         if (\config('easy-bugsnag.doctrine_orm', false) === false
-            || \class_exists(EntityManagerInterface::class) === false) {
+            || \interface_exists(Logger::class) === false) {
             return;
         }
 
-        $this->app->extend(
-            EntityManagerInterface::class,
-            function (EntityManagerInterface $entityManager): EntityManagerInterface {
-                $configurator = new SqlLoggerConfigurator($this->app->make(Client::class));
-                $configurator->configure($entityManager);
-
-                return $entityManager;
-            }
-        );
+        $this->app->singleton(SqlOrmLogger::class);
     }
 
     private function registerRequestResolver(): void

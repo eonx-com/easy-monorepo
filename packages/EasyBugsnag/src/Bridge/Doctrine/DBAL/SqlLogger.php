@@ -22,9 +22,14 @@ final class SqlLogger implements BaseSqlLoggerInterface
     private $conn;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $connName;
+
+    /**
+     * @var null|\Doctrine\DBAL\Logging\SQLLogger
+     */
+    private $decorated;
 
     /**
      * @var null|mixed[]
@@ -46,11 +51,16 @@ final class SqlLogger implements BaseSqlLoggerInterface
      */
     private $types;
 
-    public function __construct(Client $client, Connection $conn, string $connName)
-    {
+    public function __construct(
+        Client $client,
+        Connection $conn,
+        ?string $connName = null,
+        ?BaseSqlLoggerInterface $decorated = null
+    ) {
         $this->client = $client;
         $this->conn = $conn;
         $this->connName = $connName;
+        $this->decorated = $decorated;
     }
 
     /**
@@ -64,23 +74,36 @@ final class SqlLogger implements BaseSqlLoggerInterface
         $this->params = $params;
         $this->types = $types;
         $this->start = \microtime(true);
+
+        if ($this->decorated !== null) {
+            $this->decorated->startQuery($sql, $params, $types);
+        }
     }
 
     public function stopQuery(): void
     {
-        $name = \sprintf('SQL query | %s (%s)', $this->connName, $this->conn->getDatabasePlatform()->getName());
+        $name = 'SQL query';
+
+        if ($this->connName !== null) {
+            $name .= \sprintf(' | %s', $this->connName);
+        }
 
         $this->client->leaveBreadcrumb($name, Breadcrumb::PROCESS_TYPE, [
-            'DB' => $this->conn->getDatabase(),
             'SQL' => $this->sql,
             'Params' => \json_encode($this->params),
             'Types' => \json_encode($this->types),
             'Time (ms)' => \number_format((\microtime(true) - $this->start) * 1000, 2),
+            'DB' => $this->conn->getDatabase(),
+            'Platform' => $this->conn->getDatabasePlatform()->getName(),
         ]);
 
         $this->sql = null;
         $this->params = null;
         $this->types = null;
         $this->start = null;
+
+        if ($this->decorated !== null) {
+            $this->decorated->stopQuery();
+        }
     }
 }
