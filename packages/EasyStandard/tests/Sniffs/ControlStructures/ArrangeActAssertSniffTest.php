@@ -72,7 +72,9 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testLineWithCommentSucceeds(): void
     {
-        $this->doTestCorrectFileInfo( new SmartFileInfo(self::FIXTURES_DIR . '/Correct/oneLineWithComment.php.inc'));
+        $this->doTestCorrectFileInfo(
+            new SmartFileInfo(self::FIXTURES_DIR . '/Correct/oneLineWithComment.php.inc')
+        );
     }
 
     /**
@@ -82,7 +84,9 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testMethodWithInnerCurlyBracketsSucceeds(): void
     {
-        $this->doTestCorrectFileInfo( new SmartFileInfo(self::FIXTURES_DIR . '/Correct/innerCurlyBrackets.php.inc'));
+        $this->doTestCorrectFileInfo(
+            new SmartFileInfo(self::FIXTURES_DIR . '/Correct/innerCurlyBrackets.php.inc')
+        );
     }
 
     /**
