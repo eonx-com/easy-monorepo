@@ -22,6 +22,11 @@ final class SqlLogger implements BaseSqlLoggerInterface
     private $conn;
 
     /**
+     * @var string
+     */
+    private $connName;
+
+    /**
      * @var null|mixed[]
      */
     private $params;
@@ -41,10 +46,11 @@ final class SqlLogger implements BaseSqlLoggerInterface
      */
     private $types;
 
-    public function __construct(Client $client, Connection $conn)
+    public function __construct(Client $client, Connection $conn, string $connName)
     {
         $this->client = $client;
         $this->conn = $conn;
+        $this->connName = $connName;
     }
 
     /**
@@ -62,13 +68,14 @@ final class SqlLogger implements BaseSqlLoggerInterface
 
     public function stopQuery(): void
     {
-        $this->client->leaveBreadcrumb('Query executed', Breadcrumb::PROCESS_TYPE, [
-            'database' => $this->conn->getDatabase(),
-            'platform' => $this->conn->getDatabasePlatform()->getName(),
-            'sql' => $this->sql,
-            'params' => $this->params,
-            'types' => $this->types,
-            'time' => \number_format((\microtime(true) - $this->start) * 1000, 2),
+        $name = \sprintf('SQL query | %s (%s)', $this->connName, $this->conn->getDatabasePlatform()->getName());
+
+        $this->client->leaveBreadcrumb($name, Breadcrumb::PROCESS_TYPE, [
+            'DB' => $this->conn->getDatabase(),
+            'SQL' => $this->sql,
+            'Params' => \json_encode($this->params),
+            'Types' => \json_encode($this->types),
+            'Time (ms)' => \number_format((\microtime(true) - $this->start) * 1000, 2),
         ]);
 
         $this->sql = null;
