@@ -11,16 +11,13 @@ use EonX\EasyBugsnag\Bridge\Doctrine\DBAL\SqlLoggerConfigurator;
 use EonX\EasyBugsnag\Bridge\Laravel\Request\LaravelRequestResolver;
 use EonX\EasyBugsnag\ClientFactory;
 use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
+use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 final class EasyBugsnagServiceProvider extends ServiceProvider
 {
-    /**
-     * @var string[]
-     */
-    protected static $configurators = [];
-
     public function boot(): void
     {
         $this->publishes([
@@ -54,12 +51,6 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
 
     private function registerConfigurators(): void
     {
-        // Configurators
-        foreach (static::$configurators as $configurator) {
-            $this->app->singleton($configurator);
-            $this->app->tag($configurator, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
-        }
-
         $this->app->singleton(BasicsConfigurator::class, function (): BasicsConfigurator {
             $basePath = $this->app->basePath();
 
@@ -70,6 +61,14 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
             );
         });
         $this->app->tag(BasicsConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
+
+        $this->app->singleton(RuntimeVersionConfigurator::class, function (): RuntimeVersionConfigurator {
+            $version = $this->app->version();
+            $runtime = Str::contains($version, 'Lumen') ? 'lumen' : 'laravel';
+
+            return new RuntimeVersionConfigurator($runtime, $version);
+        });
+        $this->app->tag(RuntimeVersionConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
     }
 
     private function registerDoctrineOrm(): void

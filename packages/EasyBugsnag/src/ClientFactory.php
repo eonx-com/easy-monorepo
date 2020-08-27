@@ -43,6 +43,8 @@ final class ClientFactory implements ClientFactoryInterface
             $this->shutdownStrategy
         );
 
+        $client->registerDefaultCallbacks();
+
         foreach ($this->configurators as $configurator) {
             $configurator->configure($client);
         }
