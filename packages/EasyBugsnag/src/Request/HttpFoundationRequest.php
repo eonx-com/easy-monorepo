@@ -40,7 +40,7 @@ final class HttpFoundationRequest implements RequestInterface
     {
         $content = $this->request->getContent();
 
-        if (Strings::contains($this->request->getContentType(), 'json')) {
+        if (Strings::contains($this->request->getContentType() ?? '', 'json')) {
             $content = \json_decode($content) ?? $content;
         }
 
