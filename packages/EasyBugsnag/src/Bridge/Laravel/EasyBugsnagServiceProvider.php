@@ -6,9 +6,9 @@ namespace EonX\EasyBugsnag\Bridge\Laravel;
 
 use Bugsnag\Client;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
-use EonX\EasyBugsnag\Bridge\Laravel\Configurators\PathsConfigurator;
 use EonX\EasyBugsnag\Bridge\Laravel\Request\LaravelRequestResolver;
 use EonX\EasyBugsnag\ClientFactory;
+use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -36,10 +36,16 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
             $this->app->tag($configurator, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
         }
 
-        $this->app->singleton(PathsConfigurator::class, function (): PathsConfigurator {
-            return new PathsConfigurator($this->app);
+        $this->app->singleton(BasicsConfigurator::class, function (): BasicsConfigurator {
+            $basePath = $this->app->basePath();
+
+            return new BasicsConfigurator(
+                $basePath . '/app',
+                $basePath,
+                $this->app->environment()
+            );
         });
-        $this->app->tag(PathsConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
+        $this->app->tag(BasicsConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
 
         // Client Factory + Client
         $this->app->singleton(ClientFactoryInterface::class, function (): ClientFactoryInterface {

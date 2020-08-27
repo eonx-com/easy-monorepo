@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 use Bugsnag\Client;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
-use EonX\EasyBugsnag\Bridge\Symfony\Configurators\PathsConfigurator;
 use EonX\EasyBugsnag\Bridge\Symfony\Request\SymfonyRequestResolver;
 use EonX\EasyBugsnag\Bridge\Symfony\Shutdown\ShutdownStrategyListener;
 use EonX\EasyBugsnag\ClientFactory;
+use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
@@ -23,8 +24,10 @@ return static function (ContainerConfigurator $container): void {
 
     // Configurators
     $services
-        ->set(PathsConfigurator::class)
-        ->args(['%kernel.project_dir%']);
+        ->set(BasicsConfigurator::class)
+        ->arg('$projectRoot', '%kernel.project_dir%/src')
+        ->arg('$stripPath', '%kernel.project_dir%')
+        ->arg('$releaseStage', '%env(APP_ENV)%');
 
     // Client Factory + Client
     $services
