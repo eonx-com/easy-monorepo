@@ -14,5 +14,10 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_DOCTRINE_ORM = 'easy_bugsnag.doctrine_orm';
+
+    /**
+     * @var string
+     */
     public const TAG_CLIENT_CONFIGURATOR = 'easy_bugsnag.client_configurator';
 }

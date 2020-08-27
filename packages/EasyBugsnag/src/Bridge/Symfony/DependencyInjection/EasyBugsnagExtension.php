@@ -26,6 +26,7 @@ final class EasyBugsnagExtension extends Extension
         $loader->load('services.php');
 
         $container->setParameter(BridgeConstantsInterface::PARAM_API_KEY, $config['api_key']);
+        $container->setParameter(BridgeConstantsInterface::PARAM_DOCTRINE_ORM, $config['doctrine_orm'] ?? false);
 
         $container
             ->registerForAutoconfiguration(ClientConfiguratorInterface::class)

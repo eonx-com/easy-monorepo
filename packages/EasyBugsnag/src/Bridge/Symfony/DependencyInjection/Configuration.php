@@ -16,6 +16,7 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->children()
                 ->scalarNode('api_key')->isRequired()->end()
+                ->booleanNode('doctrine_om')->defaultFalse()->end()
             ->end();
 
         return $treeBuilder;
