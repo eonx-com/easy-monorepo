@@ -56,7 +56,7 @@ final class ContainsTest extends AbstractTestCase
 
         $result = $contains->getSql($sqlWalker);
 
-        self::assertSame("(${parameter} @> ${parameterValue})", $result);
+        self::assertSame(\sprintf('(%s @> %s)', $parameter, $parameterValue), $result);
     }
 
     /**
