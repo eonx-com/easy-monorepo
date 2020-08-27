@@ -22,11 +22,6 @@ final class SqlLogger implements BaseSqlLoggerInterface
     private $conn;
 
     /**
-     * @var null|\Doctrine\DBAL\Logging\SQLLogger
-     */
-    private $decorated;
-
-    /**
      * @var null|mixed[]
      */
     private $params;
@@ -46,11 +41,10 @@ final class SqlLogger implements BaseSqlLoggerInterface
      */
     private $types;
 
-    public function __construct(Client $client, Connection $conn, ?BaseSqlLoggerInterface $decorated = null)
+    public function __construct(Client $client, Connection $conn)
     {
         $this->client = $client;
         $this->conn = $conn;
-        $this->decorated = $decorated;
     }
 
     /**
@@ -64,10 +58,6 @@ final class SqlLogger implements BaseSqlLoggerInterface
         $this->params = $params;
         $this->types = $types;
         $this->start = \microtime(true);
-
-        if ($this->decorated !== null) {
-            $this->decorated->startQuery($sql, $params, $types);
-        }
     }
 
     public function stopQuery(): void
@@ -78,16 +68,12 @@ final class SqlLogger implements BaseSqlLoggerInterface
             'sql' => $this->sql,
             'params' => $this->params,
             'types' => $this->types,
-            'time' => \number_format((\microtime(true) - $this->start) * 1000, 2)
+            'time' => \number_format((\microtime(true) - $this->start) * 1000, 2),
         ]);
 
         $this->sql = null;
         $this->params = null;
         $this->types = null;
         $this->start = null;
-
-        if ($this->decorated !== null) {
-            $this->decorated->stopQuery();
-        }
     }
 }

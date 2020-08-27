@@ -14,7 +14,12 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_DOCTRINE_ORM = 'easy_bugsnag.doctrine_orm';
+    public const PARAM_DOCTRINE_DBAL_CONNECTIONS = 'easy_bugsnag.doctrine_dbal.connections';
+
+    /**
+     * @var string
+     */
+    public const PARAM_DOCTRINE_DBAL_ENABLED = 'easy_bugsnag.doctrine_dbal.enabled';
 
     /**
      * @var string
