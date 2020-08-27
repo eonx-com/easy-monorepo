@@ -6,6 +6,7 @@ namespace EonX\EasyStandard\Tests\Sniffs\ControlStructures;
 
 use EonX\EasyStandard\Sniffs\ControlStructures\NoNotOperatorSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class NoNotOperatorSniffTest extends AbstractCheckerTestCase
 {
@@ -18,11 +19,13 @@ final class NoNotOperatorSniffTest extends AbstractCheckerTestCase
     }
 
     /**
+     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
+     *
      * @dataProvider providerTestSniff
      */
     public function testSniff(string $file): void
     {
-        $this->doTestWrongFile($file);
+        $this->doTestFileInfoWithErrorCountOf(new SmartFileInfo($file), 1);
     }
 
     protected function getCheckerClass(): string
