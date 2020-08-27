@@ -8,10 +8,9 @@ parameters:
     sets:
         - 'common'
         - 'clean-code'
-        - 'php70'
-        - 'php71'
-        - 'psr12'
-        - 'types'
+        - 'php-70'
+        - 'php-71'
+        - 'psr-12'
         - 'dead-code'
 
     skip:
