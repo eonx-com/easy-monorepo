@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests;
 
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
-use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtEasyApiTokenFactoryInterface;
-use EonX\EasyApiToken\Tokens\Factories\JwtEasyApiTokenFactory;
+use EonX\EasyApiToken\Interfaces\Tokens\Factories\JwtFactoryInterface;
+use EonX\EasyApiToken\Tokens\Factories\JwtFactory;
 use Nette\Utils\Strings;
 
 abstract class AbstractJwtTokenTestCase extends AbstractTestCase
 {
-    protected function createJwtEasyApiTokenFactory(JwtDriverInterface $jwtDriver): JwtEasyApiTokenFactoryInterface
+    protected function createJwtEasyApiTokenFactory(JwtDriverInterface $jwtDriver): JwtFactoryInterface
     {
-        return new JwtEasyApiTokenFactory($jwtDriver);
+        return new JwtFactory($jwtDriver);
     }
 
     /**

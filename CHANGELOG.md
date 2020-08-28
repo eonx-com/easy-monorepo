@@ -2,7 +2,75 @@
 
 <!-- dumped content start -->
 
-## v2.4.35 - 2020-08-21
+## v2.4.41 - 2020-08-28
+
+### EasyCore
+
+- [#332] Fix ElasticsearchSearchService to preserve search body, Thanks to [@egor-dev]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.40] - 2020-08-28
+
+### EasyBugsnag
+
+- [#331] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.39] - 2020-08-26
+
+### EasyCore
+
+- [#290] Move search service to easy-core
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.38] - 2020-08-24
+
+### EasyLogging
+
+- [#328] Implement LoggerFactory
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.37] - 2020-08-23
+
+### EasyStandard
+
+- [#321] Add RestoreDefaultNullToNullableTypeParameterRector, Thanks to [@BOB41K1987]
+
+### EasyPagination
+
+- [#327] Remove PSR7 support
+
+### EasySecurity
+
+- [#326] Simplify setup + remove psr7 support
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.36] - 2020-08-23
+
+### EasyApiToken
+
+- [#286] From config to PHP, Rename classes, Remove encoders
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.35] - 2020-08-21
 
 ### EasyPsr7Factory
 
@@ -2138,3 +2206,17 @@
 [v2.4.33]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.32...v2.4.33
 [#322]: https://github.com/eonx-com/easy-monorepo/pull/322
 [v2.4.34]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.33...v2.4.34
+[#286]: https://github.com/eonx-com/easy-monorepo/pull/286
+[v2.4.35]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.34...v2.4.35
+[#327]: https://github.com/eonx-com/easy-monorepo/pull/327
+[#326]: https://github.com/eonx-com/easy-monorepo/pull/326
+[#321]: https://github.com/eonx-com/easy-monorepo/pull/321
+[v2.4.36]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.35...v2.4.36
+[#328]: https://github.com/eonx-com/easy-monorepo/pull/328
+[v2.4.37]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.36...v2.4.37
+[#290]: https://github.com/eonx-com/easy-monorepo/pull/290
+[v2.4.38]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.37...v2.4.38
+[#331]: https://github.com/eonx-com/easy-monorepo/pull/331
+[v2.4.39]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.38...v2.4.39
+[#332]: https://github.com/eonx-com/easy-monorepo/pull/332
+[v2.4.40]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.39...v2.4.40

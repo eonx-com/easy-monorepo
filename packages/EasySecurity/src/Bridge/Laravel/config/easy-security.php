@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use EonX\EasySecurity\Interfaces\SecurityContextInterface;
+
 return [
-    'context_service_id' => 'App\Security\Interfaces\ContextInterface',
-    'token_decoder' => 'chain',
+    'context_service_id' => SecurityContextInterface::class,
+    'token_decoder' => null,
 ];

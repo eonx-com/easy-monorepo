@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Modifiers;
 
-use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
-use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Tokens\ApiKey;
+use EonX\EasyApiToken\Tokens\Jwt;
 use EonX\EasySecurity\Context;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\RolesProviderInterface;
@@ -27,21 +27,21 @@ final class RolesFromJwtModifierTest extends AbstractTestCase
         ];
 
         $context = new Context();
-        $context->setToken(new ApiKeyEasyApiToken('api-key'));
+        $context->setToken(new ApiKey('api-key'));
 
         yield 'No role resolved because token not jwt' => [
             new InMemoryRolesProviderStub(),
             $context,
         ];
 
-        $context->setToken(new JwtEasyApiToken([], 'jwt'));
+        $context->setToken(new Jwt([], 'jwt'));
 
         yield 'No role resolved because no roles in token' => [
             new InMemoryRolesProviderStub(),
             $context,
         ];
 
-        $context->setToken(new JwtEasyApiToken([
+        $context->setToken(new Jwt([
             static::$mainJwtClaim => ['roles' => ['app:role']],
         ], 'jwt'));
 
@@ -50,7 +50,7 @@ final class RolesFromJwtModifierTest extends AbstractTestCase
             $context,
         ];
 
-        $context->setToken(new JwtEasyApiToken([
+        $context->setToken(new Jwt([
             static::$mainJwtClaim => ['roles' => ['app:role']],
         ], 'jwt'));
 

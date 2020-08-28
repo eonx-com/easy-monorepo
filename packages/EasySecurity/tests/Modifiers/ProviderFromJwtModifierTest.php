@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Modifiers;
 
-use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
-use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Tokens\ApiKey;
+use EonX\EasyApiToken\Tokens\Jwt;
 use EonX\EasySecurity\Context;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
@@ -28,28 +28,28 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
         ];
 
         $context = new Context();
-        $context->setToken(new ApiKeyEasyApiToken('api-key'));
+        $context->setToken(new ApiKey('api-key'));
 
         yield 'No provider resolved because token not jwt' => [
             new ProviderProviderInterfaceStub(),
             $context,
         ];
 
-        $context->setToken(new JwtEasyApiToken([], 'jwt'));
+        $context->setToken(new Jwt([], 'jwt'));
 
         yield 'No provider resolved because no provider claim' => [
             new ProviderProviderInterfaceStub(),
             $context,
         ];
 
-        $context->setToken(new JwtEasyApiToken([static::$mainJwtClaim => ['provider' => '']], 'jwt'));
+        $context->setToken(new Jwt([static::$mainJwtClaim => ['provider' => '']], 'jwt'));
 
         yield 'No provider resolved because provider claim empty' => [
             new ProviderProviderInterfaceStub(),
             $context,
         ];
 
-        $context->setToken(new JwtEasyApiToken([
+        $context->setToken(new Jwt([
             static::$mainJwtClaim => ['provider' => 'provider-id'],
         ], 'jwt'));
 
@@ -58,7 +58,7 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
             $context,
         ];
 
-        $context->setToken(new JwtEasyApiToken([
+        $context->setToken(new Jwt([
             static::$mainJwtClaim => ['provider' => 'provider-id'],
         ], 'jwt'));
 

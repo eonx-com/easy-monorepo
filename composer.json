@@ -37,12 +37,12 @@
         "nette/utils": "^3.1",
         "aws/aws-sdk-php": "^3.134",
         "eonx-com/apiformats": "^1.0",
-        "illuminate/support": "^5.5 || ^6.0"
+        "illuminate/support": "^5.5 || ^6.0",
+        "bugsnag/bugsnag": "^3.0"
     },
     "require-dev": {
         "api-platform/core": "^2.5",
         "auth0/auth0-php": "^5.4",
-        "bugsnag/bugsnag": "^3.19",
         "bugsnag/bugsnag-laravel": "^2.17",
         "doctrine/dbal": "^2.6",
         "eonx-com/test-utils": "^0.0.1",
@@ -72,6 +72,7 @@
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
             "EonX\\EasyAsync\\": "packages/EasyAsync/src",
             "EonX\\EasyAwsCredentialsFinder\\": "packages/EasyAwsCredentialsFinder/src",
+            "EonX\\EasyBugsnag\\": "packages/EasyBugsnag/src",
             "EonX\\EasyCfhighlander\\": "packages/EasyCfhighlander/src",
             "EonX\\EasyCore\\": "packages/EasyCore/src",
             "EonX\\EasyDecision\\": "packages/EasyDecision/src",
@@ -102,6 +103,7 @@
             "EonX\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
             "EonX\\EasyAsync\\Tests\\": "packages/EasyAsync/tests",
             "EonX\\EasyAwsCredentialsFinder\\Tests\\": "packages/EasyAwsCredentialsFinder/tests",
+            "EonX\\EasyBugsnag\\Tests\\": "packages/EasyBugsnag/tests",
             "EonX\\EasyCfhighlander\\Tests\\": "packages/EasyCfhighlander/tests",
             "EonX\\EasyCore\\Tests\\": "packages/EasyCore/tests",
             "EonX\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
@@ -150,7 +152,8 @@
         "eonx-com/easy-ssm": "self.version",
         "eonx-com/easy-standard": "self.version",
         "eonx-com/easy-async": "self.version",
-        "eonx-com/easy-webhook": "self.version"
+        "eonx-com/easy-webhook": "self.version",
+        "eonx-com/easy-bugsnag": "self.version"
     },
     "scripts": {
         "check-all": [

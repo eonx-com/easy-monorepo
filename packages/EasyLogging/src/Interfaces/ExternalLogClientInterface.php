@@ -6,6 +6,9 @@ namespace EonX\EasyLogging\Interfaces;
 
 use Throwable;
 
+/**
+ * @deprecated since 2.4, will be removed in 3.0. Bugsnag implementation will be reworked.
+ */
 interface ExternalLogClientInterface
 {
     public function clearBreadcrumbs(): void;
