@@ -5,16 +5,16 @@ declare(strict_types=1);
 use EonX\EasyAsync\Factories\JobFactory;
 use EonX\EasyAsync\Factories\JobLogFactory;
 use EonX\EasyAsync\Generators\DateTimeGenerator;
-use EonX\EasyAsync\Generators\RamseyUuidGenerator;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
 use EonX\EasyAsync\Interfaces\JobFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
-use EonX\EasyAsync\Interfaces\UuidGeneratorInterface;
 use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
+use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
+use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -30,7 +30,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(JobLogFactoryInterface::class, JobLogFactory::class);
 
-    $services->set(UuidGeneratorInterface::class, RamseyUuidGenerator::class);
+    $services->set(UuidV4GeneratorInterface::class, RamseyUuidV4Generator::class);
 
     $services->set('default_job_log_updater', JobLogUpdater::class);
 

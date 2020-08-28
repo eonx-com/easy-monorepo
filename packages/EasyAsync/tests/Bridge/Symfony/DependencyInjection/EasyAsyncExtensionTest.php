@@ -9,7 +9,6 @@ use EonX\EasyAsync\Exceptions\InvalidImplementationException;
 use EonX\EasyAsync\Factories\JobFactory;
 use EonX\EasyAsync\Factories\JobLogFactory;
 use EonX\EasyAsync\Generators\DateTimeGenerator;
-use EonX\EasyAsync\Generators\RamseyUuidGenerator;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\DataCleaner;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister;
@@ -20,11 +19,12 @@ use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
 use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
-use EonX\EasyAsync\Interfaces\UuidGeneratorInterface;
 use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
+use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
+use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class EasyAsyncExtensionTest extends AbstractTestCase
@@ -63,7 +63,7 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
             DateTimeGeneratorInterface::class => DateTimeGenerator::class,
             JobFactoryInterface::class => JobFactory::class,
             JobLogFactoryInterface::class => JobLogFactory::class,
-            UuidGeneratorInterface::class => RamseyUuidGenerator::class,
+            UuidV4GeneratorInterface::class => RamseyUuidV4Generator::class,
             'default_job_log_updater' => JobLogUpdater::class,
             DataCleanerInterface::class => $implementationServices['data_cleaner'],
             JobLogPersisterInterface::class => $implementationServices['job_log_persister'],

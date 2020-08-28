@@ -7,9 +7,9 @@ namespace EonX\EasyAsync\Implementations\Doctrine\DBAL;
 use Doctrine\DBAL\Connection;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
 use EonX\EasyAsync\Interfaces\EasyAsyncDataInterface;
-use EonX\EasyAsync\Interfaces\UuidGeneratorInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
+use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
 
 abstract class AbstractPersister
 {
@@ -29,14 +29,14 @@ abstract class AbstractPersister
     protected $table;
 
     /**
-     * @var \EonX\EasyAsync\Interfaces\UuidGeneratorInterface
+     * @var \EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface
      */
     protected $uuid;
 
     public function __construct(
         Connection $conn,
         DateTimeGeneratorInterface $datetime,
-        UuidGeneratorInterface $uuid,
+        UuidV4GeneratorInterface $uuid,
         string $table
     ) {
         $this->conn = $conn;

@@ -8,7 +8,6 @@ use EonX\EasyAsync\Exceptions\InvalidImplementationException;
 use EonX\EasyAsync\Factories\JobFactory;
 use EonX\EasyAsync\Factories\JobLogFactory;
 use EonX\EasyAsync\Generators\DateTimeGenerator;
-use EonX\EasyAsync\Generators\RamseyUuidGenerator;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\DataCleaner;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister;
@@ -20,11 +19,12 @@ use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
 use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
-use EonX\EasyAsync\Interfaces\UuidGeneratorInterface;
 use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
+use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyAsyncServiceProvider extends ServiceProvider
@@ -44,7 +44,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             DateTimeGeneratorInterface::class => DateTimeGenerator::class,
             JobFactoryInterface::class => JobFactory::class,
             JobLogFactoryInterface::class => JobLogFactory::class,
-            UuidGeneratorInterface::class => RamseyUuidGenerator::class,
+            UuidV4GeneratorInterface::class => RamseyUuidV4Generator::class,
             'default_job_log_updater' => JobLogUpdater::class,
             JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class,
         ];
