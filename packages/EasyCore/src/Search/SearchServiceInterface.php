@@ -7,7 +7,7 @@ namespace EonX\EasyCore\Search;
 interface SearchServiceInterface
 {
     /**
-     * @param null|mixed[] $query
+     * @param null|mixed[] $body
      * @param null|mixed[] $accessTokens
      * @param null|mixed[] $options
      *
@@ -15,7 +15,7 @@ interface SearchServiceInterface
      */
     public function search(
         string $index,
-        ?array $query = null,
+        ?array $body = null,
         ?array $accessTokens = null,
         ?array $options = null
     ): array;

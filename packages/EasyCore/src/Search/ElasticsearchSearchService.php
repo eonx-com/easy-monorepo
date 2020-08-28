@@ -20,7 +20,7 @@ final class ElasticsearchSearchService implements SearchServiceInterface
     }
 
     /**
-     * @param null|mixed[] $query
+     * @param null|mixed[] $body
      * @param null|mixed[] $accessTokens
      * @param null|mixed[] $options
      *
@@ -28,7 +28,7 @@ final class ElasticsearchSearchService implements SearchServiceInterface
      */
     public function search(
         string $index,
-        ?array $query = null,
+        ?array $body = null,
         ?array $accessTokens = null,
         ?array $options = null
     ): array {
@@ -40,21 +40,25 @@ final class ElasticsearchSearchService implements SearchServiceInterface
             $accessTokensProperty .= '.keyword';
         }
 
+        $query = $body['query'] ?? ['match_all' => new stdClass()];
+
+        $body['query'] = [
+            'bool' => [
+                'must' => $query,
+                'filter' => [
+                    [
+                        'terms' => [$accessTokensProperty => $accessTokens ?? ['anonymous']]
+                    ]
+                ]
+            ]
+        ];
+
         return $this->client->search([
             '_source_excludes' => [
                 '_access_tokens',
             ],
             'index' => $index,
-            'body' => [
-                'query' => [
-                    'bool' => [
-                        'must' => $query ?? ['match_all' => new stdClass()],
-                        'filter' => [
-                            ['terms' => [$accessTokensProperty => $accessTokens ?? 'anonymous']],
-                        ],
-                    ],
-                ],
-            ],
+            'body' => $body,
         ]);
     }
 }
