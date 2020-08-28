@@ -1,5 +1,5 @@
 ---eonx_docs---
-title: Symfony
+title: Doctrine ORM SQL Logger In Symfony
 weight: 1002
 ---eonx_docs---
 

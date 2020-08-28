@@ -1,5 +1,5 @@
 ---eonx_docs---
-title: Doctrine ORM SQL Logger
+title: Doctrine ORM SQL Logger In Laravel
 weight: 2002
 ---eonx_docs---
 
@@ -7,6 +7,8 @@ Having the list of SQL queries executed during a request which triggered an erro
 important, it makes debugging easier. That's why `easy-bugsnag` got you sorted!
 
 If your app is using Laravel/Lumen and [Laravel Doctrine ORM][1], this section is for you.
+
+<br>
 
 ### Enable Logging In EasyBugsnag Config
 
@@ -21,6 +23,8 @@ return [
     'doctrine_orm' => true,
 ]; 
 ```
+
+<br>
 
 ### Register SQL Logger Into Doctrine Config
 

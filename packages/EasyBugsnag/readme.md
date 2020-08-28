@@ -49,6 +49,8 @@ final class ExceptionHandler
 }
 ```
 
+<br>
+
 ### Client Factory
 
 The core functionality of this package is to create a Bugsnag Client instance and make it available to your application,
