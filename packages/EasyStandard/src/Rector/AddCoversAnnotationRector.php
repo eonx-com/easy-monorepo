@@ -36,6 +36,13 @@ final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements C
         $this->replaceArr = $replaceArr;
     }
 
+    public function configure(array $configuration): void
+    {
+        // We need this method to comply with an interface
+        // New Rector configuration system doesn't work correctly with current Symfony DependencyInjection version
+        // So we still have to use old parameters injection through the constructor
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -151,10 +158,5 @@ PHP
         }
 
         return $shouldSkip;
-    }
-
-    public function configure(array $configuration): void
-    {
-        // TODO: Implement configure() method.
     }
 }

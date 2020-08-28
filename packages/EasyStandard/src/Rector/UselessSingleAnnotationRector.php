@@ -28,28 +28,11 @@ final class UselessSingleAnnotationRector extends AbstractRector implements Conf
         $this->annotations = $annotations;
     }
 
-    public function getNodeTypes(): array
+    public function configure(array $configuration): void
     {
-        return [ClassMethod::class];
-    }
-
-    public function refactor(Node $node): ?Node
-    {
-        /** @var \PhpParser\Node\Stmt\ClassMethod $classMethod */
-        $classMethod = $node;
-
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
-        $phpDocInfo = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
-
-        /** @var AttributeAwareNodeInterface[] $children */
-        $children = $phpDocInfo->getPhpDocNode()->children;
-
-        if (\count($children) === 1 &&
-            \in_array($children[0]->getAttribute('original_content'), $this->annotations, true)) {
-            $phpDocInfo->getPhpDocNode()->children = [];
-        }
-
-        return $classMethod;
+        // We need this method to comply with an interface
+        // New Rector configuration system doesn't work correctly with current Symfony DependencyInjection version
+        // So we still have to use old parameters injection through the constructor
     }
 
     public function getDefinition(): RectorDefinition
@@ -77,8 +60,27 @@ PHP
         );
     }
 
-    public function configure(array $configuration): void
+    public function getNodeTypes(): array
     {
-        // TODO: Implement configure() method.
+        return [ClassMethod::class];
+    }
+
+    public function refactor(Node $node): ?Node
+    {
+        /** @var \PhpParser\Node\Stmt\ClassMethod $classMethod */
+        $classMethod = $node;
+
+        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
+        $phpDocInfo = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
+
+        /** @var AttributeAwareNodeInterface[] $children */
+        $children = $phpDocInfo->getPhpDocNode()->children;
+
+        if (\count($children) === 1 &&
+            \in_array($children[0]->getAttribute('original_content'), $this->annotations, true)) {
+            $phpDocInfo->getPhpDocNode()->children = [];
+        }
+
+        return $classMethod;
     }
 }
