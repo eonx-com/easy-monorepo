@@ -3,12 +3,7 @@ title: Introduction
 weight: 0
 ---eonx_docs---
 
-This package allows you to create and configure [Monolog Loggers][2] in centralised and reusable way:
-
-- Configure channels using PHP
-- Control Handlers and Processors order
-- Integration with popular frameworks (e.g. Laravel, Symfony)
-- Discover Handlers and Processors automatically in your application
+This package is a simple drop-in implementation of [Bugsnag][2] in your favourite PHP frameworks or plain PHP app.
 
 <br>
 
@@ -17,191 +12,87 @@ This package allows you to create and configure [Monolog Loggers][2] in centrali
 The recommended way to install this package is to use [Composer][1]:
 
 ```bash
-$ composer require eonx-com/easy-logging
+$ composer require eonx-com/easy-bugsnag
 ```
 
 <br>
 
 ### Usage
 
-Here is a simple example on how to use the `LoggerFactoryInterface` to create loggers:
+Once installed in your favourite PHP framework, this package will allow you to inject the Bugsnag Client anywhere you
+like and start notifying your errors and exceptions:
 
 ```php
-// Instantiate the logger factory manually or use DI ...
+// src/Exception/Handler.php
 
-$default = $loggerFactory->create(); // Calling create without arguments will create logger for default channel
+namespace App\Exception;
 
-$console = $loggerFactory->create('console'); // Create logger for console channel specifically
-```
+use Bugsnag\Client;
 
-<br>
-
-### Usage in Framework
-
-The different bridge provided by this package will by default register the logger for your default channel in the 
-service container under the following service ids:
-
-- `Psr\Log\LoggerInterface`
-- `logger`
-
-You can then use dependency injection anywhere you like!
-
-<br>
-
-### Logger Configuration
-
-The `LoggerFactoryInterface` allows you to set different collections of "config providers", each config can define:
-
-- **channels:** if defined the config will be applied only to given channels, if `null` the config will be applied
-                to all channels
-- **priority:** define the order each config must be set on the logger instance, higher the priority later the config
-                will be added to the logger instance
-                
-<br>
-
-###### HandlerConfig
-
-The `HandlerConfigInterface` allows you to configure `\Monolog\Handler\HandlerInterface` to be set loggers created by
-the factory. Like other configs, it allows you to specify a list of channels this handler is for and, also a priority
-to control when the handler must be executed.
-
-To tell the logger factory about your `HandlerConfigInterface`, you must use a `HandlerConfigProviderInterface`. The
-logger factory accepts a collection of providers via the `setHandlerConfigProviders()` method:
-
-```php
-use EonX\EasyLogging\LoggerFactory;
-
-$handlerConfigProviders = [];
-
-// Add your own handler config providers to $handlerConfigProviders ...
-
-$loggerFactory = new LoggerFactory();
-
-// Set your handler config providers on the logger factory
-$loggerFactory->setHandlerConfigProviders($handlerConfigProviders);
-```
-
-<br>
-
-Here is a simple example of a `HandlerConfigProviderInterface` to register a `StreamHandler`:
-
-```php
-namespace App\Logger;
-
-use EonX\EasyLogging\Config\HandlerConfig;
-use EonX\EasyLogging\Interfaces\Config\HandlerConfigProviderInterface;
-use Monolog\Handler\StreamHandler;
-
-final class StreamHandlerConfigProvider implements HandlerConfigProviderInterface
+final class ExceptionHandler
 {
     /**
-     * @return iterable<\EonX\EasyLogging\Interfaces\Config\HandlerConfigInterface>
+     * @var \Bugsnag\Client
      */
-    public function handlers(): iterable
-    {
-        /**
-         * This method returns an iterable to make it easier to handle complex handler configs definition
-         * But you can simply return an array if you want.
-         */
+    private $client;
 
-        yield new HandlerConfig(new StreamHandler('php://stdout'));
+    public function __construct(Client $client)
+    {
+        $this->client = $client;
+    }
+
+    public function report(\Throwable $throwable): void
+    {
+        // Notify bugsnag of your throwable
+        $this->client->notifyException($throwable);
     }
 }
 ```
 
-<br>
+### Client Factory
 
-###### ProcessorConfig
+The core functionality of this package is to create a Bugsnag Client instance and make it available to your application,
+so you can focus on notifying your errors/exceptions instead of the boilerplate setup. To do so, it uses a factory.
 
-The `ProcessorConfigInterface` allows you to configure `\Monolog\Processor\ProcessorInterface` to be set loggers created
-by the factory. Like other configs, it allows you to specify a list of channels this handler is for and, also a priority
-to control when the handler must be executed.
+This factory implements `EonX\EasyBugsnag\Interfaces\ClientFactoryInterface` which is able to create the client from
+just the api key you can find in your Bugsnag dashboard, handy! However, if needed you can set your own implementations
+of the additional objects used by the Bugsnag Client such as:
 
-To tell the logger factory about your `ProcessorConfigInterface`, you must use a `ProcessorConfigProviderInterface`. The
-logger factory accepts a collection of providers via the `setProcessorConfigProviders()` method:
-
-```php
-use EonX\EasyLogging\LoggerFactory;
-
-$processorConfigProviders = [];
-
-// Add your own processor config providers to $handlerConfigProviders ...
-
-$loggerFactory = new LoggerFactory();
-
-// Set your processor config providers on the logger factory
-$loggerFactory->setProcessorConfigProviders($processorConfigProviders);
-```
+- **HttpClient:** [Guzzle Client][3] used to send notifications to Bugsnag API
+- **RequestResolver:** used to resolve the request information
+- **ShutdownStrategy:** used to send bulk notifications while the application is shutting down
 
 <br>
 
-Here is a simple example of a `ProcessorConfigProviderInterface` to register a `TagProcessor`:
+### Configurators
+
+Additionally, the client factory allows you to set a collection of "configurators". Once the client instantiated, the
+factory will loop through the configurators, providing them the client instance to be configured.
+
+A configurator is a PHP class implementing `EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface`. When used within
+your favourite PHP framework, the configurators will be set on the factory for you so any created client will be configured
+before being injected into your services. Each configurator must define a priority, an integer value, which will be
+used to define the order of execution of the entire collection.
+
+Here is an example of a configurator to set the release stage:
 
 ```php
-namespace App\Logger;
+// src/Bugsnag/ReleaseStageConfigurator.php
 
-use EonX\EasyLogging\Config\ProcessorConfig;
-use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
-use Monolog\Processor\TagProcessor;
+namespace App\Bugsnag;
 
-final class TagProcessorConfigProvider implements ProcessorConfigProviderInterface
+use Bugsnag\Client;
+use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
+
+final class ReleaseStageConfigurator extends AbstractClientConfigurator
 {
-    /**
-     * @return iterable<\EonX\EasyLogging\Interfaces\Config\ProcessorConfigInterface>
-     */
-    public function processors(): iterable
+    public function configure(Client $bugsnag): void
     {
-        /**
-         * This method returns an iterable to make it easier to handle complex processor configs definition
-         * But you can simply return an array if you want.
-         */
-
-        yield new ProcessorConfig(new TagProcessor(['tag-1', 'tag-2']));
-    }
-}
-```
-
-<br>
-
-###### LoggerConfigurator
-
-The `\Monolog\Logger` class has methods allowing you to configure it even more (e.g. using microseconds). To deal with
-that, the logger factory accepts a collection of `LoggerConfiguratorInterface`. 
-
-To tell the logger factory about your `LoggerConfiguratorInterface`, you must call the `setLoggerConfigurators()` method:
-
-```php
-use EonX\EasyLogging\LoggerFactory;
-
-$loggerConfigurators = [];
-
-// Add your own logger configurators to $loggerConfigurators ...
-
-$loggerFactory = new LoggerFactory();
-
-// Set your logger configurators on the logger factory
-$loggerFactory->setLoggerConfigurators($loggerConfigurators);
-```
-
-<br>
-
-Here is a simple example of a `LoggerConfiguratorInterface` to use microseconds:
-
-```php
-namespace App\Logger;
-
-use EonX\EasyLogging\Config\AbstractLoggingConfig;
-use EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface;
-use Monolog\Logger;
-
-final class UseMicrosecondsLoggerConfigurator extends AbstractLoggingConfig implements LoggerConfiguratorInterface
-{
-    public function configure(Logger $logger) : void
-    {
-        $logger->useMicrosecondTimestamps(true);
+        $bugsnag->setReleaseStage('dev');
     }
 }
 ```
 
 [1]: https://getcomposer.org/
-[2]: https://github.com/Seldaek/monolog
+[2]: https://docs.bugsnag.com/platforms/php/other/
+[3]: http://docs.guzzlephp.org/en/stable/
