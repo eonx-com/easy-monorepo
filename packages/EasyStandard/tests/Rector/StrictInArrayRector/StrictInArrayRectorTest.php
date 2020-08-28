@@ -36,6 +36,15 @@ final class StrictInArrayRectorTest extends AbstractRectorTestCase
         $this->doTestFileInfo($fileInfo);
     }
 
+    public function testGetDefinitionSucceeds(): void
+    {
+        $rector = new StrictInArrayRector();
+
+        $definition = $rector->getDefinition();
+
+        self::assertNotEmpty($definition->getDescription());
+    }
+
     /**
      * Returns Rector with configuration.
      *

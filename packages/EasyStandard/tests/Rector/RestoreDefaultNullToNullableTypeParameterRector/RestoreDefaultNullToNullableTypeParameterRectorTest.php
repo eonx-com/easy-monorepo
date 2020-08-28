@@ -36,6 +36,15 @@ final class RestoreDefaultNullToNullableTypeParameterRectorTest extends Abstract
         $this->doTestFileInfo($fileInfo);
     }
 
+    public function testGetDefinitionSucceeds(): void
+    {
+        $rector = new RestoreDefaultNullToNullableTypeParameterRector();
+
+        $definition = $rector->getDefinition();
+
+        self::assertNotEmpty($definition->getDescription());
+    }
+
     /**
      * Returns Rector with configuration.
      *

@@ -11,8 +11,6 @@ use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
 
 /**
- * @codeCoverageIgnore
- *
  * @SuppressWarnings("unused") Class is used by Rector
  */
 final class StrictInArrayRector extends AbstractRector

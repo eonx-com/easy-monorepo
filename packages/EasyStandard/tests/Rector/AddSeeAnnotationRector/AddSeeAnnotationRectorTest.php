@@ -26,6 +26,15 @@ final class AddSeeAnnotationRectorTest extends AbstractRectorTestCase
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
 
+    public function testGetDefinitionSucceeds(): void
+    {
+        $rector = new AddSeeAnnotationRector();
+
+        $definition = $rector->getDefinition();
+
+        self::assertNotEmpty($definition->getDescription());
+    }
+
     /**
      * Tests Rector rule.
      *

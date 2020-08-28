@@ -36,6 +36,15 @@ final class InheritDocRectorTest extends AbstractRectorTestCase
         $this->doTestFileInfo($fileInfo);
     }
 
+    public function testGetDefinitionSucceeds(): void
+    {
+        $rector = new InheritDocRector();
+
+        $definition = $rector->getDefinition();
+
+        self::assertNotEmpty($definition->getDescription());
+    }
+
     /**
      * Returns Rector with configuration.
      *

@@ -36,6 +36,15 @@ final class UselessSingleAnnotationRectorTest extends AbstractRectorTestCase
         $this->doTestFileInfo($fileInfo);
     }
 
+    public function testGetDefinitionSucceeds(): void
+    {
+        $rector = new UselessSingleAnnotationRector();
+
+        $definition = $rector->getDefinition();
+
+        self::assertNotEmpty($definition->getDescription());
+    }
+
     /**
      * Returns Rector with configuration.
      *
