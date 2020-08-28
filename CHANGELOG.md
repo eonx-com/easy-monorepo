@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.39 - 2020-08-26
+## v2.4.40 - 2020-08-28
+
+### EasyBugsnag
+
+- [#331] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.39] - 2020-08-26
 
 ### EasyCore
 
@@ -2196,3 +2206,5 @@
 [v2.4.37]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.36...v2.4.37
 [#290]: https://github.com/eonx-com/easy-monorepo/pull/290
 [v2.4.38]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.37...v2.4.38
+[#331]: https://github.com/eonx-com/easy-monorepo/pull/331
+[v2.4.39]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.38...v2.4.39
