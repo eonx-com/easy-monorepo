@@ -87,7 +87,7 @@ final class JsonbTypeTest extends AbstractTestCase
      *
      * @dataProvider provideConvertToDatabaseValues
      */
-    public function testConvertToDatabaseValueSucceeds($phpValue, ?string $postgresValue): void
+    public function testConvertToDatabaseValueSucceeds($phpValue, ?string $postgresValue = null): void
     {
         /** @var \EonX\EasyCore\Doctrine\DBAL\Types\JsonbType $type */
         $type = Type::getType(JsonbType::TYPE_NAME);
@@ -109,7 +109,7 @@ final class JsonbTypeTest extends AbstractTestCase
         $type = Type::getType(JsonbType::TYPE_NAME);
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->mock(AbstractPlatform::class);
-        $value = \urldecode('some bad utf string %C4');
+        $value = \urldecode('some incorrectly encoded utf string %C4');
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
             "Could not convert PHP type 'string' to 'json', as an " .
@@ -127,7 +127,7 @@ final class JsonbTypeTest extends AbstractTestCase
      *
      * @dataProvider provideConvertToPhpValues
      */
-    public function testConvertToPhpValueSucceeds($phpValue, ?string $postgresValue): void
+    public function testConvertToPhpValueSucceeds($phpValue, ?string $postgresValue = null): void
     {
         /** @var \EonX\EasyCore\Doctrine\DBAL\Types\JsonbType $type */
         $type = Type::getType(JsonbType::TYPE_NAME);

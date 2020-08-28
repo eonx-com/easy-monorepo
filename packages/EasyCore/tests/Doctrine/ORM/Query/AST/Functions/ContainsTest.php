@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Tests\Doctrine\ORM\Query\AST\Functions;
 
 use Doctrine\ORM\Query\AST\InputParameter;
-use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
@@ -44,13 +43,6 @@ final class ContainsTest extends AbstractTestCase
                     ->andReturn($parameterValue);
             }
         );
-        $this->mock(Node::class, static function (MockInterface $mock) use ($sqlWalker, $parameter): void {
-            $mock
-                ->shouldReceive('dispatch')
-                ->once()
-                ->with($sqlWalker)
-                ->andReturn($parameter);
-        });
         $parser = $this->mockParser($contains, $inputParameter);
         $contains->parse($parser);
 
