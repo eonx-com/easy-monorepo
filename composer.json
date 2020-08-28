@@ -37,12 +37,12 @@
         "nette/utils": "^3.1",
         "aws/aws-sdk-php": "^3.134",
         "eonx-com/apiformats": "^1.0",
-        "illuminate/support": "^5.5 || ^6.0"
+        "illuminate/support": "^5.5 || ^6.0",
+        "bugsnag/bugsnag": "^3.0"
     },
     "require-dev": {
         "api-platform/core": "^2.5",
         "auth0/auth0-php": "^5.4",
-        "bugsnag/bugsnag": "^3.19",
         "bugsnag/bugsnag-laravel": "^2.17",
         "doctrine/dbal": "^2.6",
         "eonx-com/test-utils": "^0.0.1",
