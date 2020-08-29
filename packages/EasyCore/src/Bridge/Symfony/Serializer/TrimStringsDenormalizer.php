@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\Serializer;
 
-use EonX\EasyCore\Tests\Helpers\CleanerInterface;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use EonX\EasyCore\Helpers\CleanerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
@@ -14,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 final class TrimStringsDenormalizer implements DenormalizerInterface
 {
     /**
-     * @var \EonX\EasyCore\Tests\Helpers\CleanerInterface
+     * @var \EonX\EasyCore\Helpers\CleanerInterface
      */
     private $cleaner;
 
@@ -30,12 +29,6 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
 
     public function __construct(DenormalizerInterface $decorated, CleanerInterface $cleaner, array $except = [])
     {
-        if ($decorated instanceof DenormalizerInterface === false) {
-            throw new InvalidArgumentException(
-                \sprintf('The decorated normalizer must implement the %s.', DenormalizerInterface::class)
-            );
-        }
-
         $this->cleaner = $cleaner;
         $this->decorated = $decorated;
         $this->except = $except;

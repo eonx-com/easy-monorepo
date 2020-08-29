@@ -6,7 +6,7 @@ namespace EonX\EasyCore\Tests\Bridge\Laravel\Middleware;
 
 use EonX\EasyCore\Bridge\Laravel\Middleware\TrimStrings;
 use EonX\EasyCore\Tests\AbstractTestCase;
-use EonX\EasyCore\Tests\Helpers\CleanerInterface;
+use EonX\EasyCore\Helpers\CleanerInterface;
 use Illuminate\Http\Request;
 use Mockery\MockInterface;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
@@ -23,7 +23,7 @@ final class TrimStringsTest extends AbstractTestCase
         $data = ['abc' => '  123  '];
         $except = [];
         $expectedResult = ['abc' => '123'];
-        /** @var \EonX\EasyCore\Tests\Helpers\CleanerInterface $cleaner */
+        /** @var \EonX\EasyCore\Helpers\CleanerInterface $cleaner */
         $cleaner = $this->mock(
             CleanerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
@@ -35,8 +35,10 @@ final class TrimStringsTest extends AbstractTestCase
         $symfonyRequest->server->set('REQUEST_METHOD', 'GET');
         $request = Request::createFromBase($symfonyRequest);
 
-        $middleware->handle($request, static function (Request $request): void {
-            self::assertSame('123', $request->get('abc'));
+        $result = $middleware->handle($request, static function (Request $request): string {
+            return $request->get('abc');
         });
+
+        self::assertSame('123', $result);
     }
 }

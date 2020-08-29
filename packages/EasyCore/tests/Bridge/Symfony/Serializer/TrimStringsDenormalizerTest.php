@@ -7,11 +7,17 @@ namespace EonX\EasyCore\Tests\Bridge\Symfony\Serializer;
 use EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsDenormalizer;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\DenormalizerInterfaceStub;
-use EonX\EasyCore\Tests\Helpers\CleanerInterface;
+use EonX\EasyCore\Helpers\CleanerInterface;
+use Mockery\MockInterface;
 use stdClass;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
+/**
+ * @covers \EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsDenormalizer
+ *
+ * @internal
+ */
+final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
 {
     /**
      * @return mixed[]
@@ -51,11 +57,13 @@ final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
      */
     public function testSupportsDenormalizationSucceeds($data, bool $expectedResult): void
     {
-        $cleaner = $this->prophesize(CleanerInterface::class);
-        $decorated = $this->prophesize(DenormalizerInterface::class);
-        $normalizer = new TrimStringsDenormalizer($decorated->reveal(), $cleaner->reveal());
+        /** @var \EonX\EasyCore\Helpers\CleanerInterface $cleaner */
+        $cleaner = $this->mock(CleanerInterface::class);
+        /** @var \Symfony\Component\Serializer\Normalizer\DenormalizerInterface $decorated */
+        $decorated = $this->mock(DenormalizerInterface::class);
+        $denormalizer = new TrimStringsDenormalizer($decorated, $cleaner);
 
-        $result = $normalizer->supportsDenormalization($data, 'no-matter');
+        $result = $denormalizer->supportsDenormalization($data, 'no-matter');
 
         self::assertSame($expectedResult, $result);
     }
@@ -70,15 +78,18 @@ final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
         $format = null;
         $context = [];
         $except = ['some-key'];
-        $expectedData = ['abc' => '123'];
-        $cleaner = $this->prophesize(CleanerInterface::class);
-        $cleaner->clean($data, $except)->willReturn($expectedData);
+        $expectedResult = ['abc' => '123'];
+        /** @var \EonX\EasyCore\Helpers\CleanerInterface $cleaner */
+        $cleaner = $this->mock(
+            CleanerInterface::class,
+            static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
+                $mock->shouldReceive('clean')->once()->with($data, $except)->andReturn($expectedResult);
+            });
         $decorated = new DenormalizerInterfaceStub();
-        $normalizer = new TrimStringsDenormalizer($decorated, $cleaner->reveal(), $except);
+        $denormalizer = new TrimStringsDenormalizer($decorated, $cleaner, $except);
 
-        $result = $normalizer->denormalize($data, $type, $format, $context);
+        $result = $denormalizer->denormalize($data, $type, $format, $context);
 
-        self::assertSame($expectedData, $result);
-        $cleaner->clean($data, $except)->shouldHaveBeenCalledOnce();
+        self::assertSame($expectedResult, $result);
     }
 }
