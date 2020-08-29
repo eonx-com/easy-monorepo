@@ -23,10 +23,16 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
     private $decorated;
 
     /**
-     * @var mixed[]
+     * A list of array keys whose values will be ignored during processing.
+     * @see \EonX\EasyCore\Tests\Helpers\TrimStringsRecursiveTest for example
+     *
+     * @var string[]
      */
     private $except;
 
+    /**
+     * @param string[] $except
+     */
     public function __construct(DenormalizerInterface $decorated, CleanerInterface $cleaner, array $except = [])
     {
         $this->cleaner = $cleaner;
@@ -34,6 +40,16 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
         $this->except = $except;
     }
 
+    /**
+     * @param mixed $data
+     * @param string $type
+     * @param string|null $format
+     * @param mixed[] $context
+     *
+     * @return mixed
+     *
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
     public function denormalize($data, $type, $format = null, array $context = [])
     {
         $data = $this->cleaner->clean($data, $this->except);
@@ -41,6 +57,11 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
         return $this->decorated->denormalize($data, $type, $format, $context);
     }
 
+    /**
+     * @param mixed $data
+     * @param string $type
+     * @param string|null $format
+     */
     public function supportsDenormalization($data, $type, $format = null): bool
     {
         return \is_string($data) || \is_array($data);
