@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 final class TrimStrings
 {
     /**
-     * The attributes that should not be trimmed.
+     * A list of array keys whose values will be ignored during processing.
+     * @see \EonX\EasyCore\Tests\Helpers\TrimStringsRecursiveTest for example
      *
      * @var string[]
      */

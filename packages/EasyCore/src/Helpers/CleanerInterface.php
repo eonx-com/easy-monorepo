@@ -10,7 +10,7 @@ interface CleanerInterface
      * Returns the cleared value, excluding those specified in the list.
      *
      * @param mixed $data
-     * @param mixed[] $except
+     * @param string[] $except
      *
      * @return mixed
      */

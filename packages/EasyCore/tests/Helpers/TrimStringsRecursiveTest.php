@@ -109,7 +109,7 @@ final class TrimStringsRecursiveTest extends AbstractTestCase
 
     /**
      * @param mixed $data
-     * @param mixed[]  $except
+     * @param string[] $except
      * @param mixed $expectedResult
      *
      * @dataProvider provideDataForClean

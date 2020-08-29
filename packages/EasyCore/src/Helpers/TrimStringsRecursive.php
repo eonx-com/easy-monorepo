@@ -7,10 +7,15 @@ namespace EonX\EasyCore\Helpers;
 final class TrimStringsRecursive implements CleanerInterface
 {
     /**
-     * @var mixed[]
+     * A list of array keys whose values will be ignored during processing.
+     *
+     * @var string[]
      */
     private $except;
 
+    /**
+     * {@inheritdoc}
+     */
     public function clean($data, array $except = [])
     {
         $this->except = $except;
@@ -23,7 +28,7 @@ final class TrimStringsRecursive implements CleanerInterface
     }
 
     /**
-     * Clean the data in the given array.
+     * @param mixed[] $data
      *
      * @return mixed[]
      */
@@ -45,8 +50,6 @@ final class TrimStringsRecursive implements CleanerInterface
     }
 
     /**
-     * Transform the given value.
-     *
      * @param mixed $value
      *
      * @return mixed
