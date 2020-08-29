@@ -79,7 +79,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
         $cleaner = $this->mock(
             StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
-                $mock->shouldReceive('clean')->once()->with($data, $except)->andReturn($expectedResult);
+                $mock->shouldReceive('trim')->once()->with($data, $except)->andReturn($expectedResult);
             });
         $decorated = new DenormalizerInterfaceStub();
         $denormalizer = new TrimStringsDenormalizer($decorated, $cleaner, $except);

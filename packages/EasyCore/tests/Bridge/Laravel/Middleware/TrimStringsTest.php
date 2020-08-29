@@ -27,7 +27,7 @@ final class TrimStringsTest extends AbstractTestCase
         $cleaner = $this->mock(
             StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
-                $mock->shouldReceive('clean')->once()->with($data, $except)->andReturn($expectedResult);
+                $mock->shouldReceive('trim')->once()->with($data, $except)->andReturn($expectedResult);
             }
         );
         $middleware = new TrimStrings($cleaner, $except);
