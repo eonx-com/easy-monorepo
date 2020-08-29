@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\Serializer;
 
-use EonX\EasyCore\Helpers\CleanerInterface;
+use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 final class TrimStringsDenormalizer implements DenormalizerInterface
 {
     /**
-     * @var \EonX\EasyCore\Helpers\CleanerInterface
+     * @var \EonX\EasyCore\Helpers\StringsTrimmerInterface
      */
     private $cleaner;
 
@@ -24,7 +24,7 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
 
     /**
      * A list of array keys whose values will be ignored during processing.
-     * @see \EonX\EasyCore\Tests\Helpers\TrimStringsRecursiveTest for example
+     * @see \EonX\EasyCore\Tests\Helpers\RecursiveStringsTrimmerTest for example
      *
      * @var string[]
      */
@@ -33,8 +33,11 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
     /**
      * @param string[] $except
      */
-    public function __construct(DenormalizerInterface $decorated, CleanerInterface $cleaner, array $except = [])
-    {
+    public function __construct(
+        DenormalizerInterface $decorated,
+        StringsTrimmerInterface $cleaner,
+        array $except = []
+    ) {
         $this->cleaner = $cleaner;
         $this->decorated = $decorated;
         $this->except = $except;

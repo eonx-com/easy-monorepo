@@ -7,6 +7,9 @@ namespace EonX\EasyCore\Bridge\Laravel\Providers;
 use EonX\EasyCore\Bridge\Laravel\Listeners\DoctrineClearEmBeforeJobListener;
 use EonX\EasyCore\Bridge\Laravel\Listeners\DoctrineRestartQueueOnEmCloseListener;
 use EonX\EasyCore\Bridge\Laravel\Listeners\QueueWorkerStoppingListener;
+use EonX\EasyCore\Bridge\Laravel\Middleware\TrimStrings;
+use EonX\EasyCore\Helpers\RecursiveStringsTrimmer;
+use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use EonX\EasyCore\Search\ElasticsearchSearchServiceFactory;
 use EonX\EasyCore\Search\SearchServiceFactoryInterface;
 use EonX\EasyCore\Search\SearchServiceInterface;
@@ -34,6 +37,22 @@ final class EasyCoreServiceProvider extends ServiceProvider
         $this->logQueueWorkerStopping();
         $this->restartQueueOnEmClose();
         $this->search();
+        $this->trimStrings();
+    }
+
+    private function trimStrings(): void
+    {
+        if ((bool)config('easy-core.trim_strings.enabled', true) === false) {
+            return;
+        }
+
+        $this->app->singleton(StringsTrimmerInterface::class, RecursiveStringsTrimmer::class);
+        $this->app->singleton(TrimStrings::class, function(): TrimStrings {
+            return new TrimStrings(
+                $this->app->get(StringsTrimmerInterface::class),
+                config('easy-core.trim_strings.except', [])
+            );
+        });
     }
 
     private function clearDoctrineEmBeforeJob(): void

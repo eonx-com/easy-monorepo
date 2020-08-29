@@ -25,4 +25,12 @@ return [
         'enabled' => \env('EASY_CORE_SEARCH_ENABLED', false),
         'elasticsearch_host' => \env('ELASTICSEARCH_HOST', 'elasticsearch:9200'),
     ],
+
+    /**
+     * A list of array keys whose values will be ignored during processing.
+     */
+    'trim_strings' => [
+        'enabled' => \env('EASY_CORE_TRIM_STRINGS_ENABLED', true),
+        'except' => [],
+    ],
 ];

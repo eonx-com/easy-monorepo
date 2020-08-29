@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Helpers;
 
-use EonX\EasyCore\Helpers\TrimStringsRecursive;
+use EonX\EasyCore\Helpers\RecursiveStringsTrimmer;
 use EonX\EasyCore\Tests\AbstractTestCase;
 
 /**
- * @covers \EonX\EasyCore\Helpers\TrimStringsRecursive
+ * @covers \EonX\EasyCore\Helpers\RecursiveStringsTrimmer
  */
-final class TrimStringsRecursiveTest extends AbstractTestCase
+final class RecursiveStringsTrimmerTest extends AbstractTestCase
 {
     /**
      * @return mixed[]
@@ -116,7 +116,7 @@ final class TrimStringsRecursiveTest extends AbstractTestCase
      */
     public function testCleanSucceeds($data, array $except, $expectedResult): void
     {
-        $cleaner = new TrimStringsRecursive();
+        $cleaner = new RecursiveStringsTrimmer();
 
         $result = $cleaner->clean($data, $except);
 

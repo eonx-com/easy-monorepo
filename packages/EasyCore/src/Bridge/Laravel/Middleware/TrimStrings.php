@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Laravel\Middleware;
 
-use EonX\EasyCore\Helpers\CleanerInterface;
+use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -12,21 +12,21 @@ final class TrimStrings
 {
     /**
      * A list of array keys whose values will be ignored during processing.
-     * @see \EonX\EasyCore\Tests\Helpers\TrimStringsRecursiveTest for example
+     * @see \EonX\EasyCore\Tests\Helpers\RecursiveStringsTrimmerTest for example
      *
      * @var string[]
      */
     private $except;
 
     /**
-     * @var CleanerInterface
+     * @var \EonX\EasyCore\Helpers\StringsTrimmerInterface
      */
     private $cleaner;
 
     /**
      * @param string[] $except
      */
-    public function __construct(CleanerInterface $cleaner, array $except = [])
+    public function __construct(StringsTrimmerInterface $cleaner, array $except = [])
     {
         $this->cleaner = $cleaner;
         $this->except = $except;

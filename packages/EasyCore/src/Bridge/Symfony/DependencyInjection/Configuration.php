@@ -30,6 +30,13 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('elasticsearch_host')->defaultValue('elasticsearch:9200')->end()
                     ->end()
                 ->end()
+                ->arrayNode('trim_strings')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->arrayNode('except')->defaultValue([])->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

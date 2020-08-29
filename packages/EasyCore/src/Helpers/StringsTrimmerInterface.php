@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Helpers;
 
-interface CleanerInterface
+interface StringsTrimmerInterface
 {
     /**
      * Returns the cleared value, excluding those specified in the list.

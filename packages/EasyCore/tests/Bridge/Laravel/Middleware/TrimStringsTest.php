@@ -6,7 +6,7 @@ namespace EonX\EasyCore\Tests\Bridge\Laravel\Middleware;
 
 use EonX\EasyCore\Bridge\Laravel\Middleware\TrimStrings;
 use EonX\EasyCore\Tests\AbstractTestCase;
-use EonX\EasyCore\Helpers\CleanerInterface;
+use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use Illuminate\Http\Request;
 use Mockery\MockInterface;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
@@ -23,9 +23,9 @@ final class TrimStringsTest extends AbstractTestCase
         $data = ['abc' => '  123  '];
         $except = [];
         $expectedResult = ['abc' => '123'];
-        /** @var \EonX\EasyCore\Helpers\CleanerInterface $cleaner */
+        /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $cleaner */
         $cleaner = $this->mock(
-            CleanerInterface::class,
+            StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
                 $mock->shouldReceive('clean')->once()->with($data, $except)->andReturn($expectedResult);
             }
