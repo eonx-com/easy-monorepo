@@ -45,7 +45,7 @@ final class TrimStringsRecursiveTest extends AbstractTestCase
                 'except' => ['key1'],
                 'expectedResult' => ['key1' => '  123  ', 'key2' => 'abc'],
             ],
-            'tests clean if data is an multidimensional assoc array' => [
+            'tests clean if data is a multidimensional assoc array' => [
                 'data' => [
                     'key1' => '  123  ',
                     'key2' => '  aBc  ',
@@ -72,7 +72,7 @@ final class TrimStringsRecursiveTest extends AbstractTestCase
                     ],
                 ],
             ],
-            'tests clean if data is an multidimensional assoc array (except key3.key3.3.key3.3.2)' => [
+            'tests clean if data is a multidimensional assoc array (except key3.key3.3.key3.3.2)' => [
                 'data' => [
                     'key1' => '  123  ',
                     'key2' => '  aBc  ',
@@ -99,7 +99,7 @@ final class TrimStringsRecursiveTest extends AbstractTestCase
                     ],
                 ],
             ],
-            'tests clean if data is an mixed array' => [
+            'tests clean if data is a mixed array' => [
                 'data' => ['key1' => '  123  ', 'key2' => '  abc  ', '  456  ', '  def  '],
                 'except' => [],
                 'expectedResult' => ['key1' => '123', 'key2' => 'abc', '456', 'def'],
