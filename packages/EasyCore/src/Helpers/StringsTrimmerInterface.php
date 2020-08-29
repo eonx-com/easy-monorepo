@@ -14,5 +14,5 @@ interface StringsTrimmerInterface
      *
      * @return mixed
      */
-    public function clean($data, array $except);
+    public function trim($data, array $except);
 }

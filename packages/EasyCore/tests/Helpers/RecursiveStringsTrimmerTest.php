@@ -118,7 +118,7 @@ final class RecursiveStringsTrimmerTest extends AbstractTestCase
     {
         $cleaner = new RecursiveStringsTrimmer();
 
-        $result = $cleaner->clean($data, $except);
+        $result = $cleaner->trim($data, $except);
 
         self::assertSame($expectedResult, $result);
     }

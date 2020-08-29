@@ -55,7 +55,7 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
      */
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $data = $this->cleaner->clean($data, $this->except);
+        $data = $this->cleaner->trim($data, $this->except);
 
         return $this->decorated->denormalize($data, $type, $format, $context);
     }

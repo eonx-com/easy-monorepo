@@ -16,7 +16,7 @@ final class RecursiveStringsTrimmer implements StringsTrimmerInterface
     /**
      * {@inheritdoc}
      */
-    public function clean($data, array $except = [])
+    public function trim($data, array $except = [])
     {
         $this->except = $except;
 
