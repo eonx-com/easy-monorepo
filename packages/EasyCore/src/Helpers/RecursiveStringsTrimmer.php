@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Helpers;
 
-final class TrimStringsRecursive implements CleanerInterface
+final class RecursiveStringsTrimmer implements StringsTrimmerInterface
 {
     /**
      * A list of array keys whose values will be ignored during processing.

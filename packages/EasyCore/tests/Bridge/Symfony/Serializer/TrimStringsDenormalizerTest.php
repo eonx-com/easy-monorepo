@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Tests\Bridge\Symfony\Serializer;
 
 use EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsDenormalizer;
+use EonX\EasyCore\Helpers\RecursiveStringsTrimmer;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\DenormalizerInterfaceStub;
-use EonX\EasyCore\Helpers\CleanerInterface;
+use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use Mockery\MockInterface;
 use stdClass;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * @covers \EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsDenormalizer
@@ -57,11 +57,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
      */
     public function testSupportsDenormalizationSucceeds($data, bool $expectedResult): void
     {
-        /** @var \EonX\EasyCore\Helpers\CleanerInterface $cleaner */
-        $cleaner = $this->mock(CleanerInterface::class);
-        /** @var \Symfony\Component\Serializer\Normalizer\DenormalizerInterface $decorated */
-        $decorated = $this->mock(DenormalizerInterface::class);
-        $denormalizer = new TrimStringsDenormalizer($decorated, $cleaner);
+        $denormalizer = new TrimStringsDenormalizer(new DenormalizerInterfaceStub(), new RecursiveStringsTrimmer());
 
         $result = $denormalizer->supportsDenormalization($data, 'no-matter');
 
@@ -79,9 +75,9 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
         $context = [];
         $except = ['some-key'];
         $expectedResult = ['abc' => '123'];
-        /** @var \EonX\EasyCore\Helpers\CleanerInterface $cleaner */
+        /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $cleaner */
         $cleaner = $this->mock(
-            CleanerInterface::class,
+            StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
                 $mock->shouldReceive('clean')->once()->with($data, $except)->andReturn($expectedResult);
             });
