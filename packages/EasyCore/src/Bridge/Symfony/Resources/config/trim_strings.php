@@ -18,6 +18,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(StringsTrimmerInterface::class, RecursiveStringsTrimmer::class);
 
     $services->set(\EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsDenormalizer::class)
+        ->arg('$decorated', ref('.inner'))
         ->arg('$except', '%' . BridgeConstantsInterface::PARAM_TRIM_STRINGS_EXCEPT . '%')
-        ->tag('serializer.normalizer');
+        ->decorate('api_platform.jsonapi.normalizer.item')
+        ->tag('serializer.normalizer')
+    ;
 };
