@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Tests\Bridge\Symfony\Stubs;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Logging\SQLLogger;
 use EonX\EasyBugsnag\Bridge\Symfony\EasyBugsnagBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
