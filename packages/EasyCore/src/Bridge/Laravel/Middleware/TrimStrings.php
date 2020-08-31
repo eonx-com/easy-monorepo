@@ -57,6 +57,9 @@ final class TrimStrings
         }
     }
 
+    /**
+     * @param ParameterBag<string, mixed> $bag
+     */
     private function cleanParameterBag(ParameterBag $bag): void
     {
         $bag->replace($this->cleaner->trim($bag->all(), $this->except));
