@@ -6,9 +6,9 @@ namespace EonX\EasyCore\Tests\Bridge\Symfony\Serializer;
 
 use EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsDenormalizer;
 use EonX\EasyCore\Helpers\RecursiveStringsTrimmer;
+use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\DenormalizerInterfaceStub;
-use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use Mockery\MockInterface;
 use stdClass;
 
@@ -80,7 +80,8 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
             StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
                 $mock->shouldReceive('trim')->once()->with($data, $except)->andReturn($expectedResult);
-            });
+            }
+        );
         $decorated = new DenormalizerInterfaceStub();
         $denormalizer = new TrimStringsDenormalizer($decorated, $cleaner, $except);
 

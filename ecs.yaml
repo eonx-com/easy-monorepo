@@ -34,6 +34,7 @@ parameters:
         SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingNativeTypeHint:
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
+            - 'packages/EasyCore/src/Bridge/Symfony/Serializer/TrimStringsDenormalizer.php'
             - 'packages/EasyLogging/src/Logger.php'
             - 'packages/EasyApiToken/src/External/Auth0JwtDriver.php'
             - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
@@ -42,6 +43,7 @@ parameters:
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/PermissionVoter.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/RoleVoter.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php'
+            - 'packages/EasyCore/tests/Bridge/Symfony/Stubs/DenormalizerInterfaceStub.php'
             - 'packages/EasyCore/tests/Stubs/LockStub.php'
             - 'packages/EasyStandard/src/Sniffs/*'
             - 'packages/EasySsm/tests/Stubs/BaseSsmClientStub.php'
@@ -54,6 +56,7 @@ parameters:
         SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.UselessAnnotation:
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php'
             - 'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php'
+            - 'packages/EasyCore/src/Bridge/Symfony/Serializer/TrimStringsDenormalizer.php'
             - 'packages/EasyLogging/src/Logger.php'
             - 'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php'
             - 'packages/EasyAsync/src/Helpers/PropertyHelper.php'
@@ -61,6 +64,7 @@ parameters:
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/PermissionVoter.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/RoleVoter.php'
             - 'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php'
+            - 'packages/EasyCore/tests/Bridge/Symfony/Stubs/DenormalizerInterfaceStub.php'
             - 'packages/EasyCore/tests/Stubs/LockStub.php'
             - 'packages/EasyStandard/src/Sniffs/*'
             - 'packages/EasySsm/tests/Stubs/BaseSsmClientStub.php'

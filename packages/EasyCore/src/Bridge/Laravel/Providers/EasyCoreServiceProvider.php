@@ -17,6 +17,7 @@ use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Events\WorkerStopping;
 use Illuminate\Support\ServiceProvider;
+
 use function base_path;
 use function config;
 
@@ -47,7 +48,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
         }
 
         $this->app->singleton(StringsTrimmerInterface::class, RecursiveStringsTrimmer::class);
-        $this->app->singleton(TrimStrings::class, function(): TrimStrings {
+        $this->app->singleton(TrimStrings::class, function (): TrimStrings {
             return new TrimStrings(
                 $this->app->get(StringsTrimmerInterface::class),
                 config('easy-core.trim_strings.except', [])
