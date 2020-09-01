@@ -17,6 +17,7 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->children()
                 ->scalarNode('context_service_id')->defaultValue(SecurityContextInterface::class)->end()
+                ->booleanNode('easy_bugsnag')->defaultTrue()->end()
                 ->scalarNode('token_decoder')->defaultNull()->end()
                 ->arrayNode('permissions_locations')
                     ->scalarPrototype()->end()

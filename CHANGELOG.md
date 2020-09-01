@@ -2,7 +2,31 @@
 
 <!-- dumped content start -->
 
-## v2.4.41 - 2020-08-28
+## v2.4.43 - 2020-09-01
+
+### EasySecurity
+
+- [#336] Create eonx-com/easy-bugsnag bridge
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.42] - 2020-09-01
+
+### EasyCore
+
+- [#333] Add JsonbType and Contains function support for PostgreSQL, Thanks to [@ERuban]
+
+### EasyBugsnag
+
+- [#335] Enable doctrine integration by default
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.41] - 2020-08-28
 
 ### EasyCore
 
@@ -2220,3 +2244,9 @@
 [v2.4.39]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.38...v2.4.39
 [#332]: https://github.com/eonx-com/easy-monorepo/pull/332
 [v2.4.40]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.39...v2.4.40
+[#335]: https://github.com/eonx-com/easy-monorepo/pull/335
+[#333]: https://github.com/eonx-com/easy-monorepo/pull/333
+[v2.4.41]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.40...v2.4.41
+[@ERuban]: https://github.com/ERuban
+[#336]: https://github.com/eonx-com/easy-monorepo/pull/336
+[v2.4.42]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.41...v2.4.42

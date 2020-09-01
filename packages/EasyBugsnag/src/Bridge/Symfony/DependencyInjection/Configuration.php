@@ -24,7 +24,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('enabled')->defaultFalse()->end()
+                        ->booleanNode('enabled')->defaultTrue()->end()
                         ->arrayNode('connections')
                             ->beforeNormalization()->castToArray()->end()
                             ->defaultValue(['default'])
