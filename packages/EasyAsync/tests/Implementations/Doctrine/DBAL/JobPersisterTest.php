@@ -16,6 +16,7 @@ use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Mockery\MockInterface;
 
@@ -340,6 +341,9 @@ final class JobPersisterTest extends AbstractTestCase
 
     private function getPersister(Connection $conn, ?string $table = null): JobPersister
     {
-        return new JobPersister($conn, new DateTimeGenerator(), new RamseyUuidV4Generator(), $table ?? 'jobs');
+        $randomGenerator = new RandomGenerator();
+        $randomGenerator->setUuidV4Generator(new RamseyUuidV4Generator());
+
+        return new JobPersister($conn, new DateTimeGenerator(), $randomGenerator, $table ?? 'jobs');
     }
 }
