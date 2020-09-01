@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\DependencyInjection;
 
+use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagBridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\Symfony\Security\Voters\PermissionVoter;
 use EonX\EasySecurity\Bridge\Symfony\Security\Voters\ProviderVoter;
@@ -78,6 +79,11 @@ final class EasySecurityExtension extends Extension
             }
 
             $container->setDefinition($class, (new Definition($class))->setAutowired(true)->setAutoconfigured(true));
+        }
+
+        // EasyBugsnag
+        if (($config['easy_bugsnag'] ?? false) && \interface_exists(EasyBugsnagBridgeConstantsInterface::class)) {
+            $loader->load('easy_bugsnag.php');
         }
     }
 }
