@@ -9,6 +9,7 @@
         "eonx-com/easy-api-token": "^2.4.42"
     },
     "require-dev": {
+        "eonx-com/easy-bugsnag": "^v2.4.42",
         "phpunit/phpunit": "^7.5 || ^8.4",
         "laravel/lumen-framework": "^5.5",
         "symfony/symfony": "^4.2 || ^5.0"
