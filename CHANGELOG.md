@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.42 - 2020-09-01
+## v2.4.43 - 2020-09-01
+
+### EasySecurity
+
+- [#336] Create eonx-com/easy-bugsnag bridge
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.42] - 2020-09-01
 
 ### EasyCore
 
@@ -2238,3 +2248,5 @@
 [#333]: https://github.com/eonx-com/easy-monorepo/pull/333
 [v2.4.41]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.40...v2.4.41
 [@ERuban]: https://github.com/ERuban
+[#336]: https://github.com/eonx-com/easy-monorepo/pull/336
+[v2.4.42]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.41...v2.4.42
