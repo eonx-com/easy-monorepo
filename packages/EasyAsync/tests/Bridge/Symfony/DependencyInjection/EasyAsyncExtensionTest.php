@@ -23,8 +23,6 @@ use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\RandomGenerator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class EasyAsyncExtensionTest extends AbstractTestCase

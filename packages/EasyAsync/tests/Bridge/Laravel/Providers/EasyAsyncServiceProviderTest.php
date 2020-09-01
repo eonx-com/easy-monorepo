@@ -25,8 +25,6 @@ use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Tests\AbstractLumenTestCase;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\RandomGenerator;
 use Laravel\Lumen\Application;
 
 final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
