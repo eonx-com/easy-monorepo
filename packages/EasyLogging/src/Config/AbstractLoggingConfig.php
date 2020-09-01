@@ -6,7 +6,7 @@ namespace EonX\EasyLogging\Config;
 
 use EonX\EasyLogging\Interfaces\Config\LoggingConfigInterface;
 
-abstract class AbstractLoggingConfig implements LoggingConfigInterface
+class AbstractLoggingConfig implements LoggingConfigInterface
 {
     /**
      * @var null|string[]
@@ -14,29 +14,60 @@ abstract class AbstractLoggingConfig implements LoggingConfigInterface
     private $channels;
 
     /**
-     * @var int
+     * @var null|string[]
+     */
+    private $exceptChannels;
+
+    /**
+     * @var null|int
      */
     private $priority;
 
     /**
      * @param null|string[] $channels
      */
-    public function __construct(?array $channels = null, ?int $priority = null)
+    public function channels(?array $channels = null): LoggingConfigInterface
     {
         $this->channels = $channels;
-        $this->priority = $priority ?? 0;
+
+        return $this;
+    }
+
+    /**
+     * @param null|string[] $exceptChannels
+     */
+    public function exceptChannels(?array $exceptChannels = null): LoggingConfigInterface
+    {
+        $this->exceptChannels = $exceptChannels;
+
+        return $this;
     }
 
     /**
      * @return null|string[]
      */
-    public function channels(): ?array
+    public function getChannels(): ?array
     {
         return $this->channels;
     }
 
-    public function priority(): int
+    /**
+     * @return null|string[]
+     */
+    public function getExceptChannels(): ?array
     {
-        return $this->priority;
+        return $this->exceptChannels;
+    }
+
+    public function getPriority(): int
+    {
+        return $this->priority ?? 0;
+    }
+
+    public function priority(?int $priority = null): LoggingConfigInterface
+    {
+        $this->priority = $priority;
+
+        return $this;
     }
 }
