@@ -8,6 +8,9 @@ use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
 use EonX\EasyLogging\Interfaces\Config\HandlerConfigProviderInterface;
 use EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
+use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
+use Monolog\Logger;
+use Symfony\Bridge\Monolog\Logger as SymfonyBridgeLogger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -36,7 +39,15 @@ final class EasyLoggingExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
 
-        $container->setParameter(BridgeConstantsInterface::PARAM_DEFAULT_CHANNEL, $config['default_channel'] ?? null);
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_DEFAULT_CHANNEL,
+            $config['default_channel'] ?? LoggerFactoryInterface::DEFAULT_CHANNEL
+        );
+
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_LOGGER_CLASS,
+            \class_exists(SymfonyBridgeLogger::class) ? SymfonyBridgeLogger::class : Logger::class
+        );
 
         foreach (static::$autoConfigs as $interface => $tag) {
             $container->registerForAutoconfiguration($interface)->addTag($tag);

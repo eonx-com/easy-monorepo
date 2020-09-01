@@ -7,9 +7,26 @@ namespace EonX\EasyLogging\Interfaces\Config;
 interface LoggingConfigInterface
 {
     /**
+     * @param null|string[] $channels
+     */
+    public function channels(?array $channels = null): LoggingConfigInterface;
+
+    /**
+     * @param null|string[] $exceptChannels
+     */
+    public function exceptChannels(?array $exceptChannels = null): LoggingConfigInterface;
+
+    /**
      * @return null|string[]
      */
-    public function channels(): ?array;
+    public function getChannels(): ?array;
 
-    public function priority(): int;
+    /**
+     * @return null|string[]
+     */
+    public function getExceptChannels(): ?array;
+
+    public function getPriority(): int;
+
+    public function priority(?int $priority = null): LoggingConfigInterface;
 }

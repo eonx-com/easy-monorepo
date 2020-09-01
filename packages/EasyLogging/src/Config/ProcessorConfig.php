@@ -17,11 +17,14 @@ final class ProcessorConfig extends AbstractLoggingConfig implements ProcessorCo
     /**
      * @param null|string[] $channels
      */
-    public function __construct(ProcessorInterface $processor, ?array $channels = null, ?int $priority = null)
+    public function __construct(ProcessorInterface $processor)
     {
         $this->processor = $processor;
+    }
 
-        parent::__construct($channels, $priority);
+    public static function create(ProcessorInterface $processor): self
+    {
+        return new self($processor);
     }
 
     public function processor(): ProcessorInterface

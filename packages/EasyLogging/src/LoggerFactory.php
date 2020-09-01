@@ -29,6 +29,11 @@ final class LoggerFactory implements LoggerFactoryInterface
     private $handlerConfigs = [];
 
     /**
+     * @var string
+     */
+    private $loggerClass;
+
+    /**
      * @var \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface[]
      */
     private $loggerConfigurators = [];
@@ -43,9 +48,10 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private $processorConfigs = [];
 
-    public function __construct(?string $defaultChannel = null)
+    public function __construct(?string $defaultChannel = null, ?string $loggerClass = null)
     {
         $this->defaultChannel = $defaultChannel ?? self::DEFAULT_CHANNEL;
+        $this->loggerClass = $loggerClass ?? Logger::class;
     }
 
     public function create(?string $channel = null): Logger
@@ -56,7 +62,8 @@ final class LoggerFactory implements LoggerFactoryInterface
             return $this->loggers[$channel];
         }
 
-        $logger = new Logger($channel, $this->getHandlers($channel), $this->getProcessors($channel));
+        $loggerClass = $this->loggerClass;
+        $logger = new $loggerClass($channel, $this->getHandlers($channel), $this->getProcessors($channel));
 
         foreach ($this->getLoggerConfigurators($channel) as $configurator) {
             $configurator->configure($logger);
@@ -121,12 +128,12 @@ final class LoggerFactory implements LoggerFactoryInterface
     private function filterAndSortConfigs(array $configs, string $channel): array
     {
         $filter = function (LoggingConfigInterface $config) use ($channel): bool {
-            // If no channels set, applies to all channels
-            if ($config->channels() === null) {
-                return true;
+            // Priority to inclusive channels
+            if ($config->getChannels() !== null) {
+                return \in_array($channel, $config->getChannels(), true);
             }
 
-            return \in_array($channel, $config->channels(), true);
+            return \in_array($channel, $config->getExceptChannels() ?? [], true) === false;
         };
 
         return $this->sortConfigs(\array_filter($configs, $filter));
@@ -188,7 +195,7 @@ final class LoggerFactory implements LoggerFactoryInterface
     private function sortConfigs(array $configs): array
     {
         \usort($configs, static function (LoggingConfigInterface $first, LoggingConfigInterface $second): int {
-            return $first->priority() <=> $second->priority();
+            return $first->getPriority() <=> $second->getPriority();
         });
 
         return $configs;
