@@ -68,6 +68,9 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
         return \array_values(\array_map($map, $permissions));
     }
 
+    /**
+     * @return mixed[]
+     */
     private function formatProvider(ProviderInterface $provider): array
     {
         return ['class' => \get_class($provider), 'id' => $provider->getUniqueId()];
@@ -95,6 +98,9 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
         return ['class' => \get_class($apiToken), 'original' => $apiToken->getOriginalToken(),];
     }
 
+    /**
+     * @return mixed[]
+     */
     private function formatUser(UserInterface $user): array
     {
         return ['class' => \get_class($user), 'id' => $user->getUniqueId()];
