@@ -23,8 +23,8 @@ use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
-use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
+use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\RandomGenerator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class EasyAsyncExtensionTest extends AbstractTestCase
@@ -63,13 +63,13 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
             DateTimeGeneratorInterface::class => DateTimeGenerator::class,
             JobFactoryInterface::class => JobFactory::class,
             JobLogFactoryInterface::class => JobLogFactory::class,
-            UuidV4GeneratorInterface::class => RamseyUuidV4Generator::class,
             'default_job_log_updater' => JobLogUpdater::class,
             DataCleanerInterface::class => $implementationServices['data_cleaner'],
             JobLogPersisterInterface::class => $implementationServices['job_log_persister'],
             'default_job_persister' => $implementationServices['job_persister'],
             JobPersisterInterface::class => WithEventsJobPersister::class,
             JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class,
+            RandomGeneratorInterface::class => RandomGenerator::class,
         ];
 
         foreach ($services as $abstract => $concrete) {

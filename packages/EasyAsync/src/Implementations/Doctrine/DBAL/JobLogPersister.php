@@ -16,7 +16,7 @@ use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
-use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
+use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use Psr\Log\LoggerInterface;
 
 final class JobLogPersister extends AbstractPersister implements JobLogPersisterInterface
@@ -34,12 +34,12 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
     public function __construct(
         Connection $conn,
         DateTimeGeneratorInterface $dateTime,
-        UuidV4GeneratorInterface $uuid,
+        RandomGeneratorInterface $randomGenerator,
         JobPersisterInterface $jobPersister,
         LoggerInterface $logger,
         string $table
     ) {
-        parent::__construct($conn, $dateTime, $uuid, $table);
+        parent::__construct($conn, $dateTime, $randomGenerator, $table);
 
         $this->jobPersister = $jobPersister;
         $this->logger = $logger;

@@ -19,6 +19,7 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyAsync\Tests\Stubs\JobPersisterStub;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Mockery\MockInterface;
 use Psr\Log\NullLogger;
@@ -354,10 +355,13 @@ final class JobLogPersisterTest extends AbstractTestCase
         ?JobPersisterInterface $jobPersister = null,
         ?string $table = null
     ): JobLogPersister {
+        $randomGenerator = new RandomGenerator();
+        $randomGenerator->setUuidV4Generator(new RamseyUuidV4Generator());
+
         return new JobLogPersister(
             $conn,
             new DateTimeGenerator(),
-            new RamseyUuidV4Generator(),
+            $randomGenerator,
             $jobPersister ?? new JobPersisterStub(),
             new NullLogger(),
             $table ?? 'job_logs'

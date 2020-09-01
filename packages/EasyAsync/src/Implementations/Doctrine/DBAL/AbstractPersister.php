@@ -9,7 +9,7 @@ use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
 use EonX\EasyAsync\Interfaces\EasyAsyncDataInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
-use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
+use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 
 abstract class AbstractPersister
 {
@@ -29,20 +29,20 @@ abstract class AbstractPersister
     protected $table;
 
     /**
-     * @var \EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface
+     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
      */
-    protected $uuid;
+    protected $randomGenerator;
 
     public function __construct(
         Connection $conn,
         DateTimeGeneratorInterface $datetime,
-        UuidV4GeneratorInterface $uuid,
+        RandomGeneratorInterface $randomGenerator,
         string $table
     ) {
         $this->conn = $conn;
         $this->datetime = $datetime;
         $this->table = $table;
-        $this->uuid = $uuid;
+        $this->randomGenerator = $randomGenerator;
     }
 
     protected function createPaginator(StartSizeDataInterface $startSizeData): DoctrineDbalLengthAwarePaginator
@@ -67,7 +67,7 @@ abstract class AbstractPersister
 
     private function insert(EasyAsyncDataInterface $data): void
     {
-        $data->setId($this->uuid->generate());
+        $data->setId($this->randomGenerator->uuidV4());
 
         $params = $data->toArray();
         $now = $this->getDateTimeNow();

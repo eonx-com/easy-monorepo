@@ -13,8 +13,8 @@ use EonX\EasyAsync\Interfaces\JobPersisterInterface;
 use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
-use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
+use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\RandomGenerator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -30,8 +30,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(JobLogFactoryInterface::class, JobLogFactory::class);
 
-    $services->set(UuidV4GeneratorInterface::class, RamseyUuidV4Generator::class);
-
     $services->set('default_job_log_updater', JobLogUpdater::class);
 
     $services->set(JobLogUpdaterInterface::class, WithEventsJobLogUpdater::class)
@@ -39,4 +37,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(JobPersisterInterface::class, WithEventsJobPersister::class)
         ->bind('$decorated', '@default_job_persister');
+
+    $services->set(RandomGeneratorInterface::class, RandomGenerator::class);
 };
