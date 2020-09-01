@@ -69,7 +69,6 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
             'default_job_persister' => $implementationServices['job_persister'],
             JobPersisterInterface::class => WithEventsJobPersister::class,
             JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class,
-            RandomGeneratorInterface::class => RandomGenerator::class,
         ];
 
         foreach ($services as $abstract => $concrete) {
