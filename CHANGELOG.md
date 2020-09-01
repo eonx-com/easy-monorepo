@@ -2,7 +2,17 @@
 
 <!-- dumped content start -->
 
-## v2.4.43 - 2020-09-01
+## v2.4.44 - 2020-09-01
+
+### EasySecurity
+
+- [#337] Improve symfony bridge by using monolog bridge/bundle
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.43] - 2020-09-01
 
 ### EasySecurity
 
@@ -2250,3 +2260,5 @@
 [@ERuban]: https://github.com/ERuban
 [#336]: https://github.com/eonx-com/easy-monorepo/pull/336
 [v2.4.42]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.41...v2.4.42
+[#337]: https://github.com/eonx-com/easy-monorepo/pull/337
+[v2.4.43]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.42...v2.4.43
