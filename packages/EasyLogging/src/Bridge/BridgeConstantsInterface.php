@@ -14,6 +14,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_LOGGER_CLASS = 'easy_logging.logger_class';
+
+    /**
+     * @var string
+     */
     public const TAG_HANDLER_CONFIG_PROVIDER = 'easy_logging.handler_config_provider';
 
     /**
