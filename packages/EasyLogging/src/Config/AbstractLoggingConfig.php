@@ -6,7 +6,7 @@ namespace EonX\EasyLogging\Config;
 
 use EonX\EasyLogging\Interfaces\Config\LoggingConfigInterface;
 
-class AbstractLoggingConfig implements LoggingConfigInterface
+abstract class AbstractLoggingConfig implements LoggingConfigInterface
 {
     /**
      * @var null|string[]

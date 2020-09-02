@@ -52,5 +52,10 @@ final class EasyLoggingExtension extends Extension
         foreach (static::$autoConfigs as $interface => $tag) {
             $container->registerForAutoconfiguration($interface)->addTag($tag);
         }
+
+        // Default stream handler
+        if ($config['stream_handler'] ?? true) {
+            $loader->load('default_stream_handler.php');
+        }
     }
 }
