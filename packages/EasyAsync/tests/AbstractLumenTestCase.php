@@ -6,6 +6,7 @@ namespace EonX\EasyAsync\Tests;
 
 use EonX\EasyAsync\Bridge\Laravel\Providers\EasyAsyncServiceProvider;
 use EonX\EasyEventDispatcher\Bridge\Laravel\EasyEventDispatcherServiceProvider;
+use EonX\EasyRandom\Bridge\Laravel\EasyRandomServiceProvider;
 use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
@@ -24,6 +25,7 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         $app = new Application(__DIR__);
         $app->register(EasyEventDispatcherServiceProvider::class);
         $app->register(EasyAsyncServiceProvider::class);
+        $app->register(EasyRandomServiceProvider::class);
 
         return $this->app = $app;
     }
