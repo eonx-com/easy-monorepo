@@ -23,14 +23,14 @@ final class TrimStringsTest extends AbstractTestCase
         $data = ['abc' => '  123  '];
         $except = [];
         $expectedResult = ['abc' => '123'];
-        /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $cleaner */
-        $cleaner = $this->mock(
+        /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
+        $trimmer = $this->mock(
             StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
                 $mock->shouldReceive('trim')->once()->with($data, $except)->andReturn($expectedResult);
             }
         );
-        $middleware = new TrimStrings($cleaner, $except);
+        $middleware = new TrimStrings($trimmer, $except);
         $symfonyRequest = new SymfonyRequest($data);
         $symfonyRequest->server->set('REQUEST_METHOD', 'GET');
         $request = Request::createFromBase($symfonyRequest);

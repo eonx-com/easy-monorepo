@@ -21,14 +21,14 @@ final class TrimStrings
     /**
      * @var \EonX\EasyCore\Helpers\StringsTrimmerInterface
      */
-    private $cleaner;
+    private $trimmer;
 
     /**
      * @param string[] $except
      */
-    public function __construct(StringsTrimmerInterface $cleaner, array $except = [])
+    public function __construct(StringsTrimmerInterface $trimmer, array $except = [])
     {
-        $this->cleaner = $cleaner;
+        $this->trimmer = $trimmer;
         $this->except = $except;
     }
 
@@ -62,6 +62,6 @@ final class TrimStrings
      */
     private function cleanParameterBag(ParameterBag $bag): void
     {
-        $bag->replace($this->cleaner->trim($bag->all(), $this->except));
+        $bag->replace($this->trimmer->trim($bag->all(), $this->except));
     }
 }

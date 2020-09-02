@@ -75,15 +75,15 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
         $context = [];
         $except = ['some-key'];
         $expectedResult = ['abc' => '123'];
-        /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $cleaner */
-        $cleaner = $this->mock(
+        /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
+        $trimmer = $this->mock(
             StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
                 $mock->shouldReceive('trim')->once()->with($data, $except)->andReturn($expectedResult);
             }
         );
         $decorated = new DenormalizerInterfaceStub();
-        $denormalizer = new TrimStringsDenormalizer($decorated, $cleaner, $except);
+        $denormalizer = new TrimStringsDenormalizer($decorated, $trimmer, $except);
 
         $result = $denormalizer->denormalize($data, $type, $format, $context);
 

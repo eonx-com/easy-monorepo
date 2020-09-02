@@ -15,7 +15,7 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
     /**
      * @var \EonX\EasyCore\Helpers\StringsTrimmerInterface
      */
-    private $cleaner;
+    private $trimmer;
 
     /**
      * @var \Symfony\Component\Serializer\Normalizer\DenormalizerInterface
@@ -35,10 +35,10 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
      */
     public function __construct(
         DenormalizerInterface $decorated,
-        StringsTrimmerInterface $cleaner,
+        StringsTrimmerInterface $trimmer,
         array $except = []
     ) {
-        $this->cleaner = $cleaner;
+        $this->trimmer = $trimmer;
         $this->decorated = $decorated;
         $this->except = $except;
     }
@@ -55,7 +55,7 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
      */
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $data = $this->cleaner->trim($data, $this->except);
+        $data = $this->trimmer->trim($data, $this->except);
 
         return $this->decorated->denormalize($data, $type, $format, $context);
     }
