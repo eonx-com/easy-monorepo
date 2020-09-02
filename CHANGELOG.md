@@ -2,7 +2,21 @@
 
 <!-- dumped content start -->
 
-## v2.4.44 - 2020-09-01
+## v2.4.45 - 2020-09-02
+
+### EasyAsync
+
+- [#334] Use eonx-com/easy-random to generate UUID v4, Thanks to [@DKeeper]
+
+### EasyLogging
+
+- [#338] Implement stream_handler config + SelfProcessorConfigPr…
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.44] - 2020-09-01
 
 ### EasySecurity
 
@@ -2262,3 +2276,7 @@
 [v2.4.42]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.41...v2.4.42
 [#337]: https://github.com/eonx-com/easy-monorepo/pull/337
 [v2.4.43]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.42...v2.4.43
+[#338]: https://github.com/eonx-com/easy-monorepo/pull/338
+[#334]: https://github.com/eonx-com/easy-monorepo/pull/334
+[v2.4.44]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.43...v2.4.44
+[@DKeeper]: https://github.com/DKeeper
