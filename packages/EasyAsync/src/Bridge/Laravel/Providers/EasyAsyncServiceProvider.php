@@ -23,6 +23,8 @@ use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\RandomGenerator;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyAsyncServiceProvider extends ServiceProvider
@@ -44,6 +46,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             JobLogFactoryInterface::class => JobLogFactory::class,
             'default_job_log_updater' => JobLogUpdater::class,
             JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class,
+            RandomGeneratorInterface::class => RandomGenerator::class,
         ];
 
         foreach ($simples as $abstract => $concrete) {
