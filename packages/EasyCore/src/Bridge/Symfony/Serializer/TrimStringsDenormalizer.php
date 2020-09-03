@@ -40,7 +40,7 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
     ) {
         $this->trimmer = $trimmer;
         $this->decorated = $decorated;
-        $this->except = $except;
+        $this->except = $except ?? [];
     }
 
     /**
