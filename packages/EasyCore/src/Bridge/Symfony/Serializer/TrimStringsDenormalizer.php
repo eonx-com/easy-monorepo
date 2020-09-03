@@ -31,12 +31,12 @@ final class TrimStringsDenormalizer implements DenormalizerInterface
     private $except;
 
     /**
-     * @param string[] $except
+     * @param string[]|null $except
      */
     public function __construct(
         DenormalizerInterface $decorated,
         StringsTrimmerInterface $trimmer,
-        array $except = []
+        ?array $except = null
     ) {
         $this->trimmer = $trimmer;
         $this->decorated = $decorated;

@@ -24,12 +24,12 @@ final class TrimStrings
     private $trimmer;
 
     /**
-     * @param string[] $except
+     * @param string[]|null $except
      */
-    public function __construct(StringsTrimmerInterface $trimmer, array $except = [])
+    public function __construct(StringsTrimmerInterface $trimmer, ?array $except = null)
     {
         $this->trimmer = $trimmer;
-        $this->except = $except;
+        $this->except = $except ?? [];
     }
 
     /**

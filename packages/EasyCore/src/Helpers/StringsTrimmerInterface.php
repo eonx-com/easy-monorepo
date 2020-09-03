@@ -10,9 +10,9 @@ interface StringsTrimmerInterface
      * Returns the cleared value, excluding those specified in the list.
      *
      * @param mixed $data
-     * @param string[] $except
+     * @param string[]|null $except
      *
      * @return mixed
      */
-    public function trim($data, array $except);
+    public function trim($data, ?array $except = null);
 }
