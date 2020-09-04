@@ -10,7 +10,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class NormalizerInterfaceStub implements DenormalizerInterface, NormalizerInterface
 {
     /**
-     * {@inheritdoc}
+     * @param mixed $data
+     * @param string $type
+     * @param string|null $format
+     * @param mixed[]|null $context
+     *
+     * @return mixed
      */
     public function denormalize($data, $type, $format = null, ?array $context = null)
     {
@@ -18,7 +23,11 @@ final class NormalizerInterfaceStub implements DenormalizerInterface, Normalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $object
+     * @param string|null $format
+     * @param mixed[]|null $context
+     *
+     * @return mixed
      */
     public function normalize($object, $format = null, ?array $context = null)
     {

@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class TrimStringsDenormalizer implements DenormalizerInterface, NormalizerInterface, SerializerAwareInterface
 {
     /**
-     * @var \Symfony\Component\Serializer\Normalizer\DenormalizerInterface
+     * @var \Symfony\Component\Serializer\Normalizer\NormalizerInterface
      */
     private $decorated;
 
@@ -55,23 +55,38 @@ final class TrimStringsDenormalizer implements DenormalizerInterface, Normalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $data
+     * @param string $type
+     * @param string|null $format
+     * @param mixed[]|null $context
+     *
+     * @return mixed
+     *
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
     public function denormalize($data, $type, $format = null, ?array $context = null)
     {
         if (\is_string($data) || \is_array($data)) {
             $data = $this->trimmer->trim($data, $this->except);
         }
+        /** @var \Symfony\Component\Serializer\Normalizer\DenormalizerInterface $normalizer */
+        $normalizer = $this->decorated;
 
-        return $this->decorated->denormalize($data, $type, $format, $context);
+        return $normalizer->denormalize($data, $type, $format, $context ?? []);
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $object
+     * @param string|null $format
+     * @param mixed[]|null $context
+     *
+     * @return mixed
+     *
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
     public function normalize($object, $format = null, ?array $context = null)
     {
-        return $this->decorated->normalize($object, $format, $context);
+        return $this->decorated->normalize($object, $format, $context ?? []);
     }
 
     public function setSerializer(SerializerInterface $serializer): void
@@ -86,7 +101,10 @@ final class TrimStringsDenormalizer implements DenormalizerInterface, Normalizer
      */
     public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $this->decorated->supportsDenormalization($data, $type, $format);
+        /** @var \Symfony\Component\Serializer\Normalizer\DenormalizerInterface $normalizer */
+        $normalizer = $this->decorated;
+
+        return $normalizer->supportsDenormalization($data, $type, $format);
     }
 
     /**

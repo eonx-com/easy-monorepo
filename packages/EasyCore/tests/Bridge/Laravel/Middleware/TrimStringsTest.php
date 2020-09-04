@@ -46,7 +46,7 @@ final class TrimStringsTest extends AbstractTestCase
     public function testHandleSucceedsWithJsonRequest(): void
     {
         $data = ['abc' => '  123  '];
-        $json = \json_encode($data);
+        $json = (string)\json_encode($data);
         $except = [];
         $expectedResult = ['abc' => '123'];
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
