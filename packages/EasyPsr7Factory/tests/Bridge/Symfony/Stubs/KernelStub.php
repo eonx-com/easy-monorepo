@@ -16,24 +16,6 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
-    /**
-     * @var null|string[]
-     */
-    private $configs;
-
-    /**
-     * @param null|string[] $configs
-     */
-    public function __construct(
-        string $environment,
-        bool $debug,
-        ?array $configs = null
-    ) {
-        $this->configs = $configs;
-
-        parent::__construct($environment, $debug);
-    }
-
     public function process(ContainerBuilder $container): void
     {
         $requestDef = (new Definition(Request::class))
@@ -62,10 +44,5 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         // No body needed.
-    }
-
-    private function configureRequestStack(RequestStack $requestStack): void
-    {
-        $requestStack->push($this->request);
     }
 }
