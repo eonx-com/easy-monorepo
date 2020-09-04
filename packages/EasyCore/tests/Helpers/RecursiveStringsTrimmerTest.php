@@ -6,6 +6,8 @@ namespace EonX\EasyCore\Tests\Helpers;
 
 use EonX\EasyCore\Helpers\RecursiveStringsTrimmer;
 use EonX\EasyCore\Tests\AbstractTestCase;
+use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\ToStringStub;
+use stdClass;
 
 /**
  * @covers \EonX\EasyCore\Helpers\RecursiveStringsTrimmer
@@ -19,33 +21,61 @@ final class RecursiveStringsTrimmerTest extends AbstractTestCase
      */
     public function provideDataForClean(): array
     {
+        $object1 = new stdClass();
+        $object2 = new ToStringStub();
+
         return [
-            'tests clean if data is a string' => [
-                'data' => '  123  ',
+            'data is a string' => [
+                'data' => " \t\n\r\0\x0B" . '123' . PHP_EOL,
                 'except' => [],
                 'expectedResult' => '123',
             ],
-            'tests clean if data is an integer' => [
+            'data is an integer' => [
                 'data' => 123,
                 'except' => [],
                 'expectedResult' => 123,
             ],
-            'tests clean if data is an array' => [
-                'data' => ['  123  ', '  abc  '],
+            'data is an bool' => [
+                'data' => true,
                 'except' => [],
-                'expectedResult' => ['123', 'abc'],
+                'expectedResult' => true,
             ],
-            'tests clean if data is an assoc array' => [
+            'data is an object' => [
+                'data' => $object1,
+                'except' => [],
+                'expectedResult' => $object1,
+            ],
+            'data is an object with `__toString`' => [
+                'data' => $object2,
+                'except' => [],
+                'expectedResult' => $object2,
+            ],
+            'data is an array of objects' => [
+                'data' => [$object1, $object2],
+                'except' => [],
+                'expectedResult' => [$object1, $object2],
+            ],
+            'data is an float' => [
+                'data' => 1.23,
+                'except' => [],
+                'expectedResult' => 1.23,
+            ],
+            'data is an array' => [
+                'data' => ['  123  ', '  abc  ', 123],
+                'except' => [],
+                'expectedResult' => ['123', 'abc', 123],
+            ],
+            'data is an assoc array' => [
                 'data' => ['key1' => '  123  ', 'key2' => '  abc  '],
                 'except' => [],
                 'expectedResult' => ['key1' => '123', 'key2' => 'abc'],
             ],
-            'tests clean if data is an assoc array (except key1)' => [
+            'data is an assoc array (except key1)' => [
                 'data' => ['key1' => '  123  ', 'key2' => '  abc  '],
                 'except' => ['key1'],
                 'expectedResult' => ['key1' => '  123  ', 'key2' => 'abc'],
             ],
-            'tests clean if data is a multidimensional assoc array' => [
+            'data is a multidimensional assoc array' => [
                 'data' => [
                     'key1' => '  123  ',
                     'key2' => '  aBc  ',
@@ -72,7 +102,7 @@ final class RecursiveStringsTrimmerTest extends AbstractTestCase
                     ],
                 ],
             ],
-            'tests clean if data is a multidimensional assoc array (except key3.key3.3.key3.3.2)' => [
+            'data is a multidimensional assoc array (except key3.key3.3.key3.3.2)' => [
                 'data' => [
                     'key1' => '  123  ',
                     'key2' => '  aBc  ',
@@ -99,7 +129,7 @@ final class RecursiveStringsTrimmerTest extends AbstractTestCase
                     ],
                 ],
             ],
-            'tests clean if data is a mixed array' => [
+            'data is a mixed array' => [
                 'data' => ['key1' => '  123  ', 'key2' => '  abc  ', '  456  ', '  def  '],
                 'except' => [],
                 'expectedResult' => ['key1' => '123', 'key2' => 'abc', '456', 'def'],

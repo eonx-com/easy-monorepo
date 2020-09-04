@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Tests\Bridge\Symfony\Serializer;
 
 use EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsDenormalizer;
-use EonX\EasyCore\Helpers\RecursiveStringsTrimmer;
 use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
-use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\DenormalizerInterfaceStub;
+use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\NormalizerInterfaceStub;
 use Mockery\MockInterface;
 use stdClass;
 
@@ -22,67 +21,64 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
     /**
      * @return mixed[]
      *
-     * @see testSupportsDenormalizationSucceeds
+     * @see testDenormalizeSucceedsWithTrimValue
      */
-    public function provideDataForSupportsDenormalization(): array
+    public function provideDataForDenormalize(): array
     {
+        $object = new stdClass();
+
         return [
             'data is string' => [
                 '',
-                true,
+                '',
             ],
             'data is array' => [
                 [],
-                true,
+                [],
             ],
             'data is bool' => [
                 true,
-                false,
+                true,
             ],
             'data is numeric' => [
                 123,
-                false,
+                123,
             ],
             'data is object' => [
-                new stdClass(),
-                false,
+                $object,
+                $object,
             ],
         ];
     }
 
     /**
      * @param mixed $data
+     * @param mixed $expectedResult
      *
-     * @dataProvider provideDataForSupportsDenormalization
-     */
-    public function testSupportsDenormalizationSucceeds($data, bool $expectedResult): void
-    {
-        $denormalizer = new TrimStringsDenormalizer(new DenormalizerInterfaceStub(), new RecursiveStringsTrimmer());
-
-        $result = $denormalizer->supportsDenormalization($data, 'no-matter');
-
-        self::assertSame($expectedResult, $result);
-    }
-
-    /**
+     * @dataProvider provideDataForDenormalize
+     *
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
-    public function testDenormalizeSucceeds(): void
+    public function testDenormalizeSucceedsWithTrimValue($data, $expectedResult): void
     {
-        $data = ['abc' => '  123  '];
         $type = 'no-matter';
         $format = null;
         $context = [];
         $except = ['some-key'];
-        $expectedResult = ['abc' => '123'];
+        $expectation = static function (MockInterface $mock): void {
+            $mock->shouldNotReceive('trim');
+        };
+        if (\is_string($data) || \is_array($data)) {
+            $expectation = static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
+                $mock->shouldReceive('trim')->once()->with($data, $except)->andReturn($expectedResult);
+            };
+        }
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
         $trimmer = $this->mock(
             StringsTrimmerInterface::class,
-            static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
-                $mock->shouldReceive('trim')->once()->with($data, $except)->andReturn($expectedResult);
-            }
+            $expectation
         );
-        $decorated = new DenormalizerInterfaceStub();
+        $decorated = new NormalizerInterfaceStub();
         $denormalizer = new TrimStringsDenormalizer($decorated, $trimmer, $except);
 
         $result = $denormalizer->denormalize($data, $type, $format, $context);

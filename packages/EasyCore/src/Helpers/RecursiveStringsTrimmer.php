@@ -21,7 +21,7 @@ final class RecursiveStringsTrimmer implements StringsTrimmerInterface
         $this->except = $except ?? [];
 
         if (\is_array($data)) {
-            return $this->cleanArray($data, '');
+            return $this->cleanArray($data);
         }
 
         return $this->transform($data, '');
@@ -32,7 +32,7 @@ final class RecursiveStringsTrimmer implements StringsTrimmerInterface
      *
      * @return mixed[]
      */
-    private function cleanArray(array $data, string $keyPrefix = ''): array
+    private function cleanArray(array $data, ?string $keyPrefix = null): array
     {
         foreach ($data as $key => $value) {
             if (\is_array($value) === false) {

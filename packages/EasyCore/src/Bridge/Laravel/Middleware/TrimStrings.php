@@ -12,6 +12,7 @@ final class TrimStrings
 {
     /**
      * A list of array keys whose values will be ignored during processing.
+     *
      * @see \EonX\EasyCore\Tests\Helpers\RecursiveStringsTrimmerTest for example
      *
      * @var string[]
