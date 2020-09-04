@@ -30,7 +30,7 @@ final class ReplaceChannelsDefinitionPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds(self::MONOLOG_LOGGER_TAG) as $id => $tags) {
             foreach ($tags as $tag) {
-                if (($tag['channel'] ?? $defaultChannel) === $defaultChannel) {
+                if ($defaultChannel === ($tag['channel'] ?? $defaultChannel)) {
                     continue;
                 }
 

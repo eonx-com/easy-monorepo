@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Messages;
@@ -53,7 +54,8 @@ final class SlackMessageTest extends AbstractTestCase
     public function testGetters(callable $getMessage, array $body): void
     {
         /** @var \EonX\EasyNotification\Messages\SlackMessage $message */
-        $message = $getMessage(); // Trick for coverage
+        // Trick for coverage
+        $message = $getMessage();
 
         self::assertEquals(MessageInterface::TYPE_SLACK, $message->getType());
         self::assertEquals(Json::encode($body), $message->getBody());

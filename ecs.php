@@ -14,6 +14,12 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer;
 use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
+use SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff;
+use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\EasyCodingStandard\Configuration\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
@@ -29,7 +35,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     $parameters->set(Option::EXCLUDE_PATHS, [
-        '*/var/*.php',
+        'packages/*/var/*php',
         '*/vendor/*.php',
         __DIR__ . '/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php',
         __DIR__ . '/packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php'
@@ -44,7 +50,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         SetList::DEAD_CODE,
         SetList::ARRAY,
     ]);
-
+//
     $parameters->set(Option::SKIP, [
         CastSpacesFixer::class => null,
         OrderedClassElementsFixer::class => null,
@@ -53,12 +59,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         PhpUnitStrictFixer::class => null,
         BlankLineAfterOpeningTagFixer::class => null,
         MethodChainingIndentationFixer::class => null,
-        'SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff.NullTypeHintNotOnLastPosition' => null,
-        'SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingAnyTypeHint' => null,
-        'SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.MissingTraversableTypeHintSpecification' => null,
-        'SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingTraversableTypeHintSpecification' => null,
-        'SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.MissingAnyTypeHint' => null,
-        'SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingNativeTypeHint' => [
+        NullTypeHintOnLastPositionSniff::class . '.NullTypeHintNotOnLastPosition' => null,
+        ParameterTypeHintSniff::class . '.MissingAnyTypeHint' => null,
+        ReturnTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
+        ParameterTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
+        ReturnTypeHintSniff::class . '.MissingAnyTypeHint' => null,
+        ParameterTypeHintSniff::class . '.MissingNativeTypeHint' => [
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php',
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php',
             __DIR__ . '/packages/EasyLogging/src/Logger.php',

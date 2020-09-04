@@ -9,12 +9,12 @@ interface LoggingConfigInterface
     /**
      * @param null|string[] $channels
      */
-    public function channels(?array $channels = null): LoggingConfigInterface;
+    public function channels(?array $channels = null): self;
 
     /**
      * @param null|string[] $exceptChannels
      */
-    public function exceptChannels(?array $exceptChannels = null): LoggingConfigInterface;
+    public function exceptChannels(?array $exceptChannels = null): self;
 
     /**
      * @return null|string[]
@@ -28,5 +28,5 @@ interface LoggingConfigInterface
 
     public function getPriority(): int;
 
-    public function priority(?int $priority = null): LoggingConfigInterface;
+    public function priority(?int $priority = null): self;
 }

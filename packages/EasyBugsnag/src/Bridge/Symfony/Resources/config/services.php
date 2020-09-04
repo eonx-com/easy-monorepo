@@ -13,8 +13,8 @@ use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
-
 use Symfony\Component\HttpKernel\Kernel;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 

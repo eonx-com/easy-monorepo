@@ -17,7 +17,7 @@ abstract class AbstractRequestResolver implements ResolverInterface
 
     public function resolve(): RequestInterface
     {
-        if (\in_array(\php_sapi_name(), static::$inConsole, true)) {
+        if (\in_array(\PHP_SAPI, static::$inConsole, true)) {
             $argv = $_SERVER['argv'] ?? [];
 
             \array_shift($argv);
