@@ -85,7 +85,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
             __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
         ],
-        'SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.UselessAnnotation' => [
+        ParameterTypeHintSniff::class . '.UselessAnnotation' => [
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php',
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php',
             __DIR__ . '/packages/EasyLogging/src/Logger.php',
@@ -104,7 +104,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Laravel/Stubs/LaravelEventDispatcherStub.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
             __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php', ],
-        'SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.MissingNativeTypeHint' => [
+        ReturnTypeHintSniff::class . '.MissingNativeTypeHint' => [
             __DIR__ . '/packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php',
             __DIR__ . '/packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
             __DIR__ . '/packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php',
@@ -116,7 +116,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
             __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
         ],
-        'SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.UselessAnnotation' => [
+        ReturnTypeHintSniff::class . '.UselessAnnotation' => [
             __DIR__ . '/packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php',
             __DIR__ . '/packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
             __DIR__ . '/packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php',
@@ -128,13 +128,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
             __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
         ],
-        'SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff.UselessVariable' => [
+        UselessVariableSniff::class . '.UselessVariable' => [
             __DIR__ . '/packages/EasySchedule/src/Schedule.php',
         ],
-        'SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff.WriteOnlyProperty' => [
+        UnusedPrivateElementsSniff::class . '.WriteOnlyProperty' => [
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php',
         ],
-        'SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff.ReferencedGeneralException' => [
+        ReferenceThrowableOnlySniff::class . '.ReferencedGeneralException' => [
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php',
             __DIR__ . '/packages/EasyErrorHandler/tests/Bridge/Laravel/Handler/HandlerTest.php',
         ],
