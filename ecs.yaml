@@ -1,4 +1,10 @@
 parameters:
+    paths:
+        - packages
+        - changelog-linker.php
+        - monorepo-builder.php
+        # - ecs.php
+
     exclude_files:
         - '*/var/*.php'
         - '*/vendor/*.php'
