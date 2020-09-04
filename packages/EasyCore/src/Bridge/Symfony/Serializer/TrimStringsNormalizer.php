@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * @SuppressWarnings(PHPMD.UnusedFormalParameter) Method signatures are defined by parent
  */
-final class TrimStringsDenormalizer implements DenormalizerInterface, NormalizerInterface, SerializerAwareInterface
+final class TrimStringsNormalizer implements DenormalizerInterface, NormalizerInterface, SerializerAwareInterface
 {
     /**
      * @var \Symfony\Component\Serializer\Normalizer\NormalizerInterface

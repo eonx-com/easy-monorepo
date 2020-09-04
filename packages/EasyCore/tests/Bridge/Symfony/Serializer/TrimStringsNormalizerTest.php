@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Symfony\Serializer;
 
-use EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsDenormalizer;
+use EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsNormalizer;
 use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\NormalizerInterfaceStub;
@@ -12,11 +12,11 @@ use Mockery\MockInterface;
 use stdClass;
 
 /**
- * @covers \EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsDenormalizer
+ * @covers \EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsNormalizer
  *
  * @internal
  */
-final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
+final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
 {
     /**
      * @return mixed[]
@@ -79,7 +79,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
             $expectation
         );
         $decorated = new NormalizerInterfaceStub();
-        $denormalizer = new TrimStringsDenormalizer($decorated, $trimmer, $except);
+        $denormalizer = new TrimStringsNormalizer($decorated, $trimmer, $except);
 
         $result = $denormalizer->denormalize($data, $type, $format, $context);
 
