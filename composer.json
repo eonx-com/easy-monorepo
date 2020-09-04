@@ -10,12 +10,12 @@
         "packages/EasyTest/bin/easy-test"
     ],
     "require": {
+        "php": "^7.1",
         "doctrine/orm": "^2.6",
         "eonx-com/externals": "^1.0 || ^2.0",
         "nesbot/carbon": "^2.22",
         "dragonmantank/cron-expression": "^2.3",
         "ext-json": "*",
-        "php": "^7.1",
         "psr/event-dispatcher": "^1.0",
         "ramsey/uuid": "^3.9",
         "symfony/cache": "^4.2 || ^5.0",
