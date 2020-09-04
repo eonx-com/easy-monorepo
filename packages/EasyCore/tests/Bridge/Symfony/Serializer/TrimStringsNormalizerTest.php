@@ -7,7 +7,7 @@ namespace EonX\EasyCore\Tests\Bridge\Symfony\Serializer;
 use EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsNormalizer;
 use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
-use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\NormalizerInterfaceStub;
+use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\NormalizerStub;
 use Mockery\MockInterface;
 use stdClass;
 
@@ -78,7 +78,7 @@ final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
             StringsTrimmerInterface::class,
             $expectation
         );
-        $decorated = new NormalizerInterfaceStub();
+        $decorated = new NormalizerStub();
         $denormalizer = new TrimStringsNormalizer($decorated, $trimmer, $except);
 
         $result = $denormalizer->denormalize($data, $type, $format, $context);

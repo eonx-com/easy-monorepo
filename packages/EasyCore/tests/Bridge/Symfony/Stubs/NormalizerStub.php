@@ -7,7 +7,7 @@ namespace EonX\EasyCore\Tests\Bridge\Symfony\Stubs;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class NormalizerInterfaceStub implements DenormalizerInterface, NormalizerInterface
+final class NormalizerStub implements DenormalizerInterface, NormalizerInterface
 {
     /**
      * @param mixed $data
