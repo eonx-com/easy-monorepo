@@ -168,7 +168,7 @@
             "@composer validate --strict",
             "@validate-repo"
         ],
-        "check-phpstan": "vendor/bin/phpstan analyse packages --level max --error-format symplify",
+        "check-phpstan": "vendor/bin/phpstan analyse --error-format symplify",
         "check-security": "vendor/bin/security-checker security:check",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
         "changelog": [

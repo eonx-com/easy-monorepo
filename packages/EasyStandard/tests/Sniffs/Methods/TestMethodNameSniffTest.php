@@ -6,6 +6,7 @@ namespace EonX\EasyStandard\Tests\Sniffs\Methods;
 
 use EonX\EasyStandard\Sniffs\Methods\TestMethodNameSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyStandard\Sniffs\Methods\TestMethodNameSniff
@@ -15,16 +16,12 @@ use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 final class TestMethodNameSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @var string
-     */
-    private const FIXTURES_DIR = __DIR__ . '/Fixtures';
-
-    /**
      * Tests process not allowed method name fails.
      */
     public function testProcessNotAllowedMethodNameFails(): void
     {
-        $this->doTestWrongFile(self::FIXTURES_DIR . '/Wrong/NotAllowedMethodName.php');
+        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/NotAllowedMethodName.php');
+        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 2);
     }
 
     /**
@@ -32,7 +29,8 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
      */
     public function testProcessForbiddenMethodNameFails(): void
     {
-        $this->doTestWrongFile(self::FIXTURES_DIR . '/Wrong/ForbiddenMethodName.php');
+        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/ForbiddenMethodName.php');
+        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 2);
     }
 
     /**
@@ -40,7 +38,8 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
      */
     public function testProcessIgnoredMethodNameSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/IgnoredMethodName.php');
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/IgnoredMethodName.php');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -48,9 +47,9 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
      */
     public function testProcessSucceedsIfMethodNameSucceedsIfNamespaceDoesNotHaveForbiddenPatterns(): void
     {
-        $this->doTestCorrectFile(
-            self::FIXTURES_DIR . '/Correct/AnotherNamespace/NamespaceDoesNotHaveForbiddenPatterns.php'
-        );
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveForbiddenPatterns.php');
+
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -58,9 +57,9 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
      */
     public function testProcessSucceedsIfNamespaceDoesNotHaveAllowedPatterns(): void
     {
-        $this->doTestCorrectFile(
-            self::FIXTURES_DIR . '/Correct/AnotherNamespace/NamespaceDoesNotHaveAllowedPatterns.php'
-        );
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveAllowedPatterns.php');
+
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -68,7 +67,9 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
      */
     public function testProcessSucceedsIfMethodNameConformWithAllowedPatterns(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/MethodNameConformsWithAllowedPatterns.php');
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MethodNameConformsWithAllowedPatterns.php');
+
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -76,7 +77,8 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
      */
     public function testProcessSucceedsIfMethodNameDoesNotConformWithForbiddenPatterns(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/MethodNameDoesNotConformWithForbiddenPatterns.php');
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MethodNameDoesNotConformWithForbiddenPatterns.php');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     protected function getCheckerClass(): string

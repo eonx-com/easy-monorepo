@@ -6,23 +6,24 @@ namespace EonX\EasyStandard\Tests\Sniffs\Commenting;
 
 use EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class AnnotationSortingSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @return iterable<SmartFileInfo|int>
      */
     public function providerTestSniff(): iterable
     {
-        yield [__DIR__ . '/../../fixtures/Sniffs/Commenting/AnnotationSortingSniffTest.php.inc'];
+        yield [new SmartFileInfo(__DIR__ . '/../../fixtures/Sniffs/Commenting/AnnotationSortingSniffTest.php.inc'), 1];
     }
 
     /**
-     * @dataProvider providerTestSniff
+     * @dataProvider providerTestSniff()
      */
-    public function testSniff(string $file): void
+    public function testSniff(SmartFileInfo $smartFileInfo): void
     {
-        $this->doTestWrongFile($file);
+        $this->doTestFileInfoWithErrorCountOf($smartFileInfo, 1);
     }
 
     protected function getCheckerClass(): string

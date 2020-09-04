@@ -6,23 +6,24 @@ namespace EonX\EasyStandard\Tests\Sniffs\Namespaces;
 
 use EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class Psr4SniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @return iterable<SmartFileInfo|int>
      */
     public function providerTestSniff(): iterable
     {
-        yield [__DIR__ . '/../../fixtures/Sniffs/Namespaces/Psr4SniffTest.php.inc'];
+        yield [new SmartFileInfo(__DIR__ . '/../../fixtures/Sniffs/Namespaces/Psr4SniffTest.php.inc'), 1];
     }
 
     /**
-     * @dataProvider providerTestSniff
+     * @dataProvider providerTestSniff()
      */
-    public function testSniff(string $file): void
+    public function testSniff(SmartFileInfo $smartFileInfo, int $expectedErrorCount): void
     {
-        $this->doTestWrongFile($file);
+        $this->doTestFileInfoWithErrorCountOf($smartFileInfo, $expectedErrorCount);
     }
 
     protected function getCheckerClass(): string

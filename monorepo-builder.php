@@ -15,7 +15,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'symplify/easy-coding-standard' => '^8.2',
             'phpstan/phpstan' => '^0.12.42',
             'sensiolabs/security-checker' => '^5.0',
-        ]
+        ],
     ]);
 
     $parameters->set(Option::DIRECTORIES_TO_REPOSITORIES, [

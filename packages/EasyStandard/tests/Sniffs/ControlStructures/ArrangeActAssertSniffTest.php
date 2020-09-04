@@ -6,6 +6,7 @@ namespace EonX\EasyStandard\Tests\Sniffs\ControlStructures;
 
 use EonX\EasyStandard\Sniffs\ControlStructures\ArrangeActAssertSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyStandard\Sniffs\ControlStructures\ArrangeActAssertSniff
@@ -24,7 +25,8 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testClassWithNoTestNamespaceSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/noTestNamespace.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/Correct/noTestNamespace.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -32,7 +34,8 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testCorrectEmptyLinesSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/correctEmptyLines.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/Correct/correctEmptyLines.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -40,7 +43,8 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testExcessiveEmptyLinesFails(): void
     {
-        $this->doTestWrongFile(self::FIXTURES_DIR . '/Wrong/excessiveEmptyLines.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/Wrong/excessiveEmptyLines.php.inc');
+        $this->doTestFileInfoWithErrorCountOf($fileInfo, 1);
     }
 
     /**
@@ -48,7 +52,8 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testInlineCommentSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/inlineComment.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/Correct/inlineComment.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -56,7 +61,8 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testLineWithCommentSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/oneLineWithComment.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/Correct/oneLineWithComment.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -64,7 +70,8 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testMethodWithInnerCurlyBracketsSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/innerCurlyBrackets.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/Correct/innerCurlyBrackets.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -72,7 +79,8 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testNoEmptyLinesFails(): void
     {
-        $this->doTestWrongFile(self::FIXTURES_DIR . '/Wrong/noEmptyLines.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/Wrong/noEmptyLines.php.inc');
+        $this->doTestFileInfoWithErrorCountOf($fileInfo, 1);
     }
 
     /**
@@ -80,7 +88,8 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testNoTestMethodSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/noTestMethod.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/Correct/noTestMethod.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -88,7 +97,8 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testOneLineTestMethodSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/oneLineTestMethod.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/Correct/oneLineTestMethod.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -96,7 +106,8 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
      */
     public function testOneMultiLineSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/Correct/oneMultiLine.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/Correct/oneMultiLine.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     protected function getCheckerClass(): string

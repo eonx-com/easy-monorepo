@@ -6,6 +6,7 @@ namespace EonX\EasyStandard\Tests\Sniffs\Exceptions;
 
 use EonX\EasyStandard\Sniffs\Exceptions\ThrowExceptionMessageSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyStandard\Sniffs\Exceptions\ThrowExceptionMessageSniff
@@ -24,7 +25,8 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
      */
     public function testExceptionWithoutMessageSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/correct/noExceptionMessage.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/correct/noExceptionMessage.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -32,7 +34,8 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
      */
     public function testHardcodedMessageFails(): void
     {
-        $this->doTestWrongFile(self::FIXTURES_DIR . '/wrong/hardcodedMessage.php.inc');
+        $wrongFileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/wrong/hardcodedMessage.php.inc');
+        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 1);
     }
 
     /**
@@ -40,7 +43,8 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
      */
     public function testMessageWithValidPrefixSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/correct/validPrefix.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/correct/validPrefix.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -48,7 +52,8 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
      */
     public function testMultilineExceptionSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/correct/multilineException.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/correct/multilineException.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -56,7 +61,8 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
      */
     public function testThrowVariableSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/correct/throwVariable.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/correct/throwVariable.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     /**
@@ -64,7 +70,8 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
      */
     public function testVariableMessageSucceeds(): void
     {
-        $this->doTestCorrectFile(self::FIXTURES_DIR . '/correct/variableMessage.php.inc');
+        $fileInfo = new SmartFileInfo(self::FIXTURES_DIR . '/correct/variableMessage.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 
     protected function getCheckerClass(): string
@@ -75,7 +82,7 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
     protected function getCheckerConfiguration(): array
     {
         return [
-            'validPrefixes' => ['exceptions.'],
+            'validPrefixes' => ['exceptions'],
         ];
     }
 }
