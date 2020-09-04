@@ -9,10 +9,10 @@ use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer;
-use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer;
 use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
+use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
 use SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff;
 use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
@@ -38,7 +38,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         'packages/*/var/*php',
         '*/vendor/*.php',
         __DIR__ . '/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php',
-        __DIR__ . '/packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php'
+        __DIR__ . '/packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php',
     ]);
 
     $parameters->set(Option::SETS, [
@@ -50,7 +50,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         SetList::DEAD_CODE,
         SetList::ARRAY,
     ]);
-//
+
     $parameters->set(Option::SKIP, [
         CastSpacesFixer::class => null,
         OrderedClassElementsFixer::class => null,
@@ -83,7 +83,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Laravel/Stubs/LaravelEventDispatcherStub.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
-            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php'
+            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
         ],
         'SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.UselessAnnotation' => [
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php',
@@ -103,7 +103,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Laravel/Stubs/LaravelEventDispatcherStub.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
-            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php'],
+            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php', ],
         'SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.MissingNativeTypeHint' => [
             __DIR__ . '/packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php',
             __DIR__ . '/packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
@@ -114,7 +114,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Laravel/Stubs/LaravelEventDispatcherStub.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
-            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php'
+            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
         ],
         'SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.UselessAnnotation' => [
             __DIR__ . '/packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php',
@@ -126,18 +126,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Laravel/Stubs/LaravelEventDispatcherStub.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
-            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php'
+            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
         ],
         'SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff.UselessVariable' => [
-            __DIR__ . '/packages/EasySchedule/src/Schedule.php'
+            __DIR__ . '/packages/EasySchedule/src/Schedule.php',
         ],
         'SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff.WriteOnlyProperty' => [
-            __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php'
+            __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php',
         ],
         'SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff.ReferencedGeneralException' => [
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php',
             __DIR__ . '/packages/EasyErrorHandler/tests/Bridge/Laravel/Handler/HandlerTest.php',
-        ]
+        ],
     ]);
 
     $services = $containerConfigurator->services();
@@ -147,7 +147,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->call('configure', [[
             'equal' => false,
             'identical' => false,
-            'less_and_greater' => false
+            'less_and_greater' => false,
         ]]);
 
     $services->set(NoElseSniff::class);

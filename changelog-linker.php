@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symplify\ChangelogLinker\ValueObject\Option;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
-    $parameters->set('authors_to_ignore', ['natepage']);
+    $parameters->set(Option::AUTHORS_TO_IGNORE, ['natepage']);
 
-    $parameters->set('repository_url', 'https://github.com/eonx-com/easy-monorepo');
+    $parameters->set(Option::REPOSITORY_URL, 'https://github.com/eonx-com/easy-monorepo');
 };
