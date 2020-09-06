@@ -11,7 +11,7 @@ trait LogLevelAwareExceptionTrait
     /**
      * @var int
      */
-    protected $logLevel = Logger::INFO;
+    protected $logLevel = Logger::ERROR;
 
     public function getLogLevel(): int
     {
