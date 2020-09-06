@@ -21,6 +21,7 @@ use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use LogicException;
 use Mockery\MockInterface;
+use Monolog\Logger;
 use RuntimeException;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -454,14 +455,14 @@ final class HandlerTest extends AbstractTestCase
 
     public function testReportLogsExceptionWithLogLevelRetrievedFromLogLevelAwareException(): void
     {
-        $exception = (new BaseExceptionStub())->setLogLevel('critical');
+        $exception = (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL);
         /** @var \EonX\EasyLogging\Interfaces\LoggerInterface $logger */
         $logger = $this->mock(
             LoggerInterface::class,
             static function (MockInterface $mock) use ($exception): void {
                 $mock->shouldReceive('exception')
                     ->once()
-                    ->with($exception, 'critical');
+                    ->with($exception, Logger::CRITICAL);
             }
         );
         $handler = new Handler(

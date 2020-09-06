@@ -4,27 +4,21 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions\Traits;
 
-use EonX\EasyLogging\Interfaces\LoggerInterface;
+use Monolog\Logger;
 
 trait LogLevelAwareExceptionTrait
 {
     /**
-     * @var string
+     * @var int
      */
-    protected $logLevel = LoggerInterface::LEVEL_ERROR;
+    protected $logLevel = Logger::ERROR;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLogLevel(): string
+    public function getLogLevel(): int
     {
         return $this->logLevel;
     }
 
-    /**
-     * Sets the log level for an exception.
-     */
-    public function setLogLevel(string $logLevel): self
+    public function setLogLevel(int $logLevel): self
     {
         $this->logLevel = $logLevel;
 
