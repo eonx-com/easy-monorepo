@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Tests\Bridge\Laravel;
 
 use EonX\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider;
-use EonX\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider;
 use EonX\EasySecurity\Bridge\Laravel\EasySecurityServiceProvider;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use Laravel\Lumen\Application;

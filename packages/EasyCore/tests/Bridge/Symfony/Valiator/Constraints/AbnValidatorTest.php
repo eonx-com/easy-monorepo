@@ -92,7 +92,8 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $class = new class() {
             public function __toString()
             {
-                return '53004085616'; // Valid Abn
+                // Valid Abn
+                return '53004085616';
             }
         };
         $validator = new AbnValidator();

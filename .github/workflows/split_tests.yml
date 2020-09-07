@@ -1,6 +1,6 @@
 name: Split Tests
 
-on: [push]
+on: [push, pull-request]
 
 jobs:
     after_split_testing:

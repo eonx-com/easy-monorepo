@@ -28,9 +28,9 @@ final class ReplaceChannelsDefinitionPass implements CompilerPassInterface
     {
         $defaultChannel = $container->getParameter(BridgeConstantsInterface::PARAM_DEFAULT_CHANNEL);
 
-        foreach ($container->findTaggedServiceIds(self::MONOLOG_LOGGER_TAG) as $id => $tags) {
+        foreach ($container->findTaggedServiceIds(self::MONOLOG_LOGGER_TAG) as $tags) {
             foreach ($tags as $tag) {
-                if (($tag['channel'] ?? $defaultChannel) === $defaultChannel) {
+                if ($defaultChannel === ($tag['channel'] ?? $defaultChannel)) {
                     continue;
                 }
 

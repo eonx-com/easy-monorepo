@@ -29,7 +29,8 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
     private function mockDoctrinePaginator(): LegacyMockInterface
     {
         return $this->mock(DoctrinePaginator::class, function (LegacyMockInterface $paginator): void {
-            $items = [new \stdClass(), new \stdClass(), new \stdClass()]; // 3 items
+            // 3 items
+            $items = [new \stdClass(), new \stdClass(), new \stdClass()];
             $iterator = new \ArrayIterator($items);
 
             $paginator->shouldReceive('getIterator')->once()->withNoArgs()->andReturn($iterator);

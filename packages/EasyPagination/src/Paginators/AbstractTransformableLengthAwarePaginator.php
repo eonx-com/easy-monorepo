@@ -43,7 +43,8 @@ abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthA
     public function setTransformer(?callable $transformer = null): Transformable
     {
         $this->transformer = $transformer;
-        $this->transformedItems = null; // Reset transformed items
+        // Reset transformed items
+        $this->transformedItems = null;
 
         return $this;
     }

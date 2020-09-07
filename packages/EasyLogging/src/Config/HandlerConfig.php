@@ -15,7 +15,7 @@ final class HandlerConfig extends AbstractLoggingConfig implements HandlerConfig
     private $handler;
 
     /**
-     * @param null|string[] $channels
+     * @param null|string[] $handler
      */
     public function __construct(HandlerInterface $handler)
     {
