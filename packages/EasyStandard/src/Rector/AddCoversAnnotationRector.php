@@ -24,23 +24,18 @@ use Rector\NodeTypeResolver\Node\AttributeKey;
 final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements ConfigurableRectorInterface
 {
     /**
+     * @var string
+     */
+    public const REPLACE_ARRAY = 'replaceArr';
+
+    /**
      * @var string[]
      */
     private $replaceArr;
 
-    /**
-     * @param string[] $replaceArr
-     */
-    public function __construct(array $replaceArr = [])
-    {
-        $this->replaceArr = $replaceArr;
-    }
-
     public function configure(array $configuration): void
     {
-        // We need this method to comply with an interface
-        // New Rector configuration system doesn't work correctly with current Symfony DependencyInjection version
-        // So we still have to use old parameters injection through the constructor
+        $this->replaceArr = $configuration[self::REPLACE_ARRAY] ?? [];
     }
 
     /**

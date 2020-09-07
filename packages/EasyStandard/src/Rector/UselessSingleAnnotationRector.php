@@ -16,23 +16,18 @@ use Rector\NodeTypeResolver\Node\AttributeKey;
 final class UselessSingleAnnotationRector extends AbstractRector implements ConfigurableRectorInterface
 {
     /**
+     * @var string
+     */
+    public const ANNOTATIONS = 'annotations';
+
+    /**
      * @var string[]
      */
     private $annotations;
 
-    /**
-     * @param string[] $annotations
-     */
-    public function __construct(array $annotations = [])
-    {
-        $this->annotations = $annotations;
-    }
-
     public function configure(array $configuration): void
     {
-        // We need this method to comply with an interface
-        // New Rector configuration system doesn't work correctly with current Symfony DependencyInjection version
-        // So we still have to use old parameters injection through the constructor
+        $this->annotations = $configuration[self::ANNOTATIONS] ?? [];
     }
 
     public function getDefinition(): RectorDefinition
