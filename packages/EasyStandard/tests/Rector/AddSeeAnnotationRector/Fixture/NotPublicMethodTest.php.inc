@@ -5,7 +5,7 @@ namespace EonX\EasyStandard\Tests\Rector\AddSeeAnnotationRector\Fixture;
 
 use PHPUnit\Framework\TestCase;
 
-class NotPublicMethod extends TestCase
+class NotPublicMethodTest extends TestCase
 {
     public function provideSomeData(): array
     {

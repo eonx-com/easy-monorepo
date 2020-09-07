@@ -5,7 +5,7 @@ namespace EonX\EasyStandard\Tests\Rector\AddSeeAnnotationRector\Fixture;
 
 use PHPUnit\Framework\TestCase;
 
-class TestMethodWithoutDataProvider extends TestCase
+class TestMethodWithoutDataProviderTest extends TestCase
 {
     /**
      * Test add.
