@@ -17,23 +17,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class InheritDocRectorTest extends AbstractRectorTestCase
 {
     /**
-     * Provides test examples.
-     *
-     * @return Iterator<array>
+     * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
      */
     public function provideData(): Iterator
     {
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
-    }
-
-    /**
-     * Tests Rector rule.
-     *
-     * @dataProvider provideData()
-     */
-    public function test(SmartFileInfo $fileInfo): void
-    {
-        $this->doTestFileInfo($fileInfo);
     }
 
     public function testGetDefinitionSucceeds(): void
@@ -46,14 +34,16 @@ final class InheritDocRectorTest extends AbstractRectorTestCase
     }
 
     /**
-     * Returns Rector with configuration.
-     *
-     * @return mixed[]
+     * @dataProvider provideData()
      */
-    protected function getRectorsWithConfiguration(): array
+    public function testRule(SmartFileInfo $fileInfo): void
     {
-        return [
-            InheritDocRector::class => [],
-        ];
+        $this->doTestFileInfo($fileInfo);
+
+    }
+
+    protected function getRectorClass(): string
+    {
+        return InheritDocRector::class;
     }
 }

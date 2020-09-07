@@ -17,9 +17,7 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class AddSeeAnnotationRectorTest extends AbstractRectorTestCase
 {
     /**
-     * Provides test examples.
-     *
-     * @return Iterator<array>
+     * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
      */
     public function provideData(): Iterator
     {
@@ -36,24 +34,15 @@ final class AddSeeAnnotationRectorTest extends AbstractRectorTestCase
     }
 
     /**
-     * Tests Rector rule.
-     *
      * @dataProvider provideData()
      */
-    public function test(SmartFileInfo $fileInfo): void
+    public function testRule(SmartFileInfo $fileInfo): void
     {
         $this->doTestFileInfo($fileInfo);
     }
 
-    /**
-     * Returns Rector with configuration.
-     *
-     * @return mixed[]
-     */
-    protected function getRectorsWithConfiguration(): array
+    protected function getRectorClass(): string
     {
-        return [
-            AddSeeAnnotationRector::class => [],
-        ];
+        return AddSeeAnnotationRector::class;
     }
 }

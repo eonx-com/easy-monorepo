@@ -15,6 +15,7 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterfa
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\MainSecurityContextConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 

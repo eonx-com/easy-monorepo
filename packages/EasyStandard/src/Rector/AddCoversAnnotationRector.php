@@ -26,19 +26,19 @@ final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements C
     /**
      * @var string
      */
-    public const REPLACE_ARRAY = 'replaceArr';
+    public const REPLACE_ARRAY = 'replace_array';
 
     /**
      * @var string[]
      */
-    private $replaceArr;
+    private $replaceArray;
 
     /**
      * @param mixed[] $configuration
      */
     public function configure(array $configuration): void
     {
-        $this->replaceArr = $configuration[self::REPLACE_ARRAY] ?? [];
+        $this->replaceArray = $configuration[self::REPLACE_ARRAY] ?? [];
     }
 
     /**
@@ -120,7 +120,7 @@ PHP
      */
     private function resolveCoveredClassName(string $className): ?string
     {
-        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArr, '', $className));
+        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray, '', $className));
 
         if (\class_exists($className) === true) {
             return $className;

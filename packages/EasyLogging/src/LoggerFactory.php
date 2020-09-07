@@ -140,7 +140,7 @@ final class LoggerFactory implements LoggerFactoryInterface
     }
 
     /**
-     * @param iterable<mixed> $configs
+     * @param iterable<mixed> $iterable
      *
      * @return mixed[]
      */

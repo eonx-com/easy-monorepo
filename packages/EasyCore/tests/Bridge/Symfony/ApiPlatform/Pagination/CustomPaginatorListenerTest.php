@@ -49,7 +49,7 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
             $controllerResult
         );
 
-        (new CustomPaginationListener())->__invoke($event);
+        (new CustomPaginationListener())($event);
 
         self::assertEquals($isCustomPaginator, $event->getControllerResult() instanceof CustomPaginatorInterface);
     }

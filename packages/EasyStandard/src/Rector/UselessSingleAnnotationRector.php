@@ -23,7 +23,7 @@ final class UselessSingleAnnotationRector extends AbstractRector implements Conf
     /**
      * @var string[]
      */
-    private $annotations;
+    private $annotations = [];
 
     /**
      * @param mixed[] $configuration

@@ -9,7 +9,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symplify\AutowireArrayParameter\DependencyInjection\CompilerPass\AutowireArrayParameterCompilerPass;
 use Symplify\PackageBuilder\Contract\HttpKernel\ExtraConfigAwareKernelInterface;
-use Symplify\PackageBuilder\DependencyInjection\CompilerPass\AutoReturnFactoryCompilerPass;
 use Symplify\PackageBuilder\HttpKernel\SimpleKernelTrait;
 
 final class EasyDockerKernel extends Kernel implements ExtraConfigAwareKernelInterface
@@ -41,8 +40,6 @@ final class EasyDockerKernel extends Kernel implements ExtraConfigAwareKernelInt
 
     protected function build(ContainerBuilder $container): void
     {
-        $container
-            ->addCompilerPass(new AutoReturnFactoryCompilerPass())
-            ->addCompilerPass(new AutowireArrayParameterCompilerPass());
+        $container->addCompilerPass(new AutowireArrayParameterCompilerPass());
     }
 }

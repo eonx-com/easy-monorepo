@@ -107,6 +107,7 @@ abstract class AbstractTestCase extends TestCase
             public function __construct(?string $basePath = null, ?bool $runningInConsole = null)
             {
                 parent::__construct($basePath);
+
                 $this->runningInConsole = $runningInConsole;
             }
 

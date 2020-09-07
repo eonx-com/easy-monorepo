@@ -17,23 +17,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class UselessSingleAnnotationRectorTest extends AbstractRectorTestCase
 {
     /**
-     * Provides test examples.
-     *
-     * @return Iterator<array>
+     * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
      */
     public function provideData(): Iterator
     {
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
-    }
-
-    /**
-     * Tests Rector rule.
-     *
-     * @dataProvider provideData()
-     */
-    public function test(SmartFileInfo $fileInfo): void
-    {
-        $this->doTestFileInfo($fileInfo);
     }
 
     public function testGetDefinitionSucceeds(): void
@@ -43,6 +31,14 @@ final class UselessSingleAnnotationRectorTest extends AbstractRectorTestCase
         $definition = $rector->getDefinition();
 
         self::assertNotEmpty($definition->getDescription());
+    }
+
+    /**
+     * @dataProvider provideData()
+     */
+    public function testRule(SmartFileInfo $fileInfo): void
+    {
+        $this->doTestFileInfo($fileInfo);
     }
 
     /**

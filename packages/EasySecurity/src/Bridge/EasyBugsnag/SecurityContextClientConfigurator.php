@@ -95,7 +95,7 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
      */
     private function formatToken(ApiTokenInterface $apiToken): array
     {
-        return ['class' => \get_class($apiToken), 'original' => $apiToken->getOriginalToken(),];
+        return ['class' => \get_class($apiToken), 'original' => $apiToken->getOriginalToken()];
     }
 
     /**
