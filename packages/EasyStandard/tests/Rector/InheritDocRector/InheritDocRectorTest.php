@@ -39,7 +39,6 @@ final class InheritDocRectorTest extends AbstractRectorTestCase
     public function testRule(SmartFileInfo $fileInfo): void
     {
         $this->doTestFileInfo($fileInfo);
-
     }
 
     protected function getRectorClass(): string

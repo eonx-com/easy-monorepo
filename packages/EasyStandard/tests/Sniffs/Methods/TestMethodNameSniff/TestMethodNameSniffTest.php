@@ -102,7 +102,7 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
         return [
             'allowed' => [
                 [
-                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\Fixtures\\\(Correct|Wrong)$/',
+                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
                     'patterns' => [
                         '/test[A-Z]/',
                         '/test.+(Succeeds|Fails|ThrowsException|DoesNothing)/',
@@ -111,7 +111,7 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
             ],
             'forbidden' => [
                 [
-                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\Fixtures\\\(Correct|Wrong)$/',
+                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
                     'patterns' => [
                         '/(Succeed|Return|Throw)[^s]/',
                         '/(Successful|SuccessFully)/',
