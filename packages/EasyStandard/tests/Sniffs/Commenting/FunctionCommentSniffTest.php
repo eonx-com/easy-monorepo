@@ -32,11 +32,8 @@ final class FunctionCommentSniffTest extends AbstractCheckerTestCase
     public function provideWrongFixtures(): iterable
     {
         yield [self::FIXTURES_DIR . '/Wrong/missingDocComment.php.inc', 1];
-
         yield [self::FIXTURES_DIR . '/Wrong/incorrectCommentStyle.php.inc', 1];
-
         yield [self::FIXTURES_DIR . '/Wrong/blankLineAfterComment.php.inc', 2];
-
         yield [self::FIXTURES_DIR . '/Wrong/missingParamDocComment.php.inc', 1];
     }
 

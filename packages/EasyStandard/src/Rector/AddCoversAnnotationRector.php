@@ -33,6 +33,9 @@ final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements C
      */
     private $replaceArr;
 
+    /**
+     * @param mixed[] $configuration
+     */
     public function configure(array $configuration): void
     {
         $this->replaceArr = $configuration[self::REPLACE_ARRAY] ?? [];
