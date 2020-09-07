@@ -24,7 +24,6 @@ class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
 
     /**
      * @param mixed[] $decoderProviders
-     * @param null|string[] $defaultFactories
      */
     public function __construct(iterable $decoderProviders)
     {
