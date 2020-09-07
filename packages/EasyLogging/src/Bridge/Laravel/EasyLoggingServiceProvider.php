@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyLogging\Bridge\Laravel;
 
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
+use EonX\EasyLogging\Config\StreamHandlerConfigProvider;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use EonX\EasyLogging\LoggerFactory;
 use Illuminate\Support\ServiceProvider;
@@ -41,5 +42,14 @@ final class EasyLoggingServiceProvider extends ServiceProvider
 
         // Override default logger alias
         $this->app->alias(LoggerInterface::class, 'logger');
+
+        // Default stream handler
+        if (\config('easy-logging.stream_handler', true)) {
+            $this->app->singleton(StreamHandlerConfigProvider::class);
+            $this->app->tag(
+                StreamHandlerConfigProvider::class,
+                [BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER]
+            );
+        }
     }
 }

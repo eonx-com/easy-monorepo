@@ -22,7 +22,7 @@ interface SecurityContextInterface extends ContextInterface
     public function getAuthorizationMatrix(): AuthorizationMatrixInterface;
 
     /**
-     * @return \EonX\EasySecurity\Interfaces\PermissionInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
     public function getPermissions(): array;
 
@@ -31,7 +31,7 @@ interface SecurityContextInterface extends ContextInterface
     public function getProviderOrFail(): ProviderInterface;
 
     /**
-     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
     public function getRoles(): array;
 

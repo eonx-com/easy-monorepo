@@ -7,4 +7,5 @@ use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 return [
     'context_service_id' => SecurityContextInterface::class,
     'token_decoder' => null,
+    'easy_bugsnag' => true,
 ];

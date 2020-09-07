@@ -5,13 +5,11 @@ declare(strict_types=1);
 use EonX\EasyAsync\Factories\JobFactory;
 use EonX\EasyAsync\Factories\JobLogFactory;
 use EonX\EasyAsync\Generators\DateTimeGenerator;
-use EonX\EasyAsync\Generators\RamseyUuidGenerator;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
 use EonX\EasyAsync\Interfaces\JobFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
-use EonX\EasyAsync\Interfaces\UuidGeneratorInterface;
 use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
@@ -29,8 +27,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(JobFactoryInterface::class, JobFactory::class);
 
     $services->set(JobLogFactoryInterface::class, JobLogFactory::class);
-
-    $services->set(UuidGeneratorInterface::class, RamseyUuidGenerator::class);
 
     $services->set('default_job_log_updater', JobLogUpdater::class);
 
