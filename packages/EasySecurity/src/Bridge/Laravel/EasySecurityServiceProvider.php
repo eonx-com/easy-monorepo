@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Bridge\Laravel;
 
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
+use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagBridgeConstantsInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
+use EonX\EasySecurity\Bridge\EasyBugsnag\SecurityContextClientConfigurator;
 use EonX\EasySecurity\DeferredSecurityContextProvider;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
@@ -33,6 +35,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
         $contextServiceId = \config('easy-security.context_service_id');
 
         $this->registerAuthorizationMatrix();
+        $this->registerEasyBugsnag($contextServiceId);
         $this->registerSecurityContext($contextServiceId);
         $this->registerDeferredSecurityContextProvider($contextServiceId);
     }
@@ -61,6 +64,25 @@ final class EasySecurityServiceProvider extends ServiceProvider
             function () use ($contextServiceId): DeferredSecurityContextProviderInterface {
                 return new DeferredSecurityContextProvider($this->app, $contextServiceId);
             }
+        );
+    }
+
+    private function registerEasyBugsnag(string $contextServiceId): void
+    {
+        if (\config('easy-security.easy_bugsnag', false) === false
+            || \interface_exists(EasyBugsnagBridgeConstantsInterface::class) === false) {
+            return;
+        }
+
+        $this->app->singleton(
+            SecurityContextClientConfigurator::class,
+            function () use ($contextServiceId): SecurityContextClientConfigurator {
+                return new SecurityContextClientConfigurator($this->app->make($contextServiceId));
+            }
+        );
+        $this->app->tag(
+            SecurityContextClientConfigurator::class,
+            [EasyBugsnagBridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]
         );
     }
 

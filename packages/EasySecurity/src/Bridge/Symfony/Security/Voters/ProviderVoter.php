@@ -45,7 +45,8 @@ final class ProviderVoter extends Voter
         $provider = $this->securityContext->getProvider();
 
         if ($provider === null) {
-            return false; // AccessDenied if no provider on context
+            // AccessDenied if no provider on context
+            return false;
         }
 
         return $provider->getUniqueId() === $subject->getRestrictedProviderUniqueId();

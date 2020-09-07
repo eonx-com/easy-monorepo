@@ -59,7 +59,8 @@ final class UserFromJwtModifierTest extends AbstractTestCase
 
         $context->setToken(new Jwt([
             'sub' => 'user-id',
-            static::$mainJwtClaim => new stdClass(), // To cover getClaimSafely
+            // To cover getClaimSafely
+            static::$mainJwtClaim => new stdClass(),
         ], 'jwt'));
 
         yield 'User resolved' => [

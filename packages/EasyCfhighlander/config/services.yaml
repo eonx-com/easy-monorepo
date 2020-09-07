@@ -7,4 +7,10 @@ services:
         resource: '../src'
         exclude: '../src/{HttpKernel,File/File.php,File/FileStatus.php}'
 
+    Symfony\Component\Filesystem\Filesystem:
+        factory: ['@EonX\EasyCfhighlander\Factories\FilesystemFactory', 'create']
+
+    Twig\Environment:
+        factory: ['@EonX\EasyCfhighlander\Factories\TwigFactory', 'create']
+
     Symplify\PackageBuilder\Parameter\ParameterProvider: ~

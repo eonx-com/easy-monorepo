@@ -11,18 +11,30 @@ final class CloudFormationCommandTest extends AbstractTestCase
     public function testEasyDirectoryBackwardsCompatibility(): void
     {
         $inputs = [
-            'project', // project
-            'projectDatabase', // db_name
-            'projectDatabaseUsername', // db_username
-            'project.com', // dns_domain
-            'true', // redis_enabled,
-            'true', // elasticsearch_enabled
-            'project', // ssm_prefix
-            'project', // sqs_queue
-            'aws_dev_account', // dev_account
-            '599070804856', // ops_account
-            'aws_prod_account', // prod_account
-            'true', // cli_enabled
+            // project
+            'project',
+            // db_name
+            'projectDatabase',
+            // db_username
+            'projectDatabaseUsername',
+            // dns_domain
+            'project.com',
+            // redis_enabled,
+            'true',
+            // elasticsearch_enabled
+            'true',
+            // ssm_prefix
+            'project',
+            // sqs_queue
+            'project',
+            // dev_account
+            'aws_dev_account',
+            // ops_account
+            '599070804856',
+            // prod_account
+            'aws_prod_account',
+            // cli_enabled
+            'true',
         ];
 
         $filesNotExisting = [
@@ -46,18 +58,30 @@ final class CloudFormationCommandTest extends AbstractTestCase
     public function testGenerateCloudFormationFiles(): void
     {
         $inputs = [
-            'project', // project
-            'projectDatabase', // db_name
-            'projectDatabaseUsername', // db_username
-            'project.com', // dns_domain
-            'true', // redis_enabled,
-            'true', // elasticsearch_enabled
-            'project', // ssm_prefix
-            'project', // sqs_queue
-            'aws_dev_account', // dev_account
-            '599070804856', // ops_account
-            'aws_prod_account', // prod_account
-            'true', // cli_enabled
+            // project
+            'project',
+            // db_name
+            'projectDatabase',
+            // db_username
+            'projectDatabaseUsername',
+            // dns_domain
+            'project.com',
+            // redis_enabled,
+            'true',
+            // elasticsearch_enabled
+            'true',
+            // ssm_prefix
+            'project',
+            // sqs_queue
+            'project',
+            // dev_account
+            'aws_dev_account',
+            // ops_account
+            '599070804856',
+            // prod_account
+            'aws_prod_account',
+            // cli_enabled
+            'true',
         ];
 
         $files = [

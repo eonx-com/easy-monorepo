@@ -63,14 +63,16 @@ final class DumpEnvCommand extends AbstractCommand
         if ($output->isVerbose()) {
             if ($output->isVeryVerbose() === false) {
                 $output->writeln('// Use the next level of verbosity to output env vars values');
-                $output->writeln(''); // Empty line for spacing
+                // Empty line for spacing
+                $output->writeln('');
             }
 
             foreach ($envs as $name => $value) {
                 $output->writeln(\sprintf('- %s%s', $name, $output->isVeryVerbose() ? \sprintf('="%s"', $value) : ''));
             }
 
-            $output->writeln(''); // Empty line for spacing
+            // Empty line for spacing
+            $output->writeln('');
         }
 
         $contents = <<<EOF

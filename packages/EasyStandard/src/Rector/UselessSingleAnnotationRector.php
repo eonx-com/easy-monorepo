@@ -7,25 +7,23 @@ namespace EonX\EasyStandard\Rector;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use Rector\BetterPhpDocParser\Contract\PhpDocNode\AttributeAwareNodeInterface;
+use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
-final class UselessSingleAnnotationRector extends AbstractRector
+final class UselessSingleAnnotationRector extends AbstractRector implements ConfigurableRectorInterface
 {
+    /**
+     * @var string
+     */
+    public const ANNOTATIONS = 'annotations';
+
     /**
      * @var string[]
      */
-    private $annotations;
-
-    /**
-     * @param string[] $annotations
-     */
-    public function __construct(array $annotations = [])
-    {
-        $this->annotations = $annotations;
-    }
+    private $annotations = [];
 
     public function getNodeTypes(): array
     {
@@ -74,5 +72,10 @@ PHP
                 ),
             ]
         );
+    }
+
+    public function configure(array $configuration): void
+    {
+        $this->annotations = $configuration[self::ANNOTATIONS] ?? [];
     }
 }

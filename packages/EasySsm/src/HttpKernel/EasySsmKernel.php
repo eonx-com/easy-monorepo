@@ -10,7 +10,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symplify\AutowireArrayParameter\DependencyInjection\CompilerPass\AutowireArrayParameterCompilerPass;
-use Symplify\PackageBuilder\DependencyInjection\CompilerPass\AutoReturnFactoryCompilerPass;
 use Symplify\PackageBuilder\HttpKernel\SimpleKernelTrait;
 
 final class EasySsmKernel extends Kernel implements CompilerPassInterface
@@ -68,8 +67,6 @@ final class EasySsmKernel extends Kernel implements CompilerPassInterface
 
     protected function build(ContainerBuilder $container): void
     {
-        $container
-            ->addCompilerPass(new AutoReturnFactoryCompilerPass())
-            ->addCompilerPass(new AutowireArrayParameterCompilerPass());
+        $container->addCompilerPass(new AutowireArrayParameterCompilerPass());
     }
 }

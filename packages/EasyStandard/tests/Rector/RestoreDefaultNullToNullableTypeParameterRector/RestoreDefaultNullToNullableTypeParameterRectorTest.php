@@ -7,6 +7,7 @@ namespace EonX\EasyStandard\Tests\Rector\RestoreDefaultNullToNullableTypeParamet
 use EonX\EasyStandard\Rector\RestoreDefaultNullToNullableTypeParameterRector;
 use Iterator;
 use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyStandard\Rector\RestoreDefaultNullToNullableTypeParameterRector
@@ -16,9 +17,7 @@ use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
 final class RestoreDefaultNullToNullableTypeParameterRectorTest extends AbstractRectorTestCase
 {
     /**
-     * Provides test examples.
-     *
-     * @return \Iterator<array>
+     * @return \Iterator<SmartFileInfo>
      */
     public function provideData(): Iterator
     {
@@ -26,24 +25,15 @@ final class RestoreDefaultNullToNullableTypeParameterRectorTest extends Abstract
     }
 
     /**
-     * Tests Rector rule.
-     *
      * @dataProvider provideData()
      */
-    public function testRule(string $file): void
+    public function testRule(SmartFileInfo $fileInfo): void
     {
-        $this->doTestFile($file);
+        $this->doTestFileInfo($fileInfo);
     }
 
-    /**
-     * Returns Rector with configuration.
-     *
-     * @return mixed[]
-     */
-    protected function getRectorsWithConfiguration(): array
+    protected function getRectorClass(): string
     {
-        return [
-            RestoreDefaultNullToNullableTypeParameterRector::class => [],
-        ];
+        return RestoreDefaultNullToNullableTypeParameterRector::class;
     }
 }

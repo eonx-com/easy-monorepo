@@ -1,2 +1,9 @@
 easy_bugsnag:
     api_key: 'my-bugsnag-api-key'
+
+services:
+    doctrine.dbal.logger.chain.default:
+        class: Doctrine\DBAL\Logging\LoggerChain
+
+    doctrine.dbal.default_connection:
+        class: Doctrine\DBAL\Driver\Connection

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use EonX\EasyPagination\Bridge\Symfony\Factories\ServerRequestFactory;
 use EonX\EasyPagination\Bridge\Symfony\Factories\StartSizeConfigFactory;
 use EonX\EasyPagination\Bridge\Symfony\Factories\StartSizeDataFactory as BridgeStartSizeDataFactory;
 use EonX\EasyPagination\Data\StartSizeData;
@@ -14,6 +13,7 @@ use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
 use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
 use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Symfony;
 
+use EonX\EasySecurity\Bridge\EasyBugsnag\SecurityContextClientConfigurator;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 
 final class EasySecurityBundleTest extends AbstractSymfonyTestCase
@@ -13,5 +14,6 @@ final class EasySecurityBundleTest extends AbstractSymfonyTestCase
         $container = $this->getKernel([__DIR__ . '/Fixtures/config/default.yaml'])->getContainer();
 
         self::assertInstanceOf(SecurityContextInterface::class, $container->get('service-id'));
+        self::assertTrue($container->has(SecurityContextClientConfigurator::class));
     }
 }

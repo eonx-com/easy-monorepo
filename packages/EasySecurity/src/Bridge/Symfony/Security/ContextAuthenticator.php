@@ -71,7 +71,8 @@ final class ContextAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): ?Response
     {
-        return null; // null will let the request continue
+        // null will let the request continue
+        return null;
     }
 
     public function start(Request $request, ?AuthenticationException $authException = null): Response

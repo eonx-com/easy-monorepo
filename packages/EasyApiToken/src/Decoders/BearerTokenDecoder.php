@@ -38,7 +38,8 @@ final class BearerTokenDecoder extends AbstractApiTokenDecoder
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Bearer', $request);
 
         if ($authorization === null) {
-            return null; // If Authorization doesn't start with Basic, return null
+            // If Authorization doesn't start with Basic, return null
+            return null;
         }
 
         try {
