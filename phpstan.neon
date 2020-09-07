@@ -2,6 +2,11 @@ includes:
     - 'vendor/symplify/phpstan-extensions/config/config.neon'
 
 parameters:
+    paths:
+        - packages
+
+    level: max
+
     bootstrapFiles:
         - %currentWorkingDirectory%/tests/bootstrap.php
 

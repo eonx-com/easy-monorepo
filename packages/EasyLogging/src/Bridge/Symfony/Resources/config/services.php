@@ -5,9 +5,9 @@ declare(strict_types=1);
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use EonX\EasyLogging\LoggerFactory;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 

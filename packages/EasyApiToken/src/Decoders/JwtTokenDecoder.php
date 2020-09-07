@@ -33,7 +33,7 @@ final class JwtTokenDecoder extends AbstractApiTokenDecoder
         @\trigger_error(
             \sprintf(
                 'Using %s is deprecated since 2.4 and will be removed in 3.0. Use %s instead',
-                JwtTokenDecoder::class,
+                self::class,
                 BearerTokenDecoder::class
             ),
             \E_USER_DEPRECATED
@@ -53,7 +53,8 @@ final class JwtTokenDecoder extends AbstractApiTokenDecoder
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Bearer', $request);
 
         if ($authorization === null) {
-            return null; // If Authorization doesn't start with Basic, return null
+            // If Authorization doesn't start with Basic, return null
+            return null;
         }
 
         try {

@@ -22,14 +22,16 @@ final class BasicAuthDecoder extends AbstractApiTokenDecoder
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Basic', $request);
 
         if ($authorization === null) {
-            return null; // If Authorization doesn't start with Basic, return null
+            // If Authorization doesn't start with Basic, return null
+            return null;
         }
 
         $original = $authorization;
         $authorization = \explode(':', (string)\base64_decode($authorization, true));
 
         if (empty(\trim($authorization[0] ?? '')) || empty(\trim($authorization[1] ?? ''))) {
-            return null; // If Authorization doesn't contain a username AND a password, return null
+            // If Authorization doesn't contain a username AND a password, return null
+            return null;
         }
 
         return new BasicAuth(\trim($authorization[0]), \trim($authorization[1]), $original);

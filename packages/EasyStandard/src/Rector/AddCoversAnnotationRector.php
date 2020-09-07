@@ -10,6 +10,7 @@ use PhpParser\Node\Stmt\Class_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
+use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractPHPUnitRector;
 use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
@@ -20,20 +21,17 @@ use Rector\NodeTypeResolver\Node\AttributeKey;
  *
  * @SuppressWarnings("unused") Class is used by Rector
  */
-final class AddCoversAnnotationRector extends AbstractPHPUnitRector
+final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements ConfigurableRectorInterface
 {
+    /**
+     * @var string
+     */
+    public const REPLACE_ARR = 'replace_arr';
+
     /**
      * @var string[]
      */
     private $replaceArr;
-
-    /**
-     * @param string[] $replaceArr
-     */
-    public function __construct(array $replaceArr = [])
-    {
-        $this->replaceArr = $replaceArr;
-    }
 
     /**
      * {@inheritdoc}
@@ -150,5 +148,10 @@ PHP
         }
 
         return $shouldSkip;
+    }
+
+    public function configure(array $configuration): void
+    {
+        $this->replaceArr = $configuration[self::REPLACE_ARR] ?? [];
     }
 }

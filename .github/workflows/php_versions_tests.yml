@@ -1,6 +1,6 @@
 name: PHP Versions
 
-on: [push]
+on: [push, pull-request]
 
 jobs:
     php_versions_tests:

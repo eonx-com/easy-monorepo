@@ -16,7 +16,8 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'false',
             'false',
             'false',
-            'true', // prestissimo
+            // prestissimo
+            'true',
         ];
 
         $this->executeCommand('generate', $inputs);
@@ -36,7 +37,8 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'false',
             'false',
             'false',
-            'false', // prestissimo
+            // prestissimo
+            'false',
         ];
 
         $this->executeCommand('generate', $inputs);

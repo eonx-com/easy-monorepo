@@ -7,6 +7,7 @@ namespace EonX\EasyStandard\Tests\Rector\AddSeeAnnotationRector;
 use EonX\EasyStandard\Rector\AddSeeAnnotationRector;
 use Iterator;
 use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyStandard\Rector\AddSeeAnnotationRector
@@ -16,9 +17,7 @@ use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
 final class AddSeeAnnotationRectorTest extends AbstractRectorTestCase
 {
     /**
-     * Provides test examples.
-     *
-     * @return Iterator<array>
+     * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
      */
     public function provideData(): Iterator
     {
@@ -26,24 +25,15 @@ final class AddSeeAnnotationRectorTest extends AbstractRectorTestCase
     }
 
     /**
-     * Tests Rector rule.
-     *
      * @dataProvider provideData()
      */
-    public function testRule(string $file): void
+    public function testRule(SmartFileInfo $fileInfo): void
     {
-        $this->doTestFile($file);
+        $this->doTestFileInfo($fileInfo);
     }
 
-    /**
-     * Returns Rector with configuration.
-     *
-     * @return mixed[]
-     */
-    protected function getRectorsWithConfiguration(): array
+    protected function getRectorClass(): string
     {
-        return [
-            AddSeeAnnotationRector::class => [],
-        ];
+        return AddSeeAnnotationRector::class;
     }
 }

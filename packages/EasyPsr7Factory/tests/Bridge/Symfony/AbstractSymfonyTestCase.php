@@ -6,7 +6,6 @@ namespace EonX\EasyPsr7Factory\Tests\Bridge\Symfony;
 
 use EonX\EasyPsr7Factory\Tests\AbstractTestCase;
 use EonX\EasyPsr7Factory\Tests\Bridge\Symfony\Stubs\KernelStub;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractSymfonyTestCase extends AbstractTestCase

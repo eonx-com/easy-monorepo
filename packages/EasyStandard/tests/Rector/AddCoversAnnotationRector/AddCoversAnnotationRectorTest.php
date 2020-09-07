@@ -7,6 +7,7 @@ namespace EonX\EasyStandard\Tests\Rector\AddCoversAnnotationRector;
 use EonX\EasyStandard\Rector\AddCoversAnnotationRector;
 use Iterator;
 use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyStandard\Rector\AddCoversAnnotationRector
@@ -16,9 +17,7 @@ use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
 final class AddCoversAnnotationRectorTest extends AbstractRectorTestCase
 {
     /**
-     * Provides test examples.
-     *
-     * @return Iterator<array>
+     * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
      */
     public function provideData(): Iterator
     {
@@ -26,13 +25,11 @@ final class AddCoversAnnotationRectorTest extends AbstractRectorTestCase
     }
 
     /**
-     * Tests Rector rule.
-     *
      * @dataProvider provideData()
      */
-    public function testRule(string $file): void
+    public function testRule(SmartFileInfo $fileInfo): void
     {
-        $this->doTestFile($file);
+        $this->doTestFileInfo($fileInfo);
     }
 
     /**
@@ -44,7 +41,7 @@ final class AddCoversAnnotationRectorTest extends AbstractRectorTestCase
     {
         return [
             AddCoversAnnotationRector::class => [
-                '$replaceArr' => [
+                AddCoversAnnotationRector::REPLACE_ARR => [
                     'Tests\\Unit\\',
                 ],
             ],
