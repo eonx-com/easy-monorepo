@@ -67,6 +67,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ParameterTypeHintSniff::class . '.MissingNativeTypeHint' => [
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php',
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php',
+            __DIR__ . 'packages/EasyCore/src/Bridge/Symfony/Serializer/TrimStringsNormalizer.php',
             __DIR__ . '/packages/EasyLogging/src/Logger.php',
             __DIR__ . '/packages/EasyApiToken/src/External/Auth0JwtDriver.php',
             __DIR__ . '/packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
@@ -75,6 +76,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/PermissionVoter.php',
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/RoleVoter.php',
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',
+            __DIR__ . 'packages/EasyCore/tests/Bridge/Symfony/Stubs/NormalizerStub.php',
             __DIR__ . '/packages/EasyCore/tests/Stubs/LockStub.php',
             __DIR__ . '/packages/EasyStandard/src/Sniffs',
             __DIR__ . '/packages/EasySsm/tests/Stubs/BaseSsmClientStub.php',
@@ -88,6 +90,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ParameterTypeHintSniff::class . '.UselessAnnotation' => [
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php',
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php',
+            __DIR__ . 'packages/EasyCore/src/Bridge/Symfony/Serializer/TrimStringsNormalizer.php',
             __DIR__ . '/packages/EasyLogging/src/Logger.php',
             __DIR__ . '/packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
             __DIR__ . '/packages/EasyAsync/src/Helpers/PropertyHelper.php',
@@ -95,6 +98,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/PermissionVoter.php',
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/RoleVoter.php',
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',
+            __DIR__ . 'packages/EasyCore/tests/Bridge/Symfony/Stubs/NormalizerStub.php',
             __DIR__ . '/packages/EasyCore/tests/Stubs/LockStub.php',
             __DIR__ . '/packages/EasyStandard/src/Sniffs',
             __DIR__ . '/packages/EasySsm/tests/Stubs/BaseSsmClientStub.php',
@@ -103,7 +107,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Laravel/Stubs/LaravelEventDispatcherStub.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
-            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php', ],
+            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
+        ],
         ReturnTypeHintSniff::class . '.MissingNativeTypeHint' => [
             __DIR__ . '/packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php',
             __DIR__ . '/packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
@@ -144,11 +149,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(FileHeaderSniff::class);
 
     $services->set(YodaStyleFixer::class)
-        ->call('configure', [[
-            'equal' => false,
-            'identical' => false,
-            'less_and_greater' => false,
-        ]]);
+        ->call('configure', [
+            [
+                'equal' => false,
+                'identical' => false,
+                'less_and_greater' => false,
+            ]
+        ]);
 
     $services->set(NoElseSniff::class);
     $services->set(NoNotOperatorSniff::class);
