@@ -23,7 +23,8 @@ parameters:
         PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer: ~
 
         SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff.NullTypeHintNotOnLastPosition: ~
-
+        # broken - enforces PHP 7.4 on lower PHP
+        SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff.MissingNativeTypeHint: null
         # types: allow mixed
         SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingAnyTypeHint: ~
         SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff.MissingTraversableTypeHintSpecification: ~
@@ -105,6 +106,9 @@ services:
         equal: false
         identical: false
         less_and_greater: false
+    SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff: ~
 
     EonX\EasyStandard\Sniffs\ControlStructures\NoElseSniff: ~
     EonX\EasyStandard\Sniffs\ControlStructures\NoNotOperatorSniff: ~
