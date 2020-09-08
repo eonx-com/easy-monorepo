@@ -11,7 +11,9 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class AnnotationSortingSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @return iterable<SmartFileInfo|int>
+     * @return iterable<mixed>
+     *
+     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function providerTestSniff(): iterable
     {

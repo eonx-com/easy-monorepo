@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasyStandard\Tests\Sniffs\Classes\RequireStrictDeclarationSniff;
 
 use EonX\EasyStandard\Sniffs\Classes\RequireStrictDeclarationSniff;
-use Iterator;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class RequireStrictDeclarationSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @return Iterator<int, SmartFileInfo|int>
+     * @return iterable<mixed>
+     *
+     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function providerTestSniff(): iterable
     {
