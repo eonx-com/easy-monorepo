@@ -59,7 +59,10 @@ final class LoggerFactory implements LoggerFactoryInterface
         $channel = $channel ?? $this->defaultChannel;
 
         if (isset($this->loggers[$channel])) {
-            return $this->loggers[$channel];
+            /** @var \Monolog\Logger $logger */
+            $logger = $this->loggers[$channel];
+
+            return $logger;
         }
 
         $loggerClass = $this->loggerClass;
@@ -127,7 +130,7 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private function filterAndSortConfigs(array $configs, string $channel): array
     {
-        $filter = function (LoggingConfigInterface $config) use ($channel): bool {
+        $filter = function (LoggerConfiguratorInterface $config) use ($channel): bool {
             // Priority to inclusive channels
             if ($config->getChannels() !== null) {
                 return \in_array($channel, $config->getChannels(), true);
@@ -172,7 +175,10 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private function getLoggerConfigurators(string $channel): array
     {
-        return $this->filterAndSortConfigs($this->loggerConfigurators, $channel);
+        /** @var \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface[] $loggerCongurators */
+        $loggerCongurators = $this->filterAndSortConfigs($this->loggerConfigurators, $channel);
+
+        return $loggerCongurators;
     }
 
     /**
@@ -194,9 +200,10 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private function sortConfigs(array $configs): array
     {
-        \usort($configs, static function (LoggingConfigInterface $first, LoggingConfigInterface $second): int {
-            return $first->getPriority() <=> $second->getPriority();
-        });
+        \usort($configs,
+            static function (LoggingConfigInterface $first, LoggingConfigInterface $second): int {
+                return $first->getPriority() <=> $second->getPriority();
+            });
 
         return $configs;
     }

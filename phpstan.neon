@@ -130,6 +130,9 @@ parameters:
           path: packages/EasyIdentity/tests/Implementations/Auth0
 
         # ---- EasyLogging ----
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
         - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'
           path: packages/EasyLogging/src/ContextModifiers
 

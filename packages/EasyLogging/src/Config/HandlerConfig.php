@@ -7,6 +7,11 @@ namespace EonX\EasyLogging\Config;
 use EonX\EasyLogging\Interfaces\Config\HandlerConfigInterface;
 use Monolog\Handler\HandlerInterface;
 
+/**
+ * @method self channels(?array $channels = null)
+ * @method self exceptChannels(?array $exceptChannels = null)
+ * @method self priority(?int $priority = null)
+ */
 final class HandlerConfig extends AbstractLoggingConfig implements HandlerConfigInterface
 {
     /**
@@ -15,7 +20,7 @@ final class HandlerConfig extends AbstractLoggingConfig implements HandlerConfig
     private $handler;
 
     /**
-     * @param null|string[] $handler
+     * @param \Monolog\Handler\HandlerInterface $handler
      */
     public function __construct(HandlerInterface $handler)
     {

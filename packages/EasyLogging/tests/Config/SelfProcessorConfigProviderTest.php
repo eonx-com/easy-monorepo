@@ -13,7 +13,7 @@ final class SelfProcessorConfigProviderTest extends AbstractTestCase
     {
         $selfProcessorConfigProvider = new SelfProcessorConfigProviderStub();
 
-        /** @var \Generator $processors */
+        /** @var \Generator<\EonX\EasyLogging\Interfaces\Config\ProcessorConfigInterface> $processors */
         $processors = $selfProcessorConfigProvider->processors();
         $processors = \iterator_to_array($processors);
 
