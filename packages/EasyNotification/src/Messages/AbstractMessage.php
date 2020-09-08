@@ -25,7 +25,7 @@ abstract class AbstractMessage implements MessageInterface
     /**
      * @param mixed[] $body
      */
-    public function body(array $body): MessageInterface
+    public function body(array $body): self
     {
         $this->body = $body;
 
@@ -40,7 +40,7 @@ abstract class AbstractMessage implements MessageInterface
     /**
      * @param mixed[] $body
      */
-    public function mergeBody(array $body): MessageInterface
+    public function mergeBody(array $body): self
     {
         $this->body = \array_merge($this->body ?? [], $body);
 

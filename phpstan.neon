@@ -55,7 +55,6 @@ parameters:
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyBugsnag/src/Bridge/Symfony/DependencyInjection/Configuration.php
 
-        # ---- EasyCfhighlander ----
         # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'
           path: packages/EasyCore/tests/Http/Middleware
@@ -148,6 +147,9 @@ parameters:
         # ---- EasyNotification ---
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyNotification/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
+        - message: '#Anonymous function should return EonX\\EasyNotification\\Messages\\SlackMessage but returns EonX\\EasyNotification\\Messages\\AbstractMessage#'
+          path: packages/EasyNotification/tests/Messages/SlackMessageTest.php
 
         # ---- EasyPagination ----
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'

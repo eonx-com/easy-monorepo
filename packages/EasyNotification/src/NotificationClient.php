@@ -126,13 +126,6 @@ final class NotificationClient implements NotificationClientInterface
         return $this;
     }
 
-    private function configRequired(string $method): void
-    {
-        if ($this->config === null) {
-            throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', $method));
-        }
-    }
-
     /**
      * @param iterable<mixed> $configurators
      *

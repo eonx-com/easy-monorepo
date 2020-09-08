@@ -13,6 +13,7 @@ final class LoggerFactoryTest extends AbstractTestCase
     {
         $loggerFactory = new LoggerFactory();
 
+        /** @var \Monolog\Logger $logger */
         $logger = $loggerFactory->create();
 
         self::assertEquals('app', $logger->getName());
