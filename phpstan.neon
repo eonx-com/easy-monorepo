@@ -242,9 +242,6 @@ parameters:
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
           path: packages/EasySecurity/tests/Authorization/RoleTest.php
 
-        - message: '#Class EonX\\EasyApiToken\\Interfaces\\EasyApiTokenDecoderInterface not found#'
-          path: packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
-
         # ---- EasySsm ----
         - message: '#Parameter \#1 \$stream of class Symfony\\Component\\Console\\Output\\StreamOutput constructor expects resource, resource\|false given#'
           path: packages/EasySsm/tests/Services/Dotenv/Loaders/ConsoleOutputLoaderTest.php
