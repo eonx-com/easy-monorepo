@@ -23,6 +23,8 @@ use Rector\Core\RectorDefinition\RectorDefinition;
 final class ExplicitBoolCompareRector extends AbstractRector
 {
     /**
+     * @codeCoverageIgnore
+     *
      * {@inheritdoc}
      */
     public function getDefinition(): RectorDefinition

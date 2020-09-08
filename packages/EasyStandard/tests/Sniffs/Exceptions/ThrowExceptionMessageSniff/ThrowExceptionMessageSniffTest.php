@@ -17,8 +17,6 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 {
     /**
      * Tests exception without message succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testExceptionWithoutMessageSucceeds(): void
     {
@@ -28,8 +26,6 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests hardcoded message fails.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testHardcodedMessageFails(): void
     {
@@ -39,8 +35,6 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests message with valid prefix succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testMessageWithValidPrefixSucceeds(): void
     {
@@ -50,8 +44,6 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests multiline exception succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testMultilineExceptionSucceeds(): void
     {
@@ -61,8 +53,6 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests throw variable succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testThrowVariableSucceeds(): void
     {
@@ -72,8 +62,6 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests throw exception with variable message succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testVariableMessageSucceeds(): void
     {

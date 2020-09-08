@@ -17,8 +17,6 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
 {
     /**
      * Tests process a forbidden method name fails.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testProcessForbiddenMethodNameFails(): void
     {
@@ -28,8 +26,6 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests process an ignored method name succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testProcessIgnoredMethodNameSucceeds(): void
     {
@@ -39,8 +35,6 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests process not allowed method name fails.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testProcessNotAllowedMethodNameFails(): void
     {
@@ -50,8 +44,6 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests process succeeds if a method name conform with allowed patterns.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testProcessSucceedsIfMethodNameConformWithAllowedPatterns(): void
     {
@@ -61,8 +53,6 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests process succeeds if a method name does not conform with forbidden patterns.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testProcessSucceedsIfMethodNameDoesNotConformWithForbiddenPatterns(): void
     {
@@ -72,8 +62,6 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests process a method name succeeds if the namespace does not have forbidden patterns.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testProcessSucceedsIfMethodNameSucceedsIfNamespaceDoesNotHaveForbiddenPatterns(): void
     {
@@ -83,8 +71,6 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests process a method name succeeds if the namespace does not have allowed patterns.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testProcessSucceedsIfNamespaceDoesNotHaveAllowedPatterns(): void
     {

@@ -17,8 +17,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 {
     /**
      * Tests class with no test namespace succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testClassWithNoTestNamespaceSucceeds(): void
     {
@@ -28,8 +26,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests methods with correct amount of empty lines succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testCorrectEmptyLinesSucceeds(): void
     {
@@ -39,8 +35,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests method with excessive empty lines fails.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testExcessiveEmptyLinesFails(): void
     {
@@ -50,8 +44,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests inline comment succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testInlineCommentSucceeds(): void
     {
@@ -61,8 +53,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests line with comment succeeds, because comment is not an effective line.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testLineWithCommentSucceeds(): void
     {
@@ -72,8 +62,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests method with inner curly brackets succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testMethodWithInnerCurlyBracketsSucceeds(): void
     {
@@ -83,8 +71,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests method with no empty lines fails.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testNoEmptyLinesFails(): void
     {
@@ -94,8 +80,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests no test method succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testNoTestMethodSucceeds(): void
     {
@@ -105,8 +89,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Tests one line test method succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testOneLineTestMethodSucceeds(): void
     {
@@ -116,8 +98,6 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 
     /**
      * Test method with multiline succeeds.
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testOneMultiLineSucceeds(): void
     {
