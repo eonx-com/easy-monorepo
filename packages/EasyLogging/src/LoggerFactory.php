@@ -130,7 +130,7 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private function filterAndSortConfigs(array $configs, string $channel): array
     {
-        $filter = function (LoggerConfiguratorInterface $config) use ($channel): bool {
+        $filter = static function ($config) use ($channel): bool {
             // Priority to inclusive channels
             if ($config->getChannels() !== null) {
                 return \in_array($channel, $config->getChannels(), true);
