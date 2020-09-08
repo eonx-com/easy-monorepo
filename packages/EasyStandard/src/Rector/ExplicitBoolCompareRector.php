@@ -18,13 +18,13 @@ use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
 
 /**
+ * @codeCoverageIgnore
+ *
  * @SuppressWarnings("unused") Class is used by Rector
  */
 final class ExplicitBoolCompareRector extends AbstractRector
 {
     /**
-     * @codeCoverageIgnore
-     *
      * {@inheritdoc}
      */
     public function getDefinition(): RectorDefinition
