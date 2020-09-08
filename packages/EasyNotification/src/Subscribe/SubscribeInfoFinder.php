@@ -41,8 +41,12 @@ final class SubscribeInfoFinder implements SubscribeInfoFinderInterface
     {
         $options = [
             'auth_basic' => [$apiKey],
-            'headers' => ['Accept' => 'application/json'],
-            'json' => ['topics' => $topics],
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'topics' => $topics,
+            ],
         ];
 
         $url = \sprintf(

@@ -100,7 +100,10 @@ final class ValueDecisionTest extends AbstractTestCase
 
         $decision = (new ValueDecision())->addRules([$this->getModifyValueRuleInArray()]);
 
-        $decision->make(['context' => 'I know it is bad...', 'value' => 'value']);
+        $decision->make([
+            'context' => 'I know it is bad...',
+            'value' => 'value',
+        ]);
     }
 
     public function testReturnModifiedArrayInputSuccessfully(): void

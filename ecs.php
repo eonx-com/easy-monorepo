@@ -21,6 +21,12 @@ use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayOpenerNewlineFixer;
+use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
+use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
+use Symplify\CodingStandard\Fixer\Commenting\RemoveSuperfluousDocBlockWhitespaceFixer;
+use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
+use Symplify\CodingStandard\Fixer\Spacing\RemoveSpacingAroundModifierAndConstFixer;
 use Symplify\EasyCodingStandard\Configuration\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
@@ -153,4 +159,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(NoElseSniff::class);
     $services->set(NoNotOperatorSniff::class);
     $services->set(Psr4Sniff::class);
+
+    // sypmlify rules - see https://github.com/symplify/coding-standard/blob/master/docs/phpcs_fixer_fixers.md
+    // arrays
+    $services->set(ArrayOpenerNewlineFixer::class);
+    $services->set(StandaloneLineInMultilineArrayFixer::class);
+    // annotations
+    $services->set(ParamReturnAndVarTagMalformsFixer::class);
+    // extra spaces
+    $services->set(RemoveSuperfluousDocBlockWhitespaceFixer::class);
+    $services->set(RemoveSpacingAroundModifierAndConstFixer::class);
+
+    // line length 120
+    // $services->set(LineLengthFixer::class);
 };

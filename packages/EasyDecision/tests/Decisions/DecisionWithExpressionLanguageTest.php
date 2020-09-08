@@ -58,7 +58,11 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 
         $tests = [
             [
-                'original' => ['value' => 0, 'name' => 'Nathan', 'extra_param1' => 1],
+                'original' => [
+                    'value' => 0,
+                    'name' => 'Nathan',
+                    'extra_param1' => 1,
+                ],
                 'expected' => 11,
                 'outputs' => [
                     'Add Ten' => 10,
@@ -70,7 +74,11 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
                 ],
             ],
             [
-                'original' => ['value' => 0, 'name' => 'Brad', 'extra_param1' => 1],
+                'original' => [
+                    'value' => 0,
+                    'name' => 'Brad',
+                    'extra_param1' => 1,
+                ],
                 'expected' => 21,
                 'outputs' => [
                     'Add Ten' => 10,
@@ -82,7 +90,11 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
                 ],
             ],
             [
-                'original' => ['value' => 0, 'name' => 'Matt', 'extra_param1' => 1],
+                'original' => [
+                    'value' => 0,
+                    'name' => 'Matt',
+                    'extra_param1' => 1,
+                ],
                 'expected' => 201,
                 'outputs' => [
                     'Add Ten' => 10,

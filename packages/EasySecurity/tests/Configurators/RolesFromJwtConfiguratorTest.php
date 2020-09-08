@@ -43,7 +43,9 @@ final class RolesFromJwtConfiguratorTest extends AbstractTestCase
         ];
 
         $context->setToken(new Jwt([
-            static::$mainJwtClaim => ['roles' => ['app:role']],
+            static::$mainJwtClaim => [
+                'roles' => ['app:role'],
+            ],
         ], 'jwt'));
 
         yield 'No role resolved because provider return empty array' => [
@@ -52,7 +54,9 @@ final class RolesFromJwtConfiguratorTest extends AbstractTestCase
         ];
 
         $context->setToken(new Jwt([
-            static::$mainJwtClaim => ['roles' => ['app:role']],
+            static::$mainJwtClaim => [
+                'roles' => ['app:role'],
+            ],
         ], 'jwt'));
 
         yield 'Roles resolved' => [

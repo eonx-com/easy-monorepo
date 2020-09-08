@@ -46,7 +46,10 @@ final class EasyPaginationBundleTest extends AbstractTestCase
 
         yield 'InQuery_Page_PerPage_2_30' => [
             __DIR__ . '/fixtures/data/in_query_page_perPage_1_15.yaml',
-            $this->createRequest(['page' => 2, 'perPage' => 30]),
+            $this->createRequest([
+                'page' => 2,
+                'perPage' => 30,
+            ]),
             2,
             30,
         ];

@@ -47,7 +47,9 @@ final class ElasticsearchSearchService implements SearchServiceInterface
                 'must' => $query,
                 'filter' => [
                     [
-                        'terms' => [$accessTokensProperty => $accessTokens ?? ['anonymous']],
+                        'terms' => [
+                            $accessTokensProperty => $accessTokens ?? ['anonymous'],
+                        ],
                     ],
                 ],
             ],

@@ -54,7 +54,10 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
 
     public function testFindReturnsExpectedValues(): void
     {
-        $expected = ['found' => new \stdClass(), null];
+        $expected = [
+            'found' => new \stdClass(),
+            null,
+        ];
 
         foreach ($expected as $identifier => $object) {
             /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */

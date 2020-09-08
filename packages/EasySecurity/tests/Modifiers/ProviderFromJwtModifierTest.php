@@ -42,7 +42,11 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
             $context,
         ];
 
-        $context->setToken(new Jwt([static::$mainJwtClaim => ['provider' => '']], 'jwt'));
+        $context->setToken(new Jwt([
+            static::$mainJwtClaim => [
+                'provider' => '',
+            ],
+        ], 'jwt'));
 
         yield 'No provider resolved because provider claim empty' => [
             new ProviderProviderInterfaceStub(),
@@ -50,7 +54,9 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
         ];
 
         $context->setToken(new Jwt([
-            static::$mainJwtClaim => ['provider' => 'provider-id'],
+            static::$mainJwtClaim => [
+                'provider' => 'provider-id',
+            ],
         ], 'jwt'));
 
         yield 'No provider resolved because provider provider returns null' => [
@@ -59,7 +65,9 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
         ];
 
         $context->setToken(new Jwt([
-            static::$mainJwtClaim => ['provider' => 'provider-id'],
+            static::$mainJwtClaim => [
+                'provider' => 'provider-id',
+            ],
         ], 'jwt'));
 
         yield 'Provider resolved' => [
