@@ -43,7 +43,7 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * Tests process succeeds if a method name conform with allowed patterns.
+     * Tests process succeeds if a method name conforms with allowed patterns.
      */
     public function testProcessSucceedsIfMethodNameConformWithAllowedPatterns(): void
     {
