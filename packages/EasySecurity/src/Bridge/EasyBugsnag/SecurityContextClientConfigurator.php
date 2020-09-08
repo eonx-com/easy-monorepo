@@ -31,7 +31,7 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
     {
         $security = [];
 
-        if ($this->securityContext->getToken()) {
+        if ($this->securityContext->getToken() !== null) {
             $security['token'] = $this->formatToken($this->securityContext->getToken());
         }
 
@@ -43,11 +43,11 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
             $security['permissions'] = $this->formatPermissions($this->securityContext->getPermissions());
         }
 
-        if ($this->securityContext->getProvider()) {
+        if ($this->securityContext->getProvider() !== null) {
             $security['provider'] = $this->formatProvider($this->securityContext->getProvider());
         }
 
-        if ($this->securityContext->getUser()) {
+        if ($this->securityContext->getUser() !== null) {
             $security['user'] = $this->formatUser($this->securityContext->getUser());
         }
 

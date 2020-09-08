@@ -230,6 +230,9 @@ parameters:
           path: packages/EasySchedule/src/Bridge/Symfony/TraceableSchedule.php
 
         # ---- EasySecurity ----
+        - message: '#Parameter \#1 \$factory of method Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\ServiceConfigurator\:\:factory\(\) expects array\|string, Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\ReferenceConfigurator given#'
+          path: packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
+
         - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Helpers\\DeferredSecurityContextResolver\:\:resolve\(\) should return EonX\\EasySecurity\\Interfaces\\SecurityContextInterface but returns object\|null#'
           path: packages/EasySecurity/src/Bridge/Symfony/Helpers/DeferredSecurityContextResolver.php
 

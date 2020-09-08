@@ -16,6 +16,10 @@ final class ConfigureSecurityContextPass implements CompilerPassInterface
     {
         $contextServiceId = $this->getParameter($container, BridgeConstantsInterface::PARAM_CONTEXT_SERVICE_ID);
 
+        if ($contextServiceId === null) {
+            return;
+        }
+
         if ($container->hasDefinition($contextServiceId) === false) {
             return;
         }
