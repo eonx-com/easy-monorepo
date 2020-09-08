@@ -23,24 +23,16 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
      */
     public function modifyProvider(): iterable
     {
-        yield 'No provider resolved because not token' => [
-            new ProviderProviderInterfaceStub(),
-        ];
+        yield 'No provider resolved because not token' => [new ProviderProviderInterfaceStub()];
 
         $context = new Context();
         $context->setToken(new ApiKey('api-key'));
 
-        yield 'No provider resolved because token not jwt' => [
-            new ProviderProviderInterfaceStub(),
-            $context,
-        ];
+        yield 'No provider resolved because token not jwt' => [new ProviderProviderInterfaceStub(), $context];
 
         $context->setToken(new Jwt([], 'jwt'));
 
-        yield 'No provider resolved because no provider claim' => [
-            new ProviderProviderInterfaceStub(),
-            $context,
-        ];
+        yield 'No provider resolved because no provider claim' => [new ProviderProviderInterfaceStub(), $context];
 
         $context->setToken(new Jwt([
             static::$mainJwtClaim => [

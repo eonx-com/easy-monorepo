@@ -38,11 +38,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      */
     public function getBrokenConfigurations(): iterable
     {
-        yield 'Empty configuration' => [
-            [],
-            'nothing',
-            'No decoders configured',
-        ];
+        yield 'Empty configuration' => [[], 'nothing', 'No decoders configured'];
 
         yield 'Error is thrown when a non-existent key is requested.' => [
             [
@@ -146,10 +142,7 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $config = [
             'chain-key' => [
                 'type' => 'chain',
-                'list' => [
-                    'api',
-                    'pass',
-                ],
+                'list' => ['api', 'pass'],
             ],
             'api' => [
                 'type' => 'user-apikey',

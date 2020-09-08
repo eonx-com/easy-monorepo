@@ -26,10 +26,7 @@ final class EasyPaginationBundleTest extends AbstractTestCase
             StartSizeAsArrayInQueryResolver::class,
         ];
 
-        yield 'in_query' => [
-            __DIR__ . '/fixtures/in_query.yaml',
-            StartSizeInQueryResolver::class,
-        ];
+        yield 'in_query' => [__DIR__ . '/fixtures/in_query.yaml', StartSizeInQueryResolver::class];
     }
 
     /**

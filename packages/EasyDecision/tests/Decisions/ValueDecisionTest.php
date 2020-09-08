@@ -110,10 +110,7 @@ final class ValueDecisionTest extends AbstractTestCase
     {
         $modifyRule = $this->getModifyValueRuleInArray();
 
-        $decision = (new ValueDecision())->addRules([
-            $this->createUnsupportedRule('unsupported-1'),
-            $modifyRule,
-        ]);
+        $decision = (new ValueDecision())->addRules([$this->createUnsupportedRule('unsupported-1'), $modifyRule]);
 
         $original = ['value' => 0];
         $expected = 10;

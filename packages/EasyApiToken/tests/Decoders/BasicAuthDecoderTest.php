@@ -24,14 +24,7 @@ final class BasicAuthDecoderTest extends AbstractTestCase
 
     public function testBasicAuthNullIfNoUsernameOrPasswordProvided(): void
     {
-        $tests = [
-            '',
-            ':',
-            ' : ',
-            'username',
-            'username:',
-            ':password',
-        ];
+        $tests = ['', ':', ' : ', 'username', 'username:', ':password'];
 
         foreach ($tests as $test) {
             self::assertNull((new BasicAuthDecoder())->decode($this->createRequest([

@@ -18,25 +18,15 @@ final class EventTest extends AbstractTestCase
      */
     public function providerTestFiltersPass(): iterable
     {
-        yield 'False because at least one filter false' => [
-            [false],
-            [false],
-            false,
-        ];
+        yield 'False because at least one filter false' => [[false], [false], false];
 
-        yield 'False because at least one reject true' => [
-            [true],
-            [true],
-            false,
-        ];
+        yield 'False because at least one reject true' => [[true], [true], false];
 
         yield 'true because no filter false and no reject true' => [
             [true],
-            [
-                function (): bool {
-                    return false;
-                },
-            ],
+            [function (): bool {
+                return false;
+            }],
             true,
         ];
     }

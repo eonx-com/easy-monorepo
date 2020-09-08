@@ -22,24 +22,16 @@ final class RolesFromJwtModifierTest extends AbstractTestCase
      */
     public function modifyProvider(): iterable
     {
-        yield 'No role resolved because not token' => [
-            new InMemoryRolesProviderStub(),
-        ];
+        yield 'No role resolved because not token' => [new InMemoryRolesProviderStub()];
 
         $context = new Context();
         $context->setToken(new ApiKey('api-key'));
 
-        yield 'No role resolved because token not jwt' => [
-            new InMemoryRolesProviderStub(),
-            $context,
-        ];
+        yield 'No role resolved because token not jwt' => [new InMemoryRolesProviderStub(), $context];
 
         $context->setToken(new Jwt([], 'jwt'));
 
-        yield 'No role resolved because no roles in token' => [
-            new InMemoryRolesProviderStub(),
-            $context,
-        ];
+        yield 'No role resolved because no roles in token' => [new InMemoryRolesProviderStub(), $context];
 
         $context->setToken(new Jwt([
             static::$mainJwtClaim => [

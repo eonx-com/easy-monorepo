@@ -134,9 +134,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
             __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
         ],
-        UselessVariableSniff::class . '.UselessVariable' => [
-            __DIR__ . '/packages/EasySchedule/src/Schedule.php',
-        ],
+        UselessVariableSniff::class . '.UselessVariable' => [__DIR__ . '/packages/EasySchedule/src/Schedule.php'],
         UnusedPrivateElementsSniff::class . '.WriteOnlyProperty' => [
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php',
         ],
@@ -171,5 +169,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(RemoveSpacingAroundModifierAndConstFixer::class);
 
     // line length 120
-    // $services->set(LineLengthFixer::class);
+    $services->set(LineLengthFixer::class);
 };

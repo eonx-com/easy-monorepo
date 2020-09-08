@@ -128,7 +128,9 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             ' Class "NonExistentDecisionClass" does not exist.'
         );
 
-        $kernel = new KernelStub([__DIR__ . '/Fixtures/type_mapping_configuration_with_nonexistent_decision_class.php']);
+        $kernel = new KernelStub([
+            __DIR__ . '/Fixtures/type_mapping_configuration_with_nonexistent_decision_class.php',
+        ]);
         $kernel->boot();
     }
 
@@ -174,7 +176,9 @@ final class EasyDecisionBundleTest extends AbstractTestCase
     public function testNotExpressionLanguageException(): void
     {
         $this->expectException(UnableToMakeDecisionException::class);
-        $this->expectExceptionMessage('Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": Expression language not set, to use it in your rules you must set it on the decision instance');
+        $this->expectExceptionMessage(
+            'Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": Expression language not set, to use it in your rules you must set it on the decision instance'
+        );
 
         $kernel = new KernelStub([
             __DIR__ . '/Fixtures/disable_expression_language.php',

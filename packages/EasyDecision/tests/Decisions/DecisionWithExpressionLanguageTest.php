@@ -16,7 +16,9 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
     public function testExceptionIfExpressionLanguageNotSet(): void
     {
         $this->expectException(UnableToMakeDecisionException::class);
-        $this->expectExceptionMessage('Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": Expression language not set, to use it in your rules you must set it on the decision instance');
+        $this->expectExceptionMessage(
+            'Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": Expression language not set, to use it in your rules you must set it on the decision instance'
+        );
 
         (new ValueDecision())->addRule($this->createLanguageRule('value + 10'))->make(['value' => 1]);
     }

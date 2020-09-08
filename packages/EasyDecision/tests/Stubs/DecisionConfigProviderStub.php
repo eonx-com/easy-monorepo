@@ -29,10 +29,7 @@ final class DecisionConfigProviderStub implements DecisionConfigProviderInterfac
      */
     public function getExpressionFunctionProviders(): ?array
     {
-        return [
-            new FromPhpExpressionFunctionProvider(['max']),
-            'minPhpFunctionProvider',
-        ];
+        return [new FromPhpExpressionFunctionProvider(['max']), 'minPhpFunctionProvider'];
     }
 
     /**
@@ -40,9 +37,7 @@ final class DecisionConfigProviderStub implements DecisionConfigProviderInterfac
      */
     public function getExpressionFunctions(): ?array
     {
-        return [
-            ExpressionFunction::fromPhp('is_array'),
-        ];
+        return [ExpressionFunction::fromPhp('is_array')];
     }
 
     /**
@@ -50,8 +45,6 @@ final class DecisionConfigProviderStub implements DecisionConfigProviderInterfac
      */
     public function getRuleProviders(): array
     {
-        return [
-            new RuleProviderStub(),
-        ];
+        return [new RuleProviderStub()];
     }
 }

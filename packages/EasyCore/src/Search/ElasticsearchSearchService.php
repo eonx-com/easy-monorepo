@@ -56,9 +56,7 @@ final class ElasticsearchSearchService implements SearchServiceInterface
         ];
 
         return $this->client->search([
-            '_source_excludes' => [
-                '_access_tokens',
-            ],
+            '_source_excludes' => ['_access_tokens'],
             'index' => $index,
             'body' => $body,
         ]);

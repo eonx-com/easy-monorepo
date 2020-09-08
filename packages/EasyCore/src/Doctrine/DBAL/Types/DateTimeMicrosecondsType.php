@@ -53,11 +53,7 @@ final class DateTimeMicrosecondsType extends DateTimeType
             return $value->format(self::FORMAT_PHP_DATETIME);
         }
 
-        throw ConversionException::conversionFailedInvalidType(
-            $value,
-            $this->getName(),
-            ['null', 'DateTime']
-        );
+        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateTime']);
     }
 
     /**
@@ -77,11 +73,7 @@ final class DateTimeMicrosecondsType extends DateTimeType
             return $val;
         }
 
-        throw ConversionException::conversionFailedFormat(
-            $value,
-            $this->getName(),
-            self::FORMAT_PHP_DATETIME
-        );
+        throw ConversionException::conversionFailedFormat($value, $this->getName(), self::FORMAT_PHP_DATETIME);
     }
 
     public function getName(): string

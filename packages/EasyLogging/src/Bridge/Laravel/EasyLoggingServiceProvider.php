@@ -30,7 +30,9 @@ final class EasyLoggingServiceProvider extends ServiceProvider
             $factory
                 ->setHandlerConfigProviders($this->app->tagged(BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER))
                 ->setLoggerConfigurators($this->app->tagged(BridgeConstantsInterface::TAG_LOGGER_CONFIGURATOR))
-                ->setProcessorConfigProviders($this->app->tagged(BridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER));
+                ->setProcessorConfigProviders(
+                    $this->app->tagged(BridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER)
+                );
 
             return $factory;
         });
