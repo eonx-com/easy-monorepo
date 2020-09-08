@@ -24,9 +24,6 @@ parameters:
         - '#Method "\S+\(\)" returns bool type, so the name should start with is/has/was#'
 
         # ---- EasyApiToken ----
-        - message: '#Parameter \#[0-9] \$(.*?) of method EonX\\EasyApiToken\\Tests\\Encoders\\FirebaseJwtTokenEncoderTest::createJwtTokenDecoder\(\) expects resource\|string\|null, resource\|string\|false given.#'
-          path: packages/EasyApiToken/tests
-
         - message: '#Parameter \#[0-9] \$(.*?) of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource\|string\|null, resource\|string\|false given#'
           path: packages/EasyApiToken/tests
 
@@ -146,6 +143,9 @@ parameters:
         - message: '#Method EonX\\EasyLock\\Bridge\\Symfony\\Messenger\\ProcessWithLockMiddleware\:\:getLockData\(\) should return EonX\\EasyLock\\Interfaces\\WithLockDataInterface\|null but returns Symfony\\Component\\Messenger\\Stamp\\StampInterface\|null#'
           path: packages/EasyLock/src/Bridge/Symfony/Messenger/ProcessWithLockMiddleware.php
 
+        - message: '#Unable to resolve the template type T in call to method static method Doctrine\\DBAL\\DriverManager\:\:getConnection\(\)#'
+          path: packages/EasyLock/tests/Bridge/Laravel/AbstractLaravelTestCase.php
+
         # ---- EasyNotification ---
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyNotification/src/Bridge/Symfony/DependencyInjection/Configuration.php
@@ -241,6 +241,9 @@ parameters:
 
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
           path: packages/EasySecurity/tests/Authorization/RoleTest.php
+
+        - message: '#Class EonX\\EasyApiToken\\Interfaces\\EasyApiTokenDecoderInterface not found#'
+          path: packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
 
         # ---- EasySsm ----
         - message: '#Parameter \#1 \$stream of class Symfony\\Component\\Console\\Output\\StreamOutput constructor expects resource, resource\|false given#'

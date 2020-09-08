@@ -19,7 +19,7 @@ interface ApiTokenDecoderInterface
     /**
      * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
      */
-    public function decode($request): ?EasyApiTokenInterface;
+    public function decode($request): ?ApiTokenInterface;
 
     public function getName(): string;
 }
