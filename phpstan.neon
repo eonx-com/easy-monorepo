@@ -178,6 +178,9 @@ parameters:
           path: packages/EasyPipeline/tests
 
         # ---- EasyPsr7Factory ----
+        - message: '#Parameter \#1 \$factory of method Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\ServiceConfigurator\:\:factory\(\) expects array\|string, Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\ReferenceConfigurator given#'
+          path: packages/EasyPsr7Factory/src/Bridge/Symfony/Resources/config/services.php
+
         # ---- EasyRandom ----
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyRandom/src/Bridge/Symfony/DependencyInjection/Configuration.php
