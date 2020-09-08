@@ -37,7 +37,10 @@ final class SlackMessageTest extends AbstractTestCase
 
         yield 'Create method + text + body' => [
             function (): SlackMessage {
-                return SlackMessage::create('channel')->text('text')->body(['option' => 'value']);
+                /** @var \EonX\EasyNotification\Messages\SlackMessage $message */
+                $message = SlackMessage::create('channel')->text('text')->body(['option' => 'value']);
+
+                return $message;
             },
             static::$body,
         ];
@@ -45,7 +48,6 @@ final class SlackMessageTest extends AbstractTestCase
 
     /**
      * @param mixed[] $body
-     * @param string[] $topics
      *
      * @dataProvider providerTestGetters
      *
