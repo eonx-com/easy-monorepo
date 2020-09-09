@@ -12,7 +12,7 @@ final class TestClass
         $expectedClosure = static function () use ($value1, $value2): int {
             $result = $value1 + $value2;
 
-            return $result;
+            return $result + 0;
         };
 
         $actualResult = 2 + 2;
