@@ -1,34 +1,34 @@
 {
-    "name": "eonx-com/easy-test",
-    "description": "Makes testing easier",
-    "type": "library",
-    "license": "MIT",
-    "require": {
-        "php": "^7.1",
-        "symfony/console": "^4.2 || ^5.0",
-        "nette/utils": "^3.1",
-        "symfony/http-kernel": "^4.2 || ^5.0",
-        "symplify/autowire-array-parameter": "^7.2"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^7.5 || ^8.4"
-    },
-    "autoload": {
-        "psr-4": {
-            "EonX\\EasyTest\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "EonX\\EasyTest\\Tests\\": "tests"
-        }
-    },
-    "bin": [
-        "bin/easy-test"
-    ],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.5-dev"
-        }
+  "name": "eonx-com/easy-test",
+  "description": "Makes testing easier",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^7.1",
+    "symfony/console": "^4.2 || ^5.0",
+    "nette/utils": "^3.1",
+    "symfony/http-kernel": "^4.2 || ^5.0",
+    "symplify/autowire-array-parameter": "^8.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.5 || ^8.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "EonX\\EasyTest\\": "src"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "EonX\\EasyTest\\Tests\\": "tests"
+    }
+  },
+  "bin": [
+    "bin/easy-test"
+  ],
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.5-dev"
+    }
+  }
 }
