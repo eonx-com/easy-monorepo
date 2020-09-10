@@ -70,9 +70,6 @@ final class CachedConfigServiceProvider extends ServiceProvider
 
     private function registerCommands(): void
     {
-        $this->commands([
-            CacheConfigCommand::class,
-            ClearConfigCommand::class,
-        ]);
+        $this->commands([CacheConfigCommand::class, ClearConfigCommand::class]);
     }
 }

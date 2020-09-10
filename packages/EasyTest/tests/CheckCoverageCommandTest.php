@@ -15,12 +15,18 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     public function providerCheckCoverage(): iterable
     {
         yield 'File but coverage too low' => [
-            ['file' => __DIR__ . '/fixtures/coverage-70.txt', '--coverage' => 71],
+            [
+                'file' => __DIR__ . '/fixtures/coverage-70.txt',
+                '--coverage' => 71,
+            ],
             '[ERROR] Coverage "70%" is lower than expectation "71%"',
         ];
 
         yield 'File and good coverage' => [
-            ['file' => __DIR__ . '/fixtures/coverage-70.txt', '--coverage' => 70],
+            [
+                'file' => __DIR__ . '/fixtures/coverage-70.txt',
+                '--coverage' => 70,
+            ],
             '[OK] Yeah nah yeah nah yeah!! Good coverage mate! "70%"',
         ];
     }

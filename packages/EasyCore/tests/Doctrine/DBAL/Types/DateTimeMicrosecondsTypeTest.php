@@ -60,11 +60,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     public function provideFieldDeclarationValues(): array
     {
         return [
-            'mysql' => [
-                MySqlPlatform::class,
-                [],
-                'DATETIME(6)',
-            ],
+            'mysql' => [MySqlPlatform::class, [], 'DATETIME(6)'],
             'mysql, with version = true' => [
                 MySqlPlatform::class,
                 ['version' => true],

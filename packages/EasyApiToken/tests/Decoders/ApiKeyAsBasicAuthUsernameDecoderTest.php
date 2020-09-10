@@ -24,12 +24,7 @@ final class ApiKeyAsBasicAuthUsernameDecoderTest extends AbstractTestCase
 
     public function testApiKeyAsBasicAuthUsernameNullIfNotOnlyApiKeyProvided(): void
     {
-        $tests = [
-            '',
-            ':',
-            ':password',
-            'api-key:password',
-        ];
+        $tests = ['', ':', ':password', 'api-key:password'];
 
         foreach ($tests as $test) {
             self::assertNull((new ApiKeyAsBasicAuthUsernameDecoder())->decode($this->createServerRequest([

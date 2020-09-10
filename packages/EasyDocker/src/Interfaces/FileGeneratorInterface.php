@@ -23,11 +23,7 @@ interface FileGeneratorInterface
     /**
      * @var string[]
      */
-    public const STATUSES_TO_TRIGGER_MANIFEST = [
-        self::STATUS_CREATED,
-        self::STATUS_REMOVED,
-        self::STATUS_UPDATED,
-    ];
+    public const STATUSES_TO_TRIGGER_MANIFEST = [self::STATUS_CREATED, self::STATUS_REMOVED, self::STATUS_UPDATED];
 
     /**
      * @var string

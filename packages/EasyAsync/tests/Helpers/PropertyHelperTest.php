@@ -30,7 +30,10 @@ final class PropertyHelperTest extends AbstractTestCase
     public function providerSetDatetimeProperties(): iterable
     {
         yield 'set startedAt only' => [
-            ['started_at' => '2019-08-01 00:00:00', 'finished_at' => ''],
+            [
+                'started_at' => '2019-08-01 00:00:00',
+                'finished_at' => '',
+            ],
             ['started_at', 'finished_at'],
             static function (JobInterface $job): void {
                 self::assertNull($job->getFinishedAt());

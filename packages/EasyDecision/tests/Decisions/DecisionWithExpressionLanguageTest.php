@@ -16,7 +16,9 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
     public function testExceptionIfExpressionLanguageNotSet(): void
     {
         $this->expectException(UnableToMakeDecisionException::class);
-        $this->expectExceptionMessage('Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": Expression language not set, to use it in your rules you must set it on the decision instance');
+        $this->expectExceptionMessage(
+            'Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": Expression language not set, to use it in your rules you must set it on the decision instance'
+        );
 
         (new ValueDecision())->addRule($this->createLanguageRule('value + 10'))->make(['value' => 1]);
     }
@@ -58,7 +60,11 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 
         $tests = [
             [
-                'original' => ['value' => 0, 'name' => 'Nathan', 'extra_param1' => 1],
+                'original' => [
+                    'value' => 0,
+                    'name' => 'Nathan',
+                    'extra_param1' => 1,
+                ],
                 'expected' => 11,
                 'outputs' => [
                     'Add Ten' => 10,
@@ -70,7 +76,11 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
                 ],
             ],
             [
-                'original' => ['value' => 0, 'name' => 'Brad', 'extra_param1' => 1],
+                'original' => [
+                    'value' => 0,
+                    'name' => 'Brad',
+                    'extra_param1' => 1,
+                ],
                 'expected' => 21,
                 'outputs' => [
                     'Add Ten' => 10,
@@ -82,7 +92,11 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
                 ],
             ],
             [
-                'original' => ['value' => 0, 'name' => 'Matt', 'extra_param1' => 1],
+                'original' => [
+                    'value' => 0,
+                    'name' => 'Matt',
+                    'extra_param1' => 1,
+                ],
                 'expected' => 201,
                 'outputs' => [
                     'Add Ten' => 10,

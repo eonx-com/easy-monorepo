@@ -263,7 +263,10 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             $identityUserService->getIdentityToArray($identityUser, $service)
         );
 
-        $expected = ['email' => 'email@email.com', 'new-key' => 'new-value'];
+        $expected = [
+            'email' => 'email@email.com',
+            'new-key' => 'new-value',
+        ];
 
         self::assertEquals($expected, $identityUserService->getIdentityToArray($identityUser, $service));
     }

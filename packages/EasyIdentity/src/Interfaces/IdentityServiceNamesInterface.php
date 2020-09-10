@@ -14,7 +14,5 @@ interface IdentityServiceNamesInterface
     /**
      * @var string[]
      */
-    public const SERVICES = [
-        self::SERVICE_AUTH0,
-    ];
+    public const SERVICES = [self::SERVICE_AUTH0];
 }

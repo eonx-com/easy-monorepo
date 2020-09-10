@@ -32,12 +32,17 @@ final class ConfigFinder implements ConfigFinderInterface
     {
         $options = [
             'auth_basic' => [$apiKey],
-            'headers' => ['Accept' => 'application/json'],
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
         ];
 
         $url = \sprintf('%sproviders/%s', StringHelper::ensureEnd($this->apiUrl, '/'), $providerExternalId);
         $response = $this->httpClient->request('GET', $url, $options)->toArray();
 
-        return Config::fromArray($response + ['apiKey' => $apiKey, 'apiUrl' => $this->apiUrl]);
+        return Config::fromArray($response + [
+            'apiKey' => $apiKey,
+            'apiUrl' => $this->apiUrl,
+        ]);
     }
 }

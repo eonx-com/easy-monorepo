@@ -13,7 +13,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     $services->set('api_platform.data_persister', ChainSimpleDataPersister::class)
-        ->args([ref('service_container'), ref('event_dispatcher'), null, tagged_iterator('api_platform.data_persister')]);
+        ->args(
+            [ref('service_container'), ref('event_dispatcher'), null, tagged_iterator('api_platform.data_persister')]
+        );
 
     $services->set(ResolveRequestAttributesListener::class)
         ->autoconfigure()

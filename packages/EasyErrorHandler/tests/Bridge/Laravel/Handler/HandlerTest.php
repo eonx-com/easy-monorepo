@@ -117,7 +117,9 @@ final class HandlerTest extends AbstractTestCase
             new LoggerStub()
         );
         $output = new BufferedOutput();
-        $exception = (new ValidationExceptionStub())->setErrors(['property' => ['Property must not be null']]);
+        $exception = (new ValidationExceptionStub())->setErrors([
+            'property' => ['Property must not be null'],
+        ]);
 
         $handler->renderForConsole($output, $exception);
 
@@ -390,7 +392,9 @@ final class HandlerTest extends AbstractTestCase
             $this->createTranslator(),
             new LoggerStub()
         );
-        $errors = ['foo' => ['bar']];
+        $errors = [
+            'foo' => ['bar'],
+        ];
         $exception = (new ValidationExceptionStub())->setErrors($errors);
 
         $response = $handler->render(new Request(), $exception);
@@ -500,7 +504,11 @@ final class HandlerTest extends AbstractTestCase
 
     private function createConfigRepositoryWithExtendedErrorResponse(): ConfigRepository
     {
-        return new ConfigRepository(['easy-error-handler' => ['use_extended_response' => true]]);
+        return new ConfigRepository([
+            'easy-error-handler' => [
+                'use_extended_response' => true,
+            ],
+        ]);
     }
 
     /**

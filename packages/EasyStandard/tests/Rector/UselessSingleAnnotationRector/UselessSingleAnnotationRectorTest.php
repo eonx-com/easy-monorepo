@@ -41,9 +41,7 @@ final class UselessSingleAnnotationRectorTest extends AbstractRectorTestCase
     {
         return [
             UselessSingleAnnotationRector::class => [
-                UselessSingleAnnotationRector::ANNOTATIONS => [
-                    '{@inheritDoc}',
-                ],
+                UselessSingleAnnotationRector::ANNOTATIONS => ['{@inheritDoc}'],
             ],
         ];
     }

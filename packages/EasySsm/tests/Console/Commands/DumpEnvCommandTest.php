@@ -13,11 +13,11 @@ final class DumpEnvCommandTest extends AbstractTestCase
         $_SERVER['server_test'] = 'value';
         $_ENV['env_test'] = 'value';
 
-        $options = ['-e' => ['env_test']];
+        $options = [
+            '-e' => ['env_test'],
+        ];
 
-        $this->executeCommand('dump-env', null, [
-            __DIR__ . '/../../../config/console_loader.php',
-        ], $options);
+        $this->executeCommand('dump-env', null, [__DIR__ . '/../../../config/console_loader.php'], $options);
 
         $filename = '.env.local.php';
         $contents = (string)\file_get_contents($filename);

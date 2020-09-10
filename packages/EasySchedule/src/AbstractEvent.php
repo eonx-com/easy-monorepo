@@ -140,10 +140,7 @@ abstract class AbstractEvent implements EventInterface
      */
     public function hourlyAt($offset): EventInterface
     {
-        return $this->spliceIntoPosition(
-            1,
-            \is_array($offset) ? \implode(',', $offset) : $offset
-        );
+        return $this->spliceIntoPosition(1, \is_array($offset) ? \implode(',', $offset) : $offset);
     }
 
     public function mondays(): EventInterface

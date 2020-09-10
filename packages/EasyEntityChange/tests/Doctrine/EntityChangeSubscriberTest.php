@@ -72,11 +72,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
 
         $entity = new stdClass();
 
-        $unitOfWork = $this->getUnitOfWork(null, null, null, [
-            new ArrayCollection([
-                $entity,
-            ]),
-        ]);
+        $unitOfWork = $this->getUnitOfWork(null, null, null, [new ArrayCollection([$entity])]);
         $unitOfWork->expects(self::once())
             ->method('getEntityChangeSet')
             ->with($entity)
@@ -192,10 +188,7 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         $metadata->expects(self::exactly(2))
             ->method('getIdentifierValues')
             ->with($entity)
-            ->willReturnOnConsecutiveCalls(
-                [],
-                ['id' => 'value']
-            );
+            ->willReturnOnConsecutiveCalls([], ['id' => 'value']);
 
         $expectedEvent = new EntityChangeEvent([
             new UpdatedEntity(
