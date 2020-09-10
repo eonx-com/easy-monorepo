@@ -6,7 +6,6 @@ namespace EonX\EasySecurity\Tests\Stubs;
 
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 final class TokenDecoderStub implements ApiTokenDecoderInterface
 {

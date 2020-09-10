@@ -11,7 +11,7 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class NoElseSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @return iterable<array<SmartFileInfo, int>>
+     * @return iterable<array<int, SmartFileInfo|int>>
      */
     public function providerTestSniff(): iterable
     {

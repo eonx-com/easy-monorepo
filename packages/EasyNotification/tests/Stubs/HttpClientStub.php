@@ -54,7 +54,7 @@ final class HttpClientStub implements HttpClientInterface
         $this->url = $url;
         $this->options = $options;
 
-        return MockResponse::fromRequest($method, $url, $options, new MockResponse('{}'));
+        return MockResponse::fromRequest($method, $url, $options ?? [], new MockResponse('{}'));
     }
 
     /**

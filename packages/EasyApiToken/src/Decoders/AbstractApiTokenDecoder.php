@@ -43,7 +43,7 @@ abstract class AbstractApiTokenDecoder implements ApiTokenDecoderInterface
 
         $header = $request->headers->get($header, '');
 
-        if (Strings::startsWith($header, $prefix) === false) {
+        if (Strings::startsWith($header ?? '', $prefix) === false) {
             return null;
         }
 
