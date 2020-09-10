@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests;
 
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
-use EonX\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider;
 use EonX\EasyPsr7Factory\EasyPsr7Factory;
-use Laravel\Lumen\Application;
-use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -20,16 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
-
-    protected function assertInstanceInApp(string $concrete, string $abstract): void
-    {
-        self::assertInstanceOf($concrete, $this->getApplication()->get($abstract));
-    }
-
     protected function createConfig(
         ?string $numberAttr = null,
         ?int $numberDefault = null,
@@ -54,32 +41,6 @@ abstract class AbstractTestCase extends TestCase
         return (new EasyPsr7Factory())->createRequest(new Request($query ?? [], [], [], [], [], $server));
     }
 
-    protected function getApplication(?bool $pretendInConsole = null): Application
-    {
-        if ($this->app !== null) {
-            return $this->app;
-        }
-
-        $app = $this->app = $this->createApplication($pretendInConsole);
-        $app->register(EasyPsr7FactoryServiceProvider::class);
-
-        return $app;
-    }
-
-    /**
-     * @param mixed $target
-     */
-    protected function mock($target, ?callable $expectations = null): MockInterface
-    {
-        $mock = \Mockery::mock($target);
-
-        if ($expectations !== null) {
-            \call_user_func($expectations, $mock);
-        }
-
-        return $mock;
-    }
-
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -89,32 +50,6 @@ abstract class AbstractTestCase extends TestCase
             $fs->remove($var);
         }
 
-        $this->addToAssertionCount(\Mockery::getContainer()->mockery_getExpectationCount());
-
-        \Mockery::close();
-
         parent::tearDown();
-    }
-
-    private function createApplication(?bool $pretendInConsole = null): Application
-    {
-        return new class(__DIR__, $pretendInConsole) extends Application {
-            /**
-             * @var null|bool
-             */
-            private $runningInConsole;
-
-            public function __construct(?string $basePath = null, ?bool $runningInConsole = null)
-            {
-                parent::__construct($basePath);
-
-                $this->runningInConsole = $runningInConsole;
-            }
-
-            public function runningInConsole()
-            {
-                return $this->runningInConsole ?? false;
-            }
-        };
     }
 }

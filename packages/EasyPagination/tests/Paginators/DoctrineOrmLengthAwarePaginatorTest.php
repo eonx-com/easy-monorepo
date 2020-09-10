@@ -9,10 +9,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
-use EonX\EasyPagination\Tests\AbstractTestCase;
+use EonX\EasyPagination\Tests\AbstractWithMockTestCase;
 use Mockery\MockInterface;
 
-final class DoctrineOrmLengthAwarePaginatorTest extends AbstractTestCase
+final class DoctrineOrmLengthAwarePaginatorTest extends AbstractWithMockTestCase
 {
     public function testGetTotalItems(): void
     {
