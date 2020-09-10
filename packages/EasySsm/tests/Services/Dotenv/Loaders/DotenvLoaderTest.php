@@ -21,10 +21,7 @@ final class DotenvLoaderTest extends AbstractTestCase
         ];
 
         yield '2 env data' => [
-            [
-                new EnvData('env', 'value'),
-                new EnvData('env2', 'value'),
-            ],
+            [new EnvData('env', 'value'), new EnvData('env2', 'value')],
             [
                 'env' => 'value',
                 'env2' => 'value',

@@ -47,9 +47,7 @@ final class FirebaseJwtTokenInQueryDecoderTest extends AbstractFirebaseJwtTokenT
     public function testNullWhenQueryParamNotSet(): void
     {
         $decoder = new JwtTokenInQueryDecoder(
-            $this->createJwtEasyApiTokenFactory(
-                $this->createFirebaseJwtDriver()
-            ),
+            $this->createJwtEasyApiTokenFactory($this->createFirebaseJwtDriver()),
             'param'
         );
 

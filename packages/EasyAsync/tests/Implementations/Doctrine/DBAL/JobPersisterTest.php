@@ -50,7 +50,10 @@ final class JobPersisterTest extends AbstractTestCase
                     ->shouldReceive('setParameters')
                     ->atLeast()
                     ->once()
-                    ->with(['targetType' => 'type', 'targetId' => 'id'])
+                    ->with([
+                        'targetType' => 'type',
+                        'targetId' => 'id',
+                    ])
                     ->andReturnSelf();
             },
         ];

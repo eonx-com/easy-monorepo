@@ -17,14 +17,7 @@ final class ValueExpressionFunctionProvider implements ExpressionFunctionProvide
      */
     public function getFunctions(): array
     {
-        return [
-            $this->add(),
-            $this->divide(),
-            $this->equal(),
-            $this->if(),
-            $this->multiply(),
-            $this->subtract(),
-        ];
+        return [$this->add(), $this->divide(), $this->equal(), $this->if(), $this->multiply(), $this->subtract()];
     }
 
     private function add(): ExpressionFunctionInterface

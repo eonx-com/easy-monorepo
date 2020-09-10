@@ -18,7 +18,9 @@ final class EasyApiTokenServiceProviderTest extends AbstractLumenTestCase
 
         \config([
             'easy-api-token' => [
-                'decoders' => ['basic' => null],
+                'decoders' => [
+                    'basic' => null,
+                ],
                 'default_decoder' => 'basic',
             ],
         ]);

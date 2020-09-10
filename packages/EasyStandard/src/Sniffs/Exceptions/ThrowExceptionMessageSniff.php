@@ -80,8 +80,6 @@ final class ThrowExceptionMessageSniff implements Sniff
      */
     public function register(): array
     {
-        return [
-            \T_THROW,
-        ];
+        return [\T_THROW];
     }
 }

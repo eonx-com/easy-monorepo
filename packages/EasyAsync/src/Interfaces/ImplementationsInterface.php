@@ -9,9 +9,7 @@ interface ImplementationsInterface
     /**
      * @var string[]
      */
-    public const IMPLEMENTATIONS = [
-        self::IMPLEMENTATION_DOCTRINE,
-    ];
+    public const IMPLEMENTATIONS = [self::IMPLEMENTATION_DOCTRINE];
 
     /**
      * @var string

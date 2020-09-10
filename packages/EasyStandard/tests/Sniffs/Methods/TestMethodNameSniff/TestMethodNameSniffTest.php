@@ -47,7 +47,9 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
      */
     public function testProcessSucceedsIfMethodNameSucceedsIfNamespaceDoesNotHaveForbiddenPatterns(): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveForbiddenPatterns.php');
+        $fileInfo = new SmartFileInfo(
+            __DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveForbiddenPatterns.php'
+        );
 
         $this->doTestCorrectFileInfo($fileInfo);
     }
@@ -57,7 +59,9 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
      */
     public function testProcessSucceedsIfNamespaceDoesNotHaveAllowedPatterns(): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveAllowedPatterns.php');
+        $fileInfo = new SmartFileInfo(
+            __DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveAllowedPatterns.php'
+        );
 
         $this->doTestCorrectFileInfo($fileInfo);
     }
@@ -92,24 +96,16 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
             'allowed' => [
                 [
                     'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\Fixtures\\\(Correct|Wrong)$/',
-                    'patterns' => [
-                        '/test[A-Z]/',
-                        '/test.+(Succeeds|Fails|ThrowsException|DoesNothing)/',
-                    ],
+                    'patterns' => ['/test[A-Z]/', '/test.+(Succeeds|Fails|ThrowsException|DoesNothing)/'],
                 ],
             ],
             'forbidden' => [
                 [
                     'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\Fixtures\\\(Correct|Wrong)$/',
-                    'patterns' => [
-                        '/(Succeed|Return|Throw)[^s]/',
-                        '/(Successful|SuccessFully)/',
-                    ],
+                    'patterns' => ['/(Succeed|Return|Throw)[^s]/', '/(Successful|SuccessFully)/'],
                 ],
             ],
-            'ignored' => [
-                '/testIgnoredMethodNameSuccessful/',
-            ],
+            'ignored' => ['/testIgnoredMethodNameSuccessful/'],
             'testMethodPrefix' => 'test',
         ];
     }

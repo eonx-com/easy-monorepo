@@ -54,11 +54,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         $this->app->singleton(BasicsConfigurator::class, function (): BasicsConfigurator {
             $basePath = $this->app->basePath();
 
-            return new BasicsConfigurator(
-                $basePath . '/app',
-                $basePath,
-                $this->app->environment()
-            );
+            return new BasicsConfigurator($basePath . '/app', $basePath, $this->app->environment());
         });
         $this->app->tag(BasicsConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
 

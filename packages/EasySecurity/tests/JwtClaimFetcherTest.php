@@ -13,9 +13,6 @@ final class JwtClaimFetcherTest extends AbstractTestCase
     {
         $jwtClaimFetcher = new JwtClaimFetcher();
 
-        self::assertEquals(
-            'default',
-            $jwtClaimFetcher->getClaim(new Jwt([], 'original'), 'claim', 'default')
-        );
+        self::assertEquals('default', $jwtClaimFetcher->getClaim(new Jwt([], 'original'), 'claim', 'default'));
     }
 }

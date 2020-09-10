@@ -32,9 +32,7 @@ final class CodeCommand extends AbstractTemplatesCommand
      */
     protected function getSimpleFiles(): array
     {
-        return [
-            'Jenkinsfile',
-        ];
+        return ['Jenkinsfile'];
     }
 
     protected function getTemplatePrefix(): string

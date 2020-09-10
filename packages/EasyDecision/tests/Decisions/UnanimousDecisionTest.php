@@ -52,9 +52,7 @@ final class UnanimousDecisionTest extends AbstractTestCase
 
     public function testReturnTrueWhenOnlyUnsupported(): void
     {
-        $decision = (new UnanimousDecision())->addRules([
-            $this->createUnsupportedRule('unsupported-1'),
-        ]);
+        $decision = (new UnanimousDecision())->addRules([$this->createUnsupportedRule('unsupported-1')]);
 
         $expected = [
             'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,

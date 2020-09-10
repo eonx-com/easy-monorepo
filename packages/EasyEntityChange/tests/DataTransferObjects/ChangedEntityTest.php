@@ -15,11 +15,7 @@ class ChangedEntityTest extends AbstractTestCase
 {
     public function testDtoCreationAndGetters(): void
     {
-        $dto = new UpdatedEntity(
-            [],
-            stdClass::class,
-            ['id']
-        );
+        $dto = new UpdatedEntity([], stdClass::class, ['id']);
 
         self::assertEquals(stdClass::class, $dto->getClass());
         self::assertEquals(['id'], $dto->getIds());

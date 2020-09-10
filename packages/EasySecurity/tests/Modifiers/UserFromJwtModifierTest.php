@@ -24,38 +24,24 @@ final class UserFromJwtModifierTest extends AbstractTestCase
      */
     public function modifyProvider(): iterable
     {
-        yield 'No user resolved because no token given' => [
-            new UserProviderInterfaceStub(),
-        ];
+        yield 'No user resolved because no token given' => [new UserProviderInterfaceStub()];
 
         $context = new Context();
         $context->setToken(new ApiKey('api-key'));
 
-        yield 'No user resolved because token not jwt' => [
-            new UserProviderInterfaceStub(),
-            $context,
-        ];
+        yield 'No user resolved because token not jwt' => [new UserProviderInterfaceStub(), $context];
 
         $context->setToken(new Jwt([], 'jwt'));
 
-        yield 'No user resolved because no sub claim' => [
-            new UserProviderInterfaceStub(),
-            $context,
-        ];
+        yield 'No user resolved because no sub claim' => [new UserProviderInterfaceStub(), $context];
 
         $context->setToken(new Jwt(['sub' => ''], 'jwt'));
 
-        yield 'No user resolved because sub claim empty' => [
-            new UserProviderInterfaceStub(),
-            $context,
-        ];
+        yield 'No user resolved because sub claim empty' => [new UserProviderInterfaceStub(), $context];
 
         $context->setToken(new Jwt(['sub' => 'user-id'], 'jwt'));
 
-        yield 'No user resolved because provider returned null' => [
-            new UserProviderInterfaceStub(),
-            $context,
-        ];
+        yield 'No user resolved because provider returned null' => [new UserProviderInterfaceStub(), $context];
 
         $context->setToken(new Jwt([
             'sub' => 'user-id',

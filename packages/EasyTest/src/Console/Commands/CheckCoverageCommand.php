@@ -38,17 +38,8 @@ final class CheckCoverageCommand extends Command
         $this
             ->setName('check-coverage')
             ->setDescription('Run given test script and check output coverage against coverage option')
-            ->addArgument(
-                'file',
-                InputArgument::REQUIRED,
-                'File containing the coverage output'
-            )
-            ->addOption(
-                'coverage',
-                'c',
-                InputOption::VALUE_REQUIRED,
-                'Coverage limit to check against'
-            );
+            ->addArgument('file', InputArgument::REQUIRED, 'File containing the coverage output')
+            ->addOption('coverage', 'c', InputOption::VALUE_REQUIRED, 'Coverage limit to check against');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

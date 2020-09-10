@@ -16,11 +16,7 @@ final class JobLogFactoryTest extends AbstractTestCase
      */
     public function providerCreate(): iterable
     {
-        yield 'Create job log' => [
-            new Target('id', 'type'),
-            'test',
-            'jobId',
-        ];
+        yield 'Create job log' => [new Target('id', 'type'), 'test', 'jobId'];
     }
 
     /**
