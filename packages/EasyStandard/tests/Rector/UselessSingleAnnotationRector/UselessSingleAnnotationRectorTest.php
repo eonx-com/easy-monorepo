@@ -24,6 +24,15 @@ final class UselessSingleAnnotationRectorTest extends AbstractRectorTestCase
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
 
+    public function testGetDefinitionSucceeds(): void
+    {
+        $rector = new UselessSingleAnnotationRector();
+
+        $definition = $rector->getDefinition();
+
+        self::assertNotEmpty($definition->getDescription());
+    }
+
     /**
      * @dataProvider provideData()
      */
