@@ -48,7 +48,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(MainSecurityContextConfigurator::class)
-        ->factory([ref(MainSecurityContextConfiguratorFactory::class)])
+        ->factory([ref(MainSecurityContextConfiguratorFactory::class), '__invoke'])
         ->call('withConfigurators', [tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR)])
         ->call('withModifiers', [tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_MODIFIER)]);
 

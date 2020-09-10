@@ -39,11 +39,6 @@ final class StartSizeDataFactory
 
     private function getRequest(): Request
     {
-        // Fake request when running in console
-        if (\getenv('LINES') && \getenv('COLUMNS')) {
-            return $this->getFakeRequest();
-        }
-
         return $this->requestStack->getMasterRequest() ?? $this->getFakeRequest();
     }
 }
