@@ -25,28 +25,12 @@ final class UselessSingleAnnotationRector extends AbstractRector implements Conf
      */
     private $annotations = [];
 
-    public function getNodeTypes(): array
+    /**
+     * @param mixed[] $configuration
+     */
+    public function configure(array $configuration): void
     {
-        return [ClassMethod::class];
-    }
-
-    public function refactor(Node $node): ?Node
-    {
-        /** @var \PhpParser\Node\Stmt\ClassMethod $classMethod */
-        $classMethod = $node;
-
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
-        $phpDocInfo = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
-
-        /** @var AttributeAwareNodeInterface[] $children */
-        $children = $phpDocInfo->getPhpDocNode()->children;
-
-        if (\count($children) === 1 &&
-            \in_array($children[0]->getAttribute('original_content'), $this->annotations, true)) {
-            $phpDocInfo->getPhpDocNode()->children = [];
-        }
-
-        return $classMethod;
+        $this->annotations = $configuration[self::ANNOTATIONS] ?? [];
     }
 
     public function getDefinition(): RectorDefinition
@@ -74,8 +58,27 @@ PHP
         );
     }
 
-    public function configure(array $configuration): void
+    public function getNodeTypes(): array
     {
-        $this->annotations = $configuration[self::ANNOTATIONS] ?? [];
+        return [ClassMethod::class];
+    }
+
+    public function refactor(Node $node): ?Node
+    {
+        /** @var \PhpParser\Node\Stmt\ClassMethod $classMethod */
+        $classMethod = $node;
+
+        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
+        $phpDocInfo = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
+
+        /** @var AttributeAwareNodeInterface[] $children */
+        $children = $phpDocInfo->getPhpDocNode()->children;
+
+        if (\count($children) === 1 &&
+            \in_array($children[0]->getAttribute('original_content'), $this->annotations, true)) {
+            $phpDocInfo->getPhpDocNode()->children = [];
+        }
+
+        return $classMethod;
     }
 }
