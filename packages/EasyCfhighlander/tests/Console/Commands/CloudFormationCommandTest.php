@@ -37,10 +37,7 @@ final class CloudFormationCommandTest extends AbstractTestCase
             'true',
         ];
 
-        $filesNotExisting = [
-            '.easy/easy-cfhighlander-manifest.json',
-            '.easy/easy-cfhighlander-params.yaml',
-        ];
+        $filesNotExisting = ['.easy/easy-cfhighlander-manifest.json', '.easy/easy-cfhighlander-params.yaml'];
 
         $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-cfhighlander-manifest.json', '{}');
         $this->getFilesystem()->touch(static::$cwd . '/' . 'easy-cfhighlander-params.yaml');

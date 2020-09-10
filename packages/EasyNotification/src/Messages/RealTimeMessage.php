@@ -9,11 +9,7 @@ final class RealTimeMessage extends AbstractMessage
     /**
      * @var string[]
      */
-    public const STATUSES = [
-        self::STATUS_ON_FLY,
-        self::STATUS_READ,
-        self::STATUS_RECEIVED,
-    ];
+    public const STATUSES = [self::STATUS_ON_FLY, self::STATUS_READ, self::STATUS_RECEIVED];
 
     /**
      * @var string

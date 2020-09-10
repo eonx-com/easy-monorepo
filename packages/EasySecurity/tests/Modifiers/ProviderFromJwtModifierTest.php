@@ -23,26 +23,22 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
      */
     public function modifyProvider(): iterable
     {
-        yield 'No provider resolved because not token' => [
-            new ProviderProviderInterfaceStub(),
-        ];
+        yield 'No provider resolved because not token' => [new ProviderProviderInterfaceStub()];
 
         $context = new Context();
         $context->setToken(new ApiKey('api-key'));
 
-        yield 'No provider resolved because token not jwt' => [
-            new ProviderProviderInterfaceStub(),
-            $context,
-        ];
+        yield 'No provider resolved because token not jwt' => [new ProviderProviderInterfaceStub(), $context];
 
         $context->setToken(new Jwt([], 'jwt'));
 
-        yield 'No provider resolved because no provider claim' => [
-            new ProviderProviderInterfaceStub(),
-            $context,
-        ];
+        yield 'No provider resolved because no provider claim' => [new ProviderProviderInterfaceStub(), $context];
 
-        $context->setToken(new Jwt([static::$mainJwtClaim => ['provider' => '']], 'jwt'));
+        $context->setToken(new Jwt([
+            static::$mainJwtClaim => [
+                'provider' => '',
+            ],
+        ], 'jwt'));
 
         yield 'No provider resolved because provider claim empty' => [
             new ProviderProviderInterfaceStub(),
@@ -50,7 +46,9 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
         ];
 
         $context->setToken(new Jwt([
-            static::$mainJwtClaim => ['provider' => 'provider-id'],
+            static::$mainJwtClaim => [
+                'provider' => 'provider-id',
+            ],
         ], 'jwt'));
 
         yield 'No provider resolved because provider provider returns null' => [
@@ -59,7 +57,9 @@ final class ProviderFromJwtModifierTest extends AbstractTestCase
         ];
 
         $context->setToken(new Jwt([
-            static::$mainJwtClaim => ['provider' => 'provider-id'],
+            static::$mainJwtClaim => [
+                'provider' => 'provider-id',
+            ],
         ], 'jwt'));
 
         yield 'Provider resolved' => [

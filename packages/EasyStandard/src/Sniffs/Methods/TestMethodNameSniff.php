@@ -16,9 +16,7 @@ final class TestMethodNameSniff implements Sniff
     public $allowed = [
         [
             'namespace' => '/^App\\\Tests\\\Unit/',
-            'patterns' => [
-                '/test[A-Z]/',
-            ],
+            'patterns' => ['/test[A-Z]/'],
         ],
     ];
 
@@ -28,9 +26,7 @@ final class TestMethodNameSniff implements Sniff
     public $forbidden = [
         [
             'namespace' => '/^App\\\Tests\\\Unit/',
-            'patterns' => [
-                '/(Succeed|Return|Throw)[^s]/',
-            ],
+            'patterns' => ['/(Succeed|Return|Throw)[^s]/'],
         ],
     ];
 
@@ -94,9 +90,7 @@ final class TestMethodNameSniff implements Sniff
      */
     public function register(): array
     {
-        return [
-            \T_FUNCTION,
-        ];
+        return [\T_FUNCTION];
     }
 
     /**

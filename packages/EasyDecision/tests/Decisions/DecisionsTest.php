@@ -51,8 +51,14 @@ final class DecisionsTest extends AbstractTestCase
             [
                 'add(5)' => 10,
                 'Add 10' => 20,
-                'add(20)' => ['output' => 40, 'key' => 'value'],
-                'Add 30' => ['output' => 70, 'key1' => 'value1'],
+                'add(20)' => [
+                    'output' => 40,
+                    'key' => 'value',
+                ],
+                'Add 30' => [
+                    'output' => 70,
+                    'key1' => 'value1',
+                ],
             ],
         ];
 
@@ -67,10 +73,16 @@ final class DecisionsTest extends AbstractTestCase
             [],
             true,
             [
-                'Unsupported with extra' => ['output' => RuleInterface::OUTPUT_UNSUPPORTED, 'key' => 'value'],
+                'Unsupported with extra' => [
+                    'output' => RuleInterface::OUTPUT_UNSUPPORTED,
+                    'key' => 'value',
+                ],
                 'Only false' => false,
                 'Only true' => true,
-                'True with extra' => ['output' => true, 'key' => 'value'],
+                'True with extra' => [
+                    'output' => true,
+                    'key' => 'value',
+                ],
             ],
         ];
 

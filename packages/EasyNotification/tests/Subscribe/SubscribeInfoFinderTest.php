@@ -16,9 +16,7 @@ final class SubscribeInfoFinderTest extends AbstractTestCase
     {
         $response = new MockResponse(Json::encode([
             'jwt' => 'my-jwt',
-            'topics' => [
-                '/nathan',
-            ],
+            'topics' => ['/nathan'],
             'url' => 'https://subscribe.com',
         ]));
         $httpClient = new MockHttpClient([$response]);

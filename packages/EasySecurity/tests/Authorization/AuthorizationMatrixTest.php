@@ -55,9 +55,7 @@ final class AuthorizationMatrixTest extends AbstractTestCase
                 new Role('role1', [new Permission('permission1')]),
                 new Role('role2', [new Permission('permission2')]),
             ],
-            [
-                new Permission('permission3'),
-            ],
+            [new Permission('permission3')],
         ];
     }
 

@@ -18,11 +18,7 @@ final class HashCheckerTest extends AbstractTestCase
      */
     public function providerTestCheckHash(): iterable
     {
-        yield 'No local hash' => [
-            'no-local',
-            [],
-            false,
-        ];
+        yield 'No local hash' => ['no-local', [], false];
 
         yield 'Local hash different' => [
             'different',
@@ -44,11 +40,7 @@ final class HashCheckerTest extends AbstractTestCase
      */
     public function providerTestCheckHashesForParams(): iterable
     {
-        yield 'Different because empty array' => [
-            [new SsmParameter('param', 'string', 'value')],
-            [],
-            false,
-        ];
+        yield 'Different because empty array' => [[new SsmParameter('param', 'string', 'value')], [], false];
 
         yield 'Different because name' => [
             [new SsmParameter('param', 'string', 'value')],
@@ -74,11 +66,7 @@ final class HashCheckerTest extends AbstractTestCase
             false,
         ];
 
-        yield 'Identical with empty arrays' => [
-            [],
-            [],
-            true,
-        ];
+        yield 'Identical with empty arrays' => [[], [], true];
 
         yield 'Identical' => [
             [new SsmParameter('param', 'string', 'value')],

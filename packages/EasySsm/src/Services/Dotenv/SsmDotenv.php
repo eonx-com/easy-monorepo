@@ -65,10 +65,7 @@ final class SsmDotenv implements SsmDotenvInterface
 
         $this->envLoader->loadEnv(
             $this->parametersHelper->convertToEnvs(
-                $this->parametersHelper->removePathFromName(
-                    $this->getParameters($path),
-                    $path
-                )
+                $this->parametersHelper->removePathFromName($this->getParameters($path), $path)
             )
         );
     }

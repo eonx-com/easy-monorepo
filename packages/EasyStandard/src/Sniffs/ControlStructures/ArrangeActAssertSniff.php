@@ -89,9 +89,7 @@ final class ArrangeActAssertSniff implements Sniff
      */
     public function register(): array
     {
-        return [
-            \T_FUNCTION,
-        ];
+        return [\T_FUNCTION];
     }
 
     /**

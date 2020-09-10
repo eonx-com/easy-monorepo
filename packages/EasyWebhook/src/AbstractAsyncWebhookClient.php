@@ -22,10 +22,8 @@ abstract class AbstractAsyncWebhookClient implements WebhookClientInterface
      */
     private $store;
 
-    public function __construct(
-        WebhookClientInterface $client,
-        WebhookResultStoreInterface $store
-    ) {
+    public function __construct(WebhookClientInterface $client, WebhookResultStoreInterface $store)
+    {
         $this->client = $client;
         $this->store = $store;
     }

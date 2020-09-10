@@ -26,19 +26,13 @@ final class HashDumperTest extends AbstractTestCase
 
         yield '2 params' => [
             'test',
-            [
-                new SsmParameter('param', 'string', 'value'),
-                new SsmParameter('param1', 'string', 'value'),
-            ],
+            [new SsmParameter('param', 'string', 'value'), new SsmParameter('param1', 'string', 'value')],
             '8ee15046ee89706b7f9936da70710215',
         ];
 
         yield '2 params different order' => [
             'test',
-            [
-                new SsmParameter('param1', 'string', 'value'),
-                new SsmParameter('param', 'string', 'value'),
-            ],
+            [new SsmParameter('param1', 'string', 'value'), new SsmParameter('param', 'string', 'value')],
             '8ee15046ee89706b7f9936da70710215',
         ];
     }
