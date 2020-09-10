@@ -24,12 +24,7 @@ final class ApiKeyDecoderTest extends AbstractTestCase
 
     public function testApiKeyNullIfNotOnlyApiKeyProvided(): void
     {
-        $tests = [
-            '',
-            ':',
-            ':password',
-            'api-key:password',
-        ];
+        $tests = ['', ':', ':password', 'api-key:password'];
 
         foreach ($tests as $test) {
             self::assertNull((new ApiKeyDecoder())->decode($this->createRequest([

@@ -10,5 +10,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     $services->set(SsmClientInterface::class, SsmClientStub::class)
-        ->arg('$parameters', [['name' => 'param', 'type' => 'string', 'value' => 'value']]);
+        ->arg('$parameters', [[
+            'name' => 'param',
+            'type' => 'string',
+            'value' => 'value',
+        ]]);
 };

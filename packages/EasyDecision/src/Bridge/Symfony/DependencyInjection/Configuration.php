@@ -28,7 +28,9 @@ final class Configuration implements ConfigurationInterface
                         ->thenInvalid('Class %s does not exist.')
                     ->end()
                     ->end()
-                    ->info('Decision type mapping to be used by \EonX\EasyDecision\Interfaces\DecisionFactoryInterface::createByName')
+                    ->info(
+                        'Decision type mapping to be used by \EonX\EasyDecision\Interfaces\DecisionFactoryInterface::createByName'
+                    )
                 ->end()
             ->end();
 

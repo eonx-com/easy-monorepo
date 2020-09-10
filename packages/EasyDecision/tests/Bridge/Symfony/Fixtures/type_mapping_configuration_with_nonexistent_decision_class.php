@@ -5,5 +5,9 @@ declare(strict_types=1);
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->extension('easy_decision', ['type_mapping' => ['decision' => 'NonExistentDecisionClass']]);
+    $containerConfigurator->extension('easy_decision', [
+        'type_mapping' => [
+            'decision' => 'NonExistentDecisionClass',
+        ],
+    ]);
 };

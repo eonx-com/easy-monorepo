@@ -38,50 +38,78 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      */
     public function getBrokenConfigurations(): iterable
     {
-        yield 'Empty configuration' => [
-            [],
-            'nothing',
-            'No decoders configured',
-        ];
+        yield 'Empty configuration' => [[], 'nothing', 'No decoders configured'];
 
         yield 'Error is thrown when a non-existent key is requested.' => [
-            ['onething' => ['type' => 'basic']],
+            [
+                'onething' => [
+                    'type' => 'basic',
+                ],
+            ],
             'some_other_thing',
             'No decoder configured for key: "some_other_thing".',
         ];
 
         yield 'Error because no type set and no default factories for decoder' => [
-            ['fake-basic' => []],
+            [
+                'fake-basic' => [],
+            ],
             'fake-basic',
             'No "type" or default factory configured for decoder "fake-basic".',
         ];
 
         yield 'Test that an error is thrown when a non-existent decoder type is configured.' => [
-            ['xxx' => ['type' => 'yyy', 'driver' => 'auth0', 'options' => []]],
+            [
+                'xxx' => [
+                    'type' => 'yyy',
+                    'driver' => 'auth0',
+                    'options' => [],
+                ],
+            ],
             'xxx',
             'Unable to instantiate the factory "yyy" for decoder "xxx".',
         ];
 
         yield 'Expect chain driver with no list to return error.' => [
-            ['chain-thing' => ['type' => 'chain']],
+            [
+                'chain-thing' => [
+                    'type' => 'chain',
+                ],
+            ],
             'chain-thing',
             '"list" is required and must be an array for decoder "chain-thing".',
         ];
 
         yield 'Expect error for missing options supplied for JWT driver.' => [
-            ['rad' => ['type' => 'jwt-header', 'driver' => 'auth0']],
+            [
+                'rad' => [
+                    'type' => 'jwt-header',
+                    'driver' => 'auth0',
+                ],
+            ],
             'rad',
             '"options" is required and must be an array for decoder "rad".',
         ];
 
         yield 'Expect error for invalid jwt driver.' => [
-            ['foobar' => ['type' => 'jwt-header', 'driver' => 'GOOGLE', 'options' => ['not-empty']]],
+            [
+                'foobar' => [
+                    'type' => 'jwt-header',
+                    'driver' => 'GOOGLE',
+                    'options' => ['not-empty'],
+                ],
+            ],
             'foobar',
             '"driver" value "GOOGLE" is invalid. Valid drivers: ["auth0", "firebase"].',
         ];
 
         yield 'Expect error for missing jwt driver' => [
-            ['something' => ['type' => 'jwt-header', 'options' => []]],
+            [
+                'something' => [
+                    'type' => 'jwt-header',
+                    'options' => [],
+                ],
+            ],
             'something',
             '"driver" is required and must be a string for decoder "something".',
         ];
@@ -114,13 +142,14 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $config = [
             'chain-key' => [
                 'type' => 'chain',
-                'list' => [
-                    'api',
-                    'pass',
-                ],
+                'list' => ['api', 'pass'],
             ],
-            'api' => ['type' => 'user-apikey'],
-            'pass' => ['type' => 'basic'],
+            'api' => [
+                'type' => 'user-apikey',
+            ],
+            'pass' => [
+                'type' => 'basic',
+            ],
         ];
 
         yield 'Build API Chain' => [
@@ -295,13 +324,21 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
     public function getSimpleBuilds(): iterable
     {
         yield 'Simple API Key' => [
-            ['apiconfig' => ['type' => 'user-apikey']],
+            [
+                'apiconfig' => [
+                    'type' => 'user-apikey',
+                ],
+            ],
             'apiconfig',
             new ApiKeyAsBasicAuthUsernameDecoder('apiconfig'),
         ];
 
         yield 'Simple Basic Auth decoder' => [
-            ['something' => ['type' => 'basic']],
+            [
+                'something' => [
+                    'type' => 'basic',
+                ],
+            ],
             'something',
             new BasicAuthDecoder('something'),
         ];
@@ -345,7 +382,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('runtime problems');
 
-        $provider = new FromConfigDecoderProvider(['basic' => []]);
+        $provider = new FromConfigDecoderProvider([
+            'basic' => [],
+        ]);
         $provider->setContainer($container);
 
         $factory = new ApiTokenDecoderFactory([$provider]);

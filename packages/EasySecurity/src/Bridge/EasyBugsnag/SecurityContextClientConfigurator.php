@@ -73,7 +73,10 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
      */
     private function formatProvider(ProviderInterface $provider): array
     {
-        return ['class' => \get_class($provider), 'id' => $provider->getUniqueId()];
+        return [
+            'class' => \get_class($provider),
+            'id' => $provider->getUniqueId(),
+        ];
     }
 
     /**
@@ -95,7 +98,10 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
      */
     private function formatToken(ApiTokenInterface $apiToken): array
     {
-        return ['class' => \get_class($apiToken), 'original' => $apiToken->getOriginalToken()];
+        return [
+            'class' => \get_class($apiToken),
+            'original' => $apiToken->getOriginalToken(),
+        ];
     }
 
     /**
@@ -103,6 +109,9 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
      */
     private function formatUser(UserInterface $user): array
     {
-        return ['class' => \get_class($user), 'id' => $user->getUniqueId()];
+        return [
+            'class' => \get_class($user),
+            'id' => $user->getUniqueId(),
+        ];
     }
 }

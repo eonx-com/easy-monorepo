@@ -18,7 +18,11 @@ final class ConfigCommandsTest extends AbstractTestCase
         $kernel->call('config:cache');
 
         $expectedPath = $app->storagePath('cached_config.php');
-        $expectedConfig = ['database' => ['connection' => 'not-cached-connection']];
+        $expectedConfig = [
+            'database' => [
+                'connection' => 'not-cached-connection',
+            ],
+        ];
 
         self::assertFileExists($expectedPath);
         self::assertEquals(require $expectedPath, $expectedConfig);

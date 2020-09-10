@@ -12,11 +12,7 @@ final class RoleTest extends AbstractTestCase
 {
     public function testRole(): void
     {
-        $role = new Role('app:role', [
-            new Permission('perm'),
-            'perm-as-string',
-            new \stdClass(),
-        ]);
+        $role = new Role('app:role', [new Permission('perm'), 'perm-as-string', new \stdClass()]);
 
         self::assertEquals('app:role', $role->getIdentifier());
         self::assertEquals('app:role', (string)$role);

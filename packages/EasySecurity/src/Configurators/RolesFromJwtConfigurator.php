@@ -10,11 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class RolesFromJwtConfigurator extends AbstractFromJwtConfigurator
 {
-    protected function doConfigure(
-        SecurityContextInterface $context,
-        Request $request,
-        JwtInterface $token
-    ): void {
+    protected function doConfigure(SecurityContextInterface $context, Request $request, JwtInterface $token): void
+    {
         $roles = $context->getAuthorizationMatrix()->getRolesByIdentifiers($this->getMainClaim($token)['roles'] ?? []);
 
         if (empty($roles)) {

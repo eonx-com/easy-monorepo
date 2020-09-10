@@ -12,7 +12,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     $services->set(CustomPaginationListener::class)
-        ->tag('kernel.event_listener', ['event' => 'kernel.view', 'priority' => 17]);
+        ->tag('kernel.event_listener', [
+            'event' => 'kernel.view',
+            'priority' => 17,
+        ]);
 
     $services->set(SerializerContextBuilder::class)
         ->autoconfigure(false)

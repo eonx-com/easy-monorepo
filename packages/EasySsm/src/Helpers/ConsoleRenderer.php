@@ -60,13 +60,7 @@ final class ConsoleRenderer
         $table = new Table($output);
         $table->setHeaderTitle('Diff Summary');
         $table->setHeaders(['New', 'Updated', 'Deleted']);
-        $table->setRows([
-            [
-                \count($diff->getNew()),
-                \count($diff->getUpdated()),
-                \count($diff->getDeleted()),
-            ],
-        ]);
+        $table->setRows([[\count($diff->getNew()), \count($diff->getUpdated()), \count($diff->getDeleted())]]);
         $table->render();
     }
 

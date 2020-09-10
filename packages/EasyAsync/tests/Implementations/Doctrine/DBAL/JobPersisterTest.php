@@ -50,7 +50,10 @@ final class JobPersisterTest extends AbstractTestCase
                     ->shouldReceive('setParameters')
                     ->atLeast()
                     ->once()
-                    ->with(['targetType' => 'type', 'targetId' => 'id'])
+                    ->with([
+                        'targetType' => 'type',
+                        'targetId' => 'id',
+                    ])
                     ->andReturnSelf();
             },
         ];
@@ -158,7 +161,7 @@ final class JobPersisterTest extends AbstractTestCase
                 ->atLeast()
                 ->once()
                 ->withArgs(static function (string $select): bool {
-                    return \in_array($select, ['COUNT(1) as _count', '*'], true);
+                    return \in_array($select, ['COUNT(DISTINCT 1) as _count_1', '*'], true);
                 })
                 ->andReturnSelf();
 
@@ -207,7 +210,7 @@ final class JobPersisterTest extends AbstractTestCase
                 ->atLeast()
                 ->once()
                 ->with('sql query', [])
-                ->andReturn(['_count' => 1]);
+                ->andReturn(['_count_1' => 1]);
 
             $mock
                 ->shouldReceive('fetchAll')

@@ -11,5 +11,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set('EonX\EasyCore\Bridge\Symfony\ApiPlatform\Metadata\NoPropertiesPropertyNameCollectionFactory')
         ->decorate('api_platform.metadata.property.name_collection_factory.property_info', null, -20)
-        ->args([ref('EonX\EasyCore\Bridge\Symfony\ApiPlatform\Metadata\NoPropertiesPropertyNameCollectionFactory.inner')]);
+        ->args(
+            [ref('EonX\EasyCore\Bridge\Symfony\ApiPlatform\Metadata\NoPropertiesPropertyNameCollectionFactory.inner')]
+        );
 };

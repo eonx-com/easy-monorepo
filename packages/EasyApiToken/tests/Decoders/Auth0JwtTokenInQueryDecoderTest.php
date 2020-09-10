@@ -36,9 +36,7 @@ final class Auth0JwtTokenInQueryDecoderTest extends AbstractAuth0JwtTokenTestCas
     public function testNullWhenQueryParamNotSet(): void
     {
         $decoder = new JwtTokenInQueryDecoder(
-            $this->createJwtEasyApiTokenFactory(
-                $this->createAuth0JwtDriver()
-            ),
+            $this->createJwtEasyApiTokenFactory($this->createAuth0JwtDriver()),
             'param'
         );
 

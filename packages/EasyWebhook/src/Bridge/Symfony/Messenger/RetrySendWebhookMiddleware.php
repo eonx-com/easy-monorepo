@@ -57,10 +57,7 @@ final class RetrySendWebhookMiddleware implements MiddlewareInterface
 
             $retryEnvelope = $envelope
                 ->withoutAll(HandledStamp::class)
-                ->with(
-                    new DelayStamp($delay),
-                    new RedeliveryStamp($result->getWebhook()->getCurrentAttempt())
-                );
+                ->with(new DelayStamp($delay), new RedeliveryStamp($result->getWebhook()->getCurrentAttempt()));
 
             /** @var \EonX\EasyWebhook\Bridge\Symfony\Messenger\SendWebhookMessage $message */
             $message = $retryEnvelope->getMessage();

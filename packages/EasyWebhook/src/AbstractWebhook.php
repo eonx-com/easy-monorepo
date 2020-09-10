@@ -11,10 +11,7 @@ abstract class AbstractWebhook implements WebhookInterface
     /**
      * @var string[]
      */
-    protected static $integers = [
-        'current_attempt',
-        'max_attempt',
-    ];
+    protected static $integers = ['current_attempt', 'max_attempt'];
 
     /**
      * @var string[]

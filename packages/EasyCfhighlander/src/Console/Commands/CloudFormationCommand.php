@@ -30,11 +30,7 @@ final class CloudFormationCommand extends AbstractTemplatesCommand
      */
     protected function getProjectFiles(): array
     {
-        return [
-            'project.cfhighlander.rb',
-            'project.config.yaml',
-            'project.mappings.yaml',
-        ];
+        return ['project.cfhighlander.rb', 'project.config.yaml', 'project.mappings.yaml'];
     }
 
     /**

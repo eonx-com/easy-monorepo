@@ -135,11 +135,7 @@ final class Psr4Sniff implements Sniff
 
             $relativePath = \substr(\dirname($classFilename), $basePathPosition, \strlen($classFilename));
 
-            $this->expectedNamespace = \str_replace(
-                [$basePath, '/'],
-                [$baseNamespace, '\\'],
-                $relativePath
-            );
+            $this->expectedNamespace = \str_replace([$basePath, '/'], [$baseNamespace, '\\'], $relativePath);
         }
 
         $this->code = self::CODE_NAMESPACE_VIOLATION;

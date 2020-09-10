@@ -52,7 +52,9 @@ final class NotificationClientTest extends AbstractTestCase
 
         $expectedOptions = [
             'auth_basic' => [$config->getApiKey()],
-            'headers' => ['Accept' => 'application/json'],
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
         ];
 
         self::assertEquals('DELETE', $httpClientStub->getMethod());
@@ -66,12 +68,21 @@ final class NotificationClientTest extends AbstractTestCase
         $httpClientStub = new HttpClientStub();
         $client = $this->getNotificationClient(null, $httpClientStub)->withConfig($config);
 
-        $client->getMessages(['topic'], ['query' => ['my-query' => 'my-value']]);
+        $client->getMessages(['topic'], [
+            'query' => [
+                'my-query' => 'my-value',
+            ],
+        ]);
 
         $expectedOptions = [
             'auth_basic' => [$config->getApiKey()],
-            'headers' => ['Accept' => 'application/json'],
-            'query' => ['topic' => ['topic'], 'my-query' => 'my-value'],
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+            'query' => [
+                'topic' => ['topic'],
+                'my-query' => 'my-value',
+            ],
         ];
 
         self::assertEquals('GET', $httpClientStub->getMethod());
@@ -128,7 +139,9 @@ final class NotificationClientTest extends AbstractTestCase
                 'status' => RealTimeMessage::STATUS_READ,
             ],
             'auth_basic' => [$config->getApiKey()],
-            'headers' => ['Accept' => 'application/json'],
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
         ];
 
         self::assertEquals('PUT', $httpClientStub->getMethod());
