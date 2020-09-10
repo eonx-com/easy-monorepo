@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyStandard\Tests\Sniffs\Classes\AvoidPublicPropertiesSniff;
 
 use EonX\EasyStandard\Sniffs\Classes\AvoidPublicPropertiesSniff;
-use Iterator;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class AvoidPublicPropertiesSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @return iterable<int, SmartFileInfo|int>
+     * @return iterable<array<int, SmartFileInfo|int>>
      */
     public function providerTestSniff(): iterable
     {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyStandard\Tests\Sniffs\Classes\RequirePublicConstructorSniff;
 
 use EonX\EasyStandard\Sniffs\Classes\RequirePublicConstructorSniff;
-use Iterator;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 

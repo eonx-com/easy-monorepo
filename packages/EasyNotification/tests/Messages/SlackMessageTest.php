@@ -52,7 +52,6 @@ final class SlackMessageTest extends AbstractTestCase
 
     /**
      * @param mixed[] $body
-     * @param string[] $topics
      *
      * @dataProvider providerTestGetters
      *

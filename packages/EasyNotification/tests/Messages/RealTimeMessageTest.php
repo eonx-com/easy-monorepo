@@ -52,7 +52,10 @@ final class RealTimeMessageTest extends AbstractTestCase
 
         yield 'Create method + body + topics' => [
             function (): RealTimeMessage {
-                return RealTimeMessage::create()->topics(static::$topics)->body(static::$body);
+                $message = RealTimeMessage::create()->topics(static::$topics);
+                $message->body(static::$body);
+
+                return $message;
             },
             static::$body,
             static::$topics,
