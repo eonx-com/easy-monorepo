@@ -12,6 +12,7 @@ jobs:
                 php: [ '7.3' ]
                 actions:
                     - { name: ecs, coverage: none, run: composer check-ecs }
+                    # @validate-repo was removed from composer.json until monorepo-builder is fixed
                     - { name: monorepo, coverage: none, run: composer check-monorepo }
                     - { name: phpstan, coverage: none, run: composer check-phpstan }
                     - { name: security, coverage: none, run: composer check-security }

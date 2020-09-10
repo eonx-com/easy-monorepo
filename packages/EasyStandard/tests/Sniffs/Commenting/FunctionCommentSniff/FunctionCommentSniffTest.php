@@ -14,7 +14,7 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class FunctionCommentSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @return iterable<SmartFileInfo>
+     * @return iterable<SmartFileInfo[]>
      */
     public function provideCorrectFixtures(): iterable
     {
@@ -22,7 +22,7 @@ final class FunctionCommentSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @return iterable<SmartFileInfo|int>
+     * @return iterable<array<int, SmartFileInfo|int>>
      */
     public function provideWrongFixtures(): iterable
     {

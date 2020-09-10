@@ -12,9 +12,9 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class AvoidPublicPropertiesSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @return array<int, SmartFileInfo|int>
+     * @return iterable<int, SmartFileInfo|int>
      */
-    public function providerTestSniff(): Iterator
+    public function providerTestSniff(): iterable
     {
         yield [new SmartFileInfo(__DIR__ . '/Fixture/AvoidPublicPropertiesSniffTest.php.inc'), 1];
     }

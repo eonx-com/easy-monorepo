@@ -39,7 +39,7 @@ final class LoggerFactory implements LoggerFactoryInterface
     private $loggerConfigurators = [];
 
     /**
-     * @var \Psr\Log\LoggerInterface[]
+     * @var \Monolog\Logger[]
      */
     private $loggers = [];
 

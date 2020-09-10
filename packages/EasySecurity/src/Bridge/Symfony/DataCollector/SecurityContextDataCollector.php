@@ -136,10 +136,6 @@ final class SecurityContextDataCollector extends DataCollector
     {
         $this->data['context_configurators'] = [];
 
-        if ($this->securityContextConfigurator instanceof MainSecurityContextConfigurator === false) {
-            return;
-        }
-
         foreach ($this->securityContextConfigurator->getContextConfigurators() as $contextConfigurator) {
             $reflection = new \ReflectionClass($contextConfigurator);
 

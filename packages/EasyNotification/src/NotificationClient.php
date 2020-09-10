@@ -54,7 +54,10 @@ final class NotificationClient implements NotificationClientInterface
 
     public function deleteMessage(string $messageId): void
     {
-        $this->configRequired(__METHOD__);
+        if ($this->config === null) {
+            throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', __METHOD__));
+        }
+
         $this->sendApiRequest('DELETE', \sprintf('messages/%s', $messageId));
     }
 
@@ -66,7 +69,9 @@ final class NotificationClient implements NotificationClientInterface
      */
     public function getMessages(array $topics, ?array $options = null): array
     {
-        $this->configRequired(__METHOD__);
+        if ($this->config === null) {
+            throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', __METHOD__));
+        }
 
         $options = \array_merge_recursive($options ?? [], [
             'query' => [
@@ -79,7 +84,9 @@ final class NotificationClient implements NotificationClientInterface
 
     public function send(MessageInterface $message): void
     {
-        $this->configRequired(__METHOD__);
+        if ($this->config === null) {
+            throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', __METHOD__));
+        }
 
         $queueMessage = new QueueMessage();
 
@@ -95,7 +102,9 @@ final class NotificationClient implements NotificationClientInterface
      */
     public function updateMessagesStatus(array $messages, string $status): void
     {
-        $this->configRequired(__METHOD__);
+        if ($this->config === null) {
+            throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', __METHOD__));
+        }
 
         if (RealTimeMessage::isStatusValid($status) === false) {
             throw new InvalidRealTimeMessageStatusException(\sprintf(
@@ -118,13 +127,6 @@ final class NotificationClient implements NotificationClientInterface
         $this->config = $config;
 
         return $this;
-    }
-
-    private function configRequired(string $method): void
-    {
-        if ($this->config === null) {
-            throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', $method));
-        }
     }
 
     /**
@@ -154,9 +156,15 @@ final class NotificationClient implements NotificationClientInterface
 
     /**
      * @param null|mixed[] $options
+     *
+     * @return mixed[]
      */
     private function sendApiRequest(string $method, string $path, ?array $options = null): array
     {
+        if ($this->config === null) {
+            throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', $method));
+        }
+
         $options = \array_merge($options ?? [], [
             'auth_basic' => [$this->config->getApiKey()],
             'headers' => [

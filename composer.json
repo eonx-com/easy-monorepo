@@ -38,7 +38,8 @@
         "aws/aws-sdk-php": "^3.134",
         "eonx-com/apiformats": "^1.0",
         "illuminate/support": "^5.5 || ^6.0",
-        "bugsnag/bugsnag": "^3.0"
+        "bugsnag/bugsnag": "^3.0",
+        "elasticsearch/elasticsearch": "^7.8"
     },
     "require-dev": {
         "api-platform/core": "^2.5",
@@ -165,8 +166,7 @@
         ],
         "check-ecs": "vendor/bin/ecs check --clear-cache",
         "check-monorepo": [
-            "@composer validate --strict",
-            "@validate-repo"
+            "@composer validate --strict"
         ],
         "check-phpstan": "vendor/bin/phpstan analyse --error-format symplify",
         "check-security": "vendor/bin/security-checker security:check",
