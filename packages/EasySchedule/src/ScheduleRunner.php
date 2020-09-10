@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySchedule;
 
-use EonX\EasyCore\Lock\LockServiceInterface;
+use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasySchedule\Interfaces\ScheduleInterface;
 use EonX\EasySchedule\Interfaces\ScheduleRunnerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class ScheduleRunner implements ScheduleRunnerInterface
 {
     /**
-     * @var \EonX\EasyCore\Lock\LockServiceInterface
+     * @var \EonX\EasyLock\Interfaces\LockServiceInterface
      */
     private $lockService;
 
@@ -56,12 +56,5 @@ final class ScheduleRunner implements ScheduleRunnerInterface
         if ($this->ran === false) {
             $output->writeln('<info>No scheduled commands are ready to run.</info>');
         }
-    }
-
-    public function setLockService(LockServiceInterface $lockService): ScheduleRunnerInterface
-    {
-        $this->lockService = $lockService;
-
-        return $this;
     }
 }
