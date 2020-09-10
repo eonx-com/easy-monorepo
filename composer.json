@@ -38,7 +38,7 @@
         "aws/aws-sdk-php": "^3.134",
         "eonx-com/apiformats": "^1.0",
         "illuminate/support": "^5.5 || ^6.0",
-        "bugsnag/bugsnag": "^3.0"
+        "bugsnag/bugsnag": "^3.19"
     },
     "require-dev": {
         "api-platform/core": "^2.5",
