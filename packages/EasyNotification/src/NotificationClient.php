@@ -69,7 +69,9 @@ final class NotificationClient implements NotificationClientInterface
         $this->configRequired(__METHOD__);
 
         $options = \array_merge_recursive($options ?? [], [
-            'query' => ['topic' => $topics],
+            'query' => [
+                'topic' => $topics,
+            ],
         ]);
 
         return $this->sendApiRequest('GET', 'messages', $options);
@@ -157,7 +159,9 @@ final class NotificationClient implements NotificationClientInterface
     {
         $options = \array_merge($options ?? [], [
             'auth_basic' => [$this->config->getApiKey()],
-            'headers' => ['Accept' => 'application/json'],
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
         ]);
 
         try {

@@ -39,9 +39,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): array
     {
-        return [
-            new EasyDecisionBundle(),
-        ];
+        return [new EasyDecisionBundle()];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

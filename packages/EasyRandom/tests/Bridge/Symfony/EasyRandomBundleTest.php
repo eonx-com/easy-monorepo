@@ -15,10 +15,7 @@ final class EasyRandomBundleTest extends AbstractSymfonyTestCase
      */
     public function providerTestUuidV4GeneratorInstance(): iterable
     {
-        yield 'Ramsey\Uuid' => [
-            [__DIR__ . '/Fixtures/config/ramsey_uuid_v4.yaml'],
-            RamseyUuidV4Generator::class,
-        ];
+        yield 'Ramsey\Uuid' => [[__DIR__ . '/Fixtures/config/ramsey_uuid_v4.yaml'], RamseyUuidV4Generator::class];
 
         yield 'Symfony\Uid' => [
             [__DIR__ . '/Fixtures/config/symfony_uid_uuid_v4.yaml'],

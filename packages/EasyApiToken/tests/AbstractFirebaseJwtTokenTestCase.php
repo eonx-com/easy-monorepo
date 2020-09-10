@@ -12,14 +12,7 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
     /**
      * @var string[]
      */
-    protected static $algos = [
-        'HS256',
-        'HS512',
-        'HS384',
-        'RS256',
-        'RS384',
-        'RS512',
-    ];
+    protected static $algos = ['HS256', 'HS512', 'HS384', 'RS256', 'RS384', 'RS512'];
 
     /**
      * @var string

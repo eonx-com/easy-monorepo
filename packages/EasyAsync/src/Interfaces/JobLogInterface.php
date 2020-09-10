@@ -14,11 +14,7 @@ interface JobLogInterface extends EasyAsyncDataInterface
     /**
      * @var string[]
      */
-    public const STATUSES = [
-        self::STATUS_COMPLETED,
-        self::STATUS_FAILED,
-        self::STATUS_IN_PROGRESS,
-    ];
+    public const STATUSES = [self::STATUS_COMPLETED, self::STATUS_FAILED, self::STATUS_IN_PROGRESS];
 
     /**
      * @var string

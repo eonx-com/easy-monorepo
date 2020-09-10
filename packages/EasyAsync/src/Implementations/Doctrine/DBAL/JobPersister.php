@@ -32,7 +32,10 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
                 $queryBuilder
                     ->where('target_type = :targetType')
                     ->andWhere('target_id = :targetId')
-                    ->setParameters(['targetType' => $target->getTargetType(), 'targetId' => $target->getTargetId()]);
+                    ->setParameters([
+                        'targetType' => $target->getTargetType(),
+                        'targetId' => $target->getTargetId(),
+                    ]);
             })
             ->setTransformer(function (array $job): JobInterface {
                 return $this->newJobFromArray($job);

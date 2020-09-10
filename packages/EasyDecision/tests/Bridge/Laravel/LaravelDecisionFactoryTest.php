@@ -35,7 +35,13 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->setConfig(['decisions' => ['my-decision' => ['providers' => '']]]);
+        $this->setConfig([
+            'decisions' => [
+                'my-decision' => [
+                    'providers' => '',
+                ],
+            ],
+        ]);
 
         $this->getDecisionFactory()->create('my-decision');
     }
@@ -159,7 +165,11 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->setConfig(['decisions' => ['my-decision' => 1]]);
+        $this->setConfig([
+            'decisions' => [
+                'my-decision' => 1,
+            ],
+        ]);
 
         $this->getDecisionFactory()->create('my-decision');
     }

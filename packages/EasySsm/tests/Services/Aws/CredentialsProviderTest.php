@@ -27,9 +27,15 @@ final class CredentialsProviderTest extends AbstractTestCase
             [
                 'version' => 'latest',
                 'region' => 'ap-southeast-2',
-                'credentials' => ['key' => 'key', 'secret' => 'secret'],
+                'credentials' => [
+                    'key' => 'key',
+                    'secret' => 'secret',
+                ],
             ],
-            ['AWS_KEY' => 'key', 'AWS_SECRET' => 'secret'],
+            [
+                'AWS_KEY' => 'key',
+                'AWS_SECRET' => 'secret',
+            ],
         ];
     }
 

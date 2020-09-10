@@ -163,7 +163,7 @@
             "@check-security",
             "@check-tests"
         ],
-        "check-ecs": "vendor/bin/ecs check packages --clear-cache",
+        "check-ecs": "vendor/bin/ecs check --clear-cache",
         "check-monorepo": [
             "@composer validate --strict",
             "@validate-repo"

@@ -10,7 +10,11 @@ final class EasyBugsnagServiceProviderTest extends AbstractLaravelTestCase
 {
     public function testSanity(): void
     {
-        $app = $this->getApp(['easy-bugsnag' => ['api_key' => 'my-bugsnag-api-key']]);
+        $app = $this->getApp([
+            'easy-bugsnag' => [
+                'api_key' => 'my-bugsnag-api-key',
+            ],
+        ]);
 
         self::assertInstanceOf(Client::class, $app->get(Client::class));
     }

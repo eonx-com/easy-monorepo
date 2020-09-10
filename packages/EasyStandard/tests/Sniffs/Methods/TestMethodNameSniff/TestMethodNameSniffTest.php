@@ -38,7 +38,9 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
      */
     public function testProcessNotAllowedMethodNameFails(): void
     {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/NotAllowedMethodName.php');
+        $wrongFileInfo = new SmartFileInfo(
+            __DIR__ . '/Fixtures/Wrong/NotAllowedMethodName.php'
+        );
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 2);
     }
 
@@ -56,7 +58,10 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
      */
     public function testProcessSucceedsIfMethodNameDoesNotConformWithForbiddenPatterns(): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MethodNameDoesNotConformWithForbiddenPatterns.php');
+        $fileInfo = new SmartFileInfo(
+            __DIR__ . '/Fixtures/Correct/MethodNameDoesNotConformWithForbiddenPatterns.php'
+        );
+
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
@@ -88,25 +93,17 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
         return [
             'allowed' => [
                 [
-                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
-                    'patterns' => [
-                        '/test[A-Z]/',
-                        '/test.+(Succeeds|Fails|ThrowsException|DoesNothing)/',
-                    ],
+                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\Fixtures\\\(Correct|Wrong)$/',
+                    'patterns' => ['/test[A-Z]/', '/test.+(Succeeds|Fails|ThrowsException|DoesNothing)/'],
                 ],
             ],
             'forbidden' => [
                 [
-                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
-                    'patterns' => [
-                        '/(Succeed|Return|Throw)[^s]/',
-                        '/(Successful|SuccessFully)/',
-                    ],
+                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\Fixtures\\\(Correct|Wrong)$/',
+                    'patterns' => ['/(Succeed|Return|Throw)[^s]/', '/(Successful|SuccessFully)/'],
                 ],
             ],
-            'ignored' => [
-                '/testIgnoredMethodNameSuccessful/',
-            ],
+            'ignored' => ['/testIgnoredMethodNameSuccessful/'],
             'testMethodPrefix' => 'test',
         ];
     }
