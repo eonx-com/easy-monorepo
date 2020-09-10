@@ -36,7 +36,7 @@ final class NotificationClientTest extends AbstractTestCase
         $this->expectException(ApiRequestFailedException::class);
 
         $config = Config::fromArray(static::$defaultConfig);
-        $httpClient = new MockHttpClient([new MockResponse('')]);
+        $httpClient = new MockHttpClient([new MockResponse('invalid-content')]);
         $client = $this->getNotificationClient(null, $httpClient)->withConfig($config);
 
         $client->deleteMessage('message-id');
