@@ -24,5 +24,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(ServerRequestInterface::class)
-        ->factory(ref(SymfonyPsr7RequestFactory::class));
+        ->factory([ref(SymfonyPsr7RequestFactory::class)]);
 };

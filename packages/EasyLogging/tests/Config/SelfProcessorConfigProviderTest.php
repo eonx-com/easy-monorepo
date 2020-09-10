@@ -13,7 +13,7 @@ final class SelfProcessorConfigProviderTest extends AbstractTestCase
     {
         $selfProcessorConfigProvider = new SelfProcessorConfigProviderStub();
 
-        /** @var \Generator $processors */
+        /** @var \Generator<\Monolog\Processor\ProcessorInterface> $processors */
         $processors = $selfProcessorConfigProvider->processors();
         $processors = \iterator_to_array($processors);
 

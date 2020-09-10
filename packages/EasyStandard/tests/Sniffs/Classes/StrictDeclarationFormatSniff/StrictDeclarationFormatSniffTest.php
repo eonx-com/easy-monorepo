@@ -12,7 +12,7 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class StrictDeclarationFormatSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @return Iterator<int, SmartFileInfo|int>
+     * @return iterable<array<int, SmartFileInfo|int>>
      */
     public function providerTestSniff(): iterable
     {

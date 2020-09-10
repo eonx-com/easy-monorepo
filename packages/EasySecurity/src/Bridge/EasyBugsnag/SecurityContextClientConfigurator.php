@@ -31,8 +31,9 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
     {
         $security = [];
 
-        if ($this->securityContext->getToken()) {
-            $security['token'] = $this->formatToken($this->securityContext->getToken());
+        $token = $this->securityContext->getToken();
+        if ($token !== null) {
+            $security['token'] = $this->formatToken($token);
         }
 
         if (\count($this->securityContext->getRoles()) > 0) {
@@ -43,12 +44,14 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
             $security['permissions'] = $this->formatPermissions($this->securityContext->getPermissions());
         }
 
-        if ($this->securityContext->getProvider()) {
-            $security['provider'] = $this->formatProvider($this->securityContext->getProvider());
+        $provider = $this->securityContext->getProvider();
+        if ($provider !== null) {
+            $security['provider'] = $this->formatProvider($provider);
         }
 
-        if ($this->securityContext->getUser()) {
-            $security['user'] = $this->formatUser($this->securityContext->getUser());
+        $user = $this->securityContext->getUser();
+        if ($user !== null) {
+            $security['user'] = $this->formatUser($user);
         }
 
         $bugsnag->setMetaData(['security' => $security]);

@@ -20,7 +20,10 @@ final class TokenDecoderStub implements ApiTokenDecoderInterface
         $this->token = $token;
     }
 
-    public function decode(ServerRequestInterface $request): ?ApiTokenInterface
+    /**
+     * @param \Psr\Http\Message\ServerRequestInterface|\Symfony\Component\HttpFoundation\Request $request
+     */
+    public function decode($request): ?ApiTokenInterface
     {
         return $this->token;
     }

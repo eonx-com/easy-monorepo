@@ -26,6 +26,9 @@ abstract class AbstractApiTokenDecoder implements ApiTokenDecoderInterface
         return $this->name ?? self::class;
     }
 
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
+     */
     protected function getHeaderWithoutPrefix(string $header, string $prefix, $request): ?string
     {
         if ($request instanceof ServerRequestInterface) {
