@@ -13,7 +13,7 @@ final class EasyPsr7FactoryServiceProviderTest extends AbstractLumenTestCase
 {
     public function testRegisterExpectedServices(): void
     {
-        $app = $this->getApplication(new Request($query ?? [], [], [], [], [], ['HTTP_HOST' => 'eonx.com']));
+        $app = $this->getApplication(new Request([], [], [], [], [], ['HTTP_HOST' => 'eonx.com']));
 
         self::assertInstanceOf(EasyPsr7Factory::class, $app->get(EasyPsr7FactoryInterface::class));
         self::assertInstanceOf(ServerRequestInterface::class, $app->get(ServerRequestInterface::class));

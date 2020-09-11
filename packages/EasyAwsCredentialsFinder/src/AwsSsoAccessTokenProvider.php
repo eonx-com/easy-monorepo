@@ -53,7 +53,7 @@ final class AwsSsoAccessTokenProvider implements AwsSsoAccessTokenProviderInterf
         if ($this->filesystem->exists($filename) === false) {
             throw new SsoAccessTokenNotFoundException(\sprintf(
                 'No SSO access token cache file found for startUrl "%s". Please run "aws sso login" first.',
-                $ssoConfig['sso_start_url'] ?? ''
+                $ssoConfigs['sso_start_url'] ?? ''
             ));
         }
 

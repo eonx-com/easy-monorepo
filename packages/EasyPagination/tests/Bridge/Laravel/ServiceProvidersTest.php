@@ -43,7 +43,7 @@ final class ServiceProvidersTest extends AbstractLaravelTestCase
 
             $app->instance(
                 $pretendInConsole === true ? 'request' : Request::class,
-                new Request($query ?? [], [], [], [], [], $server)
+                new Request([], [], [], [], [], $server)
             );
 
             /** @var \Illuminate\Support\ServiceProvider $provider */
