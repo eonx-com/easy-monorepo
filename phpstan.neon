@@ -135,9 +135,6 @@ parameters:
           path: packages/EasyLock/tests/Bridge/Laravel/AbstractLaravelTestCase.php
 
         # ---- EasyLogging ----
-        - message: '#Method EonX\\EasyLogging\\LoggerFactory\:\:getLoggerConfigurators\(\) should return array<EonX\\EasyLogging\\Interfaces\\Config\\LoggerConfiguratorInterface\> but returns array<EonX\\EasyLogging\\Interfaces\\Config\\LoggingConfigInterface\>#'
-          path: packages/EasyLogging/src/LoggerFactory.php
-
         # ---- EasyPagination ----
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
           path: packages/EasyPagination/tests/Bridge/Laravel
@@ -209,9 +206,6 @@ parameters:
           path: packages/EasySchedule/src/Bridge/Symfony/TraceableSchedule.php
 
         # ---- EasySecurity ----
-        - message: '#Parameter \#1 \$factory of method Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\ServiceConfigurator\:\:factory\(\) expects array\|string, Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\ReferenceConfigurator given#'
-          path: packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
-
         - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Helpers\\DeferredSecurityContextResolver\:\:resolve\(\) should return EonX\\EasySecurity\\Interfaces\\SecurityContextInterface but returns object\|null#'
           path: packages/EasySecurity/src/Bridge/Symfony/Helpers/DeferredSecurityContextResolver.php
 
@@ -229,9 +223,6 @@ parameters:
           path: packages/EasySsm/src/Console/Commands/ExportEnvsCommand.php
 
         # ---- EasyStandard ----
-        - message: '#Access to an undefined property PHPStan\\PhpDocParser\\Ast\\PhpDoc\\PhpDocTagNode\|Rector\\BetterPhpDocParser\\Contract\\PhpDocNode\\AttributeAwareNodeInterface\:\:\$value#'
-          path: packages/EasyStandard/src/Rector/AddSeeAnnotationRector.php
-
         # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
           path: packages/EasyTest/src/Console/Commands
