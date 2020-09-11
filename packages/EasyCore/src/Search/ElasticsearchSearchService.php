@@ -71,6 +71,11 @@ final class ElasticsearchSearchService implements SearchServiceInterface
         return $this->client->search($params);
     }
 
+    /**
+     * @param mixed[] $query
+     *
+     * @return mixed[]
+     */
     private function fixMatchAllRecursive(array $query): array
     {
         foreach ($query as $key => $value) {
