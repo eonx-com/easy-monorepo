@@ -11,9 +11,7 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class StrictDeclarationFormatSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
+     * @return iterable<array<int, SmartFileInfo|int>>
      */
     public function providerTestSniff(): iterable
     {

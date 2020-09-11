@@ -14,9 +14,6 @@ final class ProcessorConfig extends AbstractLoggingConfig implements ProcessorCo
      */
     private $processor;
 
-    /**
-     * @param \Monolog\Processor\ProcessorInterface $processor
-     */
     public function __construct(ProcessorInterface $processor)
     {
         $this->processor = $processor;

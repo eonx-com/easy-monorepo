@@ -83,9 +83,9 @@ final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterfac
     }
 
     /**
-     * @param mixed $default
+     * @param null|mixed $default
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     private function getParam(ContainerBuilder $container, string $param, $default = null)
     {

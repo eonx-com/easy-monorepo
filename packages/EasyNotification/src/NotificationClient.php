@@ -57,6 +57,7 @@ final class NotificationClient implements NotificationClientInterface
         if ($this->config === null) {
             throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', __METHOD__));
         }
+
         $this->sendApiRequest('DELETE', \sprintf('messages/%s', $messageId));
     }
 
@@ -161,7 +162,7 @@ final class NotificationClient implements NotificationClientInterface
     private function sendApiRequest(string $method, string $path, ?array $options = null): array
     {
         if ($this->config === null) {
-            throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', __METHOD__));
+            throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', $method));
         }
 
         $options = \array_merge($options ?? [], [

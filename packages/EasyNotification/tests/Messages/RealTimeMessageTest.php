@@ -52,10 +52,10 @@ final class RealTimeMessageTest extends AbstractTestCase
 
         yield 'Create method + body + topics' => [
             function (): RealTimeMessage {
-                /** @var \EonX\EasyNotification\Messages\RealTimeMessage $message */
-                $message = RealTimeMessage::create()->body(static::$body);
+                $message = RealTimeMessage::create()->topics(static::$topics);
+                $message->body(static::$body);
 
-                return $message->topics(static::$topics);
+                return $message;
             },
             static::$body,
             static::$topics,

@@ -20,7 +20,7 @@ final class TokenDecoderStub implements ApiTokenDecoderInterface
     }
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ServerRequestInterface|\Symfony\Component\HttpFoundation\Request $request
      */
     public function decode($request): ?ApiTokenInterface
     {

@@ -24,6 +24,15 @@ final class InheritDocRectorTest extends AbstractRectorTestCase
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
 
+    public function testGetDefinitionSucceeds(): void
+    {
+        $rector = new InheritDocRector();
+
+        $definition = $rector->getDefinition();
+
+        self::assertNotEmpty($definition->getDescription());
+    }
+
     /**
      * @dataProvider provideData()
      */

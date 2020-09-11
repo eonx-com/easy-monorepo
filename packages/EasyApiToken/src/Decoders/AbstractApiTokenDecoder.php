@@ -27,7 +27,7 @@ abstract class AbstractApiTokenDecoder implements ApiTokenDecoderInterface
     }
 
     /**
-     * @param mixed $request
+     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
      */
     protected function getHeaderWithoutPrefix(string $header, string $prefix, $request): ?string
     {
@@ -43,7 +43,7 @@ abstract class AbstractApiTokenDecoder implements ApiTokenDecoderInterface
 
         $header = $request->headers->get($header, '');
 
-        if (Strings::startsWith($header, $prefix) === false) {
+        if (Strings::startsWith($header ?? '', $prefix) === false) {
             return null;
         }
 

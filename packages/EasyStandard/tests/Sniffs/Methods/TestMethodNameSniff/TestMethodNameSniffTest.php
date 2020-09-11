@@ -16,15 +16,6 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class TestMethodNameSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * Tests process not allowed method name fails.
-     */
-    public function testProcessNotAllowedMethodNameFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/NotAllowedMethodName.php');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 2);
-    }
-
-    /**
      * Tests process a forbidden method name fails.
      */
     public function testProcessForbiddenMethodNameFails(): void
@@ -43,6 +34,36 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
     }
 
     /**
+     * Tests process not allowed method name fails.
+     */
+    public function testProcessNotAllowedMethodNameFails(): void
+    {
+        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/NotAllowedMethodName.php');
+        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 2);
+    }
+
+    /**
+     * Tests process succeeds if a method name conforms with allowed patterns.
+     */
+    public function testProcessSucceedsIfMethodNameConformWithAllowedPatterns(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MethodNameConformsWithAllowedPatterns.php');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
+    /**
+     * Tests process succeeds if a method name does not conform with forbidden patterns.
+     */
+    public function testProcessSucceedsIfMethodNameDoesNotConformWithForbiddenPatterns(): void
+    {
+        $fileInfo = new SmartFileInfo(
+            __DIR__ . '/Fixtures/Correct/MethodNameDoesNotConformWithForbiddenPatterns.php'
+        );
+
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
+    /**
      * Tests process a method name succeeds if the namespace does not have forbidden patterns.
      */
     public function testProcessSucceedsIfMethodNameSucceedsIfNamespaceDoesNotHaveForbiddenPatterns(): void
@@ -50,7 +71,6 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
         $fileInfo = new SmartFileInfo(
             __DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveForbiddenPatterns.php'
         );
-
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
@@ -62,26 +82,6 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
         $fileInfo = new SmartFileInfo(
             __DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveAllowedPatterns.php'
         );
-
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    /**
-     * Tests process succeeds if a method name conform with allowed patterns.
-     */
-    public function testProcessSucceedsIfMethodNameConformWithAllowedPatterns(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MethodNameConformsWithAllowedPatterns.php');
-
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    /**
-     * Tests process succeeds if a method name does not conform with forbidden patterns.
-     */
-    public function testProcessSucceedsIfMethodNameDoesNotConformWithForbiddenPatterns(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MethodNameDoesNotConformWithForbiddenPatterns.php');
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
@@ -95,13 +95,13 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
         return [
             'allowed' => [
                 [
-                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\Fixtures\\\(Correct|Wrong)$/',
+                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
                     'patterns' => ['/test[A-Z]/', '/test.+(Succeeds|Fails|ThrowsException|DoesNothing)/'],
                 ],
             ],
             'forbidden' => [
                 [
-                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\Fixtures\\\(Correct|Wrong)$/',
+                    'namespace' => '/^EonX\\\EasyStandard\\\Tests\\\Sniffs\\\Methods\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
                     'patterns' => ['/(Succeed|Return|Throw)[^s]/', '/(Successful|SuccessFully)/'],
                 ],
             ],

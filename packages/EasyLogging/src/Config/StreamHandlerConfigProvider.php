@@ -53,9 +53,12 @@ final class StreamHandlerConfigProvider implements HandlerConfigProviderInterfac
      */
     public function handlers(): iterable
     {
-        yield HandlerConfig::create(new StreamHandler($this->stream))
+        $handlerConfig = HandlerConfig::create(new StreamHandler($this->stream));
+        $handlerConfig
             ->channels($this->channels)
             ->exceptChannels($this->exceptChannels)
             ->priority($this->priority);
+
+        yield $handlerConfig;
     }
 }
