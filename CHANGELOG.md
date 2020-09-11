@@ -1,8 +1,24 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
+## v2.4.46 - 2020-09-11
 
-## v2.4.45 - 2020-09-02
+- [#344] Extend ruleset with array list and line-lenght rules, Thanks to [@TomasVotruba]
+- [#340] Rector, ECS and PHPStan update, Thanks to [@TomasVotruba]
+
+### EasySchedule
+
+- [#346] Use eonx-com/easy-lock instead of easy-core
+
+### EasyStandard
+
+- [#345] Improve ArrangeActAssertSniff to ignore empty lines inside closures, Thanks to [@BOB41K1987]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.45] - 2020-09-02
 
 ### EasyAsync
 
@@ -2280,3 +2296,9 @@
 [#334]: https://github.com/eonx-com/easy-monorepo/pull/334
 [v2.4.44]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.43...v2.4.44
 [@DKeeper]: https://github.com/DKeeper
+[#346]: https://github.com/eonx-com/easy-monorepo/pull/346
+[#345]: https://github.com/eonx-com/easy-monorepo/pull/345
+[#344]: https://github.com/eonx-com/easy-monorepo/pull/344
+[#340]: https://github.com/eonx-com/easy-monorepo/pull/340
+[v2.4.45]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.44...v2.4.45
+[@TomasVotruba]: https://github.com/TomasVotruba
