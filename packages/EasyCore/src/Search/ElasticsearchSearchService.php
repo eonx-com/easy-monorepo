@@ -41,6 +41,7 @@ final class ElasticsearchSearchService implements SearchServiceInterface
         }
 
         $query = $body['query'] ?? ['match_all' => new stdClass()];
+        $query = $this->fixMatchAllRecursive($query);
 
         $body['query'] = [
             'bool' => [
@@ -68,5 +69,22 @@ final class ElasticsearchSearchService implements SearchServiceInterface
         }
 
         return $this->client->search($params);
+    }
+
+    private function fixMatchAllRecursive(array $query): array
+    {
+        foreach ($query as $key => $value) {
+            if ($key === 'match_all' && $value === []) {
+                $query[$key] = new stdClass();
+
+                continue;
+            }
+
+            if (\is_array($value)) {
+                $query[$key] = $this->fixMatchAllRecursive($value);
+            }
+        }
+
+        return $query;
     }
 }
