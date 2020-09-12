@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Search;
@@ -16,11 +17,11 @@ final class ElasticsearchSearchServiceTest extends AbstractTestCase
         $index = 'no-matter';
         $body = [
             'query' => [
-                "bool" => [
-                    "must" => [
+                'bool' => [
+                    'must' => [
                         [
-                            "term" => [
-                                "some-field" => 123,
+                            'term' => [
+                                'some-field' => 123,
                             ],
                             // wrong query, only for recursive fix tests
                             'match_all' => [],
@@ -37,11 +38,11 @@ final class ElasticsearchSearchServiceTest extends AbstractTestCase
                 'query' => [
                     'bool' => [
                         'must' => [
-                            "bool" => [
-                                "must" => [
+                            'bool' => [
+                                'must' => [
                                     [
-                                        "term" => [
-                                            "some-field" => 123,
+                                        'term' => [
+                                            'some-field' => 123,
                                         ],
                                         'match_all' => new stdClass(),
                                     ],
