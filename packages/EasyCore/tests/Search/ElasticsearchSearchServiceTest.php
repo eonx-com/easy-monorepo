@@ -58,7 +58,7 @@ final class ElasticsearchSearchServiceTest extends AbstractTestCase
                             ],
                         ],
                     ],
-                ]
+                ],
             ],
         ];
         /** @var \Elasticsearch\Client $client */
