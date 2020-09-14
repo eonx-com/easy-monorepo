@@ -30,11 +30,11 @@ abstract class AbstractErrorResponseBuilder implements ErrorResponseBuilderInter
     }
 
     /**
-     * @param null|mixed[] $headers
+     * @param mixed[] $headers
      *
-     * @return null|mixed[]
+     * @return mixed[]
      */
-    public function buildHeaders(Throwable $throwable, ?array $headers = null): ?array
+    public function buildHeaders(Throwable $throwable, array $headers): array
     {
         return $headers;
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Builders;
 
-use EonX\EasyErrorHandler\Helpers\ErrorDetailsHelper;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
@@ -53,14 +52,16 @@ final class ExtendedExceptionBuilder extends AbstractErrorResponseBuilder implem
             return parent::buildData($throwable, $data);
         }
 
-        $details = ErrorDetailsHelper::getDetails($throwable);
-
         $exception = [
-            $this->getKey('class') => $details['class'],
-            $this->getKey('file') => $details['file'],
-            $this->getKey('line') => $details['file'],
+            $this->getKey('class') => \get_class($throwable),
+            $this->getKey('file') => $throwable->getFile(),
+            $this->getKey('line') => $throwable->getLine(),
             $this->getKey('message') => $this->getMessage($throwable),
-            $this->getKey('trace') => $details['trace'],
+            $this->getKey('trace') => \array_map(static function (array $trace): array {
+                unset($trace['args']);
+
+                return $trace;
+            }, $throwable->getTrace()),
         ];
 
         $data[$this->exceptionKey] = $exception;

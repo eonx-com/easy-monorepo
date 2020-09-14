@@ -7,11 +7,8 @@ namespace EonX\EasyErrorHandler;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
-use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -34,21 +31,11 @@ final class ErrorHandler implements ErrorHandlerInterface
     private $reporters;
 
     /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface
-     */
-    private $responseFactory;
-
-    /**
      * @param iterable<mixed> $builderProviders
      * @param iterable<mixed> $reporterProviders
      */
-    public function __construct(
-        ErrorResponseFactoryInterface $errorResponseFactory,
-        iterable $builderProviders,
-        iterable $reporterProviders,
-        ?bool $isVerbose = null
-    ) {
-        $this->responseFactory = $errorResponseFactory;
+    public function __construct(iterable $builderProviders, iterable $reporterProviders, ?bool $isVerbose = null)
+    {
         $this->setBuilders($builderProviders);
         $this->setReporters($reporterProviders);
         $this->isVerbose = $isVerbose ?? false;
@@ -61,16 +48,22 @@ final class ErrorHandler implements ErrorHandlerInterface
 
     public function render(Request $request, Throwable $throwable): Response
     {
+        $data = [];
+        $headers = [];
+        $statusCode = null;
+
         foreach ($this->builders as $builder) {
-            $data = $builder->buildData($throwable, $data ?? []);
-            $headers = $builder->buildHeaders($throwable, $headers ?? null);
-            $statusCode = $builder->buildStatusCode($throwable, $statusCode ?? null);
+            $data = $builder->buildData($throwable, $data);
+            $headers = $builder->buildHeaders($throwable, $headers);
+            $statusCode = $builder->buildStatusCode($throwable, $statusCode);
         }
 
-        return $this->responseFactory->create(
-            $request,
-            ErrorResponseData::create($this->sortRecursive($data ?? []), $statusCode ?? null, $headers ?? null)
-        );
+        // TODO - Improve content formatting
+        // TODO - Create reporters
+        // TODO - Create Symfony bridge
+        $content = \json_encode($this->sortRecursive($data));
+
+        return new Response($content, $statusCode ?? 500, $headers);
     }
 
     public function report(Throwable $throwable): void
@@ -136,7 +129,7 @@ final class ErrorHandler implements ErrorHandlerInterface
     private function setReporters(iterable $reporterProviders): void
     {
         /** @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface[] $providers */
-        $providers = $this->filterIterable($reporterProviders, ErrorReporterProviderInterface::class);
+        $providers = $this->filterIterable($reporterProviders, ErrorResponseBuilderProviderInterface::class);
         $reporters = [];
 
         foreach ($providers as $provider) {
@@ -149,7 +142,7 @@ final class ErrorHandler implements ErrorHandlerInterface
 
         \usort(
             $reporters,
-            static function (ErrorReporterInterface $first, ErrorReporterInterface $second): int {
+            static function (ErrorResponseBuilderInterface $first, ErrorResponseBuilderInterface $second): int {
                 return $first->getPriority() <=> $second->getPriority();
             }
         );

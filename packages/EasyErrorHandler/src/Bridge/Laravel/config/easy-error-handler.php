@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+
     /**
      * Use extended error response with exception message, trace, etc.
      */
@@ -12,21 +13,6 @@ return [
      * Use default set of error response builders.
      */
     'use_default_builders' => \env('EASY_ERROR_HANDLER_USE_DEFAULT_BUILDERS', true),
-
-    /**
-     * Use default set of error reporters.
-     */
-    'use_default_reporters' => \env('EASY_ERROR_HANDLER_USE_DEFAULT_REPORTERS', true),
-
-    /**
-     * Register error reporter for easy-bugsnag automatically.
-     */
-    'bugsnag_enabled' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', true),
-
-    /**
-     * Log level threshold to notify bugsnag.
-     */
-    'bugsnag_threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', null),
 
     /*
     |--------------------------------------------------------------------------
