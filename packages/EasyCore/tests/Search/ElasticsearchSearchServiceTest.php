@@ -12,7 +12,7 @@ use stdClass;
 
 final class ElasticsearchSearchServiceTest extends AbstractTestCase
 {
-    public function testFixMatchAllSucceeds(): void
+    public function testSearchSucceedsAndReplacesEmptyArraysWithEmptyObjectsInMatchAllRecursively(): void
     {
         $index = 'no-matter';
         $body = [

@@ -41,7 +41,7 @@ final class ElasticsearchSearchService implements SearchServiceInterface
         }
 
         $query = $body['query'] ?? ['match_all' => new stdClass()];
-        $query = $this->fixMatchAllRecursive($query);
+        $query = $this->replaceEmptyArrayWithEmptyObjectInMatchAllRecursively($query);
 
         $body['query'] = [
             'bool' => [
@@ -72,11 +72,13 @@ final class ElasticsearchSearchService implements SearchServiceInterface
     }
 
     /**
+     * Needed to avoid "[match_all] query malformed, no start_object after query name" error.
+     *
      * @param mixed[] $query
      *
      * @return mixed[]
      */
-    private function fixMatchAllRecursive(array $query): array
+    private function replaceEmptyArrayWithEmptyObjectInMatchAllRecursively(array $query): array
     {
         foreach ($query as $key => $value) {
             if ($key === 'match_all' && $value === []) {
@@ -86,7 +88,7 @@ final class ElasticsearchSearchService implements SearchServiceInterface
             }
 
             if (\is_array($value)) {
-                $query[$key] = $this->fixMatchAllRecursive($value);
+                $query[$key] = $this->replaceEmptyArrayWithEmptyObjectInMatchAllRecursively($value);
             }
         }
 
