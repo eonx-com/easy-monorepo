@@ -11,11 +11,6 @@ use Throwable;
 final class UserMessageBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
     /**
-     * @var string
-     */
-    private const DEFAULT_USER_MESSAGE = 'easy-error-handler::messages.default_user_message';
-
-    /**
      * @var \EonX\EasyErrorHandler\Interfaces\TranslatorInterface
      */
     private $translator;
@@ -23,7 +18,7 @@ final class UserMessageBuilder extends AbstractSingleKeyErrorResponseBuilder
     public function __construct(TranslatorInterface $translator, ?string $key = null, ?int $priority = null)
     {
         $this->translator = $translator;
-        
+
         parent::__construct($key, $priority);
     }
 
@@ -37,7 +32,7 @@ final class UserMessageBuilder extends AbstractSingleKeyErrorResponseBuilder
             $parameters = $throwable->getUserMessageParams();
         }
 
-        return $this->translator->trans($message ?? self::DEFAULT_USER_MESSAGE, $parameters);
+        return $this->translator->trans($message ?? TranslatableExceptionInterface::DEFAULT_USER_MESSAGE, $parameters);
     }
 
     protected function getDefaultKey(): string
