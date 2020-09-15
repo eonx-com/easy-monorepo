@@ -7,6 +7,7 @@ namespace EonX\EasyErrorHandler;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
@@ -135,7 +136,7 @@ final class ErrorHandler implements ErrorHandlerInterface
     private function setReporters(iterable $reporterProviders): void
     {
         /** @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface[] $providers */
-        $providers = $this->filterIterable($reporterProviders, ErrorResponseBuilderProviderInterface::class);
+        $providers = $this->filterIterable($reporterProviders, ErrorReporterProviderInterface::class);
         $reporters = [];
 
         foreach ($providers as $provider) {
@@ -148,7 +149,7 @@ final class ErrorHandler implements ErrorHandlerInterface
 
         \usort(
             $reporters,
-            static function (ErrorResponseBuilderInterface $first, ErrorResponseBuilderInterface $second): int {
+            static function (ErrorReporterInterface $first, ErrorReporterInterface $second): int {
                 return $first->getPriority() <=> $second->getPriority();
             }
         );

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Reporters;
 
 use EonX\EasyErrorHandler\Helpers\ErrorDetailsHelper;
-use EonX\EasyErrorHandler\Interfaces\Exceptions\LogLevelAwareExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -29,18 +28,9 @@ final class LoggerReporter extends AbstractErrorReporter
     public function report(Throwable $throwable)
     {
         $this->logger->log(
-            $this->getLevel($throwable),
+            $this->getLogLevel($throwable),
             $throwable->getMessage(),
             ['exception' => ErrorDetailsHelper::getDetails($throwable)]
         );
-    }
-
-    private function getLevel(Throwable $throwable): int
-    {
-        if ($throwable instanceof LogLevelAwareExceptionInterface) {
-            return $throwable->getLogLevel();
-        }
-
-        return 400;
     }
 }

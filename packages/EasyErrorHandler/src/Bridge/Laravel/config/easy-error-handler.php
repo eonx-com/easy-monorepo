@@ -19,6 +19,16 @@ return [
      */
     'use_default_reporters' => \env('EASY_ERROR_HANDLER_USE_DEFAULT_REPORTERS', true),
 
+    /**
+     * Register error reporter for easy-bugsnag automatically.
+     */
+    'bugsnag_enabled' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', true),
+
+    /**
+     * Log level threshold to notify bugsnag.
+     */
+    'bugsnag_threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', null),
+
     /*
     |--------------------------------------------------------------------------
     | Error response
