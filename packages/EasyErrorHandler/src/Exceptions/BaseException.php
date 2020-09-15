@@ -8,10 +8,10 @@ use EonX\EasyErrorHandler\Exceptions\Traits\LogLevelAwareExceptionTrait;
 use EonX\EasyErrorHandler\Exceptions\Traits\StatusCodeAwareExceptionTrait;
 use EonX\EasyErrorHandler\Exceptions\Traits\SubCodeAwareExceptionTrait;
 use EonX\EasyErrorHandler\Exceptions\Traits\TranslatableExceptionTrait;
-use EonX\EasyErrorHandler\Interfaces\LogLevelAwareExceptionInterface;
-use EonX\EasyErrorHandler\Interfaces\StatusCodeAwareExceptionInterface;
-use EonX\EasyErrorHandler\Interfaces\SubCodeAwareExceptionInterface;
-use EonX\EasyErrorHandler\Interfaces\TranslatableExceptionInterface;
+use EonX\EasyErrorHandler\Interfaces\Exceptions\LogLevelAwareExceptionInterface;
+use EonX\EasyErrorHandler\Interfaces\Exceptions\StatusCodeAwareExceptionInterface;
+use EonX\EasyErrorHandler\Interfaces\Exceptions\SubCodeAwareExceptionInterface;
+use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use Exception;
 
 abstract class BaseException extends Exception implements
