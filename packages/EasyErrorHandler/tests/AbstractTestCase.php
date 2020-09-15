@@ -29,19 +29,8 @@ class AbstractTestCase extends TestCase
             new \Exception(),
             static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
-                self::assertSame('exceptions.default_user_message', $content['message']);
+                self::assertSame('easy-error-handler::messages.default_user_message', $content['message']);
             },
-        ];
-
-        yield 'Returns default user message translated' => [
-            new Request(),
-            new \Exception(),
-            static function (Response $response): void {
-                $content = \json_decode((string)$response->getContent(), true);
-                self::assertSame('Default message', $content['message']);
-            },
-            null,
-            ['exceptions.default_user_message' => 'Default message'],
         ];
 
         yield 'Returns extended response on debug' => [
@@ -176,15 +165,10 @@ class AbstractTestCase extends TestCase
     protected function tearDown(): void
     {
         $fs = new Filesystem();
-        $files = [
-            __DIR__ . '/../var',
-            __DIR__ . '/Bridge/Symfony/tmp_config.yaml',
-        ];
+        $var = __DIR__ . '/../var';
 
-        foreach ($files as $file) {
-            if ($fs->exists($file)) {
-                $fs->remove($file);
-            }
+        if ($fs->exists($var)) {
+            $fs->remove($var);
         }
 
         parent::tearDown();
