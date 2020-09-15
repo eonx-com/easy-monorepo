@@ -5,10 +5,10 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "nesbot/carbon": "^2.22"
+        "nesbot/carbon": "^2.22",
+        "eonx-com/easy-logging": "^2.4.45"
     },
     "require-dev": {
-        "eonx-com/easy-logging": "^2.4.45",
         "phpunit/phpunit": "^7.5 || ^8.4",
         "laravel/lumen-framework": "^5.5",
         "symfony/symfony": "^4.2 || ^5.0"
