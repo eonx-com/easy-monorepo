@@ -9,7 +9,9 @@ use EonX\EasyErrorHandler\Bridge\Laravel\ExceptionHandler;
 use EonX\EasyErrorHandler\Bridge\Laravel\Translator;
 use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
 use EonX\EasyErrorHandler\ErrorHandler;
+use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
+use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,10 +30,13 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/easy-error-handler.php', 'easy-error-handler');
 
+        $this->app->singleton(ErrorResponseFactoryInterface::class, ErrorResponseFactory::class);
+
         $this->app->singleton(
             IlluminateExceptionHandlerInterface::class,
             function (): IlluminateExceptionHandlerInterface {
                 return new ExceptionHandler(new ErrorHandler(
+                    $this->app->make(ErrorResponseFactoryInterface::class),
                     $this->app->tagged(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER),
                     $this->app->tagged(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER),
                     (bool)\config('easy-error-handler.use_extended_response', false)

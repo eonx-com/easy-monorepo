@@ -16,11 +16,11 @@ interface ErrorResponseBuilderInterface
     public function buildData(Throwable $throwable, array $data): array;
 
     /**
-     * @param mixed[] $headers
+     * @param null|mixed[] $headers
      *
-     * @return mixed[]
+     * @return null|mixed[]
      */
-    public function buildHeaders(Throwable $throwable, array $headers): array;
+    public function buildHeaders(Throwable $throwable, ?array $headers = null): ?array;
 
     public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int;
 
