@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection;
 
+use Bugsnag\Client;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
@@ -24,6 +25,7 @@ final class EasyErrorHandlerExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new PhpFileLoader($container, new FileLocator([__DIR__ . '/../Resources/config']));
 
+        $container->setParameter(BridgeConstantsInterface::PARAM_BUGSNAG_THRESHOLD, $config['bugsnag_threshold']);
         $container->setParameter(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose']);
         $container->setParameter(BridgeConstantsInterface::PARAM_RESPONSE_KEYS, $config['response']);
         $container->setParameter(BridgeConstantsInterface::PARAM_TRANSLATION_DOMAIN, $config['translation_domain']);
@@ -44,6 +46,10 @@ final class EasyErrorHandlerExtension extends Extension
 
         if ($config['user_default_reporters'] ?? true) {
             $loader->load('default_reporters.php');
+        }
+
+        if (($config['bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
+            $loader->load('bugsnag_reporter.php');
         }
     }
 }

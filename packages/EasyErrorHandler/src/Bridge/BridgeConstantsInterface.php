@@ -9,6 +9,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_BUGSNAG_THRESHOLD = 'easy_error_handler.param_bugsnag_threshold';
+
+    /**
+     * @var string
+     */
     public const PARAM_IS_VERBOSE = 'easy_error_handler.param_is_verbose';
 
     /**
