@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony\Stubs;
 
 use EonX\EasyErrorHandler\Bridge\Symfony\EasyErrorHandlerBundle;
+use EonX\EasyLogging\Bridge\Symfony\EasyLoggingBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -46,6 +47,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
+        yield new EasyLoggingBundle();
         yield new EasyErrorHandlerBundle();
     }
 
