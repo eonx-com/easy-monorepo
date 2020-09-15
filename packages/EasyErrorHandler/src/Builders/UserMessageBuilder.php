@@ -22,6 +22,11 @@ final class UserMessageBuilder extends AbstractSingleKeyErrorResponseBuilder
         parent::__construct($key, $priority);
     }
 
+    /**
+     * @param mixed[] $data
+     *
+     * @return string
+     */
     protected function doBuildValue(Throwable $throwable, array $data)
     {
         $message = null;

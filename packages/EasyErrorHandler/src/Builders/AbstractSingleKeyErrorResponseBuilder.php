@@ -36,6 +36,11 @@ abstract class AbstractSingleKeyErrorResponseBuilder extends AbstractErrorRespon
         return parent::buildData($throwable, $data);
     }
 
+    /**
+     * @param mixed[] $data
+     *
+     * @return mixed
+     */
     abstract protected function doBuildValue(Throwable $throwable, array $data);
 
     abstract protected function getDefaultKey(): string;

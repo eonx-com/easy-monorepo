@@ -9,6 +9,11 @@ use Throwable;
 
 final class ViolationsBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
+    /**
+     * @param mixed[] $data
+     *
+     * @return null|mixed[]
+     */
     protected function doBuildValue(Throwable $throwable, array $data)
     {
         if (($throwable instanceof ValidationExceptionInterface) === false) {

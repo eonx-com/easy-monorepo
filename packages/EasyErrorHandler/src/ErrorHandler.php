@@ -84,7 +84,9 @@ final class ErrorHandler implements ErrorHandlerInterface
     }
 
     /**
-     * @param iterable<mixed> $reporters
+     * @param iterable<mixed> $items
+     *
+     * @return mixed[]
      */
     private function filterIterable(iterable $items, string $class): array
     {

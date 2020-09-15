@@ -11,6 +11,9 @@ use Throwable;
 
 final class ErrorDetailsHelper
 {
+    /**
+     * @return mixed[]
+     */
     public static function getDetails(Throwable $throwable): array
     {
         $details = [

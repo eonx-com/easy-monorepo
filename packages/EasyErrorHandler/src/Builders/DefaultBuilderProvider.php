@@ -10,7 +10,7 @@ use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
     /**
-     * @var string[]
+     * @var mixed[]
      */
     private $keys;
 
@@ -29,7 +29,7 @@ final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterf
     }
 
     /**
-     * @return iterable<\EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface>
+     * @return iterable<\EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface>
      */
     public function getBuilders(): iterable
     {

@@ -8,6 +8,11 @@ use Throwable;
 
 final class SubCodeBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
+    /**
+     * @param mixed[] $data
+     *
+     * @return null|int
+     */
     protected function doBuildValue(Throwable $throwable, array $data)
     {
         if (($throwable instanceof SubCodeAwareExceptionInterface) === false) {

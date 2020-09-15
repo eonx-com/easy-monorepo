@@ -34,6 +34,7 @@ final class ExceptionHandlerTest extends AbstractSymfonyTestCase
         $handler = $container->get(ErrorHandlerInterface::class);
 
         if ($translations !== null) {
+            /** @var \EonX\EasyErrorHandler\Tests\Bridge\Symfony\Stubs\TranslatorStub $translator */
             $translator = $container->get(TranslatorInterface::class);
             $translator->setTranslations($translations);
         }

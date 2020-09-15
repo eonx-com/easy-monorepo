@@ -8,6 +8,11 @@ use Throwable;
 
 final class CodeBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
+    /**
+     * @param mixed[] $data
+     *
+     * @return int
+     */
     protected function doBuildValue(Throwable $throwable, array $data)
     {
         return $throwable->getCode();

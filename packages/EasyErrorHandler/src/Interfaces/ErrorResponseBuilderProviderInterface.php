@@ -7,7 +7,7 @@ namespace EonX\EasyErrorHandler\Interfaces;
 interface ErrorResponseBuilderProviderInterface
 {
     /**
-     * @return iterable<\EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface>
+     * @return iterable<\EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface>
      */
     public function getBuilders(): iterable;
 }
