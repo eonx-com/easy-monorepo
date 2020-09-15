@@ -25,7 +25,7 @@ final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterf
     public function __construct(TranslatorInterface $translator, ?array $keys = null)
     {
         $this->translator = $translator;
-        $this->keys = $keys;
+        $this->keys = $keys ?? [];
     }
 
     /**
