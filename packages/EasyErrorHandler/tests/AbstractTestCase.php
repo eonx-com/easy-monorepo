@@ -165,10 +165,15 @@ class AbstractTestCase extends TestCase
     protected function tearDown(): void
     {
         $fs = new Filesystem();
-        $var = __DIR__ . '/../var';
+        $files = [
+            __DIR__ . '/../var',
+            __DIR__ . '/Bridge/Symfony/tmp_config.yaml',
+        ];
 
-        if ($fs->exists($var)) {
-            $fs->remove($var);
+        foreach ($files as $file) {
+            if ($fs->exists($file)) {
+                $fs->remove($file);
+            }
         }
 
         parent::tearDown();

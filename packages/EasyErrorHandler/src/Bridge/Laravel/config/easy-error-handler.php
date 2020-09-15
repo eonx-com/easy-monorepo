@@ -14,6 +14,11 @@ return [
      */
     'use_default_builders' => \env('EASY_ERROR_HANDLER_USE_DEFAULT_BUILDERS', true),
 
+    /**
+     * Use default set of error reporters.
+     */
+    'use_default_reporters' => \env('EASY_ERROR_HANDLER_USE_DEFAULT_REPORTERS', true),
+
     /*
     |--------------------------------------------------------------------------
     | Error response

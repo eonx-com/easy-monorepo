@@ -41,5 +41,9 @@ final class EasyErrorHandlerExtension extends Extension
         if ($config['user_default_builders'] ?? true) {
             $loader->load('default_builders.php');
         }
+
+        if ($config['user_default_reporters'] ?? true) {
+            $loader->load('default_reporters.php');
+        }
     }
 }

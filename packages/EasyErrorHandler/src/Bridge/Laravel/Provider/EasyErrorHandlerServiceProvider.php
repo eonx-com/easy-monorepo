@@ -11,6 +11,7 @@ use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
 use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
+use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
 use Illuminate\Support\ServiceProvider;
@@ -59,6 +60,11 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                 DefaultBuilderProvider::class,
                 [BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER]
             );
+        }
+
+        if ((bool)\config('easy-error-handler.use_default_reporters', true)) {
+            $this->app->singleton(DefaultReporterProvider::class);
+            $this->app->tag(DefaultReporterProvider::class, [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER]);
         }
     }
 }

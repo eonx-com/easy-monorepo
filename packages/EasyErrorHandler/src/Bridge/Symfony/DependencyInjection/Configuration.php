@@ -17,6 +17,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->booleanNode('verbose')->defaultFalse()->end()
                 ->booleanNode('use_default_builders')->defaultTrue()->end()
+                ->booleanNode('use_default_reporters')->defaultTrue()->end()
                 ->scalarNode('translation_domain')->defaultNull()->end()
                 ->arrayNode('response')
                     ->addDefaultsIfNotSet()
