@@ -29,8 +29,19 @@ class AbstractTestCase extends TestCase
             new \Exception(),
             static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
-                self::assertSame('easy-error-handler::messages.default_user_message', $content['message']);
+                self::assertSame('exceptions.default_user_message', $content['message']);
             },
+        ];
+
+        yield 'Returns default user message translated' => [
+            new Request(),
+            new \Exception(),
+            static function (Response $response): void {
+                $content = \json_decode((string)$response->getContent(), true);
+                self::assertSame('Default message', $content['message']);
+            },
+            null,
+            ['exceptions.default_user_message' => 'Default message'],
         ];
 
         yield 'Returns extended response on debug' => [

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions\Traits;
 
+use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
+
 trait TranslatableExceptionTrait
 {
     /**
@@ -14,7 +16,7 @@ trait TranslatableExceptionTrait
     /**
      * @var string|null
      */
-    protected $userMessage = 'easy-error-handler::messages.default_user_message';
+    protected $userMessage = TranslatableExceptionInterface::DEFAULT_USER_MESSAGE;
 
     /**
      * @var mixed[]
