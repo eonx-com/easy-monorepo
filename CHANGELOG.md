@@ -1,7 +1,16 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.4.46 - 2020-09-11
+## v2.4.47 - 2020-09-16
+
+### EasyCore
+
+- [#349] Support from and size options for elasticsearch
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.4.46] - 2020-09-11
 
 - [#344] Extend ruleset with array list and line-lenght rules, Thanks to [@TomasVotruba]
 - [#340] Rector, ECS and PHPStan update, Thanks to [@TomasVotruba]
@@ -2302,3 +2311,5 @@
 [#340]: https://github.com/eonx-com/easy-monorepo/pull/340
 [v2.4.45]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.44...v2.4.45
 [@TomasVotruba]: https://github.com/TomasVotruba
+[#349]: https://github.com/eonx-com/easy-monorepo/pull/349
+[v2.4.46]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.45...v2.4.46
