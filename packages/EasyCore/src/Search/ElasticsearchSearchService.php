@@ -55,10 +55,18 @@ final class ElasticsearchSearchService implements SearchServiceInterface
             ],
         ];
 
-        return $this->client->search([
+        $params = [
             '_source_excludes' => ['_access_tokens'],
             'index' => $index,
             'body' => $body,
-        ]);
+        ];
+
+        foreach (['from', 'size'] as $name) {
+            if (isset($options[$name])) {
+                $params[$name] = $options[$name];
+            }
+        }
+
+        return $this->client->search($params);
     }
 }
