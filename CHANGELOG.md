@@ -1,7 +1,19 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.4.47 - 2020-09-16
+## v2.4.48 - 2020-09-16
+
+- [#343] Feature/fix ci, Thanks to [@DKeeper]
+
+### EasyCore
+
+- [#325] TrimStrings middleware, Thanks to [@DKeeper]
+- [#347] Fix `match_all` in query, Thanks to [@DKeeper]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.4.47] - 2020-09-16
 
 ### EasyCore
 
@@ -2313,3 +2325,7 @@
 [@TomasVotruba]: https://github.com/TomasVotruba
 [#349]: https://github.com/eonx-com/easy-monorepo/pull/349
 [v2.4.46]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.45...v2.4.46
+[#347]: https://github.com/eonx-com/easy-monorepo/pull/347
+[#343]: https://github.com/eonx-com/easy-monorepo/pull/343
+[#325]: https://github.com/eonx-com/easy-monorepo/pull/325
+[v2.4.47]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.46...v2.4.47
