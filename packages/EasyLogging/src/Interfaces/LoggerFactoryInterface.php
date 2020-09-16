@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Interfaces;
 
-use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
 interface LoggerFactoryInterface
 {
@@ -13,7 +13,7 @@ interface LoggerFactoryInterface
      */
     public const DEFAULT_CHANNEL = 'app';
 
-    public function create(?string $channel = null): Logger;
+    public function create(?string $channel = null): LoggerInterface;
 
     /**
      * @param iterable<mixed> $handlerConfigProviders

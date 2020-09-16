@@ -16,6 +16,11 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
+    public function __construct()
+    {
+        parent::__construct('test', true);
+    }
+
     public function process(ContainerBuilder $container): void
     {
         $requestDef = (new Definition(Request::class))

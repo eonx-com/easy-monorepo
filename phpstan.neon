@@ -50,6 +50,9 @@ parameters:
           path: packages/EasyAsync/tests/Stubs/EventDispatcherStub.php
 
         # ---- EasyCfhighlander ----
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyBugsnag/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
         # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'
           path: packages/EasyCore/tests/Http/Middleware
@@ -114,6 +117,9 @@ parameters:
           path: packages/EasyIdentity/tests/Implementations/Auth0
 
         # ---- EasyLogging ----
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
         - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'
           path: packages/EasyLogging/src/ContextModifiers
 
@@ -129,9 +135,6 @@ parameters:
           path: packages/EasyLock/tests/Bridge/Laravel/AbstractLaravelTestCase.php
 
         # ---- EasyLogging ----
-        - message: '#Method EonX\\EasyLogging\\LoggerFactory\:\:getLoggerConfigurators\(\) should return array<EonX\\EasyLogging\\Interfaces\\Config\\LoggerConfiguratorInterface\> but returns array<EonX\\EasyLogging\\Interfaces\\Config\\LoggingConfigInterface\>#'
-          path: packages/EasyLogging/src/LoggerFactory.php
-
         # ---- EasyPagination ----
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
           path: packages/EasyPagination/tests/Bridge/Laravel
@@ -220,9 +223,6 @@ parameters:
           path: packages/EasySsm/src/Console/Commands/ExportEnvsCommand.php
 
         # ---- EasyStandard ----
-        - message: '#Access to an undefined property PHPStan\\PhpDocParser\\Ast\\PhpDoc\\PhpDocTagNode\|Rector\\BetterPhpDocParser\\Contract\\PhpDocNode\\AttributeAwareNodeInterface\:\:\$value#'
-          path: packages/EasyStandard/src/Rector/AddSeeAnnotationRector.php
-
         # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
           path: packages/EasyTest/src/Console/Commands

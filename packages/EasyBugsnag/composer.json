@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "bugsnag/bugsnag": "^3.0",
+        "bugsnag/bugsnag": "^3.19",
         "nette/utils": "^3.1"
     },
     "require-dev": {

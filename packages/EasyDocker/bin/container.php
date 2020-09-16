@@ -17,9 +17,11 @@ $inputConfig = (new ConfigResolver())->resolveFromInputWithFallback(new ArgvInpu
 if ($inputConfig) {
     $configs[] = $inputConfig;
 }
+/** @var string[] $configs */
+$configs = \array_filter($configs);
 
 $kernel = new EasyDockerKernel();
-$kernel->setConfigs(\array_filter($configs));
+$kernel->setConfigs($configs);
 $kernel->boot();
 
 return $kernel->getContainer();
