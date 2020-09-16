@@ -18,7 +18,7 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('api_key')->isRequired()->end()
                 ->arrayNode('doctrine_dbal')
                     ->beforeNormalization()
-                        ->always(function ($v): array {
+                        ->always(static function ($v): array {
                             return \is_array($v) ? $v : ['enabled' => (bool)$v];
                         })
                     ->end()

@@ -9,6 +9,7 @@ use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer;
+use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
@@ -58,6 +59,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     $parameters->set(Option::SKIP, [
+        NotOperatorWithSuccessorSpaceFixer::class => null,
         CastSpacesFixer::class => null,
         OrderedClassElementsFixer::class => null,
         NoSuperfluousPhpdocTagsFixer::class => null,
@@ -109,7 +111,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Laravel/Stubs/LaravelEventDispatcherStub.php',
             __DIR__ . '/packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
-            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php', ],
+            __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
+        ],
         ReturnTypeHintSniff::class . '.MissingNativeTypeHint' => [
             __DIR__ . '/packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php',
             __DIR__ . '/packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
@@ -148,11 +151,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(FileHeaderSniff::class);
 
     $services->set(YodaStyleFixer::class)
-        ->call('configure', [[
-            'equal' => false,
-            'identical' => false,
-            'less_and_greater' => false,
-        ]]);
+        ->call('configure', [
+            [
+                'equal' => false,
+                'identical' => false,
+                'less_and_greater' => false,
+            ],
+        ]);
 
     $services->set(NoElseSniff::class);
     $services->set(NoNotOperatorSniff::class);
