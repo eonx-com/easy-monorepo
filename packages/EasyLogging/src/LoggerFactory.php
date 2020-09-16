@@ -15,6 +15,7 @@ use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use Monolog\Processor\ProcessorInterface;
+use Psr\Log\LoggerInterface;
 
 final class LoggerFactory implements LoggerFactoryInterface
 {
@@ -54,7 +55,7 @@ final class LoggerFactory implements LoggerFactoryInterface
         $this->loggerClass = $loggerClass ?? Logger::class;
     }
 
-    public function create(?string $channel = null): Logger
+    public function create(?string $channel = null): LoggerInterface
     {
         $channel = $channel ?? $this->defaultChannel;
 
@@ -65,6 +66,7 @@ final class LoggerFactory implements LoggerFactoryInterface
         $loggerClass = $this->loggerClass;
         $logger = new $loggerClass($channel, $this->getHandlers($channel), $this->getProcessors($channel));
 
+        /** @var \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface $configurator */
         foreach ($this->getLoggerConfigurators($channel) as $configurator) {
             $configurator->configure($logger);
         }
@@ -127,7 +129,7 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private function filterAndSortConfigs(array $configs, string $channel): array
     {
-        $filter = function (LoggingConfigInterface $config) use ($channel): bool {
+        $filter = static function ($config) use ($channel): bool {
             // Priority to inclusive channels
             if ($config->getChannels() !== null) {
                 return \in_array($channel, $config->getChannels(), true);
@@ -168,7 +170,7 @@ final class LoggerFactory implements LoggerFactoryInterface
     }
 
     /**
-     * @return \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface[]
+     * @return \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface[]|\EonX\EasyLogging\Interfaces\Config\LoggingConfigInterface[]
      */
     private function getLoggerConfigurators(string $channel): array
     {
@@ -194,9 +196,12 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private function sortConfigs(array $configs): array
     {
-        \usort($configs, static function (LoggingConfigInterface $first, LoggingConfigInterface $second): int {
-            return $first->getPriority() <=> $second->getPriority();
-        });
+        \usort(
+            $configs,
+            static function (LoggingConfigInterface $first, LoggingConfigInterface $second): int {
+                return $first->getPriority() <=> $second->getPriority();
+            }
+        );
 
         return $configs;
     }

@@ -26,21 +26,21 @@ final class SlackMessageTest extends AbstractTestCase
     public function providerTestGetters(): iterable
     {
         yield 'Constructor' => [
-            function (): SlackMessage {
+            static function (): SlackMessage {
                 return new SlackMessage('channel', 'text', ['option' => 'value']);
             },
             static::$body,
         ];
 
         yield 'Create method' => [
-            function (): SlackMessage {
+            static function (): SlackMessage {
                 return SlackMessage::create('channel', 'text', ['option' => 'value']);
             },
             static::$body,
         ];
 
         yield 'Create method + text + body' => [
-            function (): SlackMessage {
+            static function (): SlackMessage {
                 $message = SlackMessage::create('channel')->text('text');
                 $message->body(['option' => 'value']);
 

@@ -13,7 +13,7 @@
         "eonx-com/test-utils": "^0.0.1",
         "eonx-com/standards": "^0.3.0",
         "phpmd/phpmd": "^2.8",
-        "phpstan/phpstan": "^0.12.3",
+        "phpstan/phpstan": "^0.12.42",
         "phpstan/phpstan-strict-rules": "^0.12.0",
         "phpstan/phpstan-phpunit": "^0.12.3",
         "sebastian/phpcpd": "^4.1",
