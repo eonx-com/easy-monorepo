@@ -35,7 +35,7 @@ final class RecursiveStringsTrimmerTest extends AbstractTestCase
                 'except' => [],
                 'expectedResult' => 123,
             ],
-            'data is an bool' => [
+            'data is a bool' => [
                 'data' => true,
                 'except' => [],
                 'expectedResult' => true,
@@ -55,7 +55,7 @@ final class RecursiveStringsTrimmerTest extends AbstractTestCase
                 'except' => [],
                 'expectedResult' => [$object1, $object2],
             ],
-            'data is an float' => [
+            'data is a float' => [
                 'data' => 1.23,
                 'except' => [],
                 'expectedResult' => 1.23,
