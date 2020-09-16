@@ -156,7 +156,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'equal' => false,
                 'identical' => false,
                 'less_and_greater' => false,
-            ]
+            ],
         ]);
 
     $services->set(NoElseSniff::class);
