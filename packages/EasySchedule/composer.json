@@ -4,7 +4,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "nesbot/carbon": "^2.22",
         "dragonmantank/cron-expression": "^2.3",
         "symfony/console": "^4.2 || ^5.0",

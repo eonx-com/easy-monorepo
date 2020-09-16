@@ -10,7 +10,7 @@
         "packages/EasyTest/bin/easy-test"
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "doctrine/orm": "^2.6",
         "eonx-com/externals": "^1.0 || ^2.0",
         "nesbot/carbon": "^2.22",
