@@ -52,7 +52,11 @@ class AbstractTestCase extends TestCase
                 self::assertSame(['code', 'exception', 'message', 'time'], \array_keys($content));
                 self::assertSame(['class', 'file', 'line', 'message', 'trace'], \array_keys($content['exception']));
             },
-            ['easy-error-handler' => ['use_extended_response' => true]],
+            [
+                'easy-error-handler' => [
+                    'use_extended_response' => true,
+                ],
+            ],
         ];
 
         yield 'Returns messages as is if translations are absent' => [
@@ -63,7 +67,11 @@ class AbstractTestCase extends TestCase
                 self::assertSame('User-friendly error message', $content['message']);
                 self::assertSame('Exception message', $content['exception']['message']);
             },
-            ['easy-error-handler' => ['use_extended_response' => true]],
+            [
+                'easy-error-handler' => [
+                    'use_extended_response' => true,
+                ],
+            ],
         ];
 
         yield 'Returns message with params' => [
@@ -77,7 +85,11 @@ class AbstractTestCase extends TestCase
                 self::assertSame('Exception message with foo', $content['exception']['message']);
                 self::assertSame('User-friendly error message with bar', $content['message']);
             },
-            ['easy-error-handler' => ['use_extended_response' => true]],
+            [
+                'easy-error-handler' => [
+                    'use_extended_response' => true,
+                ],
+            ],
             [
                 'test.exception_message' => 'Exception message with :param',
                 'test.user_message' => 'User-friendly error message with :param',
@@ -150,11 +162,15 @@ class AbstractTestCase extends TestCase
 
         yield 'Short response with violations' => [
             new Request(),
-            (new ValidationExceptionStub())->setErrors(['foo' => ['bar']]),
+            (new ValidationExceptionStub())->setErrors([
+                'foo' => ['bar'],
+            ]),
             static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
                 self::assertArrayHasKey('violations', $content);
-                self::assertSame(['foo' => ['bar']], $content['violations']);
+                self::assertSame([
+                    'foo' => ['bar'],
+                ], $content['violations']);
             },
         ];
     }
@@ -176,10 +192,7 @@ class AbstractTestCase extends TestCase
     protected function tearDown(): void
     {
         $fs = new Filesystem();
-        $files = [
-            __DIR__ . '/../var',
-            __DIR__ . '/Bridge/Symfony/tmp_config.yaml',
-        ];
+        $files = [__DIR__ . '/../var', __DIR__ . '/Bridge/Symfony/tmp_config.yaml'];
 
         foreach ($files as $file) {
             if ($fs->exists($file)) {

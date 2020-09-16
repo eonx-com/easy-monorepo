@@ -142,8 +142,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php',
         ],
         ReferenceThrowableOnlySniff::class . '.ReferencedGeneralException' => [
-            __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php',
-            __DIR__ . '/packages/EasyErrorHandler/tests/Bridge/Laravel/Handler/HandlerTest.php',
+            __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php',
+            __DIR__ . '/packages/EasyErrorHandler/tests/Bridge/Laravel/ExceptionHandlerTest.php',
         ],
     ]);
 

@@ -18,10 +18,7 @@ final class BugsnagReporterTest extends AbstractTestCase
      */
     public function providerTestReport(): iterable
     {
-        yield 'Report unexpected exception with no log level' => [
-            true,
-            new \Exception(),
-        ];
+        yield 'Report unexpected exception with no log level' => [true, new \Exception()];
 
         yield 'Report same log level as threshold' => [
             true,

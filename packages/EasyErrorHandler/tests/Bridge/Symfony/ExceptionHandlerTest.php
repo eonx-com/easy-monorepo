@@ -20,7 +20,7 @@ final class ExceptionHandlerTest extends AbstractSymfonyTestCase
      */
     public function testRenderWithDefaultBuilders(
         Request $request,
-        \Exception $exception,
+        \Throwable $exception,
         callable $assertResponse,
         ?array $config = null,
         ?array $translations = null
