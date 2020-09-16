@@ -66,14 +66,26 @@ final class RecursiveStringsTrimmerTest extends AbstractTestCase
                 'expectedResult' => ['123', 'abc', 123],
             ],
             'data is an assoc array' => [
-                'data' => ['key1' => '  123  ', 'key2' => '  abc  '],
+                'data' => [
+                    'key1' => '  123  ',
+                    'key2' => '  abc  ',
+                ],
                 'except' => [],
-                'expectedResult' => ['key1' => '123', 'key2' => 'abc'],
+                'expectedResult' => [
+                    'key1' => '123',
+                    'key2' => 'abc',
+                ],
             ],
             'data is an assoc array (except key1)' => [
-                'data' => ['key1' => '  123  ', 'key2' => '  abc  '],
+                'data' => [
+                    'key1' => '  123  ',
+                    'key2' => '  abc  ',
+                ],
                 'except' => ['key1'],
-                'expectedResult' => ['key1' => '  123  ', 'key2' => 'abc'],
+                'expectedResult' => [
+                    'key1' => '  123  ',
+                    'key2' => 'abc',
+                ],
             ],
             'data is a multidimensional assoc array' => [
                 'data' => [
@@ -130,9 +142,19 @@ final class RecursiveStringsTrimmerTest extends AbstractTestCase
                 ],
             ],
             'data is a mixed array' => [
-                'data' => ['key1' => '  123  ', 'key2' => '  abc  ', '  456  ', '  def  '],
+                'data' => [
+                    'key1' => '  123  ',
+                    'key2' => '  abc  ',
+                    '  456  ',
+                    '  def  ',
+                ],
                 'except' => [],
-                'expectedResult' => ['key1' => '123', 'key2' => 'abc', '456', 'def'],
+                'expectedResult' => [
+                    'key1' => '123',
+                    'key2' => 'abc',
+                    '456',
+                    'def',
+                ],
             ],
         ];
     }

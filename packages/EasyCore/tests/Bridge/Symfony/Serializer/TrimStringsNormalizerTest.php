@@ -28,26 +28,11 @@ final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
         $object = new stdClass();
 
         return [
-            'data is string' => [
-                '',
-                '',
-            ],
-            'data is array' => [
-                [],
-                [],
-            ],
-            'data is bool' => [
-                true,
-                true,
-            ],
-            'data is numeric' => [
-                123,
-                123,
-            ],
-            'data is object' => [
-                $object,
-                $object,
-            ],
+            'data is string' => ['', ''],
+            'data is array' => [[], []],
+            'data is bool' => [true, true],
+            'data is numeric' => [123, 123],
+            'data is object' => [$object, $object],
         ];
     }
 
@@ -74,10 +59,7 @@ final class TrimStringsNormalizerTest extends AbstractSymfonyTestCase
             };
         }
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
-        $trimmer = $this->mock(
-            StringsTrimmerInterface::class,
-            $expectation
-        );
+        $trimmer = $this->mock(StringsTrimmerInterface::class, $expectation);
         $decorated = new NormalizerStub();
         $denormalizer = new TrimStringsNormalizer($decorated, $trimmer, $except);
 
