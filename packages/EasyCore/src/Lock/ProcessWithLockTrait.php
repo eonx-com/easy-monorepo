@@ -31,7 +31,7 @@ trait ProcessWithLockTrait
     {
         @\trigger_error(\sprintf(
             '%s is deprecated since 2.4.31 and will be removed in 3.0, Use eonx-com/easy-lock package instead.',
-            static::class,
+            static::class
         ), \E_USER_DEPRECATED);
 
         $data = $withLockData->getLockData();

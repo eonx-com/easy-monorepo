@@ -15,16 +15,13 @@ abstract class AbstractSymfonyTestCase extends AbstractTestCase
      */
     private $kernel;
 
-    /**
-     * @param null|string[] $configs
-     */
-    protected function getKernel(?array $configs = null): KernelInterface
+    protected function getKernel(): KernelInterface
     {
         if ($this->kernel !== null) {
             return $this->kernel;
         }
 
-        $kernel = new KernelStub('test', true, $configs);
+        $kernel = new KernelStub('test', true);
         $kernel->boot();
 
         return $this->kernel = $kernel;

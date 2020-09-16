@@ -38,6 +38,7 @@ final class HttpFoundationRequest implements RequestInterface
      */
     public function getMetaData(): array
     {
+        /** @var string $content */
         $content = $this->request->getContent();
 
         if (Strings::contains((string)($this->request->getContentType() ?? ''), 'json')) {

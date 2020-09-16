@@ -61,6 +61,15 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
     }
 
     /**
+     * Tests method with empty lines in Closure succeeds.
+     */
+    public function testMethodWithEmptyLinesInClosureSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Correct/EmptyLinesInClosure.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
+    /**
      * Tests method with inner curly brackets succeeds.
      */
     public function testMethodWithInnerCurlyBracketsSucceeds(): void

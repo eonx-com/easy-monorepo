@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyStandard\Tests\Sniffs\Classes\StrictDeclarationFormatSniff;
 
 use EonX\EasyStandard\Sniffs\Classes\StrictDeclarationFormatSniff;
-use Hoa\Iterator\Recursive\Iterator;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class StrictDeclarationFormatSniffTest extends AbstractCheckerTestCase
 {
     /**
-     * @return Iterator<int, SmartFileInfo|int>
+     * @return iterable<array<int, SmartFileInfo|int>>
      */
     public function providerTestSniff(): iterable
     {

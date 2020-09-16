@@ -18,6 +18,11 @@ final class TestClass
                     ->withNoArgs()
                     ->once()
                     ->andReturn([]);
+
+                $mock->shouldReceive('anotherMethod')
+                    ->withNoArgs()
+                    ->once()
+                    ->andReturn([]);
             }
         );
         $array = $ruleRepository->someMethod();

@@ -41,7 +41,7 @@ final class AddCoversAnnotationRectorTest extends AbstractRectorTestCase
     {
         return [
             AddCoversAnnotationRector::class => [
-                AddCoversAnnotationRector::REPLACE_ARR => ['Tests\\Unit\\'],
+                AddCoversAnnotationRector::REPLACE_ARRAY => ['Tests\\Unit\\'],
             ],
         ];
     }

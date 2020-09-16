@@ -24,6 +24,15 @@ final class RestoreDefaultNullToNullableTypeParameterRectorTest extends Abstract
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
 
+    public function testGetDefinitionSucceeds(): void
+    {
+        $rector = new RestoreDefaultNullToNullableTypeParameterRector();
+
+        $definition = $rector->getDefinition();
+
+        self::assertNotEmpty($definition->getDescription());
+    }
+
     /**
      * @dataProvider provideData()
      */

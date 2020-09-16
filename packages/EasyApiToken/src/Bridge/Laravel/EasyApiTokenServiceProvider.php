@@ -35,7 +35,7 @@ final class EasyApiTokenServiceProvider extends ServiceProvider
                 return new FromConfigDecoderProvider(
                     \config('easy-api-token.decoders', []),
                     \config('easy-api-token.factories', null),
-                    \config('easy-api-token.default_decoder', null),
+                    \config('easy-api-token.default_decoder', null)
                 );
             });
             $this->app->tag(FromConfigDecoderProvider::class, [BridgeConstantsInterface::TAG_DECODER_PROVIDER]);

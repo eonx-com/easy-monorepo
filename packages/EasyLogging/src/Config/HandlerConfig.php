@@ -14,15 +14,12 @@ final class HandlerConfig extends AbstractLoggingConfig implements HandlerConfig
      */
     private $handler;
 
-    /**
-     * @param null|string[] $handler
-     */
     public function __construct(HandlerInterface $handler)
     {
         $this->handler = $handler;
     }
 
-    public static function create(HandlerInterface $handler): self
+    public static function create(HandlerInterface $handler): HandlerConfigInterface
     {
         return new self($handler);
     }
