@@ -76,6 +76,15 @@ final class EasyCoreExtension extends Extension
             $loader->load('search.php');
         }
 
+        if ($config['trim_strings']['enabled'] ?? false) {
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_TRIM_STRINGS_EXCEPT,
+                $config['trim_strings']['except']
+            );
+
+            $loader->load('trim_strings.php');
+        }
+
         // Aliases for custom collection operations HTTP methods
         foreach (['PATCH', 'PUT'] as $method) {
             $alias = \sprintf('api_platform.action.%s_collection', \strtolower($method));
