@@ -16,6 +16,15 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 {
     /**
+     * Test anonymous class succeeds.
+     */
+    public function testAnonymousClassSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Correct/anonymousClass.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
+    /**
      * Tests class with no test namespace succeeds.
      */
     public function testClassWithNoTestNamespaceSucceeds(): void
@@ -75,6 +84,15 @@ final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
     public function testMethodWithInnerCurlyBracketsSucceeds(): void
     {
         $fileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Correct/innerCurlyBrackets.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
+    /**
+     * Test multilevel closure succeeds.
+     */
+    public function testMultiLevelClosureSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Correct/multiLevelClosure.php.inc');
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
