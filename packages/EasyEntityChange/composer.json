@@ -35,6 +35,9 @@
     "extra": {
         "branch-alias": {
             "dev-master": "2.5-dev"
+        },
+        "eonx_docs": {
+            "deprecated": "yes"
         }
     }
 }
