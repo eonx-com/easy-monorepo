@@ -651,10 +651,10 @@ class FunctionCommentSniff extends SquizFunctionCommentSniff
     /**
      * Check if a comment has a valid 'inheritdoc' annotation.
      *
-     * @param  File $phpcsFile
-     * @param  int $stackPtr
-     * @param  int $commentStart
-     * @param  int $commentEnd
+     * @param File $phpcsFile
+     * @param int $stackPtr
+     * @param int $commentStart
+     * @param int $commentEnd
      *
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
      */
@@ -726,7 +726,11 @@ class FunctionCommentSniff extends SquizFunctionCommentSniff
             $class .= $phpcsFile->getDeclarationName($classPtr);
 
             if (\class_exists($class) || \interface_exists($class)) {
-                $this->parentsAndInterfaces = \array_merge(\class_parents($class), \class_implements($class));
+                $this->parentsAndInterfaces = \array_merge(
+                    \class_parents($class),
+                    \class_implements($class),
+                    \class_uses($class)
+                );
             }
         }
 
