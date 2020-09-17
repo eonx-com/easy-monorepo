@@ -9,7 +9,7 @@ final class TestClass
     {
         $value1 = 2;
         $value2 = 2;
-        $expectedClosure = \array_map(static function ($value) use ($value1, $value2) {
+        $expectedClosure = \array_map(static function () use ($value1, $value2) {
             $result = static function () use ($value1, $value2): int {
                 $result = $value1 + $value2;
 
