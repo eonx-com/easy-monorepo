@@ -10,6 +10,8 @@ use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 /**
  * Workaround for an issue: https://github.com/doctrine/dbal/issues/1110.
  *
+ * @author https://github.com/vudaltsov
+ *
  * @codeCoverageIgnore
  */
 final class FixPostgreSqlDefaultSchemaListener
