@@ -74,18 +74,18 @@ PHP
             }
 
             if ($child instanceof AttributeAwarePhpDocTextNode) {
-                $this->checkText($child);
+                $this->checkTextNode($child);
             }
 
             if ($child instanceof AttributeAwarePhpDocTagNode) {
-                $this->checkAttribute($child);
+                $this->checkTagNode($child);
             }
         }
 
         return $node;
     }
 
-    private function checkAttribute(AttributeAwarePhpDocTagNode $child): AttributeAwarePhpDocTagNode
+    private function checkTagNode(AttributeAwarePhpDocTagNode $child): AttributeAwarePhpDocTagNode
     {
         /** @var \Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareGenericTagValueNode $tagValueNode */
         $tagValueNode = $child->value;
@@ -101,13 +101,13 @@ PHP
         return $child;
     }
 
-    private function checkText(AttributeAwarePhpDocTextNode $child): AttributeAwarePhpDocTextNode
+    private function checkTextNode(AttributeAwarePhpDocTextNode $child): AttributeAwarePhpDocTextNode
     {
         if ($child->text === '') {
             return $child;
         }
 
-        if (\in_array(substr($child->text, -1), $this->allowedEnd, true) === false) {
+        if (\in_array(\substr($child->text, -1), $this->allowedEnd, true) === false) {
             $child->text .= '.';
         }
 
