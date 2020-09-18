@@ -1,37 +1,31 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\ClassMethod;
-use PhpParser\Node\Stmt\Return_;
+use PhpParser\Node\Stmt\Property;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
 use Rector\NodeTypeResolver\Node\AttributeKey;
-use Nette\Utils\Strings;
 
 final class AnnotationsCommentsRector extends AbstractRector
 {
     /**
      * @var string[]
      */
-    private $ignore = [
-        '{@inheritdoc}',
-    ];
+    private $ignore = ['{@inheritdoc}'];
 
     /**
      * @var string[]
      */
-    private $allowedEnd = [
-        '.',
-        '?',
-    ];
+    private $allowedEnd = ['.', '?'];
 
     /**
      * From this method documentation is generated.
@@ -75,7 +69,7 @@ PHP
         $phpDocInfo = $node->getAttribute(AttributeKey::PHP_DOC_INFO);
 
         foreach ($phpDocInfo->getPhpDocNode()->children as $child) {
-            if (\in_array((string)$child, $this->ignore)) {
+            if (\in_array((string)$child, $this->ignore, true)) {
                 continue;
             }
 
@@ -93,12 +87,15 @@ PHP
 
     private function checkAttribute(AttributeAwarePhpDocTagNode $child): AttributeAwarePhpDocTagNode
     {
-        if ($child->value->value === null) {
+        /** @var \Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareGenericTagValueNode $tagValueNode */
+        $tagValueNode = $child->value;
+
+        if ($tagValueNode->value === null) {
             return $child;
         }
 
-        if (\in_array(substr($child->value->value, -1), $this->allowedEnd) === true) {
-            $child->value->value = \substr($child->value->value, 0, -1);
+        if (\in_array(\substr($tagValueNode->value, -1), $this->allowedEnd, true) === true) {
+            $tagValueNode->value = \substr($tagValueNode->value, 0, -1);
         }
 
         return $child;
@@ -110,7 +107,7 @@ PHP
             return $child;
         }
 
-        if (\in_array(substr($child->text, -1), $this->allowedEnd) === false) {
+        if (\in_array(substr($child->text, -1), $this->allowedEnd, true) === false) {
             $child->text .= '.';
         }
 

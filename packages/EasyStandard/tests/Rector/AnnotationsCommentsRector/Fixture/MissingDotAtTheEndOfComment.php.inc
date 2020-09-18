@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyStandard\Tests\Rector\AnnotationsCommentsRector\Fixture;
 
 /**
- * Missing dot at the end of comment
+ * Missing dot at the end of the comment
  */
 class MissingDotAtTheEndOfComment
 {
@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace EonX\EasyStandard\Tests\Rector\AnnotationsCommentsRector\Fixture;
 
 /**
- * Missing dot at the end of comment.
+ * Missing dot at the end of the comment.
  */
 class MissingDotAtTheEndOfComment
 {
