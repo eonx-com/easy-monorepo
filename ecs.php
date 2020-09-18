@@ -5,6 +5,7 @@ declare(strict_types=1);
 use EonX\EasyStandard\Sniffs\ControlStructures\NoElseSniff;
 use EonX\EasyStandard\Sniffs\ControlStructures\NoNotOperatorSniff;
 use EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
@@ -152,6 +153,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     $services = $containerConfigurator->services();
+    $services->set(LineLengthSniff::class)
+        ->property('absoluteLineLimit', 120)
+        ->property('ignoreComments', false);
     $services->set(FileHeaderSniff::class);
 
     $services->set(YodaStyleFixer::class)
