@@ -11,7 +11,10 @@ final class BaseSsmClientStub extends SsmClient
     /**
      * @var mixed[]
      */
-    private $actions = ['put' => [], 'delete' => []];
+    private $actions = [
+        'put' => [],
+        'delete' => [],
+    ];
 
     /**
      * @var mixed[]

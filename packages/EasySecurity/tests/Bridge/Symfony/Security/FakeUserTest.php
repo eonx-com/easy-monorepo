@@ -12,7 +12,8 @@ final class FakeUserTest extends AbstractSymfonyTestCase
     public function testGetters(): void
     {
         $user = new FakeUser();
-        $user->eraseCredentials(); // For coverage
+        // For coverage
+        $user->eraseCredentials();
 
         self::assertNull($user->getPassword());
         self::assertEmpty($user->getRoles());

@@ -132,6 +132,7 @@ PHP
             return;
         }
 
+        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode $dataProviderTag */
         foreach ($dataProviderTags as $dataProviderTag) {
             $dataProviderMethod = $class->getMethod((string)$dataProviderTag->value);
 

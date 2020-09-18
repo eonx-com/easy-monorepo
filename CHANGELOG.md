@@ -1,8 +1,161 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
+## v2.4.48 - 2020-09-16
 
-## v2.4.35 - 2020-08-21
+- [#343] Feature/fix ci, Thanks to [@DKeeper]
+
+### EasyCore
+
+- [#325] TrimStrings middleware, Thanks to [@DKeeper]
+- [#347] Fix `match_all` in query, Thanks to [@DKeeper]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.4.47] - 2020-09-16
+
+### EasyCore
+
+- [#349] Support from and size options for elasticsearch
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.4.46] - 2020-09-11
+
+- [#344] Extend ruleset with array list and line-lenght rules, Thanks to [@TomasVotruba]
+- [#340] Rector, ECS and PHPStan update, Thanks to [@TomasVotruba]
+
+### EasySchedule
+
+- [#346] Use eonx-com/easy-lock instead of easy-core
+
+### EasyStandard
+
+- [#345] Improve ArrangeActAssertSniff to ignore empty lines inside closures, Thanks to [@BOB41K1987]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.45] - 2020-09-02
+
+### EasyAsync
+
+- [#334] Use eonx-com/easy-random to generate UUID v4, Thanks to [@DKeeper]
+
+### EasyLogging
+
+- [#338] Implement stream_handler config + SelfProcessorConfigPr…
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.44] - 2020-09-01
+
+### EasySecurity
+
+- [#337] Improve symfony bridge by using monolog bridge/bundle
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.43] - 2020-09-01
+
+### EasySecurity
+
+- [#336] Create eonx-com/easy-bugsnag bridge
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.42] - 2020-09-01
+
+### EasyCore
+
+- [#333] Add JsonbType and Contains function support for PostgreSQL, Thanks to [@ERuban]
+
+### EasyBugsnag
+
+- [#335] Enable doctrine integration by default
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.41] - 2020-08-28
+
+### EasyCore
+
+- [#332] Fix ElasticsearchSearchService to preserve search body, Thanks to [@egor-dev]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.40] - 2020-08-28
+
+### EasyBugsnag
+
+- [#331] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.39] - 2020-08-26
+
+### EasyCore
+
+- [#290] Move search service to easy-core
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.38] - 2020-08-24
+
+### EasyLogging
+
+- [#328] Implement LoggerFactory
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.37] - 2020-08-23
+
+### EasyStandard
+
+- [#321] Add RestoreDefaultNullToNullableTypeParameterRector, Thanks to [@BOB41K1987]
+
+### EasyPagination
+
+- [#327] Remove PSR7 support
+
+### EasySecurity
+
+- [#326] Simplify setup + remove psr7 support
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.36] - 2020-08-23
+
+### EasyApiToken
+
+- [#286] From config to PHP, Rename classes, Remove encoders
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+
+## [v2.4.35] - 2020-08-21
 
 ### EasyPsr7Factory
 
@@ -2138,3 +2291,41 @@
 [v2.4.33]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.32...v2.4.33
 [#322]: https://github.com/eonx-com/easy-monorepo/pull/322
 [v2.4.34]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.33...v2.4.34
+[#286]: https://github.com/eonx-com/easy-monorepo/pull/286
+[v2.4.35]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.34...v2.4.35
+[#327]: https://github.com/eonx-com/easy-monorepo/pull/327
+[#326]: https://github.com/eonx-com/easy-monorepo/pull/326
+[#321]: https://github.com/eonx-com/easy-monorepo/pull/321
+[v2.4.36]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.35...v2.4.36
+[#328]: https://github.com/eonx-com/easy-monorepo/pull/328
+[v2.4.37]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.36...v2.4.37
+[#290]: https://github.com/eonx-com/easy-monorepo/pull/290
+[v2.4.38]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.37...v2.4.38
+[#331]: https://github.com/eonx-com/easy-monorepo/pull/331
+[v2.4.39]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.38...v2.4.39
+[#332]: https://github.com/eonx-com/easy-monorepo/pull/332
+[v2.4.40]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.39...v2.4.40
+[#335]: https://github.com/eonx-com/easy-monorepo/pull/335
+[#333]: https://github.com/eonx-com/easy-monorepo/pull/333
+[v2.4.41]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.40...v2.4.41
+[@ERuban]: https://github.com/ERuban
+[#336]: https://github.com/eonx-com/easy-monorepo/pull/336
+[v2.4.42]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.41...v2.4.42
+[#337]: https://github.com/eonx-com/easy-monorepo/pull/337
+[v2.4.43]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.42...v2.4.43
+[#338]: https://github.com/eonx-com/easy-monorepo/pull/338
+[#334]: https://github.com/eonx-com/easy-monorepo/pull/334
+[v2.4.44]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.43...v2.4.44
+[@DKeeper]: https://github.com/DKeeper
+[#346]: https://github.com/eonx-com/easy-monorepo/pull/346
+[#345]: https://github.com/eonx-com/easy-monorepo/pull/345
+[#344]: https://github.com/eonx-com/easy-monorepo/pull/344
+[#340]: https://github.com/eonx-com/easy-monorepo/pull/340
+[v2.4.45]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.44...v2.4.45
+[@TomasVotruba]: https://github.com/TomasVotruba
+[#349]: https://github.com/eonx-com/easy-monorepo/pull/349
+[v2.4.46]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.45...v2.4.46
+[#347]: https://github.com/eonx-com/easy-monorepo/pull/347
+[#343]: https://github.com/eonx-com/easy-monorepo/pull/343
+[#325]: https://github.com/eonx-com/easy-monorepo/pull/325
+[v2.4.47]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.46...v2.4.47

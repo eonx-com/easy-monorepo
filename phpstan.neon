@@ -2,6 +2,11 @@ includes:
     - 'vendor/symplify/phpstan-extensions/config/config.neon'
 
 parameters:
+    paths:
+        - packages
+
+    level: max
+
     bootstrapFiles:
         - %currentWorkingDirectory%/tests/bootstrap.php
 
@@ -16,19 +21,13 @@ parameters:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Parameter \#1 \$app of class [A-Z][\w\\]+ constructor expects Illuminate\\(Contracts\\)?Foundation\\Application, Laravel\\Lumen\\Application given.#'
-        - '#Method "\S+\(\)" returns bool type, so the name should start with is/has/was#'
+        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
 
         # ---- EasyApiToken ----
-        - message: '#Parameter \#[0-9] \$(.*?) of method EonX\\EasyApiToken\\Tests\\Encoders\\FirebaseJwtTokenEncoderTest::createJwtTokenDecoder\(\) expects resource\|string\|null, resource\|string\|false given.#'
-          path: packages/EasyApiToken/tests
-
         - message: '#Parameter \#[0-9] \$(.*?) of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource\|string\|null, resource\|string\|false given#'
           path: packages/EasyApiToken/tests
 
         # ---- EasyAsync ----
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
-          path: packages/EasyAsync/src/Bridge/Symfony/DependencyInjection
-
         - message: '#Method EonX\\EasyAsync\\Generators\\DateTimeGenerator::fromString\(\) should return DateTime but returns DateTime\|false.#'
           path: packages/EasyAsync/src/Generators
 
@@ -51,6 +50,9 @@ parameters:
           path: packages/EasyAsync/tests/Stubs/EventDispatcherStub.php
 
         # ---- EasyCfhighlander ----
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyBugsnag/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
         # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'
           path: packages/EasyCore/tests/Http/Middleware
@@ -60,9 +62,6 @@ parameters:
 
         - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\Providers\\CachedConfigServiceProvider::\$loadedConfigurations.#'
           path: packages/EasyCore/src/Bridge/Laravel/Providers
-
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-          path: packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Configuration.php
 
         - message: '#Parameter \#1 \$connOrDsn of class Symfony\\Component\\Lock\\Store\\PdoStore constructor expects Doctrine\\DBAL\\Connection\|PDO\|string, object given#'
           path: packages/EasyCore/src/Lock/LockService.php
@@ -98,9 +97,6 @@ parameters:
         - message: "#Offset 'fn' does not exist on array\\(string\\).#"
           path: packages/EasyDecision/src/Helpers
 
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-          path: packages/EasyDecision/src/Bridge/Symfony/DependencyInjection/Configuration.php
-
         - message: '#Cannot call method getFunctions\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
           path: packages/EasyDecision/tests/Bridge/Symfony/EasyDecisionBundleTest.php
 
@@ -121,6 +117,9 @@ parameters:
           path: packages/EasyIdentity/tests/Implementations/Auth0
 
         # ---- EasyLogging ----
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
         - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'
           path: packages/EasyLogging/src/ContextModifiers
 
@@ -128,16 +127,14 @@ parameters:
           path: packages/EasyLogging/src/ContextModifiers
 
         # ---- EasyLock ----
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-          path: packages/EasyLock/src/Bridge/Symfony/DependencyInjection/Configuration.php
 
         - message: '#Method EonX\\EasyLock\\Bridge\\Symfony\\Messenger\\ProcessWithLockMiddleware\:\:getLockData\(\) should return EonX\\EasyLock\\Interfaces\\WithLockDataInterface\|null but returns Symfony\\Component\\Messenger\\Stamp\\StampInterface\|null#'
           path: packages/EasyLock/src/Bridge/Symfony/Messenger/ProcessWithLockMiddleware.php
 
-        # ---- EasyNotification ---
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-          path: packages/EasyNotification/src/Bridge/Symfony/DependencyInjection/Configuration.php
+        - message: '#Unable to resolve the template type T in call to method static method Doctrine\\DBAL\\DriverManager\:\:getConnection\(\)#'
+          path: packages/EasyLock/tests/Bridge/Laravel/AbstractLaravelTestCase.php
 
+        # ---- EasyLogging ----
         # ---- EasyPagination ----
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
           path: packages/EasyPagination/tests/Bridge/Laravel
@@ -148,11 +145,8 @@ parameters:
         - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\)#'
           path: packages/EasyPagination/tests
 
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-          path: packages/EasyPagination/src/Bridge/Symfony/DependencyInjection/Configuration.php
-
-        - message: '#Method EonX\\EasyPagination\\Tests\\AbstractTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
-          path: packages/EasyPagination/tests/AbstractTestCase.php
+        - message: '#Method EonX\\EasyPagination\\Tests\\AbstractWithMockTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
+          path: packages/EasyPagination/tests/AbstractWithMockTestCase.php
 
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\Doctrine(Dbal|Orm)LengthAwarePaginator::doGet(TotalItems|Result)\(\) expects Doctrine\\(ORM|DBAL\\Query)\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given.#'
         - '#Method EonX\\EasyPagination\\Paginators\\Doctrine(Dbal|Orm)LengthAwarePaginator::createQueryBuilder\(\) never returns Doctrine\\(ORM|DBAL\\Query)\\QueryBuilder so it can be removed from the return typehint.#'
@@ -167,9 +161,6 @@ parameters:
 
         # ---- EasyPsr7Factory ----
         # ---- EasyRandom ----
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-          path: packages/EasyRandom/src/Bridge/Symfony/DependencyInjection/Configuration.php
-
         - message: '#Access to an undefined property EonX\\EasyRandom\\Interfaces\\RandomGeneratorInterface\:\:\$uuidV4Generator#'
           path: packages/EasyRandom/tests/Bridge/Symfony/EasyRandomBundleTest.php
 
@@ -218,9 +209,6 @@ parameters:
         - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Helpers\\DeferredSecurityContextResolver\:\:resolve\(\) should return EonX\\EasySecurity\\Interfaces\\SecurityContextInterface but returns object\|null#'
           path: packages/EasySecurity/src/Bridge/Symfony/Helpers/DeferredSecurityContextResolver.php
 
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
-          path: packages/EasySecurity/src/Bridge/Symfony/DependencyInjection
-
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
           path: packages/EasySecurity/tests/Authorization/RoleTest.php
 
@@ -234,6 +222,7 @@ parameters:
         - message: '#Cannot cast array<string\>\|bool\|string\|null to string#'
           path: packages/EasySsm/src/Console/Commands/ExportEnvsCommand.php
 
+        # ---- EasyStandard ----
         # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
           path: packages/EasyTest/src/Console/Commands
@@ -244,6 +233,3 @@ parameters:
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: packages/EasyWebhook/src/AbstractWebhook.php
-
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-          path: packages/EasyWebhook/src/Bridge/Symfony/DependencyInjection/Configuration.php

@@ -23,6 +23,22 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('simple_data_persister_enabled')->defaultValue(true)->end()
                     ->end()
                 ->end()
+                ->arrayNode('search')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
+                        ->scalarNode('elasticsearch_host')->defaultValue('elasticsearch:9200')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('trim_strings')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->arrayNode('except')
+                            ->scalarPrototype()->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

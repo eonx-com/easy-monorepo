@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use EonX\EasyPagination\Bridge\Symfony\Factories\ServerRequestFactory;
 use EonX\EasyPagination\Bridge\Symfony\Factories\StartSizeConfigFactory;
 use EonX\EasyPagination\Bridge\Symfony\Factories\StartSizeDataFactory as BridgeStartSizeDataFactory;
 use EonX\EasyPagination\Data\StartSizeData;
@@ -13,7 +12,6 @@ use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
 use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
 use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
@@ -25,12 +23,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    # Request / ServerRequest
-    $services->set(ServerRequestFactory::class);
-
-    $services->set('easy_pagination.server_request', ServerRequestInterface::class)
-        ->factory([ref(ServerRequestFactory::class), '__invoke']);
-
     # Config
     $services->set(StartSizeConfigFactory::class)
         ->arg('$config', '%easy_pagination.start_size_config%');
@@ -39,8 +31,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->factory([ref(StartSizeConfigFactory::class), '__invoke']);
 
     # Data
-    $services->set(BridgeStartSizeDataFactory::class)
-        ->arg('$request', ref('easy_pagination.server_request'));
+    $services->set(BridgeStartSizeDataFactory::class);
 
     $services->set(StartSizeDataInterface::class, StartSizeData::class)
         ->factory([ref(BridgeStartSizeDataFactory::class), '__invoke']);

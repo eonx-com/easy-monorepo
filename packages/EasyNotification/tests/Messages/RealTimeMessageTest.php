@@ -52,7 +52,10 @@ final class RealTimeMessageTest extends AbstractTestCase
 
         yield 'Create method + body + topics' => [
             function (): RealTimeMessage {
-                return RealTimeMessage::create()->body(static::$body)->topics(static::$topics);
+                $message = RealTimeMessage::create()->topics(static::$topics);
+                $message->body(static::$body);
+
+                return $message;
             },
             static::$body,
             static::$topics,
@@ -70,7 +73,8 @@ final class RealTimeMessageTest extends AbstractTestCase
     public function testGetters(callable $getMessage, array $body, array $topics): void
     {
         /** @var \EonX\EasyNotification\Messages\RealTimeMessage $message */
-        $message = $getMessage(); // Trick for coverage
+        // Trick for coverage
+        $message = $getMessage();
 
         self::assertEquals(MessageInterface::TYPE_REAL_TIME, $message->getType());
         self::assertEquals(Json::encode($body), $message->getBody());

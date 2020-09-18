@@ -21,17 +21,26 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
     public function providerTestCreateFromRequest(): iterable
     {
         yield 'Group not added, both type and name invalid' => [
-            ['operation_type' => 'invalid', 'collection_operation_name' => 'invalid'],
+            [
+                'operation_type' => 'invalid',
+                'collection_operation_name' => 'invalid',
+            ],
             false,
         ];
 
         yield 'Group not added, type invalid' => [
-            ['operation_type' => 'invalid', 'item_operation_name' => CustomPaginatorInterface::OPERATION_NAME],
+            [
+                'operation_type' => 'invalid',
+                'item_operation_name' => CustomPaginatorInterface::OPERATION_NAME,
+            ],
             false,
         ];
 
         yield 'Group not added, name invalid' => [
-            ['operation_type' => CustomPaginatorInterface::OPERATION_TYPE, 'collection_operation_name' => 'invalid'],
+            [
+                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
+                'collection_operation_name' => 'invalid',
+            ],
             false,
         ];
 

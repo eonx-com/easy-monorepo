@@ -1,6 +1,6 @@
 name: Split Tests
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
     after_split_testing:
@@ -18,7 +18,7 @@ jobs:
                     - EasyDocker
                     - EasyEntityChange
                     - EasyIdentity
-                    # - EasyLogging | This package needs more than just test
+                    - EasyLogging
                     - EasyPagination
                     - EasyPipeline
                     - EasyPsr7Factory

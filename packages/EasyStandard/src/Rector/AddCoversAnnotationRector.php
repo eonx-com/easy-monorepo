@@ -10,6 +10,7 @@ use PhpParser\Node\Stmt\Class_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
+use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractPHPUnitRector;
 use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
@@ -20,19 +21,24 @@ use Rector\NodeTypeResolver\Node\AttributeKey;
  *
  * @SuppressWarnings("unused") Class is used by Rector
  */
-final class AddCoversAnnotationRector extends AbstractPHPUnitRector
+final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements ConfigurableRectorInterface
 {
+    /**
+     * @var string
+     */
+    public const REPLACE_ARRAY = 'replace_array';
+
     /**
      * @var string[]
      */
-    private $replaceArr;
+    private $replaceArray;
 
     /**
-     * @param string[] $replaceArr
+     * @param mixed[] $configuration
      */
-    public function __construct(array $replaceArr = [])
+    public function configure(array $configuration): void
     {
-        $this->replaceArr = $replaceArr;
+        $this->replaceArray = $configuration[self::REPLACE_ARRAY] ?? [];
     }
 
     /**
@@ -114,7 +120,7 @@ PHP
      */
     private function resolveCoveredClassName(string $className): ?string
     {
-        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArr, '', $className));
+        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray, '', $className));
 
         if (\class_exists($className) === true) {
             return $className;

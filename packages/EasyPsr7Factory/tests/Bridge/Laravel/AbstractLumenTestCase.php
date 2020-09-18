@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyPsr7Factory\Tests\Bridge\Laravel;
 
 use EonX\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider;
-use EonX\EasySecurity\Tests\AbstractTestCase;
+use EonX\EasyPsr7Factory\Tests\AbstractTestCase;
 use Illuminate\Http\Request as IlluminateRequest;
 use Laravel\Lumen\Application;
 use Symfony\Component\HttpFoundation\Request;

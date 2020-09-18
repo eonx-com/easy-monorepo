@@ -16,11 +16,7 @@ class EntityChangeEventTest extends AbstractTestCase
 {
     public function testEventCreationAndGetters(): void
     {
-        $updatedEntity = new UpdatedEntity(
-            [],
-            stdClass::class,
-            ['id']
-        );
+        $updatedEntity = new UpdatedEntity([], stdClass::class, ['id']);
 
         $event = new EntityChangeEvent([$updatedEntity]);
 

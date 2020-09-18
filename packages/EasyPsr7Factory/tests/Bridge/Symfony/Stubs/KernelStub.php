@@ -9,41 +9,28 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
-    /**
-     * @var null|string[]
-     */
-    private $configs;
-
-    /**
-     * @var null|\Symfony\Component\HttpFoundation\Request
-     */
-    private $request;
-
-    /**
-     * @param null|string[] $configs
-     */
-    public function __construct(string $environment, bool $debug, ?array $configs = null, ?Request $request = null)
+    public function __construct()
     {
-        $this->configs = $configs;
-        $this->request = $request;
-
-        parent::__construct($environment, $debug);
+        parent::__construct('test', true);
     }
 
     public function process(ContainerBuilder $container): void
     {
-        $requestStackDef = new Definition(RequestStack::class);
+        $requestDef = (new Definition(Request::class))
+            ->setFactory([Request::class, 'create'])
+            ->setArguments(['http://eonx.com']);
 
-        if ($this->request !== null) {
-            $requestStackDef->addMethodCall('push', [$this->request]);
-        }
+        $requestStackDef = (new Definition(RequestStack::class))
+            ->addMethodCall('push', [new Reference('request')]);
 
+        $container->setDefinition('request', $requestDef);
         $container->setDefinition(RequestStack::class, $requestStackDef);
 
         foreach ($container->getDefinitions() as $def) {

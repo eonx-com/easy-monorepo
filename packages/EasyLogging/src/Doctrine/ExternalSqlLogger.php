@@ -8,6 +8,9 @@ use Bugsnag\Breadcrumbs\Breadcrumb;
 use Doctrine\DBAL\Logging\SQLLogger;
 use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
 
+/**
+ * @deprecated since 2.4, will be removed in 3.0. Bugsnag implementation will be reworked.
+ */
 final class ExternalSqlLogger implements SQLLogger
 {
     /**

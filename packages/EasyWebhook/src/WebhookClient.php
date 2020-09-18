@@ -77,7 +77,8 @@ final class WebhookClient implements WebhookClientInterface
 
         try {
             $response = $this->httpClient->request($method, $url, $webhook->getHttpClientOptions() ?? []);
-            $response->getContent(); // Trigger exception on bad response
+            // Trigger exception on bad response
+            $response->getContent();
 
             $result = new WebhookResult($webhook, $response);
         } catch (\Throwable $throwable) {

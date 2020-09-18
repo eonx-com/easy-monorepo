@@ -11,7 +11,6 @@ use EonX\EasyAsync\Data\JobLog;
 use EonX\EasyAsync\Data\Target;
 use EonX\EasyAsync\Exceptions\UnableToPersistJobLogException;
 use EonX\EasyAsync\Generators\DateTimeGenerator;
-use EonX\EasyAsync\Generators\RamseyUuidGenerator;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister;
 use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
@@ -20,6 +19,8 @@ use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyAsync\Tests\Stubs\JobPersisterStub;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use EonX\EasyRandom\RandomGenerator;
+use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Mockery\MockInterface;
 use Psr\Log\NullLogger;
 
@@ -136,7 +137,7 @@ final class JobLogPersisterTest extends AbstractTestCase
                 ->atLeast()
                 ->once()
                 ->withArgs(static function (string $select): bool {
-                    return \in_array($select, ['COUNT(1) as _count', '*'], true);
+                    return \in_array($select, ['COUNT(DISTINCT 1) as _count_1', '*'], true);
                 })
                 ->andReturnSelf();
 
@@ -183,7 +184,7 @@ final class JobLogPersisterTest extends AbstractTestCase
                 ->atLeast()
                 ->once()
                 ->with('sql query', [])
-                ->andReturn(['_count' => 1]);
+                ->andReturn(['_count_1' => 1]);
 
             $mock
                 ->shouldReceive('fetchAll')
@@ -354,10 +355,13 @@ final class JobLogPersisterTest extends AbstractTestCase
         ?JobPersisterInterface $jobPersister = null,
         ?string $table = null
     ): JobLogPersister {
+        $randomGenerator = new RandomGenerator();
+        $randomGenerator->setUuidV4Generator(new RamseyUuidV4Generator());
+
         return new JobLogPersister(
             $conn,
             new DateTimeGenerator(),
-            new RamseyUuidGenerator(),
+            $randomGenerator,
             $jobPersister ?? new JobPersisterStub(),
             new NullLogger(),
             $table ?? 'job_logs'

@@ -11,12 +11,13 @@ use EonX\EasyAsync\Data\Target;
 use EonX\EasyAsync\Exceptions\UnableToFindJobException;
 use EonX\EasyAsync\Exceptions\UnableToPersistJobException;
 use EonX\EasyAsync\Generators\DateTimeGenerator;
-use EonX\EasyAsync\Generators\RamseyUuidGenerator;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister;
 use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use EonX\EasyRandom\RandomGenerator;
+use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Mockery\MockInterface;
 
 final class JobPersisterTest extends AbstractTestCase
@@ -49,7 +50,10 @@ final class JobPersisterTest extends AbstractTestCase
                     ->shouldReceive('setParameters')
                     ->atLeast()
                     ->once()
-                    ->with(['targetType' => 'type', 'targetId' => 'id'])
+                    ->with([
+                        'targetType' => 'type',
+                        'targetId' => 'id',
+                    ])
                     ->andReturnSelf();
             },
         ];
@@ -157,7 +161,7 @@ final class JobPersisterTest extends AbstractTestCase
                 ->atLeast()
                 ->once()
                 ->withArgs(static function (string $select): bool {
-                    return \in_array($select, ['COUNT(1) as _count', '*'], true);
+                    return \in_array($select, ['COUNT(DISTINCT 1) as _count_1', '*'], true);
                 })
                 ->andReturnSelf();
 
@@ -206,7 +210,7 @@ final class JobPersisterTest extends AbstractTestCase
                 ->atLeast()
                 ->once()
                 ->with('sql query', [])
-                ->andReturn(['_count' => 1]);
+                ->andReturn(['_count_1' => 1]);
 
             $mock
                 ->shouldReceive('fetchAll')
@@ -340,6 +344,9 @@ final class JobPersisterTest extends AbstractTestCase
 
     private function getPersister(Connection $conn, ?string $table = null): JobPersister
     {
-        return new JobPersister($conn, new DateTimeGenerator(), new RamseyUuidGenerator(), $table ?? 'jobs');
+        $randomGenerator = new RandomGenerator();
+        $randomGenerator->setUuidV4Generator(new RamseyUuidV4Generator());
+
+        return new JobPersister($conn, new DateTimeGenerator(), $randomGenerator, $table ?? 'jobs');
     }
 }

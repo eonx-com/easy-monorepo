@@ -6,6 +6,7 @@ namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
+use EonX\EasyCore\Bridge\BridgeConstantsInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
@@ -64,6 +65,24 @@ final class EasyCoreExtension extends Extension
             if ($container->hasParameter('kernel.debug') && $container->getParameter('kernel.debug')) {
                 $loader->load('api_platform/debug.php');
             }
+        }
+
+        if ($config['search']['enabled'] ?? false) {
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_ELASTICSEARCH_HOST,
+                $config['search']['elasticsearch_host']
+            );
+
+            $loader->load('search.php');
+        }
+
+        if ($config['trim_strings']['enabled'] ?? false) {
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_TRIM_STRINGS_EXCEPT,
+                $config['trim_strings']['except']
+            );
+
+            $loader->load('trim_strings.php');
         }
 
         // Aliases for custom collection operations HTTP methods

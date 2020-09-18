@@ -24,15 +24,9 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
      */
     public function providerTestListener(): iterable
     {
-        yield 'Not paginator' => [
-            new \stdClass(),
-            false,
-        ];
+        yield 'Not paginator' => [new \stdClass(), false];
 
-        yield 'Paginator' => [
-            $this->getApiPlatformPaginator(),
-            true,
-        ];
+        yield 'Paginator' => [$this->getApiPlatformPaginator(), true];
     }
 
     /**
@@ -49,7 +43,7 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
             $controllerResult
         );
 
-        (new CustomPaginationListener())->__invoke($event);
+        (new CustomPaginationListener())($event);
 
         self::assertEquals($isCustomPaginator, $event->getControllerResult() instanceof CustomPaginatorInterface);
     }

@@ -92,7 +92,8 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $class = new class() {
             public function __toString()
             {
-                return '53004085616'; // Valid Abn
+                // Valid Abn
+                return '53004085616';
             }
         };
         $validator = new AbnValidator();
@@ -219,25 +220,28 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
     private function mockConstraintViolationBuilder(string $code): ConstraintViolationBuilderInterface
     {
         /** @var ConstraintViolationBuilderInterface $violationBuilder */
-        $violationBuilder = $this->mock(ConstraintViolationBuilderInterface::class, static function (MockInterface $mock) use ($code): void {
-            $mock
+        $violationBuilder = $this->mock(
+            ConstraintViolationBuilderInterface::class,
+            static function (MockInterface $mock) use ($code): void {
+                $mock
                 ->shouldReceive('setParameter')
                 ->once()
                 ->withNoArgs()
                 ->andReturnSelf();
 
-            $mock
+                $mock
                 ->shouldReceive('setCode')
                 ->once()
                 ->with($code)
                 ->andReturnSelf();
 
-            $mock
+                $mock
                 ->shouldReceive('addViolation')
                 ->once()
                 ->withNoArgs()
                 ->andReturnSelf();
-        });
+            }
+        );
 
         return $violationBuilder;
     }
@@ -247,7 +251,10 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         ConstraintViolationBuilderInterface $violationBuilder
     ): ExecutionContextInterface {
         /** @var ExecutionContextInterface $context */
-        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use ($message, $violationBuilder): void {
+        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
+            $message,
+            $violationBuilder
+        ): void {
             $mock
                 ->shouldReceive('buildViolation')
                 ->once()

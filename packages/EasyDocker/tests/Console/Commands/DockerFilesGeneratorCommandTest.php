@@ -16,7 +16,8 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'false',
             'false',
             'false',
-            'true', // prestissimo
+            // prestissimo
+            'true',
         ];
 
         $this->executeCommand('generate', $inputs);
@@ -36,7 +37,8 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
             'false',
             'false',
             'false',
-            'false', // prestissimo
+            // prestissimo
+            'false',
         ];
 
         $this->executeCommand('generate', $inputs);
@@ -50,18 +52,9 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
 
     public function testEasyDirectoryBackwardsCompatibility(): void
     {
-        $inputs = [
-            'project',
-            'true',
-            'true',
-            'true',
-            'false',
-        ];
+        $inputs = ['project', 'true', 'true', 'true', 'false'];
 
-        $filesNotExisting = [
-            '.easy/easy-docker-manifest.json',
-            '.easy/easy-docker-params.yaml',
-        ];
+        $filesNotExisting = ['.easy/easy-docker-manifest.json', '.easy/easy-docker-params.yaml'];
 
         $this->getFilesystem()->dumpFile(static::$cwd . '/' . 'easy-docker-manifest.json', '{}');
         $this->getFilesystem()->touch(static::$cwd . '/' . 'easy-docker-params.yaml');
@@ -75,13 +68,7 @@ final class DockerFilesGeneratorCommandTest extends AbstractTestCase
 
     public function testGenerateDockerFiles(): void
     {
-        $inputs = [
-            'project',
-            'true',
-            'true',
-            'true',
-            'false',
-        ];
+        $inputs = ['project', 'true', 'true', 'true', 'false'];
 
         $files = [
             '.easy/easy-docker-manifest.json',

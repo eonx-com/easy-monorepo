@@ -30,7 +30,11 @@ final class CredentialsProvider implements CredentialsProviderInterface
 
         $awsCredentials = $this->awsCredentialsProvider->getCredentials();
         $credentials = [];
-        $creds = ['key' => 'getAccessKeyId', 'secret' => 'getSecretKey', 'token' => 'getSessionToken'];
+        $creds = [
+            'key' => 'getAccessKeyId',
+            'secret' => 'getSecretKey',
+            'token' => 'getSessionToken',
+        ];
 
         foreach ($creds as $name => $getter) {
             if (empty($awsCredentials->{$getter}()) === false) {

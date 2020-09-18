@@ -6,13 +6,13 @@ namespace EonX\EasyPagination\Tests\Paginators;
 
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Paginators\EloquentLengthAwarePaginator;
-use EonX\EasyPagination\Tests\AbstractTestCase;
+use EonX\EasyPagination\Tests\AbstractWithMockTestCase;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Mockery\MockInterface;
 
-final class EloquentLengthAwarePaginatorTest extends AbstractTestCase
+final class EloquentLengthAwarePaginatorTest extends AbstractWithMockTestCase
 {
     public function testGetItems(): void
     {

@@ -7,6 +7,7 @@ namespace EonX\EasyStandard\Tests\Rector\InheritDocRector;
 use EonX\EasyStandard\Rector\InheritDocRector;
 use Iterator;
 use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyStandard\Rector\InheritDocRector
@@ -16,34 +17,32 @@ use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
 final class InheritDocRectorTest extends AbstractRectorTestCase
 {
     /**
-     * Provides test examples.
-     *
-     * @return Iterator<array>
+     * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
      */
     public function provideData(): Iterator
     {
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
 
-    /**
-     * Tests Rector rule.
-     *
-     * @dataProvider provideData()
-     */
-    public function testRule(string $file): void
+    public function testGetDefinitionSucceeds(): void
     {
-        $this->doTestFile($file);
+        $rector = new InheritDocRector();
+
+        $definition = $rector->getDefinition();
+
+        self::assertNotEmpty($definition->getDescription());
     }
 
     /**
-     * Returns Rector with configuration.
-     *
-     * @return mixed[]
+     * @dataProvider provideData()
      */
-    protected function getRectorsWithConfiguration(): array
+    public function testRule(SmartFileInfo $fileInfo): void
     {
-        return [
-            InheritDocRector::class => [],
-        ];
+        $this->doTestFileInfo($fileInfo);
+    }
+
+    protected function getRectorClass(): string
+    {
+        return InheritDocRector::class;
     }
 }

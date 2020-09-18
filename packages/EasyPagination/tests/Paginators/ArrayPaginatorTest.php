@@ -16,19 +16,9 @@ final class ArrayPaginatorTest extends AbstractTestCase
      */
     public function providerTestUrls(): iterable
     {
-        yield 'Prev: no, Next: yes' => [
-            10,
-            new StartSizeData(1, 5),
-            null,
-            '/?page=2&perPage=5',
-        ];
+        yield 'Prev: no, Next: yes' => [10, new StartSizeData(1, 5), null, '/?page=2&perPage=5'];
 
-        yield 'Prev: yes, Next: yes' => [
-            10,
-            new StartSizeData(2, 2),
-            '/?page=1&perPage=2',
-            '/?page=3&perPage=2',
-        ];
+        yield 'Prev: yes, Next: yes' => [10, new StartSizeData(2, 2), '/?page=1&perPage=2', '/?page=3&perPage=2'];
 
         yield 'Prev: yes, Next: yes (with query)' => [
             10,

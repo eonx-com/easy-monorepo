@@ -9,15 +9,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symplify\AutowireArrayParameter\DependencyInjection\CompilerPass\AutowireArrayParameterCompilerPass;
 use Symplify\PackageBuilder\Contract\HttpKernel\ExtraConfigAwareKernelInterface;
-use Symplify\PackageBuilder\DependencyInjection\CompilerPass\AutoReturnFactoryCompilerPass;
 use Symplify\PackageBuilder\HttpKernel\SimpleKernelTrait;
+use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class EasyDockerKernel extends Kernel implements ExtraConfigAwareKernelInterface
 {
     use SimpleKernelTrait;
 
     /**
-     * @var string[]
+     * @var string[]|\Symplify\SmartFileSystem\SmartFileInfo[]
      */
     private $configs = [];
 
@@ -27,12 +27,16 @@ final class EasyDockerKernel extends Kernel implements ExtraConfigAwareKernelInt
         $loader->load(__DIR__ . '/../../config/services.yaml');
 
         foreach ($this->configs as $config) {
+            if ($config instanceof SmartFileInfo) {
+                $config = $config->getPath();
+            }
+
             $loader->load($config);
         }
     }
 
     /**
-     * @param string[] $configs
+     * @param string[]|\Symplify\SmartFileSystem\SmartFileInfo[] $configs
      */
     public function setConfigs(array $configs): void
     {
@@ -41,8 +45,6 @@ final class EasyDockerKernel extends Kernel implements ExtraConfigAwareKernelInt
 
     protected function build(ContainerBuilder $container): void
     {
-        $container
-            ->addCompilerPass(new AutoReturnFactoryCompilerPass())
-            ->addCompilerPass(new AutowireArrayParameterCompilerPass());
+        $container->addCompilerPass(new AutowireArrayParameterCompilerPass());
     }
 }
