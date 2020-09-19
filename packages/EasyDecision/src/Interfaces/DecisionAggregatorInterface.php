@@ -13,11 +13,6 @@ interface DecisionAggregatorInterface
     public function addDecision(DecisionInterface $decision, array $configurators): self;
 
     /**
-     * @return \EonX\EasyDecision\Interfaces\DecisionAggregatorInterface
-     */
-    public function getConfigurators(): array;
-
-    /**
      * @return \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
      */
     public function getConfiguratorsByDecision(DecisionInterface $decision): array;

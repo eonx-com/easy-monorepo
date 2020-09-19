@@ -53,11 +53,6 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * @var \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
-    private $processedRules = [];
-
-    /**
-     * @var \EonX\EasyDecision\Interfaces\RuleInterface[]
-     */
     private $rules = [];
 
     public function __construct(?string $name = null)
@@ -265,8 +260,6 @@ abstract class AbstractDecision implements DecisionInterface
 
             try {
                 $ruleOutput = $rule->proceed($this->input);
-
-                $this->processedRules[] = $rule;
 
                 $this->addDecisionOutputForRule($rule, $ruleOutput);
 

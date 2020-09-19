@@ -26,11 +26,6 @@ final class DecisionAggregator implements DecisionAggregatorInterface
         return $this;
     }
 
-    public function getConfigurators(): array
-    {
-        return $this->configurators;
-    }
-
     public function getConfiguratorsByDecision(DecisionInterface $decision): array
     {
         return $this->configurators[\spl_object_hash($decision)] ?? [];
