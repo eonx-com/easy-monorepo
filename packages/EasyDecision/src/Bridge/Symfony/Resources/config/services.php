@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use EonX\EasyDecision\Bridge\Symfony\DataCollector\DecisionContextDataCollector;
+use EonX\EasyDecision\Bridge\Symfony\DataCollector\DecisionDataCollector;
 use EonX\EasyDecision\DecisionAggregator;
 use EonX\EasyDecision\Decisions\DecisionFactory;
 use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
@@ -32,9 +32,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(ExpressionLanguageRuleFactoryInterface::class, ExpressionLanguageRuleFactory::class);
 
-    $services->set(DecisionContextDataCollector::class)
+    $services->set(DecisionDataCollector::class)
         ->tag('data_collector', [
-            'template' => '@EasyDecision/Collector/decision_context_collector.html.twig',
-            'id' => DecisionContextDataCollector::NAME,
+            'template' => '@EasyDecision/Collector/decision_collector.html.twig',
+            'id' => DecisionDataCollector::NAME,
         ]);
 };

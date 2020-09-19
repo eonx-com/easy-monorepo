@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Decisions;
 
 use EonX\EasyDecision\Context;
-use EonX\EasyDecision\Data\DecisionDataFlow;
 use EonX\EasyDecision\Exceptions\ContextNotSetException;
 use EonX\EasyDecision\Exceptions\ExpressionLanguageNotSetOnDecisionException;
 use EonX\EasyDecision\Exceptions\ReservedContextIndexException;
@@ -13,14 +12,13 @@ use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 use EonX\EasyDecision\Interfaces\ContextAwareInterface;
 use EonX\EasyDecision\Interfaces\ContextInterface;
-use EonX\EasyDecision\Interfaces\DecisionDataFlowAwareInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\DecisionOutputForRuleAwareInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use EonX\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 
-abstract class AbstractDecision implements DecisionInterface, DecisionDataFlowAwareInterface
+abstract class AbstractDecision implements DecisionInterface
 {
     /**
      * @var \EonX\EasyDecision\Interfaces\ContextInterface
@@ -95,17 +93,6 @@ abstract class AbstractDecision implements DecisionInterface, DecisionDataFlowAw
         throw new ContextNotSetException($this->getExceptionMessage(
             'You cannot called getContext() before decision has been made'
         ));
-    }
-
-    public function getDataFlow(): DecisionDataFlow
-    {
-        return new DecisionDataFlow(
-            $this->getContext()->getOriginalInput(),
-            $this->rules,
-            $this->processedRules,
-            $this->defaultOutput,
-            $this->getContext()->getRuleOutputs()
-        );
     }
 
     public function getExpressionLanguage(): ?ExpressionLanguageInterface

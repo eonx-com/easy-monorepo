@@ -5,17 +5,17 @@ namespace EonX\EasyDecision\Interfaces;
 
 interface DecisionAggregatorInterface
 {
-    public function addDecision(DecisionInterface $decision): self;
-
     /**
      * @param \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[] $configurators
+     *
+     * @return \EonX\EasyDecision\DecisionAggregator
      */
-    public function addDecisionConfigurators(DecisionInterface $decision, array $configurators): self;
+    public function addDecision(DecisionInterface $decision, array $configurators): self;
 
     /**
-     * @param \EonX\EasyDecision\Interfaces\RuleProviderInterface[] $ruleProviders
+     * @return \EonX\EasyDecision\Interfaces\DecisionAggregatorInterface
      */
-    public function addDecisionRuleProviders(DecisionInterface $decision, array $ruleProviders): self;
+    public function getConfigurators(): array;
 
     /**
      * @return \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
@@ -26,9 +26,4 @@ interface DecisionAggregatorInterface
      * @return \EonX\EasyDecision\Interfaces\DecisionInterface[]
      */
     public function getDecisions(): array;
-
-    /**
-     * @return \EonX\EasyDecision\Interfaces\RuleProviderInterface[]
-     */
-    public function getRuleProvidersByDecision(DecisionInterface $decision): array;
 }

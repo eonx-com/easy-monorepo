@@ -111,8 +111,6 @@ final class DecisionFactory implements DecisionFactoryInterface
             $this->configurators[] = new AddRulesConfigurator($provider->getRules($params));
         }
 
-        $this->decisionAggregator->addDecisionRuleProviders($decision, $config->getRuleProviders());
-
         return $this->configureDecision($decision);
     }
 
@@ -172,8 +170,7 @@ final class DecisionFactory implements DecisionFactoryInterface
             $configurator->configure($decision);
         }
 
-        $this->decisionAggregator->addDecision($decision);
-        $this->decisionAggregator->addDecisionConfigurators($decision, $configurators);
+        $this->decisionAggregator->addDecision($decision, $configurators);
 
         return $decision;
     }

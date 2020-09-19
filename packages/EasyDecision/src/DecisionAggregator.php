@@ -18,39 +18,22 @@ final class DecisionAggregator implements DecisionAggregatorInterface
      */
     private $decisions = [];
 
-    /**
-     * @var mixed[]
-     */
-    private $ruleProviders = [];
-
-    public function addDecision(DecisionInterface $decision): DecisionAggregatorInterface
+    public function addDecision(DecisionInterface $decision, array $configurators): DecisionAggregatorInterface
     {
         $this->decisions[] = $decision;
+        $this->addConfigurator($decision, $configurators);
 
         return $this;
     }
 
-    public function addDecisionConfigurators(
-        DecisionInterface $decision,
-        array $configurators
-    ): DecisionAggregatorInterface {
-        $this->configurators[$this->getDecisionIdentifier($decision)] = $configurators;
-
-        return $this;
-    }
-
-    public function addDecisionRuleProviders(
-        DecisionInterface $decision,
-        array $ruleProviders
-    ): DecisionAggregatorInterface {
-        $this->ruleProviders[$this->getDecisionIdentifier($decision)] = $ruleProviders;
-
-        return $this;
+    public function getConfigurators(): array
+    {
+        return $this->configurators;
     }
 
     public function getConfiguratorsByDecision(DecisionInterface $decision): array
     {
-        return $this->configurators[$this->getDecisionIdentifier($decision)] ?? [];
+        return $this->configurators[\spl_object_hash($decision)] ?? [];
     }
 
     public function getDecisions(): array
@@ -58,13 +41,11 @@ final class DecisionAggregator implements DecisionAggregatorInterface
         return $this->decisions;
     }
 
-    public function getRuleProvidersByDecision(DecisionInterface $decision): array
+    /**
+     * @param \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[] $configurators
+     */
+    private function addConfigurator(DecisionInterface $decision, array $configurators): void
     {
-        return $this->configurators[$this->getDecisionIdentifier($decision)] ?? [];
-    }
-
-    private function getDecisionIdentifier(DecisionInterface $decision): string
-    {
-        return \spl_object_hash($decision);
+        $this->configurators[\spl_object_hash($decision)] = $configurators;
     }
 }
