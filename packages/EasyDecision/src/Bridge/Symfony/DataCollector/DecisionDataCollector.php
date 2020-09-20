@@ -31,7 +31,10 @@ final class DecisionDataCollector extends DataCollector
         $this->data['decisions'] = $this->mapDecisions();
     }
 
-    public function getDecisions()
+    /**
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface[]
+     */
+    public function getDecisions(): array
     {
         return $this->data['decisions'] ?? [];
     }
