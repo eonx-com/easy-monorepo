@@ -38,9 +38,11 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
     public function testCreateFromSimpleArraySuccessfully(): void
     {
         $input = [
-            'cap', function ($arguments, $value, $max) {
-                        return \min($value, $max);
-                    }];
+            'cap',
+            function ($arguments, $value, $max) {
+                return \min($value, $max);
+            }
+        ];
 
         $function = $this->getFactory()->create($input);
 

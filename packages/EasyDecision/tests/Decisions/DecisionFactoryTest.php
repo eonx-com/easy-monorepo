@@ -28,7 +28,11 @@ final class DecisionFactoryTest extends AbstractTestCase
         $mappingProvider = new ConfigMappingProvider([]);
         $decisionAggregator = new DecisionAggregator();
 
-        $decision = (new DecisionFactory($decisionAggregator, $mappingProvider, $this->getExpressionLanguageFactory()))->create($config);
+        $decision = (new DecisionFactory(
+            $decisionAggregator,
+            $mappingProvider,
+            $this->getExpressionLanguageFactory()
+        ))->create($config);
 
         $expected = [
             'true-1' => true,
@@ -49,7 +53,11 @@ final class DecisionFactoryTest extends AbstractTestCase
         $mappingProvider = new ConfigMappingProvider([]);
         $decisionAggregator = new DecisionAggregator();
 
-        (new DecisionFactory($decisionAggregator, $mappingProvider, $this->getExpressionLanguageFactory()))->create($config);
+        (new DecisionFactory(
+            $decisionAggregator,
+            $mappingProvider,
+            $this->getExpressionLanguageFactory()
+        ))->create($config);
     }
 
     public function testInvalidRuleProviderException(): void
@@ -60,7 +68,11 @@ final class DecisionFactoryTest extends AbstractTestCase
         $config = new DecisionConfig(UnanimousDecision::class, 'my-decision', [new \stdClass()]);
         $decisionAggregator = new DecisionAggregator();
 
-        (new DecisionFactory($decisionAggregator, $mappingProvider, $this->getExpressionLanguageFactory()))->create($config);
+        (new DecisionFactory(
+            $decisionAggregator,
+            $mappingProvider,
+            $this->getExpressionLanguageFactory()
+        ))->create($config);
     }
 
     public function testNotInMappingDecisionException(): void
@@ -70,7 +82,11 @@ final class DecisionFactoryTest extends AbstractTestCase
         $mappingProvider = new ConfigMappingProvider([]);
         $decisionAggregator = new DecisionAggregator();
 
-        (new DecisionFactory($decisionAggregator, $mappingProvider, $this->getExpressionLanguageFactory()))->create(new DecisionConfig(
+        (new DecisionFactory(
+            $decisionAggregator,
+            $mappingProvider,
+            $this->getExpressionLanguageFactory()
+        ))->create(new DecisionConfig(
             '',
             'my-decision',
             []
