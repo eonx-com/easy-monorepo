@@ -93,6 +93,7 @@ final class EasyDecisionServiceProvider extends ServiceProvider
             ), \E_USER_DEPRECATED);
 
             $baseFactory = new BaseDecisionFactory(
+                $this->app->make(DecisionAggregatorInterface::class),
                 $this->app->make(MappingProviderInterface::class),
                 $this->app->make(ExpressionLanguageFactoryInterface::class)
             );

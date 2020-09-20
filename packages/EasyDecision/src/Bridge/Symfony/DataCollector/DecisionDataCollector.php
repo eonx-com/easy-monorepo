@@ -49,6 +49,9 @@ final class DecisionDataCollector extends DataCollector
         $this->data = [];
     }
 
+    /**
+     * @return mixed[]
+     */
     private function mapConfigurators(DecisionInterface $decision): array
     {
         $configurators = [];
@@ -66,6 +69,9 @@ final class DecisionDataCollector extends DataCollector
         return $configurators;
     }
 
+    /**
+     * @return mixed[]
+     */
     private function mapDecisions(): array
     {
         $decisions = [];
