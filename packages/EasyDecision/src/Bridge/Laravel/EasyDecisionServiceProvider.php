@@ -10,11 +10,13 @@ use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
 use EonX\EasyDecision\Bridge\Interfaces\TagsInterface;
 use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
+use EonX\EasyDecision\DecisionAggregator;
 use EonX\EasyDecision\Decisions\DecisionFactory as BaseDecisionFactory;
 use EonX\EasyDecision\Expressions\ExpressionFunctionFactory;
 use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionFactoryInterface;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
+use EonX\EasyDecision\Interfaces\DecisionAggregatorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface as BaseDecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
 use EonX\EasyDecision\Interfaces\MappingProviderInterface;
@@ -49,8 +51,11 @@ final class EasyDecisionServiceProvider extends ServiceProvider
             return new ConfigMappingProvider(\config('easy-decision.type_mapping', []));
         });
 
+        $this->app->bind(DecisionAggregatorInterface::class, DecisionAggregator::class);
+
         $this->app->singleton(BaseDecisionFactoryInterface::class, function (): BaseDecisionFactoryInterface {
             return new BaseDecisionFactory(
+                $this->app->make(DecisionAggregatorInterface::class),
                 $this->app->make(MappingProviderInterface::class),
                 null,
                 $this->app->tagged(TagsInterface::DECISION_CONFIGURATOR)

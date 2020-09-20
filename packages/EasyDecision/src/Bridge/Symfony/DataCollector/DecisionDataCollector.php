@@ -26,7 +26,7 @@ final class DecisionDataCollector extends DataCollector
         $this->decisionAggregator = $decisionAggregator;
     }
 
-    public function collect(Request $request, Response $response, \Throwable $exception = null): void
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         $this->data['decisions'] = $this->mapDecisions();
     }
