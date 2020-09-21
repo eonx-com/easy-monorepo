@@ -65,7 +65,10 @@ final class TrimStringsDenormalizer implements DenormalizerAwareInterface, Conte
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $data
+     * @param string $type
+     * @param string|null $format
+     * @param mixed[]|null $context
      */
     public function supportsDenormalization($data, $type, $format = null, ?array $context = null): bool
     {
