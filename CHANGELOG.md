@@ -1,7 +1,27 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.4.48 - 2020-09-16
+## v2.4.49 - 2020-09-21
+
+### EasyCore
+
+- [#361] Make JsonbType type name value uppercase, Thanks to [@DKeeper]
+
+### EasyDecision
+
+- [#317] Symfony WebProfiler integration, Thanks to [@albertlabarentojr]
+
+### EasyStandard
+
+- [#355] Feature/add annotations comments rector, Thanks to [@BOB41K1987]
+- [#354] Hotfix/Including traits in validate Inheritdoc, Thanks to [@DKeeper]
+- [#353] hotfix/Update-ArrangeActAssertSniff-to-support-multilevel-closures, Thanks to [@BOB41K1987]
+
+### EasySecurity
+
+- [#362] Fix security context not configured in data collector
+
+## [v2.4.48] - 2020-09-16
 
 - [#343] Feature/fix ci, Thanks to [@DKeeper]
 
@@ -2329,3 +2349,10 @@
 [#343]: https://github.com/eonx-com/easy-monorepo/pull/343
 [#325]: https://github.com/eonx-com/easy-monorepo/pull/325
 [v2.4.47]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.46...v2.4.47
+[#362]: https://github.com/eonx-com/easy-monorepo/pull/362
+[#361]: https://github.com/eonx-com/easy-monorepo/pull/361
+[#355]: https://github.com/eonx-com/easy-monorepo/pull/355
+[#354]: https://github.com/eonx-com/easy-monorepo/pull/354
+[#353]: https://github.com/eonx-com/easy-monorepo/pull/353
+[#317]: https://github.com/eonx-com/easy-monorepo/pull/317
+[v2.4.48]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.47...v2.4.48

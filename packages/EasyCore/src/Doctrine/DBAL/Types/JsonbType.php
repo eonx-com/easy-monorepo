@@ -12,7 +12,7 @@ final class JsonbType extends JsonType
     /**
      * @var string
      */
-    public const TYPE_NAME = 'jsonb';
+    public const TYPE_NAME = 'JSONB';
 
     public function getName(): string
     {
