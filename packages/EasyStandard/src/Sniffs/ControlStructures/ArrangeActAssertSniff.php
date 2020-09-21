@@ -56,24 +56,24 @@ final class ArrangeActAssertSniff implements Sniff
         $currentTokenPosition = $openTokenPosition;
         $previousLine = $tokens[$openTokenPosition]['line'];
         $emptyLines = 0;
-        $insideClosure = false;
+        $closureLevel = 0;
 
         while ($currentTokenPosition < $closeTokenPosition) {
             // Find next token skipping whitespaces
             $nextTokenPosition = TokenHelper::findNextExcluding($phpcsFile, [T_WHITESPACE], $currentTokenPosition + 1);
             if ($tokens[$currentTokenPosition]['type'] === 'T_CLOSURE') {
-                $insideClosure = true;
+                $closureLevel++;
             }
 
             $currentLine = $tokens[$nextTokenPosition]['line'];
-            if ($currentLine - $previousLine > 1 && $insideClosure === false) {
+            if ($currentLine - $previousLine > 1 && $closureLevel === 0) {
                 $emptyLines++;
             }
 
             $previousLine = $currentLine;
             $currentTokenPosition = $nextTokenPosition;
             if ($tokens[$currentTokenPosition]['type'] === 'T_CLOSE_CURLY_BRACKET') {
-                $insideClosure = false;
+                $closureLevel--;
             }
         }
 
