@@ -38,21 +38,6 @@ final class EasyCoreServiceProvider extends ServiceProvider
         $this->trimStrings();
     }
 
-    private function trimStrings(): void
-    {
-        if ((bool)\config('easy-core.trim_strings.enabled', true) === false) {
-            return;
-        }
-
-        $this->app->singleton(StringsTrimmerInterface::class, RecursiveStringsTrimmer::class);
-        $this->app->singleton(TrimStrings::class, function (): TrimStrings {
-            return new TrimStrings(
-                $this->app->get(StringsTrimmerInterface::class),
-                \config('easy-core.trim_strings.except', [])
-            );
-        });
-    }
-
     private function clearDoctrineEmBeforeJob(): void
     {
         if ((bool)\config('easy-core.clear_doctrine_em_before_job', false) === false) {
@@ -92,6 +77,17 @@ final class EasyCoreServiceProvider extends ServiceProvider
 
         $this->app->singleton(SearchServiceInterface::class, function (): SearchServiceInterface {
             return $this->app->make(SearchServiceFactoryInterface::class)->create();
+        });
+    }
+
+    private function trimStrings(): void
+    {
+        $this->app->singleton(StringsTrimmerInterface::class, RecursiveStringsTrimmer::class);
+        $this->app->singleton(TrimStrings::class, function (): TrimStrings {
+            return new TrimStrings(
+                $this->app->get(StringsTrimmerInterface::class),
+                \config('easy-core.trim_strings.except', [])
+            );
         });
     }
 }
