@@ -6,13 +6,15 @@ is_section: true
 
 ### Issue description
 
-During create a migration the `down()` method always has: `$this->addSql('CREATE SCHEMA public');`
+When using PostgreSQL, `$this->addSql('CREATE SCHEMA public')` is automatically added to all the newly created migration files.
 
 [Issue on GitHub][1]
 
 ### Enable fix
 
-Register listener
+#### Symfony
+
+Register the listener:
 ```yaml
 // services_dev.yaml
 services:
