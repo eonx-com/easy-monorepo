@@ -50,6 +50,26 @@ public function provideSomeData(): array
 }
 ```
 
+##### [\EonX\EasyStandard\Rector\AnnotationsCommentsRector][3]
+Comments should have punctuation marks at the end of the sentence.
+```php
+// before
+/**
+ * Some class
+ */
+class SomeClass
+{
+}
+```
+```php
+// after
+/**
+ * Some class.
+*/
+class SomeClass
+{
+}
+```
 ##### [\EonX\EasyStandard\Rector\ExplicitBoolCompareRector][4]
 Makes bool conditions more pretty
 ```php
