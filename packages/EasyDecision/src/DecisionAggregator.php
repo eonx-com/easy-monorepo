@@ -19,6 +19,9 @@ final class DecisionAggregator implements DecisionAggregatorInterface
      */
     private $decisions = [];
 
+    /**
+     * @param \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[] $configurators
+     */
     public function addDecision(DecisionInterface $decision, array $configurators): DecisionAggregatorInterface
     {
         $this->decisions[] = $decision;
@@ -27,11 +30,17 @@ final class DecisionAggregator implements DecisionAggregatorInterface
         return $this;
     }
 
+    /**
+     * @return \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
+     */
     public function getConfiguratorsByDecision(DecisionInterface $decision): array
     {
         return $this->configurators[\spl_object_hash($decision)] ?? [];
     }
 
+    /**
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface[]
+     */
     public function getDecisions(): array
     {
         return $this->decisions;
