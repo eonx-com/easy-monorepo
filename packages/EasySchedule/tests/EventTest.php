@@ -26,8 +26,8 @@ final class EventTest extends AbstractTestCase
             [true],
             [
                 function (): bool {
-                    return false;
-                },
+                                return false;
+                            }
             ],
             true,
         ];
