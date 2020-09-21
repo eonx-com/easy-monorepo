@@ -24,9 +24,11 @@ final class EventTest extends AbstractTestCase
 
         yield 'true because no filter false and no reject true' => [
             [true],
-            [function (): bool {
-                return false;
-            }],
+            [
+                function (): bool {
+                    return false;
+                },
+            ],
             true,
         ];
     }
