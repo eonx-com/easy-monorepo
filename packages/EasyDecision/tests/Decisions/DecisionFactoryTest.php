@@ -86,10 +86,6 @@ final class DecisionFactoryTest extends AbstractTestCase
             $decisionAggregator,
             $mappingProvider,
             $this->getExpressionLanguageFactory()
-        ))->create(new DecisionConfig(
-            '',
-            'my-decision',
-            []
-        ));
+        ))->create(new DecisionConfig('', 'my-decision', []));
     }
 }
