@@ -33,7 +33,7 @@ final class DecisionDataCollector extends DataCollector
     }
 
     /**
-     * @return \EonX\EasyDecision\Interfaces\DecisionInterface[]
+     * @return mixed[]
      */
     public function getDecisions(): array
     {
