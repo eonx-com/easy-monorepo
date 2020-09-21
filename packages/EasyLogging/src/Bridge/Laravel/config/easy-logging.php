@@ -14,4 +14,9 @@ return [
      * Enable/Disable the default stream handler.
      */
     'stream_handler' => true,
+
+    /**
+     * The log level to set on the default stream handler, defaults to DEBUG.
+     */
+    'stream_handler_level' => null,
 ];
