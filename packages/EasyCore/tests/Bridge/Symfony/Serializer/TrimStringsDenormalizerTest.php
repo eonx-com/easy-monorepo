@@ -26,7 +26,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
     public function provideCorrectDataForDenormalization(): array
     {
         return [
-            'Context has not `TRIM_STRINGS_ALREADY_CALLED` key' => [
+            'context has not `TRIM_STRINGS_ALREADY_CALLED` key' => [
                 'data' => 'some-correct-value',
                 'type' => 'no-matter',
                 'format' => 'no-matter',
@@ -34,13 +34,13 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
                     'some-key' => 'some-value',
                 ],
             ],
-            'Data is an array' => [
+            'data is an array' => [
                 'data' => [],
                 'type' => 'no-matter',
                 'format' => 'no-matter',
                 'context' => null,
             ],
-            'Data is a string' => [
+            'data is a string' => [
                 'data' => 'some-correct-value',
                 'type' => 'no-matter',
                 'format' => 'no-matter',
@@ -70,7 +70,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
     public function provideIneligibleDataForDenormalization(): array
     {
         return [
-            'Already called' => [
+            'already called' => [
                 'data' => 'some-correct-value',
                 'type' => 'no-matter',
                 'format' => 'no-matter',
@@ -78,25 +78,25 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
                     'TRIM_STRINGS_ALREADY_CALLED' => true,
                 ],
             ],
-            'Data is an object' => [
+            'data is an object' => [
                 'data' => new stdClass(),
                 'type' => 'no-matter',
                 'format' => 'no-matter',
                 'context' => null,
             ],
-            'Data is an integer' => [
+            'data is an integer' => [
                 'data' => 123,
                 'type' => 'no-matter',
                 'format' => 'no-matter',
                 'context' => null,
             ],
-            'Data is a float' => [
+            'data is a float' => [
                 'data' => 12.34,
                 'type' => 'no-matter',
                 'format' => 'no-matter',
                 'context' => null,
             ],
-            'Data is a bool' => [
+            'data is a bool' => [
                 'data' => true,
                 'type' => 'no-matter',
                 'format' => 'no-matter',
