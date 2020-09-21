@@ -14,5 +14,5 @@ abstract class NotFoundException extends BaseException
     /**
      * @var string
      */
-    protected $userMessage = 'easy-error-handler::messages.not_found';
+    protected $userMessage = 'exceptions.not_found';
 }

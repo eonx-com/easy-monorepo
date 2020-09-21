@@ -2,10 +2,15 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Interfaces;
+namespace EonX\EasyErrorHandler\Interfaces\Exceptions;
 
 interface TranslatableExceptionInterface
 {
+    /**
+     * @var string
+     */
+    public const DEFAULT_USER_MESSAGE = 'exceptions.default_user_message';
+
     /**
      * Returns the exception message parameters.
      *
