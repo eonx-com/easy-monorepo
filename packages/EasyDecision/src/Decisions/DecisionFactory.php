@@ -29,9 +29,19 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $configurators;
 
     /**
+     * @var \EonX\EasyDecision\Interfaces\DecisionInterface[]
+     */
+    private $configuredDecisions = [];
+
+    /**
      * @var \Psr\Container\ContainerInterface
      */
     private $container;
+
+    /**
+     * @var mixed[]
+     */
+    private $decisionConfigurators = [];
 
     /**
      * @var null|\EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface
@@ -111,6 +121,13 @@ final class DecisionFactory implements DecisionFactoryInterface
         return $this->configureDecision(new AffirmativeDecision($name));
     }
 
+    public function createByName(string $name): DecisionInterface
+    {
+        $decision = $this->mappingProvider->getDecisionType($name);
+
+        return $this->configureDecision(new $decision($name));
+    }
+
     public function createConsensusDecision(?string $name = null): DecisionInterface
     {
         return $this->configureDecision(new ConsensusDecision($name));
@@ -126,12 +143,31 @@ final class DecisionFactory implements DecisionFactoryInterface
         return $this->configureDecision(new ValueDecision($name));
     }
 
+    public function getConfiguratorsByDecision(DecisionInterface $decision): array
+    {
+        return $this->decisionConfigurators[\spl_object_hash($decision)] ?? [];
+    }
+
+    public function getConfiguredDecisions(): array
+    {
+        return $this->configuredDecisions;
+    }
+
     /**
      * @deprecated since 2.3.7
      */
     public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
+    }
+
+    /**
+     * @param \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[] $configurators
+     */
+    private function addConfiguredDecision(DecisionInterface $decision, array $configurators): void
+    {
+        $this->decisionConfigurators[\spl_object_hash($decision)] = $configurators;
+        $this->configuredDecisions[] = $decision;
     }
 
     private function configureDecision(DecisionInterface $decision): DecisionInterface
@@ -146,6 +182,8 @@ final class DecisionFactory implements DecisionFactoryInterface
             }
         );
 
+        $decisionConfigs = [];
+
         foreach ($configurators as $configurator) {
             if ($configurator instanceof RestrictedDecisionConfiguratorInterface
                 && $configurator->supports($decision) === false) {
@@ -153,7 +191,11 @@ final class DecisionFactory implements DecisionFactoryInterface
             }
 
             $configurator->configure($decision);
+
+            $decisionConfigs[] = $configurator;
         }
+
+        $this->addConfiguredDecision($decision, $decisionConfigs);
 
         return $decision;
     }
@@ -208,12 +250,5 @@ final class DecisionFactory implements DecisionFactoryInterface
             $decisionType,
             DecisionInterface::class
         ));
-    }
-
-    public function createByName(string $name): DecisionInterface
-    {
-        $decision = $this->mappingProvider->getDecisionType($name);
-
-        return $this->configureDecision(new $decision($name));
     }
 }
