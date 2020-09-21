@@ -36,7 +36,6 @@
         "symplify/autowire-array-parameter": "^8.2",
         "nette/utils": "^3.1",
         "aws/aws-sdk-php": "^3.134",
-        "eonx-com/apiformats": "^1.0",
         "illuminate/support": "^5.5 || ^6.0",
         "bugsnag/bugsnag": "^3.19",
         "elasticsearch/elasticsearch": "^7.8"
