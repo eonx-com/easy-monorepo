@@ -71,10 +71,7 @@ final class DecisionFactoryTest extends AbstractTestCase
         $config = new DecisionConfig(\stdClass::class, 'my-decision', []);
         $mappingProvider = new ConfigMappingProvider([]);
 
-        (new DecisionFactory(
-            $mappingProvider,
-            $this->getExpressionLanguageFactory()
-        ))->create($config);
+        (new DecisionFactory($mappingProvider, $this->getExpressionLanguageFactory()))->create($config);
     }
 
     public function testInvalidRuleProviderException(): void
@@ -93,7 +90,10 @@ final class DecisionFactoryTest extends AbstractTestCase
 
         $mappingProvider = new ConfigMappingProvider([]);
 
-        (new DecisionFactory($mappingProvider, $this->getExpressionLanguageFactory()))->create(new DecisionConfig('',
-            'my-decision', []));
+        (new DecisionFactory($mappingProvider, $this->getExpressionLanguageFactory()))->create(new DecisionConfig(
+            '',
+            'my-decision',
+            []
+        ));
     }
 }
