@@ -36,7 +36,6 @@
         "symplify/autowire-array-parameter": "^8.2",
         "nette/utils": "^3.1",
         "aws/aws-sdk-php": "^3.134",
-        "eonx-com/apiformats": "^1.0",
         "illuminate/support": "^5.5 || ^6.0",
         "bugsnag/bugsnag": "^3.19",
         "elasticsearch/elasticsearch": "^7.8"
@@ -54,7 +53,7 @@
         "mikey179/vfsstream": "~1",
         "mockery/mockery": "^1.2",
         "phpspec/prophecy": "~1.0",
-        "phpstan/phpstan": "^0.12.42",
+        "phpstan/phpstan": "0.12.42",
         "phpunit/phpunit": "^7.5 || ^8.4",
         "psr/container": "^1.0",
         "symfony/symfony": "^4.2 || ^5.0",
@@ -176,6 +175,7 @@
             "vendor/bin/changelog-linker link",
             "vendor/bin/changelog-linker cleanup"
         ],
+        "fix-ecs": "vendor/bin/ecs check --fix --clear-cache",
         "merge": "vendor/bin/monorepo-builder merge",
         "propagate": "vendor/bin/monorepo-builder propagate",
         "split": "vendor/bin/monorepo-builder split",

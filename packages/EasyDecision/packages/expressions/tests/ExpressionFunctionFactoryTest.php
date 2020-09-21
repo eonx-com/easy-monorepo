@@ -40,7 +40,8 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
         $input = [
             'cap', function ($arguments, $value, $max) {
                         return \min($value, $max);
-                    }];
+                    }
+        ];
 
         $function = $this->getFactory()->create($input);
 

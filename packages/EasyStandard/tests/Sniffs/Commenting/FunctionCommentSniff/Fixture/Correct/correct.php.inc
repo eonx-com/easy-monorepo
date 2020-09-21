@@ -1,6 +1,23 @@
 <?php
 
-class MyAnnotationClass
+trait TraitWithAbstractMethod
+{
+    /**
+     * Do something from trait.
+     *
+     * @param mixed[] $param
+     *
+     * @return mixed[]
+     */
+    abstract public function doSomethingFromTrait(array $param): array;
+}
+
+abstract class AbstractClassWithTrait
+{
+    use \TraitWithAbstractMethod;
+}
+
+class MyAnnotationClass extends \AbstractClassWithTrait
 {
     /**
      * Do something.
@@ -12,5 +29,13 @@ class MyAnnotationClass
     public function doSomething(string $param): void
     {
 
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function doSomethingFromTrait(array $param): array
+    {
+        return $param;
     }
 }
