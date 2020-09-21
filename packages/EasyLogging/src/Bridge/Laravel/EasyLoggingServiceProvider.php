@@ -47,7 +47,13 @@ final class EasyLoggingServiceProvider extends ServiceProvider
 
         // Default stream handler
         if (\config('easy-logging.stream_handler', true)) {
-            $this->app->singleton(StreamHandlerConfigProvider::class);
+            $this->app->singleton(StreamHandlerConfigProvider::class, function (): StreamHandlerConfigProvider {
+                $level = \config('easy-logging.stream_handler_level')
+                    ? (int)\config('easy-logging.stream_handler_level')
+                    : null;
+
+                return new StreamHandlerConfigProvider(null, $level);
+            });
             $this->app->tag(
                 StreamHandlerConfigProvider::class,
                 [BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER]
