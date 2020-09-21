@@ -37,6 +37,9 @@ final class FunctionCommentSniffTest extends AbstractCheckerTestCase
      */
     public function testCorrectSniffs(SmartFileInfo $fileInfo): void
     {
+        // Loading classes from fixture for correct use `\class_exists()` and `\interface_exists()`
+        require_once $fileInfo->getRealPath();
+
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
