@@ -16,11 +16,9 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
     public function testCreateFromAssociativeArraySuccessfully(): void
     {
         $input = [
-            'name' => 'cap',
-            'evaluator' => function ($arguments, $value, $max) {
+            'cap', function ($arguments, $value, $max) {
                 return \min($value, $max);
-            },
-        ];
+            }];
 
         $function = $this->getFactory()->create($input);
 
