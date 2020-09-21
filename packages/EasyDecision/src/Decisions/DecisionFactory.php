@@ -12,7 +12,6 @@ use EonX\EasyDecision\Exceptions\InvalidDecisionException;
 use EonX\EasyDecision\Exceptions\InvalidRuleProviderException;
 use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
-use EonX\EasyDecision\Interfaces\DecisionAggregatorInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
@@ -30,14 +29,19 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $configurators;
 
     /**
+     * @var \EonX\EasyDecision\Interfaces\DecisionInterface[]
+     */
+    private $configuredDecisions = [];
+
+    /**
      * @var \Psr\Container\ContainerInterface
      */
     private $container;
 
     /**
-     * @var \EonX\EasyDecision\Interfaces\DecisionAggregatorInterface
+     * @var mixed[]
      */
-    private $decisionAggregator;
+    private $decisionConfigurators = [];
 
     /**
      * @var null|\EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface
@@ -53,7 +57,6 @@ final class DecisionFactory implements DecisionFactoryInterface
      * @param null|iterable<mixed> $configurators
      */
     public function __construct(
-        DecisionAggregatorInterface $decisionAggregator,
         MappingProviderInterface $mappingProvider,
         ?ExpressionLanguageFactoryInterface $languageFactory = null,
         ?iterable $configurators = null
@@ -67,7 +70,6 @@ final class DecisionFactory implements DecisionFactoryInterface
             ), \E_USER_DEPRECATED);
         }
 
-        $this->decisionAggregator = $decisionAggregator;
         $this->mappingProvider = $mappingProvider;
         $this->expressionLanguageFactory = $languageFactory;
         $this->configurators = $this->getConfiguratorsAsArray($configurators);
@@ -141,12 +143,31 @@ final class DecisionFactory implements DecisionFactoryInterface
         return $this->configureDecision(new ValueDecision($name));
     }
 
+    public function getConfiguratorsByDecision(DecisionInterface $decision): array
+    {
+        return $this->decisionConfigurators[\spl_object_hash($decision)] ?? [];
+    }
+
+    public function getConfiguredDecisions(): array
+    {
+        return $this->configuredDecisions;
+    }
+
     /**
      * @deprecated since 2.3.7
      */
     public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
+    }
+
+    /**
+     * @param \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[] $configurators
+     */
+    private function addConfiguredDecision(DecisionInterface $decision, array $configurators): void
+    {
+        $this->decisionConfigurators[\spl_object_hash($decision)] = $configurators;
+        $this->configuredDecisions[] = $decision;
     }
 
     private function configureDecision(DecisionInterface $decision): DecisionInterface
@@ -170,7 +191,7 @@ final class DecisionFactory implements DecisionFactoryInterface
             $configurator->configure($decision);
         }
 
-        $this->decisionAggregator->addDecision($decision, $configurators);
+        $this->addConfiguredDecision($decision, $configurators);
 
         return $decision;
     }

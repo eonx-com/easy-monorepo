@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Decisions;
 
-use EonX\EasyDecision\DecisionAggregator;
 use EonX\EasyDecision\Decisions\DecisionConfig;
 use EonX\EasyDecision\Decisions\DecisionFactory;
 use EonX\EasyDecision\Decisions\UnanimousDecision;
@@ -26,10 +25,8 @@ final class DecisionFactoryTest extends AbstractTestCase
             new ExpressionLanguageConfig()
         );
         $mappingProvider = new ConfigMappingProvider([]);
-        $decisionAggregator = new DecisionAggregator();
 
         $decision = (new DecisionFactory(
-            $decisionAggregator,
             $mappingProvider,
             $this->getExpressionLanguageFactory()
         ))->create($config);
@@ -51,10 +48,8 @@ final class DecisionFactoryTest extends AbstractTestCase
 
         $config = new DecisionConfig(\stdClass::class, 'my-decision', []);
         $mappingProvider = new ConfigMappingProvider([]);
-        $decisionAggregator = new DecisionAggregator();
 
         (new DecisionFactory(
-            $decisionAggregator,
             $mappingProvider,
             $this->getExpressionLanguageFactory()
         ))->create($config);
@@ -66,10 +61,8 @@ final class DecisionFactoryTest extends AbstractTestCase
 
         $mappingProvider = new ConfigMappingProvider([]);
         $config = new DecisionConfig(UnanimousDecision::class, 'my-decision', [new \stdClass()]);
-        $decisionAggregator = new DecisionAggregator();
 
         (new DecisionFactory(
-            $decisionAggregator,
             $mappingProvider,
             $this->getExpressionLanguageFactory()
         ))->create($config);
@@ -80,10 +73,8 @@ final class DecisionFactoryTest extends AbstractTestCase
         $this->expectException(InvalidDecisionException::class);
 
         $mappingProvider = new ConfigMappingProvider([]);
-        $decisionAggregator = new DecisionAggregator();
 
         (new DecisionFactory(
-            $decisionAggregator,
             $mappingProvider,
             $this->getExpressionLanguageFactory()
         ))->create(new DecisionConfig('', 'my-decision', []));

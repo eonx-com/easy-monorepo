@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Bridge\Symfony\DataCollector;
 
-use EonX\EasyDecision\Interfaces\DecisionAggregatorInterface;
+use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,13 +18,13 @@ final class DecisionDataCollector extends DataCollector
     public const NAME = 'easy_decision.decision_collector';
 
     /**
-     * @var \EonX\EasyDecision\Interfaces\DecisionAggregatorInterface
+     * @var \EonX\EasyDecision\Interfaces\DecisionFactoryInterface
      */
-    private $decisionAggregator;
+    private $decisionFactory;
 
-    public function __construct(DecisionAggregatorInterface $decisionAggregator)
+    public function __construct(DecisionFactoryInterface $decisionFactory)
     {
-        $this->decisionAggregator = $decisionAggregator;
+        $this->decisionFactory = $decisionFactory;
     }
 
     public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
@@ -57,7 +57,7 @@ final class DecisionDataCollector extends DataCollector
     {
         $configurators = [];
 
-        foreach ($this->decisionAggregator->getConfiguratorsByDecision($decision) as $configurator) {
+        foreach ($this->decisionFactory->getConfiguratorsByDecision($decision) as $configurator) {
             $reflection = new \ReflectionClass($configurator);
 
             $configurators[] = [
@@ -77,7 +77,7 @@ final class DecisionDataCollector extends DataCollector
     {
         $decisions = [];
 
-        foreach ($this->decisionAggregator->getDecisions() as $decision) {
+        foreach ($this->decisionFactory->getConfiguredDecisions() as $decision) {
             $context = $decision->getContext();
 
             $decisions[] = [
