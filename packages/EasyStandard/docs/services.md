@@ -1,9 +1,9 @@
 ---eonx_docs---
-title: Services
+title: Settings of services
 weight: 2000
 is_section: true
 ---eonx_docs---
-```yml
+```yaml
 // ecs.yml
 services:
     PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
@@ -26,5 +26,3 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 };
 
 ```
-
-### List of services

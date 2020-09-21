@@ -1,9 +1,9 @@
 ---eonx_docs---
-title: Parameters
+title: Settings of parameters
 weight: 1000
 is_section: true
 ---eonx_docs---
-```yml
+```yaml
 // ecs.yml
 parameters:
     paths:

@@ -23,7 +23,7 @@ $ composer require --dev eonx/easy-standard
 You can use one of next the names for configuration: `easy-coding-standard.yml`, `easy-coding-standard.yaml`, `ecs.yml`, `ecs.yaml` or `ecs.php`. Create this file in root folder of project.
 
 Basic structure of configuration:
-```yml
+```yaml
 // ecs.yml
 parameters:
     /*
