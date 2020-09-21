@@ -182,6 +182,8 @@ final class DecisionFactory implements DecisionFactoryInterface
             }
         );
 
+        $decisionConfigs = [];
+
         foreach ($configurators as $configurator) {
             if ($configurator instanceof RestrictedDecisionConfiguratorInterface
                 && $configurator->supports($decision) === false) {
@@ -189,9 +191,11 @@ final class DecisionFactory implements DecisionFactoryInterface
             }
 
             $configurator->configure($decision);
+
+            $decisionConfigs[] = $configurator;
         }
 
-        $this->addConfiguredDecision($decision, $configurators);
+        $this->addConfiguredDecision($decision, $decisionConfigs);
 
         return $decision;
     }

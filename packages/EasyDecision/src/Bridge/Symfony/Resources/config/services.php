@@ -10,6 +10,7 @@ use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
 use EonX\EasyDecision\Rules\ExpressionLanguageRuleFactory;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
