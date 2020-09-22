@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "symfony/process": "^4.2 || ^5.0",
         "symplify/package-builder": "^8.2",
         "symplify/autowire-array-parameter": "^8.2",
