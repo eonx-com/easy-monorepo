@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Tests\Bridge\Symfony\Serializer;
 
 use EonX\EasyCore\Bridge\Symfony\Serializer\TrimStringsDenormalizer;
+use EonX\EasyCore\Helpers\RecursiveStringsTrimmer;
 use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Mockery\MockInterface;
@@ -21,12 +22,35 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
     /**
      * @return mixed[]
      *
-     * @see testSupportsDenormalizationReturnsTrue
+     * @see testDenormalizeSucceedsWithTrimValue
      */
-    public function provideCorrectDataForDenormalization(): array
+    public function provideDataForDenormalize(): array
     {
         return [
-            'context has not `TRIM_STRINGS_ALREADY_CALLED` key' => [
+            'data is string' => [' 123 ', '123'],
+            'data is array' => [[' 123 '], ['123']],
+        ];
+    }
+
+    /**
+     * @return mixed[]
+     *
+     * @see testSupportsDenormalizationReturnsExpectedResult
+     */
+    public function provideDataForSupportsDenormalization(): array
+    {
+        return [
+            'data is an array' => [
+                'expected' => true,
+                'data' => [],
+                'type' => 'no-matter',
+                'format' => 'no-matter',
+                'context' => [
+                    'some-key' => 'some-value',
+                ],
+            ],
+            'data is a string' => [
+                'expected' => true,
                 'data' => 'some-correct-value',
                 'type' => 'no-matter',
                 'format' => 'no-matter',
@@ -34,43 +58,8 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
                     'some-key' => 'some-value',
                 ],
             ],
-            'data is an array' => [
-                'data' => [],
-                'type' => 'no-matter',
-                'format' => 'no-matter',
-                'context' => null,
-            ],
-            'data is a string' => [
-                'data' => 'some-correct-value',
-                'type' => 'no-matter',
-                'format' => 'no-matter',
-                'context' => null,
-            ],
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     *
-     * @see testDenormalizeSucceedsWithTrimValue
-     */
-    public function provideDataForDenormalize(): array
-    {
-        return [
-            'data is string' => ['', ''],
-            'data is array' => [[], []],
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     *
-     * @see testSupportsDenormalizationReturnsFalse
-     */
-    public function provideIneligibleDataForDenormalization(): array
-    {
-        return [
             'already called' => [
+                'expected' => false,
                 'data' => 'some-correct-value',
                 'type' => 'no-matter',
                 'format' => 'no-matter',
@@ -79,24 +68,28 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
                 ],
             ],
             'data is an object' => [
+                'expected' => false,
                 'data' => new stdClass(),
                 'type' => 'no-matter',
                 'format' => 'no-matter',
                 'context' => null,
             ],
             'data is an integer' => [
+                'expected' => false,
                 'data' => 123,
                 'type' => 'no-matter',
                 'format' => 'no-matter',
                 'context' => null,
             ],
             'data is a float' => [
+                'expected' => false,
                 'data' => 12.34,
                 'type' => 'no-matter',
                 'format' => 'no-matter',
                 'context' => null,
             ],
             'data is a bool' => [
+                'expected' => false,
                 'data' => true,
                 'type' => 'no-matter',
                 'format' => 'no-matter',
@@ -119,16 +112,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
         $format = null;
         $context = [];
         $except = ['some-key'];
-        $expectation = static function (MockInterface $mock): void {
-            $mock->shouldNotReceive('trim');
-        };
-        if (\is_string($data) || \is_array($data)) {
-            $expectation = static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
-                $mock->shouldReceive('trim')->once()->with($data, $except)->andReturn($expectedResult);
-            };
-        }
-        /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
-        $trimmer = $this->mock(StringsTrimmerInterface::class, $expectation);
+        $trimmer = new RecursiveStringsTrimmer();
         /** @var \Symfony\Component\Serializer\Normalizer\DenormalizerInterface $innerDenormalizer */
         $innerDenormalizer = $this->mock(
             DenormalizerInterface::class,
@@ -153,14 +137,16 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
     }
 
     /**
+     * @param bool $expected
      * @param mixed $data
      * @param string $type
      * @param string|null $format
      * @param mixed[]|null $context
      *
-     * @dataProvider provideIneligibleDataForDenormalization
+     * @dataProvider provideDataForSupportsDenormalization
      */
-    public function testSupportsDenormalizationReturnsFalse(
+    public function testSupportsDenormalizationReturnsExpectedResult(
+        bool $expected,
         $data,
         string $type,
         ?string $format = null,
@@ -172,29 +158,6 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
 
         $result = $denormalizer->supportsDenormalization($data, $type, $format, $context);
 
-        self::assertFalse($result);
-    }
-
-    /**
-     * @param mixed $data
-     * @param string $type
-     * @param string|null $format
-     * @param mixed[]|null $context
-     *
-     * @dataProvider provideCorrectDataForDenormalization
-     */
-    public function testSupportsDenormalizationReturnsTrue(
-        $data,
-        string $type,
-        ?string $format = null,
-        ?array $context = null
-    ): void {
-        /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
-        $trimmer = $this->mock(StringsTrimmerInterface::class);
-        $denormalizer = new TrimStringsDenormalizer($trimmer);
-
-        $result = $denormalizer->supportsDenormalization($data, $type, $format, $context);
-
-        self::assertTrue($result);
+        self::assertSame($expected, $result);
     }
 }
