@@ -91,6 +91,7 @@
             "EonX\\EasyPsr7Factory\\": "packages/EasyPsr7Factory/src",
             "EonX\\EasyRandom\\": "packages/EasyRandom/src",
             "EonX\\EasyRepository\\": "packages/EasyRepository/src",
+            "EonX\\EasyRequestId\\": "packages/EasyRequestId/src",
             "EonX\\EasySecurity\\": "packages/EasySecurity/src",
             "EonX\\EasySchedule\\": "packages/EasySchedule/src",
             "EonX\\EasySsm\\": "packages/EasySsm/src",
@@ -122,6 +123,7 @@
             "EonX\\EasyPsr7Factory\\Tests\\": "packages/EasyPsr7Factory/tests",
             "EonX\\EasyRandom\\Tests\\": "packages/EasyRandom/tests",
             "EonX\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
+            "EonX\\EasyRequestId\\Tests\\": "packages/EasyRequestId/tests",
             "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
             "EonX\\EasySchedule\\Tests\\": "packages/EasySchedule/tests",
             "EonX\\EasySsm\\Tests\\": "packages/EasySsm/tests",
@@ -154,7 +156,8 @@
         "eonx-com/easy-standard": "self.version",
         "eonx-com/easy-async": "self.version",
         "eonx-com/easy-webhook": "self.version",
-        "eonx-com/easy-bugsnag": "self.version"
+        "eonx-com/easy-bugsnag": "self.version",
+        "eonx-com/easy-request-id": "self.version"
     },
     "scripts": {
         "check-all": [

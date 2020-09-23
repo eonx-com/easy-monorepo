@@ -45,6 +45,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         'packages/EasyNotification' => 'git@github.com:eonx-com/easy-notification.git',
         'packages/EasyPipeline' => 'git@github.com:eonx-com/easy-pipeline.git',
         'packages/EasyRepository' => 'git@github.com:eonx-com/easy-repository.git',
+        'packages/EasyRequestId' => 'git@github.com:eonx-com/easy-request-id.git',
         'packages/EasyPagination' => 'git@github.com:eonx-com/easy-pagination.git',
         'packages/EasyPsr7Factory' => 'git@github.com:eonx-com/easy-psr7-factory.git',
         'packages/EasyRandom' => 'git@github.com:eonx-com/easy-random.git',
