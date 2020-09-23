@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Tests;
 
 use EonX\EasyRequestId\DefaultResolver;
-use EonX\EasyRequestId\Interfaces\ResolverInterface;
+use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class DefaultResolverTest extends AbstractTestCase
@@ -21,8 +21,8 @@ final class DefaultResolverTest extends AbstractTestCase
 
         yield 'Default headers' => [
             $this->getRequestWithHeaders([
-                ResolverInterface::DEFAULT_CORRELATION_ID_HEADER => 'correlation',
-                ResolverInterface::DEFAULT_REQUEST_ID_HEADER => 'request',
+                RequestIdKeysAwareInterface::KEY_CORRELATION_ID => 'correlation',
+                RequestIdKeysAwareInterface::KEY_REQUEST_ID => 'request',
             ]),
             'request',
             'correlation',

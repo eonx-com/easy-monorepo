@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Bridge\Symfony\DependencyInjection;
 
+use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagBridgeConstantsInterface;
+use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface as EasyErrorHandlerBridgeConstantsInterface;
+use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
 use EonX\EasyRequestId\Bridge\BridgeConstantsInterface;
 use EonX\EasyRequestId\Interfaces\CorrelationIdResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdResolverInterface;
+use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -15,36 +19,72 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 final class EasyRequestIdExtension extends Extension
 {
     /**
+     * @var string[]
+     */
+    protected static $params = [
+        BridgeConstantsInterface::PARAM_CORRELATION_ID_KEY => 'correlation_id_key',
+        BridgeConstantsInterface::PARAM_DEFAULT_CORRELATION_ID_HEADER => 'default_correlation_id_header',
+        BridgeConstantsInterface::PARAM_DEFAULT_REQUEST_ID_HEADER => 'default_request_id_header',
+        BridgeConstantsInterface::PARAM_REQUEST_ID_KEY => 'request_id_key',
+    ];
+
+    /**
+     * @var string[]
+     */
+    protected static $tags = [
+        CorrelationIdResolverInterface::class => BridgeConstantsInterface::TAG_CORRELATION_ID_RESOLVER,
+        RequestIdResolverInterface::class => BridgeConstantsInterface::TAG_REQUEST_ID_RESOLVER,
+    ];
+
+    /**
+     * @var mixed[]
+     */
+    private $config;
+
+    /**
+     * @var \Symfony\Component\Config\Loader\LoaderInterface
+     */
+    private $loader;
+
+    /**
      * @param mixed[] $configs
      *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration(new Configuration(), $configs);
-        $loader = new PhpFileLoader($container, new FileLocator([__DIR__ . '/../Resources/config']));
+        $this->config = $config = $this->processConfiguration(new Configuration(), $configs);
+        $this->loader = $loader = new PhpFileLoader($container, new FileLocator([__DIR__ . '/../Resources/config']));
 
-        $container->setParameter(
-            BridgeConstantsInterface::PARAM_DEFAULT_CORRELATION_ID_HEADER,
-            $config['default_correlation_id_header']
-        );
-        $container->setParameter(
-            BridgeConstantsInterface::PARAM_DEFAULT_REQUEST_ID_HEADER,
-            $config['default_request_id_header']
-        );
+        foreach (static::$params as $param => $configName) {
+            $container->setParameter($param, $config[$configName]);
+        }
 
-        $container
-            ->registerForAutoconfiguration(CorrelationIdResolverInterface::class)
-            ->addTag(BridgeConstantsInterface::TAG_CORRELATION_ID_RESOLVER);
-
-        $container
-            ->registerForAutoconfiguration(RequestIdResolverInterface::class)
-            ->addTag(BridgeConstantsInterface::TAG_REQUEST_ID_RESOLVER);
+        foreach (static::$tags as $interface => $tag) {
+            $container->registerForAutoconfiguration($interface)->addTag($tag);
+        }
 
         $loader->load('services.php');
 
-        if ($config['default_resolver'] ?? true) {
-            $loader->load('default_resolver.php');
+        $this->loadIfEnabled('default_resolver');
+        $this->loadIfEnabled('easy_bugsnag', EasyBugsnagBridgeConstantsInterface::class);
+        $this->loadIfEnabled('easy_error_handler', EasyErrorHandlerBridgeConstantsInterface::class);
+        $this->loadIfEnabled('easy_logging', EasyLoggingBridgeConstantsInterface::class);
+        $this->loadIfEnabled('easy_webhook', EasyWebhookBridgeConstantsInterface::class);
+    }
+
+    private function loadIfEnabled(string $configName, ?string $interface = null): void
+    {
+        // Load only if interface exists
+        if ($interface !== null && \interface_exists($interface) === false) {
+            return;
         }
+
+        // Load only if enabled in config
+        if (($this->config[$configName] ?? true) === false) {
+            return;
+        }
+
+        $this->loader->load(\sprintf('%s.php', $configName));
     }
 }

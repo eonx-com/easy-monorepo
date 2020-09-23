@@ -8,7 +8,7 @@ use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyRequestId\DefaultResolver;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
-use EonX\EasyRequestId\Interfaces\ResolverInterface;
+use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\UuidV4FallbackResolver;
 use Ramsey\Uuid\Uuid;
@@ -37,8 +37,8 @@ final class RequestIdServiceTest extends AbstractTestCase
 
         yield 'Default resolver with default values' => [
             $this->getRequestWithHeaders([
-                ResolverInterface::DEFAULT_REQUEST_ID_HEADER => 'request-id',
-                ResolverInterface::DEFAULT_CORRELATION_ID_HEADER => 'correlation-id',
+                RequestIdKeysAwareInterface::KEY_CORRELATION_ID => 'correlation-id',
+                RequestIdKeysAwareInterface::KEY_REQUEST_ID => 'request-id',
             ]),
             [$defaultResolver],
             [$defaultResolver],
