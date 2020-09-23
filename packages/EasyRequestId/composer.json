@@ -14,12 +14,12 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasySecurity\\": "src"
+            "EonX\\EasyRequestId\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasySecurity\\Tests\\": "tests"
+            "EonX\\EasyRequestId\\Tests\\": "tests"
         }
     },
     "extra": {
