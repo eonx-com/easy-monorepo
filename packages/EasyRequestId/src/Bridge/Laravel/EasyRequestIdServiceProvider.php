@@ -19,7 +19,6 @@ use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\UuidV4FallbackResolver;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
-use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyRequestIdServiceProvider extends ServiceProvider
@@ -39,7 +38,6 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
 
         $this->app->singleton(RequestIdServiceInterface::class, function (): RequestIdServiceInterface {
             return new RequestIdService(
-                $this->app->make(Request::class),
                 $this->app->tagged(BridgeConstantsInterface::TAG_REQUEST_ID_RESOLVER),
                 $this->app->tagged(BridgeConstantsInterface::TAG_CORRELATION_ID_RESOLVER),
                 $this->app->make(FallbackResolverInterface::class)

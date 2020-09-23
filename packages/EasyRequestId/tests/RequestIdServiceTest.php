@@ -63,7 +63,8 @@ final class RequestIdServiceTest extends AbstractTestCase
         ?FallbackResolverInterface $fallbackResolver = null
     ): void {
         $fallbackResolver = $fallbackResolver ?? $this->defaultFallbackResolver();
-        $service = new RequestIdService($request, $requestIdResolvers, $correlationIdResolvers, $fallbackResolver);
+        $service = new RequestIdService($requestIdResolvers, $correlationIdResolvers, $fallbackResolver);
+        $service->setRequest($request);
 
         // For caching coverage
         $service->getCorrelationId();

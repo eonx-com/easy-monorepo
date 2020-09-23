@@ -29,11 +29,6 @@ final class RequestIdService implements RequestIdServiceInterface
     private $fallback;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Request
-     */
-    private $request;
-
-    /**
      * @var string
      */
     private $requestId;
@@ -48,12 +43,10 @@ final class RequestIdService implements RequestIdServiceInterface
      * @param iterable<mixed> $correlationIdResolvers
      */
     public function __construct(
-        Request $request,
         iterable $requestIdResolvers,
         iterable $correlationIdResolvers,
         FallbackResolverInterface $fallback
     ) {
-        $this->request = $request;
         $this->requestIdResolvers = $this->filterResolvers($requestIdResolvers, RequestIdResolverInterface::class);
         $this->correlationIdResolvers = $this->filterResolvers(
             $correlationIdResolvers,
@@ -64,36 +57,41 @@ final class RequestIdService implements RequestIdServiceInterface
 
     public function getCorrelationId(): string
     {
-        if ($this->correlationId !== null) {
-            return $this->correlationId;
-        }
-
-        foreach ($this->correlationIdResolvers as $resolver) {
-            $correlationId = $resolver->getCorrelationId($this->request);
-
-            if ($correlationId !== null) {
-                break;
-            }
-        }
-
-        return $this->correlationId = $correlationId ?? $this->fallback->fallbackCorrelationId();
+        return $this->correlationId = $this->correlationId ?? $this->fallback->fallbackCorrelationId();
     }
 
     public function getRequestId(): string
     {
-        if ($this->requestId !== null) {
-            return $this->requestId;
-        }
+        return $this->requestId = $this->requestId ?? $this->fallback->fallbackRequestId();
+    }
 
-        foreach ($this->requestIdResolvers as $resolver) {
-            $requestId = $resolver->getRequestId($this->request);
+    public function setRequest(Request $request): RequestIdServiceInterface
+    {
+        // Reset ids
+        $this->correlationId = null;
+        $this->requestId = null;
 
-            if ($requestId !== null) {
+        foreach ($this->correlationIdResolvers as $resolver) {
+            $correlationId = $resolver->getCorrelationId($request);
+
+            if ($correlationId !== null) {
+                $this->correlationId = $correlationId;
+
                 break;
             }
         }
 
-        return $this->requestId = $requestId ?? $this->fallback->fallbackRequestId();
+        foreach ($this->requestIdResolvers as $resolver) {
+            $requestId = $resolver->getRequestId($request);
+
+            if ($requestId !== null) {
+                $this->requestId = $requestId;
+
+                break;
+            }
+        }
+
+        return $this;
     }
 
     /**
