@@ -3,14 +3,13 @@
 declare(strict_types=1);
 
 use EonX\EasyRequestId\Bridge\BridgeConstantsInterface;
-use EonX\EasyRequestId\Bridge\Symfony\Factories\RequestIdServiceFactory;
 use EonX\EasyRequestId\Bridge\Symfony\Listeners\RequestIdListener;
-use EonX\EasyRequestId\DeferredRequestIdServiceProvider;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\UuidV4FallbackResolver;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -33,7 +32,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(RequestIdListener::class)
         ->tag('kernel.event_listener', ['priority' => 10000]);
-
-    // Deferred Service Provider
-    $services->set(DeferredRequestIdServiceProvider::class);
 };

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Bridge\EasyBugsnag;
 
 use Bugsnag\Client;
+use Bugsnag\Middleware\CallbackBridge;
+use Bugsnag\Report;
 use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
-use EonX\EasyRequestId\DeferredRequestIdServiceProvider;
 use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
+use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\Traits\RequestIdKeysAwareTrait;
 
 final class RequestIdConfigurator extends AbstractClientConfigurator implements RequestIdKeysAwareInterface
@@ -15,26 +17,26 @@ final class RequestIdConfigurator extends AbstractClientConfigurator implements 
     use RequestIdKeysAwareTrait;
 
     /**
-     * @var \EonX\EasyRequestId\DeferredRequestIdServiceProvider
+     * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
      */
-    private $deferred;
+    private $requestIdService;
 
-    public function __construct(DeferredRequestIdServiceProvider $deferred, ?int $priority = null)
+    public function __construct(RequestIdServiceInterface $requestIdService, ?int $priority = null)
     {
-        $this->deferred = $deferred;
+        $this->requestIdService = $requestIdService;
 
         parent::__construct($priority);
     }
 
     public function configure(Client $bugsnag): void
     {
-        $service = $this->deferred->getRequestIdService();
-
-        $bugsnag->setMetaData([
-            'request' => [
-                $this->getRequestIdKey() => $service->getRequestId(),
-                $this->getCorrelationIdKey() => $service->getCorrelationId(),
-            ],
-        ]);
+        $bugsnag->getPipeline()->pipe(new CallbackBridge(function (Report $report): void {
+            $report->setMetaData([
+                'request' => [
+                    $this->getRequestIdKey() => $this->requestIdService->getRequestId(),
+                    $this->getCorrelationIdKey() => $this->requestIdService->getCorrelationId(),
+                ],
+            ]);
+        }));
     }
 }
