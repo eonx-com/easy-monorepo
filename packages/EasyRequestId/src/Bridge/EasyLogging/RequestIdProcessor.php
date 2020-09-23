@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Bridge\EasyLogging;
 
 use EonX\EasyLogging\Config\AbstractSelfProcessorConfigProvider;
+use EonX\EasyRequestId\DeferredRequestIdServiceProvider;
 use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
-use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\Traits\RequestIdKeysAwareTrait;
 
 final class RequestIdProcessor extends AbstractSelfProcessorConfigProvider implements RequestIdKeysAwareInterface
@@ -14,13 +14,13 @@ final class RequestIdProcessor extends AbstractSelfProcessorConfigProvider imple
     use RequestIdKeysAwareTrait;
 
     /**
-     * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
+     * @var \EonX\EasyRequestId\DeferredRequestIdServiceProvider
      */
-    private $requestIdService;
+    private $deferred;
 
-    public function __construct(RequestIdServiceInterface $requestIdService)
+    public function __construct(DeferredRequestIdServiceProvider $deferred)
     {
-        $this->requestIdService = $requestIdService;
+        $this->deferred = $deferred;
     }
 
     /**
@@ -30,9 +30,11 @@ final class RequestIdProcessor extends AbstractSelfProcessorConfigProvider imple
      */
     public function __invoke(array $records): array
     {
+        $service = $this->deferred->getRequestIdService();
+
         $extra = $records['extra'] ?? [];
-        $extra[$this->getRequestIdKey()] = $this->requestIdService->getRequestId();
-        $extra[$this->getCorrelationIdKey()] = $this->requestIdService->getCorrelationId();
+        $extra[$this->getRequestIdKey()] = $service->getRequestId();
+        $extra[$this->getCorrelationIdKey()] = $service->getCorrelationId();
 
         $records['extra'] = $extra;
 

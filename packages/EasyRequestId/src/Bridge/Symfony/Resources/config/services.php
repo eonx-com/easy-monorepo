@@ -5,6 +5,7 @@ declare(strict_types=1);
 use EonX\EasyRequestId\Bridge\BridgeConstantsInterface;
 use EonX\EasyRequestId\Bridge\Symfony\Factories\RequestIdServiceFactory;
 use EonX\EasyRequestId\Bridge\Symfony\Listeners\RequestIdListener;
+use EonX\EasyRequestId\DeferredRequestIdServiceProvider;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
@@ -25,10 +26,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(RequestIdServiceInterface::class, RequestIdService::class)
         ->arg('$correlationIdResolvers', tagged_iterator(BridgeConstantsInterface::TAG_CORRELATION_ID_RESOLVER))
-        ->arg('$requestIdResolvers', tagged_iterator(BridgeConstantsInterface::TAG_REQUEST_ID_RESOLVER));
+        ->arg('$requestIdResolvers', tagged_iterator(BridgeConstantsInterface::TAG_REQUEST_ID_RESOLVER))
+        ->public();
 
     // Listener
     $services
         ->set(RequestIdListener::class)
-        ->tag('kernel.event_listener');
+        ->tag('kernel.event_listener', ['priority' => 10000]);
+
+    // Deferred Service Provider
+    $services->set(DeferredRequestIdServiceProvider::class);
 };
