@@ -19,6 +19,9 @@ final class RequestIdMiddleware
         $this->requestIdService = $requestIdService;
     }
 
+    /**
+     * @return mixed
+     */
     public function handle(Request $request, \Closure $next)
     {
         $this->requestIdService->setRequest($request);

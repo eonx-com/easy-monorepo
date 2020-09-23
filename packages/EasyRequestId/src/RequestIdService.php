@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class RequestIdService implements RequestIdServiceInterface
 {
     /**
-     * @var string
+     * @var null|string
      */
     private $correlationId;
 
@@ -29,7 +29,7 @@ final class RequestIdService implements RequestIdServiceInterface
     private $fallback;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $requestId;
 
