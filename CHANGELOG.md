@@ -1,7 +1,30 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.4.49 - 2020-09-21
+## v2.5.0 - 2020-09-23
+
+- [#351] Change minimum php version to 7.2
+
+### EasyCore
+
+- [#356] Including FixPostgreSqlDefaultSchemaListener to package, Thanks to [@DKeeper]
+
+### EasyErrorHandler
+
+- [#348] Framework agnostic
+
+### EasyLogging
+
+- [#363] Allow to specify stream handler level in config
+
+### EasyRequestId
+
+- [#364] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.4.49] - 2020-09-21
 
 ### EasyCore
 
@@ -2356,3 +2379,9 @@
 [#353]: https://github.com/eonx-com/easy-monorepo/pull/353
 [#317]: https://github.com/eonx-com/easy-monorepo/pull/317
 [v2.4.48]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.47...v2.4.48
+[#364]: https://github.com/eonx-com/easy-monorepo/pull/364
+[#363]: https://github.com/eonx-com/easy-monorepo/pull/363
+[#356]: https://github.com/eonx-com/easy-monorepo/pull/356
+[#351]: https://github.com/eonx-com/easy-monorepo/pull/351
+[#348]: https://github.com/eonx-com/easy-monorepo/pull/348
+[v2.4.49]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.48...v2.4.49
