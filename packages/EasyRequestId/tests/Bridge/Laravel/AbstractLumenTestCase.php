@@ -17,11 +17,7 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
      * @var \Laravel\Lumen\Application
      */
     private $app;
-
-    /**
-     * @param null|string[] $providers
-     * @param null|mixed[] $config
-     */
+    
     protected function getApplication(): Application
     {
         if ($this->app !== null) {

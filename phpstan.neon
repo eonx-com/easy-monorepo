@@ -189,6 +189,16 @@ parameters:
         - message: '#Cannot call method getRepository\(\) on Doctrine\\Persistence\\ObjectManager\|null#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractDoctrineOrmRepository.php
 
+        # ---- EasyRequestId ----
+        - message: '#Property EonX\\EasyRequestId\\RequestIdService\:\:\$requestIdResolvers \(array<EonX\\EasyRequestId\\Interfaces\\RequestIdResolverInterface\>\) does not accept array<EonX\\EasyRequestId\\Interfaces\\ResolverInterface\>#'
+          path: packages/EasyRequestId/src/RequestIdService.php
+
+        - message: '#Property EonX\\EasyRequestId\\RequestIdService\:\:\$correlationIdResolvers \(array<EonX\\EasyRequestId\\Interfaces\\CorrelationIdResolverInterface\>\) does not accept array<EonX\\EasyRequestId\\Interfaces\\ResolverInterface\>#'
+          path: packages/EasyRequestId/src/RequestIdService.php
+
+        - message: '#Method EonX\\EasyRequestId\\RequestIdService\:\:filterResolvers\(\) should return array<EonX\\EasyRequestId\\Interfaces\\ResolverInterface\> but returns array<object\>#'
+          path: packages/EasyRequestId/src/RequestIdService.php
+
         # ---- EasySchedule ----
         - message: '#Parameter \#1 \$var of function count expects array\|Countable, EonX\\EasySchedule\\Interfaces\\EventInterface given#'
           path: packages/EasySchedule/src/Bridge/Symfony/DataCollector/ScheduleDataCollector.php

@@ -17,7 +17,7 @@ final class DefaultResolver implements CorrelationIdResolverInterface, RequestId
     private $correlationIdHeader;
 
     /**
-     * @var string
+     * @var int
      */
     private $priority;
 

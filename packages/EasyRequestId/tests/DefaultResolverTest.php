@@ -15,9 +15,7 @@ final class DefaultResolverTest extends AbstractTestCase
      */
     public function providerTestResolve(): iterable
     {
-        yield 'Default empty request' => [
-            new Request(),
-        ];
+        yield 'Default empty request' => [new Request()];
 
         yield 'Default headers' => [
             $this->getRequestWithHeaders([

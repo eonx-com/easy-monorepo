@@ -9,6 +9,7 @@ use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\UuidV4FallbackResolver;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
@@ -29,5 +30,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(RequestIdServiceInterface::class, RequestIdService::class)
-        ->factory(ref(RequestIdServiceFactory::class));
+        ->factory([ref(RequestIdServiceFactory::class), '__invoke']);
 };

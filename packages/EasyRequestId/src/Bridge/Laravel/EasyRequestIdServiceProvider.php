@@ -98,7 +98,9 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
 
     private function bridgeEnabled(string $config, string $interface): bool
     {
-        return ((bool)\config(\sprintf('easy-request-id.%s', $config), true)) && \interface_exists($interface);
+        $enabled = (bool)\config(\sprintf('easy-request-id.%s', $config), true);
+
+        return $enabled && \interface_exists($interface);
     }
 
     private function getSetKeysClosure(): \Closure
