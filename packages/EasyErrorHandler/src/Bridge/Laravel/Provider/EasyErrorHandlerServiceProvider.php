@@ -55,7 +55,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             $this->app->singleton(DefaultBuilderProvider::class, function (): DefaultBuilderProvider {
                 return new DefaultBuilderProvider(
                     $this->app->make(TranslatorInterface::class),
-                    \config('easy-error-handler.response'),
+                    \config('easy-error-handler.response')
                 );
             });
             $this->app->tag(
