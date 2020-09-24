@@ -1,7 +1,16 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.5.1 - 2020-09-24
+## v2.5.2 - 2020-09-24
+
+### EasyCore
+
+- [#366] Add "resource:pagination" group for all collection operati…, Thanks to [@egor-dev]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.1] - 2020-09-24
 
 ### EasyWebhook
 
@@ -2396,3 +2405,5 @@
 [v2.4.49]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.48...v2.4.49
 [#365]: https://github.com/eonx-com/easy-monorepo/pull/365
 [v2.5.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.49...v2.5.0
+[#366]: https://github.com/eonx-com/easy-monorepo/pull/366
+[v2.5.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.0...v2.5.1
