@@ -18,7 +18,7 @@ use EonX\EasyWebhook\Stores\NullWebhookResultStore;
 use EonX\EasyWebhook\WebhookClient;
 use EonX\EasyWebhook\WebhookResultHandler;
 use EonX\EasyWebhook\WithEventsWebhookClient;
-use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -34,7 +34,7 @@ return static function (ContainerConfigurator $container): void {
         // Factory
         ->set(HttpClientFactoryInterface::class, HttpClientFactory::class)
         // Client
-        ->set(BridgeConstantsInterface::HTTP_CLIENT, HttpClient::class)
+        ->set(BridgeConstantsInterface::HTTP_CLIENT, HttpClientInterface::class)
         ->factory([ref(HttpClientFactoryInterface::class), 'create']);
 
     // Webhook Retry Strategy (Default)
