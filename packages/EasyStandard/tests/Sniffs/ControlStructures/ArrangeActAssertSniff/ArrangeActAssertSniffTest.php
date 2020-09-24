@@ -16,11 +16,20 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 final class ArrangeActAssertSniffTest extends AbstractCheckerTestCase
 {
     /**
+     * Test anonymous class without empty line succeeds.
+     */
+    public function testAnonymousClassWithoutEmptyLineSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Correct/anonymousClassWithoutEmptyLine.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
+    /**
      * Test anonymous class succeeds.
      */
-    public function testAnonymousClassSucceeds(): void
+    public function testAnonymousClassWithEmptyLineSucceeds(): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Correct/anonymousClass.php.inc');
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Correct/anonymousClassWithEmptyLine.php.inc');
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
