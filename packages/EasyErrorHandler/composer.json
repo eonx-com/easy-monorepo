@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.2",
         "nesbot/carbon": "^2.22",
-        "eonx-com/easy-logging": "^2.5.3"
+        "eonx-com/easy-logging": "^2.6"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5 || ^8.4",
@@ -27,7 +27,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "2.5-dev"
+            "dev-master": "2.6-dev"
         }
     }
 }
