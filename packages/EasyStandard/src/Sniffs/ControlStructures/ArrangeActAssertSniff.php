@@ -29,6 +29,11 @@ final class ArrangeActAssertSniff implements Sniff
     public $testNamespace = 'App\Tests';
 
     /**
+     * @var string[]
+     */
+    private const ANONYMOUS_STRUCTURES = ['T_CLOSURE', 'T_ANON_CLASS'];
+
+    /**
      * Processes this test, when one of its tokens is encountered.
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
@@ -56,25 +61,31 @@ final class ArrangeActAssertSniff implements Sniff
         $currentTokenPosition = $openTokenPosition;
         $previousLine = $tokens[$openTokenPosition]['line'];
         $emptyLines = 0;
-        $closureLevel = 0;
+        $inAnonymousStructure = false;
+        $bracketsLevel = 0;
 
         while ($currentTokenPosition < $closeTokenPosition) {
             // Find next token skipping whitespaces
             $nextTokenPosition = TokenHelper::findNextExcluding($phpcsFile, [T_WHITESPACE], $currentTokenPosition + 1);
-            if ($tokens[$currentTokenPosition]['type'] === 'T_CLOSURE') {
-                $closureLevel++;
+            if (\in_array($tokens[$currentTokenPosition]['type'], self::ANONYMOUS_STRUCTURES, true)) {
+                $inAnonymousStructure = true;
+            }
+
+            if ($inAnonymousStructure && $tokens[$currentTokenPosition]['type'] === 'T_OPEN_CURLY_BRACKET') {
+                $bracketsLevel++;
             }
 
             $currentLine = $tokens[$nextTokenPosition]['line'];
-            if ($currentLine - $previousLine > 1 && $closureLevel === 0) {
+            if ($inAnonymousStructure === false && $currentLine - $previousLine > 1) {
                 $emptyLines++;
             }
 
             $previousLine = $currentLine;
-            $currentTokenPosition = $nextTokenPosition;
-            if ($tokens[$currentTokenPosition]['type'] === 'T_CLOSE_CURLY_BRACKET') {
-                $closureLevel--;
+            if ($inAnonymousStructure && $tokens[$currentTokenPosition]['type'] === 'T_CLOSE_CURLY_BRACKET' && --$bracketsLevel === 0) {
+                $inAnonymousStructure = false;
             }
+
+            $currentTokenPosition = $nextTokenPosition;
         }
 
         if (\in_array($emptyLines, self::ALLOWED_SPACES_COUNT, true) === false) {
