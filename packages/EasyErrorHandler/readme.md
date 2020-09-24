@@ -99,7 +99,8 @@ and provide your owns.
 
 namespace App\Exception\Response;
 
-use EonX\EasyErrorHandler\Builders\StatusCodeBuilder;use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
+use EonX\EasyErrorHandler\Builders\StatusCodeBuilder;
+use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 
 final class MyStatusCodeBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
