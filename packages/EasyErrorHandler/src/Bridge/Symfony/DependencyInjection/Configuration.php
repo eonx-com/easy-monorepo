@@ -22,7 +22,7 @@ final class Configuration implements ConfigurationInterface
                 ->booleanNode('verbose')->defaultFalse()->end()
                 ->booleanNode('use_default_builders')->defaultTrue()->end()
                 ->booleanNode('use_default_reporters')->defaultTrue()->end()
-                ->scalarNode('translation_domain')->defaultNull()->end()
+                ->scalarNode('translation_domain')->defaultValue('EasyErrorHandlerBundle')->end()
                 ->arrayNode('response')
                     ->addDefaultsIfNotSet()
                     ->children()
