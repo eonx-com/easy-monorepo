@@ -1,7 +1,16 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.5.0 - 2020-09-23
+## v2.5.1 - 2020-09-24
+
+### EasyWebhook
+
+- [#365] Symfony bridge WebhookClient expecting HttpClientInterface but HttpClient given, Thanks to [@albertlabarentojr]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.0] - 2020-09-23
 
 - [#351] Change minimum php version to 7.2
 
@@ -2385,3 +2394,5 @@
 [#351]: https://github.com/eonx-com/easy-monorepo/pull/351
 [#348]: https://github.com/eonx-com/easy-monorepo/pull/348
 [v2.4.49]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.48...v2.4.49
+[#365]: https://github.com/eonx-com/easy-monorepo/pull/365
+[v2.5.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.49...v2.5.0
