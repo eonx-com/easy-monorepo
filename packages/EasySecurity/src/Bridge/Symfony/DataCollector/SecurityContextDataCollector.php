@@ -46,7 +46,7 @@ final class SecurityContextDataCollector extends DataCollector
     ) {
         $this->authorizationMatrixFactory = $authorizationMatrixFactory;
         $this->securityContextConfigurator = $securityContextConfigurator;
-        $this->securityContext = $securityContext;
+        $this->securityContext = $securityContextConfigurator->configure($securityContext);
     }
 
     public function collect(Request $request, Response $response, ?\Throwable $throwable = null): void

@@ -14,5 +14,5 @@ abstract class ForbiddenException extends BaseException
     /**
      * @var string
      */
-    protected $userMessage = 'easy-error-handler::messages.forbidden';
+    protected $userMessage = 'exceptions.forbidden';
 }

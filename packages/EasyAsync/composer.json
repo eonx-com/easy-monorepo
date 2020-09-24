@@ -4,10 +4,10 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^7.1",
-        "eonx-com/easy-event-dispatcher": "^2.4.48",
-        "eonx-com/easy-pagination": "^2.4.48",
-        "eonx-com/easy-random": "^2.4.48",
+        "php": "^7.2",
+        "eonx-com/easy-event-dispatcher": "^2.5",
+        "eonx-com/easy-pagination": "^2.5",
+        "eonx-com/easy-random": "^2.5",
         "nette/utils": "^3.1"
     },
     "require-dev": {

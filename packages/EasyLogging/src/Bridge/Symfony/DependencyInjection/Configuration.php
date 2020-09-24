@@ -16,8 +16,9 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-            ->scalarNode('default_channel')->defaultValue(LoggerFactoryInterface::DEFAULT_CHANNEL)->end()
-            ->booleanNode('stream_handler')->defaultTrue()->end()
+                ->scalarNode('default_channel')->defaultValue(LoggerFactoryInterface::DEFAULT_CHANNEL)->end()
+                ->booleanNode('stream_handler')->defaultTrue()->end()
+                ->integerNode('stream_handler_level')->defaultNull()->end()
             ->end();
 
         return $treeBuilder;

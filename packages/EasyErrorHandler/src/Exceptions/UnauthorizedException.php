@@ -14,5 +14,5 @@ abstract class UnauthorizedException extends BaseException
     /**
      * @var string
      */
-    protected $userMessage = 'easy-error-handler::messages.unauthorized';
+    protected $userMessage = 'exceptions.unauthorized';
 }

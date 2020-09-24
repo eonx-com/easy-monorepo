@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\ContextModifierInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface as ConfiguratorInterface;
@@ -42,7 +42,7 @@ final class MainSecurityContextConfigurator
     public function __construct(
         AuthorizationMatrixInterface $authorizationMatrix,
         Request $request,
-        ?EasyApiTokenInterface $apiToken = null
+        ?ApiTokenInterface $apiToken = null
     ) {
         $this->apiToken = $apiToken;
         $this->authorizationMatrix = $authorizationMatrix;

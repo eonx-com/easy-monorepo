@@ -6,12 +6,13 @@ namespace EonX\EasyErrorHandler\Tests\Exceptions;
 
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
+use Monolog\Logger;
 
 final class BaseExceptionTest extends AbstractTestCase
 {
     public function testGetLogLevel(): void
     {
-        $logLevel = 'critical';
+        $logLevel = Logger::CRITICAL;
         $exception = (new BaseExceptionStub())->setLogLevel($logLevel);
 
         self::assertSame($logLevel, $exception->getLogLevel());
@@ -59,7 +60,7 @@ final class BaseExceptionTest extends AbstractTestCase
 
     public function testSetLogLevel(): void
     {
-        $logLevel = 'critical';
+        $logLevel = Logger::CRITICAL;
 
         $exception = (new BaseExceptionStub())->setLogLevel($logLevel);
 
