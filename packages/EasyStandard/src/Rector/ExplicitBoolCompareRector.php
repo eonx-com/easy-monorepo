@@ -100,7 +100,7 @@ PHP
             /** @var \PhpParser\Node\Expr\BinaryOp\Identical $identicalExpr */
             $identicalExpr = $expr;
 
-            if (isset($identicalExpr->left) === false || isset($identicalExpr->right) === false) {
+            if (isset($identicalExpr->left, $identicalExpr->right) === false) {
                 return $expr;
             }
 
