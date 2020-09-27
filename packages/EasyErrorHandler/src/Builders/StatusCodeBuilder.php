@@ -36,12 +36,14 @@ final class StatusCodeBuilder extends AbstractErrorResponseBuilder
 
         $exceptionClass = \get_class($throwable);
 
-        foreach ($this->exceptionToStatusCode as $class => $statusCode) {
+        foreach ($this->exceptionToStatusCode as $class => $setStatusCode) {
             if (\is_a($exceptionClass, $class, true)) {
-                return $statusCode;
+                $statusCode = $setStatusCode;
+
+                break;
             }
         }
 
-        return null;
+        return $statusCode;
     }
 }
