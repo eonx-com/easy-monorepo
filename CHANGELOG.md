@@ -1,7 +1,26 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.5.2 - 2020-09-24
+## v2.5.4 - 2020-09-27
+
+### EasyErrorHandler
+
+- [#369] Handle exception to status code mapping
+
+## [v2.5.3] - 2020-09-24
+
+### EasyErrorHandler
+
+- [#368] Fix translations in Symfony bridge
+
+### EasyStandard
+
+- [#367] hotfix/fix-ArrangeActAssertSniff-for-anonymous-classes, Thanks to [@BOB41K1987]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.2] - 2020-09-24
 
 ### EasyCore
 
@@ -2407,3 +2426,8 @@
 [v2.5.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.49...v2.5.0
 [#366]: https://github.com/eonx-com/easy-monorepo/pull/366
 [v2.5.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.0...v2.5.1
+[#369]: https://github.com/eonx-com/easy-monorepo/pull/369
+[#368]: https://github.com/eonx-com/easy-monorepo/pull/368
+[#367]: https://github.com/eonx-com/easy-monorepo/pull/367
+[v2.5.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.2...v2.5.3
+[v2.5.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.1...v2.5.2
