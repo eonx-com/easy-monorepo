@@ -100,7 +100,6 @@ PHP
         $identicalExpr = $expr;
 
         if ($isNegated === false && isset($identicalExpr->left, $identicalExpr->right)) {
-
             $left = $identicalExpr->left;
             /** @var \PhpParser\Node\Expr\ConstFetch $right */
             $right = $identicalExpr->right;
