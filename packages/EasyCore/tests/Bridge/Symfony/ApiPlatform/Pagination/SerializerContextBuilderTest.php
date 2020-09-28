@@ -20,10 +20,26 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
      */
     public function providerTestCreateFromRequest(): iterable
     {
+        yield 'Group not added, both type and name invalid' => [
+            [
+                'operation_type' => 'invalid',
+                'collection_operation_name' => 'invalid',
+            ],
+            false,
+        ];
+
         yield 'Group not added, type invalid' => [
             [
                 'operation_type' => 'invalid',
                 'item_operation_name' => CustomPaginatorInterface::OPERATION_NAME,
+            ],
+            false,
+        ];
+
+        yield 'Group not added, name invalid' => [
+            [
+                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
+                'collection_operation_name' => 'invalid',
             ],
             false,
         ];
@@ -34,6 +50,30 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
                 'collection_operation_name' => CustomPaginatorInterface::OPERATION_NAME,
             ],
             true,
+        ];
+
+        yield 'Group added for operation name ending with "_get"' => [
+            [
+                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
+                'collection_operation_name' => 'public_get',
+            ],
+            true,
+        ];
+
+        yield 'Group added for operation name starting with "get_"' => [
+            [
+                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
+                'collection_operation_name' => 'get_public',
+            ],
+            true,
+        ];
+
+        yield 'Group not added operation name having "get" in the middle' => [
+            [
+                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
+                'collection_operation_name' => 'public_get_public',
+            ],
+            false,
         ];
     }
 
