@@ -96,13 +96,10 @@ PHP
      */
     private function getNewConditionNode(bool $isNegated, Expr $expr): Expr
     {
-        if ($isNegated === false) {
-            /** @var \PhpParser\Node\Expr\BinaryOp\Identical $identicalExpr */
-            $identicalExpr = $expr;
+        /** @var \PhpParser\Node\Expr\BinaryOp\Identical $identicalExpr */
+        $identicalExpr = $expr;
 
-            if (isset($identicalExpr->left, $identicalExpr->right) === false) {
-                return $expr;
-            }
+        if ($isNegated === false && isset($identicalExpr->left, $identicalExpr->right)) {
 
             $left = $identicalExpr->left;
             /** @var \PhpParser\Node\Expr\ConstFetch $right */
