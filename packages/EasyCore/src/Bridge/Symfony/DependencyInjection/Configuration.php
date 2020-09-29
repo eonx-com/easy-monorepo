@@ -33,7 +33,7 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('trim_strings')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->booleanNode('enabled')->defaultFalse()->end()
                         ->arrayNode('except')
                             ->scalarPrototype()->end()
                         ->end()
