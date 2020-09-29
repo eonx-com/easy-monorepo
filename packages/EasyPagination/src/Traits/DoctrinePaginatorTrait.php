@@ -117,9 +117,13 @@ trait DoctrinePaginatorTrait
             \call_user_func($this->getItemsCriteria, $queryBuilder);
         }
 
-        $this->hasJoinsInQuery ? $this->applyPrimaryKeys($queryBuilder) : $this->applyPagination($queryBuilder);
+        if ($this->hasJoinsInQuery === false) {
+            $this->applyPagination($queryBuilder);
 
-        return $this->doGetResult($queryBuilder);
+            return $this->doGetResult($queryBuilder);
+        }
+
+        return $this->doGetItemsUsingPrimaryKeys($queryBuilder);
     }
 
     protected function getFromAlias(?bool $forCount = null): string
@@ -152,28 +156,6 @@ trait DoctrinePaginatorTrait
     }
 
     /**
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
-     */
-    private function applyPrimaryKeys($queryBuilder): void
-    {
-        $primaryKeyIndex = $this->getPrimaryKeyIndex();
-        $select = \sprintf('%s.%s', $this->getFromAlias(), $primaryKeyIndex);
-        $newQueryBuilder = $this->createQueryBuilder()->select($select);
-
-        // Apply pagination to get primary keys only for current page
-        $this->applyPagination($newQueryBuilder);
-
-        $mapPrimaryKey = static function (array $row) use ($primaryKeyIndex): string {
-            return $row[$primaryKeyIndex];
-        };
-
-        // Filter records on their primary keys
-        $queryBuilder->andWhere(
-            $queryBuilder->expr()->in($select, \array_map($mapPrimaryKey, $newQueryBuilder->getQuery()->getResult()))
-        );
-    }
-
-    /**
      * @return \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder
      */
     private function createQueryBuilder()
@@ -185,5 +167,34 @@ trait DoctrinePaginatorTrait
         }
 
         return $queryBuilder;
+    }
+
+    /**
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
+     *
+     * @return mixed[]
+     */
+    private function doGetItemsUsingPrimaryKeys($queryBuilder): array
+    {
+        $primaryKeyIndex = $this->getPrimaryKeyIndex();
+        $select = \sprintf('%s.%s', $this->getFromAlias(), $primaryKeyIndex);
+        $newQueryBuilder = $this->createQueryBuilder()->select($select);
+
+        // Apply pagination to get primary keys only for current page
+        $this->applyPagination($newQueryBuilder);
+
+        $primaryKeys = \array_map(static function (array $row) use ($primaryKeyIndex): string {
+            return $row[$primaryKeyIndex];
+        }, $newQueryBuilder->getQuery()->getResult());
+
+        // If no primary keys, no items for current pagination
+        if (\count($primaryKeys) === 0) {
+            return [];
+        }
+
+        // Filter records on their primary keys
+        $queryBuilder->andWhere($queryBuilder->expr()->in($select, $primaryKeys));
+
+        return $this->doGetResult($queryBuilder);
     }
 }
