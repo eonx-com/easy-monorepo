@@ -30,6 +30,7 @@ return [
      * A list of array keys whose values will be ignored during processing.
      */
     'trim_strings' => [
+        'enabled' => \env('EASY_CORE_TRIM_STRINGS_ENABLED', false),
         'except' => [],
     ],
 ];

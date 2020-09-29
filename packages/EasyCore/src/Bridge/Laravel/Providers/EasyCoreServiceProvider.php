@@ -82,12 +82,19 @@ final class EasyCoreServiceProvider extends ServiceProvider
 
     private function trimStrings(): void
     {
-        $this->app->singleton(StringsTrimmerInterface::class, RecursiveStringsTrimmer::class);
-        $this->app->singleton(TrimStrings::class, function (): TrimStrings {
+        if ((bool)\config('easy-core.trim_strings.enabled', false) === false) {
+            return;
+        }
+
+        /** @var \Laravel\Lumen\Application $app */
+        $app = $this->app;
+        $app->singleton(StringsTrimmerInterface::class, RecursiveStringsTrimmer::class);
+        $app->singleton(TrimStrings::class, function () use ($app): TrimStrings {
             return new TrimStrings(
-                $this->app->get(StringsTrimmerInterface::class),
+                $app->get(StringsTrimmerInterface::class),
                 \config('easy-core.trim_strings.except', [])
             );
         });
+        $app->middleware([TrimStrings::class]);
     }
 }
