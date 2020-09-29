@@ -51,6 +51,10 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
                     \config('easy-request-id.default_correlation_id_header')
                 );
             });
+            $this->app->tag(DefaultResolver::class, [
+                BridgeConstantsInterface::TAG_CORRELATION_ID_RESOLVER,
+                BridgeConstantsInterface::TAG_REQUEST_ID_RESOLVER,
+            ]);
         }
 
         // EasyBugsnag
