@@ -18,7 +18,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
      */
     public function providerTestCreateFromRequest(): iterable
     {
-        yield 'Group not added, both type and name invalid' => [
+        yield 'Group not added, both type and request method invalid' => [
             'contextFromDecorated' => ['operation_type' => 'invalid'],
             'requestMethod' => 'INVALID',
             'groupAdded' => false,
