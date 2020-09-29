@@ -1,7 +1,16 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.5.5 - 2020-09-29
+## v2.5.6 - 2020-09-29
+
+### EasyPagination
+
+- [#374] Handle empty pagination in Doctrine using primary keys
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.5] - 2020-09-29
 
 ### EasyPagination
 
@@ -2459,3 +2468,5 @@
 [#370]: https://github.com/eonx-com/easy-monorepo/pull/370
 [#357]: https://github.com/eonx-com/easy-monorepo/pull/357
 [v2.5.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.3...v2.5.4
+[#374]: https://github.com/eonx-com/easy-monorepo/pull/374
+[v2.5.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.4...v2.5.5
