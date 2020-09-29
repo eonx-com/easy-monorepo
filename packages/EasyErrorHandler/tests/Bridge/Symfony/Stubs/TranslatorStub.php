@@ -56,7 +56,7 @@ final class TranslatorStub implements TranslatorInterface
         $translator->addLoader('array', new ArrayLoader());
 
         if ($this->translations !== null) {
-            $translator->addResource('array', $this->translations, 'en', 'messages');
+            $translator->addResource('array', $this->translations, 'en', 'EasyErrorHandlerBundle');
         }
 
         return $this->translator = $translator;

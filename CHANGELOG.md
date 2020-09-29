@@ -1,7 +1,44 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.5.0 - 2020-09-23
+## v2.5.4 - 2020-09-27
+
+### EasyErrorHandler
+
+- [#369] Handle exception to status code mapping
+
+## [v2.5.3] - 2020-09-24
+
+### EasyErrorHandler
+
+- [#368] Fix translations in Symfony bridge
+
+### EasyStandard
+
+- [#367] hotfix/fix-ArrangeActAssertSniff-for-anonymous-classes, Thanks to [@BOB41K1987]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.2] - 2020-09-24
+
+### EasyCore
+
+- [#366] Add "resource:pagination" group for all collection operati…, Thanks to [@egor-dev]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.1] - 2020-09-24
+
+### EasyWebhook
+
+- [#365] Symfony bridge WebhookClient expecting HttpClientInterface but HttpClient given, Thanks to [@albertlabarentojr]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.0] - 2020-09-23
 
 - [#351] Change minimum php version to 7.2
 
@@ -2385,3 +2422,12 @@
 [#351]: https://github.com/eonx-com/easy-monorepo/pull/351
 [#348]: https://github.com/eonx-com/easy-monorepo/pull/348
 [v2.4.49]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.48...v2.4.49
+[#365]: https://github.com/eonx-com/easy-monorepo/pull/365
+[v2.5.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.49...v2.5.0
+[#366]: https://github.com/eonx-com/easy-monorepo/pull/366
+[v2.5.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.0...v2.5.1
+[#369]: https://github.com/eonx-com/easy-monorepo/pull/369
+[#368]: https://github.com/eonx-com/easy-monorepo/pull/368
+[#367]: https://github.com/eonx-com/easy-monorepo/pull/367
+[v2.5.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.2...v2.5.3
+[v2.5.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.1...v2.5.2

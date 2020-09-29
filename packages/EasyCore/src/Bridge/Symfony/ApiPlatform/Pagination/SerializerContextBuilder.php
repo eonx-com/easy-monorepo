@@ -28,11 +28,9 @@ final class SerializerContextBuilder implements SerializerContextBuilderInterfac
     {
         $context = $this->decorated->createFromRequest($request, $normalization, $extractedAttributes);
         $operationType = $context['operation_type'] ?? null;
-        $operationName = $context['collection_operation_name'] ?? null;
 
         // Customize context only for collection get
-        if ($operationType === CustomPaginatorInterface::OPERATION_TYPE
-            && $operationName === CustomPaginatorInterface::OPERATION_NAME) {
+        if ($operationType === CustomPaginatorInterface::OPERATION_TYPE) {
             $context['groups'] = \array_merge($context['groups'] ?? [], [CustomPaginatorInterface::SERIALIZER_GROUP]);
         }
 
