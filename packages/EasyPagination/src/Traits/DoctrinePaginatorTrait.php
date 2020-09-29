@@ -128,7 +128,9 @@ trait DoctrinePaginatorTrait
             return $this->fromAlias;
         }
 
-        return ($forCount ?? false) ? '1' : $this->from;
+        $forCount = $forCount ?? false;
+
+        return $forCount ? '1' : $this->from;
     }
 
     /**
