@@ -20,7 +20,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
     {
         yield 'Group not added, both type and request method invalid' => [
             'contextFromDecorated' => [
-                'operation_type' => 'invalid'
+                'operation_type' => 'invalid',
             ],
             'requestMethod' => 'INVALID',
             'groupAdded' => false,
@@ -28,7 +28,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
 
         yield 'Group not added, type invalid' => [
             'contextFromDecorated' => [
-                'operation_type' => 'invalid'
+                'operation_type' => 'invalid',
             ],
             'requestMethod' => 'GET',
             'groupAdded' => false,
@@ -36,7 +36,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
 
         yield 'Group not added, request method invalid' => [
             'contextFromDecorated' => [
-                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE
+                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
             ],
             'requestMethod' => 'INVALID',
             'groupAdded' => false,
@@ -44,7 +44,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
 
         yield 'Group added' => [
             'contextFromDecorated' => [
-                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE
+                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
             ],
             'requestMethod' => 'GET',
             'groupAdded' => true,
