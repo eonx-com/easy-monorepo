@@ -6,6 +6,7 @@ namespace EonX\EasyPagination\Paginators;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use EonX\EasyPagination\Exceptions\InvalidPrimaryKeyIndexException;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Traits\DoctrinePaginatorTrait;
 
@@ -17,6 +18,11 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
      * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $manager;
+
+    /**
+     * @var string
+     */
+    private $primaryKeyIndex;
 
     public function __construct(
         EntityManagerInterface $manager,
@@ -47,5 +53,20 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
     protected function doGetTotalItems(QueryBuilder $queryBuilder, string $countAlias): int
     {
         return (int)($queryBuilder->getQuery()->getResult()[0][$countAlias] ?? 0);
+    }
+
+    protected function getPrimaryKeyIndex(): string
+    {
+        if ($this->primaryKeyIndex !== null) {
+            return $this->primaryKeyIndex;
+        }
+
+        try {
+            return $this->primaryKeyIndex = $this->manager
+                ->getClassMetadata($this->from)
+                ->getSingleIdentifierColumnName();
+        } catch (\Throwable $throwable) {
+            throw new InvalidPrimaryKeyIndexException($throwable->getMessage());
+        }
     }
 }
