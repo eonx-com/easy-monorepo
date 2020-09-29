@@ -32,6 +32,11 @@ trait DoctrinePaginatorTrait
     private $getItemsCriteria;
 
     /**
+     * @var bool
+     */
+    private $hasJoinsInQuery = false;
+
+    /**
      * @var null|mixed
      */
     private $select;
@@ -42,13 +47,20 @@ trait DoctrinePaginatorTrait
             return $this->count;
         }
 
-        $fromAlias = $this->getFromAlias();
+        $fromAlias = $this->getFromAlias(true);
         $countAlias = \sprintf('_count_%s', $fromAlias);
         $sql = \sprintf('COUNT(DISTINCT %s) as %s', $fromAlias, $countAlias);
 
         $queryBuilder = $this->createQueryBuilder()->select($sql);
 
         return $this->count = $this->doGetTotalItems($queryBuilder, $countAlias);
+    }
+
+    public function hasJoinsInQuery(?bool $hasJoinsInQuery = null): self
+    {
+        $this->hasJoinsInQuery = $hasJoinsInQuery ?? true;
+
+        return $this;
     }
 
     public function setCriteria(?callable $criteria = null): self
@@ -92,6 +104,8 @@ trait DoctrinePaginatorTrait
      */
     abstract protected function doGetTotalItems($queryBuilder, string $countAlias): int;
 
+    abstract protected function getPrimaryKeyIndex(): string;
+
     /**
      * @return mixed[]
      */
@@ -103,24 +117,20 @@ trait DoctrinePaginatorTrait
             \call_user_func($this->getItemsCriteria, $queryBuilder);
         }
 
-        $queryBuilder
-            ->setFirstResult(($this->paginationData->getStart() - 1) * $this->paginationData->getSize())
-            ->setMaxResults($this->paginationData->getSize());
+        $this->hasJoinsInQuery ? $this->applyPrimaryKeys($queryBuilder) : $this->applyPagination($queryBuilder);
 
         return $this->doGetResult($queryBuilder);
     }
 
-    protected function getFromAlias(): string
+    protected function getFromAlias(?bool $forCount = null): string
     {
         if ($this->fromAlias !== null) {
             return $this->fromAlias;
         }
-        if (\is_string($this->select)) {
-            return \substr($this->select, 0, 2);
-        }
 
-        // Not sure about this one...
-        return '1';
+        $forCount = $forCount ?? false;
+
+        return $forCount ? '1' : $this->from;
     }
 
     /**
@@ -129,6 +139,38 @@ trait DoctrinePaginatorTrait
     protected function getSelect()
     {
         return $this->select ?? $this->fromAlias ?? '*';
+    }
+
+    /**
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
+     */
+    private function applyPagination($queryBuilder): void
+    {
+        $queryBuilder
+            ->setFirstResult(($this->paginationData->getStart() - 1) * $this->paginationData->getSize())
+            ->setMaxResults($this->paginationData->getSize());
+    }
+
+    /**
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
+     */
+    private function applyPrimaryKeys($queryBuilder): void
+    {
+        $primaryKeyIndex = $this->getPrimaryKeyIndex();
+        $select = \sprintf('%s.%s', $this->getFromAlias(), $primaryKeyIndex);
+        $newQueryBuilder = $this->createQueryBuilder()->select($select);
+
+        // Apply pagination to get primary keys only for current page
+        $this->applyPagination($newQueryBuilder);
+
+        $mapPrimaryKey = static function (array $row) use ($primaryKeyIndex): string {
+            return $row[$primaryKeyIndex];
+        };
+
+        // Filter records on their primary keys
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->in($select, \array_map($mapPrimaryKey, $newQueryBuilder->getQuery()->getResult()))
+        );
     }
 
     /**
