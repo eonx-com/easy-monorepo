@@ -1,7 +1,16 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.5.6 - 2020-09-29
+## v2.5.7 - 2020-09-29
+
+### EasyRequestId
+
+- [#375] Tag default resolver in Laravel bridge
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.6] - 2020-09-29
 
 ### EasyPagination
 
@@ -2470,3 +2479,5 @@
 [v2.5.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.3...v2.5.4
 [#374]: https://github.com/eonx-com/easy-monorepo/pull/374
 [v2.5.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.4...v2.5.5
+[#375]: https://github.com/eonx-com/easy-monorepo/pull/375
+[v2.5.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.5...v2.5.6
