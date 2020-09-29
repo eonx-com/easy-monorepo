@@ -1,7 +1,20 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.5.7 - 2020-09-29
+## v2.5.8 - 2020-09-29
+
+### EasyAsync
+
+- [#376] Fixed service binding for non existing service, Thanks to [@albertlabarentojr]
+
+### EasyLogging
+
+- [#377] Fix LoggerInterface service provider in Laravel
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.7] - 2020-09-29
 
 ### EasyRequestId
 
@@ -2481,3 +2494,6 @@
 [v2.5.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.4...v2.5.5
 [#375]: https://github.com/eonx-com/easy-monorepo/pull/375
 [v2.5.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.5...v2.5.6
+[#377]: https://github.com/eonx-com/easy-monorepo/pull/377
+[#376]: https://github.com/eonx-com/easy-monorepo/pull/376
+[v2.5.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.6...v2.5.7
