@@ -19,25 +19,33 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
     public function providerTestCreateFromRequest(): iterable
     {
         yield 'Group not added, both type and request method invalid' => [
-            'contextFromDecorated' => ['operation_type' => 'invalid'],
+            'contextFromDecorated' => [
+                'operation_type' => 'invalid'
+            ],
             'requestMethod' => 'INVALID',
             'groupAdded' => false,
         ];
 
         yield 'Group not added, type invalid' => [
-            'contextFromDecorated' => ['operation_type' => 'invalid'],
+            'contextFromDecorated' => [
+                'operation_type' => 'invalid'
+            ],
             'requestMethod' => 'GET',
             'groupAdded' => false,
         ];
 
         yield 'Group not added, request method invalid' => [
-            'contextFromDecorated' => ['operation_type' => CustomPaginatorInterface::OPERATION_TYPE],
+            'contextFromDecorated' => [
+                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE
+            ],
             'requestMethod' => 'INVALID',
             'groupAdded' => false,
         ];
 
         yield 'Group added' => [
-            'contextFromDecorated' => ['operation_type' => CustomPaginatorInterface::OPERATION_TYPE],
+            'contextFromDecorated' => [
+                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE
+            ],
             'requestMethod' => 'GET',
             'groupAdded' => true,
         ];
@@ -63,7 +71,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @param $contextFromDecorated
+     * @param mixed[] $contextFromDecorated
      *
      * @return \ApiPlatform\Core\Serializer\SerializerContextBuilderInterface
      */
