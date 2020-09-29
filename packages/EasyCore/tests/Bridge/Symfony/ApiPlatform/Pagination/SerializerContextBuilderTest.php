@@ -44,7 +44,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @param mixed[] $context
+     * @param mixed[] $contextFromDecorated
      *
      * @dataProvider providerTestCreateFromRequest
      */
@@ -63,7 +63,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @param $context
+     * @param $contextFromDecorated
      *
      * @return \ApiPlatform\Core\Serializer\SerializerContextBuilderInterface
      */
