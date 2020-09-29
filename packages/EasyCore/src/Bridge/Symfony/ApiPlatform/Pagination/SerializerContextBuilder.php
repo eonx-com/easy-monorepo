@@ -28,30 +28,12 @@ final class SerializerContextBuilder implements SerializerContextBuilderInterfac
     {
         $context = $this->decorated->createFromRequest($request, $normalization, $extractedAttributes);
         $operationType = $context['operation_type'] ?? null;
-        $operationName = $context['collection_operation_name'] ?? null;
 
         // Customize context only for collection get
-        if ($operationType === CustomPaginatorInterface::OPERATION_TYPE && $this->isGetOperation($operationName)) {
+        if ($operationType === CustomPaginatorInterface::OPERATION_TYPE && $request->isMethod(Request::METHOD_GET)) {
             $context['groups'] = \array_merge($context['groups'] ?? [], [CustomPaginatorInterface::SERIALIZER_GROUP]);
         }
 
         return $context;
-    }
-
-    private function isGetOperation(string $operationName): bool
-    {
-        return $operationName === CustomPaginatorInterface::OPERATION_NAME ||
-            $this->isStringStartsWith($operationName, 'get_') ||
-            $this->isStringEndsWith($operationName, '_get');
-    }
-
-    private function isStringEndsWith(string $haystack, string $needle): bool
-    {
-        return \substr($haystack, -\strlen($needle)) === $needle;
-    }
-
-    private function isStringStartsWith(string $haystack, string $needle): bool
-    {
-        return \strpos($haystack, $needle) === 0;
     }
 }
