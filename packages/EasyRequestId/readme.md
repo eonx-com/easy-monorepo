@@ -75,4 +75,4 @@ final class MyController
 [4]: https://github.com/eonx-com/easy-bugsnag
 [5]: https://github.com/eonx-com/easy-error-handler
 [6]: https://github.com/eonx-com/easy-error-logging
-[7 ]: https://github.com/eonx-com/easy-webhook
+[7]: https://github.com/eonx-com/easy-webhook
