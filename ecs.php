@@ -75,7 +75,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ParameterTypeHintSniff::class . '.MissingNativeTypeHint' => [
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php',
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php',
-            __DIR__ . 'packages/EasyCore/src/Bridge/Symfony/Serializer/TrimStringsNormalizer.php',
+            __DIR__ . 'packages/EasyCore/src/Bridge/Symfony/Serializer/TrimStringsDenormalizer.php',
             __DIR__ . '/packages/EasyLogging/src/Logger.php',
             __DIR__ . '/packages/EasyApiToken/src/External/Auth0JwtDriver.php',
             __DIR__ . '/packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
@@ -98,7 +98,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ParameterTypeHintSniff::class . '.UselessAnnotation' => [
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php',
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php',
-            __DIR__ . 'packages/EasyCore/src/Bridge/Symfony/Serializer/TrimStringsNormalizer.php',
+            __DIR__ . 'packages/EasyCore/src/Bridge/Symfony/Serializer/TrimStringsDenormalizer.php',
             __DIR__ . '/packages/EasyLogging/src/Logger.php',
             __DIR__ . '/packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
             __DIR__ . '/packages/EasyAsync/src/Helpers/PropertyHelper.php',
@@ -146,8 +146,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php',
         ],
         ReferenceThrowableOnlySniff::class . '.ReferencedGeneralException' => [
-            __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php',
-            __DIR__ . '/packages/EasyErrorHandler/tests/Bridge/Laravel/Handler/HandlerTest.php',
+            __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php',
+            __DIR__ . '/packages/EasyErrorHandler/tests/Bridge/Laravel/ExceptionHandlerTest.php',
         ],
     ]);
 

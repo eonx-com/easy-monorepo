@@ -1,7 +1,140 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.4.48 - 2020-09-16
+## v2.5.8 - 2020-09-29
+
+### EasyAsync
+
+- [#376] Fixed service binding for non existing service, Thanks to [@albertlabarentojr]
+
+### EasyLogging
+
+- [#377] Fix LoggerInterface service provider in Laravel
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.7] - 2020-09-29
+
+### EasyRequestId
+
+- [#375] Tag default resolver in Laravel bridge
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.6] - 2020-09-29
+
+### EasyPagination
+
+- [#374] Handle empty pagination in Doctrine using primary keys
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.5] - 2020-09-29
+
+### EasyPagination
+
+- [#373] Add logic to deal better with joins in Doctrine paginators
+
+### EasyCore
+
+- [#371] Update SerializerContextBuilder to rely on request method, Thanks to [@egor-dev]
+- [#357] Disable trim string middleware/denormalizer by default, Thanks to [@DKeeper]
+
+### EasyAsync
+
+- [#372] Fixed service binding to use \Configurator\ref, Thanks to [@albertlabarentojr]
+
+### EasyStandard
+
+- [#370] Fix ExplicitBoolCompareRector, Thanks to [@ERuban]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.4] - 2020-09-27
+
+### EasyErrorHandler
+
+- [#369] Handle exception to status code mapping
+
+## [v2.5.3] - 2020-09-24
+
+### EasyErrorHandler
+
+- [#368] Fix translations in Symfony bridge
+
+### EasyStandard
+
+- [#367] hotfix/fix-ArrangeActAssertSniff-for-anonymous-classes, Thanks to [@BOB41K1987]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.2] - 2020-09-24
+
+### EasyCore
+
+- [#366] Add "resource:pagination" group for all collection operati…, Thanks to [@egor-dev]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.1] - 2020-09-24
+
+### EasyWebhook
+
+- [#365] Symfony bridge WebhookClient expecting HttpClientInterface but HttpClient given, Thanks to [@albertlabarentojr]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.0] - 2020-09-23
+
+- [#351] Change minimum php version to 7.2
+
+### EasyCore
+
+- [#356] Including FixPostgreSqlDefaultSchemaListener to package, Thanks to [@DKeeper]
+
+### EasyErrorHandler
+
+- [#348] Framework agnostic
+
+### EasyLogging
+
+- [#363] Allow to specify stream handler level in config
+
+### EasyRequestId
+
+- [#364] Create package
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.4.49] - 2020-09-21
+
+### EasyCore
+
+- [#361] Make JsonbType type name value uppercase, Thanks to [@DKeeper]
+
+### EasyDecision
+
+- [#317] Symfony WebProfiler integration, Thanks to [@albertlabarentojr]
+
+### EasyStandard
+
+- [#355] Feature/add annotations comments rector, Thanks to [@BOB41K1987]
+- [#354] Hotfix/Including traits in validate Inheritdoc, Thanks to [@DKeeper]
+- [#353] hotfix/Update-ArrangeActAssertSniff-to-support-multilevel-closures, Thanks to [@BOB41K1987]
+
+### EasySecurity
+
+- [#362] Fix security context not configured in data collector
+
+## [v2.4.48] - 2020-09-16
 
 - [#343] Feature/fix ci, Thanks to [@DKeeper]
 
@@ -2329,3 +2462,38 @@
 [#343]: https://github.com/eonx-com/easy-monorepo/pull/343
 [#325]: https://github.com/eonx-com/easy-monorepo/pull/325
 [v2.4.47]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.46...v2.4.47
+[#362]: https://github.com/eonx-com/easy-monorepo/pull/362
+[#361]: https://github.com/eonx-com/easy-monorepo/pull/361
+[#355]: https://github.com/eonx-com/easy-monorepo/pull/355
+[#354]: https://github.com/eonx-com/easy-monorepo/pull/354
+[#353]: https://github.com/eonx-com/easy-monorepo/pull/353
+[#317]: https://github.com/eonx-com/easy-monorepo/pull/317
+[v2.4.48]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.47...v2.4.48
+[#364]: https://github.com/eonx-com/easy-monorepo/pull/364
+[#363]: https://github.com/eonx-com/easy-monorepo/pull/363
+[#356]: https://github.com/eonx-com/easy-monorepo/pull/356
+[#351]: https://github.com/eonx-com/easy-monorepo/pull/351
+[#348]: https://github.com/eonx-com/easy-monorepo/pull/348
+[v2.4.49]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.48...v2.4.49
+[#365]: https://github.com/eonx-com/easy-monorepo/pull/365
+[v2.5.0]: https://github.com/eonx-com/easy-monorepo/compare/v2.4.49...v2.5.0
+[#366]: https://github.com/eonx-com/easy-monorepo/pull/366
+[v2.5.1]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.0...v2.5.1
+[#369]: https://github.com/eonx-com/easy-monorepo/pull/369
+[#368]: https://github.com/eonx-com/easy-monorepo/pull/368
+[#367]: https://github.com/eonx-com/easy-monorepo/pull/367
+[v2.5.3]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.2...v2.5.3
+[v2.5.2]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.1...v2.5.2
+[#373]: https://github.com/eonx-com/easy-monorepo/pull/373
+[#372]: https://github.com/eonx-com/easy-monorepo/pull/372
+[#371]: https://github.com/eonx-com/easy-monorepo/pull/371
+[#370]: https://github.com/eonx-com/easy-monorepo/pull/370
+[#357]: https://github.com/eonx-com/easy-monorepo/pull/357
+[v2.5.4]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.3...v2.5.4
+[#374]: https://github.com/eonx-com/easy-monorepo/pull/374
+[v2.5.5]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.4...v2.5.5
+[#375]: https://github.com/eonx-com/easy-monorepo/pull/375
+[v2.5.6]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.5...v2.5.6
+[#377]: https://github.com/eonx-com/easy-monorepo/pull/377
+[#376]: https://github.com/eonx-com/easy-monorepo/pull/376
+[v2.5.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.6...v2.5.7

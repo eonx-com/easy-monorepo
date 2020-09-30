@@ -19,17 +19,6 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 $app->register(\EonX\EasyErrorHandler\Bridge\Laravel\Provider\EasyErrorHandlerServiceProvider::class);
 ```
 
-### Bind the Handler
- 
-```php
-# bootstrap/app.php
-
-$app->singleton(
-    \Illuminate\Contracts\Debug\ExceptionHandler::class,
-    \EonX\EasyErrorHandler\Bridge\Laravel\Handler\Handler::class
-);
-```
-
 ### Add Config
 
 In a Lumen application you must explicitly tell the application to add the package's config as following:

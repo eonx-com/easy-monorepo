@@ -213,7 +213,7 @@ final class JobPersisterTest extends AbstractTestCase
                 ->andReturn(['_count_1' => 1]);
 
             $mock
-                ->shouldReceive('fetchAll')
+                ->shouldReceive('fetchAllAssociative')
                 ->atLeast()
                 ->once()
                 ->with('sql query', [])

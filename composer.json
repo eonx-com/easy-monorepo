@@ -10,7 +10,7 @@
         "packages/EasyTest/bin/easy-test"
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "doctrine/orm": "^2.6",
         "eonx-com/externals": "^1.0 || ^2.0",
         "nesbot/carbon": "^2.22",
@@ -36,7 +36,6 @@
         "symplify/autowire-array-parameter": "^8.2",
         "nette/utils": "^3.1",
         "aws/aws-sdk-php": "^3.134",
-        "eonx-com/apiformats": "^1.0",
         "illuminate/support": "^5.5 || ^6.0",
         "bugsnag/bugsnag": "^3.19",
         "elasticsearch/elasticsearch": "^7.8"
@@ -54,7 +53,7 @@
         "mikey179/vfsstream": "~1",
         "mockery/mockery": "^1.2",
         "phpspec/prophecy": "~1.0",
-        "phpstan/phpstan": "^0.12.42",
+        "phpstan/phpstan": "0.12.42",
         "phpunit/phpunit": "^7.5 || ^8.4",
         "psr/container": "^1.0",
         "symfony/symfony": "^4.2 || ^5.0",
@@ -92,6 +91,7 @@
             "EonX\\EasyPsr7Factory\\": "packages/EasyPsr7Factory/src",
             "EonX\\EasyRandom\\": "packages/EasyRandom/src",
             "EonX\\EasyRepository\\": "packages/EasyRepository/src",
+            "EonX\\EasyRequestId\\": "packages/EasyRequestId/src",
             "EonX\\EasySecurity\\": "packages/EasySecurity/src",
             "EonX\\EasySchedule\\": "packages/EasySchedule/src",
             "EonX\\EasySsm\\": "packages/EasySsm/src",
@@ -123,6 +123,7 @@
             "EonX\\EasyPsr7Factory\\Tests\\": "packages/EasyPsr7Factory/tests",
             "EonX\\EasyRandom\\Tests\\": "packages/EasyRandom/tests",
             "EonX\\EasyRepository\\Tests\\": "packages/EasyRepository/tests",
+            "EonX\\EasyRequestId\\Tests\\": "packages/EasyRequestId/tests",
             "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
             "EonX\\EasySchedule\\Tests\\": "packages/EasySchedule/tests",
             "EonX\\EasySsm\\Tests\\": "packages/EasySsm/tests",
@@ -155,7 +156,8 @@
         "eonx-com/easy-standard": "self.version",
         "eonx-com/easy-async": "self.version",
         "eonx-com/easy-webhook": "self.version",
-        "eonx-com/easy-bugsnag": "self.version"
+        "eonx-com/easy-bugsnag": "self.version",
+        "eonx-com/easy-request-id": "self.version"
     },
     "scripts": {
         "check-all": [
@@ -176,6 +178,7 @@
             "vendor/bin/changelog-linker link",
             "vendor/bin/changelog-linker cleanup"
         ],
+        "fix-ecs": "vendor/bin/ecs check --fix --clear-cache",
         "merge": "vendor/bin/monorepo-builder merge",
         "propagate": "vendor/bin/monorepo-builder propagate",
         "split": "vendor/bin/monorepo-builder split",
