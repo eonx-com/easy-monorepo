@@ -62,7 +62,9 @@ final class BaseSsmClientStub extends SsmClient
     {
         $this->paginatorCalls[$name] = $args ?? [];
 
-        return [['Parameters' => $this->parameters]];
+        return [[
+            'Parameters' => $this->parameters,
+        ]];
     }
 
     /**

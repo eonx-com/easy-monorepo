@@ -30,7 +30,9 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractWithMockTestCase
                     ->andReturnSelf();
 
                 $query = $this->mock(AbstractQuery::class, function (MockInterface $mock): void {
-                    $mock->shouldReceive('getResult')->once()->withNoArgs()->andReturn([['_count_t' => 3]]);
+                    $mock->shouldReceive('getResult')->once()->withNoArgs()->andReturn([[
+                        '_count_t' => 3,
+                    ]]);
                 });
 
                 $mock->shouldReceive('getQuery')->once()->andReturn($query);

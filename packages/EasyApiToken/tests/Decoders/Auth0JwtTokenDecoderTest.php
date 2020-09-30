@@ -40,7 +40,9 @@ final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
     {
         $decoder = new JwtTokenDecoder($this->createJwtEasyApiTokenFactory($this->createAuth0JwtDriver()));
 
-        self::assertNull($decoder->decode($this->createRequest(['HTTP_AUTHORIZATION' => 'SomethingElse'])));
+        self::assertNull($decoder->decode($this->createRequest([
+            'HTTP_AUTHORIZATION' => 'SomethingElse',
+        ])));
     }
 
     public function testJwtTokenReturnNullIfUnableToDecodeToken(): void

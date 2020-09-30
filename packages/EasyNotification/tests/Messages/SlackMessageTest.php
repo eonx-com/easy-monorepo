@@ -27,14 +27,18 @@ final class SlackMessageTest extends AbstractTestCase
     {
         yield 'Constructor' => [
             static function (): SlackMessage {
-                return new SlackMessage('channel', 'text', ['option' => 'value']);
+                return new SlackMessage('channel', 'text', [
+                    'option' => 'value',
+                ]);
             },
             static::$body,
         ];
 
         yield 'Create method' => [
             static function (): SlackMessage {
-                return SlackMessage::create('channel', 'text', ['option' => 'value']);
+                return SlackMessage::create('channel', 'text', [
+                    'option' => 'value',
+                ]);
             },
             static::$body,
         ];
@@ -42,7 +46,9 @@ final class SlackMessageTest extends AbstractTestCase
         yield 'Create method + text + body' => [
             static function (): SlackMessage {
                 $message = SlackMessage::create('channel')->text('text');
-                $message->body(['option' => 'value']);
+                $message->body([
+                    'option' => 'value',
+                ]);
 
                 return $message;
             },

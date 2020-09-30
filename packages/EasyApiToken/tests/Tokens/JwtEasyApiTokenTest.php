@@ -13,7 +13,9 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
     public function testGetClaimForceArraySuccessfully(): void
     {
         $claim = new \stdClass();
-        $token = new Jwt(['claim' => $claim], 'original');
+        $token = new Jwt([
+            'claim' => $claim,
+        ], 'original');
 
         self::assertEquals($claim, $token->getClaim('claim'));
         self::assertEquals([], $token->getClaimForceArray('claim'));
@@ -29,7 +31,9 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
 
         $claim->subClaim = $subClaim;
 
-        $token = new Jwt(['claim' => $claim], 'original');
+        $token = new Jwt([
+            'claim' => $claim,
+        ], 'original');
 
         $expected = [
             'key' => 'value',
@@ -43,14 +47,18 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
 
     public function testGetClaimSuccessfully(): void
     {
-        $token = new Jwt(['claim' => 'claim'], 'original');
+        $token = new Jwt([
+            'claim' => 'claim',
+        ], 'original');
 
         self::assertEquals('claim', $token->getClaim('claim'));
     }
 
     public function testGetPayloadSuccessfully(): void
     {
-        $payload = ['claim' => 'claim'];
+        $payload = [
+            'claim' => 'claim',
+        ];
         $token = new Jwt($payload, 'original');
 
         self::assertEquals($payload, $token->getPayload());
@@ -59,7 +67,9 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
 
     public function testHasClaimSuccessfully(): void
     {
-        $token = new Jwt(['claim' => 'claim'], 'original');
+        $token = new Jwt([
+            'claim' => 'claim',
+        ], 'original');
 
         self::assertTrue($token->hasClaim('claim'));
         self::assertFalse($token->hasClaim('invalid'));

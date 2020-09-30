@@ -25,7 +25,9 @@ final class DecisionsTest extends AbstractTestCase
         yield 'No rules' => [
             new ValueDecision(),
             [],
-            ['value' => 5],
+            [
+                'value' => 5,
+            ],
             5,
             [],
         ];
@@ -33,9 +35,13 @@ final class DecisionsTest extends AbstractTestCase
         yield 'Simple rule' => [
             new ValueDecision(),
             [$this->createLanguageRule('add(5)')],
-            ['value' => 5],
+            [
+                'value' => 5,
+            ],
             10,
-            ['add(5)' => 10],
+            [
+                'add(5)' => 10,
+            ],
         ];
 
         yield 'Rules with name and extra' => [
@@ -43,10 +49,16 @@ final class DecisionsTest extends AbstractTestCase
             [
                 $this->createLanguageRule('add(5)'),
                 $this->createLanguageRule('add(10)', null, 'Add 10'),
-                $this->createLanguageRule('add(20)', null, null, ['key' => 'value']),
-                $this->createLanguageRule('add(30)', null, 'Add 30', ['key1' => 'value1']),
+                $this->createLanguageRule('add(20)', null, null, [
+                    'key' => 'value',
+                ]),
+                $this->createLanguageRule('add(30)', null, 'Add 30', [
+                    'key1' => 'value1',
+                ]),
             ],
-            ['value' => 5],
+            [
+                'value' => 5,
+            ],
             70,
             [
                 'add(5)' => 10,
@@ -65,10 +77,14 @@ final class DecisionsTest extends AbstractTestCase
         yield 'Consensus with name and extra' => [
             new ConsensusDecision(),
             [
-                new RuleWithExtraOutputStub('Unsupported with extra', false, ['key' => 'value'], false),
+                new RuleWithExtraOutputStub('Unsupported with extra', false, [
+                    'key' => 'value',
+                ], false),
                 new RuleStub('Only false', false),
                 new RuleStub('Only true', true),
-                new RuleWithExtraOutputStub('True with extra', true, ['key' => 'value']),
+                new RuleWithExtraOutputStub('True with extra', true, [
+                    'key' => 'value',
+                ]),
             ],
             [],
             true,
@@ -93,7 +109,9 @@ final class DecisionsTest extends AbstractTestCase
                 new RuleStopPropagationStub('exit-on-propagation-stopped', 10, true),
                 $this->createLanguageRule('add(10)'),
             ],
-            ['value' => 5],
+            [
+                'value' => 5,
+            ],
             10,
             [
                 'add(5)' => 10,

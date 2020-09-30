@@ -25,7 +25,11 @@ abstract class AbstractTestCase extends TestCase
     protected function executeCommand(string $command, ?array $inputs = null): string
     {
         $tester = new CommandTester($this->getApplication()->find($command));
-        $tester->execute(\array_merge(['command' => $command], $inputs ?? []), ['capture_stderr_separately' => true]);
+        $tester->execute(\array_merge([
+            'command' => $command,
+        ], $inputs ?? []), [
+            'capture_stderr_separately' => true,
+        ]);
 
         return $tester->getDisplay();
     }

@@ -54,6 +54,10 @@ return static function (ContainerConfigurator $container): void {
     // Shutdown Strategy
     $services
         ->set(ShutdownStrategyListener::class)
-        ->tag('kernel.event_listener', ['event' => TerminateEvent::class])
-        ->tag('kernel.event_listener', ['event' => ConsoleTerminateEvent::class]);
+        ->tag('kernel.event_listener', [
+            'event' => TerminateEvent::class,
+        ])
+        ->tag('kernel.event_listener', [
+            'event' => ConsoleTerminateEvent::class,
+        ]);
 };

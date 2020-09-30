@@ -121,7 +121,9 @@ final class Event extends AbstractEvent
 
     private function buildInput(): InputInterface
     {
-        $inputParams = ['command' => $this->command];
+        $inputParams = [
+            'command' => $this->command,
+        ];
 
         foreach ($this->params as $key => $value) {
             $inputParams[$key] = $value;

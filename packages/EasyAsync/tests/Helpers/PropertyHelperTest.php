@@ -48,7 +48,9 @@ final class PropertyHelperTest extends AbstractTestCase
     public function providerSetIntProperties(): iterable
     {
         yield 'set total' => [
-            ['failed' => '10'],
+            [
+                'failed' => '10',
+            ],
             ['failed'],
             static function (JobInterface $job): void {
                 self::assertEquals(10, $job->getFailed());
@@ -62,10 +64,14 @@ final class PropertyHelperTest extends AbstractTestCase
     public function providerSetJsonProperties(): iterable
     {
         yield 'set debug_info' => [
-            ['debug_info' => '{"key":"value"}'],
+            [
+                'debug_info' => '{"key":"value"}',
+            ],
             ['debug_info'],
             static function (JobLogInterface $jobLog): void {
-                self::assertEquals(['key' => 'value'], $jobLog->getDebugInfo());
+                self::assertEquals([
+                    'key' => 'value',
+                ], $jobLog->getDebugInfo());
             },
         ];
     }
@@ -76,7 +82,9 @@ final class PropertyHelperTest extends AbstractTestCase
     public function providerSetOptionalProperties(): iterable
     {
         yield 'set failure_reason' => [
-            ['failure_reason' => 'reason'],
+            [
+                'failure_reason' => 'reason',
+            ],
             ['failure_reason'],
             static function (JobLogInterface $jobLog): void {
                 self::assertEquals('reason', $jobLog->getFailureReason());

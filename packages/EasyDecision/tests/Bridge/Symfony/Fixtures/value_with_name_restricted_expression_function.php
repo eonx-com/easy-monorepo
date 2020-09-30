@@ -6,7 +6,9 @@ use EonX\EasyDecision\Tests\Bridge\Symfony\Stubs\Configurators\NameRestrictedExp
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->extension('easy_decision', ['use_expression_language' => true]);
+    $containerConfigurator->extension('easy_decision', [
+        'use_expression_language' => true,
+    ]);
 
     $services = $containerConfigurator->services();
 

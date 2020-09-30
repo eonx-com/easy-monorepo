@@ -30,7 +30,9 @@ final class LoggerReporter extends AbstractErrorReporter
         $this->logger->log(
             $this->getLogLevel($throwable),
             $throwable->getMessage(),
-            ['exception' => ErrorDetailsHelper::getDetails($throwable)]
+            [
+                'exception' => ErrorDetailsHelper::getDetails($throwable),
+            ]
         );
     }
 }

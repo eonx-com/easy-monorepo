@@ -53,7 +53,9 @@ final class RolesFromJwtModifierTest extends AbstractTestCase
         yield 'Roles resolved' => [
             new InMemoryRolesProviderStub([new Role('app:role', [])]),
             $context,
-            ['app:role' => new Role('app:role', [])],
+            [
+                'app:role' => new Role('app:role', []),
+            ],
         ];
     }
 

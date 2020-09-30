@@ -83,7 +83,9 @@ final class ExternalSqlLogger implements SQLLogger
      */
     private function formatQuery(): array
     {
-        $data = ['sql' => $this->sql];
+        $data = [
+            'sql' => $this->sql,
+        ];
 
         foreach ($this->params as $index => $binding) {
             $data[\sprintf('binding %s', $index)] = $binding;

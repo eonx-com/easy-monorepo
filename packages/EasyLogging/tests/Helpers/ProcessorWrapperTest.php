@@ -15,11 +15,9 @@ final class ProcessorWrapperTest extends AbstractTestCase
      */
     public function providerTestInvoke(): iterable
     {
-        yield 'Using closure' => [
-            function (array $records): array {
-                        return $records;
-                    }
-        ];
+        yield 'Using closure' => [function (array $records): array {
+            return $records;
+        }];
 
         yield 'Using object with __invoke method' => [new InvokableStub()];
     }
@@ -30,7 +28,9 @@ final class ProcessorWrapperTest extends AbstractTestCase
     public function testInvoke(callable $wrapped): void
     {
         $wrapper = ProcessorWrapper::wrap($wrapped);
-        $array = ['key' => 'value'];
+        $array = [
+            'key' => 'value',
+        ];
 
         self::assertEquals($array, $wrapper($array));
     }

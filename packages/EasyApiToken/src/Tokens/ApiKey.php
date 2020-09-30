@@ -33,7 +33,9 @@ final class ApiKey implements ApiKeyInterface
      */
     public function getPayload(): array
     {
-        return ['api_key' => $this->apiKey];
+        return [
+            'api_key' => $this->apiKey,
+        ];
     }
 }
 

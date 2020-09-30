@@ -37,6 +37,5 @@ return [
         ]
         */
     ],
-
     'default_decoder' => null,
 ];

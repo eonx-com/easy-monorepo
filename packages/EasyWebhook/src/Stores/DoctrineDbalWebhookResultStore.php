@@ -41,7 +41,9 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
     {
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->getTableForQuery());
 
-        $data = $this->conn->fetchAssoc($sql, ['id' => $id]);
+        $data = $this->conn->fetchAssoc($sql, [
+            'id' => $id,
+        ]);
 
         if (\is_array($data) === false) {
             return null;
@@ -70,7 +72,9 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
             return $result;
         }
 
-        $this->conn->update($this->table, $this->formatData($data), ['id' => $result->getWebhook()->getId()]);
+        $this->conn->update($this->table, $this->formatData($data), [
+            'id' => $result->getWebhook()->getId(),
+        ]);
 
         return $result;
     }

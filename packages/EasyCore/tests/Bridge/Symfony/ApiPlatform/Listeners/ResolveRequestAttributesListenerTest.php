@@ -28,7 +28,9 @@ final class ResolveRequestAttributesListenerTest extends AbstractSymfonyTestCase
     public function testSetRequestAttributesSuccessfully(): void
     {
         $requestStack = new RequestStack();
-        $requestStack->push(new Request([], [], ['param1' => 'value1']));
+        $requestStack->push(new Request([], [], [
+            'param1' => 'value1',
+        ]));
 
         $listener = new ResolveRequestAttributesListener($requestStack);
         $dataPersister = new RequestAttributesAwareStub();

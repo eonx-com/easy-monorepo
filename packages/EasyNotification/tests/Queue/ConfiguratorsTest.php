@@ -36,7 +36,9 @@ final class ConfiguratorsTest extends AbstractTestCase
             new RealTimeMessage([]),
             static function (QueueMessageInterface $queueMessage): void {
                 self::assertEquals(
-                    [QueueMessageInterface::HEADER_PROVIDER => static::$defaultConfig['externalId']],
+                    [
+                        QueueMessageInterface::HEADER_PROVIDER => static::$defaultConfig['externalId'],
+                    ],
                     $queueMessage->getHeaders()
                 );
             },
@@ -64,7 +66,9 @@ final class ConfiguratorsTest extends AbstractTestCase
         yield 'RealTimeBody' => [
             new RealTimeBodyConfigurator(),
             Config::fromArray(static::$defaultConfig),
-            new RealTimeMessage(['name' => 'nathan'], ['nathan']),
+            new RealTimeMessage([
+                'name' => 'nathan',
+            ], ['nathan']),
             static function (QueueMessageInterface $queueMessage): void {
                 $expected = '{"body":"{\"name\":\"nathan\"}","topics":["nathan"]}';
 
