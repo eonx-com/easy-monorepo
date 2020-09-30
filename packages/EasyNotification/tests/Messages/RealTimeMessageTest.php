@@ -14,7 +14,9 @@ final class RealTimeMessageTest extends AbstractTestCase
     /**
      * @var mixed[]
      */
-    protected static $body = ['message' => 'hey there'];
+    protected static $body = [
+        'message' => 'hey there',
+    ];
 
     /**
      * @var string[]

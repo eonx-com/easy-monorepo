@@ -24,7 +24,9 @@ final class Arr
             }
 
             // Set value
-            $flattened[] = [\sprintf('%s%s', (string)$prepend, $key) => $value];
+            $flattened[] = [
+                \sprintf('%s%s', (string)$prepend, $key) => $value,
+            ];
         }
 
         // Merge flattened keys if some were found otherwise return an empty array
@@ -60,7 +62,9 @@ final class Arr
             }
 
             if (\is_string($array[$key] ?? null)) {
-                $array[$key] = ['__base__' => $array[$key]];
+                $array[$key] = [
+                    '__base__' => $array[$key],
+                ];
             }
 
             if (isset($array[$key]) === false || \is_array($array[$key]) === false) {

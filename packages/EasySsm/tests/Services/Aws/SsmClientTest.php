@@ -52,7 +52,9 @@ final class SsmClientTest extends AbstractTestCase
                     ],
                 ],
                 'delete' => [
-                    ['Name' => 'param2'],
+                    [
+                        'Name' => 'param2',
+                    ],
                 ],
             ],
         ];

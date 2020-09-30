@@ -37,7 +37,9 @@ final class SlackMessage extends AbstractMessage
 
     public function getBody(): string
     {
-        $extra = ['channel' => $this->channel];
+        $extra = [
+            'channel' => $this->channel,
+        ];
 
         if ($this->text) {
             $extra['text'] = $this->text;

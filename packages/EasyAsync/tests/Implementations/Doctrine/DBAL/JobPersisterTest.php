@@ -120,7 +120,9 @@ final class JobPersisterTest extends AbstractTestCase
             $mock
                 ->shouldReceive('fetchAssoc')
                 ->once()
-                ->with('SELECT * FROM `jobs` WHERE id = :jobId', ['jobId' => 'jobId'])
+                ->with('SELECT * FROM `jobs` WHERE id = :jobId', [
+                    'jobId' => 'jobId',
+                ])
                 ->andThrow(new \Exception());
         });
 
@@ -136,7 +138,9 @@ final class JobPersisterTest extends AbstractTestCase
             $mock
                 ->shouldReceive('fetchAssoc')
                 ->once()
-                ->with('SELECT * FROM `jobs` WHERE id = :jobId', ['jobId' => 'jobId'])
+                ->with('SELECT * FROM `jobs` WHERE id = :jobId', [
+                    'jobId' => 'jobId',
+                ])
                 ->andReturn(false);
         });
 
@@ -210,7 +214,9 @@ final class JobPersisterTest extends AbstractTestCase
                 ->atLeast()
                 ->once()
                 ->with('sql query', [])
-                ->andReturn(['_count_1' => 1]);
+                ->andReturn([
+                    '_count_1' => 1,
+                ]);
 
             $mock
                 ->shouldReceive('fetchAllAssociative')
@@ -282,7 +288,9 @@ final class JobPersisterTest extends AbstractTestCase
             $mock
                 ->shouldReceive('executeQuery')
                 ->once()
-                ->with('DELETE FROM `jobs` WHERE id = :jobId', ['jobId' => 'jobId'])
+                ->with('DELETE FROM `jobs` WHERE id = :jobId', [
+                    'jobId' => 'jobId',
+                ])
                 ->andReturn(true);
         });
 
@@ -321,7 +329,9 @@ final class JobPersisterTest extends AbstractTestCase
                 $mock
                     ->shouldReceive('fetchAssoc')
                     ->once()
-                    ->with($sql, ['jobId' => 'jobId'])
+                    ->with($sql, [
+                        'jobId' => 'jobId',
+                    ])
                     ->andReturn($expected);
             }
         );

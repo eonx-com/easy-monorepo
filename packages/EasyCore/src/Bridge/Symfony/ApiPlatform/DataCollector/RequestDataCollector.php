@@ -39,7 +39,9 @@ final class RequestDataCollector extends DataCollector
 
         $this->data = $reflection->getValue($this->decorated);
 
-        $this->data['dataPersisters'] = ['responses' => $this->dataPersister->getPersistersResponse() ?? []];
+        $this->data['dataPersisters'] = [
+            'responses' => $this->dataPersister->getPersistersResponse() ?? [],
+        ];
     }
 
     /**

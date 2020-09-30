@@ -40,7 +40,9 @@ final class ElasticsearchSearchService implements SearchServiceInterface
             $accessTokensProperty .= '.keyword';
         }
 
-        $query = $body['query'] ?? ['match_all' => new stdClass()];
+        $query = $body['query'] ?? [
+            'match_all' => new stdClass(),
+        ];
         $query = $this->replaceEmptyArrayWithEmptyObjectInMatchAllRecursively($query);
 
         $body['query'] = [

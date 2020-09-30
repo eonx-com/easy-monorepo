@@ -63,12 +63,16 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
             'mysql' => [MySqlPlatform::class, [], 'DATETIME(6)'],
             'mysql, with version = true' => [
                 MySqlPlatform::class,
-                ['version' => true],
+                [
+                    'version' => true,
+                ],
                 DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP,
             ],
             'mysql, with version = false' => [
                 MySqlPlatform::class,
-                ['version' => false],
+                [
+                    'version' => false,
+                ],
                 DateTimeMicrosecondsType::FORMAT_DB_DATETIME,
             ],
             'postgresql' => [
@@ -78,12 +82,16 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
             ],
             'postgresql, with version = true' => [
                 PostgreSqlPlatform::class,
-                ['version' => true],
+                [
+                    'version' => true,
+                ],
                 DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
             ],
             'postgresql, with version = false' => [
                 PostgreSqlPlatform::class,
-                ['version' => false],
+                [
+                    'version' => false,
+                ],
                 DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
             ],
         ];

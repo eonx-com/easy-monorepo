@@ -36,7 +36,9 @@ abstract class AbstractTestCase extends TestCase
      */
     protected function createServerRequest(?array $query = null): ServerRequestInterface
     {
-        $server = ['HTTP_HOST' => 'eonx.com'];
+        $server = [
+            'HTTP_HOST' => 'eonx.com',
+        ];
 
         return (new EasyPsr7Factory())->createRequest(new Request($query ?? [], [], [], [], [], $server));
     }

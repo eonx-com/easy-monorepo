@@ -51,7 +51,9 @@ final class RolesFromJwtConfiguratorTest extends AbstractTestCase
         yield 'Roles resolved' => [
             [new Role('app:role', [])],
             $context,
-            ['app:role' => new Role('app:role', [])],
+            [
+                'app:role' => new Role('app:role', []),
+            ],
             new JwtClaimFetcher(),
         ];
     }

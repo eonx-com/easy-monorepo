@@ -90,7 +90,9 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
     {
         $sql = \sprintf('DELETE FROM %s WHERE job_id = :jobId', $this->getTableForQuery());
 
-        $this->conn->executeQuery($sql, ['jobId' => $jobId]);
+        $this->conn->executeQuery($sql, [
+            'jobId' => $jobId,
+        ]);
     }
 
     private function updateJob(JobLogInterface $jobLog, JobInterface $job): JobInterface

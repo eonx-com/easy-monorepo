@@ -37,7 +37,9 @@ abstract class AbstractTestCase extends TestCase
         $tester->execute([
             'command' => $command,
             '--cwd' => static::$cwd,
-        ], ['capture_stderr_separately' => true]);
+        ], [
+            'capture_stderr_separately' => true,
+        ]);
 
         return $tester->getDisplay();
     }

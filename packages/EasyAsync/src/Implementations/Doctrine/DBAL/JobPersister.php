@@ -92,7 +92,9 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
     {
         $sql = \sprintf('DELETE FROM %s WHERE id = :jobId', $this->getTableForQuery());
 
-        $this->conn->executeQuery($sql, ['jobId' => $job->getId()]);
+        $this->conn->executeQuery($sql, [
+            'jobId' => $job->getId(),
+        ]);
     }
 
     private function findOneJob(string $jobId, ?bool $forUpdate = null): JobInterface

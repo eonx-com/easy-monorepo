@@ -30,7 +30,9 @@ final class JobLogTest extends AbstractTestCase
 
         self::assertEquals($expected, $jobLog->toArray());
 
-        $jobLog->addDebugInfo('exception', ['class' => 'exception']);
+        $jobLog->addDebugInfo('exception', [
+            'class' => 'exception',
+        ]);
 
         self::assertEquals([
             'exception' => [

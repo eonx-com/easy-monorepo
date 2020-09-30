@@ -27,7 +27,9 @@ final class JsonbTypeTest extends AbstractTestCase
             $this->provideConvertToPhpValues(),
             [
                 'object phpValue' => [
-                    'phpValue' => (object)['property' => 'value'],
+                    'phpValue' => (object)[
+                        'property' => 'value',
+                    ],
                     'postgresValue' => '{"property":"value"}',
                 ],
             ]

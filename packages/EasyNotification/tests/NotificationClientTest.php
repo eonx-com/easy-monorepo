@@ -96,7 +96,9 @@ final class NotificationClientTest extends AbstractTestCase
         $sqsClientStub = new SqsClientStub();
         $client = $this->getNotificationClient($sqsClientStub);
 
-        $client->withConfig($config)->send(RealTimeMessage::create(['name' => 'nathan'], ['topic']));
+        $client->withConfig($config)->send(RealTimeMessage::create([
+            'name' => 'nathan',
+        ], ['topic']));
 
         $expected = [
             'QueueUrl' => static::$defaultConfig['queueUrl'],

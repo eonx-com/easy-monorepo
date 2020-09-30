@@ -35,7 +35,9 @@ final class DecisionFactoryTest extends AbstractTestCase
             'value < 2' => true,
         ];
 
-        self::assertTrue($decision->make(['value' => 1]));
+        self::assertTrue($decision->make([
+            'value' => 1,
+        ]));
         self::assertSame(UnanimousDecision::class, $decision->getContext()->getDecisionType());
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());
     }

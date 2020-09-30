@@ -39,7 +39,9 @@ final class ServiceProvidersTest extends AbstractLaravelTestCase
             /** @var \Illuminate\Contracts\Foundation\Application $app */
             $app = $this->getApplication($pretendInConsole);
 
-            $server = ['HTTP_HOST' => 'eonx.com'];
+            $server = [
+                'HTTP_HOST' => 'eonx.com',
+            ];
 
             $app->instance(
                 $pretendInConsole === true ? 'request' : Request::class,
