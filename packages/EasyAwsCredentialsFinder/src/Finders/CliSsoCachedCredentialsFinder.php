@@ -85,7 +85,7 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
             $contents['Credentials']['AccessKeyId'] ?? null,
             $contents['Credentials']['SecretAccessKey'] ?? null,
             $contents['Credentials']['SessionToken'] ?? null,
-            $expiration,
+            $expiration
         );
     }
 
