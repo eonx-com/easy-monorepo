@@ -1,7 +1,19 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.5.8 - 2020-09-29
+## v2.5.9 - 2020-10-02
+
+- [#380] Remove easy-cfhighlander and easy-docker
+
+### EasyErrorHandler
+
+- [#379] HttpExceptionBuilder using Symfony Kernel Interfaces
+- [#378] Fix exception data in ExtendedExceptionBuilder, Thanks to [@DKeeper]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.8] - 2020-09-29
 
 ### EasyAsync
 
@@ -2497,3 +2509,7 @@
 [#377]: https://github.com/eonx-com/easy-monorepo/pull/377
 [#376]: https://github.com/eonx-com/easy-monorepo/pull/376
 [v2.5.7]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.6...v2.5.7
+[#380]: https://github.com/eonx-com/easy-monorepo/pull/380
+[#379]: https://github.com/eonx-com/easy-monorepo/pull/379
+[#378]: https://github.com/eonx-com/easy-monorepo/pull/378
+[v2.5.8]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.7...v2.5.8
