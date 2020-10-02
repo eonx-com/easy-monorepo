@@ -5,9 +5,9 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "eonx-com/easy-event-dispatcher": "^2.6",
-        "eonx-com/easy-pagination": "^2.6",
-        "eonx-com/easy-random": "^2.6",
+        "eonx-com/easy-event-dispatcher": "^2.5.9",
+        "eonx-com/easy-pagination": "^2.5.9",
+        "eonx-com/easy-random": "^2.5.9",
         "nette/utils": "^3.1"
     },
     "require-dev": {
