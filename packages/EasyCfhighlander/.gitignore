@@ -1,6 +1,0 @@
-# Simple cache
-/var
-
-# Composer
-composer.lock
-/vendor

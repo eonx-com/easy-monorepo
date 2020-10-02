@@ -12,10 +12,8 @@ jobs:
                 package:
                     - EasyApiToken
                     - EasyAsync
-                    - EasyCfhighlander
                     - EasyCore
                     - EasyDecision
-                    - EasyDocker
                     - EasyEntityChange
                     - EasyIdentity
                     - EasyLogging

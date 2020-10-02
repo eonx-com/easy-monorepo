@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasySsm\HttpKernel;
 
 use EonX\EasyAwsCredentialsFinder\Bridge\Symfony\EasyAwsCredentialsFinderBundle;
+use EonX\EasyRandom\RandomGenerator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symplify\AutowireArrayParameter\DependencyInjection\CompilerPass\AutowireArrayParameterCompilerPass;
-use Symplify\PackageBuilder\HttpKernel\SimpleKernelTrait;
 
 final class EasySsmKernel extends Kernel implements CompilerPassInterface
 {
-    use SimpleKernelTrait;
-
     /**
      * @var string[]
      */
@@ -28,7 +26,7 @@ final class EasySsmKernel extends Kernel implements CompilerPassInterface
     {
         $this->configs = $configs ?? [];
 
-        parent::__construct($this->getUniqueKernelKey(), false);
+        parent::__construct(\sprintf('easy_ssm_%s', $this->getKernelId()), false);
     }
 
     public function getCacheDir(): string
@@ -68,5 +66,10 @@ final class EasySsmKernel extends Kernel implements CompilerPassInterface
     protected function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new AutowireArrayParameterCompilerPass());
+    }
+
+    private function getKernelId(): string
+    {
+        return (string)(new RandomGenerator())->randomString(8)->userFriendly();
     }
 }
