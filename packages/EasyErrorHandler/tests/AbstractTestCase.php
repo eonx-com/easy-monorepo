@@ -192,7 +192,7 @@ class AbstractTestCase extends TestCase
                 $content = \json_decode((string)$response->getContent(), true);
                 self::assertSame(404, $response->getStatusCode());
                 self::assertSame('my-message', $content['message']);
-            }
+            },
         ];
     }
 
