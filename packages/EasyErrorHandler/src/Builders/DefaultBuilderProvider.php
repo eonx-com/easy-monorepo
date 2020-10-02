@@ -6,6 +6,7 @@ namespace EonX\EasyErrorHandler\Builders;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
@@ -44,6 +45,10 @@ final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterf
         yield new TimeBuilder($this->getKey('time'));
         yield new UserMessageBuilder($this->translator, $this->getKey('message'));
         yield new ViolationsBuilder($this->getKey('violations'));
+
+        if (\interface_exists(HttpExceptionInterface::class)) {
+            yield new HttpExceptionBuilder();
+        }
     }
 
     private function getKey(string $name): string

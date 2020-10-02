@@ -12,6 +12,7 @@ use ReflectionClass;
 use ReflectionProperty;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -181,6 +182,16 @@ class AbstractTestCase extends TestCase
                 self::assertSame([
                     'foo' => ['bar'],
                 ], $content['violations']);
+            },
+        ];
+
+        yield 'HttpException statusCode and message' => [
+            new Request(),
+            new NotFoundHttpException('my-message'),
+            static function (Response $response): void {
+                $content = \json_decode((string)$response->getContent(), true);
+                self::assertSame(404, $response->getStatusCode());
+                self::assertSame('my-message', $content['message']);
             },
         ];
     }
