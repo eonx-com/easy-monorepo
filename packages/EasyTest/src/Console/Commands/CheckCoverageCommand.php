@@ -16,6 +16,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class CheckCoverageCommand extends Command
 {
     /**
+     * @var string
+     */
+    protected static $defaultName = 'check-coverage';
+
+    /**
      * @var \EonX\EasyTest\Interfaces\CoverageLoaderInterface
      */
     private $coverageLoader;
@@ -36,7 +41,6 @@ final class CheckCoverageCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('check-coverage')
             ->setDescription('Run given test script and check output coverage against coverage option')
             ->addArgument('file', InputArgument::REQUIRED, 'File containing the coverage output')
             ->addOption('coverage', 'c', InputOption::VALUE_REQUIRED, 'Coverage limit to check against');

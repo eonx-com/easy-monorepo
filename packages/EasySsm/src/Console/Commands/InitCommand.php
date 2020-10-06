@@ -10,9 +10,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class InitCommand extends AbstractCommand
 {
+    /**
+     * @var string
+     */
+    protected static $defaultName = 'init';
+
     protected function configure(): void
     {
-        $this->setName('init');
         $this->setDescription('Initial pull content of SSM and create YAML file');
     }
 
