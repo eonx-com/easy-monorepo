@@ -24,10 +24,10 @@ final class ErrorDetailsHelper
             'line' => $throwable->getLine(),
             'message' => $throwable->getMessage(),
             'trace' => \array_map(static function (array $trace): array {
-                            unset($trace['args']);
+                unset($trace['args']);
 
-                            return $trace;
-                        }, $throwable->getTrace()),
+                return $trace;
+            }, $throwable->getTrace()),
         ];
 
         if ($throwable instanceof SubCodeAwareExceptionInterface) {

@@ -10,7 +10,6 @@ use EonX\EasyRandom\Exceptions\InvalidAlphabetNameException;
 use EonX\EasyRandom\Exceptions\InvalidRandomStringException;
 use EonX\EasyRandom\Interfaces\RandomStringInterface;
 use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\Tests\Stubs\AlwaysInvalidRandomStringConstraintStub;
 use EonX\EasyRandom\Tests\Stubs\AlwaysValidRandomStringConstraintStub;
 
 final class RandomStringTest extends AbstractTestCase

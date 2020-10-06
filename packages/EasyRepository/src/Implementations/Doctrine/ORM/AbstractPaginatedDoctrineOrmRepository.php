@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
