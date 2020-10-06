@@ -1,7 +1,28 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.5.9 - 2020-10-02
+## v2.5.10 - 2020-10-06
+
+### EasyRandom
+
+- [#382] Implement CallbackConstraint
+
+### EasyRepository
+
+- [#383] Update doctrine classes to new ones
+
+### EasyTest
+
+- [#381] Make console commands lazy., Thanks to [@ERuban]
+
+### EasySsm
+
+- [#381] [EasySsm]Make console commands lazy., Thanks to [@ERuban]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.9] - 2020-10-02
 
 - [#380] Remove easy-cfhighlander and easy-docker
 
@@ -2513,3 +2534,7 @@
 [#379]: https://github.com/eonx-com/easy-monorepo/pull/379
 [#378]: https://github.com/eonx-com/easy-monorepo/pull/378
 [v2.5.8]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.7...v2.5.8
+[#383]: https://github.com/eonx-com/easy-monorepo/pull/383
+[#382]: https://github.com/eonx-com/easy-monorepo/pull/382
+[#381]: https://github.com/eonx-com/easy-monorepo/pull/381
+[v2.5.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.8...v2.5.9
