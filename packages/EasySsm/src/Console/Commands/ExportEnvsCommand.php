@@ -12,6 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class ExportEnvsCommand extends AbstractCommand
 {
     /**
+     * @var string
+     */
+    protected static $defaultName = 'export-envs';
+
+    /**
      * @var \EonX\EasySsm\Services\Dotenv\SsmDotenvInterface
      */
     private $ssmDotenv;
@@ -27,7 +32,6 @@ final class ExportEnvsCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setName('export-envs')
             ->setDescription('Export SSM parameters to env variables')
             ->addOption(
                 'strict',

@@ -11,6 +11,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class DumpEnvCommand extends AbstractCommand
 {
     /**
+     * @var string
+     */
+    protected static $defaultName = 'dump-env';
+
+    /**
      * @var string[]
      */
     private static $excludes = [
@@ -34,7 +39,6 @@ final class DumpEnvCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setName('dump-env')
             ->setDescription('Dump env vars in a PHP file to improve loading time.')
             ->addOption(
                 'filename',
