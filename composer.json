@@ -52,7 +52,7 @@
         "mockery/mockery": "^1.2",
         "phpspec/prophecy": "~1.0",
         "phpstan/phpstan": "^0.12.42",
-        "phpunit/phpunit": "^7.5 || ^8.4",
+        "phpunit/phpunit": "^8.4 || ^9.5",
         "psr/container": "^1.0",
         "symfony/symfony": "^4.2 || ^5.0",
         "symplify/monorepo-builder": "^8.3.32",

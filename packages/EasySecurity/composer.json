@@ -10,7 +10,7 @@
     },
     "require-dev": {
         "eonx-com/easy-bugsnag": "^2.6",
-        "phpunit/phpunit": "^7.5 || ^8.4",
+        "phpunit/phpunit": "^8.4 || ^9.5",
         "laravel/lumen-framework": "^5.5",
         "symfony/symfony": "^4.2 || ^5.0"
     },
