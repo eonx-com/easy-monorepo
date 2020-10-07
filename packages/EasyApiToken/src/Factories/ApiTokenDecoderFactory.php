@@ -10,7 +10,7 @@ use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderProviderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 
-class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
+final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
 {
     /**
      * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface[]

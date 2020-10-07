@@ -10,7 +10,7 @@ use Symfony\Bridge\PsrHttpMessage\Tests\Fixtures\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
-class EasyPsr7FactoryTest extends AbstractTestCase
+final class EasyPsr7FactoryTest extends AbstractTestCase
 {
     public function testCreateRequest(): void
     {

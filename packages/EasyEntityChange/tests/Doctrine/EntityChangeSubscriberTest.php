@@ -26,7 +26,7 @@ use stdClass;
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class EntityChangeSubscriberTest extends AbstractTestCase
+final class EntityChangeSubscriberTest extends AbstractTestCase
 {
     public function testListener(): void
     {

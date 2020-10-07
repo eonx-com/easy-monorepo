@@ -6,7 +6,7 @@ namespace EonX\EasyIdentity\Implementations\Auth0;
 
 use EonX\EasyIdentity\Exceptions\RequiredDataMissingException;
 
-class Config
+final class Config
 {
     /**
      * @var mixed[]

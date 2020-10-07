@@ -9,7 +9,7 @@ use EonX\EasyEntityChange\Interfaces\DeletedEntityEnrichmentInterface;
 /**
  * @coversNothing
  */
-class DeletedEntityEnrichmentStub implements DeletedEntityEnrichmentInterface
+final class DeletedEntityEnrichmentStub implements DeletedEntityEnrichmentInterface
 {
     /**
      * @var mixed[][]
