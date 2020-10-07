@@ -42,7 +42,7 @@ jobs:
                     restore-keys: ${{ matrix.php }}-comp-
 
             -   run: composer global require hirak/prestissimo
-            -   run: composer install --prefer-dist --no-progress
+            -   run: composer install --prefer-dist --no-progress --ansi
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}

@@ -158,23 +158,23 @@
             "@check-security",
             "@check-tests"
         ],
-        "check-ecs": "vendor/bin/ecs check --clear-cache",
+        "check-ecs": "vendor/bin/ecs check --clear-cache --ansi",
         "check-monorepo": [
             "@composer validate --strict"
         ],
-        "check-phpstan": "vendor/bin/phpstan analyse --error-format symplify",
+        "check-phpstan": "vendor/bin/phpstan analyse --error-format symplify --ansi",
         "check-security": "vendor/bin/security-checker security:check",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
         "changelog": [
-            "vendor/bin/changelog-linker dump-merges --in-packages",
-            "vendor/bin/changelog-linker link",
-            "vendor/bin/changelog-linker cleanup"
+            "vendor/bin/changelog-linker dump-merges --in-packages --ansi",
+            "vendor/bin/changelog-linker link --ansi",
+            "vendor/bin/changelog-linker cleanup --ansi"
         ],
-        "fix-ecs": "vendor/bin/ecs check --fix --clear-cache",
-        "merge": "vendor/bin/monorepo-builder merge",
-        "propagate": "vendor/bin/monorepo-builder propagate",
-        "split": "vendor/bin/monorepo-builder split",
-        "validate-repo": "vendor/bin/monorepo-builder validate"
+        "fix-ecs": "vendor/bin/ecs check --fix --clear-cache --ansi",
+        "merge": "vendor/bin/monorepo-builder merge --ansi",
+        "propagate": "vendor/bin/monorepo-builder propagate --ansi",
+        "split": "vendor/bin/monorepo-builder spli --ansit",
+        "validate-repo": "vendor/bin/monorepo-builder validate --ansi"
     },
     "suggest": {
         "auth0/auth0-php": "To use the Auth0 implementation to handle your users identity",
