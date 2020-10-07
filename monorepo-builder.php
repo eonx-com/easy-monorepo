@@ -17,9 +17,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $parameters->set(Option::DATA_TO_APPEND, [
         'require-dev' => [
-            'symplify/monorepo-builder' => '^8.2',
-            'symplify/changelog-linker' => '^8.2',
-            'symplify/easy-coding-standard' => '^8.2',
             'phpstan/phpstan' => '^0.12.42',
             'sensiolabs/security-checker' => '^5.0',
         ],
