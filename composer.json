@@ -64,7 +64,8 @@
         "symplify/easy-coding-standard-tester": "^8.3.30",
         "symfony/maker-bundle": "^1.15",
         "rector/rector": "^0.8.2",
-        "symfony/monolog-bundle": "^3.5"
+        "symfony/monolog-bundle": "^3.5",
+        "tracy/tracy": "^2.7"
     },
     "autoload": {
         "psr-4": {
@@ -159,9 +160,8 @@
             "@check-tests"
         ],
         "check-ecs": "vendor/bin/ecs check --clear-cache --ansi",
-        "check-monorepo": [
-            "@composer validate --strict"
-        ],
+        "check-monorepo": "vendor/bin/monorepo-builder validate",
+        "check-composer": "@composer validate --strict",
         "check-phpstan": "vendor/bin/phpstan analyse --error-format symplify --ansi",
         "check-security": "vendor/bin/security-checker security:check",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
