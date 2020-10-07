@@ -27,6 +27,7 @@ use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFi
 use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveSuperfluousDocBlockWhitespaceFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
+use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\CodingStandard\Fixer\Spacing\RemoveSpacingAroundModifierAndConstFixer;
 use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
@@ -66,7 +67,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         PhpdocVarWithoutNameFixer::class => null,
         PhpUnitStrictFixer::class => null,
         BlankLineAfterOpeningTagFixer::class => null,
-        MethodChainingIndentationFixer::class => null,
+
+        MethodChainingIndentationFixer::class => ['*/Configuration.php'],
+
+        MethodChainingNewlineFixer::class => [
+            // bug, to be fixed in symplify
+            '*/Configuration.php',
+            __DIR__ . '/packages/EasyCore/tests/Doctrine/DBAL/Types/DateTimeMicrosecondsTypeTest.php',
+        ],
         NullTypeHintOnLastPositionSniff::class . '.NullTypeHintNotOnLastPosition' => null,
         ParameterTypeHintSniff::class . '.MissingAnyTypeHint' => null,
         ReturnTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
@@ -153,6 +161,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services = $containerConfigurator->services();
     $services->set(FileHeaderSniff::class);
+
+    $services->set(MethodChainingNewlineFixer::class);
 
     $services->set(YodaStyleFixer::class)
         ->call('configure', [

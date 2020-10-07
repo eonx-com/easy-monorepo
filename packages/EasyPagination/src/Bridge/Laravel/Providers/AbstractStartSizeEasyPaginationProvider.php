@@ -45,7 +45,8 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
 
     protected function createConfig(): StartSizeConfig
     {
-        $config = $this->app->make('config')->get('pagination.start_size', []);
+        $config = $this->app->make('config')
+            ->get('pagination.start_size', []);
 
         return new StartSizeConfig(
             $config['start_attribute'] ?? static::$defaultConfig['start_attribute'],

@@ -23,8 +23,7 @@ final class EasyApiTokenExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
 
-        $container
-            ->registerForAutoconfiguration(ApiTokenDecoderProviderInterface::class)
+        $container->registerForAutoconfiguration(ApiTokenDecoderProviderInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_DECODER_PROVIDER);
 
         // Resolve config
@@ -48,7 +47,7 @@ final class EasyApiTokenExtension extends Extension
 
         if (empty($decoders) === false) {
             @\trigger_error(\sprintf(
-                'Defining ApiTokenDecoders using a config file is deprecated since 2.4 and will be removed in 3.0. 
+                'Defining ApiTokenDecoders using a config file is deprecated since 2.4 and will be removed in 3.0.
                 Use %s instead.',
                 ApiTokenDecoderProviderInterface::class
             ), \E_USER_NOTICE);

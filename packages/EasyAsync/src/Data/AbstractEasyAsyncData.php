@@ -118,9 +118,11 @@ abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
         $format = DateTimeGeneratorInterface::DATE_FORMAT;
 
         return [
-            'finished_at' => $this->getFinishedAt() ? $this->getFinishedAt()->format($format) : null,
+            'finished_at' => $this->getFinishedAt() ? $this->getFinishedAt()
+                ->format($format) : null,
             'id' => $this->getId(),
-            'started_at' => $this->getStartedAt() ? $this->getStartedAt()->format($format) : null,
+            'started_at' => $this->getStartedAt() ? $this->getStartedAt()
+                ->format($format) : null,
             'status' => $this->getStatus(),
             'target_id' => $this->getTargetId(),
             'target_type' => $this->getTargetType(),

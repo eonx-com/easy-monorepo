@@ -28,10 +28,11 @@ final class RuntimeVersionConfigurator extends AbstractClientConfigurator
 
     public function configure(Client $bugsnag): void
     {
-        $bugsnag->getConfig()->mergeDeviceData([
-            'runtimeVersions' => [
-                $this->runtime => $this->version,
-            ],
-        ]);
+        $bugsnag->getConfig()
+            ->mergeDeviceData([
+                'runtimeVersions' => [
+                    $this->runtime => $this->version,
+                ],
+            ]);
     }
 }

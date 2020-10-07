@@ -11,7 +11,8 @@ final class EasyRequestIdServiceProviderTest extends AbstractLumenTestCase
 {
     public function testSanity(): void
     {
-        $requestIdService = $this->getApplication()->make(RequestIdServiceInterface::class);
+        $requestIdService = $this->getApplication()
+            ->make(RequestIdServiceInterface::class);
 
         self::assertTrue(Uuid::isValid($requestIdService->getCorrelationId()));
         self::assertTrue(Uuid::isValid($requestIdService->getRequestId()));

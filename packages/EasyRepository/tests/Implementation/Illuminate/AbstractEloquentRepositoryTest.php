@@ -15,7 +15,9 @@ final class AbstractEloquentRepositoryTest extends AbstractTestCase
         $repo = $this->createEloquentRepository();
 
         $model = $this->mock(Model::class, function (MockInterface $model): void {
-            $model->shouldReceive('delete')->once()->withNoArgs();
+            $model->shouldReceive('delete')
+                ->once()
+                ->withNoArgs();
         });
 
         $repo->delete($model);
@@ -28,7 +30,10 @@ final class AbstractEloquentRepositoryTest extends AbstractTestCase
         $object = new \stdClass();
 
         $repo = $this->createEloquentRepository(function (MockInterface $model) use ($object): void {
-            $model->shouldReceive('find')->once()->with('identifier')->andReturn($object);
+            $model->shouldReceive('find')
+                ->once()
+                ->with('identifier')
+                ->andReturn($object);
         });
 
         $found = $repo->find('identifier');
@@ -43,7 +48,9 @@ final class AbstractEloquentRepositoryTest extends AbstractTestCase
         $repo = $this->createEloquentRepository();
 
         $model = $this->mock(Model::class, function (MockInterface $model): void {
-            $model->shouldReceive('save')->once()->withNoArgs();
+            $model->shouldReceive('save')
+                ->once()
+                ->withNoArgs();
         });
 
         $repo->save($model);

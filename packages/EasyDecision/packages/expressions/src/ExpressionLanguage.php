@@ -81,7 +81,8 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
      */
     public function evaluate(string $expression, ?array $arguments = null)
     {
-        return $this->getExpressionLanguage()->evaluate($expression, $arguments ?? []);
+        return $this->getExpressionLanguage()
+            ->evaluate($expression, $arguments ?? []);
     }
 
     /**
@@ -130,7 +131,8 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     public function validate(string $expression, ?array $names = null): bool
     {
         try {
-            $this->getExpressionLanguage()->parse($expression, $names ?? []);
+            $this->getExpressionLanguage()
+                ->parse($expression, $names ?? []);
 
             return true;
         } catch (SyntaxError $exception) {

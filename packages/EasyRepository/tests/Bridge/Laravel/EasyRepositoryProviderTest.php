@@ -25,10 +25,11 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
     public function testRegisterRepositoriesSuccessfully(): void
     {
         $app = $this->getApplication();
-        \config()->set('easy-repository.repositories', [
-            'interface-1' => Repository1Stub::class,
-            'interface-2' => Repository2Stub::class,
-        ]);
+        \config()
+            ->set('easy-repository.repositories', [
+                'interface-1' => Repository1Stub::class,
+                'interface-2' => Repository2Stub::class,
+            ]);
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */
         $provider = new EasyRepositoryProvider($app);

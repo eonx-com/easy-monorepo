@@ -62,7 +62,8 @@ final class EasySecurityExtension extends Extension
         $container->setParameter(BridgeConstantsInterface::PARAM_TOKEN_DECODER, $config['token_decoder'] ?? null);
 
         foreach (static::$autoConfigTags as $interface => $tag) {
-            $container->registerForAutoconfiguration($interface)->addTag($tag);
+            $container->registerForAutoconfiguration($interface)
+                ->addTag($tag);
         }
 
         $container->setDefinition($contextServiceId, (new Definition(SecurityContext::class))->setPublic(true));

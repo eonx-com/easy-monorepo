@@ -25,13 +25,16 @@ final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
     public function testHandleSucceeds(): void
     {
         $jobProphecy = $this->prophesize(Job::class);
-        $jobProphecy->getJobId()->willReturn('job_id');
-        $jobProphecy->getName()->willReturn('job_name');
+        $jobProphecy->getJobId()
+            ->willReturn('job_id');
+        $jobProphecy->getName()
+            ->willReturn('job_name');
         /** @var \Illuminate\Contracts\Queue\Job $job */
         $job = $jobProphecy->reveal();
         $event = new JobExceptionOccurred('connectionName', $job, new Exception('some-message'));
         $emProphecy = $this->prophesize(EntityManagerInterface::class);
-        $emProphecy->isOpen()->willReturn(false);
+        $emProphecy->isOpen()
+            ->willReturn(false);
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
         $entityManager = $emProphecy->reveal();
         Carbon::setTestNow(Carbon::create(2020, 5, 3));
@@ -53,9 +56,11 @@ final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
 
         $listener->handle($event);
 
-        $emProphecy->isOpen()->shouldHaveBeenCalledOnce();
+        $emProphecy->isOpen()
+            ->shouldHaveBeenCalledOnce();
         $cacheProphecy->forever('illuminate:queue:restart', Carbon::now()->getTimestamp())->shouldHaveBeenCalledOnce();
-        $loggerProphecy->info($logMessage, $logData)->shouldHaveBeenCalledOnce();
+        $loggerProphecy->info($logMessage, $logData)
+            ->shouldHaveBeenCalledOnce();
     }
 
     public function testHandleWithOpenEmSucceeds(): void
@@ -63,7 +68,8 @@ final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
         /** @var \Illuminate\Contracts\Queue\Job $job */
         $job = $this->prophesize(Job::class)->reveal();
         $emProphecy = $this->prophesize(EntityManagerInterface::class);
-        $emProphecy->isOpen()->willReturn(true);
+        $emProphecy->isOpen()
+            ->willReturn(true);
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
         $entityManager = $emProphecy->reveal();
         $cacheProphecy = $this->prophesize(Repository::class);
@@ -76,7 +82,8 @@ final class DoctrineRestartQueueOnEmCloseListenerTest extends AbstractTestCase
 
         $listener->handle(new JobExceptionOccurred('connectionName', $job, new Exception('some-message')));
 
-        $emProphecy->isOpen()->shouldHaveBeenCalledOnce();
+        $emProphecy->isOpen()
+            ->shouldHaveBeenCalledOnce();
         $cacheProphecy->forever(Argument::any(), Argument::any())->shouldNotHaveBeenCalled();
         /** @var mixed[] $infoData */
         $infoData = Argument::any();

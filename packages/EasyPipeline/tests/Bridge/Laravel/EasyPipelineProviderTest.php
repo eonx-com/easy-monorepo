@@ -28,9 +28,10 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
     public function testRegisterPipelineFactorySuccess(): void
     {
         $app = $this->getApplication();
-        \config()->set('easy-pipeline.pipelines', [
-            'pipeline-1' => 'provider-1',
-        ]);
+        \config()
+            ->set('easy-pipeline.pipelines', [
+                'pipeline-1' => 'provider-1',
+            ]);
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */
         (new EasyIlluminatePipelineServiceProvider($app))->register();
@@ -41,9 +42,10 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
     public function testRegisterProviderSuccess(): void
     {
         $app = $this->getApplication();
-        \config()->set('easy-pipeline.pipelines', [
-            'pipeline-1' => MiddlewareProviderStub::class,
-        ]);
+        \config()
+            ->set('easy-pipeline.pipelines', [
+                'pipeline-1' => MiddlewareProviderStub::class,
+            ]);
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */
         (new EasyIlluminatePipelineServiceProvider($app))->register();

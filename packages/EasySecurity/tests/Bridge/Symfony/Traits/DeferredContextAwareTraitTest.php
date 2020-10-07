@@ -14,7 +14,8 @@ final class DeferredContextAwareTraitTest extends AbstractSymfonyTestCase
     public function testResolveContext(): void
     {
         $context = new Context();
-        $container = $this->getKernel()->getContainer();
+        $container = $this->getKernel()
+            ->getContainer();
 
         $container->set('service-id', $context);
 

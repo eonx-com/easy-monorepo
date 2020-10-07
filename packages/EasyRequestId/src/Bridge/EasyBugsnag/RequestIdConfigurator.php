@@ -30,13 +30,14 @@ final class RequestIdConfigurator extends AbstractClientConfigurator implements 
 
     public function configure(Client $bugsnag): void
     {
-        $bugsnag->getPipeline()->pipe(new CallbackBridge(function (Report $report): void {
-            $report->setMetaData([
-                'request' => [
-                    $this->getRequestIdKey() => $this->requestIdService->getRequestId(),
-                    $this->getCorrelationIdKey() => $this->requestIdService->getCorrelationId(),
-                ],
-            ]);
-        }));
+        $bugsnag->getPipeline()
+            ->pipe(new CallbackBridge(function (Report $report): void {
+                $report->setMetaData([
+                    'request' => [
+                        $this->getRequestIdKey() => $this->requestIdService->getRequestId(),
+                        $this->getCorrelationIdKey() => $this->requestIdService->getCorrelationId(),
+                    ],
+                ]);
+            }));
     }
 }
