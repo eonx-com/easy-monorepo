@@ -65,7 +65,9 @@
         "symfony/maker-bundle": "^1.15",
         "rector/rector": "^0.8.15",
         "symfony/monolog-bundle": "^3.5",
-        "tracy/tracy": "^2.7"
+        "tracy/tracy": "^2.7",
+        "cweagans/composer-patches": "^1.7",
+        "migrify/vendor-patches": "^0.3.48"
     },
     "autoload": {
         "psr-4": {
@@ -194,6 +196,11 @@
         },
         "branch-alias": {
             "dev-master": "2.5-dev"
+        },
+        "patches": {
+            "nesbot/carbon": [
+                "patches/nesbot-carbon-src-carbon-traits-localization-php.patch"
+            ]
         }
     }
 }
