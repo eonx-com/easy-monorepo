@@ -60,7 +60,7 @@
         "sensiolabs/security-checker": "^5.0",
         "symplify/easy-coding-standard": "^8.3.31",
         "symplify/phpstan-extensions": "^8.3.31",
-        "slevomat/coding-standard": "^6.1",
+        "slevomat/coding-standard": "^6.4",
         "symplify/easy-coding-standard-tester": "^8.3.31",
         "symfony/maker-bundle": "^1.15",
         "rector/rector": "^0.8.2",
@@ -160,7 +160,7 @@
             "@check-tests"
         ],
         "check-ecs": "vendor/bin/ecs check --clear-cache --ansi",
-        "check-monorepo": "vendor/bin/monorepo-builder validate",
+        "check-monorepo": "vendor/bin/monorepo-builder validate --ansi",
         "check-composer": "@composer validate --strict",
         "check-phpstan": "vendor/bin/phpstan analyse --error-format symplify --ansi",
         "check-security": "vendor/bin/security-checker security:check",
