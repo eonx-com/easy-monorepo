@@ -63,7 +63,7 @@
         "slevomat/coding-standard": "^6.4",
         "symplify/easy-coding-standard-tester": "^8.3.31",
         "symfony/maker-bundle": "^1.15",
-        "rector/rector": "^0.8.2",
+        "rector/rector": "^0.8.15",
         "symfony/monolog-bundle": "^3.5",
         "tracy/tracy": "^2.7"
     },
@@ -165,6 +165,7 @@
         "check-phpstan": "vendor/bin/phpstan analyse --error-format symplify --ansi",
         "check-security": "vendor/bin/security-checker security:check",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
+        "check-rector-ci": "vendor/veindr/rector process",
         "changelog": [
             "vendor/bin/changelog-linker dump-merges --in-packages --ansi",
             "vendor/bin/changelog-linker link --ansi",
