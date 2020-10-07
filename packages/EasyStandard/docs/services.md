@@ -3,13 +3,6 @@ title: Settings of services
 weight: 2000
 is_section: true
 ---eonx_docs---
-```yaml
-// ecs.yml
-services:
-    PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
-        absoluteLineLimit: 120
-        ignoreComments: false
-```
 ```php
 // ecs.php
 declare(strict_types=1);

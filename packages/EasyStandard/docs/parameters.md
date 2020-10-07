@@ -3,23 +3,6 @@ title: Settings of parameters
 weight: 1000
 is_section: true
 ---eonx_docs---
-```yaml
-// ecs.yml
-parameters:
-    paths:
-        - 'app'
-        - 'tests'
-    sets:
-        - 'psr12'
-    skip:
-        PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff: ~
-        SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff:
-            - 'path/to/file.php'
-            - 'path/to/folder/*'
-    exclude_paths:
-        - 'path/to/file.php'
-        - 'path/with/mask/**/*.php'
-```
 ```php
 // ecs.php
 declare(strict_types=1);

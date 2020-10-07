@@ -1,5 +1,5 @@
 ---eonx_docs---
-title: 'EasyStandard: Rector'
+title: 'EasyStandard: Rectors'
 weight: 2001
 ---eonx_docs---
 ##### [\EonX\EasyStandard\Rector\AddCoversAnnotationRector][1]
