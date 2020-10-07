@@ -171,8 +171,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // arrays
     $services->set(ArrayOpenerNewlineFixer::class);
     $services->set(StandaloneLineInMultilineArrayFixer::class);
+
     // annotations
     $services->set(ParamReturnAndVarTagMalformsFixer::class);
+
     // extra spaces
     $services->set(RemoveSuperfluousDocBlockWhitespaceFixer::class);
     $services->set(RemoveSpacingAroundModifierAndConstFixer::class);
