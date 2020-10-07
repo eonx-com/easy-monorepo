@@ -67,7 +67,8 @@
         "symfony/monolog-bundle": "^3.5",
         "tracy/tracy": "^2.7",
         "cweagans/composer-patches": "^1.7",
-        "migrify/vendor-patches": "^0.3.48"
+        "migrify/vendor-patches": "^0.3.48",
+        "dg/bypass-finals": "^1.2"
     },
     "autoload": {
         "psr-4": {

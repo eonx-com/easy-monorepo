@@ -11,7 +11,8 @@
         "mockery/mockery": "^1.2",
         "ext-json": "*",
         "laravel/lumen-framework": "^5.5",
-        "auth0/auth0-php": "^5.4"
+        "auth0/auth0-php": "^5.4",
+        "dg/bypass-finals": "^1.2"
     },
     "autoload": {
         "psr-4": {
