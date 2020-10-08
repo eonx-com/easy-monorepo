@@ -9,15 +9,18 @@ use EonX\EasyDecision\Bridge\Common\ExpressionLanguageConfigFactory;
 use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
 use EonX\EasyDecision\Bridge\Interfaces\TagsInterface;
+use EonX\EasyDecision\Configurators\AddRestrictedRulesDecisionConfigurator;
 use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
 use EonX\EasyDecision\Decisions\DecisionFactory as BaseDecisionFactory;
 use EonX\EasyDecision\Expressions\ExpressionFunctionFactory;
 use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionFactoryInterface;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
+use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface as BaseDecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
 use EonX\EasyDecision\Interfaces\MappingProviderInterface;
+use EonX\EasyDecision\Interfaces\RestrictedRuleInterface;
 use EonX\EasyDecision\Providers\ConfigMappingProvider;
 use EonX\EasyDecision\Rules\ExpressionLanguageRuleFactory;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +38,19 @@ final class EasyDecisionServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-decision.php', 'easy-decision');
 
+        $this->app->tag(RestrictedRuleInterface::class, [TagsInterface::DECISION_RESTRICTED_RULE]);
+
+        $this->app->singleton(
+            AddRestrictedRulesDecisionConfigurator::class,
+            static function (): DecisionConfiguratorInterface {
+                return new AddRestrictedRulesDecisionConfigurator(
+                    $this->app->tagged(TagsInterface::DECISION_RESTRICTED_RULE)
+                );
+            }
+        );
+
+        $defaultConfigurators = [AddRestrictedRulesDecisionConfigurator::class];
+
         if (\config('easy-decision.use_expression_language', false)) {
             $this->app->bind(SetExpressionLanguageConfigurator::class, function (): SetExpressionLanguageConfigurator {
                 return new SetExpressionLanguageConfigurator(
@@ -42,8 +58,10 @@ final class EasyDecisionServiceProvider extends ServiceProvider
                 );
             });
 
-            $this->app->tag(SetExpressionLanguageConfigurator::class, [TagsInterface::DECISION_CONFIGURATOR]);
+            $defaultConfigurators[] = SetExpressionLanguageConfigurator::class;
         }
+
+        $this->app->tag($defaultConfigurators, [TagsInterface::DECISION_CONFIGURATOR]);
 
         $this->app->singleton(MappingProviderInterface::class, static function (): MappingProviderInterface {
             return new ConfigMappingProvider(\config('easy-decision.type_mapping', []));
