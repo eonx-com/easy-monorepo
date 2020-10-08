@@ -20,7 +20,6 @@ use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface as BaseDecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
 use EonX\EasyDecision\Interfaces\MappingProviderInterface;
-use EonX\EasyDecision\Interfaces\RestrictedRuleInterface;
 use EonX\EasyDecision\Providers\ConfigMappingProvider;
 use EonX\EasyDecision\Rules\ExpressionLanguageRuleFactory;
 use Illuminate\Support\ServiceProvider;
