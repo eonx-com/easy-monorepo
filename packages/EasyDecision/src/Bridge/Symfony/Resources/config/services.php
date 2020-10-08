@@ -23,7 +23,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services->set(AddRestrictedRulesDecisionConfigurator::class)
-        ->arg('$restrictedRules', tagged_iterator(TagsInterface::DECISION_RESTRICTED_RULE));
+        ->arg('$rules', tagged_iterator(TagsInterface::DECISION_RULE));
 
     $services->set(DecisionFactoryInterface::class, DecisionFactory::class)
         ->arg('$configurators', tagged_iterator('easy_decision.decision_configurator'));

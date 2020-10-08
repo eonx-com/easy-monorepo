@@ -12,22 +12,24 @@ final class AddRestrictedRulesDecisionConfigurator extends AbstractConfigurator
     /**
      * @var iterable<\EonX\EasyDecision\Interfaces\RuleInterface>
      */
-    private $restrictedRules;
+    private $rules;
 
     /**
-     * @param iterable<\EonX\EasyDecision\Interfaces\RuleInterface> $restrictedRules
+     * @param iterable<\EonX\EasyDecision\Interfaces\RuleInterface> $rules
      */
-    public function __construct(iterable $restrictedRules, ?int $priority = null)
+    public function __construct(iterable $rules, ?int $priority = null)
     {
         parent::__construct($priority);
 
-        $this->restrictedRules = $restrictedRules;
+        $this->rules = $rules;
     }
 
     public function configure(DecisionInterface $decision): void
     {
-        foreach ($this->restrictedRules as $rule) {
+        foreach ($this->rules as $rule) {
             if (($rule instanceof RestrictedRuleInterface) === false) {
+                $decision->addRule($rule); // If not restricted then add the rule by default.
+
                 continue;
             }
 

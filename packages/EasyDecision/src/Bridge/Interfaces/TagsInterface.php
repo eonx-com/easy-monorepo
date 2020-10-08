@@ -14,5 +14,5 @@ interface TagsInterface
     /**
      * @var string
      */
-    public const DECISION_RESTRICTED_RULE = 'easy_decision.restricted_rule';
+    public const DECISION_RULE = 'easy_decision.rule';
 }

@@ -112,18 +112,21 @@ return [
     ],
     /*
     |--------------------------------------------------------------------------
-    | Restricted Rules
+    | Decision Rules
     |--------------------------------------------------------------------------
     |
-    | Here you will define your rules restricted by decisions which implements
-    | \EonX\EasyDecision\Interfaces\RestrictedRuleInterface
+    | Here you will define your rules that will automatically be added to your decisions.
+    | It can be one of:
+    |       \EonX\EasyDecision\Interfaces\RuleInterface
+    |       \EonX\EasyDecision\Interfaces\RestrictedRuleInterface
     |
     | Example:
     |
     | \EonX\EasyDecision\Rules\MyRestrictedRuleForDecisionA::class
+    | \EonX\EasyDecision\Rules\MyRuleForAnyDecision::class
     |
     */
-    'restricted_rules' => [
-        // Your restricted rules here
+    'rules' => [
+        // Your rules here...
     ],
 ];
