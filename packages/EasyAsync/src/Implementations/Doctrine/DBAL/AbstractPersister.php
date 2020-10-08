@@ -83,6 +83,8 @@ abstract class AbstractPersister
         $params = $data->toArray();
         $params['updated_at'] = $this->getDateTimeNow();
 
-        $this->conn->update($this->getTableForQuery(), $params, ['id' => $data->getId()]);
+        $this->conn->update($this->getTableForQuery(), $params, [
+            'id' => $data->getId(),
+        ]);
     }
 }

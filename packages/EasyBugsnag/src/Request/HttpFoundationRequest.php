@@ -58,7 +58,9 @@ final class HttpFoundationRequest implements RequestInterface
             $request['request'] = $this->request->request->all();
         }
 
-        return ['request' => $request];
+        return [
+            'request' => $request,
+        ];
     }
 
     /**

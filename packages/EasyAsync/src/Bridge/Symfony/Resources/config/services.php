@@ -36,5 +36,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->bind('$decorated', ref('default_job_log_updater'));
 
     $services->set(JobPersisterInterface::class, WithEventsJobPersister::class)
-        ->bind('$decorated', ref('@default_job_persister'));
+        ->bind('$decorated', ref('default_job_persister'));
 };

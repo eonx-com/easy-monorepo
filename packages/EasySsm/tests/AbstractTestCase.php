@@ -42,7 +42,9 @@ abstract class AbstractTestCase extends TestCase
 
         $tester = new CommandTester($kernel->getContainer()->get(EasySsmApplication::class)->find($command));
         $tester->setInputs($inputs ?? []);
-        $tester->execute($argsOpts, ['capture_stderr_separately' => true]);
+        $tester->execute($argsOpts, [
+            'capture_stderr_separately' => true,
+        ]);
 
         return $tester->getDisplay();
     }

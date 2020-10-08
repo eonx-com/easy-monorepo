@@ -71,7 +71,9 @@ final class ExceptionHandlerTest extends AbstractSymfonyTestCase
 
         unset($config['use_extended_response']);
 
-        \file_put_contents($filename, Yaml::dump(['easy_error_handler' => $config]));
+        \file_put_contents($filename, Yaml::dump([
+            'easy_error_handler' => $config,
+        ]));
 
         return $filename;
     }

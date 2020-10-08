@@ -344,7 +344,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
         ];
 
         yield 'Simple Basic Auth decoder using default factory' => [
-            ['basic' => null],
+            [
+                'basic' => null,
+            ],
             'basic',
             new BasicAuthDecoder(),
         ];

@@ -31,5 +31,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Listener
     $services
         ->set(RequestIdListener::class)
-        ->tag('kernel.event_listener', ['priority' => 10000]);
+        ->tag('kernel.event_listener', [
+            'priority' => 10000,
+        ]);
 };

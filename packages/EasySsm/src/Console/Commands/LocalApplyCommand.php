@@ -10,9 +10,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class LocalApplyCommand extends AbstractCommand
 {
+    /**
+     * @var string
+     */
+    protected static $defaultName = 'local-apply';
+
     protected function configure(): void
     {
-        $this->setName('local-apply');
         $this->setDescription('Display local diff between old and local SSM parameters');
     }
 

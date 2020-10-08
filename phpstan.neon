@@ -49,10 +49,6 @@ parameters:
         - message: '#Method EonX\\EasyAsync\\Tests\\Stubs\\EventDispatcherStub\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
           path: packages/EasyAsync/tests/Stubs/EventDispatcherStub.php
 
-        # ---- EasyCfhighlander ----
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-          path: packages/EasyBugsnag/src/Bridge/Symfony/DependencyInjection/Configuration.php
-
         # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'
           path: packages/EasyCore/tests/Http/Middleware
@@ -106,7 +102,6 @@ parameters:
         - message: '#Cannot call method addFunction\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
           path: packages/EasyDecision/tests/Bridge/Symfony/Stubs/Configurators/TypeRestrictedExpressionFunctionConfigurator.php
 
-        # ---- EasyDocker ----
         # ---- EasyEntityChange ----
         # ---- EasyErrorHandler ----
         - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'

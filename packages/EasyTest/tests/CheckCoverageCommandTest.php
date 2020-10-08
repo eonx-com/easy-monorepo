@@ -37,17 +37,23 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     public function providerCheckCoverageExceptions(): iterable
     {
         yield 'File not found' => [
-            ['file' => 'invalid-file.txt'],
+            [
+                'file' => 'invalid-file.txt',
+            ],
             UnableToLoadCoverageException::class,
         ];
 
         yield 'File but no coverage' => [
-            ['file' => __DIR__ . '/fixtures/no-coverage.txt'],
+            [
+                'file' => __DIR__ . '/fixtures/no-coverage.txt',
+            ],
             UnableToResolveCoverageException::class,
         ];
 
         yield 'File and Lines but no coverage' => [
-            ['file' => __DIR__ . '/fixtures/lines-but-no-coverage.txt'],
+            [
+                'file' => __DIR__ . '/fixtures/lines-but-no-coverage.txt',
+            ],
             UnableToResolveCoverageException::class,
         ];
     }

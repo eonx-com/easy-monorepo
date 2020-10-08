@@ -111,6 +111,8 @@ final class EasyPaginationBundleTest extends AbstractTestCase
      */
     private function createRequest(?array $query = null): Request
     {
-        return new Request($query ?? [], [], [], [], [], ['HTTP_HOST' => 'eonx.com']);
+        return new Request($query ?? [], [], [], [], [], [
+            'HTTP_HOST' => 'eonx.com',
+        ]);
     }
 }

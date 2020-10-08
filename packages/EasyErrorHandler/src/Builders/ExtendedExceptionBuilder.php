@@ -58,7 +58,7 @@ final class ExtendedExceptionBuilder extends AbstractErrorResponseBuilder implem
         $exception = [
             $this->getKey('class') => $details['class'],
             $this->getKey('file') => $details['file'],
-            $this->getKey('line') => $details['file'],
+            $this->getKey('line') => $details['line'],
             $this->getKey('message') => $this->getMessage($throwable),
             $this->getKey('trace') => $details['trace'],
         ];

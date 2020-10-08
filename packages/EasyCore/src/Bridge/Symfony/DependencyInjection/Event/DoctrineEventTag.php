@@ -41,7 +41,9 @@ final class DoctrineEventTag implements EventTagInterface
      */
     public function getAttributes(): array
     {
-        $attr = ['event' => $this->event];
+        $attr = [
+            'event' => $this->event,
+        ];
 
         if ($this->priority) {
             $attr['priority'] = $this->priority;

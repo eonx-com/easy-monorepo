@@ -21,9 +21,13 @@ final class TrimStringsTest extends AbstractTestCase
 {
     public function testHandleSucceedsWithGetRequest(): void
     {
-        $data = ['abc' => '  123  '];
+        $data = [
+            'abc' => '  123  ',
+        ];
         $except = [];
-        $expectedResult = ['abc' => '123'];
+        $expectedResult = [
+            'abc' => '123',
+        ];
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
         $trimmer = $this->mock(
             StringsTrimmerInterface::class,
@@ -45,10 +49,14 @@ final class TrimStringsTest extends AbstractTestCase
 
     public function testHandleSucceedsWithJsonRequest(): void
     {
-        $data = ['abc' => '  123  '];
+        $data = [
+            'abc' => '  123  ',
+        ];
         $json = (string)\json_encode($data);
         $except = [];
-        $expectedResult = ['abc' => '123'];
+        $expectedResult = [
+            'abc' => '123',
+        ];
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
         $trimmer = $this->mock(
             StringsTrimmerInterface::class,
@@ -60,7 +68,9 @@ final class TrimStringsTest extends AbstractTestCase
         $middleware = new TrimStrings($trimmer, $except);
         $symfonyRequest = new SymfonyRequest([], [], [], [], [], [], $json);
         $symfonyRequest->server->set('REQUEST_METHOD', 'POST');
-        $symfonyRequest->headers = new HeaderBag(['CONTENT_TYPE' => 'application/json']);
+        $symfonyRequest->headers = new HeaderBag([
+            'CONTENT_TYPE' => 'application/json',
+        ]);
         $request = Request::createFromBase($symfonyRequest);
 
         $result = $middleware->handle($request, static function (Request $request): string {
@@ -72,9 +82,13 @@ final class TrimStringsTest extends AbstractTestCase
 
     public function testHandleSucceedsWithPostRequest(): void
     {
-        $data = ['abc' => '  123  '];
+        $data = [
+            'abc' => '  123  ',
+        ];
         $except = [];
-        $expectedResult = ['abc' => '123'];
+        $expectedResult = [
+            'abc' => '123',
+        ];
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
         $trimmer = $this->mock(
             StringsTrimmerInterface::class,

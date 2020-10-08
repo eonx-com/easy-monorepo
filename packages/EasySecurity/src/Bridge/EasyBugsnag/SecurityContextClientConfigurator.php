@@ -54,7 +54,9 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
             $security['user'] = $this->formatUser($user);
         }
 
-        $bugsnag->setMetaData(['security' => $security]);
+        $bugsnag->setMetaData([
+            'security' => $security,
+        ]);
     }
 
     /**

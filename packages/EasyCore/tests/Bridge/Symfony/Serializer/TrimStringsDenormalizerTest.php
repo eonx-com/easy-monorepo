@@ -123,7 +123,9 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
                         $expectedResult,
                         $type,
                         $format,
-                        \array_merge($context, ['TRIM_STRINGS_ALREADY_CALLED' => true])
+                        \array_merge($context, [
+                            'TRIM_STRINGS_ALREADY_CALLED' => true,
+                        ])
                     )
                     ->andReturn($expectedResult);
             }

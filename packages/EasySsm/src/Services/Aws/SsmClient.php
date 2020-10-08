@@ -42,7 +42,9 @@ final class SsmClient implements SsmClientInterface
 
         // Remove deleted parameters
         foreach ($diff->getDeleted() as $parameter) {
-            $this->ssm->deleteParameter(['Name' => $parameter->getName()]);
+            $this->ssm->deleteParameter([
+                'Name' => $parameter->getName(),
+            ]);
         }
     }
 

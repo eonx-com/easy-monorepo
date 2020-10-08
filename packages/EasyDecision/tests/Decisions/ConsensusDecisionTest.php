@@ -23,8 +23,12 @@ final class ConsensusDecisionTest extends AbstractTestCase
         self::assertTrue((new AffirmativeDecision())->addRules([])->make([]));
         self::assertTrue((new ConsensusDecision())->addRules([])->make([]));
         self::assertTrue((new UnanimousDecision())->addRules([])->make([]));
-        self::assertEquals(5, (new ValueDecision())->addRules([])->make(['value' => 5]));
-        self::assertEquals(10, (new ValueDecision())->setDefaultOutput(10)->make(['value' => 5]));
+        self::assertEquals(5, (new ValueDecision())->addRules([])->make([
+            'value' => 5,
+        ]));
+        self::assertEquals(10, (new ValueDecision())->setDefaultOutput(10)->make([
+            'value' => 5,
+        ]));
     }
 
     public function testReturnFalseWhenMoreFalseThanTrue(): void
@@ -71,7 +75,9 @@ final class ConsensusDecisionTest extends AbstractTestCase
     {
         $decision = (new ConsensusDecision())->addRules([$this->createUnsupportedRule('unsupported-1')]);
 
-        $expected = ['unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED];
+        $expected = [
+            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
+        ];
 
         self::assertTrue($decision->make([]));
         self::assertEquals($expected, $decision->getContext()->getRuleOutputs());

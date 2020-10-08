@@ -39,7 +39,7 @@ final class EasyLoggingServiceProvider extends ServiceProvider
 
         // Override PSR Logger
         $this->app->singleton(LoggerInterface::class, function (): LoggerInterface {
-            return $this->app->make(LoggerFactory::class)->create(\config('easy-logging.default_channel'));
+            return $this->app->make(LoggerFactoryInterface::class)->create(\config('easy-logging.default_channel'));
         });
 
         // Override default logger alias

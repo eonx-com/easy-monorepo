@@ -50,7 +50,9 @@ final class MainSecurityContextConfiguratorFactory
 
     private function getFakeRequest(): Request
     {
-        return new Request([], [], [], [], [], ['HTTP_HOST' => 'eonx.com']);
+        return new Request([], [], [], [], [], [
+            'HTTP_HOST' => 'eonx.com',
+        ]);
     }
 
     private function getRequest(): Request

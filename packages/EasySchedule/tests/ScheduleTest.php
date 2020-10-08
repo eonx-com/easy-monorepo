@@ -23,7 +23,9 @@ final class ScheduleTest extends AbstractTestCase
     public function testCommand(): void
     {
         $schedule = new Schedule();
-        $event = $schedule->command('command:foo', ['--foo' => 'bar']);
+        $event = $schedule->command('command:foo', [
+            '--foo' => 'bar',
+        ]);
 
         self::assertSame('\'command:foo\' --foo=bar', $event->getDescription());
     }
@@ -31,7 +33,9 @@ final class ScheduleTest extends AbstractTestCase
     public function testGetDueEvents(): void
     {
         $schedule = new Schedule();
-        $schedule->command('command:foo', ['--foo' => 'bar']);
+        $schedule->command('command:foo', [
+            '--foo' => 'bar',
+        ]);
 
         self::assertCount(1, $schedule->getDueEvents());
     }

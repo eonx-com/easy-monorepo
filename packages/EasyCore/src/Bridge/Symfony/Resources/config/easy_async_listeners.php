@@ -10,5 +10,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     $services->set(AddValidationErrorsOnJobLogListener::class)
-        ->tag('kernel.event_listener', ['event' => JobLogFailedEvent::class]);
+        ->tag('kernel.event_listener', [
+            'event' => JobLogFailedEvent::class,
+        ]);
 };

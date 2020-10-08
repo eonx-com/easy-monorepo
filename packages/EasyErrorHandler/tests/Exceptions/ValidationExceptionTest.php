@@ -11,7 +11,9 @@ final class ValidationExceptionTest extends AbstractTestCase
 {
     public function testGetErrors(): void
     {
-        $errors = ['foo' => 'bar'];
+        $errors = [
+            'foo' => 'bar',
+        ];
         $exception = (new ValidationExceptionStub())->setErrors($errors);
 
         self::assertSame($errors, $exception->getErrors());
@@ -19,7 +21,9 @@ final class ValidationExceptionTest extends AbstractTestCase
 
     public function testSetErrors(): void
     {
-        $errors = ['foo' => 'bar'];
+        $errors = [
+            'foo' => 'bar',
+        ];
 
         $exception = (new ValidationExceptionStub())->setErrors($errors);
 

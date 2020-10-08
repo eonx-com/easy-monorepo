@@ -22,7 +22,9 @@ class ManagementApiClientFactoryTest extends AbstractTestCase
             $mock->shouldReceive('getToken')->once()->withNoArgs()->andReturn('access_token');
         });
 
-        $config = new Config(['domain' => 'domain']);
+        $config = new Config([
+            'domain' => 'domain',
+        ]);
         $factory = new ManagementApiClientFactory($config, $tokenProvider);
         $factory->create();
 

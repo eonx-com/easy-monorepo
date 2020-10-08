@@ -12,6 +12,7 @@ use ReflectionClass;
 use ReflectionProperty;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -41,7 +42,9 @@ class AbstractTestCase extends TestCase
                 self::assertSame('Default message', $content['message']);
             },
             null,
-            ['exceptions.default_user_message' => 'Default message'],
+            [
+                'exceptions.default_user_message' => 'Default message',
+            ],
         ];
 
         yield 'Returns extended response on debug' => [
@@ -77,9 +80,13 @@ class AbstractTestCase extends TestCase
         yield 'Returns message with params' => [
             new Request(),
             (new BaseExceptionStub('test.exception_message'))
-                ->setMessageParams(['param' => 'foo'])
+                ->setMessageParams([
+                    'param' => 'foo',
+                ])
                 ->setUserMessage('test.user_message')
-                ->setUserMessageParams(['param' => 'bar']),
+                ->setUserMessageParams([
+                    'param' => 'bar',
+                ]),
             static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
                 self::assertSame('Exception message with foo', $content['exception']['message']);
@@ -133,11 +140,15 @@ class AbstractTestCase extends TestCase
 
         yield 'Response with validation errors' => [
             new Request(),
-            (new ValidationExceptionStub())->setErrors(['foo' => 'bar']),
+            (new ValidationExceptionStub())->setErrors([
+                'foo' => 'bar',
+            ]),
             static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
                 self::assertArrayHasKey('violations', $content);
-                self::assertSame(['foo' => 'bar'], $content['violations']);
+                self::assertSame([
+                    'foo' => 'bar',
+                ], $content['violations']);
             },
         ];
 
@@ -171,6 +182,16 @@ class AbstractTestCase extends TestCase
                 self::assertSame([
                     'foo' => ['bar'],
                 ], $content['violations']);
+            },
+        ];
+
+        yield 'HttpException statusCode and message' => [
+            new Request(),
+            new NotFoundHttpException('my-message'),
+            static function (Response $response): void {
+                $content = \json_decode((string)$response->getContent(), true);
+                self::assertSame(404, $response->getStatusCode());
+                self::assertSame('my-message', $content['message']);
             },
         ];
     }

@@ -33,7 +33,9 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
     public function providerLoad(): iterable
     {
         yield 'Doctrine' => [
-            ['implementation' => 'doctrine'],
+            [
+                'implementation' => 'doctrine',
+            ],
             [
                 'data_cleaner' => DataCleaner::class,
                 'job_log_persister' => JobLogPersister::class,
@@ -82,6 +84,8 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
         $containerBuilder = new ContainerBuilder();
         $extension = new EasyAsyncExtension();
 
-        $extension->load([['implementation' => 'invalid']], $containerBuilder);
+        $extension->load([[
+            'implementation' => 'invalid',
+        ]], $containerBuilder);
     }
 }

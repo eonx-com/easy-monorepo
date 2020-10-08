@@ -23,7 +23,9 @@ final class AbstractFromHeaderConfiguratorTest extends AbstractTestCase
     public function testPermissionSetWhenApiKeyToken(): void
     {
         $context = new SecurityContext();
-        $request = new Request([], [], [], [], [], ['HTTP_my-header' => 'value']);
+        $request = new Request([], [], [], [], [], [
+            'HTTP_my-header' => 'value',
+        ]);
 
         $configurator = new PermissionFromHeaderConfiguratorStub('my-permission', ['my-header']);
         $configurator->configure($context, $request);

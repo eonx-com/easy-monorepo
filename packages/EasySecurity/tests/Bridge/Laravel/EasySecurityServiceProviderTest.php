@@ -24,7 +24,9 @@ final class EasySecurityServiceProviderTest extends AbstractLumenTestCase
             ],
         ]);
 
-        $app->instance(Request::class, new SymfonyRequest([], [], [], [], [], ['HTTP_HOST' => 'eonx.com']));
+        $app->instance(Request::class, new SymfonyRequest([], [], [], [], [], [
+            'HTTP_HOST' => 'eonx.com',
+        ]));
 
         self::assertInstanceOf(SecurityContext::class, $app->make(SecurityContextInterface::class));
     }

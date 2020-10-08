@@ -47,7 +47,9 @@ final class WebhookClientTest extends AbstractTestCase
         yield 'Body formatter with header' => [
             (new Webhook())
                 ->url('https://eonx.com')
-                ->body(['key' => 'value']),
+                ->body([
+                    'key' => 'value',
+                ]),
             [new BodyFormatterWebhookConfigurator(new JsonFormatter())],
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
@@ -78,7 +80,9 @@ final class WebhookClientTest extends AbstractTestCase
         yield 'RS256 Signature' => [
             (new Webhook())
                 ->url('https://eonx.com')
-                ->body(['key' => 'value']),
+                ->body([
+                    'key' => 'value',
+                ]),
             [
                 new BodyFormatterWebhookConfigurator(new JsonFormatter()),
                 new SignatureWebhookConfigurator(new Rs256Signer(), 'my-secret'),

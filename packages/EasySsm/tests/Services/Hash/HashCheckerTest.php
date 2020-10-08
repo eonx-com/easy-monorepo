@@ -82,7 +82,9 @@ final class HashCheckerTest extends AbstractTestCase
      */
     public function testCheckHash(string $name, array $parameters, bool $expected, ?string $localHash = null): void
     {
-        $hashRepository = new HashRepositoryStub([$name => $localHash]);
+        $hashRepository = new HashRepositoryStub([
+            $name => $localHash,
+        ]);
         $hashChecker = new HashChecker(new HashCalculator(new Parameters()), $hashRepository);
 
         self::assertEquals($expected, $hashChecker->checkHash($name, $parameters));

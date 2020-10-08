@@ -1,4 +1,0 @@
-parameters:
-    doctrine_migrations_enabled: true
-    elasticsearch_enabled: false
-    soap: false
