@@ -70,7 +70,7 @@ abstract class AbstractTestCase extends TestCase
     }
 
     /**
-     * Calls object's private method and returns it's result.
+     * Calls object's private method and returns its result.
      *
      * @param object $object
      * @param string $method

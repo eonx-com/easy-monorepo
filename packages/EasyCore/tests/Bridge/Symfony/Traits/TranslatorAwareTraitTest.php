@@ -10,7 +10,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class TranslatorAwareTraitTest extends AbstractSymfonyTestCase
 {
-    public function testSetEntityManagerSucceeds(): void
+    public function testSetTranslatorSucceeds(): void
     {
         $abstractClass = new class() {
             use TranslatorAwareTrait;
