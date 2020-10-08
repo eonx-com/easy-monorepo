@@ -83,10 +83,10 @@ parameters:
         - message: '#Call to an undefined method ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\:\:(getSimpleDataPersisters|getDataPersisters)\(\)#'
           path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/TraceableChainSimpleDataPersister.php
 
-        - message: '#Parameter \#1 \$entityManager of method class@anonymous/EntityManagerAwareTraitTest\.php\:15\:\:setEntityManager\(\) expects Doctrine\\ORM\\EntityManagerInterface, Mockery\\MockInterface given#'
+        - message: '#Parameter \#1 \$entityManager of method class@anonymous/EasyCore/tests/Bridge/Symfony/Traits/EntityManagerAwareTraitTest\.php\:15\:\:setEntityManager\(\) expects Doctrine\\ORM\\EntityManagerInterface, Mockery\\MockInterface given#'
           path: packages/EasyCore/tests/Bridge/Symfony/Traits/EntityManagerAwareTraitTest.php
 
-        - message: '#Parameter \#1 \$translator of method class@anonymous/TranslatorAwareTraitTest\.php\:15\:\:setTranslator\(\) expects Symfony\\Contracts\\Translation\\TranslatorInterface, Mockery\\MockInterface given#'
+        - message: '#Parameter \#1 \$translator of method class@anonymous/EasyCore/tests/Bridge/Symfony/Traits/TranslatorAwareTraitTest\.php\:15\:\:setTranslator\(\) expects Symfony\\Contracts\\Translation\\TranslatorInterface, Mockery\\MockInterface given#'
           path: packages/EasyCore/tests/Bridge/Symfony/Traits/TranslatorAwareTraitTest.php
 
         # ---- EasyDecision ----
