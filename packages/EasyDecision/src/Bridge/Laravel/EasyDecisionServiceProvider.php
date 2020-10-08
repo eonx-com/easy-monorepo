@@ -42,7 +42,7 @@ final class EasyDecisionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             AddRestrictedRulesDecisionConfigurator::class,
-            static function (): DecisionConfiguratorInterface {
+            function (): DecisionConfiguratorInterface {
                 return new AddRestrictedRulesDecisionConfigurator(
                     $this->app->tagged(TagsInterface::DECISION_RESTRICTED_RULE)
                 );
