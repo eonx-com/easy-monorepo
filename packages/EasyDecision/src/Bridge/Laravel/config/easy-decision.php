@@ -125,5 +125,5 @@ return [
     */
     'restricted_rules' => [
         // Your restricted rules here
-    ]
+    ],
 ];
