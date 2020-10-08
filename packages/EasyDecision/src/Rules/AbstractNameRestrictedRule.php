@@ -10,13 +10,13 @@ use EonX\EasyDecision\Interfaces\RestrictedRuleInterface;
 abstract class AbstractNameRestrictedRule implements RestrictedRuleInterface
 {
     /**
-     * @var null|int
+     * @var int
      */
     private $priority;
 
     public function __construct(?int $priority = null)
     {
-        $this->priority = $priority;
+        $this->priority = $priority ?? 0;
     }
 
     public function getPriority(): int

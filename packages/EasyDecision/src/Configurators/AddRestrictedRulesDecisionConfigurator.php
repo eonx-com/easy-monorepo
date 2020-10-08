@@ -28,7 +28,7 @@ final class AddRestrictedRulesDecisionConfigurator extends AbstractConfigurator
     {
         foreach ($this->rules as $rule) {
             if (($rule instanceof RestrictedRuleInterface) === false) {
-                $decision->addRule($rule); // If not restricted then add the rule by default.
+                $decision->addRule($rule);
 
                 continue;
             }
