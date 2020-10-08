@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Configurators;
@@ -15,7 +16,6 @@ final class AddRestrictedRulesDecisionConfigurator extends AbstractConfigurator
     /**
      * @param iterable<\EonX\EasyDecision\Interfaces\RestrictedRuleInterface> $restrictedRules
      */
-
     public function __construct(iterable $restrictedRules, ?int $priority = null)
     {
         parent::__construct($priority);
