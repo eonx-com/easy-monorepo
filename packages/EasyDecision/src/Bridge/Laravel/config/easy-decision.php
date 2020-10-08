@@ -110,4 +110,20 @@ return [
     'type_mapping' => [
         // Your decision type mapping here...
     ],
+    /*
+    |--------------------------------------------------------------------------
+    | Restricted Rules
+    |--------------------------------------------------------------------------
+    |
+    | Here you will define your rules restricted by decisions which implements
+    | \EonX\EasyDecision\Interfaces\RestrictedRuleInterface
+    |
+    | Example:
+    |
+    | \EonX\EasyDecision\Rules\MyRestrictedRuleForDecisionA::class
+    |
+    */
+    'restricted_rules' => [
+        // Your restricted rules here
+    ]
 ];

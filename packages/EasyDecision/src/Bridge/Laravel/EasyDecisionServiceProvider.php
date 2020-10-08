@@ -38,7 +38,7 @@ final class EasyDecisionServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-decision.php', 'easy-decision');
 
-        $this->app->tag(RestrictedRuleInterface::class, [TagsInterface::DECISION_RESTRICTED_RULE]);
+        $this->app->tag(\config('easy-decision.restricted_rules', []), [TagsInterface::DECISION_RESTRICTED_RULE]);
 
         $this->app->singleton(
             AddRestrictedRulesDecisionConfigurator::class,
