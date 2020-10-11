@@ -14,7 +14,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
     {
         $expected = [new \stdClass(), new \stdClass()];
 
-        /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
+        /** @var \Doctrine\Persistence\ManagerRegistry $registry */
         $registry = $this->mockRegistry(null, function (MockInterface $repo) use ($expected): void {
             $repo->shouldReceive('findAll')->once()->withNoArgs()->andReturn($expected);
         });
@@ -24,7 +24,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
 
     public function testCreateQueryBuilderReturnsOrmQueryBuilder(): void
     {
-        /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
+        /** @var \Doctrine\Persistence\ManagerRegistry $registry */
         $registry = $this->mockRegistry(null, function (MockInterface $repo): void {
             $queryBuilder = $this->mock(QueryBuilder::class);
 
@@ -45,7 +45,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
         $tests = [new \stdClass(), [new \stdClass(), new \stdClass()]];
 
         foreach ($tests as $test) {
-            /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
+            /** @var \Doctrine\Persistence\ManagerRegistry $registry */
             $registry = $this->mockRegistry($this->getManagerExpectations('remove', $test));
 
             (new DoctrineOrmRepositoryStub($registry))->delete($test);
@@ -60,7 +60,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
         ];
 
         foreach ($expected as $identifier => $object) {
-            /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
+            /** @var \Doctrine\Persistence\ManagerRegistry $registry */
             $registry = $this->mockRegistry(null, function (MockInterface $repo) use ($identifier, $object): void {
                 $repo->shouldReceive('find')->once()->with($identifier)->andReturn($object);
             });
@@ -74,7 +74,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
         $tests = [new \stdClass(), [new \stdClass(), new \stdClass()]];
 
         foreach ($tests as $test) {
-            /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
+            /** @var \Doctrine\Persistence\ManagerRegistry $registry */
             $registry = $this->mockRegistry($this->getManagerExpectations('persist', $test));
 
             (new DoctrineOrmRepositoryStub($registry))->save($test);

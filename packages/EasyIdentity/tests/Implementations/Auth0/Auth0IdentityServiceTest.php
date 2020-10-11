@@ -42,7 +42,9 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             $mock
                 ->shouldReceive('create')
                 ->once()
-                ->with(['connection' => $this->getConfig()->getConnection()])
+                ->with([
+                    'connection' => $this->getConfig()->getConnection(),
+                ])
                 ->andReturn(['expected']);
         });
 
@@ -65,7 +67,9 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                             && \array_shift($connection) === $this->getConfig()->getConnection();
                     }
                 )
-                ->andReturn(['user_id' => 'identity-id']);
+                ->andReturn([
+                    'user_id' => 'identity-id',
+                ]);
         });
 
         $identityUserService = new IdentityUserService();
@@ -138,7 +142,9 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                 self::assertTrue($condition);
 
                 return $condition;
-            })->andReturn(['new-key' => 'new-value']);
+            })->andReturn([
+                'new-key' => 'new-value',
+            ]);
         });
 
         $service = IdentityServiceNamesInterface::SERVICE_AUTH0;
@@ -150,7 +156,9 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $this->getServiceForUsersMethod($identityUserService, $management)->getUser($identityUser);
 
         self::assertEquals(
-            ['new-key' => 'new-value'],
+            [
+                'new-key' => 'new-value',
+            ],
             $identityUserService->getIdentityToArray($identityUser, $service)
         );
     }
@@ -248,7 +256,9 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                         && \array_key_exists('client_id', $identityArray)
                         && \array_key_exists('connection', $identityArray);
                 })
-                ->andReturn(['new-key' => 'new-value']);
+                ->andReturn([
+                    'new-key' => 'new-value',
+                ]);
         });
 
         $service = IdentityServiceNamesInterface::SERVICE_AUTH0;

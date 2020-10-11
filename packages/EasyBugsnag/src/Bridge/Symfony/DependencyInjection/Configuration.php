@@ -19,7 +19,9 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('doctrine_dbal')
                     ->beforeNormalization()
                         ->always(static function ($v): array {
-                            return \is_array($v) ? $v : ['enabled' => (bool)$v];
+                            return \is_array($v) ? $v : [
+                                'enabled' => (bool)$v,
+                            ];
                         })
                     ->end()
                     ->addDefaultsIfNotSet()

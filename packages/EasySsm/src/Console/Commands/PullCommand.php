@@ -10,9 +10,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class PullCommand extends AbstractCommand
 {
+    /**
+     * @var string
+     */
+    protected static $defaultName = 'pull';
+
     protected function configure(): void
     {
-        $this->setName('pull');
         $this->setDescription('Pull content of SSM and create YAML file');
     }
 

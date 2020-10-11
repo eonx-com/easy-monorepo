@@ -26,12 +26,8 @@ final class StatusCodeBuilder extends AbstractErrorResponseBuilder
 
     public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int
     {
-        if ($statusCode !== null) {
-            return $statusCode;
-        }
-
         if ($throwable instanceof StatusCodeAwareExceptionInterface) {
-            return $throwable->getStatusCode();
+            $statusCode = $throwable->getStatusCode();
         }
 
         $exceptionClass = \get_class($throwable);
@@ -44,6 +40,6 @@ final class StatusCodeBuilder extends AbstractErrorResponseBuilder
             }
         }
 
-        return $statusCode;
+        return parent::buildStatusCode($throwable, $statusCode);
     }
 }

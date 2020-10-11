@@ -50,13 +50,17 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         $metadata->expects(self::once())
             ->method('getIdentifierValues')
             ->with($entity)
-            ->willReturn(['id' => 'thing']);
+            ->willReturn([
+                'id' => 'thing',
+            ]);
 
         $expectedEvent = new EntityChangeEvent([
             new UpdatedEntity(
                 ['property'],
                 stdClass::class,
-                ['id' => 'thing']
+                [
+                    'id' => 'thing',
+                ]
             ),
         ]);
 
@@ -87,13 +91,17 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         $metadata->expects(self::once())
             ->method('getIdentifierValues')
             ->with($entity)
-            ->willReturn(['id' => 'seventy']);
+            ->willReturn([
+                'id' => 'seventy',
+            ]);
 
         $expectedEvent = new EntityChangeEvent([
             new UpdatedEntity(
                 ['property'],
                 stdClass::class,
-                ['id' => 'seventy']
+                [
+                    'id' => 'seventy',
+                ]
             ),
         ]);
 
@@ -105,7 +113,9 @@ class EntityChangeSubscriberTest extends AbstractTestCase
     public function testListenerDelete(): void
     {
         $dispatcher = new EventDispatcherStub();
-        $enrichment = new DeletedEntityEnrichmentStub([['metadata' => 'thing']]);
+        $enrichment = new DeletedEntityEnrichmentStub([[
+            'metadata' => 'thing',
+        ]]);
         $subscriber = new EntityChangeSubscriber($dispatcher, $enrichment);
 
         $entity = new stdClass();
@@ -119,13 +129,19 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         $metadata->expects(self::once())
             ->method('getIdentifierValues')
             ->with($entity)
-            ->willReturn(['id' => 'value']);
+            ->willReturn([
+                'id' => 'value',
+            ]);
 
         $expectedEvent = new EntityChangeEvent([
             new DeletedEntity(
                 stdClass::class,
-                ['id' => 'value'],
-                ['metadata' => 'thing']
+                [
+                    'id' => 'value',
+                ],
+                [
+                    'metadata' => 'thing',
+                ]
             ),
         ]);
 
@@ -137,7 +153,9 @@ class EntityChangeSubscriberTest extends AbstractTestCase
     public function testListenerDeleteNotWatching(): void
     {
         $dispatcher = new EventDispatcherStub();
-        $enrichment = new DeletedEntityEnrichmentStub([['metadata' => 'thing']]);
+        $enrichment = new DeletedEntityEnrichmentStub([[
+            'metadata' => 'thing',
+        ]]);
         $subscriber = new EntityChangeSubscriber($dispatcher, $enrichment, []);
 
         $entity = new stdClass();
@@ -188,13 +206,17 @@ class EntityChangeSubscriberTest extends AbstractTestCase
         $metadata->expects(self::exactly(2))
             ->method('getIdentifierValues')
             ->with($entity)
-            ->willReturnOnConsecutiveCalls([], ['id' => 'value']);
+            ->willReturnOnConsecutiveCalls([], [
+                'id' => 'value',
+            ]);
 
         $expectedEvent = new EntityChangeEvent([
             new UpdatedEntity(
                 ['property'],
                 stdClass::class,
-                ['id' => 'value']
+                [
+                    'id' => 'value',
+                ]
             ),
         ]);
 
@@ -301,7 +323,9 @@ class EntityChangeSubscriberTest extends AbstractTestCase
             $metadata->method('getName')
                 ->willReturn(stdClass::class);
             $metadata->method('getIdentifierValues')
-                ->willReturn(['id' => 'value']);
+                ->willReturn([
+                    'id' => 'value',
+                ]);
         }
 
         $entityManager = $this->createMock(EntityManagerInterface::class);

@@ -21,7 +21,9 @@ class DoctrineORMTestCaseTest extends DoctrineORMTestCase
     {
         $expectedDispatches = [
             new EntityChangeEvent([
-                new UpdatedEntity(['property'], SimpleEntity::class, ['id' => 1]),
+                new UpdatedEntity(['property'], SimpleEntity::class, [
+                    'id' => 1,
+                ]),
             ]),
         ];
 
@@ -43,7 +45,9 @@ class DoctrineORMTestCaseTest extends DoctrineORMTestCase
     {
         $expectedDispatches = [
             new EntityChangeEvent([
-                new UpdatedEntity(['id', 'property'], ProvidedIdEntity::class, ['id' => 'uuid']),
+                new UpdatedEntity(['id', 'property'], ProvidedIdEntity::class, [
+                    'id' => 'uuid',
+                ]),
             ]),
         ];
 

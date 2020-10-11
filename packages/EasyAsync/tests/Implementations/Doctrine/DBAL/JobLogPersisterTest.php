@@ -184,7 +184,9 @@ final class JobLogPersisterTest extends AbstractTestCase
                 ->atLeast()
                 ->once()
                 ->with('sql query', [])
-                ->andReturn(['_count_1' => 1]);
+                ->andReturn([
+                    '_count_1' => 1,
+                ]);
 
             $mock
                 ->shouldReceive('fetchAllAssociative')
@@ -344,7 +346,9 @@ final class JobLogPersisterTest extends AbstractTestCase
             $mock
                 ->shouldReceive('executeQuery')
                 ->once()
-                ->with('DELETE FROM `job_logs` WHERE job_id = :jobId', ['jobId' => 'jobId']);
+                ->with('DELETE FROM `job_logs` WHERE job_id = :jobId', [
+                    'jobId' => 'jobId',
+                ]);
         });
 
         $this->getPersister($conn)->removeForJob('jobId');

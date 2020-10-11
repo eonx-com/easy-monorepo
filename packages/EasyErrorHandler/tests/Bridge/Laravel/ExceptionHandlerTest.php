@@ -27,7 +27,9 @@ final class ExceptionHandlerTest extends AbstractLaravelTestCase
         $message = 'Exception message.';
         $app = $this->getApplication();
         $translator = $app->make('translator');
-        $translator->addLines(['test.message' => $message], $translator->getLocale());
+        $translator->addLines([
+            'test.message' => $message,
+        ], $translator->getLocale());
         $handler = $app->make(ExceptionHandler::class);
         $output = new BufferedOutput();
         $expectedMessage = \sprintf('Translated exception message: %s', $message);

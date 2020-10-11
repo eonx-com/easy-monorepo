@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasySsm\Console;
 
 use Symfony\Component\Console\Application;
-use Symplify\PackageBuilder\Console\HelpfulApplicationTrait;
 
 final class EasySsmApplication extends Application
 {
-    use HelpfulApplicationTrait;
-
     /**
      * @var string
      */

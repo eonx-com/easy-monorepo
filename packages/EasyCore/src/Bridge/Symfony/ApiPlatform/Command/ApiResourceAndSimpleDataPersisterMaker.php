@@ -64,7 +64,9 @@ final class ApiResourceAndSimpleDataPersisterMaker extends AbstractMaker
 
         $resourceClassNameDetails = $generator->createClassNameDetails($name, $resourceNamespace);
         $resourceTpl = __DIR__ . '/../../Resources/skeleton/api_resource.tpl.php';
-        $resourceVars = ['snakeCaseName' => Str::asSnakeCase($resourceClassNameDetails->getShortName())];
+        $resourceVars = [
+            'snakeCaseName' => Str::asSnakeCase($resourceClassNameDetails->getShortName()),
+        ];
 
         $persisterName = \sprintf('%sPersister', $resourceClassNameDetails->getShortName());
         $persisterClassNameDetails = $generator->createClassNameDetails($persisterName, $persisterNamespace);

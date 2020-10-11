@@ -18,7 +18,9 @@ final class JsonHelperTest extends AbstractTestCase
 
         yield 'simple' => [
             '{"key":"value"}',
-            ['key' => 'value'],
+            [
+                'key' => 'value',
+            ],
         ];
     }
 
@@ -30,7 +32,9 @@ final class JsonHelperTest extends AbstractTestCase
         yield 'null' => [null, null];
 
         yield 'simple' => [
-            ['key' => 'value'],
+            [
+                'key' => 'value',
+            ],
             '{"key":"value"}',
         ];
     }

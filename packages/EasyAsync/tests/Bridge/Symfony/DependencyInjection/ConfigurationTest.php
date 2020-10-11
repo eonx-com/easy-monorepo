@@ -24,7 +24,9 @@ final class ConfigurationTest extends AbstractTestCase
         ];
 
         yield 'Custom implementation' => [
-            ['implementation' => 'custom'],
+            [
+                'implementation' => 'custom',
+            ],
             [
                 'implementation' => 'custom',
                 'jobs_table' => 'easy_async_jobs',

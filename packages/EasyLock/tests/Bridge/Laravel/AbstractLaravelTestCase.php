@@ -27,7 +27,9 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
         $app->register(EasyLockServiceProvider::class);
         $app->instance(
             BridgeConstantsInterface::SERVICE_CONNECTION,
-            DriverManager::getConnection(['url' => 'sqlite:///:memory:'])
+            DriverManager::getConnection([
+                'url' => 'sqlite:///:memory:',
+            ])
         );
 
         return $this->app = $app;

@@ -35,11 +35,15 @@ final class UserFromJwtModifierTest extends AbstractTestCase
 
         yield 'No user resolved because no sub claim' => [new UserProviderInterfaceStub(), $context];
 
-        $context->setToken(new Jwt(['sub' => ''], 'jwt'));
+        $context->setToken(new Jwt([
+            'sub' => '',
+        ], 'jwt'));
 
         yield 'No user resolved because sub claim empty' => [new UserProviderInterfaceStub(), $context];
 
-        $context->setToken(new Jwt(['sub' => 'user-id'], 'jwt'));
+        $context->setToken(new Jwt([
+            'sub' => 'user-id',
+        ], 'jwt'));
 
         yield 'No user resolved because provider returned null' => [new UserProviderInterfaceStub(), $context];
 

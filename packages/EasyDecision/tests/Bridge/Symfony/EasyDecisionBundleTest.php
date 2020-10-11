@@ -52,7 +52,9 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
                 self::assertSame('<no-name>', $decision->getName());
-                self::assertSame(1, $decision->make(['value' => 1]));
+                self::assertSame(1, $decision->make([
+                    'value' => 1,
+                ]));
             },
         ];
 
@@ -61,7 +63,9 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
                 self::assertSame('my-value-decision', $decision->getName());
-                self::assertSame(1, $decision->make(['value' => 1]));
+                self::assertSame(1, $decision->make([
+                    'value' => 1,
+                ]));
             },
             [__DIR__ . '/Fixtures/value_with_name.php'],
         ];
@@ -70,7 +74,9 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             $this->getCreateValueDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
-                self::assertSame(11, $decision->make(['value' => 1]));
+                self::assertSame(11, $decision->make([
+                    'value' => 1,
+                ]));
             },
             [__DIR__ . '/Fixtures/value_with_rules_and_expression_language.php'],
         ];
@@ -188,7 +194,9 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         $kernel->boot();
 
         $factory = $kernel->getContainer()->get(DecisionFactoryInterface::class);
-        $factory->createValueDecision()->make(['value' => 1]);
+        $factory->createValueDecision()->make([
+            'value' => 1,
+        ]);
     }
 
     private function getCreateAffirmativeDecision(?string $name = null): \Closure

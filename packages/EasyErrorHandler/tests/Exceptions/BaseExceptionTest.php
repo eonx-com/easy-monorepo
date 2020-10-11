@@ -20,7 +20,9 @@ final class BaseExceptionTest extends AbstractTestCase
 
     public function testGetMessageParams(): void
     {
-        $messageParams = ['foo' => 'bar'];
+        $messageParams = [
+            'foo' => 'bar',
+        ];
         $exception = (new BaseExceptionStub())->setMessageParams($messageParams);
 
         self::assertSame($messageParams, $exception->getMessageParams());
@@ -52,7 +54,9 @@ final class BaseExceptionTest extends AbstractTestCase
 
     public function testGetUserMessageParams(): void
     {
-        $userMessageParams = ['foo' => 'bar'];
+        $userMessageParams = [
+            'foo' => 'bar',
+        ];
         $exception = (new BaseExceptionStub())->setUserMessageParams($userMessageParams);
 
         self::assertSame($userMessageParams, $exception->getUserMessageParams());
@@ -70,7 +74,9 @@ final class BaseExceptionTest extends AbstractTestCase
 
     public function testSetMessageParams(): void
     {
-        $messageParams = ['foo' => 'bar'];
+        $messageParams = [
+            'foo' => 'bar',
+        ];
 
         $exception = (new BaseExceptionStub())->setMessageParams($messageParams);
 
@@ -110,7 +116,9 @@ final class BaseExceptionTest extends AbstractTestCase
 
     public function testSetUserMessageParams(): void
     {
-        $userMessageParams = ['foo' => 'bar'];
+        $userMessageParams = [
+            'foo' => 'bar',
+        ];
 
         $exception = (new BaseExceptionStub())->setUserMessageParams($userMessageParams);
 

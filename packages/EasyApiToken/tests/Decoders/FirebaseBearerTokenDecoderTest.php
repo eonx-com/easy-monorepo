@@ -48,7 +48,9 @@ final class FirebaseBearerTokenDecoderTest extends AbstractFirebaseJwtTokenTestC
     {
         $decoder = new BearerTokenDecoder($this->createFirebaseJwtDriver());
 
-        self::assertNull($decoder->decode($this->createRequest(['HTTP_AUTHORIZATION' => 'SomethingElse'])));
+        self::assertNull($decoder->decode($this->createRequest([
+            'HTTP_AUTHORIZATION' => 'SomethingElse',
+        ])));
     }
 
     public function testJwtTokenReturnNullIfUnableToDecodeToken(): void

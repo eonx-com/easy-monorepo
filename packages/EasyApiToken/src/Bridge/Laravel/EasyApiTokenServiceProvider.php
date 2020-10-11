@@ -16,7 +16,9 @@ final class EasyApiTokenServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->publishes([__DIR__ . '/config/easy-api-token.php' => \base_path('config/easy-api-token.php')]);
+        $this->publishes([
+            __DIR__ . '/config/easy-api-token.php' => \base_path('config/easy-api-token.php'),
+        ]);
     }
 
     public function register(): void
