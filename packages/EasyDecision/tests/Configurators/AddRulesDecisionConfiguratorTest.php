@@ -22,7 +22,7 @@ final class AddRulesDecisionConfiguratorTest extends AbstractTestCase
 
         $rules = [
             new RestrictedRuleStub($expectedRule, 'decision-stub', $expectedOutput),
-            new RestrictedRuleStub('any-rule', 'any-decision', 'any-output'),
+            new RestrictedRuleStub('except-rule', 'any-decision', 'any-output'),
         ];
 
         $configurator = new AddRulesDecisionConfigurator($rules);
@@ -36,7 +36,7 @@ final class AddRulesDecisionConfiguratorTest extends AbstractTestCase
         $ruleOutputs = $decision->getContext()->getRuleOutputs();
 
         self::assertCount(1, $ruleOutputs);
-        self::assertArrayNotHasKey('any-rule', $ruleOutputs);
+        self::assertArrayNotHasKey('except-rule', $ruleOutputs);
 
         self::assertArrayHasKey($expectedRule, $ruleOutputs);
         self::assertEquals($expectedOutput, $ruleOutputs[$expectedRule]);
