@@ -119,7 +119,7 @@ public function someMethod(): array
 ```
 
 ##### [\EonX\EasyStandard\Rector\RestoreDefaultNullToNullableTypeParameterRector][6]
-Add null default to function arguments with PHP 7.1 nullable type
+Adds default null value to function arguments with PHP 7.1 nullable type
 ```php
 // before
 class SomeClass

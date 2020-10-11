@@ -47,7 +47,7 @@ class MyClass
 ```
 
 ##### [\EonX\EasyStandard\Sniffs\Classes\RequireStrictDeclarationSniff][3]
-Strict type declaration is require.
+Strict type declaration is required.
 ```php
 // incorrect
 <?php
@@ -86,7 +86,7 @@ declare(strict_types=1);
 #### Commenting
 
 ##### [\EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff][5]
-Checks that annotations are alphabetically sort.
+Checks that annotations are sort alphabetically.
 ```php
 // incorrect
 class MyClass
@@ -221,7 +221,7 @@ class MyClass
 #### Control Structures
 
 ##### [\EonX\EasyStandard\Sniffs\ControlStructures\ArrangeActAssertSniff][7]
-Checks that test method must conform to Arrange, Act and Assert (AAA) Pattern. Allow amount of empty lines is between [1, 2].
+Checks that a test method conforms to Arrange, Act and Assert (AAA) pattern. The allowed number of empty lines is between [1, 2].
 ```php
 // incorrect
 final class TestClass
@@ -300,8 +300,8 @@ final class TestClass
 ```
 **Parameters**
 
-- `testMethodPrefix` - If the method name starts with this prefix, checks will be applied to it. Default value: `test`.
-- `testNamespace` - If the class namespace begins with this prefix, the class will be parsed. Default value: `App\Tests`.
+- `testMethodPrefix` - If a method name starts with this prefix, checks will be applied to it. Default value: `test`.
+- `testNamespace` - If a class namespace starts with this prefix, the class will be parsed. Default value: `App\Tests`.
 ```php
 // correct
 namespace App\NoTestNamespace;
@@ -322,7 +322,7 @@ final class TestClass
 ```
 
 ##### [\EonX\EasyStandard\Sniffs\ControlStructures\NoNotOperatorSniff][8]
-Strict comparison operator should be used instead NOT operator.
+A strict comparison operator must be used instead of a NOT operator.
 ```php
 // incorrect
 $a = (bool)\random_int(0, 1);
@@ -392,10 +392,10 @@ Default value:
 #### Namespaces
 
 ##### [\EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff][11]
-Checks that namespace name match PSR-4 project structure.
+Checks that a namespace name matches PSR-4 project structure.
 **Parameters**
 
-- `composerJsonPath` - Relative path to project file `composer.json`. Default value: `composer.json`.
+- `composerJsonPath` - A relative path to the project file `composer.json`. Default value: `composer.json`.
 
 [1]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/AvoidPublicPropertiesSniff.php
 [2]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequirePublicConstructorSniff.php

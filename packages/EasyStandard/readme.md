@@ -20,9 +20,9 @@ $ composer require --dev eonx/easy-standard
 
 ### Prepare configuration file
 
-You can use one of next the names for configuration: `easy-coding-standard.yml`, `easy-coding-standard.yaml`, `ecs.yml`, `ecs.yaml` or `ecs.php`. Create this file in root folder of project.
+You can use one of the following names for configuration: `easy-coding-standard.yml`, `easy-coding-standard.yaml`, `ecs.yml`, `ecs.yaml` or `ecs.php`. Create this file in the root folder of the project.
 
-Basic structure of configuration:
+The basic structure of configuration:
 ```php
 // ecs.php
 declare(strict_types=1);
@@ -45,7 +45,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
 ### Run check
 
-Go to root of project and run `vendor/bin/ecs check`.
+Go to the root of project and run `vendor/bin/ecs check`.
 
 Expected output: `[OK] No errors found. Great job - your code is shiny in style!`
 
