@@ -7,7 +7,7 @@ namespace EonX\EasyDecision\Configurators;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\RestrictedRuleInterface;
 
-final class AddRestrictedRulesDecisionConfigurator extends AbstractConfigurator
+final class AddRulesDecisionConfigurator extends AbstractConfigurator
 {
     /**
      * @var iterable<\EonX\EasyDecision\Interfaces\RuleInterface>
@@ -27,13 +27,7 @@ final class AddRestrictedRulesDecisionConfigurator extends AbstractConfigurator
     public function configure(DecisionInterface $decision): void
     {
         foreach ($this->rules as $rule) {
-            if (($rule instanceof RestrictedRuleInterface) === false) {
-                $decision->addRule($rule);
-
-                continue;
-            }
-
-            if ($rule->supportsDecision($decision) === true) {
+            if (($rule instanceof RestrictedRuleInterface) === false || $rule->supportsDecision($decision)) {
                 $decision->addRule($rule);
             }
         }

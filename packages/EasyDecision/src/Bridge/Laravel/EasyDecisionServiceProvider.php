@@ -9,7 +9,7 @@ use EonX\EasyDecision\Bridge\Common\ExpressionLanguageConfigFactory;
 use EonX\EasyDecision\Bridge\Common\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Bridge\Common\Interfaces\ExpressionLanguageConfigFactoryInterface;
 use EonX\EasyDecision\Bridge\Interfaces\TagsInterface;
-use EonX\EasyDecision\Configurators\AddRestrictedRulesDecisionConfigurator;
+use EonX\EasyDecision\Configurators\AddRulesDecisionConfigurator;
 use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
 use EonX\EasyDecision\Decisions\DecisionFactory as BaseDecisionFactory;
 use EonX\EasyDecision\Expressions\ExpressionFunctionFactory;
@@ -40,13 +40,13 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         $this->app->tag(\config('easy-decision.rules', []), [TagsInterface::DECISION_RULE]);
 
         $this->app->singleton(
-            AddRestrictedRulesDecisionConfigurator::class,
+            AddRulesDecisionConfigurator::class,
             function (): DecisionConfiguratorInterface {
-                return new AddRestrictedRulesDecisionConfigurator($this->app->tagged(TagsInterface::DECISION_RULE));
+                return new AddRulesDecisionConfigurator($this->app->tagged(TagsInterface::DECISION_RULE));
             }
         );
 
-        $defaultConfigurators = [AddRestrictedRulesDecisionConfigurator::class];
+        $defaultConfigurators = [AddRulesDecisionConfigurator::class];
 
         if (\config('easy-decision.use_expression_language', false)) {
             $this->app->bind(SetExpressionLanguageConfigurator::class, function (): SetExpressionLanguageConfigurator {

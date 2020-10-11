@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use EonX\EasyDecision\Bridge\Interfaces\TagsInterface;
 use EonX\EasyDecision\Bridge\Symfony\DataCollector\DecisionDataCollector;
-use EonX\EasyDecision\Configurators\AddRestrictedRulesDecisionConfigurator;
+use EonX\EasyDecision\Configurators\AddRulesDecisionConfigurator;
 use EonX\EasyDecision\Decisions\DecisionFactory;
 use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
@@ -22,7 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->set(AddRestrictedRulesDecisionConfigurator::class)
+    $services->set(AddRulesDecisionConfigurator::class)
         ->arg('$rules', tagged_iterator(TagsInterface::DECISION_RULE));
 
     $services->set(DecisionFactoryInterface::class, DecisionFactory::class)
