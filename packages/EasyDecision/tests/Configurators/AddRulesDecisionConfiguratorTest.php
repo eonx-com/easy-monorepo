@@ -15,6 +15,27 @@ use EonX\EasyDecision\Tests\Stubs\RuleStub;
  */
 final class AddRulesDecisionConfiguratorTest extends AbstractTestCase
 {
+    public function testAddNonRestrictedRule(): void
+    {
+        $expectedRule = 'any-rule';
+        $expectedOutput = 'my-output';
+
+        $rules = [new RuleStub($expectedRule, $expectedOutput)];
+
+        $configurator = new AddRulesDecisionConfigurator($rules);
+
+        $decision = new DecisionStub('decision-stub');
+
+        $configurator->configure($decision);
+
+        $decision->make(['my-input']);
+
+        $ruleOutputs = $decision->getContext()->getRuleOutputs();
+
+        self::assertArrayHasKey($expectedRule, $ruleOutputs);
+        self::assertEquals($expectedOutput, $ruleOutputs[$expectedRule]);
+    }
+
     public function testAddRestrictedRule(): void
     {
         $expectedRule = 'restricted-rule';
@@ -37,27 +58,6 @@ final class AddRulesDecisionConfiguratorTest extends AbstractTestCase
 
         self::assertCount(1, $ruleOutputs);
         self::assertArrayNotHasKey('except-rule', $ruleOutputs);
-
-        self::assertArrayHasKey($expectedRule, $ruleOutputs);
-        self::assertEquals($expectedOutput, $ruleOutputs[$expectedRule]);
-    }
-
-    public function testAddNonRestrictedRule(): void
-    {
-        $expectedRule = 'any-rule';
-        $expectedOutput = 'my-output';
-
-        $rules = [new RuleStub($expectedRule, $expectedOutput)];
-
-        $configurator = new AddRulesDecisionConfigurator($rules);
-
-        $decision = new DecisionStub('decision-stub');
-
-        $configurator->configure($decision);
-
-        $decision->make(['my-input']);
-
-        $ruleOutputs = $decision->getContext()->getRuleOutputs();
 
         self::assertArrayHasKey($expectedRule, $ruleOutputs);
         self::assertEquals($expectedOutput, $ruleOutputs[$expectedRule]);
