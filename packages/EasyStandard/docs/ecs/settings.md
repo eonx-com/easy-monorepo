@@ -1,8 +1,11 @@
 ---eonx_docs---
-title: Settings of parameters
+title: Settings of ecs
 weight: 1000
 is_section: true
 ---eonx_docs---
+
+### Example of configuration
+
 ```php
 // ecs.php
 declare(strict_types=1);
@@ -37,13 +40,20 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/path/to/file.php',
         __DIR__ . '/path/with/mask/**/*.php',
     ]);
+    
+    $services = $containerConfigurator->services();
+    
+    $services->set(LineLengthSniff::class)
+        ->property('absoluteLineLimit', 120)
+        ->property('ignoreComments', false);
+
 };
 
 ```
 
 ### List of parameters
 
+- `exclude_paths` - skip directory and/or file
 - `paths` - paths to analyze
 - `sets` - list of rules using during analyze
 - `skip` - skip directory and/or file by rule
-- `exclude_paths` - skip directory and/or file

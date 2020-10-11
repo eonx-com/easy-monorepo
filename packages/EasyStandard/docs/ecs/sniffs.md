@@ -1,6 +1,6 @@
 ---eonx_docs---
 title: 'EasyStandard: Sniffs'
-weight: 2002
+weight: 1001
 ---eonx_docs---
 #### Classes
 
