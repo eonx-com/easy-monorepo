@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Tests\Bridge\Symfony\Valiator\Constraints;
+namespace EonX\EasyCore\Tests\Bridge\Symfony\Validator\Constraints;
 
 use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Abn;
 use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\AbnValidator;
