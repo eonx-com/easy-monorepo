@@ -13,7 +13,7 @@ use Mockery\MockInterface;
 /**
  * @covers \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory
  */
-class ManagementApiClientFactoryTest extends AbstractTestCase
+final class ManagementApiClientFactoryTest extends AbstractTestCase
 {
     public function testCreate(): void
     {

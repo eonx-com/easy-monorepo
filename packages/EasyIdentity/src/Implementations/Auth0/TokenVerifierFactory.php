@@ -6,7 +6,7 @@ namespace EonX\EasyIdentity\Implementations\Auth0;
 
 use Auth0\SDK\JWTVerifier;
 
-class TokenVerifierFactory
+final class TokenVerifierFactory
 {
     /**
      * @var \EonX\EasyIdentity\Implementations\Auth0\Config

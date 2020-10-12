@@ -15,7 +15,7 @@ use Eonx\TestUtils\TestCases\Integration\DoctrineORMTestCase;
 /**
  * @coversNothing
  */
-class DoctrineORMTestCaseTest extends DoctrineORMTestCase
+final class DoctrineORMTestCaseTest extends DoctrineORMTestCase
 {
     public function testEntityChangeEventIsDispatchedWithDbId(): void
     {
