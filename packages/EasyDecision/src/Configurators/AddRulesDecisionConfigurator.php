@@ -39,7 +39,7 @@ final class AddRulesDecisionConfigurator extends AbstractConfigurator
      *
      * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
-    private function filterRules(iterable $rules): array
+    private function filterRules($rules): array
     {
         $rules = $rules instanceof \Traversable
             ? \iterator_to_array($rules)
