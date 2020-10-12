@@ -65,7 +65,7 @@ final class AddRulesDecisionConfiguratorTest extends AbstractTestCase
         self::assertEquals($expectedOutput, $ruleOutputs[$expectedRule]);
     }
 
-    public function testFilterNotARuleClass(): void
+    public function testFilterRules(): void
     {
         $expectedRule = 'restricted-rule';
         $expectedOutput = 'my-output';
