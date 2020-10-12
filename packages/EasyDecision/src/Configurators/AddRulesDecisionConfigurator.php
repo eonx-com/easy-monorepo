@@ -11,12 +11,12 @@ use EonX\EasyDecision\Interfaces\RuleInterface;
 final class AddRulesDecisionConfigurator extends AbstractConfigurator
 {
     /**
-     * @var mixed|iterable<\EonX\EasyDecision\Interfaces\RuleInterface>
+     * @var mixed
      */
     private $rules;
 
     /**
-     * @param mixed|iterable<\EonX\EasyDecision\Interfaces\RuleInterface> $rules
+     * @param mixed $rules
      */
     public function __construct($rules, ?int $priority = null)
     {
@@ -35,11 +35,11 @@ final class AddRulesDecisionConfigurator extends AbstractConfigurator
     }
 
     /**
-     * @param mixed|iterable<\EonX\EasyDecision\Interfaces\RuleInterface> $rules
+     * @param mixed $rules
      *
      * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
-    private function filterRules(iterable $rules): array
+    private function filterRules($rules): array
     {
         $rules = $rules instanceof \Traversable
             ? \iterator_to_array($rules)
