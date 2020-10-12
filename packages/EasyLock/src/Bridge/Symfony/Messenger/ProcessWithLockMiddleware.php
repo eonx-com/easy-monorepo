@@ -18,17 +18,20 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         if ($this->shouldSkip($envelope)) {
-            return $stack->next()->handle($envelope, $stack);
+            return $stack->next()
+                ->handle($envelope, $stack);
         }
 
         $withLockData = $this->getLockData($envelope);
 
         if ($withLockData === null) {
-            return $stack->next()->handle($envelope, $stack);
+            return $stack->next()
+                ->handle($envelope, $stack);
         }
 
         $newEnvelope = $this->processWithLock($withLockData, static function () use ($envelope, $stack): Envelope {
-            return $stack->next()->handle($envelope, $stack);
+            return $stack->next()
+                ->handle($envelope, $stack);
         });
 
         return $newEnvelope ?? $envelope;

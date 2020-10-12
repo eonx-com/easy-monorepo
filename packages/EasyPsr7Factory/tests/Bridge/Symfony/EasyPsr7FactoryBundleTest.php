@@ -11,7 +11,8 @@ final class EasyPsr7FactoryBundleTest extends AbstractSymfonyTestCase
 {
     public function testPsr7FactoryRegisteredAsService(): void
     {
-        $container = $this->getKernel()->getContainer();
+        $container = $this->getKernel()
+            ->getContainer();
 
         self::assertInstanceOf(EasyPsr7FactoryInterface::class, $container->get(EasyPsr7FactoryInterface::class));
         self::assertInstanceOf(ServerRequestInterface::class, $container->get(ServerRequestInterface::class));

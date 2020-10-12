@@ -34,7 +34,9 @@ final class ExternalLogger implements SqlLoggerInterface
     {
         $logger = new ExternalSqlLogger(
             $this->client,
-            $em->getConnection()->getDatabasePlatform()->getName(),
+            $em->getConnection()
+                ->getDatabasePlatform()
+                ->getName(),
             $this->includeBindings
         );
 

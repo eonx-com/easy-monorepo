@@ -11,7 +11,7 @@ use EonX\EasyIdentity\Tests\AbstractTestCase;
 /**
  * @covers \EonX\EasyIdentity\Implementations\Auth0\Config
  */
-class ConfigTest extends AbstractTestCase
+final class ConfigTest extends AbstractTestCase
 {
     public function testGettersReturnExpectedValues(): void
     {

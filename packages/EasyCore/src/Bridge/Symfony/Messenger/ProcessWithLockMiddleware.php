@@ -26,14 +26,16 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
         ), \E_USER_DEPRECATED);
 
         if ($this->shouldSkip($envelope)) {
-            return $stack->next()->handle($envelope, $stack);
+            return $stack->next()
+                ->handle($envelope, $stack);
         }
 
         /** @var \EonX\EasyCore\Lock\WithLockDataInterface $message */
         $message = $envelope->getMessage();
 
         $newEnvelope = $this->processWithLock($message, static function () use ($envelope, $stack): Envelope {
-            return $stack->next()->handle($envelope, $stack);
+            return $stack->next()
+                ->handle($envelope, $stack);
         });
 
         return $newEnvelope ?? $envelope;

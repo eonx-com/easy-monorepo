@@ -11,7 +11,7 @@ use stdClass;
 /**
  * @covers \EonX\EasyEntityChange\DataTransferObjects\UpdatedEntity
  */
-class UpdatedEntityTest extends AbstractTestCase
+final class UpdatedEntityTest extends AbstractTestCase
 {
     public function testDtoCreationAndGetters(): void
     {

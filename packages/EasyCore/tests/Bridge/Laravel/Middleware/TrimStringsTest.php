@@ -32,7 +32,10 @@ final class TrimStringsTest extends AbstractTestCase
         $trimmer = $this->mock(
             StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
-                $mock->shouldReceive('trim')->once()->with($data, $except)->andReturn($expectedResult);
+                $mock->shouldReceive('trim')
+                    ->once()
+                    ->with($data, $except)
+                    ->andReturn($expectedResult);
             }
         );
         $middleware = new TrimStrings($trimmer, $except);
@@ -61,8 +64,13 @@ final class TrimStringsTest extends AbstractTestCase
         $trimmer = $this->mock(
             StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
-                $mock->shouldReceive('trim')->once()->with([], $except)->andReturn([]);
-                $mock->shouldReceive('trim')->once()->with($data, $except)->andReturn($expectedResult);
+                $mock->shouldReceive('trim')
+                    ->once()
+                    ->with([], $except)->andReturn([]);
+                $mock->shouldReceive('trim')
+                    ->once()
+                    ->with($data, $except)
+                    ->andReturn($expectedResult);
             }
         );
         $middleware = new TrimStrings($trimmer, $except);
@@ -93,8 +101,13 @@ final class TrimStringsTest extends AbstractTestCase
         $trimmer = $this->mock(
             StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
-                $mock->shouldReceive('trim')->once()->with([], $except)->andReturn([]);
-                $mock->shouldReceive('trim')->once()->with($data, $except)->andReturn($expectedResult);
+                $mock->shouldReceive('trim')
+                    ->once()
+                    ->with([], $except)->andReturn([]);
+                $mock->shouldReceive('trim')
+                    ->once()
+                    ->with($data, $except)
+                    ->andReturn($expectedResult);
             }
         );
         $middleware = new TrimStrings($trimmer, $except);

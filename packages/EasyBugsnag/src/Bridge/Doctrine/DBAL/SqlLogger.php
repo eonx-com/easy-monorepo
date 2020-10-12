@@ -94,7 +94,8 @@ final class SqlLogger implements BaseSqlLoggerInterface
             'Types' => \json_encode($this->types),
             'Time (ms)' => \number_format((\microtime(true) - $this->start) * 1000, 2),
             'DB' => $this->conn->getDatabase(),
-            'Platform' => $this->conn->getDatabasePlatform()->getName(),
+            'Platform' => $this->conn->getDatabasePlatform()
+                ->getName(),
         ]);
 
         $this->sql = null;

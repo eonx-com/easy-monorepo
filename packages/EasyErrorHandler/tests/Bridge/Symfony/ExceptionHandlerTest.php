@@ -30,7 +30,8 @@ final class ExceptionHandlerTest extends AbstractSymfonyTestCase
             $config = [$this->dumpConfigFile($config)];
         }
 
-        $container = $this->getKernel($config)->getContainer();
+        $container = $this->getKernel($config)
+            ->getContainer();
         $handler = $container->get(ErrorHandlerInterface::class);
 
         if ($translations !== null) {
