@@ -28,7 +28,7 @@ use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveSuperfluousDocBlockWhitespaceFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
 use Symplify\CodingStandard\Fixer\Spacing\RemoveSpacingAroundModifierAndConstFixer;
-use Symplify\EasyCodingStandard\Configuration\Option;
+use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -171,8 +171,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // arrays
     $services->set(ArrayOpenerNewlineFixer::class);
     $services->set(StandaloneLineInMultilineArrayFixer::class);
+
     // annotations
     $services->set(ParamReturnAndVarTagMalformsFixer::class);
+
     // extra spaces
     $services->set(RemoveSuperfluousDocBlockWhitespaceFixer::class);
     $services->set(RemoveSpacingAroundModifierAndConstFixer::class);
