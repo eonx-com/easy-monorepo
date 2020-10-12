@@ -14,7 +14,9 @@ final class ForBuildEnvVarProcessor implements EnvVarProcessorInterface
      */
     public static function getProvidedTypes(): array
     {
-        return ['for_build' => 'string'];
+        return [
+            'for_build' => 'string',
+        ];
     }
 
     /**
