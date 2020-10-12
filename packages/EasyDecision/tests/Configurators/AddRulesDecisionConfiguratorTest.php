@@ -64,4 +64,34 @@ final class AddRulesDecisionConfiguratorTest extends AbstractTestCase
         self::assertArrayHasKey($expectedRule, $ruleOutputs);
         self::assertEquals($expectedOutput, $ruleOutputs[$expectedRule]);
     }
+
+    public function testFilterNotARuleClass(): void
+    {
+        $expectedRule = 'restricted-rule';
+        $expectedOutput = 'my-output';
+
+        $rules = [
+            new RestrictedRuleStub($expectedRule, 'decision-stub', $expectedOutput),
+            new class {
+                // No body needed.
+            },
+        ];
+
+        $configurator = new AddRulesDecisionConfigurator($rules);
+
+        $decision = new DecisionStub('decision-stub');
+
+        $configurator->configure($decision);
+
+        $decision->make(['my-input']);
+
+        $ruleOutputs = $decision->getContext()
+            ->getRuleOutputs();
+
+        self::assertCount(1, $ruleOutputs);
+        self::assertArrayNotHasKey('except-rule', $ruleOutputs);
+
+        self::assertArrayHasKey($expectedRule, $ruleOutputs);
+        self::assertEquals($expectedOutput, $ruleOutputs[$expectedRule]);
+    }
 }

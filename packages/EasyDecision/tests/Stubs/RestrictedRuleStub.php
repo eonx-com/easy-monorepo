@@ -18,10 +18,9 @@ final class RestrictedRuleStub extends RuleStub implements RestrictedRuleInterfa
         string $name,
         string $supportedDecision,
         $output,
-        ?bool $supports = null,
-        ?int $priority = null
+        ?bool $supports = null
     ) {
-        parent::__construct($name, $output, $supports, $priority);
+        parent::__construct($name, $output, $supports);
 
         $this->supportedDecision = $supportedDecision;
     }

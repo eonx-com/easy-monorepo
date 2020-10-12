@@ -43,7 +43,7 @@ final class AddRulesDecisionConfigurator extends AbstractConfigurator
     {
         $rules = $rules instanceof \Traversable
             ? \iterator_to_array($rules)
-            : (array)$this->rules;
+            : (array)$rules;
 
         return \array_filter($rules, static function ($rule): bool {
             return $rule instanceof RuleInterface;
