@@ -14,12 +14,11 @@ final class RestrictedRuleStub extends RuleStub implements RestrictedRuleInterfa
      */
     private $supportedDecision;
 
-    public function __construct(
-        string $name,
-        string $supportedDecision,
-        $output,
-        ?bool $supports = null
-    ) {
+    /**
+     * @param mixed $output
+     */
+    public function __construct(string $name, string $supportedDecision, $output, ?bool $supports = null)
+    {
         parent::__construct($name, $output, $supports);
 
         $this->supportedDecision = $supportedDecision;

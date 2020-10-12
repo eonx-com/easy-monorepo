@@ -102,6 +102,9 @@ parameters:
         - message: '#Cannot call method addFunction\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
           path: packages/EasyDecision/tests/Bridge/Symfony/Stubs/Configurators/TypeRestrictedExpressionFunctionConfigurator.php
 
+        - message: '#Parameter \#1 \$rules of class EonX\\EasyDecision\\Configurators\\AddRulesDecisionConfigurator constructor expects iterable<EonX\\EasyDecision\\Interfaces\\RuleInterface\>, array<int, class@anonymous/EasyDecision/tests/Configurators/AddRulesDecisionConfiguratorTest\.php\:75\|EonX\\EasyDecision\\Tests\\Stubs\\RestrictedRuleStub\> given#'
+          path: packages/EasyDecision/tests/Configurators/AddRulesDecisionConfiguratorTest.php
+
         # ---- EasyEntityChange ----
         # ---- EasyErrorHandler ----
         - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
