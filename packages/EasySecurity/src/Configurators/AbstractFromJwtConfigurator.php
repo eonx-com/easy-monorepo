@@ -60,7 +60,8 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
      */
     protected function getClaim(JwtInterface $token, string $claim, $default = null)
     {
-        return $this->getJwtClaimFetcher()->getClaim($token, $claim, $default);
+        return $this->getJwtClaimFetcher()
+            ->getClaim($token, $claim, $default);
     }
 
     /**
@@ -70,7 +71,8 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
      */
     protected function getMainClaim(JwtInterface $token, ?array $default = null): array
     {
-        return $this->getJwtClaimFetcher()->getArrayClaim($token, $this->jwtClaim, $default);
+        return $this->getJwtClaimFetcher()
+            ->getArrayClaim($token, $this->jwtClaim, $default);
     }
 
     private function getJwtClaimFetcher(): JwtClaimFetcherInterface

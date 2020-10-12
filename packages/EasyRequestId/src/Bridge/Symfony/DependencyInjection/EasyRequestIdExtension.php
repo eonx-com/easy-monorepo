@@ -61,7 +61,8 @@ final class EasyRequestIdExtension extends Extension
         }
 
         foreach (static::$tags as $interface => $tag) {
-            $container->registerForAutoconfiguration($interface)->addTag($tag);
+            $container->registerForAutoconfiguration($interface)
+                ->addTag($tag);
         }
 
         $loader->load('services.php');

@@ -11,7 +11,8 @@ final class EasyLoggingBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanity(): void
     {
-        $container = $this->getKernel()->getContainer();
+        $container = $this->getKernel()
+            ->getContainer();
 
         self::assertInstanceOf(LoggerFactoryInterface::class, $container->get(LoggerFactoryInterface::class));
         self::assertInstanceOf(LoggerInterface::class, $container->get(LoggerInterface::class));

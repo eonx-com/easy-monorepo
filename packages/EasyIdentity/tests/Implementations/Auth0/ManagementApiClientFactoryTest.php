@@ -19,7 +19,10 @@ class ManagementApiClientFactoryTest extends AbstractTestCase
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider $tokenProvider */
         $tokenProvider = $this->mock(ManagementTokenProvider::class, static function (MockInterface $mock): void {
-            $mock->shouldReceive('getToken')->once()->withNoArgs()->andReturn('access_token');
+            $mock->shouldReceive('getToken')
+                ->once()
+                ->withNoArgs()
+                ->andReturn('access_token');
         });
 
         $config = new Config([

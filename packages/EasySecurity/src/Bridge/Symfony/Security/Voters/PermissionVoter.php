@@ -26,7 +26,8 @@ final class PermissionVoter extends Voter
      */
     protected function supports($attribute, $subject): bool
     {
-        return $this->securityContext->getAuthorizationMatrix()->isPermission((string)$attribute);
+        return $this->securityContext->getAuthorizationMatrix()
+            ->isPermission((string)$attribute);
     }
 
     /**

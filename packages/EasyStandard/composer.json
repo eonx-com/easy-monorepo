@@ -10,8 +10,8 @@
         "phpstan/phpstan": "^0.12.42",
         "phpunit/phpunit": "^7.5 || ^8.4",
         "slevomat/coding-standard": "^6.4",
-        "symplify/easy-coding-standard-tester": "^8.3.31",
-        "rector/rector": "^0.8.2"
+        "symplify/easy-coding-standard-tester": "^8.3.32",
+        "rector/rector": "^0.8.15"
     },
     "autoload": {
         "psr-4": {

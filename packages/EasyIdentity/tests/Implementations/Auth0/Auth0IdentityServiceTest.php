@@ -43,7 +43,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                 ->shouldReceive('create')
                 ->once()
                 ->with([
-                    'connection' => $this->getConfig()->getConnection(),
+                    'connection' => $this->getConfig()
+                        ->getConnection(),
                 ])
                 ->andReturn(['expected']);
         });
@@ -51,7 +52,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $identityUserService = new IdentityUserService();
         $identityUser = new IdentityUserStub();
 
-        $this->getServiceForUsersMethod($identityUserService, $management)->createUser($identityUser);
+        $this->getServiceForUsersMethod($identityUserService, $management)
+            ->createUser($identityUser);
     }
 
     public function testCreateUserSuccessfully(): void
@@ -64,7 +66,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                 ->withArgs(
                     function ($connection): bool {
                         return \in_array('connection', $connection, true)
-                            && \array_shift($connection) === $this->getConfig()->getConnection();
+                            && \array_shift($connection) === $this->getConfig()
+                                ->getConnection();
                     }
                 )
                 ->andReturn([
@@ -75,7 +78,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $identityUserService = new IdentityUserService();
         $identityUser = new IdentityUserStub();
 
-        $this->getServiceForUsersMethod($identityUserService, $management)->createUser($identityUser);
+        $this->getServiceForUsersMethod($identityUserService, $management)
+            ->createUser($identityUser);
 
         self::assertEquals(
             'identity-id',
@@ -88,10 +92,16 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         /** @var \EonX\EasyIdentity\Implementations\Auth0\TokenVerifierFactory $tokenVerifierFactory */
         $tokenVerifierFactory = $this->mock(TokenVerifierFactory::class, function (LegacyMockInterface $mock): void {
             $jwt = $this->mock(JWTVerifier::class, static function (LegacyMockInterface $mock): void {
-                $mock->shouldReceive('verifyAndDecode')->once()->with('token')->andReturn(['expected']);
+                $mock->shouldReceive('verifyAndDecode')
+                    ->once()
+                    ->with('token')
+                    ->andReturn(['expected']);
             });
 
-            $mock->shouldReceive('create')->once()->withNoArgs()->andReturn($jwt);
+            $mock->shouldReceive('create')
+                ->once()
+                ->withNoArgs()
+                ->andReturn($jwt);
         });
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mock(ManagementApiClientFactory::class);
@@ -111,13 +121,15 @@ class Auth0IdentityServiceTest extends AbstractTestCase
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mockManagementForUsersClient(static function (LegacyMockInterface $mock): void {
-            $mock->shouldReceive('delete')->once()->withArgs(static function ($userId): bool {
-                $condition = \is_string($userId) && $userId === 'identity-id';
+            $mock->shouldReceive('delete')
+                ->once()
+                ->withArgs(static function ($userId): bool {
+                    $condition = \is_string($userId) && $userId === 'identity-id';
 
-                self::assertTrue($condition);
+                    self::assertTrue($condition);
 
-                return $condition;
-            })->andReturnNull();
+                    return $condition;
+                })->andReturnNull();
         });
 
         $identityUserService = new IdentityUserService();
@@ -129,22 +141,25 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             'identity-id'
         );
 
-        $this->getServiceForUsersMethod($identityUserService, $management)->deleteUser($identityUser);
+        $this->getServiceForUsersMethod($identityUserService, $management)
+            ->deleteUser($identityUser);
     }
 
     public function testGetUser(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
         $management = $this->mockManagementForUsersClient(static function (LegacyMockInterface $mock): void {
-            $mock->shouldReceive('get')->once()->withArgs(static function ($userId): bool {
-                $condition = \is_string($userId) && $userId === 'identity-id';
+            $mock->shouldReceive('get')
+                ->once()
+                ->withArgs(static function ($userId): bool {
+                    $condition = \is_string($userId) && $userId === 'identity-id';
 
-                self::assertTrue($condition);
+                    self::assertTrue($condition);
 
-                return $condition;
-            })->andReturn([
-                'new-key' => 'new-value',
-            ]);
+                    return $condition;
+                })->andReturn([
+                    'new-key' => 'new-value',
+                ]);
         });
 
         $service = IdentityServiceNamesInterface::SERVICE_AUTH0;
@@ -153,7 +168,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $identityUser = new IdentityUserStub();
         $identityUserService->setIdentityUserId($identityUser, $service, 'identity-id');
 
-        $this->getServiceForUsersMethod($identityUserService, $management)->getUser($identityUser);
+        $this->getServiceForUsersMethod($identityUserService, $management)
+            ->getUser($identityUser);
 
         self::assertEquals(
             [
@@ -175,7 +191,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $identityUserService = new IdentityUserService();
         $identityUser = new IdentityUserStub();
 
-        $this->getServiceForUsersMethod($identityUserService, $management)->getUser($identityUser);
+        $this->getServiceForUsersMethod($identityUserService, $management)
+            ->getUser($identityUser);
     }
 
     public function testLoginUserWithExceptionAuthResponse(): void
@@ -187,16 +204,28 @@ class Auth0IdentityServiceTest extends AbstractTestCase
             $exception = $this->mock(RequestException::class, function (LegacyMockInterface $mock): void {
                 $response = $this->mock(ResponseInterface::class, function (LegacyMockInterface $mock): void {
                     $body = $this->mock(StreamInterface::class, static function (LegacyMockInterface $mock): void {
-                        $mock->shouldReceive('getContents')->once()->withNoArgs()->andReturn('');
+                        $mock->shouldReceive('getContents')
+                            ->once()
+                            ->withNoArgs()
+                            ->andReturn('');
                     });
 
-                    $mock->shouldReceive('getBody')->once()->withNoArgs()->andReturn($body);
+                    $mock->shouldReceive('getBody')
+                        ->once()
+                        ->withNoArgs()
+                        ->andReturn($body);
                 });
 
-                $mock->shouldReceive('getResponse')->once()->withNoArgs()->andReturn($response);
+                $mock->shouldReceive('getResponse')
+                    ->once()
+                    ->withNoArgs()
+                    ->andReturn($response);
             });
 
-            $mock->shouldReceive('create')->once()->withNoArgs()->andThrow($exception);
+            $mock->shouldReceive('create')
+                ->once()
+                ->withNoArgs()
+                ->andThrow($exception);
         });
 
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
@@ -222,9 +251,15 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         /** @var \EonX\EasyIdentity\Implementations\Auth0\AuthenticationApiClientFactory $authFactory */
         $authFactory = $this->mock(AuthenticationApiClientFactory::class, function (LegacyMockInterface $mock): void {
             $exception = $this->mock(RequestException::class, static function (LegacyMockInterface $mock): void {
-                $mock->shouldReceive('getResponse')->once()->withNoArgs()->andReturn(null);
+                $mock->shouldReceive('getResponse')
+                    ->once()
+                    ->withNoArgs()
+                    ->andReturn(null);
             });
-            $mock->shouldReceive('create')->once()->withNoArgs()->andThrow($exception);
+            $mock->shouldReceive('create')
+                ->once()
+                ->withNoArgs()
+                ->andThrow($exception);
         });
 
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory $management */
@@ -268,10 +303,8 @@ class Auth0IdentityServiceTest extends AbstractTestCase
         $identityUserService->setIdentityUserId($identityUser, $service, 'my-identity-id');
         $identityUserService->setIdentityValue($identityUser, $service, 'email', 'email@email.com');
 
-        $this->getServiceForUsersMethod($identityUserService, $management)->updateUser(
-            $identityUser,
-            $identityUserService->getIdentityToArray($identityUser, $service)
-        );
+        $this->getServiceForUsersMethod($identityUserService, $management)
+            ->updateUser($identityUser, $identityUserService->getIdentityToArray($identityUser, $service));
 
         $expected = [
             'email' => 'email@email.com',
@@ -318,7 +351,10 @@ class Auth0IdentityServiceTest extends AbstractTestCase
                 $management = $this->mock(Management::class);
                 $management->users = $users;
 
-                $mock->shouldReceive('create')->once()->withNoArgs()->andReturn($management);
+                $mock->shouldReceive('create')
+                    ->once()
+                    ->withNoArgs()
+                    ->andReturn($management);
             }
         );
     }

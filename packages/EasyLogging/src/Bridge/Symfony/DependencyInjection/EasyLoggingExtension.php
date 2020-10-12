@@ -52,7 +52,8 @@ final class EasyLoggingExtension extends Extension
         $container->setParameter(BridgeConstantsInterface::PARAM_STREAM_HANDLER_LEVEL, $config['stream_handler_level']);
 
         foreach (static::$autoConfigs as $interface => $tag) {
-            $container->registerForAutoconfiguration($interface)->addTag($tag);
+            $container->registerForAutoconfiguration($interface)
+                ->addTag($tag);
         }
 
         // Default stream handler

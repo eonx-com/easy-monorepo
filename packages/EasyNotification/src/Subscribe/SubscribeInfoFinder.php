@@ -55,7 +55,8 @@ final class SubscribeInfoFinder implements SubscribeInfoFinderInterface
             $providerExternalId
         );
 
-        $response = $this->httpClient->request('POST', $url, $options)->toArray();
+        $response = $this->httpClient->request('POST', $url, $options)
+            ->toArray();
 
         return SubscribeInfo::fromArray($response);
     }

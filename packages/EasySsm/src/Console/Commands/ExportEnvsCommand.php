@@ -52,7 +52,8 @@ final class ExportEnvsCommand extends AbstractCommand
         $strict = $input->getOption('strict') ?? null ? (bool)$input->getOption('strict') : false;
         $path = $input->getOption('path') ?? null ? (string)$input->getOption('path') : null;
 
-        $this->ssmDotenv->setStrict($strict)->loadEnv($path);
+        $this->ssmDotenv->setStrict($strict)
+            ->loadEnv($path);
 
         return 0;
     }

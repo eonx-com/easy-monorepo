@@ -37,7 +37,8 @@ abstract class AbstractTestCase extends TestCase
     protected function createExpressionLanguage(
         ?ExpressionLanguageConfigInterface $config = null
     ): ExpressionLanguageInterface {
-        return $this->getExpressionLanguageFactory()->create($config ?? new ExpressionLanguageConfig());
+        return $this->getExpressionLanguageFactory()
+            ->create($config ?? new ExpressionLanguageConfig());
     }
 
     protected function createFalseRule(string $name, ?int $priority = null): RuleInterface
@@ -54,7 +55,8 @@ abstract class AbstractTestCase extends TestCase
         ?string $name = null,
         ?array $extra = null
     ): RuleInterface {
-        return $this->getLanguageRuleFactory()->create($expression, $priority, $name, $extra);
+        return $this->getLanguageRuleFactory()
+            ->create($expression, $priority, $name, $extra);
     }
 
     protected function createTrueRule(string $name, ?int $priority = null): RuleInterface

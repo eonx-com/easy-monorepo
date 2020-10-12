@@ -18,14 +18,16 @@ final class ProcessJobLogMiddleware implements MiddlewareInterface
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         if ($this->shouldSkip($envelope)) {
-            return $stack->next()->handle($envelope, $stack);
+            return $stack->next()
+                ->handle($envelope, $stack);
         }
 
         /** @var \EonX\EasyAsync\Interfaces\WithProcessJobLogDataInterface $message */
         $message = $envelope->getMessage();
 
         $newEnvelope = $this->processWithJobLog($message, static function () use ($envelope, $stack): Envelope {
-            return $stack->next()->handle($envelope, $stack);
+            return $stack->next()
+                ->handle($envelope, $stack);
         });
 
         // If exception is thrown during process, trait will return null
