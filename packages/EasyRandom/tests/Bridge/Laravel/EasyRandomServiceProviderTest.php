@@ -22,7 +22,8 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 
     public function testSanity(): void
     {
-        $randomGenerator = $this->getApp()->get(RandomGeneratorInterface::class);
+        $randomGenerator = $this->getApp()
+            ->get(RandomGeneratorInterface::class);
 
         self::assertInstanceOf(RandomGeneratorInterface::class, $randomGenerator);
     }

@@ -39,19 +39,33 @@ final class CustomPaginatorTest extends AbstractSymfonyTestCase
     {
         /** @var \Doctrine\ORM\EntityManagerInterface $manager */
         $manager = $this->mock(EntityManagerInterface::class, static function (MockInterface $mock): void {
-            $mock->shouldReceive('getConfiguration')->atLeast()->once()->withNoArgs()->andReturn(new Configuration());
+            $mock->shouldReceive('getConfiguration')
+                ->atLeast()
+                ->once()
+                ->withNoArgs()
+                ->andReturn(new Configuration());
         });
 
         $query = new Query($manager);
-        $query->setFirstResult(1)->setMaxResults(15);
+        $query->setFirstResult(1)
+            ->setMaxResults(15);
 
         /** @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator */
         $doctrinePaginator = $this->mock(
             DoctrinePaginator::class,
             static function (MockInterface $mock) use ($query): void {
-                $mock->shouldReceive('getQuery')->once()->withNoArgs()->andReturn($query);
-                $mock->shouldReceive('getIterator')->once()->withNoArgs()->andReturn(new \ArrayIterator());
-                $mock->shouldReceive('count')->once()->withNoArgs()->andReturn(0);
+                $mock->shouldReceive('getQuery')
+                    ->once()
+                    ->withNoArgs()
+                    ->andReturn($query);
+                $mock->shouldReceive('getIterator')
+                    ->once()
+                    ->withNoArgs()
+                    ->andReturn(new \ArrayIterator());
+                $mock->shouldReceive('count')
+                    ->once()
+                    ->withNoArgs()
+                    ->andReturn(0);
             }
         );
 

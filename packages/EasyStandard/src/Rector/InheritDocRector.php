@@ -38,7 +38,8 @@ final class InheritDocRector extends AbstractRector
         $phpDocInfo = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
 
         /** @var AttributeAwarePhpDocTextNode[] $children */
-        $children = $phpDocInfo->getPhpDocNode()->children;
+        $children = $phpDocInfo->getPhpDocNode()
+            ->children;
 
         foreach ($children as $key => $child) {
             if ($child->getAttribute('original_content') === self::INHERITDOC_INCORRECT_ANNOTATION) {
@@ -46,7 +47,8 @@ final class InheritDocRector extends AbstractRector
             }
         }
 
-        $phpDocInfo->getPhpDocNode()->children = $children;
+        $phpDocInfo->getPhpDocNode()
+            ->children = $children;
 
         return $classMethod;
     }

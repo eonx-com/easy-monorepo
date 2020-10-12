@@ -30,7 +30,8 @@ class DoctrineORMTestCaseTest extends DoctrineORMTestCase
         $dispatcher = new EventDispatcherStub();
 
         $entityManager = $this->getEntityManager();
-        $entityManager->getEventManager()->addEventSubscriber(new EntityChangeSubscriber($dispatcher));
+        $entityManager->getEventManager()
+            ->addEventSubscriber(new EntityChangeSubscriber($dispatcher));
 
         $entity = new SimpleEntity();
         $entity->setProperty('hello');
@@ -54,7 +55,8 @@ class DoctrineORMTestCaseTest extends DoctrineORMTestCase
         $dispatcher = new EventDispatcherStub();
 
         $entityManager = $this->getEntityManager();
-        $entityManager->getEventManager()->addEventSubscriber(new EntityChangeSubscriber($dispatcher));
+        $entityManager->getEventManager()
+            ->addEventSubscriber(new EntityChangeSubscriber($dispatcher));
 
         $entity = new ProvidedIdEntity('uuid');
         $entity->setProperty('hello');

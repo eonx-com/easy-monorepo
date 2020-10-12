@@ -36,7 +36,8 @@ final class TranslatorStub implements TranslatorInterface
      */
     public function trans($id, ?array $parameters = null, $domain = null, $locale = null): string
     {
-        $translated = $this->getTranslator()->trans($id, $parameters ?? [], $domain, $locale);
+        $translated = $this->getTranslator()
+            ->trans($id, $parameters ?? [], $domain, $locale);
 
         // TODO - That's cheating... Translations need to be reworked completely
         if (empty($parameters) === false) {

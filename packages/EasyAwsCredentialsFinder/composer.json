@@ -6,8 +6,8 @@
     "require": {
         "php": "^7.2",
         "symfony/process": "^4.2 || ^5.0",
-        "symplify/package-builder": "^8.3.31",
-        "symplify/autowire-array-parameter": "^8.3.31",
+        "symplify/package-builder": "^8.3.32",
+        "symplify/autowire-array-parameter": "^8.3.32",
         "aws/aws-sdk-php": "^3.134",
         "nesbot/carbon": "^2.22"
     },
