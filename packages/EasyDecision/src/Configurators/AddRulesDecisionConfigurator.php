@@ -16,7 +16,7 @@ final class AddRulesDecisionConfigurator extends AbstractConfigurator
     private $rules;
 
     /**
-     * @param iterable<\EonX\EasyDecision\Interfaces\RuleInterface> $rules
+     * @param mixed|iterable<\EonX\EasyDecision\Interfaces\RuleInterface> $rules
      */
     public function __construct(iterable $rules, ?int $priority = null)
     {
