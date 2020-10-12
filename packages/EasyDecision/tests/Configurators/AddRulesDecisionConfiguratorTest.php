@@ -30,7 +30,8 @@ final class AddRulesDecisionConfiguratorTest extends AbstractTestCase
 
         $decision->make(['my-input']);
 
-        $ruleOutputs = $decision->getContext()->getRuleOutputs();
+        $ruleOutputs = $decision->getContext()
+            ->getRuleOutputs();
 
         self::assertArrayHasKey($expectedRule, $ruleOutputs);
         self::assertEquals($expectedOutput, $ruleOutputs[$expectedRule]);
@@ -54,7 +55,8 @@ final class AddRulesDecisionConfiguratorTest extends AbstractTestCase
 
         $decision->make(['my-input']);
 
-        $ruleOutputs = $decision->getContext()->getRuleOutputs();
+        $ruleOutputs = $decision->getContext()
+            ->getRuleOutputs();
 
         self::assertCount(1, $ruleOutputs);
         self::assertArrayNotHasKey('except-rule', $ruleOutputs);
