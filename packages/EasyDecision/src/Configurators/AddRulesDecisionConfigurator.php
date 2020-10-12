@@ -11,7 +11,7 @@ use EonX\EasyDecision\Interfaces\RuleInterface;
 final class AddRulesDecisionConfigurator extends AbstractConfigurator
 {
     /**
-     * @var iterable<\EonX\EasyDecision\Interfaces\RuleInterface>
+     * @var mixed|iterable<\EonX\EasyDecision\Interfaces\RuleInterface>
      */
     private $rules;
 
