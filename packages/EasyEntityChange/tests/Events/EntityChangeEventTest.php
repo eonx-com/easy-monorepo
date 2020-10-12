@@ -12,7 +12,7 @@ use stdClass;
 /**
  * @covers \EonX\EasyEntityChange\Events\EntityChangeEvent
  */
-class EntityChangeEventTest extends AbstractTestCase
+final class EntityChangeEventTest extends AbstractTestCase
 {
     public function testEventCreationAndGetters(): void
     {

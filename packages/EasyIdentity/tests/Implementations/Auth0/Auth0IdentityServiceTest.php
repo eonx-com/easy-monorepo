@@ -26,7 +26,7 @@ use Mockery\LegacyMockInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
-class Auth0IdentityServiceTest extends AbstractTestCase
+final class Auth0IdentityServiceTest extends AbstractTestCase
 {
     /**
      * @var \EonX\EasyIdentity\Implementations\Auth0\Config

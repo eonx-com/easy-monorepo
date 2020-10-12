@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @SuppressWarnings(PHPMD)
  */
-class ProvidedIdEntity
+final class ProvidedIdEntity
 {
     /**
      * @ORM\Column(type="guid")

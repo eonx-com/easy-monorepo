@@ -9,7 +9,7 @@ use EonX\EasySecurity\Interfaces\ContextInterface;
 /**
  * @deprecated Since 2.4, will be removed in 3.0. Use SecurityContext instead.
  */
-class Context extends SecurityContext implements ContextInterface
+final class Context extends SecurityContext implements ContextInterface
 {
     // No body needed.
 }

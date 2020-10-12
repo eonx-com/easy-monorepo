@@ -8,7 +8,7 @@
         "nette/utils": "^3.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5 || ^8.4",
+        "phpunit/phpunit": "^8.4 || ^9.5",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
         "eonx-com/easy-psr7-factory": "^2.6",

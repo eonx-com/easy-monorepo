@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @SuppressWarnings(PHPMD)
  */
-class SimpleEntity
+final class SimpleEntity
 {
     /**
      * @ORM\Column(type="integer")

@@ -7,7 +7,7 @@ namespace EonX\EasyIdentity\Implementations\Auth0;
 use EonX\EasyIdentity\Exceptions\RequiredDataMissingException;
 use GuzzleHttp\ClientInterface;
 
-class ManagementTokenProvider
+final class ManagementTokenProvider
 {
     /**
      * @var \GuzzleHttp\ClientInterface

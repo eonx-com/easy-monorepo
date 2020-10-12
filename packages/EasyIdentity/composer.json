@@ -7,11 +7,12 @@
         "php": "^7.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5 || ^8.4",
+        "phpunit/phpunit": "^8.4 || ^9.5",
         "mockery/mockery": "^1.2",
         "ext-json": "*",
         "laravel/lumen-framework": "^5.5",
-        "auth0/auth0-php": "^5.4"
+        "auth0/auth0-php": "^5.4",
+        "dg/bypass-finals": "^1.2"
     },
     "autoload": {
         "psr-4": {
