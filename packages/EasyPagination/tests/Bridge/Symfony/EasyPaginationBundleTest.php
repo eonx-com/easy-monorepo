@@ -80,7 +80,8 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         KernelStub::setRequest($this->createRequest());
         $kernel->boot();
 
-        $factory = $kernel->getContainer()->get(StartSizeDataFactoryInterface::class);
+        $factory = $kernel->getContainer()
+            ->get(StartSizeDataFactoryInterface::class);
         $startSizeData = $factory->create();
 
         self::assertInstanceOf(StartSizeDataInterface::class, $startSizeData);
@@ -100,7 +101,8 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         KernelStub::setRequest($request);
         $kernel->boot();
 
-        $startSizeData = $kernel->getContainer()->get(StartSizeDataInterface::class);
+        $startSizeData = $kernel->getContainer()
+            ->get(StartSizeDataInterface::class);
 
         self::assertEquals($start, $startSizeData->getStart());
         self::assertEquals($size, $startSizeData->getSize());

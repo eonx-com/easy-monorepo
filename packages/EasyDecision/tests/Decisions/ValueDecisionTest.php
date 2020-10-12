@@ -89,7 +89,8 @@ final class ValueDecisionTest extends AbstractTestCase
 
         self::assertEquals([
             'non-blocking-error' => 'non-blocking-error',
-        ], $decision->getContext()->getRuleOutputs());
+        ], $decision->getContext()
+            ->getRuleOutputs());
         self::assertEquals(10, $output);
     }
 

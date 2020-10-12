@@ -62,7 +62,8 @@ abstract class AbstractPersister
 
     private function getDateTimeNow(): string
     {
-        return $this->datetime->now()->format(DateTimeGeneratorInterface::DATE_FORMAT);
+        return $this->datetime->now()
+            ->format(DateTimeGeneratorInterface::DATE_FORMAT);
     }
 
     private function insert(EasyAsyncDataInterface $data): void

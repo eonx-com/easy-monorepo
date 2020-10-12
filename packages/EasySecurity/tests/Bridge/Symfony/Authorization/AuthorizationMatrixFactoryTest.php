@@ -13,7 +13,8 @@ final class AuthorizationMatrixFactoryTest extends AbstractSymfonyTestCase
     {
         $kernel = $this->getKernel([__DIR__ . '/../Fixtures/config/authorization_roles_permissions.yaml']);
         /** @var \EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface $authorizationMatrixFactory */
-        $authorizationMatrixFactory = $kernel->getContainer()->get(AuthorizationMatrixFactoryInterface::class);
+        $authorizationMatrixFactory = $kernel->getContainer()
+            ->get(AuthorizationMatrixFactoryInterface::class);
         $authorizationMatrix = $authorizationMatrixFactory->create();
 
         self::assertTrue($authorizationMatrix->isRole('role'));

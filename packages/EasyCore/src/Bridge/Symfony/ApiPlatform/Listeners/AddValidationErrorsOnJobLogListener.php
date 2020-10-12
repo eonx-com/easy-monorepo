@@ -24,7 +24,8 @@ final class AddValidationErrorsOnJobLogListener
                 ];
             }
 
-            $event->getJobLog()->setValidationErrors($errors);
+            $event->getJobLog()
+                ->setValidationErrors($errors);
         }
     }
 }

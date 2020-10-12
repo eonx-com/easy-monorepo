@@ -16,7 +16,7 @@ use Mockery\MockInterface;
 /**
  * @covers \EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider
  */
-class ManagementTokenProviderTest extends AbstractTestCase
+final class ManagementTokenProviderTest extends AbstractTestCase
 {
     public function testGetToken(): void
     {

@@ -7,7 +7,7 @@ namespace EonX\EasyIdentity\Implementations;
 use EonX\EasyIdentity\Interfaces\IdentityUserInterface;
 use EonX\EasyIdentity\Interfaces\IdentityUserServiceInterface;
 
-class IdentityUserService implements IdentityUserServiceInterface
+final class IdentityUserService implements IdentityUserServiceInterface
 {
     /**
      * @var mixed[]

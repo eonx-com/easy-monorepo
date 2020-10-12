@@ -65,7 +65,8 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
             return $this->primaryKeyIndex;
         }
 
-        $indexes = $this->conn->getSchemaManager()->listTableIndexes($this->from);
+        $indexes = $this->conn->getSchemaManager()
+            ->listTableIndexes($this->from);
 
         foreach ($indexes as $index) {
             if ($index->isPrimary()) {

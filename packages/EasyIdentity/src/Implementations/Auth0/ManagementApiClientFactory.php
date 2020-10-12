@@ -6,7 +6,7 @@ namespace EonX\EasyIdentity\Implementations\Auth0;
 
 use Auth0\SDK\API\Management;
 
-class ManagementApiClientFactory
+final class ManagementApiClientFactory
 {
     /**
      * @var \EonX\EasyIdentity\Implementations\Auth0\Config

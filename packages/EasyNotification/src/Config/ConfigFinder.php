@@ -38,7 +38,8 @@ final class ConfigFinder implements ConfigFinderInterface
         ];
 
         $url = \sprintf('%sproviders/%s', StringHelper::ensureEnd($this->apiUrl, '/'), $providerExternalId);
-        $response = $this->httpClient->request('GET', $url, $options)->toArray();
+        $response = $this->httpClient->request('GET', $url, $options)
+            ->toArray();
 
         return Config::fromArray($response + [
             'apiKey' => $apiKey,
