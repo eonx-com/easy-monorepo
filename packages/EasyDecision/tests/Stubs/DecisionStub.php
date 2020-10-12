@@ -8,48 +8,18 @@ use EonX\EasyDecision\Decisions\AbstractDecision;
 
 final class DecisionStub extends AbstractDecision
 {
-    /**
-     * @var mixed
-     */
-    private $defaultOutput;
-
-    /**
-     * @var mixed
-     */
-    private $output;
-
-    /**
-     * @var null|\Closure
-     */
-    private $outputClosure;
-
-    public function __construct(
-        ?string $name = null,
-        $defaultOutput = null,
-        $output = null,
-        ?\Closure $outputClosure = null
-    ) {
-        parent::__construct($name);
-
-        $this->outputClosure = $outputClosure;
-        $this->defaultOutput = $defaultOutput;
-        $this->output = $output;
-    }
-
     protected function doHandleRuleOutput($output): void
     {
-        if ($this->outputClosure !== null) {
-            \call_user_func($this->outputClosure, $output);
-        }
+        // No body needed.
     }
 
-    protected function doMake()
+    protected function doMake(): bool
     {
-        return $this->output;
+        return true;
     }
 
-    protected function getDefaultOutput()
+    protected function getDefaultOutput(): bool
     {
-        return $this->defaultOutput;
+        return true;
     }
 }

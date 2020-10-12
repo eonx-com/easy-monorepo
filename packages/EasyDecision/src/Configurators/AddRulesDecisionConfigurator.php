@@ -6,6 +6,7 @@ namespace EonX\EasyDecision\Configurators;
 
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\RestrictedRuleInterface;
+use EonX\EasyDecision\Interfaces\RuleInterface;
 
 final class AddRulesDecisionConfigurator extends AbstractConfigurator
 {
@@ -21,7 +22,7 @@ final class AddRulesDecisionConfigurator extends AbstractConfigurator
     {
         parent::__construct($priority);
 
-        $this->rules = $rules;
+        $this->rules = $this->filterRules($rules);
     }
 
     public function configure(DecisionInterface $decision): void
@@ -31,5 +32,21 @@ final class AddRulesDecisionConfigurator extends AbstractConfigurator
                 $decision->addRule($rule);
             }
         }
+    }
+
+    /**
+     * @param iterable<\EonX\EasyDecision\Interfaces\RuleInterface> $rules
+     *
+     * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
+     */
+    private function filterRules(iterable $rules): array
+    {
+        $rules = $rules instanceof \Traversable
+            ? \iterator_to_array($rules)
+            : (array)$this->rules;
+
+        return \array_filter($rules, static function ($rule): bool {
+            return $rule instanceof RuleInterface;
+        });
     }
 }
