@@ -26,6 +26,14 @@ trait TranslatableExceptionTrait
     /**
      * {@inheritdoc}
      */
+    public function getDomain(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getMessageParams(): array
     {
         return $this->messageParams;
