@@ -22,7 +22,7 @@ final class Translator implements TranslatorInterface
     /**
      * @param mixed[] $parameters
      */
-    public function trans(string $message, array $parameters): string
+    public function trans(string $message, array $parameters, ?array $options = null): string
     {
         // TODO: rework after upgrading all the illuminate and laravel packages to ^6.0
         $method = \method_exists($this->decorated, 'trans') ? 'trans' : 'get';

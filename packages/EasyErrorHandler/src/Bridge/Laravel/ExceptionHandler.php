@@ -73,7 +73,11 @@ final class ExceptionHandler implements IlluminateExceptionHandlerInterface
             return $exception->getMessage();
         }
 
-        return $this->translator->trans($exception->getMessage(), $exception->getMessageParams());
+        return $this->translator->trans(
+            $exception->getMessage(),
+            $exception->getMessageParams(),
+            [TranslatableExceptionInterface::OPTION_DOMAIN => $exception->getDomain()]
+        );
     }
 
     /**
