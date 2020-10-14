@@ -31,13 +31,19 @@ final class UserMessageBuilder extends AbstractSingleKeyErrorResponseBuilder
     {
         $message = null;
         $parameters = [];
+        $options = [];
 
         if ($throwable instanceof TranslatableExceptionInterface) {
             $message = $throwable->getUserMessage();
             $parameters = $throwable->getUserMessageParams();
+            $options[TranslatableExceptionInterface::OPTION_DOMAIN] = $throwable->getDomain();
         }
 
-        return $this->translator->trans($message ?? TranslatableExceptionInterface::DEFAULT_USER_MESSAGE, $parameters);
+        return $this->translator->trans(
+            $message ?? TranslatableExceptionInterface::DEFAULT_USER_MESSAGE,
+            $parameters,
+            $options
+        );
     }
 
     protected function getDefaultKey(): string
