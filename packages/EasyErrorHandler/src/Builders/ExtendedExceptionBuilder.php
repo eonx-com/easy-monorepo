@@ -82,7 +82,9 @@ final class ExtendedExceptionBuilder extends AbstractErrorResponseBuilder implem
         return $this->translator->trans(
             $throwable->getMessage(),
             $throwable->getMessageParams(),
-            [TranslatableExceptionInterface::OPTION_DOMAIN => $throwable->getDomain()]
+            [
+                TranslatableExceptionInterface::OPTION_DOMAIN => $throwable->getDomain(),
+            ]
         );
     }
 }
