@@ -1,7 +1,13 @@
 <!-- changelog-linker -->
 
+## v2.5.13 - 2020-10-14
+
+### EasyErrorHandler
+
+- [#392] Allow translatable exception to define domain
+
 <!-- dumped content start -->
-## v2.5.12 - 2020-10-13
+## [v2.5.12] - 2020-10-13
 
 ### EasyDecision
 
@@ -2567,3 +2573,5 @@
 [v2.5.10]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.9...v2.5.10
 [#389]: https://github.com/eonx-com/easy-monorepo/pull/389
 [v2.5.11]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.10...v2.5.11
+[#392]: https://github.com/eonx-com/easy-monorepo/pull/392
+[v2.5.12]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.11...v2.5.12
