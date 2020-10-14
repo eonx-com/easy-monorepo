@@ -6,6 +6,7 @@ namespace EonX\EasyCore\Bridge\Symfony;
 
 use EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler\ApiPlatformSimpleDataPersisterPass;
 use EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler\AutoConfigureEventListenersPass;
+use EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler\ReplaceProfilerStoragePass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -19,5 +20,6 @@ final class EasyCoreBundle extends Bundle
         // To be executed before Doctrine passes
         $container->addCompilerPass(new AutoConfigureEventListenersPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
         $container->addCompilerPass(new ApiPlatformSimpleDataPersisterPass());
+        $container->addCompilerPass(new ReplaceProfilerStoragePass());
     }
 }
