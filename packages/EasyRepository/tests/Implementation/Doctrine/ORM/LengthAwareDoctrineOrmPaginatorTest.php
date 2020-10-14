@@ -33,8 +33,14 @@ final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
             $items = [new \stdClass(), new \stdClass(), new \stdClass()];
             $iterator = new \ArrayIterator($items);
 
-            $paginator->shouldReceive('getIterator')->once()->withNoArgs()->andReturn($iterator);
-            $paginator->shouldReceive('count')->once()->withNoArgs()->andReturn(\count($items));
+            $paginator->shouldReceive('getIterator')
+                ->once()
+                ->withNoArgs()
+                ->andReturn($iterator);
+            $paginator->shouldReceive('count')
+                ->once()
+                ->withNoArgs()
+                ->andReturn(\count($items));
         });
     }
 }

@@ -26,7 +26,8 @@ final class ExpressionLanguageTest extends AbstractTestCase
         $function = new ExpressionFunction('my-function', function (): void {
         }, 'my-description');
 
-        $expressionLanguage = $this->getExpressionLanguage()->setCache(new ArrayAdapter());
+        $expressionLanguage = $this->getExpressionLanguage()
+            ->setCache(new ArrayAdapter());
 
         $expressionLanguage->addFunction($function);
         $expressionLanguage->removeFunction('min');
@@ -60,7 +61,8 @@ final class ExpressionLanguageTest extends AbstractTestCase
 
     public function testGetFunctions(): void
     {
-        $functions = $this->getExpressionLanguage()->getFunctions();
+        $functions = $this->getExpressionLanguage()
+            ->getFunctions();
 
         self::assertCount(2, $functions);
         self::assertEquals('min', $functions[0]->getName());
@@ -71,7 +73,8 @@ final class ExpressionLanguageTest extends AbstractTestCase
     {
         $this->expectException(InvalidExpressionException::class);
 
-        $this->getExpressionLanguage()->validate(static::$expression, ['invalid']);
+        $this->getExpressionLanguage()
+            ->validate(static::$expression, ['invalid']);
     }
 
     public function testValidateValidExpression(): void

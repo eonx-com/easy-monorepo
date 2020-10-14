@@ -30,15 +30,23 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractWithMockTestCase
                     ->andReturnSelf();
 
                 $query = $this->mock(AbstractQuery::class, function (MockInterface $mock): void {
-                    $mock->shouldReceive('getResult')->once()->withNoArgs()->andReturn([[
-                        '_count_t' => 3,
-                    ]]);
+                    $mock->shouldReceive('getResult')
+                        ->once()
+                        ->withNoArgs()
+                        ->andReturn([[
+                            '_count_t' => 3,
+                        ]]);
                 });
 
-                $mock->shouldReceive('getQuery')->once()->andReturn($query);
+                $mock->shouldReceive('getQuery')
+                    ->once()
+                    ->andReturn($query);
             });
 
-            $mock->shouldReceive('createQueryBuilder')->once()->withNoArgs()->andReturn($queryBuilder);
+            $mock->shouldReceive('createQueryBuilder')
+                ->once()
+                ->withNoArgs()
+                ->andReturn($queryBuilder);
         });
 
         $paginator = new DoctrineOrmLengthAwarePaginator($manager, new StartSizeData(1, 15), 'table', 't');

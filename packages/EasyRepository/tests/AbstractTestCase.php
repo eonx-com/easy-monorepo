@@ -52,8 +52,14 @@ abstract class AbstractTestCase extends TestCase
                 $manager = $this->mock(EntityManagerInterface::class, $managerExpectations);
                 $repository = $this->mock(ObjectRepository::class, $repositoryExpectations);
 
-                $manager->shouldReceive('getRepository')->once()->with('my-entity-class')->andReturn($repository);
-                $registry->shouldReceive('getManagerForClass')->once()->with('my-entity-class')->andReturn($manager);
+                $manager->shouldReceive('getRepository')
+                    ->once()
+                    ->with('my-entity-class')
+                    ->andReturn($repository);
+                $registry->shouldReceive('getManagerForClass')
+                    ->once()
+                    ->with('my-entity-class')
+                    ->andReturn($manager);
             }
         );
     }

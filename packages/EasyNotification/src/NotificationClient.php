@@ -94,7 +94,8 @@ final class NotificationClient implements NotificationClientInterface
             $queueMessage = $configurator->configure($this->config, $queueMessage, $message);
         }
 
-        $this->transportFactory->create($this->config)->send($queueMessage);
+        $this->transportFactory->create($this->config)
+            ->send($queueMessage);
     }
 
     /**

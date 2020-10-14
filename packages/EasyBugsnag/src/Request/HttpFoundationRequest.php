@@ -72,7 +72,8 @@ final class HttpFoundationRequest implements RequestInterface
             return [];
         }
 
-        return $this->request->getSession()->all();
+        return $this->request->getSession()
+            ->all();
     }
 
     public function getUserId(): ?string

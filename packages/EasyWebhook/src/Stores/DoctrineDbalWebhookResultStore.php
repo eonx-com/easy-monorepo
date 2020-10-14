@@ -67,13 +67,15 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
 
             $this->conn->insert($this->table, $this->formatData($data));
 
-            $result->getWebhook()->id($data['id']);
+            $result->getWebhook()
+                ->id($data['id']);
 
             return $result;
         }
 
         $this->conn->update($this->table, $this->formatData($data), [
-            'id' => $result->getWebhook()->getId(),
+            'id' => $result->getWebhook()
+                ->getId(),
         ]);
 
         return $result;

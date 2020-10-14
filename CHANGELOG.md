@@ -1,7 +1,29 @@
 <!-- changelog-linker -->
 
 <!-- dumped content start -->
-## v2.5.10 - 2020-10-06
+## v2.5.12 - 2020-10-13
+
+### EasyDecision
+
+- [#389] Implemented AddRestrictedRulesDecisionConfigurator, Thanks to [@albertlabarentojr]
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.11] - 2020-10-12
+
+- [#384] Fix failing EasyStandard build, Thanks to [@TomasVotruba]
+- [#385] add fluent method coding standard, Thanks to [@TomasVotruba]
+- [#387] Add first rule to Rector CI, Thanks to [@TomasVotruba]
+
+### EasyCore
+
+- [#390] Add ForBuildEnvVarProcessor
+
+<!-- dumped content end -->
+
+<!-- dumped content start -->
+## [v2.5.10] - 2020-10-06
 
 ### EasyRandom
 
@@ -2538,3 +2560,10 @@
 [#382]: https://github.com/eonx-com/easy-monorepo/pull/382
 [#381]: https://github.com/eonx-com/easy-monorepo/pull/381
 [v2.5.9]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.8...v2.5.9
+[#390]: https://github.com/eonx-com/easy-monorepo/pull/390
+[#387]: https://github.com/eonx-com/easy-monorepo/pull/387
+[#385]: https://github.com/eonx-com/easy-monorepo/pull/385
+[#384]: https://github.com/eonx-com/easy-monorepo/pull/384
+[v2.5.10]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.9...v2.5.10
+[#389]: https://github.com/eonx-com/easy-monorepo/pull/389
+[v2.5.11]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.10...v2.5.11

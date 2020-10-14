@@ -30,12 +30,14 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
 
     public function beginTransaction(): void
     {
-        $this->model->getConnection()->beginTransaction();
+        $this->model->getConnection()
+            ->beginTransaction();
     }
 
     public function commit(): void
     {
-        $this->model->getConnection()->commit();
+        $this->model->getConnection()
+            ->commit();
     }
 
     /**
@@ -72,7 +74,8 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
 
     public function rollback(): void
     {
-        $this->model->getConnection()->rollBack();
+        $this->model->getConnection()
+            ->rollBack();
     }
 
     /**

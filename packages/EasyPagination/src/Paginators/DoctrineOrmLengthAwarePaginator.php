@@ -47,7 +47,8 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
      */
     protected function doGetResult(QueryBuilder $queryBuilder): array
     {
-        return $queryBuilder->getQuery()->getResult();
+        return $queryBuilder->getQuery()
+            ->getResult();
     }
 
     protected function doGetTotalItems(QueryBuilder $queryBuilder, string $countAlias): int

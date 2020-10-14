@@ -54,7 +54,8 @@ final class Auth0IdentityService extends AbstractIdentityService
         $data = $this->getIdentityToArray($user);
         $data['connection'] = $this->config->getConnection();
 
-        $response = $this->managementFactory->create()->users->create($data);
+        $response = $this->managementFactory->create()
+            ->users->create($data);
 
         if (empty($response['user_id']) === false) {
             $this->setIdentityUserId($user, $response['user_id']);
@@ -74,17 +75,20 @@ final class Auth0IdentityService extends AbstractIdentityService
      */
     public function decodeToken(string $token)
     {
-        return $this->tokenVerifierFactory->create()->verifyAndDecode($token);
+        return $this->tokenVerifierFactory->create()
+            ->verifyAndDecode($token);
     }
 
     public function deleteUser(IdentityUserInterface $user): void
     {
-        $this->managementFactory->create()->users->delete($this->getIdentityUserId($user));
+        $this->managementFactory->create()
+            ->users->delete($this->getIdentityUserId($user));
     }
 
     public function getUser(IdentityUserInterface $user): IdentityUserInterface
     {
-        $identityUser = $this->managementFactory->create()->users->get($this->getIdentityUserId($user));
+        $identityUser = $this->managementFactory->create()
+            ->users->get($this->getIdentityUserId($user));
 
         if (\is_array($identityUser) === true) {
             foreach ($identityUser as $key => $value) {
@@ -101,7 +105,8 @@ final class Auth0IdentityService extends AbstractIdentityService
         $data['realm'] = $this->config->getConnection();
 
         try {
-            return $this->authFactory->create()->oauth_token($data);
+            return $this->authFactory->create()
+                ->oauth_token($data);
         } catch (RequestException $exception) {
             throw new LoginFailedException($this->getLoginExceptionMessage($exception));
         }
@@ -119,7 +124,8 @@ final class Auth0IdentityService extends AbstractIdentityService
         $data['client_id'] = $this->config->getClientId();
         $data['connection'] = $this->config->getConnection();
 
-        $identity = $this->managementFactory->create()->users->update($this->getIdentityUserId($user), $data);
+        $identity = $this->managementFactory->create()
+            ->users->update($this->getIdentityUserId($user), $data);
 
         foreach ($identity as $key => $value) {
             $this->setIdentityValue($user, $key, $value);

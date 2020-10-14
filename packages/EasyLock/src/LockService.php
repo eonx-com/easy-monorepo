@@ -36,7 +36,8 @@ final class LockService implements LockServiceInterface
 
     public function createLock(string $resource, ?float $ttl = null): LockInterface
     {
-        return $this->getFactory()->createLock($resource, $ttl ?? 300.0);
+        return $this->getFactory()
+            ->createLock($resource, $ttl ?? 300.0);
     }
 
     private function getFactory(): LockFactory

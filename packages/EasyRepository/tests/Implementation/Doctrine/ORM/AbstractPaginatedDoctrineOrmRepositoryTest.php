@@ -52,7 +52,10 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
                 }
             );
 
-            $queryBuilder->shouldReceive('getQuery')->once()->withNoArgs()->andReturn(new Query($entityManager));
+            $queryBuilder->shouldReceive('getQuery')
+                ->once()
+                ->withNoArgs()
+                ->andReturn(new Query($entityManager));
         });
     }
 }

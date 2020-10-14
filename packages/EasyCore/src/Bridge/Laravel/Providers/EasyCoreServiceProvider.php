@@ -44,7 +44,8 @@ final class EasyCoreServiceProvider extends ServiceProvider
             return;
         }
 
-        $this->app->get('events')->listen(JobProcessing::class, DoctrineClearEmBeforeJobListener::class);
+        $this->app->get('events')
+            ->listen(JobProcessing::class, DoctrineClearEmBeforeJobListener::class);
     }
 
     private function logQueueWorkerStopping(): void
@@ -53,7 +54,8 @@ final class EasyCoreServiceProvider extends ServiceProvider
             return;
         }
 
-        $this->app->get('events')->listen(WorkerStopping::class, QueueWorkerStoppingListener::class);
+        $this->app->get('events')
+            ->listen(WorkerStopping::class, QueueWorkerStoppingListener::class);
     }
 
     private function restartQueueOnEmClose(): void
@@ -62,7 +64,8 @@ final class EasyCoreServiceProvider extends ServiceProvider
             return;
         }
 
-        $this->app->get('events')->listen(JobExceptionOccurred::class, DoctrineRestartQueueOnEmCloseListener::class);
+        $this->app->get('events')
+            ->listen(JobExceptionOccurred::class, DoctrineRestartQueueOnEmCloseListener::class);
     }
 
     private function search(): void

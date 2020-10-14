@@ -88,7 +88,8 @@ final class EasyCoreExtension extends Extension
         // Aliases for custom collection operations HTTP methods
         foreach (['PATCH', 'PUT'] as $method) {
             $alias = \sprintf('api_platform.action.%s_collection', \strtolower($method));
-            $container->setAlias($alias, 'api_platform.action.placeholder')->setPublic(true);
+            $container->setAlias($alias, 'api_platform.action.placeholder')
+                ->setPublic(true);
         }
     }
 
@@ -97,7 +98,8 @@ final class EasyCoreExtension extends Extension
      */
     private function autoconfigTag(string $interface, string $tag, ?array $attributes = null): void
     {
-        $this->container->registerForAutoconfiguration($interface)->addTag($tag, $attributes ?? []);
+        $this->container->registerForAutoconfiguration($interface)
+            ->addTag($tag, $attributes ?? []);
     }
 
     /**

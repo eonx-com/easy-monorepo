@@ -93,7 +93,8 @@ final class DecisionFactory implements DecisionFactoryInterface
                 $type,
                 $decision,
                 $this->getRuleProviders($providers),
-                $this->getExpressionLanguageConfigFactory()->create($decision),
+                $this->getExpressionLanguageConfigFactory()
+                    ->create($decision),
                 $params,
                 $defaultOutput
             )

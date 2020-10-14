@@ -14,7 +14,8 @@ final class ExceptionHandlerTest extends AbstractLaravelTestCase
 {
     public function testRenderForConsoleDoesNotShowTranslationIfItEqualsToOriginalMessage(): void
     {
-        $handler = $this->getApplication()->make(ExceptionHandler::class);
+        $handler = $this->getApplication()
+            ->make(ExceptionHandler::class);
         $output = new BufferedOutput();
 
         $handler->renderForConsole($output, new \Exception('test.message'));
@@ -42,7 +43,8 @@ final class ExceptionHandlerTest extends AbstractLaravelTestCase
     public function testRenderForConsoleShowsExceptionWithoutTranslation(): void
     {
         $message = 'Exception message.';
-        $handler = $this->getApplication()->make(ExceptionHandler::class);
+        $handler = $this->getApplication()
+            ->make(ExceptionHandler::class);
         $output = new BufferedOutput();
 
         $handler->renderForConsole($output, new \Exception($message));
@@ -53,7 +55,8 @@ final class ExceptionHandlerTest extends AbstractLaravelTestCase
 
     public function testRenderForConsoleShowsValidationExceptionWithFailures(): void
     {
-        $handler = $this->getApplication()->make(ExceptionHandler::class);
+        $handler = $this->getApplication()
+            ->make(ExceptionHandler::class);
         $output = new BufferedOutput();
         $exception = (new ValidationExceptionStub())->setErrors([
             'property' => ['Property must not be null'],
@@ -68,7 +71,8 @@ final class ExceptionHandlerTest extends AbstractLaravelTestCase
 
     public function testRenderForConsoleShowsValidationExceptionWithoutFailures(): void
     {
-        $handler = $this->getApplication()->make(ExceptionHandler::class);
+        $handler = $this->getApplication()
+            ->make(ExceptionHandler::class);
         $output = new BufferedOutput();
 
         $handler->renderForConsole($output, new ValidationExceptionStub());

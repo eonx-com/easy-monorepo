@@ -26,7 +26,7 @@ final class LockData implements LockDataInterface
 
     public static function create(string $resource, ?float $ttl = null): LockDataInterface
     {
-        return new static($resource, $ttl);
+        return new self($resource, $ttl);
     }
 
     public function getResource(): string

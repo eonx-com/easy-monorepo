@@ -22,7 +22,7 @@ use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
  *
  * @final
  */
-class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterface
+final class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterface
 {
     /**
      * @var int

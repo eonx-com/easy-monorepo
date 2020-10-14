@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Tests\Bridge\Symfony\Valiator\Constraints;
+namespace EonX\EasyCore\Tests\Bridge\Symfony\Validator\Constraints;
 
 use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Abn;
 use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\AbnValidator;
@@ -223,23 +223,20 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $violationBuilder = $this->mock(
             ConstraintViolationBuilderInterface::class,
             static function (MockInterface $mock) use ($code): void {
-                $mock
-                ->shouldReceive('setParameter')
-                ->once()
-                ->withNoArgs()
-                ->andReturnSelf();
+                $mock->shouldReceive('setParameter')
+                    ->once()
+                    ->withNoArgs()
+                    ->andReturnSelf();
 
-                $mock
-                ->shouldReceive('setCode')
-                ->once()
-                ->with($code)
-                ->andReturnSelf();
+                $mock->shouldReceive('setCode')
+                    ->once()
+                    ->with($code)
+                    ->andReturnSelf();
 
-                $mock
-                ->shouldReceive('addViolation')
-                ->once()
-                ->withNoArgs()
-                ->andReturnSelf();
+                $mock->shouldReceive('addViolation')
+                    ->once()
+                    ->withNoArgs()
+                    ->andReturnSelf();
             }
         );
 
@@ -255,8 +252,7 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
             $message,
             $violationBuilder
         ): void {
-            $mock
-                ->shouldReceive('buildViolation')
+            $mock->shouldReceive('buildViolation')
                 ->once()
                 ->with($message)
                 ->andReturn($violationBuilder);
@@ -269,8 +265,7 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
     {
         /** @var ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
-            $mock
-                ->shouldReceive('buildViolation')
+            $mock->shouldReceive('buildViolation')
                 ->never();
         });
 
