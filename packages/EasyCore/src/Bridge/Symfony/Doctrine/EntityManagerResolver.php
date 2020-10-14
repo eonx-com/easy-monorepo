@@ -19,9 +19,6 @@ final class EntityManagerResolver
         $this->managerRegistry = $managerRegistry;
     }
 
-    /**
-     * @return \Doctrine\ORM\EntityManagerInterface
-     */
     public function getManager(): EntityManagerInterface
     {
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
