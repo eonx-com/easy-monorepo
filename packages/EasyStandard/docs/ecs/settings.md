@@ -5,7 +5,28 @@ is_section: true
 ---eonx_docs---
 
 ### Example of configuration
+```yaml
+# ecs.yaml
+parameters:
+    sets:
+        - 'psr12'
+    paths:
+        - 'app'
+        - 'tests'
+    skip:
+        PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff: ~
+        SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff:
+            - 'path/to/file.php'
+            - 'path/to/folder/*'
+    exclude_paths:
+        - 'path/to/file.php'
+        - 'path/with/mask/**/*.php'
 
+services:
+    PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
+        absoluteLineLimit: 120
+        ignoreComments: false
+```
 ```php
 // ecs.php
 declare(strict_types=1);
@@ -48,7 +69,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->property('ignoreComments', false);
 
 };
-
 ```
 
 ### List of parameters
