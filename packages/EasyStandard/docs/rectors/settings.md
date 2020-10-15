@@ -1,5 +1,5 @@
 ---eonx_docs---
-title: Settings of rector
+title: Settings of Rector
 weight: 2000
 is_section: true
 ---eonx_docs---

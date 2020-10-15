@@ -1,5 +1,5 @@
 ---eonx_docs---
-title: Settings of ecs
+title: Settings of ECS
 weight: 1000
 is_section: true
 ---eonx_docs---

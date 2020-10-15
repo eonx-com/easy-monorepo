@@ -18,7 +18,7 @@ We recommend to use [Composer][1] to manage your dependencies. You can require t
 $ composer require --dev eonx/easy-standard
 ```
 
-### Prepare configuration file for ecs
+### Prepare configuration file for ECS
 
 You can use one of the following names for a configuration: `easy-coding-standard.yml`, `easy-coding-standard.yaml`, `ecs.yml`, `ecs.yaml` or `ecs.php`. Create this file in the root folder of the project.
 
@@ -53,13 +53,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 };
 ```
 
-### Run ecs check
+### Run ECS check
 
 Go to the root of project and run `vendor/bin/ecs check`.
 
 Expected output: `[OK] No errors found. Great job - your code is shiny in style!`
 
-### Prepare configuration file for rector
+### Prepare configuration file for Rector
 
 You can use one of the following names for a configuration: `rector.yml` or `rector.yaml`. Create this file in the root folder of the project.
 
@@ -90,7 +90,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
      */
 };
 ```
-### Run rector check
+### Run Rector check
 
 Go to the root of project and run
 ```bash
