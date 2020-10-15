@@ -27,9 +27,9 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
-    public function testProcessMultiLineParametersSucceeds(): void
+    public function testProcessMultiLineParametersInClassMethodSucceeds(): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MultiLineParameters.php.inc');
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodMultiLineParameters.php.inc');
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
@@ -45,15 +45,15 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
-    public function testProcessSingleLineParametersSucceeds(): void
+    public function testProcessSingleLineParametersInClassMethodSucceeds(): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SingleLineParameters.php.inc');
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodSingleLineParameters.php.inc');
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
-    public function testProcessWrongMultiLineParametersFails(): void
+    public function testProcessWrongMultiLineParametersInClassMethodFails(): void
     {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/MultiLineParameters.php.inc');
+        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/ClassMethodMultiLineParameters.php.inc');
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 10);
     }
 
@@ -69,9 +69,9 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 10);
     }
 
-    public function testProcessWrongSingleLineParametersFails(): void
+    public function testProcessWrongSingleLineParametersInClassMethodFails(): void
     {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SingleLineParameters.php.inc');
+        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/ClassMethodSingleLineParameters.php.inc');
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 3);
     }
 
