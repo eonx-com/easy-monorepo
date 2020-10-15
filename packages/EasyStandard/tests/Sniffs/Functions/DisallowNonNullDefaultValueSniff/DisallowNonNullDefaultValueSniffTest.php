@@ -15,9 +15,57 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
 {
+    public function testProcessMultiLineParametersInClosureSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClosureMultiLineParameters.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
+    public function testProcessMultiLineParametersInSimpleFunctionSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SimpleFunctionMultiLineParameters.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
+    public function testProcessMultiLineParametersSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MultiLineParameters.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
+    public function testProcessSingleLineParametersInClosureSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClosureSingleLineParameters.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
+    public function testProcessSingleLineParametersInSimpleFunctionSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SimpleFunctionSingleLineParameters.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
+    public function testProcessSingleLineParametersSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SingleLineParameters.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
     public function testProcessWrongMultiLineParametersFails(): void
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/MultiLineParameters.php.inc');
+        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 10);
+    }
+
+    public function testProcessWrongMultiLineParametersInClosureFails(): void
+    {
+        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/ClosureMultiLineParameters.php.inc');
+        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 10);
+    }
+
+    public function testProcessWrongMultiLineParametersInSimpleFunctionFails(): void
+    {
+        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SimpleFunctionMultiLineParameters.php.inc');
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 10);
     }
 
@@ -27,16 +75,16 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 3);
     }
 
-    public function testProcessMultiLineParametersSucceeds(): void
+    public function testProcessWrongSingleLineParametersInClosureFails(): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MultiLineParameters.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
+        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/ClosureSingleLineParameters.php.inc');
+        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 3);
     }
 
-    public function testProcessSingleLineParametersSucceeds(): void
+    public function testProcessWrongSingleLineParametersInSimpleFunctionFails(): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SingleLineParameters.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
+        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SimpleFunctionSingleLineParameters.php.inc');
+        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 3);
     }
 
     protected function getCheckerClass(): string
