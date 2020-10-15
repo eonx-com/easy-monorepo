@@ -183,7 +183,7 @@ final class FlysystemProfilerStorage implements ProfilerStorageInterface
             $contents = \gzdecode($contents);
         }
 
-        $data = \unserialize($contents);
+        $data = \unserialize((string)$contents);
 
         $profile = new Profile($token);
         $profile->setIp($data['ip']);
