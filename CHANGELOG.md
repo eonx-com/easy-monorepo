@@ -1,6 +1,12 @@
 <!-- changelog-linker -->
 
-## v2.5.13 - 2020-10-14
+## v2.5.14 - 2020-10-15
+
+### EasyErrorHandler
+
+- [#393] Add setter for TranslatableExceptionTrait domain
+
+## [v2.5.13] - 2020-10-14
 
 ### EasyErrorHandler
 
@@ -2575,3 +2581,5 @@
 [v2.5.11]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.10...v2.5.11
 [#392]: https://github.com/eonx-com/easy-monorepo/pull/392
 [v2.5.12]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.11...v2.5.12
+[#393]: https://github.com/eonx-com/easy-monorepo/pull/393
+[v2.5.13]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.12...v2.5.13
