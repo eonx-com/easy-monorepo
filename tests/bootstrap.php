@@ -9,6 +9,6 @@ require_once __DIR__ . '/../vendor/symfony/symfony/src/Symfony/Component/Depende
 
 // enables mocking of final classes
 // @see https://tomasvotruba.com/blog/2019/03/28/how-to-mock-final-classes-in-phpunit/
-DG\BypassFinals::enable();
+//DG\BypassFinals::enable();
 
 new Tokens();
