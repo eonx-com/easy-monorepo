@@ -7,7 +7,9 @@ namespace EonX\EasyStandard\Sniffs\Functions;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use SlevomatCodingStandard\Helpers\TokenHelper;
+
 use function in_array;
+
 use const T_CLOSE_SHORT_ARRAY;
 use const T_DOUBLE_COLON;
 use const T_NS_SEPARATOR;
@@ -23,12 +25,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
     /**
      * @var mixed[]
      */
-    public const REPLACEABLE_TOKENS = [
-        T_CLOSE_SHORT_ARRAY,
-        T_STRING,
-        T_DOUBLE_COLON,
-        T_NS_SEPARATOR,
-    ];
+    public const REPLACEABLE_TOKENS = [T_CLOSE_SHORT_ARRAY, T_STRING, T_DOUBLE_COLON, T_NS_SEPARATOR];
 
     public function process(File $phpcsFile, $functionPointer): void
     {
@@ -49,7 +46,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                     self::FUNCTION_INCORRECT_DEFAULT_VALUE_FOR_ARRAY
                 );
 
-                if (!$fix) {
+                if ($fix === false) {
                     continue;
                 }
 
@@ -63,14 +60,13 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
             }
 
             if (isset($parameter['default']) && $parameter['default'] !== 'null') {
-
                 $fix = $phpcsFile->addFixableError(
                     'The default value should be `null`',
                     $parameter['content'],
                     self::FUNCTION_INCORRECT_DEFAULT_VALUE_FOR_ARRAY
                 );
 
-                if (!$fix) {
+                if ($fix === false) {
                     continue;
                 }
 
@@ -84,7 +80,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 $nextPointer = TokenHelper::findNextEffective($phpcsFile, $defaultTokenPtr + 1);
 
                 if (in_array($tokens[$nextPointer]['code'], self::REPLACEABLE_TOKENS, true)) {
-                    $phpcsFile->fixer->replaceToken($nextPointer, '');
+                    $phpcsFile->fixer->replaceToken((int)$nextPointer, '');
                 }
 
                 $phpcsFile->fixer->replaceToken($defaultTokenPtr, 'null');
