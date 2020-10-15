@@ -109,7 +109,7 @@ final class FlysystemProfilerStorage implements ProfilerStorageInterface
             return null;
         }
 
-        return $this->createProfileFromContents($token, $this->filesystem->read($filename));
+        return $this->createProfileFromContents($token, (string)$this->filesystem->read($filename));
     }
 
     /**
