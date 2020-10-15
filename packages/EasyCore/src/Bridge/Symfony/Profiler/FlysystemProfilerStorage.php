@@ -39,14 +39,14 @@ final class FlysystemProfilerStorage implements ProfilerStorageInterface
      *
      * @throws \League\Flysystem\FileNotFoundException
      */
-    public function find($ip, $url, $limit, $method, $start = null, $end = null, string $statusCode = null): array
+    public function find($ip, $url, $limit, $method, $start = null, $end = null, ?string $statusCode = null): array
     {
         // If index file doesn't exist, abort
         if ($this->filesystem->has(self::INDEX_FILENAME) === false) {
             return [];
         }
 
-        $contents = \explode(\PHP_EOL, $this->filesystem->read(self::INDEX_FILENAME));
+        $contents = \explode(\PHP_EOL, (string)$this->filesystem->read(self::INDEX_FILENAME));
         $results = [];
 
         foreach ($contents as $line) {
@@ -146,12 +146,16 @@ final class FlysystemProfilerStorage implements ProfilerStorageInterface
             $contents = \gzencode($contents, 3);
         }
 
-        if ($this->filesystem->put($filename, $contents) === false) {
+        if ($this->filesystem->put($filename, (string)$contents) === false) {
             return false;
         }
 
         if ($profileIndexed === false) {
-            $originalContents = $this->filesystem->has(self::INDEX_FILENAME) ? $this->filesystem->read(self::INDEX_FILENAME) : '';
+            $originalContents = '';
+
+            if ($this->filesystem->has(self::INDEX_FILENAME)) {
+                $originalContents = (string)$this->filesystem->read(self::INDEX_FILENAME);
+            }
 
             $profileData = [
                 $profile->getToken(),
@@ -172,7 +176,7 @@ final class FlysystemProfilerStorage implements ProfilerStorageInterface
     /**
      * @throws \League\Flysystem\FileNotFoundException
      */
-    protected function createProfileFromContents(string $token, string $contents, Profile $parent = null): Profile
+    private function createProfileFromContents(string $token, string $contents, ?Profile $parent = null): Profile
     {
         // Decode contents if enabled
         if (\function_exists('gzdecode')) {
@@ -215,7 +219,7 @@ final class FlysystemProfilerStorage implements ProfilerStorageInterface
      *
      * @return string The profile filename
      */
-    protected function getFilename(string $token): string
+    private function getFilename(string $token): string
     {
         // Uses 4 last characters, because first are mostly the same.
         return \sprintf('%s/%s/%s', \substr($token, -2, 2), \substr($token, -4, 2), $token);

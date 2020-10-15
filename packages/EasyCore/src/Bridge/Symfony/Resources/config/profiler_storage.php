@@ -19,7 +19,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Default Flysystem implementation to local
     $services
         ->set('easy_core.profiler_storage_flysystem.local_adapter', Local::class)
-        ->arg('$root', '%kernel.cache_dir%/profiler/'); // Symfony default
+        // Symfony default
+        ->arg('$root', '%kernel.cache_dir%/profiler/');
 
     $services
         ->set(BridgeConstantsInterface::SERVICE_PROFILER_STORAGE_FLYSYSTEM, Filesystem::class)
