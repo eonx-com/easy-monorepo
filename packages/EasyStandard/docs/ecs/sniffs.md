@@ -86,7 +86,7 @@ declare(strict_types=1);
 #### Commenting
 
 ##### [\EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff][5]
-Checks that annotations are sort alphabetically.
+Checks that annotations are sorted alphabetically.
 ```php
 // incorrect
 class MyClass
@@ -366,6 +366,7 @@ throw new RuntimeException($message);
 
 ##### [\EonX\EasyStandard\Sniffs\Methods\TestMethodNameSniff][10]
 Checks that a method name matches/does not match a specific regex.
+
 **Parameters**
 
 - `allowed` - An array of regular expressions to match method names.
@@ -393,6 +394,7 @@ Default value:
 
 ##### [\EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff][11]
 Checks that a namespace name matches PSR-4 project structure.
+
 **Parameters**
 
 - `composerJsonPath` - A relative path to the project file `composer.json`. Default value: `composer.json`.

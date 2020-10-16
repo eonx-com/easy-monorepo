@@ -21,7 +21,7 @@ class SomeServiceTest extends \PHPUnit\Framework\TestCase
 ```
 **Parameters**
 
-- `replaceArray` - An array of strings that will be cut from the FQCN when searching for the class covered by this test. Default value: `[]`.
+- `replaceArray` - An array of strings that will be cut from the FQCN (Fully Qualified Class Name) when searching for the class covered by this test. Default value: `[]`.
 
 ##### [\EonX\EasyStandard\Rector\AddSeeAnnotationRector][2]
 Adds `@see` annotation for data providers
@@ -71,7 +71,7 @@ class SomeClass
 }
 ```
 ##### [\EonX\EasyStandard\Rector\ExplicitBoolCompareRector][4]
-Makes bool conditions more pretty
+Makes bool conditions more prettier.
 ```php
 // before
 final class SomeController
@@ -119,7 +119,7 @@ public function someMethod(): array
 ```
 
 ##### [\EonX\EasyStandard\Rector\RestoreDefaultNullToNullableTypeParameterRector][6]
-Adds default null value to function arguments with PHP 7.1 nullable type
+Adds default null value to function arguments with PHP 7.1 nullable type.
 ```php
 // before
 class SomeClass
@@ -142,7 +142,7 @@ class SomeClass
 ```
 
 ##### [\EonX\EasyStandard\Rector\StrictInArrayRector][7]
-Makes in_array calls strict
+Makes in_array calls strict.
 ```php
 // before
 \in_array($value, $items);
