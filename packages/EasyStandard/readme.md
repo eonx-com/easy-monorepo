@@ -12,27 +12,24 @@ This package is a way to centralise reusable classes used for coding standards. 
 
 ### Require package (Composer)
 
-We recommend to use [Composer][1] to manage your dependencies. You can require this package as follows:
+We recommend using [Composer][1] to manage your dependencies. You can require this package as follows:
 
 ```bash
 $ composer require --dev eonx/easy-standard
 ```
 
-### Prepare configuration file for ECS
+### Prepare configuration file for ECS (Easy Coding Standard) Sniffs
 
-You can use one of the following names for a configuration: `easy-coding-standard.yml`, `easy-coding-standard.yaml`, `ecs.yml`, `ecs.yaml` or `ecs.php`. Create this file in the root folder of the project.
+You can use one of the following names for a configuration file: `easy-coding-standard.yml`, `easy-coding-standard.yaml`, `ecs.yml`, `ecs.yaml` or `ecs.php`. Create this file in the root folder of the project.
 
-The basic structure of configuration:
+The basic structure of the configuration file follows:
 ```yaml
 # ecs.yml
 parameters:
-    /*
-     * List of parameters
-     */
+    # List of parameters
+
 services:
-    /*
-     * List of services
-     */
+    # List of services
 ```
 ```php
 // ecs.php
@@ -55,22 +52,27 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
 ### Run ECS check
 
-Go to the root of project and run `vendor/bin/ecs check`.
-
-Expected output: `[OK] No errors found. Great job - your code is shiny in style!`
+Go to the root folder of the project and run
+```bash
+vendor/bin/ecs check
+```
+Expected output: 
+```bash
+[OK] No errors found. Great job - your code is shiny in style!
+```
 
 ### Prepare configuration file for Rector
 
-You can use one of the following names for a configuration: `rector.yml` or `rector.yaml`. Create this file in the root folder of the project.
+You can use one of the following names for a configuration file: `rector.yml` or `rector.yaml`. Create this file in the root folder of the project.
 
-The basic structure of configuration:
+The basic structure of the configuration file follows:
 ```yaml
 # rector.yml
 parameters:
-    # list of parameters
+    # List of parameters
 
 services:
-    # list of services with their configurations
+    # List of services
 ```
 ```php
 // rector.php
@@ -92,12 +94,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 ```
 ### Run Rector check
 
-Go to the root of project and run
+Go to the root folder of the project and run
 ```bash
 touch `php -r "echo sys_get_temp_dir() . '/_rector_type_probe.txt';"` && vendor/bin/rector process --dry-run
 ```
-
-Expected output: `[OK] Rector is done!`
+Expected output:
+```bash
+[OK] Rector is done!
+```
 
 [1]: https://getcomposer.org/
 [2]: https://github.com/rectorphp/rector

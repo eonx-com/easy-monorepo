@@ -1,10 +1,10 @@
 ---eonx_docs---
-title: Settings of Rector
+title: Rector settings
 weight: 2000
 is_section: true
 ---eonx_docs---
 
-### Example of configuration
+### Example configuration
 
 ```yaml
 parameters:
@@ -95,12 +95,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
 ### List of parameters
 
-- `auto_import_names` - auto import fully qualified class names? [default: false]
-- `autoload_paths` - rector relies on autoload setup of your project; Composer autoload is included by default
-- `exclude_paths` - skip directory and/or file
-- `exclude_rectors` - is there single rule you don't like from a set you use?
-- `import_doc_blocks` - skip classes used in PHP DocBlocks, like in /** @var \Some\Class */ [default: true]
-- `import_short_classes` - skip root namespace classes, like \DateTime or \Exception [default: true]
-- `paths` - paths to analyze
-- `php_version_features` - is your PHP version different from the one your refactor to? [default: your PHP version]
-- `skip` - skip directory and/or file by rule
+- `auto_import_names` - whether to automatically import fully qualified class names [default: false]
+- `autoload_paths` - list of paths to autoload (Rector relies on the autoload setup of your project; Composer autoload is included by default)
+- `exclude_paths` - list of files/directories to skip
+- `exclude_rectors` - list of rectors to exclude from analysis
+- `import_doc_blocks` - whether to skip classes used in PHP DocBlocks, like in /** @var \Some\Class */ [default: true]
+- `import_short_classes` - whether to import root namespace classes, like \DateTime and \Exception [default: true]
+- `paths` - list of paths to analyse
+- `php_version_features` - use features of a specific PHP version [default: your PHP version]
+- `skip` - list of files/directories to skip per rule

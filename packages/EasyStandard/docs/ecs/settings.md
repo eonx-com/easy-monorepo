@@ -1,10 +1,10 @@
 ---eonx_docs---
-title: Settings of ECS
+title: ECS settings
 weight: 1000
 is_section: true
 ---eonx_docs---
 
-### Example of configuration
+### Example configuration
 ```yaml
 # ecs.yaml
 parameters:
@@ -71,9 +71,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 };
 ```
 
-### List of parameters
+### Parameters
 
-- `exclude_paths` - skip directory and/or file
-- `paths` - paths to analyze
-- `sets` - list of rules using during analyze
-- `skip` - skip directory and/or file by rule
+- `exclude_paths` - list of files/directories to skip
+- `paths` - list of paths to analyse
+- `sets` - list of rules to use for analysis
+- `skip` - list of files/directories to skip per rule
