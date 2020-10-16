@@ -166,7 +166,6 @@ final class SecurityContextDataCollector extends DataCollector
             $this->data['roles_providers'][] = [
                 'class' => $reflection->getName(),
                 'filename' => $reflection->getFileName(),
-                'roles' => $rolesProvider->getRoles(),
             ];
         }
 
@@ -176,7 +175,6 @@ final class SecurityContextDataCollector extends DataCollector
             $this->data['permissions_providers'][] = [
                 'class' => $reflection->getName(),
                 'filename' => $reflection->getFileName(),
-                'permissions' => $permissionsProvider->getPermissions(),
             ];
         }
     }
