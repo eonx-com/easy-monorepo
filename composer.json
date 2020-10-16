@@ -178,7 +178,8 @@
         "fix-ecs": "vendor/bin/ecs check --fix --ansi",
         "merge": "vendor/bin/monorepo-builder merge --ansi",
         "propagate": "vendor/bin/monorepo-builder propagate --ansi",
-        "split": "vendor/bin/monorepo-builder split --ansi"
+        "split": "vendor/bin/monorepo-builder split --ansi",
+        "rector-ci": "vendor/bin/rector process --config rector-ci.php --dry-run"
     },
     "suggest": {
         "auth0/auth0-php": "To use the Auth0 implementation to handle your users identity",
