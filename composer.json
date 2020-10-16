@@ -169,7 +169,7 @@
         "check-phpstan": "vendor/bin/phpstan analyse --error-format symplify --ansi",
         "check-security": "vendor/bin/security-checker security:check",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
-        "check-rector-ci": "vendor/bin/rector process --ansi --dry-run",
+        "check-rector-ci": "vendor/bin/rector process --ansi --dry-run --config rector-ci.php",
         "changelog": [
             "vendor/bin/changelog-linker dump-merges --in-packages --ansi",
             "vendor/bin/changelog-linker link --ansi",
