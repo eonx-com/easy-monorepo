@@ -47,4 +47,12 @@ final class EventDispatcherStub implements EventDispatcherInterface
     {
         return $this->dispatched;
     }
+
+    /**
+     * @return mixed[]
+     */
+    public function getReturns(): array
+    {
+        return $this->returns;
+    }
 }
