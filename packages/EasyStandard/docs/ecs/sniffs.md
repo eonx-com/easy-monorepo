@@ -341,7 +341,7 @@ if ($a === false) {
 #### Exceptions
 
 ##### [\EonX\EasyStandard\Sniffs\Exceptions\ThrowExceptionMessageSniff][9]
-Exception message must be either a variable or a translation message, started with one of valid prefixes.
+Exception message must be either a variable or a translation message, starting with a valid prefix.
 ```php
 // incorrect
 throw new \Exception('Incorrect message');
@@ -360,7 +360,7 @@ throw new RuntimeException($message);
 ````
 **Parameters**
 
-- `validPrefixes` - An array of prefixes to start with the message text line. Default value: `['exceptions.']`.
+- `validPrefixes` - An array of prefixes that are valid for starting the message text. Default value: `['exceptions.']`.
 
 #### Methods
 
