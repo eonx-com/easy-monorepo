@@ -6,37 +6,6 @@ is_section: true
 
 ### Example configuration
 
-```yaml
-parameters:
-    auto_import_names: true
-    import_short_classes: true
-    import_doc_blocks: false
-    php_version_features: '7.4'
-    autoload_paths:
-        - '.phpunit/phpunit-8.5-0/src'
-    paths:
-        - 'src'
-        - 'tests'
-    exclude_paths:
-        - 'path/to/folder/*'
-    skip:
-        Rector\CodeQuality\Rector\Array_\CallableThisArrayToAnonymousFunctionRector: ~
-        Rector\CodeQuality\Rector\Array_\ArrayThisCallToThisMethodCallRector:
-            - 'path/to/file.php'
-            - 'path/to/folder/*'
-
-services:
-    EonX\EasyStandard\Rector\StrictInArrayRector: ~
-
-    Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector: ~
-    Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector: ~
-    
-    EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff:
-        alwaysTopAnnotations:
-            - '@param'
-            - '@return'
-            - '@throws'
-```
 ```php
 // rector.php
 declare(strict_types=1);
@@ -91,6 +60,37 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '@throws',
         ]);
 };
+```
+```yaml
+parameters:
+    auto_import_names: true
+    import_short_classes: true
+    import_doc_blocks: false
+    php_version_features: '7.4'
+    autoload_paths:
+        - '.phpunit/phpunit-8.5-0/src'
+    paths:
+        - 'src'
+        - 'tests'
+    exclude_paths:
+        - 'path/to/folder/*'
+    skip:
+        Rector\CodeQuality\Rector\Array_\CallableThisArrayToAnonymousFunctionRector: ~
+        Rector\CodeQuality\Rector\Array_\ArrayThisCallToThisMethodCallRector:
+            - 'path/to/file.php'
+            - 'path/to/folder/*'
+
+services:
+    EonX\EasyStandard\Rector\StrictInArrayRector: ~
+
+    Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector: ~
+    Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector: ~
+    
+    EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff:
+        alwaysTopAnnotations:
+            - '@param'
+            - '@return'
+            - '@throws'
 ```
 
 ### List of parameters

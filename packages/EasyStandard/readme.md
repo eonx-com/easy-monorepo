@@ -20,17 +20,11 @@ $ composer require --dev eonx/easy-standard
 
 ### Prepare configuration file for ECS (Easy Coding Standard) Sniffs
 
-You can use one of the following names for a configuration file: `easy-coding-standard.yml`, `easy-coding-standard.yaml`, `ecs.yml`, `ecs.yaml` or `ecs.php`. Create this file in the root folder of the project.
+You can use one of the following names for a configuration file: `ecs.php`, `ecs.yml`, `ecs.yaml`, `easy-coding-standard.yml`, or `easy-coding-standard.yaml`. Create this file in the root folder of the project.
+
+**Note**: The YAML configuration is deprecated in the new ECS versions. Use the PHP configuration if possible.
 
 The basic structure of the configuration file follows:
-```yaml
-# ecs.yml
-parameters:
-    # List of parameters
-
-services:
-    # List of services
-```
 ```php
 // ecs.php
 declare(strict_types=1);
@@ -49,6 +43,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
      */
 };
 ```
+```yaml
+# ecs.yml
+parameters:
+    # List of parameters
+
+services:
+    # List of services
+```
 
 ### Run ECS check
 
@@ -63,17 +65,11 @@ Expected output:
 
 ### Prepare configuration file for Rector
 
-You can use one of the following names for a configuration file: `rector.yml` or `rector.yaml`. Create this file in the root folder of the project.
+You can use one of the following names for a configuration file: `rector.php`, `rector.yml` or `rector.yaml`. Create this file in the root folder of the project.
+
+**Note**: The YAML configuration is deprecated in the new Rector versions. Use the PHP configuration if possible.
 
 The basic structure of the configuration file follows:
-```yaml
-# rector.yml
-parameters:
-    # List of parameters
-
-services:
-    # List of services
-```
 ```php
 // rector.php
 declare(strict_types=1);
@@ -91,6 +87,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
      * List of services
      */
 };
+```
+```yaml
+# rector.yml
+parameters:
+    # List of parameters
+
+services:
+    # List of services
 ```
 ### Run Rector check
 
