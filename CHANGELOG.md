@@ -1,6 +1,12 @@
 <!-- changelog-linker -->
 
-## v2.5.14 - 2020-10-15
+## v2.5.15 - 2020-10-18
+
+### EasySecurity
+
+- [#397] Ease caching authorization matrix creation logic
+
+## [v2.5.14] - 2020-10-15
 
 ### EasyErrorHandler
 
@@ -2583,3 +2589,5 @@
 [v2.5.12]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.11...v2.5.12
 [#393]: https://github.com/eonx-com/easy-monorepo/pull/393
 [v2.5.13]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.12...v2.5.13
+[#397]: https://github.com/eonx-com/easy-monorepo/pull/397
+[v2.5.14]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.13...v2.5.14
