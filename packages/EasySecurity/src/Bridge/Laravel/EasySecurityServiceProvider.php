@@ -7,6 +7,7 @@ namespace EonX\EasySecurity\Bridge\Laravel;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagBridgeConstantsInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
+use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\EasyBugsnag\SecurityContextClientConfigurator;
 use EonX\EasySecurity\DeferredSecurityContextProvider;
@@ -18,6 +19,7 @@ use EonX\EasySecurity\MainSecurityContextConfigurator;
 use EonX\EasySecurity\SecurityContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 final class EasySecurityServiceProvider extends ServiceProvider
 {
@@ -42,12 +44,17 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
     private function registerAuthorizationMatrix(): void
     {
+        $this->app->singleton(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE, ArrayAdapter::class);
+
         $this->app->singleton(
             AuthorizationMatrixFactoryInterface::class,
             function (): AuthorizationMatrixFactoryInterface {
-                return new AuthorizationMatrixFactory(
-                    $this->app->tagged(BridgeConstantsInterface::TAG_ROLES_PROVIDER),
-                    $this->app->tagged(BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER)
+                return new CachedAuthorizationMatrixFactory(
+                    $this->app->make(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE),
+                    new AuthorizationMatrixFactory(
+                        $this->app->tagged(BridgeConstantsInterface::TAG_ROLES_PROVIDER),
+                        $this->app->tagged(BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER)
+                    )
                 );
             }
         );

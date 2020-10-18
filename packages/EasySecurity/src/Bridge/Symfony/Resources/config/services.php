@@ -5,6 +5,7 @@ declare(strict_types=1);
 use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
+use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\Symfony\DataCollector\SecurityContextDataCollector;
 use EonX\EasySecurity\Bridge\Symfony\Factories\AuthenticationFailureResponseFactory;
@@ -14,6 +15,7 @@ use EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\MainSecurityContextConfigurator;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
@@ -27,10 +29,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     // Authorization
+    $services->set(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE, ArrayAdapter::class);
+
     $services
-        ->set(AuthorizationMatrixFactoryInterface::class, AuthorizationMatrixFactory::class)
+        ->set('easy_security.core_authorization_matrix_factory', AuthorizationMatrixFactory::class)
         ->arg('$rolesProviders', tagged_iterator(BridgeConstantsInterface::TAG_ROLES_PROVIDER))
         ->arg('$permissionsProviders', tagged_iterator(BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER));
+
+    $services
+        ->set(AuthorizationMatrixFactoryInterface::class, CachedAuthorizationMatrixFactory::class)
+        ->arg('$cache', ref(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE))
+        ->arg('$decorated', ref('easy_security.core_authorization_matrix_factory'));
 
     $services
         ->set(AuthorizationMatrixInterface::class)

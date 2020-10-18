@@ -9,7 +9,7 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-final class SymfonyCacheAuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
+final class CachedAuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
 {
     /**
      * @var string
