@@ -40,4 +40,9 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const TAG_ROLES_PROVIDER = 'easy_security.roles_provider';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_AUTHORIZATION_MATRIX_CACHE = 'easy_security.authorization_matrix_cache';
 }

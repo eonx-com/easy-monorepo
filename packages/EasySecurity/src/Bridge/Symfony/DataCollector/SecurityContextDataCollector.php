@@ -6,7 +6,7 @@ namespace EonX\EasySecurity\Bridge\Symfony\DataCollector;
 
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
-use EonX\EasySecurity\Authorization\SymfonyCacheAuthorizationMatrixFactory;
+use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
@@ -152,7 +152,7 @@ final class SecurityContextDataCollector extends DataCollector
         $this->data['roles_providers'] = [];
         $this->data['permissions_providers'] = [];
 
-        $factory = $this->authorizationMatrixFactory instanceof SymfonyCacheAuthorizationMatrixFactory
+        $factory = $this->authorizationMatrixFactory instanceof CachedAuthorizationMatrixFactory
             ? $this->authorizationMatrixFactory->getDecorated()
             : $this->authorizationMatrixFactory;
 
@@ -166,7 +166,6 @@ final class SecurityContextDataCollector extends DataCollector
             $this->data['roles_providers'][] = [
                 'class' => $reflection->getName(),
                 'filename' => $reflection->getFileName(),
-                'roles' => $rolesProvider->getRoles(),
             ];
         }
 
@@ -176,7 +175,6 @@ final class SecurityContextDataCollector extends DataCollector
             $this->data['permissions_providers'][] = [
                 'class' => $reflection->getName(),
                 'filename' => $reflection->getFileName(),
-                'permissions' => $permissionsProvider->getPermissions(),
             ];
         }
     }
