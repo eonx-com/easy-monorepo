@@ -9,8 +9,8 @@
         "eonx-com/easy-aws-credentials-finder": "^2.6",
         "eonx-com/easy-random": "^2.6",
         "nette/utils": "^3.1",
-        "symplify/package-builder": "^8.3.32",
-        "symplify/autowire-array-parameter": "^8.3.32"
+        "symplify/package-builder": "^8.3.36",
+        "symplify/autowire-array-parameter": "^8.3.36"
     },
     "autoload": {
         "psr-4": {
