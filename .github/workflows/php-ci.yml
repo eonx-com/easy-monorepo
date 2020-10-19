@@ -16,7 +16,7 @@ jobs:
                     - { name: composer, coverage: none, run: composer check-composer }
                     - { name: phpstan, coverage: none, run: composer check-phpstan }
                     - { name: security, coverage: none, run: composer check-security }
-                    - { name: rector, coverage: none, run: composer check-rector-ci }
+                    - { name: rector, coverage: none, run: composer check-rector }
 
                     -   name: tests
                         coverage: pcov

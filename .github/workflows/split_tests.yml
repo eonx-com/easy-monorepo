@@ -44,7 +44,7 @@ jobs:
                     key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
                     restore-keys: ${{ matrix.php }}-comp-
 
-            -   run: composer global require hirak/prestissimo
+            -   run: composer global require hirak/prestissimo --ansi
             -   run: composer install --prefer-dist --no-progress --ansi
             -   run: vendor/bin/monorepo-builder localize-composer-paths --ansi
             -   run: cd packages/${{ matrix.package }}; composer update --prefer-dist --no-progress --ansi
