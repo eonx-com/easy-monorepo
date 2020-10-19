@@ -76,6 +76,7 @@
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
             "EonX\\EasyAsync\\": "packages/EasyAsync/src",
             "EonX\\EasyAwsCredentialsFinder\\": "packages/EasyAwsCredentialsFinder/src",
+            "EonX\\EasyBankFiles\\": "packages/EasyBankFiles/src",
             "EonX\\EasyBugsnag\\": "packages/EasyBugsnag/src",
             "EonX\\EasyCore\\": "packages/EasyCore/src",
             "EonX\\EasyDecision\\": "packages/EasyDecision/src",
@@ -106,6 +107,7 @@
             "EonX\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
             "EonX\\EasyAsync\\Tests\\": "packages/EasyAsync/tests",
             "EonX\\EasyAwsCredentialsFinder\\Tests\\": "packages/EasyAwsCredentialsFinder/tests",
+            "EonX\\EasyBankFiles\\Tests\\": "packages/EasyBankFiles/tests",
             "EonX\\EasyBugsnag\\Tests\\": "packages/EasyBugsnag/tests",
             "EonX\\EasyCore\\Tests\\": "packages/EasyCore/tests",
             "EonX\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
@@ -154,7 +156,8 @@
         "eonx-com/easy-async": "self.version",
         "eonx-com/easy-webhook": "self.version",
         "eonx-com/easy-bugsnag": "self.version",
-        "eonx-com/easy-request-id": "self.version"
+        "eonx-com/easy-request-id": "self.version",
+        "eonx-com/easy-bank-files": "self.version"
     },
     "scripts": {
         "check-all": [
