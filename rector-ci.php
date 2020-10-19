@@ -25,6 +25,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     $services = $containerConfigurator->services();
-    // $services->set(FinalizeClassesWithoutChildrenRector::class);
+    $services->set(FinalizeClassesWithoutChildrenRector::class);
     $services->set(RemoveUnusedPrivatePropertyRector::class);
 };
