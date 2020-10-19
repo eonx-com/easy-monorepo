@@ -11,7 +11,7 @@
         "phpunit/phpunit": "^8.4 || ^9.5",
         "slevomat/coding-standard": "^6.4",
         "symplify/easy-coding-standard-tester": "^8.3.36",
-        "rector/rector": "^0.8.33"
+        "rector/rector": "^0.8.34"
     },
     "autoload": {
         "psr-4": {
