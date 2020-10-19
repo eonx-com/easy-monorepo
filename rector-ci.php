@@ -16,15 +16,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/tests',
     ]);
 
-//    $parameters->set(Option::SETS, [
-//        SetList::DEAD_CODE,
-//    ]);
+    $parameters->set(Option::SETS, [
+        SetList::DEAD_CODE,
+    ]);
 
     $parameters->set(Option::AUTOLOAD_PATHS, [
         __DIR__ . '/tests/rector_bootstrap.php',
     ]);
-
-    $services = $containerConfigurator->services();
-    $services->set(FinalizeClassesWithoutChildrenRector::class);
-    $services->set(RemoveUnusedPrivatePropertyRector::class);
 };
