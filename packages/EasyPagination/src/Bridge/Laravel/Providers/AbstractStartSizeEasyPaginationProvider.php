@@ -10,7 +10,9 @@ use EonX\EasyPagination\Interfaces\StartSizeDataFactoryInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
+use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
 abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
@@ -45,8 +47,10 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
 
     protected function createConfig(): StartSizeConfig
     {
-        $config = $this->app->make('config')
-            ->get('pagination.start_size', []);
+        /** @var Repository $configRepository */
+        $configRepository = $this->app->make('config');
+
+        $config = $configRepository->get('pagination.start_size', []);
 
         return new StartSizeConfig(
             $config['start_attribute'] ?? static::$defaultConfig['start_attribute'],

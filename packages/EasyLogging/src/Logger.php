@@ -12,6 +12,7 @@ use EonX\EasyLogging\Formatters\SumoJsonFormatter;
 use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
 use EonX\EasyLogging\Interfaces\LoggerInterface;
 use Laravel\Lumen\Application;
+use LaravelDoctrine\ORM\Testing\ConfigRepository;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
@@ -249,7 +250,9 @@ final class Logger implements LoggerInterface
         $handlers = $this->handlers;
 
         // Add Bugsnag handler only if enabled
-        if ($this->app->make('config')->get('bugsnag.enabled', false)) {
+        /** @var ConfigRepository $configRepository */
+        $configRepository = $this->app->make('config');
+        if ($configRepository->get('bugsnag.enabled', false)) {
             $bugsnag = new BugsnagHandler($this->app->get(ExternalLogClientInterface::class));
 
             $this->handlers[] = $bugsnag->setDoNotReport($this->bugsnagDoNotReport);
