@@ -9,10 +9,15 @@ use EonX\EasySsm\Services\Aws\Data\SsmParameter;
 use EonX\EasySsm\Services\Hash\HashCalculator;
 use EonX\EasySsm\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class HashCalculatorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCalculateHash
      */
     public function providerTestCalculateHash(): iterable
     {

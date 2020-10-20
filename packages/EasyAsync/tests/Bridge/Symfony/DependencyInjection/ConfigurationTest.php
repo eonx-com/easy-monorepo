@@ -7,10 +7,15 @@ namespace EonX\EasyAsync\Tests\Bridge\Symfony\DependencyInjection;
 use EonX\EasyAsync\Bridge\Symfony\DependencyInjection\Configuration;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class ConfigurationTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetConfigTreeBuilder
      */
     public function providerGetConfigTreeBuilder(): iterable
     {

@@ -8,6 +8,9 @@ use EonX\EasyRepository\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\MockInterface;
 
+/**
+ * @coversNothing
+ */
 final class AbstractEloquentRepositoryTest extends AbstractTestCase
 {
     public function testDeleteUsesGivenModel(): void

@@ -8,6 +8,9 @@ use EonX\EasySsm\Dotenv\SsmDotenv;
 use EonX\EasySsm\HttpKernel\EasySsmKernel;
 use EonX\EasySsm\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class SsmDotenvTest extends AbstractTestCase
 {
     public function testLoadEnv(): void

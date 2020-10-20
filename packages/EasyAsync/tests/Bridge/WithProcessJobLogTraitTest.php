@@ -14,10 +14,15 @@ use EonX\EasyAsync\Tests\Stubs\WithProcessJobLogDataStub;
 use EonX\EasyAsync\Tests\Stubs\WithProcessJobLogTraitStub;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 
+/**
+ * @coversNothing
+ */
 final class WithProcessJobLogTraitTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcessWithJobLog
      */
     public function providerProcessWithJobLog(): iterable
     {

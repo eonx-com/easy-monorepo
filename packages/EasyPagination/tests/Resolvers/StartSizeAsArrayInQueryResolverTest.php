@@ -7,6 +7,9 @@ namespace EonX\EasyPagination\Tests\Resolvers;
 use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
 use EonX\EasyPagination\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class StartSizeAsArrayInQueryResolverTest extends AbstractTestCase
 {
     public function testCustomConfigResolveSuccessfully(): void

@@ -12,10 +12,15 @@ use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\AuthorizationPermissionsProviderStub;
 use EonX\EasySecurity\Tests\Stubs\AuthorizationRolesProviderStub;
 
+/**
+ * @coversNothing
+ */
 final class AuthorizationMatrixTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testMatrix
      */
     public function providerTestMatrix(): iterable
     {

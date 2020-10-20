@@ -7,6 +7,9 @@ namespace EonX\EasyLogging\Tests\Config;
 use EonX\EasyLogging\Tests\AbstractTestCase;
 use EonX\EasyLogging\Tests\Stubs\SelfProcessorConfigProviderStub;
 
+/**
+ * @coversNothing
+ */
 final class SelfProcessorConfigProviderTest extends AbstractTestCase
 {
     public function testSanity(): void

@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyStandard\Rector;
 
+use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
+use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareGenericTagValueNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
 use Rector\Core\Rector\AbstractRector;
@@ -15,13 +18,11 @@ use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
+/**
+ * @see \EonX\EasyStandard\Tests\Rector\AnnotationsCommentsRector\AnnotationsCommentsRectorTest
+ */
 final class AnnotationsCommentsRector extends AbstractRector
 {
-    /**
-     * @var string[]
-     */
-    private $ignore = ['{@inheritdoc}'];
-
     /**
      * @var string[]
      */
@@ -68,49 +69,49 @@ PHP
         /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
         $phpDocInfo = $node->getAttribute(AttributeKey::PHP_DOC_INFO);
 
-        foreach ($phpDocInfo->getPhpDocNode()->children as $child) {
-            if (\in_array((string)$child, $this->ignore, true)) {
+        foreach ($phpDocInfo->getPhpDocNode()->children as $phpDocChildNode) {
+            /** @var PhpDocChildNode $phpDocChildNode */
+            $content = (string) $phpDocChildNode;
+            if (Strings::match($content, '#inheritdoc#i')) {
                 continue;
             }
 
-            if ($child instanceof AttributeAwarePhpDocTextNode) {
-                $this->checkTextNode($child);
+            if ($phpDocChildNode instanceof AttributeAwarePhpDocTextNode) {
+                $this->checkTextNode($phpDocChildNode);
             }
 
-            if ($child instanceof AttributeAwarePhpDocTagNode) {
-                $this->checkTagNode($child);
+            if ($phpDocChildNode instanceof AttributeAwarePhpDocTagNode) {
+                $this->checkTagNode($phpDocChildNode);
             }
         }
 
         return $node;
     }
 
-    private function checkTagNode(AttributeAwarePhpDocTagNode $child): AttributeAwarePhpDocTagNode
+    private function checkTagNode(AttributeAwarePhpDocTagNode $child): void
     {
-        /** @var \Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareGenericTagValueNode $tagValueNode */
-        $tagValueNode = $child->value;
-
-        if ($tagValueNode->value === null) {
-            return $child;
+        if ($child->value instanceof AttributeAwareGenericTagValueNode === false) {
+            return;
         }
 
-        if (\in_array(\substr($tagValueNode->value, -1), $this->allowedEnd, true) === true) {
+        $tagValueNode = $child->value;
+        if ($tagValueNode->value === null) {
+            return;
+        }
+
+        if (\in_array(\substr($tagValueNode->value, -1), $this->allowedEnd, true)) {
             $tagValueNode->value = \substr($tagValueNode->value, 0, -1);
         }
-
-        return $child;
     }
 
-    private function checkTextNode(AttributeAwarePhpDocTextNode $child): AttributeAwarePhpDocTextNode
+    private function checkTextNode(AttributeAwarePhpDocTextNode $child): void
     {
         if ($child->text === '') {
-            return $child;
+            return;
         }
 
         if (\in_array(\substr($child->text, -1), $this->allowedEnd, true) === false) {
             $child->text .= '.';
         }
-
-        return $child;
     }
 }

@@ -9,10 +9,15 @@ use EonX\EasySsm\Services\Aws\Data\SsmParameter;
 use EonX\EasySsm\Services\Filesystem\SsmParametersParser;
 use EonX\EasySsm\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class SsmParametersParserTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testParseParameters
      */
     public function providerTestParseParameters(): iterable
     {

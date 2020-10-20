@@ -9,6 +9,9 @@ use EonX\EasyAsync\Data\Target;
 use EonX\EasyAsync\Events\JobCompletedEvent;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class JobCompletedEventTest extends AbstractTestCase
 {
     public function testGetJob(): void

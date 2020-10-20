@@ -11,10 +11,15 @@ use EonX\EasySsm\Services\Hash\HashChecker;
 use EonX\EasySsm\Tests\AbstractTestCase;
 use EonX\EasySsm\Tests\Stubs\HashRepositoryStub;
 
+/**
+ * @coversNothing
+ */
 final class HashCheckerTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCheckHash
      */
     public function providerTestCheckHash(): iterable
     {
@@ -37,6 +42,8 @@ final class HashCheckerTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testCheckHashesForParams
      */
     public function providerTestCheckHashesForParams(): iterable
     {

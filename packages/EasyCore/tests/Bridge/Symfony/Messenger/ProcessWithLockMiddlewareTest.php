@@ -14,10 +14,15 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\StackMiddleware;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
+/**
+ * @coversNothing
+ */
 final class ProcessWithLockMiddlewareTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcessWithJobLog
      */
     public function providerHandle(): iterable
     {

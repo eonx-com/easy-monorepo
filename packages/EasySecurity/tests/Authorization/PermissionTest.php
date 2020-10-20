@@ -7,6 +7,9 @@ namespace EonX\EasySecurity\Tests\Authorization;
 use EonX\EasySecurity\Authorization\Permission;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class PermissionTest extends AbstractTestCase
 {
     public function testPermission(): void

@@ -13,10 +13,15 @@ use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class PropertyHelperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetSetterName
      */
     public function providerGetSetterName(): iterable
     {
@@ -26,6 +31,8 @@ final class PropertyHelperTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testSetDatetimeProperties
      */
     public function providerSetDatetimeProperties(): iterable
     {
@@ -44,6 +51,8 @@ final class PropertyHelperTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testSetIntProperties
      */
     public function providerSetIntProperties(): iterable
     {
@@ -60,6 +69,8 @@ final class PropertyHelperTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testSetJsonProperties
      */
     public function providerSetJsonProperties(): iterable
     {
@@ -78,6 +89,8 @@ final class PropertyHelperTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testSetOptionalProperties
      */
     public function providerSetOptionalProperties(): iterable
     {

@@ -25,7 +25,7 @@ use Rector\Core\RectorDefinition\RectorDefinition;
 final class ExplicitBoolCompareRector extends AbstractRector
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getDefinition(): RectorDefinition
     {
@@ -59,7 +59,7 @@ PHP
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getNodeTypes(): array
     {
@@ -67,7 +67,7 @@ PHP
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function refactor(Node $node): ?Node
     {

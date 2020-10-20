@@ -17,10 +17,15 @@ use EonX\EasySecurity\Tests\Stubs\UserProviderInterfaceStub;
 use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @coversNothing
+ */
 final class UserFromJwtModifierTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testResolve
      */
     public function modifyProvider(): iterable
     {

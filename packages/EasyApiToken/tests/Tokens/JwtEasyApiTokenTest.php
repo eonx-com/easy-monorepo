@@ -8,6 +8,9 @@ use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
 use EonX\EasyApiToken\Tokens\Jwt;
 
+/**
+ * @coversNothing
+ */
 final class JwtEasyApiTokenTest extends AbstractTestCase
 {
     public function testGetClaimForceArraySuccessfully(): void

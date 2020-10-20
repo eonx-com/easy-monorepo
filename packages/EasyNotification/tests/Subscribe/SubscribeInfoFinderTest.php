@@ -10,6 +10,9 @@ use Nette\Utils\Json;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
+/**
+ * @coversNothing
+ */
 final class SubscribeInfoFinderTest extends AbstractTestCase
 {
     public function testFind(): void

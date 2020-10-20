@@ -9,6 +9,9 @@ use EonX\EasySsm\Services\Aws\Data\SsmParameter;
 use EonX\EasySsm\Services\Parameters\DiffResolver;
 use EonX\EasySsm\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class DiffResolverTest extends AbstractTestCase
 {
     public function testDiffIdentical(): void

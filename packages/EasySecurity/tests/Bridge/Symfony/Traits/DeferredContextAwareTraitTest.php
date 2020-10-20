@@ -9,6 +9,9 @@ use EonX\EasySecurity\Context;
 use EonX\EasySecurity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasySecurity\Tests\Bridge\Symfony\Stubs\DeferredContextAwareTraitStub;
 
+/**
+ * @coversNothing
+ */
 final class DeferredContextAwareTraitTest extends AbstractSymfonyTestCase
 {
     public function testResolveContext(): void

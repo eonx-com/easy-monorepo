@@ -6,6 +6,9 @@ namespace EonX\EasySchedule\Tests;
 
 use EonX\EasySchedule\Event;
 
+/**
+ * @coversNothing
+ */
 final class EventTest extends AbstractTestCase
 {
     /**
@@ -15,6 +18,8 @@ final class EventTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testFiltersPass
      */
     public function providerTestFiltersPass(): iterable
     {
@@ -33,6 +38,8 @@ final class EventTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testNoArgsMethods
      */
     public function providerTestNoArgsMethods(): iterable
     {

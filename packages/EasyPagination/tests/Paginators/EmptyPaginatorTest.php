@@ -8,6 +8,9 @@ use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Paginators\EmptyPaginator;
 use EonX\EasyPagination\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class EmptyPaginatorTest extends AbstractTestCase
 {
     public function testPaginator(): void

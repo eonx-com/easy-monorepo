@@ -8,10 +8,15 @@ use EonX\EasyStandard\Sniffs\Classes\StrictDeclarationFormatSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
+/**
+ * @coversNothing
+ */
 final class StrictDeclarationFormatSniffTest extends AbstractCheckerTestCase
 {
     /**
      * @return iterable<array<int, SmartFileInfo|int>>
+     *
+     * @see testSniff
      */
     public function providerTestSniff(): iterable
     {

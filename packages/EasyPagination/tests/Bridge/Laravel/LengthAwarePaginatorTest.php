@@ -8,6 +8,9 @@ use EonX\EasyPagination\Bridge\Laravel\LengthAwarePaginator;
 use EonX\EasyPagination\Tests\AbstractTestCase;
 use Illuminate\Pagination\LengthAwarePaginator as IlluminateLengthAwarePaginator;
 
+/**
+ * @coversNothing
+ */
 final class LengthAwarePaginatorTest extends AbstractTestCase
 {
     public function testGetters(): void

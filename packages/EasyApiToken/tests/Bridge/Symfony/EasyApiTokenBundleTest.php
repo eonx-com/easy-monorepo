@@ -12,6 +12,9 @@ use EonX\EasyApiToken\Tests\AbstractTestCase;
 use EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs\KernelStub;
 use EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs\ServiceStub;
 
+/**
+ * @coversNothing
+ */
 final class EasyApiTokenBundleTest extends AbstractTestCase
 {
     public function testDecoderFactoryIsRegisteredAsService(): void

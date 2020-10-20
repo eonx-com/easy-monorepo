@@ -7,6 +7,9 @@ namespace EonX\EasyIdentity\Tests\Implementations\Auth0;
 use EonX\EasyIdentity\Implementations\Auth0\Auth0IdentityServiceFactory;
 use EonX\EasyIdentity\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class Auth0IdentityServiceFactoryTest extends AbstractTestCase
 {
     public function testCreate(): void

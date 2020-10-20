@@ -6,10 +6,15 @@ namespace EonX\EasyRandom\Tests;
 
 use EonX\EasyRandom\RandomGenerator;
 
+/**
+ * @coversNothing
+ */
 final class RandomIntegerTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testRandomInteger
      */
     public function providerTestRandomInteger(): iterable
     {

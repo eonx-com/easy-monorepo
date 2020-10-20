@@ -8,6 +8,9 @@ use EonX\EasySecurity\Bridge\Symfony\Exceptions\PermissionConstantNotFoundExcept
 use EonX\EasySecurity\Bridge\Symfony\Security\PermissionExpressionFunctionProvider;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class PermissionExpressionFunctionProviderTest extends AbstractTestCase
 {
     public const PERMISSION_VALID = 'permission';

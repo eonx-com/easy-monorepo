@@ -42,7 +42,7 @@ final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements C
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @noinspection AutoloadingIssuesInspection
      */
@@ -72,7 +72,7 @@ PHP
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getNodeTypes(): array
     {
@@ -80,7 +80,7 @@ PHP
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function refactor(Node $node): ?Node
     {
@@ -122,7 +122,7 @@ PHP
     {
         $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray, '', $className));
 
-        if (\class_exists($className) === true) {
+        if (\class_exists($className)) {
             return $className;
         }
 

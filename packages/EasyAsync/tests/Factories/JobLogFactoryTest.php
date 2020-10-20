@@ -9,10 +9,15 @@ use EonX\EasyAsync\Factories\JobLogFactory;
 use EonX\EasyAsync\Interfaces\TargetInterface;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class JobLogFactoryTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCreate
      */
     public function providerCreate(): iterable
     {

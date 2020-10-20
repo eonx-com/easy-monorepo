@@ -11,6 +11,9 @@ use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\RequestAttributesAwareStub;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * @coversNothing
+ */
 final class ResolveRequestAttributesListenerTest extends AbstractSymfonyTestCase
 {
     public function testRequestIsNull(): void

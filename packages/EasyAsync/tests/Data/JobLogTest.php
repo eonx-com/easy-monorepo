@@ -7,6 +7,9 @@ namespace EonX\EasyAsync\Tests\Data;
 use EonX\EasyAsync\Data\JobLog;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class JobLogTest extends AbstractTestCase
 {
     public function testJobLog(): void

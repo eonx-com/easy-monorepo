@@ -23,10 +23,15 @@ use EonX\EasyNotification\Tests\Stubs\MessageStub;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
+/**
+ * @coversNothing
+ */
 final class ConfiguratorsTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testConfigure
      */
     public function providerTestConfigure(): iterable
     {

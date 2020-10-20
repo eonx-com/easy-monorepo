@@ -10,6 +10,9 @@ use EonX\EasyCore\Tests\AbstractTestCase;
 use Mockery\MockInterface;
 use stdClass;
 
+/**
+ * @coversNothing
+ */
 final class ElasticsearchSearchServiceTest extends AbstractTestCase
 {
     public function testSearchSucceedsAndReplacesEmptyArraysWithEmptyObjectsInMatchAllRecursively(): void

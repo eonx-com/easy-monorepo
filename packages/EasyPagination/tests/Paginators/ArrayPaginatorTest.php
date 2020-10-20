@@ -9,10 +9,15 @@ use EonX\EasyPagination\Exceptions\InvalidPathException;
 use EonX\EasyPagination\Paginators\ArrayPaginator;
 use EonX\EasyPagination\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class ArrayPaginatorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testUrls
      */
     public function providerTestUrls(): iterable
     {

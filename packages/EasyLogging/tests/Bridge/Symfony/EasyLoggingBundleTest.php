@@ -7,6 +7,9 @@ namespace EonX\EasyLogging\Tests\Bridge\Symfony;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @coversNothing
+ */
 final class EasyLoggingBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanity(): void

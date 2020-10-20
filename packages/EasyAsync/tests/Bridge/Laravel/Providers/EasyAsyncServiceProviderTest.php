@@ -27,10 +27,15 @@ use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
 use Laravel\Lumen\Application;
 
+/**
+ * @coversNothing
+ */
 final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testServiceProvider
      */
     public function providerTestServiceProvider(): iterable
     {

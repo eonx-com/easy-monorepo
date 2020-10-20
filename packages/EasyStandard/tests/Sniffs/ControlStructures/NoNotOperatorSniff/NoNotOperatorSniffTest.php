@@ -8,6 +8,9 @@ use EonX\EasyStandard\Sniffs\ControlStructures\NoNotOperatorSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
+/**
+ * @coversNothing
+ */
 final class NoNotOperatorSniffTest extends AbstractCheckerTestCase
 {
     public function testSniff(): void

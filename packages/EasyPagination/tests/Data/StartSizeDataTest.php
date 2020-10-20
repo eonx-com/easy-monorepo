@@ -7,6 +7,9 @@ namespace EonX\EasyPagination\Tests\Data;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class StartSizeDataTest extends AbstractTestCase
 {
     public function testGettersReturnIdenticalInput(): void

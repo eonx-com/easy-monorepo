@@ -9,6 +9,9 @@ use EonX\EasyEventDispatcher\Tests\Bridge\Symfony\Stubs\EventStub;
 use EonX\EasyEventDispatcher\Tests\Bridge\Symfony\Stubs\SymfonyEventDispatcherStub;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 
+/**
+ * @coversNothing
+ */
 final class EasyEventDispatcherBundleTest extends AbstractSymfonyTestCase
 {
     public function testDispatchInSymfony(): void

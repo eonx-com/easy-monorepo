@@ -9,10 +9,15 @@ use EonX\EasySsm\Services\Dotenv\Loaders\ConsoleOutputLoader;
 use EonX\EasySsm\Tests\AbstractTestCase;
 use Symfony\Component\Console\Output\StreamOutput;
 
+/**
+ * @coversNothing
+ */
 final class ConsoleOutputLoaderTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testLoadEnv
      */
     public function providerTestLoadEnv(): iterable
     {

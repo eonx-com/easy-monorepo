@@ -12,6 +12,9 @@ use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyPagination\Tests\AbstractWithMockTestCase;
 use Mockery\MockInterface;
 
+/**
+ * @coversNothing
+ */
 final class DoctrineOrmLengthAwarePaginatorTest extends AbstractWithMockTestCase
 {
     public function testGetTotalItems(): void

@@ -9,6 +9,9 @@ use EonX\EasyAsync\Data\Target;
 use EonX\EasyAsync\Events\JobLogFailedEvent;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class JobLogFailedEventTest extends AbstractTestCase
 {
     public function testGetJobLogAndThrowable(): void

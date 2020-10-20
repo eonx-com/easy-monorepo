@@ -8,6 +8,9 @@ use EonX\EasyStandard\Sniffs\Classes\RequireStrictDeclarationSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
+/**
+ * @coversNothing
+ */
 final class RequireStrictDeclarationSniffTest extends AbstractCheckerTestCase
 {
     /**

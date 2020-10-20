@@ -7,6 +7,9 @@ namespace EonX\EasyPsr7Factory\Tests\Bridge\Symfony;
 use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * @coversNothing
+ */
 final class EasyPsr7FactoryBundleTest extends AbstractSymfonyTestCase
 {
     public function testPsr7FactoryRegisteredAsService(): void

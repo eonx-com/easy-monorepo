@@ -8,6 +8,9 @@ use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Stubs\ExpressionFunctionProviderStub;
 
+/**
+ * @coversNothing
+ */
 final class ExpressionLanguageFactoryTest extends AbstractTestCase
 {
     public function testCreateWithFunctions(): void

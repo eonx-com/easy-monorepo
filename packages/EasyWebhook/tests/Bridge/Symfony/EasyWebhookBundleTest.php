@@ -10,10 +10,15 @@ use EonX\EasyWebhook\Configurators\MethodWebhookConfigurator;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @coversNothing
+ */
 final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testConfigAndDependenciesSanity
      */
     public function providerTestConfigAndDependenciesSanity(): iterable
     {

@@ -18,6 +18,8 @@ final class AnnotationsCommentsRectorTest extends AbstractRectorTestCase
 {
     /**
      * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
+     *
+     * @see testRule
      */
     public function provideData(): Iterator
     {

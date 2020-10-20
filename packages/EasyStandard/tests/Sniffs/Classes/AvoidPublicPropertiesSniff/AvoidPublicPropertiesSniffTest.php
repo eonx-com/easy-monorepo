@@ -8,6 +8,9 @@ use EonX\EasyStandard\Sniffs\Classes\AvoidPublicPropertiesSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
+/**
+ * @coversNothing
+ */
 final class AvoidPublicPropertiesSniffTest extends AbstractCheckerTestCase
 {
     /**

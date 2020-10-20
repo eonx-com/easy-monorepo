@@ -9,6 +9,9 @@ use EonX\EasyRepository\Implementations\Doctrine\ORM\LengthAwareDoctrineOrmPagin
 use EonX\EasyRepository\Tests\AbstractTestCase;
 use Mockery\LegacyMockInterface;
 
+/**
+ * @coversNothing
+ */
 final class LengthAwareDoctrineOrmPaginatorTest extends AbstractTestCase
 {
     public function testGettersReturnExpectedValues(): void

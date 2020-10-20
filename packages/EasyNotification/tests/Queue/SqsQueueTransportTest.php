@@ -9,6 +9,9 @@ use EonX\EasyNotification\Queue\SqsQueueTransport;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 use EonX\EasyNotification\Tests\Stubs\SqsClientStub;
 
+/**
+ * @coversNothing
+ */
 final class SqsQueueTransportTest extends AbstractTestCase
 {
     public function testSend(): void

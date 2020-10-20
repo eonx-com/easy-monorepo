@@ -11,6 +11,9 @@ use EonX\EasyWebhook\Tests\AbstractTestCase;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
 
+/**
+ * @coversNothing
+ */
 final class ArrayWebhookStoreTest extends AbstractTestCase
 {
     public function testFindWithDefaultClass(): void

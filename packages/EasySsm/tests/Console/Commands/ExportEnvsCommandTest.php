@@ -6,6 +6,9 @@ namespace EonX\EasySsm\Tests\Console\Commands;
 
 use EonX\EasySsm\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class ExportEnvsCommandTest extends AbstractTestCase
 {
     public function testExportEnvs(): void

@@ -11,10 +11,15 @@ use EonX\EasyErrorHandler\Tests\Stubs\BugsnagClientStub;
 use Monolog\Logger;
 use Throwable;
 
+/**
+ * @coversNothing
+ */
 final class BugsnagReporterTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testReport
      */
     public function providerTestReport(): iterable
     {

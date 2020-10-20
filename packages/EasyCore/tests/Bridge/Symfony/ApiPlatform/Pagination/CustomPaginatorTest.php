@@ -13,6 +13,9 @@ use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginator;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Mockery\MockInterface;
 
+/**
+ * @coversNothing
+ */
 final class CustomPaginatorTest extends AbstractSymfonyTestCase
 {
     public function testCustomPaginator(): void

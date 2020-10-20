@@ -7,6 +7,9 @@ namespace EonX\EasySecurity\Tests\Bridge\Symfony;
 use EonX\EasySecurity\Bridge\EasyBugsnag\SecurityContextClientConfigurator;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 
+/**
+ * @coversNothing
+ */
 final class EasySecurityBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanity(): void

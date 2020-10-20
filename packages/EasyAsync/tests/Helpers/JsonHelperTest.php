@@ -7,10 +7,15 @@ namespace EonX\EasyAsync\Tests\Helpers;
 use EonX\EasyAsync\Helpers\JsonHelper;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class JsonHelperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDecode
      */
     public function providerDecode(): iterable
     {
@@ -26,6 +31,8 @@ final class JsonHelperTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testEncode
      */
     public function providerEncode(): iterable
     {

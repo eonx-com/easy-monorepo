@@ -10,6 +10,9 @@ use EonX\EasyPipeline\Interfaces\PipelineFactoryInterface;
 use EonX\EasyPipeline\Tests\AbstractLumenTestCase;
 use EonX\EasyPipeline\Tests\Bridge\Laravel\Stubs\MiddlewareProviderStub;
 
+/**
+ * @coversNothing
+ */
 final class EasyPipelineProviderTest extends AbstractLumenTestCase
 {
     public function testEmptyProvidersListException(): void

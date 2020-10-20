@@ -15,6 +15,9 @@ use EonX\EasyDecision\Tests\AbstractLumenTestCase;
 use EonX\EasyDecision\Tests\Stubs\DecisionConfigProviderStub;
 use EonX\EasyDecision\Tests\Stubs\RuleProviderStub;
 
+/**
+ * @coversNothing
+ */
 final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
 {
     public function testArrayConfigCreateDecisionSuccessfully(): void

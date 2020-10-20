@@ -14,10 +14,15 @@ use EonX\EasyPagination\Tests\Bridge\Symfony\Stubs\KernelStub;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @coversNothing
+ */
 final class EasyPaginationBundleTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testResolverInstance
      */
     public function providerTestResolverInstance(): iterable
     {
@@ -31,6 +36,8 @@ final class EasyPaginationBundleTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testStartSizeDataResolver
      */
     public function providerTestStartSizeDataResolver(): iterable
     {

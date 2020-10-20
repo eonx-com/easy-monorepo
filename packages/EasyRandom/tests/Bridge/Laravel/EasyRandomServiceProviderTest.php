@@ -9,10 +9,15 @@ use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
 
+/**
+ * @coversNothing
+ */
 final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testUuidV4GeneratorInstance
      */
     public function providerTestUuidV4GeneratorInstance(): iterable
     {

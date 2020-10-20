@@ -7,6 +7,9 @@ namespace EonX\EasySecurity\Tests\Bridge\Symfony\Authorization;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 
+/**
+ * @coversNothing
+ */
 final class AuthorizationMatrixFactoryTest extends AbstractSymfonyTestCase
 {
     public function testRolesAndPermissionsProvidersInjected(): void

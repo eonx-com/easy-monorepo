@@ -11,10 +11,15 @@ use EonX\EasySsm\Services\Hash\HashCalculator;
 use EonX\EasySsm\Tests\AbstractTestCase;
 use EonX\EasySsm\Tests\Stubs\HashRepositoryStub;
 
+/**
+ * @coversNothing
+ */
 final class HashDumperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDumpHash
      */
     public function providerTestDumpHash(): iterable
     {

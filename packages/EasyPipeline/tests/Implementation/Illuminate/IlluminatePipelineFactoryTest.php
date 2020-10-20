@@ -13,6 +13,9 @@ use EonX\EasyPipeline\Tests\AbstractLumenTestCase;
 use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\PipelineNameAwareMiddlewareProviderStub;
 use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ValidMiddlewareProviderStub;
 
+/**
+ * @coversNothing
+ */
 final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
 {
     public function testCreatePipelineSuccessfullyWithPrefixAndCacheResolved(): void

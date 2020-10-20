@@ -8,6 +8,9 @@ use EonX\EasyDecision\Decisions\AffirmativeDecision;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class AffirmativeDecisionTest extends AbstractTestCase
 {
     public function testReturnFalseWhenNoTrue(): void

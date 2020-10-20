@@ -8,10 +8,15 @@ use EonX\EasyRequestId\DefaultResolver;
 use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @coversNothing
+ */
 final class DefaultResolverTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testResolve
      */
     public function providerTestResolve(): iterable
     {

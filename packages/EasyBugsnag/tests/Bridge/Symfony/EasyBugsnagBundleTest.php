@@ -6,6 +6,9 @@ namespace EonX\EasyBugsnag\Tests\Bridge\Symfony;
 
 use Bugsnag\Client;
 
+/**
+ * @coversNothing
+ */
 final class EasyBugsnagBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanityCheck(): void

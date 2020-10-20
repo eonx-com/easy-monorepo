@@ -8,6 +8,9 @@ use EonX\EasySsm\Services\Hash\HashRepository;
 use EonX\EasySsm\Tests\AbstractTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * @coversNothing
+ */
 final class HashRepositoryTest extends AbstractTestCase
 {
     public function testFileDoesntExist(): void

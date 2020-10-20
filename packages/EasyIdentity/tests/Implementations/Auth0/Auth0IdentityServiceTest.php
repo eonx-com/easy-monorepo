@@ -26,6 +26,9 @@ use Mockery\LegacyMockInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
+/**
+ * @coversNothing
+ */
 final class Auth0IdentityServiceTest extends AbstractTestCase
 {
     /**

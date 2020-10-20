@@ -8,6 +8,9 @@ use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyEventDispatcher\Tests\Bridge\Symfony\Stubs\EventStub;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
 
+/**
+ * @coversNothing
+ */
 final class EasyEventDispatcherServiceProviderTest extends AbstractLaravelTestCase
 {
     public function testDispatchInLaravel(): void

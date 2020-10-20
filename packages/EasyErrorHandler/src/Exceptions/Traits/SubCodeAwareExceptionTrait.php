@@ -12,7 +12,7 @@ trait SubCodeAwareExceptionTrait
     protected $subCode = 0;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getSubCode(): int
     {

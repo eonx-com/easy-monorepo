@@ -15,10 +15,15 @@ use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\ProviderProviderInterfaceStub;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @coversNothing
+ */
 final class ProviderFromHeaderModifierTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testModify
      */
     public function modifyProvider(): iterable
     {

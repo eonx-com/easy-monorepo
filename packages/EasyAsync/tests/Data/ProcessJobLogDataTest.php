@@ -8,6 +8,9 @@ use EonX\EasyAsync\Data\ProcessJobLogData;
 use EonX\EasyAsync\Data\Target;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class ProcessJobLogDataTest extends AbstractTestCase
 {
     public function testProcessJobLogData(): void

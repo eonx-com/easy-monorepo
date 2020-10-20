@@ -7,6 +7,9 @@ namespace EonX\EasyCore\Tests\Bridge\Laravel\Console\Commands\Lumen;
 use EonX\EasyCore\Tests\AbstractTestCase;
 use Laravel\Lumen\Console\Kernel;
 
+/**
+ * @coversNothing
+ */
 final class ConfigCommandsTest extends AbstractTestCase
 {
     public function testCacheAndClearConfig(): void

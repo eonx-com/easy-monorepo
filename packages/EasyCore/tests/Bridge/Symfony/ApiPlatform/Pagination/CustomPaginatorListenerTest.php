@@ -17,10 +17,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+/**
+ * @coversNothing
+ */
 final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testListener
      */
     public function providerTestListener(): iterable
     {

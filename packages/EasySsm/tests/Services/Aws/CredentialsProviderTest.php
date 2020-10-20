@@ -9,10 +9,15 @@ use EonX\EasyAwsCredentialsFinder\Finders\EnvsCredentialsFinder;
 use EonX\EasySsm\Services\Aws\CredentialsProvider;
 use EonX\EasySsm\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class CredentialsProviderTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetCredentials
      */
     public function providerTestGetCredentials(): iterable
     {

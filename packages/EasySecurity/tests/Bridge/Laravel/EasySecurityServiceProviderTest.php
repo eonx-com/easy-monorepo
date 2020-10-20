@@ -9,6 +9,9 @@ use EonX\EasySecurity\SecurityContext;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
+/**
+ * @coversNothing
+ */
 final class EasySecurityServiceProviderTest extends AbstractLumenTestCase
 {
     public function testSanity(): void

@@ -7,6 +7,9 @@ namespace EonX\EasyNotification\Tests\Config;
 use EonX\EasyNotification\Config\Config;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class ConfigTest extends AbstractTestCase
 {
     public function testGetters(): void

@@ -10,10 +10,15 @@ use EonX\EasySsm\Services\Parameters\Data\Diff;
 use EonX\EasySsm\Tests\AbstractTestCase;
 use EonX\EasySsm\Tests\Stubs\BaseSsmClientStub;
 
+/**
+ * @coversNothing
+ */
 final class SsmClientTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testApplyDiff
      */
     public function providerTestApplyDiff(): iterable
     {
@@ -70,6 +75,8 @@ final class SsmClientTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetAllParameters
      */
     public function providerTestGetAllParameters(): iterable
     {

@@ -12,10 +12,15 @@ use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Uid\UuidV4;
 
+/**
+ * @coversNothing
+ */
 final class UuidV4GeneratorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testUuidV4
      */
     public function providerTestUuidV4(): iterable
     {

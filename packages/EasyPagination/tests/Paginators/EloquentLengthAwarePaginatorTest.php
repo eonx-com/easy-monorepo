@@ -12,6 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Mockery\MockInterface;
 
+/**
+ * @coversNothing
+ */
 final class EloquentLengthAwarePaginatorTest extends AbstractWithMockTestCase
 {
     public function testGetItems(): void

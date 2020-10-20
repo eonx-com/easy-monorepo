@@ -8,6 +8,9 @@ use EonX\EasyApiToken\Decoders\BearerTokenDecoder;
 use EonX\EasyApiToken\Tests\AbstractFirebaseJwtTokenTestCase;
 use EonX\EasyApiToken\Tokens\Jwt;
 
+/**
+ * @coversNothing
+ */
 final class FirebaseBearerTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
 {
     public function testJwtTokenDecodeSuccessfully(): void

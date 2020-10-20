@@ -25,10 +25,15 @@ use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * @coversNothing
+ */
 final class EasyAsyncExtensionTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testLoad
      */
     public function providerLoad(): iterable
     {

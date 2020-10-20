@@ -7,6 +7,9 @@ namespace EonX\EasyApiToken\Tests\Tokens;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
 use EonX\EasyApiToken\Tokens\BasicAuth;
 
+/**
+ * @coversNothing
+ */
 final class BasicAuthEasyApiTokenTest extends AbstractTestCase
 {
     public function testGettersShouldReturnSameValueAsPayload(): void

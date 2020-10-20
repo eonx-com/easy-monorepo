@@ -90,7 +90,7 @@ final class Auth0IdentityService extends AbstractIdentityService
         $identityUser = $this->managementFactory->create()
             ->users->get($this->getIdentityUserId($user));
 
-        if (\is_array($identityUser) === true) {
+        if (\is_array($identityUser)) {
             foreach ($identityUser as $key => $value) {
                 $this->setIdentityValue($user, $key, $value);
             }

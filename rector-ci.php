@@ -8,6 +8,8 @@ use Rector\Set\ValueObject\SetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->import(__DIR__ . '/packages/EasyStandard/config/rector-set.php');
+
     // get parameters
     $parameters = $containerConfigurator->parameters();
     $parameters->set(Option::PROJECT_TYPE, ProjectType::OPEN_SOURCE);

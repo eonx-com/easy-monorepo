@@ -13,10 +13,15 @@ use EonX\EasySsm\Tests\AbstractTestCase;
 use EonX\EasySsm\Tests\Stubs\EnvLoaderStub;
 use EonX\EasySsm\Tests\Stubs\SsmClientStub;
 
+/**
+ * @coversNothing
+ */
 final class SsmDotenvTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testLoadEnv
      */
     public function providerTestLoadEnv(): iterable
     {

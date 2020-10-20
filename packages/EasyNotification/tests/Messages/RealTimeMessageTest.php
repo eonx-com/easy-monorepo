@@ -9,6 +9,9 @@ use EonX\EasyNotification\Messages\RealTimeMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 use Nette\Utils\Json;
 
+/**
+ * @coversNothing
+ */
 final class RealTimeMessageTest extends AbstractTestCase
 {
     /**
@@ -25,6 +28,8 @@ final class RealTimeMessageTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetters
      */
     public function providerTestGetters(): iterable
     {

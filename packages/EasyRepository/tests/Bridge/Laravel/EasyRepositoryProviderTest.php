@@ -10,6 +10,9 @@ use EonX\EasyRepository\Tests\AbstractLumenTestCase;
 use EonX\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository1Stub;
 use EonX\EasyRepository\Tests\Bridge\Laravel\Stubs\Repository2Stub;
 
+/**
+ * @coversNothing
+ */
 final class EasyRepositoryProviderTest extends AbstractLumenTestCase
 {
     public function testEmptyRepositoriesListException(): void

@@ -7,6 +7,9 @@ namespace EonX\EasyNotification\Tests\Bridge\Symfony;
 use EonX\EasyNotification\Interfaces\NotificationClientInterface;
 use EonX\EasyNotification\NotificationClient;
 
+/**
+ * @coversNothing
+ */
 final class EasyNotificationBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanityCheck(): void

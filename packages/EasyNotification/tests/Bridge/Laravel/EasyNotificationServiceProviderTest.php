@@ -10,6 +10,9 @@ use EonX\EasyNotification\Interfaces\NotificationClientInterface;
 use EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface;
 use EonX\EasyNotification\Subscribe\SubscribeInfoFinder;
 
+/**
+ * @coversNothing
+ */
 final class EasyNotificationServiceProviderTest extends AbstractLaravelTestCase
 {
     public function testSanity(): void

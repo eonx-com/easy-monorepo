@@ -16,10 +16,15 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Bridge\Symfony\Stubs\KernelStub;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
+/**
+ * @coversNothing
+ */
 final class EasyDecisionBundleTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDecisions
      */
     public function providerCreateDecision(): iterable
     {

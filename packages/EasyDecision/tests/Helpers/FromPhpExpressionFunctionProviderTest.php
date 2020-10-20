@@ -7,6 +7,9 @@ namespace EonX\EasyDecision\Tests\Helpers;
 use EonX\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class FromPhpExpressionFunctionProviderTest extends AbstractTestCase
 {
     public function testGetFunctions(): void

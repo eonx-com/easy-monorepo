@@ -14,10 +14,15 @@ use EonX\EasyAsync\Tests\Stubs\EventDispatcherStub;
 use EonX\EasyAsync\Tests\Stubs\JobPersisterStub;
 use EonX\EasyPagination\Data\StartSizeData;
 
+/**
+ * @coversNothing
+ */
 final class WithEventsJobPersisterTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testMethods
      */
     public function providerTestMethods(): iterable
     {

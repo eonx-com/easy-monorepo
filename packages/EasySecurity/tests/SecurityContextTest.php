@@ -13,10 +13,15 @@ use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\UserInterfaceStub;
 
+/**
+ * @coversNothing
+ */
 final class SecurityContextTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testContextGetters
      */
     public function gettersDataProvider(): iterable
     {
@@ -50,6 +55,8 @@ final class SecurityContextTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testContextHas
      */
     public function hasDataProvider(): iterable
     {

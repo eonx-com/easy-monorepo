@@ -11,6 +11,9 @@ use EonX\EasyDecision\Decisions\ValueDecision;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 
+/**
+ * @coversNothing
+ */
 final class ConsensusDecisionTest extends AbstractTestCase
 {
     public function testGetName(): void

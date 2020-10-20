@@ -7,6 +7,9 @@ namespace EonX\EasyErrorHandler\Tests\Exceptions;
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\ValidationExceptionStub;
 
+/**
+ * @coversNothing
+ */
 final class ValidationExceptionTest extends AbstractTestCase
 {
     public function testGetErrors(): void

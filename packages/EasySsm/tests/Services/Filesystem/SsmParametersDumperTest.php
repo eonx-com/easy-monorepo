@@ -10,10 +10,15 @@ use EonX\EasySsm\Services\Filesystem\SsmParametersDumper;
 use EonX\EasySsm\Tests\AbstractTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * @coversNothing
+ */
 final class SsmParametersDumperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDumpParameters
      */
     public function providerTestDumpParameters(): iterable
     {

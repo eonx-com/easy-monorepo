@@ -56,7 +56,7 @@ final class InheritDocRector extends AbstractRector
     public function getDefinition(): RectorDefinition
     {
         return new RectorDefinition(
-            'Replaces {@inheritdoc} annotation with {@inheritDoc}.',
+            'Replaces {@inheritdoc} annotation with {@inheritDoc}',
             [
                 new CodeSample(
                     <<<'PHP'

@@ -18,7 +18,7 @@ use Rector\Core\RectorDefinition\RectorDefinition;
 final class StrictInArrayRector extends AbstractRector
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getDefinition(): RectorDefinition
     {
@@ -28,7 +28,7 @@ final class StrictInArrayRector extends AbstractRector
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getNodeTypes(): array
     {
@@ -36,7 +36,7 @@ final class StrictInArrayRector extends AbstractRector
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function refactor(Node $node): ?Node
     {
