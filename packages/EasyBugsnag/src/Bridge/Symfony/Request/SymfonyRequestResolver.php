@@ -26,6 +26,6 @@ final class SymfonyRequestResolver extends AbstractRequestResolver
     {
         $request = $this->requestStack->getMasterRequest();
 
-        return $request ? new HttpFoundationRequest($request) : new NullRequest();
+        return $request !== null ? new HttpFoundationRequest($request) : new NullRequest();
     }
 }

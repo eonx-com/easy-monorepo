@@ -6,6 +6,7 @@ namespace EonX\EasyRandom\Tests\Bridge\Laravel;
 
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
+use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
 
@@ -42,11 +43,10 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
             }
         );
 
+        /** @var RandomGenerator $randomGenerator */
         $randomGenerator = $app->get(RandomGeneratorInterface::class);
 
-        $setUuidV4Generator = \Closure::bind(function () {
-            return $this->uuidV4Generator;
-        }, $randomGenerator, $randomGenerator)();
+        $setUuidV4Generator = $this->getPrivateProperty($randomGenerator, 'uuidV4Generator');
 
         self::assertEquals(\spl_object_hash($uuidV4Generator), \spl_object_hash($setUuidV4Generator));
     }

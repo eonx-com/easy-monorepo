@@ -65,14 +65,7 @@ final class AwsConfigurationProvider extends AbstractConfigurationProvider imple
     {
         $profile = \sprintf('profile %s', $this->getCurrentProfile());
         $parsed = $this->parseConfig();
-
-        foreach ($parsed as $name => $config) {
-            if ($profile === $name) {
-                return $config;
-            }
-        }
-
-        return null;
+        return $parsed[$profile] ?? null;
     }
 
     /**

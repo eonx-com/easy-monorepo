@@ -67,7 +67,7 @@ final class Config implements ConfigInterface
      */
     public static function fromArray(array $config): ConfigInterface
     {
-        return new static(
+        return new self(
             $config['algorithm'],
             $config['apiKey'],
             $config['apiUrl'],

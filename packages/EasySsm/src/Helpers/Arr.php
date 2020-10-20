@@ -30,7 +30,7 @@ final class Arr
         }
 
         // Merge flattened keys if some were found otherwise return an empty array
-        $flattened = \count($flattened) ? \array_merge(...$flattened) : [];
+        $flattened = \count($flattened) > 0 ? \array_merge(...$flattened) : [];
 
         // Remove /__base__
         $return = [];

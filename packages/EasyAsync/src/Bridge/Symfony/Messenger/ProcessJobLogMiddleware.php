@@ -39,11 +39,6 @@ final class ProcessJobLogMiddleware implements MiddlewareInterface
         if ($envelope->last(ConsumedByWorkerStamp::class) === null) {
             return true;
         }
-
-        if ($envelope->getMessage() instanceof WithProcessJobLogDataInterface === false) {
-            return true;
-        }
-
-        return false;
+        return $envelope->getMessage() instanceof WithProcessJobLogDataInterface === false;
     }
 }

@@ -46,11 +46,6 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
         if ($envelope->last(ConsumedByWorkerStamp::class) === null) {
             return true;
         }
-
-        if ($envelope->getMessage() instanceof WithLockDataInterface === false) {
-            return true;
-        }
-
-        return false;
+        return $envelope->getMessage() instanceof WithLockDataInterface === false;
     }
 }

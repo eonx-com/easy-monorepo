@@ -41,13 +41,12 @@ final class EasyRandomBundleTest extends AbstractSymfonyTestCase
      */
     public function testUuidV4GeneratorInstance(array $configs, string $uuidV4GeneratorClass): void
     {
+        /** @var \EonX\EasyRandom\RandomGenerator $randomGenerator */
         $randomGenerator = $this->getKernel($configs)
             ->getContainer()
             ->get(RandomGeneratorInterface::class);
 
-        $uuidV4Generator = \Closure::bind(function () {
-            return $this->uuidV4Generator;
-        }, $randomGenerator, $randomGenerator)();
+        $uuidV4Generator = $this->getPrivateProperty($randomGenerator, 'uuidV4Generator');
 
         self::assertInstanceOf($uuidV4GeneratorClass, $uuidV4Generator);
     }

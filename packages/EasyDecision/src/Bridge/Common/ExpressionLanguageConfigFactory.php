@@ -78,7 +78,10 @@ final class ExpressionLanguageConfigFactory implements ExpressionLanguageConfigF
             $providers = $config->getExpressionFunctionProviders();
         }
 
-        return \compact('functions', 'providers');
+        return [
+            'functions' => $functions,
+            'providers' => $providers,
+        ];
     }
 
     private function getExpressionFunctionFactory(): ExpressionFunctionFactoryInterface

@@ -12,7 +12,6 @@ use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
 abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider

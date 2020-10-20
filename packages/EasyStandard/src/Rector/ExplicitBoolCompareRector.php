@@ -99,7 +99,7 @@ PHP
         /** @var \PhpParser\Node\Expr\BinaryOp\Identical $identicalExpr */
         $identicalExpr = $expr;
 
-        if ($isNegated === false && isset($identicalExpr->left, $identicalExpr->right)) {
+        if ($isNegated === false && ($identicalExpr->left !== null && $identicalExpr->right !== null)) {
             $left = $identicalExpr->left;
             /** @var \PhpParser\Node\Expr\ConstFetch $right */
             $right = $identicalExpr->right;

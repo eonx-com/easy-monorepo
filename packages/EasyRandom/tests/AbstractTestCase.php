@@ -6,6 +6,7 @@ namespace EonX\EasyRandom\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symplify\PackageBuilder\Reflection\PrivatesAccessor;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -23,5 +24,14 @@ abstract class AbstractTestCase extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getPrivateProperty(object $object, string $propertyName)
+    {
+        $privatesAccessor = new PrivatesAccessor();
+        return $privatesAccessor->getPrivateProperty($object, $propertyName);
     }
 }

@@ -106,7 +106,9 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
         );
 
         try {
-            $data = $this->conn->fetchAssoc($sql, \compact('jobId'));
+            $data = $this->conn->fetchAssoc($sql, [
+                'jobId' => $jobId,
+            ]);
         } catch (\Throwable $exception) {
             throw new UnableToFindJobException($exception->getMessage(), $exception->getCode(), $exception);
         }

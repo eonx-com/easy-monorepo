@@ -45,7 +45,9 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
 
                 return $next($input);
             },
-            [$this, 'actAsMiddleware'],
+            function ($input, \Closure $next) {
+                return $this->actAsMiddleware($input, $next);
+            },
         ];
 
         $pipeline = new IlluminatePipeline(new Pipeline(), $middlewareList);

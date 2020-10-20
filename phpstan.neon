@@ -40,9 +40,6 @@ parameters:
         - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
           path: packages/EasyAsync/tests/Persisters
 
-        - message: '#Cannot call method format\(\) on DateTime\|null#'
-          path: packages/EasyAsync/src/Data/AbstractEasyAsyncData.php
-
         - message: '#Parameter \#1 \$(finished|started)At of method EonX\\EasyAsync\\Interfaces\\EasyAsyncDataInterface\:\:set(Finished|Started)At\(\) expects DateTime, DateTime\|null given#'
           path: packages/EasyAsync/src/Implementations/Doctrine/DBAL/JobLogPersister.php
 
@@ -158,9 +155,6 @@ parameters:
           path: packages/EasyPipeline/tests
 
         # ---- EasyPsr7Factory ----
-        # ---- EasyRandom ----
-        - message: '#Access to an undefined property EonX\\EasyRandom\\Interfaces\\RandomGeneratorInterface\:\:\$uuidV4Generator#'
-          path: packages/EasyRandom/tests/Bridge/Symfony/EasyRandomBundleTest.php
 
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
