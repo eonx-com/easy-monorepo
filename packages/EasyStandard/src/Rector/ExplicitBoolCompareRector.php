@@ -6,6 +6,7 @@ namespace EonX\EasyStandard\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Instanceof_;
@@ -67,18 +68,15 @@ PHP
     }
 
     /**
-     * {@inheritdoc}
+     * @param If_|ElseIf_ $node
      */
     public function refactor(Node $node): ?Node
     {
-        /** @var \PhpParser\Node\Stmt\If_|\PhpParser\Node\Stmt\ElseIf_ $ifNode */
-        $ifNode = $node;
-
-        $conditionNode = $ifNode->cond;
+        $conditionNode = $node->cond;
         $isNegated = false;
 
-        if ($ifNode->cond instanceof BooleanNot) {
-            $conditionNode = $ifNode->cond->expr;
+        if ($node->cond instanceof BooleanNot) {
+            $conditionNode = $node->cond->expr;
             $isNegated = true;
         }
 
@@ -86,9 +84,9 @@ PHP
             return null;
         }
 
-        $ifNode->cond = $this->getNewConditionNode($isNegated, $conditionNode);
+        $node->cond = $this->getNewConditionNode($isNegated, $conditionNode);
 
-        return $ifNode;
+        return $node;
     }
 
     /**
@@ -96,21 +94,20 @@ PHP
      */
     private function getNewConditionNode(bool $isNegated, Expr $expr): Expr
     {
-        /** @var \PhpParser\Node\Expr\BinaryOp\Identical $identicalExpr */
-        $identicalExpr = $expr;
+        if ($expr instanceof Identical) {
+            if ($isNegated === false && isset($expr->left, $expr->right)) {
+                $left = $expr->left;
+                /** @var \PhpParser\Node\Expr\ConstFetch $right */
+                $right = $expr->right;
 
-        if ($isNegated === false && ($identicalExpr->left !== null && $identicalExpr->right !== null)) {
-            $left = $identicalExpr->left;
-            /** @var \PhpParser\Node\Expr\ConstFetch $right */
-            $right = $identicalExpr->right;
-
-            if ($this->isValidNotNegated($left, $right) && (\mb_strtolower((string)$right->name) === 'true')) {
-                return $left;
+                if ($this->isValidNotNegated($left, $right) && (\mb_strtolower((string) $right->name) === 'true')) {
+                    return $left;
+                }
             }
         }
 
         if ($isNegated === true) {
-            return new Expr\BinaryOp\Identical($expr, $this->createFalse());
+            return new Identical($expr, $this->createFalse());
         }
 
         return $expr;

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use EonX\EasyStandard\Rector\ExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\Identical\SimplifyBoolIdenticalTrueRector;
 use Rector\Core\Configuration\Option;
 use Rector\Core\ValueObject\ProjectType;
@@ -11,6 +12,9 @@ use Rector\SOLID\Rector\ClassMethod\UseInterfaceOverImplementationInConstructorR
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
+    $services = $containerConfigurator->services();
+    $services->set(ExplicitBoolCompareRector::class);
+
     // get parameters
     $parameters = $containerConfigurator->parameters();
     $parameters->set(Option::PROJECT_TYPE, ProjectType::OPEN_SOURCE);
