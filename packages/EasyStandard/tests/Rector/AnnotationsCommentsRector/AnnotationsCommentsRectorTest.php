@@ -26,15 +26,6 @@ final class AnnotationsCommentsRectorTest extends AbstractRectorTestCase
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
 
-    public function testGetDefinitionSucceeds(): void
-    {
-        $rector = new AnnotationsCommentsRector();
-
-        $definition = $rector->getDefinition();
-
-        self::assertNotEmpty($definition->getDescription());
-    }
-
     /**
      * @dataProvider provideData
      */
