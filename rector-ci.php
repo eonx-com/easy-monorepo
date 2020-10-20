@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
+use Rector\CodeQuality\Rector\Identical\SimplifyBoolIdenticalTrueRector;
 use Rector\Core\Configuration\Option;
+use Rector\Core\ValueObject\ProjectType;
 use Rector\Set\ValueObject\SetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     // get parameters
     $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::PROJECT_TYPE, Option::PROJECT_TYPE_OPEN_SOURCE);
+    $parameters->set(Option::PROJECT_TYPE, ProjectType::OPEN_SOURCE);
 
     $parameters->set(Option::PATHS, [
         __DIR__ . '/packages',
@@ -17,7 +19,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     $parameters->set(Option::SETS, [
-        SetList::DEAD_CODE,
+        SetList::CODE_QUALITY,
+        // SetList::DEAD_CODE,
+    ]);
+
+    $parameters->set(Option::EXCLUDE_PATHS, [
+        // problematic in code-quality set
+        __DIR__ . '/packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php',
+    ]);
+
+    $parameters->set(Option::EXCLUDE_RECTORS, [
+        SimplifyBoolIdenticalTrueRector::class,
     ]);
 
     $parameters->set(Option::AUTOLOAD_PATHS, [
