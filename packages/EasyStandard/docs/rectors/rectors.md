@@ -3,7 +3,7 @@ title: 'EasyStandard: Rectors'
 weight: 2001
 ---eonx_docs---
 ##### [\EonX\EasyStandard\Rector\AddCoversAnnotationRector][1]
-Adds `@covers` annotation for test classes
+Adds `@covers` annotation for test classes.
 ```php
 // before
 class SomeServiceTest extends \PHPUnit\Framework\TestCase
@@ -24,7 +24,7 @@ class SomeServiceTest extends \PHPUnit\Framework\TestCase
 - `replaceArray` - An array of strings that will be cut from the FQCN (Fully Qualified Class Name) when searching for the class covered by this test. Default value: `[]`.
 
 ##### [\EonX\EasyStandard\Rector\AddSeeAnnotationRector][2]
-Adds `@see` annotation for data providers
+Adds `@see` annotation for data providers.
 ```php
 // before
 /**
@@ -71,7 +71,7 @@ class SomeClass
 }
 ```
 ##### [\EonX\EasyStandard\Rector\ExplicitBoolCompareRector][4]
-Makes bool conditions more prettier.
+Makes bool conditions prettier.
 ```php
 // before
 final class SomeController
