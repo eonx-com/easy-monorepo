@@ -1,6 +1,12 @@
 <!-- changelog-linker -->
 
-## v2.5.16 - 2020-10-21
+## v2.5.17 - 2020-10-21
+
+### EasyCore
+
+- [#404] Remove entity manager resolver binding as it doesn't work
+
+## [v2.5.16] - 2020-10-21
 
 - [#396] add colors and first Rector rule, Thanks to [@TomasVotruba]
 - [#399] enable full dead-code set, Thanks to [@TomasVotruba]
@@ -2616,3 +2622,5 @@
 [#395]: https://github.com/eonx-com/easy-monorepo/pull/395
 [#386]: https://github.com/eonx-com/easy-monorepo/pull/386
 [v2.5.15]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.14...v2.5.15
+[#404]: https://github.com/eonx-com/easy-monorepo/pull/404
+[v2.5.16]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.15...v2.5.16
