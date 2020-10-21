@@ -97,9 +97,7 @@ PHP
         $phpDocInfo = $classNode->getAttribute(AttributeKey::PHP_DOC_INFO);
 
         if ($coveredClass === null) {
-            $phpDocInfo->addBareTag('@coversNothing');
-
-            return $classNode;
+            return null;
         }
 
         $phpDocInfo->addPhpDocTagNode($this->createCoversPhpDocTagNode($coveredClass));
@@ -144,7 +142,7 @@ PHP
             return true;
         }
 
-        // Is the @covers or @coversNothing annotation already added
+        // Is the @covers or annotation already added
         if ($class->getDocComment() !== null) {
             /** @var \PhpParser\Comment\Doc $docComment */
             $docComment = $class->getDocComment();

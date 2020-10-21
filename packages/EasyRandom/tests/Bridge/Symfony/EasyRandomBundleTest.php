@@ -8,9 +8,6 @@ use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
 
-/**
- * @coversNothing
- */
 final class EasyRandomBundleTest extends AbstractSymfonyTestCase
 {
     /**

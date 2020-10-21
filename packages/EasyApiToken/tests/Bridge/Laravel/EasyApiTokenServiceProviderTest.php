@@ -10,9 +10,6 @@ use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface as DecoderFactoryInterface;
 use EonX\EasyApiToken\Tests\AbstractLumenTestCase;
 
-/**
- * @coversNothing
- */
 final class EasyApiTokenServiceProviderTest extends AbstractLumenTestCase
 {
     public function testRegister(): void

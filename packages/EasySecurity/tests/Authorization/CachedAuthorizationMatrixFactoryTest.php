@@ -10,9 +10,6 @@ use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\AuthorizationMatrixFactoryStub;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
-/**
- * @coversNothing
- */
 final class CachedAuthorizationMatrixFactoryTest extends AbstractTestCase
 {
     public function testCacheWorking(): void

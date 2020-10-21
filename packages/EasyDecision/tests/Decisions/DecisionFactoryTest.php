@@ -15,9 +15,6 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Stubs\DecisionConfiguratorStub;
 use EonX\EasyDecision\Tests\Stubs\RuleProviderStub;
 
-/**
- * @coversNothing
- */
 final class DecisionFactoryTest extends AbstractTestCase
 {
     public function testCreateDecisionSuccessfully(): void

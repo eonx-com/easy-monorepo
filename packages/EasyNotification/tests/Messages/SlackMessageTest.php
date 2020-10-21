@@ -9,9 +9,6 @@ use EonX\EasyNotification\Messages\SlackMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 use Nette\Utils\Json;
 
-/**
- * @coversNothing
- */
 final class SlackMessageTest extends AbstractTestCase
 {
     /**

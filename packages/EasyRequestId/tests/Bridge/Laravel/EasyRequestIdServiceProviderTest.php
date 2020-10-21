@@ -7,9 +7,6 @@ namespace EonX\EasyRequestId\Tests\Bridge\Laravel;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @coversNothing
- */
 final class EasyRequestIdServiceProviderTest extends AbstractLumenTestCase
 {
     public function testSanity(): void

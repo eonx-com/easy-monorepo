@@ -9,9 +9,6 @@ use EonX\EasyNotification\Messages\RealTimeMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 use Nette\Utils\Json;
 
-/**
- * @coversNothing
- */
 final class RealTimeMessageTest extends AbstractTestCase
 {
     /**

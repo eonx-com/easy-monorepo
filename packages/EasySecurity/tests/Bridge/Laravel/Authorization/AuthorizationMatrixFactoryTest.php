@@ -8,9 +8,6 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterfa
 use EonX\EasySecurity\Tests\Bridge\Laravel\AbstractLumenTestCase;
 use EonX\EasySecurity\Tests\Bridge\Laravel\Fixtures\Providers\RolesAndPermissionsServiceProvider;
 
-/**
- * @coversNothing
- */
 final class AuthorizationMatrixFactoryTest extends AbstractLumenTestCase
 {
     public function testRolesAndPermissionsProvidersInjected(): void

@@ -8,9 +8,6 @@ use EonX\EasyCore\Bridge\Laravel\Providers\CachedConfigServiceProvider;
 use EonX\EasyCore\Tests\AbstractTestCase;
 use Laravel\Lumen\Application;
 
-/**
- * @coversNothing
- */
 final class CachedConfigServiceProviderTest extends AbstractTestCase
 {
     /**

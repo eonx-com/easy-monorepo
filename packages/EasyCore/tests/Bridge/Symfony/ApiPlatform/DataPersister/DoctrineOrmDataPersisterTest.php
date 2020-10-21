@@ -8,9 +8,6 @@ use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\DoctrineOrmDataPersis
 use EonX\EasyCore\Tests\AbstractTestCase;
 use EonX\EasyCore\Tests\Bridge\Symfony\Stubs\ContextAwareDataPersisterStub;
 
-/**
- * @coversNothing
- */
 final class DoctrineOrmDataPersisterTest extends AbstractTestCase
 {
     public function testCallsToDecorated(): void

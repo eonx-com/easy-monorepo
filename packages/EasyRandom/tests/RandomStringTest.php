@@ -12,9 +12,6 @@ use EonX\EasyRandom\Interfaces\RandomStringInterface;
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\Tests\Stubs\AlwaysValidRandomStringConstraintStub;
 
-/**
- * @coversNothing
- */
 final class RandomStringTest extends AbstractTestCase
 {
     /**

@@ -6,9 +6,6 @@ namespace EonX\EasyAwsCredentialsFinder\Tests\Bridge\Symfony;
 
 use EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsProviderInterface;
 
-/**
- * @coversNothing
- */
 final class EasyAwsCredentialsFinderBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanity(): void

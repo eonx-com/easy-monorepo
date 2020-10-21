@@ -11,9 +11,6 @@ use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 
-/**
- * @coversNothing
- */
 final class JobLogUpdaterTest extends AbstractTestCase
 {
     public function testCompleted(): void

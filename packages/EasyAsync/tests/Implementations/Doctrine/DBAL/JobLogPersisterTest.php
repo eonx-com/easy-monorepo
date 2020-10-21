@@ -24,9 +24,6 @@ use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Mockery\MockInterface;
 use Psr\Log\NullLogger;
 
-/**
- * @coversNothing
- */
 final class JobLogPersisterTest extends AbstractTestCase
 {
     /**

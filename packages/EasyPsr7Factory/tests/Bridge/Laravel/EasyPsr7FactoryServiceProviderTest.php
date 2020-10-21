@@ -9,9 +9,6 @@ use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversNothing
- */
 final class EasyPsr7FactoryServiceProviderTest extends AbstractLumenTestCase
 {
     public function testRegisterExpectedServices(): void

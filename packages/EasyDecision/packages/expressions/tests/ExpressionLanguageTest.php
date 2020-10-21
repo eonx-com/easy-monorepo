@@ -14,9 +14,6 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 
-/**
- * @coversNothing
- */
 final class ExpressionLanguageTest extends AbstractTestCase
 {
     /**

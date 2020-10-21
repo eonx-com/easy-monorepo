@@ -19,9 +19,6 @@ use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookClient;
 use EonX\EasyWebhook\WebhookResultHandler;
 
-/**
- * @coversNothing
- */
 final class WebhookClientTest extends AbstractTestCase
 {
     /**

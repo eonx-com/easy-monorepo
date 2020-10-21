@@ -13,9 +13,6 @@ use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
 use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
 use Illuminate\Http\Request;
 
-/**
- * @coversNothing
- */
 final class ServiceProvidersTest extends AbstractLaravelTestCase
 {
     /**

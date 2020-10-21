@@ -16,9 +16,6 @@ use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversNothing
- */
 final class RolesFromJwtConfiguratorTest extends AbstractTestCase
 {
     /**

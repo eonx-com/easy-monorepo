@@ -9,9 +9,6 @@ use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyRequestId\UuidV4FallbackResolver;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @coversNothing
- */
 final class UuidV4FallbackResolverTest extends AbstractTestCase
 {
     public function testFallback(): void

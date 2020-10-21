@@ -11,9 +11,6 @@ use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\BasicAuthInterface;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
 {
     public function testChainFirstApiKeyTokenSuccessfully(): void

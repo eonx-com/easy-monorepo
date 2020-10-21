@@ -6,9 +6,6 @@ namespace EonX\EasySchedule\Tests;
 
 use EonX\EasySchedule\Event;
 
-/**
- * @coversNothing
- */
 final class EventTest extends AbstractTestCase
 {
     /**

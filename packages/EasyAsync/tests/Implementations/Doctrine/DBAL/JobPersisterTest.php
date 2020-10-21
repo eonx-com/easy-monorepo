@@ -20,9 +20,6 @@ use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Mockery\MockInterface;
 
-/**
- * @coversNothing
- */
 final class JobPersisterTest extends AbstractTestCase
 {
     /**

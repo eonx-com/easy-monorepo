@@ -13,9 +13,6 @@ use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\UserInterfaceStub;
 
-/**
- * @coversNothing
- */
 final class SecurityContextTest extends AbstractTestCase
 {
     /**

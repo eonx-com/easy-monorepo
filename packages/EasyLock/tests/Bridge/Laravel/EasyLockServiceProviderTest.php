@@ -7,9 +7,6 @@ namespace EonX\EasyLock\Tests\Bridge\Laravel;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockService;
 
-/**
- * @coversNothing
- */
 final class EasyLockServiceProviderTest extends AbstractLaravelTestCase
 {
     public function testDispatchInLaravel(): void

@@ -13,9 +13,6 @@ use EonX\EasySecurity\Tests\Stubs\ProviderRestrictedStub;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-/**
- * @coversNothing
- */
 final class ProviderVoterTest extends AbstractTestCase
 {
     /**

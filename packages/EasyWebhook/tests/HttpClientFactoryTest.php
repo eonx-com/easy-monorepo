@@ -7,9 +7,6 @@ namespace EonX\EasyWebhook\Tests;
 use EonX\EasyWebhook\HttpClientFactory;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-/**
- * @coversNothing
- */
 final class HttpClientFactoryTest extends AbstractTestCase
 {
     public function testCreate(): void

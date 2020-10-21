@@ -7,9 +7,6 @@ namespace EonX\EasyLogging\Tests;
 use EonX\EasyLogging\LoggerFactory;
 use Monolog\Handler\NullHandler;
 
-/**
- * @coversNothing
- */
 final class LoggerFactoryTest extends AbstractTestCase
 {
     public function testCreateDefaultEmptyLogger(): void

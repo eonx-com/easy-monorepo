@@ -14,9 +14,6 @@ use EonX\EasyRequestId\UuidV4FallbackResolver;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversNothing
- */
 final class RequestIdServiceTest extends AbstractTestCase
 {
     /**

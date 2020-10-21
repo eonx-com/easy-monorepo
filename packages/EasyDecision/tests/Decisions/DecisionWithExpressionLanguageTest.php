@@ -11,9 +11,6 @@ use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 {
     public function testExceptionIfExpressionLanguageNotSet(): void

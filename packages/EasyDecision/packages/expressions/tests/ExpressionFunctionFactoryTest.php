@@ -11,9 +11,6 @@ use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionFactoryInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
-/**
- * @coversNothing
- */
 final class ExpressionFunctionFactoryTest extends AbstractTestCase
 {
     public function testCreateFromAssociativeArraySuccessfully(): void

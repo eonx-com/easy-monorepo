@@ -14,9 +14,6 @@ use EonX\EasyAsync\Tests\Stubs\JobLogPersisterStub;
 use EonX\EasyAsync\Tests\Stubs\JobPersisterStub;
 use Mockery\MockInterface;
 
-/**
- * @coversNothing
- */
 final class DataCleanerTest extends AbstractTestCase
 {
     public function testRemoveFailed(): void

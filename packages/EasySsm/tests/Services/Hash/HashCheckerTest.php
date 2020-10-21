@@ -11,9 +11,6 @@ use EonX\EasySsm\Services\Hash\HashChecker;
 use EonX\EasySsm\Tests\AbstractTestCase;
 use EonX\EasySsm\Tests\Stubs\HashRepositoryStub;
 
-/**
- * @coversNothing
- */
 final class HashCheckerTest extends AbstractTestCase
 {
     /**

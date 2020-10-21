@@ -8,9 +8,6 @@ use EonX\EasyRequestId\DefaultResolver;
 use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversNothing
- */
 final class DefaultResolverTest extends AbstractTestCase
 {
     /**

@@ -13,9 +13,6 @@ use EonX\EasySecurity\Tests\AbstractTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-/**
- * @coversNothing
- */
 final class RoleVoterTest extends AbstractTestCase
 {
     /**

@@ -8,9 +8,6 @@ use EonX\EasyLogging\Helpers\ProcessorWrapper;
 use EonX\EasyLogging\Tests\AbstractTestCase;
 use EonX\EasyLogging\Tests\Stubs\InvokableStub;
 
-/**
- * @coversNothing
- */
 final class ProcessorWrapperTest extends AbstractTestCase
 {
     /**

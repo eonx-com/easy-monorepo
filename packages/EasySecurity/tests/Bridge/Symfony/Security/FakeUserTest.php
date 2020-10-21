@@ -7,9 +7,6 @@ namespace EonX\EasySecurity\Tests\Bridge\Symfony\Security;
 use EonX\EasySecurity\Bridge\Symfony\Security\FakeUser;
 use EonX\EasySecurity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 
-/**
- * @coversNothing
- */
 final class FakeUserTest extends AbstractSymfonyTestCase
 {
     public function testGetters(): void

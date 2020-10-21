@@ -9,9 +9,6 @@ use EonX\EasyAwsCredentialsFinder\Finders\EnvsCredentialsFinder;
 use EonX\EasySsm\Services\Aws\CredentialsProvider;
 use EonX\EasySsm\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class CredentialsProviderTest extends AbstractTestCase
 {
     /**

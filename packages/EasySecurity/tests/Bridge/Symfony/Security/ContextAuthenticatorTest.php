@@ -10,9 +10,6 @@ use EonX\EasySecurity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasySecurity\Tests\Bridge\Symfony\Stubs\SymfonyUserStub;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversNothing
- */
 final class ContextAuthenticatorTest extends AbstractSymfonyTestCase
 {
     public function testSanityCheck(): void

@@ -8,9 +8,6 @@ use EonX\EasyStandard\Sniffs\ControlStructures\NoElseSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
-/**
- * @coversNothing
- */
 final class NoElseSniffTest extends AbstractCheckerTestCase
 {
     /**

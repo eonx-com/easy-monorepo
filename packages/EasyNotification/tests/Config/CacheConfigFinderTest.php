@@ -9,9 +9,6 @@ use EonX\EasyNotification\Tests\AbstractTestCase;
 use EonX\EasyNotification\Tests\Stubs\ConfigFinderStub;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
-/**
- * @coversNothing
- */
 final class CacheConfigFinderTest extends AbstractTestCase
 {
     public function testCachePreventCallingDecoratedFinder(): void

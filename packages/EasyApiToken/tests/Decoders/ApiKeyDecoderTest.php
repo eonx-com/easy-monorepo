@@ -8,9 +8,6 @@ use EonX\EasyApiToken\Decoders\ApiKeyDecoder;
 use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class ApiKeyDecoderTest extends AbstractTestCase
 {
     public function testApiKeyNullIfAuthorizationHeaderNotSet(): void

@@ -11,9 +11,6 @@ use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Mockery\MockInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversNothing
- */
 final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
 {
     /**

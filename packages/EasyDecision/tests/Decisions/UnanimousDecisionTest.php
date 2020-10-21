@@ -8,9 +8,6 @@ use EonX\EasyDecision\Decisions\UnanimousDecision;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class UnanimousDecisionTest extends AbstractTestCase
 {
     public function testReturnFalseWhenAtLeastOneFalse(): void

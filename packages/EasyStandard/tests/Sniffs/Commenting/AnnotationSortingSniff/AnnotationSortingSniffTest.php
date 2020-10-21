@@ -8,9 +8,6 @@ use EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
-/**
- * @coversNothing
- */
 final class AnnotationSortingSniffTest extends AbstractCheckerTestCase
 {
     /**

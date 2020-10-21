@@ -6,9 +6,6 @@ namespace EonX\EasyBugsnag\Tests\Bridge\Laravel;
 
 use Bugsnag\Client;
 
-/**
- * @coversNothing
- */
 final class EasyBugsnagServiceProviderTest extends AbstractLaravelTestCase
 {
     public function testSanity(): void

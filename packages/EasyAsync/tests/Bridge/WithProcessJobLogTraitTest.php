@@ -14,9 +14,6 @@ use EonX\EasyAsync\Tests\Stubs\WithProcessJobLogDataStub;
 use EonX\EasyAsync\Tests\Stubs\WithProcessJobLogTraitStub;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 
-/**
- * @coversNothing
- */
 final class WithProcessJobLogTraitTest extends AbstractTestCase
 {
     /**

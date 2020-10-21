@@ -8,9 +8,6 @@ use EonX\EasySsm\Services\Dotenv\Data\EnvData;
 use EonX\EasySsm\Services\Dotenv\Loaders\DotenvLoader;
 use EonX\EasySsm\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class DotenvLoaderTest extends AbstractTestCase
 {
     /**

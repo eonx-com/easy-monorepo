@@ -8,9 +8,6 @@ use EonX\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
 use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class ApiKeyAsBasicAuthUsernameDecoderTest extends AbstractTestCase
 {
     public function testApiKeyAsBasicAuthUsernameNullIfAuthorizationHeaderNotSet(): void

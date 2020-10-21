@@ -7,9 +7,6 @@ namespace EonX\EasyLogging\Tests\Bridge\Laravel;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * @coversNothing
- */
 final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
 {
     public function testSanity(): void

@@ -8,9 +8,6 @@ use Doctrine\ORM\QueryBuilder;
 use EonX\EasyRepository\Tests\AbstractTestCase;
 use Mockery\MockInterface;
 
-/**
- * @coversNothing
- */
 final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
 {
     public function testAllReturnsExpectedArray(): void

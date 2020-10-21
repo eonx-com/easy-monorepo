@@ -14,9 +14,6 @@ use EonX\EasyPagination\Tests\Bridge\Symfony\Stubs\KernelStub;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversNothing
- */
 final class EasyPaginationBundleTest extends AbstractTestCase
 {
     /**

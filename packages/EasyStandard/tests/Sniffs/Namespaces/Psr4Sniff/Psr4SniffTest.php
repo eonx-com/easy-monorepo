@@ -8,9 +8,6 @@ use EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
-/**
- * @coversNothing
- */
 final class Psr4SniffTest extends AbstractCheckerTestCase
 {
     /**

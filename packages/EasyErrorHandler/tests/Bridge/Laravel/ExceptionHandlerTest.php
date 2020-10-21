@@ -10,9 +10,6 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-/**
- * @coversNothing
- */
 final class ExceptionHandlerTest extends AbstractLaravelTestCase
 {
     public function testRenderForConsoleDoesNotShowTranslationIfItEqualsToOriginalMessage(): void

@@ -15,9 +15,6 @@ use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\RolesProviders\InMemoryRolesProviderStub;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversNothing
- */
 final class RolesFromJwtModifierTest extends AbstractTestCase
 {
     /**

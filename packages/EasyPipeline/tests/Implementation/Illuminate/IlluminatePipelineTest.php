@@ -12,9 +12,6 @@ use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\InputStub;
 use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\LoggerChangeNameMiddleware;
 use Illuminate\Pipeline\Pipeline;
 
-/**
- * @coversNothing
- */
 final class IlluminatePipelineTest extends AbstractLumenTestCase
 {
     /**

@@ -17,9 +17,6 @@ use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
-/**
- * @coversNothing
- */
 final class WithEventsJobLogUpdaterTest extends AbstractTestCase
 {
     public function testCompleted(): void

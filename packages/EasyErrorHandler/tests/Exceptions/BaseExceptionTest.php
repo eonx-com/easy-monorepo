@@ -8,9 +8,6 @@ use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use Monolog\Logger;
 
-/**
- * @coversNothing
- */
 final class BaseExceptionTest extends AbstractTestCase
 {
     public function testGetLogLevel(): void

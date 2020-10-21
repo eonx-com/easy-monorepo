@@ -6,9 +6,6 @@ namespace EonX\EasySsm\Tests\Console\Commands;
 
 use EonX\EasySsm\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class DumpEnvCommandTest extends AbstractTestCase
 {
     public function testDumpEnvCommand(): void

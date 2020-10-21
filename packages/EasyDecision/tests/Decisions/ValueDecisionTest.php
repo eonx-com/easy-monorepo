@@ -13,9 +13,6 @@ use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Stubs\RuleWithNonBlockingErrorStub;
 
-/**
- * @coversNothing
- */
 final class ValueDecisionTest extends AbstractTestCase
 {
     /**

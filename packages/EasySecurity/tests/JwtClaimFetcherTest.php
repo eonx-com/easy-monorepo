@@ -7,9 +7,6 @@ namespace EonX\EasySecurity\Tests;
 use EonX\EasyApiToken\Tokens\Jwt;
 use EonX\EasySecurity\JwtClaimFetcher;
 
-/**
- * @coversNothing
- */
 final class JwtClaimFetcherTest extends AbstractTestCase
 {
     public function testExceptionReturnsDefault(): void

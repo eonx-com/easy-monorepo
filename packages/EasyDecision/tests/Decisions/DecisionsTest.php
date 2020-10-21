@@ -15,9 +15,6 @@ use EonX\EasyDecision\Tests\Stubs\RuleStopPropagationStub;
 use EonX\EasyDecision\Tests\Stubs\RuleStub;
 use EonX\EasyDecision\Tests\Stubs\RuleWithExtraOutputStub;
 
-/**
- * @coversNothing
- */
 final class DecisionsTest extends AbstractTestCase
 {
     /**

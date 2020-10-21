@@ -8,9 +8,6 @@ use EonX\EasySecurity\Authorization\Permission;
 use EonX\EasySecurity\Authorization\Role;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class RoleTest extends AbstractTestCase
 {
     public function testRole(): void

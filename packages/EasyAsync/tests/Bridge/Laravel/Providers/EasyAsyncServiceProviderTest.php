@@ -27,9 +27,6 @@ use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
 use Laravel\Lumen\Application;
 
-/**
- * @coversNothing
- */
 final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
 {
     /**

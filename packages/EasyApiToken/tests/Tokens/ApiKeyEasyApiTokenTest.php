@@ -7,9 +7,6 @@ namespace EonX\EasyApiToken\Tests\Tokens;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
 use EonX\EasyApiToken\Tokens\ApiKey;
 
-/**
- * @coversNothing
- */
 final class ApiKeyEasyApiTokenTest extends AbstractTestCase
 {
     public function testGetApiKeySuccessfully(): void

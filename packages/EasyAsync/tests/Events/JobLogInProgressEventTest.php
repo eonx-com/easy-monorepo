@@ -9,9 +9,6 @@ use EonX\EasyAsync\Data\Target;
 use EonX\EasyAsync\Events\JobLogInProgressEvent;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class JobLogInProgressEventTest extends AbstractTestCase
 {
     public function testGetJobLog(): void

@@ -25,9 +25,6 @@ use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * @coversNothing
- */
 final class EasyAsyncExtensionTest extends AbstractTestCase
 {
     /**

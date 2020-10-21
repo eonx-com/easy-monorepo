@@ -10,9 +10,6 @@ use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\PermissionFromApiKeyConfiguratorStub;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversNothing
- */
 final class AbstractFromApiKeyConfiguratorTest extends AbstractTestCase
 {
     public function testPermissionNotSetWhenNotApiKeyToken(): void

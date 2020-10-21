@@ -13,9 +13,6 @@ use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyRepository\Tests\AbstractTestCase;
 use Mockery\LegacyMockInterface;
 
-/**
- * @coversNothing
- */
 final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
 {
     public function testPaginateSetResultsSuccessfully(): void

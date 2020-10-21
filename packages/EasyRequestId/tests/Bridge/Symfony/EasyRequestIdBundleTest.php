@@ -7,9 +7,6 @@ namespace EonX\EasyRequestId\Tests\Bridge\Symfony;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @coversNothing
- */
 final class EasyRequestIdBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanity(): void

@@ -8,9 +8,6 @@ use EonX\EasySchedule\Schedule;
 use EonX\EasySchedule\Tests\Stubs\ScheduleProviderStub;
 use Symfony\Component\Console\Application;
 
-/**
- * @coversNothing
- */
 final class ScheduleTest extends AbstractTestCase
 {
     public function testAddProviders(): void

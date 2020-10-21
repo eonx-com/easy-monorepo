@@ -7,9 +7,6 @@ namespace EonX\EasyTest\Tests;
 use EonX\EasyTest\Exceptions\UnableToLoadCoverageException;
 use EonX\EasyTest\Exceptions\UnableToResolveCoverageException;
 
-/**
- * @coversNothing
- */
 final class CheckCoverageCommandTest extends AbstractTestCase
 {
     /**

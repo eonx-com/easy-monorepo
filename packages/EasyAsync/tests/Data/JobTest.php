@@ -8,9 +8,6 @@ use EonX\EasyAsync\Data\Job;
 use EonX\EasyAsync\Data\Target;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class JobTest extends AbstractTestCase
 {
     public function testJob(): void

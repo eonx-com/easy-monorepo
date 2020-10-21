@@ -9,9 +9,6 @@ use EonX\EasyIdentity\Implementations\Auth0\Auth0IdentityService;
 use EonX\EasyIdentity\Interfaces\IdentityServiceInterface;
 use EonX\EasyIdentity\Tests\AbstractLumenTestCase;
 
-/**
- * @coversNothing
- */
 final class Auth0IdentityServiceProviderTest extends AbstractLumenTestCase
 {
     public function testRegister(): void

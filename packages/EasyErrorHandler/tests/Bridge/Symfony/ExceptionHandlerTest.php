@@ -10,9 +10,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @coversNothing
- */
 final class ExceptionHandlerTest extends AbstractSymfonyTestCase
 {
     /**

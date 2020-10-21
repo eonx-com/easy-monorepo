@@ -7,9 +7,6 @@ namespace EonX\EasyAsync\Tests\Data;
 use EonX\EasyAsync\Data\Target;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class TargetTest extends AbstractTestCase
 {
     public function testTarget(): void

@@ -13,9 +13,6 @@ use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class PropertyHelperTest extends AbstractTestCase
 {
     /**

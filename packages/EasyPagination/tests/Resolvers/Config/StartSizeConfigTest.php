@@ -7,9 +7,6 @@ namespace EonX\EasyPagination\Tests\Resolvers\Config;
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
 use EonX\EasyPagination\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class StartSizeConfigTest extends AbstractTestCase
 {
     public function testGettersReturnIdenticalInput(): void

@@ -7,9 +7,6 @@ namespace EonX\EasyLock\Tests\Bridge\Symfony;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockService;
 
-/**
- * @coversNothing
- */
 final class EasyLockBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanity(): void

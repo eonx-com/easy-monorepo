@@ -10,9 +10,6 @@ use Nette\Utils\Json;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
-/**
- * @coversNothing
- */
 final class ConfigFinderTest extends AbstractTestCase
 {
     public function testHydrateConfigFromHttpResponse(): void

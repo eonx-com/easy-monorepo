@@ -7,8 +7,6 @@ namespace EonX\EasyEntityChange\Tests\Integration\Fixtures;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @coversNothing
- *
  * @ORM\Entity
  */
 final class ProvidedIdEntity

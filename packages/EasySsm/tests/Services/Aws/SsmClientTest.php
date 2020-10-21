@@ -10,9 +10,6 @@ use EonX\EasySsm\Services\Parameters\Data\Diff;
 use EonX\EasySsm\Tests\AbstractTestCase;
 use EonX\EasySsm\Tests\Stubs\BaseSsmClientStub;
 
-/**
- * @coversNothing
- */
 final class SsmClientTest extends AbstractTestCase
 {
     /**

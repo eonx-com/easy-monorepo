@@ -8,9 +8,6 @@ use EonX\EasyAsync\Data\Target;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyAsync\Tests\Stubs\WithProcessJobLogDataStub;
 
-/**
- * @coversNothing
- */
 final class WithProcessJobLogDataTraitTest extends AbstractTestCase
 {
     public function testTrait(): void

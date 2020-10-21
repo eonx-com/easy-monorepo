@@ -6,9 +6,6 @@ namespace EonX\EasyRandom\Tests;
 
 use EonX\EasyRandom\RandomGenerator;
 
-/**
- * @coversNothing
- */
 final class RandomIntegerTest extends AbstractTestCase
 {
     /**

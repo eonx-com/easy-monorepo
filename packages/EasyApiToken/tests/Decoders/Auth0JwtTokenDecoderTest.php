@@ -8,9 +8,6 @@ use EonX\EasyApiToken\Decoders\JwtTokenDecoder;
 use EonX\EasyApiToken\Tests\AbstractAuth0JwtTokenTestCase;
 use EonX\EasyApiToken\Tokens\Jwt;
 
-/**
- * @coversNothing
- */
 final class Auth0JwtTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
 {
     public function testJwtTokenDecodeSuccessfully(): void

@@ -7,9 +7,6 @@ namespace EonX\EasySecurity\Tests\RolesProviders;
 use EonX\EasySecurity\Role;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class InMemoryRolesProviderTest extends AbstractTestCase
 {
     /**

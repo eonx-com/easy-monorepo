@@ -8,9 +8,6 @@ use EonX\EasySecurity\Bridge\Symfony\Helpers\DeferredContextResolver;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 
-/**
- * @coversNothing
- */
 final class DeferredContextResolverTest extends AbstractSymfonyTestCase
 {
     public function testResolve(): void

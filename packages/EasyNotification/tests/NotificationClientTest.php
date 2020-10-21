@@ -22,9 +22,6 @@ use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-/**
- * @coversNothing
- */
 final class NotificationClientTest extends AbstractTestCase
 {
     public function testConfigRequiredException(): void

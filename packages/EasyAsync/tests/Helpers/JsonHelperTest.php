@@ -7,9 +7,6 @@ namespace EonX\EasyAsync\Tests\Helpers;
 use EonX\EasyAsync\Helpers\JsonHelper;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 
-/**
- * @coversNothing
- */
 final class JsonHelperTest extends AbstractTestCase
 {
     /**
