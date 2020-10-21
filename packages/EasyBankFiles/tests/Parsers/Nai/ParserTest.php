@@ -65,21 +65,36 @@ final class ParserTest extends TestCase
 
                 self::assertEquals($transaction->getAmount(), $baiTransaction->getAmount(), 'mismatch amount');
                 self::assertEquals($transaction->getCode(), $baiTransaction->getCode(), 'mismatch code');
-                self::assertEquals($transaction->getReferenceNumber(), $baiTransaction->getReferenceNumber(),
-                    'mismatch reference number');
+                self::assertEquals(
+                    $transaction->getReferenceNumber(),
+                    $baiTransaction->getReferenceNumber(),
+                    'mismatch reference number'
+                );
                 self::assertEquals($transaction->getText(), $baiTransaction->getText(), 'mismatch text');
-                self::assertEquals($transaction->getTransactionCode(), $baiTransaction->getTransactionCode(),
-                    'mismatch transaction code');
+                self::assertEquals(
+                    $transaction->getTransactionCode(),
+                    $baiTransaction->getTransactionCode(),
+                    'mismatch transaction code'
+                );
 
                 $naiTransactionDetails = $transaction->getTransactionDetails();
                 $baiTransactionDetails = $baiTransaction->getTransactionDetails();
 
-                self::assertEquals($naiTransactionDetails->getDescription(), $baiTransactionDetails->getDescription(),
-                    'mismatch details description');
-                self::assertEquals($naiTransactionDetails->getParticulars(), $baiTransactionDetails->getParticulars(),
-                    'mismatch details particulars');
-                self::assertEquals($naiTransactionDetails->getType(), $baiTransactionDetails->getType(),
-                    'mismatch details type');
+                self::assertEquals(
+                    $naiTransactionDetails->getDescription(),
+                    $baiTransactionDetails->getDescription(),
+                    'mismatch details description'
+                );
+                self::assertEquals(
+                    $naiTransactionDetails->getParticulars(),
+                    $baiTransactionDetails->getParticulars(),
+                    'mismatch details particulars'
+                );
+                self::assertEquals(
+                    $naiTransactionDetails->getType(),
+                    $baiTransactionDetails->getType(),
+                    'mismatch details type'
+                );
             }
         }
     }
@@ -274,11 +289,13 @@ final class ParserTest extends TestCase
     {
         $return = [];
         $filter = $filter ?? \array_map(static function (Account $account): string {
-                return $account->getIdentifier()->getCommercialAccountNumber();
-            }, $accounts);
+            return $account->getIdentifier()
+                ->getCommercialAccountNumber();
+        }, $accounts);
 
         foreach ($accounts as $account) {
-            $accountNumber = $account->getIdentifier()->getCommercialAccountNumber();
+            $accountNumber = $account->getIdentifier()
+                ->getCommercialAccountNumber();
 
             if (\in_array($accountNumber, $filter, true) === false) {
                 continue;
