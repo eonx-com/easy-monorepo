@@ -14,6 +14,7 @@ use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer;
+use PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
 use SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff;
 use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
@@ -156,6 +157,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ReferenceThrowableOnlySniff::class . '.ReferencedGeneralException' => [
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php',
             __DIR__ . '/packages/EasyErrorHandler/tests/Bridge/Laravel/ExceptionHandlerTest.php',
+        ],
+        ReturnAssignmentFixer::class => [
+            __DIR__ . '/packages/EasyCore/src/Bridge/Symfony/Doctrine/EntityManagerResolver.php',
         ],
     ]);
 
