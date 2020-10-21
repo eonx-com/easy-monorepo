@@ -15,7 +15,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class ParserTest extends TestCase
 {
     /**
-     * Test aba ack processing
+     * Test aba ack processing.
      *
      * @group Ack-Parser
      */
@@ -158,7 +158,7 @@ final class ParserTest extends TestCase
     }
 
     /**
-     * Test bpay batch ack processing
+     * Test bpay batch ack processing.
      *
      * @group Ack-Parser
      */
@@ -202,7 +202,7 @@ final class ParserTest extends TestCase
     }
 
     /**
-     * Test issues are correctly processed regardless of formatting
+     * Test issues are correctly processed regardless of formatting.
      *
      * @group Ack-Parser
      *
@@ -320,7 +320,7 @@ XML;
 
     /**
      * Should return empty collection if no issue
-     * and an empty array if attribute is not found in the xml
+     * and an empty array if attribute is not found in the xml.
      *
      * @group Ack-Parser
      */
@@ -338,7 +338,7 @@ XML;
     }
 
     /**
-     * Should return PaymentAcknowledgement, Issues collection and Issue object
+     * Should return PaymentAcknowledgement, Issues collection and Issue object.
      *
      * @group Ack-Parser
      */

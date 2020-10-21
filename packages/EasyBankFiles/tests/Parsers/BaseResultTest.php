@@ -9,7 +9,7 @@ use EonX\EasyBankFiles\Tests\Parsers\Stubs\ResultStub;
 final class BaseResultTest extends TestCase
 {
     /**
-     * Should return company name as biller
+     * Should return company name as biller.
      *
      * @group Base-Result
      */
@@ -25,7 +25,7 @@ final class BaseResultTest extends TestCase
     }
 
     /**
-     * Should return null if attribute does not exist
+     * Should return null if attribute does not exist.
      *
      * @group Base-Result
      */

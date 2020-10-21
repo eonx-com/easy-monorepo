@@ -33,7 +33,7 @@ trait SignedFieldsTrait
     ];
 
     /**
-     * Get the signed field value and type based on the code/key
+     * Get the signed field value and type based on the code/key.
      *
      * @return string[]|null
      */

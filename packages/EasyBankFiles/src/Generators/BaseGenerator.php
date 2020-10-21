@@ -32,7 +32,7 @@ abstract class BaseGenerator implements GeneratorInterface
     ];
 
     /**
-     * Return contents
+     * Return contents.
      */
     public function getContents(): string
     {
@@ -54,17 +54,17 @@ abstract class BaseGenerator implements GeneratorInterface
     }
 
     /**
-     * Generate
+     * Generate.
      */
     abstract protected function generate(): void;
 
     /**
-     * Return the defined line length of a generator
+     * Return the defined line length of a generator.
      */
     abstract protected function getLineLength(): int;
 
     /**
-     * Check if line's length is greater than defined length
+     * Check if line's length is greater than defined length.
      *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\LengthMismatchesException
      */
@@ -80,7 +80,7 @@ abstract class BaseGenerator implements GeneratorInterface
     }
 
     /**
-     * Validate object attributes
+     * Validate object attributes.
      *
      * @param null|mixed[] $rules
      *
@@ -138,7 +138,7 @@ abstract class BaseGenerator implements GeneratorInterface
     }
 
     /**
-     * Process rule against a value
+     * Process rule against a value.
      *
      * @param mixed[] $errors The errors array to set errors to
      * @param string $rule The rule to process

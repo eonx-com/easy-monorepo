@@ -22,7 +22,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 final class PaymentAcknowledgement extends BaseResult
 {
     /**
-     * Convert dateTime into DateTime object
+     * Convert dateTime into DateTime object.
      *
      * @return \DateTime[]|null
      *

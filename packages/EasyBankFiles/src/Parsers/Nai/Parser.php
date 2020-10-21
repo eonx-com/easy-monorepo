@@ -176,7 +176,7 @@ final class Parser extends AbstractLineByLineParser
     }
 
     /**
-     * Process line and parse data
+     * Process line and parse data.
      */
     protected function processLine(int $lineNumber, string $line): void
     {

@@ -7,7 +7,7 @@ namespace EonX\EasyBankFiles\Parsers\Nai;
 trait ControlTotal
 {
     /**
-     * Format amount/total from string to float
+     * Format amount/total from string to float.
      */
     private function formatAmount(string $amount): float
     {

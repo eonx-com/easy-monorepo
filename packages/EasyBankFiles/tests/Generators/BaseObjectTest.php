@@ -9,7 +9,7 @@ use EonX\EasyBankFiles\Tests\Generators\Stubs\ObjectStub;
 final class BaseObjectTest extends TestCase
 {
     /**
-     * Should return all attributes
+     * Should return all attributes.
      *
      * @group Generator-BaseObject
      */

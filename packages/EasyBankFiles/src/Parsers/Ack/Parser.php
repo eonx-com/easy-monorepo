@@ -34,7 +34,7 @@ abstract class Parser extends BaseParser
     }
 
     /**
-     * Return PaymentAcknowledgement
+     * Return PaymentAcknowledgement.
      */
     public function getPaymentAcknowledgement(): PaymentAcknowledgement
     {
@@ -73,7 +73,7 @@ abstract class Parser extends BaseParser
 
     /**
      * Determine how to process issues, this array can change depending on whether there
-     * are one or many issues to be stored
+     * are one or many issues to be stored.
      *
      * @param mixed $issues
      *
@@ -87,7 +87,7 @@ abstract class Parser extends BaseParser
         }
 
         // If issues is a single item, force to array
-        if (\array_key_exists('@value', $issues) === true) {
+        if (\array_key_exists('@value', $issues)) {
             $issues = [$issues];
         }
 

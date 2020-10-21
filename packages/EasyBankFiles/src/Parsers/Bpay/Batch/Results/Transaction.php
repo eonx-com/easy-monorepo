@@ -23,7 +23,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 final class Transaction extends BaseResult
 {
     /**
-     * Convert amount into decimal and return
+     * Convert amount into decimal and return.
      */
     public function getAmountDecimal(): ?string
     {

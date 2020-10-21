@@ -28,7 +28,7 @@ abstract class BaseObject extends AbstractDataBag
     abstract public function getValidationRules(): array;
 
     /**
-     * Return all the attributes
+     * Return all the attributes.
      *
      * @return mixed[]
      */
@@ -38,7 +38,7 @@ abstract class BaseObject extends AbstractDataBag
     }
 
     /**
-     * Return attribute values as single line
+     * Return attribute values as single line.
      */
     public function getAttributesAsLine(): string
     {
@@ -66,7 +66,7 @@ abstract class BaseObject extends AbstractDataBag
     }
 
     /**
-     * Set the value of the attribute
+     * Set the value of the attribute.
      *
      * @param string|int|null $value
      */

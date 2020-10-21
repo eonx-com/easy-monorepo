@@ -17,7 +17,7 @@ final class Trailer extends BaseResult
     use ControlTotal;
 
     /**
-     * Return file control total A
+     * Return file control total A.
      */
     public function getFileControlTotalA(): float
     {
@@ -25,7 +25,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Return file control total B
+     * Return file control total B.
      */
     public function getFileControlTotalB(): float
     {

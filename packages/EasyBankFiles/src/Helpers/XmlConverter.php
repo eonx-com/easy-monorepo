@@ -23,7 +23,7 @@ final class XmlConverter
     public const XML_INCLUDE_ATTRIBUTES = 1;
 
     /**
-     * XML DOMDocument
+     * XML DOMDocument.
      *
      * @var \DOMDocument
      */
@@ -80,7 +80,7 @@ final class XmlConverter
     }
 
     /**
-     * Append an attribute from a mixed value to a XML node
+     * Append an attribute from a mixed value to a XML node.
      *
      * @param \DOMElement $node The node to add the value to
      * @param string $name The node name to add
@@ -99,7 +99,7 @@ final class XmlConverter
     }
 
     /**
-     * Append an attribute from an array to a XML node
+     * Append an attribute from an array to a XML node.
      *
      * @param \DOMElement $node The node to add the value to
      * @param string $name The node name to add
@@ -119,7 +119,7 @@ final class XmlConverter
     }
 
     /**
-     * Create an XML node from an array, recursively
+     * Create an XML node from an array, recursively.
      *
      * @param string $name The name of the node to convert this array to
      * @param mixed $value The value to add, can be array or scalar value
@@ -143,7 +143,7 @@ final class XmlConverter
     }
 
     /**
-     * Create the correct xml correct for a value
+     * Create the correct xml correct for a value.
      *
      * @param mixed $value The value to create a child from
      *
@@ -158,7 +158,7 @@ final class XmlConverter
     }
 
     /**
-     * Recursively convert a DOMDocument to array
+     * Recursively convert a DOMDocument to array.
      *
      * @param \DOMDocument $document The document to convert
      * @param int|null $options Additional xml parsing options
@@ -200,7 +200,7 @@ final class XmlConverter
     }
 
     /**
-     * Recursively convert a DOMElement to an array
+     * Recursively convert a DOMElement to an array.
      *
      * @param \DOMElement $element The element to convert
      *
@@ -251,7 +251,7 @@ final class XmlConverter
     }
 
     /**
-     * Ensure the node name or attribute only contains valid characters
+     * Ensure the node name or attribute only contains valid characters.
      *
      * @param string $name The name to validate
      *
@@ -265,7 +265,7 @@ final class XmlConverter
     }
 
     /**
-     * Post-process a converted DOMNode array and flatten based on options
+     * Post-process a converted DOMNode array and flatten based on options.
      *
      * @param mixed[] $array The array to process
      * @param int $options Additional xml parsing options
@@ -297,7 +297,7 @@ final class XmlConverter
     }
 
     /**
-     * Process an array of node attributes
+     * Process an array of node attributes.
      *
      * @param \DOMElement $node The node to add attributes to
      * @param string $name The node name
@@ -319,7 +319,7 @@ final class XmlConverter
     }
 
     /**
-     * Create an XML node from an array of node values
+     * Create an XML node from an array of node values.
      *
      * @param string $name The node name
      * @param mixed[] $values
@@ -375,7 +375,7 @@ final class XmlConverter
     }
 
     /**
-     * Convert boolean strings to boolean
+     * Convert boolean strings to boolean.
      *
      * @param string $value The value to convert
      *
@@ -393,7 +393,7 @@ final class XmlConverter
     }
 
     /**
-     * Convert a value to a string
+     * Convert a value to a string.
      *
      * @param mixed $value The value to convert
      *

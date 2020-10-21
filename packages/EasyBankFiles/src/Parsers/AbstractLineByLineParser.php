@@ -17,12 +17,12 @@ abstract class AbstractLineByLineParser extends BaseParser
     }
 
     /**
-     * Process line and parse data
+     * Process line and parse data.
      */
     abstract protected function processLine(int $lineNumber, string $line): void;
 
     /**
-     * Process parsing
+     * Process parsing.
      */
     protected function process(): void
     {

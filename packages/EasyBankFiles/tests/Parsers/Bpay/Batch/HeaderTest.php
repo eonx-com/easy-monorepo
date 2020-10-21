@@ -11,7 +11,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class HeaderTest extends TestCase
 {
     /**
-     * Should return dates as an object
+     * Should return dates as an object.
      *
      * @group Batch-Header
      *
@@ -29,7 +29,7 @@ final class HeaderTest extends TestCase
     }
 
     /**
-     * Should return processing date as a null
+     * Should return processing date as a null.
      *
      * @group Batch-Trailer
      *

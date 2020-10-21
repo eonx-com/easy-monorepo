@@ -10,6 +10,9 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
+/**
+ * @covers \EonX\EasyBankFiles\Tests\Parsers\TestCase
+ */
 class TestCase extends BaseTestCase
 {
     /**
@@ -25,7 +28,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * Set the protected/private function to accessible and return reflection method
+     * Set the protected/private function to accessible and return reflection method.
      *
      * @throws \ReflectionException
      *
@@ -42,7 +45,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * Set property to accessible and return reflection property
+     * Set property to accessible and return reflection property.
      *
      * @throws \ReflectionException
      *

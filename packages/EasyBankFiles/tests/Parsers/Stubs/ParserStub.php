@@ -9,7 +9,7 @@ use EonX\EasyBankFiles\Parsers\BaseParser;
 final class ParserStub extends BaseParser
 {
     /**
-     * Process parsing
+     * Process parsing.
      */
     public function process(): void
     {

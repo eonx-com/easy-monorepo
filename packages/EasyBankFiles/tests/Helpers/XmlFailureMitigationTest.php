@@ -16,6 +16,8 @@ final class XmlFailureMitigationTest extends TestCase
      * Gets the XML scenarios for testing.
      *
      * @return mixed[]
+     *
+     * @see testMitigationReplacesInvalidLines
      */
     public function getXmlScenarios(): iterable
     {

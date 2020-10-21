@@ -37,7 +37,7 @@ final class GeneratorStub extends BaseGenerator
     }
 
     /**
-     * Generate
+     * Generate.
      *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
@@ -52,7 +52,7 @@ final class GeneratorStub extends BaseGenerator
     }
 
     /**
-     * Return the defined line length of a generators
+     * Return the defined line length of a generators.
      */
     protected function getLineLength(): int
     {

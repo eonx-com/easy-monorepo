@@ -47,7 +47,7 @@ final class Parser extends AbstractLineByLineParser
     private $transactions;
 
     /**
-     * Get header record
+     * Get header record.
      */
     public function getHeader(): Header
     {
@@ -55,7 +55,7 @@ final class Parser extends AbstractLineByLineParser
     }
 
     /**
-     * Get trailer record
+     * Get trailer record.
      */
     public function getTrailer(): Trailer
     {
@@ -71,7 +71,7 @@ final class Parser extends AbstractLineByLineParser
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function processLine(int $lineNumber, string $line): void
     {
@@ -93,7 +93,7 @@ final class Parser extends AbstractLineByLineParser
     }
 
     /**
-     * Process header block of line
+     * Process header block of line.
      */
     private function processHeader(string $line): Header
     {
@@ -108,7 +108,7 @@ final class Parser extends AbstractLineByLineParser
     }
 
     /**
-     * Process trailer block of line
+     * Process trailer block of line.
      */
     private function processTrailer(string $line): Trailer
     {
@@ -122,7 +122,7 @@ final class Parser extends AbstractLineByLineParser
     }
 
     /**
-     * Process transaction block of line
+     * Process transaction block of line.
      */
     private function processTransaction(string $line): Transaction
     {
