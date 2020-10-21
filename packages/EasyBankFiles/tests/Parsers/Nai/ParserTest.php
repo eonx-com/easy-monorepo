@@ -50,12 +50,18 @@ final class ParserTest extends TestCase
         $naiTransactions = $this->getTransactionsForAccounts($nai->getAccounts());
         $baiTransactions = $this->getTransactionsForAccounts($bai->getAccounts(), $naiAccountNumbers);
 
+        /**
+         * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[] $transactions
+         */
         foreach ($naiTransactions as $accountNumber => $transactions) {
             $currentBaiTransactions = $baiTransactions[$accountNumber];
 
             self::assertEquals(\count($transactions), \count($currentBaiTransactions));
 
-            /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction $transaction */
+            /**
+             * @var int $index
+             * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction $transaction
+             */
             foreach ($transactions as $index => $transaction) {
                 $baiTransaction = $currentBaiTransactions[$index];
 
@@ -283,7 +289,7 @@ final class ParserTest extends TestCase
      * @param \EonX\EasyBankFiles\Parsers\Nai\Results\Account[] $accounts
      * @param null|string[] $filter The account numbers to filter on
      *
-     * @return \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[]
+     * @return array<string, \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[]>
      */
     private function getTransactionsForAccounts(array $accounts, ?array $filter = null): array
     {
