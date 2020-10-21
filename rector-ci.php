@@ -3,13 +3,14 @@
 declare(strict_types=1);
 
 use Rector\Core\Configuration\Option;
+use Rector\Core\ValueObject\ProjectType;
 use Rector\Set\ValueObject\SetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     // get parameters
     $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::PROJECT_TYPE, Option::PROJECT_TYPE_OPEN_SOURCE);
+    $parameters->set(Option::PROJECT_TYPE, ProjectType::OPEN_SOURCE);
 
     $parameters->set(Option::PATHS, [
         __DIR__ . '/packages',
