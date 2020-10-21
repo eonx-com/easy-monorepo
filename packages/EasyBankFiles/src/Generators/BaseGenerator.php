@@ -144,9 +144,6 @@ abstract class BaseGenerator implements GeneratorInterface
      * @param string $rule The rule to process
      * @param string $attribute The attribute the value relates to
      * @param mixed $value The value from the attribute
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess) DateTime requires static access to createFromFormat()
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity) Planned to externalise validation
      */
     private function processRule(array &$errors, string $rule, string $attribute, $value): void
     {

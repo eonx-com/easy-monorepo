@@ -14,10 +14,6 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Trailer as GroupTrailer;
 use EonX\EasyBankFiles\Parsers\Nai\TransactionDetailCodes;
 use Nette\Utils\Strings;
 
-/**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects) High coupling required to do string functions.
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity due to different string edge cases.
- */
 final class ResultsContext
 {
     use AccountSummaryCodes;

@@ -19,8 +19,6 @@ use Rector\Core\RectorDefinition\RectorDefinition;
 
 /**
  * @codeCoverageIgnore
- *
- * @SuppressWarnings("unused") Class is used by Rector
  */
 final class ExplicitBoolCompareRector extends AbstractRector
 {

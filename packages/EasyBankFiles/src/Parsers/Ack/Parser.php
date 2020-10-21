@@ -11,9 +11,6 @@ use EonX\EasyBankFiles\Parsers\Ack\Results\Issue;
 use EonX\EasyBankFiles\Parsers\Ack\Results\PaymentAcknowledgement;
 use EonX\EasyBankFiles\Parsers\BaseParser;
 
-/**
- * @SuppressWarnings(PHPMD.StaticAccess) Ignore static access to XML mitigation.
- */
 abstract class Parser extends BaseParser
 {
     /**

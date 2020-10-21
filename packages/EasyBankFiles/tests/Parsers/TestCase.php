@@ -10,15 +10,10 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-/**
- * @SuppressWarnings(PHPMD.NumberOfChildren) All Tests extend this class
- */
 class TestCase extends BaseTestCase
 {
     /**
      * Get mock for given class and set expectations based on given callable.
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess) Inherited from Mockery
      */
     protected function getMockWithExpectations(string $class, callable $setExpectations): LegacyMockInterface
     {

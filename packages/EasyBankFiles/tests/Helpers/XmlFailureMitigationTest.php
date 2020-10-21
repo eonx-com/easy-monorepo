@@ -9,8 +9,6 @@ use EonX\EasyBankFiles\Tests\TestCases\TestCase;
 
 /**
  * @covers \EonX\EasyBankFiles\Helpers\XmlFailureMitigation
- *
- * @SuppressWarnings(PHPMD.StaticAccess) Ignore static access to XML mitigation.
  */
 final class XmlFailureMitigationTest extends TestCase
 {

@@ -9,9 +9,6 @@ use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 
-/**
- * @SuppressWarnings(PHPMD.UnusedFormalParameter) Method signatures are defined by parent
- */
 final class TrimStringsDenormalizer implements DenormalizerAwareInterface, ContextAwareDenormalizerInterface
 {
     use DenormalizerAwareTrait;

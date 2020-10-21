@@ -19,7 +19,6 @@ use Rector\NodeTypeResolver\Node\AttributeKey;
 /**
  * @codeCoverageIgnore
  *
- * @SuppressWarnings("unused") Class is used by Rector
  * @see \EonX\EasyStandard\Tests\Rector\AddCoversAnnotationRector\AddCoversAnnotationRectorTest
  */
 final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements ConfigurableRectorInterface

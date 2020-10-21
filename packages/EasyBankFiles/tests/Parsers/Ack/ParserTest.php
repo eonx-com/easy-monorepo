@@ -18,8 +18,6 @@ final class ParserTest extends TestCase
      * Test aba ack processing
      *
      * @group Ack-Parser
-     *
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength) Method is long for comparison only
      */
     public function testAbaAckProcessing(): void
     {

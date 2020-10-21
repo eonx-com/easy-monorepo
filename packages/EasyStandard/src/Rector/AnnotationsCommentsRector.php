@@ -113,8 +113,10 @@ PHP
         }
     }
 
-    private function checkTextNode(AttributeAwarePhpDocTextNode $attributeAwarePhpDocTextNode, string $phpDocContent): void
-    {
+    private function checkTextNode(
+        AttributeAwarePhpDocTextNode $attributeAwarePhpDocTextNode,
+        string $phpDocContent
+    ): void {
         if ($attributeAwarePhpDocTextNode->text === '') {
             return;
         }

@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @coversNothing
  *
  * @ORM\Entity
- *
- * @SuppressWarnings(PHPMD)
  */
 final class ProvidedIdEntity
 {
