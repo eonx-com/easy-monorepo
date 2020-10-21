@@ -15,11 +15,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->defaults()
         ->autowire()
-        ->autoconfigure()
-        ->bind(
-            Doctrine\ORM\EntityManagerInterface::class,
-            expr('@=service("EonX\EasyCore\Bridge\Symfony\Doctrine\EntityManagerResolver").getManager()')
-        );
+        ->autoconfigure();
 
     $services->set(ForBuildEnvVarProcessor::class);
 
