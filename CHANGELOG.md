@@ -1,6 +1,24 @@
 <!-- changelog-linker -->
 
-## v2.5.15 - 2020-10-18
+## v2.5.16 - 2020-10-21
+
+- [#396] add colors and first Rector rule, Thanks to [@TomasVotruba]
+- [#399] enable full dead-code set, Thanks to [@TomasVotruba]
+- [#400] make use of pascal mask split, Thanks to [@TomasVotruba]
+
+### EasyCore
+
+- [#386] Add helper traits for Symfony projects, Thanks to [@DKeeper]
+
+### EasyStandard
+
+- [#395] Add ECS sniff to disallow non null argument default values, Thanks to [@DKeeper]
+
+### EasyBankFiles
+
+- [#403] Create package
+
+## [v2.5.15] - 2020-10-18
 
 ### EasySecurity
 
@@ -2591,3 +2609,10 @@
 [v2.5.13]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.12...v2.5.13
 [#397]: https://github.com/eonx-com/easy-monorepo/pull/397
 [v2.5.14]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.13...v2.5.14
+[#403]: https://github.com/eonx-com/easy-monorepo/pull/403
+[#400]: https://github.com/eonx-com/easy-monorepo/pull/400
+[#399]: https://github.com/eonx-com/easy-monorepo/pull/399
+[#396]: https://github.com/eonx-com/easy-monorepo/pull/396
+[#395]: https://github.com/eonx-com/easy-monorepo/pull/395
+[#386]: https://github.com/eonx-com/easy-monorepo/pull/386
+[v2.5.15]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.14...v2.5.15
