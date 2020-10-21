@@ -8,18 +8,12 @@ use EonX\EasyCore\Lock\LockService;
 use EonX\EasyCore\Lock\LockServiceInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
-use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
-
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     $services->defaults()
         ->autowire()
-        ->autoconfigure()
-        ->bind(
-            Doctrine\ORM\EntityManagerInterface::class,
-            expr('@=service("EonX\EasyCore\Bridge\Symfony\Doctrine\EntityManagerResolver").getManager()')
-        );
+        ->autoconfigure();
 
     $services->set(ForBuildEnvVarProcessor::class);
 
