@@ -90,27 +90,33 @@ PHP
             }
 
             if ($phpDocChildNode instanceof AttributeAwarePhpDocTagNode) {
-                $this->checkTagNode($phpDocChildNode);
+                $this->checkTagNode($phpDocChildNode, $phpDocContent);
             }
         }
 
         return $node;
     }
 
-    private function checkTagNode(AttributeAwarePhpDocTagNode $child): void
+    private function checkTagNode(AttributeAwarePhpDocTagNode $attributeAwarePhpDocTagNode, string $phpDocContent): void
     {
-        if ($child->value instanceof AttributeAwareGenericTagValueNode === false) {
+        if ($attributeAwarePhpDocTagNode->value instanceof AttributeAwareGenericTagValueNode === false) {
             return;
         }
 
-        $tagValueNode = $child->value;
+        if (Strings::startsWith($attributeAwarePhpDocTagNode->name, '@')) {
+            return;
+        }
+
+        $tagValueNode = $attributeAwarePhpDocTagNode->value;
         if ($tagValueNode->value === null) {
             return;
         }
 
-        if (\in_array(\substr($tagValueNode->value, -1), $this->allowedEnd, true)) {
-            $tagValueNode->value = \substr($tagValueNode->value, 0, -1);
+        if ($this->shouldSkipDocLine($tagValueNode->value, $phpDocContent)) {
+            return;
         }
+
+        $tagValueNode->value = \substr($tagValueNode->value, 0, -1);
     }
 
     private function checkTextNode(
@@ -121,24 +127,28 @@ PHP
             return;
         }
 
-        if ($this->isLineEndingWithAllowed($attributeAwarePhpDocTextNode)) {
-            return;
-        }
-
-        $lineText = $attributeAwarePhpDocTextNode->text;
-
-        $extraSpaceLineTextPattern = '#\*\s{2,}' . preg_quote($lineText, '#') . '#';
-        if (Strings::match($phpDocContent, $extraSpaceLineTextPattern)) {
+        if ($this->shouldSkipDocLine($attributeAwarePhpDocTextNode->text, $phpDocContent)) {
             return;
         }
 
         $attributeAwarePhpDocTextNode->text .= '.';
     }
 
-    private function isLineEndingWithAllowed(AttributeAwarePhpDocTextNode $attributeAwarePhpDocTextNode): bool
+    private function isLineEndingWithAllowed(string $docLineContent): bool
     {
-        $lastCharacter = \substr($attributeAwarePhpDocTextNode->text, -1);
+        $lastCharacter = \substr($docLineContent, -1);
 
         return \in_array($lastCharacter, $this->allowedEnd, true);
+    }
+
+    private function shouldSkipDocLine(string $docLineContent, string $phpDocContent): bool
+    {
+        if ($this->isLineEndingWithAllowed($docLineContent)) {
+            return true;
+        }
+
+        $extraSpaceLineTextPattern = '#\*\s{2,}' . preg_quote($docLineContent, '#') . '#';
+
+        return (bool) Strings::match($phpDocContent, $extraSpaceLineTextPattern);
     }
 }

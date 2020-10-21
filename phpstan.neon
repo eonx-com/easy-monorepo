@@ -251,3 +251,5 @@ parameters:
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: packages/EasyWebhook/src/AbstractWebhook.php
+
+        - '#Class EonX\\EasyApiToken\\Interfaces\\EasyApiTokenDecoderInterface not found#'
