@@ -194,6 +194,9 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "config": {
+        "process-timeout": 0
+    },
     "extra": {
         "eonx_docs": {
             "finder_pattern": "readme.md",
