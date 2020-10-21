@@ -13,6 +13,7 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareGenericTagValueNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
+use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
@@ -26,7 +27,7 @@ final class AnnotationsCommentsRector extends AbstractRector
     /**
      * @var string[]
      */
-    private $allowedEnd = ['.', '?'];
+    private $allowedEnd = ['.', '?', ':', ')', '(', '}', '{', '}'];
 
     /**
      * From this method documentation is generated.
@@ -64,10 +65,18 @@ PHP
         return [Class_::class, ClassMethod::class, Property::class];
     }
 
+    /**
+     * @param Class_|ClassMethod|Property $node
+     */
     public function refactor(Node $node): ?Node
     {
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
+        /** @var PhpDocInfo|null $phpDocInfo */
         $phpDocInfo = $node->getAttribute(AttributeKey::PHP_DOC_INFO);
+        if ($phpDocInfo === null) {
+            return null;
+        }
+
+        $phpDocContent = $phpDocInfo->getOriginalContent();
 
         foreach ($phpDocInfo->getPhpDocNode()->children as $phpDocChildNode) {
             /** @var PhpDocChildNode $phpDocChildNode */
@@ -77,7 +86,7 @@ PHP
             }
 
             if ($phpDocChildNode instanceof AttributeAwarePhpDocTextNode) {
-                $this->checkTextNode($phpDocChildNode);
+                $this->checkTextNode($phpDocChildNode, $phpDocContent);
             }
 
             if ($phpDocChildNode instanceof AttributeAwarePhpDocTagNode) {
@@ -104,14 +113,30 @@ PHP
         }
     }
 
-    private function checkTextNode(AttributeAwarePhpDocTextNode $child): void
+    private function checkTextNode(AttributeAwarePhpDocTextNode $attributeAwarePhpDocTextNode, string $phpDocContent): void
     {
-        if ($child->text === '') {
+        if ($attributeAwarePhpDocTextNode->text === '') {
             return;
         }
 
-        if (\in_array(\substr($child->text, -1), $this->allowedEnd, true) === false) {
-            $child->text .= '.';
+        if ($this->isLineEndingWithAllowed($attributeAwarePhpDocTextNode)) {
+            return;
         }
+
+        $lineText = $attributeAwarePhpDocTextNode->text;
+
+        $extraSpaceLineTextPattern = '#\*\s{2,}' . preg_quote($lineText, '#') . '#';
+        if (Strings::match($phpDocContent, $extraSpaceLineTextPattern)) {
+            return;
+        }
+
+        $attributeAwarePhpDocTextNode->text .= '.';
+    }
+
+    private function isLineEndingWithAllowed(AttributeAwarePhpDocTextNode $attributeAwarePhpDocTextNode): bool
+    {
+        $lastCharacter = \substr($attributeAwarePhpDocTextNode->text, -1);
+
+        return \in_array($lastCharacter, $this->allowedEnd, true);
     }
 }

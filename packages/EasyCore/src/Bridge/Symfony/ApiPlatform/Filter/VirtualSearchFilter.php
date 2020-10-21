@@ -10,16 +10,16 @@ use Doctrine\ORM\QueryBuilder;
 /**
  * This class allows us to define multiple search strategy for the same property on a single resource.
  *
- * The default behaviour of SearchFilter is preserved + ability to define "virtual properties" mapped to real ones:.
+ * The default behaviour of SearchFilter is preserved + ability to define "virtual properties" mapped to real ones:
  *
  * ApiFilter(
  *     VirtualSearchFilter::class,
- *     properties={.
- *         "number_partial": {"number": "ipartial"}, --> Virtual search property to number partial.
- *         "number_exact": {"number": "exact"}, --> Virtual search property to number exact.
- *         "email": "ipartial" --> Normal search property definition.
- *     }.
- * ).
+ *     properties={
+ *         "number_partial": {"number": "ipartial"}, --> Virtual search property to number partial
+ *         "number_exact": {"number": "exact"}, --> Virtual search property to number exact
+ *         "email": "ipartial" --> Normal search property definition
+ *     }
+ * )
  */
 final class VirtualSearchFilter extends SearchFilter
 {
