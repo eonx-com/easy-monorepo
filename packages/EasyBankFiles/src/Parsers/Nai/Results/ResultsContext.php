@@ -204,7 +204,8 @@ final class ResultsContext
     private function formatTransactionCodes(array $transactionCodes): array
     {
         foreach ($transactionCodes as $key => $codes) {
-            [$code, $amount] = $codes;
+            $code = $this->removeTrailingSlash($codes[0] ?? '');
+            $amount = $this->removeTrailingSlash($codes[1] ?? '');
 
             $transactionCodes[$key] = [
                 'code' => $code,
@@ -214,6 +215,11 @@ final class ResultsContext
         }
 
         return $transactionCodes;
+    }
+
+    private function removeTrailingSlash(string $value): string
+    {
+        return \str_replace('/', '', $value);
     }
 
     /**
@@ -258,10 +264,17 @@ final class ResultsContext
         $lineArray = \explode(',', $line);
         $attributes = \array_merge($required, $optional);
 
+        // Remove CustomerReferenceNumber for BAI because always empty
+        if (\strtolower($lineArray[3] ?? '') === 'z') {
+            unset($lineArray[5]);
+            // Reset array keys
+            $lineArray = \array_values($lineArray);
+        }
+
         foreach ($attributes as $index => $attribute) {
             $value = $lineArray[$index] ?? '';
             $endsWithSlash = Strings::endsWith((string)$value, '/');
-            $data[$attribute] = $endsWithSlash ? \str_replace('/', '', $value) : $value;
+            $data[$attribute] = $endsWithSlash ? \substr($value, 0, -1) : $value;
 
             // If attribute ends with slash, it's the last one of line, exit
             if ($endsWithSlash) {
@@ -287,6 +300,9 @@ final class ResultsContext
             // otherwise set a default value to it.
             $data[$attribute] = '';
         }
+
+        // Trim text
+        $data['text'] = \trim($data['text'] ?? '');
 
         return $data;
     }

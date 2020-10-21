@@ -6,6 +6,7 @@ namespace EonX\EasyBankFiles\Tests\Parsers\Nai;
 
 use EonX\EasyBankFiles\Parsers\Nai\ControlTotal;
 use EonX\EasyBankFiles\Parsers\Nai\Parser;
+use EonX\EasyBankFiles\Parsers\Nai\Results\Account;
 use EonX\EasyBankFiles\Parsers\Nai\Results\File;
 use EonX\EasyBankFiles\Parsers\Nai\TransactionDetailCodes;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
@@ -31,6 +32,56 @@ final class ParserTest extends TestCase
 
         self::assertIsFloat($formatAmount->invokeArgs($trait, ['100000']));
         self::assertSame((float)100, $formatAmount->invokeArgs($trait, ['10000']));
+    }
+
+    public function testParserCanParseBaiFile(): void
+    {
+        $this->markTestSkipped('Until BAI sample added, however it was tested with real files');
+
+        $bai = new Parser($this->getSampleFileContents('sample.BAI'));
+        $nai = new Parser($this->getSampleFileContents('sample.NAI'));
+
+        // Grab NAI accounts numbers
+        $naiAccountNumbers = [];
+        foreach ($nai->getAccounts() as $account) {
+            $naiAccountNumbers[] = $account->getIdentifier()->getCommercialAccountNumber();
+        }
+
+        $naiTransactions = $this->getTransactionsForAccounts($nai->getAccounts());
+        $baiTransactions = $this->getTransactionsForAccounts($bai->getAccounts(), $naiAccountNumbers);
+
+        foreach ($naiTransactions as $accountNumber => $transactions) {
+            $currentBaiTransactions = $baiTransactions[$accountNumber];
+
+            self::assertEquals(\count($transactions), \count($currentBaiTransactions));
+
+            /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction $transaction */
+            foreach ($transactions as $index => $transaction) {
+                $baiTransaction = $currentBaiTransactions[$index];
+
+                // Assert fixed values
+                self::assertEquals('0', $transaction->getFundsType());
+                self::assertEquals('z', \strtolower($baiTransaction->getFundsType()));
+
+                self::assertEquals($transaction->getAmount(), $baiTransaction->getAmount(), 'mismatch amount');
+                self::assertEquals($transaction->getCode(), $baiTransaction->getCode(), 'mismatch code');
+                self::assertEquals($transaction->getReferenceNumber(), $baiTransaction->getReferenceNumber(),
+                    'mismatch reference number');
+                self::assertEquals($transaction->getText(), $baiTransaction->getText(), 'mismatch text');
+                self::assertEquals($transaction->getTransactionCode(), $baiTransaction->getTransactionCode(),
+                    'mismatch transaction code');
+
+                $naiTransactionDetails = $transaction->getTransactionDetails();
+                $baiTransactionDetails = $baiTransaction->getTransactionDetails();
+
+                self::assertEquals($naiTransactionDetails->getDescription(), $baiTransactionDetails->getDescription(),
+                    'mismatch details description');
+                self::assertEquals($naiTransactionDetails->getParticulars(), $baiTransactionDetails->getParticulars(),
+                    'mismatch details particulars');
+                self::assertEquals($naiTransactionDetails->getType(), $baiTransactionDetails->getType(),
+                    'mismatch details type');
+            }
+        }
     }
 
     /**
@@ -211,5 +262,31 @@ final class ParserTest extends TestCase
     private function getSampleFileContents(string $file): string
     {
         return \file_get_contents(\realpath(__DIR__) . '/data/' . $file) ?: '';
+    }
+
+    /**
+     * @param \EonX\EasyBankFiles\Parsers\Nai\Results\Account[] $accounts
+     * @param null|string[] $filter The account numbers to filter on
+     *
+     * @return \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[]
+     */
+    private function getTransactionsForAccounts(array $accounts, ?array $filter = null): array
+    {
+        $return = [];
+        $filter = $filter ?? \array_map(static function (Account $account): string {
+                return $account->getIdentifier()->getCommercialAccountNumber();
+            }, $accounts);
+
+        foreach ($accounts as $account) {
+            $accountNumber = $account->getIdentifier()->getCommercialAccountNumber();
+
+            if (\in_array($accountNumber, $filter, true) === false) {
+                continue;
+            }
+
+            $return[$accountNumber] = $account->getTransactions();
+        }
+
+        return $return;
     }
 }
