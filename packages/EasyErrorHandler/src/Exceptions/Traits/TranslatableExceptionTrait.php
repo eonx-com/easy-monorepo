@@ -11,7 +11,7 @@ trait TranslatableExceptionTrait
     /**
      * @var null|string
      */
-    protected $domain = null;
+    protected $domain;
 
     /**
      * @var mixed[]
