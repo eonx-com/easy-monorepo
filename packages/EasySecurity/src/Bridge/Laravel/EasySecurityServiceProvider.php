@@ -98,7 +98,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
         $this->app->singleton(MainSecurityContextConfigurator::class, function (): MainSecurityContextConfigurator {
             $request = $this->app->make(Request::class);
             $apiTokenDecoderFactory = $this->app->make(ApiTokenDecoderFactoryInterface::class);
-            $apiTokenDecoder = $apiTokenDecoderFactory->build(\config('easy-security.token_decoder', null));
+            $apiTokenDecoder = $apiTokenDecoderFactory->build(\config('easy-security.token_decoder'));
 
             $mainConfigurator = new MainSecurityContextConfigurator(
                 $this->app->make(AuthorizationMatrixInterface::class),
