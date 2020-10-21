@@ -34,7 +34,6 @@ final class GeneratorStub extends BaseGenerator
         $this->transactions = $transactions ?? [];
 
         $this->generate();
-        $this->validateLineLengths();
     }
 
     /**
@@ -58,12 +57,5 @@ final class GeneratorStub extends BaseGenerator
     protected function getLineLength(): int
     {
         return 120;
-    }
-
-    /**
-     * Check if record length is no more than defined characters
-     */
-    protected function validateLineLengths(): void
-    {
     }
 }
