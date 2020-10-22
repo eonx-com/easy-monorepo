@@ -8,6 +8,7 @@
         "eonx-com/easy-random": "^2.6"
     },
     "require-dev": {
+        "eonx-com/easy-test": "^2.5",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "laravel/lumen-framework": "^5.5",
         "symfony/symfony": "^4.2 || ^5.0"
