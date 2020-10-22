@@ -8,10 +8,10 @@ use EonX\EasyRandom\Bridge\Laravel\EasyRandomServiceProvider;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyRequestId\Bridge\Laravel\EasyRequestIdServiceProvider;
-use EonX\EasyTest\Tests\AbstractTestCase;
 use Laravel\Lumen\Application;
+use PHPUnit\Framework\TestCase;
 
-abstract class AbstractLumenTestCase extends AbstractTestCase
+abstract class AbstractLumenTestCase extends TestCase
 {
     /**
      * @var \Laravel\Lumen\Application
