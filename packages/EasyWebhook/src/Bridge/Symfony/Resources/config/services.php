@@ -18,6 +18,7 @@ use EonX\EasyWebhook\Stores\NullWebhookResultStore;
 use EonX\EasyWebhook\WebhookClient;
 use EonX\EasyWebhook\WebhookResultHandler;
 use EonX\EasyWebhook\WithEventsWebhookClient;
+use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 return static function (ContainerConfigurator $container): void {
@@ -44,15 +45,10 @@ return static function (ContainerConfigurator $container): void {
     $services->set(WebhookResultHandlerInterface::class, WebhookResultHandler::class);
 
     // Webhook Client
-    $webhookClientServiceDefinition = $services->set(WebhookClientInterface::class, WebhookClient::class)
+    $services
+        ->set(WebhookClientInterface::class, WebhookClient::class)
+        ->arg('$configurators', tagged_polyfill(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR))
         ->arg('$httpClient', ref(BridgeConstantsInterface::HTTP_CLIENT));
-
-    if (function_exists('Symfony\Component\DependencyInjection\Loader\Configurator\tagged')) {
-        $configurators = tagged(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR);
-    } else {
-        $configurators = tagged_iterator(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR);
-    }
-    $webhookClientServiceDefinition->arg('$configurators', $configurators);
 
     // Webhook Client With Events
     $services
@@ -62,3 +58,14 @@ return static function (ContainerConfigurator $container): void {
     // Webhook Store (Default)
     $services->set(WebhookResultStoreInterface::class, NullWebhookResultStore::class);
 };
+
+function tagged_polyfill(string $tag, string $indexAttribute = null, string $defaultIndexMethod = null): TaggedIteratorArgument
+{
+    // works in Symfony 4.*
+    if (function_exists('Symfony\Component\DependencyInjection\Loader\Configurator\tagged')) {
+        return tagged($tag, $indexAttribute, $defaultIndexMethod);
+    }
+
+    // works in Symfony 4.4+ and 5
+    return tagged_iterator($tag, $indexAttribute, $defaultIndexMethod);
+}

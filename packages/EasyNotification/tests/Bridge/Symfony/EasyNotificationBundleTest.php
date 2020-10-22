@@ -11,7 +11,8 @@ final class EasyNotificationBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanityCheck(): void
     {
-        $container = $this->getKernel([__DIR__ . '/Fixtures/default_config.yaml'])->getContainer();
+        $kernel = $this->getKernel([__DIR__ . '/Fixtures/default_config.yaml']);
+        $container = $kernel->getContainer();
 
         self::assertInstanceOf(NotificationClient::class, $container->get(NotificationClientInterface::class));
     }
