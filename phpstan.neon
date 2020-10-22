@@ -10,7 +10,7 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     bootstrapFiles:
-        - %currentWorkingDirectory%/tests/bootstrap.php
+        - %currentWorkingDirectory%/tests/phpunit_bootstrap.php
 
     excludes_analyse:
         - packages/*/var/*
