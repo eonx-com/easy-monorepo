@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
         colors="true"
-        bootstrap="vendor/autoload.php"
+        bootstrap="tests/phpunit_bootstrap.php"
 >
     <testsuites>
         <testsuite name="EonX EasyBankFiles Package Test Suite">
