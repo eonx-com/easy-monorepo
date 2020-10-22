@@ -46,7 +46,7 @@ return static function (ContainerConfigurator $container): void {
     // Webhook Client
     $services
         ->set(WebhookClientInterface::class, WebhookClient::class)
-        ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR))
+        ->arg('$configurators', tagged(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR))
         ->arg('$httpClient', ref(BridgeConstantsInterface::HTTP_CLIENT));
 
     // Webhook Client With Events
