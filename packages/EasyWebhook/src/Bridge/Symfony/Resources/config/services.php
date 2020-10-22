@@ -44,10 +44,15 @@ return static function (ContainerConfigurator $container): void {
     $services->set(WebhookResultHandlerInterface::class, WebhookResultHandler::class);
 
     // Webhook Client
-    $services
-        ->set(WebhookClientInterface::class, WebhookClient::class)
-        ->arg('$configurators', tagged(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR))
+    $webhookClientServiceDefinition = $services->set(WebhookClientInterface::class, WebhookClient::class)
         ->arg('$httpClient', ref(BridgeConstantsInterface::HTTP_CLIENT));
+
+    if (function_exists('Symfony\Component\DependencyInjection\Loader\Configurator\tagged')) {
+        $configurators = tagged(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR);
+    } else {
+        $configurators = tagged_iterator(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR);
+    }
+    $webhookClientServiceDefinition->arg('$configurators', $configurators);
 
     // Webhook Client With Events
     $services
