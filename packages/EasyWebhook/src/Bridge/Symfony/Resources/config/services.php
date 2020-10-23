@@ -59,8 +59,11 @@ return static function (ContainerConfigurator $container): void {
     $services->set(WebhookResultStoreInterface::class, NullWebhookResultStore::class);
 };
 
-function tagged_polyfill(string $tag, string $indexAttribute = null, string $defaultIndexMethod = null): TaggedIteratorArgument
-{
+function tagged_polyfill(
+    string $tag,
+    ?string $indexAttribute = null,
+    ?string $defaultIndexMethod = null
+): TaggedIteratorArgument {
     // works in Symfony 4.*
     if (function_exists('Symfony\Component\DependencyInjection\Loader\Configurator\tagged')) {
         return tagged($tag, $indexAttribute, $defaultIndexMethod);
