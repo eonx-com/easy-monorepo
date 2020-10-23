@@ -38,7 +38,7 @@ final class SubscribeInfo implements SubscribeInfoInterface
      */
     public static function fromArray(array $info): SubscribeInfoInterface
     {
-        return new static($info['jwt'], $info['topics'], $info['url']);
+        return new self($info['jwt'], $info['topics'], $info['url']);
     }
 
     public function getJwt(): string

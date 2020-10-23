@@ -253,3 +253,8 @@ parameters:
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: packages/EasyWebhook/src/AbstractWebhook.php
+
+
+        -
+            message: '#Function tagged not found#'
+            path: packages/EasyWebhook/src/Bridge/Symfony/Resources/config/services.php
