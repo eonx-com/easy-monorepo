@@ -11,6 +11,8 @@ final class ConfigurationTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetConfigTreeBuilder
      */
     public function providerGetConfigTreeBuilder(): iterable
     {

@@ -13,6 +13,8 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testUuidV4GeneratorInstance
      */
     public function providerTestUuidV4GeneratorInstance(): iterable
     {

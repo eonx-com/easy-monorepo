@@ -18,6 +18,8 @@ final class RequestIdServiceTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetIds
      */
     public function providerTestGetIds(): iterable
     {

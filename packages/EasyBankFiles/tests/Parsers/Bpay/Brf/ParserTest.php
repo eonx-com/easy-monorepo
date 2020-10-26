@@ -13,7 +13,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class ParserTest extends TestCase
 {
     /**
-     * Should return error from the content
+     * Should return error from the content.
      *
      * @group Brf-Parser-Error
      */
@@ -25,7 +25,7 @@ final class ParserTest extends TestCase
     }
 
     /**
-     * Should return Header object
+     * Should return Header object.
      *
      * @group Brf-Parser-Header
      */
@@ -38,7 +38,7 @@ final class ParserTest extends TestCase
     }
 
     /**
-     * Should return trailer from the content
+     * Should return trailer from the content.
      *
      * @group Brf-Parser-Trailer
      */
@@ -51,7 +51,7 @@ final class ParserTest extends TestCase
     }
 
     /**
-     * Should return Transaction and TransactionItem class
+     * Should return Transaction and TransactionItem class.
      *
      * @group Brf-Parser-Transaction
      */

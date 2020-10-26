@@ -46,7 +46,7 @@ final class Generator extends BaseGenerator
     }
 
     /**
-     * Generate
+     * Generate.
      *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\LengthMismatchesException
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException
@@ -79,7 +79,7 @@ final class Generator extends BaseGenerator
     }
 
     /**
-     * Return the defined line length of a generator
+     * Return the defined line length of a generator.
      */
     protected function getLineLength(): int
     {

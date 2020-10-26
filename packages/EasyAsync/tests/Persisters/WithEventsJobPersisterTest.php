@@ -18,6 +18,8 @@ final class WithEventsJobPersisterTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testMethods
      */
     public function providerTestMethods(): iterable
     {

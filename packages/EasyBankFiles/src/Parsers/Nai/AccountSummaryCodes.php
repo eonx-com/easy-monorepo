@@ -30,7 +30,7 @@ trait AccountSummaryCodes
     ];
 
     /**
-     * Return code summary
+     * Return code summary.
      */
     public function getCodeSummary(string $code): ?string
     {

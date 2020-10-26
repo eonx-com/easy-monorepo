@@ -13,7 +13,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class TransactionTest extends TestCase
 {
     /**
-     * Test if amount conversion works as expected
+     * Test if amount conversion works as expected.
      */
     public function testAmountConversion(): void
     {
@@ -25,7 +25,7 @@ final class TransactionTest extends TestCase
     }
 
     /**
-     * Check if amount conversion works if 8 digit withholding tax provided
+     * Check if amount conversion works if 8 digit withholding tax provided.
      */
     public function testAmountConversionWorksOn8Digit(): void
     {

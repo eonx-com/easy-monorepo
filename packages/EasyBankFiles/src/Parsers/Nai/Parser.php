@@ -176,9 +176,7 @@ final class Parser extends AbstractLineByLineParser
     }
 
     /**
-     * Process line and parse data
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity) Inherited from file complexity
+     * Process line and parse data.
      */
     protected function processLine(int $lineNumber, string $line): void
     {

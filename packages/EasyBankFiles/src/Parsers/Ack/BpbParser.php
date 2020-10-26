@@ -9,7 +9,7 @@ use EonX\EasyBankFiles\Parsers\Ack\Results\PaymentAcknowledgement;
 final class BpbParser extends Parser
 {
     /**
-     * Process line and parse data
+     * Process line and parse data.
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException
      */

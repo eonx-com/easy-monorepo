@@ -31,6 +31,8 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testServiceProvider
      */
     public function providerTestServiceProvider(): iterable
     {

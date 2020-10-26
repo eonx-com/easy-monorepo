@@ -15,6 +15,8 @@ final class HashDumperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDumpHash
      */
     public function providerTestDumpHash(): iterable
     {

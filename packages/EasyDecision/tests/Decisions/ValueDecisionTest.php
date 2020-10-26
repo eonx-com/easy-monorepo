@@ -17,6 +17,8 @@ final class ValueDecisionTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDecisionEntirely
      */
     public function decisionEntirelyProvider(): iterable
     {

@@ -12,6 +12,8 @@ final class TransactionTest extends TestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testShouldReturnAmount
      */
     public function providerTestAmount(): iterable
     {
@@ -21,7 +23,7 @@ final class TransactionTest extends TestCase
     }
 
     /**
-     * Should return transaction amount
+     * Should return transaction amount.
      *
      * @param string $amount
      * @param float $expected
@@ -40,7 +42,7 @@ final class TransactionTest extends TestCase
     }
 
     /**
-     * Should return payment date as DateTime object
+     * Should return payment date as DateTime object.
      *
      * @group Bpay-Transaction
      *
@@ -56,7 +58,7 @@ final class TransactionTest extends TestCase
     }
 
     /**
-     * Should return settlement date as DateTime object
+     * Should return settlement date as DateTime object.
      *
      * @group Bpay-Transaction
      *

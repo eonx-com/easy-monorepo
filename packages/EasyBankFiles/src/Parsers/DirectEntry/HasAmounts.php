@@ -7,7 +7,7 @@ namespace EonX\EasyBankFiles\Parsers\DirectEntry;
 trait HasAmounts
 {
     /**
-     * Create amount value in dollars from string
+     * Create amount value in dollars from string.
      */
     protected function createAmount(string $value): string
     {

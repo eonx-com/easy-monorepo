@@ -22,6 +22,8 @@ final class ProcessJobLogMiddlewareTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcessWithJobLog
      */
     public function providerHandle(): iterable
     {

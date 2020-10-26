@@ -13,6 +13,8 @@ final class ConsoleOutputLoaderTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testLoadEnv
      */
     public function providerTestLoadEnv(): iterable
     {

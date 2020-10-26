@@ -13,7 +13,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class TrailerTest extends TestCase
 {
     /**
-     * Test amount conversion works as expected
+     * Test amount conversion works as expected.
      */
     public function testAmountConversionWorksAsExpected(): void
     {
@@ -25,7 +25,7 @@ final class TrailerTest extends TestCase
     }
 
     /**
-     * Test amount conversions if invalid data provided
+     * Test amount conversions if invalid data provided.
      */
     public function testAmountConversionsIfInvalidData(): void
     {
@@ -37,7 +37,7 @@ final class TrailerTest extends TestCase
     }
 
     /**
-     * Test amount conversions if no data provided
+     * Test amount conversions if no data provided.
      */
     public function testAmountConversionsIfNoData(): void
     {

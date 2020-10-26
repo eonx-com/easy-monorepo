@@ -4,28 +4,30 @@ declare(strict_types=1);
 
 namespace EonX\EasyStandard\Rector;
 
+use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
+use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareGenericTagValueNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
+use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
+/**
+ * @see \EonX\EasyStandard\Tests\Rector\AnnotationsCommentsRector\AnnotationsCommentsRectorTest
+ */
 final class AnnotationsCommentsRector extends AbstractRector
 {
     /**
      * @var string[]
      */
-    private $ignore = ['{@inheritdoc}'];
-
-    /**
-     * @var string[]
-     */
-    private $allowedEnd = ['.', '?'];
+    private $allowedEnd = ['.', '?', ':', ')', '(', '}', '{', '}'];
 
     /**
      * From this method documentation is generated.
@@ -63,54 +65,90 @@ PHP
         return [Class_::class, ClassMethod::class, Property::class];
     }
 
+    /**
+     * @param Class_|ClassMethod|Property $node
+     */
     public function refactor(Node $node): ?Node
     {
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
+        /** @var PhpDocInfo|null $phpDocInfo */
         $phpDocInfo = $node->getAttribute(AttributeKey::PHP_DOC_INFO);
+        if ($phpDocInfo === null) {
+            return null;
+        }
 
-        foreach ($phpDocInfo->getPhpDocNode()->children as $child) {
-            if (\in_array((string)$child, $this->ignore, true)) {
+        $phpDocContent = $phpDocInfo->getOriginalContent();
+
+        foreach ($phpDocInfo->getPhpDocNode()->children as $phpDocChildNode) {
+            /** @var PhpDocChildNode $phpDocChildNode */
+            $content = (string) $phpDocChildNode;
+            if (Strings::match($content, '#inheritdoc#i')) {
                 continue;
             }
 
-            if ($child instanceof AttributeAwarePhpDocTextNode) {
-                $this->checkTextNode($child);
+            if ($phpDocChildNode instanceof AttributeAwarePhpDocTextNode) {
+                $this->checkTextNode($phpDocChildNode, $phpDocContent);
             }
 
-            if ($child instanceof AttributeAwarePhpDocTagNode) {
-                $this->checkTagNode($child);
+            if ($phpDocChildNode instanceof AttributeAwarePhpDocTagNode) {
+                $this->checkTagNode($phpDocChildNode, $phpDocContent);
             }
         }
 
         return $node;
     }
 
-    private function checkTagNode(AttributeAwarePhpDocTagNode $child): AttributeAwarePhpDocTagNode
+    private function checkTagNode(AttributeAwarePhpDocTagNode $attributeAwarePhpDocTagNode, string $phpDocContent): void
     {
-        /** @var \Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareGenericTagValueNode $tagValueNode */
-        $tagValueNode = $child->value;
+        if ($attributeAwarePhpDocTagNode->value instanceof AttributeAwareGenericTagValueNode === false) {
+            return;
+        }
 
+        if (Strings::startsWith($attributeAwarePhpDocTagNode->name, '@')) {
+            return;
+        }
+
+        $tagValueNode = $attributeAwarePhpDocTagNode->value;
         if ($tagValueNode->value === null) {
-            return $child;
+            return;
         }
 
-        if (\in_array(\substr($tagValueNode->value, -1), $this->allowedEnd, true) === true) {
-            $tagValueNode->value = \substr($tagValueNode->value, 0, -1);
+        if ($this->shouldSkipDocLine($tagValueNode->value, $phpDocContent)) {
+            return;
         }
 
-        return $child;
+        $tagValueNode->value = \substr($tagValueNode->value, 0, -1);
     }
 
-    private function checkTextNode(AttributeAwarePhpDocTextNode $child): AttributeAwarePhpDocTextNode
+    private function checkTextNode(
+        AttributeAwarePhpDocTextNode $attributeAwarePhpDocTextNode,
+        string $phpDocContent
+    ): void {
+        if ($attributeAwarePhpDocTextNode->text === '') {
+            return;
+        }
+
+        if ($this->shouldSkipDocLine($attributeAwarePhpDocTextNode->text, $phpDocContent)) {
+            return;
+        }
+
+        $attributeAwarePhpDocTextNode->text .= '.';
+    }
+
+    private function isLineEndingWithAllowed(string $docLineContent): bool
     {
-        if ($child->text === '') {
-            return $child;
+        $lastCharacter = \substr($docLineContent, -1);
+
+        return \in_array($lastCharacter, $this->allowedEnd, true);
+    }
+
+    private function shouldSkipDocLine(string $docLineContent, string $phpDocContent): bool
+    {
+        if ($this->isLineEndingWithAllowed($docLineContent)) {
+            return true;
         }
 
-        if (\in_array(\substr($child->text, -1), $this->allowedEnd, true) === false) {
-            $child->text .= '.';
-        }
+        $extraSpaceLineTextPattern = '#\*\s{2,}' . preg_quote($docLineContent, '#') . '#';
 
-        return $child;
+        return (bool) Strings::match($phpDocContent, $extraSpaceLineTextPattern);
     }
 }

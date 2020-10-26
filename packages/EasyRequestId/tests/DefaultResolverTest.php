@@ -12,6 +12,8 @@ final class DefaultResolverTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testResolve
      */
     public function providerTestResolve(): iterable
     {

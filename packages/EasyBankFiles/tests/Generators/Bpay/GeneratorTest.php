@@ -23,7 +23,7 @@ final class GeneratorTest extends TestCase
     }
 
     /**
-     * Generated data should be present in the content
+     * Generated data should be present in the content.
      *
      * @group Generator-Bpay
      *

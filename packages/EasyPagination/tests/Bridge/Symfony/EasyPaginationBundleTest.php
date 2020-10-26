@@ -18,6 +18,8 @@ final class EasyPaginationBundleTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testResolverInstance
      */
     public function providerTestResolverInstance(): iterable
     {
@@ -31,6 +33,8 @@ final class EasyPaginationBundleTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testStartSizeDataResolver
      */
     public function providerTestStartSizeDataResolver(): iterable
     {

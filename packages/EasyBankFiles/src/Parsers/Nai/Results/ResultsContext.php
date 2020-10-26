@@ -14,10 +14,6 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Trailer as GroupTrailer;
 use EonX\EasyBankFiles\Parsers\Nai\TransactionDetailCodes;
 use Nette\Utils\Strings;
 
-/**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects) High coupling required to do string functions.
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity due to different string edge cases.
- */
 final class ResultsContext
 {
     use AccountSummaryCodes;
@@ -195,7 +191,7 @@ final class ResultsContext
     }
 
     /**
-     * Format account identifier transactions and add code summary
+     * Format account identifier transactions and add code summary.
      *
      * @param mixed[] $transactionCodes
      *
@@ -289,7 +285,7 @@ final class ResultsContext
             }
 
             // if this is a required attribute fail and return.
-            if (\in_array($attribute, $required, true) === true) {
+            if (\in_array($attribute, $required, true)) {
                 // Add error if data is either null or empty string
                 $this->addError($line, $lineNumber);
 
