@@ -305,7 +305,7 @@ trait TransactionDetailCodes
     ];
 
     /**
-     * Return Transaction Detail Code
+     * Return Transaction Detail Code.
      */
     public function getTransactionCodeDetails(string $code): ?Details
     {

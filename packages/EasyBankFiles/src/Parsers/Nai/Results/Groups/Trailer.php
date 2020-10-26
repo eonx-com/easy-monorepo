@@ -16,7 +16,7 @@ final class Trailer extends BaseResult
     use ControlTotal;
 
     /**
-     * Return group control total A
+     * Return group control total A.
      */
     public function getGroupControlTotalA(): float
     {
@@ -24,7 +24,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Return group control total B
+     * Return group control total B.
      */
     public function getGroupControlTotalB(): float
     {

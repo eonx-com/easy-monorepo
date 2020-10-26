@@ -34,7 +34,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
     private $phpcsFile;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
      * @throws \PHP_CodeSniffer\Exceptions\TokenizerException

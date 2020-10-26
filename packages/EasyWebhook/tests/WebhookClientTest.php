@@ -23,6 +23,8 @@ final class WebhookClientTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testSend
      */
     public function providerTestSend(): iterable
     {
@@ -115,7 +117,7 @@ final class WebhookClientTest extends AbstractTestCase
      */
     public function testSend(
         WebhookInterface $webhook,
-        ?iterable $configurators,
+        ?iterable $configurators = null,
         string $method,
         string $url,
         array $httpClientOptions

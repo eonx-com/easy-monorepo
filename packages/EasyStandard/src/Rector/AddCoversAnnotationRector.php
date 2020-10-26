@@ -19,7 +19,7 @@ use Rector\NodeTypeResolver\Node\AttributeKey;
 /**
  * @codeCoverageIgnore
  *
- * @SuppressWarnings("unused") Class is used by Rector
+ * @see \EonX\EasyStandard\Tests\Rector\AddCoversAnnotationRector\AddCoversAnnotationRectorTest
  */
 final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements ConfigurableRectorInterface
 {
@@ -42,7 +42,7 @@ final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements C
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @noinspection AutoloadingIssuesInspection
      */
@@ -72,7 +72,7 @@ PHP
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getNodeTypes(): array
     {
@@ -80,7 +80,7 @@ PHP
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function refactor(Node $node): ?Node
     {
@@ -97,9 +97,7 @@ PHP
         $phpDocInfo = $classNode->getAttribute(AttributeKey::PHP_DOC_INFO);
 
         if ($coveredClass === null) {
-            $phpDocInfo->addBareTag('@coversNothing');
-
-            return $classNode;
+            return null;
         }
 
         $phpDocInfo->addPhpDocTagNode($this->createCoversPhpDocTagNode($coveredClass));
@@ -122,7 +120,7 @@ PHP
     {
         $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray, '', $className));
 
-        if (\class_exists($className) === true) {
+        if (\class_exists($className)) {
             return $className;
         }
 
@@ -134,27 +132,26 @@ PHP
      */
     private function shouldSkipClass(Class_ $class): bool
     {
-        $shouldSkip = false;
         $className = $this->getName($class);
 
         if ($className === null || $class->isAnonymous() === true || $class->isAbstract()) {
-            $shouldSkip = true;
+            return true;
         }
 
         if ($this->isInTestClass($class) === false) {
-            $shouldSkip = true;
+            return true;
         }
 
-        // Is the @covers or @coversNothing annotation already added
+        // Is the @covers or annotation already added
         if ($class->getDocComment() !== null) {
             /** @var \PhpParser\Comment\Doc $docComment */
             $docComment = $class->getDocComment();
 
-            if (Strings::match($docComment->getText(), '/(@covers|@coversNothing)(.*?)/') !== null) {
-                $shouldSkip = true;
+            if (Strings::match($docComment->getText(), '/(@covers|@coversNothing)(.*?)/i') !== null) {
+                return true;
             }
         }
 
-        return $shouldSkip;
+        return false;
     }
 }

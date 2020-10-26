@@ -13,6 +13,8 @@ final class JobFactoryTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCreate
      */
     public function providerCreate(): iterable
     {

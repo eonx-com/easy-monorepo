@@ -9,7 +9,7 @@ use EonX\EasyBankFiles\Tests\Parsers\Stubs\ParserStub;
 final class BaseParserTest extends TestCase
 {
     /**
-     * Should set the content
+     * Should set the content.
      *
      * @throws \ReflectionException
      */

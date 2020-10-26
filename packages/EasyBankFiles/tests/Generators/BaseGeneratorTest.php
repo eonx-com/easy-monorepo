@@ -10,7 +10,7 @@ use EonX\EasyBankFiles\Tests\Generators\Stubs\GeneratorStub;
 final class BaseGeneratorTest extends TestCase
 {
     /**
-     * Should throw exception if target is not an object
+     * Should throw exception if target is not an object.
      *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException

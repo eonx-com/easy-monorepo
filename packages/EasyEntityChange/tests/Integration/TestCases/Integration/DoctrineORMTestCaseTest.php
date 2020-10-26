@@ -12,9 +12,6 @@ use EonX\EasyEntityChange\Tests\Integration\Fixtures\SimpleEntity;
 use EonX\EasyEntityChange\Tests\Stubs\EventDispatcherStub;
 use Eonx\TestUtils\TestCases\Integration\DoctrineORMTestCase;
 
-/**
- * @coversNothing
- */
 final class DoctrineORMTestCaseTest extends DoctrineORMTestCase
 {
     public function testEntityChangeEventIsDispatchedWithDbId(): void

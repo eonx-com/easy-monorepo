@@ -16,6 +16,8 @@ final class UuidV4GeneratorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testUuidV4
      */
     public function providerTestUuidV4(): iterable
     {

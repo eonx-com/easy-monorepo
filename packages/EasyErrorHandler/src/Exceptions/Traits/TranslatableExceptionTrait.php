@@ -29,7 +29,7 @@ trait TranslatableExceptionTrait
     protected $userMessageParams = [];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getDomain(): ?string
     {
@@ -37,7 +37,7 @@ trait TranslatableExceptionTrait
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getMessageParams(): array
     {
@@ -45,7 +45,7 @@ trait TranslatableExceptionTrait
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getUserMessage(): ?string
     {
@@ -53,7 +53,7 @@ trait TranslatableExceptionTrait
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getUserMessageParams(): array
     {

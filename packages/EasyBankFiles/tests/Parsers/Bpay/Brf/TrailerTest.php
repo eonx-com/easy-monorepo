@@ -11,7 +11,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class TrailerTest extends TestCase
 {
     /**
-     * Should return amount of error corrections
+     * Should return amount of error corrections.
      *
      * @group \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Trailer
      *
@@ -33,7 +33,7 @@ final class TrailerTest extends TestCase
     }
 
     /**
-     * Should return amount of payments
+     * Should return amount of payments.
      *
      * @group \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Trailer
      *
@@ -55,7 +55,7 @@ final class TrailerTest extends TestCase
     }
 
     /**
-     * Should return amount of payments
+     * Should return amount of payments.
      *
      * @group \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Trailer
      *
@@ -77,7 +77,7 @@ final class TrailerTest extends TestCase
     }
 
     /**
-     * Should return number of payments
+     * Should return number of payments.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
@@ -97,7 +97,7 @@ final class TrailerTest extends TestCase
     }
 
     /**
-     * Should return number of error corrections
+     * Should return number of error corrections.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
@@ -117,7 +117,7 @@ final class TrailerTest extends TestCase
     }
 
     /**
-     * Should return number of reversals
+     * Should return number of reversals.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
@@ -137,7 +137,7 @@ final class TrailerTest extends TestCase
     }
 
     /**
-     * Should return settlement amount
+     * Should return settlement amount.
      *
      * @group \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Trailer
      *
@@ -159,7 +159,7 @@ final class TrailerTest extends TestCase
     }
 
     /**
-     * Should throw exception if sign field is not found
+     * Should throw exception if sign field is not found.
      *
      * @group \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Trailer
      *

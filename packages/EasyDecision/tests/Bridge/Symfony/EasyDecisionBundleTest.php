@@ -20,6 +20,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDecisions
      */
     public function providerCreateDecision(): iterable
     {

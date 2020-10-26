@@ -14,6 +14,8 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testConfigAndDependenciesSanity
      */
     public function providerTestConfigAndDependenciesSanity(): iterable
     {

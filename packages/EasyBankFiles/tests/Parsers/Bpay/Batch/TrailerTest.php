@@ -10,7 +10,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class TrailerTest extends TestCase
 {
     /**
-     * Should return total amounts as a decimal
+     * Should return total amounts as a decimal.
      *
      * @group Batch-Trailer
      */
@@ -28,7 +28,7 @@ final class TrailerTest extends TestCase
     }
 
     /**
-     * Should return total amounts as a null
+     * Should return total amounts as a null.
      *
      * @group Batch-Trailer
      */

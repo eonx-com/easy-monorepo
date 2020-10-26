@@ -20,6 +20,8 @@ final class RolesFromJwtConfiguratorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testConfigure
      */
     public function providerTestConfigure(): iterable
     {

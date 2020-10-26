@@ -14,6 +14,8 @@ final class SsmClientTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testApplyDiff
      */
     public function providerTestApplyDiff(): iterable
     {
@@ -70,6 +72,8 @@ final class SsmClientTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetAllParameters
      */
     public function providerTestGetAllParameters(): iterable
     {

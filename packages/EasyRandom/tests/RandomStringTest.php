@@ -16,6 +16,8 @@ final class RandomStringTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testRandomString
      */
     public function providerTestRandomString(): iterable
     {

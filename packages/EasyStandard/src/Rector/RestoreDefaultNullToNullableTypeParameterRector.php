@@ -12,6 +12,9 @@ use Rector\Core\Rector\AbstractRector;
 use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
 
+/**
+ * @see \EonX\EasyStandard\Tests\Rector\RestoreDefaultNullToNullableTypeParameterRector\RestoreDefaultNullToNullableTypeParameterRectorTest
+ */
 final class RestoreDefaultNullToNullableTypeParameterRector extends AbstractRector
 {
     public function getDefinition(): RectorDefinition

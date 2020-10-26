@@ -6,9 +6,6 @@ namespace EonX\EasyEntityChange\Tests\Stubs;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @coversNothing
- */
 final class EventDispatcherStub implements EventDispatcherInterface
 {
     /**
