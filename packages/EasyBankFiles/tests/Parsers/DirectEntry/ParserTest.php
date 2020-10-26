@@ -16,7 +16,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class ParserTest extends TestCase
 {
     /**
-     * Test if process on parser returns transactions
+     * Test if process on parser returns transactions.
      */
     public function testProcessReturnsTransactions(): void
     {
@@ -26,7 +26,7 @@ final class ParserTest extends TestCase
     }
 
     /**
-     * Test process on parser returns header
+     * Test process on parser returns header.
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
      */
@@ -53,7 +53,7 @@ final class ParserTest extends TestCase
     }
 
     /**
-     * Test if process on parser returns a trailer record
+     * Test if process on parser returns a trailer record.
      */
     public function testProcessShouldReturnTrailer(): void
     {

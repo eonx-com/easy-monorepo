@@ -12,6 +12,8 @@ final class EasyRandomBundleTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testUuidV4GeneratorInstance
      */
     public function providerTestUuidV4GeneratorInstance(): iterable
     {

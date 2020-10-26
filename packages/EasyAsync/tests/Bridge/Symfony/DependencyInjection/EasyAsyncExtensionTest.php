@@ -29,6 +29,8 @@ final class EasyAsyncExtensionTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testLoad
      */
     public function providerLoad(): iterable
     {

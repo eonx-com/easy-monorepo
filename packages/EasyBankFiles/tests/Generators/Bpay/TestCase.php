@@ -8,10 +8,13 @@ use EonX\EasyBankFiles\Generators\Bpay\Objects\Header;
 use EonX\EasyBankFiles\Generators\Bpay\Objects\Transaction;
 use EonX\EasyBankFiles\Tests\Generators\TestCase as GeneratorTestCase;
 
+/**
+ * @covers \EonX\EasyBankFiles\Tests\Generators\Bpay\TestCase
+ */
 class TestCase extends GeneratorTestCase
 {
     /**
-     * Create a Header object
+     * Create a Header object.
      */
     protected function createHeader(): Header
     {
@@ -23,7 +26,7 @@ class TestCase extends GeneratorTestCase
     }
 
     /**
-     * Create a Transaction object
+     * Create a Transaction object.
      */
     protected function createTransaction(): Transaction
     {

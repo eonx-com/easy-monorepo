@@ -25,6 +25,8 @@ final class RealTimeMessageTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetters
      */
     public function providerTestGetters(): iterable
     {

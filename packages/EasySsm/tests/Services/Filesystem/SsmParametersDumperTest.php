@@ -14,6 +14,8 @@ final class SsmParametersDumperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDumpParameters
      */
     public function providerTestDumpParameters(): iterable
     {

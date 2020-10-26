@@ -16,7 +16,7 @@ final class Trailer extends BaseResult
     use HasAmounts;
 
     /**
-     * Get total credit amount as in file trailer as dollars
+     * Get total credit amount as in file trailer as dollars.
      */
     public function getTotalCreditAmount(): string
     {
@@ -24,7 +24,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get total debit amount as in file trailer as dollars
+     * Get total debit amount as in file trailer as dollars.
      */
     public function getTotalDebitAmount(): string
     {
@@ -32,7 +32,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get total net amount as in file trailer as dollars
+     * Get total net amount as in file trailer as dollars.
      */
     public function getTotalNetAmount(): string
     {

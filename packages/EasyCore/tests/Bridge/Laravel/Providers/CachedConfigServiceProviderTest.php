@@ -12,6 +12,8 @@ final class CachedConfigServiceProviderTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetCachedConfig
      */
     public function dataProviderGetCachedConfig(): iterable
     {

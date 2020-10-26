@@ -18,7 +18,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 final class Trailer extends BaseResult
 {
     /**
-     * Get the amount of approvals as a decimal
+     * Get the amount of approvals as a decimal.
      */
     public function getAmountOfApprovalsDecimal(): ?string
     {
@@ -26,7 +26,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get the amount of declines as a decimal
+     * Get the amount of declines as a decimal.
      */
     public function getAmountOfDeclinesDecimal(): ?string
     {
@@ -34,7 +34,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get the amount of payments as a decimal
+     * Get the amount of payments as a decimal.
      */
     public function getAmountOfPaymentsDecimal(): ?string
     {
@@ -60,7 +60,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get the amount as a decimal
+     * Get the amount as a decimal.
      *
      * @param string $attribute The attribute to get the decimal amount from
      */

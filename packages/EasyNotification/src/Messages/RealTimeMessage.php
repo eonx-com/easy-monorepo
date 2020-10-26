@@ -50,7 +50,7 @@ final class RealTimeMessage extends AbstractMessage
      */
     public static function create(?array $body = null, ?array $topics = null): self
     {
-        return new static($body, $topics);
+        return new self($body, $topics);
     }
 
     public static function isStatusValid(string $status): bool

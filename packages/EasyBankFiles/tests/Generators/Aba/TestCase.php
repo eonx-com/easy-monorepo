@@ -9,10 +9,13 @@ use EonX\EasyBankFiles\Generators\Aba\Objects\FileTotalRecord;
 use EonX\EasyBankFiles\Generators\Aba\Objects\Transaction;
 use EonX\EasyBankFiles\Tests\Generators\TestCase as GeneratorTestCase;
 
+/**
+ * @covers \EonX\EasyBankFiles\Tests\Generators\Aba\TestCase
+ */
 class TestCase extends GeneratorTestCase
 {
     /**
-     * Create a DescriptiveRecord object with default attributes
+     * Create a DescriptiveRecord object with default attributes.
      */
     protected function createDescriptiveRecord(): DescriptiveRecord
     {
@@ -27,7 +30,7 @@ class TestCase extends GeneratorTestCase
     }
 
     /**
-     * Create File Total Record object with default values
+     * Create File Total Record object with default values.
      */
     protected function createFileTotalRecord(): FileTotalRecord
     {
@@ -40,7 +43,7 @@ class TestCase extends GeneratorTestCase
     }
 
     /**
-     * Create a Transaction object with default values
+     * Create a Transaction object with default values.
      *
      * @param int|null $transactionCode Either Transaction::CODE_GENERAL_CREDIT or Transaction::CODE_GENERAL_DEBIT
      */

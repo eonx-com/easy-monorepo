@@ -22,6 +22,8 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
 {
     /**
      * @return string[][]
+     *
+     * @see testValidateFailsWithInvalidCharactersError
      */
     public function provideAbnWithInvalidCharacters(): array
     {
@@ -33,6 +35,8 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
 
     /**
      * @return mixed[]
+     *
+     * @see testValidateThrowsUnexpectedValueException
      */
     public function provideUnexpectedValues(): array
     {
@@ -44,6 +48,8 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
 
     /**
      * @return mixed[]
+     *
+     * @see testValidateSucceedsWithValidAbn
      */
     public function provideValidAbnValues(): array
     {
@@ -59,6 +65,8 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
 
     /**
      * @return string[][]
+     *
+     * @see testValidateFailsWithModulusCalculationFailedError
      */
     public function provideInvalidAbnValues(): array
     {

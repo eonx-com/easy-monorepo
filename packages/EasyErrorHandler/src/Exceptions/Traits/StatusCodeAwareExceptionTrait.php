@@ -12,7 +12,7 @@ trait StatusCodeAwareExceptionTrait
     protected $statusCode = 500;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getStatusCode(): int
     {

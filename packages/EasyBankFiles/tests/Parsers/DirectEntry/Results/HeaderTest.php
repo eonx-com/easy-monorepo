@@ -14,7 +14,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class HeaderTest extends TestCase
 {
     /**
-     * Test if date conversion works as expected
+     * Test if date conversion works as expected.
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
      */
@@ -30,7 +30,7 @@ final class HeaderTest extends TestCase
     }
 
     /**
-     * Test if invalid date returns null
+     * Test if invalid date returns null.
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
      */

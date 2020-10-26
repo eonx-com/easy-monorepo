@@ -11,7 +11,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class PaymentAcknowledgementTest extends TestCase
 {
     /**
-     * Should return datetime as DateTime object
+     * Should return datetime as DateTime object.
      *
      * @group Ack-PaymentAcknowledgement
      *

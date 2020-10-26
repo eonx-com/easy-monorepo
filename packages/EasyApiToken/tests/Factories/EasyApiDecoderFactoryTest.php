@@ -35,6 +35,8 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testInvalidConfigurationErrors
      */
     public function getBrokenConfigurations(): iterable
     {
@@ -136,6 +138,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
      * @return iterable<mixed>
      *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
+     *
+     * @see testBuild
+     * @see testBuildWithContainer
      */
     public function getChainBuilds(): iterable
     {
@@ -164,6 +169,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testBuild
+     * @see testBuildWithContainer
      */
     public function getJwtBuilds(): iterable
     {
@@ -320,6 +328,9 @@ final class EasyApiDecoderFactoryTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testBuild
+     * @see testBuildWithContainer
      */
     public function getSimpleBuilds(): iterable
     {

@@ -11,14 +11,12 @@ use ReflectionMethod;
 use ReflectionProperty;
 
 /**
- * @SuppressWarnings(PHPMD.NumberOfChildren) All Tests extend this class
+ * @covers \EonX\EasyBankFiles\Tests\Parsers\TestCase
  */
 class TestCase extends BaseTestCase
 {
     /**
      * Get mock for given class and set expectations based on given callable.
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess) Inherited from Mockery
      */
     protected function getMockWithExpectations(string $class, callable $setExpectations): LegacyMockInterface
     {
@@ -30,7 +28,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * Set the protected/private function to accessible and return reflection method
+     * Set the protected/private function to accessible and return reflection method.
      *
      * @throws \ReflectionException
      *
@@ -47,7 +45,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * Set property to accessible and return reflection property
+     * Set property to accessible and return reflection property.
      *
      * @throws \ReflectionException
      *

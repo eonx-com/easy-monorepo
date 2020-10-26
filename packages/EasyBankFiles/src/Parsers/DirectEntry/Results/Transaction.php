@@ -24,7 +24,7 @@ final class Transaction extends BaseResult
     use HasAmounts;
 
     /**
-     * Get amount on transaction as dollar
+     * Get amount on transaction as dollar.
      */
     public function getAmount(): string
     {
@@ -32,7 +32,7 @@ final class Transaction extends BaseResult
     }
 
     /**
-     * Get withholding tax on transaction as dollar
+     * Get withholding tax on transaction as dollar.
      */
     public function getWithholdingTax(): string
     {

@@ -18,6 +18,8 @@ final class ProcessWithLockMiddlewareTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcessWithJobLog
      */
     public function providerHandle(): iterable
     {

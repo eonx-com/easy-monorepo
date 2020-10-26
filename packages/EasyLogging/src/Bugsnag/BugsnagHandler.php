@@ -51,7 +51,7 @@ final class BugsnagHandler extends AbstractProcessingHandler
         // Notify exception if context exception exists
         $exception = $record['context']['exception'] ?? null;
 
-        if (($exception instanceof Throwable) === true) {
+        if ($exception instanceof Throwable) {
             // Do not combine if statements so we keep the notifyError feature if no exception in context
             if ($this->shouldReport($exception)) {
                 $this->client->notifyException($exception, $this->getNotifyCallback($record));

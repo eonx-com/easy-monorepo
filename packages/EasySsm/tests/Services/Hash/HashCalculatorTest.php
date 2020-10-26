@@ -13,6 +13,8 @@ final class HashCalculatorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCalculateHash
      */
     public function providerTestCalculateHash(): iterable
     {

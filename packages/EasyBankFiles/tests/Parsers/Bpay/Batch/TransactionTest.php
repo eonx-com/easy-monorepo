@@ -10,7 +10,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class TransactionTest extends TestCase
 {
     /**
-     * Should return transaction amount as a decimal
+     * Should return transaction amount as a decimal.
      *
      * @group Batch-Transaction
      */
@@ -24,7 +24,7 @@ final class TransactionTest extends TestCase
     }
 
     /**
-     * Should return transaction amount
+     * Should return transaction amount.
      *
      * @group Batch-Transaction
      */

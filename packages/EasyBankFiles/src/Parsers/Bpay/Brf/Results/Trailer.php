@@ -17,7 +17,7 @@ final class Trailer extends BaseResult
     use SignedFieldsTrait;
 
     /**
-     * Get the amount of error correction and type
+     * Get the amount of error correction and type.
      *
      * @return mixed[]
      *
@@ -29,7 +29,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get the amount of payment and type
+     * Get the amount of payment and type.
      *
      * @return mixed[]
      *
@@ -41,7 +41,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get the amount fo reversal and type
+     * Get the amount fo reversal and type.
      *
      * @return mixed[]
      *
@@ -53,7 +53,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get number of error corrections and type
+     * Get number of error corrections and type.
      *
      * @return mixed[]
      *
@@ -65,7 +65,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get number of payments and type
+     * Get number of payments and type.
      *
      * @return mixed[]
      *
@@ -77,7 +77,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get Number of Reversals and type
+     * Get Number of Reversals and type.
      *
      * @return mixed[]
      *
@@ -89,7 +89,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get the settlement amount and type
+     * Get the settlement amount and type.
      *
      * @return mixed[]
      *
@@ -121,7 +121,7 @@ final class Trailer extends BaseResult
     }
 
     /**
-     * Get the trailer amount and convert to proper value based on signed field
+     * Get the trailer amount and convert to proper value based on signed field.
      *
      * @return mixed[]
      *

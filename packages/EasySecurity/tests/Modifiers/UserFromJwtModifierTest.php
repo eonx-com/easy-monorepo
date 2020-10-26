@@ -21,6 +21,8 @@ final class UserFromJwtModifierTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testResolve
      */
     public function modifyProvider(): iterable
     {

@@ -12,6 +12,8 @@ final class StrictDeclarationFormatSniffTest extends AbstractCheckerTestCase
 {
     /**
      * @return iterable<array<int, SmartFileInfo|int>>
+     *
+     * @see testSniff
      */
     public function providerTestSniff(): iterable
     {

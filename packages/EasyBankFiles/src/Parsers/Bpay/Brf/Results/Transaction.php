@@ -20,7 +20,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 final class Transaction extends BaseResult
 {
     /**
-     * Convert amount into float and return as dollars
+     * Convert amount into float and return as dollars.
      */
     public function getAmount(): float
     {
@@ -28,7 +28,7 @@ final class Transaction extends BaseResult
     }
 
     /**
-     * Convert to DateTime object and return
+     * Convert to DateTime object and return.
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException If datetime constructor string is invalid
      */
@@ -38,7 +38,7 @@ final class Transaction extends BaseResult
     }
 
     /**
-     * Convert to DateTime object and return
+     * Convert to DateTime object and return.
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException If datetime constructor string is invalid
      */

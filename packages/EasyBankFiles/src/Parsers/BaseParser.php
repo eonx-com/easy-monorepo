@@ -20,7 +20,7 @@ abstract class BaseParser
     }
 
     /**
-     * Process parsing
+     * Process parsing.
      */
     abstract protected function process(): void;
 }
