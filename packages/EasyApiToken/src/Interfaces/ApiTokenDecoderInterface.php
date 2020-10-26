@@ -23,5 +23,3 @@ interface ApiTokenDecoderInterface
 
     public function getName(): string;
 }
-
-\class_alias(ApiTokenDecoderInterface::class, EasyApiTokenDecoderInterface::class);

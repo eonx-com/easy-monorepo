@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
@@ -47,7 +47,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // MainSecurityContextConfigurator
     $services
-        ->set('easy_security.api_token_decoder', EasyApiTokenDecoderInterface::class)
+        ->set('easy_security.api_token_decoder', ApiTokenDecoderInterface::class)
         ->factory([ref(ApiTokenDecoderFactoryInterface::class), 'build'])
         ->args(['%' . BridgeConstantsInterface::PARAM_TOKEN_DECODER . '%']);
 
