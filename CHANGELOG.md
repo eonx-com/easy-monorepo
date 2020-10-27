@@ -1,6 +1,18 @@
 <!-- changelog-linker -->
 
-## v2.5.17 - 2020-10-21
+## v2.5.18 - 2020-10-27
+
+- [#405] static fixes, Thanks to [@TomasVotruba]
+
+### EasySecurity
+
+- [#407] Prevent resolving security context when not needed
+
+### EasyStandard
+
+- [#402] Apply easy Rector rules on the monorepo itself, Thanks to [@TomasVotruba]
+
+## [v2.5.17] - 2020-10-21
 
 ### EasyCore
 
@@ -2624,3 +2636,7 @@
 [v2.5.15]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.14...v2.5.15
 [#404]: https://github.com/eonx-com/easy-monorepo/pull/404
 [v2.5.16]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.15...v2.5.16
+[#407]: https://github.com/eonx-com/easy-monorepo/pull/407
+[#405]: https://github.com/eonx-com/easy-monorepo/pull/405
+[#402]: https://github.com/eonx-com/easy-monorepo/pull/402
+[v2.5.17]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.16...v2.5.17
