@@ -12,8 +12,10 @@ use EonX\EasySecurity\Bridge\Symfony\Factories\AuthenticationFailureResponseFact
 use EonX\EasySecurity\Bridge\Symfony\Factories\MainSecurityContextConfiguratorFactory;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface;
 use EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator;
+use EonX\EasySecurity\DeferredSecurityContextProvider;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
+use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
 use EonX\EasySecurity\MainSecurityContextConfigurator;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -23,8 +25,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_it
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
-    $services
-        ->defaults()
+    $services->defaults()
         ->autowire()
         ->autoconfigure();
 
@@ -61,9 +62,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->call('withConfigurators', [tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR)])
         ->call('withModifiers', [tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_MODIFIER)]);
 
+    // Deferred Security Provider
+    $services
+        ->set(DeferredSecurityContextProviderInterface::class, DeferredSecurityContextProvider::class)
+        ->arg('$contextServiceId', '%' . BridgeConstantsInterface::PARAM_CONTEXT_SERVICE_ID . '%');
+
     // Symfony Security
     $services->set(AuthenticationFailureResponseFactoryInterface::class, AuthenticationFailureResponseFactory::class);
-
     $services->set(ContextAuthenticator::class);
 
     // DataCollector

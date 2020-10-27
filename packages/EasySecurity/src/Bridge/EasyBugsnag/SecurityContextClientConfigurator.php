@@ -5,58 +5,67 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Bridge\EasyBugsnag;
 
 use Bugsnag\Client;
+use Bugsnag\Middleware\CallbackBridge;
+use Bugsnag\Report;
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
 use EonX\EasySecurity\Interfaces\Authorization\PermissionInterface;
 use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
+use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
-use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
 
 final class SecurityContextClientConfigurator extends AbstractClientConfigurator
 {
     /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextInterface
+     * @var \EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface
      */
-    private $securityContext;
+    private $securityContextProvider;
 
-    public function __construct(SecurityContextInterface $securityContext, ?int $priority = null)
-    {
-        $this->securityContext = $securityContext;
+    public function __construct(
+        DeferredSecurityContextProviderInterface $securityContextProvider,
+        ?int $priority = null
+    ) {
+        $this->securityContextProvider = $securityContextProvider;
 
         parent::__construct($priority);
     }
 
     public function configure(Client $bugsnag): void
     {
-        $security = [];
+        $bugsnag
+            ->getPipeline()
+            ->pipe(new CallbackBridge(function (Report $report): void {
+                $security = [];
+                $securityContext = $this->securityContextProvider->getSecurityContext();
 
-        $token = $this->securityContext->getToken();
-        if ($token !== null) {
-            $security['token'] = $this->formatToken($token);
-        }
+                $token = $securityContext->getToken();
+                if ($token !== null) {
+                    $security['token'] = $this->formatToken($token);
+                }
 
-        if (\count($this->securityContext->getRoles()) > 0) {
-            $security['roles'] = $this->formatRoles($this->securityContext->getRoles());
-        }
+                if (\count($securityContext->getRoles()) > 0) {
+                    $security['roles'] = $this->formatRoles($securityContext->getRoles());
+                }
 
-        if (\count($this->securityContext->getPermissions()) > 0) {
-            $security['permissions'] = $this->formatPermissions($this->securityContext->getPermissions());
-        }
+                if (\count($securityContext->getPermissions()) > 0) {
+                    $security['permissions'] = $this->formatPermissions($securityContext->getPermissions());
+                }
 
-        $provider = $this->securityContext->getProvider();
-        if ($provider !== null) {
-            $security['provider'] = $this->formatProvider($provider);
-        }
+                $provider = $securityContext->getProvider();
+                if ($provider !== null) {
+                    $security['provider'] = $this->formatProvider($provider);
+                }
 
-        $user = $this->securityContext->getUser();
-        if ($user !== null) {
-            $security['user'] = $this->formatUser($user);
-        }
+                $user = $securityContext->getUser();
+                if ($user !== null) {
+                    $security['user'] = $this->formatUser($user);
+                }
 
-        $bugsnag->setMetaData([
-            'security' => $security,
-        ]);
+                $report->setMetaData([
+                    'security' => $security,
+                ]);
+            }));
     }
 
     /**
