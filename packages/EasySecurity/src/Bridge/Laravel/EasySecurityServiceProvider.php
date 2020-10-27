@@ -37,7 +37,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
         $contextServiceId = \config('easy-security.context_service_id');
 
         $this->registerAuthorizationMatrix();
-        $this->registerEasyBugsnag($contextServiceId);
+        $this->registerEasyBugsnag();
         $this->registerSecurityContext($contextServiceId);
         $this->registerDeferredSecurityContextProvider($contextServiceId);
     }
@@ -74,7 +74,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
         );
     }
 
-    private function registerEasyBugsnag(string $contextServiceId): void
+    private function registerEasyBugsnag(): void
     {
         if (\config('easy-security.easy_bugsnag', false) === false
             || \interface_exists(EasyBugsnagBridgeConstantsInterface::class) === false) {
@@ -83,8 +83,10 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             SecurityContextClientConfigurator::class,
-            function () use ($contextServiceId): SecurityContextClientConfigurator {
-                return new SecurityContextClientConfigurator($this->app->make($contextServiceId));
+            function (): SecurityContextClientConfigurator {
+                return new SecurityContextClientConfigurator(
+                    $this->app->make(DeferredSecurityContextProviderInterface::class)
+                );
             }
         );
         $this->app->tag(
