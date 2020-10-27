@@ -33,37 +33,39 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
 
     public function configure(Client $bugsnag): void
     {
-        $bugsnag->getPipeline()->pipe(new CallbackBridge(function (Report $report): void {
-            $security = [];
-            $securityContext = $this->securityContextProvider->getSecurityContext();
+        $bugsnag
+            ->getPipeline()
+            ->pipe(new CallbackBridge(function (Report $report): void {
+                $security = [];
+                $securityContext = $this->securityContextProvider->getSecurityContext();
 
-            $token = $securityContext->getToken();
-            if ($token !== null) {
-                $security['token'] = $this->formatToken($token);
-            }
+                $token = $securityContext->getToken();
+                if ($token !== null) {
+                    $security['token'] = $this->formatToken($token);
+                }
 
-            if (\count($securityContext->getRoles()) > 0) {
-                $security['roles'] = $this->formatRoles($securityContext->getRoles());
-            }
+                if (\count($securityContext->getRoles()) > 0) {
+                    $security['roles'] = $this->formatRoles($securityContext->getRoles());
+                }
 
-            if (\count($securityContext->getPermissions()) > 0) {
-                $security['permissions'] = $this->formatPermissions($securityContext->getPermissions());
-            }
+                if (\count($securityContext->getPermissions()) > 0) {
+                    $security['permissions'] = $this->formatPermissions($securityContext->getPermissions());
+                }
 
-            $provider = $securityContext->getProvider();
-            if ($provider !== null) {
-                $security['provider'] = $this->formatProvider($provider);
-            }
+                $provider = $securityContext->getProvider();
+                if ($provider !== null) {
+                    $security['provider'] = $this->formatProvider($provider);
+                }
 
-            $user = $securityContext->getUser();
-            if ($user !== null) {
-                $security['user'] = $this->formatUser($user);
-            }
+                $user = $securityContext->getUser();
+                if ($user !== null) {
+                    $security['user'] = $this->formatUser($user);
+                }
 
-            $report->setMetaData([
-                'security' => $security,
-            ]);
-        }));
+                $report->setMetaData([
+                    'security' => $security,
+                ]);
+            }));
     }
 
     /**
