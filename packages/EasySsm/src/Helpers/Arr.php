@@ -24,11 +24,24 @@ final class Arr
             }
 
             // Set value
-            $flattened[] = [\sprintf('%s%s', (string)$prepend, $key) => $value];
+            $flattened[] = [
+                \sprintf('%s%s', (string)$prepend, $key) => $value,
+            ];
         }
 
         // Merge flattened keys if some were found otherwise return an empty array
-        return \count($flattened) ? \array_merge(...$flattened) : [];
+        $flattened = \count($flattened) ? \array_merge(...$flattened) : [];
+
+        // Remove /__base__
+        $return = [];
+
+        foreach ($flattened as $key => $value) {
+            $key = \str_replace('/__base__', '', (string)$key);
+
+            $return[$key] = $value;
+        }
+
+        return $return;
     }
 
     /**
@@ -46,6 +59,12 @@ final class Arr
 
             if (empty($key)) {
                 continue;
+            }
+
+            if (\is_string($array[$key] ?? null)) {
+                $array[$key] = [
+                    '__base__' => $array[$key],
+                ];
             }
 
             if (isset($array[$key]) === false || \is_array($array[$key]) === false) {

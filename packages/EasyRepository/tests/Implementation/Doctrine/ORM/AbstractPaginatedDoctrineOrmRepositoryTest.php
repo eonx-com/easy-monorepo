@@ -17,7 +17,7 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
 {
     public function testPaginateSetResultsSuccessfully(): void
     {
-        /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
+        /** @var \Doctrine\Persistence\ManagerRegistry $registry */
         $registry = $this->mockRegistry(null, function (LegacyMockInterface $repository): void {
             $repository
                 ->shouldReceive('getClassName')
@@ -52,7 +52,10 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
                 }
             );
 
-            $queryBuilder->shouldReceive('getQuery')->once()->withNoArgs()->andReturn(new Query($entityManager));
+            $queryBuilder->shouldReceive('getQuery')
+                ->once()
+                ->withNoArgs()
+                ->andReturn(new Query($entityManager));
         });
     }
 }

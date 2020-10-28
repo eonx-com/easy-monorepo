@@ -69,10 +69,7 @@ final class EntityChangeSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents(): array
     {
-        return [
-            Events::onFlush,
-            Events::postFlush,
-        ];
+        return [Events::onFlush, Events::postFlush];
     }
 
     public function onFlush(OnFlushEventArgs $eventArgs): void
@@ -193,10 +190,7 @@ final class EntityChangeSubscriber implements EventSubscriber
         // If we dont have any ids for the object we will store the DTO in a separate array to be re-processed
         // after the flush.
         if (\count($entityIds) === 0) {
-            $this->inserts[] = [
-                new UpdatedEntity($changedProperties, $className, $entityIds),
-                $entity,
-            ];
+            $this->inserts[] = [new UpdatedEntity($changedProperties, $className, $entityIds), $entity];
 
             return;
         }
@@ -246,11 +240,7 @@ final class EntityChangeSubscriber implements EventSubscriber
                 // @codeCoverageIgnoreEnd
             }
 
-            $this->changes[] = new UpdatedEntity(
-                $dto->getChangedProperties(),
-                $dto->getClass(),
-                $ids
-            );
+            $this->changes[] = new UpdatedEntity($dto->getChangedProperties(), $dto->getClass(), $ids);
         }
     }
 }

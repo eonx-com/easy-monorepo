@@ -15,14 +15,12 @@ final class HashCheckerTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCheckHash
      */
     public function providerTestCheckHash(): iterable
     {
-        yield 'No local hash' => [
-            'no-local',
-            [],
-            false,
-        ];
+        yield 'No local hash' => ['no-local', [], false];
 
         yield 'Local hash different' => [
             'different',
@@ -41,14 +39,12 @@ final class HashCheckerTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testCheckHashesForParams
      */
     public function providerTestCheckHashesForParams(): iterable
     {
-        yield 'Different because empty array' => [
-            [new SsmParameter('param', 'string', 'value')],
-            [],
-            false,
-        ];
+        yield 'Different because empty array' => [[new SsmParameter('param', 'string', 'value')], [], false];
 
         yield 'Different because name' => [
             [new SsmParameter('param', 'string', 'value')],
@@ -74,11 +70,7 @@ final class HashCheckerTest extends AbstractTestCase
             false,
         ];
 
-        yield 'Identical with empty arrays' => [
-            [],
-            [],
-            true,
-        ];
+        yield 'Identical with empty arrays' => [[], [], true];
 
         yield 'Identical' => [
             [new SsmParameter('param', 'string', 'value')],
@@ -94,7 +86,9 @@ final class HashCheckerTest extends AbstractTestCase
      */
     public function testCheckHash(string $name, array $parameters, bool $expected, ?string $localHash = null): void
     {
-        $hashRepository = new HashRepositoryStub([$name => $localHash]);
+        $hashRepository = new HashRepositoryStub([
+            $name => $localHash,
+        ]);
         $hashChecker = new HashChecker(new HashCalculator(new Parameters()), $hashRepository);
 
         self::assertEquals($expected, $hashChecker->checkHash($name, $parameters));

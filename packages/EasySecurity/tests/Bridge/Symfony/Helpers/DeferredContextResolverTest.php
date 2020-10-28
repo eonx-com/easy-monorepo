@@ -12,7 +12,8 @@ final class DeferredContextResolverTest extends AbstractSymfonyTestCase
 {
     public function testResolve(): void
     {
-        $container = $this->getKernel()->getContainer();
+        $container = $this->getKernel()
+            ->getContainer();
 
         $helper = new DeferredContextResolver($container, 'service-id');
 

@@ -4,28 +4,25 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Laravel\Providers;
 
-use EonX\EasyAsync\Bridge\Laravel\Events\EventDispatcher;
 use EonX\EasyAsync\Exceptions\InvalidImplementationException;
 use EonX\EasyAsync\Factories\JobFactory;
 use EonX\EasyAsync\Factories\JobLogFactory;
 use EonX\EasyAsync\Generators\DateTimeGenerator;
-use EonX\EasyAsync\Generators\RamseyUuidGenerator;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\DataCleaner;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobLogPersister;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister;
 use EonX\EasyAsync\Interfaces\DataCleanerInterface;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
-use EonX\EasyAsync\Interfaces\EventDispatcherInterface;
 use EonX\EasyAsync\Interfaces\ImplementationsInterface;
 use EonX\EasyAsync\Interfaces\JobFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
 use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
 use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
-use EonX\EasyAsync\Interfaces\UuidGeneratorInterface;
 use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyAsyncServiceProvider extends ServiceProvider
@@ -43,10 +40,8 @@ final class EasyAsyncServiceProvider extends ServiceProvider
 
         $simples = [
             DateTimeGeneratorInterface::class => DateTimeGenerator::class,
-            EventDispatcherInterface::class => EventDispatcher::class,
             JobFactoryInterface::class => JobFactory::class,
             JobLogFactoryInterface::class => JobLogFactory::class,
-            UuidGeneratorInterface::class => RamseyUuidGenerator::class,
             'default_job_log_updater' => JobLogUpdater::class,
             JobLogUpdaterInterface::class => WithEventsJobLogUpdater::class,
         ];

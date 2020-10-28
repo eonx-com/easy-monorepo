@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Modifiers;
 
-use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\JwtInterface;
 use EonX\EasySecurity\Interfaces\JwtClaimFetcherInterface;
 use EonX\EasySecurity\JwtClaimFetcher;
 
+/**
+ * @deprecated Since 2.4, will be removed in 3.0.
+ */
 abstract class AbstractFromJwtContextModifier extends AbstractContextModifier
 {
     /**
@@ -45,7 +48,7 @@ abstract class AbstractFromJwtContextModifier extends AbstractContextModifier
      *
      * @return mixed
      */
-    protected function getClaim(JwtEasyApiTokenInterface $token, string $claim, $default = null)
+    protected function getClaim(JwtInterface $token, string $claim, $default = null)
     {
         return $this->jwtClaimFetcher->getClaim($token, $claim, $default);
     }
@@ -55,7 +58,7 @@ abstract class AbstractFromJwtContextModifier extends AbstractContextModifier
      *
      * @return mixed[]
      */
-    protected function getMainClaim(JwtEasyApiTokenInterface $token, ?array $default = null): array
+    protected function getMainClaim(JwtInterface $token, ?array $default = null): array
     {
         return $this->jwtClaimFetcher->getArrayClaim($token, $this->jwtClaim, $default);
     }

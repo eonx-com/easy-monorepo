@@ -7,6 +7,7 @@ namespace EonX\EasyDecision\Tests\Bridge\Laravel;
 use EonX\EasyDecision\Decisions\AffirmativeDecision;
 use EonX\EasyDecision\Decisions\ValueDecision;
 use EonX\EasyDecision\Exceptions\InvalidArgumentException;
+use EonX\EasyDecision\Exceptions\InvalidMappingException;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 use EonX\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
@@ -34,9 +35,16 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->setConfig(['decisions' => ['my-decision' => ['providers' => '']]]);
+        $this->setConfig([
+            'decisions' => [
+                'my-decision' => [
+                    'providers' => '',
+                ],
+            ],
+        ]);
 
-        $this->getDecisionFactory()->create('my-decision');
+        $this->getDecisionFactory()
+            ->create('my-decision');
     }
 
     public function testArrayConfigEmptyType(): void
@@ -52,12 +60,56 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
             ],
         ]);
 
-        $this->getDecisionFactory()->create('my-decision');
+        $this->getDecisionFactory()
+            ->create('my-decision');
+    }
+
+    public function testCreateDecisionByNameThrowsInvalidMappingExceptionIfDecisionIsNotConfigured(): void
+    {
+        $this->expectException(InvalidMappingException::class);
+        $this->expectExceptionMessage('Decision for name "some-decision" is not configured');
+        $factory = $this->getApplication()
+            ->get(DecisionFactoryInterface::class);
+
+        $factory->createByName('some-decision');
+    }
+
+    public function testCreateDecisionByNameThrowsInvalidMappingExceptionIfClassIsNotValid(): void
+    {
+        $this->setConfig([
+            'type_mapping' => [
+                'some-decision' => 'NonexistentClass',
+            ],
+        ]);
+        $this->expectException(InvalidMappingException::class);
+        $this->expectExceptionMessage(
+            'Decision class "NonexistentClass" for name "some-decision" is not a valid classname'
+        );
+        $factory = $this->getApplication()
+            ->get(DecisionFactoryInterface::class);
+
+        $factory->createByName('some-decision');
+    }
+
+    public function testCreateDecisionByNameSucceeds(): void
+    {
+        $this->setConfig([
+            'type_mapping' => [
+                'some-decision' => ValueDecision::class,
+            ],
+        ]);
+        $factory = $this->getApplication()
+            ->get(DecisionFactoryInterface::class);
+
+        $decision = $factory->createByName('some-decision');
+
+        self::assertInstanceOf(ValueDecision::class, $decision);
     }
 
     public function testCreateDecisionSuccessfullyWithRuleProviderFromContainer(): void
     {
-        $this->getApplication()->instance(RuleProviderStub::class, new RuleProviderStub());
+        $this->getApplication()
+            ->instance(RuleProviderStub::class, new RuleProviderStub());
 
         $this->setConfig([
             'decisions' => [
@@ -73,7 +125,8 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
 
     public function testCreateDecisionWithConfigurators(): void
     {
-        $factory = $this->getApplication()->get(DecisionFactoryInterface::class);
+        $factory = $this->getApplication()
+            ->get(DecisionFactoryInterface::class);
         $decision = $factory->createValueDecision();
 
         self::assertInstanceOf(ValueDecision::class, $decision);
@@ -82,7 +135,8 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
 
     public function testCreateWithProviderConfigWithExpressionFunctionsSuccessfully(): void
     {
-        $this->getApplication()->instance('minPhpFunctionProvider', new FromPhpExpressionFunctionProvider(['min']));
+        $this->getApplication()
+            ->instance('minPhpFunctionProvider', new FromPhpExpressionFunctionProvider(['min']));
 
         $this->setConfig([
             'decisions' => [
@@ -104,7 +158,8 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->getApplication()->instance('MyDecisionConfigProvider', new \stdClass());
+        $this->getApplication()
+            ->instance('MyDecisionConfigProvider', new \stdClass());
 
         $this->setConfig([
             'decisions' => [
@@ -112,23 +167,30 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
             ],
         ]);
 
-        $this->getDecisionFactory()->create('my-decision');
+        $this->getDecisionFactory()
+            ->create('my-decision');
     }
 
     public function testInvalidConfigTypeException(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->setConfig(['decisions' => ['my-decision' => 1]]);
+        $this->setConfig([
+            'decisions' => [
+                'my-decision' => 1,
+            ],
+        ]);
 
-        $this->getDecisionFactory()->create('my-decision');
+        $this->getDecisionFactory()
+            ->create('my-decision');
     }
 
     public function testNoConfigForDecisionException(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->getDecisionFactory()->create('invalid');
+        $this->getDecisionFactory()
+            ->create('invalid');
     }
 
     /**
@@ -136,6 +198,8 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
      */
     private function setConfig(array $config): void
     {
-        $this->getApplication()->make('config')->set('easy-decision', $config);
+        $this->getApplication()
+            ->make('config')
+            ->set('easy-decision', $config);
     }
 }

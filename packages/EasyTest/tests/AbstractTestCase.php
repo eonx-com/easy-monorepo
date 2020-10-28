@@ -25,7 +25,11 @@ abstract class AbstractTestCase extends TestCase
     protected function executeCommand(string $command, ?array $inputs = null): string
     {
         $tester = new CommandTester($this->getApplication()->find($command));
-        $tester->execute(\array_merge(['command' => $command], $inputs ?? []), ['capture_stderr_separately' => true]);
+        $tester->execute(\array_merge([
+            'command' => $command,
+        ], $inputs ?? []), [
+            'capture_stderr_separately' => true,
+        ]);
 
         return $tester->getDisplay();
     }
@@ -40,7 +44,8 @@ abstract class AbstractTestCase extends TestCase
         $kernel->boot();
 
         /** @var \Symfony\Component\Console\Application $app */
-        $app = $kernel->getContainer()->get(EasyTestApplication::class);
+        $app = $kernel->getContainer()
+            ->get(EasyTestApplication::class);
 
         return $this->app = $app;
     }

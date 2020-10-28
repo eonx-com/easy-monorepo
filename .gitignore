@@ -1,5 +1,9 @@
 # Composer
 composer.lock
 /vendor
+/.idea
 .phpunit.result.cache
 coverage_output.txt
+
+# env
+.env.local.php

@@ -53,13 +53,7 @@ final class SsmParametersDumper implements SsmParametersDumperInterface
             $name = $parameter->getName();
             $value = $parameter->getValue();
 
-            if ($parameter->getType() !== 'SecureString') {
-                $array[$name] = $value;
-
-                continue;
-            }
-
-            $array[$name] = new TaggedValue('secure', $value);
+            $array[$name] = $parameter->getType() !== 'SecureString' ? $value : new TaggedValue('secure', $value);
         }
 
         \ksort($array);

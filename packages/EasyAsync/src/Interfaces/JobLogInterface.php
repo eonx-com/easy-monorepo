@@ -6,16 +6,29 @@ namespace EonX\EasyAsync\Interfaces;
 
 interface JobLogInterface extends EasyAsyncDataInterface
 {
-    public const STATUSES = [
-        self::STATUS_COMPLETED,
-        self::STATUS_FAILED,
-        self::STATUS_IN_PROGRESS,
-    ];
+    /**
+     * @var string
+     */
+    public const MSG_FAILED_BECAUSE_EXCEPTION = 'easy_async.failed.because_exception';
 
+    /**
+     * @var string[]
+     */
+    public const STATUSES = [self::STATUS_COMPLETED, self::STATUS_FAILED, self::STATUS_IN_PROGRESS];
+
+    /**
+     * @var string
+     */
     public const STATUS_COMPLETED = 'completed';
 
+    /**
+     * @var string
+     */
     public const STATUS_FAILED = 'failed';
 
+    /**
+     * @var string
+     */
     public const STATUS_IN_PROGRESS = 'in_progress';
 
     /**

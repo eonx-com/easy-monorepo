@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
 use Closure;
+use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
+use Throwable;
 
 trait DoctrineOrmRepositoryTrait
 {
@@ -88,8 +92,11 @@ trait DoctrineOrmRepositoryTrait
             $this->commit();
 
             return $return ?? true;
-        } catch (\Throwable $exception) {
-            $this->manager->close();
+        } catch (Throwable $exception) {
+            if ($exception instanceof ORMException || $exception instanceof DBALException) {
+                $this->manager->close();
+            }
+
             $this->rollback();
 
             throw $exception;
@@ -99,6 +106,11 @@ trait DoctrineOrmRepositoryTrait
     protected function createQueryBuilder(?string $alias = null, ?string $indexBy = null): QueryBuilder
     {
         return $this->repository->createQueryBuilder($alias ?? $this->getEntityAlias(), $indexBy);
+    }
+
+    protected function getClassMetadata(): ClassMetadata
+    {
+        return $this->manager->getClassMetadata($this->repository->getClassName());
     }
 
     protected function getEntityAlias(): string

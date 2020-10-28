@@ -13,6 +13,8 @@ final class HashCalculatorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCalculateHash
      */
     public function providerTestCalculateHash(): iterable
     {
@@ -22,18 +24,12 @@ final class HashCalculatorTest extends AbstractTestCase
         ];
 
         yield '2 string parameters' => [
-            [
-                new SsmParameter('param', 'string', 'value'),
-                new SsmParameter('param1', 'string', 'value1'),
-            ],
+            [new SsmParameter('param', 'string', 'value'), new SsmParameter('param1', 'string', 'value1')],
             '468426c6f1f39a846e871a1a58cab1db',
         ];
 
         yield '2 string parameters different order' => [
-            [
-                new SsmParameter('param1', 'string', 'value1'),
-                new SsmParameter('param', 'string', 'value'),
-            ],
+            [new SsmParameter('param1', 'string', 'value1'), new SsmParameter('param', 'string', 'value')],
             '468426c6f1f39a846e871a1a58cab1db',
         ];
     }

@@ -10,14 +10,13 @@ use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
 use EonX\EasyDecision\Configurators\SetNameConfigurator;
 use EonX\EasyDecision\Exceptions\InvalidDecisionException;
 use EonX\EasyDecision\Exceptions\InvalidRuleProviderException;
-use EonX\EasyDecision\Expressions\ExpressionLanguage;
-use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
+use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
-use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
+use EonX\EasyDecision\Interfaces\MappingProviderInterface;
 use EonX\EasyDecision\Interfaces\RestrictedDecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\RuleProviderInterface;
 use Psr\Container\ContainerInterface;
@@ -30,14 +29,19 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $configurators;
 
     /**
+     * @var \EonX\EasyDecision\Interfaces\DecisionInterface[]
+     */
+    private $configuredDecisions = [];
+
+    /**
      * @var \Psr\Container\ContainerInterface
      */
     private $container;
 
     /**
-     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface
+     * @var mixed[]
      */
-    private $expressionLanguage;
+    private $decisionConfigurators = [];
 
     /**
      * @var null|\EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface
@@ -45,9 +49,15 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $expressionLanguageFactory;
 
     /**
+     * @var \EonX\EasyDecision\Interfaces\MappingProviderInterface
+     */
+    private $mappingProvider;
+
+    /**
      * @param null|iterable<mixed> $configurators
      */
     public function __construct(
+        MappingProviderInterface $mappingProvider,
         ?ExpressionLanguageFactoryInterface $languageFactory = null,
         ?iterable $configurators = null
     ) {
@@ -60,6 +70,7 @@ final class DecisionFactory implements DecisionFactoryInterface
             ), \E_USER_DEPRECATED);
         }
 
+        $this->mappingProvider = $mappingProvider;
         $this->expressionLanguageFactory = $languageFactory;
         $this->configurators = $this->getConfiguratorsAsArray($configurators);
     }
@@ -85,8 +96,9 @@ final class DecisionFactory implements DecisionFactoryInterface
 
         $this->configurators[] = new SetNameConfigurator($config->getName());
         $this->configurators[] = new SetDefaultOutputConfigurator($config->getDefaultOutput());
-        $this->configurators[] = new SetExpressionLanguageConfigurator($this->getExpressionLanguage($config));
-
+        $this->configurators[] = new SetExpressionLanguageConfigurator(
+            $this->expressionLanguageFactory ?? new ExpressionLanguageFactory()
+        );
         $params = $config->getParams();
 
         foreach ($config->getRuleProviders() as $provider) {
@@ -109,6 +121,13 @@ final class DecisionFactory implements DecisionFactoryInterface
         return $this->configureDecision(new AffirmativeDecision($name));
     }
 
+    public function createByName(string $name): DecisionInterface
+    {
+        $decision = $this->mappingProvider->getDecisionType($name);
+
+        return $this->configureDecision(new $decision($name));
+    }
+
     public function createConsensusDecision(?string $name = null): DecisionInterface
     {
         return $this->configureDecision(new ConsensusDecision($name));
@@ -124,12 +143,31 @@ final class DecisionFactory implements DecisionFactoryInterface
         return $this->configureDecision(new ValueDecision($name));
     }
 
+    public function getConfiguratorsByDecision(DecisionInterface $decision): array
+    {
+        return $this->decisionConfigurators[\spl_object_hash($decision)] ?? [];
+    }
+
+    public function getConfiguredDecisions(): array
+    {
+        return $this->configuredDecisions;
+    }
+
     /**
      * @deprecated since 2.3.7
      */
     public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
+    }
+
+    /**
+     * @param \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[] $configurators
+     */
+    private function addConfiguredDecision(DecisionInterface $decision, array $configurators): void
+    {
+        $this->decisionConfigurators[\spl_object_hash($decision)] = $configurators;
+        $this->configuredDecisions[] = $decision;
     }
 
     private function configureDecision(DecisionInterface $decision): DecisionInterface
@@ -144,6 +182,8 @@ final class DecisionFactory implements DecisionFactoryInterface
             }
         );
 
+        $decisionConfigs = [];
+
         foreach ($configurators as $configurator) {
             if ($configurator instanceof RestrictedDecisionConfiguratorInterface
                 && $configurator->supports($decision) === false) {
@@ -151,7 +191,11 @@ final class DecisionFactory implements DecisionFactoryInterface
             }
 
             $configurator->configure($decision);
+
+            $decisionConfigs[] = $configurator;
         }
+
+        $this->addConfiguredDecision($decision, $decisionConfigs);
 
         return $decision;
     }
@@ -176,24 +220,6 @@ final class DecisionFactory implements DecisionFactoryInterface
         };
 
         return \array_filter($configurators, $filter);
-    }
-
-    /**
-     * @deprecated since 2.3.7
-     */
-    private function getExpressionLanguage(DecisionConfigInterface $config): ExpressionLanguageInterface
-    {
-        if ($this->expressionLanguage !== null) {
-            return $this->expressionLanguage;
-        }
-
-        if ($this->expressionLanguageFactory !== null) {
-            return $this->expressionLanguage = $this->expressionLanguageFactory->create(
-                $config->getExpressionLanguageConfig() ?? new ExpressionLanguageConfig()
-            );
-        }
-
-        return new ExpressionLanguage();
     }
 
     /**

@@ -6,14 +6,16 @@ namespace EonX\EasyApiToken\Tests\Tokens;
 
 use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
-use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Tokens\Jwt;
 
 final class JwtEasyApiTokenTest extends AbstractTestCase
 {
     public function testGetClaimForceArraySuccessfully(): void
     {
         $claim = new \stdClass();
-        $token = new JwtEasyApiToken(['claim' => $claim], 'original');
+        $token = new Jwt([
+            'claim' => $claim,
+        ], 'original');
 
         self::assertEquals($claim, $token->getClaim('claim'));
         self::assertEquals([], $token->getClaimForceArray('claim'));
@@ -29,7 +31,9 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
 
         $claim->subClaim = $subClaim;
 
-        $token = new JwtEasyApiToken(['claim' => $claim], 'original');
+        $token = new Jwt([
+            'claim' => $claim,
+        ], 'original');
 
         $expected = [
             'key' => 'value',
@@ -43,15 +47,19 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
 
     public function testGetClaimSuccessfully(): void
     {
-        $token = new JwtEasyApiToken(['claim' => 'claim'], 'original');
+        $token = new Jwt([
+            'claim' => 'claim',
+        ], 'original');
 
         self::assertEquals('claim', $token->getClaim('claim'));
     }
 
     public function testGetPayloadSuccessfully(): void
     {
-        $payload = ['claim' => 'claim'];
-        $token = new JwtEasyApiToken($payload, 'original');
+        $payload = [
+            'claim' => 'claim',
+        ];
+        $token = new Jwt($payload, 'original');
 
         self::assertEquals($payload, $token->getPayload());
         self::assertEquals('original', $token->getOriginalToken());
@@ -59,7 +67,9 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
 
     public function testHasClaimSuccessfully(): void
     {
-        $token = new JwtEasyApiToken(['claim' => 'claim'], 'original');
+        $token = new Jwt([
+            'claim' => 'claim',
+        ], 'original');
 
         self::assertTrue($token->hasClaim('claim'));
         self::assertFalse($token->hasClaim('invalid'));
@@ -69,6 +79,6 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new JwtEasyApiToken([], ''))->getClaim('invalid');
+        (new Jwt([], ''))->getClaim('invalid');
     }
 }

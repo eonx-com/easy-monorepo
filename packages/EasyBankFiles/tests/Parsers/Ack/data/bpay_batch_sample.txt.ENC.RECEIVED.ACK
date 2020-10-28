@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MessageAcknowledgement type="RECEIVED">
+<DateTime>2019-07-17T13:28:48+1000</DateTime>
+<CustomerId>LOYC01AU</CustomerId>
+<CompanyName>Loyalty Corp Australia Pty Ltd</CompanyName>
+<MessageDetails>
+<OriginalMessageId>105973228</OriginalMessageId>
+<Datatype>DTBPB</Datatype>
+<DatatypeDescription>DT:BPB incoming BPay Batch files                                                                                                                                                                        </DatatypeDescription>
+<OriginalFilename>2019-07-17.bpb.ENC</OriginalFilename>
+</MessageDetails>
+<Issues>
+<Issue type="RECEIVED">BPay Batch file RECEIVED for processing</Issue>
+</Issues>
+</MessageAcknowledgement>

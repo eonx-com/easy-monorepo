@@ -1,2 +1,10 @@
+easy_api_token:
+    default_decoder: chain
+    decoders:
+        chain:
+            list:
+                - user-apikey
+        user-apikey: null
+
 easy_security:
     context_service_id: service-id

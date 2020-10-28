@@ -11,6 +11,7 @@ use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Tests\Stubs\RuleStopPropagationStub;
 use EonX\EasyDecision\Tests\Stubs\RuleStub;
 use EonX\EasyDecision\Tests\Stubs\RuleWithExtraOutputStub;
 
@@ -18,13 +19,17 @@ final class DecisionsTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDecisions
      */
     public function providerTestDecisions(): iterable
     {
         yield 'No rules' => [
             new ValueDecision(),
             [],
-            ['value' => 5],
+            [
+                'value' => 5,
+            ],
             5,
             [],
         ];
@@ -32,9 +37,13 @@ final class DecisionsTest extends AbstractTestCase
         yield 'Simple rule' => [
             new ValueDecision(),
             [$this->createLanguageRule('add(5)')],
-            ['value' => 5],
+            [
+                'value' => 5,
+            ],
             10,
-            ['add(5)' => 10],
+            [
+                'add(5)' => 10,
+            ],
         ];
 
         yield 'Rules with name and extra' => [
@@ -42,34 +51,73 @@ final class DecisionsTest extends AbstractTestCase
             [
                 $this->createLanguageRule('add(5)'),
                 $this->createLanguageRule('add(10)', null, 'Add 10'),
-                $this->createLanguageRule('add(20)', null, null, ['key' => 'value']),
-                $this->createLanguageRule('add(30)', null, 'Add 30', ['key1' => 'value1']),
+                $this->createLanguageRule('add(20)', null, null, [
+                    'key' => 'value',
+                ]),
+                $this->createLanguageRule('add(30)', null, 'Add 30', [
+                    'key1' => 'value1',
+                ]),
             ],
-            ['value' => 5],
+            [
+                'value' => 5,
+            ],
             70,
             [
                 'add(5)' => 10,
                 'Add 10' => 20,
-                'add(20)' => ['output' => 40, 'key' => 'value'],
-                'Add 30' => ['output' => 70, 'key1' => 'value1'],
+                'add(20)' => [
+                    'output' => 40,
+                    'key' => 'value',
+                ],
+                'Add 30' => [
+                    'output' => 70,
+                    'key1' => 'value1',
+                ],
             ],
         ];
 
         yield 'Consensus with name and extra' => [
             new ConsensusDecision(),
             [
-                new RuleWithExtraOutputStub('Unsupported with extra', false, ['key' => 'value'], false),
+                new RuleWithExtraOutputStub('Unsupported with extra', false, [
+                    'key' => 'value',
+                ], false),
                 new RuleStub('Only false', false),
                 new RuleStub('Only true', true),
-                new RuleWithExtraOutputStub('True with extra', true, ['key' => 'value']),
+                new RuleWithExtraOutputStub('True with extra', true, [
+                    'key' => 'value',
+                ]),
             ],
             [],
             true,
             [
-                'Unsupported with extra' => ['output' => RuleInterface::OUTPUT_UNSUPPORTED, 'key' => 'value'],
+                'Unsupported with extra' => [
+                    'output' => RuleInterface::OUTPUT_UNSUPPORTED,
+                    'key' => 'value',
+                ],
                 'Only false' => false,
                 'Only true' => true,
-                'True with extra' => ['output' => true, 'key' => 'value'],
+                'True with extra' => [
+                    'output' => true,
+                    'key' => 'value',
+                ],
+            ],
+        ];
+
+        yield 'Exit on propagation stopped' => [
+            (new ValueDecision())->setExitOnPropagationStopped(),
+            [
+                $this->createLanguageRule('add(5)'),
+                new RuleStopPropagationStub('exit-on-propagation-stopped', 10, true),
+                $this->createLanguageRule('add(10)'),
+            ],
+            [
+                'value' => 5,
+            ],
+            10,
+            [
+                'add(5)' => 10,
+                'exit-on-propagation-stopped' => 10,
             ],
         ];
     }
@@ -94,7 +142,8 @@ final class DecisionsTest extends AbstractTestCase
             new ExpressionLanguageConfig(null, [new ValueExpressionFunctionProvider()])
         );
 
-        $output = $decision->addRules($rules)->make($input);
+        $output = $decision->addRules($rules)
+            ->make($input);
         $context = $decision->getContext();
 
         self::assertEquals($expectedOutput, $output);

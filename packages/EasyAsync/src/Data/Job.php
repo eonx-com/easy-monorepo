@@ -43,7 +43,7 @@ final class Job extends AbstractEasyAsyncData implements JobInterface
      */
     public static function fromArray(array $data): JobInterface
     {
-        $job = new static(new Target($data['target_id'], $data['target_type']), $data['type'], (int)$data['total']);
+        $job = new self(new Target($data['target_id'], $data['target_type']), $data['type'], (int)$data['total']);
 
         $job->setStatus($data['status']);
         $job->setId($data['id']);

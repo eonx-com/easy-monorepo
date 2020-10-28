@@ -7,11 +7,15 @@ namespace EonX\EasyAsync\Bridge\Symfony\DependencyInjection;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\ProcessJobLogMiddleware;
 use EonX\EasyAsync\Exceptions\InvalidImplementationException;
 use EonX\EasyAsync\Interfaces\ImplementationsInterface;
+use EonX\EasyAsync\Interfaces\JobLogFactoryInterface;
+use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
+use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyAsyncExtension extends Extension
@@ -25,8 +29,8 @@ final class EasyAsyncExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yaml');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.php');
 
         // Set tables parameters
         foreach (['jobs_table', 'job_logs_table'] as $name) {
@@ -39,11 +43,16 @@ final class EasyAsyncExtension extends Extension
             throw new InvalidImplementationException(\sprintf('Implementation "%s" invalid', $implementation));
         }
 
-        $loader->load(\sprintf('implementations/%s.yaml', $implementation));
+        $loader->load(\sprintf('implementations/%s.php', $implementation));
 
         // Register middleware if messenger present
         if (\class_exists(MessengerPass::class)) {
-            $container->setDefinition(ProcessJobLogMiddleware::class, new Definition(ProcessJobLogMiddleware::class));
+            $jobLogMidDef = new Definition(ProcessJobLogMiddleware::class);
+            $jobLogMidDef->addMethodCall('setJogLogFactory', [new Reference(JobLogFactoryInterface::class)]);
+            $jobLogMidDef->addMethodCall('setJobLogPersister', [new Reference(JobLogPersisterInterface::class)]);
+            $jobLogMidDef->addMethodCall('setJobLogUpdater', [new Reference(JobLogUpdaterInterface::class)]);
+
+            $container->setDefinition(ProcessJobLogMiddleware::class, $jobLogMidDef);
         }
     }
 }

@@ -9,6 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyLogging\Interfaces\ExternalLogClientInterface;
 use EonX\EasyLogging\Interfaces\SqlLoggerInterface;
 
+/**
+ * @deprecated since 2.4, will be removed in 3.0. Bugsnag implementation will be reworked.
+ */
 final class ExternalLogger implements SqlLoggerInterface
 {
     /**
@@ -31,7 +34,9 @@ final class ExternalLogger implements SqlLoggerInterface
     {
         $logger = new ExternalSqlLogger(
             $this->client,
-            $em->getConnection()->getDatabasePlatform()->getName(),
+            $em->getConnection()
+                ->getDatabasePlatform()
+                ->getName(),
             $this->includeBindings
         );
 

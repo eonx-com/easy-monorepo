@@ -22,7 +22,8 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
             },
         ];
 
-        $function = $this->getFactory()->create($input);
+        $function = $this->getFactory()
+            ->create($input);
 
         self::assertEquals($input['name'], $function->getName());
         self::assertEquals($input['evaluator'], $function->getEvaluator());
@@ -37,14 +38,12 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
 
     public function testCreateFromSimpleArraySuccessfully(): void
     {
-        $input = [
-            'cap',
-            function ($arguments, $value, $max) {
-                return \min($value, $max);
-            },
-        ];
+        $input = ['cap', function ($arguments, $value, $max) {
+            return \min($value, $max);
+        }];
 
-        $function = $this->getFactory()->create($input);
+        $function = $this->getFactory()
+            ->create($input);
 
         self::assertEquals($input[0], $function->getName());
         self::assertEquals($input[1], $function->getEvaluator());
@@ -65,14 +64,16 @@ final class ExpressionFunctionFactoryTest extends AbstractTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->getFactory()->create([]);
+        $this->getFactory()
+            ->create([]);
     }
 
     public function testNonArrayInputException(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->getFactory()->create('non-array');
+        $this->getFactory()
+            ->create('non-array');
     }
 
     private function getFactory(): ExpressionFunctionFactoryInterface

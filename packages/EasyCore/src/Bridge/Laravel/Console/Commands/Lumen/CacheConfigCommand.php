@@ -64,6 +64,7 @@ final class CacheConfigCommand extends Command
         $app = require $this->bootstrapPath;
         $app->boot();
 
-        return $app->make('config')->all();
+        return $app->make('config')
+            ->all();
     }
 }

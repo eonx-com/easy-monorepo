@@ -4,13 +4,13 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^7.1"
+        "php": "^7.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5 || ^8.4",
+        "phpunit/phpunit": "^8.4 || ^9.5",
         "mockery/mockery": "^1.2",
         "doctrine/orm": "^2.6",
-        "eonx-com/easy-pagination": "^2.4",
+        "eonx-com/easy-pagination": "^2.6",
         "laravel/lumen-framework": "^5.5",
         "vlucas/phpdotenv": "^3.3"
     },
@@ -33,7 +33,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "2.4-dev"
+            "dev-master": "2.6-dev"
         }
     }
 }

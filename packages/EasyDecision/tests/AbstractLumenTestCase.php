@@ -31,6 +31,7 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
 
     protected function getDecisionFactory(): DecisionFactoryInterface
     {
-        return $this->getApplication()->make(DecisionFactoryInterface::class);
+        return $this->getApplication()
+            ->make(DecisionFactoryInterface::class);
     }
 }

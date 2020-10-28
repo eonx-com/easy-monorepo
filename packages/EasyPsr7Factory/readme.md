@@ -1,11 +1,9 @@
-<div align="center">
-    <h1>EonX - EasyPsr7Factory</h1>
-    <p>Provides an easy way to create PSR7 Request/Response from Symfony Request/Response.</p>
-</div>
+---eonx_docs---
+title: Introduction
+weight: 0
+---eonx_docs---
 
----
-
-# Documentation
+Provides an easy way to create PSR7 Request/Response from Symfony Request/Response.
 
 ## Installation
 
@@ -15,6 +13,8 @@ The recommended way to install this package is to use [Composer][1].
 $ composer require eonx/psr7-factory
 ```
 
+<br>
+
 ## How it works
 
 You are working on a PHP application using the well known [Symfony HttpFoundation Component][2] and you want to
@@ -22,6 +22,8 @@ implement some logic which can be used in any other PHP application using Reques
 
 The EasyPsr7Factory will allow you to create a PSR-7 ServerRequestInterface implementation from a Symfony HttpFoundation
 Request and then will also allow you to create a Symfony Response from a PSR-7 ResponseInterface.
+
+<br>
 
 ## Usage
 
@@ -35,6 +37,8 @@ $serverRequest = (new EasyPsr7Factory())->createRequest($symfonyRequest);
 $symfonyResponse = (new EasyPsr7Factory())->createResponse($psr7Response);
 ```
 
+<br>
+
 ## Laravel / Lumen
 
 You like the idea and you're not using Symfony but [Laravel][3]/[Lumen][4] instead? Lucky you this is an easy use case :)
@@ -43,6 +47,8 @@ Laravel/Lumen Request/Response classes both extend the Symfony ones so this Easy
 
 And just to make your day, it comes with a service provider allowing you to create requests and responses from anywhere
 you want in your application :)
+
+<br>
 
 ### Laravel
 ```php
@@ -55,6 +61,8 @@ you want in your application :)
 ],
 ```
 
+<br>
+
 ### Lumen
 
 ```php
@@ -62,6 +70,8 @@ you want in your application :)
 
 $app->register(\EonX\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider::class);
 ```
+
+<br>
 
 ## Contributing
 

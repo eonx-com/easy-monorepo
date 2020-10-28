@@ -79,7 +79,7 @@ abstract class AbstractLengthAwarePaginator implements LengthAwarePaginatorInter
             '%s?%s%s',
             $this->parseUrl($urlArr),
             \http_build_query($this->parseQuery($start, $urlArr['query'] ?? null), '', '&'),
-            empty($urlArr['fragment']) === false ? \sprintf('#%s', $urlArr['fragment']) : ''
+            isset($urlArr['fragment']) === true ? \sprintf('#%s', $urlArr['fragment']) : ''
         );
     }
 

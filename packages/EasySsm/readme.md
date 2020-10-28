@@ -1,11 +1,11 @@
-<div align="center">
-    <h1>EonX - EasySsm</h1>
-    <p>CLI tool to interact with AWS ParameterStore in a convenient way.</p>
-</div>
+---eonx_docs---
+title: Introduction
+weight: 0
+---eonx_docs---
 
----
+CLI tool to interact with AWS ParameterStore in a convenient way
 
-## Documentation
+<br>
 
 ### Require package (Composer)
 
@@ -15,14 +15,19 @@ We recommend to use [Composer][1] to manage your dependencies. You can require t
 $ composer require eonx-com/easy-ssm
 ```
 
+<br>
+
 ### Commands
 
 - **apply:** Apply local changes to remote AWS ParameterStore
 - **diff:** Resolve diff between local parameters and AWS ParameterStore
+- **dump-envs:** Dump env vars in a PHP file to improve loading time
 - **export-envs:** Fetch parameters from AWS ParameterStore and output shell syntax to export them as env variables
 - **init:** Initialise local parameters from AWS ParameterStore
 - **local-apply:** Apply changes locally when "*_old" file has been generated
 - **local-diff:** Resolve diff locally when "*_old" file has been generated
+
+<br>
 
 ### Dotenv integration
 

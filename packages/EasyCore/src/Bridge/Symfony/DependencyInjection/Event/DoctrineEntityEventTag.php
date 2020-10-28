@@ -52,7 +52,10 @@ final class DoctrineEntityEventTag implements EventTagInterface
      */
     public function getAttributes(): array
     {
-        $attr = ['event' => $this->event, 'entity' => $this->entity];
+        $attr = [
+            'event' => $this->event,
+            'entity' => $this->entity,
+        ];
 
         if ($this->entityManager) {
             $attr['entity_manager'] = $this->entityManager;

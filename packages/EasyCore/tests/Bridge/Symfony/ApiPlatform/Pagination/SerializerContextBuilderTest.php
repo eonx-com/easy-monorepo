@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Symfony\ApiPlatform\Pagination;
 
-use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
-use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;
-use ApiPlatform\Core\Serializer\SerializerContextBuilder as ApiPlatformSerializerContextBuilder;
+use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginatorInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\SerializerContextBuilder;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
@@ -17,64 +15,82 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCreateFromRequest
      */
     public function providerTestCreateFromRequest(): iterable
     {
-        yield 'Group not added, both type and name invalid' => [
-            ['operation_type' => 'invalid', 'collection_operation_name' => 'invalid'],
-            false,
+        yield 'Group not added, both type and request method invalid' => [
+            'contextFromDecorated' => [
+                'operation_type' => 'invalid',
+            ],
+            'requestMethod' => 'INVALID',
+            'groupAdded' => false,
         ];
 
         yield 'Group not added, type invalid' => [
-            ['operation_type' => 'invalid', 'item_operation_name' => CustomPaginatorInterface::OPERATION_NAME],
-            false,
+            'contextFromDecorated' => [
+                'operation_type' => 'invalid',
+            ],
+            'requestMethod' => 'GET',
+            'groupAdded' => false,
         ];
 
-        yield 'Group not added, name invalid' => [
-            ['operation_type' => CustomPaginatorInterface::OPERATION_TYPE, 'collection_operation_name' => 'invalid'],
-            false,
+        yield 'Group not added, request method invalid' => [
+            'contextFromDecorated' => [
+                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
+            ],
+            'requestMethod' => 'INVALID',
+            'groupAdded' => false,
         ];
 
         yield 'Group added' => [
-            [
+            'contextFromDecorated' => [
                 'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
-                'collection_operation_name' => CustomPaginatorInterface::OPERATION_NAME,
             ],
-            true,
+            'requestMethod' => 'GET',
+            'groupAdded' => true,
         ];
     }
 
     /**
-     * @param mixed[] $context
+     * @param mixed[] $contextFromDecorated
      *
      * @dataProvider providerTestCreateFromRequest
      */
-    public function testCreateFromRequest(array $context, bool $groupAdded): void
+    public function testCreateFromRequest(array $contextFromDecorated, string $requestMethod, bool $groupAdded): void
     {
-        $context = \array_merge($context, ['resource_class' => 'class']);
+        $request = new Request();
+        $request->setMethod($requestMethod);
+        $contextBuilder = new SerializerContextBuilder(
+            $this->mockDecoratedSerializerContextBuilder($contextFromDecorated)
+        );
 
-        $contextBuilder = new SerializerContextBuilder($this->getApiPlatformSerializerContextBuilder());
+        $context = $contextBuilder->createFromRequest($request, true);
 
-        $context = $contextBuilder->createFromRequest(new Request(), true, $context);
         $inArray = \in_array(CustomPaginatorInterface::SERIALIZER_GROUP, $context['groups'] ?? [], true);
-
         self::assertEquals($groupAdded, $inArray);
     }
 
-    private function getApiPlatformSerializerContextBuilder(): ApiPlatformSerializerContextBuilder
-    {
-        /** @var \ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface $metadataFactory */
-        $metadataFactory = $this->mock(
-            ResourceMetadataFactoryInterface::class,
-            static function (MockInterface $mock): void {
+    /**
+     * @param mixed[] $contextFromDecorated
+     *
+     * @return \ApiPlatform\Core\Serializer\SerializerContextBuilderInterface
+     */
+    private function mockDecoratedSerializerContextBuilder(
+        array $contextFromDecorated
+    ): SerializerContextBuilderInterface {
+        /** @var \ApiPlatform\Core\Serializer\SerializerContextBuilderInterface $decorated */
+        $decorated = $this->mock(
+            SerializerContextBuilderInterface::class,
+            static function (MockInterface $mock) use ($contextFromDecorated): void {
                 $mock
-                    ->shouldReceive('create')
+                    ->shouldReceive('createFromRequest')
                     ->once()
-                    ->with('class')
-                    ->andReturn(new ResourceMetadata(null, null, null, []));
+                    ->andReturn($contextFromDecorated);
             }
         );
 
-        return new ApiPlatformSerializerContextBuilder($metadataFactory);
+        return $decorated;
     }
 }

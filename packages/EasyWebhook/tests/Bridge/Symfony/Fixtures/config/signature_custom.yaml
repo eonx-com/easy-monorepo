@@ -1,0 +1,5 @@
+easy_webhook:
+    signature:
+        enabled: true
+        signature_header: X-My-Header
+        secret: my-secret

@@ -17,18 +17,14 @@ final class SsmDotenvTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testLoadEnv
      */
     public function providerTestLoadEnv(): iterable
     {
-        yield 'no path' => [
-            [new SsmParameter('param', 'string', 'value')],
-            [new EnvData('param', 'value')],
-        ];
+        yield 'no path' => [[new SsmParameter('param', 'string', 'value')], [new EnvData('param', 'value')]];
 
-        yield 'simple path' => [
-            [new SsmParameter('/param', 'string', 'value')],
-            [new EnvData('param', 'value')],
-        ];
+        yield 'simple path' => [[new SsmParameter('/param', 'string', 'value')], [new EnvData('param', 'value')]];
 
         yield 'longer path' => [
             [new SsmParameter('/test/env/param', 'string', 'value')],
@@ -62,7 +58,8 @@ final class SsmDotenvTest extends AbstractTestCase
         $ssmPathResolver = new SsmPathResolver();
 
         $ssmDotenv = new SsmDotenv($ssmClient, $ssmPathResolver, new Parameters(), $envLoader);
-        $ssmDotenv->setStrict(false)->loadEnv();
+        $ssmDotenv->setStrict(false)
+            ->loadEnv();
 
         self::assertEmpty($envLoader->getLoadedEnvs());
     }
@@ -77,6 +74,7 @@ final class SsmDotenvTest extends AbstractTestCase
         $ssmPathResolver = new SsmPathResolver();
 
         $ssmDotenv = new SsmDotenv($ssmClient, $ssmPathResolver, new Parameters(), $envLoader);
-        $ssmDotenv->setStrict(true)->loadEnv();
+        $ssmDotenv->setStrict(true)
+            ->loadEnv();
     }
 }

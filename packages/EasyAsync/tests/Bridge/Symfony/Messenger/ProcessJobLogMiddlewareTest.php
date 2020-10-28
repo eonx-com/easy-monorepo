@@ -22,6 +22,8 @@ final class ProcessJobLogMiddlewareTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcessWithJobLog
      */
     public function providerHandle(): iterable
     {
@@ -80,7 +82,8 @@ final class ProcessJobLogMiddlewareTest extends AbstractTestCase
 
         $iterator = new \ArrayIterator([$middleware, new MessengerMiddlewareStub($func)]);
 
-        $iterator->current()->handle($envelope, new StackMiddleware($iterator));
+        $iterator->current()
+            ->handle($envelope, new StackMiddleware($iterator));
 
         \call_user_func($test, $middleware->getJobLog());
     }

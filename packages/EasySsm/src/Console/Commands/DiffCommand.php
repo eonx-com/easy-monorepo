@@ -10,9 +10,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DiffCommand extends AbstractCommand
 {
+    /**
+     * @var string
+     */
+    protected static $defaultName = 'diff';
+
     protected function configure(): void
     {
-        $this->setName('diff');
         $this->setDescription('Display diff between remote and local SSM parameters');
     }
 

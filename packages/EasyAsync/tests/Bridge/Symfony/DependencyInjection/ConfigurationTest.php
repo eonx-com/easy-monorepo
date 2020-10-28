@@ -11,6 +11,8 @@ final class ConfigurationTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetConfigTreeBuilder
      */
     public function providerGetConfigTreeBuilder(): iterable
     {
@@ -24,7 +26,9 @@ final class ConfigurationTest extends AbstractTestCase
         ];
 
         yield 'Custom implementation' => [
-            ['implementation' => 'custom'],
+            [
+                'implementation' => 'custom',
+            ],
             [
                 'implementation' => 'custom',
                 'jobs_table' => 'easy_async_jobs',

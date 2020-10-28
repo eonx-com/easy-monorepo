@@ -10,9 +10,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class ApplyCommand extends AbstractCommand
 {
+    /**
+     * @var string
+     */
+    protected static $defaultName = 'apply';
+
     protected function configure(): void
     {
-        $this->setName('apply');
         $this->setDescription('Apply diff to remote SSM parameters');
     }
 

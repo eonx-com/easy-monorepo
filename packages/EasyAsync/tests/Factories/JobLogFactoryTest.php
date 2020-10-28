@@ -13,14 +13,12 @@ final class JobLogFactoryTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCreate
      */
     public function providerCreate(): iterable
     {
-        yield 'Create job log' => [
-            new Target('id', 'type'),
-            'test',
-            'jobId',
-        ];
+        yield 'Create job log' => [new Target('id', 'type'), 'test', 'jobId'];
     }
 
     /**

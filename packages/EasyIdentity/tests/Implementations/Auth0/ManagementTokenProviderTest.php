@@ -16,7 +16,7 @@ use Mockery\MockInterface;
 /**
  * @covers \EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider
  */
-class ManagementTokenProviderTest extends AbstractTestCase
+final class ManagementTokenProviderTest extends AbstractTestCase
 {
     public function testGetToken(): void
     {
@@ -24,7 +24,9 @@ class ManagementTokenProviderTest extends AbstractTestCase
 
         /** @var \GuzzleHttp\ClientInterface $client */
         $client = $this->mock(ClientInterface::class, function (MockInterface $mock) use ($config): void {
-            $this->buildBaseExpectation($mock, $config, ['access_token' => 'access_token']);
+            $this->buildBaseExpectation($mock, $config, [
+                'access_token' => 'access_token',
+            ]);
         });
 
         $provider = new ManagementTokenProvider($client, $config);

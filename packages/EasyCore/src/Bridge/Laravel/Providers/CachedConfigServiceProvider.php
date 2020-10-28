@@ -63,16 +63,15 @@ final class CachedConfigServiceProvider extends ServiceProvider
      */
     private function getConfigFiles(): array
     {
-        $finder = (new Finder())->in(\sprintf('%s/config', $this->app->basePath()))->files()->name('*.php');
+        $finder = (new Finder())->in(\sprintf('%s/config', $this->app->basePath()))
+            ->files()
+            ->name('*.php');
 
         return $finder->hasResults() ? \iterator_to_array($finder) : [];
     }
 
     private function registerCommands(): void
     {
-        $this->commands([
-            CacheConfigCommand::class,
-            ClearConfigCommand::class,
-        ]);
+        $this->commands([CacheConfigCommand::class, ClearConfigCommand::class]);
     }
 }

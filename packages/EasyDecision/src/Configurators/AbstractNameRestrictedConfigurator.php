@@ -11,8 +11,11 @@ abstract class AbstractNameRestrictedConfigurator extends AbstractConfigurator i
 {
     public function supports(DecisionInterface $decision): bool
     {
-        return $decision->getName() === $this->getName();
+        return \in_array($decision->getName(), $this->getNames(), true);
     }
 
-    abstract protected function getName(): string;
+    /**
+     * @return string[]
+     */
+    abstract protected function getNames(): array;
 }

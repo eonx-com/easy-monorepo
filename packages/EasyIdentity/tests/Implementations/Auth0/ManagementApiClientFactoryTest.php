@@ -13,16 +13,21 @@ use Mockery\MockInterface;
 /**
  * @covers \EonX\EasyIdentity\Implementations\Auth0\ManagementApiClientFactory
  */
-class ManagementApiClientFactoryTest extends AbstractTestCase
+final class ManagementApiClientFactoryTest extends AbstractTestCase
 {
     public function testCreate(): void
     {
         /** @var \EonX\EasyIdentity\Implementations\Auth0\ManagementTokenProvider $tokenProvider */
         $tokenProvider = $this->mock(ManagementTokenProvider::class, static function (MockInterface $mock): void {
-            $mock->shouldReceive('getToken')->once()->withNoArgs()->andReturn('access_token');
+            $mock->shouldReceive('getToken')
+                ->once()
+                ->withNoArgs()
+                ->andReturn('access_token');
         });
 
-        $config = new Config(['domain' => 'domain']);
+        $config = new Config([
+            'domain' => 'domain',
+        ]);
         $factory = new ManagementApiClientFactory($config, $tokenProvider);
         $factory->create();
 

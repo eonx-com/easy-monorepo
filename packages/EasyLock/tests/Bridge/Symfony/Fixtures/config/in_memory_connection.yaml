@@ -1,0 +1,11 @@
+easy_lock:
+    connection: in_memory_connection
+
+services:
+    in_memory_connection:
+        class: Doctrine\DBAL\Connection
+        factory: ['Doctrine\DBAL\DriverManager', 'getConnection']
+        arguments: [{'url': 'sqlite:///:memory:'}]
+
+    Psr\Log\LoggerInterface:
+        class: Psr\Log\NullLogger

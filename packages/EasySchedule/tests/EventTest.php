@@ -15,34 +15,28 @@ final class EventTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testFiltersPass
      */
     public function providerTestFiltersPass(): iterable
     {
-        yield 'False because at least one filter false' => [
-            [false],
-            [false],
-            false,
-        ];
+        yield 'False because at least one filter false' => [[false], [false], false];
 
-        yield 'False because at least one reject true' => [
-            [true],
-            [true],
-            false,
-        ];
+        yield 'False because at least one reject true' => [[true], [true], false];
 
         yield 'true because no filter false and no reject true' => [
             [true],
-            [
-                function (): bool {
-                    return false;
-                },
-            ],
+            [function (): bool {
+                return false;
+            }],
             true,
         ];
     }
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testNoArgsMethods
      */
     public function providerTestNoArgsMethods(): iterable
     {
@@ -89,7 +83,9 @@ final class EventTest extends AbstractTestCase
      */
     public function testFiltersPass(array $filters, array $rejects, bool $expected): void
     {
-        $event = new Event('command:foo', ['--foo' => 'bar']);
+        $event = new Event('command:foo', [
+            '--foo' => 'bar',
+        ]);
 
         foreach ($rejects as $reject) {
             $event->skip($reject);
@@ -126,12 +122,13 @@ final class EventTest extends AbstractTestCase
      */
     public function testNoArgsMethods(string $expression, string $method, ?array $params = null): void
     {
-        $event = new Event('command:foo', ['--foo' => 'bar']);
+        $event = new Event('command:foo', [
+            '--foo' => 'bar',
+        ]);
 
         // Ok this is for coverage only, please don't judge me...
-        $event
-            ->before(function (): void {
-            })
+        $event->before(function (): void {
+        })
             ->then(function (): void {
             });
 
@@ -163,6 +160,8 @@ final class EventTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->event = new Event('command:foo', ['--foo' => 'bar']);
+        $this->event = new Event('command:foo', [
+            '--foo' => 'bar',
+        ]);
     }
 }

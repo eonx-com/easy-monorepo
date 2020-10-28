@@ -9,9 +9,14 @@ use EonX\EasyPagination\Interfaces\TransformableLengthAwarePaginatorInterface as
 abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthAwarePaginator implements Transformable
 {
     /**
-     * @var mixed[]
+     * @var null|mixed[]
      */
     private $transformedItems;
+
+    /**
+     * @var mixed[]
+     */
+    private $items;
 
     /**
      * @var null|callable
@@ -27,12 +32,19 @@ abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthA
             return $this->transformedItems;
         }
 
-        return $this->transformedItems = $this->transformItems($this->doGetItems());
+        // Cache items so we don't trigger SQL queries when transformer reset
+        if ($this->items === null) {
+            $this->items = $this->doGetItems();
+        }
+
+        return $this->transformedItems = $this->transformItems($this->items);
     }
 
     public function setTransformer(?callable $transformer = null): Transformable
     {
         $this->transformer = $transformer;
+        // Reset transformed items
+        $this->transformedItems = null;
 
         return $this;
     }

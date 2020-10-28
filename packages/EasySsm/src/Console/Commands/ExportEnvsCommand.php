@@ -12,6 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class ExportEnvsCommand extends AbstractCommand
 {
     /**
+     * @var string
+     */
+    protected static $defaultName = 'export-envs';
+
+    /**
      * @var \EonX\EasySsm\Services\Dotenv\SsmDotenvInterface
      */
     private $ssmDotenv;
@@ -27,7 +32,6 @@ final class ExportEnvsCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setName('export-envs')
             ->setDescription('Export SSM parameters to env variables')
             ->addOption(
                 'strict',
@@ -40,11 +44,24 @@ final class ExportEnvsCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $strict = $input->getOption('strict') ?? null ? (bool)$input->getOption('strict') : false;
-        $path = $input->getOption('path') ?? null ? (string)$input->getOption('path') : null;
+        // Useful for local dev
+        if ($this->shouldSkip()) {
+            return 0;
+        }
 
-        $this->ssmDotenv->setStrict($strict)->loadEnv($path);
+        $strict = (bool) $input->getOption('strict');
+        $path = $input->getOption('path') ?? null ? (string) $input->getOption('path') : null;
+
+        $this->ssmDotenv->setStrict($strict)
+            ->loadEnv($path);
 
         return 0;
+    }
+
+    private function shouldSkip(): bool
+    {
+        $name = 'EASY_SSM_SKIP';
+
+        return isset($_ENV[$name]) || isset($_SERVER[$name]) || \getenv($name);
     }
 }

@@ -11,7 +11,7 @@ use EonX\EasyIdentity\Tests\AbstractTestCase;
 /**
  * @covers \EonX\EasyIdentity\Implementations\Auth0\TokenVerifierFactory
  */
-class TokenVerifierFactoryTest extends AbstractTestCase
+final class TokenVerifierFactoryTest extends AbstractTestCase
 {
     public function testCreate(): void
     {

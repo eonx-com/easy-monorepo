@@ -18,21 +18,21 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
     private $cached = [];
 
     /**
+     * @var string[]
+     */
+    private $locations;
+
+    /**
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
 
     /**
-     * @var string[]
+     * @param string[] $locations
      */
-    private $targets;
-
-    /**
-     * @param string[] $targets
-     */
-    public function __construct(array $targets, ?LoggerInterface $logger = null)
+    public function __construct(array $locations, ?LoggerInterface $logger = null)
     {
-        $this->targets = $targets;
+        $this->locations = $locations;
         $this->logger = $logger ?? new NullLogger();
     }
 
@@ -51,8 +51,8 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
                         return $this->cached[$permission];
                     }
 
-                    foreach ($this->targets as $target) {
-                        $constant = \sprintf('%s::%s', $target, $permission);
+                    foreach ($this->locations as $location) {
+                        $constant = \sprintf('%s::%s', $location, $permission);
 
                         try {
                             return \constant($constant);

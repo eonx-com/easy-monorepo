@@ -15,11 +15,23 @@ interface DecisionFactoryInterface
 
     public function createAffirmativeDecision(?string $name = null): DecisionInterface;
 
+    public function createByName(string $name): DecisionInterface;
+
     public function createConsensusDecision(?string $name = null): DecisionInterface;
 
     public function createUnanimousDecision(?string $name = null): DecisionInterface;
 
     public function createValueDecision(?string $name = null): DecisionInterface;
+
+    /**
+     * @return \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
+     */
+    public function getConfiguratorsByDecision(DecisionInterface $decision): array;
+
+    /**
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface[]
+     */
+    public function getConfiguredDecisions(): array;
 
     /**
      * @deprecated since 2.3.7

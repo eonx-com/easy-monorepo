@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Modifiers;
 
-use EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\JwtInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\JwtClaimFetcherInterface;
 use EonX\EasySecurity\Interfaces\ProviderProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @deprecated Since 2.4, will be removed in 3.0.
+ */
 final class ProviderFromJwtModifier extends AbstractFromJwtContextModifier
 {
     /**
@@ -33,11 +36,11 @@ final class ProviderFromJwtModifier extends AbstractFromJwtContextModifier
         $token = $context->getToken();
 
         // Work only for JWT
-        if ($token instanceof JwtEasyApiTokenInterface === false) {
+        if ($token instanceof JwtInterface === false) {
             return;
         }
 
-        /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtEasyApiTokenInterface $token */
+        /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtInterface $token */
 
         $providerId = $this->getMainClaim($token)['provider'] ?? null;
 

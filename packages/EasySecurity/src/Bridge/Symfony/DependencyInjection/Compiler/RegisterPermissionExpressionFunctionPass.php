@@ -16,18 +16,27 @@ final class RegisterPermissionExpressionFunctionPass implements CompilerPassInte
     public function process(ContainerBuilder $container): void
     {
         $locations = $container->getParameter(ParametersInterface::PERMISSIONS_LOCATIONS);
+        $exprLangId = 'security.expression_language';
 
-        if (empty($locations) || $container->has('security.expression_language') === false) {
+        if (empty($locations) || $container->has($exprLangId) === false) {
             return;
         }
 
         $providerClass = PermissionExpressionFunctionProvider::class;
         $providerDef = new Definition($providerClass);
+<<<<<<< HEAD
         $providerDef->setArgument('$target', $locations);
+=======
+        $providerDef->setArgument('$locations', $locations);
+>>>>>>> upstream/master
 
         $container->setDefinition($providerClass, $providerDef);
 
-        $exprLangDef = $container->getDefinition('security.expression_language');
+        $exprLangDef = $container->getDefinition($exprLangId);
         $exprLangDef->addMethodCall('registerProvider', [new Reference($providerClass)]);
+
+        if ($container->hasDefinition('logger')) {
+            $providerDef->setArgument('$logger', new Reference('logger'));
+        }
     }
 }

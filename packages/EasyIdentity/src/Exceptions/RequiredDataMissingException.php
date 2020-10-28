@@ -6,7 +6,7 @@ namespace EonX\EasyIdentity\Exceptions;
 
 use EonX\EasyIdentity\Interfaces\IdentityServiceExceptionInterface;
 
-class RequiredDataMissingException extends \RuntimeException implements IdentityServiceExceptionInterface
+final class RequiredDataMissingException extends \RuntimeException implements IdentityServiceExceptionInterface
 {
     // No body needed.
 }
