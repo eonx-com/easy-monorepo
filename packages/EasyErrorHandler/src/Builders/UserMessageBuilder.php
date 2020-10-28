@@ -31,7 +31,6 @@ final class UserMessageBuilder extends AbstractSingleKeyErrorResponseBuilder
     {
         $message = null;
         $parameters = [];
-        $options = [];
 
         if ($throwable instanceof TranslatableExceptionInterface) {
             $message = $throwable->getUserMessage();
@@ -40,8 +39,7 @@ final class UserMessageBuilder extends AbstractSingleKeyErrorResponseBuilder
 
         return $this->translator->trans(
             $message ?? TranslatableExceptionInterface::DEFAULT_USER_MESSAGE,
-            $parameters,
-            $options
+            $parameters
         );
     }
 

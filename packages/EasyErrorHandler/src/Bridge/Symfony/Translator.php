@@ -27,9 +27,8 @@ final class Translator implements TranslatorInterface
 
     /**
      * @param mixed[] $parameters
-     * @param null|mixed[] $options
      */
-    public function trans(string $message, array $parameters, ?array $options = null): string
+    public function trans(string $message, array $parameters): string
     {
         $translation = $this->decorated->trans($message, $parameters, $this->domain);
 
