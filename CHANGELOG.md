@@ -1,6 +1,16 @@
 <!-- changelog-linker -->
 
-## v2.5.18 - 2020-10-27
+## v2.5.19 - 2020-10-28
+
+### EasyDecision
+
+- [#410] Reset decision configurators, Thanks to [@elloyd-cruz]
+
+### EasyErrorHandler
+
+- [#411] Fallback strategy for Symfony translations, Thanks to [@buddyshontogan]
+
+## [v2.5.18] - 2020-10-27
 
 - [#405] static fixes, Thanks to [@TomasVotruba]
 
@@ -2640,3 +2650,7 @@
 [#405]: https://github.com/eonx-com/easy-monorepo/pull/405
 [#402]: https://github.com/eonx-com/easy-monorepo/pull/402
 [v2.5.17]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.16...v2.5.17
+[#411]: https://github.com/eonx-com/easy-monorepo/pull/411
+[#410]: https://github.com/eonx-com/easy-monorepo/pull/410
+[v2.5.18]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.17...v2.5.18
+[@elloyd-cruz]: https://github.com/elloyd-cruz
