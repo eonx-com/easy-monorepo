@@ -47,7 +47,7 @@ final class EasyDecisionExtension extends Extension
 
         // Register middleware if messenger present
         if (\class_exists(MessengerPass::class)) {
-            $loader->load('messenger_client.php');
+            $loader->load('messenger_middleware.php');
         }
     }
 }
