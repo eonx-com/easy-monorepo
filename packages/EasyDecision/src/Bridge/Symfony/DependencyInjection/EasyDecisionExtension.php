@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Bridge\Symfony\DependencyInjection;
 
 use EonX\EasyDecision\Bridge\Interfaces\TagsInterface;
-use EonX\EasyDecision\Bridge\Symfony\Messenger\ResetDecisionMiddleware;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\MappingProviderInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Providers\ConfigMappingProvider;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
@@ -49,9 +47,7 @@ final class EasyDecisionExtension extends Extension
 
         // Register middleware if messenger present
         if (\class_exists(MessengerPass::class)) {
-            $middlewareDefinition = new Definition(ResetDecisionMiddleware::class);
-
-            $container->setDefinition(ResetDecisionMiddleware::class, $middlewareDefinition);
+            $loader->load('messenger_client.php');
         }
     }
 }

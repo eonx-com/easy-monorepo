@@ -24,22 +24,11 @@ final class ResetDecisionMiddleware implements MiddlewareInterface
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
-        if ($this->shouldSkip($envelope)) {
-            return $stack->next()
-                ->handle($envelope, $stack);
+        if ($envelope->last(ConsumedByWorkerStamp::class) !== null) {
+            $this->decisionFactory->reset();
         }
 
-        $this->decisionFactory->reset();
-
-        return $envelope;
-    }
-
-    private function shouldSkip(Envelope $envelope): bool
-    {
-        if ($envelope->last(ConsumedByWorkerStamp::class) === null) {
-            return true;
-        }
-
-        return false;
+        return $stack->next()
+            ->handle($envelope, $stack);
     }
 }
