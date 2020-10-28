@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Bridge\Symfony\Messenger;
@@ -11,6 +12,9 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
 final class ResetDecisionMiddleware implements MiddlewareInterface
 {
+    /**
+     * @var \EonX\EasyDecision\Interfaces\DecisionFactoryInterface
+     */
     private $decisionFactory;
 
     public function __construct(DecisionFactoryInterface $decisionFactory)
@@ -21,7 +25,8 @@ final class ResetDecisionMiddleware implements MiddlewareInterface
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         if ($this->shouldSkip($envelope)) {
-            return $stack->next()->handle($envelope, $stack);
+            return $stack->next()
+                ->handle($envelope, $stack);
         }
 
         $this->decisionFactory->reset();
