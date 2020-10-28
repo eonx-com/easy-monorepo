@@ -161,6 +161,12 @@ final class DecisionFactory implements DecisionFactoryInterface
         $this->container = $container;
     }
 
+    public function reset(): void
+    {
+        $this->decisionConfigurators = [];
+        $this->configuredDecisions = [];
+    }
+
     /**
      * @param \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[] $configurators
      */
