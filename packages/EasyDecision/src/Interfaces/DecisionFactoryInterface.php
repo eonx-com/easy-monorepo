@@ -37,6 +37,4 @@ interface DecisionFactoryInterface
      * @deprecated since 2.3.7
      */
     public function setContainer(ContainerInterface $container): void;
-
-    public function reset(): void;
 }
