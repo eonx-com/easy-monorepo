@@ -12,11 +12,6 @@ interface TranslatableExceptionInterface
     public const DEFAULT_USER_MESSAGE = 'exceptions.default_user_message';
 
     /**
-     * @var string
-     */
-    public const OPTION_DOMAIN = 'domain';
-
-    /**
      * Returns the translation domain.
      *
      * @return null|string
