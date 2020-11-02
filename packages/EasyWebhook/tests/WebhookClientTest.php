@@ -65,10 +65,7 @@ final class WebhookClientTest extends AbstractTestCase
 
         yield 'Configurator priorities run higher last' => [
             (new Webhook())->url('https://eonx.com'),
-            [
-                new MethodWebhookConfigurator('PATCH', 200),
-                new MethodWebhookConfigurator('PUT', 100)
-            ],
+            [new MethodWebhookConfigurator('PATCH', 200), new MethodWebhookConfigurator('PUT', 100)],
             'PUT',
             'https://eonx.com',
             [],
