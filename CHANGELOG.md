@@ -1,6 +1,12 @@
 <!-- changelog-linker -->
 
-## v2.5.19 - 2020-10-28
+## v2.5.20 - 2020-11-02
+
+### EasyWebhook
+
+- [#412] Fix sending webhook async
+
+## [v2.5.19] - 2020-10-28
 
 ### EasyDecision
 
@@ -2654,3 +2660,5 @@
 [#410]: https://github.com/eonx-com/easy-monorepo/pull/410
 [v2.5.18]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.17...v2.5.18
 [@elloyd-cruz]: https://github.com/elloyd-cruz
+[#412]: https://github.com/eonx-com/easy-monorepo/pull/412
+[v2.5.19]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.18...v2.5.19
