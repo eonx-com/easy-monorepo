@@ -51,6 +51,11 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
 
         $class = $data['class'] ?? Webhook::class;
 
+        // Quick fix, maybe we will need to think about something better if needed
+        if (\is_string($data['http_options'] ?? null)) {
+            $data['http_options'] = \json_decode($data['http_options'], true) ?? $data['http_options'];
+        }
+
         return new WebhookResult($class::fromArray($data)->id($id));
     }
 
