@@ -66,7 +66,7 @@ final class WebhookClientTest extends AbstractTestCase
         yield 'Configurator priorities run higher last' => [
             (new Webhook())->url('https://eonx.com'),
             [new MethodWebhookConfigurator('PATCH', 200), new MethodWebhookConfigurator('PUT', 100)],
-            'PATCH',
+            'PUT',
             'https://eonx.com',
             [],
         ];
@@ -117,7 +117,7 @@ final class WebhookClientTest extends AbstractTestCase
      */
     public function testSend(
         WebhookInterface $webhook,
-        ?iterable $configurators = null,
+        ?iterable $configurators,
         string $method,
         string $url,
         array $httpClientOptions
