@@ -6,10 +6,10 @@
     "require": {
         "php": "^7.2",
         "nette/utils": "^3.1",
-        "eonx-com/easy-api-token": "^2.6"
+        "eonx-com/easy-api-token": "^2.5.20"
     },
     "require-dev": {
-        "eonx-com/easy-bugsnag": "^2.6",
+        "eonx-com/easy-bugsnag": "^2.5.20",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "laravel/lumen-framework": "^5.5",
         "symfony/symfony": "^4.2 || ^5.0"
