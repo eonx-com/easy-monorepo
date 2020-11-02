@@ -116,7 +116,7 @@ final class WebhookClient implements WebhookClientInterface
         \usort(
             $configurators,
             static function (WebhookConfiguratorInterface $first, WebhookConfiguratorInterface $second): int {
-                return $second->getPriority() <=> $first->getPriority();
+                return $first->getPriority() <=> $second->getPriority();
             }
         );
 
