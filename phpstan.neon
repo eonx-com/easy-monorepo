@@ -140,6 +140,9 @@ parameters:
           path: packages/EasyLock/tests/Bridge/Laravel/AbstractLaravelTestCase.php
 
         # ---- EasyLogging ----
+        - message: '#Parameter \#1 \$logger of method class@anonymous/LoggerAwareTraitTest\.php\:18\:\:setLogger\(\) expects Psr\\Log\\LoggerInterface, object given#'
+          path: packages/EasyLogging/tests/Bridge/Symfony/Traits/LoggerAwareTraitTest.php
+
         # ---- EasyPagination ----
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
           path: packages/EasyPagination/tests/Bridge/Laravel

@@ -18,7 +18,6 @@ final class LoggerAwareTraitTest extends AbstractTestCase
         $abstractClass = new class() {
             use LoggerAwareTrait;
         };
-        /** @var \Psr\Log\LoggerInterface $logger */
         $logger = $this->prophesize(LoggerInterface::class)->reveal();
 
         $abstractClass->setLogger($logger);
