@@ -46,7 +46,8 @@ service container under the following service ids:
 
 You can then use dependency injection anywhere you like!
 
-Thanks to [Autowiring via setters](https://symfony.com/doc/current/service_container/autowiring.html#autowiring-calls) in Symfony, you can use `<trait FQCN>` to simplify the injection of `Psr\Log\LoggerInterface`.
+Thanks to [Autowiring via setters][3] in Symfony, you can use `<trait FQCN>` to simplify the injection of
+`Psr\Log\LoggerInterface`.
 
 <br>
 
@@ -207,3 +208,4 @@ final class UseMicrosecondsLoggerConfigurator extends AbstractLoggingConfig impl
 
 [1]: https://getcomposer.org/
 [2]: https://github.com/Seldaek/monolog
+[3]: https://symfony.com/doc/current/service_container/autowiring.html#autowiring-calls
