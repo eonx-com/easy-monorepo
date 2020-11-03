@@ -70,10 +70,17 @@ final class MyService
             // Do something...
         } catch (\Throwable $throwable) {
             $this->errorHandler->report($throwable);
-        }  
+        }
     }
 }
 ```
+
+<br>
+
+### Usage in Framework
+
+Thanks to [Autowiring via setters][3] in Symfony, you can use `\EonX\EasyErrorHandler\Traits\ErrorHandlerAwareTrait`
+to simplify the injection of `\EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface`.
 
 <br>
 
@@ -86,7 +93,7 @@ an HTTP response for the given error. It is responsible for providing:
 - **headers:** array of headers to set on the generated HTTP response
 - **status code:** the status code of the generated HTTP response
 
-The error handler loop through the list of `ErrorResponseBuilderInterface` provided to build the error response data to 
+The error handler loop through the list of `ErrorResponseBuilderInterface` provided to build the error response data to
 generate the HTTP response.
 
 How do you provide those error response builders? Using `EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface`!
@@ -131,4 +138,4 @@ and provide your owns.
 
 [0]: https://packages.eonx.com/projects/eonx-com/easy-bugsnag/
 [1]: https://getcomposer.org/
-
+[3]: https://symfony.com/doc/current/service_container/autowiring.html#autowiring-calls
