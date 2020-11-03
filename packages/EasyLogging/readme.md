@@ -46,8 +46,8 @@ service container under the following service ids:
 
 You can then use dependency injection anywhere you like!
 
-Thanks to [Autowiring via setters][3] in Symfony, you can use `<trait FQCN>` to simplify the injection of
-`Psr\Log\LoggerInterface`.
+Thanks to [Autowiring via setters][3] in Symfony, you can use `\EonX\EasyLogging\Bridge\Symfony\Traits\LoggerAwareTrait`
+to simplify the injection of `Psr\Log\LoggerInterface`.
 
 <br>
 
