@@ -40,6 +40,8 @@ interface WebhookInterface
 
     public function currentAttempt(int $currentAttempt): self;
 
+    public function event(string $event): self;
+
     /**
      * @param mixed[] $extra
      */
@@ -56,6 +58,8 @@ interface WebhookInterface
     public function getBody(): ?array;
 
     public function getCurrentAttempt(): int;
+
+    public function getEvent(): ?string;
 
     /**
      * @return null|mixed[]
