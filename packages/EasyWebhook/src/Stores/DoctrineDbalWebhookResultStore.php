@@ -130,8 +130,8 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
 
         if ($response !== null) {
             $data['response'] = [
-                'content' => $response->getContent(),
-                'headers' => $response->getHeaders(),
+                'content' => $response->getContent(false),
+                'headers' => $response->getHeaders(false),
                 'info' => $response->getInfo(),
                 'status_code' => $response->getStatusCode(),
             ];
