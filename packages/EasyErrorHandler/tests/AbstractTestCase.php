@@ -199,22 +199,6 @@ class AbstractTestCase extends TestCase
     }
 
     /**
-     * Calls object's private method and returns its result.
-     *
-     * @param object $object
-     * @param string $method
-     * @param mixed ...$args
-     *
-     * @return mixed
-     */
-    protected function callPrivateMethod($object, string $method, ...$args)
-    {
-        return (function ($method, $args) {
-            return $this->{$method}(...$args);
-        })->call($object, $method, $args);
-    }
-
-    /**
      * Returns object's private property value.
      *
      * @param object $object
@@ -241,20 +225,6 @@ class AbstractTestCase extends TestCase
         $method->setAccessible(true);
 
         return $method;
-    }
-
-    /**
-     * Sets private property value.
-     *
-     * @param object $object
-     * @param string $property
-     * @param mixed $value
-     */
-    protected function setPrivatePropertyValue($object, string $property, $value): void
-    {
-        (function ($property, $value): void {
-            $this->{$property} = $value;
-        })->call($object, $property, $value);
     }
 
     protected function tearDown(): void
