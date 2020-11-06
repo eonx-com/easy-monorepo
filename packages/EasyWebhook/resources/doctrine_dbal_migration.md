@@ -9,7 +9,7 @@ ignore: true
 ```php
 final class WebhooksMigration
 {
-    public function up(): void 
+    public function up(): void
     {
         $this->addSql(
             'CREATE TABLE `easy_webhooks` (
@@ -18,7 +18,8 @@ final class WebhooksMigration
                 `url` varchar(191) NOT NULL,
                 `status` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
                 `response` LONGTEXT DEFAULT NULL COMMENT "(DC2Type:json)",
-                `http_options` LONGTEXT DEFAULT NULL COMMENT "(DC2Type:json)", 
+                `event` varchar(191) DEFAULT NULL,
+                `http_options` LONGTEXT DEFAULT NULL COMMENT "(DC2Type:json)",
                 `throwable` LONGTEXT DEFAULT NULL COMMENT "(DC2Type:json)",
                 `current_attempt` int(11) DEFAULT 0 NOT NULL,
                 `max_attempt` int(11) DEFAULT 0 NOT NULL,
@@ -29,10 +30,10 @@ final class WebhooksMigration
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;'
         );
     }
-    
-    public function down(): void 
+
+    public function down(): void
     {
         $this->addSql('DROP TABLE `easy_webhooks`;');
-    }   
+    }
 }
 ```
