@@ -3,6 +3,11 @@
 declare(strict_types=1);
 
 return [
+    // 'event' => [
+    //     'enabled' => true,
+    //     'event_header' => 'X-Event',
+    // ],
+
     // 'method' => 'POST',
 
     // 'send_async' => true,
