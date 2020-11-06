@@ -28,6 +28,7 @@ final class ResetWebhookResultStoreMiddleware implements MiddlewareInterface
             $this->store->reset();
         }
 
-        return $stack->next()->handle($envelope, $stack);
+        return $stack->next()
+            ->handle($envelope, $stack);
     }
 }
