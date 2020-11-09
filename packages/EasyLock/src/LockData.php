@@ -14,19 +14,25 @@ final class LockData implements LockDataInterface
     private $resource;
 
     /**
+     * @var bool
+     */
+    private $retry;
+
+    /**
      * @var null|float
      */
     private $ttl;
 
-    public function __construct(string $resource, ?float $ttl = null)
+    public function __construct(string $resource, ?float $ttl = null, ?bool $retry = null)
     {
         $this->resource = $resource;
         $this->ttl = $ttl;
+        $this->retry = $retry ?? false;
     }
 
-    public static function create(string $resource, ?float $ttl = null): LockDataInterface
+    public static function create(string $resource, ?float $ttl = null, ?bool $retry = null): LockDataInterface
     {
-        return new self($resource, $ttl);
+        return new self($resource, $ttl, $retry);
     }
 
     public function getResource(): string
@@ -37,5 +43,10 @@ final class LockData implements LockDataInterface
     public function getTtl(): ?float
     {
         return $this->ttl;
+    }
+
+    public function shouldRetry(): bool
+    {
+        return $this->retry;
     }
 }
