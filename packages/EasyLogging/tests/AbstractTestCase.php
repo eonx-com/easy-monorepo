@@ -13,6 +13,21 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    /**
+     * Returns object's private property value.
+     *
+     * @param object $object
+     * @param string $property
+     *
+     * @return mixed
+     */
+    protected function getPrivatePropertyValue($object, string $property)
+    {
+        return (function ($property) {
+            return $this->{$property};
+        })->call($object, $property);
+    }
+
     protected function tearDown(): void
     {
         $fs = new Filesystem();
