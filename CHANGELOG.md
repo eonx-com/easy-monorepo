@@ -1,6 +1,25 @@
 <!-- changelog-linker -->
 
-## v2.5.20 - 2020-11-02
+## v2.5.21 - 2020-11-09
+
+### EasyErrorHandler
+
+- [#414] Implement ErrorHandlerAwareTrait, Thanks to [@DKeeper]
+
+### EasyLock
+
+- [#419] Implement ShouldRetryException
+
+### EasyLogging
+
+- [#413] Implement LoggerAwareTrait, Thanks to [@DKeeper]
+
+### EasyWebhook
+
+- [#416] Implement event on webhook
+- [#415] Make sure Http response getters don't throw exceptions
+
+## [v2.5.20] - 2020-11-02
 
 ### EasyWebhook
 
@@ -2662,3 +2681,9 @@
 [@elloyd-cruz]: https://github.com/elloyd-cruz
 [#412]: https://github.com/eonx-com/easy-monorepo/pull/412
 [v2.5.19]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.18...v2.5.19
+[#419]: https://github.com/eonx-com/easy-monorepo/pull/419
+[#416]: https://github.com/eonx-com/easy-monorepo/pull/416
+[#415]: https://github.com/eonx-com/easy-monorepo/pull/415
+[#414]: https://github.com/eonx-com/easy-monorepo/pull/414
+[#413]: https://github.com/eonx-com/easy-monorepo/pull/413
+[v2.5.20]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.19...v2.5.20
