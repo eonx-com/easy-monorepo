@@ -38,13 +38,16 @@ $console = $loggerFactory->create('console'); // Create logger for console chann
 
 ### Usage in Framework
 
-The different bridge provided by this package will by default register the logger for your default channel in the 
+The different bridge provided by this package will by default register the logger for your default channel in the
 service container under the following service ids:
 
 - `Psr\Log\LoggerInterface`
 - `logger`
 
 You can then use dependency injection anywhere you like!
+
+Thanks to [Autowiring via setters][3] in Symfony, you can use `\EonX\EasyLogging\Bridge\Symfony\Traits\LoggerAwareTrait`
+to simplify the injection of `Psr\Log\LoggerInterface`.
 
 <br>
 
@@ -56,7 +59,7 @@ The `LoggerFactoryInterface` allows you to set different collections of "config 
                 to all channels
 - **priority:** define the order each config must be set on the logger instance, higher the priority later the config
                 will be added to the logger instance
-                
+
 <br>
 
 ###### HandlerConfig
@@ -166,7 +169,7 @@ final class TagProcessorConfigProvider implements ProcessorConfigProviderInterfa
 ###### LoggerConfigurator
 
 The `\Monolog\Logger` class has methods allowing you to configure it even more (e.g. using microseconds). To deal with
-that, the logger factory accepts a collection of `LoggerConfiguratorInterface`. 
+that, the logger factory accepts a collection of `LoggerConfiguratorInterface`.
 
 To tell the logger factory about your `LoggerConfiguratorInterface`, you must call the `setLoggerConfigurators()` method:
 
@@ -205,3 +208,4 @@ final class UseMicrosecondsLoggerConfigurator extends AbstractLoggingConfig impl
 
 [1]: https://getcomposer.org/
 [2]: https://github.com/Seldaek/monolog
+[3]: https://symfony.com/doc/current/service_container/autowiring.html#autowiring-calls
