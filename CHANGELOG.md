@@ -1,6 +1,12 @@
 <!-- changelog-linker -->
 
-## v2.5.21 - 2020-11-09
+## v2.5.22 - 2020-11-09
+
+### EasyErrorHandler
+
+- [#420] Ignore HttpExceptions for Bugsnag
+
+## [v2.5.21] - 2020-11-09
 
 ### EasyErrorHandler
 
@@ -2687,3 +2693,5 @@
 [#414]: https://github.com/eonx-com/easy-monorepo/pull/414
 [#413]: https://github.com/eonx-com/easy-monorepo/pull/413
 [v2.5.20]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.19...v2.5.20
+[#420]: https://github.com/eonx-com/easy-monorepo/pull/420
+[v2.5.21]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.20...v2.5.21
