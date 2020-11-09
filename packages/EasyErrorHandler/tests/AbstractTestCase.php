@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * This class has for objective to provide common features to all tests without having to update
  * the class they all extend.
+ *
  * @covers \EonX\EasyErrorHandler\Tests\AbstractTestCase
  */
 class AbstractTestCase extends TestCase
@@ -195,6 +196,21 @@ class AbstractTestCase extends TestCase
                 self::assertSame('my-message', $content['message']);
             },
         ];
+    }
+
+    /**
+     * Returns object's private property value.
+     *
+     * @param object $object
+     * @param string $property
+     *
+     * @return mixed
+     */
+    protected function getPrivatePropertyValue($object, string $property)
+    {
+        return (function ($property) {
+            return $this->{$property};
+        })->call($object, $property);
     }
 
     /**
