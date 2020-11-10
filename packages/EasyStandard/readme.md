@@ -58,8 +58,8 @@ Go to the root folder of the project and run
 ```bash
 vendor/bin/ecs check
 ```
-Expected output: 
-```bash
+Expected output:
+```
 [OK] No errors found. Great job - your code is shiny in style!
 ```
 
@@ -103,7 +103,7 @@ Go to the root folder of the project and run
 touch `php -r "echo sys_get_temp_dir() . '/_rector_type_probe.txt';"` && vendor/bin/rector process --dry-run
 ```
 Expected output:
-```bash
+```
 [OK] Rector is done!
 ```
 

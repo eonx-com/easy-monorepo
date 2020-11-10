@@ -29,7 +29,7 @@ Adds `@see` annotation for data providers.
 // before
 /**
  * Provides some data.
- * 
+ *
  * @return mixed[]
  */
 public function provideSomeData(): array
@@ -40,9 +40,9 @@ public function provideSomeData(): array
 // after
 /**
  * Provides some data.
- * 
+ *
  * @return mixed[]
- * 
+ *
  * @see testMethod
  */
 public function provideSomeData(): array
@@ -65,7 +65,7 @@ class SomeClass
 // after
 /**
  * Some class.
-*/
+ */
 class SomeClass
 {
 }

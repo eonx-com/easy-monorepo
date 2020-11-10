@@ -93,7 +93,7 @@ class MyClass
 {
     /**
      * @return void
-     * 
+     *
      * @param mixed $withSomething
      */
     public function doSomething($withSomething): void
@@ -108,7 +108,7 @@ class MyClass
 {
     /**
      * @param mixed $withSomething
-     * 
+     *
      * @return void
      */
     public function doSomething($withSomething): void
@@ -122,14 +122,14 @@ class MyClass
 - `alwaysTopAnnotations` - A list of annotations that should always come first in the list, without regard to sorting. Default value: `[]`.
 
 ##### [\EonX\EasyStandard\Sniffs\Commenting\FunctionCommentSniff][6]
-Checks function comment blocks follow our standards.
+Checks that function comment blocks follow EonX standards.
 ```php
 // incorrect
 class MyClass
 {
     /**
      * @return void
-     * 
+     *
      * @param mixed $withSomething
      */
 
@@ -140,7 +140,7 @@ class MyClass
 
     /*
      * @return void
-     * 
+     *
      * @param string $withSomething
      */
     public function doSomethingB(string $withSomething): void
@@ -152,7 +152,7 @@ class MyClass
     {
 
     }
-    
+
     /**
      * Do something.
      *
@@ -172,7 +172,7 @@ class MyClass
      * Do something.
      *
      * @param mixed $withSomething
-     * 
+     *
      * @return void
      */
     public function doSomethingA($withSomething): void
@@ -184,7 +184,7 @@ class MyClass
      * Do something.
      *
      * @param string $withSomething
-     * 
+     *
      * @return void
      */
     public function doSomethingB(string $withSomething): void
@@ -196,19 +196,19 @@ class MyClass
      * Do something.
      *
      * @param int $withSomething
-     * 
+     *
      * @return void
      */
     public function doSomethingC(int $withSomething): void
     {
 
     }
-    
+
     /**
      * Do something.
      *
      * @param bool $withSomething
-     * 
+     *
      * @return void
      */
     public function doSomethingD(bool $withSomething): void
@@ -236,7 +236,7 @@ final class TestClass
         self::assertSame($expectedResult, $actualResult);
         self::assertSame(['key' => 'value'], $array);
     }
-    
+
     public function testSomethingB()
     {
         $expectedResult = 4;
@@ -261,18 +261,18 @@ final class TestClass
         self::assertSame($expectedResult, $actualResult);
         self::assertSame(['key' => 'value'], $array);
     }
-    
+
     public function testSomethingB()
     {
         $actualResult = 2 + 2;
-        
+
         self::assertSame(4, $actualResult);
     }
 
     public function testSomethingC()
     {
         self::assertSame(4, 2 + 2);
-    }    
+    }
 
     // Allow empty line in closure
     public function testSomethingD()

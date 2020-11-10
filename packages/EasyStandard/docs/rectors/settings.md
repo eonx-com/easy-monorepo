@@ -29,17 +29,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set(Option::IMPORT_DOC_BLOCKS, false);
 
     $parameters->set(Option::PHP_VERSION_FEATURES, '7.4');
-    
+
     $parameters->set(Option::AUTOLOAD_PATHS, [
         __DIR__ . '/phpunit/phpunit-8.5-0/src',
     ]);
-    
+
     $parameters->set(Option::PATHS, [__DIR__ . '/src', __DIR__ . '/tests']);
 
     $parameters->set(Option::EXCLUDE_PATHS, [
             __DIR__ . '/path/to/folder/*',
     ]);
-    
+
     $parameters->set(Option::SKIP, [
         CallableThisArrayToAnonymousFunctionRector::class => null,
         ArrayThisCallToThisMethodCallRector::class => [
@@ -49,7 +49,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     $services = $containerConfigurator->services();
-    
+
     $services->set(StrictInArrayRector::class);
     $services->set(ThrowWithPreviousExceptionRector::class);
     $services->set(ExplicitBoolCompareRector::class);
@@ -85,7 +85,7 @@ services:
 
     Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector: ~
     Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector: ~
-    
+
     EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff:
         alwaysTopAnnotations:
             - '@param'
@@ -99,7 +99,7 @@ services:
 - `autoload_paths` - list of paths to autoload (Rector relies on the autoload setup of your project; Composer autoload is included by default)
 - `exclude_paths` - list of files/directories to skip
 - `exclude_rectors` - list of rectors to exclude from analysis
-- `import_doc_blocks` - whether to skip classes used in PHP DocBlocks, like in /** @var \Some\Class */ [default: true]
+- `import_doc_blocks` - whether to skip classes used in PHP DocBlocks, like in `/** @var \Some\Class */` [default: true]
 - `import_short_classes` - whether to import root namespace classes, like \DateTime and \Exception [default: true]
 - `paths` - list of paths to analyse
 - `php_version_features` - use features of a specific PHP version [default: your PHP version]
