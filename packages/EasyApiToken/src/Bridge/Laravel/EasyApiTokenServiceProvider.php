@@ -28,7 +28,7 @@ final class EasyApiTokenServiceProvider extends ServiceProvider
         // TODO - Remove in 3.0.
         if (empty(\config('easy-api-token.decoders', [])) === false) {
             @\trigger_error(\sprintf(
-                'Defining ApiTokenDecoders using a config file is deprecated since 2.4 and will be removed in 3.0. 
+                'Defining ApiTokenDecoders using a config file is deprecated since 2.4 and will be removed in 3.0.
                 Use %s instead.',
                 ApiTokenDecoderProviderInterface::class
             ), \E_USER_NOTICE);
@@ -36,8 +36,8 @@ final class EasyApiTokenServiceProvider extends ServiceProvider
             $this->app->singleton(FromConfigDecoderProvider::class, function (): FromConfigDecoderProvider {
                 return new FromConfigDecoderProvider(
                     \config('easy-api-token.decoders', []),
-                    \config('easy-api-token.factories', null),
-                    \config('easy-api-token.default_decoder', null)
+                    \config('easy-api-token.factories'),
+                    \config('easy-api-token.default_decoder')
                 );
             });
             $this->app->tag(FromConfigDecoderProvider::class, [BridgeConstantsInterface::TAG_DECODER_PROVIDER]);

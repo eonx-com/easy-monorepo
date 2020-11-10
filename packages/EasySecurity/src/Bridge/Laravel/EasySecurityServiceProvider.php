@@ -7,6 +7,7 @@ namespace EonX\EasySecurity\Bridge\Laravel;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagBridgeConstantsInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
+use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\EasyBugsnag\SecurityContextClientConfigurator;
 use EonX\EasySecurity\DeferredSecurityContextProvider;
@@ -18,6 +19,7 @@ use EonX\EasySecurity\MainSecurityContextConfigurator;
 use EonX\EasySecurity\SecurityContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 final class EasySecurityServiceProvider extends ServiceProvider
 {
@@ -35,19 +37,24 @@ final class EasySecurityServiceProvider extends ServiceProvider
         $contextServiceId = \config('easy-security.context_service_id');
 
         $this->registerAuthorizationMatrix();
-        $this->registerEasyBugsnag($contextServiceId);
+        $this->registerEasyBugsnag();
         $this->registerSecurityContext($contextServiceId);
         $this->registerDeferredSecurityContextProvider($contextServiceId);
     }
 
     private function registerAuthorizationMatrix(): void
     {
+        $this->app->singleton(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE, ArrayAdapter::class);
+
         $this->app->singleton(
             AuthorizationMatrixFactoryInterface::class,
             function (): AuthorizationMatrixFactoryInterface {
-                return new AuthorizationMatrixFactory(
-                    $this->app->tagged(BridgeConstantsInterface::TAG_ROLES_PROVIDER),
-                    $this->app->tagged(BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER)
+                return new CachedAuthorizationMatrixFactory(
+                    $this->app->make(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE),
+                    new AuthorizationMatrixFactory(
+                        $this->app->tagged(BridgeConstantsInterface::TAG_ROLES_PROVIDER),
+                        $this->app->tagged(BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER)
+                    )
                 );
             }
         );
@@ -67,7 +74,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
         );
     }
 
-    private function registerEasyBugsnag(string $contextServiceId): void
+    private function registerEasyBugsnag(): void
     {
         if (\config('easy-security.easy_bugsnag', false) === false
             || \interface_exists(EasyBugsnagBridgeConstantsInterface::class) === false) {
@@ -76,8 +83,10 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             SecurityContextClientConfigurator::class,
-            function () use ($contextServiceId): SecurityContextClientConfigurator {
-                return new SecurityContextClientConfigurator($this->app->make($contextServiceId));
+            function (): SecurityContextClientConfigurator {
+                return new SecurityContextClientConfigurator(
+                    $this->app->make(DeferredSecurityContextProviderInterface::class)
+                );
             }
         );
         $this->app->tag(
@@ -91,7 +100,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
         $this->app->singleton(MainSecurityContextConfigurator::class, function (): MainSecurityContextConfigurator {
             $request = $this->app->make(Request::class);
             $apiTokenDecoderFactory = $this->app->make(ApiTokenDecoderFactoryInterface::class);
-            $apiTokenDecoder = $apiTokenDecoderFactory->build(\config('easy-security.token_decoder', null));
+            $apiTokenDecoder = $apiTokenDecoderFactory->build(\config('easy-security.token_decoder'));
 
             $mainConfigurator = new MainSecurityContextConfigurator(
                 $this->app->make(AuthorizationMatrixInterface::class),

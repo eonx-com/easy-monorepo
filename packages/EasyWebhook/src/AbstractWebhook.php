@@ -19,6 +19,7 @@ abstract class AbstractWebhook implements WebhookInterface
     protected static $setters = [
         'body' => 'body',
         'current_attempt' => 'currentAttempt',
+        'event' => 'event',
         'http_options' => 'httpClientOptions',
         'max_attempt' => 'maxAttempt',
         'method' => 'method',
@@ -32,7 +33,7 @@ abstract class AbstractWebhook implements WebhookInterface
     private $body;
 
     /**
-     * @var null|boolean
+     * @var null|bool
      */
     private $configured;
 
@@ -40,6 +41,11 @@ abstract class AbstractWebhook implements WebhookInterface
      * @var null|int
      */
     private $currentAttempt;
+
+    /**
+     * @var null|string
+     */
+    private $event;
 
     /**
      * @var null|mixed[]
@@ -72,7 +78,7 @@ abstract class AbstractWebhook implements WebhookInterface
     private $secret;
 
     /**
-     * @var null|boolean
+     * @var null|bool
      */
     private $sendNow;
 
@@ -91,7 +97,8 @@ abstract class AbstractWebhook implements WebhookInterface
      */
     public static function create(string $url, ?array $body = null, ?string $method = null): WebhookInterface
     {
-        $webhook = (new static())->url($url)->method($method ?? self::DEFAULT_METHOD);
+        $webhook = (new static())->url($url)
+            ->method($method ?? self::DEFAULT_METHOD);
 
         if ($body !== null) {
             $webhook->body($body);
@@ -146,6 +153,13 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
+    public function event(string $event): WebhookInterface
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
     /**
      * @param mixed[] $extra
      */
@@ -167,6 +181,11 @@ abstract class AbstractWebhook implements WebhookInterface
     public function getCurrentAttempt(): int
     {
         return $this->currentAttempt ?? 0;
+    }
+
+    public function getEvent(): ?string
+    {
+        return $this->event;
     }
 
     /**
@@ -304,6 +323,7 @@ abstract class AbstractWebhook implements WebhookInterface
     {
         return [
             'current_attempt' => $this->getCurrentAttempt(),
+            'event' => $this->getEvent(),
             'http_options' => $this->getHttpClientOptions(),
             'max_attempt' => $this->getMaxAttempt(),
             'method' => $this->getMethod(),

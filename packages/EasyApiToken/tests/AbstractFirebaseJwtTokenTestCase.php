@@ -65,6 +65,7 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
 
         /** @var resource|string|null $key */
 
-        return $this->createFirebaseJwtDriver($algo, null, $key)->encode(static::$tokenPayload);
+        return $this->createFirebaseJwtDriver($algo, null, $key)
+            ->encode(static::$tokenPayload);
     }
 }

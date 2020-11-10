@@ -34,7 +34,8 @@ final class ReplaceChannelsDefinitionPass implements CompilerPassInterface
                     continue;
                 }
 
-                $resolvedChannel = $container->getParameterBag()->resolveValue($tag['channel']);
+                $resolvedChannel = $container->getParameterBag()
+                    ->resolveValue($tag['channel']);
                 $loggerId = \sprintf(self::MONOLOG_LOGGER_ID_PATTERN, $resolvedChannel);
 
                 if ($container->hasDefinition($loggerId) === false) {

@@ -45,7 +45,8 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
 
     protected function createConfig(): StartSizeConfig
     {
-        $config = $this->app->make('config')->get('pagination.start_size', []);
+        $config = $this->app->make('config')
+            ->get('pagination.start_size', []);
 
         return new StartSizeConfig(
             $config['start_attribute'] ?? static::$defaultConfig['start_attribute'],
@@ -64,7 +65,7 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
 
     private function getRequest(): Request
     {
-        if ($this->app->runningInConsole() === true) {
+        if ($this->app->runningInConsole()) {
             /**
              * When running in console, a request instance is created and bound to `request` alias.
              *

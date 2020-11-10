@@ -12,6 +12,8 @@ final class DotenvLoaderTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testLoadEnv
      */
     public function providerTestLoadEnv(): iterable
     {

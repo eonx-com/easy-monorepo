@@ -40,7 +40,8 @@ final class ApiPlatformSimpleDataPersisterPass implements CompilerPassInterface
         $originalId = 'api_platform.data_persister';
 
         if ($container->hasDefinition($originalId) === false
-            || $container->getDefinition($originalId)->getClass() !== ChainSimpleDataPersister::class) {
+            || $container->getDefinition($originalId)
+                ->getClass() !== ChainSimpleDataPersister::class) {
             return;
         }
 

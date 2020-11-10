@@ -18,19 +18,12 @@ final class AnnotationsCommentsRectorTest extends AbstractRectorTestCase
 {
     /**
      * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
+     *
+     * @see testRule
      */
     public function provideData(): Iterator
     {
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
-    }
-
-    public function testGetDefinitionSucceeds(): void
-    {
-        $rector = new AnnotationsCommentsRector();
-
-        $definition = $rector->getDefinition();
-
-        self::assertNotEmpty($definition->getDescription());
     }
 
     /**

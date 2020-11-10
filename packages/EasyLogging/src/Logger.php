@@ -173,7 +173,7 @@ final class Logger implements LoggerInterface
         try {
             $callable = [$this->getLogger(), $level];
 
-            if (\is_callable($callable) === true) {
+            if (\is_callable($callable)) {
                 $callable($message, $context ?? []);
             }
         } catch (\Throwable $exception) {

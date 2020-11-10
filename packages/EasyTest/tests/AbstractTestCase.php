@@ -44,7 +44,8 @@ abstract class AbstractTestCase extends TestCase
         $kernel->boot();
 
         /** @var \Symfony\Component\Console\Application $app */
-        $app = $kernel->getContainer()->get(EasyTestApplication::class);
+        $app = $kernel->getContainer()
+            ->get(EasyTestApplication::class);
 
         return $this->app = $app;
     }

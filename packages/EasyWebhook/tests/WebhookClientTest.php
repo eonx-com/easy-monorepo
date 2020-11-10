@@ -7,6 +7,7 @@ namespace EonX\EasyWebhook\Tests;
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyWebhook\Configurators\BodyFormatterWebhookConfigurator;
+use EonX\EasyWebhook\Configurators\EventWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\MethodWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\SignatureWebhookConfigurator;
 use EonX\EasyWebhook\Exceptions\InvalidWebhookUrlException;
@@ -23,6 +24,8 @@ final class WebhookClientTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testSend
      */
     public function providerTestSend(): iterable
     {
@@ -64,7 +67,7 @@ final class WebhookClientTest extends AbstractTestCase
         yield 'Configurator priorities run higher last' => [
             (new Webhook())->url('https://eonx.com'),
             [new MethodWebhookConfigurator('PATCH', 200), new MethodWebhookConfigurator('PUT', 100)],
-            'PATCH',
+            'PUT',
             'https://eonx.com',
             [],
         ];
@@ -95,6 +98,20 @@ final class WebhookClientTest extends AbstractTestCase
                     'X-Signature' => 'fbde39337b529a887fba290e322809bd8530d9ba68d2c4c869d1394cc07bd99e',
                 ],
                 'body' => '{"key":"value"}',
+            ],
+        ];
+
+        yield 'Event header' => [
+            (new Webhook())
+                ->url('https://eonx.com')
+                ->event('my-event'),
+            [new EventWebhookConfigurator()],
+            WebhookInterface::DEFAULT_METHOD,
+            'https://eonx.com',
+            [
+                'headers' => [
+                    'X-Event' => 'my-event',
+                ],
             ],
         ];
     }

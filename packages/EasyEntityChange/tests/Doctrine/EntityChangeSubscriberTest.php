@@ -23,10 +23,8 @@ use stdClass;
 
 /**
  * @covers \EonX\EasyEntityChange\Doctrine\EntityChangeSubscriber
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class EntityChangeSubscriberTest extends AbstractTestCase
+final class EntityChangeSubscriberTest extends AbstractTestCase
 {
     public function testListener(): void
     {

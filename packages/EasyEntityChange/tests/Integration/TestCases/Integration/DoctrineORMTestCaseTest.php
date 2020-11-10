@@ -12,10 +12,7 @@ use EonX\EasyEntityChange\Tests\Integration\Fixtures\SimpleEntity;
 use EonX\EasyEntityChange\Tests\Stubs\EventDispatcherStub;
 use Eonx\TestUtils\TestCases\Integration\DoctrineORMTestCase;
 
-/**
- * @coversNothing
- */
-class DoctrineORMTestCaseTest extends DoctrineORMTestCase
+final class DoctrineORMTestCaseTest extends DoctrineORMTestCase
 {
     public function testEntityChangeEventIsDispatchedWithDbId(): void
     {
@@ -30,7 +27,8 @@ class DoctrineORMTestCaseTest extends DoctrineORMTestCase
         $dispatcher = new EventDispatcherStub();
 
         $entityManager = $this->getEntityManager();
-        $entityManager->getEventManager()->addEventSubscriber(new EntityChangeSubscriber($dispatcher));
+        $entityManager->getEventManager()
+            ->addEventSubscriber(new EntityChangeSubscriber($dispatcher));
 
         $entity = new SimpleEntity();
         $entity->setProperty('hello');
@@ -54,7 +52,8 @@ class DoctrineORMTestCaseTest extends DoctrineORMTestCase
         $dispatcher = new EventDispatcherStub();
 
         $entityManager = $this->getEntityManager();
-        $entityManager->getEventManager()->addEventSubscriber(new EntityChangeSubscriber($dispatcher));
+        $entityManager->getEventManager()
+            ->addEventSubscriber(new EntityChangeSubscriber($dispatcher));
 
         $entity = new ProvidedIdEntity('uuid');
         $entity->setProperty('hello');

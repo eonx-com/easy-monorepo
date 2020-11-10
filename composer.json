@@ -11,11 +11,11 @@
     ],
     "require": {
         "php": "^7.2",
+        "ext-json": "*",
         "doctrine/orm": "^2.6",
         "eonx-com/externals": "^1.0 || ^2.0",
         "nesbot/carbon": "^2.22",
         "dragonmantank/cron-expression": "^2.3",
-        "ext-json": "*",
         "psr/event-dispatcher": "^1.0",
         "ramsey/uuid": "^3.9",
         "symfony/cache": "^4.2 || ^5.0",
@@ -29,9 +29,9 @@
         "symfony/string": "^4.2 || ^5.0",
         "symfony/uid": "^4.2 || ^5.0",
         "symfony/psr-http-message-bridge": "^1.1",
-        "symplify/package-builder": "^8.2",
+        "symplify/package-builder": "^8.3.41",
         "nyholm/psr7": "^1.1",
-        "symplify/autowire-array-parameter": "^8.2",
+        "symplify/autowire-array-parameter": "^8.3.41",
         "nette/utils": "^3.1",
         "aws/aws-sdk-php": "^3.134",
         "illuminate/support": "^5.5 || ^6.0",
@@ -52,25 +52,31 @@
         "mockery/mockery": "^1.2",
         "phpspec/prophecy": "~1.0",
         "phpstan/phpstan": "^0.12.42",
-        "phpunit/phpunit": "^7.5 || ^8.4",
+        "phpunit/phpunit": "^8.4 || ^9.5",
         "psr/container": "^1.0",
         "symfony/symfony": "^4.2 || ^5.0",
-        "symplify/monorepo-builder": "^8.2",
-        "symplify/changelog-linker": "^8.2",
+        "symplify/monorepo-builder": "^8.3.41",
+        "symplify/changelog-linker": "^8.3.41",
         "sensiolabs/security-checker": "^5.0",
-        "symplify/easy-coding-standard": "^8.2",
-        "symplify/phpstan-extensions": "^8.2",
-        "slevomat/coding-standard": "^6.1",
-        "symplify/easy-coding-standard-tester": "^8.2",
+        "symplify/easy-coding-standard": "^8.3.41",
+        "symplify/phpstan-extensions": "^8.3.41",
+        "slevomat/coding-standard": "^6.4",
+        "symplify/easy-coding-standard-tester": "^8.3.41",
         "symfony/maker-bundle": "^1.15",
-        "rector/rector": "^0.8.2",
-        "symfony/monolog-bundle": "^3.5"
+        "rector/rector": "^0.8.34",
+        "symfony/monolog-bundle": "^3.5",
+        "tracy/tracy": "^2.7",
+        "cweagans/composer-patches": "^1.7",
+        "migrify/vendor-patches": "^0.3.48",
+        "dg/bypass-finals": "^1.2",
+        "roave/security-advisories": "dev-master"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
             "EonX\\EasyAsync\\": "packages/EasyAsync/src",
             "EonX\\EasyAwsCredentialsFinder\\": "packages/EasyAwsCredentialsFinder/src",
+            "EonX\\EasyBankFiles\\": "packages/EasyBankFiles/src",
             "EonX\\EasyBugsnag\\": "packages/EasyBugsnag/src",
             "EonX\\EasyCore\\": "packages/EasyCore/src",
             "EonX\\EasyDecision\\": "packages/EasyDecision/src",
@@ -101,6 +107,7 @@
             "EonX\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
             "EonX\\EasyAsync\\Tests\\": "packages/EasyAsync/tests",
             "EonX\\EasyAwsCredentialsFinder\\Tests\\": "packages/EasyAwsCredentialsFinder/tests",
+            "EonX\\EasyBankFiles\\Tests\\": "packages/EasyBankFiles/tests",
             "EonX\\EasyBugsnag\\Tests\\": "packages/EasyBugsnag/tests",
             "EonX\\EasyCore\\Tests\\": "packages/EasyCore/tests",
             "EonX\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
@@ -149,7 +156,8 @@
         "eonx-com/easy-async": "self.version",
         "eonx-com/easy-webhook": "self.version",
         "eonx-com/easy-bugsnag": "self.version",
-        "eonx-com/easy-request-id": "self.version"
+        "eonx-com/easy-request-id": "self.version",
+        "eonx-com/easy-bank-files": "self.version"
     },
     "scripts": {
         "check-all": [
@@ -158,23 +166,23 @@
             "@check-security",
             "@check-tests"
         ],
-        "check-ecs": "vendor/bin/ecs check --clear-cache",
-        "check-monorepo": [
-            "@composer validate --strict"
-        ],
-        "check-phpstan": "vendor/bin/phpstan analyse --error-format symplify",
+        "check-ecs": "vendor/bin/ecs check --ansi",
+        "check-monorepo": "vendor/bin/monorepo-builder validate --ansi",
+        "check-composer": "@composer validate --strict",
+        "check-phpstan": "vendor/bin/phpstan analyse --error-format symplify --ansi",
         "check-security": "vendor/bin/security-checker security:check",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
+        "check-rector": "vendor/bin/rector process --ansi --config rector-ci.php --dry-run",
         "changelog": [
-            "vendor/bin/changelog-linker dump-merges --in-packages",
-            "vendor/bin/changelog-linker link",
-            "vendor/bin/changelog-linker cleanup"
+            "vendor/bin/changelog-linker dump-merges --in-packages --ansi",
+            "vendor/bin/changelog-linker link --ansi",
+            "vendor/bin/changelog-linker cleanup --ansi"
         ],
-        "fix-ecs": "vendor/bin/ecs check --fix --clear-cache",
-        "merge": "vendor/bin/monorepo-builder merge",
-        "propagate": "vendor/bin/monorepo-builder propagate",
-        "split": "vendor/bin/monorepo-builder split",
-        "validate-repo": "vendor/bin/monorepo-builder validate"
+        "fix-ecs": "vendor/bin/ecs check --fix --ansi",
+        "fix-rector": "vendor/bin/rector process --ansi --config rector-ci.php",
+        "merge": "vendor/bin/monorepo-builder merge --ansi",
+        "propagate": "vendor/bin/monorepo-builder propagate --ansi",
+        "split": "vendor/bin/monorepo-builder split --ansi"
     },
     "suggest": {
         "auth0/auth0-php": "To use the Auth0 implementation to handle your users identity",
@@ -186,6 +194,9 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "config": {
+        "process-timeout": 0
+    },
     "extra": {
         "eonx_docs": {
             "finder_pattern": "readme.md",
@@ -193,6 +204,11 @@
         },
         "branch-alias": {
             "dev-master": "2.5-dev"
+        },
+        "patches": {
+            "nesbot/carbon": [
+                "patches/nesbot-carbon-src-carbon-traits-localization-php.patch"
+            ]
         }
     }
 }

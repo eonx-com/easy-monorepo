@@ -13,6 +13,8 @@ final class ArrayPaginatorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testUrls
      */
     public function providerTestUrls(): iterable
     {

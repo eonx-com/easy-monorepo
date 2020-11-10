@@ -15,6 +15,8 @@ final class EventTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testFiltersPass
      */
     public function providerTestFiltersPass(): iterable
     {
@@ -33,6 +35,8 @@ final class EventTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testNoArgsMethods
      */
     public function providerTestNoArgsMethods(): iterable
     {
@@ -123,9 +127,8 @@ final class EventTest extends AbstractTestCase
         ]);
 
         // Ok this is for coverage only, please don't judge me...
-        $event
-            ->before(function (): void {
-            })
+        $event->before(function (): void {
+        })
             ->then(function (): void {
             });
 

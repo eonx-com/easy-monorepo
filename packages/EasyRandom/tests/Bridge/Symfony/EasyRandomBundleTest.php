@@ -12,6 +12,8 @@ final class EasyRandomBundleTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testUuidV4GeneratorInstance
      */
     public function providerTestUuidV4GeneratorInstance(): iterable
     {
@@ -25,7 +27,9 @@ final class EasyRandomBundleTest extends AbstractSymfonyTestCase
 
     public function testSanity(): void
     {
-        $randomGenerator = $this->getKernel()->getContainer()->get(RandomGeneratorInterface::class);
+        $randomGenerator = $this->getKernel()
+            ->getContainer()
+            ->get(RandomGeneratorInterface::class);
 
         self::assertInstanceOf(RandomGeneratorInterface::class, $randomGenerator);
     }
@@ -39,7 +43,9 @@ final class EasyRandomBundleTest extends AbstractSymfonyTestCase
      */
     public function testUuidV4GeneratorInstance(array $configs, string $uuidV4GeneratorClass): void
     {
-        $randomGenerator = $this->getKernel($configs)->getContainer()->get(RandomGeneratorInterface::class);
+        $randomGenerator = $this->getKernel($configs)
+            ->getContainer()
+            ->get(RandomGeneratorInterface::class);
 
         $uuidV4Generator = \Closure::bind(function () {
             return $this->uuidV4Generator;

@@ -14,6 +14,7 @@ use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer;
+use PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
 use SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff;
 use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
@@ -27,8 +28,9 @@ use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFi
 use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveSuperfluousDocBlockWhitespaceFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
+use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\CodingStandard\Fixer\Spacing\RemoveSpacingAroundModifierAndConstFixer;
-use Symplify\EasyCodingStandard\Configuration\Option;
+use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -66,7 +68,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         PhpdocVarWithoutNameFixer::class => null,
         PhpUnitStrictFixer::class => null,
         BlankLineAfterOpeningTagFixer::class => null,
-        MethodChainingIndentationFixer::class => null,
+
+        MethodChainingIndentationFixer::class => ['*/Configuration.php'],
+
+        MethodChainingNewlineFixer::class => [
+            // bug, to be fixed in symplify
+            '*/Configuration.php',
+            __DIR__ . '/packages/EasyCore/tests/Doctrine/DBAL/Types/DateTimeMicrosecondsTypeTest.php',
+        ],
         NullTypeHintOnLastPositionSniff::class . '.NullTypeHintNotOnLastPosition' => null,
         ParameterTypeHintSniff::class . '.MissingAnyTypeHint' => null,
         ReturnTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
@@ -149,10 +158,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php',
             __DIR__ . '/packages/EasyErrorHandler/tests/Bridge/Laravel/ExceptionHandlerTest.php',
         ],
+        ReturnAssignmentFixer::class => [
+            __DIR__ . '/packages/EasyCore/src/Bridge/Symfony/Doctrine/EntityManagerResolver.php',
+        ],
     ]);
 
     $services = $containerConfigurator->services();
     $services->set(FileHeaderSniff::class);
+
+    $services->set(MethodChainingNewlineFixer::class);
 
     $services->set(YodaStyleFixer::class)
         ->call('configure', [
@@ -171,8 +185,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // arrays
     $services->set(ArrayOpenerNewlineFixer::class);
     $services->set(StandaloneLineInMultilineArrayFixer::class);
+
     // annotations
     $services->set(ParamReturnAndVarTagMalformsFixer::class);
+
     // extra spaces
     $services->set(RemoveSuperfluousDocBlockWhitespaceFixer::class);
     $services->set(RemoveSpacingAroundModifierAndConstFixer::class);

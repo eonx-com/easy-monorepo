@@ -16,6 +16,8 @@ final class AuthorizationMatrixTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testMatrix
      */
     public function providerTestMatrix(): iterable
     {

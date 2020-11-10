@@ -19,6 +19,8 @@ final class DecisionsTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDecisions
      */
     public function providerTestDecisions(): iterable
     {
@@ -140,7 +142,8 @@ final class DecisionsTest extends AbstractTestCase
             new ExpressionLanguageConfig(null, [new ValueExpressionFunctionProvider()])
         );
 
-        $output = $decision->addRules($rules)->make($input);
+        $output = $decision->addRules($rules)
+            ->make($input);
         $context = $decision->getContext();
 
         self::assertEquals($expectedOutput, $output);

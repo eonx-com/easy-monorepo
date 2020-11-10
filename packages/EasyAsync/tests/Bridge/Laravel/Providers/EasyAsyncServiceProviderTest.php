@@ -31,6 +31,8 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testServiceProvider
      */
     public function providerTestServiceProvider(): iterable
     {
@@ -53,7 +55,8 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
 
         /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->createApplication();
-        $app->get('config')->set('easy-async.implementation', 'invalid');
+        $app->get('config')
+            ->set('easy-async.implementation', 'invalid');
 
         $provider = new EasyAsyncServiceProvider($app);
 
@@ -72,7 +75,8 @@ final class EasyAsyncServiceProviderTest extends AbstractLumenTestCase
         ?callable $dependencies = null
     ): void {
         $app = $this->createApplication();
-        $app->get('config')->set('easy-async.implementation', $implementation);
+        $app->get('config')
+            ->set('easy-async.implementation', $implementation);
 
         if ($dependencies !== null) {
             \call_user_func($dependencies, $app);

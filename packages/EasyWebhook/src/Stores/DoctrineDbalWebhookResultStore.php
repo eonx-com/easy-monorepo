@@ -51,6 +51,11 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
 
         $class = $data['class'] ?? Webhook::class;
 
+        // Quick fix, maybe we will need to think about something better if needed
+        if (\is_string($data['http_options'] ?? null)) {
+            $data['http_options'] = \json_decode($data['http_options'], true) ?? $data['http_options'];
+        }
+
         return new WebhookResult($class::fromArray($data)->id($id));
     }
 
@@ -67,13 +72,15 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
 
             $this->conn->insert($this->table, $this->formatData($data));
 
-            $result->getWebhook()->id($data['id']);
+            $result->getWebhook()
+                ->id($data['id']);
 
             return $result;
         }
 
         $this->conn->update($this->table, $this->formatData($data), [
-            'id' => $result->getWebhook()->getId(),
+            'id' => $result->getWebhook()
+                ->getId(),
         ]);
 
         return $result;
@@ -123,8 +130,8 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
 
         if ($response !== null) {
             $data['response'] = [
-                'content' => $response->getContent(),
-                'headers' => $response->getHeaders(),
+                'content' => $response->getContent(false),
+                'headers' => $response->getHeaders(false),
                 'info' => $response->getInfo(),
                 'status_code' => $response->getStatusCode(),
             ];

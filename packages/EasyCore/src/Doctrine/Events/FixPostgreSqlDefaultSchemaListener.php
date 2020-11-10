@@ -31,7 +31,8 @@ final class FixPostgreSqlDefaultSchemaListener
 
         foreach ($schemaManager->getExistingSchemaSearchPaths() as $namespace) {
             if ($args->getSchema()->hasNamespace($namespace) === false) {
-                $args->getSchema()->createNamespace($namespace);
+                $args->getSchema()
+                    ->createNamespace($namespace);
             }
         }
     }

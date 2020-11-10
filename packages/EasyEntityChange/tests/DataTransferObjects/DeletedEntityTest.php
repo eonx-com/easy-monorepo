@@ -11,7 +11,7 @@ use stdClass;
 /**
  * @covers \EonX\EasyEntityChange\DataTransferObjects\DeletedEntity
  */
-class DeletedEntityTest extends AbstractTestCase
+final class DeletedEntityTest extends AbstractTestCase
 {
     public function testDtoCreationAndGetters(): void
     {

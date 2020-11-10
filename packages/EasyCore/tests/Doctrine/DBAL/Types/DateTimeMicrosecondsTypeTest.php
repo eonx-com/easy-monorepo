@@ -21,6 +21,8 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 {
     /**
      * @return mixed[]
+     *
+     * @see testConvertToDatabaseValueSucceeds
      */
     public function provideConvertToDatabaseValues(): array
     {
@@ -34,6 +36,8 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 
     /**
      * @return mixed[]
+     *
+     * @see testConvertToPhpValueSucceeds
      */
     public function provideConvertToPhpValues(): array
     {
@@ -56,6 +60,8 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 
     /**
      * @return mixed[]
+     *
+     * @see testGetSqlDeclarationSucceeds
      */
     public function provideFieldDeclarationValues(): array
     {
@@ -105,7 +111,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
      *
      * @dataProvider provideConvertToDatabaseValues
      */
-    public function testConvertToDatabaseValueSucceeds($value, ?string $expectedValue): void
+    public function testConvertToDatabaseValueSucceeds($value, ?string $expectedValue = null): void
     {
         /** @var \EonX\EasyCore\Doctrine\DBAL\Types\DateTimeMicrosecondsType $type */
         $type = Type::getType(DateTimeMicrosecondsType::TYPE_NAME);
@@ -139,7 +145,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
      *
      * @dataProvider provideConvertToPhpValues
      */
-    public function testConvertToPhpValueSucceeds($value, ?DateTimeInterface $expectedValue): void
+    public function testConvertToPhpValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyCore\Doctrine\DBAL\Types\DateTimeMicrosecondsType $type */
         $type = Type::getType(DateTimeMicrosecondsType::TYPE_NAME);

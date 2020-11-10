@@ -37,7 +37,10 @@ final class UserMessageBuilder extends AbstractSingleKeyErrorResponseBuilder
             $parameters = $throwable->getUserMessageParams();
         }
 
-        return $this->translator->trans($message ?? TranslatableExceptionInterface::DEFAULT_USER_MESSAGE, $parameters);
+        return $this->translator->trans(
+            $message ?? TranslatableExceptionInterface::DEFAULT_USER_MESSAGE,
+            $parameters
+        );
     }
 
     protected function getDefaultKey(): string

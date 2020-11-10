@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Util\Common;
 use PHP_CodeSniffer\Util\Tokens;
 use SlevomatCodingStandard\Helpers\SuppressHelper;
 
-class FunctionCommentSniff extends SquizFunctionCommentSniff
+final class FunctionCommentSniff extends SquizFunctionCommentSniff
 {
     /**
      * Cache for class parents and interfaces.
@@ -34,7 +34,7 @@ class FunctionCommentSniff extends SquizFunctionCommentSniff
     private $phpcsFile;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
      * @throws \PHP_CodeSniffer\Exceptions\TokenizerException

@@ -30,6 +30,8 @@ final class JobLogPersisterTest extends AbstractTestCase
      * @return iterable<mixed>
      *
      * @throws \Exception
+     *
+     * @see testPersistSuccessfully
      */
     public function providerPersistSuccessfully(): iterable
     {
@@ -242,7 +244,8 @@ final class JobLogPersisterTest extends AbstractTestCase
                 ->andThrow(new UnableToPersistJobLogException());
         });
 
-        $this->getPersister($conn, $jobPersister)->persist(new JobLog(new Target('id', 'type'), 'test', 'jobId'));
+        $this->getPersister($conn, $jobPersister)
+            ->persist(new JobLog(new Target('id', 'type'), 'test', 'jobId'));
     }
 
     /**
@@ -351,7 +354,8 @@ final class JobLogPersisterTest extends AbstractTestCase
                 ]);
         });
 
-        $this->getPersister($conn)->removeForJob('jobId');
+        $this->getPersister($conn)
+            ->removeForJob('jobId');
     }
 
     private function getPersister(

@@ -24,6 +24,8 @@ final class JobPersisterTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testListMethods
      */
     public function providerListMethods(): iterable
     {
@@ -126,7 +128,8 @@ final class JobPersisterTest extends AbstractTestCase
                 ->andThrow(new \Exception());
         });
 
-        $this->getPersister($conn)->find('jobId');
+        $this->getPersister($conn)
+            ->find('jobId');
     }
 
     public function testFindThrowsExceptionForNonArray(): void
@@ -144,7 +147,8 @@ final class JobPersisterTest extends AbstractTestCase
                 ->andReturn(false);
         });
 
-        $this->getPersister($conn)->find('jobId');
+        $this->getPersister($conn)
+            ->find('jobId');
     }
 
     /**
@@ -260,7 +264,8 @@ final class JobPersisterTest extends AbstractTestCase
 
         $job = new Job(new Target('id', 'type'), 'test');
 
-        $this->getPersister($conn)->persist($job);
+        $this->getPersister($conn)
+            ->persist($job);
 
         self::assertNotNull($job->getId());
     }
@@ -278,7 +283,8 @@ final class JobPersisterTest extends AbstractTestCase
                 ->andThrow(new \Exception());
         });
 
-        $this->getPersister($conn)->persist(new Job(new Target('id', 'type'), 'test'));
+        $this->getPersister($conn)
+            ->persist(new Job(new Target('id', 'type'), 'test'));
     }
 
     public function testRemoveSuccessfully(): void
@@ -297,7 +303,8 @@ final class JobPersisterTest extends AbstractTestCase
         $job = new Job(new Target('id', 'type'), 'test');
         $job->setId('jobId');
 
-        $this->getPersister($conn)->remove($job);
+        $this->getPersister($conn)
+            ->remove($job);
     }
 
     private function doTestFindJob(?bool $forUpdate = null): void
@@ -339,7 +346,8 @@ final class JobPersisterTest extends AbstractTestCase
         $method = $forUpdate ? 'findOneForUpdate' : 'find';
 
         /** @var \EonX\EasyAsync\Interfaces\JobInterface $job */
-        $job = $this->getPersister($conn)->{$method}('jobId');
+        $job = $this->getPersister($conn)
+            ->{$method}('jobId');
 
         self::assertEquals($expected['id'], $job->getId());
         self::assertEquals($expected['target_id'], $job->getTargetId());

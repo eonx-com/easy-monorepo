@@ -51,7 +51,8 @@ trait DoctrinePaginatorTrait
         $countAlias = \sprintf('_count_%s', $fromAlias);
         $sql = \sprintf('COUNT(DISTINCT %s) as %s', $fromAlias, $countAlias);
 
-        $queryBuilder = $this->createQueryBuilder()->select($sql);
+        $queryBuilder = $this->createQueryBuilder()
+            ->select($sql);
 
         return $this->count = $this->doGetTotalItems($queryBuilder, $countAlias);
     }
@@ -111,7 +112,8 @@ trait DoctrinePaginatorTrait
      */
     protected function doGetItems(): array
     {
-        $queryBuilder = $this->createQueryBuilder()->select($this->getSelect());
+        $queryBuilder = $this->createQueryBuilder()
+            ->select($this->getSelect());
 
         if ($this->getItemsCriteria !== null) {
             \call_user_func($this->getItemsCriteria, $queryBuilder);
@@ -160,7 +162,8 @@ trait DoctrinePaginatorTrait
      */
     private function createQueryBuilder()
     {
-        $queryBuilder = $this->doCreateQueryBuilder()->from($this->from, $this->fromAlias);
+        $queryBuilder = $this->doCreateQueryBuilder()
+            ->from($this->from, $this->fromAlias);
 
         if ($this->criteria !== null) {
             \call_user_func($this->criteria, $queryBuilder);
@@ -178,14 +181,16 @@ trait DoctrinePaginatorTrait
     {
         $primaryKeyIndex = $this->getPrimaryKeyIndex();
         $select = \sprintf('%s.%s', $this->getFromAlias(), $primaryKeyIndex);
-        $newQueryBuilder = $this->createQueryBuilder()->select($select);
+        $newQueryBuilder = $this->createQueryBuilder()
+            ->select($select);
 
         // Apply pagination to get primary keys only for current page
         $this->applyPagination($newQueryBuilder);
 
         $primaryKeys = \array_map(static function (array $row) use ($primaryKeyIndex): string {
             return $row[$primaryKeyIndex];
-        }, $newQueryBuilder->getQuery()->getResult());
+        }, $newQueryBuilder->getQuery()
+            ->getResult());
 
         // If no primary keys, no items for current pagination
         if (\count($primaryKeys) === 0) {

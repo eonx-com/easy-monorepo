@@ -70,6 +70,7 @@ final class EasySsmKernel extends Kernel implements CompilerPassInterface
 
     private function getKernelId(): string
     {
-        return (string)(new RandomGenerator())->randomString(8)->userFriendly();
+        return (string)(new RandomGenerator())->randomString(8)
+            ->userFriendly();
     }
 }

@@ -20,6 +20,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDecisions
      */
     public function providerCreateDecision(): iterable
     {
@@ -86,7 +88,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
 
-                $functions = $decision->getExpressionLanguage()->getFunctions();
+                $functions = $decision->getExpressionLanguage()
+                    ->getFunctions();
 
                 self::assertCount(1, $functions);
                 self::assertSame('restricted', $functions[0]->getName());
@@ -108,7 +111,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
 
-                $functions = $decision->getExpressionLanguage()->getFunctions();
+                $functions = $decision->getExpressionLanguage()
+                    ->getFunctions();
 
                 self::assertCount(1, $functions);
                 self::assertSame('restricted', $functions[0]->getName());
@@ -147,7 +151,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
 
         $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.php']);
         $kernel->boot();
-        $factory = $kernel->getContainer()->get(DecisionFactoryInterface::class);
+        $factory = $kernel->getContainer()
+            ->get(DecisionFactoryInterface::class);
 
         $factory->createByName('non-configured-decision');
     }
@@ -156,7 +161,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
     {
         $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.php']);
         $kernel->boot();
-        $factory = $kernel->getContainer()->get(DecisionFactoryInterface::class);
+        $factory = $kernel->getContainer()
+            ->get(DecisionFactoryInterface::class);
 
         $decision = $factory->createByName('global_event_value_decision');
 
@@ -173,7 +179,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         $kernel = new KernelStub($configPaths);
         $kernel->boot();
 
-        $factory = $kernel->getContainer()->get(DecisionFactoryInterface::class);
+        $factory = $kernel->getContainer()
+            ->get(DecisionFactoryInterface::class);
         $decision = \call_user_func($create, $factory);
 
         \call_user_func($assert, $decision);
@@ -193,10 +200,12 @@ final class EasyDecisionBundleTest extends AbstractTestCase
 
         $kernel->boot();
 
-        $factory = $kernel->getContainer()->get(DecisionFactoryInterface::class);
-        $factory->createValueDecision()->make([
-            'value' => 1,
-        ]);
+        $factory = $kernel->getContainer()
+            ->get(DecisionFactoryInterface::class);
+        $factory->createValueDecision()
+            ->make([
+                'value' => 1,
+            ]);
     }
 
     private function getCreateAffirmativeDecision(?string $name = null): \Closure

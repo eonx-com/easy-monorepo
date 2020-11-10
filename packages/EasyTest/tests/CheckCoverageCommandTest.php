@@ -11,6 +11,8 @@ final class CheckCoverageCommandTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCheckCoverage
      */
     public function providerCheckCoverage(): iterable
     {
@@ -33,6 +35,8 @@ final class CheckCoverageCommandTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testCheckCoverageExceptions
      */
     public function providerCheckCoverageExceptions(): iterable
     {

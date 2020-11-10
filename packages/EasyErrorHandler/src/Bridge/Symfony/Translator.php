@@ -30,6 +30,12 @@ final class Translator implements TranslatorInterface
      */
     public function trans(string $message, array $parameters): string
     {
-        return $this->decorated->trans($message, $parameters, $this->domain);
+        $translation = $this->decorated->trans($message, $parameters, $this->domain);
+
+        if ($translation !== $message) {
+            return $translation;
+        }
+
+        return $this->decorated->trans($message, $parameters, 'EasyErrorHandlerBundle');
     }
 }

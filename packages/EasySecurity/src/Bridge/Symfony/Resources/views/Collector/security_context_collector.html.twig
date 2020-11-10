@@ -129,7 +129,6 @@
                         <thead>
                             <tr>
                                 <th>Class</th>
-                                <th>Roles</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -139,9 +138,6 @@
                             <tr>
                                 <td>
                                     <a href="{{ link }}" title="{{ rolesProvider.filename }}">{{ rolesProvider.class }}</a>
-                                </td>
-                                <td>
-                                    {{ dump(rolesProvider.roles) }}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -160,7 +156,6 @@
                         <thead>
                             <tr>
                                 <th>Class</th>
-                                <th>Permissions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -170,9 +165,6 @@
                             <tr>
                                 <td>
                                     <a href="{{ link }}" title="{{ permissionsProvider.filename }}">{{ permissionsProvider.class }}</a>
-                                </td>
-                                <td>
-                                    {{ dump(permissionsProvider.permissions) }}
                                 </td>
                             </tr>
                         {% endfor %}

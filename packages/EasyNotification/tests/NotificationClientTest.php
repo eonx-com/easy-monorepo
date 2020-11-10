@@ -28,7 +28,8 @@ final class NotificationClientTest extends AbstractTestCase
     {
         $this->expectException(ConfigRequiredException::class);
 
-        $this->getNotificationClient()->deleteMessage('messageId');
+        $this->getNotificationClient()
+            ->deleteMessage('messageId');
     }
 
     public function testApiRequestException(): void
@@ -37,7 +38,8 @@ final class NotificationClientTest extends AbstractTestCase
 
         $config = Config::fromArray(static::$defaultConfig);
         $httpClient = new MockHttpClient([new MockResponse('invalid-content')]);
-        $client = $this->getNotificationClient(null, $httpClient)->withConfig($config);
+        $client = $this->getNotificationClient(null, $httpClient)
+            ->withConfig($config);
 
         $client->deleteMessage('message-id');
     }
@@ -46,7 +48,8 @@ final class NotificationClientTest extends AbstractTestCase
     {
         $config = Config::fromArray(static::$defaultConfig);
         $httpClientStub = new HttpClientStub();
-        $client = $this->getNotificationClient(null, $httpClientStub)->withConfig($config);
+        $client = $this->getNotificationClient(null, $httpClientStub)
+            ->withConfig($config);
 
         $client->deleteMessage('message-id');
 
@@ -66,7 +69,8 @@ final class NotificationClientTest extends AbstractTestCase
     {
         $config = Config::fromArray(static::$defaultConfig);
         $httpClientStub = new HttpClientStub();
-        $client = $this->getNotificationClient(null, $httpClientStub)->withConfig($config);
+        $client = $this->getNotificationClient(null, $httpClientStub)
+            ->withConfig($config);
 
         $client->getMessages(['topic'], [
             'query' => [
@@ -96,9 +100,10 @@ final class NotificationClientTest extends AbstractTestCase
         $sqsClientStub = new SqsClientStub();
         $client = $this->getNotificationClient($sqsClientStub);
 
-        $client->withConfig($config)->send(RealTimeMessage::create([
-            'name' => 'nathan',
-        ], ['topic']));
+        $client->withConfig($config)
+            ->send(RealTimeMessage::create([
+                'name' => 'nathan',
+            ], ['topic']));
 
         $expected = [
             'QueueUrl' => static::$defaultConfig['queueUrl'],
@@ -124,14 +129,17 @@ final class NotificationClientTest extends AbstractTestCase
 
         $config = Config::fromArray(static::$defaultConfig);
 
-        $this->getNotificationClient()->withConfig($config)->updateMessagesStatus(['message'], 'invalid');
+        $this->getNotificationClient()
+            ->withConfig($config)
+            ->updateMessagesStatus(['message'], 'invalid');
     }
 
     public function testUpdateMessagesStatusSuccessful(): void
     {
         $config = Config::fromArray(static::$defaultConfig);
         $httpClientStub = new HttpClientStub();
-        $client = $this->getNotificationClient(null, $httpClientStub)->withConfig($config);
+        $client = $this->getNotificationClient(null, $httpClientStub)
+            ->withConfig($config);
 
         $client->updateMessagesStatus(['message-id'], RealTimeMessage::STATUS_READ);
 

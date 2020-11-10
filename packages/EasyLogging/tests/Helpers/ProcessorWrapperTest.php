@@ -12,6 +12,8 @@ final class ProcessorWrapperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testInvoke
      */
     public function providerTestInvoke(): iterable
     {

@@ -13,6 +13,9 @@ trait ErrorHandlerAwareTrait
      */
     protected $errorHandler;
 
+    /**
+     * @required
+     */
     public function setErrorHandler(ErrorHandlerInterface $errorHandler): void
     {
         $this->errorHandler = $errorHandler;
