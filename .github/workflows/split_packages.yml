@@ -1,0 +1,37 @@
+name: Split Packages
+
+on:
+    push:
+        branches:
+            - master
+            - feature/split-packages-in-ga
+
+jobs:
+    split_packages:
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                mapping:
+                    - { dir: 'EasyApiToken', repo: 'easy-api-token' }
+
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+                # this is required for "WyriHaximus/github-action-get-previous-tag" workflow
+                # see https://github.com/actions/checkout#fetch-all-history-for-all-tags-and-branches
+                with:
+                    fetch-depth: 0
+
+            # see https://github.com/WyriHaximus/github-action-get-previous-tag
+            -   id: previous_tag
+                uses: eonx-com/github-action-get-previous-tag@master
+
+            -   name: Split ${{ matrix.mapping.dir }}
+                uses: eonx-com/github-action-monorepo-split@master
+                env:
+                    GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
+                with:
+                    package-directory: 'packages/${{ matrix.mapping.dir }}'
+                    split-repository-organization: 'eonx-com'
+                    split-repository-name: '${{ matrix.mapping.repo }}'
+                    tag: ${{ steps.previous_tag.outputs.tag }}
