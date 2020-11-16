@@ -23,7 +23,9 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
     {
         yield 'Default format' => [
             new Request(),
-            ErrorResponseData::create(['message' => 'yeah']),
+            ErrorResponseData::create([
+                'message' => 'yeah',
+            ]),
             '{"message":"yeah"}',
         ];
 
@@ -32,10 +34,14 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
 
         yield 'Xml format' => [
             $request,
-            ErrorResponseData::create(['message' => 'yeah']),
+            ErrorResponseData::create([
+                'message' => 'yeah',
+            ]),
             '<?xml version="1.0"?><response><message>yeah</message></response>',
             new Serializer([], [new XmlEncoder()]),
-            ['xml' => ['application/nathan+xml']],
+            [
+                'xml' => ['application/nathan+xml'],
+            ],
         ];
     }
 
@@ -59,8 +65,6 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
 
     private function removeEndOfLines(string $content): string
     {
-        $content = \str_replace(\PHP_EOL, '', $content);
-
-        return $content;
+        return \str_replace(\PHP_EOL, '', $content);
     }
 }

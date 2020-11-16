@@ -37,9 +37,7 @@ final class BugsnagReporter extends AbstractErrorReporter
         $this->threshold = $threshold ?? Logger::ERROR;
 
         // TODO - Implement configuration to allow apps to customize the list
-        $this->ignoreExceptions = $ignoreExceptions ?? [
-                HttpExceptionInterface::class,
-            ];
+        $this->ignoreExceptions = $ignoreExceptions ?? [HttpExceptionInterface::class];
 
         parent::__construct($priority);
     }

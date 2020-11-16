@@ -29,7 +29,9 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
     public function __construct(SerializerInterface $serializer, ?array $errorFormats = null)
     {
         $this->serializer = $serializer;
-        $this->errorFormats = $errorFormats ?? ['json' => ['application/json']];
+        $this->errorFormats = $errorFormats ?? [
+            'json' => ['application/json'],
+        ];
     }
 
     public function create(Request $request, ErrorResponseDataInterface $data): Response
@@ -44,7 +46,9 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
         $content = $this->serializer->serialize(
             $data->getRawData(),
             $format->getKey(),
-            ['statusCode' => $data->getStatusCode()]
+            [
+                'statusCode' => $data->getStatusCode(),
+            ]
         );
 
         return new Response($content, $data->getStatusCode(), $headers);
@@ -54,7 +58,7 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
     {
         $requestFormat = $request->getRequestFormat('');
 
-        if ('' !== $requestFormat && isset($this->errorFormats[$requestFormat])) {
+        if ($requestFormat !== '' && isset($this->errorFormats[$requestFormat])) {
             return ErrorResponseFormat::create($requestFormat, $this->errorFormats[$requestFormat][0]);
         }
 
