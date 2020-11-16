@@ -177,10 +177,20 @@ class SecurityContext implements SecurityContextInterface
      */
     public function setPermissions($permissions): void
     {
-        $this->overridePermissions = $permissions === null
-            // Allow to remove the permissions override
-            ? null
-            : AuthorizationMatrixFormatter::formatPermissions((array)$permissions);
+        // Allow to remove the permissions override
+        if ($permissions === null) {
+            $this->overridePermissions = null;
+
+            return;
+        }
+
+        $overridePermissions = [];
+
+        foreach (AuthorizationMatrixFormatter::formatPermissions((array)$permissions) as $permission) {
+            $overridePermissions[$permission->getIdentifier()] = $permission;
+        }
+
+        $this->overridePermissions = $overridePermissions;
     }
 
     public function setProvider(?ProviderInterface $provider = null): void
