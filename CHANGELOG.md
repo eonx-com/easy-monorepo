@@ -1,6 +1,22 @@
 <!-- changelog-linker -->
 
-## v2.5.22 - 2020-11-09
+## v2.5.23 - 2020-11-16
+
+- [#422] Split packages in github actions
+
+### EasyErrorHandler
+
+- [#424] Implement Symfony Serializer response factory
+
+### EasyStandard
+
+- [#359] Update package documentation, Thanks to [@DKeeper]
+
+### EasySecurity
+
+- [#423] Fix override permissions list
+
+## [v2.5.22] - 2020-11-09
 
 ### EasyErrorHandler
 
@@ -2695,3 +2711,8 @@
 [v2.5.20]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.19...v2.5.20
 [#420]: https://github.com/eonx-com/easy-monorepo/pull/420
 [v2.5.21]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.20...v2.5.21
+[#424]: https://github.com/eonx-com/easy-monorepo/pull/424
+[#423]: https://github.com/eonx-com/easy-monorepo/pull/423
+[#422]: https://github.com/eonx-com/easy-monorepo/pull/422
+[#359]: https://github.com/eonx-com/easy-monorepo/pull/359
+[v2.5.22]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.21...v2.5.22
