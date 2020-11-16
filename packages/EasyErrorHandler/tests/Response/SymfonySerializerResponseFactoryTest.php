@@ -46,6 +46,8 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
     }
 
     /**
+     * @param null|mixed[] $errorFormats
+     *
      * @dataProvider providerTestCreate
      */
     public function testCreate(
@@ -60,7 +62,7 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
 
         $response = $responseFactory->create($request, $data);
 
-        self::assertSame($this->removeEndOfLines($content), $this->removeEndOfLines($response->getContent()));
+        self::assertSame($this->removeEndOfLines($content), $this->removeEndOfLines((string)$response->getContent()));
     }
 
     private function removeEndOfLines(string $content): string

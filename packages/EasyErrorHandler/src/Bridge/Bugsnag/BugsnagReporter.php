@@ -27,6 +27,9 @@ final class BugsnagReporter extends AbstractErrorReporter
      */
     private $threshold;
 
+    /**
+     * @param null|string[] $ignoreExceptions
+     */
     public function __construct(
         Client $bugsnag,
         ?int $threshold = null,
