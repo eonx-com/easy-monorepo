@@ -21,7 +21,9 @@ final class WithLoggingHttpClientTest extends AbstractTestCase
         yield 'simple_request' => [
             'POST',
             'https://eonx.com',
-            new MockResponse(\json_encode(['message' => 'ok'])),
+            new MockResponse((string)\json_encode([
+                'message' => 'ok',
+            ])),
             static function (string $logs): void {
                 self::assertStringContainsString('Request: "POST https://eonx.com" {"http_options":[]} []', $logs);
                 self::assertStringContainsString('Response: "200 https://eonx.com"', $logs);
@@ -45,6 +47,10 @@ final class WithLoggingHttpClientTest extends AbstractTestCase
     ): void {
         $filename = __DIR__ . '/http_client_test_stream.txt';
         $stream = \fopen($filename, 'w+');
+
+        if ($stream === false) {
+            return;
+        }
 
         $withLogging = new WithLoggingHttpClient(
             new MockHttpClient([$mockResponse]),

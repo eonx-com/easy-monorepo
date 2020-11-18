@@ -27,11 +27,21 @@ final class WithLoggingHttpClient implements HttpClientInterface
         $this->logger = $logger;
     }
 
+    /**
+     * @param null|mixed[] $options
+     *
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function request(string $method, string $url, ?array $options = null): ResponseInterface
     {
         $options = $options ?? [];
 
-        $this->logger->debug(\sprintf('Request: "%s %s"', $method, $url), ['http_options' => $options]);
+        $this->logger->debug(\sprintf('Request: "%s %s"', $method, $url), [
+            'http_options' => $options,
+        ]);
 
         $response = $this->decorated->request($method, $url, $options);
 
