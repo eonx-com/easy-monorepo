@@ -17,7 +17,7 @@ $ composer require eonx-com/easy-webhook
 
 ### Usage
 
-The webhook client to send webhooks is automatically registered within the service container, so you can use 
+The webhook client to send webhooks is automatically registered within the service container, so you can use
 dependency injection to access the fully configured client easily.
 
 ```php
@@ -32,8 +32,8 @@ final class MyService
      * @var \EonX\EasyWebhook\Interfaces\WebhookClientInterface
      */
     private $webhookClient;
-    
-    public function __construct(WebhookClientInterface $webhookClient) 
+
+    public function __construct(WebhookClientInterface $webhookClient)
     {
         $this->webhookClient = $webhookClient;
     }
@@ -68,15 +68,15 @@ If not set the default method of a webhook is `POST`.
 
 <br>
 
-### Send webhooks asynchronously
+### Send webhooks synchronously
 
 By default, this package will send webhooks asynchronously if possible. This logic can be changed for every webhook
-at the configuration level by setting `send_async = false`. It can also be changed for specific webhook using the 
+at the configuration level by setting `send_async = false`. It can also be changed for specific webhook using the
 `sendNow()` method.
 
 ```php
 $webhookClient->sendWebhook(Webhook::create('https://eonx.com')->sendNow());
-``` 
+```
 
 <br>
 
@@ -94,12 +94,12 @@ This package has concept of webhook configurators which are used every time a we
 internally to format the request body as an example. Configurators can also be used by the applications for manipulating
 every webhooks before sending them.
 
-A webhook configurator is a service implementing `EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface`. 
+A webhook configurator is a service implementing `EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface`.
 
 <p style="display: none;"></p>
 
 ::: tip | Tip
-Depends on the framework used by the application, the configurators might be automatically injected in the webhook 
+Depends on the framework used by the application, the configurators might be automatically injected in the webhook
 client or you might have to manually tag them when registering them.
 :::
 
@@ -135,7 +135,7 @@ final class MyCustomHeaderWebhookConfigurator extends AbstractWebhookConfigurato
 This package allows you to store webhook results within the persisting layer of your choice. By default, it will not
 store them anywhere.
 
-To change the storing logic, simply override the `EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface` service 
+To change the storing logic, simply override the `EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface` service
 with you own.
 
 <p style="display: none;"></p>
@@ -151,8 +151,8 @@ This store will persist each extra information on the webhook as a separate colu
 
 Events containing the webhook result are dispatched so you can have business logic associated to it:
 
-- `EonX\EasyWebhook\Events\SuccessWebhookEvent`: dispatched when webhook sent successfully 
-- `EonX\EasyWebhook\Events\FailedWebhookEvent`: dispatched when webhook failed and is waiting to be retried 
-- `EonX\EasyWebhook\Events\FinalFailedWebhookEvent`: dispatched when webhook failed and cannot be retried anymore 
+- `EonX\EasyWebhook\Events\SuccessWebhookEvent`: dispatched when webhook sent successfully
+- `EonX\EasyWebhook\Events\FailedWebhookEvent`: dispatched when webhook failed and is waiting to be retried
+- `EonX\EasyWebhook\Events\FinalFailedWebhookEvent`: dispatched when webhook failed and cannot be retried anymore
 
 [1]: https://getcomposer.org/

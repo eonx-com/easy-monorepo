@@ -51,7 +51,7 @@ final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
      */
     public static function fromArray(array $data): JobLogInterface
     {
-        $jobLog = new static(new Target($data['target_id'], $data['target_type']), $data['type'], $data['job_id']);
+        $jobLog = new self(new Target($data['target_id'], $data['target_type']), $data['type'], $data['job_id']);
 
         $jobLog->setStatus($data['status']);
         $jobLog->setId($data['id']);

@@ -24,6 +24,8 @@ final class JobPersisterTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testListMethods
      */
     public function providerListMethods(): iterable
     {

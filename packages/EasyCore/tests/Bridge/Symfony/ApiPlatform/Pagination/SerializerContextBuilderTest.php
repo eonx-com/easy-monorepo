@@ -15,6 +15,8 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCreateFromRequest
      */
     public function providerTestCreateFromRequest(): iterable
     {

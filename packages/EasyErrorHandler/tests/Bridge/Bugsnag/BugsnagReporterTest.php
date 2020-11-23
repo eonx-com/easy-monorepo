@@ -15,6 +15,8 @@ final class BugsnagReporterTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testReport
      */
     public function providerTestReport(): iterable
     {

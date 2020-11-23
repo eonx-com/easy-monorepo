@@ -13,6 +13,8 @@ final class CredentialsProviderTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetCredentials
      */
     public function providerTestGetCredentials(): iterable
     {

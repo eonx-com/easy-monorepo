@@ -58,18 +58,21 @@ PHP
         );
     }
 
+    /**
+     * @return string[]
+     */
     public function getNodeTypes(): array
     {
         return [ClassMethod::class];
     }
 
+    /**
+     * @param ClassMethod $node
+     */
     public function refactor(Node $node): ?Node
     {
-        /** @var \PhpParser\Node\Stmt\ClassMethod $classMethod */
-        $classMethod = $node;
-
         /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
-        $phpDocInfo = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
+        $phpDocInfo = $node->getAttribute(AttributeKey::PHP_DOC_INFO);
 
         /** @var AttributeAwareNodeInterface[] $children */
         $children = $phpDocInfo->getPhpDocNode()
@@ -79,8 +82,10 @@ PHP
             \in_array($children[0]->getAttribute('original_content'), $this->annotations, true)) {
             $phpDocInfo->getPhpDocNode()
                 ->children = [];
+
+            return $node;
         }
 
-        return $classMethod;
+        return null;
     }
 }

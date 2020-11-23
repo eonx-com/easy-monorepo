@@ -8,6 +8,8 @@ use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
 use EonX\EasyWebhook\Bridge\Laravel\Jobs\AsyncWebhookClient;
 use EonX\EasyWebhook\Configurators\BodyFormatterWebhookConfigurator;
+use EonX\EasyWebhook\Configurators\EventWebhookConfigurator;
+use EonX\EasyWebhook\Configurators\IdWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\MethodWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\SignatureWebhookConfigurator;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
@@ -45,6 +47,14 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
         if (\config('easy-webhook.use_default_configurators', true)) {
             $this->registerDefaultConfigurators();
+        }
+
+        if (\config('easy-webhook.event.enabled', true)) {
+            $this->registerEventServices();
+        }
+
+        if (\config('easy-webhook.id.enabled', true)) {
+            $this->registerIdServices();
         }
 
         if (\config('easy-webhook.signature.enabled', false)) {
@@ -119,6 +129,27 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         }
     }
 
+    private function registerEventServices(): void
+    {
+        $this->app->singleton(EventWebhookConfigurator::class, function (): EventWebhookConfigurator {
+            return new EventWebhookConfigurator(\config('easy-webhook.event.event_header'));
+        });
+
+        $this->app->tag(EventWebhookConfigurator::class, [BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR]);
+    }
+
+    private function registerIdServices(): void
+    {
+        $this->app->singleton(IdWebhookConfigurator::class, function (): IdWebhookConfigurator {
+            return new IdWebhookConfigurator(
+                $this->app->make(WebhookResultStoreInterface::class),
+                \config('easy-webhook.id.id_header')
+            );
+        });
+
+        $this->app->tag(IdWebhookConfigurator::class, [BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR]);
+    }
+
     private function registerSignatureServices(): void
     {
         $this->app->singleton(Rs256Signer::class);
@@ -131,5 +162,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                 BridgeConstantsInterface::DEFAULT_CONFIGURATOR_PRIORITY + 1
             );
         });
+
+        $this->app->tag(SignatureWebhookConfigurator::class, [BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR]);
     }
 }

@@ -16,7 +16,7 @@ jobs:
                     - { name: composer, coverage: none, run: composer check-composer }
                     - { name: phpstan, coverage: none, run: composer check-phpstan }
                     - { name: security, coverage: none, run: composer check-security }
-                    - { name: rector, coverage: none, run: composer check-rector-ci }
+                    - { name: rector, coverage: none, run: composer check-rector }
 
                     -   name: tests
                         coverage: pcov
@@ -43,7 +43,6 @@ jobs:
                     key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
                     restore-keys: ${{ matrix.php }}-comp-
 
-            -   run: composer global require hirak/prestissimo
             -   run: composer install --prefer-dist --no-progress --ansi
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'

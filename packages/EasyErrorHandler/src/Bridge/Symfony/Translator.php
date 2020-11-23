@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony;
 
-use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface as SymfonyTranslatorInterface;
 
@@ -28,14 +27,15 @@ final class Translator implements TranslatorInterface
 
     /**
      * @param mixed[] $parameters
-     * @param null|mixed[] $options
      */
-    public function trans(string $message, array $parameters, ?array $options = null): string
+    public function trans(string $message, array $parameters): string
     {
-        return $this->decorated->trans(
-            $message,
-            $parameters,
-            $options[TranslatableExceptionInterface::OPTION_DOMAIN] ?? $this->domain
-        );
+        $translation = $this->decorated->trans($message, $parameters, $this->domain);
+
+        if ($translation !== $message) {
+            return $translation;
+        }
+
+        return $this->decorated->trans($message, $parameters, 'EasyErrorHandlerBundle');
     }
 }

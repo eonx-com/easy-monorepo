@@ -13,6 +13,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyDecisionExtension extends Extension
 {
@@ -43,5 +44,10 @@ final class EasyDecisionExtension extends Extension
         $container
             ->autowire(MappingProviderInterface::class, ConfigMappingProvider::class)
             ->setArgument('$decisionsConfig', $config['type_mapping'] ?? []);
+
+        // Register middleware if messenger present
+        if (\class_exists(MessengerPass::class)) {
+            $loader->load('messenger_middleware.php');
+        }
     }
 }

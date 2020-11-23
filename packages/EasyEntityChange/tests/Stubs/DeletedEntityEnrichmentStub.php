@@ -6,9 +6,6 @@ namespace EonX\EasyEntityChange\Tests\Stubs;
 
 use EonX\EasyEntityChange\Interfaces\DeletedEntityEnrichmentInterface;
 
-/**
- * @coversNothing
- */
 final class DeletedEntityEnrichmentStub implements DeletedEntityEnrichmentInterface
 {
     /**

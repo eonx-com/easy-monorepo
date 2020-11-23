@@ -9,8 +9,6 @@ use Eonx\TestUtils\TestCases\UnitTestCase;
 /**
  * This class has for objective to provide common features to all tests without having to update
  * the class they all extend.
- *
- * @coversNothing
  */
 abstract class AbstractTestCase extends UnitTestCase
 {

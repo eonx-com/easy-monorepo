@@ -22,6 +22,8 @@ final class SlackMessageTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetters
      */
     public function providerTestGetters(): iterable
     {

@@ -13,6 +13,8 @@ final class EnableVotersTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testVotersEnabled
      */
     public function providerTestVotersEnabled(): iterable
     {

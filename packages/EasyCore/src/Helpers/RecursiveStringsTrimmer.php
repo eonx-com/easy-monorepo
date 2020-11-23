@@ -14,7 +14,7 @@ final class RecursiveStringsTrimmer implements StringsTrimmerInterface
     private $except;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function trim($data, ?array $except = null)
     {

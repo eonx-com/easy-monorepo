@@ -18,6 +18,8 @@ final class WithProcessJobLogTraitTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcessWithJobLog
      */
     public function providerProcessWithJobLog(): iterable
     {

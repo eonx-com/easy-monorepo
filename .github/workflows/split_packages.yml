@@ -1,0 +1,55 @@
+name: Split Packages
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    split_packages:
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                mapping:
+                    - { dir: 'EasyApiToken', repo: 'easy-api-token' }
+                    - { dir: 'EasyAsync', repo: 'easy-async' }
+                    - { dir: 'EasyAwsCredentialsFinder', repo: 'easy-aws-credentials-finder' }
+                    - { dir: 'EasyBankFiles', repo: 'easy-bank-files' }
+                    - { dir: 'EasyBugsnag', repo: 'easy-bugsnag' }
+                    - { dir: 'EasyCore', repo: 'easy-core' }
+                    - { dir: 'EasyDecision', repo: 'easy-decision' }
+                    - { dir: 'EasyErrorHandler', repo: 'easy-error-handler' }
+                    - { dir: 'EasyEventDispatcher', repo: 'easy-event-dispatcher' }
+                    - { dir: 'EasyLock', repo: 'easy-lock' }
+                    - { dir: 'EasyLogging', repo: 'easy-logging' }
+                    - { dir: 'EasyNotification', repo: 'easy-notification' }
+                    - { dir: 'EasyPagination', repo: 'easy-pagination' }
+                    - { dir: 'EasyPipeline', repo: 'easy-pipeline' }
+                    - { dir: 'EasyPsr7Factory', repo: 'easy-psr7-factory' }
+                    - { dir: 'EasyRandom', repo: 'easy-random' }
+                    - { dir: 'EasyRepository', repo: 'easy-repository' }
+                    - { dir: 'EasyRequestId', repo: 'easy-request-id' }
+                    - { dir: 'EasySchedule', repo: 'easy-schedule' }
+                    - { dir: 'EasySecurity', repo: 'easy-security' }
+                    - { dir: 'EasySsm', repo: 'easy-ssm' }
+                    - { dir: 'EasyStandard', repo: 'easy-standard' }
+                    - { dir: 'EasyTest', repo: 'easy-test' }
+                    - { dir: 'EasyWebhook', repo: 'easy-webhook' }
+
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+            -   run: git fetch --prune --unshallow
+
+            -   id: previous_tag
+                uses: eonx-com/github-action-get-previous-tag@master
+
+            -   name: Split ${{ matrix.mapping.dir }}
+                uses: eonx-com/github-action-monorepo-split@master
+                env:
+                    GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
+                with:
+                    package-directory: 'packages/${{ matrix.mapping.dir }}'
+                    split-repository-organization: 'eonx-com'
+                    split-repository-name: '${{ matrix.mapping.repo }}'
+                    tag: ${{ steps.previous_tag.outputs.tag }}

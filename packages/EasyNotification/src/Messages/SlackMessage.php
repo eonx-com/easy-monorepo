@@ -32,7 +32,7 @@ final class SlackMessage extends AbstractMessage
      */
     public static function create(string $channel, ?string $text = null, ?array $body = null): self
     {
-        return new static($channel, $text, $body);
+        return new self($channel, $text, $body);
     }
 
     public function getBody(): string

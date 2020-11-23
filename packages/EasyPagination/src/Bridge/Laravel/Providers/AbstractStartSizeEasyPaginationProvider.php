@@ -65,7 +65,7 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
 
     private function getRequest(): Request
     {
-        if ($this->app->runningInConsole() === true) {
+        if ($this->app->runningInConsole()) {
             /**
              * When running in console, a request instance is created and bound to `request` alias.
              *

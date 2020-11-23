@@ -30,6 +30,8 @@ final class JobLogPersisterTest extends AbstractTestCase
      * @return iterable<mixed>
      *
      * @throws \Exception
+     *
+     * @see testPersistSuccessfully
      */
     public function providerPersistSuccessfully(): iterable
     {

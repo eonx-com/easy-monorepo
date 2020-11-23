@@ -1,6 +1,111 @@
 <!-- changelog-linker -->
 
-## v2.5.13 - 2020-10-14
+## v2.5.23 - 2020-11-16
+
+- [#422] Split packages in github actions
+
+### EasyErrorHandler
+
+- [#424] Implement Symfony Serializer response factory
+
+### EasyStandard
+
+- [#359] Update package documentation, Thanks to [@DKeeper]
+
+### EasySecurity
+
+- [#423] Fix override permissions list
+
+## [v2.5.22] - 2020-11-09
+
+### EasyErrorHandler
+
+- [#420] Ignore HttpExceptions for Bugsnag
+
+## [v2.5.21] - 2020-11-09
+
+### EasyErrorHandler
+
+- [#414] Implement ErrorHandlerAwareTrait, Thanks to [@DKeeper]
+
+### EasyLock
+
+- [#419] Implement ShouldRetryException
+
+### EasyLogging
+
+- [#413] Implement LoggerAwareTrait, Thanks to [@DKeeper]
+
+### EasyWebhook
+
+- [#416] Implement event on webhook
+- [#415] Make sure Http response getters don't throw exceptions
+
+## [v2.5.20] - 2020-11-02
+
+### EasyWebhook
+
+- [#412] Fix sending webhook async
+
+## [v2.5.19] - 2020-10-28
+
+### EasyDecision
+
+- [#410] Reset decision configurators, Thanks to [@elloyd-cruz]
+
+### EasyErrorHandler
+
+- [#411] Fallback strategy for Symfony translations, Thanks to [@buddyshontogan]
+
+## [v2.5.18] - 2020-10-27
+
+- [#405] static fixes, Thanks to [@TomasVotruba]
+
+### EasySecurity
+
+- [#407] Prevent resolving security context when not needed
+
+### EasyStandard
+
+- [#402] Apply easy Rector rules on the monorepo itself, Thanks to [@TomasVotruba]
+
+## [v2.5.17] - 2020-10-21
+
+### EasyCore
+
+- [#404] Remove entity manager resolver binding as it doesn't work
+
+## [v2.5.16] - 2020-10-21
+
+- [#396] add colors and first Rector rule, Thanks to [@TomasVotruba]
+- [#399] enable full dead-code set, Thanks to [@TomasVotruba]
+- [#400] make use of pascal mask split, Thanks to [@TomasVotruba]
+
+### EasyCore
+
+- [#386] Add helper traits for Symfony projects, Thanks to [@DKeeper]
+
+### EasyStandard
+
+- [#395] Add ECS sniff to disallow non null argument default values, Thanks to [@DKeeper]
+
+### EasyBankFiles
+
+- [#403] Create package
+
+## [v2.5.15] - 2020-10-18
+
+### EasySecurity
+
+- [#397] Ease caching authorization matrix creation logic
+
+## [v2.5.14] - 2020-10-15
+
+### EasyErrorHandler
+
+- [#393] Add setter for TranslatableExceptionTrait domain
+
+## [v2.5.13] - 2020-10-14
 
 ### EasyErrorHandler
 
@@ -2575,3 +2680,39 @@
 [v2.5.11]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.10...v2.5.11
 [#392]: https://github.com/eonx-com/easy-monorepo/pull/392
 [v2.5.12]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.11...v2.5.12
+[#393]: https://github.com/eonx-com/easy-monorepo/pull/393
+[v2.5.13]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.12...v2.5.13
+[#397]: https://github.com/eonx-com/easy-monorepo/pull/397
+[v2.5.14]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.13...v2.5.14
+[#403]: https://github.com/eonx-com/easy-monorepo/pull/403
+[#400]: https://github.com/eonx-com/easy-monorepo/pull/400
+[#399]: https://github.com/eonx-com/easy-monorepo/pull/399
+[#396]: https://github.com/eonx-com/easy-monorepo/pull/396
+[#395]: https://github.com/eonx-com/easy-monorepo/pull/395
+[#386]: https://github.com/eonx-com/easy-monorepo/pull/386
+[v2.5.15]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.14...v2.5.15
+[#404]: https://github.com/eonx-com/easy-monorepo/pull/404
+[v2.5.16]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.15...v2.5.16
+[#407]: https://github.com/eonx-com/easy-monorepo/pull/407
+[#405]: https://github.com/eonx-com/easy-monorepo/pull/405
+[#402]: https://github.com/eonx-com/easy-monorepo/pull/402
+[v2.5.17]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.16...v2.5.17
+[#411]: https://github.com/eonx-com/easy-monorepo/pull/411
+[#410]: https://github.com/eonx-com/easy-monorepo/pull/410
+[v2.5.18]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.17...v2.5.18
+[@elloyd-cruz]: https://github.com/elloyd-cruz
+[#412]: https://github.com/eonx-com/easy-monorepo/pull/412
+[v2.5.19]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.18...v2.5.19
+[#419]: https://github.com/eonx-com/easy-monorepo/pull/419
+[#416]: https://github.com/eonx-com/easy-monorepo/pull/416
+[#415]: https://github.com/eonx-com/easy-monorepo/pull/415
+[#414]: https://github.com/eonx-com/easy-monorepo/pull/414
+[#413]: https://github.com/eonx-com/easy-monorepo/pull/413
+[v2.5.20]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.19...v2.5.20
+[#420]: https://github.com/eonx-com/easy-monorepo/pull/420
+[v2.5.21]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.20...v2.5.21
+[#424]: https://github.com/eonx-com/easy-monorepo/pull/424
+[#423]: https://github.com/eonx-com/easy-monorepo/pull/423
+[#422]: https://github.com/eonx-com/easy-monorepo/pull/422
+[#359]: https://github.com/eonx-com/easy-monorepo/pull/359
+[v2.5.22]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.21...v2.5.22

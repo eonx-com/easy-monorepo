@@ -21,6 +21,8 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testListener
      */
     public function providerTestListener(): iterable
     {
