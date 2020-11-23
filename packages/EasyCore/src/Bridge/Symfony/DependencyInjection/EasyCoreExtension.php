@@ -67,6 +67,7 @@ final class EasyCoreExtension extends Extension
             }
         }
 
+        // Search
         if ($config['search']['enabled'] ?? false) {
             $container->setParameter(
                 BridgeConstantsInterface::PARAM_ELASTICSEARCH_HOST,
@@ -76,6 +77,12 @@ final class EasyCoreExtension extends Extension
             $loader->load('search.php');
         }
 
+        // Profiler storage
+        if ($config['profiler_storage']['enabled'] ?? false) {
+            $loader->load('profiler_storage.php');
+        }
+
+        // Trim strings
         if ($config['trim_strings']['enabled'] ?? false) {
             $container->setParameter(
                 BridgeConstantsInterface::PARAM_TRIM_STRINGS_EXCEPT,
