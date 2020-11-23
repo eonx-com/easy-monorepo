@@ -67,7 +67,6 @@ final class WebhookClient implements WebhookClientInterface
     public function sendWebhook(WebhookInterface $webhook): WebhookResultInterface
     {
         $webhook = $this->configure($webhook);
-
         $method = $webhook->getMethod() ?? WebhookInterface::DEFAULT_METHOD;
         $url = $webhook->getUrl();
 
@@ -75,23 +74,20 @@ final class WebhookClient implements WebhookClientInterface
             throw new InvalidWebhookUrlException('Webhook URL required');
         }
 
+        $response = null;
+        $throwable = null;
+
         try {
             $response = $this->httpClient->request($method, $url, $webhook->getHttpClientOptions() ?? []);
             // Trigger exception on bad response
             $response->getContent();
-
-            $result = new WebhookResult($webhook, $response);
         } catch (\Throwable $throwable) {
-            $response = null;
-
             if ($throwable instanceof HttpExceptionInterface) {
                 $response = $throwable->getResponse();
             }
-
-            $result = new WebhookResult($webhook, $response, $throwable);
         }
 
-        return $this->resultHandler->handle($result);
+        return $this->resultHandler->handle(new WebhookResult($webhook, $response, $throwable));
     }
 
     /**

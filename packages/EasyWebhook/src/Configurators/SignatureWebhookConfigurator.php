@@ -33,7 +33,7 @@ final class SignatureWebhookConfigurator extends AbstractWebhookConfigurator
     ) {
         $this->signer = $signer;
         $this->secret = $secret;
-        $this->signatureHeader = $signatureHeader ?? 'X-Signature';
+        $this->signatureHeader = $signatureHeader ?? self::HEADER_SIGNATURE;
 
         parent::__construct($priority);
     }

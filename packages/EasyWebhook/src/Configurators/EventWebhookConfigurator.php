@@ -15,7 +15,7 @@ final class EventWebhookConfigurator extends AbstractWebhookConfigurator
 
     public function __construct(?string $eventHeader = null, ?int $priority = null)
     {
-        $this->eventHeader = $eventHeader ?? 'X-Event';
+        $this->eventHeader = $eventHeader ?? self::HEADER_EVENT;
 
         parent::__construct($priority);
     }
