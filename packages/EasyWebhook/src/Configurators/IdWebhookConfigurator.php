@@ -30,11 +30,13 @@ final class IdWebhookConfigurator extends AbstractWebhookConfigurator
 
     public function configure(WebhookInterface $webhook): void
     {
-        $webhook->id($this->getWebhookId($webhook));
+        $webhookId = $this->getWebhookId($webhook);
 
-        if ($webhook->getId() === null) {
+        if ($webhookId === null) {
             return;
         }
+
+        $webhook->id($webhookId);
 
         $webhook->mergeHttpClientOptions([
             'headers' => [
