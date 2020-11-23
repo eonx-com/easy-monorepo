@@ -1,6 +1,21 @@
 <!-- changelog-linker -->
 
-## v2.5.23 - 2020-11-16
+## v2.5.24 - 2020-11-23
+
+### EasyCore
+
+- [#425] WithLogging Symfony HttpClient
+- [#394] Implement flysystem profiler storage
+
+### EasyWebhook
+
+- [#427] Implement webhook id properly
+
+### EasyCore
+
+- [#426] Mark SetContentLength as deprecated
+
+## [v2.5.23] - 2020-11-16
 
 - [#422] Split packages in github actions
 
@@ -2716,3 +2731,8 @@
 [#422]: https://github.com/eonx-com/easy-monorepo/pull/422
 [#359]: https://github.com/eonx-com/easy-monorepo/pull/359
 [v2.5.22]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.21...v2.5.22
+[#427]: https://github.com/eonx-com/easy-monorepo/pull/427
+[#426]: https://github.com/eonx-com/easy-monorepo/pull/426
+[#425]: https://github.com/eonx-com/easy-monorepo/pull/425
+[#394]: https://github.com/eonx-com/easy-monorepo/pull/394
+[v2.5.23]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.22...v2.5.23
