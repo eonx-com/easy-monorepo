@@ -23,7 +23,7 @@ final class IdWebhookConfigurator extends AbstractWebhookConfigurator
     public function __construct(WebhookResultStoreInterface $store, ?string $idHeader = null, ?int $priority = null)
     {
         $this->store = $store;
-        $this->idHeader = $idHeader ?? 'X-Webhook-Id';
+        $this->idHeader = $idHeader ?? self::HEADER_ID;
 
         parent::__construct($priority);
     }

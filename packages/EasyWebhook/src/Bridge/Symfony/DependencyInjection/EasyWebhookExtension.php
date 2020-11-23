@@ -51,7 +51,7 @@ final class EasyWebhookExtension extends Extension
         }
 
         if ($config['id']['enabled'] ?? true) {
-            $container->setParameter(BridgeConstantsInterface::PARAM_ID_HEADER, $config['id']['id_header']);
+            $container->setParameter(BridgeConstantsInterface::PARAM_ID_HEADER, $config['id']['id_header'] ?? null);
 
             $loader->load('id.php');
         }
