@@ -8,6 +8,7 @@ use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyWebhook\Configurators\BodyFormatterWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\EventWebhookConfigurator;
+use EonX\EasyWebhook\Configurators\IdWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\MethodWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\SignatureWebhookConfigurator;
 use EonX\EasyWebhook\Exceptions\InvalidWebhookUrlException;
@@ -15,6 +16,7 @@ use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stores\ArrayWebhookResultStore;
+use EonX\EasyWebhook\Tests\Stubs\ArrayWebhookResultStoreStub;
 use EonX\EasyWebhook\Tests\Stubs\HttpClientStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookClient;
@@ -111,6 +113,18 @@ final class WebhookClientTest extends AbstractTestCase
             [
                 'headers' => [
                     'X-Event' => 'my-event',
+                ],
+            ],
+        ];
+
+        yield 'Id header' => [
+            (new Webhook())->url('https://eonx.com'),
+            [new IdWebhookConfigurator(new ArrayWebhookResultStoreStub('78981b69-535d-4483-8d94-2ef7cbdb07c8'))],
+            WebhookInterface::DEFAULT_METHOD,
+            'https://eonx.com',
+            [
+                'headers' => [
+                    'X-Webhook-Id' => '78981b69-535d-4483-8d94-2ef7cbdb07c8',
                 ],
             ],
         ];

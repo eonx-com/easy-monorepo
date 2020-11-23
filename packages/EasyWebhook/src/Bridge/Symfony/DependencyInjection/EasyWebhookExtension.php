@@ -50,6 +50,12 @@ final class EasyWebhookExtension extends Extension
             $loader->load('event.php');
         }
 
+        if ($config['id']['enabled'] ?? true) {
+            $container->setParameter(BridgeConstantsInterface::PARAM_ID_HEADER, $config['id']['id_header'] ?? null);
+
+            $loader->load('id.php');
+        }
+
         if ($config['signature']['enabled'] ?? false) {
             foreach (static::$signatureParams as $param => $configName) {
                 $container->setParameter($param, $config['signature'][$configName] ?? null);

@@ -39,6 +39,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_ID_HEADER = 'easy_webhooks.params.id_header';
+
+    /**
+     * @var string
+     */
     public const PARAM_SIGNATURE_HEADER = 'easy_webhooks.params.signature_header';
 
     /**

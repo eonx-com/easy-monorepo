@@ -4,26 +4,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Stores;
 
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyWebhook\Interfaces\ResettableWebhookResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 
-final class ArrayWebhookResultStore implements WebhookResultStoreInterface
+final class ArrayWebhookResultStore extends AbstractIdAwareWebhookResultStore implements ResettableWebhookResultStoreInterface
 {
-    /**
-     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
-     */
-    private $random;
-
     /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookResultInterface[]
      */
     private $results = [];
-
-    public function __construct(RandomGeneratorInterface $random)
-    {
-        $this->random = $random;
-    }
 
     public function find(string $id): ?WebhookResultInterface
     {
@@ -47,7 +36,7 @@ final class ArrayWebhookResultStore implements WebhookResultStoreInterface
     {
         if ($result->getWebhook()->getId() === null) {
             $result->getWebhook()
-                ->id($this->random->uuidV4());
+                ->id($this->generateWebhookId());
         }
 
         return $this->results[$result->getWebhook()->getId()] = $result;

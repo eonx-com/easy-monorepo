@@ -5,25 +5,20 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Stores;
 
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Doctrine\DBAL\Connection;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
 use Nette\Utils\Json;
 
-final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterface
+final class DoctrineDbalWebhookResultStore extends AbstractIdAwareWebhookResultStore
 {
     /**
      * @var \Doctrine\DBAL\Connection
      */
     private $conn;
-
-    /**
-     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
-     */
-    private $random;
 
     /**
      * @var string
@@ -33,15 +28,16 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
     public function __construct(Connection $conn, RandomGeneratorInterface $random, ?string $table = null)
     {
         $this->conn = $conn;
-        $this->random = $random;
         $this->table = $table ?? 'easy_webhooks';
+
+        parent::__construct($random);
     }
 
     public function find(string $id): ?WebhookResultInterface
     {
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->getTableForQuery());
 
-        $data = $this->conn->fetchAssoc($sql, [
+        $data = $this->conn->fetchAssociative($sql, [
             'id' => $id,
         ]);
 
@@ -61,29 +57,45 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
 
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
-        $data = $this->getData($result);
         $now = Carbon::now('UTC');
+        $data = $this->getData($result, $now);
+        $webhook = $result->getWebhook();
 
-        $data['updated_at'] = $now;
-
-        if ($result->getWebhook()->getId() === null) {
-            $data['id'] = $this->random->uuidV4();
+        // New webhook with no id
+        if ($webhook->getId() === null) {
+            $data['id'] = $this->generateWebhookId();
             $data['created_at'] = $now;
 
             $this->conn->insert($this->table, $this->formatData($data));
 
-            $result->getWebhook()
-                ->id($data['id']);
+            $webhook->id($data['id']);
 
             return $result;
         }
 
+        // New webhook with id
+        if ($this->existsInDb($webhook->getId()) === false) {
+            $data['id'] = $webhook->getId();
+            $data['created_at'] = $now;
+
+            $this->conn->insert($this->table, $this->formatData($data));
+
+            return $result;
+        }
+
+        // Update existing webhook
         $this->conn->update($this->table, $this->formatData($data), [
-            'id' => $result->getWebhook()
-                ->getId(),
+            'id' => $webhook->getId(),
         ]);
 
         return $result;
+    }
+
+    private function existsInDb(string $id): bool
+    {
+        $sql = \sprintf('SELECT id FROM %s WHERE id = :id', $this->getTableForQuery());
+
+        return \is_array($this->conn->fetchAssociative($sql, \compact('id')));
     }
 
     /**
@@ -116,7 +128,7 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    private function getData(WebhookResultInterface $result): array
+    private function getData(WebhookResultInterface $result, CarbonInterface $now): array
     {
         $webhook = $result->getWebhook();
         $response = $result->getResponse();
@@ -124,6 +136,9 @@ final class DoctrineDbalWebhookResultStore implements WebhookResultStoreInterfac
 
         // Merge extra so each of them is separate column
         $data = \array_merge($webhook->getExtra() ?? [], $webhook->toArray());
+
+        // Always set updated_at
+        $data['updated_at'] = $now;
 
         // Add class to be able to instantiate when fetching from store
         $data['class'] = \get_class($webhook);
