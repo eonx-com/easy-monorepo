@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Parsers\DirectEntry;
 
 use EonX\EasyBankFiles\Parsers\AbstractLineByLineParser;
+use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Error;
 use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Header;
 use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Trailer;
 use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Transaction;
@@ -14,22 +15,42 @@ final class Parser extends AbstractLineByLineParser
     /**
      * @const Code for header line
      */
-    private const HEADER = 0;
+    private const HEADER = '0';
+
+    /**
+     * @const Minimal header line length (calculated from maximum substr arguments)
+     */
+    private const MIN_HEADER_LINE_LENGTH = 80;
+
+    /**
+     * @const Minimal trailer line length (calculated from maximum substr arguments)
+     */
+    private const MIN_TRAILER_LINE_LENGTH = 80;
+
+    /**
+     * @const Minimal transaction line length (calculated from maximum substr arguments)
+     */
+    private const MIN_TRANSACTION_LINE_LENGTH = 120;
 
     /**
      * @const Code for trailer line
      */
-    private const TRAILER = 7;
+    private const TRAILER = '7';
 
     /**
      * @const Code for transaction
      */
-    private const TRANSACTION_1 = 1;
+    private const TRANSACTION_1 = '1';
 
     /**
      * @const Code for transaction
      */
-    private const TRANSACTION_2 = 2;
+    private const TRANSACTION_2 = '2';
+
+    /**
+     * @var mixed[] $errors
+     */
+    private $errors = [];
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\DirectEntry\Results\Header
@@ -45,6 +66,14 @@ final class Parser extends AbstractLineByLineParser
      * @var \EonX\EasyBankFiles\Parsers\DirectEntry\Results\Transaction[]
      */
     private $transactions;
+
+    /**
+     * @return \EonX\EasyBankFiles\Parsers\DirectEntry\Results\Error[]
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
 
     /**
      * Get header record.
@@ -77,19 +106,30 @@ final class Parser extends AbstractLineByLineParser
     {
         // code is the first character in line
         $code = $line[0];
+        $lineLength = \strlen($line);
 
-        switch ($code) {
-            case self::HEADER:
-                $this->header = $this->processHeader($line);
-                break;
-            case self::TRAILER:
-                $this->trailer = $this->processTrailer($line);
-                break;
-            case self::TRANSACTION_1:
-            case self::TRANSACTION_2:
-                $this->transactions[] = $this->processTransaction($line);
-                break;
+        if ($code === self::HEADER && $lineLength >= self::MIN_HEADER_LINE_LENGTH) {
+            $this->header = $this->processHeader($line);
+
+            return;
         }
+
+        if ($code === self::TRAILER && $lineLength >= self::MIN_TRAILER_LINE_LENGTH) {
+            $this->trailer = $this->processTrailer($line);
+
+            return;
+        }
+
+        if (
+            ($code === self::TRANSACTION_1 || $code === self::TRANSACTION_2) &&
+            $lineLength >= self::MIN_TRANSACTION_LINE_LENGTH
+        ) {
+            $this->transactions[] = $this->processTransaction($line);
+
+            return;
+        }
+
+        $this->errors[] = new Error(\compact('line', 'lineNumber'));
     }
 
     /**

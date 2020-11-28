@@ -16,13 +16,19 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
  */
 final class Header extends BaseResult
 {
+    /**
+     * @const Date in string representation pattern
+     */
+    private const DATE_STRING_PATTERN = '%s-%s-%s';
+
     public function getDateProcessed(): ?DateTime
     {
         if (\is_string($this->data['dateProcessed']) === true &&
-            \strlen($this->data['dateProcessed']) === 6
+            \strlen($this->data['dateProcessed']) === 6 &&
+            \ctype_digit($this->data['dateProcessed']) === true
         ) {
             $stringDate = \sprintf(
-                '%s-%s-%s',
+                self::DATE_STRING_PATTERN,
                 \substr($this->data['dateProcessed'], 4, 2),
                 \substr($this->data['dateProcessed'], 2, 2),
                 \substr($this->data['dateProcessed'], 0, 2)
