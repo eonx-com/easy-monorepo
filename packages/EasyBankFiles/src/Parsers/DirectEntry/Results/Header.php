@@ -17,7 +17,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 final class Header extends BaseResult
 {
     /**
-     * @const Date in string representation pattern
+     * @var string Date in string representation pattern
      */
     private const DATE_STRING_PATTERN = '%s-%s-%s';
 
