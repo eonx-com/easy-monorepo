@@ -30,7 +30,7 @@ final class Parser extends AbstractLineByLineParser
     /**
      * @var \EonX\EasyBankFiles\Parsers\Bpay\Batch\Results\Error[]
      */
-    protected $errors;
+    protected $errors = [];
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Bpay\Batch\Results\Header
