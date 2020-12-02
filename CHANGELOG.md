@@ -1,6 +1,12 @@
 <!-- changelog-linker -->
 
-## v2.5.24 - 2020-11-23
+## v2.5.25 - 2020-12-02
+
+### EasyBankFiles
+
+- [#428] Refactor DirectLink files parser., Thanks to [@ERuban]
+
+## [v2.5.24] - 2020-11-23
 
 ### EasyCore
 
@@ -2736,3 +2742,5 @@
 [#425]: https://github.com/eonx-com/easy-monorepo/pull/425
 [#394]: https://github.com/eonx-com/easy-monorepo/pull/394
 [v2.5.23]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.22...v2.5.23
+[#428]: https://github.com/eonx-com/easy-monorepo/pull/428
+[v2.5.24]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.23...v2.5.24
