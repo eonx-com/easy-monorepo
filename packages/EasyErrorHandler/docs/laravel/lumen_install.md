@@ -33,4 +33,18 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 $app->configure('easy-error-handler');
 ```
 
+### Change Exception Handler
+
+Instead of using the default `App\Exception\Handler` change the default exception handler on your `bootstrap/app.php`.
+
+```php
+// bootstrap/app.php
+...
+$app->singleton(
+    \Illuminate\Contracts\Debug\ExceptionHandler::class,
+    \EonX\EasyErrorHandler\Bridge\Laravel\ExceptionHandler::class
+);
+...
+```
+
 [1]: https://getcomposer.org/

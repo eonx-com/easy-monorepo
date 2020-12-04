@@ -11,6 +11,7 @@ use EonX\EasyErrorHandler\Bridge\Laravel\ExceptionHandler;
 use EonX\EasyErrorHandler\Bridge\Laravel\Translator;
 use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
 use EonX\EasyErrorHandler\ErrorHandler;
+use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
@@ -35,15 +36,22 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
         $this->app->singleton(ErrorResponseFactoryInterface::class, ErrorResponseFactory::class);
 
+        $this->app->singleton(ErrorHandlerInterface::class, function (): ErrorHandlerInterface {
+            return new ErrorHandler(
+                $this->app->make(ErrorResponseFactoryInterface::class),
+                $this->app->tagged(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER),
+                $this->app->tagged(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER),
+                (bool)\config('easy-error-handler.use_extended_response', false)
+            );
+        });
+
         $this->app->singleton(
             IlluminateExceptionHandlerInterface::class,
             function (): IlluminateExceptionHandlerInterface {
-                return new ExceptionHandler(new ErrorHandler(
-                    $this->app->make(ErrorResponseFactoryInterface::class),
-                    $this->app->tagged(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER),
-                    $this->app->tagged(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER),
-                    (bool)\config('easy-error-handler.use_extended_response', false)
-                ), $this->app->make(TranslatorInterface::class));
+                return new ExceptionHandler(
+                    $this->app->make(ErrorHandlerInterface::class),
+                    $this->app->make(TranslatorInterface::class)
+                );
             }
         );
 
