@@ -18,12 +18,16 @@ use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 final class EasyErrorHandlerServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->loadTranslationsFrom(__DIR__ . '/../translations', 'easy-error-handler');
+        $this->loadTranslationsFrom(
+            __DIR__ . '/../translations',
+            BridgeConstantsInterface::TRANSLATION_NAMESPACE
+        );
 
         $this->publishes([
             __DIR__ . '/../config/easy-error-handler.php' => \base_path('config/easy-error-handler.php'),
@@ -63,6 +67,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             $this->app->singleton(DefaultBuilderProvider::class, function (): DefaultBuilderProvider {
                 return new DefaultBuilderProvider(
                     $this->app->make(TranslatorInterface::class),
+                    Str::contains($this->app->version(), 'Lumen') ? 'lumen' : 'laravel',
                     \config('easy-error-handler.response')
                 );
             });

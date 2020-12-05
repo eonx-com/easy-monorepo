@@ -29,6 +29,7 @@ final class EasyErrorHandlerExtension extends Extension
         $container->setParameter(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose']);
         $container->setParameter(BridgeConstantsInterface::PARAM_RESPONSE_KEYS, $config['response']);
         $container->setParameter(BridgeConstantsInterface::PARAM_TRANSLATION_DOMAIN, $config['translation_domain']);
+        $container->setParameter(BridgeConstantsInterface::PARAM_RUNTIME_NAME, 'symfony');
 
         $container
             ->registerForAutoconfiguration(ErrorReporterProviderInterface::class)

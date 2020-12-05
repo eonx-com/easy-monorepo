@@ -9,6 +9,16 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const TRANSLATION_NAMESPACE = 'easy-error-handler';
+
+    /**
+     * @var string
+     */
+    public const PARAM_RUNTIME_NAME = 'easy_error_handler.param_runtime_name';
+
+    /**
+     * @var string
+     */
     public const PARAM_BUGSNAG_THRESHOLD = 'easy_error_handler.param_bugsnag_threshold';
 
     /**

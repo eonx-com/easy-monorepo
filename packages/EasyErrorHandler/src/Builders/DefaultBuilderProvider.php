@@ -11,6 +11,11 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
     /**
+     * @var string
+     */
+    private $runtimeName;
+
+    /**
      * @var mixed[]
      */
     private $keys;
@@ -21,11 +26,14 @@ final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterf
     private $translator;
 
     /**
+     * @param \EonX\EasyErrorHandler\Interfaces\TranslatorInterface $translator
+     * @param string $runtimeName
      * @param null|string[] $keys
      */
-    public function __construct(TranslatorInterface $translator, ?array $keys = null)
+    public function __construct(TranslatorInterface $translator, string $runtimeName, ?array $keys = null)
     {
         $this->translator = $translator;
+        $this->runtimeName = $runtimeName;
         $this->keys = $keys ?? [];
     }
 
@@ -43,7 +51,7 @@ final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterf
         yield new StatusCodeBuilder();
         yield new SubCodeBuilder($this->getKey('sub_code'));
         yield new TimeBuilder($this->getKey('time'));
-        yield new UserMessageBuilder($this->translator, $this->getKey('message'));
+        yield new UserMessageBuilder($this->translator, $this->runtimeName, $this->getKey('message'));
         yield new ViolationsBuilder($this->getKey('violations'));
 
         if (\interface_exists(HttpExceptionInterface::class)) {
