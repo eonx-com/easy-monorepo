@@ -14,6 +14,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(DefaultBuilderProvider::class)
-        ->arg('$runtimeName', '%' . BridgeConstantsInterface::PARAM_RUNTIME_NAME . '%')
         ->arg('$keys', '%' . BridgeConstantsInterface::PARAM_RESPONSE_KEYS . '%');
 };
