@@ -15,14 +15,23 @@ final class BugsnagReporterProvider implements ErrorReporterProviderInterface
     private $bugsnag;
 
     /**
+     * @var null|string[]
+     */
+    private $ignoredExceptions;
+
+    /**
      * @var null|int
      */
     private $threshold;
 
-    public function __construct(Client $bugsnag, ?int $threshold = null)
+    /**
+     * @param null|string[] $ignoredExceptions
+     */
+    public function __construct(Client $bugsnag, ?int $threshold = null, ?array $ignoredExceptions = null)
     {
         $this->bugsnag = $bugsnag;
         $this->threshold = $threshold;
+        $this->ignoredExceptions = $ignoredExceptions;
     }
 
     /**
@@ -30,6 +39,6 @@ final class BugsnagReporterProvider implements ErrorReporterProviderInterface
      */
     public function getReporters(): iterable
     {
-        yield new BugsnagReporter($this->bugsnag, $this->threshold);
+        yield new BugsnagReporter($this->bugsnag, $this->threshold, $this->ignoredExceptions);
     }
 }

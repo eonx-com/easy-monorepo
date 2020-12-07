@@ -26,6 +26,11 @@ final class EasyErrorHandlerExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator([__DIR__ . '/../Resources/config']));
 
         $container->setParameter(BridgeConstantsInterface::PARAM_BUGSNAG_THRESHOLD, $config['bugsnag_threshold']);
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_BUGSNAG_IGNORED_EXCEPTIONS,
+            \count($config['bugsnag_ignored_exceptions']) > 1 ? $config['bugsnag_ignored_exceptions'] : null
+        );
+
         $container->setParameter(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose']);
         $container->setParameter(BridgeConstantsInterface::PARAM_RESPONSE_KEYS, $config['response']);
         $container->setParameter(BridgeConstantsInterface::PARAM_TRANSLATION_DOMAIN, $config['translation_domain']);

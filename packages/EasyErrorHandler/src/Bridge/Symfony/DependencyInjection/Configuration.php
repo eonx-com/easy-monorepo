@@ -18,7 +18,10 @@ final class Configuration implements ConfigurationInterface
                 //Bugsnag
                 ->booleanNode('bugsnag_enabled')->defaultTrue()->end()
                 ->integerNode('bugsnag_threshold')->defaultNull()->end()
-
+                ->arrayNode('bugsnag_ignored_exceptions')
+                    ->beforeNormalization()->castToArray()->end()
+                    ->scalarPrototype()->end()
+                ->end()
                 ->booleanNode('verbose')->defaultFalse()->end()
                 ->booleanNode('use_default_builders')->defaultTrue()->end()
                 ->booleanNode('use_default_reporters')->defaultTrue()->end()

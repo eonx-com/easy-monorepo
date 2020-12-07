@@ -36,15 +36,28 @@ final class BugsnagReporterTest extends AbstractTestCase
             false,
             (new BaseExceptionStub())->setLogLevel(Logger::INFO),
         ];
+
+        yield 'Do not report ignored exceptions' => [
+            false,
+            (new BaseExceptionStub())->setLogLevel(Logger::ERROR),
+            null,
+            [BaseExceptionStub::class],
+        ];
     }
 
     /**
      * @dataProvider providerTestReport
+     *
+     * @param null|string[] $ignoredExceptions
      */
-    public function testReport(bool $shouldReport, Throwable $throwable, ?int $threshold = null): void
-    {
+    public function testReport(
+        bool $shouldReport,
+        Throwable $throwable,
+        ?int $threshold = null,
+        ?array $ignoredExceptions = null
+    ): void {
         $stub = new BugsnagClientStub();
-        $reporter = new BugsnagReporter($stub, $threshold);
+        $reporter = new BugsnagReporter($stub, $threshold, $ignoredExceptions);
 
         $reporter->report($throwable);
 
