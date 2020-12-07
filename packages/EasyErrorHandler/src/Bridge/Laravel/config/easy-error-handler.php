@@ -28,7 +28,7 @@ return [
     /**
      * List of Ignored Exceptions that'll not be reported to bugsnag.
      */
-    'bugsnag_ignored_exceptions' => [HttpExceptionInterface::class],
+    'bugsnag_ignored_exceptions' => null,
     /*
     |--------------------------------------------------------------------------
     | Error response
