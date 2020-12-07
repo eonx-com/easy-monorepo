@@ -41,12 +41,14 @@ final class BugsnagReporterTest extends AbstractTestCase
             false,
             (new BaseExceptionStub())->setLogLevel(Logger::ERROR),
             null,
-            [BaseExceptionStub::class]
+            [BaseExceptionStub::class],
         ];
     }
 
     /**
      * @dataProvider providerTestReport
+     *
+     * @param null|string[] $ignoredExceptions
      */
     public function testReport(
         bool $shouldReport,
