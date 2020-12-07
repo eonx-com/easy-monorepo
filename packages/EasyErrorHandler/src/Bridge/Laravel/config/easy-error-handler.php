@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-
 return [
     /**
      * Use extended error response with exception message, trace, etc.
