@@ -13,6 +13,8 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testUuidV4GeneratorInstance
      */
     public function providerTestUuidV4GeneratorInstance(): iterable
     {
@@ -22,7 +24,8 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 
     public function testSanity(): void
     {
-        $randomGenerator = $this->getApp()->get(RandomGeneratorInterface::class);
+        $randomGenerator = $this->getApp()
+            ->get(RandomGeneratorInterface::class);
 
         self::assertInstanceOf(RandomGeneratorInterface::class, $randomGenerator);
     }
@@ -35,7 +38,8 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
         $app = $this->getApp();
         $app->extend(
             RandomGeneratorInterface::class,
-            static function (RandomGeneratorInterface $randomGenerator) use ($uuidV4Generator
+            static function (RandomGeneratorInterface $randomGenerator) use (
+                $uuidV4Generator
             ): RandomGeneratorInterface {
                 return $randomGenerator->setUuidV4Generator($uuidV4Generator);
             }

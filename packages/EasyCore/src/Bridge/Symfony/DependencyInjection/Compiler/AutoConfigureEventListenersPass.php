@@ -19,7 +19,8 @@ final class AutoConfigureEventListenersPass implements CompilerPassInterface
             $def = $container->getDefinition($listener);
 
             /** @var EventListenerInterface $instance */
-            $instance = $container->getReflectionClass($def->getClass())->newInstanceWithoutConstructor();
+            $instance = $container->getReflectionClass($def->getClass())
+                ->newInstanceWithoutConstructor();
 
             foreach ($instance->registerEvents() as $eventTag) {
                 $def->addTag($eventTag->getName(), $eventTag->getAttributes());

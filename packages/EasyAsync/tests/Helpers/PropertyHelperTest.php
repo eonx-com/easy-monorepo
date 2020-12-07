@@ -17,6 +17,8 @@ final class PropertyHelperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetSetterName
      */
     public function providerGetSetterName(): iterable
     {
@@ -26,11 +28,16 @@ final class PropertyHelperTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testSetDatetimeProperties
      */
     public function providerSetDatetimeProperties(): iterable
     {
         yield 'set startedAt only' => [
-            ['started_at' => '2019-08-01 00:00:00', 'finished_at' => ''],
+            [
+                'started_at' => '2019-08-01 00:00:00',
+                'finished_at' => '',
+            ],
             ['started_at', 'finished_at'],
             static function (JobInterface $job): void {
                 self::assertNull($job->getFinishedAt());
@@ -41,11 +48,15 @@ final class PropertyHelperTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testSetIntProperties
      */
     public function providerSetIntProperties(): iterable
     {
         yield 'set total' => [
-            ['failed' => '10'],
+            [
+                'failed' => '10',
+            ],
             ['failed'],
             static function (JobInterface $job): void {
                 self::assertEquals(10, $job->getFailed());
@@ -55,25 +66,35 @@ final class PropertyHelperTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testSetJsonProperties
      */
     public function providerSetJsonProperties(): iterable
     {
         yield 'set debug_info' => [
-            ['debug_info' => '{"key":"value"}'],
+            [
+                'debug_info' => '{"key":"value"}',
+            ],
             ['debug_info'],
             static function (JobLogInterface $jobLog): void {
-                self::assertEquals(['key' => 'value'], $jobLog->getDebugInfo());
+                self::assertEquals([
+                    'key' => 'value',
+                ], $jobLog->getDebugInfo());
             },
         ];
     }
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testSetOptionalProperties
      */
     public function providerSetOptionalProperties(): iterable
     {
         yield 'set failure_reason' => [
-            ['failure_reason' => 'reason'],
+            [
+                'failure_reason' => 'reason',
+            ],
             ['failure_reason'],
             static function (JobLogInterface $jobLog): void {
                 self::assertEquals('reason', $jobLog->getFailureReason());

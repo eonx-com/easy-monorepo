@@ -4,31 +4,36 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Decoders;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
-use EonX\EasyApiToken\Tokens\BasicAuthEasyApiToken;
-use EonX\EasyApiToken\Traits\EasyApiTokenDecoderTrait;
-use Psr\Http\Message\ServerRequestInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
+use EonX\EasyApiToken\Tokens\BasicAuth;
 
-final class BasicAuthDecoder implements EasyApiTokenDecoderInterface
+final class BasicAuthDecoder extends AbstractApiTokenDecoder
 {
-    use EasyApiTokenDecoderTrait;
+    public function __construct(?string $name = null)
+    {
+        parent::__construct($name ?? self::NAME_BASIC);
+    }
 
-    public function decode(ServerRequestInterface $request): ?EasyApiTokenInterface
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
+     */
+    public function decode($request): ?ApiTokenInterface
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Basic', $request);
 
         if ($authorization === null) {
-            return null; // If Authorization doesn't start with Basic, return null
+            // If Authorization doesn't start with Basic, return null
+            return null;
         }
 
         $original = $authorization;
         $authorization = \explode(':', (string)\base64_decode($authorization, true));
 
         if (empty(\trim($authorization[0] ?? '')) || empty(\trim($authorization[1] ?? ''))) {
-            return null; // If Authorization doesn't contain a username AND a password, return null
+            // If Authorization doesn't contain a username AND a password, return null
+            return null;
         }
 
-        return new BasicAuthEasyApiToken(\trim($authorization[0]), \trim($authorization[1]), $original);
+        return new BasicAuth(\trim($authorization[0]), \trim($authorization[1]), $original);
     }
 }

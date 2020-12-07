@@ -1,6 +1,6 @@
 name: Split Tests
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
     after_split_testing:
@@ -12,13 +12,11 @@ jobs:
                 package:
                     - EasyApiToken
                     - EasyAsync
-                    - EasyCfhighlander
                     - EasyCore
                     - EasyDecision
-                    - EasyDocker
                     - EasyEntityChange
                     - EasyIdentity
-                    # - EasyLogging | This package needs more than just test
+                    - EasyLogging
                     - EasyPagination
                     - EasyPipeline
                     - EasyPsr7Factory
@@ -46,8 +44,7 @@ jobs:
                     key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
                     restore-keys: ${{ matrix.php }}-comp-
 
-            -   run: composer global require hirak/prestissimo
-            -   run: composer install --prefer-dist --no-progress
-            -   run: vendor/bin/monorepo-builder localize-composer-paths
-            -   run: cd packages/${{ matrix.package }}; composer update --prefer-dist --no-progress
+            -   run: composer install --prefer-dist --no-progress --ansi
+            -   run: vendor/bin/monorepo-builder localize-composer-paths --ansi
+            -   run: cd packages/${{ matrix.package }}; composer update --prefer-dist --no-progress --ansi
             -   run: cd packages/${{ matrix.package }}; vendor/bin/phpunit tests

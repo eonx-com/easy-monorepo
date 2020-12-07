@@ -27,8 +27,6 @@ final class PipelineNameAwareMiddlewareProviderStub implements MiddlewareProvide
      */
     public function getMiddlewareList(): array
     {
-        return [
-            [$this, 'actAsMiddleware'],
-        ];
+        return [[$this, 'actAsMiddleware']];
     }
 }

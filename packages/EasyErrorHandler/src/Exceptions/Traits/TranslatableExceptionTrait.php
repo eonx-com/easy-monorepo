@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions\Traits;
 
+use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
+
 trait TranslatableExceptionTrait
 {
+    /**
+     * @var null|string
+     */
+    protected $domain;
+
     /**
      * @var mixed[]
      */
@@ -14,7 +21,7 @@ trait TranslatableExceptionTrait
     /**
      * @var string|null
      */
-    protected $userMessage = 'easy-error-handler::messages.default_user_message';
+    protected $userMessage = TranslatableExceptionInterface::DEFAULT_USER_MESSAGE;
 
     /**
      * @var mixed[]
@@ -22,7 +29,15 @@ trait TranslatableExceptionTrait
     protected $userMessageParams = [];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
+     */
+    public function getDomain(): ?string
+    {
+        return $this->domain;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function getMessageParams(): array
     {
@@ -30,7 +45,7 @@ trait TranslatableExceptionTrait
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getUserMessage(): ?string
     {
@@ -38,11 +53,21 @@ trait TranslatableExceptionTrait
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getUserMessageParams(): array
     {
         return $this->userMessageParams;
+    }
+
+    /**
+     * Sets the translation domain for Symfony bridge.
+     */
+    public function setDomain(string $domain): self
+    {
+        $this->domain = $domain;
+
+        return $this;
     }
 
     /**

@@ -13,6 +13,8 @@ final class EnableVotersTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testVotersEnabled
      */
     public function providerTestVotersEnabled(): iterable
     {
@@ -70,7 +72,8 @@ final class EnableVotersTest extends AbstractSymfonyTestCase
      */
     public function testVotersEnabled(array $configs, array $assertions): void
     {
-        $container = $this->getKernel($configs)->getContainer();
+        $container = $this->getKernel($configs)
+            ->getContainer();
 
         foreach ($assertions as $id => $bool) {
             self::assertEquals($bool, $container->has($id));

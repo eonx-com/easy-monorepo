@@ -128,7 +128,8 @@ abstract class AbstractDecision implements DecisionInterface
 
         try {
             // Let children classes handle rules output and define the output
-            return $this->processRules()->doMake();
+            return $this->processRules()
+                ->doMake();
         } catch (\Throwable $exception) {
             throw new UnableToMakeDecisionException(
                 $this->getExceptionMessage($exception->getMessage()),

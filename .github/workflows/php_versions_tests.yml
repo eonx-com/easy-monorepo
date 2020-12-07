@@ -1,6 +1,6 @@
 name: PHP Versions
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
     php_versions_tests:
@@ -8,7 +8,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ '7.1', '7.2', '7.4' ] # 7.3 already done in split_tests
+                php: [ '7.2', '7.4' ] # 7.3 already done in split_tests
                 package: # Contains only package not requiring eonoepay externals package
                     - EasyApiToken
                     - EasyAsync
@@ -31,13 +31,13 @@ jobs:
                     php-version: 7.3
                     coverage: none
 
-            -   run: composer install --prefer-dist --no-progress # Install with stable php version
-            -   run: vendor/bin/monorepo-builder localize-composer-paths
+            -   run: composer install --prefer-dist --no-progress --ansi # Install with stable php version
+            -   run: vendor/bin/monorepo-builder localize-composer-paths --ansi
 
             -   uses: eonx-com/actions-setup-php@v1
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: none
 
-            -   run: cd packages/${{ matrix.package }}; composer update --prefer-dist --no-progress
+            -   run: cd packages/${{ matrix.package }}; composer update --prefer-dist --no-progress --ansi
             -   run: cd packages/${{ matrix.package }}; vendor/bin/phpunit tests

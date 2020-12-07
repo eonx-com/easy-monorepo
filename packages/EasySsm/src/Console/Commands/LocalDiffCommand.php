@@ -10,9 +10,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class LocalDiffCommand extends AbstractCommand
 {
+    /**
+     * @var string
+     */
+    protected static $defaultName = 'local-diff';
+
     protected function configure(): void
     {
-        $this->setName('local-diff');
         $this->setDescription('Display local diff between old and local SSM parameters');
     }
 

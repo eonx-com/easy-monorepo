@@ -11,6 +11,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class DumpEnvCommand extends AbstractCommand
 {
     /**
+     * @var string
+     */
+    protected static $defaultName = 'dump-env';
+
+    /**
      * @var string[]
      */
     private static $excludes = [
@@ -34,7 +39,6 @@ final class DumpEnvCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setName('dump-env')
             ->setDescription('Dump env vars in a PHP file to improve loading time.')
             ->addOption(
                 'filename',
@@ -54,6 +58,7 @@ final class DumpEnvCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @var string[] $excludes */
         $excludes = $input->getOption('excludes');
         $envs = $this->loadEnv($excludes);
         $vars = \var_export($envs, true);
@@ -62,14 +67,16 @@ final class DumpEnvCommand extends AbstractCommand
         if ($output->isVerbose()) {
             if ($output->isVeryVerbose() === false) {
                 $output->writeln('// Use the next level of verbosity to output env vars values');
-                $output->writeln(''); // Empty line for spacing
+                // Empty line for spacing
+                $output->writeln('');
             }
 
             foreach ($envs as $name => $value) {
                 $output->writeln(\sprintf('- %s%s', $name, $output->isVeryVerbose() ? \sprintf('="%s"', $value) : ''));
             }
 
-            $output->writeln(''); // Empty line for spacing
+            // Empty line for spacing
+            $output->writeln('');
         }
 
         $contents = <<<EOF
@@ -82,6 +89,7 @@ return ${vars};
 
 EOF;
 
+        /** @var string $filename */
         $filename = $input->getOption('filename');
         $this->filesystem->dumpFile($filename, $contents);
 
@@ -91,7 +99,6 @@ EOF;
     }
 
     /**
-     * @param string[] $includes
      * @param string[] $excludes
      *
      * @return mixed[]

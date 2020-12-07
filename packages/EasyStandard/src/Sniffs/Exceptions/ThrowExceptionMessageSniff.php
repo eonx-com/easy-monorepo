@@ -43,7 +43,7 @@ final class ThrowExceptionMessageSniff implements Sniff
             return;
         }
 
-        if ($this->startsWithValidPrefix(\trim($messageToken['content'], "'\"")) === true) {
+        if ($this->startsWithValidPrefix(\trim($messageToken['content'], "'\""))) {
             return;
         }
 
@@ -74,14 +74,12 @@ final class ThrowExceptionMessageSniff implements Sniff
     }
 
     /**
-     * Returns the token types that this sniff is interested in
+     * Returns the token types that this sniff is interested in.
      *
      * @return int[]
      */
     public function register(): array
     {
-        return [
-            \T_THROW,
-        ];
+        return [\T_THROW];
     }
 }

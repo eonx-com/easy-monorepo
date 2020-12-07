@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasySecurity\Authorization\Helpers\AuthorizationMatrixFormatter;
 use EonX\EasySecurity\Exceptions\NoProviderInContextException;
 use EonX\EasySecurity\Exceptions\NoUserInContextException;
@@ -49,7 +49,7 @@ class SecurityContext implements SecurityContextInterface
     private $roles;
 
     /**
-     * @var null|\EonX\EasyApiToken\Interfaces\EasyApiTokenInterface
+     * @var null|\EonX\EasyApiToken\Interfaces\ApiTokenInterface
      */
     private $token;
 
@@ -138,7 +138,7 @@ class SecurityContext implements SecurityContextInterface
         return $this->roles ?? [];
     }
 
-    public function getToken(): ?EasyApiTokenInterface
+    public function getToken(): ?ApiTokenInterface
     {
         return $this->token;
     }
@@ -177,9 +177,20 @@ class SecurityContext implements SecurityContextInterface
      */
     public function setPermissions($permissions): void
     {
-        $this->overridePermissions = $permissions === null
-            ? null // Allow to remove the permissions override
-            : AuthorizationMatrixFormatter::formatPermissions((array)$permissions);
+        // Allow to remove the permissions override
+        if ($permissions === null) {
+            $this->overridePermissions = null;
+
+            return;
+        }
+
+        $overridePermissions = [];
+
+        foreach (AuthorizationMatrixFormatter::formatPermissions((array)$permissions) as $permission) {
+            $overridePermissions[$permission->getIdentifier()] = $permission;
+        }
+
+        $this->overridePermissions = $overridePermissions;
     }
 
     public function setProvider(?ProviderInterface $provider = null): void
@@ -200,7 +211,7 @@ class SecurityContext implements SecurityContextInterface
         }
     }
 
-    public function setToken(?EasyApiTokenInterface $token = null): void
+    public function setToken(?ApiTokenInterface $token = null): void
     {
         $this->token = $token;
     }

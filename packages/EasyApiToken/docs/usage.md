@@ -42,14 +42,14 @@ controller.
 
 namespace App\Controller;
 
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class MyController
 {
     public function __invoke(
-        EasyApiTokenDecoderFactoryInterface $decoderFactory,
+        ApiTokenDecoderFactoryInterface $decoderFactory,
         EasyPsr7FactoryInterface $psr7Factory,
         Request $request
     ){
@@ -93,14 +93,14 @@ Once the configuration updated, simply change the argument given to the decoder 
 
 namespace App\Controller;
 
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class MyController
 {
     public function __invoke(
-        EasyApiTokenDecoderFactoryInterface $decoderFactory,
+        ApiTokenDecoderFactoryInterface $decoderFactory,
         EasyPsr7FactoryInterface $psr7Factory,
         Request $request
     ){
@@ -158,14 +158,14 @@ Once the configuration updated, replace the argument for the decoder factory to 
 
 namespace App\Controller;
 
-use EonX\EasyApiToken\Interfaces\Factories\EasyApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class MyController
 {
     public function __invoke(
-        EasyApiTokenDecoderFactoryInterface $decoderFactory,
+        ApiTokenDecoderFactoryInterface $decoderFactory,
         EasyPsr7FactoryInterface $psr7Factory,
         Request $request
     ){

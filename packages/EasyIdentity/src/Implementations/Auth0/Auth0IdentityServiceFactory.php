@@ -16,7 +16,9 @@ final class Auth0IdentityServiceFactory
     public function create(array $configData, ?ClientInterface $client = null): Auth0IdentityService
     {
         $config = new Config($configData);
-        $client = $client ?? new Client(['base_uri' => $this->createBaseUri($config)]);
+        $client = $client ?? new Client([
+            'base_uri' => $this->createBaseUri($config),
+        ]);
 
         $authFactory = new AuthenticationApiClientFactory($config);
         $identityUserService = new IdentityUserService();

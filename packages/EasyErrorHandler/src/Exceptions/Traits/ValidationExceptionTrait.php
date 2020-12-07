@@ -12,7 +12,7 @@ trait ValidationExceptionTrait
     protected $errors = [];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getErrors(): array
     {

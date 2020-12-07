@@ -11,10 +11,9 @@ use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
 use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
-use EonX\EasyPagination\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 
-final class ServiceProvidersTest extends AbstractTestCase
+final class ServiceProvidersTest extends AbstractLaravelTestCase
 {
     /**
      * @var string[]
@@ -40,11 +39,13 @@ final class ServiceProvidersTest extends AbstractTestCase
             /** @var \Illuminate\Contracts\Foundation\Application $app */
             $app = $this->getApplication($pretendInConsole);
 
-            $server = ['HTTP_HOST' => 'eonx.com'];
+            $server = [
+                'HTTP_HOST' => 'eonx.com',
+            ];
 
             $app->instance(
                 $pretendInConsole === true ? 'request' : Request::class,
-                new Request($query ?? [], [], [], [], [], $server)
+                new Request([], [], [], [], [], $server)
             );
 
             /** @var \Illuminate\Support\ServiceProvider $provider */

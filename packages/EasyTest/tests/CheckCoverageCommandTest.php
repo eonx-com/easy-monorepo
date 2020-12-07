@@ -11,37 +11,53 @@ final class CheckCoverageCommandTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCheckCoverage
      */
     public function providerCheckCoverage(): iterable
     {
         yield 'File but coverage too low' => [
-            ['file' => __DIR__ . '/fixtures/coverage-70.txt', '--coverage' => 71],
+            [
+                'file' => __DIR__ . '/fixtures/coverage-70.txt',
+                '--coverage' => 71,
+            ],
             '[ERROR] Coverage "70%" is lower than expectation "71%"',
         ];
 
         yield 'File and good coverage' => [
-            ['file' => __DIR__ . '/fixtures/coverage-70.txt', '--coverage' => 70],
+            [
+                'file' => __DIR__ . '/fixtures/coverage-70.txt',
+                '--coverage' => 70,
+            ],
             '[OK] Yeah nah yeah nah yeah!! Good coverage mate! "70%"',
         ];
     }
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testCheckCoverageExceptions
      */
     public function providerCheckCoverageExceptions(): iterable
     {
         yield 'File not found' => [
-            ['file' => 'invalid-file.txt'],
+            [
+                'file' => 'invalid-file.txt',
+            ],
             UnableToLoadCoverageException::class,
         ];
 
         yield 'File but no coverage' => [
-            ['file' => __DIR__ . '/fixtures/no-coverage.txt'],
+            [
+                'file' => __DIR__ . '/fixtures/no-coverage.txt',
+            ],
             UnableToResolveCoverageException::class,
         ];
 
         yield 'File and Lines but no coverage' => [
-            ['file' => __DIR__ . '/fixtures/lines-but-no-coverage.txt'],
+            [
+                'file' => __DIR__ . '/fixtures/lines-but-no-coverage.txt',
+            ],
             UnableToResolveCoverageException::class,
         ];
     }

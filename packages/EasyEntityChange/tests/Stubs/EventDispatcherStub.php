@@ -6,9 +6,6 @@ namespace EonX\EasyEntityChange\Tests\Stubs;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @coversNothing
- */
 final class EventDispatcherStub implements EventDispatcherInterface
 {
     /**
@@ -46,5 +43,13 @@ final class EventDispatcherStub implements EventDispatcherInterface
     public function getDispatched(): array
     {
         return $this->dispatched;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getReturns(): array
+    {
+        return $this->returns;
     }
 }

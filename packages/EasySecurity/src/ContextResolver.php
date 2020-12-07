@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
-use EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\ContextModifierInterface;
@@ -33,7 +33,7 @@ final class ContextResolver implements ContextResolverInterface
     private $psr7Factory;
 
     /**
-     * @var \EonX\EasyApiToken\Interfaces\EasyApiTokenDecoderInterface
+     * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface
      */
     private $tokenDecoder;
 
@@ -43,7 +43,7 @@ final class ContextResolver implements ContextResolverInterface
     public function __construct(
         ContextInterface $context,
         EasyPsr7FactoryInterface $psr7Factory,
-        EasyApiTokenDecoderInterface $tokenDecoder,
+        ApiTokenDecoderInterface $tokenDecoder,
         iterable $contextModifiers
     ) {
         $this->context = $context;

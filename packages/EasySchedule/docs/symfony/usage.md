@@ -31,6 +31,8 @@ final class MyScheduleProvider implements ScheduleProviderInterface
 }
 ```
 
+<br>
+
 ### Run The Schedule
 
 This bundle providers a console command to run the schedule:

@@ -19,13 +19,11 @@ use Rector\Core\RectorDefinition\RectorDefinition;
 
 /**
  * @codeCoverageIgnore
- *
- * @SuppressWarnings("unused") Class is used by Rector
  */
 final class ExplicitBoolCompareRector extends AbstractRector
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getDefinition(): RectorDefinition
     {
@@ -59,7 +57,7 @@ PHP
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getNodeTypes(): array
     {
@@ -67,7 +65,7 @@ PHP
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function refactor(Node $node): ?Node
     {
@@ -96,10 +94,10 @@ PHP
      */
     private function getNewConditionNode(bool $isNegated, Expr $expr): Expr
     {
-        if ($isNegated === false) {
-            /** @var \PhpParser\Node\Expr\BinaryOp\Identical $identicalExpr */
-            $identicalExpr = $expr;
+        /** @var \PhpParser\Node\Expr\BinaryOp\Identical $identicalExpr */
+        $identicalExpr = $expr;
 
+        if ($isNegated === false && isset($identicalExpr->left, $identicalExpr->right)) {
             $left = $identicalExpr->left;
             /** @var \PhpParser\Node\Expr\ConstFetch $right */
             $right = $identicalExpr->right;

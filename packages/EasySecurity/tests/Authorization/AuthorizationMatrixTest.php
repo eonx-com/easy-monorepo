@@ -16,6 +16,8 @@ final class AuthorizationMatrixTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testMatrix
      */
     public function providerTestMatrix(): iterable
     {
@@ -55,9 +57,7 @@ final class AuthorizationMatrixTest extends AbstractTestCase
                 new Role('role1', [new Permission('permission1')]),
                 new Role('role2', [new Permission('permission2')]),
             ],
-            [
-                new Permission('permission3'),
-            ],
+            [new Permission('permission3')],
         ];
     }
 
@@ -71,7 +71,7 @@ final class AuthorizationMatrixTest extends AbstractTestCase
     {
         $factory = new AuthorizationMatrixFactory(
             [new AuthorizationRolesProviderStub($roles)],
-            [new AuthorizationPermissionsProviderStub($permissions)],
+            [new AuthorizationPermissionsProviderStub($permissions)]
         );
 
         $test($factory->create());

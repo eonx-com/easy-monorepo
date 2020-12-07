@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests;
 
+use EonX\EasyRandom\Constraints\CallbackConstraint;
 use EonX\EasyRandom\Exceptions\InvalidAlphabetException;
 use EonX\EasyRandom\Exceptions\InvalidAlphabetNameException;
 use EonX\EasyRandom\Exceptions\InvalidRandomStringException;
 use EonX\EasyRandom\Interfaces\RandomStringInterface;
 use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\Tests\Stubs\AlwaysInvalidRandomStringConstraintStub;
 use EonX\EasyRandom\Tests\Stubs\AlwaysValidRandomStringConstraintStub;
 
 final class RandomStringTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testRandomString
      */
     public function providerTestRandomString(): iterable
     {
@@ -97,9 +99,13 @@ final class RandomStringTest extends AbstractTestCase
     {
         $this->expectException(InvalidRandomStringException::class);
 
+        $alwaysInvalid = new CallbackConstraint(static function (): bool {
+            return false;
+        });
+
         (new RandomGenerator())
             ->randomString(8)
-            ->constraints([new AlwaysInvalidRandomStringConstraintStub()])
+            ->constraints([$alwaysInvalid])
             ->__toString();
     }
 

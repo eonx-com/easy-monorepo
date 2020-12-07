@@ -12,19 +12,20 @@ final class DotenvLoaderTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testLoadEnv
      */
     public function providerTestLoadEnv(): iterable
     {
         yield '1 env data' => [
             [new EnvData('env', 'value')],
-            ['env' => 'value'],
+            [
+                'env' => 'value',
+            ],
         ];
 
         yield '2 env data' => [
-            [
-                new EnvData('env', 'value'),
-                new EnvData('env2', 'value'),
-            ],
+            [new EnvData('env', 'value'), new EnvData('env2', 'value')],
             [
                 'env' => 'value',
                 'env2' => 'value',

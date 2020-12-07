@@ -10,7 +10,7 @@ use Symfony\Bridge\PsrHttpMessage\Tests\Fixtures\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
-class EasyPsr7FactoryTest extends AbstractTestCase
+final class EasyPsr7FactoryTest extends AbstractTestCase
 {
     public function testCreateRequest(): void
     {
@@ -19,7 +19,11 @@ class EasyPsr7FactoryTest extends AbstractTestCase
         $uri = 'eonx.com';
         $value = 'value-query-1';
 
-        $symfonyRequest = new Request(['query1' => $value], [], [], [], [], ['HTTP_HOST' => $uri]);
+        $symfonyRequest = new Request([
+            'query1' => $value,
+        ], [], [], [], [], [
+            'HTTP_HOST' => $uri,
+        ]);
         $psrRequest = $psr7Factory->createRequest($symfonyRequest);
 
         self::assertInstanceOf(ServerRequestInterface::class, $psrRequest);

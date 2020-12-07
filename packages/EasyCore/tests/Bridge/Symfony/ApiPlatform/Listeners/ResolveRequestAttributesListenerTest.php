@@ -20,7 +20,7 @@ final class ResolveRequestAttributesListenerTest extends AbstractSymfonyTestCase
         $listener = new ResolveRequestAttributesListener($requestStack);
         $dataPersister = new RequestAttributesAwareStub();
 
-        $listener->__invoke(new DataPersisterResolvedEvent($dataPersister));
+        $listener(new DataPersisterResolvedEvent($dataPersister));
 
         self::assertNull($dataPersister->getRequestAttributes());
     }
@@ -28,12 +28,14 @@ final class ResolveRequestAttributesListenerTest extends AbstractSymfonyTestCase
     public function testSetRequestAttributesSuccessfully(): void
     {
         $requestStack = new RequestStack();
-        $requestStack->push(new Request([], [], ['param1' => 'value1']));
+        $requestStack->push(new Request([], [], [
+            'param1' => 'value1',
+        ]));
 
         $listener = new ResolveRequestAttributesListener($requestStack);
         $dataPersister = new RequestAttributesAwareStub();
 
-        $listener->__invoke(new DataPersisterResolvedEvent($dataPersister));
+        $listener(new DataPersisterResolvedEvent($dataPersister));
 
         self::assertEquals(['value1'], $dataPersister->getRequestAttributes());
     }

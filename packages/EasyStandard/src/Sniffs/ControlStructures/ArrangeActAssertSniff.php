@@ -29,6 +29,11 @@ final class ArrangeActAssertSniff implements Sniff
     public $testNamespace = 'App\Tests';
 
     /**
+     * @var string[]
+     */
+    private const ANONYMOUS_STRUCTURES = ['T_CLOSURE', 'T_ANON_CLASS'];
+
+    /**
      * Processes this test, when one of its tokens is encountered.
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
@@ -42,29 +47,41 @@ final class ArrangeActAssertSniff implements Sniff
 
         $tokens = $phpcsFile->getTokens();
 
+        /** @var int $openTokenPosition */
         $openTokenPosition = TokenHelper::findNext($phpcsFile, [\T_OPEN_CURLY_BRACKET], $stackPtr);
-        if ($openTokenPosition === null) {
-            return;
-        }
-
         $closeTokenPosition = $tokens[$openTokenPosition]['bracket_closer'];
 
-        if ($this->isSingleLineMethod($phpcsFile, $openTokenPosition, $closeTokenPosition) === true) {
+        if ($this->isSingleLineMethod($phpcsFile, $openTokenPosition, $closeTokenPosition)) {
             return;
         }
 
         $currentTokenPosition = $openTokenPosition;
         $previousLine = $tokens[$openTokenPosition]['line'];
         $emptyLines = 0;
+        $inAnonymousStructure = false;
+        $bracketsLevel = 0;
 
         while ($currentTokenPosition < $closeTokenPosition) {
             // Find next token skipping whitespaces
             $nextTokenPosition = TokenHelper::findNextExcluding($phpcsFile, [T_WHITESPACE], $currentTokenPosition + 1);
+            if (\in_array($tokens[$currentTokenPosition]['type'], self::ANONYMOUS_STRUCTURES, true)) {
+                $inAnonymousStructure = true;
+            }
+
+            if ($inAnonymousStructure && $tokens[$currentTokenPosition]['type'] === 'T_OPEN_CURLY_BRACKET') {
+                $bracketsLevel++;
+            }
+
             $currentLine = $tokens[$nextTokenPosition]['line'];
-            if ($currentLine - $previousLine > 1) {
+            if ($inAnonymousStructure === false && $currentLine - $previousLine > 1) {
                 $emptyLines++;
             }
+
             $previousLine = $currentLine;
+            if ($inAnonymousStructure && $tokens[$currentTokenPosition]['type'] === 'T_CLOSE_CURLY_BRACKET' && --$bracketsLevel === 0) {
+                $inAnonymousStructure = false;
+            }
+
             $currentTokenPosition = $nextTokenPosition;
         }
 
@@ -83,15 +100,13 @@ final class ArrangeActAssertSniff implements Sniff
     }
 
     /**
-     * Returns the token types that this sniff is interested in
+     * Returns the token types that this sniff is interested in.
      *
      * @return int[]
      */
     public function register(): array
     {
-        return [
-            \T_FUNCTION,
-        ];
+        return [\T_FUNCTION];
     }
 
     /**

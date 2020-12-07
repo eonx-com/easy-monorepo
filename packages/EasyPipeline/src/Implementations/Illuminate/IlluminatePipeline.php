@@ -72,7 +72,8 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
      */
     public function process($input)
     {
-        $this->logs = []; // Reset logs to allow same pipeline to process multiple inputs
+        // Reset logs to allow same pipeline to process multiple inputs
+        $this->logs = [];
 
         // Handle middleware logger aware
         foreach ($this->middlewareList as $middleware) {

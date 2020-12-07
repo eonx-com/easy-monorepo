@@ -7,13 +7,9 @@ namespace EonX\EasyEntityChange\Tests\Integration\Fixtures;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @coversNothing
- *
  * @ORM\Entity
- *
- * @SuppressWarnings(PHPMD)
  */
-class ProvidedIdEntity
+final class ProvidedIdEntity
 {
     /**
      * @ORM\Column(type="guid")

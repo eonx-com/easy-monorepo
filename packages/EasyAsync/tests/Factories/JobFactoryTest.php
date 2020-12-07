@@ -13,19 +13,14 @@ final class JobFactoryTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCreate
      */
     public function providerCreate(): iterable
     {
-        yield 'Create job without total' => [
-            new Target('id', 'type'),
-            'test',
-        ];
+        yield 'Create job without total' => [new Target('id', 'type'), 'test'];
 
-        yield 'Create job with total' => [
-            new Target('id', 'type'),
-            'test',
-            100,
-        ];
+        yield 'Create job with total' => [new Target('id', 'type'), 'test', 100];
     }
 
     /**

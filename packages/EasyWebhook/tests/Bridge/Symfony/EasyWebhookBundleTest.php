@@ -7,7 +7,6 @@ namespace EonX\EasyWebhook\Tests\Bridge\Symfony;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
 use EonX\EasyWebhook\Configurators\BodyFormatterWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\MethodWebhookConfigurator;
-use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -15,6 +14,8 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testConfigAndDependenciesSanity
      */
     public function providerTestConfigAndDependenciesSanity(): iterable
     {

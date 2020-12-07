@@ -19,28 +19,22 @@ final class ProviderFromHeaderModifierTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testModify
      */
     public function modifyProvider(): iterable
     {
-        yield 'No provider resolved because no header' => [
-            new ProviderProviderInterfaceStub(),
-        ];
+        yield 'No provider resolved because no header' => [new ProviderProviderInterfaceStub()];
 
         $request = new Request();
         $request->headers->set('X-Provider-Id', '');
 
-        yield 'No provider resolved because header empty' => [
-            new ProviderProviderInterfaceStub(),
-            $request,
-        ];
+        yield 'No provider resolved because header empty' => [new ProviderProviderInterfaceStub(), $request];
 
         $request = new Request();
         $request->headers->set('X-Provider-Id', 'provider-id');
 
-        yield 'No provider resolved because no permission' => [
-            new ProviderProviderInterfaceStub(),
-            $request,
-        ];
+        yield 'No provider resolved because no permission' => [new ProviderProviderInterfaceStub(), $request];
 
         $context = new Context();
         $context->setRoles([new Role('app:role', ['provider:switch'])]);

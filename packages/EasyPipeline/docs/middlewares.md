@@ -1,9 +1,7 @@
-<div align="center">
-    <h1>EonX - EasyPipeline</h1>
-    <p>Provides an easy and powerful way to implement pipelines for anything.</p>
-</div>
-
----
+---eonx_docs---
+title: Middleware
+weight: 1
+---eonx_docs---
 
 This document describes the concept of middleware and how to use them.
 
@@ -11,6 +9,8 @@ This document describes the concept of middleware and how to use them.
 
 If you're not familiar with the Pipeline Design Pattern we recommend you to have a look at this [documentation][1].
 In this package the "tasks or stages" are the middleware and are defined by the `EonX\EasyPipeline\Interfaces\MiddlewareInterface`.
+
+<br>
 
 # How to create a middleware
 
@@ -42,6 +42,8 @@ final class MyMiddleware implements MiddlewareInterface
      }
 }
 ```
+
+<br>
 
 # Log each step of your pipeline
 

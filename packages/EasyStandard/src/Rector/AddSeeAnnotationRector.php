@@ -40,7 +40,7 @@ final class AddSeeAnnotationRector extends AbstractPHPUnitRector
                     <<<'PHP'
 /**
  * Provides some data.
- * 
+ *
  * @return mixed[]
 */
 public function provideSomeData(): array
@@ -51,9 +51,9 @@ PHP
                     <<<'PHP'
 /**
  * Provides some data.
- * 
+ *
  * @return mixed[]
- * 
+ *
  * @see testMethod
 */
 public function provideSomeData(): array
@@ -66,7 +66,7 @@ PHP
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getNodeTypes(): array
     {
@@ -123,8 +123,11 @@ PHP
      */
     private function checkTestMethod(Class_ $class, ClassMethod $classMethod): void
     {
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
+        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo|null $phpDocInfo */
         $phpDocInfo = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
+        if ($phpDocInfo === null) {
+            return;
+        }
 
         $dataProviderTags = $phpDocInfo->getTagsByName(self::DATA_PROVIDER_TAG);
 
@@ -132,9 +135,9 @@ PHP
             return;
         }
 
+        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode $dataProviderTag */
         foreach ($dataProviderTags as $dataProviderTag) {
             $dataProviderMethod = $class->getMethod((string)$dataProviderTag->value);
-
             if ($dataProviderMethod === null) {
                 continue;
             }

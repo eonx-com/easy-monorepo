@@ -10,6 +10,8 @@ final class RandomIntegerTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testRandomInteger
      */
     public function providerTestRandomInteger(): iterable
     {

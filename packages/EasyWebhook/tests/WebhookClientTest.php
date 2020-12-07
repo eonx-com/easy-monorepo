@@ -7,14 +7,16 @@ namespace EonX\EasyWebhook\Tests;
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyWebhook\Configurators\BodyFormatterWebhookConfigurator;
+use EonX\EasyWebhook\Configurators\EventWebhookConfigurator;
+use EonX\EasyWebhook\Configurators\IdWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\MethodWebhookConfigurator;
 use EonX\EasyWebhook\Configurators\SignatureWebhookConfigurator;
 use EonX\EasyWebhook\Exceptions\InvalidWebhookUrlException;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
-use EonX\EasyWebhook\RetryStrategies\ExponentialWebhookRetryStrategy;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stores\ArrayWebhookResultStore;
+use EonX\EasyWebhook\Tests\Stubs\ArrayWebhookResultStoreStub;
 use EonX\EasyWebhook\Tests\Stubs\HttpClientStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookClient;
@@ -24,6 +26,8 @@ final class WebhookClientTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testSend
      */
     public function providerTestSend(): iterable
     {
@@ -48,7 +52,9 @@ final class WebhookClientTest extends AbstractTestCase
         yield 'Body formatter with header' => [
             (new Webhook())
                 ->url('https://eonx.com')
-                ->body(['key' => 'value']),
+                ->body([
+                    'key' => 'value',
+                ]),
             [new BodyFormatterWebhookConfigurator(new JsonFormatter())],
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
@@ -62,11 +68,8 @@ final class WebhookClientTest extends AbstractTestCase
 
         yield 'Configurator priorities run higher last' => [
             (new Webhook())->url('https://eonx.com'),
-            [
-                new MethodWebhookConfigurator('PATCH', 200),
-                new MethodWebhookConfigurator('PUT', 100),
-            ],
-            'PATCH',
+            [new MethodWebhookConfigurator('PATCH', 200), new MethodWebhookConfigurator('PUT', 100)],
+            'PUT',
             'https://eonx.com',
             [],
         ];
@@ -82,7 +85,9 @@ final class WebhookClientTest extends AbstractTestCase
         yield 'RS256 Signature' => [
             (new Webhook())
                 ->url('https://eonx.com')
-                ->body(['key' => 'value']),
+                ->body([
+                    'key' => 'value',
+                ]),
             [
                 new BodyFormatterWebhookConfigurator(new JsonFormatter()),
                 new SignatureWebhookConfigurator(new Rs256Signer(), 'my-secret'),
@@ -95,6 +100,32 @@ final class WebhookClientTest extends AbstractTestCase
                     'X-Signature' => 'fbde39337b529a887fba290e322809bd8530d9ba68d2c4c869d1394cc07bd99e',
                 ],
                 'body' => '{"key":"value"}',
+            ],
+        ];
+
+        yield 'Event header' => [
+            (new Webhook())
+                ->url('https://eonx.com')
+                ->event('my-event'),
+            [new EventWebhookConfigurator()],
+            WebhookInterface::DEFAULT_METHOD,
+            'https://eonx.com',
+            [
+                'headers' => [
+                    'X-Event' => 'my-event',
+                ],
+            ],
+        ];
+
+        yield 'Id header' => [
+            (new Webhook())->url('https://eonx.com'),
+            [new IdWebhookConfigurator(new ArrayWebhookResultStoreStub('78981b69-535d-4483-8d94-2ef7cbdb07c8'))],
+            WebhookInterface::DEFAULT_METHOD,
+            'https://eonx.com',
+            [
+                'headers' => [
+                    'X-Webhook-Id' => '78981b69-535d-4483-8d94-2ef7cbdb07c8',
+                ],
             ],
         ];
     }

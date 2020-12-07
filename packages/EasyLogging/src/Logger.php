@@ -20,6 +20,9 @@ use Monolog\Processor\WebProcessor;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 use Throwable;
 
+/**
+ * @deprecated since 2.4, will be removed in 3.0. No need to decorated monolog logger.
+ */
 final class Logger implements LoggerInterface
 {
     /**
@@ -170,7 +173,7 @@ final class Logger implements LoggerInterface
         try {
             $callable = [$this->getLogger(), $level];
 
-            if (\is_callable($callable) === true) {
+            if (\is_callable($callable)) {
                 $callable($message, $context ?? []);
             }
         } catch (\Throwable $exception) {

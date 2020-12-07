@@ -12,7 +12,6 @@ return [
     |
     */
     'use_expression_language' => true,
-
     /*
     |--------------------------------------------------------------------------
     | Expression Language
@@ -38,7 +37,6 @@ return [
         |
         */
         'functions' => [],
-
         /*
         |--------------------------------------------------------------------------
         | Global Expression Functions Providers List
@@ -59,7 +57,6 @@ return [
         */
         'providers' => [],
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Decisions
@@ -97,7 +94,6 @@ return [
     'decisions' => [
         // Your decisions here...
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Decision type mapping
@@ -113,5 +109,24 @@ return [
     */
     'type_mapping' => [
         // Your decision type mapping here...
+    ],
+    /*
+    |--------------------------------------------------------------------------
+    | Decision Rules
+    |--------------------------------------------------------------------------
+    |
+    | Here you will define your rules that will automatically be added to your decisions.
+    | It can be one of:
+    |       \EonX\EasyDecision\Interfaces\RuleInterface
+    |       \EonX\EasyDecision\Interfaces\RestrictedRuleInterface
+    |
+    | Example:
+    |
+    | \EonX\EasyDecision\Rules\MyRestrictedRuleForDecisionA::class
+    | \EonX\EasyDecision\Rules\MyRuleForAnyDecision::class
+    |
+    */
+    'rules' => [
+        // Your rules here...
     ],
 ];

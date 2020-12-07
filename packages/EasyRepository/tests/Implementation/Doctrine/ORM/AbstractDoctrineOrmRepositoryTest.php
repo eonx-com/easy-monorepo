@@ -14,9 +14,12 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
     {
         $expected = [new \stdClass(), new \stdClass()];
 
-        /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
+        /** @var \Doctrine\Persistence\ManagerRegistry $registry */
         $registry = $this->mockRegistry(null, function (MockInterface $repo) use ($expected): void {
-            $repo->shouldReceive('findAll')->once()->withNoArgs()->andReturn($expected);
+            $repo->shouldReceive('findAll')
+                ->once()
+                ->withNoArgs()
+                ->andReturn($expected);
         });
 
         self::assertEquals($expected, (new DoctrineOrmRepositoryStub($registry))->all());
@@ -24,16 +27,18 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
 
     public function testCreateQueryBuilderReturnsOrmQueryBuilder(): void
     {
-        /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
+        /** @var \Doctrine\Persistence\ManagerRegistry $registry */
         $registry = $this->mockRegistry(null, function (MockInterface $repo): void {
             $queryBuilder = $this->mock(QueryBuilder::class);
 
-            $repo->shouldReceive('createQueryBuilder')->once()->withArgs(function (string $alias, $indexBy): bool {
-                self::assertEquals('alias', $alias);
-                self::assertNull($indexBy);
+            $repo->shouldReceive('createQueryBuilder')
+                ->once()
+                ->withArgs(function (string $alias, $indexBy): bool {
+                    self::assertEquals('alias', $alias);
+                    self::assertNull($indexBy);
 
-                return true;
-            })->andReturn($queryBuilder);
+                    return true;
+                })->andReturn($queryBuilder);
         });
 
         $createQueryBuilder = $this->getMethodAsPublic(DoctrineOrmRepositoryStub::class, 'createQueryBuilder');
@@ -45,7 +50,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
         $tests = [new \stdClass(), [new \stdClass(), new \stdClass()]];
 
         foreach ($tests as $test) {
-            /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
+            /** @var \Doctrine\Persistence\ManagerRegistry $registry */
             $registry = $this->mockRegistry($this->getManagerExpectations('remove', $test));
 
             (new DoctrineOrmRepositoryStub($registry))->delete($test);
@@ -54,12 +59,18 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
 
     public function testFindReturnsExpectedValues(): void
     {
-        $expected = ['found' => new \stdClass(), null];
+        $expected = [
+            'found' => new \stdClass(),
+            null,
+        ];
 
         foreach ($expected as $identifier => $object) {
-            /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
+            /** @var \Doctrine\Persistence\ManagerRegistry $registry */
             $registry = $this->mockRegistry(null, function (MockInterface $repo) use ($identifier, $object): void {
-                $repo->shouldReceive('find')->once()->with($identifier)->andReturn($object);
+                $repo->shouldReceive('find')
+                    ->once()
+                    ->with($identifier)
+                    ->andReturn($object);
             });
 
             self::assertEquals($object, (new DoctrineOrmRepositoryStub($registry))->find($identifier));
@@ -71,7 +82,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
         $tests = [new \stdClass(), [new \stdClass(), new \stdClass()]];
 
         foreach ($tests as $test) {
-            /** @var \Doctrine\Common\Persistence\ManagerRegistry $registry */
+            /** @var \Doctrine\Persistence\ManagerRegistry $registry */
             $registry = $this->mockRegistry($this->getManagerExpectations('persist', $test));
 
             (new DoctrineOrmRepositoryStub($registry))->save($test);
@@ -86,12 +97,16 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
         return function (MockInterface $manager) use ($method, $objects): void {
             $times = \is_array($objects) ? \count($objects) : 1;
 
-            $manager->shouldReceive($method)->times($times)->withArgs(function ($object): bool {
-                self::assertInstanceOf(\stdClass::class, $object);
+            $manager->shouldReceive($method)
+                ->times($times)
+                ->withArgs(function ($object): bool {
+                    self::assertInstanceOf(\stdClass::class, $object);
 
-                return $object instanceof \stdClass;
-            });
-            $manager->shouldReceive('flush')->once()->withNoArgs();
+                    return $object instanceof \stdClass;
+                });
+            $manager->shouldReceive('flush')
+                ->once()
+                ->withNoArgs();
         };
     }
 }

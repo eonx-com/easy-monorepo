@@ -10,7 +10,6 @@ use EonX\EasyPagination\Interfaces\StartSizeDataFactoryInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
-use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
@@ -46,7 +45,8 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
 
     protected function createConfig(): StartSizeConfig
     {
-        $config = $this->app->make('config')->get('pagination.start_size', []);
+        $config = $this->app->make('config')
+            ->get('pagination.start_size', []);
 
         return new StartSizeConfig(
             $config['start_attribute'] ?? static::$defaultConfig['start_attribute'],
@@ -59,20 +59,16 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
     private function getDataClosure(): Closure
     {
         return function (): StartSizeDataInterface {
-            /** @var \EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface $psr7Factory */
-            $psr7Factory = $this->app->get(EasyPsr7FactoryInterface::class);
-
-            return $this->app->get(StartSizeDataResolverInterface::class)->resolve(
-                $psr7Factory->createRequest($this->getRequest())
-            );
+            return $this->app->get(StartSizeDataResolverInterface::class)->resolve($this->getRequest());
         };
     }
 
     private function getRequest(): Request
     {
-        if ($this->app->runningInConsole() === true) {
+        if ($this->app->runningInConsole()) {
             /**
              * When running in console, a request instance is created and bound to `request` alias.
+             *
              * @see \Laravel\Lumen\Console\Kernel::setRequestForConsole
              */
             return $this->app->get('request');

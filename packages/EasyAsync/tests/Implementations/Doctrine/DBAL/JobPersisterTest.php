@@ -11,18 +11,21 @@ use EonX\EasyAsync\Data\Target;
 use EonX\EasyAsync\Exceptions\UnableToFindJobException;
 use EonX\EasyAsync\Exceptions\UnableToPersistJobException;
 use EonX\EasyAsync\Generators\DateTimeGenerator;
-use EonX\EasyAsync\Generators\RamseyUuidGenerator;
 use EonX\EasyAsync\Implementations\Doctrine\DBAL\JobPersister;
 use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use EonX\EasyRandom\RandomGenerator;
+use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Mockery\MockInterface;
 
 final class JobPersisterTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testListMethods
      */
     public function providerListMethods(): iterable
     {
@@ -49,7 +52,10 @@ final class JobPersisterTest extends AbstractTestCase
                     ->shouldReceive('setParameters')
                     ->atLeast()
                     ->once()
-                    ->with(['targetType' => 'type', 'targetId' => 'id'])
+                    ->with([
+                        'targetType' => 'type',
+                        'targetId' => 'id',
+                    ])
                     ->andReturnSelf();
             },
         ];
@@ -116,11 +122,14 @@ final class JobPersisterTest extends AbstractTestCase
             $mock
                 ->shouldReceive('fetchAssoc')
                 ->once()
-                ->with('SELECT * FROM `jobs` WHERE id = :jobId', ['jobId' => 'jobId'])
+                ->with('SELECT * FROM `jobs` WHERE id = :jobId', [
+                    'jobId' => 'jobId',
+                ])
                 ->andThrow(new \Exception());
         });
 
-        $this->getPersister($conn)->find('jobId');
+        $this->getPersister($conn)
+            ->find('jobId');
     }
 
     public function testFindThrowsExceptionForNonArray(): void
@@ -132,11 +141,14 @@ final class JobPersisterTest extends AbstractTestCase
             $mock
                 ->shouldReceive('fetchAssoc')
                 ->once()
-                ->with('SELECT * FROM `jobs` WHERE id = :jobId', ['jobId' => 'jobId'])
+                ->with('SELECT * FROM `jobs` WHERE id = :jobId', [
+                    'jobId' => 'jobId',
+                ])
                 ->andReturn(false);
         });
 
-        $this->getPersister($conn)->find('jobId');
+        $this->getPersister($conn)
+            ->find('jobId');
     }
 
     /**
@@ -157,7 +169,7 @@ final class JobPersisterTest extends AbstractTestCase
                 ->atLeast()
                 ->once()
                 ->withArgs(static function (string $select): bool {
-                    return \in_array($select, ['COUNT(1) as _count', '*'], true);
+                    return \in_array($select, ['COUNT(DISTINCT 1) as _count_1', '*'], true);
                 })
                 ->andReturnSelf();
 
@@ -206,10 +218,12 @@ final class JobPersisterTest extends AbstractTestCase
                 ->atLeast()
                 ->once()
                 ->with('sql query', [])
-                ->andReturn(['_count' => 1]);
+                ->andReturn([
+                    '_count_1' => 1,
+                ]);
 
             $mock
-                ->shouldReceive('fetchAll')
+                ->shouldReceive('fetchAllAssociative')
                 ->atLeast()
                 ->once()
                 ->with('sql query', [])
@@ -250,7 +264,8 @@ final class JobPersisterTest extends AbstractTestCase
 
         $job = new Job(new Target('id', 'type'), 'test');
 
-        $this->getPersister($conn)->persist($job);
+        $this->getPersister($conn)
+            ->persist($job);
 
         self::assertNotNull($job->getId());
     }
@@ -268,7 +283,8 @@ final class JobPersisterTest extends AbstractTestCase
                 ->andThrow(new \Exception());
         });
 
-        $this->getPersister($conn)->persist(new Job(new Target('id', 'type'), 'test'));
+        $this->getPersister($conn)
+            ->persist(new Job(new Target('id', 'type'), 'test'));
     }
 
     public function testRemoveSuccessfully(): void
@@ -278,14 +294,17 @@ final class JobPersisterTest extends AbstractTestCase
             $mock
                 ->shouldReceive('executeQuery')
                 ->once()
-                ->with('DELETE FROM `jobs` WHERE id = :jobId', ['jobId' => 'jobId'])
+                ->with('DELETE FROM `jobs` WHERE id = :jobId', [
+                    'jobId' => 'jobId',
+                ])
                 ->andReturn(true);
         });
 
         $job = new Job(new Target('id', 'type'), 'test');
         $job->setId('jobId');
 
-        $this->getPersister($conn)->remove($job);
+        $this->getPersister($conn)
+            ->remove($job);
     }
 
     private function doTestFindJob(?bool $forUpdate = null): void
@@ -317,7 +336,9 @@ final class JobPersisterTest extends AbstractTestCase
                 $mock
                     ->shouldReceive('fetchAssoc')
                     ->once()
-                    ->with($sql, ['jobId' => 'jobId'])
+                    ->with($sql, [
+                        'jobId' => 'jobId',
+                    ])
                     ->andReturn($expected);
             }
         );
@@ -325,7 +346,8 @@ final class JobPersisterTest extends AbstractTestCase
         $method = $forUpdate ? 'findOneForUpdate' : 'find';
 
         /** @var \EonX\EasyAsync\Interfaces\JobInterface $job */
-        $job = $this->getPersister($conn)->{$method}('jobId');
+        $job = $this->getPersister($conn)
+            ->{$method}('jobId');
 
         self::assertEquals($expected['id'], $job->getId());
         self::assertEquals($expected['target_id'], $job->getTargetId());
@@ -340,6 +362,9 @@ final class JobPersisterTest extends AbstractTestCase
 
     private function getPersister(Connection $conn, ?string $table = null): JobPersister
     {
-        return new JobPersister($conn, new DateTimeGenerator(), new RamseyUuidGenerator(), $table ?? 'jobs');
+        $randomGenerator = new RandomGenerator();
+        $randomGenerator->setUuidV4Generator(new RamseyUuidV4Generator());
+
+        return new JobPersister($conn, new DateTimeGenerator(), $randomGenerator, $table ?? 'jobs');
     }
 }

@@ -21,18 +21,14 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testListener
      */
     public function providerTestListener(): iterable
     {
-        yield 'Not paginator' => [
-            new \stdClass(),
-            false,
-        ];
+        yield 'Not paginator' => [new \stdClass(), false];
 
-        yield 'Paginator' => [
-            $this->getApiPlatformPaginator(),
-            true,
-        ];
+        yield 'Paginator' => [$this->getApiPlatformPaginator(), true];
     }
 
     /**
@@ -49,7 +45,7 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
             $controllerResult
         );
 
-        (new CustomPaginationListener())->__invoke($event);
+        (new CustomPaginationListener())($event);
 
         self::assertEquals($isCustomPaginator, $event->getControllerResult() instanceof CustomPaginatorInterface);
     }
@@ -61,17 +57,25 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
     {
         /** @var \Doctrine\ORM\EntityManagerInterface $manager */
         $manager = $this->mock(EntityManagerInterface::class, static function (MockInterface $mock): void {
-            $mock->shouldReceive('getConfiguration')->atLeast()->once()->withNoArgs()->andReturn(new Configuration());
+            $mock->shouldReceive('getConfiguration')
+                ->atLeast()
+                ->once()
+                ->withNoArgs()
+                ->andReturn(new Configuration());
         });
 
         $query = new Query($manager);
-        $query->setFirstResult(1)->setMaxResults(15);
+        $query->setFirstResult(1)
+            ->setMaxResults(15);
 
         /** @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator */
         $doctrinePaginator = $this->mock(
             DoctrinePaginator::class,
             static function (MockInterface $mock) use ($query): void {
-                $mock->shouldReceive('getQuery')->once()->withNoArgs()->andReturn($query);
+                $mock->shouldReceive('getQuery')
+                    ->once()
+                    ->withNoArgs()
+                    ->andReturn($query);
             }
         );
 

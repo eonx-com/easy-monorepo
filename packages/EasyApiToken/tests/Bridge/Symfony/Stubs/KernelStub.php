@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs;
 
 use EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenBundle;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,6 +21,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        $container->getDefinition(ApiTokenDecoderInterface::class)->setPublic(true);
+
         $container
             ->setDefinition(ServiceStub::class, new Definition(ServiceStub::class))
             ->setAutowired(true)

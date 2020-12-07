@@ -18,7 +18,6 @@ return [
     |
     */
     'array_in_query_attr' => \env('PAGINATION_ARRAY_IN_QUERY_ATTR', 'page'),
-
     /*
     |--------------------------------------------------------------------------
     | StartSize EasyPagination

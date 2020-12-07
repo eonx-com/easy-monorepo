@@ -1,0 +1,20 @@
+<PaymentsAcknowledgement type="warning">
+<PaymentId>1234567890</PaymentId>
+<OriginalMessageId>1234567890</OriginalMessageId>
+<DateTime>2020/01/01</DateTime>
+<CustomerId>CUST01</CustomerId>
+<CompanyName>Test Company</CompanyName>
+<UserMessage>Payment status is REQUIRES AUTHORISATION</UserMessage>
+<DetailedMessage>Payment requires customer authorisation. Log into NAB Connect to review and authorise payment.</DetailedMessage>
+<OriginalFilename>PAYMENTGATEWAY_1234567890_1024_20200101230050437250</OriginalFilename>
+<Issues>
+<Issue type="290049">Uploaded Interchange 111111111 for Customer 123456 and Payment Type DL_DIRECTCREDIT.</Issue>
+<Issue type="2025">Payment 111111111 successfully uploaded from a file.</Issue>
+<Issue type="2025">Payment 111111111 successfully uploaded from a file.</Issue>
+<Issue type="104503">Payment successfully validated.</Issue>
+<Issue type="181026">The BSB 777-777 is invalid.</Issue>
+<Issue type="181022">Counter transaction <4> created due to transaction <1> having invalid account name, BSB or account number.</Issue>
+<Issue type="181015">Payment ID 111111111 has partially failed account validation.</Issue>
+<Issue type="6010">Payment is ready for authorisation - 1 authorisations required.</Issue>
+</Issues>
+</PaymentsAcknowledgement>

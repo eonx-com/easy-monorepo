@@ -4,12 +4,13 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^7.1",
-        "symplify/package-builder": "^7.2",
-        "symplify/autowire-array-parameter": "^7.2",
+        "php": "^7.2",
         "aws/aws-sdk-php": "^3.134",
+        "eonx-com/easy-aws-credentials-finder": "^2.6",
+        "eonx-com/easy-random": "^2.6",
         "nette/utils": "^3.1",
-        "eonx-com/easy-aws-credentials-finder": "^2.5"
+        "symplify/package-builder": "^8.3.41",
+        "symplify/autowire-array-parameter": "^8.3.41"
     },
     "autoload": {
         "psr-4": {
@@ -26,7 +27,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "2.5-dev"
+            "dev-master": "2.6-dev"
         }
     }
 }

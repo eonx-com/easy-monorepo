@@ -24,7 +24,19 @@ interface DecisionFactoryInterface
     public function createValueDecision(?string $name = null): DecisionInterface;
 
     /**
+     * @return \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
+     */
+    public function getConfiguratorsByDecision(DecisionInterface $decision): array;
+
+    /**
+     * @return \EonX\EasyDecision\Interfaces\DecisionInterface[]
+     */
+    public function getConfiguredDecisions(): array;
+
+    /**
      * @deprecated since 2.3.7
      */
     public function setContainer(ContainerInterface $container): void;
+
+    public function reset(): void;
 }

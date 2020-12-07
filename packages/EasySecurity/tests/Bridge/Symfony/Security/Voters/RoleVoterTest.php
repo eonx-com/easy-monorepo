@@ -17,6 +17,8 @@ final class RoleVoterTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testVoter
      */
     public function providerTestVoter(): iterable
     {

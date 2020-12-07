@@ -12,6 +12,9 @@ use Rector\Core\RectorDefinition\CodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
+/**
+ * @see \EonX\EasyStandard\Tests\Rector\InheritDocRector\InheritDocRectorTest
+ */
 final class InheritDocRector extends AbstractRector
 {
     /**
@@ -29,32 +32,32 @@ final class InheritDocRector extends AbstractRector
         return [ClassMethod::class];
     }
 
+    /**
+     * @param ClassMethod $node
+     */
     public function refactor(Node $node): ?Node
     {
-        /** @var \PhpParser\Node\Stmt\ClassMethod $classMethod */
-        $classMethod = $node;
-
         /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
-        $phpDocInfo = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
+        $phpDocInfo = $node->getAttribute(AttributeKey::PHP_DOC_INFO);
 
         /** @var AttributeAwarePhpDocTextNode[] $children */
-        $children = $phpDocInfo->getPhpDocNode()->children;
+        $children = $phpDocInfo->getPhpDocNode()
+            ->children;
 
         foreach ($children as $key => $child) {
             if ($child->getAttribute('original_content') === self::INHERITDOC_INCORRECT_ANNOTATION) {
                 $children[$key]->text = self::INHERITDOC_CORRECT_ANNOTATION;
+                return $node;
             }
         }
 
-        $phpDocInfo->getPhpDocNode()->children = $children;
-
-        return $classMethod;
+        return null;
     }
 
     public function getDefinition(): RectorDefinition
     {
         return new RectorDefinition(
-            'Replaces {@inheritdoc} annotation with {@inheritDoc}.',
+            'Replaces {@inheritdoc} annotation with {@inheritDoc}',
             [
                 new CodeSample(
                     <<<'PHP'

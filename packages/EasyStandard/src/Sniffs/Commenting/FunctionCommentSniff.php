@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Util\Common;
 use PHP_CodeSniffer\Util\Tokens;
 use SlevomatCodingStandard\Helpers\SuppressHelper;
 
-class FunctionCommentSniff extends SquizFunctionCommentSniff
+final class FunctionCommentSniff extends SquizFunctionCommentSniff
 {
     /**
      * Cache for class parents and interfaces.
@@ -34,7 +34,7 @@ class FunctionCommentSniff extends SquizFunctionCommentSniff
     private $phpcsFile;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
      * @throws \PHP_CodeSniffer\Exceptions\TokenizerException
@@ -651,10 +651,10 @@ class FunctionCommentSniff extends SquizFunctionCommentSniff
     /**
      * Check if a comment has a valid 'inheritdoc' annotation.
      *
-     * @param  File $phpcsFile
-     * @param  int $stackPtr
-     * @param  int $commentStart
-     * @param  int $commentEnd
+     * @param File $phpcsFile
+     * @param int $stackPtr
+     * @param int $commentStart
+     * @param int $commentEnd
      *
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
      */
@@ -726,7 +726,11 @@ class FunctionCommentSniff extends SquizFunctionCommentSniff
             $class .= $phpcsFile->getDeclarationName($classPtr);
 
             if (\class_exists($class) || \interface_exists($class)) {
-                $this->parentsAndInterfaces = \array_merge(\class_parents($class), \class_implements($class));
+                $this->parentsAndInterfaces = \array_merge(
+                    \class_parents($class),
+                    \class_implements($class),
+                    \class_uses($class)
+                );
             }
         }
 

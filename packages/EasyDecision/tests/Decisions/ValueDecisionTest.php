@@ -17,19 +17,25 @@ final class ValueDecisionTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDecisionEntirely
      */
     public function decisionEntirelyProvider(): iterable
     {
         yield 'No rules, no default output' => [
             [],
-            ['value' => 5],
+            [
+                'value' => 5,
+            ],
             5,
             [],
         ];
 
         yield 'No rules, explicit default output' => [
             [],
-            ['value' => 5],
+            [
+                'value' => 5,
+            ],
             10,
             [],
             null,
@@ -79,9 +85,14 @@ final class ValueDecisionTest extends AbstractTestCase
     {
         $decision = (new ValueDecision())->addRule(new RuleWithNonBlockingErrorStub());
 
-        $output = $decision->make(['value' => 10]);
+        $output = $decision->make([
+            'value' => 10,
+        ]);
 
-        self::assertEquals(['non-blocking-error' => 'non-blocking-error'], $decision->getContext()->getRuleOutputs());
+        self::assertEquals([
+            'non-blocking-error' => 'non-blocking-error',
+        ], $decision->getContext()
+            ->getRuleOutputs());
         self::assertEquals(10, $output);
     }
 
@@ -100,19 +111,21 @@ final class ValueDecisionTest extends AbstractTestCase
 
         $decision = (new ValueDecision())->addRules([$this->getModifyValueRuleInArray()]);
 
-        $decision->make(['context' => 'I know it is bad...', 'value' => 'value']);
+        $decision->make([
+            'context' => 'I know it is bad...',
+            'value' => 'value',
+        ]);
     }
 
     public function testReturnModifiedArrayInputSuccessfully(): void
     {
         $modifyRule = $this->getModifyValueRuleInArray();
 
-        $decision = (new ValueDecision())->addRules([
-            $this->createUnsupportedRule('unsupported-1'),
-            $modifyRule,
-        ]);
+        $decision = (new ValueDecision())->addRules([$this->createUnsupportedRule('unsupported-1'), $modifyRule]);
 
-        $original = ['value' => 0];
+        $original = [
+            'value' => 0,
+        ];
         $expected = 10;
 
         $expectedRuleOutput = [
@@ -131,7 +144,9 @@ final class ValueDecisionTest extends AbstractTestCase
 
         $decision = (new ValueDecision())->addRule($this->getExceptionRule());
 
-        $decision->make(['value' => 1]);
+        $decision->make([
+            'value' => 1,
+        ]);
     }
 
     private function getExceptionRule(): RuleInterface

@@ -18,6 +18,8 @@ final class ProcessWithLockMiddlewareTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcessWithJobLog
      */
     public function providerHandle(): iterable
     {
@@ -65,7 +67,8 @@ final class ProcessWithLockMiddlewareTest extends AbstractSymfonyTestCase
             }),
         ]);
 
-        $newEnvelope = $iterator->current()->handle($envelope, new StackMiddleware($iterator));
+        $newEnvelope = $iterator->current()
+            ->handle($envelope, new StackMiddleware($iterator));
 
         self::assertEquals($sameEnvelope, \spl_object_hash($envelope) === \spl_object_hash($newEnvelope));
     }

@@ -26,7 +26,8 @@ final class RoleVoter extends Voter
      */
     protected function supports($attribute, $subject): bool
     {
-        return $this->securityContext->getAuthorizationMatrix()->isRole((string)$attribute);
+        return $this->securityContext->getAuthorizationMatrix()
+            ->isRole((string)$attribute);
     }
 
     /**

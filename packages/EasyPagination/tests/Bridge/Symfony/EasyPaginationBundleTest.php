@@ -18,6 +18,8 @@ final class EasyPaginationBundleTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testResolverInstance
      */
     public function providerTestResolverInstance(): iterable
     {
@@ -26,14 +28,13 @@ final class EasyPaginationBundleTest extends AbstractTestCase
             StartSizeAsArrayInQueryResolver::class,
         ];
 
-        yield 'in_query' => [
-            __DIR__ . '/fixtures/in_query.yaml',
-            StartSizeInQueryResolver::class,
-        ];
+        yield 'in_query' => [__DIR__ . '/fixtures/in_query.yaml', StartSizeInQueryResolver::class];
     }
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testStartSizeDataResolver
      */
     public function providerTestStartSizeDataResolver(): iterable
     {
@@ -46,7 +47,10 @@ final class EasyPaginationBundleTest extends AbstractTestCase
 
         yield 'InQuery_Page_PerPage_2_30' => [
             __DIR__ . '/fixtures/data/in_query_page_perPage_1_15.yaml',
-            $this->createRequest(['page' => 2, 'perPage' => 30]),
+            $this->createRequest([
+                'page' => 2,
+                'perPage' => 30,
+            ]),
             2,
             30,
         ];
@@ -80,7 +84,8 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         KernelStub::setRequest($this->createRequest());
         $kernel->boot();
 
-        $factory = $kernel->getContainer()->get(StartSizeDataFactoryInterface::class);
+        $factory = $kernel->getContainer()
+            ->get(StartSizeDataFactoryInterface::class);
         $startSizeData = $factory->create();
 
         self::assertInstanceOf(StartSizeDataInterface::class, $startSizeData);
@@ -100,7 +105,8 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         KernelStub::setRequest($request);
         $kernel->boot();
 
-        $startSizeData = $kernel->getContainer()->get(StartSizeDataInterface::class);
+        $startSizeData = $kernel->getContainer()
+            ->get(StartSizeDataInterface::class);
 
         self::assertEquals($start, $startSizeData->getStart());
         self::assertEquals($size, $startSizeData->getSize());
@@ -111,6 +117,8 @@ final class EasyPaginationBundleTest extends AbstractTestCase
      */
     private function createRequest(?array $query = null): Request
     {
-        return new Request($query ?? [], [], [], [], [], ['HTTP_HOST' => 'eonx.com']);
+        return new Request($query ?? [], [], [], [], [], [
+            'HTTP_HOST' => 'eonx.com',
+        ]);
     }
 }

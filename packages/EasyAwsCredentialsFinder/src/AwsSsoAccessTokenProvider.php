@@ -45,7 +45,7 @@ final class AwsSsoAccessTokenProvider implements AwsSsoAccessTokenProviderInterf
 
     public function getSsoAccessToken(): AwsSsoAccessTokenInterface
     {
-        $ssoConfigs = $this->configProvider->getCurrentProfileSsoConfig();
+        $ssoConfigs = $this->configProvider->getCurrentProfileSsoConfig() ?? [];
         $ssoCacheKey = $this->configProvider->computeSsoAccessTokenCacheKey($ssoConfigs);
 
         $filename = $this->configProvider->getCliPath(\sprintf('sso/cache/%s.json', $ssoCacheKey));
@@ -53,7 +53,7 @@ final class AwsSsoAccessTokenProvider implements AwsSsoAccessTokenProviderInterf
         if ($this->filesystem->exists($filename) === false) {
             throw new SsoAccessTokenNotFoundException(\sprintf(
                 'No SSO access token cache file found for startUrl "%s". Please run "aws sso login" first.',
-                $ssoConfig['sso_start_url'] ?? ''
+                $ssoConfigs['sso_start_url'] ?? ''
             ));
         }
 

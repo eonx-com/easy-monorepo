@@ -7,11 +7,13 @@ namespace EonX\EasyDecision\Bridge\Symfony\DependencyInjection;
 use EonX\EasyDecision\Bridge\Interfaces\TagsInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\MappingProviderInterface;
+use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Providers\ConfigMappingProvider;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyDecisionExtension extends Extension
 {
@@ -24,11 +26,11 @@ final class EasyDecisionExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yaml');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.php');
 
         if ($config['use_expression_language'] ?? false) {
-            $loader->load('use_expression_language.yaml');
+            $loader->load('use_expression_language.php');
         }
 
         $container
@@ -36,7 +38,16 @@ final class EasyDecisionExtension extends Extension
             ->addTag(TagsInterface::DECISION_CONFIGURATOR);
 
         $container
+            ->registerForAutoconfiguration(RuleInterface::class)
+            ->addTag(TagsInterface::DECISION_RULE);
+
+        $container
             ->autowire(MappingProviderInterface::class, ConfigMappingProvider::class)
             ->setArgument('$decisionsConfig', $config['type_mapping'] ?? []);
+
+        // Register middleware if messenger present
+        if (\class_exists(MessengerPass::class)) {
+            $loader->load('messenger_middleware.php');
+        }
     }
 }

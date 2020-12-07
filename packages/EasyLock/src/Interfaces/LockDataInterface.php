@@ -9,4 +9,6 @@ interface LockDataInterface
     public function getResource(): string;
 
     public function getTtl(): ?float;
+
+    public function shouldRetry(): bool;
 }

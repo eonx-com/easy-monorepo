@@ -13,6 +13,8 @@ final class SsmParametersParserTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testParseParameters
      */
     public function providerTestParseParameters(): iterable
     {

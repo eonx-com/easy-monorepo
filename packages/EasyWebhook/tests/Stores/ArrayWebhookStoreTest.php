@@ -16,9 +16,16 @@ final class ArrayWebhookStoreTest extends AbstractTestCase
     public function testFindWithDefaultClass(): void
     {
         $store = new ArrayWebhookResultStore((new RandomGenerator())->setUuidV4Generator(new RamseyUuidV4Generator()));
+        $result = $store->store(new WebhookResult(Webhook::fromArray([
+            'method' => 'PUT',
+            'https://eonx.com',
+        ])));
+        $found = $store->find((string)$result->getWebhook()->getId());
 
-        $result = $store->store(new WebhookResult(Webhook::fromArray(['method' => 'PUT', 'https://eonx.com'])));
+        if ($found === null) {
+            return;
+        }
 
-        self::assertInstanceOf(Webhook::class, $store->find($result->getWebhook()->getId())->getWebhook());
+        self::assertInstanceOf(Webhook::class, $found->getWebhook());
     }
 }

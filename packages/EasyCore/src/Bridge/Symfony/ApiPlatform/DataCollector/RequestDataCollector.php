@@ -39,7 +39,9 @@ final class RequestDataCollector extends DataCollector
 
         $this->data = $reflection->getValue($this->decorated);
 
-        $this->data['dataPersisters'] = ['responses' => $this->dataPersister->getPersistersResponse() ?? []];
+        $this->data['dataPersisters'] = [
+            'responses' => $this->dataPersister->getPersistersResponse() ?? [],
+        ];
     }
 
     /**
@@ -55,7 +57,10 @@ final class RequestDataCollector extends DataCollector
      */
     public function getCollectionDataProviders(): array
     {
-        return $this->data['dataProviders']['collection'] ?? ['context' => [], 'responses' => []];
+        return $this->data['dataProviders']['collection'] ?? [
+            'context' => [],
+            'responses' => [],
+        ];
     }
 
     /**
@@ -71,7 +76,9 @@ final class RequestDataCollector extends DataCollector
      */
     public function getDataPersisters(): array
     {
-        return $this->data['dataPersisters'] ?? ['responses' => []];
+        return $this->data['dataPersisters'] ?? [
+            'responses' => [],
+        ];
     }
 
     /**
@@ -87,7 +94,10 @@ final class RequestDataCollector extends DataCollector
      */
     public function getItemDataProviders(): array
     {
-        return $this->data['dataProviders']['item'] ?? ['context' => [], 'responses' => []];
+        return $this->data['dataProviders']['item'] ?? [
+            'context' => [],
+            'responses' => [],
+        ];
     }
 
     public function getName(): string
@@ -121,7 +131,10 @@ final class RequestDataCollector extends DataCollector
      */
     public function getSubresourceDataProviders(): array
     {
-        return $this->data['dataProviders']['subresource'] ?? ['context' => [], 'responses' => []];
+        return $this->data['dataProviders']['subresource'] ?? [
+            'context' => [],
+            'responses' => [],
+        ];
     }
 
     public function reset(): void

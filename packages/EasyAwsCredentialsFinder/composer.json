@@ -4,10 +4,10 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "symfony/process": "^4.2 || ^5.0",
-        "symplify/package-builder": "^7.2",
-        "symplify/autowire-array-parameter": "^7.2",
+        "symplify/package-builder": "^8.3.41",
+        "symplify/autowire-array-parameter": "^8.3.41",
         "aws/aws-sdk-php": "^3.134",
         "nesbot/carbon": "^2.22"
     },
@@ -26,7 +26,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.5-dev"
+            "dev-master": "2.6-dev"
         }
     }
 }

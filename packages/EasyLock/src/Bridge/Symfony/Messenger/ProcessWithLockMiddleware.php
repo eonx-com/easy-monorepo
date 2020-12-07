@@ -18,29 +18,52 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         if ($this->shouldSkip($envelope)) {
-            return $stack->next()->handle($envelope, $stack);
+            return $stack->next()
+                ->handle($envelope, $stack);
         }
 
-        /** @var \EonX\EasyLock\Interfaces\WithLockDataInterface $message */
-        $message = $envelope->getMessage();
+        $withLockData = $this->getLockData($envelope);
 
-        $newEnvelope = $this->processWithLock($message, static function () use ($envelope, $stack): Envelope {
-            return $stack->next()->handle($envelope, $stack);
+        if ($withLockData === null) {
+            return $stack->next()
+                ->handle($envelope, $stack);
+        }
+
+        $newEnvelope = $this->processWithLock($withLockData, static function () use ($envelope, $stack): Envelope {
+            return $stack->next()
+                ->handle($envelope, $stack);
         });
 
         return $newEnvelope ?? $envelope;
     }
 
+    private function getLockData(Envelope $envelope): ?WithLockDataInterface
+    {
+        if ($envelope->getMessage() instanceof WithLockDataInterface) {
+            return $envelope->getMessage();
+        }
+
+        return $envelope->last(WithLockDataStamp::class);
+    }
+
     private function shouldSkip(Envelope $envelope): bool
     {
+        // Skip if not consumed by worker
         if ($envelope->last(ConsumedByWorkerStamp::class) === null) {
             return true;
         }
 
-        if ($envelope->getMessage() instanceof WithLockDataInterface === false) {
-            return true;
+        // Proceed if message has lock data
+        if ($envelope->getMessage() instanceof WithLockDataInterface) {
+            return false;
         }
 
-        return false;
+        // Proceed if envelope has stamp with lock data
+        if ($envelope->last(WithLockDataStamp::class) !== null) {
+            return false;
+        }
+
+        // Skip if none of above statements returned
+        return true;
     }
 }

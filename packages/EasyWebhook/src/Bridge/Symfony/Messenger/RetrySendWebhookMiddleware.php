@@ -36,7 +36,8 @@ final class RetrySendWebhookMiddleware implements MiddlewareInterface
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
-        $envelope = $stack->next()->handle($envelope, $stack);
+        $envelope = $stack->next()
+            ->handle($envelope, $stack);
 
         // Skip if not webhook message
         if (($envelope->getMessage() instanceof SendWebhookMessage) === false) {
@@ -44,7 +45,8 @@ final class RetrySendWebhookMiddleware implements MiddlewareInterface
         }
 
         $stamp = $envelope->last(ReceivedStamp::class);
-        $result = $envelope->getMessage()->getResult();
+        $result = $envelope->getMessage()
+            ->getResult();
 
         // Skip if message not received or not result set
         if (($stamp instanceof ReceivedStamp) === false || ($result instanceof WebhookResultInterface) === false) {
@@ -57,15 +59,16 @@ final class RetrySendWebhookMiddleware implements MiddlewareInterface
 
             $retryEnvelope = $envelope
                 ->withoutAll(HandledStamp::class)
-                ->with(
-                    new DelayStamp($delay),
-                    new RedeliveryStamp($result->getWebhook()->getCurrentAttempt())
-                );
+                ->with(new DelayStamp($delay), new RedeliveryStamp($result->getWebhook()->getCurrentAttempt()));
+
+            /** @var \EonX\EasyWebhook\Bridge\Symfony\Messenger\SendWebhookMessage $message */
+            $message = $retryEnvelope->getMessage();
 
             // Set result to null before sending back the message
-            $retryEnvelope->getMessage()->setResult(null);
+            $message->setResult(null);
 
-            $this->getTransport($stamp->getTransportName())->send($retryEnvelope);
+            $this->getTransport($stamp->getTransportName())
+                ->send($retryEnvelope);
         }
 
         return $envelope;

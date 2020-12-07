@@ -33,7 +33,7 @@ final class SignatureWebhookConfigurator extends AbstractWebhookConfigurator
     ) {
         $this->signer = $signer;
         $this->secret = $secret;
-        $this->signatureHeader = $signatureHeader ?? 'X-Signature';
+        $this->signatureHeader = $signatureHeader ?? self::HEADER_SIGNATURE;
 
         parent::__construct($priority);
     }
@@ -41,8 +41,9 @@ final class SignatureWebhookConfigurator extends AbstractWebhookConfigurator
     public function configure(WebhookInterface $webhook): void
     {
         $options = $webhook->getHttpClientOptions();
+        $body = $options['body'] ?? null;
 
-        if (\is_string($options['body'] ?? null) === false) {
+        if (\is_string($body) === false) {
             return;
         }
 
@@ -54,7 +55,7 @@ final class SignatureWebhookConfigurator extends AbstractWebhookConfigurator
 
         $webhook->mergeHttpClientOptions([
             'headers' => [
-                $this->signatureHeader => $this->signer->sign($options['body'], $secret),
+                $this->signatureHeader => $this->signer->sign($body, $secret),
             ],
         ]);
     }

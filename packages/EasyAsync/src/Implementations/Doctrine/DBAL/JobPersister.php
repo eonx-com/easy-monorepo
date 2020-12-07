@@ -32,7 +32,10 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
                 $queryBuilder
                     ->where('target_type = :targetType')
                     ->andWhere('target_id = :targetId')
-                    ->setParameters(['targetType' => $target->getTargetType(), 'targetId' => $target->getTargetId()]);
+                    ->setParameters([
+                        'targetType' => $target->getTargetType(),
+                        'targetId' => $target->getTargetId(),
+                    ]);
             })
             ->setTransformer(function (array $job): JobInterface {
                 return $this->newJobFromArray($job);
@@ -89,7 +92,9 @@ final class JobPersister extends AbstractPersister implements JobPersisterInterf
     {
         $sql = \sprintf('DELETE FROM %s WHERE id = :jobId', $this->getTableForQuery());
 
-        $this->conn->executeQuery($sql, ['jobId' => $job->getId()]);
+        $this->conn->executeQuery($sql, [
+            'jobId' => $job->getId(),
+        ]);
     }
 
     private function findOneJob(string $jobId, ?bool $forUpdate = null): JobInterface

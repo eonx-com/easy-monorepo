@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Configurators;
 
-use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
-use EonX\EasyApiToken\Tokens\JwtEasyApiToken;
+use EonX\EasyApiToken\Tokens\ApiKey;
+use EonX\EasyApiToken\Tokens\Jwt;
 use EonX\EasySecurity\Authorization\AuthorizationMatrix;
 use EonX\EasySecurity\Configurators\RolesFromJwtConfigurator;
 use EonX\EasySecurity\Interfaces\JwtClaimFetcherInterface;
@@ -20,45 +20,42 @@ final class RolesFromJwtConfiguratorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testConfigure
      */
     public function providerTestConfigure(): iterable
     {
-        yield 'No role resolved because not token' => [
-            [],
-        ];
+        yield 'No role resolved because not token' => [[]];
 
         $context = new SecurityContext();
-        $context->setToken(new ApiKeyEasyApiToken('api-key'));
+        $context->setToken(new ApiKey('api-key'));
 
-        yield 'No role resolved because token not jwt' => [
-            [],
-            $context,
-        ];
+        yield 'No role resolved because token not jwt' => [[], $context];
 
-        $context->setToken(new JwtEasyApiToken([], 'jwt'));
+        $context->setToken(new Jwt([], 'jwt'));
 
-        yield 'No role resolved because no roles in token' => [
-            [],
-            $context,
-        ];
+        yield 'No role resolved because no roles in token' => [[], $context];
 
-        $context->setToken(new JwtEasyApiToken([
-            static::$mainJwtClaim => ['roles' => ['app:role']],
+        $context->setToken(new Jwt([
+            static::$mainJwtClaim => [
+                'roles' => ['app:role'],
+            ],
         ], 'jwt'));
 
-        yield 'No role resolved because provider return empty array' => [
-            [],
-            $context,
-        ];
+        yield 'No role resolved because provider return empty array' => [[], $context];
 
-        $context->setToken(new JwtEasyApiToken([
-            static::$mainJwtClaim => ['roles' => ['app:role']],
+        $context->setToken(new Jwt([
+            static::$mainJwtClaim => [
+                'roles' => ['app:role'],
+            ],
         ], 'jwt'));
 
         yield 'Roles resolved' => [
             [new Role('app:role', [])],
             $context,
-            ['app:role' => new Role('app:role', [])],
+            [
+                'app:role' => new Role('app:role', []),
+            ],
             new JwtClaimFetcher(),
         ];
     }

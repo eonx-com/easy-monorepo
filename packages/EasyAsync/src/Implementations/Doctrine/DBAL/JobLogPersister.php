@@ -14,9 +14,9 @@ use EonX\EasyAsync\Interfaces\JobInterface;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Interfaces\JobLogPersisterInterface;
 use EonX\EasyAsync\Interfaces\JobPersisterInterface;
-use EonX\EasyAsync\Interfaces\UuidGeneratorInterface;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
+use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use Psr\Log\LoggerInterface;
 
 final class JobLogPersister extends AbstractPersister implements JobLogPersisterInterface
@@ -34,12 +34,12 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
     public function __construct(
         Connection $conn,
         DateTimeGeneratorInterface $dateTime,
-        UuidGeneratorInterface $uuid,
+        RandomGeneratorInterface $randomGenerator,
         JobPersisterInterface $jobPersister,
         LoggerInterface $logger,
         string $table
     ) {
-        parent::__construct($conn, $dateTime, $uuid, $table);
+        parent::__construct($conn, $dateTime, $randomGenerator, $table);
 
         $this->jobPersister = $jobPersister;
         $this->logger = $logger;
@@ -90,7 +90,9 @@ final class JobLogPersister extends AbstractPersister implements JobLogPersister
     {
         $sql = \sprintf('DELETE FROM %s WHERE job_id = :jobId', $this->getTableForQuery());
 
-        $this->conn->executeQuery($sql, ['jobId' => $jobId]);
+        $this->conn->executeQuery($sql, [
+            'jobId' => $jobId,
+        ]);
     }
 
     private function updateJob(JobLogInterface $jobLog, JobInterface $job): JobInterface

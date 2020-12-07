@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests;
 
-use EonX\EasyApiToken\Tokens\ApiKeyEasyApiToken;
+use EonX\EasyApiToken\Tokens\ApiKey;
 use EonX\EasySecurity\Exceptions\NoProviderInContextException;
 use EonX\EasySecurity\Exceptions\NoUserInContextException;
 use EonX\EasySecurity\Permission;
@@ -17,53 +17,34 @@ final class SecurityContextTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testContextGetters
      */
     public function gettersDataProvider(): iterable
     {
         yield '1 role 2 permissions' => [
-            [
-                new Role('app:role', [
-                    new Permission('perm1'),
-                    new Permission('perm2'),
-                ]),
-            ],
+            [new Role('app:role', [new Permission('perm1'), new Permission('perm2')])],
             1,
             2,
         ];
 
         yield '2 roles 3 permissions because duplicates' => [
             [
-                new Role('app:role', [
-                    new Permission('perm1'),
-                    new Permission('perm2'),
-                ]),
-                new Role('app:role1', [
-                    new Permission('perm1'),
-                    new Permission('perm3'),
-                ]),
+                new Role('app:role', [new Permission('perm1'), new Permission('perm2')]),
+                new Role('app:role1', [new Permission('perm1'), new Permission('perm3')]),
             ],
             2,
             3,
         ];
 
         yield '1 role 1 permission because non role given' => [
-            [
-                new Role('app:role', [
-                    new Permission('perm1'),
-                ]),
-                new \stdClass(),
-            ],
+            [new Role('app:role', [new Permission('perm1')]), new \stdClass()],
             1,
             1,
         ];
 
         yield '2 roles 1 permission because string role given' => [
-            [
-                new Role('app:role', [
-                    new Permission('perm1'),
-                ]),
-                'string:role',
-            ],
+            [new Role('app:role', [new Permission('perm1')]), 'string:role'],
             2,
             1,
         ];
@@ -71,15 +52,13 @@ final class SecurityContextTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testContextHas
      */
     public function hasDataProvider(): iterable
     {
         yield 'No role No permission' => [
-            [
-                new Role('app:role', [
-                    new Permission('perm1'),
-                ]),
-            ],
+            [new Role('app:role', [new Permission('perm1')])],
             'app:role1',
             'perm2',
             false,
@@ -87,11 +66,7 @@ final class SecurityContextTest extends AbstractTestCase
         ];
 
         yield 'Yes role No permission' => [
-            [
-                new Role('app:role', [
-                    new Permission('perm1'),
-                ]),
-            ],
+            [new Role('app:role', [new Permission('perm1')])],
             'app:role',
             'perm2',
             true,
@@ -99,11 +74,7 @@ final class SecurityContextTest extends AbstractTestCase
         ];
 
         yield 'No role Yes permission' => [
-            [
-                new Role('app:role1', [
-                    new Permission('perm2'),
-                ]),
-            ],
+            [new Role('app:role1', [new Permission('perm2')])],
             'app:role',
             'perm2',
             false,
@@ -111,11 +82,7 @@ final class SecurityContextTest extends AbstractTestCase
         ];
 
         yield 'Yes role Yes permission' => [
-            [
-                new Role('app:role', [
-                    new Permission('perm1'),
-                ]),
-            ],
+            [new Role('app:role', [new Permission('perm1')])],
             'app:role',
             'perm1',
             true,
@@ -123,14 +90,7 @@ final class SecurityContextTest extends AbstractTestCase
         ];
 
         yield 'Yes role Yes permission with multiple roles' => [
-            [
-                new Role('app:role', [
-                    new Permission('perm1'),
-                ]),
-                new Role('app:role1', [
-                    new Permission('perm2'),
-                ]),
-            ],
+            [new Role('app:role', [new Permission('perm1')]), new Role('app:role1', [new Permission('perm2')])],
             'app:role',
             'perm2',
             true,
@@ -159,7 +119,7 @@ final class SecurityContextTest extends AbstractTestCase
      */
     public function testContextGetters(array $roles, int $countRoles, int $countPermissions): void
     {
-        $token = new ApiKeyEasyApiToken('api-key');
+        $token = new ApiKey('api-key');
         $provider = new ProviderInterfaceStub('uniqueId');
         $user = new UserInterfaceStub('uniqueId');
 

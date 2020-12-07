@@ -221,7 +221,8 @@ final class RandomString implements RandomStringInterface
             ->exclude(self::LOWERCASE)
             ->exclude(self::SYMBOL)
             ->exclude(self::SIMILAR)
-            ->exclude(self::VOWEL); // Pretty useful to avoid "bad words" in generated strings
+            // Pretty useful to avoid "bad words" in generated strings
+            ->exclude(self::VOWEL);
 
         return $this;
     }

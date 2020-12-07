@@ -6,7 +6,6 @@ namespace EonX\EasyWebhook\Bridge\Symfony\Messenger;
 
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
-use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class SendWebhookHandler implements MessageHandlerInterface
@@ -17,23 +16,14 @@ final class SendWebhookHandler implements MessageHandlerInterface
     private $client;
 
     /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface
-     */
-    private $retryStrategy;
-
-    /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface
      */
     private $store;
 
-    public function __construct(
-        WebhookClientInterface $client,
-        WebhookResultStoreInterface $store,
-        WebhookRetryStrategyInterface $retryStrategy
-    ) {
+    public function __construct(WebhookClientInterface $client, WebhookResultStoreInterface $store)
+    {
         $this->client = $client;
         $this->store = $store;
-        $this->retryStrategy = $retryStrategy;
     }
 
     public function __invoke(SendWebhookMessage $message): void
@@ -44,6 +34,12 @@ final class SendWebhookHandler implements MessageHandlerInterface
             return;
         }
 
-        $message->setResult($this->client->sendWebhook($result->getWebhook()->sendNow(true)));
+        // Once here, webhooks are already configured and should be sent synchronously
+        $result
+            ->getWebhook()
+            ->configured(true)
+            ->sendNow(true);
+
+        $message->setResult($this->client->sendWebhook($result->getWebhook()));
     }
 }

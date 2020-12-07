@@ -6,6 +6,7 @@ namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
+use EonX\EasyCore\Bridge\BridgeConstantsInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
@@ -13,7 +14,7 @@ use Symfony\Bundle\MakerBundle\MakerBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyCoreExtension extends Extension
 {
@@ -36,8 +37,8 @@ final class EasyCoreExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yaml');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.php');
 
         $this->container = $container;
         $this->loader = $loader;
@@ -45,25 +46,57 @@ final class EasyCoreExtension extends Extension
         $this->autoconfigTag(EventListenerInterface::class, TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
         $this->autoconfigTag(SimpleDataPersisterInterface::class, TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG);
 
-        $this->loadIfBundlesExists('easy_async_listeners.yaml', EasyAsyncBundle::class);
-        $this->loadIfBundlesExists('api_platform/iri_converter.yaml', ApiPlatformBundle::class);
-        $this->loadIfBundlesExists('api_platform/maker_commands.yaml', [ApiPlatformBundle::class, MakerBundle::class]);
+        $this->loadIfBundlesExists('easy_async_listeners.php', EasyAsyncBundle::class);
+        $this->loadIfBundlesExists('api_platform/iri_converter.php', ApiPlatformBundle::class);
+        $this->loadIfBundlesExists('api_platform/maker_commands.php', [ApiPlatformBundle::class, MakerBundle::class]);
 
         if ($config['api_platform']['custom_pagination_enabled'] ?? false) {
-            $this->loadIfBundlesExists('api_platform/pagination.yaml', ApiPlatformBundle::class);
+            $this->loadIfBundlesExists('api_platform/pagination.php', ApiPlatformBundle::class);
         }
 
         if ($config['api_platform']['no_properties_api_resource_enabled'] ?? false) {
-            $this->loadIfBundlesExists('api_platform/no_properties_api_resource.yaml', ApiPlatformBundle::class);
+            $this->loadIfBundlesExists('api_platform/no_properties_api_resource.php', ApiPlatformBundle::class);
         }
 
         if ($config['api_platform']['simple_data_persister_enabled'] ?? false) {
-            $this->loadIfBundlesExists('api_platform/simple_data_persister.yaml', ApiPlatformBundle::class);
+            $this->loadIfBundlesExists('api_platform/simple_data_persister.php', ApiPlatformBundle::class);
 
             // This debug file is only for when simple data persister is enabled
             if ($container->hasParameter('kernel.debug') && $container->getParameter('kernel.debug')) {
-                $loader->load('api_platform/debug.yaml');
+                $loader->load('api_platform/debug.php');
             }
+        }
+
+        // Search
+        if ($config['search']['enabled'] ?? false) {
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_ELASTICSEARCH_HOST,
+                $config['search']['elasticsearch_host']
+            );
+
+            $loader->load('search.php');
+        }
+
+        // Profiler storage
+        if ($config['profiler_storage']['enabled'] ?? false) {
+            $loader->load('profiler_storage.php');
+        }
+
+        // Trim strings
+        if ($config['trim_strings']['enabled'] ?? false) {
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_TRIM_STRINGS_EXCEPT,
+                $config['trim_strings']['except']
+            );
+
+            $loader->load('trim_strings.php');
+        }
+
+        // Aliases for custom collection operations HTTP methods
+        foreach (['PATCH', 'PUT'] as $method) {
+            $alias = \sprintf('api_platform.action.%s_collection', \strtolower($method));
+            $container->setAlias($alias, 'api_platform.action.placeholder')
+                ->setPublic(true);
         }
     }
 
@@ -72,7 +105,8 @@ final class EasyCoreExtension extends Extension
      */
     private function autoconfigTag(string $interface, string $tag, ?array $attributes = null): void
     {
-        $this->container->registerForAutoconfiguration($interface)->addTag($tag, $attributes ?? []);
+        $this->container->registerForAutoconfiguration($interface)
+            ->addTag($tag, $attributes ?? []);
     }
 
     /**

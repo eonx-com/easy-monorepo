@@ -6,6 +6,9 @@ namespace EonX\EasyCore\Http\Middleware;
 
 use Illuminate\Http\Request;
 
+/**
+ * @deprecated since 2.3.1 and will be removed in 3.0.
+ */
 final class SetContentLength
 {
     public function __construct()
