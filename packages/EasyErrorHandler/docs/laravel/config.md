@@ -5,8 +5,8 @@ weight: 2001
 
 ### Create the configuration file
 
-The package allows you to configure error response field names. 
-Just copy `src/Bridge/Laravel/config/easy-error-handler.php` to `config/easy-error-handler.php` and adjust it to 
+The package allows you to configure error response field names.
+Just copy `src/Bridge/Laravel/config/easy-error-handler.php` to `config/easy-error-handler.php` and adjust it to
 your needs (you can leave only the fields you want to override):
 
 ```php
@@ -39,6 +39,12 @@ return [
      */
     'bugsnag_threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', null),
 
+    /**
+     * List of Ignored Exceptions that'll not be reported to bugsnag.
+     */
+    'bugsnag_ignored_exceptions' => [],
+    /*
+
     /*
     |--------------------------------------------------------------------------
     | Error response
@@ -67,5 +73,5 @@ return [
 
 ### Translations
 
-If you want to update default package translations, copy the `src/Bridge/Laravel/translations/en/messages.php` 
+If you want to update default package translations, copy the `src/Bridge/Laravel/translations/en/messages.php`
 to the `resources/lang/vendor/easy-error-handler/en/messages.php` and change it.
