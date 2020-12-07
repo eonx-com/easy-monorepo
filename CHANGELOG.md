@@ -1,6 +1,12 @@
 <!-- changelog-linker -->
 
-## v2.5.25 - 2020-12-02
+## v2.5.26 - 2020-12-07
+
+### EasyErrorHandler
+
+- [#435] Config for bugsnag to ignore exceptions
+
+## [v2.5.25] - 2020-12-02
 
 ### EasyBankFiles
 
@@ -2744,3 +2750,5 @@
 [v2.5.23]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.22...v2.5.23
 [#428]: https://github.com/eonx-com/easy-monorepo/pull/428
 [v2.5.24]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.23...v2.5.24
+[#435]: https://github.com/eonx-com/easy-monorepo/pull/435
+[v2.5.25]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.24...v2.5.25
