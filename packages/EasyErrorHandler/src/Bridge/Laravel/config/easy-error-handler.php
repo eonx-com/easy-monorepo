@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+
 return [
     /**
      * Use extended error response with exception message, trace, etc.
@@ -23,6 +25,10 @@ return [
      * Log level threshold to notify bugsnag.
      */
     'bugsnag_threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', null),
+    /**
+     * List of Ignored Exceptions that'll not be reported to bugsnag.
+     */
+    'bugsnag_ignored_exceptions' => [HttpExceptionInterface::class],
     /*
     |--------------------------------------------------------------------------
     | Error response

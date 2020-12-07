@@ -6,6 +6,7 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -18,6 +19,11 @@ final class Configuration implements ConfigurationInterface
                 //Bugsnag
                 ->booleanNode('bugsnag_enabled')->defaultTrue()->end()
                 ->integerNode('bugsnag_threshold')->defaultNull()->end()
+                ->arrayNode('bugsnag_ignored_exceptions')
+                    ->defaultValue([HttpExceptionInterface::class])
+                    ->scalarPrototype()->end()
+                    ->beforeNormalization()->castToArray()->end()
+                    ->end()
 
                 ->booleanNode('verbose')->defaultFalse()->end()
                 ->booleanNode('use_default_builders')->defaultTrue()->end()

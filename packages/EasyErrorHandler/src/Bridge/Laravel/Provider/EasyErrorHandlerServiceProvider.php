@@ -73,7 +73,8 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             $this->app->singleton(BugsnagReporterProvider::class, function (): BugsnagReporterProvider {
                 return new BugsnagReporterProvider(
                     $this->app->make(Client::class),
-                    \config('easy-error-handler.bugsnag_threshold')
+                    \config('easy-error-handler.bugsnag_threshold'),
+                    \config('easy-error-handler.bugsnag_ignored_exceptions')
                 );
             });
             $this->app->tag(BugsnagReporterProvider::class, [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER]);

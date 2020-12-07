@@ -14,5 +14,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(BugsnagReporterProvider::class)
-        ->arg('$threshold', '%' . BridgeConstantsInterface::PARAM_BUGSNAG_THRESHOLD . '%');
+        ->arg('$threshold', '%' . BridgeConstantsInterface::PARAM_BUGSNAG_THRESHOLD . '%')
+        ->arg('$ignoredExceptions', '%' . BridgeConstantsInterface::PARAM_BUGSNAG_IGNORED_EXCEPTIONS . '%');
 };
