@@ -1,4 +1,5 @@
 <?php
+
 $array = [
     'iat' => \time(),
     'iss' => self::TEST_CONST,
@@ -15,8 +16,9 @@ $array = [
 ];
 
 ?>
------
+    -----
 <?php
+
 $array = [
     'aud' => self::ANOTHER_TEST_CONST,
     'exp' => \time() + 3600,
