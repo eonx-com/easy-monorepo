@@ -24,12 +24,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         SetList::DEAD_CODE,
     ]);
 
-    $parameters->set(Option::SKIP, [
-        RemoveUnusedDoctrineEntityMethodAndPropertyRector::class => [
-            __DIR__ . '/packages/EasyEntityChange/tests/Integration/Fixtures',
-        ],
-    ]);
-
     $parameters->set(Option::AUTOLOAD_PATHS, [
         __DIR__ . '/tests/rector_bootstrap.php',
     ]);
