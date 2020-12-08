@@ -6,7 +6,7 @@ namespace EonX\EasyStandard\Tests\Rector\StrictInArrayRector;
 
 use EonX\EasyStandard\Rector\StrictInArrayRector;
 use Iterator;
-use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
+use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**

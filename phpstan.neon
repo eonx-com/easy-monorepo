@@ -16,6 +16,8 @@ parameters:
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
         - packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php
         - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
+        - packages/EasyApiToken/src/Interfaces/*
+        - packages/EasyApiToken/tests/Bridge/Symfony/*
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
@@ -51,6 +53,9 @@ parameters:
 
         # ---- EasyBankFiles ----
         - message: '#Call to an undefined method object\:\:getTransactionCodeDetails\(\)#'
+          path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
+
+        - message: '#Unreachable statement \- code above always terminates#'
           path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
 
         # ---- EasyCore ----

@@ -18,6 +18,8 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCreate
      */
     public function providerTestCreate(): iterable
     {
