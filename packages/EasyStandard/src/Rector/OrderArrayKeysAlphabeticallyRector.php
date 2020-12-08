@@ -74,16 +74,20 @@ PHP
 
     private function getArrayKeyAsString(ArrayItem $node): string
     {
-        switch ($node->key->getType()) {
+        /** @var \PhpParser\Node\Expr $keyNode */
+        $keyNode = $node->key;
+        switch ($keyNode->getType()) {
             case 'Expr_ClassConstFetch':
                 /** @var \PhpParser\Node\Expr\ClassConstFetch $keyNode */
                 $keyNode = $node->key;
                 /** @var \PhpParser\Node\Name $nameNode */
                 $nameNode = $keyNode->class;
-                $name = $nameNode->getLast() . '::' . $keyNode->name->name;
+                /** @var \PhpParser\Node\Identifier $identifier */
+                $identifier = $keyNode->name;
+                $name = $nameNode->getLast() . '::' . $identifier->name;
                 break;
             default:
-                $name = \trim($this->print($node->key), " \t\n\r\0\x0B\"'");
+                $name = \trim($this->print($keyNode), " \t\n\r\0\x0B\"'");
         }
 
         return \strtolower($name);
@@ -102,7 +106,7 @@ PHP
             return $firstName <=> $secondName;
         });
 
-        return $items;
+        return \array_filter($items);
     }
 
     /**
@@ -114,6 +118,7 @@ PHP
     {
         $isAssociative = 1;
 
+        /** @var \PhpParser\Node\Expr\ArrayItem $arrayItem */
         foreach ($array->items as $arrayItem) {
             $isAssociative &= $arrayItem->key !== null;
         }
