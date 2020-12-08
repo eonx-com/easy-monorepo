@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use EonX\EasyStandard\Rector\OrderArrayKeysAlphabeticallyRector;
 use Rector\Core\Configuration\Option;
 use Rector\Core\ValueObject\ProjectType;
 use Rector\DeadCode\Rector\Class_\RemoveUnusedDoctrineEntityMethodAndPropertyRector;
@@ -25,6 +26,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     $parameters->set(Option::SKIP, [
+        OrderArrayKeysAlphabeticallyRector::class => null,
         RemoveUnusedDoctrineEntityMethodAndPropertyRector::class => [
             __DIR__ . '/packages/EasyEntityChange/tests/Integration/Fixtures',
         ],
