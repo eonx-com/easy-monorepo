@@ -14,8 +14,6 @@ jobs:
                     - EasyAsync
                     - EasyCore
                     - EasyDecision
-                    - EasyEntityChange
-                    - EasyIdentity
                     - EasyLogging
                     - EasyPagination
                     - EasyPipeline

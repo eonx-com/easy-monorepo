@@ -112,14 +112,9 @@ parameters:
         - message: '#Cannot call method addFunction\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
           path: packages/EasyDecision/tests/Bridge/Symfony/Stubs/Configurators/TypeRestrictedExpressionFunctionConfigurator.php
 
-        # ---- EasyEntityChange ----
         # ---- EasyErrorHandler ----
         - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
           path: packages/EasyErrorHandler/tests
-
-        # ---- EasyIdentity ----
-        - message: '#Access to an undefined property Mockery\\LegacyMockInterface::\$users.#'
-          path: packages/EasyIdentity/tests/Implementations/Auth0
 
         # ---- EasyLogging ----
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
