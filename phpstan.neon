@@ -53,6 +53,9 @@ parameters:
         - message: '#Call to an undefined method object\:\:getTransactionCodeDetails\(\)#'
           path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
 
+        - message: '#Unreachable statement \- code above always terminates#'
+          path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
+
         # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'
           path: packages/EasyCore/tests/Http/Middleware
