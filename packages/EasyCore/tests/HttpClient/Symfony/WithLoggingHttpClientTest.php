@@ -15,6 +15,8 @@ final class WithLoggingHttpClientTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testRequest
      */
     public function providerTestRequest(): iterable
     {

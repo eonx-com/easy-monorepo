@@ -33,7 +33,6 @@ final class WebhookClientTest extends AbstractTestCase
     {
         yield 'Simple URL' => [
             (new Webhook())->url('https://eonx.com'),
-            null,
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [],
@@ -43,10 +42,10 @@ final class WebhookClientTest extends AbstractTestCase
             (new Webhook())
                 ->url('https://eonx.com')
                 ->method('PUT'),
-            [new MethodWebhookConfigurator('PATCH')],
             'PUT',
             'https://eonx.com',
             [],
+            [new MethodWebhookConfigurator('PATCH')],
         ];
 
         yield 'Body formatter with header' => [
@@ -55,7 +54,6 @@ final class WebhookClientTest extends AbstractTestCase
                 ->body([
                     'key' => 'value',
                 ]),
-            [new BodyFormatterWebhookConfigurator(new JsonFormatter())],
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [
@@ -64,22 +62,23 @@ final class WebhookClientTest extends AbstractTestCase
                 ],
                 'body' => '{"key":"value"}',
             ],
+            [new BodyFormatterWebhookConfigurator(new JsonFormatter())],
         ];
 
         yield 'Configurator priorities run higher last' => [
             (new Webhook())->url('https://eonx.com'),
-            [new MethodWebhookConfigurator('PATCH', 200), new MethodWebhookConfigurator('PUT', 100)],
             'PUT',
             'https://eonx.com',
             [],
+            [new MethodWebhookConfigurator('PATCH', 200), new MethodWebhookConfigurator('PUT', 100)],
         ];
 
         yield 'Configurators as Traversable' => [
             (new Webhook())->url('https://eonx.com'),
-            new \EmptyIterator(),
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [],
+            new \EmptyIterator(),
         ];
 
         yield 'RS256 Signature' => [
@@ -88,18 +87,18 @@ final class WebhookClientTest extends AbstractTestCase
                 ->body([
                     'key' => 'value',
                 ]),
-            [
-                new BodyFormatterWebhookConfigurator(new JsonFormatter()),
-                new SignatureWebhookConfigurator(new Rs256Signer(), 'my-secret'),
-            ],
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'X-Signature' => 'fbde39337b529a887fba290e322809bd8530d9ba68d2c4c869d1394cc07bd99e',
+                    'X-Webhook-Signature' => 'fbde39337b529a887fba290e322809bd8530d9ba68d2c4c869d1394cc07bd99e',
                 ],
                 'body' => '{"key":"value"}',
+            ],
+            [
+                new BodyFormatterWebhookConfigurator(new JsonFormatter()),
+                new SignatureWebhookConfigurator(new Rs256Signer(), 'my-secret'),
             ],
         ];
 
@@ -107,19 +106,18 @@ final class WebhookClientTest extends AbstractTestCase
             (new Webhook())
                 ->url('https://eonx.com')
                 ->event('my-event'),
-            [new EventWebhookConfigurator()],
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [
                 'headers' => [
-                    'X-Event' => 'my-event',
+                    'X-Webhook-Event' => 'my-event',
                 ],
             ],
+            [new EventWebhookConfigurator()],
         ];
 
         yield 'Id header' => [
             (new Webhook())->url('https://eonx.com'),
-            [new IdWebhookConfigurator(new ArrayWebhookResultStoreStub('78981b69-535d-4483-8d94-2ef7cbdb07c8'))],
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [
@@ -127,6 +125,7 @@ final class WebhookClientTest extends AbstractTestCase
                     'X-Webhook-Id' => '78981b69-535d-4483-8d94-2ef7cbdb07c8',
                 ],
             ],
+            [new IdWebhookConfigurator(new ArrayWebhookResultStoreStub('78981b69-535d-4483-8d94-2ef7cbdb07c8'))],
         ];
     }
 
@@ -146,10 +145,10 @@ final class WebhookClientTest extends AbstractTestCase
      */
     public function testSend(
         WebhookInterface $webhook,
-        ?iterable $configurators,
         string $method,
         string $url,
-        array $httpClientOptions
+        array $httpClientOptions,
+        ?iterable $configurators = null
     ): void {
         $httpClient = new HttpClientStub();
         $store = $this->getArrayStore();

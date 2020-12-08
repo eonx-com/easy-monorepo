@@ -6,7 +6,7 @@ namespace EonX\EasyStandard\Tests\Rector\InheritDocRector;
 
 use EonX\EasyStandard\Rector\InheritDocRector;
 use Iterator;
-use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
+use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
