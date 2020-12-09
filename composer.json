@@ -40,7 +40,6 @@
         "auth0/auth0-php": "^5.4",
         "bugsnag/bugsnag-laravel": "^2.17",
         "doctrine/dbal": "^2.6",
-        "eonx-com/test-utils": "^0.0.1",
         "ext-openssl": "^7.1",
         "firebase/php-jwt": "^5.0",
         "laravel-doctrine/orm": "^1.4",
