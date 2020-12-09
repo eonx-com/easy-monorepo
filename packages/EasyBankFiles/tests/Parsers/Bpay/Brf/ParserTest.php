@@ -15,7 +15,7 @@ final class ParserTest extends TestCase
     /**
      * Should return error from the content.
      *
-     * @group Batch-Parser-Error
+     * @group Brf-Parser-Error
      */
     public function testShouldReturnErrors(): void
     {

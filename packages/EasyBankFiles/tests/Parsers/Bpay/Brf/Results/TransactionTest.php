@@ -41,7 +41,7 @@ final class TransactionTest extends TestCase
     /**
      * Should return date as a null when date string is invalid.
      *
-     * @group Bpay-Transaction
+     * @group Brf-Transaction
      *
      * @param mixed[] $date
      *
@@ -57,7 +57,7 @@ final class TransactionTest extends TestCase
     /**
      * Should return payment date as DateTime object.
      *
-     * @group Bpay-Transaction
+     * @group Brf-Transaction
      */
     public function testShouldReturnPaymentDate(): void
     {
@@ -71,7 +71,7 @@ final class TransactionTest extends TestCase
     /**
      * Should return settlement date as DateTime object.
      *
-     * @group Bpay-Transaction
+     * @group Brf-Transaction
      */
     public function testShouldReturnSettlementDate(): void
     {
