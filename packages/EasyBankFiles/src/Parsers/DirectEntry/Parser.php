@@ -208,7 +208,7 @@ final class Parser extends AbstractLineByLineParser
         $traceBsb = \substr($line, 80, 7);
         /** @var string|false $txnCode */
         $txnCode = \substr($line, 18, 2);
-        /** @var string|false $txnCode */
+        /** @var string|false $withholdingTax */
         $withholdingTax = \substr($line, 112, 8);
 
         return new Transaction([

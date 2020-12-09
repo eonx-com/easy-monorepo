@@ -116,7 +116,7 @@ final class Parser extends AbstractLineByLineParser
         $billerShortName = \substr($line, 12, 20);
         /** @var string|false $billerCreditBSB */
         $billerCreditBSB = \substr($line, 32, 6);
-        /** @var string|false $billerCreditBSB */
+        /** @var string|false $billerCreditAccount */
         $billerCreditAccount = \substr($line, 38, 9);
         /** @var string|false $fileCreationDate */
         $fileCreationDate = \substr($line, 47, 8);
