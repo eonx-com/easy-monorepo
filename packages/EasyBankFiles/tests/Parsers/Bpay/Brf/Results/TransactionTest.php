@@ -21,19 +21,27 @@ final class TransactionTest extends TestCase
     public function provideInvalidDates(): iterable
     {
         yield 'null paymentDate' => [
-            'date' => ['paymentDate' => null],
+            'date' => [
+                'paymentDate' => null,
+            ],
             'dateGetter' => 'getPaymentDateObject',
         ];
         yield 'paymentDate has non-digital symbols' => [
-            'date' => ['paymentDate' => '201909ab'],
+            'date' => [
+                'paymentDate' => '201909ab',
+            ],
             'dateGetter' => 'getPaymentDateObject',
         ];
         yield 'null settlementDate' => [
-            'date' => ['settlementDate' => null],
+            'date' => [
+                'settlementDate' => null,
+            ],
             'dateGetter' => 'getSettlementDateObject',
         ];
         yield 'settlementDate has non-digital symbols' => [
-            'date' => ['settlementDate' => '201909ab'],
+            'date' => [
+                'settlementDate' => '201909ab',
+            ],
             'dateGetter' => 'getSettlementDateObject',
         ];
     }
@@ -51,7 +59,7 @@ final class TransactionTest extends TestCase
     {
         $transaction = new Transaction($date);
 
-        self::assertNull($transaction->$dateGetter());
+        self::assertNull($transaction->{$dateGetter}());
     }
 
     /**

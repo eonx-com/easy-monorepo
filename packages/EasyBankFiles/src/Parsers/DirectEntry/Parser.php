@@ -137,11 +137,17 @@ final class Parser extends AbstractLineByLineParser
      */
     private function processHeader(string $line): Header
     {
+        /** @var string|false $dateProcessed */
         $dateProcessed = \substr($line, 74, 6);
+        /** @var string|false $description */
         $description = \substr($line, 62, 12);
+        /** @var string|false $userFinancialInstitution */
         $userFinancialInstitution = \substr($line, 20, 3);
+        /** @var string|false $userIdSupplyingFile */
         $userIdSupplyingFile = \substr($line, 56, 6);
+        /** @var string|false $userSupplyingFile */
         $userSupplyingFile = \substr($line, 30, 26);
+        /** @var string|false $reelSequenceNumber */
         $reelSequenceNumber = \substr($line, 18, 2);
 
         return new Header([
@@ -159,10 +165,15 @@ final class Parser extends AbstractLineByLineParser
      */
     private function processTrailer(string $line): Trailer
     {
+        /** @var string|false $bsb */
         $bsb = \substr($line, 1, 7);
+        /** @var string|false $numberPayments */
         $numberPayments = \substr($line, 74, 6);
+        /** @var string|false $totalNetAmount */
         $totalNetAmount = \substr($line, 20, 10);
+        /** @var string|false $totalCreditAmount */
         $totalCreditAmount = \substr($line, 30, 10);
+        /** @var string|false $totalDebitAmount */
         $totalDebitAmount = \substr($line, 40, 10);
 
         return new Trailer([
@@ -179,15 +190,25 @@ final class Parser extends AbstractLineByLineParser
      */
     private function processTransaction(string $line): Transaction
     {
+        /** @var string|false $accountName */
         $accountName = \substr($line, 30, 32);
+        /** @var string|false $accountNumber */
         $accountNumber = \substr($line, 8, 9);
+        /** @var string|false $amount */
         $amount = \substr($line, 20, 10);
+        /** @var string|false $bsb */
         $bsb = \substr($line, 1, 7);
+        /** @var string|false $lodgmentReference */
         $lodgmentReference = \substr($line, 62, 18);
+        /** @var string|false $remitterName */
         $remitterName = \substr($line, 96, 16);
+        /** @var string|false $traceAccountNumber */
         $traceAccountNumber = \substr($line, 87, 9);
+        /** @var string|false $traceBsb */
         $traceBsb = \substr($line, 80, 7);
+        /** @var string|false $txnCode */
         $txnCode = \substr($line, 18, 2);
+        /** @var string|false $txnCode */
         $withholdingTax = \substr($line, 112, 8);
 
         return new Transaction([

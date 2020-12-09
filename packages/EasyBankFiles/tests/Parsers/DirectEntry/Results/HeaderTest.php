@@ -21,10 +21,14 @@ final class HeaderTest extends TestCase
     public function provideInvalidDateProcessedValues(): iterable
     {
         yield 'null dateProcessed' => [
-            'dateProcessed' => ['dateProcessed' => null],
+            'dateProcessed' => [
+                'dateProcessed' => null,
+            ],
         ];
         yield 'dateProcessed has non-digital symbols' => [
-            'dateProcessed' => ['dateProcessed' => '201909ab'],
+            'dateProcessed' => [
+                'dateProcessed' => '201909ab',
+            ],
         ];
     }
 

@@ -110,9 +110,13 @@ final class Parser extends AbstractLineByLineParser
      */
     private function processHeader(string $line): Header
     {
+        /** @var string|false $customerId */
         $customerId = \substr($line, 1, 16);
+        /** @var string|false $customerShortName */
         $customerShortName = \substr($line, 17, 20);
+        /** @var string|false $dateProcessed */
         $dateProcessed = \substr($line, 37, 8);
+        /** @var string|false $restOfRecord */
         $restOfRecord = \substr($line, 45, 174);
 
         return new Header([
@@ -128,12 +132,19 @@ final class Parser extends AbstractLineByLineParser
      */
     private function processTrailer(string $line): Trailer
     {
+        /** @var string|false $numberOfApprovals */
         $numberOfApprovals = \substr($line, 1, 10);
+        /** @var string|false $amountOfApprovals */
         $amountOfApprovals = \substr($line, 11, 13);
+        /** @var string|false $numberOfDeclines */
         $numberOfDeclines = \substr($line, 24, 10);
+        /** @var string|false $amountOfDeclines */
         $amountOfDeclines = \substr($line, 34, 13);
+        /** @var string|false $numberOfPayments */
         $numberOfPayments = \substr($line, 47, 10);
+        /** @var string|false $amountOfPayments */
         $amountOfPayments = \substr($line, 57, 13);
+        /** @var string|false $restOfRecord */
         $restOfRecord = \substr($line, 70, 149);
 
         return new Trailer([
@@ -152,17 +163,29 @@ final class Parser extends AbstractLineByLineParser
      */
     private function processTransaction(string $line): Transaction
     {
+        /** @var string|false $billerCode */
         $billerCode = \substr($line, 1, 10);
+        /** @var string|false $accountBsb */
         $accountBsb = \substr($line, 11, 6);
+        /** @var string|false $accountNumber */
         $accountNumber = \substr($line, 17, 9);
+        /** @var string|false $customerReferenceNumber */
         $customerReferenceNumber = \substr($line, 26, 20);
+        /** @var string|false $amount */
         $amount = \substr($line, 46, 13);
+        /** @var string|false $reference1 */
         $reference1 = \substr($line, 59, 10);
+        /** @var string|false $reference2 */
         $reference2 = \substr($line, 69, 20);
+        /** @var string|false $reference3 */
         $reference3 = \substr($line, 89, 50);
+        /** @var string|false $returnCode */
         $returnCode = \substr($line, 139, 4);
+        /** @var string|false $returnCodeDescription */
         $returnCodeDescription = \substr($line, 143, 50);
+        /** @var string|false $transactionReferenceNumber */
         $transactionReferenceNumber = \substr($line, 193, 21);
+        /** @var string|false $restOfRecord */
         $restOfRecord = \substr($line, 214, 5);
 
         return new Transaction([

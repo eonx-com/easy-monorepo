@@ -77,7 +77,7 @@ final class Parser extends AbstractLineByLineParser
     private $currentTransaction;
 
     /**
-     * @var \EonX\EasyBankFiles\Parsers\Error[]
+     * @var mixed[]
      */
     private $errors = [];
 

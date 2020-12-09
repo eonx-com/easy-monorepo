@@ -59,13 +59,34 @@ final class ParserTest extends TestCase
         $trailer = $brfParser->getTrailer();
         self::assertSame('254169', $trailer->getBillerCode());
         self::assertSame('', $trailer->getRestOfRecord());
-        self::assertSame(['amount' => '0', 'type' => 'credit'], $trailer->getAmountOfErrorCorrections());
-        self::assertSame(['amount' => '116025', 'type' => 'debit'], $trailer->getAmountOfPayments());
-        self::assertSame(['amount' => '0', 'type' => 'credit'], $trailer->getAmountOfReversals());
-        self::assertSame(['amount' => '0', 'type' => 'credit'], $trailer->getNumberOfErrorCorrections());
-        self::assertSame(['amount' => '2', 'type' => 'credit'], $trailer->getNumberOfPayments());
-        self::assertSame(['amount' => '0', 'type' => 'credit'], $trailer->getNumberOfReversals());
-        self::assertSame(['amount' => '115000', 'type' => 'credit'], $trailer->getSettlementAmount());
+        self::assertSame([
+            'amount' => '0',
+            'type' => 'credit',
+        ], $trailer->getAmountOfErrorCorrections());
+        self::assertSame([
+            'amount' => '116025',
+            'type' => 'debit',
+        ], $trailer->getAmountOfPayments());
+        self::assertSame([
+            'amount' => '0',
+            'type' => 'credit',
+        ], $trailer->getAmountOfReversals());
+        self::assertSame([
+            'amount' => '0',
+            'type' => 'credit',
+        ], $trailer->getNumberOfErrorCorrections());
+        self::assertSame([
+            'amount' => '2',
+            'type' => 'credit',
+        ], $trailer->getNumberOfPayments());
+        self::assertSame([
+            'amount' => '0',
+            'type' => 'credit',
+        ], $trailer->getNumberOfReversals());
+        self::assertSame([
+            'amount' => '115000',
+            'type' => 'credit',
+        ], $trailer->getSettlementAmount());
     }
 
     /**
