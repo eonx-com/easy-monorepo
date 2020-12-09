@@ -11,16 +11,22 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 /**
  * @method string|null getCustomerId()
  * @method string|null getCustomerShortName()
- * @method string|null getProcessingDate()
+ * @method string|null getDateProcessed()
  * @method string|null getRestOfRecord()
  */
 final class Header extends BaseResult
 {
-    public function getProcessingDateObject(): ?DateTimeInterface
+    /**
+     * Return processed date as a DateTime object.
+     */
+    public function getDateProcessedObject(): ?DateTimeInterface
     {
-        $value = $this->data['processingDate'] ?? null;
+        $value = $this->data['dateProcessed'];
 
-        if ($value === null) {
+        if (
+            \is_string($value) === false ||
+            \ctype_digit($value) === false
+        ) {
             return null;
         }
 
@@ -34,6 +40,6 @@ final class Header extends BaseResult
      */
     protected function initAttributes(): array
     {
-        return ['customerId', 'customerShortName', 'processingDate', 'restOfRecord'];
+        return ['customerId', 'customerShortName', 'dateProcessed', 'restOfRecord'];
     }
 }

@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Tests\Parsers\Bpay\Brf;
+namespace EonX\EasyBankFiles\Tests\Parsers\Bpay\Brf\Results;
 
 use EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException;
 use EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Trailer;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 
+/**
+ * @covers \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Trailer
+ */
 final class TrailerTest extends TestCase
 {
     /**
@@ -20,7 +23,7 @@ final class TrailerTest extends TestCase
     public function testShouldReturnAmountOfErrorCorrections(): void
     {
         $expected = [
-            'amount' => '20.00',
+            'amount' => '2000',
             'type' => 'credit',
         ];
 
@@ -42,7 +45,7 @@ final class TrailerTest extends TestCase
     public function testShouldReturnAmountOfPayments(): void
     {
         $expected = [
-            'amount' => '120.15',
+            'amount' => '12015',
             'type' => 'credit',
         ];
 
@@ -64,7 +67,7 @@ final class TrailerTest extends TestCase
     public function testShouldReturnAmountOfReversals(): void
     {
         $expected = [
-            'amount' => '125.17',
+            'amount' => '12517',
             'type' => 'credit',
         ];
 
@@ -77,26 +80,6 @@ final class TrailerTest extends TestCase
     }
 
     /**
-     * Should return number of payments.
-     *
-     * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
-     */
-    public function testShouldReturnNumberOfPayments(): void
-    {
-        $expected = [
-            'amount' => 34,
-            'type' => 'credit',
-        ];
-
-        $trailer = new Trailer([
-            'numberOfPayments' => '00000003D',
-        ]);
-
-        self::assertCount(2, $trailer->getNumberOfPayments());
-        self::assertSame($expected, $trailer->getNumberOfPayments());
-    }
-
-    /**
      * Should return number of error corrections.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
@@ -104,7 +87,7 @@ final class TrailerTest extends TestCase
     public function testShouldReturnNumberOfErrorCorrections(): void
     {
         $expected = [
-            'amount' => 10,
+            'amount' => '10',
             'type' => 'credit',
         ];
 
@@ -117,6 +100,26 @@ final class TrailerTest extends TestCase
     }
 
     /**
+     * Should return number of payments.
+     *
+     * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     */
+    public function testShouldReturnNumberOfPayments(): void
+    {
+        $expected = [
+            'amount' => '34',
+            'type' => 'credit',
+        ];
+
+        $trailer = new Trailer([
+            'numberOfPayments' => '00000003D',
+        ]);
+
+        self::assertCount(2, $trailer->getNumberOfPayments());
+        self::assertSame($expected, $trailer->getNumberOfPayments());
+    }
+
+    /**
      * Should return number of reversals.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
@@ -124,7 +127,7 @@ final class TrailerTest extends TestCase
     public function testShouldReturnNumberOfReversals(): void
     {
         $expected = [
-            'amount' => 20,
+            'amount' => '20',
             'type' => 'credit',
         ];
 
@@ -146,7 +149,7 @@ final class TrailerTest extends TestCase
     public function testShouldReturnSettlementAmount(): void
     {
         $expected = [
-            'amount' => '125.17',
+            'amount' => '12517',
             'type' => 'credit',
         ];
 

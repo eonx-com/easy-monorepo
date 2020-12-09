@@ -9,7 +9,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 abstract class AbstractNaiResult extends BaseResult
 {
     /**
-     * @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext
+     * @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface
      */
     protected $context;
 
@@ -18,7 +18,7 @@ abstract class AbstractNaiResult extends BaseResult
      *
      * @param mixed[]|null $data
      */
-    public function __construct(ResultsContext $context, ?array $data = null)
+    public function __construct(ResultsContextInterface $context, ?array $data = null)
     {
         parent::__construct($data);
 

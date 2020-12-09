@@ -7,37 +7,37 @@ namespace EonX\EasyBankFiles\Generators\Interfaces;
 interface GeneratorInterface
 {
     /**
-     * @const string
+     * @var string
      */
     public const BREAK_LINE_MAC = "\r";
 
     /**
-     * @const string
+     * @var string
      */
     public const BREAK_LINE_UNIX = "\n";
 
     /**
-     * @const string
+     * @var string
      */
     public const BREAK_LINE_WINDOWS = "\r\n";
 
     /**
-     * @const string
+     * @var string
      */
     public const VALIDATION_RULE_ALPHA = 'alpha';
 
     /**
-     * @const string
+     * @var string
      */
     public const VALIDATION_RULE_BSB = 'bsb';
 
     /**
-     * @const string
+     * @var string
      */
     public const VALIDATION_RULE_DATE = 'date';
 
     /**
-     * @const string
+     * @var string
      */
     public const VALIDATION_RULE_NUMERIC = 'numeric';
 

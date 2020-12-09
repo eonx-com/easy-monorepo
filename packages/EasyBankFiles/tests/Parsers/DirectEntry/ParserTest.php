@@ -20,36 +20,58 @@ final class ParserTest extends TestCase
      */
     public function testProcessReturnsTransactions(): void
     {
-        $contents = $this->getSampleFileContents('DE_return.txt');
-        $parser = new Parser($contents);
-        self::assertCount(10, $parser->getTransactions());
+        $parser = new Parser($this->getSampleFileContents('DE_return.txt'));
+
+        $transactions = $parser->getTransactions();
+        self::assertIsArray($transactions);
+        self::assertCount(10, $transactions);
+        $firstTransactionItem = $transactions[0];
+        self::assertSame('18622', $firstTransactionItem->getAmount());
+        self::assertSame('THOMPSON  SARAH', $firstTransactionItem->getAccountName());
+        self::assertSame('458799993', $firstTransactionItem->getAccountNumber());
+        self::assertSame('082001', $firstTransactionItem->getBsb());
+        self::assertSame('5', $firstTransactionItem->getIndicator());
+        self::assertSame('694609', $firstTransactionItem->getLodgmentReference());
+        self::assertSame('2', $firstTransactionItem->getRecordType());
+        self::assertSame('SUNNY-PEOPLE', $firstTransactionItem->getRemitterName());
+        self::assertSame('010479999', $firstTransactionItem->getTraceAccountNumber());
+        self::assertSame('062184', $firstTransactionItem->getTraceBsb());
+        self::assertSame('13', $firstTransactionItem->getTxnCode());
+        self::assertSame('06337999', $firstTransactionItem->getWithholdingTax());
+    }
+
+    /**
+     * Should return error from the content.
+     */
+    public function testProcessShouldReturnErrors(): void
+    {
+        $invalidLine = 'invalid';
+
+        $batchParser = new Parser($invalidLine);
+
+        $firstError = $batchParser->getErrors()[0];
+        self::assertSame(1, $firstError->getLineNumber());
+        self::assertSame($invalidLine, $firstError->getLine());
     }
 
     /**
      * Test process on parser returns header.
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
      */
     public function testProcessShouldReturnHeader(): void
     {
-        $contents = $this->getSampleFileContents('DE_return.txt');
-
         $expected = new Header([
             'dateProcessed' => '070905',
-            'description' => 'DE Returns  ',
+            'description' => 'DE Returns',
             'userFinancialInstitution' => 'NAB',
             'userIdSupplyingFile' => '012345',
-            'userSupplyingFile' => 'NAB                       ',
+            'userSupplyingFile' => 'NAB',
             'reelSequenceNumber' => '01',
         ]);
 
-        $parser = new Parser($contents);
+        $parser = new Parser($this->getSampleFileContents('DE_return.txt'));
 
-        // assert the objects are equal
         self::assertEquals($expected, $parser->getHeader());
-
-        // assert the date gets converted to datetime
-        self::assertEquals(new DateTime('2005-09-07'), $parser->getHeader()->getDateProcessed());
+        self::assertEquals(new DateTime('2005-09-07'), $parser->getHeader()->getDateProcessedObject());
     }
 
     /**
@@ -57,25 +79,17 @@ final class ParserTest extends TestCase
      */
     public function testProcessShouldReturnTrailer(): void
     {
-        $contents = $this->getSampleFileContents('DE_return.txt');
-
         $expected = new Trailer([
-            'bsb' => '999-999',
-            'numberPayments' => '000010',
-            'totalNetAmount' => '0000296782',
-            'totalCreditAmount' => '0000000000',
-            'totalDebitAmount' => '0000296782',
+            'bsb' => '999999',
+            'numberPayments' => '10',
+            'totalNetAmount' => '296782',
+            'totalCreditAmount' => '0',
+            'totalDebitAmount' => '296782',
         ]);
 
-        $parser = new Parser($contents);
+        $parser = new Parser($this->getSampleFileContents('DE_return.txt'));
 
-        // assert the objects are equal
         self::assertEquals($expected, $parser->getTrailer());
-
-        // assert amounts are converted to dollars
-        self::assertSame('2967.82', $parser->getTrailer()->getTotalNetAmount());
-        self::assertSame('0.00', $parser->getTrailer()->getTotalCreditAmount());
-        self::assertSame('2967.82', $parser->getTrailer()->getTotalDebitAmount());
     }
 
     /**

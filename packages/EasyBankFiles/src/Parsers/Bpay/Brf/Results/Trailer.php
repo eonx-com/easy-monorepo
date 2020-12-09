@@ -10,7 +10,7 @@ use EonX\EasyBankFiles\Parsers\Bpay\Brf\SignedFieldsTrait;
 
 /**
  * @method string|null getBillerCode()
- * @method string|null getFiller()
+ * @method string|null getRestOfRecord()
  */
 final class Trailer extends BaseResult
 {
@@ -116,7 +116,7 @@ final class Trailer extends BaseResult
             'numberOfReversals',
             'amountOfReversals',
             'settlementAmount',
-            'filler',
+            'restOfRecord',
         ];
     }
 
@@ -141,15 +141,10 @@ final class Trailer extends BaseResult
 
         $amountOfPayments = \substr($value, 0, -1) . $sfValue['value'];
 
-        // cents only for lengths equal to 15
-        $cents = \substr($amountOfPayments, 13, 2);
-        $amount = \substr($amountOfPayments, 0, 13);
-
-        // \strlen($cents ?: '') used as \is_string($cents) makes phpstan unhappy
-        $amount = (\strlen($cents ?: '') === 2) ? (int)$amount . '.' . $cents : (int)$amount;
+        $amount = \ltrim($amountOfPayments, '0');
 
         return [
-            'amount' => $amount,
+            'amount' => $amount === '' ? '0' : $amount,
             'type' => $sfValue['type'],
         ];
     }

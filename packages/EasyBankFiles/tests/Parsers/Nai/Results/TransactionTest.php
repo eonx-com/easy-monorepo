@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\Nai\Results;
 
-use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext;
+use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Transaction;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Transactions\Details;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
@@ -39,8 +39,8 @@ final class TransactionTest extends TestCase
                 ->andReturn(null);
         };
 
-        /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext $context */
-        $context = $this->getMockWithExpectations(ResultsContext::class, $setExpectations);
+        /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface $context */
+        $context = $this->getMockWithExpectations(ResultsContextInterface::class, $setExpectations);
 
         $transaction = new Transaction($context, $data);
 

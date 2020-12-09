@@ -12,42 +12,42 @@ use Nette\Utils\Strings;
 final class Parser extends AbstractLineByLineParser
 {
     /**
-     * @const string
+     * @var string
      */
     private const ACCOUNT_IDENTIFIER = '03';
 
     /**
-     * @const string
+     * @var string
      */
     private const ACCOUNT_TRAILER = '49';
 
     /**
-     * @const string
+     * @var string
      */
     private const CONTINUATION = '88';
 
     /**
-     * @const string
+     * @var string
      */
     private const FILE_HEADER = '01';
 
     /**
-     * @const string
+     * @var string
      */
     private const FILE_TRAILER = '99';
 
     /**
-     * @const string
+     * @var string
      */
     private const GROUP_HEADER = '02';
 
     /**
-     * @const string
+     * @var string
      */
     private const GROUP_TRAILER = '98';
 
     /**
-     * @const string
+     * @var string
      */
     private const TRANSACTION_DETAIL = '16';
 
@@ -77,7 +77,7 @@ final class Parser extends AbstractLineByLineParser
     private $currentTransaction;
 
     /**
-     * @var mixed[]
+     * @var \EonX\EasyBankFiles\Parsers\Error[]
      */
     private $errors = [];
 
@@ -124,7 +124,7 @@ final class Parser extends AbstractLineByLineParser
     /**
      * Get errors.
      *
-     * @return \EonX\EasyBankFiles\Parsers\Nai\Results\Error[]
+     * @return \EonX\EasyBankFiles\Parsers\Error[]
      */
     public function getErrors(): array
     {

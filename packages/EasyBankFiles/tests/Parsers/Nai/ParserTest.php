@@ -36,7 +36,7 @@ final class ParserTest extends TestCase
 
     public function testParserCanParseBaiFile(): void
     {
-        $this->markTestSkipped('Until BAI sample added, however it was tested with real files');
+        self::markTestSkipped('Until BAI sample added, however it was tested with real files');
 
         $bai = new Parser($this->getSampleFileContents('sample.BAI'));
         $nai = new Parser($this->getSampleFileContents('sample.NAI'));

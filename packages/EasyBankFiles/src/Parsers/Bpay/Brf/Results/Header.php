@@ -13,7 +13,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
  * @method string|null getBillerCreditAccount()
  * @method string|null getFileCreationDate()
  * @method string|null getFileCreationTime()
- * @method string|null getFiller()
+ * @method string|null getRestOfRecord()
  */
 final class Header extends BaseResult
 {
@@ -31,7 +31,7 @@ final class Header extends BaseResult
             'billerCreditAccount',
             'fileCreationDate',
             'fileCreationTime',
-            'filler',
+            'restOfRecord',
         ];
     }
 }

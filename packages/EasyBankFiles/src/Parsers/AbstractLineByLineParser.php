@@ -40,4 +40,14 @@ abstract class AbstractLineByLineParser extends BaseParser
             $lineNumber++;
         }
     }
+
+    /**
+     * Trim zeros from the left side of the string.
+     */
+    protected function trimLeftZeros(string $value): string
+    {
+        $value = \ltrim($value, '0');
+
+        return $value === '' ? '0' : $value;
+    }
 }

@@ -7,7 +7,7 @@ namespace EonX\EasyBankFiles\Tests\Parsers\Nai\Results;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Group;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Header;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Trailer;
-use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext;
+use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 use Mockery\MockInterface;
 
@@ -40,8 +40,8 @@ final class GroupTest extends TestCase
                 ->andReturn([]);
         };
 
-        /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext $context */
-        $context = $this->getMockWithExpectations(ResultsContext::class, $setExpectations);
+        /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface $context */
+        $context = $this->getMockWithExpectations(ResultsContextInterface::class, $setExpectations);
 
         $group = new Group($context, $data);
 
