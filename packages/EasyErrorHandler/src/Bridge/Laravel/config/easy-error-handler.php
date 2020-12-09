@@ -23,6 +23,10 @@ return [
      * Log level threshold to notify bugsnag.
      */
     'bugsnag_threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', null),
+    /**
+     * List of Ignored Exceptions that'll not be reported to bugsnag.
+     */
+    'bugsnag_ignored_exceptions' => null,
     /*
     |--------------------------------------------------------------------------
     | Error response

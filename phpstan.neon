@@ -16,6 +16,8 @@ parameters:
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
         - packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php
         - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
+        - packages/EasyApiToken/src/Interfaces/*
+        - packages/EasyApiToken/tests/Bridge/Symfony/*
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
@@ -51,6 +53,9 @@ parameters:
 
         # ---- EasyBankFiles ----
         - message: '#Call to an undefined method object\:\:getTransactionCodeDetails\(\)#'
+          path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
+
+        - message: '#Unreachable statement \- code above always terminates#'
           path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
 
         # ---- EasyCore ----
@@ -112,14 +117,9 @@ parameters:
         - message: '#Cannot call method addFunction\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
           path: packages/EasyDecision/tests/Bridge/Symfony/Stubs/Configurators/TypeRestrictedExpressionFunctionConfigurator.php
 
-        # ---- EasyEntityChange ----
         # ---- EasyErrorHandler ----
         - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
           path: packages/EasyErrorHandler/tests
-
-        # ---- EasyIdentity ----
-        - message: '#Access to an undefined property Mockery\\LegacyMockInterface::\$users.#'
-          path: packages/EasyIdentity/tests/Implementations/Auth0
 
         # ---- EasyLogging ----
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'

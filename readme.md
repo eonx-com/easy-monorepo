@@ -14,9 +14,7 @@ you can look [there][1].
 - [EasyApiToken](https://github.com/eonx-com/easy-api-token): Tools to handle API tokens like a pro.
 - [EasyAsync](https://github.com/eonx-com/easy-async): Makes dealing with async processes easier.
 - [EasyDecision](https://github.com/eonx-com/easy-decision): Your most complex decisions made the easiest way.
-- [EasyEntityChange](https://github.com/eonx-com/easy-entity-change): Provides an easy way to hook up logic in your entities lifecycle.
 - [EasyErrorHandler](https://github.com/eonx-com/easy-error-handler): Provides customizable ready-to-use error handler for applications.
-- [EasyIdentity](https://github.com/eonx-com/easy-identity): Tools to handle authentication like a pro.
 - [EasyPipeline](https://github.com/eonx-com/easy-pipeline): An easy way to implement the Pipeline Design Pattern in your applications.
 - [EasyRepository](https://github.com/eonx-com/easy-repository): An easy way to implement the Repository Design Pattern in your applications.
 - [EasyPagination](https://github.com/eonx-com/easy-pagination): A generic way to handle pagination data from clients.
