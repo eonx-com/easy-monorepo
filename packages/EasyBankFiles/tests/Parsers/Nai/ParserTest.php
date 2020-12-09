@@ -34,12 +34,8 @@ final class ParserTest extends TestCase
         self::assertSame((float)100, $formatAmount->invokeArgs($trait, ['10000']));
     }
 
-    /**
-     * @noRector
-     */
     public function testParserCanParseBaiFile(): void
     {
-        /** @noRector \Rector\DeadCode\Rector\Stmt\RemoveUnreachableStatementRector */
         self::markTestSkipped('Until BAI sample added, however it was tested with real files');
 
         $bai = new Parser($this->getSampleFileContents('sample.BAI'));
