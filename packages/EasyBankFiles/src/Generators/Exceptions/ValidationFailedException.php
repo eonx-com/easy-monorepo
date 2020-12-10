@@ -4,11 +4,25 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generators\Exceptions;
 
-use EoneoPay\Utils\Exceptions\ValidationException;
+use EonX\EasyErrorHandler\Exceptions\ValidationException;
 use Throwable;
 
 final class ValidationFailedException extends ValidationException
 {
+    /**
+     * Default error code for validation.
+     *
+     * @var int
+     */
+    public const DEFAULT_ERROR_CODE_VALIDATION = 1000;
+
+    /**
+     * Default error sub-code.
+     *
+     * @var int
+     */
+    public const DEFAULT_ERROR_SUB_CODE = 0;
+
     /**
      * ValidationFailedException constructor.
      *
@@ -18,7 +32,9 @@ final class ValidationFailedException extends ValidationException
     {
         $message = \sprintf('%s. %s', $message ?? '', $this->getErrorsToString($errors));
 
-        parent::__construct($message, null, $code, $previous, $errors);
+        $this->setErrors($errors);
+
+        parent::__construct($message, $code ?? 0, $previous);
     }
 
     /**
