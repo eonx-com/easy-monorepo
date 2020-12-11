@@ -10,20 +10,6 @@ use Throwable;
 final class ValidationFailedException extends ValidationException
 {
     /**
-     * Default error code for validation.
-     *
-     * @var int
-     */
-    public const DEFAULT_ERROR_CODE_VALIDATION = 1000;
-
-    /**
-     * Default error sub-code.
-     *
-     * @var int
-     */
-    public const DEFAULT_ERROR_SUB_CODE = 0;
-
-    /**
      * ValidationFailedException constructor.
      *
      * @param mixed[] $errors
@@ -35,22 +21,6 @@ final class ValidationFailedException extends ValidationException
         $this->setErrors($errors);
 
         parent::__construct($message, $code ?? 0, $previous);
-    }
-
-    /**
-     * Get Error code.
-     */
-    public function getErrorCode(): int
-    {
-        return self::DEFAULT_ERROR_CODE_VALIDATION;
-    }
-
-    /**
-     * Get Error sub-code.
-     */
-    public function getErrorSubCode(): int
-    {
-        return self::DEFAULT_ERROR_SUB_CODE;
     }
 
     /**

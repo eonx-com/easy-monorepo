@@ -84,7 +84,7 @@ final class Parser extends AbstractLineByLineParser
      */
     protected function processLine(int $lineNumber, string $line): void
     {
-        $code = $line[0];
+        $code = $line[0] ?? self::EMPTY_LINE_CODE;
 
         switch ($code) {
             case self::HEADER:

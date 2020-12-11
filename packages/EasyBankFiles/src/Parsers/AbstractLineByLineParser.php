@@ -7,6 +7,11 @@ namespace EonX\EasyBankFiles\Parsers;
 abstract class AbstractLineByLineParser extends BaseParser
 {
     /**
+     * @var string
+     */
+    protected const EMPTY_LINE_CODE = 'empty-line';
+
+    /**
      * AbstractLineByLineParser constructor.
      */
     public function __construct(string $contents)
