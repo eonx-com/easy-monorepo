@@ -65,7 +65,7 @@ final class Parser extends AbstractLineByLineParser
     /**
      * @var \EonX\EasyBankFiles\Parsers\DirectEntry\Results\Transaction[]
      */
-    private $transactions;
+    private $transactions = [];
 
     /**
      * @return \EonX\EasyBankFiles\Parsers\Error[]

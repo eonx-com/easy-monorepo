@@ -99,7 +99,6 @@ final class ParserTest extends TestCase
         $brfParser = new Parser($this->getSampleFileContents('sample.BRF'));
 
         $transactions = $brfParser->getTransactions();
-        self::assertIsArray($transactions);
         self::assertCount(3, $transactions);
         $firstTransactionItem = $transactions[0];
         self::assertSame('55000', $firstTransactionItem->getAmount());

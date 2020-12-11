@@ -23,7 +23,6 @@ final class ParserTest extends TestCase
         $parser = new Parser($this->getSampleFileContents('DE_return.txt'));
 
         $transactions = $parser->getTransactions();
-        self::assertIsArray($transactions);
         self::assertCount(10, $transactions);
         $firstTransactionItem = $transactions[0];
         self::assertSame('18622', $firstTransactionItem->getAmount());

@@ -45,7 +45,7 @@ final class Parser extends AbstractLineByLineParser
     /**
      * @var \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Transaction[] $transactions
      */
-    protected $transactions;
+    protected $transactions = [];
 
     /**
      * @return \EonX\EasyBankFiles\Parsers\Error[]

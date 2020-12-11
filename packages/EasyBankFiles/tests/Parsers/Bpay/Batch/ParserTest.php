@@ -73,7 +73,6 @@ final class ParserTest extends TestCase
         $batchParser = new Parser($this->getSampleFileContents('sample.BPB'));
 
         $transactions = $batchParser->getTransactions();
-        self::assertIsArray($transactions);
         self::assertCount(2, $transactions);
         $firstTransactionItem = $transactions[0];
         self::assertSame('162', $firstTransactionItem->getAmount());
