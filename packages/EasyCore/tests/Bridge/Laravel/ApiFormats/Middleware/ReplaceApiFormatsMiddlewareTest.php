@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Laravel\ApiFormats\Middleware;
@@ -15,30 +16,31 @@ final class ReplaceApiFormatsMiddlewareTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testHandle
      */
     public function providerTestHandle(): iterable
     {
         yield 'Array' => [
-            ['key' => 'value'],
+            [
+                'key' => 'value',
+            ],
         ];
 
         yield 'Formatted api response' => [
-            new FormattedApiResponse(['key' => 'value']),
+            new FormattedApiResponse([
+                'key' => 'value',
+            ]),
         ];
 
-        yield 'No content response' => [
-            new NoContentApiResponse(),
-            NoContentApiResponse::class,
-        ];
+        yield 'No content response' => [new NoContentApiResponse(), NoContentApiResponse::class];
 
-        yield 'Symfony response' => [
-            new Response(''),
-            Response::class,
-        ];
+        yield 'Symfony response' => [new Response(''), Response::class];
     }
 
     /**
      * @param mixed $apiResponse
+     * @param null|class-string $expectedResponseClass
      *
      * @dataProvider providerTestHandle
      */
