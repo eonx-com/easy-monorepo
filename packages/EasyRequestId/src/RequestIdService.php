@@ -8,7 +8,7 @@ use EonX\EasyRequestId\Interfaces\CorrelationIdResolverInterface;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
-use EonX\EasyRequestId\Interfaces\ResolverInterface;
+use EonX\EasyUtils\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 final class RequestIdService implements RequestIdServiceInterface
@@ -96,21 +96,12 @@ final class RequestIdService implements RequestIdServiceInterface
 
     /**
      * @param iterable<mixed> $resolvers
+     * @param class-string $class
      *
      * @return \EonX\EasyRequestId\Interfaces\ResolverInterface[]
      */
     private function filterResolvers(iterable $resolvers, string $class): array
     {
-        $resolvers = $resolvers instanceof \Traversable ? \iterator_to_array($resolvers) : (array)$resolvers;
-
-        $resolvers = \array_filter($resolvers, static function ($resolver) use ($class): bool {
-            return $resolver instanceof $class;
-        });
-
-        \usort($resolvers, static function (ResolverInterface $first, ResolverInterface $second): int {
-            return $first->getPriority() <=> $second->getPriority();
-        });
-
-        return $resolvers;
+        return CollectorHelper::orderLowerPriorityFirst(CollectorHelper::filterByClass($resolvers, $class));
     }
 }

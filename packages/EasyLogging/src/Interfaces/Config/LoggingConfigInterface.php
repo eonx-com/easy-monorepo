@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Interfaces\Config;
 
-interface LoggingConfigInterface
+use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+
+interface LoggingConfigInterface extends HasPriorityInterface
 {
     /**
      * @param null|string[] $channels
@@ -25,8 +27,6 @@ interface LoggingConfigInterface
      * @return null|string[]
      */
     public function getExceptChannels(): ?array;
-
-    public function getPriority(): int;
 
     public function priority(?int $priority = null): self;
 }

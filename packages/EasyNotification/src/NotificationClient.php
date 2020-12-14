@@ -14,6 +14,7 @@ use EonX\EasyNotification\Interfaces\QueueMessageConfiguratorInterface;
 use EonX\EasyNotification\Interfaces\QueueTransportFactoryInterface;
 use EonX\EasyNotification\Messages\RealTimeMessage;
 use EonX\EasyNotification\Queue\QueueMessage;
+use EonX\EasyUtils\CollectorHelper;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -47,9 +48,12 @@ final class NotificationClient implements NotificationClientInterface
         QueueTransportFactoryInterface $transportFactory,
         ?HttpClientInterface $httpClient = null
     ) {
-        $this->configurators = $this->filterConfigurators($configurators);
         $this->transportFactory = $transportFactory;
         $this->httpClient = $httpClient ?? HttpClient::create();
+
+        $this->configurators = CollectorHelper::orderLowerPriorityFirst(
+            CollectorHelper::filterByClass($configurators, QueueMessageConfiguratorInterface::class)
+        );
     }
 
     public function deleteMessage(string $messageId): void
@@ -128,31 +132,6 @@ final class NotificationClient implements NotificationClientInterface
         $this->config = $config;
 
         return $this;
-    }
-
-    /**
-     * @param iterable<mixed> $configurators
-     *
-     * @return \EonX\EasyNotification\Interfaces\QueueMessageConfiguratorInterface[]
-     */
-    private function filterConfigurators(iterable $configurators): array
-    {
-        $configurators = $configurators instanceof \Traversable
-            ? \iterator_to_array($configurators)
-            : (array)$configurators;
-
-        $configurators = \array_filter($configurators, static function ($item): bool {
-            return $item instanceof QueueMessageConfiguratorInterface;
-        });
-
-        \usort(
-            $configurators,
-            static function (QueueMessageConfiguratorInterface $first, QueueMessageConfiguratorInterface $second): int {
-                return $first->getPriority() <=> $second->getPriority();
-            }
-        );
-
-        return $configurators;
     }
 
     /**

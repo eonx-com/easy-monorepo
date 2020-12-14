@@ -19,6 +19,7 @@ use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\MappingProviderInterface;
 use EonX\EasyDecision\Interfaces\RestrictedDecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\RuleProviderInterface;
+use EonX\EasyUtils\CollectorHelper;
 use Psr\Container\ContainerInterface;
 
 final class DecisionFactory implements DecisionFactoryInterface
@@ -72,7 +73,10 @@ final class DecisionFactory implements DecisionFactoryInterface
 
         $this->mappingProvider = $mappingProvider;
         $this->expressionLanguageFactory = $languageFactory;
-        $this->configurators = $this->getConfiguratorsAsArray($configurators);
+
+        $this->configurators = CollectorHelper::orderLowerPriorityFirst(
+            CollectorHelper::filterByClass($configurators ?? [], DecisionConfiguratorInterface::class)
+        );
     }
 
     /**
@@ -153,18 +157,18 @@ final class DecisionFactory implements DecisionFactoryInterface
         return $this->configuredDecisions;
     }
 
+    public function reset(): void
+    {
+        $this->decisionConfigurators = [];
+        $this->configuredDecisions = [];
+    }
+
     /**
      * @deprecated since 2.3.7
      */
     public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
-    }
-
-    public function reset(): void
-    {
-        $this->decisionConfigurators = [];
-        $this->configuredDecisions = [];
     }
 
     /**
@@ -178,19 +182,9 @@ final class DecisionFactory implements DecisionFactoryInterface
 
     private function configureDecision(DecisionInterface $decision): DecisionInterface
     {
-        // Sort configurators by priority
-        $configurators = $this->configurators;
-
-        \usort(
-            $configurators,
-            static function (DecisionConfiguratorInterface $first, DecisionConfiguratorInterface $second): int {
-                return $first->getPriority() <=> $second->getPriority();
-            }
-        );
-
         $decisionConfigs = [];
 
-        foreach ($configurators as $configurator) {
+        foreach ($this->configurators as $configurator) {
             if ($configurator instanceof RestrictedDecisionConfiguratorInterface
                 && $configurator->supports($decision) === false) {
                 continue;
@@ -204,28 +198,6 @@ final class DecisionFactory implements DecisionFactoryInterface
         $this->addConfiguredDecision($decision, $decisionConfigs);
 
         return $decision;
-    }
-
-    /**
-     * @param null|iterable<mixed> $configurators
-     *
-     * @return \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
-     */
-    private function getConfiguratorsAsArray(?iterable $configurators = null): array
-    {
-        if ($configurators === null) {
-            return [];
-        }
-
-        if ($configurators instanceof \Traversable) {
-            $configurators = \iterator_to_array($configurators);
-        }
-
-        $filter = static function ($item): bool {
-            return $item instanceof DecisionConfiguratorInterface;
-        };
-
-        return \array_filter($configurators, $filter);
     }
 
     /**

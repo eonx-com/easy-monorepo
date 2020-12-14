@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyAwsCredentialsFinder\Interfaces;
 
-interface AwsCredentialsFinderInterface
+use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+
+interface AwsCredentialsFinderInterface extends HasPriorityInterface
 {
     public function findCredentials(): ?AwsCredentialsInterface;
-
-    public function getPriority(): int;
 }

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Interfaces;
 
-interface RuleInterface
+use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+
+interface RuleInterface extends HasPriorityInterface
 {
     public const OUTPUT_SKIPPED = 'skipped';
 
     public const OUTPUT_UNSUPPORTED = 'unsupported';
-
-    public function getPriority(): int;
 
     /**
      * @param mixed[] $input

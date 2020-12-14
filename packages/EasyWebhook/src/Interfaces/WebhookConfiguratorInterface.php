@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Interfaces;
 
-interface WebhookConfiguratorInterface
+use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+
+interface WebhookConfiguratorInterface extends HasPriorityInterface
 {
     /**
      * @var string
@@ -22,6 +24,4 @@ interface WebhookConfiguratorInterface
     public const HEADER_SIGNATURE = 'X-Webhook-Signature';
 
     public function configure(WebhookInterface $webhook): void;
-
-    public function getPriority(): int;
 }
