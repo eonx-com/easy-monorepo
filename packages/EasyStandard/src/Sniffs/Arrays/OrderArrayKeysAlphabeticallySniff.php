@@ -62,12 +62,36 @@ final class OrderArrayKeysAlphabeticallySniff implements Sniff
             return;
         }
 
+        if ($ast === null) {
+            $phpcsFile->fixer->beginChangeset();
+            $phpcsFile->addErrorOnLine(
+                'Unknown error during parse code',
+                $token['line'],
+                self::ARRAY_KEYS_SORT_ALPHABETICALLY
+            );
+            $phpcsFile->fixer->endChangeset();
+
+            return;
+        }
+
         /** @var \PhpParser\Node\Stmt\Expression $stmtExpr */
         $stmtExpr = $ast[0];
         /** @var \PhpParser\Node\Expr\Array_ $array */
         $array = $stmtExpr->expr;
 
         $array = $this->refactor($array);
+
+        if ($array === null) {
+            $phpcsFile->fixer->beginChangeset();
+            $phpcsFile->addErrorOnLine(
+                'Unknown error during refactor array',
+                $token['line'],
+                self::ARRAY_KEYS_SORT_ALPHABETICALLY
+            );
+            $phpcsFile->fixer->endChangeset();
+
+            return;
+        }
 
         if ($array !== null && $array->hasAttribute('isChanged') === false) {
             return;
@@ -124,10 +148,7 @@ final class OrderArrayKeysAlphabeticallySniff implements Sniff
      */
     public function register(): array
     {
-        return [
-            T_OPEN_SHORT_ARRAY,
-            T_ARRAY,
-        ];
+        return [T_OPEN_SHORT_ARRAY, T_ARRAY];
     }
 
     public function shouldSkip(File $phpcsFile, int $bracketOpenerPointer): bool
@@ -155,14 +176,18 @@ final class OrderArrayKeysAlphabeticallySniff implements Sniff
      */
     private function fixMultiLineOutput(array $items): array
     {
-        $currentLine = (int)\current($items)->key->getAttribute('startLine');
+        /** @var \PhpParser\Node\Expr $currentKey */
+        $currentKey = $items[0]->key;
+        $currentLine = (int)$currentKey->getAttribute('startLine');
 
         foreach ($items as $index => $arrayItem) {
             if ($index === 0) {
                 continue;
             }
 
-            $nextLine = (int)$arrayItem->key->getAttribute('startLine');
+            /** @var \PhpParser\Node\Expr $currentKey */
+            $currentKey = $arrayItem->key;
+            $nextLine = (int)$currentKey->getAttribute('startLine');
             if ($nextLine !== $currentLine) {
                 $arrayItem->setAttribute('comments', [new Comment(self::COMMENT_CONTENT)]);
                 $currentLine = $nextLine;
