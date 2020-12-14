@@ -6,4 +6,4 @@ namespace EonX\EasyStandard\Tests\Sniffs\Arrays\OrderArrayKeysAlphabeticallySnif
 
 $array = ['z' => 0, 'a' => 1, 'f' => ['b' => 1, 'a' => 2], 'b' => 3];
 
-$array2 = array('z' => 0, 'a' => 1, 'f' => ['b' => 1, 'a' => 2], 'b' => 3);
+$array2 = array('z' => 0, 'a' => 1, 'f' => array('b' => 1, 'a' => 2), 'b' => 3);
