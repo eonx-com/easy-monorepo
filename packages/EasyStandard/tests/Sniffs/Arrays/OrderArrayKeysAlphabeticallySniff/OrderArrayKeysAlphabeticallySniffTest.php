@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Sniffs\Arrays\OrderArrayKeysAlphabeticallySniff;
 
+use EonX\EasyStandard\Sniffs\Arrays\OrderArrayKeysAlphabeticallySniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
@@ -48,6 +49,11 @@ final class OrderArrayKeysAlphabeticallySniffTest extends AbstractCheckerTestCas
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SingleLineMultiDimensionalArray.php.inc');
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 4);
+    }
+
+    protected function getCheckerClass(): string
+    {
+        return OrderArrayKeysAlphabeticallySniff::class;
     }
 
     /**
