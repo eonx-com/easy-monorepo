@@ -15,20 +15,30 @@ final class ErrorDetailsHelper
     /**
      * @return mixed[]
      */
-    public static function getDetails(Throwable $throwable): array
+    public static function getDetails(Throwable $throwable, ?bool $extended = null): array
     {
+        $extended = $extended ?? true;
+
         $details = [
             'code' => $throwable->getCode(),
             'class' => \get_class($throwable),
             'file' => $throwable->getFile(),
             'line' => $throwable->getLine(),
             'message' => $throwable->getMessage(),
-            'trace' => \array_map(static function (array $trace): array {
+        ];
+
+        if ($extended) {
+            $previous = $throwable->getPrevious();
+            if ($previous instanceof Throwable) {
+                $details['previous'] = self::getDetails($previous, false);
+            }
+
+            $details['trace'] = \array_map(static function (array $trace): array {
                 unset($trace['args']);
 
                 return $trace;
-            }, $throwable->getTrace()),
-        ];
+            }, $throwable->getTrace());
+        }
 
         if ($throwable instanceof SubCodeAwareExceptionInterface) {
             $details['sub_code'] = $throwable->getSubCode();
