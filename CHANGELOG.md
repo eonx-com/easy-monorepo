@@ -1,6 +1,24 @@
 <!-- changelog-linker -->
 
-## v2.5.26 - 2020-12-07
+## 2.5.27 - 2020-12-14
+
+- [#436] Remove deprecated packages
+- [#437] Fix CI
+
+### EasyCore
+
+- [#440] Implement replacement for api-formats
+
+### EasyErrorHandler
+
+- [#438] Fixed binding of ErrorHandlerInterface, Thanks to [@jayaregalinadaflexisourceit]
+- [#442] Allow to report details about previous exception
+
+### EasyUtils
+
+- [#441] Create package
+
+## [v2.5.26] - 2020-12-07
 
 ### EasyErrorHandler
 
@@ -2752,3 +2770,11 @@
 [v2.5.24]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.23...v2.5.24
 [#435]: https://github.com/eonx-com/easy-monorepo/pull/435
 [v2.5.25]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.24...v2.5.25
+[#442]: https://github.com/eonx-com/easy-monorepo/pull/442
+[#441]: https://github.com/eonx-com/easy-monorepo/pull/441
+[#440]: https://github.com/eonx-com/easy-monorepo/pull/440
+[#438]: https://github.com/eonx-com/easy-monorepo/pull/438
+[#437]: https://github.com/eonx-com/easy-monorepo/pull/437
+[#436]: https://github.com/eonx-com/easy-monorepo/pull/436
+[v2.5.26]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.25...v2.5.26
+[@jayaregalinadaflexisourceit]: https://github.com/jayaregalinadaflexisourceit
