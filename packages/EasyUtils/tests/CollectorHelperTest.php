@@ -11,6 +11,8 @@ final class CollectorHelperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testFilterByClass
      */
     public function providerTestFilterByClass(): iterable
     {
@@ -23,6 +25,8 @@ final class CollectorHelperTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testOrderHigherPriorityFirst
      */
     public function providerTestOrderHigherPriorityFirst(): iterable
     {
@@ -41,6 +45,8 @@ final class CollectorHelperTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testOrderLowerPriorityFirst
      */
     public function providerTestOrderLowerPriorityFirst(): iterable
     {
