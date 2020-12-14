@@ -32,7 +32,7 @@ final class ErrorDetailsHelper
             if ($previous instanceof Throwable) {
                 $details['previous'] = self::getDetails($previous, false);
             }
-            
+
             $details['trace'] = \array_map(static function (array $trace): array {
                 unset($trace['args']);
 
