@@ -8,6 +8,7 @@
         "eonx-com/easy-event-dispatcher": "^2.6",
         "eonx-com/easy-lock": "^2.6",
         "eonx-com/easy-random": "^2.6",
+        "eonx-com/easy-utils": "^2.6",
         "nesbot/carbon": "^2.22",
         "symfony/http-client": "^4.2 || ^5.0"
     },

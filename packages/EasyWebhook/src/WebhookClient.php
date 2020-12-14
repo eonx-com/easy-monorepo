@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook;
 
+use EonX\EasyUtils\CollectorHelper;
 use EonX\EasyWebhook\Exceptions\InvalidWebhookUrlException;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface;
@@ -40,7 +41,10 @@ final class WebhookClient implements WebhookClientInterface
     ) {
         $this->httpClient = $httpClient;
         $this->resultHandler = $resultHandler;
-        $this->configurators = $this->filterConfigurators($configurators);
+
+        $this->configurators = CollectorHelper::orderLowerPriorityFirst(
+            CollectorHelper::filterByClass($configurators ?? [], WebhookConfiguratorInterface::class)
+        );
     }
 
     public function configure(WebhookInterface $webhook): WebhookInterface
@@ -88,34 +92,5 @@ final class WebhookClient implements WebhookClientInterface
         }
 
         return $this->resultHandler->handle(new WebhookResult($webhook, $response, $throwable));
-    }
-
-    /**
-     * @param null|iterable<mixed> $configurators
-     *
-     * @return \EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface[]
-     */
-    private function filterConfigurators(?iterable $configurators = null): array
-    {
-        if ($configurators === null) {
-            return [];
-        }
-
-        $configurators = $configurators instanceof \Traversable
-            ? \iterator_to_array($configurators)
-            : (array)$configurators;
-
-        $configurators = \array_filter($configurators, static function ($configurator): bool {
-            return $configurator instanceof WebhookConfiguratorInterface;
-        });
-
-        \usort(
-            $configurators,
-            static function (WebhookConfiguratorInterface $first, WebhookConfiguratorInterface $second): int {
-                return $first->getPriority() <=> $second->getPriority();
-            }
-        );
-
-        return $configurators;
     }
 }

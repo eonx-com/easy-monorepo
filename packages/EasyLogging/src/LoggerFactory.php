@@ -7,10 +7,10 @@ namespace EonX\EasyLogging;
 use EonX\EasyLogging\Interfaces\Config\HandlerConfigInterface;
 use EonX\EasyLogging\Interfaces\Config\HandlerConfigProviderInterface;
 use EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface;
-use EonX\EasyLogging\Interfaces\Config\LoggingConfigInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
+use EonX\EasyUtils\CollectorHelper;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
@@ -143,16 +143,13 @@ final class LoggerFactory implements LoggerFactoryInterface
 
     /**
      * @param iterable<mixed> $iterable
+     * @param class-string $class
      *
      * @return mixed[]
      */
     private function filterIterable(iterable $iterable, string $class): array
     {
-        $iterable = $iterable instanceof \Traversable ? \iterator_to_array($iterable) : (array)$iterable;
-
-        return \array_filter($iterable, static function ($config) use ($class): bool {
-            return $config instanceof $class;
-        });
+        return CollectorHelper::filterByClassAsArray($iterable, $class);
     }
 
     /**
@@ -196,13 +193,6 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private function sortConfigs(array $configs): array
     {
-        \usort(
-            $configs,
-            static function (LoggingConfigInterface $first, LoggingConfigInterface $second): int {
-                return $first->getPriority() <=> $second->getPriority();
-            }
-        );
-
-        return $configs;
+        return CollectorHelper::orderLowerPriorityFirst($configs);
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Interfaces;
 
-interface ApiTokenDecoderProviderInterface
+use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+
+interface ApiTokenDecoderProviderInterface extends HasPriorityInterface
 {
     /**
      * @return iterable<\EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface>
@@ -12,6 +14,4 @@ interface ApiTokenDecoderProviderInterface
     public function getDecoders(): iterable;
 
     public function getDefaultDecoder(): ?string;
-
-    public function getPriority(): int;
 }

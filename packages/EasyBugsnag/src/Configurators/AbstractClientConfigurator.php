@@ -18,7 +18,7 @@ abstract class AbstractClientConfigurator implements ClientConfiguratorInterface
         $this->priority = $priority ?? 0;
     }
 
-    public function priority(): int
+    public function getPriority(): int
     {
         return $this->priority;
     }

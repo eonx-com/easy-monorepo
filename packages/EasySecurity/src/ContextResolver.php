@@ -9,8 +9,8 @@ use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use EonX\EasySecurity\Interfaces\ContextInterface;
 use EonX\EasySecurity\Interfaces\ContextModifierInterface;
 use EonX\EasySecurity\Interfaces\ContextResolverInterface;
+use EonX\EasyUtils\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
-use Traversable;
 
 /**
  * @deprecated Since 2.4, will be removed in 3.0. Use SecurityContextResolver instead.
@@ -69,18 +69,8 @@ final class ContextResolver implements ContextResolverInterface
      */
     private function setContextModifiers(iterable $modifiers): void
     {
-        $modifiers = $modifiers instanceof Traversable ? \iterator_to_array($modifiers) : (array)$modifiers;
-
-        $filter = static function ($resolver): bool {
-            return $resolver instanceof ContextModifierInterface;
-        };
-        $sort = static function (ContextModifierInterface $first, ContextModifierInterface $second): int {
-            return $first->getPriority() <=> $second->getPriority();
-        };
-
-        $modifiers = \array_filter($modifiers, $filter);
-        \usort($modifiers, $sort);
-
-        $this->contextModifiers = $modifiers;
+        $this->contextModifiers = CollectorHelper::orderLowerPriorityFirst(
+            CollectorHelper::filterByClass($modifiers, ContextModifierInterface::class)
+        );
     }
 }

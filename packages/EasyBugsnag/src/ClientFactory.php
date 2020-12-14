@@ -10,6 +10,7 @@ use Bugsnag\Request\ResolverInterface;
 use Bugsnag\Shutdown\ShutdownStrategyInterface;
 use EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
+use EonX\EasyUtils\CollectorHelper;
 use GuzzleHttp\ClientInterface;
 
 final class ClientFactory implements ClientFactoryInterface
@@ -57,22 +58,9 @@ final class ClientFactory implements ClientFactoryInterface
      */
     public function setConfigurators(iterable $configurators): ClientFactoryInterface
     {
-        $configurators = $configurators instanceof \Traversable
-            ? \iterator_to_array($configurators)
-            : (array)$configurators;
-
-        $configurators = \array_filter($configurators, static function ($configurator): bool {
-            return $configurator instanceof ClientConfiguratorInterface;
-        });
-
-        \usort(
-            $configurators,
-            static function (ClientConfiguratorInterface $first, ClientConfiguratorInterface $second): int {
-                return $first->priority() <=> $second->priority();
-            }
+        $this->configurators = CollectorHelper::orderLowerPriorityFirst(
+            CollectorHelper::filterByClass($configurators, ClientConfiguratorInterface::class)
         );
-
-        $this->configurators = $configurators;
 
         return $this;
     }

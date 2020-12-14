@@ -9,6 +9,7 @@ use EonX\EasyApiToken\Exceptions\InvalidDefaultDecoderException;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderProviderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
+use EonX\EasyUtils\CollectorHelper;
 
 final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
 {
@@ -59,25 +60,7 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
      */
     private function filter(iterable $collection, string $class): array
     {
-        $collection = $collection instanceof \Traversable ? \iterator_to_array($collection) : (array)$collection;
-
-        $collection = \array_filter($collection, static function ($item) use ($class): bool {
-            return $item instanceof $class;
-        });
-
-        if ($class === ApiTokenDecoderProviderInterface::class) {
-            \usort(
-                $collection,
-                static function (
-                    ApiTokenDecoderProviderInterface $first,
-                    ApiTokenDecoderProviderInterface $second
-                ): int {
-                    return $first->getPriority() <=> $second->getPriority();
-                }
-            );
-        }
-
-        return $collection;
+        return CollectorHelper::orderLowerPriorityFirst(CollectorHelper::filterByClass($collection, $class));
     }
 
     /**

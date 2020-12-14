@@ -108,15 +108,6 @@ parameters:
         - message: "#Offset 'fn' does not exist on array\\(string\\).#"
           path: packages/EasyDecision/src/Helpers
 
-        - message: '#Cannot call method getFunctions\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
-          path: packages/EasyDecision/tests/Bridge/Symfony/EasyDecisionBundleTest.php
-
-        - message: '#Cannot call method addFunction\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
-          path: packages/EasyDecision/tests/Bridge/Symfony/Stubs/Configurators/NameRestrictedExpressionFunctionConfigurator.php
-
-        - message: '#Cannot call method addFunction\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
-          path: packages/EasyDecision/tests/Bridge/Symfony/Stubs/Configurators/TypeRestrictedExpressionFunctionConfigurator.php
-
         # ---- EasyErrorHandler ----
         - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
           path: packages/EasyErrorHandler/tests
@@ -202,9 +193,6 @@ parameters:
           path: packages/EasyRequestId/src/RequestIdService.php
 
         - message: '#Property EonX\\EasyRequestId\\RequestIdService\:\:\$correlationIdResolvers \(array<EonX\\EasyRequestId\\Interfaces\\CorrelationIdResolverInterface\>\) does not accept array<EonX\\EasyRequestId\\Interfaces\\ResolverInterface\>#'
-          path: packages/EasyRequestId/src/RequestIdService.php
-
-        - message: '#Method EonX\\EasyRequestId\\RequestIdService\:\:filterResolvers\(\) should return array<EonX\\EasyRequestId\\Interfaces\\ResolverInterface\> but returns array<object\>#'
           path: packages/EasyRequestId/src/RequestIdService.php
 
         # ---- EasySchedule ----

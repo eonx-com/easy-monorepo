@@ -88,8 +88,12 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
 
-                $functions = $decision->getExpressionLanguage()
-                    ->getFunctions();
+                $functions = [];
+                $expressionLanguage = $decision->getExpressionLanguage();
+
+                if ($expressionLanguage !== null) {
+                    $functions = $expressionLanguage->getFunctions();
+                }
 
                 self::assertCount(1, $functions);
                 self::assertSame('restricted', $functions[0]->getName());
@@ -101,7 +105,15 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             $this->getCreateValueDecision('not-restricted'),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
-                self::assertEmpty($decision->getExpressionLanguage()->getFunctions());
+
+                $functions = [];
+                $expressionLanguage = $decision->getExpressionLanguage();
+
+                if ($expressionLanguage !== null) {
+                    $functions = $expressionLanguage->getFunctions();
+                }
+
+                self::assertEmpty($functions);
             },
             [__DIR__ . '/Fixtures/value_with_name_restricted_expression_function.php'],
         ];
@@ -111,8 +123,12 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
 
-                $functions = $decision->getExpressionLanguage()
-                    ->getFunctions();
+                $functions = [];
+                $expressionLanguage = $decision->getExpressionLanguage();
+
+                if ($expressionLanguage !== null) {
+                    $functions = $expressionLanguage->getFunctions();
+                }
 
                 self::assertCount(1, $functions);
                 self::assertSame('restricted', $functions[0]->getName());
@@ -124,7 +140,15 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             $this->getCreateUnanimousDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(UnanimousDecision::class, $decision);
-                self::assertEmpty($decision->getExpressionLanguage()->getFunctions());
+
+                $functions = [];
+                $expressionLanguage = $decision->getExpressionLanguage();
+
+                if ($expressionLanguage !== null) {
+                    $functions = $expressionLanguage->getFunctions();
+                }
+
+                self::assertEmpty($functions);
             },
             [__DIR__ . '/Fixtures/value_with_type_restricted_expression_function.php'],
         ];
