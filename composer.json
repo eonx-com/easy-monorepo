@@ -94,6 +94,7 @@
             "EonX\\EasySsm\\": "packages/EasySsm/src",
             "EonX\\EasyStandard\\": "packages/EasyStandard/src",
             "EonX\\EasyTest\\": "packages/EasyTest/src",
+            "EonX\\EasyUtils\\": "packages/EasyUtils/src",
             "EonX\\EasyWebhook\\": "packages/EasyWebhook/src"
         }
     },
@@ -123,6 +124,7 @@
             "EonX\\EasySsm\\Tests\\": "packages/EasySsm/tests",
             "EonX\\EasyStandard\\Tests\\": "packages/EasyStandard/tests",
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests",
+            "EonX\\EasyUtils\\Tests\\": "packages/EasyUtils/tests",
             "EonX\\EasyWebhook\\Tests\\": "packages/EasyWebhook/tests"
         }
     },
@@ -148,7 +150,8 @@
         "eonx-com/easy-webhook": "self.version",
         "eonx-com/easy-bugsnag": "self.version",
         "eonx-com/easy-request-id": "self.version",
-        "eonx-com/easy-bank-files": "self.version"
+        "eonx-com/easy-bank-files": "self.version",
+        "eonx-com/easy-utils": "self.version"
     },
     "scripts": {
         "check-all": [
