@@ -12,6 +12,7 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
+use EonX\EasyUtils\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -85,16 +86,13 @@ final class ErrorHandler implements ErrorHandlerInterface
 
     /**
      * @param iterable<mixed> $items
+     * @param class-string $class
      *
      * @return mixed[]
      */
     private function filterIterable(iterable $items, string $class): array
     {
-        $items = $items instanceof \Traversable ? \iterator_to_array($items) : (array)$items;
-
-        $items = \array_filter($items, static function ($reporter) use ($class): bool {
-            return $reporter instanceof $class;
-        });
+        $items = CollectorHelper::filterByClassAsArray($items, $class);
 
         foreach ($items as $item) {
             if ($item instanceof ErrorHandlerAwareInterface) {
@@ -122,14 +120,7 @@ final class ErrorHandler implements ErrorHandlerInterface
             }
         }
 
-        \usort(
-            $builders,
-            static function (ErrorResponseBuilderInterface $first, ErrorResponseBuilderInterface $second): int {
-                return $first->getPriority() <=> $second->getPriority();
-            }
-        );
-
-        $this->builders = $builders;
+        $this->builders = CollectorHelper::orderLowerPriorityFirst($builders);
     }
 
     /**
@@ -149,14 +140,7 @@ final class ErrorHandler implements ErrorHandlerInterface
             }
         }
 
-        \usort(
-            $reporters,
-            static function (ErrorReporterInterface $first, ErrorReporterInterface $second): int {
-                return $first->getPriority() <=> $second->getPriority();
-            }
-        );
-
-        $this->reporters = $reporters;
+        $this->reporters = CollectorHelper::orderLowerPriorityFirst($reporters);
     }
 
     /**

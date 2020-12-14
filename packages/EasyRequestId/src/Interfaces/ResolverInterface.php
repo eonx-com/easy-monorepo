@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Interfaces;
 
-interface ResolverInterface
+use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+
+interface ResolverInterface extends HasPriorityInterface
 {
-    public function getPriority(): int;
+    // No body needed.
 }

@@ -9,8 +9,8 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\ContextModifierInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface as ConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
+use EonX\EasyUtils\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
-use Traversable;
 
 final class MainSecurityContextConfigurator
 {
@@ -89,21 +89,9 @@ final class MainSecurityContextConfigurator
      */
     public function withConfigurators(iterable $configurators): self
     {
-        $configurators = $configurators instanceof Traversable
-            ? \iterator_to_array($configurators)
-            : (array)$configurators;
-
-        $filter = static function ($configurator): bool {
-            return $configurator instanceof ConfiguratorInterface;
-        };
-        $sort = static function (ConfiguratorInterface $first, ConfiguratorInterface $second): int {
-            return $first->getPriority() <=> $second->getPriority();
-        };
-
-        $configurators = \array_filter($configurators, $filter);
-        \usort($configurators, $sort);
-
-        $this->configurators = $configurators;
+        $this->configurators = CollectorHelper::orderLowerPriorityFirst(
+            CollectorHelper::filterByClass($configurators, ConfiguratorInterface::class)
+        );
 
         return $this;
     }
@@ -113,19 +101,9 @@ final class MainSecurityContextConfigurator
      */
     public function withModifiers(iterable $modifiers): self
     {
-        $modifiers = $modifiers instanceof Traversable ? \iterator_to_array($modifiers) : (array)$modifiers;
-
-        $filter = static function ($resolver): bool {
-            return $resolver instanceof ContextModifierInterface;
-        };
-        $sort = static function (ContextModifierInterface $first, ContextModifierInterface $second): int {
-            return $first->getPriority() <=> $second->getPriority();
-        };
-
-        $modifiers = \array_filter($modifiers, $filter);
-        \usort($modifiers, $sort);
-
-        $this->modifiers = $modifiers;
+        $this->modifiers = CollectorHelper::orderLowerPriorityFirst(
+            CollectorHelper::filterByClass($modifiers, ContextModifierInterface::class)
+        );
 
         return $this;
     }

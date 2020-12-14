@@ -7,6 +7,7 @@ namespace EonX\EasyAwsCredentialsFinder;
 use EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsFinderInterface;
 use EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsInterface;
 use EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsProviderInterface;
+use EonX\EasyUtils\CollectorHelper;
 
 final class AwsCredentialsProvider implements AwsCredentialsProviderInterface
 {
@@ -22,7 +23,9 @@ final class AwsCredentialsProvider implements AwsCredentialsProviderInterface
      */
     public function __construct(array $finders)
     {
-        $this->setFinders($finders);
+        $this->finders = CollectorHelper::orderLowerPriorityFirst(
+            CollectorHelper::filterByClass($finders, AwsCredentialsFinderInterface::class)
+        );
     }
 
     public function getCredentials(): AwsCredentialsInterface
@@ -36,21 +39,5 @@ final class AwsCredentialsProvider implements AwsCredentialsProviderInterface
         }
 
         return new AwsCredentials();
-    }
-
-    /**
-     * @param mixed[] $finders
-     */
-    private function setFinders(array $finders): void
-    {
-        $finders = \array_filter($finders, static function ($finder): bool {
-            return $finder instanceof AwsCredentialsFinderInterface;
-        });
-
-        \usort($finders, function (AwsCredentialsFinderInterface $first, AwsCredentialsFinderInterface $second): int {
-            return $first->getPriority() <=> $second->getPriority();
-        });
-
-        $this->finders = $finders;
     }
 }
