@@ -30,7 +30,7 @@ final class OrderArrayKeysAlphabeticallySniff implements Sniff
      * @var mixed[]
      */
     public $skipPatterns = [
-        T_FUNCTION => ['/provide[A-Z]/'],
+        T_FUNCTION => ['/^provide.*/'],
     ];
 
     /**

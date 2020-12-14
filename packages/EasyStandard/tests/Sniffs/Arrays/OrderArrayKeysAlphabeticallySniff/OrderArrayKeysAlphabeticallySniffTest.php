@@ -111,8 +111,8 @@ final class OrderArrayKeysAlphabeticallySniffTest extends AbstractCheckerTestCas
     {
         return [
             'skipPatterns' => [
-                T_FUNCTION => ['/provide[A-Z]/'],
-                T_CLASS => ['/SomeClass[A-Z]/'],
+                T_CLASS => ['/^SomeClass.*/'],
+                T_FUNCTION => ['/^provide.*/'],
             ],
         ];
     }
