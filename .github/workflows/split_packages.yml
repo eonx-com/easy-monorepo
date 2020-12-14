@@ -35,6 +35,7 @@ jobs:
                     - { dir: 'EasySsm', repo: 'easy-ssm' }
                     - { dir: 'EasyStandard', repo: 'easy-standard' }
                     - { dir: 'EasyTest', repo: 'easy-test' }
+                    - { dir: 'EasyUtils', repo: 'easy-utils' }
                     - { dir: 'EasyWebhook', repo: 'easy-webhook' }
 
         steps:
