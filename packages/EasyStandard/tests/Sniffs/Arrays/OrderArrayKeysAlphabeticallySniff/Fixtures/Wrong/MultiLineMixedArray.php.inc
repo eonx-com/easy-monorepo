@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace EonX\EasyStandard\Tests\Sniffs\Arrays\OrderArrayKeysAlphabeticallySniff\Fixtures\Wrong;
+
 $array = [
     'iat' => \time(),
     'iss' => self::TEST_CONST,
