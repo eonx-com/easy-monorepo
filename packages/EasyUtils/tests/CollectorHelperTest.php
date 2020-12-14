@@ -72,7 +72,7 @@ final class CollectorHelperTest extends AbstractTestCase
     public function testFilterByClass(iterable $items, int $expectedCount, ?string $class = null): void
     {
         $class = $class ?? \stdClass::class;
-        $results = CollectorHelper::filterByClass($items, $class);
+        $results = CollectorHelper::filterByClassAsArray($items, $class);
 
         self::assertCount($expectedCount, $results);
 

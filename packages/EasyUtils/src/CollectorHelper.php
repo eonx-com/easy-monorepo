@@ -23,17 +23,24 @@ final class CollectorHelper
      *
      * @return mixed[]
      */
-    public static function filterByClass(iterable $items, string $class): array
+    public static function filterByClass(iterable $items, string $class): iterable
     {
-        $return = [];
-
         foreach ($items as $item) {
             if ($item instanceof $class) {
-                $return[] = $item;
+                yield $item;
             }
         }
+    }
 
-        return $return;
+    /**
+     * @param iterable<mixed> $items
+     * @param class-string $class
+     *
+     * @return mixed[]
+     */
+    public static function filterByClassAsArray(iterable $items, string $class): array
+    {
+        return self::convertToArray(self::filterByClass($items, $class));
     }
 
     /**
