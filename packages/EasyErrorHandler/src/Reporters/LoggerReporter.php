@@ -4,19 +4,28 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Reporters;
 
-use EonX\EasyErrorHandler\Helpers\ErrorDetailsHelper;
+use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
 final class LoggerReporter extends AbstractErrorReporter
 {
     /**
+     * @var \EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface
+     */
+    private $errorDetailsResolver;
+
+    /**
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
 
-    public function __construct(LoggerInterface $logger, ?int $priority = null)
-    {
+    public function __construct(
+        ErrorDetailsResolverInterface $errorDetailsResolver,
+        LoggerInterface $logger,
+        ?int $priority = null
+    ) {
+        $this->errorDetailsResolver = $errorDetailsResolver;
         $this->logger = $logger;
 
         parent::__construct($priority);
@@ -31,7 +40,7 @@ final class LoggerReporter extends AbstractErrorReporter
             $this->getLogLevel($throwable),
             $throwable->getMessage(),
             [
-                'exception' => ErrorDetailsHelper::getDetails($throwable),
+                'exception' => $this->errorDetailsResolver->resolveExtendedDetails($throwable),
             ]
         );
     }

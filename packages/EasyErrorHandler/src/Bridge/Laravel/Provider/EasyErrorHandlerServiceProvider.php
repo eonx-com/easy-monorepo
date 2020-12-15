@@ -10,7 +10,9 @@ use EonX\EasyErrorHandler\Bridge\Bugsnag\BugsnagReporterProvider;
 use EonX\EasyErrorHandler\Bridge\Laravel\ExceptionHandler;
 use EonX\EasyErrorHandler\Bridge\Laravel\Translator;
 use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
+use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
+use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
@@ -33,6 +35,8 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/easy-error-handler.php', 'easy-error-handler');
+
+        $this->app->singleton(ErrorDetailsResolverInterface::class, ErrorDetailsResolver::class);
 
         $this->app->singleton(ErrorResponseFactoryInterface::class, ErrorResponseFactory::class);
 
@@ -62,6 +66,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         if ((bool)\config('easy-error-handler.use_default_builders', true)) {
             $this->app->singleton(DefaultBuilderProvider::class, function (): DefaultBuilderProvider {
                 return new DefaultBuilderProvider(
+                    $this->app->make(ErrorDetailsResolverInterface::class),
                     $this->app->make(TranslatorInterface::class),
                     \config('easy-error-handler.response')
                 );
