@@ -12,14 +12,15 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
-
     $services->defaults()
         ->autowire()
         ->autoconfigure();
 
-    $services->set(ExpressionLanguageInterface::class, ExpressionLanguage::class)
+    $services
+        ->set(ExpressionLanguageInterface::class, ExpressionLanguage::class)
         ->factory([ref(ExpressionLanguageFactoryInterface::class), 'create']);
 
-    $services->set(SetExpressionLanguageConfigurator::class)
+    $services
+        ->set(SetExpressionLanguageConfigurator::class)
         ->arg('$priority', -5000);
 };
