@@ -46,11 +46,15 @@ jobs:
             -   id: previous_tag
                 uses: eonx-com/github-action-get-previous-tag@master
 
+            -   id: branch_name
+                run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+
             -   name: Split ${{ matrix.mapping.dir }}
                 uses: eonx-com/github-action-monorepo-split@master
                 env:
                     GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
                 with:
+                    branch: ${{ steps.branch_name.outputs.branch }}
                     package-directory: 'packages/${{ matrix.mapping.dir }}'
                     split-repository-organization: 'eonx-com'
                     split-repository-name: '${{ matrix.mapping.repo }}'
