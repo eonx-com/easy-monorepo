@@ -13,7 +13,7 @@ jobs:
                     - EasyApiToken
                     - EasyAsync
                     - EasyAwsCredentialsFinder
-                    - EasyBankFiles
+                    # - EasyBankFiles
                     - EasyBugsnag
                     - EasyCore
                     - EasyDecision
