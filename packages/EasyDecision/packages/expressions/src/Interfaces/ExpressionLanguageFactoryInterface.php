@@ -6,5 +6,5 @@ namespace EonX\EasyDecision\Expressions\Interfaces;
 
 interface ExpressionLanguageFactoryInterface
 {
-    public function create(?ExpressionLanguageConfigInterface $config = null): ExpressionLanguageInterface;
+    public function create(): ExpressionLanguageInterface;
 }
