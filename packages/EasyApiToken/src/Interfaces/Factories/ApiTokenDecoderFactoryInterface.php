@@ -12,5 +12,3 @@ interface ApiTokenDecoderFactoryInterface
 
     public function buildDefault(): ApiTokenDecoderInterface;
 }
-
-\class_alias(ApiTokenDecoderFactoryInterface::class, EasyApiTokenDecoderFactoryInterface::class);
