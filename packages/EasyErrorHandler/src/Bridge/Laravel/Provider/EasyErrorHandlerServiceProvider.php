@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Laravel\Provider;
 
 use Bugsnag\Client;
+use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\BugsnagReporterProvider;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\ErrorDetailsClientConfigurator;
 use EonX\EasyErrorHandler\Bridge\Laravel\ExceptionHandler;
 use EonX\EasyErrorHandler\Bridge\Laravel\Translator;
 use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
@@ -91,6 +93,12 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                 );
             });
             $this->app->tag(BugsnagReporterProvider::class, [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER]);
+
+            $this->app->singleton(ErrorDetailsClientConfigurator::class);
+            $this->app->tag(
+                ErrorDetailsClientConfigurator::class,
+                [EasyBugsnagConstantsInterface::TAG_CLIENT_CONFIGURATOR]
+            );
         }
     }
 }
