@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag;
@@ -34,7 +35,9 @@ final class ErrorDetailsClientConfigurator extends AbstractClientConfigurator
                     return;
                 }
 
-                $report->addMetaData(['error' => $this->errorDetailsResolver->resolveExtendedDetails($throwable)]);
+                $report->addMetaData([
+                    'error' => $this->errorDetailsResolver->resolveExtendedDetails($throwable),
+                ]);
             }));
     }
 }
