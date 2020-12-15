@@ -6,14 +6,15 @@
     "require": {
         "php": "^7.2",
         "eonx-com/easy-utils": "^2.6",
-        "symfony/process": "^4.2 || ^5.0",
+        "symfony/process": "^4.4 || ^5.0",
         "symplify/package-builder": "^8.3.41",
         "symplify/autowire-array-parameter": "^8.3.41",
         "aws/aws-sdk-php": "^3.134",
         "nesbot/carbon": "^2.22"
     },
     "require-dev": {
-        "symfony/symfony": "^4.2 || ^5.0"
+        "phpunit/phpunit": "^8.4 || ^9.5",
+        "symfony/symfony": "^4.4 || ^5.0"
     },
     "autoload": {
         "psr-4": {
