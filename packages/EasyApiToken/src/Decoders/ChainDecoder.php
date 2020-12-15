@@ -7,6 +7,7 @@ namespace EonX\EasyApiToken\Decoders;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyUtils\CollectorHelper;
+use Symfony\Component\HttpFoundation\Request;
 
 final class ChainDecoder extends AbstractApiTokenDecoder
 {
@@ -25,10 +26,7 @@ final class ChainDecoder extends AbstractApiTokenDecoder
         parent::__construct($name ?? self::NAME_CHAIN);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
-     */
-    public function decode($request): ?ApiTokenInterface
+    public function decode(Request $request): ?ApiTokenInterface
     {
         foreach ($this->decoders as $decoder) {
             $token = $decoder->decode($request);
@@ -41,5 +39,3 @@ final class ChainDecoder extends AbstractApiTokenDecoder
         return null;
     }
 }
-
-\class_alias(ChainDecoder::class, ChainReturnFirstTokenDecoder::class);
