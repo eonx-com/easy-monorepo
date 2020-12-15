@@ -26,6 +26,7 @@ final class CheckDoctrineDbConnectionMiddleware implements MiddlewareInterface
     {
         ConnectionChecker::checkConnection($this->connection);
 
-        return $stack->next()->handle($envelope, $stack);
+        return $stack->next()
+            ->handle($envelope, $stack);
     }
 }
