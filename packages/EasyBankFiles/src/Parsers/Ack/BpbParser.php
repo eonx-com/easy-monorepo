@@ -10,8 +10,6 @@ final class BpbParser extends Parser
 {
     /**
      * Process line and parse data.
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException
      */
     protected function process(): void
     {

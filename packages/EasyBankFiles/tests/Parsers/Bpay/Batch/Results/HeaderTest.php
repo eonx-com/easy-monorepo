@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntry\Results;
+namespace EonX\EasyBankFiles\Tests\Parsers\Bpay\Batch\Results;
 
 use DateTime;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Header;
+use EonX\EasyBankFiles\Parsers\Bpay\Batch\Results\Header;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 
 /**
- * @covers \EonX\EasyBankFiles\Parsers\DirectEntry\Results\Header
+ * @covers \EonX\EasyBankFiles\Parsers\Bpay\Batch\Results\Header
  */
 final class HeaderTest extends TestCase
 {
@@ -33,21 +33,9 @@ final class HeaderTest extends TestCase
     }
 
     /**
-     * Test if date conversion works as expected.
-     */
-    public function testDateConversion(): void
-    {
-        $header = new Header([
-            'dateProcessed' => '070904',
-        ]);
-
-        $expectedDateTime = new DateTime('2004-09-07');
-
-        self::assertEquals($expectedDateTime, $header->getDateProcessedObject());
-    }
-
-    /**
      * Should return processing date as a null when date string is invalid.
+     *
+     * @group Batch-Header
      *
      * @param mixed[] $dateProcessed
      *
@@ -58,5 +46,22 @@ final class HeaderTest extends TestCase
         $header = new Header($dateProcessed);
 
         self::assertNull($header->getDateProcessedObject());
+    }
+
+    /**
+     * Should return date as an DateTime object.
+     *
+     * @group Batch-Header
+     */
+    public function testShouldReturnDateProcessedObject(): void
+    {
+        $header = new Header([
+            'dateProcessed' => '20190919',
+        ]);
+
+        /** @var \DateTime $object */
+        $object = $header->getDateProcessedObject();
+        self::assertInstanceOf(DateTime::class, $object);
+        self::assertSame('19-09-2019', $object->format('d-m-Y'));
     }
 }

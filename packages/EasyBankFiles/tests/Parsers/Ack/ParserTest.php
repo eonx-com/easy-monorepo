@@ -205,8 +205,6 @@ final class ParserTest extends TestCase
      * Test issues are correctly processed regardless of formatting.
      *
      * @group Ack-Parser
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlTagException Inherited, if xml contains an invalid tag
      */
     public function testIssueProcessing(): void
     {

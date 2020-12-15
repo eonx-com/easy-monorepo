@@ -7,7 +7,7 @@ namespace EonX\EasyBankFiles\Tests\Parsers\Nai\Results;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Account;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Identifier;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Trailer;
-use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext;
+use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 use Mockery\MockInterface;
 
@@ -42,8 +42,8 @@ final class AccountTest extends TestCase
                 ->andReturn([]);
         };
 
-        /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext $context */
-        $context = $this->getMockWithExpectations(ResultsContext::class, $setExpectations);
+        /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface $context */
+        $context = $this->getMockWithExpectations(ResultsContextInterface::class, $setExpectations);
 
         $account = new Account($context, $data);
 

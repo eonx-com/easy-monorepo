@@ -45,8 +45,6 @@ abstract class Parser extends BaseParser
      * Attempts to convert the provided XML string to an array.
      *
      * @return mixed[]
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException
      */
     protected function convertXmlToArray(string $xml): array
     {

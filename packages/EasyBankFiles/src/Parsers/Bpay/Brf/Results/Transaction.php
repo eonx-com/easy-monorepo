@@ -5,46 +5,56 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Parsers\Bpay\Brf\Results;
 
 use DateTime;
+use DateTimeInterface;
 use EonX\EasyBankFiles\Parsers\BaseResult;
 
 /**
- * @method getBillerCode()
- * @method getCustomerReferenceNumber()
- * @method getPaymentInstructionType()
- * @method getTransactionReferenceNumber()
- * @method getOriginalReferenceNumber()
- * @method getErrorCorrectionReason()
- * @method getPaymentTime()
- * @method getFiller()
+ * @method string|null getAmount()
+ * @method string|null getBillerCode()
+ * @method string|null getCustomerReferenceNumber()
+ * @method string|null getPaymentInstructionType()
+ * @method string|null getTransactionReferenceNumber()
+ * @method string|null getOriginalReferenceNumber()
+ * @method string|null getErrorCorrectionReason()
+ * @method string|null getPaymentDate()
+ * @method string|null getPaymentTime()
+ * @method string|null getRestOfRecord()
+ * @method string|null getSettlementDate()
  */
 final class Transaction extends BaseResult
 {
     /**
-     * Convert amount into float and return as dollars.
+     * Convert to DateTime object and return.
      */
-    public function getAmount(): float
+    public function getPaymentDateObject(): ?DateTimeInterface
     {
-        return (float)(((int)$this->data['amount']) / 100);
+        $value = $this->data['paymentDate'];
+
+        if (
+            \is_string($value) === false ||
+            \ctype_digit($value) === false
+        ) {
+            return null;
+        }
+
+        return new DateTime($value);
     }
 
     /**
      * Convert to DateTime object and return.
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException If datetime constructor string is invalid
      */
-    public function getPaymentDate(): DateTime
+    public function getSettlementDateObject(): ?DateTimeInterface
     {
-        return new DateTime($this->data['paymentDate']);
-    }
+        $value = $this->data['settlementDate'];
 
-    /**
-     * Convert to DateTime object and return.
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException If datetime constructor string is invalid
-     */
-    public function getSettlementDate(): DateTime
-    {
-        return new DateTime($this->data['settlementDate']);
+        if (
+            \is_string($value) === false ||
+            \ctype_digit($value) === false
+        ) {
+            return null;
+        }
+
+        return new DateTime($value);
     }
 
     /**
@@ -64,8 +74,8 @@ final class Transaction extends BaseResult
             'amount',
             'paymentDate',
             'paymentTime',
+            'restOfRecord',
             'settlementDate',
-            'filler',
         ];
     }
 }
