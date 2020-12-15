@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Symfony\Stubs;
 
+use EonX\EasyApiToken\Bridge\BridgeConstantsInterface as EasyApiTokenConstantsInterface;
 use EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenBundle;
 use EonX\EasySecurity\Bridge\Symfony\EasySecurityBundle;
+use EonX\EasySecurity\Tests\Stubs\ApiTokenDecoderProviderStub;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -40,6 +42,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        // RequestStack
         $requestStackDef = new Definition(RequestStack::class);
 
         if ($this->request !== null) {
@@ -47,6 +50,11 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         }
 
         $container->setDefinition(RequestStack::class, $requestStackDef);
+
+        // ApiTokenDecoderProvider
+        $container
+            ->setDefinition(ApiTokenDecoderProviderStub::class, new Definition(ApiTokenDecoderProviderStub::class))
+            ->addTag(EasyApiTokenConstantsInterface::TAG_DECODER_PROVIDER);
 
         foreach ($container->getDefinitions() as $definition) {
             $definition->setPublic(true);
@@ -69,10 +77,5 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         foreach ($this->configs as $config) {
             $loader->load($config);
         }
-    }
-
-    protected function build(ContainerBuilder $container): void
-    {
-        $container->addCompilerPass($this);
     }
 }
