@@ -21,21 +21,6 @@ use EonX\EasyNotification\Queue\Configurators\TypeConfigurator;
 use EonX\EasyNotification\Queue\SqsQueueTransportFactory;
 use EonX\EasyNotification\Subscribe\SubscribeInfoFinder;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
-
-function tagged_polyfill(
-    string $tag,
-    ?string $indexAttribute = null,
-    ?string $defaultIndexMethod = null
-): TaggedIteratorArgument {
-    // works in Symfony 4.*
-    if (\function_exists('Symfony\Component\DependencyInjection\Loader\Configurator\tagged')) {
-        return tagged($tag, $indexAttribute, $defaultIndexMethod);
-    }
-
-    // works in Symfony 4.4+ and 5
-    return tagged_iterator($tag, $indexAttribute, $defaultIndexMethod);
-}
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -64,7 +49,7 @@ return static function (ContainerConfigurator $container): void {
     // Client
     $services
         ->set(NotificationClientInterface::class, NotificationClient::class)
-        ->arg('$configurators', tagged_polyfill(BridgeConstantsInterface::TAG_QUEUE_MESSAGE_CONFIGURATOR));
+        ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_QUEUE_MESSAGE_CONFIGURATOR));
 
     // Configurators
     $services->set(RealTimeBodyConfigurator::class);
