@@ -23,10 +23,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->loadTranslationsFrom(
-            __DIR__ . '/../translations',
-            BridgeConstantsInterface::TRANSLATION_NAMESPACE
-        );
+        $this->loadTranslationsFrom(__DIR__ . '/../translations', BridgeConstantsInterface::TRANSLATION_NAMESPACE);
 
         $this->publishes([
             __DIR__ . '/../config/easy-error-handler.php' => \base_path('config/easy-error-handler.php'),

@@ -40,7 +40,7 @@ final class Translator implements TranslatorInterface
     /**
      * @param mixed[] $parameters
      */
-    private function getOrLang(string $message, array $parameters) : string
+    private function getOrLang(string $message, array $parameters): string
     {
         $method = \method_exists($this->decorated, 'lang') ? 'lang' : 'get';
 
