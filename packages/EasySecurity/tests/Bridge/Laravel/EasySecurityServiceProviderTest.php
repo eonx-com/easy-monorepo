@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Laravel;
 
+use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\SecurityContext;
 use Illuminate\Http\Request;
@@ -14,13 +15,8 @@ final class EasySecurityServiceProviderTest extends AbstractLumenTestCase
     public function testSanity(): void
     {
         $app = $this->getApplication(null, [
-            'easy-api-token' => [
-                'decoders' => [
-                    'basic' => null,
-                ],
-            ],
             'easy-security' => [
-                'token_decoder' => 'basic',
+                'token_decoder' => BasicAuthDecoder::class,
             ],
         ]);
 
