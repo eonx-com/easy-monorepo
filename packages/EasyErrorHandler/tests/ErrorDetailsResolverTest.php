@@ -11,12 +11,12 @@ final class ErrorDetailsResolverTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testResolveExtendedDetails
      */
     public function providerTestResolveExtendedDetails(): iterable
     {
-        yield 'simple' => [
-            new \Exception(),
-        ];
+        yield 'simple' => [new \Exception()];
 
         yield 'max depth 0 so no previous' => [
             new \Exception('message', 0, new \Exception()),

@@ -91,12 +91,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
 
         $previous = $throwable->getPrevious();
         if ($this->canResolvePrevious($maxDepth, $depth, $previous)) {
-            $details[\sprintf('previous_%d', $depth)] = $this->doResolve(
-                $previous,
-                $maxDepth,
-                $depth + 1,
-                false
-            );
+            $details[\sprintf('previous_%d', $depth)] = $this->doResolve($previous, $maxDepth, $depth + 1, false);
         }
 
         if ($throwable instanceof SubCodeAwareExceptionInterface) {
