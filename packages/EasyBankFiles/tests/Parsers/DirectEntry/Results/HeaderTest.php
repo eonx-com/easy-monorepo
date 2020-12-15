@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntry\Results;
 
-use EoneoPay\Utils\DateTime;
+use DateTime;
 use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Header;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 
