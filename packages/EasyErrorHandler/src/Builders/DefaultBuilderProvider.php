@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Builders;
 
+use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
+    /**
+     * @var \EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface
+     */
+    private $errorDetailsResolver;
+
     /**
      * @var mixed[]
      */
@@ -23,8 +29,12 @@ final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterf
     /**
      * @param null|string[] $keys
      */
-    public function __construct(TranslatorInterface $translator, ?array $keys = null)
-    {
+    public function __construct(
+        ErrorDetailsResolverInterface $errorDetailsResolver,
+        TranslatorInterface $translator,
+        ?array $keys = null
+    ) {
+        $this->errorDetailsResolver = $errorDetailsResolver;
         $this->translator = $translator;
         $this->keys = $keys ?? [];
     }
@@ -36,6 +46,7 @@ final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterf
     {
         yield new CodeBuilder($this->getKey('code'));
         yield new ExtendedExceptionBuilder(
+            $this->errorDetailsResolver,
             $this->translator,
             $this->getKey('exception'),
             $this->keys['extended_exception_keys'] ?? []
