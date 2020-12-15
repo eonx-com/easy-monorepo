@@ -59,3 +59,5 @@ jobs:
                     split-repository-organization: 'eonx-com'
                     split-repository-name: '${{ matrix.mapping.repo }}'
                     tag: ${{ steps.previous_tag.outputs.tag }}
+                    user-email: 'nathan.page@eonx.com'
+                    user-name: 'natepage'
