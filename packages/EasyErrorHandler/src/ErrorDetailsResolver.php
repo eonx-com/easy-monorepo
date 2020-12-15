@@ -63,12 +63,8 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         return $details;
     }
 
-    private function canResolvePrevious(int $maxDepth, int $depth, ?\Throwable $previous = null): bool
+    private function canResolvePrevious(\Throwable $previous, int $maxDepth, int $depth): bool
     {
-        if ($previous === null) {
-            return false;
-        }
-
         if (\in_array(\spl_object_hash($previous), $this->chain, true)) {
             $this->logger->info('Circular reference detected in throwable chain', [
                 'exception' => $this->resolveSimpleDetails($previous),
@@ -90,7 +86,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         $details = $this->resolveSimpleDetails($throwable, $withTrace);
 
         $previous = $throwable->getPrevious();
-        if ($this->canResolvePrevious($maxDepth, $depth, $previous)) {
+        if ($previous !== null && $this->canResolvePrevious($previous, $maxDepth, $depth)) {
             $details[\sprintf('previous_%d', $depth)] = $this->doResolve($previous, $maxDepth, $depth + 1, false);
         }
 
