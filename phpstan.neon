@@ -93,15 +93,6 @@ parameters:
           path: packages/EasyCore/tests/Bridge/Symfony/Traits/TranslatorAwareTraitTest.php
 
         # ---- EasyDecision ----
-        - message: '#Strict comparison using === between true and false will always evaluate to false.#'
-          path: packages/EasyDecision/src/Decisions
-
-        - message: '#Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
-          path: packages/EasyDecision/tests/Decisions
-
-        - message: "#Offset 'fn' does not exist on array\\(string\\).#"
-          path: packages/EasyDecision/src/Helpers
-
         # ---- EasyErrorHandler ----
         - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
           path: packages/EasyErrorHandler/tests

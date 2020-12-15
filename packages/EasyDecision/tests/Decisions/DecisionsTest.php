@@ -6,7 +6,6 @@ namespace EonX\EasyDecision\Tests\Decisions;
 
 use EonX\EasyDecision\Decisions\ConsensusDecision;
 use EonX\EasyDecision\Decisions\ValueDecision;
-use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
 use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
@@ -137,12 +136,13 @@ final class DecisionsTest extends AbstractTestCase
         $expectedOutput,
         array $expectedRulesOutput
     ): void {
-        $this->injectExpressionLanguage(
-            $decision,
-            new ExpressionLanguageConfig(null, [new ValueExpressionFunctionProvider()])
-        );
+        $expressionLanguage = $this->createExpressionLanguage();
+        $expressionLanguage->addFunctions((new ValueExpressionFunctionProvider())->getFunctions());
 
-        $output = $decision->addRules($rules)
+        $decision->setExpressionLanguage($expressionLanguage);
+
+        $output = $decision
+            ->addRules($rules)
             ->make($input);
         $context = $decision->getContext();
 
