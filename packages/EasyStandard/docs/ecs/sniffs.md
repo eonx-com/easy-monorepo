@@ -476,27 +476,15 @@ Checks that a namespace name matches PSR-4 project structure.
 - `composerJsonPath` - A relative path to the project file `composer.json`. Default value: `composer.json`.
 
 [1]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Arrays/OrderArrayKeysAlphabeticallySniff.php
-
 [2]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/AvoidPublicPropertiesSniff.php
-
 [3]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequirePublicConstructorSniff.php
-
 [4]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequireStrictDeclarationSniff.php
-
 [5]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/StrictDeclarationFormatSniff.php
-
 [6]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Commenting/AnnotationSortingSniff.php
-
 [7]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php
-
 [8]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/ControlStructures/ArrangeActAssertSniff.php
-
 [9]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/ControlStructures/NoNotOperatorSniff.php
-
 [10]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Exceptions/ThrowExceptionMessageSniff.php
-
 [11]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Functions/DisallowNonNullDefaultValueSniff.php
-
 [12]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Methods/TestMethodNameSniff.php
-
 [13]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Namespaces/Psr4Sniff.php
