@@ -101,12 +101,6 @@ parameters:
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
 
-        - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'
-          path: packages/EasyLogging/src/ContextModifiers
-
-        - message: '#Call to method getErrors\(\) on an unknown class App\\Exceptions\\EntityValidationFailedException.#'
-          path: packages/EasyLogging/src/ContextModifiers
-
         # ---- EasyLock ----
 
         - message: '#Method EonX\\EasyLock\\Bridge\\Symfony\\Messenger\\ProcessWithLockMiddleware\:\:getLockData\(\) should return EonX\\EasyLock\\Interfaces\\WithLockDataInterface\|null but returns Symfony\\Component\\Messenger\\Stamp\\StampInterface\|null#'
