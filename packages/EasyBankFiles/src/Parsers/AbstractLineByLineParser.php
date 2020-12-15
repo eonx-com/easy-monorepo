@@ -7,6 +7,11 @@ namespace EonX\EasyBankFiles\Parsers;
 abstract class AbstractLineByLineParser extends BaseParser
 {
     /**
+     * @var string
+     */
+    protected const EMPTY_LINE_CODE = 'empty-line';
+
+    /**
      * AbstractLineByLineParser constructor.
      */
     public function __construct(string $contents)
@@ -39,5 +44,15 @@ abstract class AbstractLineByLineParser extends BaseParser
             $this->processLine($lineNumber, $line);
             $lineNumber++;
         }
+    }
+
+    /**
+     * Trim zeros from the left side of the string.
+     */
+    protected function trimLeftZeros(string $value): string
+    {
+        $value = \ltrim($value, '0');
+
+        return $value === '' ? '0' : $value;
     }
 }

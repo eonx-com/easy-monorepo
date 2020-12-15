@@ -14,8 +14,6 @@ final class PaymentAcknowledgementTest extends TestCase
      * Should return datetime as DateTime object.
      *
      * @group Ack-PaymentAcknowledgement
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException If datetime constructor string is invalid
      */
     public function testShouldReturnDateTimeAsObject(): void
     {

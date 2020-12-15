@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Parsers\Bpay\Brf\Results;
-
-use EonX\EasyBankFiles\Parsers\BaseResult;
+namespace EonX\EasyBankFiles\Parsers;
 
 /**
  * @method string getLine()

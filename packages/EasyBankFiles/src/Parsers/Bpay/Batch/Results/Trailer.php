@@ -18,30 +18,6 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 final class Trailer extends BaseResult
 {
     /**
-     * Get the amount of approvals as a decimal.
-     */
-    public function getAmountOfApprovalsDecimal(): ?string
-    {
-        return $this->getTrailerAmountDecimal('amountOfApprovals');
-    }
-
-    /**
-     * Get the amount of declines as a decimal.
-     */
-    public function getAmountOfDeclinesDecimal(): ?string
-    {
-        return $this->getTrailerAmountDecimal('amountOfDeclines');
-    }
-
-    /**
-     * Get the amount of payments as a decimal.
-     */
-    public function getAmountOfPaymentsDecimal(): ?string
-    {
-        return $this->getTrailerAmountDecimal('amountOfPayments');
-    }
-
-    /**
      * Return object attributes.
      *
      * @return string[]
@@ -57,26 +33,5 @@ final class Trailer extends BaseResult
             'numberOfPayments',
             'restOfRecord',
         ];
-    }
-
-    /**
-     * Get the amount as a decimal.
-     *
-     * @param string $attribute The attribute to get the decimal amount from
-     */
-    private function getTrailerAmountDecimal(string $attribute): ?string
-    {
-        $value = $this->data[$attribute] ?? null;
-
-        // If value isn't set, return
-        if ($value === null) {
-            return null;
-        }
-
-        // Decimal is implied by the last 2 digits
-        $dollars = \substr(\ltrim($value, '0'), 0, -2);
-        $cents = \substr($value, -2);
-
-        return \sprintf('%d.%d', $dollars, $cents);
     }
 }

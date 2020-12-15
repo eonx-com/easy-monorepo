@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Tests\Parsers\Nai\Results;
+namespace EonX\EasyBankFiles\Tests\Parsers;
 
-use EonX\EasyBankFiles\Parsers\Nai\Results\Error;
-use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use EonX\EasyBankFiles\Parsers\Error;
 
 /**
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Results\Error
+ * @covers \EonX\EasyBankFiles\Parsers\Error
  */
 final class ErrorTest extends TestCase
 {
