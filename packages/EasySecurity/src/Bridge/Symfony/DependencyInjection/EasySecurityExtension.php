@@ -25,7 +25,7 @@ final class EasySecurityExtension extends Extension
     /**
      * @var string[]
      */
-    protected static $autoConfigTags = [
+    private const AUTO_CONFIG_TAGS = [
         RolesProviderInterface::class => BridgeConstantsInterface::TAG_ROLES_PROVIDER,
         PermissionsProviderInterface::class => BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER,
         SecurityContextConfiguratorInterface::class => BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR,
@@ -34,7 +34,7 @@ final class EasySecurityExtension extends Extension
     /**
      * @var string[]
      */
-    protected static $voters = [
+    private const VOTERS = [
         'permission' => PermissionVoter::class,
         'provider' => ProviderVoter::class,
         'role' => RoleVoter::class,
@@ -59,8 +59,9 @@ final class EasySecurityExtension extends Extension
         $container->setParameter(BridgeConstantsInterface::PARAM_CONTEXT_SERVICE_ID, $contextServiceId);
         $container->setParameter(BridgeConstantsInterface::PARAM_TOKEN_DECODER, $config['token_decoder'] ?? null);
 
-        foreach (static::$autoConfigTags as $interface => $tag) {
-            $container->registerForAutoconfiguration($interface)
+        foreach (self::AUTO_CONFIG_TAGS as $interface => $tag) {
+            $container
+                ->registerForAutoconfiguration($interface)
                 ->addTag($tag);
         }
 
@@ -70,7 +71,7 @@ final class EasySecurityExtension extends Extension
             $container->setAlias(SecurityContextInterface::class, $contextServiceId);
         }
 
-        foreach (static::$voters as $name => $class) {
+        foreach (self::VOTERS as $name => $class) {
             $configName = \sprintf('%s_enabled', $name);
 
             if (($config['voters'][$configName] ?? false) === false) {
@@ -83,6 +84,11 @@ final class EasySecurityExtension extends Extension
         // EasyBugsnag
         if (($config['easy_bugsnag'] ?? false) && \interface_exists(EasyBugsnagBridgeConstantsInterface::class)) {
             $loader->load('easy_bugsnag.php');
+        }
+
+        // Default configurators
+        if ($config['use_default_configurators'] ?? true) {
+            $loader->load('default_configurators.php');
         }
     }
 }

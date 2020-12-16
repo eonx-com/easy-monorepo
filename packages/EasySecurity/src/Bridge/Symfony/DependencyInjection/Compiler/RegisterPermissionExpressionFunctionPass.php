@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\DependencyInjection\Compiler;
 
-use EonX\EasySecurity\Bridge\Symfony\Interfaces\ParametersInterface;
+use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\Symfony\Security\PermissionExpressionFunctionProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,7 +15,7 @@ final class RegisterPermissionExpressionFunctionPass implements CompilerPassInte
 {
     public function process(ContainerBuilder $container): void
     {
-        $locations = $container->getParameter(ParametersInterface::PERMISSIONS_LOCATIONS);
+        $locations = $container->getParameter(BridgeConstantsInterface::PARAM_PERMISSIONS_LOCATIONS);
         $exprLangId = 'security.expression_language';
 
         if (empty($locations) || $container->has($exprLangId) === false) {

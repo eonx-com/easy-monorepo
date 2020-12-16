@@ -39,5 +39,10 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const SERVICE_API_TOKEN_DECODER = 'easy_security.api_token_decoder';
+
+    /**
+     * @var string
+     */
     public const SERVICE_AUTHORIZATION_MATRIX_CACHE = 'easy_security.authorization_matrix_cache';
 }
