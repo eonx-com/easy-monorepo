@@ -25,37 +25,26 @@ final class Translator implements TranslatorInterface
      */
     public function trans(string $message, array $parameters): string
     {
-        $translation = $this->doTrans($message, $parameters, false);
+        $translation = $this->doTrans($message, $parameters);
 
         if ($translation !== $message) {
             return $translation;
         }
 
-        $namespaceTranslation = $this->doTrans($message, $parameters);
+        $namespacedMessage = \sprintf('%s::%s', BridgeConstantsInterface::TRANSLATION_NAMESPACE, \trim($message));
+        $translation = $this->doTrans($namespacedMessage, $parameters);
 
-        if ($this->processMessage($translation) === $namespaceTranslation) {
-            return $translation;
-        }
-
-        return $namespaceTranslation;
+        // If translation is finally different we return it otherwise default to original message.
+        return $translation !== $namespacedMessage ? $translation : $message;
     }
 
     /**
      * @param mixed[] $parameters
      */
-    private function doTrans(string $message, array $parameters, bool $hasPrefix = true): string
+    private function doTrans(string $message, array $parameters): string
     {
         $method = \method_exists($this->decorated, 'lang') ? 'lang' : 'get';
 
-        return $this->decorated->{$method}($this->processMessage($message, $hasPrefix), $parameters);
-    }
-
-    private function processMessage(string $message, bool $hasPrefix = true): string
-    {
-        return $hasPrefix ? \sprintf(
-            '%s::%s',
-            BridgeConstantsInterface::TRANSLATION_NAMESPACE,
-            \trim($message)
-        ) : \trim($message);
+        return $this->decorated->{$method}(\trim($message), $parameters);
     }
 }
