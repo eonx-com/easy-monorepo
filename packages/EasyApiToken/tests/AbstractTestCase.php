@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
- * the class they all extend. TestSplit
+ * the class they all extend.
  */
 abstract class AbstractTestCase extends TestCase
 {
