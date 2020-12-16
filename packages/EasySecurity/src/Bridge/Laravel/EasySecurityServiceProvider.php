@@ -109,8 +109,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
             );
 
             return $mainConfigurator
-                ->withConfigurators($this->app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR))
-                ->withModifiers($this->app->tagged(BridgeConstantsInterface::TAG_CONTEXT_MODIFIER));
+                ->withConfigurators($this->app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR));
         });
 
         $this->app->singleton($contextServiceId, function (): SecurityContextInterface {

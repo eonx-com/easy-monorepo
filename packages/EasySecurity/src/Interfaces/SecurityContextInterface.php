@@ -7,15 +7,15 @@ namespace EonX\EasySecurity\Interfaces;
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 
-interface SecurityContextInterface extends ContextInterface
+interface SecurityContextInterface
 {
     /**
-     * @param string|string[]|\EonX\EasySecurity\Interfaces\PermissionInterface|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
+     * @param string|string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
      */
     public function addPermissions($permissions): void;
 
     /**
-     * @param string|string[]|\EonX\EasySecurity\Interfaces\RoleInterface|\EonX\EasySecurity\Interfaces\RoleInterface[] $roles
+     * @param string|string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
      */
     public function addRoles($roles): void;
 
@@ -48,14 +48,14 @@ interface SecurityContextInterface extends ContextInterface
     public function setAuthorizationMatrix(AuthorizationMatrixInterface $authorizationMatrix): void;
 
     /**
-     * @param string|string[]|\EonX\EasySecurity\Interfaces\PermissionInterface|\EonX\EasySecurity\Interfaces\PermissionInterface[] $permissions
+     * @param string|string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
      */
     public function setPermissions($permissions): void;
 
     public function setProvider(?ProviderInterface $provider = null): void;
 
     /**
-     * @param string|string[]|\EonX\EasySecurity\Interfaces\RoleInterface|\EonX\EasySecurity\Interfaces\RoleInterface[] $roles
+     * @param string|string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
      */
     public function setRoles($roles): void;
 
