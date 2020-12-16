@@ -25,25 +25,37 @@ final class Translator implements TranslatorInterface
      */
     public function trans(string $message, array $parameters): string
     {
-        $translation = $this->getOrLang($message, $parameters);
+        $translation = $this->doTrans($message, $parameters, false);
 
         if ($translation !== $message) {
             return $translation;
         }
 
-        return $this->getOrLang(
-            \sprintf('%s::%s', BridgeConstantsInterface::TRANSLATION_NAMESPACE, $message),
-            $parameters
-        );
+        $namespaceTranslation = $this->doTrans($message, $parameters);
+
+        if ($this->processMessage($translation) === $namespaceTranslation) {
+            return $translation;
+        }
+
+        return $namespaceTranslation;
     }
 
     /**
      * @param mixed[] $parameters
      */
-    private function getOrLang(string $message, array $parameters): string
+    private function doTrans(string $message, array $parameters, bool $hasPrefix = true): string
     {
         $method = \method_exists($this->decorated, 'lang') ? 'lang' : 'get';
 
-        return $this->decorated->{$method}(\trim($message), $parameters);
+        return $this->decorated->{$method}($this->processMessage($message, $hasPrefix), $parameters);
+    }
+
+    private function processMessage(string $message, bool $hasPrefix = true): string
+    {
+        return $hasPrefix ? \sprintf(
+            '%s::%s',
+            BridgeConstantsInterface::TRANSLATION_NAMESPACE,
+            \trim($message)
+        ) : \trim($message);
     }
 }
