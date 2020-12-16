@@ -20,8 +20,15 @@ $array = ['a' => 3, 'g' => 2, 'z' => 1];
 
 - `skipPatterns` - List of templates, if they match, the check is ignored. The type of token for which you want to
   check (function, class) is specified as the key. An array of patterns for checking the name is specified as the values
-  of this key. By default, arrays inside functions whose name matches the pattern `/^provide.*/` are not checked.
-  Default value: `[T_FUNCTION => ['/^provide.*/']]`.
+  of this key. Default value: `[]`.
+  For example, we can skip all arrays inside functions which name starts with `someFunction`
+  or classes which names starts with `someClass`.
+```
+[
+    T_FUNCTION => ['/^someFunction.*/'],
+    T_CLASS => ['/^someClass.*/'],
+]
+```
 
 ##### [\EonX\EasyStandard\Sniffs\Classes\AvoidPublicPropertiesSniff][2]
 
