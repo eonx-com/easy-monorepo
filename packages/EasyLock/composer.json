@@ -5,13 +5,13 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "symfony/lock": "^4.4 || ^5.0"
+        "symfony/lock": "^4.4 || ^5.1.5"
     },
     "require-dev": {
         "doctrine/orm": "^2.6",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "laravel/lumen-framework": "^5.5",
-        "symfony/symfony": "^4.4 || ^5.0"
+        "symfony/symfony": "^4.4 || ^5.1.5"
     },
     "autoload": {
         "psr-4": {
