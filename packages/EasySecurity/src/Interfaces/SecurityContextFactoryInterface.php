@@ -7,4 +7,6 @@ namespace EonX\EasySecurity\Interfaces;
 interface SecurityContextFactoryInterface
 {
     public function create(): SecurityContextInterface;
+
+    public function reset(): void;
 }
