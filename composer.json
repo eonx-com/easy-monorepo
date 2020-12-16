@@ -50,7 +50,7 @@
         "phpstan/phpstan": "^0.12.42",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "psr/container": "^1.0",
-        "symfony/symfony": "^4.4 || ^5.0",
+        "symfony/symfony": "^4.4 || ^5.1.5",
         "symplify/monorepo-builder": "^8.3.41",
         "symplify/changelog-linker": "^8.3.41",
         "sensiolabs/security-checker": "^5.0",
