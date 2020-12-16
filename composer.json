@@ -11,7 +11,6 @@
         "php": "^7.2",
         "ext-json": "*",
         "doctrine/orm": "^2.6",
-        "eonx-com/externals": "^1.0 || ^2.0",
         "nesbot/carbon": "^2.22",
         "dragonmantank/cron-expression": "^2.3",
         "ramsey/uuid": "^3.9",
