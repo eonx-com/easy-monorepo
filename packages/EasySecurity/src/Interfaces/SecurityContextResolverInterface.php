@@ -6,7 +6,7 @@ namespace EonX\EasySecurity\Interfaces;
 
 use Symfony\Component\HttpFoundation\Request;
 
-interface SecurityContextResolverInterface extends ContextResolverInterface
+interface SecurityContextResolverInterface
 {
     public function resolve(Request $request): SecurityContextInterface;
 }

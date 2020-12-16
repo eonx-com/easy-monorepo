@@ -29,11 +29,6 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const TAG_CONTEXT_MODIFIER = 'easy_security.context_modifier';
-
-    /**
-     * @var string
-     */
     public const TAG_PERMISSIONS_PROVIDER = 'easy_security.permissions_provider';
 
     /**

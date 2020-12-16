@@ -11,7 +11,6 @@ use EonX\EasySecurity\Bridge\Symfony\Security\Voters\ProviderVoter;
 use EonX\EasySecurity\Bridge\Symfony\Security\Voters\RoleVoter;
 use EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface;
 use EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface;
-use EonX\EasySecurity\Interfaces\ContextModifierInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\SecurityContext;
@@ -29,7 +28,6 @@ final class EasySecurityExtension extends Extension
     protected static $autoConfigTags = [
         RolesProviderInterface::class => BridgeConstantsInterface::TAG_ROLES_PROVIDER,
         PermissionsProviderInterface::class => BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER,
-        ContextModifierInterface::class => BridgeConstantsInterface::TAG_CONTEXT_MODIFIER,
         SecurityContextConfiguratorInterface::class => BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR,
     ];
 

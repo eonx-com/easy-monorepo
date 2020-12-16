@@ -131,7 +131,7 @@ class SecurityContext implements SecurityContextInterface
     }
 
     /**
-     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
     public function getRoles(): array
     {
