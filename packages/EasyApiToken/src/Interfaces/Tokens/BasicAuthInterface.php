@@ -12,5 +12,3 @@ interface BasicAuthInterface extends ApiTokenInterface
 
     public function getUsername(): string;
 }
-
-\class_alias(BasicAuthInterface::class, BasicAuthEasyApiTokenInterface::class);

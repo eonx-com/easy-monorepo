@@ -8,9 +8,8 @@ use EonX\EasyDecision\Exceptions\InvalidArgumentException;
 use EonX\EasyDecision\Exceptions\MissingValueIndexException;
 use EonX\EasyDecision\Expressions\ExpressionFunction;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface;
-use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionProviderInterface;
 
-final class ValueExpressionFunctionProvider implements ExpressionFunctionProviderInterface
+final class ValueExpressionFunctionProvider
 {
     /**
      * @return mixed[]
