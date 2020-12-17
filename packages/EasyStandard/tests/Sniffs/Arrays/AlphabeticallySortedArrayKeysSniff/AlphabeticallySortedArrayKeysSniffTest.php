@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyStandard\Tests\Sniffs\Arrays\OrderArrayKeysAlphabeticallySniff;
+namespace EonX\EasyStandard\Tests\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
 
-use EonX\EasyStandard\Sniffs\Arrays\OrderArrayKeysAlphabeticallySniff;
+use EonX\EasyStandard\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
- * @covers \EonX\EasyStandard\Sniffs\Arrays\OrderArrayKeysAlphabeticallySniff
+ * @covers \EonX\EasyStandard\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff
  *
  * @internal
  */
-final class OrderArrayKeysAlphabeticallySniffTest extends AbstractCheckerTestCase
+final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCase
 {
     public function testProcessMultiLineArrayFails(): void
     {
@@ -101,7 +101,7 @@ final class OrderArrayKeysAlphabeticallySniffTest extends AbstractCheckerTestCas
 
     protected function getCheckerClass(): string
     {
-        return OrderArrayKeysAlphabeticallySniff::class;
+        return AlphabeticallySortedArrayKeysSniff::class;
     }
 
     /**
@@ -111,8 +111,8 @@ final class OrderArrayKeysAlphabeticallySniffTest extends AbstractCheckerTestCas
     {
         return [
             'skipPatterns' => [
-                T_CLASS => ['/^SomeClass.*/'],
-                T_FUNCTION => ['/^provide.*/'],
+                T_CLASS => ['/^SomeClass/'],
+                T_FUNCTION => ['/^provide/'],
             ],
         ];
     }

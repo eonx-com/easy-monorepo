@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyStandard\Tests\Sniffs\Arrays\OrderArrayKeysAlphabeticallySniff\Fixtures\Wrong;
+namespace EonX\EasyStandard\Tests\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff\Fixtures\Wrong;
 
 $array = [
     'z' => 0,

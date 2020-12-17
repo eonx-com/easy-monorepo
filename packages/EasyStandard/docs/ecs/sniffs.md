@@ -2,7 +2,7 @@
 
 #### Arrays
 
-##### [\EonX\EasyStandard\Sniffs\Arrays\OrderArrayKeysAlphabeticallySniff][1]
+##### [\EonX\EasyStandard\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff][1]
 
 Arrays must be sorted by keys alphabetically.
 
@@ -18,15 +18,15 @@ $array = ['a' => 3, 'g' => 2, 'z' => 1];
 
 **Parameters**
 
-- `skipPatterns` - List of templates, if they match, the check is ignored. The type of token for which you want to
-  check (function, class) is specified as the key. An array of patterns for checking the name is specified as the values
-  of this key. Default value: `[]`.
-  For example, we can skip all arrays inside functions which name starts with `someFunction`
-  or classes which names starts with `someClass`.
+- `skipPatterns` - A list of patterns to be checked to skip the array.
+  Specify a token type (e.g. `T_FUNCTION` or `T_CLASS`) as a key, and an array of regex patterns as a value
+  to skip an array in the corresponding tokens (functions, classes). Default value: `[]`.
+  For example, you can skip all the arrays inside of functions which names start with `someFunction`
+  or classes which names start with `SomeClass`.
 ```
 [
     T_FUNCTION => ['/^someFunction.*/'],
-    T_CLASS => ['/^someClass.*/'],
+    T_CLASS => ['/^SomeClass.*/'],
 ]
 ```
 
@@ -482,7 +482,7 @@ Checks that a namespace name matches PSR-4 project structure.
 
 - `composerJsonPath` - A relative path to the project file `composer.json`. Default value: `composer.json`.
 
-[1]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Arrays/OrderArrayKeysAlphabeticallySniff.php
+[1]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Arrays/AlphabeticallySortedArrayKeysSniff.php
 [2]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/AvoidPublicPropertiesSniff.php
 [3]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequirePublicConstructorSniff.php
 [4]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequireStrictDeclarationSniff.php

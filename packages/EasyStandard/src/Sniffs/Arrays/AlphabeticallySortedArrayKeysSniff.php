@@ -14,19 +14,38 @@ use PhpParser\ParserFactory;
 use PhpParser\PrettyPrinter\Standard;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
-final class OrderArrayKeysAlphabeticallySniff implements Sniff
+final class AlphabeticallySortedArrayKeysSniff implements Sniff
 {
     /**
      * @var string
      */
-    public const ARRAY_KEYS_SORT_ALPHABETICALLY = 'ArrayKeysSortAlphabetically';
+    public const ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY = 'ArrayKeysNotSortedAlphabetically';
 
     /**
      * @var string
      */
-    private const COMMENT_CONTENT = '[comment]';
+    public const ARRAY_PROCESS_ERROR = 'ArrayProcessError';
 
     /**
+     * @var string
+     */
+    public const FILE_PARSE_ERROR = 'FileParseError';
+
+    /**
+     * This comment is temporarily added to the lines of a multiline array to keep it multiline after fixing the order.
+     *
+     * @var string
+     */
+    private const TEMP_COMMENT_CONTENT = '[temp comment]';
+
+    /**
+     * A list of patterns to be checked to skip the array.
+     * Specify a token type (e.g. `T_FUNCTION` or `T_CLASS`) as a key
+     * and an array of regex patterns as a value to skip an array in the
+     * corresponding tokens (functions, classes).
+     *
+     * Example: `[T_FUNCTION => ['/^someFunction/']]`
+     *
      * @var mixed[]
      */
     public $skipPatterns = [];
@@ -53,7 +72,7 @@ final class OrderArrayKeysAlphabeticallySniff implements Sniff
             $phpcsFile->addErrorOnLine(
                 "Parse error: {$error->getMessage()}",
                 $token['line'],
-                self::ARRAY_KEYS_SORT_ALPHABETICALLY
+                self::FILE_PARSE_ERROR
             );
             $phpcsFile->fixer->endChangeset();
 
@@ -63,9 +82,9 @@ final class OrderArrayKeysAlphabeticallySniff implements Sniff
         if ($ast === null) {
             $phpcsFile->fixer->beginChangeset();
             $phpcsFile->addErrorOnLine(
-                'Unknown error during parse code',
+                'Unknown error while parsing the codee',
                 $token['line'],
-                self::ARRAY_KEYS_SORT_ALPHABETICALLY
+                self::FILE_PARSE_ERROR
             );
             $phpcsFile->fixer->endChangeset();
 
@@ -82,36 +101,36 @@ final class OrderArrayKeysAlphabeticallySniff implements Sniff
         if ($array === null) {
             $phpcsFile->fixer->beginChangeset();
             $phpcsFile->addErrorOnLine(
-                'Unknown error during refactor array',
+                'Unknown error while processing the array',
                 $token['line'],
-                self::ARRAY_KEYS_SORT_ALPHABETICALLY
+                self::ARRAY_PROCESS_ERROR
             );
             $phpcsFile->fixer->endChangeset();
 
             return;
         }
 
-        if ($array !== null && $array->hasAttribute('isChanged') === false) {
+        if ($array->hasAttribute('isChanged') === false) {
             return;
         }
 
         $prettyPrinter = new Standard();
         $newContent = $prettyPrinter->prettyPrint([$array]);
-        $newContent = \str_replace('    ' . self::COMMENT_CONTENT . PHP_EOL, '', $newContent);
+        $newContent = \str_replace('    ' . self::TEMP_COMMENT_CONTENT . PHP_EOL, '', $newContent);
 
         $phpcsFile->fixer->beginChangeset();
 
         $fix = $phpcsFile->addFixableError(
-            'Array\'s keys should be sorted alphabetically',
+            'The array keys should be sorted alphabetically',
             $token['content'],
-            self::ARRAY_KEYS_SORT_ALPHABETICALLY
+            self::ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY
         );
 
         if ($fix !== false) {
             $phpcsFile->addErrorOnLine(
-                'Array\'s keys should be sorted alphabetically',
+                'The array keys should be sorted alphabetically',
                 $token['line'],
-                self::ARRAY_KEYS_SORT_ALPHABETICALLY
+                self::ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY
             );
 
             $phpcsFile->fixer->replaceToken($bracketOpenerPointer, $newContent);
@@ -123,48 +142,12 @@ final class OrderArrayKeysAlphabeticallySniff implements Sniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    public function refactor(?Array_ $node = null): ?Array_
-    {
-        if ($node === null) {
-            return null;
-        }
-
-        if ($this->isAssociativeOnly($node)) {
-            $items = $this->getSortedItems($node);
-
-            if ($items !== $node->items) {
-                $node->items = $this->fixMultiLineOutput($items);
-                $node->setAttribute('isChanged', true);
-            }
-        }
-
-        return $node;
-    }
-
     /**
      * @return mixed[]
      */
     public function register(): array
     {
         return [T_OPEN_SHORT_ARRAY, T_ARRAY];
-    }
-
-    public function shouldSkip(File $phpcsFile, int $bracketOpenerPointer): bool
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        foreach ($this->skipPatterns as $tokenType => $patterns) {
-            $sourcePointer = TokenHelper::findPrevious($phpcsFile, [$tokenType], $bracketOpenerPointer);
-            $namePointer = TokenHelper::findNextEffective($phpcsFile, $sourcePointer + 1, $bracketOpenerPointer);
-            $name = $tokens[$namePointer]['content'];
-            foreach ($patterns as $pattern) {
-                if (\preg_match($pattern, $name)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -187,7 +170,7 @@ final class OrderArrayKeysAlphabeticallySniff implements Sniff
             $currentKey = $arrayItem->key;
             $nextLine = (int)$currentKey->getAttribute('startLine');
             if ($nextLine !== $currentLine) {
-                $arrayItem->setAttribute('comments', [new Comment(self::COMMENT_CONTENT)]);
+                $arrayItem->setAttribute('comments', [new Comment(self::TEMP_COMMENT_CONTENT)]);
                 $currentLine = $nextLine;
             }
         }
@@ -249,5 +232,41 @@ final class OrderArrayKeysAlphabeticallySniff implements Sniff
         }
 
         return (bool)$isAssociative;
+    }
+
+    private function refactor(?Array_ $node = null): ?Array_
+    {
+        if ($node === null) {
+            return null;
+        }
+
+        if ($this->isAssociativeOnly($node)) {
+            $items = $this->getSortedItems($node);
+
+            if ($items !== $node->items) {
+                $node->items = $this->fixMultiLineOutput($items);
+                $node->setAttribute('isChanged', true);
+            }
+        }
+
+        return $node;
+    }
+
+    private function shouldSkip(File $phpcsFile, int $bracketOpenerPointer): bool
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        foreach ($this->skipPatterns as $tokenType => $patterns) {
+            $sourcePointer = TokenHelper::findPrevious($phpcsFile, [$tokenType], $bracketOpenerPointer);
+            $namePointer = TokenHelper::findNextEffective($phpcsFile, $sourcePointer + 1, $bracketOpenerPointer);
+            $name = $tokens[$namePointer]['content'];
+            foreach ($patterns as $pattern) {
+                if (\preg_match($pattern, $name)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

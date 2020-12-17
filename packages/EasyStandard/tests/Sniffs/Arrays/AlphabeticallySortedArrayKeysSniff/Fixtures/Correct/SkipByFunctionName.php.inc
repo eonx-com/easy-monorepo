@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyStandard\Tests\Sniffs\Arrays\OrderArrayKeysAlphabeticallySniff\Fixtures\Correct;
+namespace EonX\EasyStandard\Tests\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff\Fixtures\Correct;
 
 final class TestSomeClass
 {
