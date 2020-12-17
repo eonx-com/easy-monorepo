@@ -70,6 +70,7 @@
     },
     "autoload": {
         "psr-4": {
+            "EonX\\EasyMonorepo\\": "monorepo",
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
             "EonX\\EasyAsync\\": "packages/EasyAsync/src",
             "EonX\\EasyAwsCredentialsFinder\\": "packages/EasyAwsCredentialsFinder/src",
