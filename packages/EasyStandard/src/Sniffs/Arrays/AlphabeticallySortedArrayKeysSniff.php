@@ -44,7 +44,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      * and an array of regex patterns as a value to skip an array in the
      * corresponding tokens (functions, classes).
      *
-     * Example: `[T_FUNCTION => ['/^someFunction/']]`
+     * Example: `[T_FUNCTION => ['/^someFunction/']]`.
      *
      * @var mixed[]
      */
