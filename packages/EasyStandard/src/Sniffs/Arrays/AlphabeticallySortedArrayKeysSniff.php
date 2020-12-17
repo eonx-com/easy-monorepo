@@ -68,25 +68,21 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         try {
             $ast = $parser->parse('<?php' . PHP_EOL . $code . ';');
         } catch (Error $error) {
-            $phpcsFile->fixer->beginChangeset();
             $phpcsFile->addErrorOnLine(
                 "Parse error: {$error->getMessage()}",
                 $token['line'],
                 self::FILE_PARSE_ERROR
             );
-            $phpcsFile->fixer->endChangeset();
 
             return;
         }
 
         if ($ast === null) {
-            $phpcsFile->fixer->beginChangeset();
             $phpcsFile->addErrorOnLine(
                 'Unknown error while parsing the codee',
                 $token['line'],
                 self::FILE_PARSE_ERROR
             );
-            $phpcsFile->fixer->endChangeset();
 
             return;
         }
@@ -99,13 +95,11 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $array = $this->refactor($array);
 
         if ($array === null) {
-            $phpcsFile->fixer->beginChangeset();
             $phpcsFile->addErrorOnLine(
                 'Unknown error while processing the array',
                 $token['line'],
                 self::ARRAY_PROCESS_ERROR
             );
-            $phpcsFile->fixer->endChangeset();
 
             return;
         }
@@ -118,8 +112,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $newContent = $prettyPrinter->prettyPrint([$array]);
         $newContent = \str_replace('    ' . self::TEMP_COMMENT_CONTENT . PHP_EOL, '', $newContent);
 
-        $phpcsFile->fixer->beginChangeset();
-
         $fix = $phpcsFile->addFixableError(
             'The array keys should be sorted alphabetically',
             $token['content'],
@@ -127,19 +119,15 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         );
 
         if ($fix !== false) {
-            $phpcsFile->addErrorOnLine(
-                'The array keys should be sorted alphabetically',
-                $token['line'],
-                self::ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY
-            );
+            $phpcsFile->fixer->beginChangeset();
 
             $phpcsFile->fixer->replaceToken($bracketOpenerPointer, $newContent);
             for ($bracketOpenerPointer++; $bracketOpenerPointer <= $bracketCloserPointer; $bracketOpenerPointer++) {
                 $phpcsFile->fixer->replaceToken($bracketOpenerPointer, '');
             }
-        }
 
-        $phpcsFile->fixer->endChangeset();
+            $phpcsFile->fixer->endChangeset();
+        }
     }
 
     /**
