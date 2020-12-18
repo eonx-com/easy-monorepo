@@ -38,12 +38,7 @@ $array = [
     'exp' => \time() + 3600,
     'iat' => \time(),
     'iss' => self::TEST_CONST,
-    self::ANOTHER_TEST_CONST => [
-        'email' => $someObject->getEmail(),
-        'fn' => $someObject->getFn(),
-        'ln' => $someObject->getLn(),
-        'phone' => $someObject->getPhone(),
-    ],
+    self::ANOTHER_TEST_CONST => ['email' => $someObject->getEmail(), 'fn' => $someObject->getFn(), 'ln' => $someObject->getLn(), 'phone' => $someObject->getPhone()],
     SomeFile::TEST_CONST => 'abc',
     'sub' => $someObject->getValue(),
 ];
@@ -53,12 +48,7 @@ $array2 = array(
     'exp' => \time() + 3600,
     'iat' => \time(),
     'iss' => self::TEST_CONST,
-    self::ANOTHER_TEST_CONST => array(
-        'email' => $someObject->getEmail(),
-        'fn' => $someObject->getFn(),
-        'ln' => $someObject->getLn(),
-        'phone' => $someObject->getPhone(),
-    ),
+    self::ANOTHER_TEST_CONST => array('email' => $someObject->getEmail(), 'fn' => $someObject->getFn(), 'ln' => $someObject->getLn(), 'phone' => $someObject->getPhone()),
     SomeFile::TEST_CONST => 'abc',
     'sub' => $someObject->getValue(),
 );
