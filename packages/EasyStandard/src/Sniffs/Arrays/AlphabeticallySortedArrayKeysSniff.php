@@ -19,17 +19,17 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     /**
      * @var string
      */
-    public const ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY = 'ArrayKeysNotSortedAlphabetically';
+    private const ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY = 'ArrayKeysNotSortedAlphabetically';
 
     /**
      * @var string
      */
-    public const ARRAY_PROCESS_ERROR = 'ArrayProcessError';
+    private const ARRAY_PROCESS_ERROR = 'ArrayProcessError';
 
     /**
      * @var string
      */
-    public const FILE_PARSE_ERROR = 'FileParseError';
+    private const FILE_PARSE_ERROR = 'FileParseError';
 
     /**
      * This comment is temporarily added to the lines of a multiline array to keep it multiline after fixing the order.
