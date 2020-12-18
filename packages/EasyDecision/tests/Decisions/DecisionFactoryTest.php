@@ -4,30 +4,26 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Decisions;
 
-use EonX\EasyDecision\Decisions\DecisionConfig;
+use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
 use EonX\EasyDecision\Decisions\DecisionFactory;
 use EonX\EasyDecision\Decisions\UnanimousDecision;
-use EonX\EasyDecision\Exceptions\InvalidDecisionException;
-use EonX\EasyDecision\Exceptions\InvalidRuleProviderException;
-use EonX\EasyDecision\Expressions\ExpressionLanguageConfig;
+use EonX\EasyDecision\Exceptions\InvalidMappingException;
+use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
 use EonX\EasyDecision\Providers\ConfigMappingProvider;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Stubs\DecisionConfiguratorStub;
-use EonX\EasyDecision\Tests\Stubs\RuleProviderStub;
+use EonX\EasyDecision\Tests\Stubs\RulesConfiguratorStub;
 
 final class DecisionFactoryTest extends AbstractTestCase
 {
     public function testCreateDecisionSuccessfully(): void
     {
-        $config = new DecisionConfig(
-            UnanimousDecision::class,
-            'my-decision',
-            [new RuleProviderStub()],
-            new ExpressionLanguageConfig()
-        );
+        $configurators = [
+            new RulesConfiguratorStub(),
+            new SetExpressionLanguageConfigurator(new ExpressionLanguageFactory()),
+        ];
         $mappingProvider = new ConfigMappingProvider([]);
-
-        $decision = (new DecisionFactory($mappingProvider, $this->getExpressionLanguageFactory()))->create($config);
+        $decision = (new DecisionFactory($mappingProvider, $configurators))->createUnanimousDecision();
 
         $expected = [
             'true-1' => true,
@@ -48,11 +44,11 @@ final class DecisionFactoryTest extends AbstractTestCase
 
         $configurator1 = new DecisionConfiguratorStub('my-unanimous-decision');
         $configurator2 = new DecisionConfiguratorStub('my-consensus-decision');
+        $exprLanguageConfigurator = new SetExpressionLanguageConfigurator(new ExpressionLanguageFactory());
 
         $decisionFactory = (new DecisionFactory(
             $mappingProvider,
-            $this->getExpressionLanguageFactory(),
-            new \ArrayIterator([$configurator1, $configurator2])
+            new \ArrayIterator([$configurator1, $configurator2, $exprLanguageConfigurator])
         ));
 
         $decision1 = $decisionFactory->createUnanimousDecision('my-unanimous-decision');
@@ -68,34 +64,8 @@ final class DecisionFactoryTest extends AbstractTestCase
 
     public function testInvalidDecisionInMappingException(): void
     {
-        $this->expectException(InvalidDecisionException::class);
+        $this->expectException(InvalidMappingException::class);
 
-        $config = new DecisionConfig(\stdClass::class, 'my-decision', []);
-        $mappingProvider = new ConfigMappingProvider([]);
-
-        (new DecisionFactory($mappingProvider, $this->getExpressionLanguageFactory()))->create($config);
-    }
-
-    public function testInvalidRuleProviderException(): void
-    {
-        $this->expectException(InvalidRuleProviderException::class);
-
-        $mappingProvider = new ConfigMappingProvider([]);
-        $config = new DecisionConfig(UnanimousDecision::class, 'my-decision', [new \stdClass()]);
-
-        (new DecisionFactory($mappingProvider, $this->getExpressionLanguageFactory()))->create($config);
-    }
-
-    public function testNotInMappingDecisionException(): void
-    {
-        $this->expectException(InvalidDecisionException::class);
-
-        $mappingProvider = new ConfigMappingProvider([]);
-
-        (new DecisionFactory($mappingProvider, $this->getExpressionLanguageFactory()))->create(new DecisionConfig(
-            '',
-            'my-decision',
-            []
-        ));
+        (new DecisionFactory(new ConfigMappingProvider([])))->createByName('my-decision');
     }
 }

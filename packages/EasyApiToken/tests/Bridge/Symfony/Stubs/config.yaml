@@ -1,6 +1,0 @@
-easy_api_token:
-    decoders:
-        user-apikey: ~
-        chain:
-            list:
-                - user-apikey

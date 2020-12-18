@@ -23,24 +23,11 @@ abstract class AbstractApiTokenDecoder implements ApiTokenDecoderInterface
 
     public function getName(): string
     {
-        return $this->name ?? self::class;
+        return $this->name ?? static::class;
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
-     */
-    protected function getHeaderWithoutPrefix(string $header, string $prefix, $request): ?string
+    protected function getHeaderWithoutPrefix(string $header, string $prefix, Request $request): ?string
     {
-        if ($request instanceof ServerRequestInterface) {
-            @\trigger_error(\sprintf(
-                'Passing $request as %s is deprecated since 2.4 and removed in 3.0. Use %s instead.',
-                ServerRequestInterface::class,
-                Request::class
-            ), \E_USER_DEPRECATED);
-
-            return $this->getHeaderWithoutPrefixForServerRequest($header, $prefix, $request);
-        }
-
         $header = $request->headers->get($header, '');
 
         if (Strings::startsWith($header ?? '', $prefix) === false) {
@@ -62,27 +49,5 @@ abstract class AbstractApiTokenDecoder implements ApiTokenDecoderInterface
         ), \E_USER_DEPRECATED);
 
         return $request->getQueryParams()[$param] ?? null;
-    }
-
-    private function getFirstHeaderValue(string $header, ServerRequestInterface $request): ?string
-    {
-        return $request->getHeader(\strtolower($header))[0] ?? null;
-    }
-
-    private function getHeaderWithoutPrefixForServerRequest(
-        string $header,
-        string $prefix,
-        ServerRequestInterface $request
-    ): ?string {
-        if ($this->headerStartsWith($header, $prefix, $request) === false) {
-            return null;
-        }
-
-        return \substr((string)$this->getFirstHeaderValue($header, $request), \strlen($prefix));
-    }
-
-    private function headerStartsWith(string $header, string $prefix, ServerRequestInterface $request): bool
-    {
-        return Strings::startsWith($this->getFirstHeaderValue($header, $request) ?? '', $prefix);
     }
 }

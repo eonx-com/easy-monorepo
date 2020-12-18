@@ -6,13 +6,11 @@ namespace EonX\EasyApiToken\Decoders;
 
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyApiToken\Tokens\ApiKey;
+use Symfony\Component\HttpFoundation\Request;
 
 final class ApiKeyDecoder extends AbstractApiTokenDecoder
 {
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
-     */
-    public function decode($request): ?ApiTokenInterface
+    public function decode(Request $request): ?ApiTokenInterface
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Basic', $request);
 
