@@ -14,7 +14,6 @@ final class ErrorResponseFactory implements ErrorResponseFactoryInterface
 {
     public function create(Request $request, ErrorResponseDataInterface $data): Response
     {
-        // TODO - Support more formats, using symfony serializer
         return new JsonResponse($data->getRawData(), $data->getStatusCode(), $data->getHeaders());
     }
 }

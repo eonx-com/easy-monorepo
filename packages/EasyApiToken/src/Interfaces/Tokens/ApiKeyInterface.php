@@ -10,5 +10,3 @@ interface ApiKeyInterface extends ApiTokenInterface
 {
     public function getApiKey(): string;
 }
-
-\class_alias(ApiKeyInterface::class, ApiKeyEasyApiTokenInterface::class);
