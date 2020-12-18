@@ -4,28 +4,46 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
-use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasySecurity\Events\SecurityContextCreatedEvent;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 
 abstract class AbstractSecurityContextFactory implements SecurityContextFactoryInterface
 {
     /**
-     * @var \EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface
+     * @var null|\EonX\EasySecurity\Interfaces\SecurityContextInterface
      */
-    private $authorizationMatrix;
+    private $cached;
 
-    public function __construct(AuthorizationMatrixInterface $authorizationMatrix)
+    /**
+     * @var null|\EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(?EventDispatcherInterface $eventDispatcher = null)
     {
-        $this->authorizationMatrix = $authorizationMatrix;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function create(): SecurityContextInterface
     {
-        $context = $this->doCreate();
-        $context->setAuthorizationMatrix($this->authorizationMatrix);
+        if ($this->cached !== null) {
+            return $this->cached;
+        }
 
-        return $context;
+        $context = $this->doCreate();
+
+        if ($this->eventDispatcher !== null) {
+            $this->eventDispatcher->dispatch(new SecurityContextCreatedEvent($context));
+        }
+
+        return $this->cached = $context;
+    }
+
+    public function reset(): void
+    {
+        $this->cached = null;
     }
 
     abstract protected function doCreate(): SecurityContextInterface;

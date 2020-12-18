@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Tests;
 
 use EonX\EasyApiToken\Tokens\ApiKey;
+use EonX\EasySecurity\Authorization\Permission;
+use EonX\EasySecurity\Authorization\Role;
 use EonX\EasySecurity\Exceptions\NoProviderInContextException;
 use EonX\EasySecurity\Exceptions\NoUserInContextException;
-use EonX\EasySecurity\Permission;
-use EonX\EasySecurity\Role;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\UserInterfaceStub;
