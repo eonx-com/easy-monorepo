@@ -6,7 +6,7 @@ namespace EonX\EasyStandard\Tests\Rector\UselessSingleAnnotationRector;
 
 use EonX\EasyStandard\Rector\UselessSingleAnnotationRector;
 use Iterator;
-use Rector\Testing\PHPUnit\AbstractRectorTestCase;
+use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**

@@ -18,7 +18,7 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     public function testProcessMultiLineArrayFails(): void
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/MultiLineArray.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 2);
+        $this->doTestFileInfo($wrongFileInfo);
     }
 
     public function testProcessMultiLineArraySucceeds(): void
@@ -30,7 +30,7 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     public function testProcessMultiLineMixedArrayFails(): void
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/MultiLineMixedArray.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 4);
+        $this->doTestFileInfo($wrongFileInfo);
     }
 
     public function testProcessMultiLineMixedArraySucceeds(): void
@@ -42,7 +42,7 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     public function testProcessMultiLineMultiDimensionalArrayFails(): void
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/MultiLineMultiDimensionalArray.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 4);
+        $this->doTestFileInfo($wrongFileInfo);
     }
 
     public function testProcessMultiLineMultiDimensionalArraySucceeds(): void
@@ -54,7 +54,7 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     public function testProcessSingleLineArrayFails(): void
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SingleLineArray.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 2);
+        $this->doTestFileInfo($wrongFileInfo);
     }
 
     public function testProcessSingleLineArraySucceeds(): void
@@ -66,7 +66,7 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     public function testProcessSingleLineMixedArrayFails(): void
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SingleLineMixedArray.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 4);
+        $this->doTestFileInfo($wrongFileInfo);
     }
 
     public function testProcessSingleLineMixedArraySucceeds(): void
@@ -78,7 +78,7 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     public function testProcessSingleLineMultiDimensionalArrayFails(): void
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SingleLineMultiDimensionalArray.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 4);
+        $this->doTestFileInfo($wrongFileInfo);
     }
 
     public function testProcessSingleLineMultiDimensionalArraySucceeds(): void
