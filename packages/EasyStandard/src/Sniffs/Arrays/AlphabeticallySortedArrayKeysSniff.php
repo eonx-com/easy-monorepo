@@ -23,11 +23,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     /**
      * @var string
      */
-    private const ARRAY_PROCESS_ERROR = 'ArrayProcessError';
-
-    /**
-     * @var string
-     */
     private const FILE_PARSE_ERROR = 'FileParseError';
 
     /**
