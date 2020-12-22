@@ -38,6 +38,11 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     public $skipPatterns = [];
 
     /**
+     * @var mixed[]
+     */
+    private static $parsedLine = [];
+
+    /**
      * @var \EonX\EasyStandard\Output\Printer
      */
     private $prettyPrinter;
@@ -88,6 +93,14 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             return;
         }
 
+        if (isset(self::$parsedLine[$phpcsFile->getFilename()]) === false) {
+            self::$parsedLine[$phpcsFile->getFilename()] = [];
+        }
+
+        self::$parsedLine[$phpcsFile->getFilename()][] = [
+            'start' => $token['line'],
+            'finish' => $tokens[$bracketCloserPointer]
+        ];
         $this->prettyPrinter = new Printer();
         $array = $this->refactor($array);
 
@@ -152,10 +165,12 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             }
 
             if ($arrayItem->value instanceof Array_ && \count($arrayItem->value->items) > 0) {
-                /** @var ArrayItem[] $items */
-                $items = $arrayItem->value->items;
-                $arrayItem->value->items = $this->fixMultiLineOutput($items);
+                /** @var ArrayItem[] $subItems */
+                $subItems = $arrayItem->value->items;
+                $arrayItem->value->items = $this->fixMultiLineOutput($subItems);
             }
+
+            $items[$index] = $arrayItem;
         }
 
         return $items;
@@ -171,11 +186,27 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     }
 
     /**
+     * @param ArrayItem[] $items
+     *
      * @return ArrayItem[]
      */
-    private function getSortedItems(Array_ $array): array
+    private function getSortedItems(array $items): array
     {
-        $items = $array->items;
+        foreach ($items as $index => $arrayItem) {
+            if ($arrayItem->value instanceof Array_) {
+                $subItems = $arrayItem->value->items;
+                if (\count($subItems) > 1) {
+                    $arrayItem->value->items = $this->getSortedItems($subItems);
+                }
+
+                $items[$index] = $arrayItem;
+            }
+        }
+
+        if ($this->isAssociativeOnly($items) === false) {
+            return $items;
+        }
+
         \usort($items, function (ArrayItem $firstItem, ArrayItem $secondItem): int {
             $firstName = $this->getArrayKeyAsString($firstItem);
             $secondName = $this->getArrayKeyAsString($secondItem);
@@ -183,20 +214,19 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             return $firstName <=> $secondName;
         });
 
-        return \array_filter($items);
+        return $items;
     }
 
     /**
-     * @param \PhpParser\Node\Expr\Array_ $array
+     * @param ArrayItem[] $items
      *
      * @return bool
      */
-    private function isAssociativeOnly(Array_ $array): bool
+    private function isAssociativeOnly(array $items): bool
     {
         $isAssociative = 1;
 
-        /** @var \PhpParser\Node\Expr\ArrayItem $arrayItem */
-        foreach ($array->items as $arrayItem) {
+        foreach ($items as $arrayItem) {
             $isAssociative &= $arrayItem->key !== null;
         }
 
@@ -205,8 +235,11 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
     private function refactor(Array_ $node): Array_
     {
-        if ($this->isAssociativeOnly($node)) {
-            $items = $this->getSortedItems($node);
+        /** @var ArrayItem[] $items */
+        $items = $node->items;
+
+        if ($this->isAssociativeOnly($items)) {
+            $items = $this->getSortedItems($items);
 
             if ($node->items !== $items) {
                 $node->items = $this->fixMultiLineOutput($items);
@@ -255,6 +288,20 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             $name = $tokens[$namePointer]['content'];
             foreach ($patterns as $pattern) {
                 if (\preg_match($pattern, $name)) {
+                    return true;
+                }
+            }
+        }
+
+        if (isset(self::$parsedLine[$phpcsFile->getFilename()])) {
+            $tokens = $phpcsFile->getTokens();
+            $token = $tokens[$bracketOpenerPointer];
+            $bracketCloserPointer = $token['bracket_closer'] ?? $token['parenthesis_closer'];
+            $startLine = $token['line'];
+            $finishLine = $tokens[$bracketCloserPointer]['line'];
+
+            foreach (self::$parsedLine[$phpcsFile->getFilename()] as $parsedLine) {
+                if ($startLine >= $parsedLine['start'] && $finishLine <= $parsedLine['finish']) {
                     return true;
                 }
             }
