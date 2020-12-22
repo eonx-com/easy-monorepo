@@ -99,7 +99,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
         self::$parsedLine[$phpcsFile->getFilename()][] = [
             'start' => $token['line'],
-            'finish' => $tokens[$bracketCloserPointer]
+            'finish' => $tokens[$bracketCloserPointer]['line'],
         ];
         $this->prettyPrinter = new Printer();
         $array = $this->refactor($array);
@@ -141,7 +141,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      */
     public function register(): array
     {
-        return [T_OPEN_SHORT_ARRAY, T_ARRAY];
+        return [T_ARRAY, T_OPEN_SHORT_ARRAY];
     }
 
     /**
