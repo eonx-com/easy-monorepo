@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyStandard\Sniffs\Arrays;
 
+use EonX\EasyStandard\Output\Printer;
 use Error;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PhpParser\Comment;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\ParserFactory;
-use PhpParser\PrettyPrinter\Standard;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class AlphabeticallySortedArrayKeysSniff implements Sniff
@@ -32,13 +31,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     private const FILE_PARSE_ERROR = 'FileParseError';
 
     /**
-     * This comment is temporarily added to the lines of a multiline array to keep it multiline after fixing the order.
-     *
-     * @var string
-     */
-    private const TEMP_COMMENT_CONTENT = '[temp comment]';
-
-    /**
      * A list of patterns to be checked to skip the array.
      * Specify a token type (e.g. `T_FUNCTION` or `T_CLASS`) as a key
      * and an array of regex patterns as a value to skip an array in the
@@ -49,6 +41,11 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      * @var mixed[]
      */
     public $skipPatterns = [];
+
+    /**
+     * @var \EonX\EasyStandard\Output\Printer
+     */
+    private $prettyPrinter;
 
     /**
      * @param int $bracketOpenerPointer
@@ -87,10 +84,15 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             return;
         }
 
+        $this->prettyPrinter = new Printer();
         /** @var \PhpParser\Node\Stmt\Expression $stmtExpr */
         $stmtExpr = $ast[0];
         /** @var \PhpParser\Node\Expr\Array_ $array */
         $array = $stmtExpr->expr;
+
+        if (\count($array->items) <= 1) {
+            return;
+        }
 
         $array = $this->refactor($array);
 
@@ -108,23 +110,29 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             return;
         }
 
-        $prettyPrinter = new Standard();
-        $newContent = $prettyPrinter->prettyPrint([$array]);
-        $newContent = \str_replace('    ' . self::TEMP_COMMENT_CONTENT . PHP_EOL, '', $newContent);
+        $phpcsFile->addErrorOnLine(
+            'The array keys should be sorted alphabetically',
+            $token['line'],
+            self::ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY
+        );
 
         $fix = $phpcsFile->addFixableError(
             'The array keys should be sorted alphabetically',
-            $token['content'],
+            $bracketOpenerPointer,
             self::ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY
         );
 
         if ($fix !== false) {
+            $this->setStartIndent($phpcsFile, $bracketOpenerPointer);
+
+            $newContent = $this->prettyPrinter->printNodes([$array]);
+
             $phpcsFile->fixer->beginChangeset();
 
-            $phpcsFile->fixer->replaceToken($bracketOpenerPointer, $newContent);
-            for ($bracketOpenerPointer++; $bracketOpenerPointer <= $bracketCloserPointer; $bracketOpenerPointer++) {
-                $phpcsFile->fixer->replaceToken($bracketOpenerPointer, '');
+            for ($iterator = $bracketOpenerPointer; $iterator <= $bracketCloserPointer; $iterator++) {
+                $phpcsFile->fixer->replaceToken($iterator, '');
             }
+            $phpcsFile->fixer->replaceToken($bracketOpenerPointer, $newContent);
 
             $phpcsFile->fixer->endChangeset();
         }
@@ -145,21 +153,21 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      */
     private function fixMultiLineOutput(array $items): array
     {
-        /** @var \PhpParser\Node\Expr $currentKey */
-        $currentKey = $items[0]->key;
-        $currentLine = (int)$currentKey->getAttribute('startLine');
+        $currentLine = (int)$items[0]->getAttribute('startLine');
 
         foreach ($items as $index => $arrayItem) {
             if ($index === 0) {
                 continue;
             }
 
-            /** @var \PhpParser\Node\Expr $currentKey */
-            $currentKey = $arrayItem->key;
-            $nextLine = (int)$currentKey->getAttribute('startLine');
+            $nextLine = (int)$arrayItem->getAttribute('startLine');
             if ($nextLine !== $currentLine) {
-                $arrayItem->setAttribute('comments', [new Comment(self::TEMP_COMMENT_CONTENT)]);
+                $arrayItem->setAttribute('multiLine', true);
                 $currentLine = $nextLine;
+            }
+
+            if ($arrayItem->value instanceof Array_ && \count($arrayItem->value->items) > 0) {
+                $arrayItem->value->items = $this->fixMultiLineOutput($arrayItem->value->items);
             }
         }
 
@@ -168,25 +176,9 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
     private function getArrayKeyAsString(ArrayItem $node): string
     {
-        /** @var \PhpParser\Node\Expr $keyNode */
-        $keyNode = $node->key;
-        switch ($keyNode->getType()) {
-            case 'Expr_ClassConstFetch':
-                /** @var \PhpParser\Node\Expr\ClassConstFetch $classConstNode */
-                $classConstNode = $node->key;
-                /** @var \PhpParser\Node\Name $nameNode */
-                $nameNode = $classConstNode->class;
-                /** @var \PhpParser\Node\Identifier $identifier */
-                $identifier = $classConstNode->name;
-                $name = $nameNode->getLast() . '::' . $identifier->name;
-                break;
-            default:
-                /** @var \PhpParser\Node\Scalar\String_ $stringNode */
-                $stringNode = $node->key;
-                $name = \trim($stringNode->value, " \t\n\r\0\x0B\"'");
-        }
+        $nodeKeyName = $this->prettyPrinter->prettyPrint([$node->key]);
 
-        return \strtolower($name);
+        return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
     }
 
     /**
@@ -238,6 +230,34 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         }
 
         return $node;
+    }
+
+    private function setStartIndent(File $phpcsFile, int $bracketOpenerPointer): void
+    {
+        $token = $phpcsFile->getTokens()[$bracketOpenerPointer];
+        $indentLevel = (int)\floor(($token['column'] - 1) / 4);
+        $indentLevel *= 4;
+
+        $closePointer = $token['bracket_closer'] ?? $token['parenthesis_closer'];
+
+        if ($closePointer === null) {
+            $this->prettyPrinter->setStartIndentLevel($indentLevel);
+
+            return;
+        }
+
+        $closeToken = $phpcsFile->getTokens()[$closePointer];
+
+        if ($token['line'] === $closeToken['line']) {
+            $this->prettyPrinter->setStartIndentLevel($indentLevel);
+
+            return;
+        }
+
+        $indentLevel = (int)\floor(($closeToken['column'] - 1) / 4);
+        $indentLevel *= 4;
+
+        $this->prettyPrinter->setStartIndentLevel($indentLevel);
     }
 
     private function shouldSkip(File $phpcsFile, int $bracketOpenerPointer): bool
