@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Output;
@@ -36,6 +37,20 @@ final class Printer extends Standard
     }
 
     /**
+     * @param \PhpParser\Node[] $nodes
+     */
+    protected function pMaybeMultiline(array $nodes, ?bool $trailingComma = null): string
+    {
+        $trailingComma = $trailingComma ?? false;
+
+        if ($this->hasMultiLineNodes($nodes) === false) {
+            return $this->pCommaSeparated($nodes);
+        }
+
+        return $this->pCommaSeparatedMultiline($nodes, $trailingComma) . $this->nl;
+    }
+
+    /**
      * @param Node[] $nodes
      */
     private function hasMultiLineNodes(array $nodes): bool
@@ -47,19 +62,5 @@ final class Printer extends Standard
         }
 
         return false;
-    }
-
-    /**
-     * @param \PhpParser\Node[] $nodes
-     */
-    private function pMaybeMultiline(array $nodes, ?bool $trailingComma = null): string
-    {
-        $trailingComma = $trailingComma ?? false;
-
-        if (!$this->hasMultiLineNodes($nodes)) {
-            return $this->pCommaSeparated($nodes);
-        }
-
-        return $this->pCommaSeparatedMultiline($nodes, $trailingComma) . $this->nl;
     }
 }

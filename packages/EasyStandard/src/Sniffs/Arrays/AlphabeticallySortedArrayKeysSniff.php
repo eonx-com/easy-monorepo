@@ -76,7 +76,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
         if ($ast === null) {
             $phpcsFile->addErrorOnLine(
-                'Unknown error while parsing the codee',
+                'Unknown error while parsing the code',
                 $token['line'],
                 self::FILE_PARSE_ERROR
             );
@@ -90,12 +90,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         /** @var \PhpParser\Node\Expr\Array_ $array */
         $array = $stmtExpr->expr;
 
-        if (\count($array->items) <= 1) {
-            return;
-        }
-
-        $array = $this->refactor($array);
-
         if ($array === null) {
             $phpcsFile->addErrorOnLine(
                 'Unknown error while processing the array',
@@ -105,6 +99,12 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
             return;
         }
+
+        if (\count($array->items) <= 1) {
+            return;
+        }
+
+        $array = $this->refactor($array);
 
         if ($array->hasAttribute('isChanged') === false) {
             return;
@@ -187,7 +187,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     private function getSortedItems(Array_ $array): array
     {
         $items = $array->items;
-        usort($items, function (ArrayItem $firstItem, ArrayItem $secondItem): int {
+        \usort($items, function (ArrayItem $firstItem, ArrayItem $secondItem): int {
             $firstName = $this->getArrayKeyAsString($firstItem);
             $secondName = $this->getArrayKeyAsString($secondItem);
 
@@ -214,12 +214,8 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         return (bool)$isAssociative;
     }
 
-    private function refactor(?Array_ $node = null): ?Array_
+    private function refactor(Array_ $node): Array_
     {
-        if ($node === null) {
-            return null;
-        }
-
         if ($this->isAssociativeOnly($node)) {
             $items = $this->getSortedItems($node);
 
