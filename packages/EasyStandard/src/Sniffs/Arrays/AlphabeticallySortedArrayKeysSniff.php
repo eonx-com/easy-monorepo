@@ -145,9 +145,9 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     }
 
     /**
-     * @param ArrayItem[] $items
+     * @param \PhpParser\Node\Expr\ArrayItem[] $items
      *
-     * @return ArrayItem[]
+     * @return \PhpParser\Node\Expr\ArrayItem[]
      */
     private function fixMultiLineOutput(array $items): array
     {
@@ -165,7 +165,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             }
 
             if ($arrayItem->value instanceof Array_ && \count($arrayItem->value->items) > 0) {
-                /** @var ArrayItem[] $subItems */
+                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                 $subItems = $arrayItem->value->items;
                 $arrayItem->value->items = $this->fixMultiLineOutput($subItems);
             }
@@ -186,14 +186,15 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     }
 
     /**
-     * @param ArrayItem[] $items
+     * @param \PhpParser\Node\Expr\ArrayItem[] $items
      *
-     * @return ArrayItem[]
+     * @return \PhpParser\Node\Expr\ArrayItem[]
      */
     private function getSortedItems(array $items): array
     {
         foreach ($items as $index => $arrayItem) {
             if ($arrayItem->value instanceof Array_) {
+                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                 $subItems = $arrayItem->value->items;
                 if (\count($subItems) > 1) {
                     $arrayItem->value->items = $this->getSortedItems($subItems);
@@ -218,7 +219,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     }
 
     /**
-     * @param ArrayItem[] $items
+     * @param \PhpParser\Node\Expr\ArrayItem[] $items
      *
      * @return bool
      */
@@ -235,7 +236,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
     private function refactor(Array_ $node): Array_
     {
-        /** @var ArrayItem[] $items */
+        /** @var \PhpParser\Node\Expr\ArrayItem[] $items */
         $items = $node->items;
 
         if ($this->isAssociativeOnly($items)) {
