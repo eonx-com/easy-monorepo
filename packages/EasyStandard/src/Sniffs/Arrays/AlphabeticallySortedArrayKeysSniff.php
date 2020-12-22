@@ -84,26 +84,16 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             return;
         }
 
-        $this->prettyPrinter = new Printer();
         /** @var \PhpParser\Node\Stmt\Expression $stmtExpr */
         $stmtExpr = $ast[0];
         /** @var \PhpParser\Node\Expr\Array_ $array */
         $array = $stmtExpr->expr;
 
-        if ($array === null) {
-            $phpcsFile->addErrorOnLine(
-                'Unknown error while processing the array',
-                $token['line'],
-                self::ARRAY_PROCESS_ERROR
-            );
-
+        if ($array->items === null || \count($array->items) <= 1) {
             return;
         }
 
-        if (\count($array->items) <= 1) {
-            return;
-        }
-
+        $this->prettyPrinter = new Printer();
         $array = $this->refactor($array);
 
         if ($array->hasAttribute('isChanged') === false) {
@@ -167,7 +157,9 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             }
 
             if ($arrayItem->value instanceof Array_ && \count($arrayItem->value->items) > 0) {
-                $arrayItem->value->items = $this->fixMultiLineOutput($arrayItem->value->items);
+                /** @var ArrayItem[] $items */
+                $items = $arrayItem->value->items;
+                $arrayItem->value->items = $this->fixMultiLineOutput($items);
             }
         }
 
@@ -176,7 +168,9 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
     private function getArrayKeyAsString(ArrayItem $node): string
     {
-        $nodeKeyName = $this->prettyPrinter->prettyPrint([$node->key]);
+        /** @var \PhpParser\Node\Expr $key */
+        $key = $node->key;
+        $nodeKeyName = $this->prettyPrinter->prettyPrint([$key]);
 
         return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
     }
@@ -219,7 +213,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         if ($this->isAssociativeOnly($node)) {
             $items = $this->getSortedItems($node);
 
-            if ($items !== $node->items) {
+            if ($node->items !== $items) {
                 $node->items = $this->fixMultiLineOutput($items);
                 $node->setAttribute('isChanged', true);
             }

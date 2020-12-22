@@ -29,11 +29,13 @@ final class Printer extends Standard
             'kind',
             $this->options['shortArraySyntax'] ? Array_::KIND_SHORT : Array_::KIND_LONG
         );
+        /** @var \PhpParser\Node\Expr\ArrayItem[] $items */
+        $items = $node->items;
         if ($syntax === Array_::KIND_SHORT) {
-            return '[' . $this->pMaybeMultiline($node->items, true) . ']';
+            return '[' . $this->pMaybeMultiline($items, true) . ']';
         }
 
-        return 'array(' . $this->pMaybeMultiline($node->items, true) . ')';
+        return 'array(' . $this->pMaybeMultiline($items, true) . ')';
     }
 
     /**
@@ -56,7 +58,7 @@ final class Printer extends Standard
     private function hasMultiLineNodes(array $nodes): bool
     {
         foreach ($nodes as $node) {
-            if ($node && $node->hasAttribute('multiLine')) {
+            if ($node->hasAttribute('multiLine')) {
                 return true;
             }
         }
