@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\fixtures\Sniffs\ControlStructures\ExceptionAssertionsSniff\Wrong;
@@ -9,7 +10,8 @@ final class MissingUserMessageParamsAssertion
 {
     public function testValidateThrowsExceptionWithUnsupportedConstraint(): void
     {
-        $this->safeCall(static function (){});
+        $this->safeCall(static function (): void {
+        });
 
         $this->assertThrownException(TranslatableException::class);
         $this->assertThrownExceptionMessage('exceptions.business.unexpected_business_feature_type');

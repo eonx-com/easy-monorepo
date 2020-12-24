@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Sniffs\ControlStructures;
@@ -43,9 +44,7 @@ final class ExceptionAssertionsSniff implements Sniff
 
     public function register(): array
     {
-        return [
-            \T_FUNCTION,
-        ];
+        return [\T_FUNCTION];
     }
 
     /**
