@@ -14,7 +14,9 @@ final class MissingExceptionMessageAssertion
         });
 
         $this->assertThrownException(TranslatableException::class);
-        $this->assertThrownExceptionMessageParams(['type' => 'some-type']);
+        $this->assertThrownExceptionMessageParams([
+            'type' => 'some-type',
+        ]);
         $this->assertThrownExceptionUserMessage('exceptions.default_user_message');
         $this->assertThrownExceptionUserMessageParams([]);
     }

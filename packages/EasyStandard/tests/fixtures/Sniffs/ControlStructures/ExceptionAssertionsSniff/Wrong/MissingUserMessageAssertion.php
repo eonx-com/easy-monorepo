@@ -15,7 +15,9 @@ final class MissingUserMessageAssertion
 
         $this->assertThrownException(TranslatableException::class);
         $this->assertThrownExceptionMessage('exceptions.business.unexpected_business_feature_type');
-        $this->assertThrownExceptionMessageParams(['type' => 'some-type']);
+        $this->assertThrownExceptionMessageParams([
+            'type' => 'some-type',
+        ]);
         $this->assertThrownExceptionUserMessageParams([]);
     }
 }
