@@ -10,6 +10,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
+use PhpParser\Node\Expr\MethodCall;
 use PhpParser\ParserFactory;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
@@ -102,9 +103,9 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             'finish' => $tokens[$bracketCloserPointer]['line'],
         ];
         $this->prettyPrinter = new Printer();
-        $array = $this->refactor($array);
+        $refactoredArray = $this->refactor($array);
 
-        if ($array->hasAttribute('isChanged') === false) {
+        if ($refactoredArray->hasAttribute('isChanged') === false) {
             return;
         }
 
@@ -123,7 +124,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         if ($fix !== false) {
             $this->setStartIndent($phpcsFile, $bracketOpenerPointer);
 
-            $newContent = $this->prettyPrinter->printNodes([$array]);
+            $newContent = $this->prettyPrinter->printNodes([$refactoredArray]);
 
             $phpcsFile->fixer->beginChangeset();
 
@@ -154,6 +155,29 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $currentLine = (int)$items[0]->getAttribute('startLine');
 
         foreach ($items as $index => $arrayItem) {
+            if ($arrayItem->value instanceof Array_ && \count($arrayItem->value->items) > 0) {
+                /** @var ArrayItem[] $subItems */
+                $subItems = $arrayItem->value->items;
+                $arrayItem->value->items = $this->fixMultiLineOutput($subItems);
+                $items[$index] = $arrayItem;
+            }
+
+            if ($arrayItem->value instanceof MethodCall) {
+                /** @var \PhpParser\Node\Expr\MethodCall $value */
+                $value = $arrayItem->value;
+                foreach ($value->args as $argIndex => $argument) {
+                    if ($argument->value instanceof Array_) {
+                        $subItems = $argument->value->items;
+                        if (\count($subItems) > 1) {
+                            $argument->value->items = $this->fixMultiLineOutput($subItems);
+                        }
+
+                        $value->args[$argIndex] = $argument;
+                    }
+                }
+                $items[$index] = $arrayItem;
+            }
+
             if ($index === 0) {
                 continue;
             }
@@ -162,12 +186,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             if ($nextLine !== $currentLine) {
                 $arrayItem->setAttribute('multiLine', true);
                 $currentLine = $nextLine;
-            }
-
-            if ($arrayItem->value instanceof Array_ && \count($arrayItem->value->items) > 0) {
-                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
-                $subItems = $arrayItem->value->items;
-                $arrayItem->value->items = $this->fixMultiLineOutput($subItems);
             }
 
             $items[$index] = $arrayItem;
@@ -194,13 +212,27 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     {
         foreach ($items as $index => $arrayItem) {
             if ($arrayItem->value instanceof Array_) {
-                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                 $subItems = $arrayItem->value->items;
                 if (\count($subItems) > 1) {
                     $arrayItem->value->items = $this->getSortedItems($subItems);
                 }
 
                 $items[$index] = $arrayItem;
+            }
+
+            if ($arrayItem->value instanceof MethodCall) {
+                /** @var \PhpParser\Node\Expr\MethodCall $value */
+                $value = $arrayItem->value;
+                foreach ($value->args as $argIndex => $argument) {
+                    if ($argument->value instanceof Array_) {
+                        $subItems = $argument->value->items;
+                        if (\count($subItems) > 1) {
+                            $argument->value->items = $this->getSortedItems($subItems);
+                        }
+
+                        $value->args[$argIndex] = $argument;
+                    }
+                }
             }
         }
 

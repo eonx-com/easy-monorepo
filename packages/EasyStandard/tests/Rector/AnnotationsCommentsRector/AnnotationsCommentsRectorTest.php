@@ -6,8 +6,10 @@ namespace EonX\EasyStandard\Tests\Rector\AnnotationsCommentsRector;
 
 use EonX\EasyStandard\Rector\AnnotationsCommentsRector;
 use Iterator;
-use Rector\Testing\PHPUnit\AbstractRectorTestCase;
+use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
+
+;
 
 /**
  * @covers \EonX\EasyStandard\Rector\AnnotationsCommentsRector

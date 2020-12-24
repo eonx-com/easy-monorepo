@@ -6,8 +6,10 @@ namespace EonX\EasyStandard\Tests\Rector\AddSeeAnnotationRector;
 
 use EonX\EasyStandard\Rector\AddSeeAnnotationRector;
 use Iterator;
-use Rector\Testing\PHPUnit\AbstractRectorTestCase;
+use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
+
+;
 
 /**
  * @covers \EonX\EasyStandard\Rector\AddSeeAnnotationRector
