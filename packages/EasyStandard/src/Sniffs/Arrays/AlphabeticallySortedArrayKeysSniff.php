@@ -176,6 +176,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                         $value->args[$argIndex] = $argument;
                     }
                 }
+
                 $items[$index] = $arrayItem;
             }
 
@@ -236,6 +237,8 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                         $value->args[$argIndex] = $argument;
                     }
                 }
+
+                $items[$index] = $arrayItem;
             }
         }
 
