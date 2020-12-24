@@ -6,10 +6,8 @@ namespace EonX\EasyStandard\Tests\Rector\RestoreDefaultNullToNullableTypeParamet
 
 use EonX\EasyStandard\Rector\RestoreDefaultNullToNullableTypeParameterRector;
 use Iterator;
-use Rector\Core\Testing\PHPUnit\AbstractRectorTestCase;
+use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
-
-;
 
 /**
  * @covers \EonX\EasyStandard\Rector\RestoreDefaultNullToNullableTypeParameterRector
