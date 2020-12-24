@@ -15,7 +15,7 @@ final class Printer extends Standard
      */
     public function printNodes(array $stmts): string
     {
-        return ltrim($this->handleMagicTokens($this->pStmts($stmts, false)));
+        return \ltrim($this->handleMagicTokens($this->pStmts($stmts, false)));
     }
 
     public function setStartIndentLevel(int $level): void

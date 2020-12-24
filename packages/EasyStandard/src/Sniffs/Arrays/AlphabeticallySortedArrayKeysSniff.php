@@ -64,7 +64,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
         $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
         try {
-            $ast = $parser->parse('<?php' . PHP_EOL . $code . ';');
+            $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
         } catch (Error $error) {
             $phpcsFile->addErrorOnLine(
                 "Parse error: {$error->getMessage()}",
