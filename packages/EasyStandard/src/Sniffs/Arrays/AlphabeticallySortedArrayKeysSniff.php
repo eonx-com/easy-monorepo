@@ -156,7 +156,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
         foreach ($items as $index => $arrayItem) {
             if ($arrayItem->value instanceof Array_ && \count($arrayItem->value->items) > 0) {
-                /** @var ArrayItem[] $subItems */
+                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                 $subItems = $arrayItem->value->items;
                 $arrayItem->value->items = $this->fixMultiLineOutput($subItems);
                 $items[$index] = $arrayItem;
@@ -167,6 +167,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                 $value = $arrayItem->value;
                 foreach ($value->args as $argIndex => $argument) {
                     if ($argument->value instanceof Array_) {
+                        /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                         $subItems = $argument->value->items;
                         if (\count($subItems) > 1) {
                             $argument->value->items = $this->fixMultiLineOutput($subItems);
@@ -212,6 +213,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     {
         foreach ($items as $index => $arrayItem) {
             if ($arrayItem->value instanceof Array_) {
+                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                 $subItems = $arrayItem->value->items;
                 if (\count($subItems) > 1) {
                     $arrayItem->value->items = $this->getSortedItems($subItems);
@@ -225,6 +227,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                 $value = $arrayItem->value;
                 foreach ($value->args as $argIndex => $argument) {
                     if ($argument->value instanceof Array_) {
+                        /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                         $subItems = $argument->value->items;
                         if (\count($subItems) > 1) {
                             $argument->value->items = $this->getSortedItems($subItems);
