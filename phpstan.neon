@@ -203,6 +203,9 @@ parameters:
           path: packages/EasySsm/src/Console/Commands/ExportEnvsCommand.php
 
         # ---- EasyStandard ----
+        - message: '#Call to an undefined method#'
+          path: packages/EasyStandard/tests/fixtures/Sniffs/ControlStructures/ExceptionAssertionsSniff
+
         # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
           path: packages/EasyTest/src/Console/Commands
