@@ -12,9 +12,9 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 final class ExceptionAssertionsSniff implements Sniff
 {
     /**
-     * @var string[]
+     * @var string
      */
-    private const THROWN_EXCEPTION_ASSERTION = 'assertThrownException';
+    public $thrownExceptionAssertion = 'assertThrownException';
 
     /**
      * @var string
@@ -24,7 +24,7 @@ final class ExceptionAssertionsSniff implements Sniff
     /**
      * @var string
      */
-    public const FUNCTION_MISSING_REQUIRED_TRANSLATABLE_ASSERTIONS = 'MissingRequiredTranslatableAssertions';
+    public const FUNCTION_MISSING_TRANSLATABLE_EXCEPTION_ASSERTIONS = 'MissingTranslatableExceptionAssertions';
 
     /**
      * @var string[]
@@ -39,7 +39,7 @@ final class ExceptionAssertionsSniff implements Sniff
     /**
      * @var string
      */
-    private const EXCEPTION_CALL_FUNCTION = 'safeCall';
+    public $exceptionCallFunction = 'safeCall';
 
     public function register(): array
     {
@@ -60,22 +60,22 @@ final class ExceptionAssertionsSniff implements Sniff
             return;
         }
 
+        $methodName = FunctionHelper::getName($phpcsFile, $stackPtr);
         $functionToken = $tokens[$stackPtr];
         $exceptionClass = null;
 
         for ($key = $functionToken['scope_opener']; $key < $functionToken['scope_closer']; $key++) {
-            if ($tokens[$key]['content'] === self::THROWN_EXCEPTION_ASSERTION) {
+            if ($tokens[$key]['content'] === $this->thrownExceptionAssertion) {
                 $exceptionClass = $tokens[$key + 2]['content'];
             }
         }
 
         if ($exceptionClass === null) {
-            $method = FunctionHelper::getName($phpcsFile, $stackPtr);
             $phpcsFile->addErrorOnLine(
                 \sprintf(
                     'Missing [%s] is missing thrown exception assertion [%s].',
-                    $method,
-                    self::THROWN_EXCEPTION_ASSERTION
+                    $methodName,
+                    $this->thrownExceptionAssertion
                 ),
                 $tokens[$stackPtr]['line'],
                 self::FUNCTION_MISSING_THROWN_EXCEPTION_ASSERTION
@@ -99,15 +99,14 @@ final class ExceptionAssertionsSniff implements Sniff
         }
 
         if (\count($missingTranslatableAssertions) > 0) {
-            $method = FunctionHelper::getName($phpcsFile, $stackPtr);
             $phpcsFile->addErrorOnLine(
                 \sprintf(
                     'Method [%s] is missing required assertions for translatable exception [%s].',
-                    $method,
+                    $methodName,
                     \implode(', ', $missingTranslatableAssertions)
                 ),
                 $tokens[$stackPtr]['line'],
-                self::FUNCTION_MISSING_REQUIRED_TRANSLATABLE_ASSERTIONS
+                self::FUNCTION_MISSING_TRANSLATABLE_EXCEPTION_ASSERTIONS
             );
         }
     }
@@ -124,7 +123,7 @@ final class ExceptionAssertionsSniff implements Sniff
         }
 
         for ($key = $functionToken['scope_opener']; $key < $functionToken['scope_closer']; $key++) {
-            if ($tokens[$key]['content'] === self::EXCEPTION_CALL_FUNCTION) {
+            if ($tokens[$key]['content'] === $this->exceptionCallFunction) {
                 return false;
             }
         }
