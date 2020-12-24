@@ -22,6 +22,8 @@ final class ExceptionAssertionsSniffTest extends AbstractCheckerTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testSniff
      */
     public function provideFixtures(): iterable
     {
