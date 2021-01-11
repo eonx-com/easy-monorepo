@@ -15,87 +15,93 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCase
 {
-    public function testProcessMultiLineArrayFails(): void
+    /**
+     * @return mixed[]
+     *
+     * @see testProcessSucceeds
+     */
+    public function provideCorrectData(): array
     {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/MultiLineArray.php.inc');
+        return [
+            'multi line array' => [
+                'filePath' => '/Fixtures/Correct/MultiLineArray.php.inc',
+            ],
+            'multi line mixed array' => [
+                'filePath' => '/Fixtures/Correct/MultiLineMixedArray.php.inc',
+            ],
+            'multi line multi dimensional array' => [
+                'filePath' => '/Fixtures/Correct/MultiLineMultiDimensionalArray.php.inc',
+            ],
+            'single line array' => [
+                'filePath' => '/Fixtures/Correct/SingleLineArray.php.inc',
+            ],
+            'single line mixed array' => [
+                'filePath' => '/Fixtures/Correct/SingleLineMixedArray.php.inc',
+            ],
+            'single line multi dimensional array' => [
+                'filePath' => '/Fixtures/Correct/SingleLineMultiDimensionalArray.php.inc',
+            ],
+            'skip by class name' => [
+                'filePath' => '/Fixtures/Correct/SkipByClassName.php.inc',
+            ],
+            'skip by function name' => [
+                'filePath' => '/Fixtures/Correct/SkipByFunctionName.php.inc',
+            ],
+        ];
+    }
+
+    /**
+     * @return mixed[]
+     *
+     * @see testProcessFails
+     */
+    public function provideWrongData(): array
+    {
+        return [
+            'multi line array' => [
+                'filePath' => '/Fixtures/Wrong/MultiLineArray.php.inc',
+            ],
+            'multi line mixed array' => [
+                'filePath' => '/Fixtures/Wrong/MultiLineMixedArray.php.inc',
+            ],
+            'multi line multi dimensional array' => [
+                'filePath' => '/Fixtures/Wrong/MultiLineMultiDimensionalArray.php.inc',
+            ],
+            'single line array' => [
+                'filePath' => '/Fixtures/Wrong/SingleLineArray.php.inc',
+            ],
+            'single line mixed array' => [
+                'filePath' => '/Fixtures/Wrong/SingleLineMixedArray.php.inc',
+            ],
+            'single line multi dimensional array' => [
+                'filePath' => '/Fixtures/Wrong/SingleLineMultiDimensionalArray.php.inc',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $filePath
+     *
+     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
+     *
+     * @dataProvider provideWrongData
+     */
+    public function testProcessFails(string $filePath): void
+    {
+        $wrongFileInfo = new SmartFileInfo(__DIR__ . $filePath);
         $this->doTestFileInfo($wrongFileInfo);
     }
 
-    public function testProcessMultiLineArraySucceeds(): void
+    /**
+     * @param string $filePath
+     *
+     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
+     *
+     * @dataProvider provideCorrectData
+     */
+    public function testProcessSucceeds(string $filePath): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MultiLineArray.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    public function testProcessMultiLineMixedArrayFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/MultiLineMixedArray.php.inc');
-        $this->doTestFileInfo($wrongFileInfo);
-    }
-
-    public function testProcessMultiLineMixedArraySucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MultiLineMixedArray.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    public function testProcessMultiLineMultiDimensionalArrayFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/MultiLineMultiDimensionalArray.php.inc');
-        $this->doTestFileInfo($wrongFileInfo);
-    }
-
-    public function testProcessMultiLineMultiDimensionalArraySucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MultiLineMultiDimensionalArray.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    public function testProcessSingleLineArrayFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SingleLineArray.php.inc');
-        $this->doTestFileInfo($wrongFileInfo);
-    }
-
-    public function testProcessSingleLineArraySucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SingleLineArray.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    public function testProcessSingleLineMixedArrayFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SingleLineMixedArray.php.inc');
-        $this->doTestFileInfo($wrongFileInfo);
-    }
-
-    public function testProcessSingleLineMixedArraySucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SingleLineMixedArray.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    public function testProcessSingleLineMultiDimensionalArrayFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SingleLineMultiDimensionalArray.php.inc');
-        $this->doTestFileInfo($wrongFileInfo);
-    }
-
-    public function testProcessSingleLineMultiDimensionalArraySucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SingleLineMultiDimensionalArray.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    public function testSkipByClassNameSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SkipByClassName.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    public function testSkipByFunctionNameSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SkipByFunctionName.php.inc');
+        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
         $this->doTestCorrectFileInfo($fileInfo);
     }
 

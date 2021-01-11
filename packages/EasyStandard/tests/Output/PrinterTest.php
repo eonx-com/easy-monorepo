@@ -40,7 +40,7 @@ final class PrinterTest extends TestCase
             ],
             'single line array' => [
                 'expectedOutput' => "['test1' => 'test1', 'test2' => 'test2']",
-                'multiline' => false
+                'multiline' => false,
             ],
         ];
     }
