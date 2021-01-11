@@ -292,8 +292,9 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     private function setStartIndent(File $phpcsFile, int $bracketOpenerPointer): void
     {
         $token = $phpcsFile->getTokens()[$bracketOpenerPointer];
-        $indentLevel = (int)\floor(($token['column'] - 1) / 4);
-        $indentLevel *= 4;
+        $indentSize = 4;
+        $indentLevel = (int)\floor(($token['column'] - 1) / $indentSize);
+        $indentLevel *= $indentSize;
 
         $closePointer = $token['bracket_closer'] ?? $token['parenthesis_closer'];
 
@@ -311,8 +312,8 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             return;
         }
 
-        $indentLevel = (int)\floor(($closeToken['column'] - 1) / 4);
-        $indentLevel *= 4;
+        $indentLevel = (int)\floor(($closeToken['column'] - 1) / $indentSize);
+        $indentLevel *= $indentSize;
 
         $this->prettyPrinter->setStartIndentLevel($indentLevel);
     }
