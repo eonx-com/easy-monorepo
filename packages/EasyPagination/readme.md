@@ -14,7 +14,7 @@ You are wondering if this package could be useful to you, right? Here are some p
 - ...
 
 This package provides you with out-the-box tools to implement a generic, centralised and consistent pagination data
-handling system to keep you away from any troubles :)  
+handling system to keep you away from any troubles :)
 
 # Documentation
 
@@ -23,7 +23,7 @@ handling system to keep you away from any troubles :)
 The recommended way to install this package is to use [Composer][1].
 
 ```bash
-$ composer require eonx/pagination
+$ composer require eonx-com/easy-pagination
 ```
 
 ## How it works
@@ -40,7 +40,7 @@ Can't you find your happiness in the existing resolvers? Please let us know or e
 ### StartSize Resolvers
 
 The "StartSize" resolvers assume your pagination is based on only 2 attributes to define the start and its size. What
-are those attributes names or default values? This is up to you! 
+are those attributes names or default values? This is up to you!
 A `StartSizeConfigInterface` (and its default implementation) is here for you to define all that as you want.
 
 Here are some examples of configuration you can have:

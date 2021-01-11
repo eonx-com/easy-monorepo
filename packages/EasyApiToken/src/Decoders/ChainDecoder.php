@@ -6,11 +6,13 @@ namespace EonX\EasyApiToken\Decoders;
 
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
+use EonX\EasyUtils\CollectorHelper;
+use Symfony\Component\HttpFoundation\Request;
 
 final class ChainDecoder extends AbstractApiTokenDecoder
 {
     /**
-     * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface[]
+     * @var iterable<\EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface>
      */
     private $decoders;
 
@@ -19,15 +21,12 @@ final class ChainDecoder extends AbstractApiTokenDecoder
      */
     public function __construct(array $decoders, ?string $name = null)
     {
-        $this->decoders = $this->filterDecoders($decoders);
+        $this->decoders = CollectorHelper::filterByClass($decoders, ApiTokenDecoderInterface::class);
 
         parent::__construct($name ?? self::NAME_CHAIN);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request|\Psr\Http\Message\ServerRequestInterface $request
-     */
-    public function decode($request): ?ApiTokenInterface
+    public function decode(Request $request): ?ApiTokenInterface
     {
         foreach ($this->decoders as $decoder) {
             $token = $decoder->decode($request);
@@ -39,18 +38,4 @@ final class ChainDecoder extends AbstractApiTokenDecoder
 
         return null;
     }
-
-    /**
-     * @param mixed[] $decoders
-     *
-     * @return \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface[]
-     */
-    private function filterDecoders(array $decoders): array
-    {
-        return \array_filter($decoders, static function ($decoder): bool {
-            return $decoder instanceof ApiTokenDecoderInterface;
-        });
-    }
 }
-
-\class_alias(ChainDecoder::class, ChainReturnFirstTokenDecoder::class);

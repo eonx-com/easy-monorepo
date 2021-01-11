@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Parsers\DirectEntry\Results;
 
 use DateTime;
+use DateTimeInterface;
 use EonX\EasyBankFiles\Parsers\BaseResult;
 
 /**
+ * @method string|null getDateProcessed()
  * @method string|null getDescription()
  * @method string|null getUserFinancialInstitution()
  * @method string|null getUserIdSupplyingFile()
@@ -21,17 +23,23 @@ final class Header extends BaseResult
      */
     private const DATE_STRING_PATTERN = '%s-%s-%s';
 
-    public function getDateProcessed(): ?DateTime
+    /**
+     * Return processed date as a DateTime object.
+     */
+    public function getDateProcessedObject(): ?DateTimeInterface
     {
-        if (\is_string($this->data['dateProcessed']) === true &&
-            \strlen($this->data['dateProcessed']) === 6 &&
-            \ctype_digit($this->data['dateProcessed']) === true
+        $value = $this->data['dateProcessed'];
+
+        if (
+            \is_string($value) === true &&
+            \strlen($value) === 6 &&
+            \ctype_digit($value) === true
         ) {
             $stringDate = \sprintf(
                 self::DATE_STRING_PATTERN,
-                \substr($this->data['dateProcessed'], 4, 2),
-                \substr($this->data['dateProcessed'], 2, 2),
-                \substr($this->data['dateProcessed'], 0, 2)
+                \substr($value, 4, 2),
+                \substr($value, 2, 2),
+                \substr($value, 0, 2)
             );
 
             return new DateTime($stringDate);

@@ -38,5 +38,3 @@ final class ApiKey implements ApiKeyInterface
         ];
     }
 }
-
-\class_alias(ApiKey::class, ApiKeyEasyApiToken::class);

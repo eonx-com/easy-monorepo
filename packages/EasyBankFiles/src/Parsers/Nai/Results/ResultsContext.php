@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Nai\Results;
 
+use EonX\EasyBankFiles\Parsers\Error;
 use EonX\EasyBankFiles\Parsers\Nai\AccountSummaryCodes;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Identifier as AccountIdentifier;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Trailer as AccountTrailer;
@@ -14,7 +15,7 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Trailer as GroupTrailer;
 use EonX\EasyBankFiles\Parsers\Nai\TransactionDetailCodes;
 use Nette\Utils\Strings;
 
-final class ResultsContext
+final class ResultsContext implements ResultsContextInterface
 {
     use AccountSummaryCodes;
     use TransactionDetailCodes;
@@ -30,7 +31,7 @@ final class ResultsContext
     private $caching = [];
 
     /**
-     * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Error[]
+     * @var \EonX\EasyBankFiles\Parsers\Error[]
      */
     private $errors = [];
 
@@ -43,6 +44,11 @@ final class ResultsContext
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Group[]
      */
     private $groups = [];
+
+    /**
+     * @var bool
+     */
+    private $isBai = false;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[]
@@ -60,93 +66,55 @@ final class ResultsContext
      */
     public function __construct(array $accounts, array $errors, array $file, array $groups, array $transactions)
     {
+        // Not proud of that, but the order matters, DO NOT change it...
         $this
+            ->initTransactions($transactions)
             ->initAccounts($accounts)
             ->initErrors($errors)
             ->initFile($file)
-            ->initGroups($groups)
-            ->initTransactions($transactions);
+            ->initGroups($groups);
     }
 
-    /**
-     * Get account for given index.
-     */
     public function getAccount(int $index): ?Account
     {
         return $this->accounts[$index] ?? null;
     }
 
-    /**
-     * Get accounts.
-     *
-     * @return \EonX\EasyBankFiles\Parsers\Nai\Results\Account[]
-     */
     public function getAccounts(): array
     {
         return $this->accounts;
     }
 
-    /**
-     * Get accounts for given group.
-     *
-     * @return \EonX\EasyBankFiles\Parsers\Nai\Results\Account[]
-     */
     public function getAccountsForGroup(int $group): array
     {
         return $this->caching[\sprintf('group_%d_accounts', $group)] ?? [];
     }
 
-    /**
-     * Get errors.
-     *
-     * @return \EonX\EasyBankFiles\Parsers\Nai\Results\Error[]
-     */
     public function getErrors(): array
     {
         return $this->errors;
     }
 
-    /**
-     * Get file.
-     */
     public function getFile(): ?File
     {
         return $this->file;
     }
 
-    /**
-     * Get group for given index.
-     */
     public function getGroup(int $index): ?Group
     {
         return $this->groups[$index] ?? null;
     }
 
-    /**
-     * Get groups.
-     *
-     * @return \EonX\EasyBankFiles\Parsers\Nai\Results\Group[]
-     */
     public function getGroups(): array
     {
         return $this->groups;
     }
 
-    /**
-     * Get transactions.
-     *
-     * @return \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[]
-     */
     public function getTransactions(): array
     {
         return $this->transactions;
     }
 
-    /**
-     * Get transactions for given account.
-     *
-     * @return \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[]
-     */
     public function getTransactionsForAccount(int $account): array
     {
         return $this->caching[\sprintf('account_%d_transactions', $account)] ?? [];
@@ -213,11 +181,6 @@ final class ResultsContext
         return $transactionCodes;
     }
 
-    private function removeTrailingSlash(string $value): string
-    {
-        return \str_replace('/', '', $value);
-    }
-
     /**
      * Get data from line as an associative array using given attributes. If line structure invalid, return null.
      *
@@ -228,6 +191,7 @@ final class ResultsContext
     private function getDataFromLine(array $attributes, string $line, int $lineNumber): ?array
     {
         $data = [];
+        /** @var string[] $lineArray */
         $lineArray = \explode(',', $line);
 
         foreach ($attributes as $index => $attribute) {
@@ -257,11 +221,14 @@ final class ResultsContext
         $optional = ['referenceNumber', 'text'];
 
         $data = [];
+        /** @var string[] $lineArray */
         $lineArray = \explode(',', $line);
         $attributes = \array_merge($required, $optional);
 
         // Remove CustomerReferenceNumber for BAI because always empty
         if (\strtolower($lineArray[3] ?? '') === 'z') {
+            $this->isBai = true;
+
             unset($lineArray[5]);
             // Reset array keys
             $lineArray = \array_values($lineArray);
@@ -435,13 +402,14 @@ final class ResultsContext
      */
     private function initFileTrailer(array $trailer): ?FileTrailer
     {
-        return $this->instantiateSimpleItem([
-            'code',
-            'fileControlTotalA',
-            'numberOfGroups',
-            'numberOfRecords',
-            'fileControlTotalB',
-        ], FileTrailer::class, $trailer);
+        $attributes = ['code', 'fileControlTotalA', 'numberOfGroups', 'numberOfRecords'];
+
+        // No fileControlTotalB in BAI files
+        if ($this->isBai === false) {
+            $attributes[] = 'fileControlTotalB';
+        }
+
+        return $this->instantiateSimpleItem($attributes, FileTrailer::class, $trailer);
     }
 
     /**
@@ -554,5 +522,10 @@ final class ResultsContext
         }
 
         return new $class($data);
+    }
+
+    private function removeTrailingSlash(string $value): string
+    {
+        return \str_replace('/', '', $value);
     }
 }

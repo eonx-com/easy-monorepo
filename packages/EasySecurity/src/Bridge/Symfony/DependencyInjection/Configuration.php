@@ -30,6 +30,7 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('role_enabled')->defaultFalse()->end()
                     ->end()
                 ->end()
+                ->booleanNode('use_default_configurators')->defaultTrue()->end()
             ->end();
 
         return $treeBuilder;

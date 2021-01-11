@@ -5,9 +5,12 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "nette/utils": "^3.1"
+        "nette/utils": "^3.1",
+        "eonx-com/easy-error-handler": "^3.0",
+        "monolog/monolog": "^2.1"
     },
     "require-dev": {
+        "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^8.4 || ^9.5"
     },
     "autoload": {
@@ -22,7 +25,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.6-dev"
+            "dev-master": "3.1-dev"
         }
     }
 }

@@ -7,11 +7,12 @@
         "php": "^7.2",
         "nesbot/carbon": "^2.22",
         "dragonmantank/cron-expression": "^2.3",
-        "symfony/console": "^4.2 || ^5.0",
-        "eonx-com/easy-lock": "^2.6"
+        "symfony/console": "^4.4 || ^5.1.5",
+        "eonx-com/easy-lock": "^3.0"
     },
     "require-dev": {
-        "symfony/symfony": "^4.2 || ^5.0"
+        "phpunit/phpunit": "^8.4 || ^9.5",
+        "symfony/symfony": "^4.4 || ^5.1.5"
     },
     "autoload": {
         "psr-4": {
@@ -27,7 +28,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "2.6-dev"
+            "dev-master": "3.1-dev"
         }
     }
 }

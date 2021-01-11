@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Builders;
 
-use EonX\EasyErrorHandler\Helpers\ErrorDetailsHelper;
+use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
@@ -14,6 +14,11 @@ use Throwable;
 final class ExtendedExceptionBuilder extends AbstractErrorResponseBuilder implements ErrorHandlerAwareInterface
 {
     use ErrorHandlerAwareTrait;
+
+    /**
+     * @var \EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface
+     */
+    private $errorDetailsResolver;
 
     /**
      * @var string
@@ -34,11 +39,13 @@ final class ExtendedExceptionBuilder extends AbstractErrorResponseBuilder implem
      * @param null|string[] $keys
      */
     public function __construct(
+        ErrorDetailsResolverInterface $errorDetailsResolver,
         TranslatorInterface $translator,
         ?string $exceptionKey = null,
         ?array $keys = null,
         ?int $priority = null
     ) {
+        $this->errorDetailsResolver = $errorDetailsResolver;
         $this->translator = $translator;
         $this->exceptionKey = $exceptionKey ?? 'exception';
         $this->keys = $keys ?? [];
@@ -53,7 +60,7 @@ final class ExtendedExceptionBuilder extends AbstractErrorResponseBuilder implem
             return parent::buildData($throwable, $data);
         }
 
-        $details = ErrorDetailsHelper::getDetails($throwable);
+        $details = $this->errorDetailsResolver->resolveSimpleDetails($throwable);
 
         $exception = [
             $this->getKey('class') => $details['class'],

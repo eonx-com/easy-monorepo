@@ -15,7 +15,7 @@
         "api-platform/core": "^2.5",
         "doctrine/orm": "^2.6",
         "mockery/mockery": "^1.2",
-        "symfony/symfony": "^4.2 || ^5.0",
+        "symfony/symfony": "^4.4 || ^5.1.5",
         "symfony/maker-bundle": "^1.15"
     },
     "autoload": {
@@ -30,7 +30,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.6-dev"
+            "dev-master": "3.1-dev"
         }
     }
 }

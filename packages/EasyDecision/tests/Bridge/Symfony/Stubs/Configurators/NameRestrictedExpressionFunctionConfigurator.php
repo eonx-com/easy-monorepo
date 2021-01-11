@@ -12,9 +12,14 @@ final class NameRestrictedExpressionFunctionConfigurator extends AbstractNameRes
 {
     public function configure(DecisionInterface $decision): void
     {
-        $decision->getExpressionLanguage()
-            ->addFunction(new ExpressionFunction('restricted', function (): void {
-            }));
+        $expressionLanguage = $decision->getExpressionLanguage();
+
+        if ($expressionLanguage === null) {
+            return;
+        }
+
+        $expressionLanguage->addFunction(new ExpressionFunction('restricted', function (): void {
+        }));
     }
 
     /**

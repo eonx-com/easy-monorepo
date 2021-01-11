@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\Symfony\DataCollector\SecurityContextDataCollector;
 use EonX\EasySecurity\Bridge\Symfony\Factories\AuthenticationFailureResponseFactory;
-use EonX\EasySecurity\Bridge\Symfony\Factories\MainSecurityContextConfiguratorFactory;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface;
+use EonX\EasySecurity\Bridge\Symfony\Listeners\ConfigureSecurityContextListener;
 use EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator;
 use EonX\EasySecurity\DeferredSecurityContextProvider;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
-use EonX\EasySecurity\MainSecurityContextConfigurator;
+use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
+use EonX\EasySecurity\SecurityContextFactory;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -28,6 +30,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->defaults()
         ->autowire()
         ->autoconfigure();
+
+    // ApiTokenDecoder
+    $services
+        ->set(BridgeConstantsInterface::SERVICE_API_TOKEN_DECODER, ApiTokenDecoderInterface::class)
+        ->factory([ref(ApiTokenDecoderFactoryInterface::class), 'build'])
+        ->args(['%' . BridgeConstantsInterface::PARAM_TOKEN_DECODER . '%']);
 
     // Authorization
     $services->set(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE, ArrayAdapter::class);
@@ -46,36 +54,32 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(AuthorizationMatrixInterface::class)
         ->factory([ref(AuthorizationMatrixFactoryInterface::class), 'create']);
 
-    // MainSecurityContextConfigurator
+    // DataCollector
     $services
-        ->set('easy_security.api_token_decoder', ApiTokenDecoderInterface::class)
-        ->factory([ref(ApiTokenDecoderFactoryInterface::class), 'build'])
-        ->args(['%' . BridgeConstantsInterface::PARAM_TOKEN_DECODER . '%']);
-
-    $services
-        ->set(MainSecurityContextConfiguratorFactory::class)
-        ->arg('$apiTokenDecoder', ref('easy_security.api_token_decoder'));
-
-    $services
-        ->set(MainSecurityContextConfigurator::class)
-        ->factory([ref(MainSecurityContextConfiguratorFactory::class), '__invoke'])
-        ->call('withConfigurators', [tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR)])
-        ->call('withModifiers', [tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_MODIFIER)]);
+        ->set(SecurityContextDataCollector::class)
+        ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR))
+        ->tag('data_collector', [
+            'template' => '@EasySecurity/Collector/security_context_collector.html.twig',
+            'id' => SecurityContextDataCollector::NAME,
+        ]);
 
     // Deferred Security Provider
     $services
         ->set(DeferredSecurityContextProviderInterface::class, DeferredSecurityContextProvider::class)
         ->arg('$contextServiceId', '%' . BridgeConstantsInterface::PARAM_CONTEXT_SERVICE_ID . '%');
 
+    // Listeners
+    $services
+        ->set(ConfigureSecurityContextListener::class)
+        ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR))
+        ->tag('kernel.event_listener');
+
+    // SecurityContextFactory
+    $services
+        ->set(SecurityContextFactoryInterface::class, SecurityContextFactory::class)
+        ->arg('$eventDispatcher', ref(EventDispatcherInterface::class));
+
     // Symfony Security
     $services->set(AuthenticationFailureResponseFactoryInterface::class, AuthenticationFailureResponseFactory::class);
     $services->set(ContextAuthenticator::class);
-
-    // DataCollector
-    $services
-        ->set(SecurityContextDataCollector::class)
-        ->tag('data_collector', [
-            'template' => '@EasySecurity/Collector/security_context_collector.html.twig',
-            'id' => 'easy_security.security_context_collector',
-        ]);
 };

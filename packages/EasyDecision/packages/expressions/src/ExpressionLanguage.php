@@ -7,8 +7,8 @@ namespace EonX\EasyDecision\Expressions;
 use EonX\EasyDecision\Exceptions\InvalidExpressionException;
 use EonX\EasyDecision\Expressions\Exceptions\ExpressionLanguageLockedException;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface;
-use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
+use EonX\EasyUtils\CollectorHelper;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
@@ -31,27 +31,9 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     private $functions = [];
 
     /**
-     * @var null|\Symfony\Component\ExpressionLanguage\ExpressionLanguage
-     */
-    private $legacyExpressionLanguage;
-
-    /**
      * @var bool
      */
     private $locked = false;
-
-    public function __construct(?BaseExpressionLanguage $expressionLanguage = null)
-    {
-        if ($expressionLanguage !== null) {
-            @\trigger_error(\sprintf(
-                'Passing %s in %s constructor is deprecated since 2.3.7 and will be removed in 3.0.',
-                ExpressionLanguageFactoryInterface::class,
-                static::class
-            ), \E_USER_DEPRECATED);
-        }
-
-        $this->legacyExpressionLanguage = $expressionLanguage;
-    }
 
     public function addFunction(ExpressionFunctionInterface $function): ExpressionLanguageInterface
     {
@@ -145,11 +127,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
      */
     private function doAddFunctions(array $functions): void
     {
-        $filter = static function ($function): bool {
-            return $function instanceof ExpressionFunctionInterface;
-        };
-
-        foreach (\array_filter($functions, $filter) as $function) {
+        foreach (CollectorHelper::filterByClass($functions, ExpressionFunctionInterface::class) as $function) {
             $this->functions[$function->getName()] = $function;
         }
     }
@@ -173,7 +151,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
         $this->locked = true;
 
         // Legacy to be removed in 3.0
-        $expressionLanguage = $this->legacyExpressionLanguage ?? new BaseExpressionLanguage($this->cache);
+        $expressionLanguage = new BaseExpressionLanguage($this->cache);
 
         foreach ($this->functions as $function) {
             $expressionLanguage->register(

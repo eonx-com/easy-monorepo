@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Rector\Core\Configuration\Option;
 use Rector\Core\ValueObject\ProjectType;
-use Rector\DeadCode\Rector\Class_\RemoveUnusedDoctrineEntityMethodAndPropertyRector;
+use Rector\DeadCode\Rector\Stmt\RemoveUnreachableStatementRector;
 use Rector\Set\ValueObject\SetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -26,5 +26,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $parameters->set(Option::AUTOLOAD_PATHS, [
         __DIR__ . '/tests/rector_bootstrap.php',
+    ]);
+
+    $parameters->set(Option::SKIP, [
+        RemoveUnreachableStatementRector::class => [
+            __DIR__ . '/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php',
+        ],
     ]);
 };

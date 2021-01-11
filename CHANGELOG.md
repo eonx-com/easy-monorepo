@@ -1,6 +1,25 @@
 <!-- changelog-linker -->
 
-## 2.5.27 - 2020-12-14
+## 2.5.28 - 2020-12-16
+
+- [#444] Use CollectorHelper in packages
+- [#445] Add all packages to split tests
+
+### EasyBankFiles
+
+- [#453] No fileControlTotalB for BAI files
+- [#439] Refactor Bank Files Parsers, Thanks to [@ERuban]
+
+### EasyCore
+
+- [#446] Check if db connection is ok before processing job
+
+### EasyErrorHandler
+
+- [#448] Improve error details
+- [#447] Fix translation setup in Laravel/Lumen setup, Thanks to [@jayaregalinadaflexisourceit]
+
+## [2.5.27] - 2020-12-14
 
 - [#436] Remove deprecated packages
 - [#437] Fix CI
@@ -2778,3 +2797,15 @@
 [#436]: https://github.com/eonx-com/easy-monorepo/pull/436
 [v2.5.26]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.25...v2.5.26
 [@jayaregalinadaflexisourceit]: https://github.com/jayaregalinadaflexisourceit
+[#453]: https://github.com/eonx-com/easy-monorepo/pull/453
+[#452]: https://github.com/eonx-com/easy-monorepo/pull/452
+[#451]: https://github.com/eonx-com/easy-monorepo/pull/451
+[#450]: https://github.com/eonx-com/easy-monorepo/pull/450
+[#449]: https://github.com/eonx-com/easy-monorepo/pull/449
+[#448]: https://github.com/eonx-com/easy-monorepo/pull/448
+[#447]: https://github.com/eonx-com/easy-monorepo/pull/447
+[#446]: https://github.com/eonx-com/easy-monorepo/pull/446
+[#445]: https://github.com/eonx-com/easy-monorepo/pull/445
+[#444]: https://github.com/eonx-com/easy-monorepo/pull/444
+[#439]: https://github.com/eonx-com/easy-monorepo/pull/439
+[2.5.27]: https://github.com/eonx-com/easy-monorepo/compare/v2.5.26...2.5.27

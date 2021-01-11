@@ -23,25 +23,6 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 final class Transaction extends BaseResult
 {
     /**
-     * Convert amount into decimal and return.
-     */
-    public function getAmountDecimal(): ?string
-    {
-        $value = $this->data['amount'] ?? null;
-
-        // If value isn't set, return
-        if ($value === null) {
-            return null;
-        }
-
-        // Decimal is implied by the last 2 digits
-        $dollars = \substr(\ltrim($value, '0'), 0, -2);
-        $cents = \substr($value, -2);
-
-        return \sprintf('%d.%d', $dollars, $cents);
-    }
-
-    /**
      * Return object attributes.
      *
      * @return string[]

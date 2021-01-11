@@ -24,12 +24,12 @@ use EonX\EasyBankFiles\Generators\Interfaces\GeneratorInterface;
 final class Transaction extends BaseObject
 {
     /**
-     * @const int
+     * @var int
      */
     public const CODE_GENERAL_CREDIT = 50;
 
     /**
-     * @const int
+     * @var int
      */
     public const CODE_GENERAL_DEBIT = 13;
 

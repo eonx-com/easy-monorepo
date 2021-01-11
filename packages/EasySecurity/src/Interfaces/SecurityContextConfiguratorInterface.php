@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Interfaces;
 
+use EonX\EasyUtils\Interfaces\HasPriorityInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-interface SecurityContextConfiguratorInterface
+interface SecurityContextConfiguratorInterface extends HasPriorityInterface
 {
-    public function configure(SecurityContextInterface $context, Request $request): void;
+    /**
+     * @var int
+     */
+    public const SYSTEM_PRIORITY = -100;
 
-    public function getPriority(): int;
+    public function configure(SecurityContextInterface $context, Request $request): void;
 }

@@ -12,16 +12,29 @@ jobs:
                 package:
                     - EasyApiToken
                     - EasyAsync
+                    - EasyAwsCredentialsFinder
+                    # - EasyBankFiles
+                    - EasyBugsnag
                     - EasyCore
                     - EasyDecision
+                    - EasyErrorHandler
+                    - EasyEventDispatcher
+                    - EasyLock
                     - EasyLogging
+                    - EasyNotification
                     - EasyPagination
                     - EasyPipeline
                     - EasyPsr7Factory
+                    - EasyRandom
                     - EasyRepository
+                    - EasyRequestId
+                    - EasySchedule
                     - EasySecurity
+                    - EasySsm
                     - EasyStandard
                     - EasyTest
+                    - EasyUtils
+                    - EasyWebhook
 
         name: ${{ matrix.package }}
 

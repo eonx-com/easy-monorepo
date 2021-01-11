@@ -60,16 +60,10 @@ parameters:
 
         # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'
-          path: packages/EasyCore/tests/Http/Middleware
-
-        - message: '#Access to an undefined property object::\$[\w]+.#'
           path: packages/EasyCore/tests/Bridge/Laravel/Middleware/SetContentLengthTest.php
 
         - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\Providers\\CachedConfigServiceProvider::\$loadedConfigurations.#'
           path: packages/EasyCore/src/Bridge/Laravel/Providers
-
-        - message: '#Parameter \#1 \$connOrDsn of class Symfony\\Component\\Lock\\Store\\PdoStore constructor expects Doctrine\\DBAL\\Connection\|PDO\|string, object given#'
-          path: packages/EasyCore/src/Lock/LockService.php
 
         - message: '#Method EonX\\EasyCore\\Tests\\AbstractTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
           path: packages/EasyCore/tests/AbstractTestCase.php
@@ -99,40 +93,11 @@ parameters:
           path: packages/EasyCore/tests/Bridge/Symfony/Traits/TranslatorAwareTraitTest.php
 
         # ---- EasyDecision ----
-        - message: '#Strict comparison using === between true and false will always evaluate to false.#'
-          path: packages/EasyDecision/src/Decisions
-
-        - message: '#Parameter \#3 \$ruleProviders of class EonX\\EasyDecision\\Decisions\\DecisionConfig constructor expects array<EonX\\EasyDecision\\Interfaces\\RuleProviderInterface>, array<int, stdClass> given.#'
-          path: packages/EasyDecision/tests/Decisions
-
-        - message: "#Offset 'fn' does not exist on array\\(string\\).#"
-          path: packages/EasyDecision/src/Helpers
-
-        - message: '#Cannot call method getFunctions\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
-          path: packages/EasyDecision/tests/Bridge/Symfony/EasyDecisionBundleTest.php
-
-        - message: '#Cannot call method addFunction\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
-          path: packages/EasyDecision/tests/Bridge/Symfony/Stubs/Configurators/NameRestrictedExpressionFunctionConfigurator.php
-
-        - message: '#Cannot call method addFunction\(\) on EonX\\EasyDecision\\Expressions\\Interfaces\\ExpressionLanguageInterface\|null#'
-          path: packages/EasyDecision/tests/Bridge/Symfony/Stubs/Configurators/TypeRestrictedExpressionFunctionConfigurator.php
-
         # ---- EasyErrorHandler ----
         - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
           path: packages/EasyErrorHandler/tests
 
-        # ---- EasyLogging ----
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-          path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
-
-        - message: '#Class App\\Exceptions\\EntityValidationFailedException not found.#'
-          path: packages/EasyLogging/src/ContextModifiers
-
-        - message: '#Call to method getErrors\(\) on an unknown class App\\Exceptions\\EntityValidationFailedException.#'
-          path: packages/EasyLogging/src/ContextModifiers
-
         # ---- EasyLock ----
-
         - message: '#Method EonX\\EasyLock\\Bridge\\Symfony\\Messenger\\ProcessWithLockMiddleware\:\:getLockData\(\) should return EonX\\EasyLock\\Interfaces\\WithLockDataInterface\|null but returns Symfony\\Component\\Messenger\\Stamp\\StampInterface\|null#'
           path: packages/EasyLock/src/Bridge/Symfony/Messenger/ProcessWithLockMiddleware.php
 
@@ -140,6 +105,9 @@ parameters:
           path: packages/EasyLock/tests/Bridge/Laravel/AbstractLaravelTestCase.php
 
         # ---- EasyLogging ----
+        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+          path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
         # ---- EasyPagination ----
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
           path: packages/EasyPagination/tests/Bridge/Laravel
@@ -204,9 +172,6 @@ parameters:
         - message: '#Property EonX\\EasyRequestId\\RequestIdService\:\:\$correlationIdResolvers \(array<EonX\\EasyRequestId\\Interfaces\\CorrelationIdResolverInterface\>\) does not accept array<EonX\\EasyRequestId\\Interfaces\\ResolverInterface\>#'
           path: packages/EasyRequestId/src/RequestIdService.php
 
-        - message: '#Method EonX\\EasyRequestId\\RequestIdService\:\:filterResolvers\(\) should return array<EonX\\EasyRequestId\\Interfaces\\ResolverInterface\> but returns array<object\>#'
-          path: packages/EasyRequestId/src/RequestIdService.php
-
         # ---- EasySchedule ----
         - message: '#Parameter \#1 \$var of function count expects array\|Countable, EonX\\EasySchedule\\Interfaces\\EventInterface given#'
           path: packages/EasySchedule/src/Bridge/Symfony/DataCollector/ScheduleDataCollector.php
@@ -224,9 +189,6 @@ parameters:
           path: packages/EasySchedule/src/Bridge/Symfony/TraceableSchedule.php
 
         # ---- EasySecurity ----
-        - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Helpers\\DeferredSecurityContextResolver\:\:resolve\(\) should return EonX\\EasySecurity\\Interfaces\\SecurityContextInterface but returns object\|null#'
-          path: packages/EasySecurity/src/Bridge/Symfony/Helpers/DeferredSecurityContextResolver.php
-
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
           path: packages/EasySecurity/tests/Authorization/RoleTest.php
 

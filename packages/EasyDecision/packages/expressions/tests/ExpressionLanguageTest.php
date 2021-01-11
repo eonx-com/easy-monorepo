@@ -9,10 +9,9 @@ use EonX\EasyDecision\Expressions\Exceptions\ExpressionLanguageLockedException;
 use EonX\EasyDecision\Expressions\ExpressionFunction;
 use EonX\EasyDecision\Expressions\ExpressionLanguage;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
-use EonX\EasyDecision\Helpers\FromPhpExpressionFunctionProvider;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
 final class ExpressionLanguageTest extends AbstractTestCase
 {
@@ -39,14 +38,6 @@ final class ExpressionLanguageTest extends AbstractTestCase
         self::assertEquals('max', $functions[0]->getName());
         self::assertEquals('my-function', $functions[1]->getName());
         self::assertEquals('my-description', $functions[1]->getDescription());
-    }
-
-    public function testDeprecatedConstructorArgument(): void
-    {
-        $expressionLanguage = new ExpressionLanguage(new BaseExpressionLanguage());
-        $expressionLanguage->addFunctions((new FromPhpExpressionFunctionProvider(['min', 'max']))->getFunctions());
-
-        self::assertEquals(2, $expressionLanguage->evaluate('max(1, 2)'));
     }
 
     public function testExpressionLanguageLocked(): void
@@ -85,7 +76,10 @@ final class ExpressionLanguageTest extends AbstractTestCase
     private function getExpressionLanguage(): ExpressionLanguageInterface
     {
         $expressionLanguage = new ExpressionLanguage();
-        $expressionLanguage->addFunctions((new FromPhpExpressionFunctionProvider(['min', 'max']))->getFunctions());
+        $expressionLanguage->addFunctions([
+            new ExpressionFunction('min', BaseExpressionFunction::fromPhp('min')->getEvaluator()),
+            new ExpressionFunction('max', BaseExpressionFunction::fromPhp('max')->getEvaluator()),
+        ]);
 
         return $expressionLanguage;
     }

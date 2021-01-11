@@ -8,7 +8,7 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterfa
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface;
 use EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface;
-use Traversable;
+use EonX\EasyUtils\CollectorHelper;
 
 final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
 {
@@ -73,17 +73,12 @@ final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInte
 
     /**
      * @param iterable<mixed> $providers
+     * @param class-string $class
      *
      * @return mixed[]
      */
     private function filterProviders(iterable $providers, string $class): array
     {
-        $filter = static function ($provider) use ($class): bool {
-            return $provider instanceof $class;
-        };
-
-        $providers = $providers instanceof Traversable ? \iterator_to_array($providers) : (array)$providers;
-
-        return \array_filter($providers, $filter);
+        return CollectorHelper::filterByClassAsArray($providers, $class);
     }
 }

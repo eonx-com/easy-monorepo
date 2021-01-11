@@ -17,6 +17,7 @@ use EonX\EasyDecision\Interfaces\DecisionOutputForRuleAwareInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use EonX\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
+use EonX\EasyUtils\CollectorHelper;
 
 abstract class AbstractDecision implements DecisionInterface
 {
@@ -215,18 +216,11 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
-     * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
+     * @return iterable<\EonX\EasyDecision\Interfaces\RuleInterface>
      */
-    private function getRules(): array
+    private function getRules(): iterable
     {
-        // Sort rules by priority
-        $rules = $this->rules;
-
-        \usort($rules, function (RuleInterface $first, RuleInterface $second): int {
-            return $first->getPriority() <=> $second->getPriority();
-        });
-
-        foreach ($rules as $rule) {
+        foreach (CollectorHelper::orderLowerPriorityFirst($this->rules) as $rule) {
             if ($rule instanceof ContextAwareInterface) {
                 $rule->setContext($this->context);
             }
@@ -234,9 +228,9 @@ abstract class AbstractDecision implements DecisionInterface
             if ($rule instanceof ExpressionLanguageAwareInterface) {
                 $rule->setExpressionLanguage($this->getExpressionLanguageForRule());
             }
-        }
 
-        return $rules;
+            yield $rule;
+        }
     }
 
     private function processRules(): self
