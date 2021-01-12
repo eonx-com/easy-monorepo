@@ -16,6 +16,7 @@
             <exclude>
                 <directory>packages/*/src/Bridge/Laravel/config</directory>
                 <directory>packages/EasyCore/src/Bridge/Symfony/Resources/skeleton</directory>
+                <file>packages/EasyCore/src/Bridge/Symfony/Traits/InvalidDataGeneratorTrait.php</file>
             </exclude>
         </whitelist>
     </filter>
