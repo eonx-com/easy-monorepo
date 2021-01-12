@@ -34,11 +34,11 @@ trait InvalidDataGeneratorTrait
         $fewerArrayCollection = new ArrayCollection($fewerElements);
 
         return [
-            "$property has too few elements in the collection" => [
+            "${property} has too few elements in the collection" => [
                 'data' => [
                     $property => $fewerArrayCollection,
                 ],
-                'message' => "This collection should contain $minElements element or more.",
+                'message' => "This collection should contain ${minElements} element or more.",
             ],
         ];
     }
@@ -49,11 +49,11 @@ trait InvalidDataGeneratorTrait
     public function getArrayWithFewerItems(string $property, int $minElements): array
     {
         return [
-            "$property has too few elements in the array" => [
+            "${property} has too few elements in the array" => [
                 'data' => [
                     $property => \array_fill(0, $minElements - 1, null),
                 ],
-                'message' => "This collection should contain $minElements element or more.",
+                'message' => "This collection should contain ${minElements} element or more.",
             ],
         ];
     }
@@ -64,11 +64,11 @@ trait InvalidDataGeneratorTrait
     public function getArrayWithMoreItems(string $property, int $maxElements): array
     {
         return [
-            "$property has too many elements in the collection" => [
+            "${property} has too many elements in the collection" => [
                 'data' => [
                     $property => \array_fill(0, $maxElements + 1, []),
                 ],
-                'message' => "This collection should contain $maxElements elements or less.",
+                'message' => "This collection should contain ${maxElements} elements or less.",
             ],
         ];
     }
@@ -79,7 +79,7 @@ trait InvalidDataGeneratorTrait
     public function getBlankString(string $property): array
     {
         return [
-            "$property is blank" => [
+            "${property} is blank" => [
                 'data' => [
                     $property => '',
                 ],
@@ -94,7 +94,7 @@ trait InvalidDataGeneratorTrait
     public function getBlankStringInArray(string $property): array
     {
         return [
-            "$property is blank" => [
+            "${property} is blank" => [
                 'data' => [
                     $property => [''],
                 ],
@@ -111,13 +111,15 @@ trait InvalidDataGeneratorTrait
         $dateTime = Carbon::now();
 
         return [
-            "$property has less datetime" => [
+            "${property} has less datetime" => [
                 'data' => [
-                    $property => $dateTime->clone()->subSecond()->toAtomString(),
+                    $property => $dateTime->clone()
+                        ->subSecond()
+                        ->toAtomString(),
                 ],
                 'message' => 'This value should be greater than now.',
             ],
-            "$property has equal datetime" => [
+            "${property} has equal datetime" => [
                 'data' => [
                     $property => $dateTime->toAtomString(),
                 ],
@@ -132,11 +134,11 @@ trait InvalidDataGeneratorTrait
     public function getEmptyArrayCollection(string $property, int $minElements): array
     {
         return [
-            "$property has too few elements in the collection" => [
+            "${property} has too few elements in the collection" => [
                 'data' => [
                     $property => new ArrayCollection(),
                 ],
-                'message' => "This collection should contain $minElements element or more.",
+                'message' => "This collection should contain ${minElements} element or more.",
             ],
         ];
     }
@@ -147,11 +149,11 @@ trait InvalidDataGeneratorTrait
     public function getIntegerGreaterThanGiven(string $property, int $lessThanOrEqualValue): array
     {
         return [
-            "$property has greater value" => [
+            "${property} has greater value" => [
                 'data' => [
                     $property => $lessThanOrEqualValue + 1,
                 ],
-                'message' => "This value should be less than or equal to $lessThanOrEqualValue.",
+                'message' => "This value should be less than or equal to ${lessThanOrEqualValue}.",
             ],
         ];
     }
@@ -162,17 +164,17 @@ trait InvalidDataGeneratorTrait
     public function getIntegerGreaterThanOrEqualToGiven(string $property, int $lessThanValue): array
     {
         return [
-            "$property has greater value" => [
+            "${property} has greater value" => [
                 'data' => [
                     $property => $lessThanValue + 1,
                 ],
-                'message' => "This value should be less than $lessThanValue.",
+                'message' => "This value should be less than ${lessThanValue}.",
             ],
-            "$property has equal value" => [
+            "${property} has equal value" => [
                 'data' => [
                     $property => $lessThanValue,
                 ],
-                'message' => "This value should be less than $lessThanValue.",
+                'message' => "This value should be less than ${lessThanValue}.",
             ],
         ];
     }
@@ -183,7 +185,7 @@ trait InvalidDataGeneratorTrait
     public function getInvalidCurrency(string $property): array
     {
         return [
-            "$property is invalid currency" => [
+            "${property} is invalid currency" => [
                 'data' => [
                     $property => 'invalid-currency',
                 ],
@@ -198,7 +200,7 @@ trait InvalidDataGeneratorTrait
     public function getInvalidEmail(string $property): array
     {
         return [
-            "$property is invalid email" => [
+            "${property} is invalid email" => [
                 'data' => [
                     $property => 'invalid-email',
                 ],
@@ -213,11 +215,11 @@ trait InvalidDataGeneratorTrait
     public function getInvalidExactLengthString(string $property, int $exactLength): array
     {
         return [
-            "$property has invalid length" => [
+            "${property} has invalid length" => [
                 'data' => [
                     $property => \str_pad('12345678909', $exactLength + 1, '1'),
                 ],
-                'message' => "This value should have exactly $exactLength characters.",
+                'message' => "This value should have exactly ${exactLength} characters.",
             ],
         ];
     }
@@ -471,7 +473,7 @@ trait InvalidDataGeneratorTrait
                 'data' => [
                     $property => \str_pad('g', $maxLength + 1, 'g'),
                 ],
-                'message' => "This value is too long. It should have $maxLength characters or less.",
+                'message' => "This value is too long. It should have ${maxLength} characters or less.",
             ],
         ];
     }
@@ -486,7 +488,7 @@ trait InvalidDataGeneratorTrait
                 'data' => [
                     $property => [\str_pad('g', $maxLength + 1, 'g')],
                 ],
-                'message' => "This value is too long. It should have $maxLength characters or less.",
+                'message' => "This value is too long. It should have ${maxLength} characters or less.",
             ],
         ];
     }
@@ -501,7 +503,7 @@ trait InvalidDataGeneratorTrait
                 'data' => [
                     $property => $minLength > 1 ? \str_pad('g', $minLength - 1, 'g') : '',
                 ],
-                'message' => "This value is too short. It should have $minLength characters or more.",
+                'message' => "This value is too short. It should have ${minLength} characters or more.",
             ],
         ];
     }
@@ -521,7 +523,9 @@ trait InvalidDataGeneratorTrait
             /** @var string $newCaseName */
             $newCaseName = \str_replace($innerProperty, "${property}.${innerProperty}", $caseName);
             $result[$newCaseName] = [
-                'data' => [$property => $data],
+                'data' => [
+                    $property => $data,
+                ],
                 'message' => $caseValue['message'],
             ];
         }
