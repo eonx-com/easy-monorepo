@@ -136,5 +136,91 @@ final class MyClass
 }
 ```
 
+### CollectorHelper::orderHigherPriorityFirst()
+
+Most popular PHP frameworks provide features to tag services, and then define all services for a specific tag as
+dependencies to other services. For examples, you can have a look at the following resources:
+
+- [Tagging Services in CakePHP][3]
+- [How to Work with Service Tags in Symfony][4]
+- [Service Tagging in Laravel][5]
+
+Those features are great to start implementing the [Collector DesignPattern][2] in your project as it allows you to
+easily inject a collection of services sharing the same tag into other services.
+
+However, there are things you need to consider:
+
+- You have no guarantee all given services are instances of a specific class/interface
+- You have no control on the order the services are organised within the given collection
+
+Let's elaborate on the above points.
+
+#### No guarantee on the content of tagged services
+
+The service tagging features provided discussed above are great, but they do not allow you to ensure all services sharing
+the same tagged meet common criteria. Symfony has a feature to [automatically tag services based on their class][6],
+however nothing stop you from manually tag a service with the same tag or even one of your dependencies.
+
+This is why we strongly recommend to always filter the given `iterable` of services by a given class/interface of your
+choice using the `filterByClass()` or `filterByClassAsArray()` methods.
+
+#### No control on the order the services are organised
+
+If you have used those service tagging features before, you would have probably realised that you can control the order
+the services are organised by simply change the order you define the services themselves. However, same issue as above,
+there is nothing stopping you or one of your dependencies to tag a service with the same tag and therefore you cannot
+guarantee the order as you cannot modify the dependencies service definitions.
+
+Don't panic, the `CollectorHelper` is here for us!
+
+
+In some cases the order of the given services does not matter, so no need to do anything. If your logic requires
+the services to be used in a specific order, then the `orderHigherPriorityFirst()` and `orderLowerPriorityFirst()`
+are for you!
+
+The above methods will sort the objects within the given `iterable` based on their priority. In order to define its
+priority, an object must implement the `EonX\EasyUtils\Interfaces\HasPriorityInterface` provided by this package. If
+an object doesn't implement this interface then its priority will default to `0` automatically.
+
+The `orderHigherPriorityFirst()` method will make sure the object with the highest priority is placed first, and the
+object with the lowest priority is placed last.
+
+```php
+// Foo and Bar both implement EonX\EasyUtils\Interfaces\HasPriorityInterface
+
+$foo = new Foo(); // Has a priority of 10
+$bar = new Bar(); // Has a priority of 100
+
+// $foo is added to the array first, and $bar second
+$objects = [$foo, $bar];
+
+// $bar is now first as it has a higher priority than $foo
+$objects = CollectorHelper::orderHigherPriorityFirst($objects); // [$bar, $foo]
+```
+
+### CollectorHelper::orderLowerPriorityFirst()
+
+The `orderLowerPriorityFirst()` is the opposite of `orderHigherPriorityFirst()`, it will make sure the object will the
+lowest priority is place first, and the object with the highest priority is placed last.
+
+Let's have a look at the preview example but using `orderLowerPriorityFirst()` this time.
+
+```php
+// Foo and Bar both implement EonX\EasyUtils\Interfaces\HasPriorityInterface
+
+$foo = new Foo(); // Has a priority of 10
+$bar = new Bar(); // Has a priority of 100
+
+// $foo is added to the array first, and $bar second
+$objects = [$foo, $bar];
+
+// $foo is still first as it has a lower priority than $bar
+$objects = CollectorHelper::orderLowerPriorityFirst($objects); // [$foo, $bar]
+```
+
 [1]: https://getcomposer.org/
 [2]: https://tomasvotruba.com/blog/2018/06/14/collector-pattern-for-dummies/
+[3]: https://book.cakephp.org/4.next/en/development/dependency-injection.html#tagging-services
+[4]: https://symfony.com/doc/current/service_container/tags.html
+[5]: https://laravel.com/docs/8.x/container#tagging
+[6]: https://symfony.com/blog/new-in-symfony-3-3-simpler-service-configuration#interface-based-service-configuration
