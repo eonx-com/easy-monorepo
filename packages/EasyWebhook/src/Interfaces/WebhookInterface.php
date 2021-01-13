@@ -14,6 +14,70 @@ interface WebhookInterface
     /**
      * @var string
      */
+    public const OPTIONS = [
+        self::OPTION_BODY,
+        self::OPTION_CURRENT_ATTEMPT,
+        self::OPTION_EVENT,
+        self::OPTION_HTTP_OPTIONS,
+        self::OPTION_MAX_ATTEMPT,
+        self::OPTION_METHOD,
+        self::OPTION_STATUS,
+        self::OPTION_URL,
+    ];
+
+    /**
+     * @var string
+     */
+    public const OPTION_BODY = 'body';
+
+    /**
+     * @var string
+     */
+    public const OPTION_CURRENT_ATTEMPT = 'current_attempt';
+
+    /**
+     * @var string
+     */
+    public const OPTION_EVENT = 'event';
+
+    /**
+     * @var string
+     */
+    public const OPTION_HTTP_OPTIONS = 'http_options';
+
+    /**
+     * @var string
+     */
+    public const OPTION_MAX_ATTEMPT = 'max_attempt';
+
+    /**
+     * @var string
+     */
+    public const OPTION_METHOD = 'method';
+
+    /**
+     * @var string
+     */
+    public const OPTION_STATUS = 'status';
+
+    /**
+     * @var string
+     */
+    public const OPTION_URL = 'url';
+
+    /**
+     * @var string[]
+     */
+    public const STATUSES = [
+        self::STATUS_FAILED,
+        self::STATUS_FAILED_PENDING_RETRY,
+        self::STATUS_PENDING,
+        self::STATUS_SUCCESS,
+    ];
+
+    /**
+     * @var string
+     */
     public const STATUS_FAILED = 'failed';
 
     /**

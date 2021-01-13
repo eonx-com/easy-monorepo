@@ -11,20 +11,20 @@ abstract class AbstractWebhook implements WebhookInterface
     /**
      * @var string[]
      */
-    protected static $integers = ['current_attempt', 'max_attempt'];
+    protected static $integers = [self::OPTION_CURRENT_ATTEMPT, self::OPTION_MAX_ATTEMPT];
 
     /**
      * @var string[]
      */
     protected static $setters = [
-        'body' => 'body',
-        'current_attempt' => 'currentAttempt',
-        'event' => 'event',
-        'http_options' => 'httpClientOptions',
-        'max_attempt' => 'maxAttempt',
-        'method' => 'method',
-        'status' => 'status',
-        'url' => 'url',
+        self::OPTION_BODY => 'body',
+        self::OPTION_CURRENT_ATTEMPT => 'currentAttempt',
+        self::OPTION_EVENT => 'event',
+        self::OPTION_HTTP_OPTIONS => 'httpClientOptions',
+        self::OPTION_MAX_ATTEMPT => 'maxAttempt',
+        self::OPTION_METHOD => 'method',
+        self::OPTION_STATUS => 'status',
+        self::OPTION_URL => 'url',
     ];
 
     /**
