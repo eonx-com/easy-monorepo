@@ -27,7 +27,7 @@ final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterf
     private $translator;
 
     /**
-     * @param null|string[] $keys
+     * @param null|mixed[] $keys
      */
     public function __construct(
         ErrorDetailsResolverInterface $errorDetailsResolver,
@@ -58,7 +58,7 @@ final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterf
         yield new ViolationsBuilder($this->getKey('violations'));
 
         if (\interface_exists(HttpExceptionInterface::class)) {
-            yield new HttpExceptionBuilder();
+            yield new HttpExceptionBuilder($this->keys);
         }
     }
 

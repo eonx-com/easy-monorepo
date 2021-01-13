@@ -24,6 +24,7 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->booleanNode('verbose')->defaultFalse()->end()
                 ->booleanNode('use_default_builders')->defaultTrue()->end()
+                ->booleanNode('user_api_platform_builders')->defaultTrue()->end()
                 ->booleanNode('use_default_reporters')->defaultTrue()->end()
                 ->scalarNode('translation_domain')->defaultValue('EasyErrorHandlerBundle')->end()
                 ->arrayNode('response')

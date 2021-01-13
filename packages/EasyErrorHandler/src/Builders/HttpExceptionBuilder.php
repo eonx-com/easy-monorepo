@@ -10,6 +10,21 @@ use Throwable;
 final class HttpExceptionBuilder extends AbstractErrorResponseBuilder
 {
     /**
+     * @var mixed[]
+     */
+    private $keys;
+
+    /**
+     * @param null|mixed[] $keys
+     */
+    public function __construct(?array $keys = null, ?int $priority = null)
+    {
+        $this->keys = $keys ?? [];
+
+        parent::__construct($priority);
+    }
+
+    /**
      * @param mixed[] $data
      *
      * @return mixed[]
@@ -17,7 +32,7 @@ final class HttpExceptionBuilder extends AbstractErrorResponseBuilder
     public function buildData(Throwable $throwable, array $data): array
     {
         if ($throwable instanceof HttpExceptionInterface) {
-            $data['message'] = $throwable->getMessage();
+            $data[$this->getKey('message')] = $throwable->getMessage();
         }
 
         return parent::buildData($throwable, $data);
@@ -30,5 +45,10 @@ final class HttpExceptionBuilder extends AbstractErrorResponseBuilder
         }
 
         return parent::buildStatusCode($throwable, $statusCode);
+    }
+
+    private function getKey(string $name): string
+    {
+        return $this->keys[$name] ?? $name;
     }
 }
