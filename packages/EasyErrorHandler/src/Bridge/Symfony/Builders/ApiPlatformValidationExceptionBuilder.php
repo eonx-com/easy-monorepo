@@ -83,7 +83,7 @@ final class ApiPlatformValidationExceptionBuilder extends AbstractErrorResponseB
         $keys = $keys ?? $this->keys;
         $nameParts = \explode('.', $name);
 
-        if (count($nameParts) <= 1) {
+        if (\count($nameParts) <= 1) {
             return $keys[$name] ?? $name;
         }
 
