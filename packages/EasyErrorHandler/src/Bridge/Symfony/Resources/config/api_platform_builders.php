@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-use ApiPlatform\Core\Bridge\Symfony\Validator\EventListener\ValidationExceptionListener;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
-use EonX\EasyErrorHandler\Bridge\Symfony\Builders\ApiPlatformBuilderProvider;
+use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformBuilderProvider;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {

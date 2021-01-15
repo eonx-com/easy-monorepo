@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge\Symfony\Builders;
+namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
