@@ -6,6 +6,7 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\Builders;
 
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
+use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Throwable;
 
 final class ApiPlatformValidationExceptionBuilder extends AbstractErrorResponseBuilder
@@ -16,10 +17,16 @@ final class ApiPlatformValidationExceptionBuilder extends AbstractErrorResponseB
     private $keys;
 
     /**
+     * @var \EonX\EasyErrorHandler\Interfaces\TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * @param null|mixed[] $keys
      */
-    public function __construct(?array $keys = null, ?int $priority = null)
+    public function __construct(TranslatorInterface $translator, ?array $keys = null, ?int $priority = null)
     {
+        $this->translator = $translator;
         $this->keys = $keys ?? [];
 
         parent::__construct($priority);
@@ -36,12 +43,23 @@ final class ApiPlatformValidationExceptionBuilder extends AbstractErrorResponseB
             $violations = [];
 
             foreach ($throwable->getConstraintViolationList() as $violation) {
-                $violations[] = [
-                    'propertyPath' => $violation->getPropertyPath(),
-                    'message' => $violation->getMessage(),
-                ];
+                $propertyPath = $violation->getPropertyPath();
+
+                if (\array_key_exists($propertyPath, $violations) === false) {
+                    $violations[$propertyPath] = [];
+                }
+
+                $violations[$propertyPath][] = $violation->getMessage();
             }
 
+            $exceptionKey = $this->getKey('exception');
+            $exceptionMessageKey = $this->getKey('extended_exception_keys.message');
+
+            if (\is_array($data[$exceptionKey] ?? null)) {
+                $data[$exceptionKey][$exceptionMessageKey] = 'Entity validation failed.';
+            }
+
+            $data[$this->getKey('message')] = $this->translator->trans('exceptions.not_valid', []);
             $data[$this->getKey('violations')] = $violations;
         }
 
@@ -57,8 +75,24 @@ final class ApiPlatformValidationExceptionBuilder extends AbstractErrorResponseB
         return parent::buildStatusCode($throwable, $statusCode);
     }
 
-    private function getKey(string $name): string
+    /**
+     * @param mixed[]|null $keys
+     */
+    private function getKey(string $name, ?array $keys = null): string
     {
-        return $this->keys[$name] ?? $name;
+        $keys = $keys ?? $this->keys;
+        $nameParts = \explode('.', $name);
+
+        if (count($nameParts) <= 1) {
+            return $keys[$name] ?? $name;
+        }
+
+        $firstPartOfName = \array_shift($nameParts);
+
+        if (\array_key_exists($firstPartOfName, $keys) === false) {
+            return $name;
+        }
+
+        return $this->getKey(\implode('.', $nameParts), $keys[$firstPartOfName]);
     }
 }

@@ -6,6 +6,7 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\Builders;
 
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
+use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 
 final class ApiPlatformBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
@@ -15,10 +16,16 @@ final class ApiPlatformBuilderProvider implements ErrorResponseBuilderProviderIn
     private $keys;
 
     /**
+     * @var \EonX\EasyErrorHandler\Interfaces\TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * @param null|mixed[] $keys
      */
-    public function __construct(?array $keys = null)
+    public function __construct(TranslatorInterface $translator, ?array $keys = null)
     {
+        $this->translator = $translator;
         $this->keys = $keys ?? [];
     }
 
@@ -28,7 +35,7 @@ final class ApiPlatformBuilderProvider implements ErrorResponseBuilderProviderIn
     public function getBuilders(): iterable
     {
         if (\class_exists(ValidationException::class)) {
-            yield new ApiPlatformValidationExceptionBuilder($this->keys);
+            yield new ApiPlatformValidationExceptionBuilder($this->translator, $this->keys);
         }
     }
 }

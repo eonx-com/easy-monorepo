@@ -9,6 +9,7 @@ return [
         'conflict' => 'Conflict.',
         'forbidden' => 'Forbidden.',
         'not_found' => 'Not found.',
+        'not_valid' => 'Validation failed.',
         'unauthorized' => 'Unauthorized.',
     ],
 ];
