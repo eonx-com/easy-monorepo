@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Sniffs\Classes\AvoidPrivatePropertiesSniff;
 
-use EonX\EasyStandard\Sniffs\Classes\AvoidPublicPropertiesSniff;
+use EonX\EasyStandard\Sniffs\Classes\AvoidPrivatePropertiesSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
@@ -30,6 +30,6 @@ final class AvoidPrivatePropertiesSniffTest extends AbstractCheckerTestCase
 
     protected function getCheckerClass(): string
     {
-        return AvoidPublicPropertiesSniff::class;
+        return AvoidPrivatePropertiesSniff::class;
     }
 }
