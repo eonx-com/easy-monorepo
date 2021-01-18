@@ -19,5 +19,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Drop tags of ValidationExceptionListener
     $services
         ->set('api_platform.listener.exception.validation')
-        ->synthetic(true);
+        ->abstract(true);
 };

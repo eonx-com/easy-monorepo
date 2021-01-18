@@ -45,7 +45,7 @@ final class ApiPlatformValidationExceptionBuilder extends AbstractErrorResponseB
             foreach ($throwable->getConstraintViolationList() as $violation) {
                 $propertyPath = $violation->getPropertyPath();
 
-                if (\array_key_exists($propertyPath, $violations) === false) {
+                if (isset($violations[$propertyPath]) === false) {
                     $violations[$propertyPath] = [];
                 }
 
@@ -89,7 +89,7 @@ final class ApiPlatformValidationExceptionBuilder extends AbstractErrorResponseB
 
         $firstPartOfName = \array_shift($nameParts);
 
-        if (\array_key_exists($firstPartOfName, $keys) === false) {
+        if (isset($keys[$firstPartOfName]) === false) {
             return $name;
         }
 
