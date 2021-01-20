@@ -5,7 +5,7 @@ weight: 1001
 #### Classes
 
 ##### [\EonX\EasyStandard\Sniffs\Classes\AvoidPrivatePropertiesSniff][1]
-Class properties must be protected or private.
+Class properties must be protected or public.
 ```php
 // incorrect
 class MyClass
