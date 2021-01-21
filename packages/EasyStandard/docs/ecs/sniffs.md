@@ -1,11 +1,39 @@
----eonx_docs---
-title: 'EasyStandard: Sniffs'
-weight: 1001
----eonx_docs---
-#### Classes
+---eonx_docs--- title: 'EasyStandard: Sniffs' weight: 1001 ---eonx_docs---
 
-##### [\EonX\EasyStandard\Sniffs\Classes\AvoidPublicPropertiesSniff][1]
+#### Arrays
+
+##### [\EonX\EasyStandard\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff][1]
+
+Arrays must be sorted by keys alphabetically.
+
+```php
+// incorrect
+$array = ['z' => 1, 'g' => 2, 'a' => 3];
+```
+
+```php
+// correct
+$array = ['a' => 3, 'g' => 2, 'z' => 1];
+```
+
+**Parameters**
+
+- `skipPatterns` - A list of patterns to be checked to skip the array.
+  Specify a token type (e.g. `T_FUNCTION` or `T_CLASS`) as a key, and an array of regex patterns as a value
+  to skip an array in the corresponding tokens (functions, classes). Default value: `[]`.
+  For example, you can skip all the arrays inside of functions which names start with `someFunction`
+  or classes which names start with `SomeClass`.
+```
+[
+    T_FUNCTION => ['/^someFunction.*/'],
+    T_CLASS => ['/^SomeClass.*/'],
+]
+```
+
+##### [\EonX\EasyStandard\Sniffs\Classes\AvoidPublicPropertiesSniff][2]
+
 Class properties must be protected or private.
+
 ```php
 // incorrect
 class MyClass
@@ -15,6 +43,7 @@ class MyClass
     $myProperty2;
 }
 ```
+
 ```php
 // correct
 class MyClass
@@ -25,8 +54,10 @@ class MyClass
 }
 ```
 
-##### [\EonX\EasyStandard\Sniffs\Classes\RequirePublicConstructorSniff][2]
+##### [\EonX\EasyStandard\Sniffs\Classes\RequirePublicConstructorSniff][3]
+
 Class constructor must be public.
+
 ```php
 // incorrect
 class MyClass
@@ -36,6 +67,7 @@ class MyClass
     }
 }
 ```
+
 ```php
 // correct
 class MyClass
@@ -46,13 +78,16 @@ class MyClass
 }
 ```
 
-##### [\EonX\EasyStandard\Sniffs\Classes\RequireStrictDeclarationSniff][3]
+##### [\EonX\EasyStandard\Sniffs\Classes\RequireStrictDeclarationSniff][4]
+
 Strict type declaration is required.
+
 ```php
 // incorrect
 <?php
 // any php content
 ```
+
 ```php
 // correct
 <?php
@@ -61,8 +96,10 @@ declare(strict_types=1);
 // any php content
 ```
 
-##### [\EonX\EasyStandard\Sniffs\Classes\StrictDeclarationFormatSniff][4]
+##### [\EonX\EasyStandard\Sniffs\Classes\StrictDeclarationFormatSniff][5]
+
 Strict type declaration must be on a new line with no leading whitespace.
+
 ```php
 // incorrect
 <?php
@@ -70,11 +107,13 @@ Strict type declaration must be on a new line with no leading whitespace.
 declare(strict_types=1);
 // any php content
 ```
+
 ```php
 // incorrect
 <?php declare(strict_types=1);
 // any php content
 ```
+
 ```php
 // correct
 <?php
@@ -85,8 +124,10 @@ declare(strict_types=1);
 
 #### Commenting
 
-##### [\EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff][5]
+##### [\EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff][6]
+
 Checks that annotations are sorted alphabetically.
+
 ```php
 // incorrect
 class MyClass
@@ -102,6 +143,7 @@ class MyClass
     }
 }
 ```
+
 ```php
 // correct
 class MyClass
@@ -117,12 +159,16 @@ class MyClass
     }
 }
 ```
+
 **Parameters**
 
-- `alwaysTopAnnotations` - A list of annotations that should always come first in the list, without regard to sorting. Default value: `[]`.
+- `alwaysTopAnnotations` - A list of annotations that should always come first in the list, without regard to sorting.
+  Default value: `[]`.
 
-##### [\EonX\EasyStandard\Sniffs\Commenting\FunctionCommentSniff][6]
+##### [\EonX\EasyStandard\Sniffs\Commenting\FunctionCommentSniff][7]
+
 Checks that function comment blocks follow EonX standards.
+
 ```php
 // incorrect
 class MyClass
@@ -164,6 +210,7 @@ class MyClass
     }
 }
 ```
+
 ```php
 // incorrect
 class MyClass
@@ -220,8 +267,11 @@ class MyClass
 
 #### Control Structures
 
-##### [\EonX\EasyStandard\Sniffs\ControlStructures\ArrangeActAssertSniff][7]
-Checks that a test method conforms to Arrange, Act and Assert (AAA) pattern. The allowed number of empty lines is between [1, 2].
+##### [\EonX\EasyStandard\Sniffs\ControlStructures\ArrangeActAssertSniff][8]
+
+Checks that a test method conforms to Arrange, Act and Assert (AAA) pattern. The allowed number of empty lines is
+between [1, 2].
+
 ```php
 // incorrect
 final class TestClass
@@ -245,6 +295,7 @@ final class TestClass
     }
 }
 ```
+
 ```php
 // correct
 final class TestClass
@@ -298,10 +349,12 @@ final class TestClass
     }
 }
 ```
+
 **Parameters**
 
 - `testMethodPrefix` - If a method name starts with this prefix, checks will be applied to it. Default value: `test`.
 - `testNamespace` - If a class namespace starts with this prefix, the class will be parsed. Default value: `App\Tests`.
+
 ```php
 // correct
 namespace App\NoTestNamespace;
@@ -321,8 +374,10 @@ final class TestClass
 }
 ```
 
-##### [\EonX\EasyStandard\Sniffs\ControlStructures\NoNotOperatorSniff][8]
+##### [\EonX\EasyStandard\Sniffs\ControlStructures\NoNotOperatorSniff][9]
+
 A strict comparison operator must be used instead of a NOT operator.
+
 ```php
 // incorrect
 $a = (bool)\random_int(0, 1);
@@ -330,6 +385,7 @@ if (!$a) {
     // Do something.
 }
 ````
+
 ```php
 // correct
 $a = (bool)\random_int(0, 1);
@@ -340,12 +396,15 @@ if ($a === false) {
 
 #### Exceptions
 
-##### [\EonX\EasyStandard\Sniffs\Exceptions\ThrowExceptionMessageSniff][9]
+##### [\EonX\EasyStandard\Sniffs\Exceptions\ThrowExceptionMessageSniff][10]
+
 Exception message must be either a variable or a translation message, starting with a valid prefix.
+
 ```php
 // incorrect
 throw new \Exception('Incorrect message');
 ````
+
 ```php
 // correct
 throw new NotFoundHttpException();
@@ -358,19 +417,41 @@ throw new InvalidArgumentException('exceptions.some_message');
 $message = 'Some exception message';
 throw new RuntimeException($message);
 ````
+
 **Parameters**
 
 - `validPrefixes` - An array of prefixes that are valid for starting the message text. Default value: `['exceptions.']`.
 
+#### Functions
+
+##### [\EonX\EasyStandard\Sniffs\Functions\DisallowNonNullDefaultValueSniff][11]
+
+Function and closure parameters can only have a default value of `null`.
+
+```php
+// incorrect
+function someFunction(int $param1, ?stdClass $class, string $const3 = TestClass::TEST, array $param4 = []) {
+    // No body needed
+}
+````
+
+```php
+// correct
+function someFunction(int $param1, ?stdClass $class = null, ?string $const3 = null, ?array $param4 = null) {
+    // No body needed
+}
+````
+
 #### Methods
 
-##### [\EonX\EasyStandard\Sniffs\Methods\TestMethodNameSniff][10]
+##### [\EonX\EasyStandard\Sniffs\Methods\TestMethodNameSniff][12]
+
 Checks that a method name matches/does not match a specific regex.
 
 **Parameters**
 
-- `allowed` - An array of regular expressions to match method names.
-Default value:
+- `allowed` - An array of regular expressions to match method names. Default value:
+
 ```
 [
     [
@@ -379,8 +460,9 @@ Default value:
     ],
 ]
 ```
-- `forbidden` - An array of regular expressions that method names should not match.
-Default value:
+
+- `forbidden` - An array of regular expressions that method names should not match. Default value:
+
 ```
 [
     [
@@ -392,21 +474,24 @@ Default value:
 
 #### Namespaces
 
-##### [\EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff][11]
+##### [\EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff][13]
+
 Checks that a namespace name matches PSR-4 project structure.
 
 **Parameters**
 
 - `composerJsonPath` - A relative path to the project file `composer.json`. Default value: `composer.json`.
 
-[1]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/AvoidPublicPropertiesSniff.php
-[2]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequirePublicConstructorSniff.php
-[3]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequireStrictDeclarationSniff.php
-[4]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/StrictDeclarationFormatSniff.php
-[5]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Commenting/AnnotationSortingSniff.php
-[6]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php
-[7]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/ControlStructures/ArrangeActAssertSniff.php
-[8]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/ControlStructures/NoNotOperatorSniff.php
-[9]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Exceptions/ThrowExceptionMessageSniff.php
-[10]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Methods/TestMethodNameSniff.php
-[11]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Namespaces/Psr4Sniff.php
+[1]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Arrays/AlphabeticallySortedArrayKeysSniff.php
+[2]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/AvoidPublicPropertiesSniff.php
+[3]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequirePublicConstructorSniff.php
+[4]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequireStrictDeclarationSniff.php
+[5]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/StrictDeclarationFormatSniff.php
+[6]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Commenting/AnnotationSortingSniff.php
+[7]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php
+[8]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/ControlStructures/ArrangeActAssertSniff.php
+[9]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/ControlStructures/NoNotOperatorSniff.php
+[10]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Exceptions/ThrowExceptionMessageSniff.php
+[11]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Functions/DisallowNonNullDefaultValueSniff.php
+[12]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Methods/TestMethodNameSniff.php
+[13]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Namespaces/Psr4Sniff.php
