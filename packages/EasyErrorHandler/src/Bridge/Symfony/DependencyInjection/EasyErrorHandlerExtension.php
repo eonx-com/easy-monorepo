@@ -25,6 +25,8 @@ final class EasyErrorHandlerExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new PhpFileLoader($container, new FileLocator([__DIR__ . '/../Resources/config']));
 
+        $container->setParameter(BridgeConstantsInterface::PARAM_IS_API_PLATFORM, $config['api_platform']);
+
         $container->setParameter(BridgeConstantsInterface::PARAM_BUGSNAG_THRESHOLD, $config['bugsnag_threshold']);
         $container->setParameter(
             BridgeConstantsInterface::PARAM_BUGSNAG_IGNORED_EXCEPTIONS,
@@ -47,10 +49,10 @@ final class EasyErrorHandlerExtension extends Extension
 
         if ($config['user_default_builders'] ?? true) {
             $loader->load('default_builders.php');
-        }
 
-        if ($config['user_api_platform_builders'] ?? true) {
-            $loader->load('api_platform_builders.php');
+            if ($config['api_platform'] ?? true) {
+                $loader->load('api_platform_builders.php');
+            }
         }
 
         if ($config['user_default_reporters'] ?? true) {

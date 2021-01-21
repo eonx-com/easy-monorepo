@@ -56,7 +56,10 @@ final class ApiPlatformValidationExceptionBuilder extends AbstractErrorResponseB
             $exceptionMessageKey = $this->getKey('extended_exception_keys.message');
 
             if (\is_array($data[$exceptionKey] ?? null)) {
-                $data[$exceptionKey][$exceptionMessageKey] = 'Entity validation failed.';
+                $data[$exceptionKey][$exceptionMessageKey] = $this->translator->trans(
+                    'exceptions.entity_not_valid',
+                    []
+                );
             }
 
             $data[$this->getKey('message')] = $this->translator->trans('exceptions.not_valid', []);

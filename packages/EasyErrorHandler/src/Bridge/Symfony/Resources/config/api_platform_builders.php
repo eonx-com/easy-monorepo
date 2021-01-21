@@ -15,9 +15,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(ApiPlatformBuilderProvider::class)
         ->arg('$keys', '%' . BridgeConstantsInterface::PARAM_RESPONSE_KEYS . '%');
-
-    // Drop tags of ValidationExceptionListener
-    $services
-        ->set('api_platform.listener.exception.validation')
-        ->abstract(true);
 };

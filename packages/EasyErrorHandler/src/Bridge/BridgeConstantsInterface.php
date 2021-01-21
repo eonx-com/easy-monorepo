@@ -19,6 +19,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_IS_API_PLATFORM = 'easy_error_handler.param_is_api_platform';
+
+    /**
+     * @var string
+     */
     public const PARAM_IS_VERBOSE = 'easy_error_handler.param_is_verbose';
 
     /**
