@@ -43,7 +43,8 @@ final class StopWorkerOnEmClosedEventListener
 
             // If manager found and is closed, stop worker
             if ($manager !== null && $manager->isOpen() === false) {
-                $event->getWorker()->stop();
+                $event->getWorker()
+                    ->stop();
 
                 return;
             }
