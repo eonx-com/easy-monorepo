@@ -15,7 +15,6 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->booleanNode('api_platform')->defaultTrue()->end()
                 //Bugsnag
                 ->booleanNode('bugsnag_enabled')->defaultTrue()->end()
                 ->integerNode('bugsnag_threshold')->defaultNull()->end()
@@ -24,6 +23,7 @@ final class Configuration implements ConfigurationInterface
                     ->scalarPrototype()->end()
                 ->end()
                 ->booleanNode('verbose')->defaultFalse()->end()
+                ->booleanNode('override_api_platform_listener')->defaultTrue()->end()
                 ->booleanNode('use_default_builders')->defaultTrue()->end()
                 ->booleanNode('use_default_reporters')->defaultTrue()->end()
                 ->scalarNode('translation_domain')->defaultValue('EasyErrorHandlerBundle')->end()

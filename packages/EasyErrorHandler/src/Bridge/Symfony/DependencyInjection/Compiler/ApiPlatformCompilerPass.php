@@ -12,7 +12,7 @@ class ApiPlatformCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if ($container->getParameter(BridgeConstantsInterface::PARAM_IS_API_PLATFORM) === false) {
+        if ($container->getParameter(BridgeConstantsInterface::PARAM_OVERRIDE_API_PLATFORM_LISTENER) === false) {
             return;
         }
 
