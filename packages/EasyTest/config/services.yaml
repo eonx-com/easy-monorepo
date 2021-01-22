@@ -8,3 +8,4 @@ services:
         resource: '../src'
         exclude:
             - '../src/HttpKernel/*'
+            - '../src/InvalidDataMaker/*'
