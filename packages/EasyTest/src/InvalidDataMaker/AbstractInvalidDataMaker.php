@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyTest\InvalidDataMaker;
@@ -97,7 +98,7 @@ abstract class AbstractInvalidDataMaker
                 'data' => $invalidData,
                 'message' => (string)($this->message ?? $message),
                 'propertyPath' => $this->resolvePropertyPath($invalidData),
-            ]
+            ],
         ];
 
         if ($this->wrapWith !== null) {
@@ -168,7 +169,7 @@ abstract class AbstractInvalidDataMaker
                 ],
                 'message' => $data[$caseName]['message'],
                 'propertyPath' => "{$this->wrapWith}.{$this->property}",
-            ]
+            ],
         ];
     }
 
