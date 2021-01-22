@@ -79,7 +79,7 @@ abstract class AbstractInvalidDataMaker
      *
      * @return mixed[]
      */
-    final protected function create($caseName, $value, ?string $message = null): array
+    final protected function create(string $caseName, $value, ?string $message = null): array
     {
         if ($this->asString === true) {
             $value = (string)$value;
@@ -156,6 +156,7 @@ abstract class AbstractInvalidDataMaker
      */
     private function applyWrapWith(array $data): array
     {
+        /** @var string $caseName */
         $caseName = \current(\array_keys($data));
         $caseData = $data[$caseName]['data'];
 
