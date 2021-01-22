@@ -10,6 +10,9 @@ use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\Translator;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class AbstractInvalidDataMaker
 {
     /**
