@@ -32,6 +32,10 @@ final class EasyErrorHandlerExtension extends Extension
         );
 
         $container->setParameter(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose']);
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_OVERRIDE_API_PLATFORM_LISTENER,
+            $config['override_api_platform_listener']
+        );
         $container->setParameter(BridgeConstantsInterface::PARAM_RESPONSE_KEYS, $config['response']);
         $container->setParameter(BridgeConstantsInterface::PARAM_TRANSLATION_DOMAIN, $config['translation_domain']);
 
@@ -45,11 +49,15 @@ final class EasyErrorHandlerExtension extends Extension
 
         $loader->load('services.php');
 
-        if ($config['user_default_builders'] ?? true) {
+        if ($config['use_default_builders'] ?? true) {
             $loader->load('default_builders.php');
         }
 
-        if ($config['user_default_reporters'] ?? true) {
+        if ($config['override_api_platform_listener'] ?? true) {
+            $loader->load('api_platform_builders.php');
+        }
+
+        if ($config['use_default_reporters'] ?? true) {
             $loader->load('default_reporters.php');
         }
 
