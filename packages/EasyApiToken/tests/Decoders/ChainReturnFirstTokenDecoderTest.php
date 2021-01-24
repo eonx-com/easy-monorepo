@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests\Decoders;
 
-use EonX\EasyApiToken\Decoders\ApiKeyAsBasicAuthUsernameDecoder;
+use EonX\EasyApiToken\Decoders\ApiKeyDecoder;
 use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
 use EonX\EasyApiToken\Decoders\ChainDecoder;
 use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface;
@@ -45,6 +45,6 @@ final class ChainReturnFirstTokenDecoderTest extends AbstractTestCase
 
     private function createChainReturnFirstTokenDecoder(): ChainDecoder
     {
-        return new ChainDecoder([new BasicAuthDecoder(), new ApiKeyAsBasicAuthUsernameDecoder()]);
+        return new ChainDecoder([new BasicAuthDecoder(), new ApiKeyDecoder()]);
     }
 }

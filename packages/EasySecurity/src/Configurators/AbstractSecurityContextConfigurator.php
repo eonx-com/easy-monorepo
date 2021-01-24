@@ -5,21 +5,14 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Configurators;
 
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
+use EonX\EasyUtils\Traits\HasPriorityTrait;
 
 abstract class AbstractSecurityContextConfigurator implements SecurityContextConfiguratorInterface
 {
-    /**
-     * @var int
-     */
-    private $priority;
+    use HasPriorityTrait;
 
     public function __construct(?int $priority = null)
     {
         $this->priority = $priority ?? 0;
-    }
-
-    public function getPriority(): int
-    {
-        return $this->priority;
     }
 }
