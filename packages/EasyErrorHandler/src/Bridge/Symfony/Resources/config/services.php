@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ExceptionEventListener;
+use EonX\EasyErrorHandler\Bridge\Symfony\Messenger\ReportErrorEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Translator;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
@@ -35,6 +36,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // EventListener
     $services
         ->set(ExceptionEventListener::class)
+        ->tag('kernel.event_listener');
+
+    // Messenger EventListener
+    $services
+        ->set(ReportErrorEventListener::class)
         ->tag('kernel.event_listener');
 
     // ResponseFactory
