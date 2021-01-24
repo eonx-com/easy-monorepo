@@ -23,6 +23,7 @@ final class Configuration implements ConfigurationInterface
                     ->scalarPrototype()->end()
                 ->end()
                 ->booleanNode('verbose')->defaultFalse()->end()
+                ->booleanNode('override_api_platform_listener')->defaultTrue()->end()
                 ->booleanNode('use_default_builders')->defaultTrue()->end()
                 ->booleanNode('use_default_reporters')->defaultTrue()->end()
                 ->scalarNode('translation_domain')->defaultValue('EasyErrorHandlerBundle')->end()
