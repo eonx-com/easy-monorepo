@@ -34,16 +34,7 @@ jobs:
                     php-version: ${{ matrix.php }}
                     coverage: ${{ matrix.actions.coverage }}
 
-            -   id: composer-cache
-                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            -   uses: eonx-com/actions-cache@v1
-                with:
-                    path: ${{ steps.composer-cache.outputs.dir }}
-                    key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
-                    restore-keys: ${{ matrix.php }}-comp-
-
-            -   run: composer install --prefer-dist --no-progress --ansi
+            -   uses: eonx-com/actions-composer-install@v1
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}

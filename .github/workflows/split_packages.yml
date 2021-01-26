@@ -7,37 +7,30 @@ on:
             - 3.x
 
 jobs:
+    provide_packages_json:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v2
+                with:
+                    php-version: 7.3
+                    coverage: none
+
+            -   uses: eonx-com/actions-composer-install@v1
+
+            -   id: output_data
+                run: echo "::set-output name=matrix::$(bin/monorepo export-packages)"
+
+        outputs:
+            matrix: ${{ steps.output_data.outputs.matrix }}
+
     split_packages:
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
             matrix:
-                mapping:
-                    - { dir: 'EasyApiToken', repo: 'easy-api-token' }
-                    - { dir: 'EasyAsync', repo: 'easy-async' }
-                    - { dir: 'EasyAwsCredentialsFinder', repo: 'easy-aws-credentials-finder' }
-                    - { dir: 'EasyBankFiles', repo: 'easy-bank-files' }
-                    - { dir: 'EasyBugsnag', repo: 'easy-bugsnag' }
-                    - { dir: 'EasyCore', repo: 'easy-core' }
-                    - { dir: 'EasyDecision', repo: 'easy-decision' }
-                    - { dir: 'EasyErrorHandler', repo: 'easy-error-handler' }
-                    - { dir: 'EasyEventDispatcher', repo: 'easy-event-dispatcher' }
-                    - { dir: 'EasyLock', repo: 'easy-lock' }
-                    - { dir: 'EasyLogging', repo: 'easy-logging' }
-                    - { dir: 'EasyNotification', repo: 'easy-notification' }
-                    - { dir: 'EasyPagination', repo: 'easy-pagination' }
-                    - { dir: 'EasyPipeline', repo: 'easy-pipeline' }
-                    - { dir: 'EasyPsr7Factory', repo: 'easy-psr7-factory' }
-                    - { dir: 'EasyRandom', repo: 'easy-random' }
-                    - { dir: 'EasyRepository', repo: 'easy-repository' }
-                    - { dir: 'EasyRequestId', repo: 'easy-request-id' }
-                    - { dir: 'EasySchedule', repo: 'easy-schedule' }
-                    - { dir: 'EasySecurity', repo: 'easy-security' }
-                    - { dir: 'EasySsm', repo: 'easy-ssm' }
-                    - { dir: 'EasyStandard', repo: 'easy-standard' }
-                    - { dir: 'EasyTest', repo: 'easy-test' }
-                    - { dir: 'EasyUtils', repo: 'easy-utils' }
-                    - { dir: 'EasyWebhook', repo: 'easy-webhook' }
+                mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
         steps:
             -   uses: eonx-com/actions-checkout@v2
