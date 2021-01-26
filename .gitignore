@@ -7,3 +7,6 @@ coverage_output.txt
 
 # env
 .env.local.php
+
+# Symfony
+/var
