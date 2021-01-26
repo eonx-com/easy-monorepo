@@ -1,6 +1,0 @@
-Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass: Resolving inheritance for ".instanceof.Symfony\Component\Console\Command\Command.0.EonX\EasyMonorepo\Console\Commands\ExportPackagesAsJsonCommand" (parent: .abstract.instanceof.EonX\EasyMonorepo\Console\Commands\ExportPackagesAsJsonCommand).
-Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass: Resolving inheritance for "EonX\EasyMonorepo\Console\Commands\ExportPackagesAsJsonCommand" (parent: .instanceof.Symfony\Component\Console\Command\Command.0.EonX\EasyMonorepo\Console\Commands\ExportPackagesAsJsonCommand).
-Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "Psr\Container\ContainerInterface"; reason: private alias.
-Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "Symfony\Component\DependencyInjection\ContainerInterface"; reason: private alias.
-Symfony\Component\DependencyInjection\Compiler\RemoveAbstractDefinitionsPass: Removed service ".instanceof.Symfony\Component\Console\Command\Command.0.EonX\EasyMonorepo\Console\Commands\ExportPackagesAsJsonCommand"; reason: abstract.
-Symfony\Component\DependencyInjection\Compiler\RemoveAbstractDefinitionsPass: Removed service ".abstract.instanceof.EonX\EasyMonorepo\Console\Commands\ExportPackagesAsJsonCommand"; reason: abstract.
