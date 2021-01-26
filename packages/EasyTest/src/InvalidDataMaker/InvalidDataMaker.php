@@ -144,20 +144,17 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     /**
      * @return iterable<mixed>
      */
-    public function yieldEmptyArrayCollection(int $minElements): iterable
+    public function yieldEmptyArray(): iterable
     {
-        $value = new ArrayCollection();
-        $message = $this->translateMessage(
-            (new Count([
-                'min' => $minElements,
-            ]))->minMessage,
-            [
-                '{{ limit }}' => $minElements,
-            ],
-            $minElements
-        );
+        yield from $this->yieldArrayWithFewerItems(1);
+    }
 
-        yield from $this->create("{$this->property} has too few elements in the collection", $value, $message);
+    /**
+     * @return iterable<mixed>
+     */
+    public function yieldEmptyArrayCollection(): iterable
+    {
+        yield from $this->yieldArrayCollectionWithFewerItems(1);
     }
 
     /**
