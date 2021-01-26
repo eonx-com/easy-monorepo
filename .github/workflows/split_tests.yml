@@ -38,7 +38,7 @@ jobs:
             fail-fast: false
             matrix:
                 php: [ '7.3' ]
-                package: ${{ fromJson(needs.provid_packages_json.outputs.matrix) }}
+                package: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
         name: ${{ matrix.package.dir }}
 
