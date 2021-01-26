@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+use EonX\EasyMonorepo\Console\MonorepoApplication;
+use EonX\EasyMonorepo\MonorepoKernel;
+
+require \dirname(__DIR__) . '/vendor/autoload.php';
+
+$kernel = new MonorepoKernel('dev', true);
+$kernel->boot();
+
+$app = $kernel->getContainer()->get(MonorepoApplication::class);
+exit($app->run());

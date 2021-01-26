@@ -3,40 +3,44 @@ name: Split Tests
 on: [push, pull_request]
 
 jobs:
+    provide_packages_json:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v2
+                with:
+                    php-version: 7.3
+                    coverage: none
+
+            -   id: composer-cache
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            -   uses: eonx-com/actions-cache@v1
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: 7.3-comp-${{ hashFiles('**/composer.json') }}
+                    restore-keys: 7.3-comp-
+
+            -   run: composer install --prefer-dist --no-progress --ansi
+
+            -   id: output_data
+                run: echo "::set-output name=matrix::$(bin/monorepo export-packages)"
+
+        outputs:
+            matrix: ${{ steps.output_data.outputs.matrix }}
+
+
     after_split_testing:
+        needs: provide_packages_json
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
             matrix:
                 php: [ '7.3' ]
-                package:
-                    - EasyApiToken
-                    - EasyAsync
-                    - EasyAwsCredentialsFinder
-                    # - EasyBankFiles
-                    - EasyBugsnag
-                    - EasyCore
-                    - EasyDecision
-                    - EasyErrorHandler
-                    - EasyEventDispatcher
-                    - EasyLock
-                    - EasyLogging
-                    - EasyNotification
-                    - EasyPagination
-                    - EasyPipeline
-                    - EasyPsr7Factory
-                    - EasyRandom
-                    - EasyRepository
-                    - EasyRequestId
-                    - EasySchedule
-                    - EasySecurity
-                    - EasySsm
-                    - EasyStandard
-                    - EasyTest
-                    - EasyUtils
-                    - EasyWebhook
+                package: ${{ fromJson(needs.provid_packages_json.outputs.matrix) }}
 
-        name: ${{ matrix.package }}
+        name: ${{ matrix.package.dir }}
 
         steps:
             -   uses: eonx-com/actions-checkout@v2
@@ -57,5 +61,5 @@ jobs:
 
             -   run: composer install --prefer-dist --no-progress --ansi
             -   run: vendor/bin/monorepo-builder localize-composer-paths --ansi
-            -   run: cd packages/${{ matrix.package }}; composer update --prefer-dist --no-progress --ansi
-            -   run: cd packages/${{ matrix.package }}; vendor/bin/phpunit tests
+            -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
+            -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit tests
