@@ -13,16 +13,7 @@ jobs:
                     php-version: 7.3
                     coverage: none
 
-            -   id: composer-cache
-                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            -   uses: eonx-com/actions-cache@v1
-                with:
-                    path: ${{ steps.composer-cache.outputs.dir }}
-                    key: 7.3-comp-${{ hashFiles('**/composer.json') }}
-                    restore-keys: 7.3-comp-
-
-            -   run: composer install --prefer-dist --no-progress --ansi
+            -   uses: eonx-com/actions-composer-install@v1
 
             -   id: output_data
                 run: echo "::set-output name=matrix::$(bin/monorepo export-packages)"
@@ -50,16 +41,8 @@ jobs:
                     php-version: ${{ matrix.php }}
                     coverage: none
 
-            -   id: composer-cache
-                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+            -   uses: eonx-com/actions-composer-install@v1
 
-            -   uses: eonx-com/actions-cache@v1
-                with:
-                    path: ${{ steps.composer-cache.outputs.dir }}
-                    key: ${{ matrix.php }}-comp-${{ hashFiles('**/composer.json') }}
-                    restore-keys: ${{ matrix.php }}-comp-
-
-            -   run: composer install --prefer-dist --no-progress --ansi
             -   run: vendor/bin/monorepo-builder localize-composer-paths --ansi
             -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
             -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit tests
