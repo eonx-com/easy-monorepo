@@ -28,9 +28,7 @@ abstract class AbstractInvalidDataMaker
     /**
      * @var string[]
      */
-    protected static $translations = [
-        'vendor/symfony/validator/Resources/translations/validators.en.xlf',
-    ];
+    protected static $translations = ['vendor/symfony/validator/Resources/translations/validators.en.xlf'];
 
     /**
      * @var \Symfony\Contracts\Translation\TranslatorInterface
