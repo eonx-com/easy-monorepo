@@ -26,6 +26,7 @@ jobs:
             matrix: ${{ steps.output_data.outputs.matrix }}
 
     split_packages:
+        needs: provide_packages_json
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
