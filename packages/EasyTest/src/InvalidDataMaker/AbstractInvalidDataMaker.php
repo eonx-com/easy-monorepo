@@ -18,7 +18,7 @@ abstract class AbstractInvalidDataMaker
     /**
      * @var string
      */
-    private const PLURAL_INDEX = '%count%';
+    private const PLURAL_PARAM = '%count%';
 
     /**
      * @var string
@@ -28,7 +28,9 @@ abstract class AbstractInvalidDataMaker
     /**
      * @var string[]
      */
-    private static $translations = [];
+    protected static $translations = [
+        'vendor/symfony/validator/Resources/translations/validators.en.xlf',
+    ];
 
     /**
      * @var \Symfony\Contracts\Translation\TranslatorInterface
@@ -116,7 +118,7 @@ abstract class AbstractInvalidDataMaker
      */
     final protected function translateMessage(string $messageKey, ?array $params = null, ?int $plural = null): string
     {
-        $params[self::PLURAL_INDEX] = $plural;
+        $params[self::PLURAL_PARAM] = $plural;
 
         return self::$translator->trans($messageKey, $params);
     }
@@ -131,7 +133,7 @@ abstract class AbstractInvalidDataMaker
             return new XliffFileLoader();
         }
 
-        throw new LogicException('For now allowed translations in formats [yaml, xlf]');
+        throw new LogicException('Only YAML and XLF translation formats are supported.');
     }
 
     private static function initTranslator(): void
@@ -163,8 +165,9 @@ abstract class AbstractInvalidDataMaker
         $caseName = \current(\array_keys($data));
         $caseData = $data[$caseName]['data'];
 
+        $wrappedPropertyPath = "{$this->wrapWith}.{$this->property}";
         /** @var string $newCaseName */
-        $newCaseName = \str_replace($this->property, "{$this->wrapWith}.{$this->property}", $caseName);
+        $newCaseName = \str_replace($this->property, $wrappedPropertyPath, $caseName);
 
         return [
             $newCaseName => [
@@ -172,7 +175,7 @@ abstract class AbstractInvalidDataMaker
                     $this->wrapWith => $caseData,
                 ],
                 'message' => $data[$caseName]['message'],
-                'propertyPath' => "{$this->wrapWith}.{$this->property}",
+                'propertyPath' => $wrappedPropertyPath,
             ],
         ];
     }

@@ -46,7 +46,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             $minElements
         );
 
-        yield from $this->create("{$this->property} has too few elements in the collection is blank", $value, $message);
+        yield from $this->create("{$this->property} has too few elements in the collection", $value, $message);
     }
 
     /**
@@ -65,7 +65,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             $maxElements
         );
 
-        yield from $this->create("{$this->property} has too more elements in the collection", $value, $message);
+        yield from $this->create("{$this->property} has too many elements in the collection", $value, $message);
     }
 
     /**
@@ -103,7 +103,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             $maxElements
         );
 
-        yield from $this->create("{$this->property} has too many elements in the collection", $value, $message);
+        yield from $this->create("{$this->property} has too many elements in the array", $value, $message);
     }
 
     /**
@@ -276,6 +276,11 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     }
 
     /**
+     * This method is intended to be used with a custom constraint, so a custom message should be passed, e.g.:
+     * InvalidDataMaker::make('amount')
+     *     ->message('This value is not a valid decimal number or has more than 3 digits in a precision.')
+     *     ->yieldInvalidFloat(3);
+     *
      * @return iterable<mixed>
      */
     public function yieldInvalidFloat(int $precision, ?int $integerPart = null): iterable
