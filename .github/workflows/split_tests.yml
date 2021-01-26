@@ -21,7 +21,6 @@ jobs:
         outputs:
             matrix: ${{ steps.output_data.outputs.matrix }}
 
-
     after_split_testing:
         needs: provide_packages_json
         runs-on: ubuntu-latest
