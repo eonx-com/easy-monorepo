@@ -10,7 +10,7 @@ namespace Tests\Unit\EonX\EasyStandard\Rector;
  *
  *          Another comment.
  */
-class SomeClass
+class ClassHasInCorrectPHPDoсTest
 {
     /**
      * My super const
@@ -97,7 +97,7 @@ namespace Tests\Unit\EonX\EasyStandard\Rector;
  *
  * Another comment.
  */
-class SomeClass
+class ClassHasInCorrectPHPDoсTest
 {
     /**
      * My super const.

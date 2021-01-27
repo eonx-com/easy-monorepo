@@ -226,12 +226,14 @@ PHP
             $this->walkNodeRecursive($node->expr);
         }
 
+        /** @var FuncCall $node */
         if ($node instanceof FuncCall) {
             foreach ($node->args as $arg) {
                 $this->walkNodeRecursive($arg->value);
             }
         }
 
+        /** @var Array_ $node */
         if ($node instanceof Array_ && $node->items !== null) {
             /** @var ArrayItem|null $item */
             foreach ($node->items as $item) {

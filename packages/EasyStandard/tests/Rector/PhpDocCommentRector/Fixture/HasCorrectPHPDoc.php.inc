@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Rector\AddCoversAnnotationRector\Fixture;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * Class ClassHasCoversTest
  * new class
@@ -34,7 +32,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers SomeClass some comment
  */
-class ClassHasCoversTest extends TestCase
+class ClassHasCorrectPHPDoсTest
 {
     /** Should be translatable. */
     use TranslatorAwareTrait;
