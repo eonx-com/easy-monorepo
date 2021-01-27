@@ -7,8 +7,11 @@ namespace EonX\EasyStandard\Rector;
 use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassLike;
+use PhpParser\Node\Stmt\Foreach_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareGenericTagValueNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
@@ -37,9 +40,10 @@ final class PhpDocCommentRector extends AbstractRector
 
     public function checkPhpDoc(PhpDocInfo $phpDocInfo): void
     {
-        $children = $phpDocInfo->getPhpDocNode()->children;
+        $children = $phpDocInfo->getPhpDocNode()
+            ->children;
 
-        foreach ($children as $index => $phpDocChildNode) {
+        foreach ($children as $phpDocChildNode) {
             /** @var PhpDocChildNode $phpDocChildNode */
             $content = (string)$phpDocChildNode;
             if (Strings::match($content, '#inheritdoc#i')) {
@@ -210,12 +214,14 @@ PHP
             $this->checkPhpDoc($node->getAttribute(AttributeKey::PHP_DOC_INFO));
         }
 
+        /** @var ClassLike $node */
         if (\in_array('stmts', $node->getSubNodeNames(), true) && $node->stmts !== null) {
             foreach ($node->stmts as $stmt) {
                 $this->walkNodeRecursive($stmt);
             }
         }
 
+        /** @var Foreach_ $node */
         if (\in_array('expr', $node->getSubNodeNames(), true) && $node->expr !== null) {
             $this->walkNodeRecursive($node->expr);
         }
@@ -227,7 +233,12 @@ PHP
         }
 
         if ($node instanceof Array_ && $node->items !== null) {
+            /** @var ArrayItem|null $item */
             foreach ($node->items as $item) {
+                if ($item === null) {
+                    continue;
+                }
+
                 if ($item->key !== null) {
                     $this->walkNodeRecursive($item->key);
                 }

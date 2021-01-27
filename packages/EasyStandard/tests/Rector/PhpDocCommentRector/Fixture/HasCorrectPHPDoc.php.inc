@@ -68,7 +68,7 @@ class ClassHasCoversTest extends TestCase
     }
 
     /**
-     * setter
+     * Setter.
      *
      * @param bool $test2
      *
