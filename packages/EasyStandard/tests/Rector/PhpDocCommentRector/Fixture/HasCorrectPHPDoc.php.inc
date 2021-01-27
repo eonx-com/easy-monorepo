@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Rector\AddCoversAnnotationRector\Fixture;
 
+use EonX\EasyCore\Bridge\Symfony\Traits\TranslatorAwareTrait;
+
 /**
  * Class ClassHasCoversTest
  * new class
