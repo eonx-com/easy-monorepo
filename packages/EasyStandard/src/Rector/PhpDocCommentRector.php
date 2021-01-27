@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\Foreach_;
+use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareGenericTagValueNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
@@ -122,14 +123,17 @@ PHP
 
     private function checkGenericTagValueNode(AttributeAwarePhpDocTagNode $attributeAwarePhpDocTagNode): void
     {
+        /** @var GenericTagValueNode $value */
+        $value = $attributeAwarePhpDocTagNode->value;
+
         if (Strings::startsWith($attributeAwarePhpDocTagNode->name, '@')) {
             $this->isMultilineTagNode = true;
 
-            if (Strings::endsWith($attributeAwarePhpDocTagNode->value->value, ')')) {
+            if (Strings::endsWith($value->value, ')')) {
                 $this->isMultilineTagNode = false;
             }
 
-            $firstValueLetter = Strings::substring($attributeAwarePhpDocTagNode->value->value, 0, 1);
+            $firstValueLetter = Strings::substring($value->value, 0, 1);
 
             if (\in_array($firstValueLetter, ['\\', '('], true) === false) {
                 $attributeAwarePhpDocTagNode->name .= ' ';
@@ -138,16 +142,15 @@ PHP
             return;
         }
 
-        $tagValueNode = $attributeAwarePhpDocTagNode->value;
-        if ($tagValueNode->value === null) {
+        if ($value->value === '') {
             return;
         }
 
-        if ($this->isLineEndingWithAllowed($tagValueNode->value)) {
+        if ($this->isLineEndingWithAllowed($value->value)) {
             return;
         }
 
-        $tagValueNode->value = Strings::substring($tagValueNode->value, 0, -1);
+        $value->value = Strings::substring($value->value, 0, -1);
     }
 
     private function checkTagNode(AttributeAwarePhpDocTagNode $attributeAwarePhpDocTagNode): void
