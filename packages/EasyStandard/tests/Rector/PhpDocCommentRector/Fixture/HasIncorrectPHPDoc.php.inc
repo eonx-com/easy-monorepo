@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Tests\Unit\EonX\EasyStandard\Rector;
+namespace EonX\EasyStandard\Tests\Rector\PhpDocCommentRector\Fixture;
 
 /**
  * class SomeClass
@@ -86,9 +87,10 @@ class ClassHasInCorrectPHPDoсTest
 
 -----
 <?php
+
 declare(strict_types=1);
 
-namespace Tests\Unit\EonX\EasyStandard\Rector;
+namespace EonX\EasyStandard\Tests\Rector\PhpDocCommentRector\Fixture;
 
 /**
  * Class SomeClass

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyStandard\Tests\Rector\AddCoversAnnotationRector\Fixture;
+namespace EonX\EasyStandard\Tests\Rector\PhpDocCommentRector\Fixture;
 
 use EonX\EasyCore\Bridge\Symfony\Traits\TranslatorAwareTrait;
 
