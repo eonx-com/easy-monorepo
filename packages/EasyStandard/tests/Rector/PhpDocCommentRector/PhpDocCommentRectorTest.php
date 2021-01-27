@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyStandard\Tests\Rector\AddCoversAnnotationRector;
+namespace EonX\EasyStandard\Tests\Rector\PhpDocCommentRector;
 
-use EonX\EasyStandard\Rector\AddCoversAnnotationRector;
+use EonX\EasyStandard\Rector\PhpDocCommentRector;
 use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
- * @covers \EonX\EasyStandard\Rector\AddCoversAnnotationRector
+ * @covers \EonX\EasyStandard\Rector\PhpDocCommentRector
  *
  * @internal
  */
-final class AddCoversAnnotationRectorTest extends AbstractRectorTestCase
+final class PhpDocCommentRectorTest extends AbstractRectorTestCase
 {
     /**
      * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
@@ -40,9 +40,7 @@ final class AddCoversAnnotationRectorTest extends AbstractRectorTestCase
     protected function getRectorsWithConfiguration(): array
     {
         return [
-            AddCoversAnnotationRector::class => [
-                AddCoversAnnotationRector::REPLACE_ARRAY => ['Tests\\Unit\\'],
-            ],
+            PhpDocCommentRector::class => [],
         ];
     }
 }
