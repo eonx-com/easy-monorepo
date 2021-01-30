@@ -5,10 +5,23 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Tests;
 
 use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Exceptions\InvalidArgumentException;
 use EonX\EasyUtils\Tests\Stubs\HasPriorityStub;
 
 final class CollectorHelperTest extends AbstractTestCase
 {
+    /**
+     * @return iterable<mixed>
+     */
+    public function providerTestEnsureClass(): iterable
+    {
+        yield 'basic type' => [[0], true];
+
+        yield 'basic object' => [[new \stdClass()], false];
+
+        yield 'interface based' => [[new HasPriorityStub(), new \stdClass()], true];
+    }
+
     /**
      * @return iterable<mixed>
      *
@@ -61,6 +74,24 @@ final class CollectorHelperTest extends AbstractTestCase
         $noPriority2 = new \stdClass();
 
         yield 'same order when no priority' => [[$noPriority1, $noPriority2], [$noPriority1, $noPriority2]];
+    }
+
+    /**
+     * @param iterable<mixed> $items
+     *
+     * @dataProvider providerTestEnsureClass
+     */
+    public function testEnsureClass(iterable $items, bool $expectException, ?string $class = null): void
+    {
+        if ($expectException) {
+            $this->expectException(InvalidArgumentException::class);
+        }
+
+        // Convert to array so it goes through the generator
+        CollectorHelper::convertToArray(CollectorHelper::ensureClass($items, $class ?? \stdClass::class));
+
+        // If it reaches here, test is valid
+        self::assertTrue(true);
     }
 
     /**

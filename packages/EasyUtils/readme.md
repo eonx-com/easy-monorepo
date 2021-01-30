@@ -132,7 +132,7 @@ final class MyClass
     public function __construct(iterable $workers)
     {
         // $workers now contains only WorkerInterface instances
-        $workers = CollectorHelper::filterByClass(WorkerInterface::class, $workers);
+        $workers = CollectorHelper::filterByClass($workers, WorkerInterface::class);
 
         // The filterByClass() method still returns an iterable, a generator more precisely
         // If you need an array, you can use the filterByClassAsArray() method
@@ -169,13 +169,48 @@ final class MyClass
     public function __construct(iterable $workers)
     {
         // $workers now contains only WorkerInterface instances
-        $workers = CollectorHelper::filterByClassAsArray(WorkerInterface::class, $workers);
+        $workers = CollectorHelper::filterByClassAsArray($workers, WorkerInterface::class);
 
         // $workers is now an array containing only WorkerInterface instances
         $this->workers = $workers;
     }
 }
 ```
+
+### CollectorHelper::ensureClass() and CollectorHelper::ensureClassAsArray()
+
+Those methods are similar to the `filterByClass()` and `filterByClassAsArray()` methods, however they will throw an
+exception if at least of the items is not an instance of the given class.
+
+```php
+use App\Domain\WorkerInterface;
+use EonX\EasyUtils\CollectorHelper;
+
+final class MyClass
+{
+    /**
+     * @var \App\Domain\WorkerInterface[]
+     */
+    private array $workers;
+
+    /**
+     * @param iterable<mixed> $workers
+     */
+    public function __construct(iterable $workers)
+    {
+        // $workers now contains only WorkerInterface instances
+        $workers = CollectorHelper::ensureClass(WorkerInterface::class, $workers);
+
+        foreach ($workers as $worker) {
+            // This code will be executed only if all items are instances of WorkerInterface
+        }
+    }
+}
+```
+
+::: warning
+Please note that with the `ensureClass()` method, the exception will be thrown only when iterating through the generator.
+:::
 
 ### CollectorHelper::orderHigherPriorityFirst()
 
