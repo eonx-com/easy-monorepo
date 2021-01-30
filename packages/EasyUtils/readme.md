@@ -15,27 +15,67 @@ The recommended way to install this package is to use [Composer][1]:
 $ composer require eonx-com/easy-utils
 ```
 
-## List of helpers
+## Helper list
 
-- `CollectorHelper`: provide methods to facilitate the implementation of Collector DesignPattern
+- `CollectorHelper`: provides methods to facilitate implementation of the [Collector Design Pattern][2]
 
 ## CollectorHelper
 
-The [Collector DesignPattern][2] is a great solution to contribute keeping your code SOLID, however when you start
-implementing it in different places of your project you end up repeating yourself a bit.
-The main purpose of this helper is to prevent duplicated code and facilitate the implementation of the [Collector DesignPattern][2]
-in your project.
+The [Collector Design Pattern][2] is a great method for keeping your code SOLID. However, using it in multiple parts of
+your project can lead to significant repetition. The main purpose of the `CollectorHelper` is to prevent duplicated code
+and facilitate implementation of the [Collector Design Pattern][2] in your project.
+
+Most popular PHP frameworks provide features to tag services, and then define all services for a specific tag as
+dependencies to other services. See the following resources for examples:
+
+- [Tagging Services in CakePHP][3]
+- [How to Work with Service Tags in Symfony][4]
+- [Service Tagging in Laravel][5]
+
+Those features help you implement the [Collector Design Pattern][2] in your project because they allow you to easily
+inject a collection of services sharing the same tag into other services.
+
+However, there are some things you need to consider:
+
+- There is no guarantee that all given services are instances of a specific class/interface
+- You have no control on the order the services are organised within the given collection
+
+Let's elaborate on the above points.
+
+#### No guarantee on the content of tagged services
+
+The service tagging features do not allow you to ensure all services sharing the same tag meet common criteria. Symfony
+has a feature to [automatically tag services based on their class][6], but nothing stops you from manually tagging a
+service with the same tag or even one of your dependencies.
+
+This is why we strongly recommend you always filter the given `iterable` of services by a given class/interface of your
+choice by using the `filterByClass()` or `filterByClassAsArray()` methods of the `CollectorHelper`.
+
+#### No control on the order the services are organised
+
+When using service tagging features, you can control the order that the services are organised by simply changing the
+order in which you define the services. However, as above, there is nothing stopping you or one of your dependencies
+from tagging a service with the same tag. Therefore, you cannot guarantee the order as you cannot modify the
+dependencies' service definitions. But the `CollectorHelper` can help us!
+
+In some cases, the order of the given services does not matter, so there is no need to do anything. But if your logic
+requires the services be used in a specific order, then use the `orderHigherPriorityFirst()` and/or
+`orderLowerPriorityFirst()` methods!
+
+These methods will sort the objects within the given `iterable` based on their priority. In order to define an object's
+priority, it must implement the `EonX\EasyUtils\Interfaces\HasPriorityInterface` provided by this package. If an object
+doesn't implement this interface then its priority will default to `0` automatically.
 
 ### CollectorHelper::convertToArray()
 
-The `convertToArray()` method is pretty straight forward, it will convert any iterable to a simple PHP array. It comes
-handy when you deal with `iterable` and you want to use array methods on it.
+The `convertToArray()` method will convert any iterable to a simple PHP array. It is useful when you want to use array
+methods on an `iterable`.
 
-Here is a simple example of when to use this method, you have a class which accepts an `iterable` of "workers"
-in its constructor. To safely use those "workers", you want to ensure each of them implements the right interface, so
-you decide to filter them to keep only the "good workers" using the `array_filter()` function. If the given "workers"
-are already an `array`, then no problem, however it is defined as `iterable` so you cannot guarantee you will receive
-an `array`. Use the `convertToArray()` method!
+For a simple example of when to use the `convertToArray()` method, imagine you have a class which accepts an `iterable`
+of "workers" in its constructor. To safely use these "workers", you want to ensure each of them implements the right
+interface, so you filter them to keep only the "good workers" by using the `array_filter()` function. If the "workers"
+were already an `array`, then there would be no problem. However, because they are defined as `iterable`, you cannot
+guarantee you will receive an `array`. So use the `convertToArray()` method!
 
 ```php
 use App\Domain\WorkerInterface;
@@ -69,11 +109,11 @@ final class MyClass
 
 ### CollectorHelper::filterByClass()
 
-The use case used above to explain the `convertToArray()` method is really common (at least in our projects :smiley: ),
-this is why this helper comes with a method to do it for you.
+The use case of filtering by class (used above to explain the `convertToArray()` method) is very common (at least in our
+projects :smiley: ), which is why `CollectorHelper` provides the `filterByClass()` method to do it for you.
 
-The example is exactly the same as for the last method, you have an `iterable` and you want to make sure each item is
-an instance of a specific class/interface, use `filterByClass()`!
+The following example is the same as for the `convertToArray()` method above. If you have an `iterable` and you want to
+ensure each item is an instance of a specific class/interface, use the `filterByClass()` method!
 
 ```php
 use App\Domain\WorkerInterface;
@@ -102,14 +142,15 @@ final class MyClass
 ```
 
 ::: tip
-The `filterByClass()` method still returns an iterable, a generator more precisely.
-If you need an `array`, you can use the `filterByClassAsArray()` method.
+The `filterByClass()` method still returns an iterable (or, more precisely, a generator). If you need an `array`, you
+can use the `filterByClassAsArray()` method instead.
 :::
 
 ### CollectorHelper::filterByClassAsArray()
 
-Same use case as the previous methods with a little tweak, you have an `iterable`, you want to make sure each item is
-an instance of a specific class/interface, but you need the output to be an `array`, use `filterByClassAsArray()`!
+This method is similar to the `filterByClass()` method, but with a little tweak. If you have an `iterable` and you want
+to make sure each item is an instance of a specific class/interface, but you need the output to be an `array`, use the
+`filterByClassAsArray()` method!
 
 ```php
 use App\Domain\WorkerInterface;
@@ -138,52 +179,11 @@ final class MyClass
 
 ### CollectorHelper::orderHigherPriorityFirst()
 
-Most popular PHP frameworks provide features to tag services, and then define all services for a specific tag as
-dependencies to other services. For examples, you can have a look at the following resources:
+The `orderHigherPriorityFirst()` method will ensure the object with the highest priority is placed first, and the object
+with the lowest priority is placed last.
 
-- [Tagging Services in CakePHP][3]
-- [How to Work with Service Tags in Symfony][4]
-- [Service Tagging in Laravel][5]
-
-Those features are great to start implementing the [Collector DesignPattern][2] in your project as it allows you to
-easily inject a collection of services sharing the same tag into other services.
-
-However, there are things you need to consider:
-
-- You have no guarantee all given services are instances of a specific class/interface
-- You have no control on the order the services are organised within the given collection
-
-Let's elaborate on the above points.
-
-#### No guarantee on the content of tagged services
-
-The service tagging features provided discussed above are great, but they do not allow you to ensure all services sharing
-the same tagged meet common criteria. Symfony has a feature to [automatically tag services based on their class][6],
-however nothing stop you from manually tag a service with the same tag or even one of your dependencies.
-
-This is why we strongly recommend to always filter the given `iterable` of services by a given class/interface of your
-choice using the `filterByClass()` or `filterByClassAsArray()` methods.
-
-#### No control on the order the services are organised
-
-If you have used those service tagging features before, you would have probably realised that you can control the order
-the services are organised by simply change the order you define the services themselves. However, same issue as above,
-there is nothing stopping you or one of your dependencies to tag a service with the same tag and therefore you cannot
-guarantee the order as you cannot modify the dependencies service definitions.
-
-Don't panic, the `CollectorHelper` is here for us!
-
-
-In some cases the order of the given services does not matter, so no need to do anything. If your logic requires
-the services to be used in a specific order, then the `orderHigherPriorityFirst()` and `orderLowerPriorityFirst()`
-are for you!
-
-The above methods will sort the objects within the given `iterable` based on their priority. In order to define its
-priority, an object must implement the `EonX\EasyUtils\Interfaces\HasPriorityInterface` provided by this package. If
-an object doesn't implement this interface then its priority will default to `0` automatically.
-
-The `orderHigherPriorityFirst()` method will make sure the object with the highest priority is placed first, and the
-object with the lowest priority is placed last.
+In order to define an object's priority, it must implement the `EonX\EasyUtils\Interfaces\HasPriorityInterface` provided
+by this package. If an object doesn't implement this interface then its priority will default to `0` automatically.
 
 ```php
 // Foo and Bar both implement EonX\EasyUtils\Interfaces\HasPriorityInterface
@@ -200,10 +200,11 @@ $objects = CollectorHelper::orderHigherPriorityFirst($objects); // [$bar, $foo]
 
 ### CollectorHelper::orderLowerPriorityFirst()
 
-The `orderLowerPriorityFirst()` is the opposite of `orderHigherPriorityFirst()`, it will make sure the object will the
-lowest priority is place first, and the object with the highest priority is placed last.
+The `orderLowerPriorityFirst()` method is the opposite of `orderHigherPriorityFirst()`. It will ensure the object with
+the lowest priority is placed first, and the object with the highest priority is placed last.
 
-Let's have a look at the preview example but using `orderLowerPriorityFirst()` this time.
+In order to define an object's priority, it must implement the `EonX\EasyUtils\Interfaces\HasPriorityInterface` provided
+by this package. If an object doesn't implement this interface then its priority will default to `0` automatically.
 
 ```php
 // Foo and Bar both implement EonX\EasyUtils\Interfaces\HasPriorityInterface
