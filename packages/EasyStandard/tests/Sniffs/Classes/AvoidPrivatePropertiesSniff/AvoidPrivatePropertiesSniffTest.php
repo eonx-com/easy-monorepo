@@ -14,18 +14,42 @@ final class AvoidPrivatePropertiesSniffTest extends AbstractCheckerTestCase
      * @return iterable<array<int, SmartFileInfo|int>>
      *
      * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
+     *
+     * @see testSniffSucceeds
      */
-    public function providerTestSniff(): iterable
+    public function provideCorrectFiles(): iterable
     {
-        yield [new SmartFileInfo(__DIR__ . '/Fixture/AvoidPrivatePropertiesSniffTest.php.inc'), 1];
+        yield [new SmartFileInfo(__DIR__ . '/Fixture/ProtectedProperties.php.inc')];
+        yield [new SmartFileInfo(__DIR__ . '/Fixture/PublicProperties.php.inc')];
     }
 
     /**
-     * @dataProvider providerTestSniff()
+     * @return iterable<array<int, SmartFileInfo|int>>
+     *
+     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
+     *
+     * @see testSniffFails
      */
-    public function testSniff(SmartFileInfo $smartFileInfo, int $expectedErrorCount): void
+    public function provideWrongFiles(): iterable
+    {
+        yield [new SmartFileInfo(__DIR__ . '/Fixture/PrivateProperties.php.inc'), 1];
+        yield [new SmartFileInfo(__DIR__ . '/Fixture/MissedScopeProperties.php.inc'), 1];
+    }
+
+    /**
+     * @dataProvider provideWrongFiles()
+     */
+    public function testSniffFails(SmartFileInfo $smartFileInfo, int $expectedErrorCount): void
     {
         $this->doTestFileInfoWithErrorCountOf($smartFileInfo, $expectedErrorCount);
+    }
+
+    /**
+     * @dataProvider provideCorrectFiles()
+     */
+    public function testSniffSucceeds(SmartFileInfo $smartFileInfo): void
+    {
+        $this->doTestCorrectFileInfo($smartFileInfo);
     }
 
     protected function getCheckerClass(): string
