@@ -88,7 +88,7 @@ final class CollectorHelperTest extends AbstractTestCase
         }
 
         // Convert to array so it goes through the generator
-        CollectorHelper::convertToArray(CollectorHelper::ensureClass($items, $class ?? \stdClass::class));
+        CollectorHelper::ensureClassAsArray($items, $class ?? \stdClass::class);
 
         // If it reaches here, test is valid
         self::assertTrue(true);
