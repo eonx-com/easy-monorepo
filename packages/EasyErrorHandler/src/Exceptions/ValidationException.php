@@ -10,4 +10,9 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface;
 abstract class ValidationException extends BadRequestException implements ValidationExceptionInterface
 {
     use ValidationExceptionTrait;
+
+    /**
+     * @var string
+     */
+    protected $userMessage = 'exceptions.not_valid';
 }
