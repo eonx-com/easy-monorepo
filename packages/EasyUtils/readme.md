@@ -233,6 +233,11 @@ $objects = [$foo, $bar];
 $objects = CollectorHelper::orderHigherPriorityFirst($objects); // [$bar, $foo]
 ```
 
+::: tip
+The `orderHigherPriorityFirst()` method still returns an iterable (or, more precisely, a generator). If you need an `array`, you
+can use the `orderHigherPriorityFirstAsArray()` method instead.
+:::
+
 ### CollectorHelper::orderLowerPriorityFirst()
 
 The `orderLowerPriorityFirst()` method is the opposite of `orderHigherPriorityFirst()`. It will ensure the object with
@@ -253,6 +258,11 @@ $objects = [$foo, $bar];
 // $foo is still first as it has a lower priority than $bar
 $objects = CollectorHelper::orderLowerPriorityFirst($objects); // [$foo, $bar]
 ```
+
+::: tip
+The `orderLowerPriorityFirst()` method still returns an iterable (or, more precisely, a generator). If you need an `array`, you
+can use the `orderLowerPriorityFirstAsArray()` method instead.
+:::
 
 [1]: https://getcomposer.org/
 [2]: https://tomasvotruba.com/blog/2018/06/14/collector-pattern-for-dummies/

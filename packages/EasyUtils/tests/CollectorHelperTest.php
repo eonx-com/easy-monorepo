@@ -120,7 +120,7 @@ final class CollectorHelperTest extends AbstractTestCase
      */
     public function testOrderHigherPriorityFirst(iterable $items, array $expected): void
     {
-        self::assertEquals($expected, CollectorHelper::orderHigherPriorityFirst($items));
+        self::assertEquals($expected, CollectorHelper::orderHigherPriorityFirstAsArray($items));
     }
 
     /**
@@ -131,7 +131,7 @@ final class CollectorHelperTest extends AbstractTestCase
      */
     public function testOrderLowerPriorityFirst(iterable $items, array $expected): void
     {
-        self::assertEquals($expected, CollectorHelper::orderLowerPriorityFirst($items));
+        self::assertEquals($expected, CollectorHelper::orderLowerPriorityFirstAsArray($items));
     }
 
     private function hasPriorityStub(?int $priority = null): HasPriorityStub

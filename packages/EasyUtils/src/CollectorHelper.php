@@ -79,11 +79,11 @@ final class CollectorHelper
     }
 
     /**
-     * @param mixed[] $items
+     * @param iterable<mixed> $items
      *
-     * @return mixed[]
+     * @return iterable<mixed>
      */
-    public static function orderHigherPriorityFirst(iterable $items): array
+    public static function orderHigherPriorityFirst(iterable $items): iterable
     {
         $items = self::convertToArray($items);
 
@@ -94,15 +94,27 @@ final class CollectorHelper
             return $secondPriority <=> $firstPriority;
         });
 
-        return $items;
+        foreach ($items as $item) {
+            yield $item;
+        }
     }
 
     /**
-     * @param mixed[] $items
+     * @param iterable<mixed> $items
      *
      * @return mixed[]
      */
-    public static function orderLowerPriorityFirst(iterable $items): array
+    public static function orderHigherPriorityFirstAsArray(iterable $items): array
+    {
+        return self::convertToArray(self::orderHigherPriorityFirst($items));
+    }
+
+    /**
+     * @param iterable<mixed> $items
+     *
+     * @return iterable<mixed>
+     */
+    public static function orderLowerPriorityFirst(iterable $items): iterable
     {
         $items = self::convertToArray($items);
 
@@ -113,6 +125,18 @@ final class CollectorHelper
             return $firstPriority <=> $secondPriority;
         });
 
-        return $items;
+        foreach ($items as $item) {
+            yield $item;
+        }
+    }
+
+    /**
+     * @param iterable<mixed> $items
+     *
+     * @return mixed[]
+     */
+    public static function orderLowerPriorityFirstAsArray(iterable $items): array
+    {
+        return self::convertToArray(self::orderLowerPriorityFirst($items));
     }
 }
