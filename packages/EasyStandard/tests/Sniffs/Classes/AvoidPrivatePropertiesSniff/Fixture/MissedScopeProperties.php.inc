@@ -2,5 +2,5 @@
 
 class MyClassWithPrivateProperty
 {
-$myProperty;
+    $myProperty;
 }
