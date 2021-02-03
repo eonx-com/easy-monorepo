@@ -14,6 +14,21 @@ interface WebhookInterface
     /**
      * @var string
      */
+    public const HEADER_EVENT = 'X-Webhook-Event';
+
+    /**
+     * @var string
+     */
+    public const HEADER_ID = 'X-Webhook-Id';
+
+    /**
+     * @var string
+     */
+    public const HEADER_SIGNATURE = 'X-Webhook-Signature';
+
+    /**
+     * @var string
+     */
     public const OPTIONS = [
         self::OPTION_BODY,
         self::OPTION_CURRENT_ATTEMPT,
