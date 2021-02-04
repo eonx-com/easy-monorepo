@@ -10,7 +10,12 @@ interface MiddlewareInterface extends HasPriorityInterface
     /**
      * @var int
      */
-    public const SEND_MIDDLEWARE_PRIORITY = 1000;
+    public const PRIORITY_CORE_AFTER = 5000;
+
+    /**
+     * @var int
+     */
+    public const PRIORITY_CORE_BEFORE = -5000;
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface;
 }

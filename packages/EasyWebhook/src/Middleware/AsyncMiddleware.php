@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Middleware;
 
 use EonX\EasyWebhook\Exceptions\WebhookIdRequiredForAsyncException;
+use EonX\EasyWebhook\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyWebhook\Interfaces\StackInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
@@ -19,13 +20,31 @@ final class AsyncMiddleware extends AbstractMiddleware
     private $dispatcher;
 
     /**
+     * @var bool
+     */
+    private $enabled;
+
+    /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface
      */
     private $store;
 
+    public function __construct(
+        AsyncDispatcherInterface $dispatcher,
+        WebhookResultStoreInterface $store,
+        ?bool $enabled = null,
+        ?int $priority = null
+    ) {
+        $this->dispatcher = $dispatcher;
+        $this->store = $store;
+        $this->enabled = $enabled ?? true;
+
+        parent::__construct($priority);
+    }
+
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        if ($webhook->isSendNow()) {
+        if ($this->enabled === false || $webhook->isSendNow()) {
             return $stack
                 ->next()
                 ->process($webhook, $stack);

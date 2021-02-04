@@ -14,6 +14,7 @@ use EonX\EasyWebhook\Interfaces\WebhookResultHandlerInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use EonX\EasyWebhook\RetryStrategies\MultiplierWebhookRetryStrategy;
+use EonX\EasyWebhook\Stack;
 use EonX\EasyWebhook\Stores\NullWebhookResultStore;
 use EonX\EasyWebhook\WebhookClient;
 use EonX\EasyWebhook\WebhookResultHandler;
@@ -37,22 +38,18 @@ return static function (ContainerConfigurator $container): void {
         ->set(BridgeConstantsInterface::HTTP_CLIENT, HttpClientInterface::class)
         ->factory([ref(HttpClientFactoryInterface::class), 'create']);
 
-    // Webhook Retry Strategy (Default)
+    // Retry Strategy (Default)
     $services->set(WebhookRetryStrategyInterface::class, MultiplierWebhookRetryStrategy::class);
 
-    // Webhook Result Handler
-    $services->set(WebhookResultHandlerInterface::class, WebhookResultHandler::class);
+    // Stack
+    $services
+        ->set(BridgeConstantsInterface::STACK, Stack::class)
+        ->arg('$middleware', tagged_iterator(BridgeConstantsInterface::TAG_MIDDLEWARE));
 
     // Webhook Client
     $services
         ->set(WebhookClientInterface::class, WebhookClient::class)
-        ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR))
-        ->arg('$httpClient', ref(BridgeConstantsInterface::HTTP_CLIENT));
-
-    // Webhook Client With Events
-    $services
-        ->set(WithEventsWebhookClient::class)
-        ->decorate(WebhookClientInterface::class, null, 1);
+        ->arg('$stack', ref(BridgeConstantsInterface::STACK));
 
     // Webhook Store (Default)
     $services->set(WebhookResultStoreInterface::class, NullWebhookResultStore::class);

@@ -19,11 +19,11 @@ final class SendWebhookMiddleware extends AbstractMiddleware
      */
     private $httpClient;
 
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(HttpClientInterface $httpClient, ?int $priority = null)
     {
         $this->httpClient = $httpClient;
 
-        parent::__construct(self::SEND_MIDDLEWARE_PRIORITY);
+        parent::__construct($priority);
     }
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface

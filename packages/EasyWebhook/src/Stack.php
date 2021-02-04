@@ -23,22 +23,20 @@ final class Stack implements StackInterface
 
     /**
      * @param iterable<mixed> $middleware
-     * @param iterable<mixed> $coreMiddleware
      */
-    public function __construct(iterable $middleware, iterable $coreMiddleware)
+    public function __construct(iterable $middleware)
     {
         $this->middleware = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($middleware, MiddlewareInterface::class)
         );
+    }
 
-        $coreMiddleware = CollectorHelper::orderLowerPriorityFirst(
-            CollectorHelper::filterByClass($coreMiddleware, MiddlewareInterface::class)
-        );
-
-        // Add core middleware after the other middleware
-        foreach ($coreMiddleware as $middleware) {
-            $this->middleware[] = $middleware;
-        }
+    /**
+     * @return \EonX\EasyWebhook\Interfaces\MiddlewareInterface[]
+     */
+    public function getMiddleware(): array
+    {
+        return $this->middleware;
     }
 
     public function next(): MiddlewareInterface

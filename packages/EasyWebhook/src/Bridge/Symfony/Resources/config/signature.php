@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
-use EonX\EasyWebhook\Configurators\SignatureWebhookConfigurator;
+use EonX\EasyWebhook\Middleware\SignatureHeaderMiddleware;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 
 return static function (ContainerConfigurator $container): void {
@@ -18,9 +18,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(Rs256Signer::class);
 
     $services
-        ->set(SignatureWebhookConfigurator::class)
+        ->set(SignatureHeaderMiddleware::class)
         ->arg('$signer', ref(BridgeConstantsInterface::SIGNER))
         ->arg('$secret', '%' . BridgeConstantsInterface::PARAM_SECRET . '%')
         ->arg('$signatureHeader', '%' . BridgeConstantsInterface::PARAM_SIGNATURE_HEADER . '%')
-        ->arg('$priority', BridgeConstantsInterface::DEFAULT_CONFIGURATOR_PRIORITY + 1);
+        ->arg('$priority', 100);
 };

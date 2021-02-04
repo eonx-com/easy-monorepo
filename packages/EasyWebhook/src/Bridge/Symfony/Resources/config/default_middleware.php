@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
-use EonX\EasyWebhook\Middleware\EventHeaderMiddleware;
+use EonX\EasyWebhook\Middleware\BodyFormatterMiddleware;
+use EonX\EasyWebhook\Middleware\MethodMiddleware;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -13,7 +14,11 @@ return static function (ContainerConfigurator $container): void {
         ->autowire()
         ->autoconfigure();
 
+    // Body formatter
+    $services->set(BodyFormatterMiddleware::class);
+
+    // Method
     $services
-        ->set(EventHeaderMiddleware::class)
-        ->arg('$eventHeader', '%' . BridgeConstantsInterface::PARAM_EVENT_HEADER . '%');
+        ->set(MethodMiddleware::class)
+        ->arg('$method', '%' . BridgeConstantsInterface::PARAM_METHOD . '%');
 };

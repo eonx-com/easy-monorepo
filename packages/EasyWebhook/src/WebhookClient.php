@@ -21,6 +21,11 @@ final class WebhookClient implements WebhookClientInterface
         $this->stack = $stack;
     }
 
+    public function getStack(): StackInterface
+    {
+        return $this->stack;
+    }
+
     public function sendWebhook(WebhookInterface $webhook): WebhookResultInterface
     {
         return $this->stack

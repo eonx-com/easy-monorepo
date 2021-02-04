@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyWebhook\Bridge\Symfony\Messenger\AsyncWebhookClient;
+use EonX\EasyWebhook\Bridge\Symfony\Messenger\AsyncDispatcher;
 use EonX\EasyWebhook\Bridge\Symfony\Messenger\RetrySendWebhookMiddleware;
 use EonX\EasyWebhook\Bridge\Symfony\Messenger\SendWebhookHandler;
-use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -16,10 +15,7 @@ return static function (ContainerConfigurator $container): void {
         ->autowire();
 
     $services
+        ->set(AsyncDispatcher::class)
         ->set(RetrySendWebhookMiddleware::class)
         ->set(SendWebhookHandler::class);
-
-    $services
-        ->set(AsyncWebhookClient::class)
-        ->decorate(WebhookClientInterface::class, null, 2);
 };
