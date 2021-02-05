@@ -58,7 +58,7 @@ final class ClientFactory implements ClientFactoryInterface
      */
     public function setConfigurators(iterable $configurators): ClientFactoryInterface
     {
-        $this->configurators = CollectorHelper::orderLowerPriorityFirst(
+        $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators, ClientConfiguratorInterface::class)
         );
 

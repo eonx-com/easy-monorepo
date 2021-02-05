@@ -47,7 +47,7 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('secret')->defaultNull()->end()
                     ->end()
                 ->end()
-                ->booleanNode('use_default_configurators')->defaultTrue()->end()
+                ->booleanNode('use_default_middleware')->defaultTrue()->end()
             ->end();
 
         return $treeBuilder;

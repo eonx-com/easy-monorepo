@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyWebhook\Configurators;
+namespace EonX\EasyWebhook\Middleware;
 
 use EonX\EasyWebhook\Interfaces\IdAwareWebhookResultStoreInterface;
+use EonX\EasyWebhook\Interfaces\StackInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
+use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 
-final class IdWebhookConfigurator extends AbstractWebhookConfigurator
+final class IdHeaderMiddleware extends AbstractConfigureOnceMiddleware
 {
     /**
      * @var string
@@ -23,26 +25,28 @@ final class IdWebhookConfigurator extends AbstractWebhookConfigurator
     public function __construct(WebhookResultStoreInterface $store, ?string $idHeader = null, ?int $priority = null)
     {
         $this->store = $store;
-        $this->idHeader = $idHeader ?? self::HEADER_ID;
+        $this->idHeader = $idHeader ?? WebhookInterface::HEADER_ID;
 
         parent::__construct($priority);
     }
 
-    public function configure(WebhookInterface $webhook): void
+    protected function doProcess(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
         $webhookId = $this->getWebhookId($webhook);
 
-        if ($webhookId === null) {
-            return;
+        if ($webhookId !== null) {
+            $webhook->id($webhookId);
+
+            $webhook->mergeHttpClientOptions([
+                'headers' => [
+                    $this->idHeader => $webhook->getId(),
+                ],
+            ]);
         }
 
-        $webhook->id($webhookId);
-
-        $webhook->mergeHttpClientOptions([
-            'headers' => [
-                $this->idHeader => $webhook->getId(),
-            ],
-        ]);
+        return $stack
+            ->next()
+            ->process($webhook, $stack);
     }
 
     private function getWebhookId(WebhookInterface $webhook): ?string

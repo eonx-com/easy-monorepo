@@ -52,7 +52,10 @@ final class DoctrineDbalWebhookResultStore extends AbstractIdAwareWebhookResultS
             $data['http_options'] = \json_decode($data['http_options'], true) ?? $data['http_options'];
         }
 
-        return new WebhookResult($class::fromArray($data)->id($id));
+        // Webhook from the store are already configured
+        $webhook = $class::fromArray($data)->configured(true);
+
+        return new WebhookResult($webhook);
     }
 
     public function store(WebhookResultInterface $result): WebhookResultInterface

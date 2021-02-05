@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyWebhook\Async\NullAsyncDispatcher;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\HttpClientFactory;
+use EonX\EasyWebhook\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyWebhook\Interfaces\HttpClientFactoryInterface;
 use EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultHandlerInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use EonX\EasyWebhook\RetryStrategies\MultiplierWebhookRetryStrategy;
+use EonX\EasyWebhook\Stack;
 use EonX\EasyWebhook\Stores\NullWebhookResultStore;
 use EonX\EasyWebhook\WebhookClient;
-use EonX\EasyWebhook\WebhookResultHandler;
-use EonX\EasyWebhook\WithEventsWebhookClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 return static function (ContainerConfigurator $container): void {
@@ -25,6 +25,9 @@ return static function (ContainerConfigurator $container): void {
     $services->defaults()
         ->autowire()
         ->autoconfigure();
+
+    // Async Dispatcher (Default)
+    $services->set(AsyncDispatcherInterface::class, NullAsyncDispatcher::class);
 
     // Body Formatter (Default)
     $services->set(WebhookBodyFormatterInterface::class, JsonFormatter::class);
@@ -37,22 +40,18 @@ return static function (ContainerConfigurator $container): void {
         ->set(BridgeConstantsInterface::HTTP_CLIENT, HttpClientInterface::class)
         ->factory([ref(HttpClientFactoryInterface::class), 'create']);
 
-    // Webhook Retry Strategy (Default)
+    // Retry Strategy (Default)
     $services->set(WebhookRetryStrategyInterface::class, MultiplierWebhookRetryStrategy::class);
 
-    // Webhook Result Handler
-    $services->set(WebhookResultHandlerInterface::class, WebhookResultHandler::class);
+    // Stack
+    $services
+        ->set(BridgeConstantsInterface::STACK, Stack::class)
+        ->arg('$middleware', tagged_iterator(BridgeConstantsInterface::TAG_MIDDLEWARE));
 
     // Webhook Client
     $services
         ->set(WebhookClientInterface::class, WebhookClient::class)
-        ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR))
-        ->arg('$httpClient', ref(BridgeConstantsInterface::HTTP_CLIENT));
-
-    // Webhook Client With Events
-    $services
-        ->set(WithEventsWebhookClient::class)
-        ->decorate(WebhookClientInterface::class, null, 1);
+        ->arg('$stack', ref(BridgeConstantsInterface::STACK));
 
     // Webhook Store (Default)
     $services->set(WebhookResultStoreInterface::class, NullWebhookResultStore::class);

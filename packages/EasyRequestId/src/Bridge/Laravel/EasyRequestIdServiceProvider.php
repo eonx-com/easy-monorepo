@@ -11,7 +11,7 @@ use EonX\EasyRequestId\Bridge\BridgeConstantsInterface;
 use EonX\EasyRequestId\Bridge\EasyBugsnag\RequestIdConfigurator;
 use EonX\EasyRequestId\Bridge\EasyErrorHandler\RequestIdErrorResponseBuilder;
 use EonX\EasyRequestId\Bridge\EasyLogging\RequestIdProcessor;
-use EonX\EasyRequestId\Bridge\EasyWebhook\RequestIdWebhookConfigurator;
+use EonX\EasyRequestId\Bridge\EasyWebhook\RequestIdWebhookMiddleware;
 use EonX\EasyRequestId\DefaultResolver;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
@@ -89,11 +89,11 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
 
         // EasyWebhook
         if ($this->bridgeEnabled('easy_webhook', EasyWebhookBridgeConstantsInterface::class)) {
-            $this->app->singleton(RequestIdWebhookConfigurator::class);
-            $this->app->extend(RequestIdWebhookConfigurator::class, $this->getSetKeysClosure());
+            $this->app->singleton(RequestIdWebhookMiddleware::class);
+            $this->app->extend(RequestIdWebhookMiddleware::class, $this->getSetKeysClosure());
             $this->app->tag(
-                RequestIdWebhookConfigurator::class,
-                [EasyWebhookBridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR]
+                RequestIdWebhookMiddleware::class,
+                [EasyWebhookBridgeConstantsInterface::TAG_MIDDLEWARE]
             );
         }
     }
