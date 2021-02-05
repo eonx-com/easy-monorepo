@@ -69,7 +69,6 @@ class ClassHasInCorrectPHPDoсTest
                         // Do nothing
                         continue;
                     } // 2-nd end
-
                     /**
                      * another text.
                      *
@@ -157,7 +156,6 @@ class ClassHasInCorrectPHPDoсTest
                         // Do nothing
                         continue;
                     } // 2-nd end
-
                     /**
                      * Another text.
                      *
