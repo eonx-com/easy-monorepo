@@ -9,7 +9,7 @@ namespace EonX\EasyStandard\Tests\Rector\PhpDocCommentRector\Fixture;
  *   new class
  *      for work
  *
- *          Another comment.
+ *          another comment.
  */
 class ClassHasInCorrectPHPDoсTest
 {
