@@ -78,6 +78,7 @@ class ClassHasInCorrectSingleLineComments
                     $test3['123'] = '123';
                 }
             } // first end!
+
         }, [$test2]);
 
         return $this;
@@ -167,6 +168,7 @@ class ClassHasInCorrectSingleLineComments
                     $test3['123'] = '123';
                 }
             } // First end
+
         }, [$test2]);
 
         return $this;
