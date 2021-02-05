@@ -12,7 +12,7 @@ use EonX\EasyUtils\CollectorHelper;
 final class AwsCredentialsProvider implements AwsCredentialsProviderInterface
 {
     /**
-     * @var \EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsFinderInterface[]
+     * @var iterable<\EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsFinderInterface>
      */
     private $finders;
 

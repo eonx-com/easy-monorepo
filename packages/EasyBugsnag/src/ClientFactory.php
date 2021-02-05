@@ -16,7 +16,7 @@ use GuzzleHttp\ClientInterface;
 final class ClientFactory implements ClientFactoryInterface
 {
     /**
-     * @var \EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface[]
+     * @var iterable<\EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface>
      */
     private $configurators;
 

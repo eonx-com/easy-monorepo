@@ -14,7 +14,7 @@ use EonX\EasyUtils\CollectorHelper;
 final class DecisionFactory implements DecisionFactoryInterface
 {
     /**
-     * @var \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
+     * @var iterable<\EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface>
      */
     private $configurators;
 

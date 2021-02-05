@@ -20,7 +20,7 @@ use Throwable;
 final class ErrorHandler implements ErrorHandlerInterface
 {
     /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface[]
+     * @var iterable<\EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface>
      */
     private $builders;
 
@@ -30,7 +30,7 @@ final class ErrorHandler implements ErrorHandlerInterface
     private $isVerbose;
 
     /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
+     * @var iterable<\EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface>
      */
     private $reporters;
 

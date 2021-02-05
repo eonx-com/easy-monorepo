@@ -102,6 +102,6 @@ final class RequestIdService implements RequestIdServiceInterface
      */
     private function filterResolvers(iterable $resolvers, string $class): array
     {
-        return CollectorHelper::orderLowerPriorityFirst(CollectorHelper::filterByClass($resolvers, $class));
+        return CollectorHelper::orderLowerPriorityFirstAsArray(CollectorHelper::filterByClass($resolvers, $class));
     }
 }
