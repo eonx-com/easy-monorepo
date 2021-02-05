@@ -54,6 +54,6 @@ jobs:
                     package-directory: 'packages/${{ matrix.mapping.dir }}'
                     split-repository-organization: 'eonx-com'
                     split-repository-name: '${{ matrix.mapping.repo }}'
-                    tag: '2.5.30'
+                    tag: '2.5.31'
                     user-email: 'nathan.page@eonx.com'
                     user-name: 'natepage'
