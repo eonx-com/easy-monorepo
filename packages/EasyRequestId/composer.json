@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "eonx-com/easy-random": "^2.6",
-        "eonx-com/easy-utils": "^2.6"
+        "eonx-com/easy-random": "^2.5.31",
+        "eonx-com/easy-utils": "^2.5.31"
     },
     "require-dev": {
         "ramsey/uuid": "^3.9",
