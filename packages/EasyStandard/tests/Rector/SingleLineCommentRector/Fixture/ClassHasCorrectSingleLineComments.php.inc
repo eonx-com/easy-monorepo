@@ -103,6 +103,7 @@ class ClassHasCorrectSingleLineComments
                     $test3['123'] = '123';
                 }
             } // First end
+
         }, [$test2]);
 
         return $this;
