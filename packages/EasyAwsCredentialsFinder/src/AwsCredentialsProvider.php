@@ -12,7 +12,7 @@ use EonX\EasyUtils\CollectorHelper;
 final class AwsCredentialsProvider implements AwsCredentialsProviderInterface
 {
     /**
-     * @var iterable<\EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsFinderInterface>
+     * @var \EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsFinderInterface[]
      */
     private $finders;
 
@@ -23,7 +23,7 @@ final class AwsCredentialsProvider implements AwsCredentialsProviderInterface
      */
     public function __construct(array $finders)
     {
-        $this->finders = CollectorHelper::orderLowerPriorityFirst(
+        $this->finders = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($finders, AwsCredentialsFinderInterface::class)
         );
     }

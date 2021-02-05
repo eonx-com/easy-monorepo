@@ -16,7 +16,7 @@ use GuzzleHttp\ClientInterface;
 final class ClientFactory implements ClientFactoryInterface
 {
     /**
-     * @var iterable<\EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface>
+     * @var \EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface[]
      */
     private $configurators;
 
@@ -58,7 +58,7 @@ final class ClientFactory implements ClientFactoryInterface
      */
     public function setConfigurators(iterable $configurators): ClientFactoryInterface
     {
-        $this->configurators = CollectorHelper::orderLowerPriorityFirst(
+        $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators, ClientConfiguratorInterface::class)
         );
 

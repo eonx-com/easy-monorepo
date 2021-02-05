@@ -20,7 +20,7 @@ use Throwable;
 final class ErrorHandler implements ErrorHandlerInterface
 {
     /**
-     * @var iterable<\EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface>
+     * @var \EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface[]
      */
     private $builders;
 
@@ -30,7 +30,7 @@ final class ErrorHandler implements ErrorHandlerInterface
     private $isVerbose;
 
     /**
-     * @var iterable<\EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface>
+     * @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
      */
     private $reporters;
 
@@ -120,7 +120,7 @@ final class ErrorHandler implements ErrorHandlerInterface
             }
         }
 
-        $this->builders = CollectorHelper::orderLowerPriorityFirst($builders);
+        $this->builders = CollectorHelper::orderLowerPriorityFirstAsArray($builders);
     }
 
     /**
@@ -140,7 +140,7 @@ final class ErrorHandler implements ErrorHandlerInterface
             }
         }
 
-        $this->reporters = CollectorHelper::orderLowerPriorityFirst($reporters);
+        $this->reporters = CollectorHelper::orderLowerPriorityFirstAsArray($reporters);
     }
 
     /**
