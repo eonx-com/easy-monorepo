@@ -43,7 +43,7 @@ final class SignatureHeaderMiddleware extends AbstractConfigureOnceMiddleware
     protected function doProcess(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
         $options = $webhook->getHttpClientOptions();
-        $body = $options['body'] ?? null;
+        $body = $webhook->getBodyAsString() ?? $options['body'] ?? null;
 
         if (\is_string($body)) {
             $secret = $webhook->getSecret() ?? $this->secret;

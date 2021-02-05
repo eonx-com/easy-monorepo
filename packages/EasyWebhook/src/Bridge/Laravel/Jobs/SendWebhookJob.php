@@ -61,7 +61,6 @@ final class SendWebhookJob implements ShouldQueue, WithLockDataInterface
             // Once here, webhooks are already configured and should be sent synchronously
             $result
                 ->getWebhook()
-                ->configured(true)
                 ->sendNow(true);
 
             $result = $client->sendWebhook($result->getWebhook());

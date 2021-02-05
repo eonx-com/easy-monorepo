@@ -26,6 +26,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(MethodMiddleware::class)
+        ->arg('$method', '%' . BridgeConstantsInterface::PARAM_METHOD . '%')
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 10);
 
     $services

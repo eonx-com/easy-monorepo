@@ -7,10 +7,9 @@ namespace EonX\EasyRequestId\Bridge\EasyWebhook;
 use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\Traits\RequestIdKeysAwareTrait;
-use EonX\EasyWebhook\Configurators\AbstractWebhookConfigurator;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 
-final class RequestIdWebhookConfigurator extends AbstractWebhookConfigurator implements RequestIdKeysAwareInterface
+final class RequestIdWebhookConfigurator implements RequestIdKeysAwareInterface
 {
     use RequestIdKeysAwareTrait;
 
@@ -23,7 +22,7 @@ final class RequestIdWebhookConfigurator extends AbstractWebhookConfigurator imp
     {
         $this->requestIdService = $requestIdService;
 
-        parent::__construct($priority);
+//        parent::__construct($priority);
     }
 
     public function configure(WebhookInterface $webhook): void

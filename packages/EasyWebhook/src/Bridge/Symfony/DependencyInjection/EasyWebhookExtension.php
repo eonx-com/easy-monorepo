@@ -55,6 +55,8 @@ final class EasyWebhookExtension extends Extension
         $this->container = $container;
         $this->loader = $loader;
 
+        $this->container->setParameter(BridgeConstantsInterface::PARAM_METHOD, $this->config['method'] ?? null);
+
         $container
             ->registerForAutoconfiguration(MiddlewareInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_MIDDLEWARE);
@@ -116,18 +118,17 @@ final class EasyWebhookExtension extends Extension
             return;
         }
 
-        $this->container->setParameter(BridgeConstantsInterface::PARAM_METHOD, $this->config['method'] ?? null);
         $this->loader->load('default_middleware.php');
     }
 
     private function signatureHeader(): void
     {
-        if (($config['signature']['enabled'] ?? false) === false) {
+        if (($this->config['signature']['enabled'] ?? false) === false) {
             return;
         }
 
         foreach (self::SIGNATURE_PARAMS as $param => $configName) {
-            $this->container->setParameter($param, $config['signature'][$configName] ?? null);
+            $this->container->setParameter($param, $this->config['signature'][$configName] ?? null);
         }
 
         $this->container->setAlias(BridgeConstantsInterface::SIGNER, $this->config['signature']['signer']);

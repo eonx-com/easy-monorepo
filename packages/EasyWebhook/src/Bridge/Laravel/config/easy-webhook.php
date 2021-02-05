@@ -24,5 +24,5 @@ return [
     //     'secret' => 'my-secret',
     // ],
 
-    'use_default_configurators' => true,
+    'use_default_middleware' => true,
 ];
