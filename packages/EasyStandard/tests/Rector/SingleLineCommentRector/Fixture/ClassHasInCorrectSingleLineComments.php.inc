@@ -70,7 +70,6 @@ class ClassHasInCorrectSingleLineComments
                         // Do nothing
                         continue;
                     } // 2-nd end.
-
                     /**
                      * another text.
                      *
@@ -95,25 +94,25 @@ declare(strict_types=1);
 namespace EonX\EasyStandard\Tests\Rector\SingleLineCommentRector\Fixture;
 
 /**
- * Class SomeClass
- * new class
- * for work.
+ * class SomeClass
+ *   new class
+ *      for work
  *
- *   Another comment.
+ *   another comment
  */
 class ClassHasInCorrectSingleLineComments
 {
     /**
-     * My super const.
+     * My super const
      *
      * @var string
      */
     private const TET_CONST = 'const';
 
     /**
-     * My property comment.
+     * my property comment
      *
-     * @Assert\NotNull() some description
+     * @Assert\NotNull()        Some description.
      *
      * @see Another code
      *
@@ -122,7 +121,7 @@ class ClassHasInCorrectSingleLineComments
     private $test;
 
     /**
-     * My function comment.
+     * My function comment
      *
      * @return string
      */
@@ -132,7 +131,7 @@ class ClassHasInCorrectSingleLineComments
     }
 
     /**
-     * Setter.
+     * setter
      *
      * @param bool $test2
      *
@@ -160,7 +159,6 @@ class ClassHasInCorrectSingleLineComments
                         // Do nothing
                         continue;
                     } // 2-nd end
-
                     /**
                      * another text.
                      *
