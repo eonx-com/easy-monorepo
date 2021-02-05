@@ -79,27 +79,33 @@ PHP
         $newComments = [];
 
         foreach ($comments as $comment) {
-            $commentText = $comment->getText();
-            if (Strings::startsWith($commentText, '/**')) {
+            $oldCommentText = $comment->getText();
+            if (Strings::startsWith($oldCommentText, '/**')) {
                 $newComments[] = $comment;
                 continue;
             }
 
-            $commentText = Strings::firstUpper(Strings::trim(Strings::replace($commentText, '#\/\/#', '')));
+            $commentText = Strings::firstUpper(Strings::trim(Strings::replace($oldCommentText, '#\/\/#', '')));
 
             if ($this->isLineEndingWithDisallowed($commentText)) {
                 $commentText = Strings::substring($commentText, 0, -1);
             }
 
-            $newComments[] = new Comment(
-                '// ' . $commentText,
-                $comment->getStartLine(),
-                $comment->getStartFilePos(),
-                $comment->getStartTokenPos(),
-                $comment->getEndLine(),
-                $comment->getEndFilePos(),
-                $comment->getEndTokenPos()
-            );
+            $commentText = '// ' . $commentText;
+
+            if ($oldCommentText !== $commentText) {
+                $comment = new Comment(
+                    $commentText,
+                    $comment->getStartLine(),
+                    $comment->getStartFilePos(),
+                    $comment->getStartTokenPos(),
+                    $comment->getEndLine(),
+                    $comment->getEndFilePos(),
+                    $comment->getEndTokenPos()
+                );
+            }
+
+            $newComments[] = $comment;
         }
 
         return $newComments;
