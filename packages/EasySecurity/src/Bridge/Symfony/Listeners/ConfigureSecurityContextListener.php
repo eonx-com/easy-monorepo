@@ -27,7 +27,7 @@ final class ConfigureSecurityContextListener
      */
     public function __construct(iterable $configurators, RequestStack $requestStack)
     {
-        $this->configurators = CollectorHelper::orderLowerPriorityFirst(
+        $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class)
         );
 

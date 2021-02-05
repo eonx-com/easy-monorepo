@@ -35,7 +35,8 @@ final class ArrayWebhookResultStore extends AbstractIdAwareWebhookResultStore im
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
         if ($result->getWebhook()->getId() === null) {
-            $result->getWebhook()
+            $result
+                ->getWebhook()
                 ->id($this->generateWebhookId());
         }
 

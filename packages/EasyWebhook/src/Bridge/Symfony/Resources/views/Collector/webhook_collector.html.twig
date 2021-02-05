@@ -45,10 +45,10 @@
                 {% endif %}
             </div>
         </div>
-        <div class="tab {% if collector.configurators|length == 0 %}disabled{% endif %}">
-            <h3 class="tab-title">Configurators</h3>
+        <div class="tab {% if collector.middleware|length == 0 %}disabled{% endif %}">
+            <h3 class="tab-title">Middleware</h3>
             <div class="tab-content">
-                {% if collector.configurators %}
+                {% if collector.middleware %}
                     <table>
                         <thead>
                             <tr>
@@ -57,15 +57,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for configurator in collector.configurators %}
-                            {%- set link = configurator.filename|file_link(1) -%}
+                        {% for middleware in collector.middleware %}
+                            {%- set link = middleware.filename|file_link(1) -%}
 
                             <tr>
                                 <td>
-                                    <a href="{{ link }}" title="{{ configurator.filename }}">{{ configurator.class }}</a>
+                                    <a href="{{ link }}" title="{{ middleware.filename }}">{{ middleware.class }}</a>
                                 </td>
                                 <td>
-                                    {{ configurator.priority }}
+                                    {{ middleware.priority }}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -73,7 +73,7 @@
                     </table>
                 {% else %}
                     <div class="empty">
-                        There is no webhook configurator.
+                        There is no webhook middleware.
                     </div>
                 {% endif %}
             </div>

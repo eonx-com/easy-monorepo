@@ -220,7 +220,7 @@ abstract class AbstractDecision implements DecisionInterface
      */
     private function getRules(): iterable
     {
-        foreach (CollectorHelper::orderLowerPriorityFirst($this->rules) as $rule) {
+        foreach (CollectorHelper::orderLowerPriorityFirstAsArray($this->rules) as $rule) {
             if ($rule instanceof ContextAwareInterface) {
                 $rule->setContext($this->context);
             }
