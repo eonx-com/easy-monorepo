@@ -45,7 +45,8 @@ final class ArrayWebhookResultStoreStub implements IdAwareWebhookResultStoreInte
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
         if ($this->webhookId !== null) {
-            $result->getWebhook()->id($this->webhookId);
+            $result->getWebhook()
+                ->id($this->webhookId);
         }
 
         $this->results[] = $result;

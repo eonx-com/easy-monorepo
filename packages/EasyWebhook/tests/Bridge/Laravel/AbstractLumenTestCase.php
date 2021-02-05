@@ -31,9 +31,7 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
             \config($config);
         }
 
-        $providers = \array_merge($providers ?? [], [
-            EasyWebhookServiceProvider::class,
-        ]);
+        $providers = \array_merge($providers ?? [], [EasyWebhookServiceProvider::class]);
 
         foreach ($providers as $provider) {
             $app->register($provider);

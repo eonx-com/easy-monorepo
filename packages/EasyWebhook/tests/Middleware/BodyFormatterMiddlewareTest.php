@@ -20,24 +20,32 @@ final class BodyFormatterMiddlewareTest extends AbstractMiddlewareTestCase
     public function providerTestProcess(): iterable
     {
         yield 'body null' => [
-            Webhook::fromArray(['body' => null]),
+            Webhook::fromArray([
+                'body' => null,
+            ]),
             static function (WebhookResultInterface $webhookResult): void {
                 self::assertNull($webhookResult->getWebhook()->getHttpClientOptions()['headers'] ?? null);
             },
         ];
 
         yield 'body empty' => [
-            Webhook::fromArray(['body' => []]),
+            Webhook::fromArray([
+                'body' => [],
+            ]),
             static function (WebhookResultInterface $webhookResult): void {
                 self::assertNull($webhookResult->getWebhook()->getHttpClientOptions()['headers'] ?? null);
             },
         ];
 
         yield 'body empty string' => [
-            Webhook::fromArray(['body' => ['']]),
+            Webhook::fromArray([
+                'body' => [''],
+            ]),
             static function (WebhookResultInterface $webhookResult): void {
-                $body = $webhookResult->getWebhook()->getHttpClientOptions()['body'] ?? null;
-                $headers = $webhookResult->getWebhook()->getHttpClientOptions()['headers'] ?? [];
+                $body = $webhookResult->getWebhook()
+                    ->getHttpClientOptions()['body'] ?? null;
+                $headers = $webhookResult->getWebhook()
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey('Content-Type', $headers);
                 self::assertEquals('application/json', $headers['Content-Type']);
@@ -47,10 +55,17 @@ final class BodyFormatterMiddlewareTest extends AbstractMiddlewareTestCase
         ];
 
         yield 'body associative array' => [
-            Webhook::fromArray(['body' => ['event' => 'my-event', 'key' => 'value']]),
+            Webhook::fromArray([
+                'body' => [
+                    'event' => 'my-event',
+                    'key' => 'value',
+                ],
+            ]),
             static function (WebhookResultInterface $webhookResult): void {
-                $body = $webhookResult->getWebhook()->getHttpClientOptions()['body'] ?? null;
-                $headers = $webhookResult->getWebhook()->getHttpClientOptions()['headers'] ?? [];
+                $body = $webhookResult->getWebhook()
+                    ->getHttpClientOptions()['body'] ?? null;
+                $headers = $webhookResult->getWebhook()
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey('Content-Type', $headers);
                 self::assertEquals('application/json', $headers['Content-Type']);
@@ -61,11 +76,16 @@ final class BodyFormatterMiddlewareTest extends AbstractMiddlewareTestCase
 
         yield 'json associative array' => [
             Webhook::fromArray([])->mergeHttpClientOptions([
-                'json' => ['event' => 'my-event', 'key' => 'value'],
+                'json' => [
+                    'event' => 'my-event',
+                    'key' => 'value',
+                ],
             ]),
             static function (WebhookResultInterface $webhookResult): void {
-                $body = $webhookResult->getWebhook()->getHttpClientOptions()['body'] ?? null;
-                $headers = $webhookResult->getWebhook()->getHttpClientOptions()['headers'] ?? [];
+                $body = $webhookResult->getWebhook()
+                    ->getHttpClientOptions()['body'] ?? null;
+                $headers = $webhookResult->getWebhook()
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey('Content-Type', $headers);
                 self::assertEquals('application/json', $headers['Content-Type']);

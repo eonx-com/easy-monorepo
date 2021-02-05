@@ -6,7 +6,6 @@ namespace EonX\EasyWebhook\Bridge\Symfony\DependencyInjection;
 
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
 use EonX\EasyWebhook\Interfaces\MiddlewareInterface;
-use EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;

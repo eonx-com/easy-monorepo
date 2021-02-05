@@ -24,17 +24,23 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
         yield 'No event for pending' => [];
 
         yield 'Success' => [
-            Webhook::fromArray(['status' => WebhookInterface::STATUS_SUCCESS]),
+            Webhook::fromArray([
+                'status' => WebhookInterface::STATUS_SUCCESS,
+            ]),
             SuccessWebhookEvent::class,
         ];
 
         yield 'Failed pending retry' => [
-            Webhook::fromArray(['status' => WebhookInterface::STATUS_FAILED_PENDING_RETRY]),
+            Webhook::fromArray([
+                'status' => WebhookInterface::STATUS_FAILED_PENDING_RETRY,
+            ]),
             FailedWebhookEvent::class,
         ];
 
         yield 'Final failed' => [
-            Webhook::fromArray(['status' => WebhookInterface::STATUS_FAILED]),
+            Webhook::fromArray([
+                'status' => WebhookInterface::STATUS_FAILED,
+            ]),
             FinalFailedWebhookEvent::class,
         ];
     }
@@ -42,10 +48,8 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @dataProvider providerTestProcess
      */
-    public function testProcess(
-        ?WebhookInterface $webhook = null,
-        ?string $eventClass = null
-    ): void {
+    public function testProcess(?WebhookInterface $webhook = null, ?string $eventClass = null): void
+    {
         $dispatcher = new EventDispatcherStub();
         $middleware = new EventsMiddleware($dispatcher);
 

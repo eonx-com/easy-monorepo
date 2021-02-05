@@ -16,19 +16,14 @@ final class MethodMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function providerTestProcess(): iterable
     {
-        yield 'default method' => [
-            Webhook::fromArray([]),
-            WebhookInterface::DEFAULT_METHOD,
-        ];
+        yield 'default method' => [Webhook::fromArray([]), WebhookInterface::DEFAULT_METHOD];
 
-        yield 'custom default method' => [
-            Webhook::fromArray([]),
-            'PUT',
-            'PUT',
-        ];
+        yield 'custom default method' => [Webhook::fromArray([]), 'PUT', 'PUT'];
 
         yield 'custom method on webhook' => [
-            Webhook::fromArray(['method' => 'PATCH']),
+            Webhook::fromArray([
+                'method' => 'PATCH',
+            ]),
             'PATCH',
         ];
     }

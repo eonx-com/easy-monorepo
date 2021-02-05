@@ -10,10 +10,16 @@ final class WebhookTest extends AbstractTestCase
 {
     public function testSettersGetters(): void
     {
-        $body = ['key' => 'value'];
+        $body = [
+            'key' => 'value',
+        ];
         $event = 'my-event';
-        $extra = ['key' => 'value'];
-        $httpOptions = ['key' => 'value'];
+        $extra = [
+            'key' => 'value',
+        ];
+        $httpOptions = [
+            'key' => 'value',
+        ];
         $maxAttempt = 5;
         $secret = 'my-secret';
         $url = 'https://eonx.com';
@@ -25,14 +31,18 @@ final class WebhookTest extends AbstractTestCase
             ->extra($extra)
             ->httpClientOptions($httpOptions)
             ->maxAttempt($maxAttempt)
-            ->mergeExtra(['key1' => 'value1'])
+            ->mergeExtra([
+                'key1' => 'value1',
+            ])
             ->secret($secret)
             ->sendNow()
             ->url($url);
 
         self::assertEquals($body, $webhook->getBody());
         self::assertEquals($event, $webhook->getEvent());
-        self::assertEquals($extra + ['key1' => 'value1'], $webhook->getExtra());
+        self::assertEquals($extra + [
+            'key1' => 'value1',
+        ], $webhook->getExtra());
         self::assertEquals($httpOptions, $webhook->getHttpClientOptions());
         self::assertEquals($maxAttempt, $webhook->getMaxAttempt());
         self::assertEquals($secret, $webhook->getSecret());

@@ -18,18 +18,19 @@ final class StatusAndAttemptMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function providerTestProcess(): iterable
     {
-        yield 'successful' => [
-            new WebhookResult(new Webhook()),
-            WebhookInterface::STATUS_SUCCESS,
-        ];
+        yield 'successful' => [new WebhookResult(new Webhook()), WebhookInterface::STATUS_SUCCESS];
 
         yield 'failed pending retry' => [
-            new WebhookResult(Webhook::fromArray([WebhookInterface::OPTION_MAX_ATTEMPT => 2]), null, new \Exception()),
+            new WebhookResult(Webhook::fromArray([
+                WebhookInterface::OPTION_MAX_ATTEMPT => 2,
+            ]), null, new \Exception()),
             WebhookInterface::STATUS_FAILED_PENDING_RETRY,
         ];
 
         yield 'failed' => [
-            new WebhookResult(Webhook::fromArray([WebhookInterface::OPTION_MAX_ATTEMPT => 1]), null, new \Exception()),
+            new WebhookResult(Webhook::fromArray([
+                WebhookInterface::OPTION_MAX_ATTEMPT => 1,
+            ]), null, new \Exception()),
             WebhookInterface::STATUS_FAILED,
         ];
     }

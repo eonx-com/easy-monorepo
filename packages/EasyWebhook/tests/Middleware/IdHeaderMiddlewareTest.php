@@ -32,7 +32,8 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         yield 'id from store' => [
             Webhook::fromArray([]),
             static function (WebhookResultInterface $webhookResult): void {
-                $headers = $webhookResult->getWebhook()->getHttpClientOptions()['headers'] ?? [];
+                $headers = $webhookResult->getWebhook()
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey(WebhookInterface::HEADER_ID, $headers);
                 self::assertEquals('webhook-id', $headers[WebhookInterface::HEADER_ID]);
@@ -40,9 +41,12 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ];
 
         yield 'id with default header' => [
-            Webhook::fromArray(['id' => 'my-id']),
+            Webhook::fromArray([
+                'id' => 'my-id',
+            ]),
             static function (WebhookResultInterface $webhookResult): void {
-                $headers = $webhookResult->getWebhook()->getHttpClientOptions()['headers'] ?? [];
+                $headers = $webhookResult->getWebhook()
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey(WebhookInterface::HEADER_ID, $headers);
                 self::assertEquals('my-id', $headers[WebhookInterface::HEADER_ID]);
@@ -50,9 +54,12 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ];
 
         yield 'id with custom header' => [
-            Webhook::fromArray(['id' => 'my-id']),
+            Webhook::fromArray([
+                'id' => 'my-id',
+            ]),
             static function (WebhookResultInterface $webhookResult): void {
-                $headers = $webhookResult->getWebhook()->getHttpClientOptions()['headers'] ?? [];
+                $headers = $webhookResult->getWebhook()
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey('X-My-Id', $headers);
                 self::assertEquals('my-id', $headers['X-My-Id']);

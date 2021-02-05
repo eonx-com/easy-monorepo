@@ -21,23 +21,29 @@ final class EventHeaderMiddlewareTest extends AbstractMiddlewareTestCase
             Webhook::fromArray([]),
             static function (WebhookResultInterface $webhookResult): void {
                 self::assertNull($webhookResult->getWebhook()->getHttpClientOptions()['headers'] ?? null);
-            }
+            },
         ];
 
         yield 'event with default header' => [
-            Webhook::fromArray(['event' => 'my-event']),
+            Webhook::fromArray([
+                'event' => 'my-event',
+            ]),
             static function (WebhookResultInterface $webhookResult): void {
-                $headers = $webhookResult->getWebhook()->getHttpClientOptions()['headers'] ?? [];
+                $headers = $webhookResult->getWebhook()
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey(WebhookInterface::HEADER_EVENT, $headers);
                 self::assertEquals('my-event', $headers[WebhookInterface::HEADER_EVENT]);
-            }
+            },
         ];
 
         yield 'event with custom header' => [
-            Webhook::fromArray(['event' => 'my-event']),
+            Webhook::fromArray([
+                'event' => 'my-event',
+            ]),
             static function (WebhookResultInterface $webhookResult): void {
-                $headers = $webhookResult->getWebhook()->getHttpClientOptions()['headers'] ?? [];
+                $headers = $webhookResult->getWebhook()
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey('X-My-Event', $headers);
                 self::assertEquals('my-event', $headers['X-My-Event']);

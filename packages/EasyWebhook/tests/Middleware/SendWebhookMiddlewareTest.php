@@ -13,7 +13,6 @@ use EonX\EasyWebhook\Tests\Stubs\HttpClientStub;
 use EonX\EasyWebhook\Webhook;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\Response\MockResponse;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
@@ -23,15 +22,12 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function providerTestProcess(): iterable
     {
-        yield 'empty url exception' => [
-            Webhook::fromArray([]),
-            null,
-            null,
-            InvalidWebhookUrlException::class,
-        ];
+        yield 'empty url exception' => [Webhook::fromArray([]), null, null, InvalidWebhookUrlException::class];
 
         yield 'Success' => [
-            Webhook::fromArray(['url' => 'https://eonx.com']),
+            Webhook::fromArray([
+                'url' => 'https://eonx.com',
+            ]),
             static function (WebhookResultInterface $webhookResult, HttpClientStub $httpClient): void {
                 self::assertNull($webhookResult->getThrowable());
                 self::assertInstanceOf(ResponseInterface::class, $webhookResult->getResponse());
@@ -42,7 +38,9 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
         ];
 
         yield 'HTTP exception' => [
-            Webhook::fromArray(['url' => 'https://eonx.com']),
+            Webhook::fromArray([
+                'url' => 'https://eonx.com',
+            ]),
             static function (WebhookResultInterface $webhookResult, HttpClientStub $httpClient): void {
                 self::assertInstanceOf(\Throwable::class, $webhookResult->getThrowable());
                 self::assertInstanceOf(ResponseInterface::class, $webhookResult->getResponse());

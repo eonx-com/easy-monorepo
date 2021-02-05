@@ -29,10 +29,7 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
                     BodyFormatterMiddleware::class,
                     $container->get(BodyFormatterMiddleware::class)
                 );
-                self::assertInstanceOf(
-                    MethodMiddleware::class,
-                    $container->get(MethodMiddleware::class)
-                );
+                self::assertInstanceOf(MethodMiddleware::class, $container->get(MethodMiddleware::class));
             },
         ];
 

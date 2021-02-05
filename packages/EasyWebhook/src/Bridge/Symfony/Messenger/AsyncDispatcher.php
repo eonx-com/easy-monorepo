@@ -22,7 +22,8 @@ final class AsyncDispatcher implements AsyncDispatcherInterface
 
     public function dispatch(WebhookResultInterface $webhookResult): WebhookResultInterface
     {
-        $webhookId = $webhookResult->getWebhook()->getId();
+        $webhookId = $webhookResult->getWebhook()
+            ->getId();
 
         if ($webhookId !== null) {
             $this->bus->dispatch(new SendWebhookMessage($webhookId));
