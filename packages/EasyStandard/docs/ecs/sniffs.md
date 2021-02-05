@@ -30,7 +30,29 @@ $array = ['a' => 3, 'g' => 2, 'z' => 1];
 ]
 ```
 
-##### [\EonX\EasyStandard\Sniffs\Classes\AvoidPublicPropertiesSniff][2]
+##### [\EonX\EasyStandard\Sniffs\Classes\AvoidPrivatePropertiesSniff][2]
+
+Class properties must be protected or public.
+```php
+// incorrect
+class MyClass
+{
+    private $myProperty1;
+    // or
+    $myProperty2;
+}
+```
+```php
+// correct
+class MyClass
+{
+    public $myProperty1;
+    // or
+    protected $myProperty2;
+}
+```
+
+##### [\EonX\EasyStandard\Sniffs\Classes\AvoidPublicPropertiesSniff][3]
 
 Class properties must be protected or private.
 
@@ -54,7 +76,7 @@ class MyClass
 }
 ```
 
-##### [\EonX\EasyStandard\Sniffs\Classes\RequirePublicConstructorSniff][3]
+##### [\EonX\EasyStandard\Sniffs\Classes\RequirePublicConstructorSniff][4]
 
 Class constructor must be public.
 
@@ -78,7 +100,7 @@ class MyClass
 }
 ```
 
-##### [\EonX\EasyStandard\Sniffs\Classes\RequireStrictDeclarationSniff][4]
+##### [\EonX\EasyStandard\Sniffs\Classes\RequireStrictDeclarationSniff][5]
 
 Strict type declaration is required.
 
@@ -96,7 +118,7 @@ declare(strict_types=1);
 // any php content
 ```
 
-##### [\EonX\EasyStandard\Sniffs\Classes\StrictDeclarationFormatSniff][5]
+##### [\EonX\EasyStandard\Sniffs\Classes\StrictDeclarationFormatSniff][6]
 
 Strict type declaration must be on a new line with no leading whitespace.
 
@@ -124,7 +146,7 @@ declare(strict_types=1);
 
 #### Commenting
 
-##### [\EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff][6]
+##### [\EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff][7]
 
 Checks that annotations are sorted alphabetically.
 
@@ -165,7 +187,7 @@ class MyClass
 - `alwaysTopAnnotations` - A list of annotations that should always come first in the list, without regard to sorting.
   Default value: `[]`.
 
-##### [\EonX\EasyStandard\Sniffs\Commenting\FunctionCommentSniff][7]
+##### [\EonX\EasyStandard\Sniffs\Commenting\FunctionCommentSniff][8]
 
 Checks that function comment blocks follow EonX standards.
 
@@ -267,7 +289,7 @@ class MyClass
 
 #### Control Structures
 
-##### [\EonX\EasyStandard\Sniffs\ControlStructures\ArrangeActAssertSniff][8]
+##### [\EonX\EasyStandard\Sniffs\ControlStructures\ArrangeActAssertSniff][9]
 
 Checks that a test method conforms to Arrange, Act and Assert (AAA) pattern. The allowed number of empty lines is
 between [1, 2].
@@ -374,7 +396,7 @@ final class TestClass
 }
 ```
 
-##### [\EonX\EasyStandard\Sniffs\ControlStructures\NoNotOperatorSniff][9]
+##### [\EonX\EasyStandard\Sniffs\ControlStructures\NoNotOperatorSniff][10]
 
 A strict comparison operator must be used instead of a NOT operator.
 
@@ -396,7 +418,7 @@ if ($a === false) {
 
 #### Exceptions
 
-##### [\EonX\EasyStandard\Sniffs\Exceptions\ThrowExceptionMessageSniff][10]
+##### [\EonX\EasyStandard\Sniffs\Exceptions\ThrowExceptionMessageSniff][11]
 
 Exception message must be either a variable or a translation message, starting with a valid prefix.
 
@@ -424,7 +446,7 @@ throw new RuntimeException($message);
 
 #### Functions
 
-##### [\EonX\EasyStandard\Sniffs\Functions\DisallowNonNullDefaultValueSniff][11]
+##### [\EonX\EasyStandard\Sniffs\Functions\DisallowNonNullDefaultValueSniff][12]
 
 Function and closure parameters can only have a default value of `null`.
 
@@ -444,7 +466,7 @@ function someFunction(int $param1, ?stdClass $class = null, ?string $const3 = nu
 
 #### Methods
 
-##### [\EonX\EasyStandard\Sniffs\Methods\TestMethodNameSniff][12]
+##### [\EonX\EasyStandard\Sniffs\Methods\TestMethodNameSniff][13]
 
 Checks that a method name matches/does not match a specific regex.
 
@@ -474,7 +496,7 @@ Checks that a method name matches/does not match a specific regex.
 
 #### Namespaces
 
-##### [\EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff][13]
+##### [\EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff][14]
 
 Checks that a namespace name matches PSR-4 project structure.
 
@@ -483,15 +505,16 @@ Checks that a namespace name matches PSR-4 project structure.
 - `composerJsonPath` - A relative path to the project file `composer.json`. Default value: `composer.json`.
 
 [1]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Arrays/AlphabeticallySortedArrayKeysSniff.php
-[2]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/AvoidPublicPropertiesSniff.php
-[3]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequirePublicConstructorSniff.php
-[4]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequireStrictDeclarationSniff.php
-[5]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/StrictDeclarationFormatSniff.php
-[6]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Commenting/AnnotationSortingSniff.php
-[7]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php
-[8]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/ControlStructures/ArrangeActAssertSniff.php
-[9]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/ControlStructures/NoNotOperatorSniff.php
-[10]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Exceptions/ThrowExceptionMessageSniff.php
-[11]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Functions/DisallowNonNullDefaultValueSniff.php
-[12]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Methods/TestMethodNameSniff.php
-[13]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Namespaces/Psr4Sniff.php
+[2]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/AvoidPrivatePropertiesSniff.php
+[3]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/AvoidPublicPropertiesSniff.php
+[4]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequirePublicConstructorSniff.php
+[5]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/RequireStrictDeclarationSniff.php
+[6]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Classes/StrictDeclarationFormatSniff.php
+[7]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Commenting/AnnotationSortingSniff.php
+[8]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php
+[9]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/ControlStructures/ArrangeActAssertSniff.php
+[10]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/ControlStructures/NoNotOperatorSniff.php
+[11]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Exceptions/ThrowExceptionMessageSniff.php
+[12]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Functions/DisallowNonNullDefaultValueSniff.php
+[13]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Methods/TestMethodNameSniff.php
+[14]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Sniffs/Namespaces/Psr4Sniff.php
