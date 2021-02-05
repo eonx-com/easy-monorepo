@@ -23,7 +23,7 @@ class ClassHasInCorrectPHPDoсTest
     /**
      * my property comment
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull()        Some description.
      *
      * @see Another code
      *
@@ -61,7 +61,7 @@ class ClassHasInCorrectPHPDoсTest
                 /**
                  * Some text
                  *
-                 * @var mixed[]|string $value May be refactor?
+                 * @var mixed[]|string $value       May be refactor?
                  */
                 if (\is_array($value)) {
                     // Try to loop
@@ -111,7 +111,7 @@ class ClassHasInCorrectPHPDoсTest
     /**
      * My property comment.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull() some description
      *
      * @see Another code
      *
@@ -149,7 +149,7 @@ class ClassHasInCorrectPHPDoсTest
                 /**
                  * Some text.
                  *
-                 * @var mixed[]|string $value may be refactor
+                 * @var mixed[]|string $value       may be refactor
                  */
                 if (\is_array($value)) {
                     // Try to loop

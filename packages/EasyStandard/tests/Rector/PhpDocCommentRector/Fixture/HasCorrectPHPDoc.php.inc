@@ -47,7 +47,7 @@ class ClassHasCorrectPHPDoсTest
     /**
      * My property.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull() some description
      *
      * @see Another code
      *
@@ -100,7 +100,7 @@ class ClassHasCorrectPHPDoсTest
                      *
                      * Another text 2.
                      *
-                     * @var string[] $test3 some text
+                     * @var string[]    $test3     some text
                      */
                     $test3['123'] = '123';
                 }

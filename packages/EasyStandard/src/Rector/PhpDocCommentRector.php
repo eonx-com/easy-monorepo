@@ -39,42 +39,6 @@ final class PhpDocCommentRector extends AbstractRector
      */
     private $isMultilineTagNode;
 
-    public function checkPhpDoc(PhpDocInfo $phpDocInfo): void
-    {
-        $children = $phpDocInfo->getPhpDocNode()
-            ->children;
-
-        foreach ($children as $phpDocChildNode) {
-            /** @var PhpDocChildNode $phpDocChildNode */
-            $content = (string)$phpDocChildNode;
-            if (Strings::match($content, '#inheritdoc#i')) {
-                continue;
-            }
-
-            if ($phpDocChildNode instanceof AttributeAwarePhpDocTextNode) {
-                if ($this->isMultilineTagNode) {
-                    if (Strings::endsWith($phpDocChildNode->text, ')')) {
-                        $this->isMultilineTagNode = false;
-                    }
-
-                    continue;
-                }
-
-                $this->checkTextNode($phpDocChildNode);
-
-                continue;
-            }
-
-            if ($phpDocChildNode instanceof AttributeAwarePhpDocTagNode) {
-                $this->checkTagNode($phpDocChildNode);
-
-                continue;
-            }
-        }
-
-        $this->isMultilineTagNode = false;
-    }
-
     /**
      * From this method documentation is generated.
      */
@@ -139,6 +103,18 @@ PHP
                 $attributeAwarePhpDocTagNode->name .= ' ';
             }
 
+            $valueAsArray = (array)\explode(')', $value->value);
+
+            if (\count($valueAsArray) === 2) {
+                if ($this->isLineEndingWithAllowed($valueAsArray[1])) {
+                    $valueAsArray[1] = Strings::substring($valueAsArray[1], 0, -1);
+                }
+
+                $valueAsArray[1] = Strings::firstLower(Strings::trim($valueAsArray[1]));
+
+                $value->value = implode(') ', $valueAsArray);
+            }
+
             return;
         }
 
@@ -151,6 +127,42 @@ PHP
         }
 
         $value->value = Strings::substring($value->value, 0, -1);
+    }
+
+    private function checkPhpDoc(PhpDocInfo $phpDocInfo): void
+    {
+        $children = $phpDocInfo->getPhpDocNode()
+            ->children;
+
+        foreach ($children as $phpDocChildNode) {
+            /** @var PhpDocChildNode $phpDocChildNode */
+            $content = (string)$phpDocChildNode;
+            if (Strings::match($content, '#inheritdoc#i')) {
+                continue;
+            }
+
+            if ($phpDocChildNode instanceof AttributeAwarePhpDocTextNode) {
+                if ($this->isMultilineTagNode) {
+                    if (Strings::endsWith($phpDocChildNode->text, ')')) {
+                        $this->isMultilineTagNode = false;
+                    }
+
+                    continue;
+                }
+
+                $this->checkTextNode($phpDocChildNode);
+
+                continue;
+            }
+
+            if ($phpDocChildNode instanceof AttributeAwarePhpDocTagNode) {
+                $this->checkTagNode($phpDocChildNode);
+
+                continue;
+            }
+        }
+
+        $this->isMultilineTagNode = false;
     }
 
     private function checkTagNode(AttributeAwarePhpDocTagNode $attributeAwarePhpDocTagNode): void
@@ -172,7 +184,7 @@ PHP
             return;
         }
 
-        $text = \explode(PHP_EOL, $attributeAwarePhpDocTextNode->text);
+        $text = (array)\explode(PHP_EOL, $attributeAwarePhpDocTextNode->text);
         $firstKey = array_key_first($text);
         $lastKey = array_key_last($text);
 
