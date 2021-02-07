@@ -39,6 +39,7 @@ interface WebhookInterface
         self::OPTION_MAX_ATTEMPT,
         self::OPTION_METHOD,
         self::OPTION_SECRET,
+        self::OPTION_SEND_AFTER,
         self::OPTION_STATUS,
         self::OPTION_URL,
     ];
@@ -87,6 +88,11 @@ interface WebhookInterface
      * @var string
      */
     public const OPTION_SECRET = 'secret';
+
+    /**
+     * @var string
+     */
+    public const OPTION_SEND_AFTER = 'send_after';
 
     /**
      * @var string
@@ -180,6 +186,8 @@ interface WebhookInterface
 
     public function getSecret(): ?string;
 
+    public function getSendAfter(): ?\DateTimeInterface;
+
     public function getStatus(): string;
 
     public function getUrl(): ?string;
@@ -210,6 +218,8 @@ interface WebhookInterface
     public function method(string $method): self;
 
     public function secret(string $secret): self;
+
+    public function sendAfter(\DateTimeInterface $after): self;
 
     public function sendNow(?bool $sendNow = null): self;
 

@@ -26,6 +26,7 @@ abstract class AbstractWebhook implements WebhookInterface
         self::OPTION_MAX_ATTEMPT => 'maxAttempt',
         self::OPTION_METHOD => 'method',
         self::OPTION_SECRET => 'secret',
+        self::OPTION_SEND_AFTER => 'sendAfter',
         self::OPTION_STATUS => 'status',
         self::OPTION_URL => 'url',
     ];
@@ -84,6 +85,11 @@ abstract class AbstractWebhook implements WebhookInterface
      * @var null|string
      */
     private $secret;
+
+    /**
+     * @var null|\DateTimeInterface
+     */
+    private $sendAfter;
 
     /**
      * @var null|bool
@@ -244,6 +250,11 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this->secret;
     }
 
+    public function getSendAfter(): ?\DateTimeInterface
+    {
+        return $this->sendAfter;
+    }
+
     public function getStatus(): string
     {
         return $this->status ?? WebhookInterface::STATUS_PENDING;
@@ -318,6 +329,13 @@ abstract class AbstractWebhook implements WebhookInterface
     public function secret(string $secret): WebhookInterface
     {
         $this->secret = $secret;
+
+        return $this;
+    }
+
+    public function sendAfter(\DateTimeInterface $after): WebhookInterface
+    {
+        $this->sendAfter = $after;
 
         return $this;
     }
