@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests;
 
+use DateTime;
 use EonX\EasyWebhook\Webhook;
 
 final class WebhookTest extends AbstractTestCase
@@ -22,6 +23,7 @@ final class WebhookTest extends AbstractTestCase
         ];
         $maxAttempt = 5;
         $secret = 'my-secret';
+        $sendAfter = new DateTime();
         $url = 'https://eonx.com';
 
         $webhook = Webhook::create($url, $body);
@@ -35,6 +37,7 @@ final class WebhookTest extends AbstractTestCase
                 'key1' => 'value1',
             ])
             ->secret($secret)
+            ->sendAfter($sendAfter)
             ->sendNow()
             ->url($url);
 
@@ -46,6 +49,7 @@ final class WebhookTest extends AbstractTestCase
         self::assertEquals($httpOptions, $webhook->getHttpClientOptions());
         self::assertEquals($maxAttempt, $webhook->getMaxAttempt());
         self::assertEquals($secret, $webhook->getSecret());
+        self::assertEquals($sendAfter, $webhook->getSendAfter());
         self::assertTrue($webhook->isSendNow());
         self::assertEquals($url, $webhook->getUrl());
         self::assertIsArray($webhook->toArray());
