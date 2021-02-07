@@ -18,18 +18,19 @@ final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function provideTestProcess(): iterable
     {
-        yield 'No send after -> should send' => [
-            Webhook::fromArray([]),
-            true,
-        ];
+        yield 'No send after -> should send' => [Webhook::fromArray([]), true];
 
         yield 'Send after passed -> should send' => [
-            Webhook::fromArray([WebhookInterface::OPTION_SEND_AFTER => (new DateTime())->modify('-1 day')]),
+            Webhook::fromArray([
+                WebhookInterface::OPTION_SEND_AFTER => (new DateTime())->modify('-1 day'),
+            ]),
             true,
         ];
 
         yield 'Send after in future -> should not send' => [
-            Webhook::fromArray([WebhookInterface::OPTION_SEND_AFTER => (new DateTime())->modify('+1 day')]),
+            Webhook::fromArray([
+                WebhookInterface::OPTION_SEND_AFTER => (new DateTime())->modify('+1 day'),
+            ]),
             false,
         ];
     }
