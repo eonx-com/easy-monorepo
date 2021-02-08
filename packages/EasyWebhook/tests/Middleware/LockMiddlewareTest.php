@@ -18,13 +18,12 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function providerTestProcess(): iterable
     {
-        yield 'acquire lock -> return result from stack' => [
-            Webhook::fromArray([]),
-            true,
-        ];
+        yield 'acquire lock -> return result from stack' => [Webhook::fromArray([]), true];
 
         yield 'do not acquire lock -> return new result' => [
-            Webhook::fromArray(['id' => 'my-id']),
+            Webhook::fromArray([
+                'id' => 'my-id',
+            ]),
             false,
         ];
     }
