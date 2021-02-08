@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Bridge\Laravel;
 
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyWebhook\Async\NullAsyncDispatcher;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
 use EonX\EasyWebhook\Bridge\Laravel\Jobs\AsyncDispatcher;
@@ -24,6 +25,7 @@ use EonX\EasyWebhook\Middleware\BodyFormatterMiddleware;
 use EonX\EasyWebhook\Middleware\EventHeaderMiddleware;
 use EonX\EasyWebhook\Middleware\EventsMiddleware;
 use EonX\EasyWebhook\Middleware\IdHeaderMiddleware;
+use EonX\EasyWebhook\Middleware\LockMiddleware;
 use EonX\EasyWebhook\Middleware\MethodMiddleware;
 use EonX\EasyWebhook\Middleware\ResetStoreMiddleware;
 use EonX\EasyWebhook\Middleware\SendWebhookMiddleware;
@@ -72,6 +74,15 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
     private function registerCoreMiddleware(): void
     {
+        // BEFORE MIDDLEWARE
+        $this->app->singleton(LockMiddleware::class, function (): LockMiddleware {
+            return new LockMiddleware(
+                $this->app->make(LockServiceInterface::class),
+                MiddlewareInterface::PRIORITY_CORE_BEFORE
+            );
+        });
+
+        // AFTER MIDDLEWARE
         $this->app->singleton(ResetStoreMiddleware::class, function (): ResetStoreMiddleware {
             return new ResetStoreMiddleware(
                 $this->app->make(WebhookResultStoreInterface::class),

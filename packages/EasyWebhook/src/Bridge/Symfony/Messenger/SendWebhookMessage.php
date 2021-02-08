@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Symfony\Messenger;
 
-use EonX\EasyLock\Interfaces\LockDataInterface;
-use EonX\EasyLock\Interfaces\WithLockDataInterface;
-use EonX\EasyLock\LockData;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
-final class SendWebhookMessage implements WithLockDataInterface
+final class SendWebhookMessage
 {
     /**
      * @var null|\EonX\EasyWebhook\Interfaces\WebhookResultInterface
@@ -24,11 +21,6 @@ final class SendWebhookMessage implements WithLockDataInterface
     public function __construct(string $webhookId)
     {
         $this->webhookId = $webhookId;
-    }
-
-    public function getLockData(): LockDataInterface
-    {
-        return LockData::create(\sprintf('easy_webhook_send_%s', $this->webhookId));
     }
 
     public function getResult(): ?WebhookResultInterface
