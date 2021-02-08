@@ -8,6 +8,7 @@ use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
 use EonX\EasyWebhook\Interfaces\MiddlewareInterface;
 use EonX\EasyWebhook\Middleware\AsyncMiddleware;
 use EonX\EasyWebhook\Middleware\EventsMiddleware;
+use EonX\EasyWebhook\Middleware\LockMiddleware;
 use EonX\EasyWebhook\Middleware\MethodMiddleware;
 use EonX\EasyWebhook\Middleware\ResetStoreMiddleware;
 use EonX\EasyWebhook\Middleware\SendWebhookMiddleware;
@@ -20,6 +21,12 @@ return static function (ContainerConfigurator $container): void {
         ->autowire()
         ->autoconfigure();
 
+    // BEFORE MIDDLEWARE
+    $services
+        ->set(LockMiddleware::class)
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE);
+
+    // AFTER MIDDLEWARE
     $services
         ->set(ResetStoreMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER);

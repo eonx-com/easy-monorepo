@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock;
 
+use Closure;
+use EonX\EasyLock\Exceptions\ShouldRetryException;
+use EonX\EasyLock\Interfaces\LockDataInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -38,6 +41,29 @@ final class LockService implements LockServiceInterface
     {
         return $this->getFactory()
             ->createLock($resource, $ttl ?? 300.0);
+    }
+
+    /**
+     * @return null|mixed
+     */
+    public function processWithLock(LockDataInterface $lockData, Closure $func)
+    {
+        $lock = $this->createLock($lockData->getResource(), $lockData->getTtl());
+
+        if ($lock->acquire() === false) {
+            // Throw exception to indicate we want ot retry
+            if ($lockData->shouldRetry()) {
+                throw new ShouldRetryException(\sprintf('Should retry "%s"', $lockData->getResource()));
+            }
+
+            return null;
+        }
+
+        try {
+            return $func();
+        } finally {
+            $lock->release();
+        }
     }
 
     private function getFactory(): LockFactory
