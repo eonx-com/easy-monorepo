@@ -27,6 +27,7 @@ use EonX\EasyWebhook\Middleware\EventsMiddleware;
 use EonX\EasyWebhook\Middleware\IdHeaderMiddleware;
 use EonX\EasyWebhook\Middleware\LockMiddleware;
 use EonX\EasyWebhook\Middleware\MethodMiddleware;
+use EonX\EasyWebhook\Middleware\RerunMiddleware;
 use EonX\EasyWebhook\Middleware\ResetStoreMiddleware;
 use EonX\EasyWebhook\Middleware\SendWebhookMiddleware;
 use EonX\EasyWebhook\Middleware\SignatureHeaderMiddleware;
@@ -78,8 +79,12 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         $this->app->singleton(LockMiddleware::class, function (): LockMiddleware {
             return new LockMiddleware(
                 $this->app->make(LockServiceInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_BEFORE
+                MiddlewareInterface::PRIORITY_CORE_BEFORE - 1
             );
+        });
+
+        $this->app->singleton(RerunMiddleware::class, function (): RerunMiddleware {
+            return new RerunMiddleware(MiddlewareInterface::PRIORITY_CORE_BEFORE);
         });
 
         // AFTER MIDDLEWARE

@@ -32,6 +32,11 @@ abstract class AbstractWebhook implements WebhookInterface
     ];
 
     /**
+     * @var null|bool
+     */
+    private $allowRerun;
+
+    /**
      * @var null|mixed[]
      */
     private $body;
@@ -143,6 +148,13 @@ abstract class AbstractWebhook implements WebhookInterface
         return $webhook;
     }
 
+    public function allowRerun(?bool $allowRerun = null): WebhookInterface
+    {
+        $this->allowRerun = $allowRerun ?? true;
+
+        return $this;
+    }
+
     /**
      * @param mixed[] $body
      */
@@ -206,7 +218,7 @@ abstract class AbstractWebhook implements WebhookInterface
 
     public function getCurrentAttempt(): int
     {
-        return $this->currentAttempt ?? 0;
+        return $this->currentAttempt ?? self::DEFAULT_CURRENT_ATTEMPT;
     }
 
     public function getEvent(): ?string
@@ -285,6 +297,11 @@ abstract class AbstractWebhook implements WebhookInterface
     public function isConfigured(): bool
     {
         return $this->configured ?? false;
+    }
+
+    public function isRerunAllowed(): bool
+    {
+        return $this->allowRerun ?? false;
     }
 
     public function isSendNow(): bool
