@@ -10,6 +10,7 @@ use EonX\EasyWebhook\Middleware\AsyncMiddleware;
 use EonX\EasyWebhook\Middleware\EventsMiddleware;
 use EonX\EasyWebhook\Middleware\LockMiddleware;
 use EonX\EasyWebhook\Middleware\MethodMiddleware;
+use EonX\EasyWebhook\Middleware\RerunMiddleware;
 use EonX\EasyWebhook\Middleware\ResetStoreMiddleware;
 use EonX\EasyWebhook\Middleware\SendWebhookMiddleware;
 use EonX\EasyWebhook\Middleware\StatusAndAttemptMiddleware;
@@ -24,6 +25,10 @@ return static function (ContainerConfigurator $container): void {
     // BEFORE MIDDLEWARE
     $services
         ->set(LockMiddleware::class)
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 1);
+
+    $services
+        ->set(RerunMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE);
 
     // AFTER MIDDLEWARE

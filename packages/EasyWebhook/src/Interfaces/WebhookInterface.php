@@ -7,6 +7,11 @@ namespace EonX\EasyWebhook\Interfaces;
 interface WebhookInterface
 {
     /**
+     * @var int
+     */
+    public const DEFAULT_CURRENT_ATTEMPT = 0;
+
+    /**
      * @var string
      */
     public const DEFAULT_METHOD = 'POST';
@@ -134,6 +139,8 @@ interface WebhookInterface
      */
     public const STATUS_SUCCESS = 'success';
 
+    public function allowRerun(?bool $allowRerun = null): self;
+
     /**
      * @param mixed[] $body
      */
@@ -200,6 +207,8 @@ interface WebhookInterface
     public function id(string $id): self;
 
     public function isConfigured(): bool;
+
+    public function isRerunAllowed(): bool;
 
     public function isSendNow(): bool;
 
