@@ -14,10 +14,7 @@ final class RerunMiddleware extends AbstractMiddleware
     /**
      * @var string[]
      */
-    private const SHOULD_NOT_RERUN = [
-        WebhookInterface::STATUS_FAILED,
-        WebhookInterface::STATUS_SUCCESS,
-    ];
+    private const SHOULD_NOT_RERUN = [WebhookInterface::STATUS_FAILED, WebhookInterface::STATUS_SUCCESS];
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {

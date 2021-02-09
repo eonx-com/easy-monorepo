@@ -18,14 +18,18 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
     public function providerTestProcess(): iterable
     {
         yield 'Cannot rerun exception' => [
-            Webhook::fromArray([WebhookInterface::OPTION_STATUS => WebhookInterface::STATUS_SUCCESS]),
+            Webhook::fromArray([
+                WebhookInterface::OPTION_STATUS => WebhookInterface::STATUS_SUCCESS,
+            ]),
             null,
             null,
             CannotRerunWebhookException::class,
         ];
 
         yield 'Can rerun, reset status and current attempt' => [
-            Webhook::fromArray([WebhookInterface::OPTION_STATUS => WebhookInterface::STATUS_SUCCESS])->allowRerun(),
+            Webhook::fromArray([
+                WebhookInterface::OPTION_STATUS => WebhookInterface::STATUS_SUCCESS,
+            ])->allowRerun(),
             WebhookInterface::STATUS_PENDING,
             WebhookInterface::DEFAULT_CURRENT_ATTEMPT,
         ];
