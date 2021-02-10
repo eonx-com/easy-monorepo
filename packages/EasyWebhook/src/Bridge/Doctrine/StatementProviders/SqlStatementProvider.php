@@ -25,6 +25,7 @@ final class SqlStatementProvider implements StatementsProviderInterface
                 `throwable` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json)',
                 `current_attempt` int(11) DEFAULT 0 NOT NULL,
                 `max_attempt` int(11) DEFAULT 0 NOT NULL,
+                `send_after` datetime DEFAULT NULL,
                 `class` varchar(191) NOT NULL,
                 `created_at` datetime DEFAULT NULL,
                 `updated_at` datetime DEFAULT NULL,

@@ -11,7 +11,7 @@ use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
-use EonX\EasyWebhook\Bridge\Doctrine\SqliteStatementProvider;
+use EonX\EasyWebhook\Bridge\Doctrine\StatementProviders\SqliteStatementProvider;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\Stores\DoctrineDbalWebhookResultStore;
@@ -72,22 +72,6 @@ final class DoctrineDbalWebhookResultStoreTest extends AbstractTestCase
         self::assertCount($expectedDue, $dueWebhooks->getItems());
     }
 
-    public function testStore(): void
-    {
-        $id = 'my-id';
-        $store = $this->getStore();
-        $result = new WebhookResult(
-            Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD)->id($id)
-        );
-
-        // Save new result with set id
-        $store->store($result);
-        // Update result
-        $store->store($result);
-
-        self::assertInstanceOf(WebhookResultInterface::class, $store->find($id));
-    }
-
     public function testFindWebhookResult(): void
     {
         $store = $this->getStore();
@@ -107,11 +91,30 @@ final class DoctrineDbalWebhookResultStoreTest extends AbstractTestCase
         self::assertNull($store->find('invalid'));
     }
 
+    public function testStore(): void
+    {
+        $id = 'my-id';
+        $store = $this->getStore();
+        $result = new WebhookResult(
+            Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD)->id($id)
+        );
+
+        // Save new result with set id
+        $store->store($result);
+        // Update result
+        $store->store($result);
+
+        self::assertInstanceOf(WebhookResultInterface::class, $store->find($id));
+    }
+
     protected function setUp(): void
     {
         $conn = $this->getConnection();
         $conn->connect();
-        $conn->executeStatement(SqliteStatementProvider::migrateStatement());
+
+        foreach (SqliteStatementProvider::migrateStatements() as $statement) {
+            $conn->executeStatement($statement);
+        }
 
         parent::setUp();
     }
@@ -119,7 +122,11 @@ final class DoctrineDbalWebhookResultStoreTest extends AbstractTestCase
     protected function tearDown(): void
     {
         $conn = $this->getConnection();
-        $conn->executeStatement(SqliteStatementProvider::rollbackStatement());
+
+        foreach (SqliteStatementProvider::rollbackStatements() as $statement) {
+            $conn->executeStatement($statement);
+        }
+
         $conn->close();
 
         parent::tearDown();
