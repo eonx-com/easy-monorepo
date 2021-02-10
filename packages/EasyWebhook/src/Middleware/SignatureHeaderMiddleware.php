@@ -52,11 +52,7 @@ final class SignatureHeaderMiddleware extends AbstractConfigureOnceMiddleware
                 throw new InvalidWebhookSecretException('Secret for signature is required');
             }
 
-            $webhook->mergeHttpClientOptions([
-                'headers' => [
-                    $this->signatureHeader => $this->signer->sign($body, $secret),
-                ],
-            ]);
+            $webhook->header($this->signatureHeader, $this->signer->sign($body, $secret));
         }
 
         return $stack

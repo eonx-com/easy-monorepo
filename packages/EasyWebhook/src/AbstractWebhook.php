@@ -67,6 +67,11 @@ abstract class AbstractWebhook implements WebhookInterface
     private $extra;
 
     /**
+     * @var mixed[]
+     */
+    private $headers;
+
+    /**
      * @var null|mixed[]
      */
     private $httpClientOptions;
@@ -85,6 +90,11 @@ abstract class AbstractWebhook implements WebhookInterface
      * @var null|string
      */
     private $method;
+
+    /**
+     * @var mixed[]
+     */
+    private $queries;
 
     /**
      * @var null|string
@@ -239,7 +249,21 @@ abstract class AbstractWebhook implements WebhookInterface
      */
     public function getHttpClientOptions(): ?array
     {
-        return $this->httpClientOptions;
+        if ($this->headers === null && $this->queries === null && $this->httpClientOptions === null) {
+            return null;
+        }
+
+        $return = $this->httpClientOptions ?? [];
+
+        if ($this->headers !== null) {
+            $return['headers'] = \array_merge($return['headers'] ?? [], $this->headers);
+        }
+
+        if ($this->queries !== null) {
+            $return['query'] = \array_merge($return['query'] ?? [], $this->queries);
+        }
+
+        return $return;
     }
 
     public function getId(): ?string
@@ -275,6 +299,30 @@ abstract class AbstractWebhook implements WebhookInterface
     public function getUrl(): ?string
     {
         return $this->url;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function header(string $name, $value): WebhookInterface
+    {
+        if ($this->headers === null) {
+            $this->headers = [];
+        }
+
+        $this->headers[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed[] $headers
+     */
+    public function headers(array $headers): WebhookInterface
+    {
+        $this->headers = $headers;
+
+        return $this;
     }
 
     /**
@@ -339,6 +387,30 @@ abstract class AbstractWebhook implements WebhookInterface
     public function method(string $method): WebhookInterface
     {
         $this->method = $method;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed[] $queries
+     */
+    public function queries(array $queries): WebhookInterface
+    {
+        $this->queries = $queries;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function query(string $name, $value): WebhookInterface
+    {
+        if ($this->queries === null) {
+            $this->queries = [];
+        }
+
+        $this->queries[$name] = $value;
 
         return $this;
     }

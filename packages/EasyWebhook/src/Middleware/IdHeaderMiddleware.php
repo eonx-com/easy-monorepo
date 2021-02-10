@@ -36,12 +36,7 @@ final class IdHeaderMiddleware extends AbstractConfigureOnceMiddleware
 
         if ($webhookId !== null) {
             $webhook->id($webhookId);
-
-            $webhook->mergeHttpClientOptions([
-                'headers' => [
-                    $this->idHeader => $webhook->getId(),
-                ],
-            ]);
+            $webhook->header($this->idHeader, $webhook->getId());
         }
 
         return $stack

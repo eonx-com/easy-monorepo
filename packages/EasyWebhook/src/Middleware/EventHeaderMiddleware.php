@@ -25,11 +25,7 @@ final class EventHeaderMiddleware extends AbstractConfigureOnceMiddleware
     protected function doProcess(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
         if (empty($webhook->getEvent()) === false) {
-            $webhook->mergeHttpClientOptions([
-                'headers' => [
-                    $this->eventHeader => $webhook->getEvent(),
-                ],
-            ]);
+            $webhook->header($this->eventHeader, $webhook->getEvent());
         }
 
         return $stack
