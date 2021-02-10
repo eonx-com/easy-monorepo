@@ -200,6 +200,16 @@ interface WebhookInterface
     public function getUrl(): ?string;
 
     /**
+     * @param mixed $value
+     */
+    public function header(string $name, $value): self;
+
+    /**
+     * @param mixed[] $headers
+     */
+    public function headers(array $headers): self;
+
+    /**
      * @param mixed[] $options
      */
     public function httpClientOptions(array $options): self;
@@ -225,6 +235,16 @@ interface WebhookInterface
     public function mergeHttpClientOptions(array $options): self;
 
     public function method(string $method): self;
+
+    /**
+     * @param mixed[] $queries
+     */
+    public function queries(array $queries): self;
+
+    /**
+     * @param mixed $value
+     */
+    public function query(string $name, $value): self;
 
     public function secret(string $secret): self;
 
