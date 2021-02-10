@@ -39,6 +39,6 @@ final class SqlStatementProvider implements StatementsProviderInterface
      */
     public static function rollbackStatements(): iterable
     {
-        yield "DROP TABLE `easy_webhooks`;";
+        yield 'DROP TABLE `easy_webhooks`;';
     }
 }
