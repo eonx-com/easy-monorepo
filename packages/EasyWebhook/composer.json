@@ -14,6 +14,7 @@
         "symfony/http-client": "^4.4 || ^5.1.5"
     },
     "require-dev": {
+        "eonx-com/easy-pagination": "^3.1",
         "ramsey/uuid": "^3.9",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "laravel/lumen-framework": "^5.5",
@@ -33,5 +34,8 @@
         "branch-alias": {
             "dev-master": "3.1-dev"
         }
+    },
+    "suggest": {
+        "eonx-com/easy-pagination": "Used to pagined due webhooks for sendAfter feature"
     }
 }

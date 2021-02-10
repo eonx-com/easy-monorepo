@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyWebhook\Async\NullAsyncDispatcher;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
+use EonX\EasyWebhook\Bridge\Symfony\Command\SendDueWebhooksCommand;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\HttpClientFactory;
 use EonX\EasyWebhook\Interfaces\AsyncDispatcherInterface;
@@ -31,6 +32,9 @@ return static function (ContainerConfigurator $container): void {
 
     // Body Formatter (Default)
     $services->set(WebhookBodyFormatterInterface::class, JsonFormatter::class);
+
+    // Commands
+    $services->set(SendDueWebhooksCommand::class);
 
     // HTTP Client
     $services

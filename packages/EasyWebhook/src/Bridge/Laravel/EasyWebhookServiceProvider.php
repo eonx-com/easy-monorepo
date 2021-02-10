@@ -8,6 +8,7 @@ use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyWebhook\Async\NullAsyncDispatcher;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
+use EonX\EasyWebhook\Bridge\Laravel\Commands\SendDueWebhooksCommand;
 use EonX\EasyWebhook\Bridge\Laravel\Jobs\AsyncDispatcher;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\HttpClientFactory;
@@ -57,6 +58,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         $this->registerDefaultServices();
 
         $this->registerAsyncServices();
+        $this->registerCommands();
         $this->registerCoreMiddleware();
         $this->registerDefaultMiddleware();
         $this->registerEventHeaderServices();
@@ -71,6 +73,11 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         }
 
         $this->app->singleton(AsyncDispatcherInterface::class, AsyncDispatcher::class);
+    }
+
+    private function registerCommands(): void
+    {
+        $this->commands([SendDueWebhooksCommand::class]);
     }
 
     private function registerCoreMiddleware(): void
