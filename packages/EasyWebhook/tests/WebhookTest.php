@@ -20,6 +20,12 @@ final class WebhookTest extends AbstractTestCase
         ];
         $httpOptions = [
             'key' => 'value',
+            'query' => [
+                'query' => 'value',
+            ],
+            'headers' => [
+                'header' => 'value',
+            ],
         ];
         $maxAttempt = 5;
         $secret = 'my-secret';
@@ -31,10 +37,18 @@ final class WebhookTest extends AbstractTestCase
             ->body($body)
             ->event($event)
             ->extra($extra)
+            ->header('header', 'value')
+            ->headers([
+                'header' => 'value',
+            ])
             ->httpClientOptions($httpOptions)
             ->maxAttempt($maxAttempt)
             ->mergeExtra([
                 'key1' => 'value1',
+            ])
+            ->query('query', 'value')
+            ->queries([
+                'query' => 'value',
             ])
             ->secret($secret)
             ->sendAfter($sendAfter)
