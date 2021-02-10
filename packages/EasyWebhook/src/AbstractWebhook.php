@@ -382,6 +382,7 @@ abstract class AbstractWebhook implements WebhookInterface
             'http_options' => $this->getHttpClientOptions(),
             'max_attempt' => $this->getMaxAttempt(),
             'method' => $this->getMethod(),
+            'send_after' => $this->getSendAfter(),
             'status' => $this->getStatus(),
             'url' => $this->getUrl(),
         ];
