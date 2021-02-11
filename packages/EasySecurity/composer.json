@@ -6,12 +6,12 @@
     "require": {
         "php": "^7.2",
         "nette/utils": "^3.1",
-        "eonx-com/easy-api-token": "^3.0.5",
-        "eonx-com/easy-event-dispatcher": "^3.0.5",
-        "eonx-com/easy-utils": "^3.0.5"
+        "eonx-com/easy-api-token": "^3.0",
+        "eonx-com/easy-event-dispatcher": "^3.0",
+        "eonx-com/easy-utils": "^3.0"
     },
     "require-dev": {
-        "eonx-com/easy-bugsnag": "^3.0.5",
+        "eonx-com/easy-bugsnag": "^3.0",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "laravel/lumen-framework": "^5.5",
         "symfony/symfony": "^4.4 || ^5.1.5"
@@ -28,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.1-dev"
+            "dev-master": "3.0-dev"
         }
     }
 }

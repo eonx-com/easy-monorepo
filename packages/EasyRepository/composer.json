@@ -10,7 +10,7 @@
         "phpunit/phpunit": "^8.4 || ^9.5",
         "mockery/mockery": "^1.2",
         "doctrine/orm": "^2.6",
-        "eonx-com/easy-pagination": "^3.0.5",
+        "eonx-com/easy-pagination": "^3.0",
         "laravel/lumen-framework": "^5.5",
         "vlucas/phpdotenv": "^3.3"
     },
@@ -33,7 +33,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "3.1-dev"
+            "dev-master": "3.0-dev"
         }
     }
 }

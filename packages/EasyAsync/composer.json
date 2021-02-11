@@ -5,9 +5,9 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "eonx-com/easy-event-dispatcher": "^3.0.5",
-        "eonx-com/easy-pagination": "^3.0.5",
-        "eonx-com/easy-random": "^3.0.5",
+        "eonx-com/easy-event-dispatcher": "^3.0",
+        "eonx-com/easy-pagination": "^3.0",
+        "eonx-com/easy-random": "^3.0",
         "nette/utils": "^3.1"
     },
     "require-dev": {
@@ -30,7 +30,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.1-dev"
+            "dev-master": "3.0-dev"
         }
     }
 }
