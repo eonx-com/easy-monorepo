@@ -6,7 +6,6 @@ namespace EonX\EasyWebhook\Tests\Stores;
 
 use Carbon\Carbon;
 use EonX\EasyPagination\Data\StartSizeData;
-use EonX\EasyWebhook\Bridge\Doctrine\StatementProviders\SqliteStatementProvider;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Stores\DoctrineDbalStore;
 use EonX\EasyWebhook\Tests\AbstractStoreTestCase;
@@ -90,31 +89,6 @@ final class DoctrineDbalStoreTest extends AbstractStoreTestCase
         $store->store($webhook);
 
         self::assertInstanceOf(WebhookInterface::class, $store->find($id));
-    }
-
-    protected function setUp(): void
-    {
-        $conn = $this->getDoctrineDbalConnection();
-        $conn->connect();
-
-        foreach (SqliteStatementProvider::migrateStatements() as $statement) {
-            $conn->executeStatement($statement);
-        }
-
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        $conn = $this->getDoctrineDbalConnection();
-
-        foreach (SqliteStatementProvider::rollbackStatements() as $statement) {
-            $conn->executeStatement($statement);
-        }
-
-        $conn->close();
-
-        parent::tearDown();
     }
 
     private function getStore(): DoctrineDbalStore
