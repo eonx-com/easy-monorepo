@@ -7,9 +7,9 @@ namespace EonX\EasyWebhook\Middleware;
 use EonX\EasyWebhook\Exceptions\WebhookIdRequiredForAsyncException;
 use EonX\EasyWebhook\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyWebhook\Interfaces\StackInterface;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\WebhookResult;
 
 final class AsyncMiddleware extends AbstractMiddleware
@@ -25,13 +25,13 @@ final class AsyncMiddleware extends AbstractMiddleware
     private $enabled;
 
     /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface
+     * @var \EonX\EasyWebhook\Interfaces\Stores\StoreInterface
      */
     private $store;
 
     public function __construct(
         AsyncDispatcherInterface $dispatcher,
-        WebhookResultStoreInterface $store,
+        StoreInterface $store,
         ?bool $enabled = null,
         ?int $priority = null
     ) {
@@ -50,7 +50,7 @@ final class AsyncMiddleware extends AbstractMiddleware
                 ->process($webhook, $stack);
         }
 
-        $webhookResult = $this->store->store(new WebhookResult($webhook));
+        $webhook = $this->store->store($webhook);
 
         if ($webhook->getId() === null) {
             throw new WebhookIdRequiredForAsyncException(\sprintf('
@@ -59,6 +59,8 @@ final class AsyncMiddleware extends AbstractMiddleware
             ', WebhookResultStoreInterface::class));
         }
 
-        return $this->dispatcher->dispatch($webhookResult);
+        $this->dispatcher->dispatch($webhook);
+
+        return new WebhookResult($webhook);
     }
 }

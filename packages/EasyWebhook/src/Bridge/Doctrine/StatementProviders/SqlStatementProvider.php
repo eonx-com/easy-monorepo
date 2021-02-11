@@ -13,25 +13,39 @@ final class SqlStatementProvider implements StatementsProviderInterface
      */
     public static function migrateStatements(): iterable
     {
-        yield "
+        yield '
             CREATE TABLE `easy_webhooks` (
-                `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:guid)',
-                `method` varchar(10) NOT NULL,
-                `url` varchar(191) NOT NULL,
-                `status` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-                `response` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json)',
-                `event` varchar(191) DEFAULT NULL,
-                `http_options` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json)',
-                `throwable` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json)',
-                `current_attempt` int(11) DEFAULT 0 NOT NULL,
-                `max_attempt` int(11) DEFAULT 0 NOT NULL,
-                `send_after` datetime DEFAULT NULL,
-                `class` varchar(191) NOT NULL,
-                `created_at` datetime DEFAULT NULL,
-                `updated_at` datetime DEFAULT NULL,
+                `id` CHAR(36) NOT NULL COMMENT "(DC2Type:guid)",
+                `method` VARCHAR(10) NOT NULL,
+                `url` VARCHAR(191) NOT NULL,
+                `status` VARCHAR(50) NOT NULL,
+                `event` VARCHAR(191) DEFAULT NULL,
+                `current_attempt` INT(11) DEFAULT 0 NOT NULL,
+                `max_attempt` INT(11) DEFAULT 0 NOT NULL,
+                `send_after` DATETIME DEFAULT NULL,
+                `class` VARCHAR(191) NOT NULL,
+                `created_at` DATETIME DEFAULT NULL,
+                `updated_at` DATETIME DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-        ";
+        ';
+
+        yield 'CREATE INDEX send_after_idx ON `easy_webhooks` (`status`, `send_after`)';
+
+        yield '
+            CREATE TABLE `easy_webhook_results` (
+                `id` CHAR(36) NOT NULL COMMENT "(DC2Type:guid)",
+                `method` VARCHAR(10) NOT NULL,
+                `url` VARCHAR(191) NOT NULL,
+                `http_options` LONGTEXT DEFAULT NULL,
+                `response` LONGTEXT DEFAULT NULL,
+                `throwable` LONGTEXT DEFAULT NULL,
+                `webhook_class` VARCHAR(191) NOT NULL,
+                `webhook_id` CHAR(36) NOT NULL,
+                `created_at` DATETIME DEFAULT NULL,
+                `updated_at` DATETIME DEFAULT NULL,
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        ';
     }
 
     /**
@@ -39,6 +53,7 @@ final class SqlStatementProvider implements StatementsProviderInterface
      */
     public static function rollbackStatements(): iterable
     {
+        yield 'DROP TABLE `easy_webhook_results`;';
         yield 'DROP TABLE `easy_webhooks`;';
     }
 }

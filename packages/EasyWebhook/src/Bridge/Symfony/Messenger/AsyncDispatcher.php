@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Bridge\Symfony\Messenger;
 
 use EonX\EasyWebhook\Interfaces\AsyncDispatcherInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
+use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class AsyncDispatcher implements AsyncDispatcherInterface
@@ -20,15 +20,12 @@ final class AsyncDispatcher implements AsyncDispatcherInterface
         $this->bus = $bus;
     }
 
-    public function dispatch(WebhookResultInterface $webhookResult): WebhookResultInterface
+    public function dispatch(WebhookInterface $webhook): void
     {
-        $webhookId = $webhookResult->getWebhook()
-            ->getId();
+        $webhookId = $webhook->getId();
 
         if ($webhookId !== null) {
             $this->bus->dispatch(new SendWebhookMessage($webhookId));
         }
-
-        return $webhookResult;
     }
 }

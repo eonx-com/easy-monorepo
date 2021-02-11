@@ -5,28 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Stores;
 
 use Carbon\Carbon;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
 use EonX\EasyPagination\Data\StartSizeData;
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyWebhook\Bridge\Doctrine\StatementProviders\SqliteStatementProvider;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
-use EonX\EasyWebhook\Stores\DoctrineDbalWebhookResultStore;
-use EonX\EasyWebhook\Tests\AbstractTestCase;
+use EonX\EasyWebhook\Stores\DoctrineDbalStore;
+use EonX\EasyWebhook\Tests\AbstractStoreTestCase;
 use EonX\EasyWebhook\Webhook;
-use EonX\EasyWebhook\WebhookResult;
-use Symfony\Component\HttpClient\Response\MockResponse;
 
-final class DoctrineDbalWebhookResultStoreTest extends AbstractTestCase
+final class DoctrineDbalStoreTest extends AbstractStoreTestCase
 {
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    private $conn;
-
     /**
      * @return iterable<mixed>
      */
@@ -64,7 +51,7 @@ final class DoctrineDbalWebhookResultStoreTest extends AbstractTestCase
         $store = $this->getStore();
 
         foreach ($webhooks as $webhook) {
-            $store->store(new WebhookResult($webhook));
+            $store->store($webhook);
         }
 
         $dueWebhooks = $store->findDueWebhooks(new StartSizeData(1, 15));
@@ -72,10 +59,10 @@ final class DoctrineDbalWebhookResultStoreTest extends AbstractTestCase
         self::assertCount($expectedDue, $dueWebhooks->getItems());
     }
 
-    public function testFindWebhookResult(): void
+    public function testFindWebhook(): void
     {
         $store = $this->getStore();
-        $result = new WebhookResult(Webhook::fromArray([
+        $webhook = Webhook::fromArray([
             WebhookInterface::OPTION_METHOD => WebhookInterface::DEFAULT_METHOD,
             WebhookInterface::OPTION_URL => 'https://eonx.com',
             WebhookInterface::OPTION_HTTP_OPTIONS => [
@@ -83,11 +70,11 @@ final class DoctrineDbalWebhookResultStoreTest extends AbstractTestCase
                     'X-My-Header' => 'my-header',
                 ],
             ],
-        ]), MockResponse::fromRequest('POST', 'http://eonx.com', [], new MockResponse()), new \Exception());
+        ]);
 
-        $store->store($result);
+        $store->store($webhook);
 
-        self::assertInstanceOf(WebhookResultInterface::class, $store->find((string)$result->getWebhook()->getId()));
+        self::assertInstanceOf(WebhookInterface::class, $store->find((string)$webhook->getId()));
         self::assertNull($store->find('invalid'));
     }
 
@@ -95,21 +82,19 @@ final class DoctrineDbalWebhookResultStoreTest extends AbstractTestCase
     {
         $id = 'my-id';
         $store = $this->getStore();
-        $result = new WebhookResult(
-            Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD)->id($id)
-        );
+        $webhook = Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD)->id($id);
 
         // Save new result with set id
-        $store->store($result);
+        $store->store($webhook);
         // Update result
-        $store->store($result);
+        $store->store($webhook);
 
-        self::assertInstanceOf(WebhookResultInterface::class, $store->find($id));
+        self::assertInstanceOf(WebhookInterface::class, $store->find($id));
     }
 
     protected function setUp(): void
     {
-        $conn = $this->getConnection();
+        $conn = $this->getDoctrineDbalConnection();
         $conn->connect();
 
         foreach (SqliteStatementProvider::migrateStatements() as $statement) {
@@ -121,7 +106,7 @@ final class DoctrineDbalWebhookResultStoreTest extends AbstractTestCase
 
     protected function tearDown(): void
     {
-        $conn = $this->getConnection();
+        $conn = $this->getDoctrineDbalConnection();
 
         foreach (SqliteStatementProvider::rollbackStatements() as $statement) {
             $conn->executeStatement($statement);
@@ -132,44 +117,8 @@ final class DoctrineDbalWebhookResultStoreTest extends AbstractTestCase
         parent::tearDown();
     }
 
-    private function createWebhookForSendAfter(
-        ?\DateTimeInterface $sendAfter = null,
-        ?string $status = null
-    ): WebhookInterface {
-        $webhook = Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD);
-
-        if ($sendAfter !== null) {
-            $webhook->sendAfter($sendAfter);
-        }
-
-        if ($status !== null) {
-            $webhook->status($status);
-        }
-
-        return $webhook;
-    }
-
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
-    private function getConnection(): Connection
+    private function getStore(): DoctrineDbalStore
     {
-        if ($this->conn !== null) {
-            return $this->conn;
-        }
-
-        return $this->conn = DriverManager::getConnection([
-            'url' => 'sqlite:///:memory:',
-        ]);
-    }
-
-    private function getRandomGenerator(): RandomGeneratorInterface
-    {
-        return (new RandomGenerator())->setUuidV4Generator(new RamseyUuidV4Generator());
-    }
-
-    private function getStore(): DoctrineDbalWebhookResultStore
-    {
-        return new DoctrineDbalWebhookResultStore($this->getConnection(), $this->getRandomGenerator());
+        return new DoctrineDbalStore($this->getRandomGenerator(), $this->getDoctrineDbalConnection());
     }
 }

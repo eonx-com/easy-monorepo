@@ -5,20 +5,27 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Middleware;
 
 use EonX\EasyWebhook\Interfaces\StackInterface;
+use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 
 final class StoreMiddleware extends AbstractMiddleware
 {
     /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface
+     * @var \EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface
+     */
+    private $resultStore;
+
+    /**
+     * @var \EonX\EasyWebhook\Interfaces\Stores\StoreInterface
      */
     private $store;
 
-    public function __construct(WebhookResultStoreInterface $store, ?int $priority = null)
+    public function __construct(StoreInterface $store, ResultStoreInterface $resultStore, ?int $priority = null)
     {
         $this->store = $store;
+        $this->resultStore = $resultStore;
 
         parent::__construct($priority);
     }
@@ -29,6 +36,8 @@ final class StoreMiddleware extends AbstractMiddleware
             ->next()
             ->process($webhook, $stack);
 
-        return $this->store->store($webhookResult);
+        $this->store->store($webhook);
+
+        return $this->resultStore->store($webhookResult);
     }
 }

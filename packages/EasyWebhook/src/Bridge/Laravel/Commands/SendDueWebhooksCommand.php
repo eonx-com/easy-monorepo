@@ -7,7 +7,8 @@ namespace EonX\EasyWebhook\Bridge\Laravel\Commands;
 use Carbon\Carbon;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyWebhook\Exceptions\InvalidDateTimeException;
-use EonX\EasyWebhook\Interfaces\SendAfterAwareWebhookResultStoreInterface;
+use EonX\EasyWebhook\Interfaces\Stores\SendAfterStoreInterface;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use Illuminate\Console\Command;
@@ -30,13 +31,13 @@ final class SendDueWebhooksCommand extends Command
         parent::__construct();
     }
 
-    public function handle(WebhookResultStoreInterface $store, WebhookClientInterface $client): int
+    public function handle(StoreInterface $store, WebhookClientInterface $client): int
     {
-        if ($store instanceof SendAfterAwareWebhookResultStoreInterface === false) {
+        if ($store instanceof SendAfterStoreInterface === false) {
             $this->error(\sprintf(
                 'Store "%s" does not implement "%s", cannot proceed.',
                 \get_class($store),
-                SendAfterAwareWebhookResultStoreInterface::class
+                SendAfterStoreInterface::class
             ));
 
             return 1;

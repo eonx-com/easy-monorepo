@@ -6,12 +6,12 @@ namespace EonX\EasyWebhook\Tests\Middleware;
 
 use EonX\EasyWebhook\Async\NullAsyncDispatcher;
 use EonX\EasyWebhook\Exceptions\WebhookIdRequiredForAsyncException;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\Middleware\AsyncMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
-use EonX\EasyWebhook\Tests\Stubs\ArrayWebhookResultStoreStub;
+use EonX\EasyWebhook\Tests\Stubs\ArrayStoreStub;
 use EonX\EasyWebhook\Webhook;
 
 final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
@@ -43,7 +43,7 @@ final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
             static function (WebhookResultInterface $webhookResult): void {
                 self::assertEquals('webhook-id', $webhookResult->getWebhook()->getId());
             },
-            new ArrayWebhookResultStoreStub('webhook-id'),
+            new ArrayStoreStub($this->getRandomGenerator(), 'webhook-id'),
         ];
     }
 
@@ -55,7 +55,7 @@ final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
     public function testProcess(
         WebhookInterface $webhook,
         ?callable $test = null,
-        ?WebhookResultStoreInterface $store = null,
+        ?StoreInterface $store = null,
         ?bool $enabled = null,
         ?string $expectedException = null
     ): void {
@@ -64,7 +64,7 @@ final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
         }
 
         $enabled = $enabled ?? true;
-        $store = $store ?? new ArrayWebhookResultStoreStub();
+        $store = $store ?? new ArrayStoreStub($this->getRandomGenerator());
         $middleware = new AsyncMiddleware(new NullAsyncDispatcher(), $store, $enabled);
 
         $result = $this->process($middleware, $webhook);

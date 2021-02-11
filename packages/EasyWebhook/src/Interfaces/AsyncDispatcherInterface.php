@@ -6,5 +6,5 @@ namespace EonX\EasyWebhook\Interfaces;
 
 interface AsyncDispatcherInterface
 {
-    public function dispatch(WebhookResultInterface $webhookResult): WebhookResultInterface;
+    public function dispatch(WebhookInterface $webhook): void;
 }

@@ -34,6 +34,7 @@ final class WebhookTest extends AbstractTestCase
 
         $webhook = Webhook::create($url, $body);
         $webhook
+            ->allowRerun()
             ->body($body)
             ->event($event)
             ->extra($extra)

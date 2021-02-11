@@ -7,8 +7,8 @@ namespace EonX\EasyWebhook\Tests\Middleware;
 use DateTime;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Middleware\SendAfterMiddleware;
+use EonX\EasyWebhook\Stores\ArrayStore;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
-use EonX\EasyWebhook\Tests\Stubs\ArrayWebhookResultStoreStub;
 use EonX\EasyWebhook\Webhook;
 
 final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
@@ -40,11 +40,11 @@ final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function testProcess(WebhookInterface $webhook, bool $shouldSend): void
     {
-        $store = new ArrayWebhookResultStoreStub();
+        $store = new ArrayStore($this->getRandomGenerator());
         $middleware = new SendAfterMiddleware($store);
 
         $this->process($middleware, $webhook);
 
-        self::assertCount($shouldSend ? 0 : 1, $store->getResults());
+        self::assertCount($shouldSend ? 0 : 1, $store->getWebhooks());
     }
 }
