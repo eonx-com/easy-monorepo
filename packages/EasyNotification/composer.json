@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.2",
         "aws/aws-sdk-php": "^3.134",
-        "eonx-com/easy-utils": "^3.1",
+        "eonx-com/easy-utils": "^3.0.5",
         "nette/utils": "^3.1",
         "symfony/http-client": "^4.4 || ^5.1.5"
     },

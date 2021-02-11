@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "eonx-com/easy-utils": "^3.1"
+        "eonx-com/easy-utils": "^3.0.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.4 || ^9.5",

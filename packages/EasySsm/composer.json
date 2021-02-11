@@ -6,8 +6,8 @@
     "require": {
         "php": "^7.2",
         "aws/aws-sdk-php": "^3.134",
-        "eonx-com/easy-aws-credentials-finder": "^3.1",
-        "eonx-com/easy-random": "^3.1",
+        "eonx-com/easy-aws-credentials-finder": "^3.0.5",
+        "eonx-com/easy-random": "^3.0.5",
         "nette/utils": "^3.1",
         "symplify/package-builder": "^8.3.41",
         "symplify/autowire-array-parameter": "^8.3.41"

@@ -5,12 +5,12 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "eonx-com/easy-logging": "^3.1",
-        "eonx-com/easy-utils": "^3.1",
+        "eonx-com/easy-logging": "^3.0.5",
+        "eonx-com/easy-utils": "^3.0.5",
         "nesbot/carbon": "^2.22"
     },
     "require-dev": {
-        "eonx-com/easy-bugsnag": "^3.1",
+        "eonx-com/easy-bugsnag": "^3.0.5",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "laravel/lumen-framework": "^5.5",
         "symfony/symfony": "^4.4 || ^5.1.5"

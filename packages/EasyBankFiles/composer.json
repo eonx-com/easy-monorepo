@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.2",
         "nette/utils": "^3.1",
-        "eonx-com/easy-error-handler": "^3.1",
+        "eonx-com/easy-error-handler": "^3.0.5",
         "monolog/monolog": "^2.1"
     },
     "require-dev": {

@@ -5,17 +5,17 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "eonx-com/easy-event-dispatcher": "^3.1",
-        "eonx-com/easy-lock": "^3.1",
-        "eonx-com/easy-random": "^3.1",
-        "eonx-com/easy-utils": "^3.1",
+        "eonx-com/easy-event-dispatcher": "^3.0.5",
+        "eonx-com/easy-lock": "^3.0.5",
+        "eonx-com/easy-random": "^3.0.5",
+        "eonx-com/easy-utils": "^3.0.5",
         "nesbot/carbon": "^2.22",
         "nette/utils": "^3.1",
         "symfony/http-client": "^4.4 || ^5.1.5"
     },
     "require-dev": {
         "doctrine/dbal": "^2.6",
-        "eonx-com/easy-pagination": "^3.1",
+        "eonx-com/easy-pagination": "^3.0.5",
         "illuminate/database": "^5.5 || ^6.0",
         "ramsey/uuid": "^3.9",
         "phpunit/phpunit": "^8.4 || ^9.5",
