@@ -23,7 +23,7 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
             Webhook::fromArray([]),
             static function (WebhookResultInterface $webhookResult): void {
                 $headers = $webhookResult->getWebhook()
-                        ->getHttpClientOptions()['headers'] ?? [];
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey(WebhookInterface::HEADER_ID, $headers);
                 self::assertEquals('webhook-id', $headers[WebhookInterface::HEADER_ID]);
@@ -36,7 +36,7 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
             ]),
             static function (WebhookResultInterface $webhookResult): void {
                 $headers = $webhookResult->getWebhook()
-                        ->getHttpClientOptions()['headers'] ?? [];
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey(WebhookInterface::HEADER_ID, $headers);
                 self::assertEquals('my-id', $headers[WebhookInterface::HEADER_ID]);
@@ -49,7 +49,7 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
             ]),
             static function (WebhookResultInterface $webhookResult): void {
                 $headers = $webhookResult->getWebhook()
-                        ->getHttpClientOptions()['headers'] ?? [];
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey('X-My-Id', $headers);
                 self::assertEquals('my-id', $headers['X-My-Id']);
@@ -67,7 +67,8 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ?string $idHeader = null,
         ?StoreInterface $store = null
     ): void {
-        $store = $store ?? new ArrayStoreStub($this->getRandomGenerator(), 'webhook-id'); // Fix webhook id
+        // Fix webhook id
+        $store = $store ?? new ArrayStoreStub($this->getRandomGenerator(), 'webhook-id');
         $middleware = new IdHeaderMiddleware($store, $idHeader);
 
         $test($this->process($middleware, $webhook));
