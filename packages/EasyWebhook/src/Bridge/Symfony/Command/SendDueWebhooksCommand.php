@@ -7,9 +7,9 @@ namespace EonX\EasyWebhook\Bridge\Symfony\Command;
 use Carbon\Carbon;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyWebhook\Exceptions\InvalidDateTimeException;
-use EonX\EasyWebhook\Interfaces\SendAfterAwareWebhookResultStoreInterface;
+use EonX\EasyWebhook\Interfaces\Stores\SendAfterStoreInterface;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -29,11 +29,11 @@ final class SendDueWebhooksCommand extends Command
     private $client;
 
     /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface
+     * @var \EonX\EasyWebhook\Interfaces\Stores\StoreInterface
      */
     private $store;
 
-    public function __construct(WebhookClientInterface $client, WebhookResultStoreInterface $store)
+    public function __construct(WebhookClientInterface $client, StoreInterface $store)
     {
         $this->client = $client;
         $this->store = $store;
@@ -59,11 +59,11 @@ final class SendDueWebhooksCommand extends Command
     {
         $style = new SymfonyStyle($input, $output);
 
-        if ($this->store instanceof SendAfterAwareWebhookResultStoreInterface === false) {
+        if ($this->store instanceof SendAfterStoreInterface === false) {
             $style->error(\sprintf(
                 'Store "%s" does not implement "%s", cannot proceed.',
                 \get_class($this->store),
-                SendAfterAwareWebhookResultStoreInterface::class
+                SendAfterStoreInterface::class
             ));
 
             return 1;
@@ -76,7 +76,7 @@ final class SendDueWebhooksCommand extends Command
         $timezone = $input->getOption('timezone') ? (string)$input->getOption('timezone') : null;
 
         if ($sendAfterString !== null) {
-            $sendAfter = Carbon::createFromFormat(WebhookResultStoreInterface::DATETIME_FORMAT, $sendAfterString);
+            $sendAfter = Carbon::createFromFormat(StoreInterface::DATETIME_FORMAT, $sendAfterString);
 
             if ($sendAfter instanceof Carbon === false) {
                 throw new InvalidDateTimeException(\sprintf('Invalid DateTime provided, "%s"', $sendAfterString));

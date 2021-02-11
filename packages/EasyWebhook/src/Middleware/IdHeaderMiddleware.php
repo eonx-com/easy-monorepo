@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
 
-use EonX\EasyWebhook\Interfaces\IdAwareWebhookResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\StackInterface;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 
 final class IdHeaderMiddleware extends AbstractConfigureOnceMiddleware
 {
@@ -18,11 +17,11 @@ final class IdHeaderMiddleware extends AbstractConfigureOnceMiddleware
     private $idHeader;
 
     /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface
+     * @var \EonX\EasyWebhook\Interfaces\Stores\StoreInterface
      */
     private $store;
 
-    public function __construct(WebhookResultStoreInterface $store, ?string $idHeader = null, ?int $priority = null)
+    public function __construct(StoreInterface $store, ?string $idHeader = null, ?int $priority = null)
     {
         $this->store = $store;
         $this->idHeader = $idHeader ?? WebhookInterface::HEADER_ID;
@@ -32,28 +31,11 @@ final class IdHeaderMiddleware extends AbstractConfigureOnceMiddleware
 
     protected function doProcess(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        $webhookId = $this->getWebhookId($webhook);
-
-        if ($webhookId !== null) {
-            $webhook->id($webhookId);
-            $webhook->header($this->idHeader, $webhook->getId());
-        }
+        $webhook->id($webhook->getId() ?? $this->store->generateWebhookId());
+        $webhook->header($this->idHeader, $webhook->getId());
 
         return $stack
             ->next()
             ->process($webhook, $stack);
-    }
-
-    private function getWebhookId(WebhookInterface $webhook): ?string
-    {
-        if ($webhook->getId() !== null) {
-            return $webhook->getId();
-        }
-
-        if ($this->store instanceof IdAwareWebhookResultStoreInterface) {
-            return $this->store->generateWebhookId();
-        }
-
-        return null;
     }
 }

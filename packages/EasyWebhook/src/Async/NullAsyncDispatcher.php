@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Async;
 
 use EonX\EasyWebhook\Interfaces\AsyncDispatcherInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
+use EonX\EasyWebhook\Interfaces\WebhookInterface;
 
 final class NullAsyncDispatcher implements AsyncDispatcherInterface
 {
-    public function dispatch(WebhookResultInterface $webhookResult): WebhookResultInterface
+    public function dispatch(WebhookInterface $webhook): void
     {
-        return $webhookResult;
+        // No body needed
     }
 }

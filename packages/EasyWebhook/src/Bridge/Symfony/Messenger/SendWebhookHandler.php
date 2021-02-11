@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Symfony\Messenger;
 
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class SendWebhookHandler implements MessageHandlerInterface
@@ -16,11 +16,11 @@ final class SendWebhookHandler implements MessageHandlerInterface
     private $client;
 
     /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface
+     * @var \EonX\EasyWebhook\Interfaces\Stores\StoreInterface
      */
     private $store;
 
-    public function __construct(WebhookClientInterface $client, WebhookResultStoreInterface $store)
+    public function __construct(WebhookClientInterface $client, StoreInterface $store)
     {
         $this->client = $client;
         $this->store = $store;
@@ -28,17 +28,13 @@ final class SendWebhookHandler implements MessageHandlerInterface
 
     public function __invoke(SendWebhookMessage $message): void
     {
-        $result = $this->store->find($message->getWebhookId());
+        $webhook = $this->store->find($message->getWebhookId());
 
-        if ($result === null) {
+        if ($webhook === null) {
             return;
         }
 
         // Once here, webhooks are already configured and should be sent synchronously
-        $result
-            ->getWebhook()
-            ->sendNow(true);
-
-        $message->setResult($this->client->sendWebhook($result->getWebhook()));
+        $message->setResult($this->client->sendWebhook($webhook->sendNow(true)));
     }
 }

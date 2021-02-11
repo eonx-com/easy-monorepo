@@ -11,13 +11,15 @@ use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\HttpClientFactory;
 use EonX\EasyWebhook\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyWebhook\Interfaces\HttpClientFactoryInterface;
+use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use EonX\EasyWebhook\RetryStrategies\MultiplierWebhookRetryStrategy;
 use EonX\EasyWebhook\Stack;
-use EonX\EasyWebhook\Stores\NullWebhookResultStore;
+use EonX\EasyWebhook\Stores\NullResultStore;
+use EonX\EasyWebhook\Stores\NullStore;
 use EonX\EasyWebhook\WebhookClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -57,6 +59,7 @@ return static function (ContainerConfigurator $container): void {
         ->set(WebhookClientInterface::class, WebhookClient::class)
         ->arg('$stack', ref(BridgeConstantsInterface::STACK));
 
-    // Webhook Store (Default)
-    $services->set(WebhookResultStoreInterface::class, NullWebhookResultStore::class);
+    // Stores (Default)
+    $services->set(StoreInterface::class, NullStore::class);
+    $services->set(ResultStoreInterface::class, NullResultStore::class);
 };

@@ -16,9 +16,10 @@ use EonX\EasyWebhook\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyWebhook\Interfaces\HttpClientFactoryInterface;
 use EonX\EasyWebhook\Interfaces\MiddlewareInterface;
 use EonX\EasyWebhook\Interfaces\StackInterface;
+use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use EonX\EasyWebhook\Interfaces\WebhookSignerInterface;
 use EonX\EasyWebhook\Middleware\AsyncMiddleware;
@@ -37,7 +38,8 @@ use EonX\EasyWebhook\Middleware\StoreMiddleware;
 use EonX\EasyWebhook\RetryStrategies\MultiplierWebhookRetryStrategy;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stack;
-use EonX\EasyWebhook\Stores\NullWebhookResultStore;
+use EonX\EasyWebhook\Stores\NullResultStore;
+use EonX\EasyWebhook\Stores\NullStore;
 use EonX\EasyWebhook\WebhookClient;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -97,7 +99,8 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         // AFTER MIDDLEWARE
         $this->app->singleton(ResetStoreMiddleware::class, function (): ResetStoreMiddleware {
             return new ResetStoreMiddleware(
-                $this->app->make(WebhookResultStoreInterface::class),
+                $this->app->make(StoreInterface::class),
+                $this->app->make(ResultStoreInterface::class),
                 MiddlewareInterface::PRIORITY_CORE_AFTER
             );
         });
@@ -112,7 +115,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         $this->app->singleton(AsyncMiddleware::class, function (): AsyncMiddleware {
             return new AsyncMiddleware(
                 $this->app->make(AsyncDispatcherInterface::class),
-                $this->app->make(WebhookResultStoreInterface::class),
+                $this->app->make(StoreInterface::class),
                 \config('easy-webhook.send_async', true),
                 MiddlewareInterface::PRIORITY_CORE_AFTER + 20
             );
@@ -121,6 +124,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         $this->app->singleton(StoreMiddleware::class, function (): StoreMiddleware {
             return new StoreMiddleware(
                 $this->app->make(StoreMiddleware::class),
+                $this->app->make(ResultStoreInterface::class),
                 MiddlewareInterface::PRIORITY_CORE_AFTER + 30
             );
         });
@@ -182,8 +186,9 @@ final class EasyWebhookServiceProvider extends ServiceProvider
             return new WebhookClient($this->app->make(BridgeConstantsInterface::STACK));
         });
 
-        // Webhook Store (Default)
-        $this->app->singleton(WebhookResultStoreInterface::class, NullWebhookResultStore::class);
+        // Stores (Default)
+        $this->app->singleton(StoreInterface::class, NullStore::class);
+        $this->app->singleton(ResultStoreInterface::class, NullResultStore::class);
     }
 
     private function registerEventHeaderServices(): void
@@ -207,7 +212,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
         $this->app->singleton(IdHeaderMiddleware::class, function (): IdHeaderMiddleware {
             return new IdHeaderMiddleware(
-                $this->app->make(WebhookResultStoreInterface::class),
+                $this->app->make(StoreInterface::class),
                 \config('easy-webhook.id.id_header')
             );
         });
