@@ -1,12 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use App\ApiResource\GlobalSafeBin;
+$someClass = new \stdClass();
 
-//      my single comment!
-$factoryMuffin->define(GlobalSafeBin::class)->setDefinitions([
-    'bin' => $factoryMuffin->faker()->unique()->randomNumber(6, true),
-]);
+// my single comment.
+$someClass->test = 'test';
 
 ?>
 
@@ -14,11 +12,9 @@ $factoryMuffin->define(GlobalSafeBin::class)->setDefinitions([
 <?php
 declare(strict_types=1);
 
-use App\ApiResource\GlobalSafeBin;
+$someClass = new \stdClass();
 
 // My single comment
-$factoryMuffin->define(GlobalSafeBin::class)->setDefinitions([
-    'bin' => $factoryMuffin->faker()->unique()->randomNumber(6, true),
-]);
+$someClass->test = 'test';
 
 ?>
