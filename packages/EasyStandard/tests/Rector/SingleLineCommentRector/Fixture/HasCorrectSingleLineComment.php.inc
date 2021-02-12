@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use App\ApiResource\GlobalSafeBin;
+$factoryMuffin = new \stdClass();
 
 // My single comment
-$factoryMuffin->define(GlobalSafeBin::class)->setDefinitions([
+$factoryMuffin->define(\stdClass::class)->setDefinitions([
     'bin' => $factoryMuffin->faker()->unique()->randomNumber(6, true),
 ]);
