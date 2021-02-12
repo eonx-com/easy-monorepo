@@ -79,7 +79,6 @@ class ClassHasInCorrectSingleLineComments
                         // Do nothing
                         continue;
                     } // 2-nd end
-
                     $test3['123'] = '123';
                 }
             } // First end
