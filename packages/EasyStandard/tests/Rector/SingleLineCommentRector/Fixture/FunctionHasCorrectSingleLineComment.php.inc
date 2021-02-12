@@ -2,6 +2,6 @@
 declare(strict_types=1);
 
 // My single comment
-function test(): string {
+function functionWithCorrectSingleComment(): string {
     return '';
 }

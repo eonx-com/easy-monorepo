@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 //      my single comment.
-function test(): string {
+function functionWithInCorrectSingleComment(): string {
     return '';
 }
 
@@ -13,7 +13,7 @@ function test(): string {
 declare(strict_types=1);
 
 // My single comment
-function test(): string {
+function functionWithInCorrectSingleComment(): string {
     return '';
 }
 
