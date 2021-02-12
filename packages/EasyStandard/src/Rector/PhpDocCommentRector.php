@@ -26,7 +26,7 @@ final class PhpDocCommentRector extends AbstractRector
     /**
      * @var string[]
      */
-    public $allowedEnd = ['.', ',', '?', ':', ')', '(', '}', '{', ']', '['];
+    public $allowedEnd = ['.', ',', '?', '!', ':', ')', '(', '}', '{', ']', '['];
 
     /**
      * @var bool
