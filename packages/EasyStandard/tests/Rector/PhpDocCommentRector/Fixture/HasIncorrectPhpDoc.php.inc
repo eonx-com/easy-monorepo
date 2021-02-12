@@ -98,7 +98,7 @@ namespace EonX\EasyStandard\Tests\Rector\PhpDocCommentRector\Fixture;
  *
  *   Another comment.
  */
-class ClassHasInCorrectPHPDoсTest
+class ClassHasInCorrectPhpDoсTest
 {
     /**
      * My super const.

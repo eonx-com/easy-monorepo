@@ -66,7 +66,7 @@ PHP
 
     public function getNodeTypes(): array
     {
-        return [\PhpParser\Node::class];
+        return [Node::class];
     }
 
     public function refactor(Node $node): ?Node
