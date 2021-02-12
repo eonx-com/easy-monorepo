@@ -6,12 +6,6 @@ namespace EonX\EasyStandard\Rector;
 
 use Nette\Utils\Strings;
 use PhpParser\Node;
-use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\ArrayItem;
-use PhpParser\Node\Expr\FuncCall;
-use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\ClassLike;
-use PhpParser\Node\Stmt\Foreach_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareGenericTagValueNode;
@@ -72,15 +66,14 @@ PHP
 
     public function getNodeTypes(): array
     {
-        return [Class_::class];
+        return [\PhpParser\Node::class];
     }
 
-    /**
-     * @param Class_ $node
-     */
     public function refactor(Node $node): ?Node
     {
-        $this->walkNodeRecursive($node);
+        if ($node->hasAttribute(AttributeKey::PHP_DOC_INFO)) {
+            $this->checkPhpDoc($node->getAttribute(AttributeKey::PHP_DOC_INFO));
+        }
 
         return $node;
     }
@@ -188,7 +181,9 @@ PHP
         $firstKey = array_key_first($text);
         $lastKey = array_key_last($text);
 
-        \array_walk($text, 'trim');
+        foreach ($text as $index => $value) {
+            $text[$index] = Strings::trim($value);
+        }
 
         $text[$firstKey] = Strings::firstUpper($text[$firstKey]);
 
@@ -221,47 +216,5 @@ PHP
         $lastCharacter = Strings::substring($docLineContent, -1);
 
         return \in_array($lastCharacter, $this->allowedEnd, true);
-    }
-
-    private function walkNodeRecursive(Node $node): void
-    {
-        if ($node->hasAttribute(AttributeKey::PHP_DOC_INFO)) {
-            $this->checkPhpDoc($node->getAttribute(AttributeKey::PHP_DOC_INFO));
-        }
-
-        /** @var ClassLike $node */
-        if (\in_array('stmts', $node->getSubNodeNames(), true) && $node->stmts !== null) {
-            foreach ($node->stmts as $stmt) {
-                $this->walkNodeRecursive($stmt);
-            }
-        }
-
-        /** @var Foreach_ $node */
-        if (\in_array('expr', $node->getSubNodeNames(), true) && $node->expr !== null) {
-            $this->walkNodeRecursive($node->expr);
-        }
-
-        /** @var FuncCall $node */
-        if ($node instanceof FuncCall) {
-            foreach ($node->args as $arg) {
-                $this->walkNodeRecursive($arg->value);
-            }
-        }
-
-        /** @var Array_ $node */
-        if ($node instanceof Array_ && $node->items !== null) {
-            /** @var ArrayItem|null $item */
-            foreach ($node->items as $item) {
-                if ($item === null) {
-                    continue;
-                }
-
-                if ($item->key !== null) {
-                    $this->walkNodeRecursive($item->key);
-                }
-
-                $this->walkNodeRecursive($item->value);
-            }
-        }
     }
 }
