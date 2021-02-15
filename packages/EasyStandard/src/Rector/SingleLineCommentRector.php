@@ -19,12 +19,12 @@ final class SingleLineCommentRector extends AbstractRector
     /**
      * @var string[]
      */
-    public array $disallowedEnd = ['...', '.', ',', '?', ':', '!'];
+    public $disallowedEnd = ['...', '.', ',', '?', ':', '!'];
 
     /**
      * @var string[]
      */
-    public array $shouldBeStartFromLowerCase = [
+    public $shouldBeStartFromLowerCase = [
         'phpcs:'
     ];
 
