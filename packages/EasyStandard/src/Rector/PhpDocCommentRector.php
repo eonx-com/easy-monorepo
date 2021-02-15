@@ -28,6 +28,11 @@ final class PhpDocCommentRector extends AbstractRector
      */
     public $allowedEnd = ['.', ',', '?', '!', ':', ')', '(', '}', '{', ']', '['];
 
+    public $allowedStartAnnotation = [
+        '@',
+        'ApiFilter',
+    ];
+
     /**
      * @var bool
      */
@@ -83,7 +88,7 @@ PHP
         /** @var GenericTagValueNode $value */
         $value = $attributeAwarePhpDocTagNode->value;
 
-        if (Strings::startsWith($attributeAwarePhpDocTagNode->name, '@')) {
+        if ($this->isLineStartsWithAllowedAnnotation($attributeAwarePhpDocTagNode->name)) {
             $this->isMultilineTagNode = true;
 
             if (Strings::endsWith($value->value, ')')) {
@@ -171,7 +176,13 @@ PHP
 
     private function checkTextNode(AttributeAwarePhpDocTextNode $attributeAwarePhpDocTextNode): void
     {
-        if ($attributeAwarePhpDocTextNode->text === '') {
+        if ($this->isLineStartsWithAllowedAnnotation($attributeAwarePhpDocTextNode->text)) {
+            $this->isMultilineTagNode = true;
+
+            return;
+        }
+
+        if ($attributeAwarePhpDocTextNode->text === '' || Strings::endsWith($attributeAwarePhpDocTextNode->text, ')')) {
             $this->isMultilineTagNode = false;
 
             return;
@@ -197,6 +208,10 @@ PHP
 
     private function checkVarTagValueNode(AttributeAwarePhpDocTagNode $attributeAwarePhpDocTagNode): void
     {
+        if ($this->isMultilineTagNode) {
+            return;
+        }
+
         /** @var AttributeAwareVarTagValueNode $varTagValueNode */
         $varTagValueNode = $attributeAwarePhpDocTagNode->value;
 
@@ -216,5 +231,16 @@ PHP
         $lastCharacter = Strings::substring($docLineContent, -1);
 
         return \in_array($lastCharacter, $this->allowedEnd, true);
+    }
+
+    private function isLineStartsWithAllowedAnnotation(string $docLineContent): bool
+    {
+        foreach ($this->allowedStartAnnotation as $value) {
+            if (Strings::startsWith($docLineContent, $value)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

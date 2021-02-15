@@ -91,7 +91,7 @@ PHP
 
             $commentText = Strings::trim(Strings::replace($oldCommentText, '#^\/\/#', ''));
 
-            if ($isMultilineComment === false) {
+            if ($isMultilineComment === false && $this->isShouldBeStartFromLowerCase($commentText) === false) {
                 $commentText = Strings::firstUpper($commentText);
             }
 
@@ -157,5 +157,16 @@ PHP
         }
 
         return $comment;
+    }
+
+    private function isShouldBeStartFromLowerCase(string $docLineContent): bool
+    {
+        foreach ($this->shouldBeStartFromLowerCase as $value) {
+            if (Strings::startsWith($docLineContent, $value)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
