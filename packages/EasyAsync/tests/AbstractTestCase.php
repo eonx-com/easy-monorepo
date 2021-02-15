@@ -4,11 +4,24 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests;
 
+use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\RandomGenerator;
+use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractTestCase extends TestCase
 {
+    /**
+     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
+     */
+    private $random;
+
+    protected function getRandomGenerator(): RandomGeneratorInterface
+    {
+        return $this->random = $this->random ?? (new RandomGenerator())->setUuidV4Generator(new RamseyUuidV4Generator());
+    }
+
     /**
      * @param mixed $target
      */
