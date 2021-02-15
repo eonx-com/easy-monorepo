@@ -44,7 +44,7 @@ final class PhpDocCommentRector extends AbstractRector
                 new CodeSample(
                     <<<'PHP'
 /**
- * Some class
+ * some class
  */
 class SomeClass
 {

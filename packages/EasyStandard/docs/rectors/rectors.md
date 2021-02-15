@@ -110,7 +110,31 @@ public function someMethod(): array
 }
 ```
 
-##### [\EonX\EasyStandard\Rector\RestoreDefaultNullToNullableTypeParameterRector][5]
+##### [\EonX\EasyStandard\Rector\PhpDocCommentRector][5]
+
+Capitalizes the first letter of the comment, adds a period at the end of the sentence.
+
+```php
+// before
+/**
+ * some class
+ */
+class SomeClass()
+{
+}
+```
+
+```php
+//after
+/**
+ * Some class.
+*/
+class SomeClass()
+{
+}
+```
+
+##### [\EonX\EasyStandard\Rector\RestoreDefaultNullToNullableTypeParameterRector][6]
 
 Adds default null value to function arguments with PHP 7.1 nullable type.
 
@@ -136,7 +160,30 @@ class SomeClass
 }
 ```
 
-##### [\EonX\EasyStandard\Rector\StrictInArrayRector][6]
+##### [\EonX\EasyStandard\Rector\SingleLineCommentRector][7]
+
+Changes the first letter of the comment to uppercase, removes a number of characters at the end of the sentence -
+`'.', ',', '?', ':', '!'`.
+
+```php
+// before
+
+// some class.
+class SomeClass
+{
+}
+```
+
+```php
+// after
+
+// Some class
+class SomeClass
+{
+}
+```
+
+##### [\EonX\EasyStandard\Rector\StrictInArrayRector][8]
 
 Makes in_array calls strict.
 
@@ -150,7 +197,7 @@ Makes in_array calls strict.
 \in_array($value, $items, true);
 ```
 
-##### [\EonX\EasyStandard\Rector\UselessSingleAnnotationRector][7]
+##### [\EonX\EasyStandard\Rector\UselessSingleAnnotationRector][9]
 
 Removes PHPDoc completely if it contains only useless single annotation.
 
@@ -179,8 +226,12 @@ public function someMethod(): array
 
 [4]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/InheritDocRector.php
 
-[5]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/RestoreDefaultNullToNullableTypeParameterRector.php
+[5]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/PhpDocCommentRector.php
 
-[6]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/StrictInArrayRector.php
+[6]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/RestoreDefaultNullToNullableTypeParameterRector.php
 
-[7]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/UselessSingleAnnotationRector.php
+[7]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/SingleLineCommentRector.php
+
+[8]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/StrictInArrayRector.php
+
+[9]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/UselessSingleAnnotationRector.php
