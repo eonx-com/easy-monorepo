@@ -19,7 +19,14 @@ final class SingleLineCommentRector extends AbstractRector
     /**
      * @var string[]
      */
-    public $disallowedEnd = ['.', ',', '?', ':', '!'];
+    public array $disallowedEnd = ['...', '.', ',', '?', ':', '!'];
+
+    /**
+     * @var string[]
+     */
+    public array $shouldBeStartFromLowerCase = [
+        'phpcs:'
+    ];
 
     /**
      * From this method documentation is generated.
@@ -73,33 +80,46 @@ PHP
     private function checkComments(array $comments): array
     {
         $newComments = [];
+        $isMultilineComment = false;
 
-        foreach ($comments as $comment) {
+        foreach ($comments as $index => $comment) {
             $oldCommentText = $comment->getText();
-            if (Strings::startsWith($oldCommentText, '/**')) {
+            if (Strings::startsWith($oldCommentText, '/*')) {
                 $newComments[] = $comment;
                 continue;
             }
 
-            $commentText = Strings::firstUpper(Strings::trim(Strings::replace($oldCommentText, '#\/\/#', '')));
+            $commentText = Strings::trim(Strings::replace($oldCommentText, '#^\/\/#', ''));
 
-            if ($this->isLineEndingWithDisallowed($commentText)) {
-                $commentText = Strings::substring($commentText, 0, -1);
+            if ($isMultilineComment === false) {
+                $commentText = Strings::firstUpper($commentText);
             }
 
-            $commentText = '// ' . $commentText;
-
-            if ($oldCommentText !== $commentText) {
-                $comment = new Comment(
-                    $commentText,
-                    $comment->getStartLine(),
-                    $comment->getStartFilePos(),
-                    $comment->getStartTokenPos(),
-                    $comment->getEndLine(),
-                    $comment->getEndFilePos(),
-                    $comment->getEndTokenPos()
-                );
+            if (isset($comments[$index + 1])) {
+                $nextCommentText = $comments[$index + 1];
+                if ($nextCommentText !== '') {
+                    $isMultilineComment = true;
+                }
             }
+
+            if (isset($comments[$index + 1]) === false) {
+                $isMultilineComment = false;
+            }
+
+            if ($isMultilineComment) {
+                $comment = $this->getNewCommentIfChanged($comment, '// ' . $commentText);
+                $newComments[] = $comment;
+                continue;
+            }
+
+            $disallowEnding = $this->checkLineEndingDisallowed($commentText);
+
+            if ($disallowEnding !== null) {
+                $pattern = '#' . \preg_quote($disallowEnding, null) . '$#';
+                $commentText = Strings::replace($commentText, $pattern, '');
+            }
+
+            $comment = $this->getNewCommentIfChanged($comment, '// ' . $commentText);
 
             $newComments[] = $comment;
         }
@@ -107,10 +127,35 @@ PHP
         return $newComments;
     }
 
-    private function isLineEndingWithDisallowed(string $docLineContent): bool
+    private function checkLineEndingDisallowed(string $docLineContent): ?string
     {
-        $lastCharacter = Strings::substring($docLineContent, -1);
+        $result = null;
 
-        return \in_array($lastCharacter, $this->disallowedEnd, true);
+        foreach ($this->disallowedEnd as $value) {
+            $isLineEndingWithDisallowed = Strings::endsWith($docLineContent, $value);
+            if ($isLineEndingWithDisallowed) {
+                $result = $value;
+                break;
+            }
+        }
+
+        return $result;
+    }
+
+    private function getNewCommentIfChanged(Comment $comment, string $commentText): Comment
+    {
+        if ($comment->getText() !== $commentText) {
+            $comment = new Comment(
+                $commentText,
+                $comment->getStartLine(),
+                $comment->getStartFilePos(),
+                $comment->getStartTokenPos(),
+                $comment->getEndLine(),
+                $comment->getEndFilePos(),
+                $comment->getEndTokenPos()
+            );
+        }
+
+        return $comment;
     }
 }
