@@ -11,7 +11,7 @@ namespace EonX\EasyStandard\Tests\Rector\PhpDocCommentRector\Fixture;
  *
  *   another comment
  */
-class ClassHasInCorrectPhpDoсTest
+class ClassHasIncorrectPhpDoc
 {
     /**
      * My super const
@@ -98,7 +98,7 @@ namespace EonX\EasyStandard\Tests\Rector\PhpDocCommentRector\Fixture;
  *
  *   Another comment.
  */
-class ClassHasInCorrectPhpDoсTest
+class ClassHasIncorrectPhpDoc
 {
     /**
      * My super const.

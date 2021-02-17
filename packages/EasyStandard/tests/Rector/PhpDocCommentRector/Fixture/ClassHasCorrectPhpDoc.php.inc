@@ -32,7 +32,7 @@ namespace EonX\EasyStandard\Tests\Rector\PhpDocCommentRector\Fixture;
  *
  * @covers SomeClass some comment
  */
-class ClassHasCorrectPhpDoсTest
+class ClassHasCorrectPhpDoc
 {
     /** Single line PHPDoc. */
     private $trait;
