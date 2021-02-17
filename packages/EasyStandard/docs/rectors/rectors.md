@@ -5,14 +5,14 @@
 Adds `@covers` annotation for test classes.
 
 ```php
-// before
+// Before
 class SomeServiceTest extends \PHPUnit\Framework\TestCase
 {
 }
 ```
 
 ```php
-// after
+// After
 /**
  * @covers \SomeService
  */
@@ -31,7 +31,7 @@ class SomeServiceTest extends \PHPUnit\Framework\TestCase
 Adds `@see` annotation for data providers.
 
 ```php
-// before
+// Before
 /**
  * Provides some data.
  *
@@ -43,7 +43,7 @@ public function provideSomeData(): array
 ```
 
 ```php
-// after
+// After
 /**
  * Provides some data.
  *
@@ -61,7 +61,7 @@ public function provideSomeData(): array
 Makes bool conditions prettier.
 
 ```php
-// before
+// Before
 final class SomeController
 {
     public function run($items)
@@ -74,7 +74,7 @@ final class SomeController
 ```
 
 ```php
-// after
+// After
 final class SomeController
 {
     public function run($items)
@@ -91,7 +91,7 @@ final class SomeController
 Replaces `{@inheritdoc}` annotation with `{@inheritDoc}`.
 
 ```php
-// before
+// Before
 /**
  * {@inheritdoc}
  */
@@ -101,7 +101,7 @@ public function someMethod(): array
 ```
 
 ```php
-//after
+// After
 /**
  * {@inheritDoc}
  */
@@ -112,10 +112,10 @@ public function someMethod(): array
 
 ##### [\EonX\EasyStandard\Rector\PhpDocCommentRector][5]
 
-Capitalizes the first letter of the comment, adds a period at the end of the sentence.
+Applies the company standards to PHPDoc descriptions.
 
 ```php
-// before
+// Before
 /**
  * some class
  */
@@ -125,10 +125,10 @@ class SomeClass()
 ```
 
 ```php
-//after
+// After
 /**
  * Some class.
-*/
+ */
 class SomeClass()
 {
 }
@@ -139,7 +139,7 @@ class SomeClass()
 Adds default null value to function arguments with PHP 7.1 nullable type.
 
 ```php
-// before
+// Before
 class SomeClass
 {
     public function __construct(?string $value)
@@ -150,7 +150,7 @@ class SomeClass
 ```
 
 ```php
-// after
+// After
 class SomeClass
 {
     public function __construct(?string $value = null)
@@ -162,11 +162,10 @@ class SomeClass
 
 ##### [\EonX\EasyStandard\Rector\SingleLineCommentRector][7]
 
-Changes the first letter of the comment to uppercase, removes a number of characters at the end of the sentence -
-`'.', ',', '?', ':', '!'`.
+Applies the company standards to single-line comments.
 
 ```php
-// before
+// Before
 
 // some class.
 class SomeClass
@@ -175,7 +174,7 @@ class SomeClass
 ```
 
 ```php
-// after
+// After
 
 // Some class
 class SomeClass
@@ -188,12 +187,12 @@ class SomeClass
 Makes in_array calls strict.
 
 ```php
-// before
+// Before
 \in_array($value, $items);
 ```
 
 ```php
-// after
+// After
 \in_array($value, $items, true);
 ```
 
@@ -202,7 +201,7 @@ Makes in_array calls strict.
 Removes PHPDoc completely if it contains only useless single annotation.
 
 ```php
-// before
+// Before
 /**
  * {@inheritDoc}
  */
@@ -212,7 +211,7 @@ public function someMethod(): array
 ```
 
 ```php
-// after
+// After
 public function someMethod(): array
 {
 }

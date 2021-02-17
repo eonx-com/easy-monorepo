@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Rector\SingleLineCommentRector\Fixture;
 
-class ClassHasInCorrectSingleLineComments
+class ClassHasIncorrectSingleLineComments
 {
     private const TET_CONST = 'const';
 
@@ -51,7 +51,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Rector\SingleLineCommentRector\Fixture;
 
-class ClassHasInCorrectSingleLineComments
+class ClassHasIncorrectSingleLineComments
 {
     private const TET_CONST = 'const';
 

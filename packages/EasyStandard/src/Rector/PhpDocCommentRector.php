@@ -59,7 +59,7 @@ PHP
                     <<<'PHP'
 /**
  * Some class.
-*/
+ */
 class SomeClass
 {
 }
