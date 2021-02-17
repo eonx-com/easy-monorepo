@@ -30,7 +30,6 @@ final class PhpDocCommentRector extends AbstractRector
 
     public $allowedStartAnnotation = [
         '@',
-        'ApiFilter',
     ];
 
     /**
@@ -77,6 +76,7 @@ PHP
     public function refactor(Node $node): ?Node
     {
         if ($node->hasAttribute(AttributeKey::PHP_DOC_INFO)) {
+            $this->isMultilineTagNode = false;
             $this->checkPhpDoc($node->getAttribute(AttributeKey::PHP_DOC_INFO));
         }
 
@@ -89,16 +89,24 @@ PHP
         $value = $attributeAwarePhpDocTagNode->value;
 
         if ($this->isLineStartsWithAllowedAnnotation($attributeAwarePhpDocTagNode->name)) {
-            $this->isMultilineTagNode = true;
+            if ($value->value === '') {
+                return;
+            }
 
-            if (Strings::endsWith($value->value, ')')) {
+            $checkLastLetter = Strings::endsWith($value->value, ')');
+
+            if ($checkLastLetter) {
                 $this->isMultilineTagNode = false;
             }
 
-            $firstValueLetter = Strings::substring($value->value, 0, 1);
+            if ($checkLastLetter === false) {
+                $this->isMultilineTagNode = true;
+            }
 
-            if (\in_array($firstValueLetter, ['\\', '('], true) === false) {
-                $attributeAwarePhpDocTagNode->name .= ' ';
+            $checkFirstLetter = Strings::startsWith($value->value, '(') || Strings::startsWith($value->value, '\\');
+
+            if ($checkFirstLetter && $checkLastLetter) {
+                return;
             }
 
             $valueAsArray = (array)\explode(')', $value->value);
@@ -110,7 +118,17 @@ PHP
 
                 $valueAsArray[1] = Strings::firstLower(Strings::trim($valueAsArray[1]));
 
-                $value->value = implode(') ', $valueAsArray);
+                $newValue = implode(') ', $valueAsArray);
+
+                if ($value->value !== $newValue) {
+                    $firstValueLetter = Strings::substring($value->value, 0, 1);
+
+                    if (\in_array($firstValueLetter, ['\\', '('], true) === false) {
+                        $attributeAwarePhpDocTagNode->name .= ' ';
+                    }
+
+                    $value->value = $newValue;
+                }
             }
 
             return;
@@ -132,16 +150,23 @@ PHP
         $children = $phpDocInfo->getPhpDocNode()
             ->children;
 
-        foreach ($children as $phpDocChildNode) {
+        foreach ($children as $index => $phpDocChildNode) {
             /** @var PhpDocChildNode $phpDocChildNode */
             $content = (string)$phpDocChildNode;
             if (Strings::match($content, '#inheritdoc#i')) {
                 continue;
             }
 
+            if (isset($children[$index + 1])
+                && $children[$index + 1] instanceof AttributeAwarePhpDocTextNode
+                && $children[$index + 1]->text !== ''
+            ) {
+                $this->isMultilineTagNode = true;
+            }
+
             if ($phpDocChildNode instanceof AttributeAwarePhpDocTextNode) {
                 if ($this->isMultilineTagNode) {
-                    if (Strings::endsWith($phpDocChildNode->text, ')')) {
+                    if ($phpDocChildNode->text === '' || Strings::endsWith($phpDocChildNode->text, ')')) {
                         $this->isMultilineTagNode = false;
                     }
 
@@ -154,6 +179,13 @@ PHP
             }
 
             if ($phpDocChildNode instanceof AttributeAwarePhpDocTagNode) {
+                if (isset($children[$index + 1])
+                    && $children[$index + 1] instanceof AttributeAwareGenericTagValueNode
+                    && Strings::startsWith($children[$index + 1]->name, '@')
+                ) {
+                    $this->isMultilineTagNode = false;
+                }
+
                 $this->checkTagNode($phpDocChildNode);
 
                 continue;
