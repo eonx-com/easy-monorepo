@@ -218,19 +218,11 @@ public function someMethod(): array
 ```
 
 [1]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/AddCoversAnnotationRector.php
-
 [2]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/AddSeeAnnotationRector.php
-
 [3]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/ExplicitBoolCompareRector.php
-
 [4]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/InheritDocRector.php
-
 [5]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/PhpDocCommentRector.php
-
 [6]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/RestoreDefaultNullToNullableTypeParameterRector.php
-
 [7]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/SingleLineCommentRector.php
-
 [8]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/StrictInArrayRector.php
-
 [9]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/UselessSingleAnnotationRector.php
