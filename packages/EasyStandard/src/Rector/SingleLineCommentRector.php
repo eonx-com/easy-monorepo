@@ -24,7 +24,7 @@ final class SingleLineCommentRector extends AbstractRector
     /**
      * @var string[]
      */
-    public $shouldBeStartFromLowerCase = [
+    public $ignoredPatterns = [
         'phpcs:'
     ];
 
@@ -91,7 +91,7 @@ PHP
 
             $commentText = Strings::trim(Strings::replace($oldCommentText, '#^\/\/#', ''));
 
-            if ($isMultilineComment === false && $this->isShouldBeStartFromLowerCase($commentText) === false) {
+            if ($isMultilineComment === false && $this->isCommentIgnored($commentText) === false) {
                 $commentText = Strings::firstUpper($commentText);
             }
 
@@ -159,9 +159,9 @@ PHP
         return $comment;
     }
 
-    private function isShouldBeStartFromLowerCase(string $docLineContent): bool
+    private function isCommentIgnored(string $docLineContent): bool
     {
-        foreach ($this->shouldBeStartFromLowerCase as $value) {
+        foreach ($this->ignoredPatterns as $value) {
             if (Strings::startsWith($docLineContent, $value)) {
                 return true;
             }
