@@ -53,7 +53,7 @@ final class BatchItem implements BatchItemInterface
      */
     private $throwable;
 
-    public function __construct(string $batchId, string $targetClass, ?string $id = null)
+    public function __construct(string $batchId, string $targetClass, string $id)
     {
         $this->batchId = $batchId;
         $this->targetClass = $targetClass;
@@ -70,7 +70,7 @@ final class BatchItem implements BatchItemInterface
         return $this->finishedAt;
     }
 
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -158,5 +158,23 @@ final class BatchItem implements BatchItemInterface
         $this->throwable = $throwable;
 
         return $this;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'batch_id' => $this->getBatchId(),
+            'target_class' => $this->getTargetClass(),
+            'started_at' => $this->getStartedAt(),
+            'finished_at' => $this->getFinishedAt(),
+            'status' => $this->getStatus(),
+            'reason' => $this->getReason(),
+            'reason_params' => $this->getReasonParams(),
+            'throwable' => $this->getThrowable(),
+        ];
     }
 }

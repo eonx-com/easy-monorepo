@@ -14,6 +14,11 @@ final class Batch implements BatchInterface
     private $failed;
 
     /**
+     * @var \DateTimeInterface
+     */
+    private $finishedAt;
+
+    /**
      * @var string
      */
     private $id;
@@ -27,6 +32,11 @@ final class Batch implements BatchInterface
      * @var int
      */
     private $processed;
+
+    /**
+     * @var \DateTimeInterface
+     */
+    private $startedAt;
 
     /**
      * @var string
@@ -99,6 +109,11 @@ final class Batch implements BatchInterface
         return $this->total;
     }
 
+    public function getFinishedAt(): ?\DateTimeInterface
+    {
+        return $this->finishedAt;
+    }
+
     public function getId(): ?string
     {
         return $this->id;
@@ -110,6 +125,11 @@ final class Batch implements BatchInterface
     public function getItems(): iterable
     {
         return $this->itemsProvider !== null ? \call_user_func($this->itemsProvider) : [];
+    }
+
+    public function getStartedAt(): ?\DateTimeInterface
+    {
+        return $this->startedAt;
     }
 
     public function getStatus(): string
@@ -125,6 +145,13 @@ final class Batch implements BatchInterface
     public function setFailed(int $failed): BatchInterface
     {
         $this->failed = $failed;
+
+        return $this;
+    }
+
+    public function setFinishedAt(\DateTimeInterface $finishedAt): BatchInterface
+    {
+        $this->finishedAt = $finishedAt;
 
         return $this;
     }
@@ -160,6 +187,13 @@ final class Batch implements BatchInterface
         return $this;
     }
 
+    public function setStartedAt(\DateTimeInterface $startedAt): BatchInterface
+    {
+        $this->startedAt = $startedAt;
+
+        return $this;
+    }
+
     public function setStatus(string $status): BatchInterface
     {
         $this->status = $status;
@@ -186,6 +220,24 @@ final class Batch implements BatchInterface
         $this->total = $total;
 
         return $this;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'failed' => $this->countFailed(),
+            'finished_at' => $this->getFinishedAt(),
+            'processed' => $this->countProcessed(),
+            'succeeded' => $this->countSucceeded(),
+            'total' => $this->countTotal(),
+            'started_at' => $this->getStartedAt(),
+            'status' => $this->getStatus(),
+            'throwable' => $this->getThrowable(),
+        ];
     }
 
     /**

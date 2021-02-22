@@ -25,7 +25,7 @@ interface BatchItemInterface
 
     public function getFinishedAt(): ?\DateTimeInterface;
 
-    public function getId(): ?string;
+    public function getId(): string;
 
     public function getReason(): ?string;
 
@@ -58,4 +58,9 @@ interface BatchItemInterface
     public function setStatus(string $status): self;
 
     public function setThrowable(\Throwable $throwable): self;
+
+    /**
+     * @return mixed[]
+     */
+    public function toArray(): array;
 }

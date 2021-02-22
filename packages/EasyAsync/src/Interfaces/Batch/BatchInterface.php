@@ -39,6 +39,8 @@ interface BatchInterface
 
     public function countTotal(): int;
 
+    public function getFinishedAt(): ?\DateTimeInterface;
+
     public function getId(): ?string;
 
     /**
@@ -46,11 +48,15 @@ interface BatchInterface
      */
     public function getItems(): iterable;
 
+    public function getStartedAt(): ?\DateTimeInterface;
+
     public function getStatus(): string;
 
     public function getThrowable(): ?\Throwable;
 
     public function setFailed(int $failed): self;
+
+    public function setFinishedAt(\DateTimeInterface $finishedAt): self;
 
     public function setId(string $id): self;
 
@@ -63,6 +69,8 @@ interface BatchInterface
 
     public function setProcessed(int $processed): self;
 
+    public function setStartedAt(\DateTimeInterface $startedAt): self;
+
     public function setStatus(string $status): self;
 
     public function setSucceeded(int $succeeded): self;
@@ -70,4 +78,9 @@ interface BatchInterface
     public function setThrowable(\Throwable $throwable): self;
 
     public function setTotal(int $total): self;
+
+    /**
+     * @return mixed[]
+     */
+    public function toArray(): array;
 }
