@@ -172,7 +172,7 @@ PHP
             if ($value instanceof AttributeAwareGenericTagValueNode) {
                 $containsEol = Strings::contains($value->value, \PHP_EOL);
                 $lastLetter = Strings::substring($value->value, -1, 1);
-                if ($containsEol || \in_array($lastLetter, ['(', '{'])) {
+                if ($containsEol || \in_array($lastLetter, ['(', '{'], true)) {
                     $this->isMultilineTagNode = true;
                 }
             }
@@ -199,7 +199,6 @@ PHP
             $this->checkIsMultilineNode($children, $index);
             $this->checkPhpDocChildNode($phpDocChildNode);
         }
-
     }
 
     private function checkPhpDocChildNode(PhpDocChildNode $phpDocChildNode): void

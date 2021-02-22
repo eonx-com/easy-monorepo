@@ -24,9 +24,7 @@ final class SingleLineCommentRector extends AbstractRector
     /**
      * @var string[]
      */
-    public $ignoredPatterns = [
-        '#^phpcs:#'
-    ];
+    public $ignoredPatterns = ['#^phpcs:#'];
 
     /**
      * From this method documentation is generated.
