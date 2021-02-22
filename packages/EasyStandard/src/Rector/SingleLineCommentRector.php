@@ -25,7 +25,7 @@ final class SingleLineCommentRector extends AbstractRector
      * @var string[]
      */
     public $ignoredPatterns = [
-        'phpcs:'
+        '#^phpcs:#'
     ];
 
     /**
@@ -162,7 +162,7 @@ PHP
     private function isCommentIgnored(string $docLineContent): bool
     {
         foreach ($this->ignoredPatterns as $value) {
-            if (Strings::startsWith($docLineContent, $value)) {
+            if (Strings::match($docLineContent, $value)) {
                 return true;
             }
         }
