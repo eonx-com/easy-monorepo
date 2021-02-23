@@ -17,9 +17,16 @@ interface BatchItemInterface
     public const STATUS_FAILED = 'failed';
 
     /**
+     * @return string
+     */
+    public const STATUS_PENDING = 'pending';
+
+    /**
      * @var string
      */
     public const STATUS_SUCCESS = 'success';
+
+    public function getAttempts(): int;
 
     public function getBatchId(): string;
 
@@ -41,6 +48,8 @@ interface BatchItemInterface
     public function getTargetClass(): string;
 
     public function getThrowable(): ?\Throwable;
+
+    public function setAttempts(int $attempts): self;
 
     public function setFinishedAt(\DateTimeInterface $finishedAt): self;
 

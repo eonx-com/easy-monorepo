@@ -74,6 +74,7 @@ final class BatchItemProcessor implements BatchItemProcessorInterface
         }
 
         try {
+            $batchItem->setAttempts($batchItem->getAttempts() + 1);
             $batchItem->setStartedAt(Carbon::now('UTC'));
 
             $result = $func();

@@ -9,6 +9,11 @@ use EonX\EasyAsync\Interfaces\Batch\BatchItemInterface;
 final class BatchItem implements BatchItemInterface
 {
     /**
+     * @var int
+     */
+    private $attempts;
+
+    /**
      * @var string
      */
     private $batchId;
@@ -55,9 +60,16 @@ final class BatchItem implements BatchItemInterface
 
     public function __construct(string $batchId, string $targetClass, string $id)
     {
+        $this->attempts = 0;
         $this->batchId = $batchId;
         $this->targetClass = $targetClass;
         $this->id = $id;
+        $this->status = self::STATUS_PENDING;
+    }
+
+    public function getAttempts(): int
+    {
+        return $this->attempts;
     }
 
     public function getBatchId(): string
@@ -106,6 +118,13 @@ final class BatchItem implements BatchItemInterface
     public function getThrowable(): ?\Throwable
     {
         return $this->throwable;
+    }
+
+    public function setAttempts(int $attempts): BatchItemInterface
+    {
+        $this->attempts = $attempts;
+
+        return $this;
     }
 
     public function setFinishedAt(\DateTimeInterface $finishedAt): BatchItemInterface
@@ -166,6 +185,7 @@ final class BatchItem implements BatchItemInterface
     public function toArray(): array
     {
         return [
+            'attempts' => $this->getAttempts(),
             'id' => $this->getId(),
             'batch_id' => $this->getBatchId(),
             'target_class' => $this->getTargetClass(),
