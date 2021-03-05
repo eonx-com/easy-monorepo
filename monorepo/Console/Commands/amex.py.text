@@ -1,0 +1,58 @@
+import hashlib
+import hmac
+import base64
+import requests
+import datetime
+import uuid
+
+client_id = "vcVpXFrvlObb78qe8clRGG7hi6pwWAJL"
+client_secret = "uSAitmiesy1AkmhSsFLQjNLNzvG3dyjN"
+certificate_path = "PATH TO CERTIFICATE FILE"
+certificate_key_path = "PATH TO PRIVATE KEY"
+host = "api.qasb.americanexpress.com" # Host for QA Environment Listed
+request_uri = "/sb/merchant/v1/acquisitions/sellers" # Resource Path for QA Listed
+# timestamp = int(datetime.datetime.now().timestamp() * 1000) # Create timestamp
+# Milliseconds from Unix Epoch Time
+timestamp = 1614819624
+# nonce = uuid.uuid4() # Use UUID to create unique nonce value for each request
+nonce = "45dea93b-afaa-4f09-b69e-d561ea3ead49"
+request_method = "POST"
+port = 443 # Port is 443
+payload = '{"se_setup_request_count": 1,"message_id": "egr2bt362","se_setup_requests": [{"record_number": "0000036500","participant_se": "1021311634","submitter_id": "1030026553","se_detail_status_code": "36500","se_status_code_change_date": "2015/12/25","language_preference_code": "EN","japan_credit_bureau_indicator": "0000036500","marketing_indicator": "Y","ownership_type_indicator": "D","seller_transacting_indicator": "Y","client_defined_code": "36500","seller": {"seller_id": "GSMF093019APIX1006","seller_url": "www.gsmfautomationtool.com/acquisition","seller_status": "Success","seller_mcc": "5999","seller_legal_name": "John Doe","seller_dba_name": "John Doe","seller_business_registration_number": "0000036500","seller_business_phone_number": "9914023611","seller_email_address": "john.doe@example.com","seller_currency_code": "USD","seller_start_date": "2015/12/25","seller_term_date": "2015/12/26","seller_charge_volume": "36500","seller_transaction_count": "425","seller_chargeback_count": "425","seller_chargeback_amount": "425","seller_street_address": {"address_line_1": "100 Elm Street","address_line_2": "Oak Avenue","address_line_3": "Maple Court","address_line_4": "Third Floor","address_line_5": "Suite A","city_name": "New York","region_code": "NY","postal_code": "85032","country_code": "US"}},"significant_owners": {"first_owner": {"first_name": "FOFIRSTNM001","last_name": "Smith","identification_number": "0000036500","date_of_birth": "2015/12/27","street_address": {"address_line_1": "100 Elm Street","address_line_2": "Oak Avenue","address_line_3": "Maple Court","address_line_4": "Third Floor","address_line_5": "Suite A","city_name": "New York","region_code": "New York","postal_code": "85032","country_code": "US"}},"second_owner": {"first_name": "Adam","last_name": "Smith","identification_number": "0000036500","date_of_birth": "2015/12/28","street_address": {"address_line_1": "100 Elm Street","address_line_2": "Oak Avenue","address_line_3": "Maple Court","address_line_4": "Third Floor","address_line_5": "Suite A","city_name": "New York","region_code": "New York","postal_code": "85032","country_code": "US"}},"third_owner": {"first_name": "Adam","last_name": "Smith","identification_number": "0000036500","date_of_birth": "2015/12/29","street_address": {"address_line_1": "100 Elm Street","address_line_2": "Oak Avenue","address_line_3": "Maple Court","address_line_4": "Third Floor","address_line_5": "Suite A","city_name": "New York","region_code": "New York","postal_code": "85032","country_code": "US"}},"fourth_owner": {"first_name": "Adam","last_name": "Smith","identification_number": "0000036500","date_of_birth": "2015/12/30","street_address": {"address_line_1": "100 Elm Street","address_line_2": "Oak Avenue","address_line_3": "Maple Court","address_line_4": "Third Floor","address_line_5": "Suite A","city_name": "New York","region_code": "New York","postal_code": "85032","country_code": "US"}}},"authorized_signer": {"first_name": "Adam","last_name": "Smith","identification_number": "0000036500","date_of_birth": "2015/12/31","street_address": {"address_line_1": "100 Elm Street","address_line_2": "Oak Avenue","address_line_3": "Maple Court","address_line_4": "Third Floor","address_line_5": "Suite A","city_name": "New York","region_code": "New York","postal_code": "85032","country_code": "US"},"title": "MR."},"sale": {"channel_indicator_code": "DS","channel_name": "CN","represent_id": "36500","iso_register_number": "0000036500"}}]}'
+payload = payload.replace(' ', '')
+
+def create_authorization_header(client_id, client_secret, host, request_uri, timestamp, nonce, request_method, port, payload):
+    # create body hash using Base64 HMAC SHA256 algorithm with client_secret and payload
+    body_hash = base64.b64encode(hmac.new(client_secret.encode('utf-8'), payload.encode('utf-8'), digestmod=hashlib.sha256).digest()).decode()
+
+    # create components of the mac signature, order is critical
+    mac_components = [str(timestamp), str(nonce), request_method, request_uri, host, str(port), body_hash, '']
+    mac_input = '\n'.join(mac_components)
+    # create mac signature using Base64 HMAC SHA356 algorithm with client secret and mac components
+    mac_signature = base64.b64encode(hmac.new(client_secret.encode('utf-8'), mac_input.encode('utf-8'), digestmod=hashlib.sha256).digest()).decode()
+
+    # create Authorization header
+    authorization_header = "MAC ID=\"{client_id}\",ts=\"{timestamp}\",nonce=\"{nonce}\"," \
+    "bodyhash=\"{body_hash}\",mac=\"{mac_signature}\"".format(client_id=client_id,
+    timestamp=timestamp,
+    nonce=nonce,
+    body_hash=body_hash,
+    mac_signature=mac_signature)
+
+    print authorization_header
+
+    return authorization_header
+
+def call_api(client_id, host, request_uri, certificate_path, certificate_key_path, authorization_header, payload):
+    url = "https://" + host + request_uri
+    client_certificates = (certificate_path, certificate_key_path)
+    headers = {'Content-type': 'application/json', 'X-AMEX-API-KEY': client_id, 'Authorization': authorization_header}
+
+    response = requests.request(method="POST", url=url, data=payload, headers=headers, verify=True)
+
+    print response.status_code
+    print response.json()
+
+authorization_header = create_authorization_header(client_id, client_secret, host, request_uri, timestamp, nonce, request_method, port, payload)
+
+call_api(client_id, host, request_uri, certificate_path, certificate_key_path, authorization_header, payload)
