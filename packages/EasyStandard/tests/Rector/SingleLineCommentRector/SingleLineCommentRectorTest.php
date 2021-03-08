@@ -10,7 +10,7 @@ use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
- * @covers \EonX\EasyStandard\Rector\PhpDocCommentRector
+ * @covers \EonX\EasyStandard\Rector\SingleLineCommentRector
  *
  * @internal
  */

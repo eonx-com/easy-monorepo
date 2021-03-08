@@ -31,12 +31,12 @@ final class PhpDocCommentRector extends AbstractRector
     /**
      * @var bool
      */
-    private $isMultilineTagNode;
+    private $isMultilineTagNode = false;
 
     /**
      * @var bool
      */
-    private $isMultilineTextNode;
+    private $isMultilineTextNode = false;
 
     /**
      * From this method documentation is generated.
@@ -77,8 +77,6 @@ PHP
     public function refactor(Node $node): ?Node
     {
         if ($node->hasAttribute(AttributeKey::PHP_DOC_INFO)) {
-            $this->isMultilineTagNode = false;
-            $this->isMultilineTextNode = false;
             $this->checkPhpDoc($node->getAttribute(AttributeKey::PHP_DOC_INFO));
         }
 
