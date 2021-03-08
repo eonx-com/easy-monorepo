@@ -113,7 +113,7 @@ PHP
             $disallowEnding = $this->checkLineEndingDisallowed($commentText);
 
             if ($disallowEnding !== null) {
-                $pattern = '#' . \preg_quote($disallowEnding, null) . '$#';
+                $pattern = '#' . \preg_quote($disallowEnding) . '$#';
                 $commentText = Strings::replace($commentText, $pattern, '');
             }
 

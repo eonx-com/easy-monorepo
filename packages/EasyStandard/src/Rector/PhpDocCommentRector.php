@@ -125,6 +125,9 @@ PHP
         }
     }
 
+    /**
+     * @param mixed[] $children
+     */
     private function checkIsMultilineNode(array $children, int $index): void
     {
         $phpDocChildNode = $children[$index];
@@ -161,7 +164,7 @@ PHP
             $value = $phpDocChildNode->value;
             $nextChildren = $children[$index + 1] ?? null;
 
-            if ($value === '' || $nextChildren === null) {
+            if ($value->value === '' || $nextChildren === null) {
                 $this->isMultilineTagNode = false;
 
                 return;
