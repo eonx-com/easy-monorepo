@@ -7,12 +7,12 @@
 Arrays must be sorted by keys alphabetically.
 
 ```php
-// incorrect
+// Incorrect
 $array = ['z' => 1, 'g' => 2, 'a' => 3];
 ```
 
 ```php
-// correct
+// Correct
 $array = ['a' => 3, 'g' => 2, 'z' => 1];
 ```
 
@@ -34,20 +34,20 @@ $array = ['a' => 3, 'g' => 2, 'z' => 1];
 
 Class properties must be protected or public.
 ```php
-// incorrect
+// Incorrect
 class MyClass
 {
     private $myProperty1;
-    // or
+    // Or
     $myProperty2;
 }
 ```
 ```php
-// correct
+// Correct
 class MyClass
 {
     public $myProperty1;
-    // or
+    // Or
     protected $myProperty2;
 }
 ```
@@ -57,21 +57,21 @@ class MyClass
 Class properties must be protected or private.
 
 ```php
-// incorrect
+// Incorrect
 class MyClass
 {
     public $myProperty1;
-    // or
+    // Or
     $myProperty2;
 }
 ```
 
 ```php
-// correct
+// Correct
 class MyClass
 {
     private $myProperty1;
-    // or
+    // Or
     protected $myProperty2;
 }
 ```
@@ -81,7 +81,7 @@ class MyClass
 Class constructor must be public.
 
 ```php
-// incorrect
+// Incorrect
 class MyClass
 {
     protected function __construct()
@@ -91,7 +91,7 @@ class MyClass
 ```
 
 ```php
-// correct
+// Correct
 class MyClass
 {
     public function __construct()
@@ -105,17 +105,17 @@ class MyClass
 Strict type declaration is required.
 
 ```php
-// incorrect
+// Incorrect
 <?php
-// any php content
+// Any php content
 ```
 
 ```php
-// correct
+// Correct
 <?php
 declare(strict_types=1);
 
-// any php content
+// Any php content
 ```
 
 ##### [\EonX\EasyStandard\Sniffs\Classes\StrictDeclarationFormatSniff][6]
@@ -123,25 +123,25 @@ declare(strict_types=1);
 Strict type declaration must be on a new line with no leading whitespace.
 
 ```php
-// incorrect
+// Incorrect
 <?php
 
 declare(strict_types=1);
-// any php content
+// Any php content
 ```
 
 ```php
-// incorrect
+// Incorrect
 <?php declare(strict_types=1);
-// any php content
+// Any php content
 ```
 
 ```php
-// correct
+// Correct
 <?php
 declare(strict_types=1);
 
-// any php content
+// Any php content
 ```
 
 #### Commenting
@@ -151,7 +151,7 @@ declare(strict_types=1);
 Checks that annotations are sorted alphabetically.
 
 ```php
-// incorrect
+// Incorrect
 class MyClass
 {
     /**
@@ -167,7 +167,7 @@ class MyClass
 ```
 
 ```php
-// correct
+// Correct
 class MyClass
 {
     /**
@@ -192,7 +192,7 @@ class MyClass
 Checks that function comment blocks follow EonX standards.
 
 ```php
-// incorrect
+// Incorrect
 class MyClass
 {
     /**
@@ -234,7 +234,7 @@ class MyClass
 ```
 
 ```php
-// incorrect
+// Incorrect
 class MyClass
 {
     /**
@@ -295,7 +295,7 @@ Checks that a test method conforms to Arrange, Act and Assert (AAA) pattern. The
 between [1, 2].
 
 ```php
-// incorrect
+// Incorrect
 final class TestClass
 {
     public function testSomethingA()
@@ -319,7 +319,7 @@ final class TestClass
 ```
 
 ```php
-// correct
+// Correct
 final class TestClass
 {
     public function testSomethingA()
@@ -378,7 +378,7 @@ final class TestClass
 - `testNamespace` - If a class namespace starts with this prefix, the class will be parsed. Default value: `App\Tests`.
 
 ```php
-// correct
+// Correct
 namespace App\NoTestNamespace;
 
 final class TestClass
@@ -401,7 +401,7 @@ final class TestClass
 A strict comparison operator must be used instead of a NOT operator.
 
 ```php
-// incorrect
+// Incorrect
 $a = (bool)\random_int(0, 1);
 if (!$a) {
     // Do something.
@@ -409,7 +409,7 @@ if (!$a) {
 ````
 
 ```php
-// correct
+// Correct
 $a = (bool)\random_int(0, 1);
 if ($a === false) {
     // Do something.
@@ -423,19 +423,19 @@ if ($a === false) {
 Exception message must be either a variable or a translation message, starting with a valid prefix.
 
 ```php
-// incorrect
+// Incorrect
 throw new \Exception('Incorrect message');
 ````
 
 ```php
-// correct
+// Correct
 throw new NotFoundHttpException();
-// or
+// Or
 $exception = new Exception('Some exception message');
 throw $exception;
-// or
+// Or
 throw new InvalidArgumentException('exceptions.some_message');
-// or
+// Or
 $message = 'Some exception message';
 throw new RuntimeException($message);
 ````
@@ -451,14 +451,14 @@ throw new RuntimeException($message);
 Function and closure parameters can only have a default value of `null`.
 
 ```php
-// incorrect
+// Incorrect
 function someFunction(int $param1, ?stdClass $class, string $const3 = TestClass::TEST, array $param4 = []) {
     // No body needed
 }
 ````
 
 ```php
-// correct
+// Correct
 function someFunction(int $param1, ?stdClass $class = null, ?string $const3 = null, ?array $param4 = null) {
     // No body needed
 }
