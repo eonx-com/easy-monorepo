@@ -14,7 +14,7 @@ use EonX\EasyUtils\CollectorHelper;
 final class DecisionFactory implements DecisionFactoryInterface
 {
     /**
-     * @var \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
+     * @var \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface
      */
     private $configurators;
 
@@ -40,7 +40,7 @@ final class DecisionFactory implements DecisionFactoryInterface
     {
         $this->mappingProvider = $mappingProvider;
 
-        $this->configurators = CollectorHelper::orderLowerPriorityFirst(
+        $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators ?? [], DecisionConfiguratorInterface::class)
         );
     }

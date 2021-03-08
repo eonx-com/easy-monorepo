@@ -7,6 +7,7 @@ namespace EonX\EasyWebhook\Bridge\Symfony\DataCollector;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
+use EonX\EasyWebhook\Stack;
 use EonX\EasyWebhook\WebhookClient;
 
 final class TraceableWebhookClient implements WebhookClientInterface
@@ -26,17 +27,14 @@ final class TraceableWebhookClient implements WebhookClientInterface
         $this->decorated = $decorated;
     }
 
-    public function configure(WebhookInterface $webhook): WebhookInterface
-    {
-        return $this->decorated->configure($webhook);
-    }
-
     /**
-     * @return \EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface[]
+     * @return \EonX\EasyWebhook\Interfaces\MiddlewareInterface[]
      */
-    public function getConfigurators(): array
+    public function getMiddleware(): array
     {
-        return $this->decorated instanceof WebhookClient ? $this->decorated->getConfigurators() : [];
+        $stack = $this->decorated instanceof WebhookClient ? $this->decorated->getStack() : null;
+
+        return $stack instanceof Stack ? $stack->getMiddleware() : [];
     }
 
     /**

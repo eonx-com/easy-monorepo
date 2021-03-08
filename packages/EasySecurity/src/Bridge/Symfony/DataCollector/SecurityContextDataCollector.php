@@ -51,7 +51,7 @@ final class SecurityContextDataCollector extends DataCollector
         $this->authorizationMatrixFactory = $authorizationMatrixFactory;
         $this->securityContextProvider = $securityContextProvider;
 
-        $this->configurators = CollectorHelper::orderLowerPriorityFirst(
+        $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class)
         );
     }

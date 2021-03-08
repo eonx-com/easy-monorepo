@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Bridge\Symfony\DependencyInjection;
 
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
-use EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface;
+use EonX\EasyWebhook\Interfaces\MiddlewareInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -17,10 +17,25 @@ final class EasyWebhookExtension extends Extension
     /**
      * @var string[]
      */
-    private static $signatureParams = [
+    private const SIGNATURE_PARAMS = [
         BridgeConstantsInterface::PARAM_SIGNATURE_HEADER => 'signature_header',
         BridgeConstantsInterface::PARAM_SECRET => 'secret',
     ];
+
+    /**
+     * @var mixed[]
+     */
+    private $config;
+
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
+     */
+    private $container;
+
+    /**
+     * @var \Symfony\Component\DependencyInjection\Loader\PhpFileLoader
+     */
+    private $loader;
 
     /**
      * @param mixed[] $configs
@@ -33,47 +48,89 @@ final class EasyWebhookExtension extends Extension
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
+        $loader->load('core_middleware.php');
+
+        $this->config = $config;
+        $this->container = $container;
+        $this->loader = $loader;
+
+        $this->container->setParameter(BridgeConstantsInterface::PARAM_METHOD, $this->config['method'] ?? null);
 
         $container
-            ->registerForAutoconfiguration(WebhookConfiguratorInterface::class)
-            ->addTag(BridgeConstantsInterface::TAG_WEBHOOK_CONFIGURATOR);
+            ->registerForAutoconfiguration(MiddlewareInterface::class)
+            ->addTag(BridgeConstantsInterface::TAG_MIDDLEWARE);
 
-        if ($config['use_default_configurators'] ?? true) {
-            $container->setParameter(BridgeConstantsInterface::PARAM_METHOD, $config['method'] ?? null);
+        $this->async();
+        $this->debug();
+        $this->eventHeader();
+        $this->idHeader();
+        $this->middleware();
+        $this->signatureHeader();
+    }
 
-            $loader->load('default_configurators.php');
+    private function async(): void
+    {
+        $enabled = $config['async']['enabled'] ?? true;
+
+        $this->container->setParameter(BridgeConstantsInterface::PARAM_ASYNC, $enabled);
+
+        if ($enabled && \class_exists(MessengerPass::class)) {
+            $this->container->setParameter(BridgeConstantsInterface::PARAM_BUS, $this->config['async']['bus']);
+            $this->loader->load('async.php');
+        }
+    }
+
+    private function debug(): void
+    {
+        if ($this->container->hasParameter('kernel.debug') && $this->container->getParameter('kernel.debug')) {
+            $this->loader->load('debug.php');
+        }
+    }
+
+    private function eventHeader(): void
+    {
+        if (($config['event']['enabled'] ?? true) === false) {
+            return;
         }
 
-        if ($config['event']['enabled'] ?? true) {
-            $container->setParameter(BridgeConstantsInterface::PARAM_EVENT_HEADER, $config['event']['event_header']);
+        $header = $this->config['event']['event_header'] ?? null;
 
-            $loader->load('event.php');
+        $this->container->setParameter(BridgeConstantsInterface::PARAM_EVENT_HEADER, $header);
+        $this->loader->load('event.php');
+    }
+
+    private function idHeader(): void
+    {
+        if (($config['id']['enabled'] ?? true) === false) {
+            return;
         }
 
-        if ($config['id']['enabled'] ?? true) {
-            $container->setParameter(BridgeConstantsInterface::PARAM_ID_HEADER, $config['id']['id_header'] ?? null);
+        $header = $config['id']['id_header'] ?? null;
 
-            $loader->load('id.php');
+        $this->container->setParameter(BridgeConstantsInterface::PARAM_ID_HEADER, $header);
+        $this->loader->load('id.php');
+    }
+
+    private function middleware(): void
+    {
+        if (($this->config['use_default_middleware'] ?? true) === false) {
+            return;
         }
 
-        if ($config['signature']['enabled'] ?? false) {
-            foreach (static::$signatureParams as $param => $configName) {
-                $container->setParameter($param, $config['signature'][$configName] ?? null);
-            }
+        $this->loader->load('default_middleware.php');
+    }
 
-            $container->setAlias(BridgeConstantsInterface::SIGNER, $config['signature']['signer']);
-
-            $loader->load('signature.php');
+    private function signatureHeader(): void
+    {
+        if (($this->config['signature']['enabled'] ?? false) === false) {
+            return;
         }
 
-        if (\class_exists(MessengerPass::class) && ($config['async']['enabled'] ?? true)) {
-            $container->setParameter(BridgeConstantsInterface::PARAM_BUS, $config['async']['bus']);
-
-            $loader->load('messenger_client.php');
+        foreach (self::SIGNATURE_PARAMS as $param => $configName) {
+            $this->container->setParameter($param, $this->config['signature'][$configName] ?? null);
         }
 
-        if ($container->hasParameter('kernel.debug') && $container->getParameter('kernel.debug')) {
-            $loader->load('debug.php');
-        }
+        $this->container->setAlias(BridgeConstantsInterface::SIGNER, $this->config['signature']['signer']);
+        $this->loader->load('signature.php');
     }
 }

@@ -7,6 +7,11 @@ namespace EonX\EasyWebhook\Interfaces;
 interface WebhookInterface
 {
     /**
+     * @var int
+     */
+    public const DEFAULT_CURRENT_ATTEMPT = 0;
+
+    /**
      * @var string
      */
     public const DEFAULT_METHOD = 'POST';
@@ -14,13 +19,32 @@ interface WebhookInterface
     /**
      * @var string
      */
+    public const HEADER_EVENT = 'X-Webhook-Event';
+
+    /**
+     * @var string
+     */
+    public const HEADER_ID = 'X-Webhook-Id';
+
+    /**
+     * @var string
+     */
+    public const HEADER_SIGNATURE = 'X-Webhook-Signature';
+
+    /**
+     * @var string
+     */
     public const OPTIONS = [
         self::OPTION_BODY,
+        self::OPTION_BODY_AS_STRING,
         self::OPTION_CURRENT_ATTEMPT,
         self::OPTION_EVENT,
+        self::OPTION_ID,
         self::OPTION_HTTP_OPTIONS,
         self::OPTION_MAX_ATTEMPT,
         self::OPTION_METHOD,
+        self::OPTION_SECRET,
+        self::OPTION_SEND_AFTER,
         self::OPTION_STATUS,
         self::OPTION_URL,
     ];
@@ -29,6 +53,11 @@ interface WebhookInterface
      * @var string
      */
     public const OPTION_BODY = 'body';
+
+    /**
+     * @var string
+     */
+    public const OPTION_BODY_AS_STRING = 'body_as_string';
 
     /**
      * @var string
@@ -48,12 +77,27 @@ interface WebhookInterface
     /**
      * @var string
      */
+    public const OPTION_ID = 'id';
+
+    /**
+     * @var string
+     */
     public const OPTION_MAX_ATTEMPT = 'max_attempt';
 
     /**
      * @var string
      */
     public const OPTION_METHOD = 'method';
+
+    /**
+     * @var string
+     */
+    public const OPTION_SECRET = 'secret';
+
+    /**
+     * @var string
+     */
+    public const OPTION_SEND_AFTER = 'send_after';
 
     /**
      * @var string
@@ -95,10 +139,14 @@ interface WebhookInterface
      */
     public const STATUS_SUCCESS = 'success';
 
+    public function allowRerun(?bool $allowRerun = null): self;
+
     /**
      * @param mixed[] $body
      */
     public function body(array $body): self;
+
+    public function bodyAsString(string $body): self;
 
     public function configured(?bool $configured = null): self;
 
@@ -120,6 +168,8 @@ interface WebhookInterface
      * @return null|mixed[]
      */
     public function getBody(): ?array;
+
+    public function getBodyAsString(): ?string;
 
     public function getCurrentAttempt(): int;
 
@@ -143,9 +193,21 @@ interface WebhookInterface
 
     public function getSecret(): ?string;
 
+    public function getSendAfter(): ?\DateTimeInterface;
+
     public function getStatus(): string;
 
     public function getUrl(): ?string;
+
+    /**
+     * @param mixed $value
+     */
+    public function header(string $name, $value): self;
+
+    /**
+     * @param mixed[] $headers
+     */
+    public function headers(array $headers): self;
 
     /**
      * @param mixed[] $options
@@ -155,6 +217,8 @@ interface WebhookInterface
     public function id(string $id): self;
 
     public function isConfigured(): bool;
+
+    public function isRerunAllowed(): bool;
 
     public function isSendNow(): bool;
 
@@ -172,7 +236,19 @@ interface WebhookInterface
 
     public function method(string $method): self;
 
+    /**
+     * @param mixed[] $queries
+     */
+    public function queries(array $queries): self;
+
+    /**
+     * @param mixed $value
+     */
+    public function query(string $name, $value): self;
+
     public function secret(string $secret): self;
+
+    public function sendAfter(\DateTimeInterface $after): self;
 
     public function sendNow(?bool $sendNow = null): self;
 

@@ -10,6 +10,11 @@ use stdClass;
 final class ElasticsearchSearchService implements SearchServiceInterface
 {
     /**
+     * @var string[]
+     */
+    private const EXCLUDE_OPTIONS = ['_source_excludes', 'index', 'body'];
+
+    /**
      * @var \Elasticsearch\Client
      */
     private $client;
@@ -41,8 +46,8 @@ final class ElasticsearchSearchService implements SearchServiceInterface
         }
 
         $query = $body['query'] ?? [
-            'match_all' => new stdClass(),
-        ];
+                'match_all' => new stdClass(),
+            ];
         $query = $this->replaceEmptyArrayWithEmptyObjectInMatchAllRecursively($query);
 
         $body['query'] = [
@@ -64,10 +69,14 @@ final class ElasticsearchSearchService implements SearchServiceInterface
             'body' => $body,
         ];
 
-        foreach (['from', 'size'] as $name) {
-            if (isset($options[$name])) {
-                $params[$name] = $options[$name];
+        foreach ($options as $name => $value) {
+            $name = (string)$name;
+
+            if (\in_array($name, self::EXCLUDE_OPTIONS, true)) {
+                continue;
             }
+
+            $params[$name] = $value;
         }
 
         return $this->client->search($params);

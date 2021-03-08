@@ -3,6 +3,9 @@ title: Introduction
 weight: 0
 ---eonx_docs---
 
+[ ] Refactor bridges
+[ ] Refactor tests
+
 Send webhooks asynchronously, retry if it fails, and persist them into the store of your choice, all that out of the box!
 
 ### Require package (Composer)

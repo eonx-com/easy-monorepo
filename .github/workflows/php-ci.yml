@@ -15,7 +15,7 @@ jobs:
                     - { name: monorepo, coverage: none, run: composer check-monorepo }
                     - { name: composer, coverage: none, run: composer check-composer }
                     - { name: phpstan, coverage: none, run: composer check-phpstan }
-                    - { name: security, coverage: none, run: composer check-security }
+                    # - { name: security, coverage: none, run: composer check-security }
                     - { name: rector, coverage: none, run: composer check-rector }
 
                     -   name: tests

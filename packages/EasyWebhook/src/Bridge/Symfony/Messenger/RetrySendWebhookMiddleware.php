@@ -36,7 +36,8 @@ final class RetrySendWebhookMiddleware implements MiddlewareInterface
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
-        $envelope = $stack->next()
+        $envelope = $stack
+            ->next()
             ->handle($envelope, $stack);
 
         // Skip if not webhook message
@@ -45,7 +46,8 @@ final class RetrySendWebhookMiddleware implements MiddlewareInterface
         }
 
         $stamp = $envelope->last(ReceivedStamp::class);
-        $result = $envelope->getMessage()
+        $result = $envelope
+            ->getMessage()
             ->getResult();
 
         // Skip if message not received or not result set

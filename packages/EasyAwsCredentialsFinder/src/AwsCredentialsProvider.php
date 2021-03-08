@@ -23,7 +23,7 @@ final class AwsCredentialsProvider implements AwsCredentialsProviderInterface
      */
     public function __construct(array $finders)
     {
-        $this->finders = CollectorHelper::orderLowerPriorityFirst(
+        $this->finders = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($finders, AwsCredentialsFinderInterface::class)
         );
     }
