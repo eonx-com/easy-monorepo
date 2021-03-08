@@ -164,7 +164,7 @@ PHP
             $value = $phpDocChildNode->value;
             $nextChildren = $children[$index + 1] ?? null;
 
-            if ($value->value === '' || $nextChildren === null) {
+            if ((isset($value->value) && $value->value === '') || $nextChildren === null) {
                 $this->isMultilineTagNode = false;
 
                 return;
