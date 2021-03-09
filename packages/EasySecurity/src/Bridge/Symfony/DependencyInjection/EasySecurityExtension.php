@@ -12,8 +12,6 @@ use EonX\EasySecurity\Bridge\Symfony\Security\Voters\RoleVoter;
 use EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface;
 use EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
-use EonX\EasySecurity\Interfaces\SecurityContextInterface;
-use EonX\EasySecurity\SecurityContext;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -65,12 +63,6 @@ final class EasySecurityExtension extends Extension
                 ->addTag($tag);
         }
 
-        $container->setDefinition($contextServiceId, (new Definition(SecurityContext::class))->setPublic(true));
-
-        if ($contextServiceId !== SecurityContextInterface::class) {
-            $container->setAlias(SecurityContextInterface::class, $contextServiceId);
-        }
-
         foreach (self::VOTERS as $name => $class) {
             $configName = \sprintf('%s_enabled', $name);
 
@@ -78,7 +70,11 @@ final class EasySecurityExtension extends Extension
                 continue;
             }
 
-            $container->setDefinition($class, (new Definition($class))->setAutowired(true)->setAutoconfigured(true));
+            $voterDefinition = (new Definition($class))
+                ->setAutowired(true)
+                ->setAutoconfigured(true);
+
+            $container->setDefinition($class, $voterDefinition);
         }
 
         // EasyBugsnag
