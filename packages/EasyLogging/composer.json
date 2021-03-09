@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.2",
         "eonx-com/externals": "^1.0 || ^2.0",
-        "eonx-com/easy-utils": "^2.5.33"
+        "eonx-com/easy-utils": "^2.6"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.4 || ^9.5",
