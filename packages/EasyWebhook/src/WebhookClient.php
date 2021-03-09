@@ -28,6 +28,9 @@ final class WebhookClient implements WebhookClientInterface
 
     public function sendWebhook(WebhookInterface $webhook): WebhookResultInterface
     {
+        // Make sure stack is "fresh"
+        $this->stack->rewind();
+
         return $this->stack
             ->next()
             ->process($webhook, $this->stack);

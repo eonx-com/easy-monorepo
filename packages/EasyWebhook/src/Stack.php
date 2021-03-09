@@ -52,4 +52,9 @@ final class Stack implements StackInterface
 
         return $next;
     }
+
+    public function rewind(): void
+    {
+        $this->index = 0;
+    }
 }
