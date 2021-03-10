@@ -26,6 +26,11 @@ final class AddMessengerMiddlewarePass implements CompilerPassInterface
             return;
         }
 
+        // If bus definition not defined, abort
+        if ($container->hasDefinition($busParam) === false) {
+            return;
+        }
+
         $busDef = $container->getDefinition($busParam);
         $middleware = $busDef->getArgument(0);
 
