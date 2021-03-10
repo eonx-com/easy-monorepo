@@ -33,6 +33,7 @@ jobs:
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: ${{ matrix.actions.coverage }}
+                    extensions: pdo_sqlite
 
             -   uses: eonx-com/actions-composer-install@v1
 
