@@ -2,24 +2,22 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyStandard\Tests\Rector\AnnotationsCommentsRector;
+namespace EonX\EasyStandard\Tests\Rector\SingleLineCommentRector;
 
-use EonX\EasyStandard\Rector\AnnotationsCommentsRector;
+use EonX\EasyStandard\Rector\SingleLineCommentRector;
 use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
- * @covers \EonX\EasyStandard\Rector\AnnotationsCommentsRector
+ * @covers \EonX\EasyStandard\Rector\SingleLineCommentRector
  *
  * @internal
  */
-final class AnnotationsCommentsRectorTest extends AbstractRectorTestCase
+final class SingleLineCommentRectorTest extends AbstractRectorTestCase
 {
     /**
      * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
-     *
-     * @see testRule
      */
     public function provideData(): Iterator
     {
@@ -27,15 +25,22 @@ final class AnnotationsCommentsRectorTest extends AbstractRectorTestCase
     }
 
     /**
-     * @dataProvider provideData
+     * @dataProvider provideData()
      */
     public function testRule(SmartFileInfo $fileInfo): void
     {
         $this->doTestFileInfo($fileInfo);
     }
 
-    protected function getRectorClass(): string
+    /**
+     * Returns Rector with configuration.
+     *
+     * @return mixed[]
+     */
+    protected function getRectorsWithConfiguration(): array
     {
-        return AnnotationsCommentsRector::class;
+        return [
+            SingleLineCommentRector::class => [],
+        ];
     }
 }
