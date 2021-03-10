@@ -13,7 +13,7 @@ final class DoctrineDbalBatchItemStore extends AbstractDoctrineDbalStore impleme
 {
     public function __construct(Connection $conn, ?string $table = null)
     {
-        parent::__construct($conn, $table ?? 'easy_async_batch_items');
+        parent::__construct($conn, $table ?? self::DEFAULT_TABLE);
     }
 
     public function store(BatchItemInterface $batchItem): BatchItemInterface
@@ -29,7 +29,7 @@ final class DoctrineDbalBatchItemStore extends AbstractDoctrineDbalStore impleme
         if ($exists === false) {
             // Set created_at on new batch item only
             $data['created_at'] = $now;
-            
+
             $this->conn->insert($this->table, $this->formatData($data));
 
             return $batchItem;

@@ -1,0 +1,52 @@
+<?php
+
+declare(strict_types=1);
+
+use EonX\EasyAsync\Batch\BatchFactory;
+use EonX\EasyAsync\Batch\BatchItemFactory;
+use EonX\EasyAsync\Batch\BatchItemProcessor;
+use EonX\EasyAsync\Batch\Store\DoctrineDbalBatchItemStore;
+use EonX\EasyAsync\Batch\Store\DoctrineDbalBatchStore;
+use EonX\EasyAsync\Bridge\Symfony\Messenger\BatchDispatcher;
+use EonX\EasyAsync\Bridge\Symfony\Messenger\DispatchBatchMiddleware;
+use EonX\EasyAsync\Bridge\Symfony\Messenger\ProcessBatchItemMiddleware;
+use EonX\EasyAsync\Interfaces\Batch\BatchDispatcherInterface;
+use EonX\EasyAsync\Interfaces\Batch\BatchFactoryInterface;
+use EonX\EasyAsync\Interfaces\Batch\BatchItemFactoryInterface;
+use EonX\EasyAsync\Interfaces\Batch\BatchItemProcessorInterface;
+use EonX\EasyAsync\Interfaces\Batch\BatchItemStoreInterface;
+use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
+
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $services = $containerConfigurator->services();
+    $services->defaults()
+        ->autowire()
+        ->autoconfigure();
+
+    // Dispatcher
+    $services->set(BatchDispatcherInterface::class, BatchDispatcher::class);
+
+    // Factories
+    $services
+        ->set(BatchFactoryInterface::class, BatchFactory::class)
+        ->set(BatchItemFactoryInterface::class, BatchItemFactory::class);
+
+    // Messenger
+    $services
+        ->set(DispatchBatchMiddleware::class)
+        ->set(ProcessBatchItemMiddleware::class);
+
+    // Processor
+    $services->set(BatchItemProcessorInterface::class, BatchItemProcessor::class);
+
+    // Stores (Default doctrine dbal)
+    $services
+        ->set(BatchStoreInterface::class, DoctrineDbalBatchStore::class)
+        ->arg('$conn', ref('doctrine.dbal.default_connection'));
+
+    $services
+        ->set(BatchItemStoreInterface::class, DoctrineDbalBatchItemStore::class)
+        ->arg('$conn', ref('doctrine.dbal.default_connection'));
+};

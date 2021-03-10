@@ -9,6 +9,7 @@ use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractTestCase extends TestCase
 {
@@ -38,6 +39,13 @@ abstract class AbstractTestCase extends TestCase
 
     protected function tearDown(): void
     {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
         $this->addToAssertionCount(\Mockery::getContainer()->mockery_getExpectationCount());
 
         \Mockery::close();

@@ -17,7 +17,7 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
 {
     public function __construct(Connection $conn, ?string $table = null)
     {
-        parent::__construct($conn, $table ?? 'easy_async_batches');
+        parent::__construct($conn, $table ?? self::DEFAULT_TABLE);
     }
 
     public function find(string $batchId): ?BatchInterface
@@ -134,12 +134,12 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
     private function instantiateBatch(array $data, string $batchId): BatchInterface
     {
         $batch = (new Batch())
-            ->setFailed($data['failed'] ?? 0)
+            ->setFailed((int)($data['failed'] ?? 0))
             ->setId($data['id'] ?? $batchId)
-            ->setProcessed($data['processed'] ?? 0)
+            ->setProcessed((int)($data['processed'] ?? 0))
             ->setStatus($data['status'] ?? BatchInterface::STATUS_PENDING)
-            ->setSucceeded($data['succeeded'])
-            ->setTotal($data['total']);
+            ->setSucceeded((int)($data['succeeded'] ?? 0))
+            ->setTotal((int)($data['total'] ?? 0));
 
         if (isset($data['finished_at'])) {
             $finishedAt = Carbon::createFromFormat(self::DATETIME_FORMAT, $data['finished_at']);

@@ -11,7 +11,7 @@ use EonX\EasyAsync\Tests\AbstractStoreTestCase;
 
 final class DoctrineDbalBatchItemStoreTest extends AbstractStoreTestCase
 {
-    public function testStore(): void
+    public function testStoreAndUpdate(): void
     {
         $conn = $this->getDoctrineDbalConnection();
         $store = new DoctrineDbalBatchItemStore($conn);
@@ -21,6 +21,7 @@ final class DoctrineDbalBatchItemStoreTest extends AbstractStoreTestCase
         $batchItem->setStartedAt($now);
         $batchItem->setFinishedAt($now);
 
+        $store->store($batchItem);
         $store->store($batchItem);
 
         $result = $conn->fetchAssociative("select * from easy_async_batch_items where id = 'batch-item-id'");
