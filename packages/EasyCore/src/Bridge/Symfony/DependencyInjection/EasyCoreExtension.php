@@ -54,10 +54,6 @@ final class EasyCoreExtension extends Extension
             $this->loadIfBundlesExists('api_platform/pagination.php', ApiPlatformBundle::class);
         }
 
-        if ($config['api_platform']['no_properties_api_resource_enabled'] ?? false) {
-            $this->loadIfBundlesExists('api_platform/no_properties_api_resource.php', ApiPlatformBundle::class);
-        }
-
         if ($config['api_platform']['simple_data_persister_enabled'] ?? false) {
             $this->loadIfBundlesExists('api_platform/simple_data_persister.php', ApiPlatformBundle::class);
 
