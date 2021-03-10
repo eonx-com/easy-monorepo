@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - master
+            - feature/easy-async-refactor
 
 jobs:
     provide_packages_json:
