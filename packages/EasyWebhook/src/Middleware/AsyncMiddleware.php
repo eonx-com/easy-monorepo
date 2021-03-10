@@ -54,9 +54,9 @@ final class AsyncMiddleware extends AbstractMiddleware
 
         if ($webhook->getId() === null) {
             throw new WebhookIdRequiredForAsyncException(\sprintf('
-                WebhookResult must be persisted and have a unique identifier before being sent asynchronously.
+                Webhook must be persisted and have a unique identifier before being sent asynchronously.
                 Please verify your %s implementation sets this identifier and is registered as a service
-            ', WebhookResultStoreInterface::class));
+            ', StoreInterface::class));
         }
 
         $this->dispatcher->dispatch($webhook);

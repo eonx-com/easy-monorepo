@@ -10,7 +10,6 @@ use EonX\EasyWebhook\Exceptions\InvalidDateTimeException;
 use EonX\EasyWebhook\Interfaces\Stores\SendAfterStoreInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use Illuminate\Console\Command;
 
 final class SendDueWebhooksCommand extends Command
@@ -23,7 +22,7 @@ final class SendDueWebhooksCommand extends Command
             {--sendAfter= : DateTime to start fetching due webhooks from, in "%s" format}
             {--timezone= : The timezone of sendAfter DateTimes}
             ',
-            WebhookResultStoreInterface::DATETIME_FORMAT
+            StoreInterface::DATETIME_FORMAT
         );
 
         $this->description = 'Send "sendAfter" webhooks which are due';
@@ -45,12 +44,12 @@ final class SendDueWebhooksCommand extends Command
 
         $sendAfter = null;
         $page = 1;
-        $perPage = $this->option('bulk') ? (int)$this->option('bulk') : 15;
-        $sendAfterString = $this->option('sendAfter') ? (string)$this->option('sendAfter') : null;
-        $timezone = $this->option('timezone') ? (string)$this->option('timezone') : null;
+        $perPage = $this->getIntOption('bulk') ?? 15;
+        $sendAfterString = $this->getStringOption('sendAfter');
+        $timezone = $this->getStringOption('timezone');
 
         if ($sendAfterString !== null) {
-            $sendAfter = Carbon::createFromFormat(WebhookResultStoreInterface::DATETIME_FORMAT, $sendAfterString);
+            $sendAfter = Carbon::createFromFormat(StoreInterface::DATETIME_FORMAT, $sendAfterString);
 
             if ($sendAfter instanceof Carbon === false) {
                 throw new InvalidDateTimeException(\sprintf('Invalid DateTime provided, "%s"', $sendAfterString));
@@ -70,5 +69,19 @@ final class SendDueWebhooksCommand extends Command
         $this->output->success(\sprintf('Sent %d due webhooks', $dueWebhooks->getTotalItems()));
 
         return 0;
+    }
+
+    private function getIntOption(string $name): ?int
+    {
+        $option = $this->option($name);
+
+        return \is_array($option) || \is_bool($option) ? null : (int)$option;
+    }
+
+    private function getStringOption(string $name): ?string
+    {
+        $option = $this->option($name);
+
+        return \is_array($option) || \is_bool($option) ? null : (string)$option;
     }
 }
