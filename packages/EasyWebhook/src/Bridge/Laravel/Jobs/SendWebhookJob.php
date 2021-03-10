@@ -4,23 +4,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Laravel\Jobs;
 
-use EonX\EasyLock\Interfaces\LockDataInterface;
-use EonX\EasyLock\Interfaces\LockServiceInterface;
-use EonX\EasyLock\Interfaces\WithLockDataInterface;
-use EonX\EasyLock\LockData;
-use EonX\EasyLock\ProcessWithLockTrait;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-final class SendWebhookJob implements ShouldQueue, WithLockDataInterface
+final class SendWebhookJob implements ShouldQueue
 {
     use InteractsWithQueue;
     use Queueable;
-    use ProcessWithLockTrait;
 
     /**
      * @var int
@@ -38,37 +32,22 @@ final class SendWebhookJob implements ShouldQueue, WithLockDataInterface
         $this->tries = $tries ?? 1;
     }
 
-    public function getLockData(): LockDataInterface
-    {
-        return LockData::create(\sprintf('easy_webhook_send_%s', $this->webhookId));
-    }
-
     public function handle(
-        LockServiceInterface $lockService,
         WebhookClientInterface $client,
         WebhookRetryStrategyInterface $retryStrategy,
-        WebhookResultStoreInterface $store
+        StoreInterface $store
     ): void {
-        $this->setLockService($lockService);
+        $webhook = $store->find($this->webhookId);
 
-        $this->processWithLock($this, function () use ($client, $retryStrategy, $store): void {
-            $result = $store->find($this->webhookId);
+        if ($webhook === null) {
+            return;
+        }
 
-            if ($result === null) {
-                return;
-            }
+        // Once here, webhooks are already configured and should be sent synchronously
+        $result = $client->sendWebhook($webhook->sendNow(true));
 
-            // Once here, webhooks are already configured and should be sent synchronously
-            $result
-                ->getWebhook()
-                ->configured(true)
-                ->sendNow(true);
-
-            $result = $client->sendWebhook($result->getWebhook());
-
-            if ($result->isSuccessful() === false && $retryStrategy->isRetryable($result->getWebhook())) {
-                $this->release($retryStrategy->getWaitingTime($result->getWebhook()) / 1000);
-            }
-        });
+        if ($result->isSuccessful() === false && $retryStrategy->isRetryable($result->getWebhook())) {
+            $this->release($retryStrategy->getWaitingTime($result->getWebhook()) / 1000);
+        }
     }
 }

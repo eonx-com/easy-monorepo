@@ -5,15 +5,18 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "eonx-com/easy-event-dispatcher": "^2.6",
-        "eonx-com/easy-lock": "^2.6",
-        "eonx-com/easy-random": "^2.6",
-        "eonx-com/easy-utils": "^2.6",
+        "eonx-com/easy-event-dispatcher": "^3.0",
+        "eonx-com/easy-lock": "^3.0",
+        "eonx-com/easy-random": "^3.0",
+        "eonx-com/easy-utils": "^3.0",
         "nesbot/carbon": "^2.22",
         "nette/utils": "^3.1",
         "symfony/http-client": "^4.4 || ^5.1.5"
     },
     "require-dev": {
+        "doctrine/dbal": "^2.6",
+        "eonx-com/easy-pagination": "^3.0",
+        "illuminate/database": "^5.5 || ^6.20.14",
         "ramsey/uuid": "^3.9",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "laravel/lumen-framework": "^5.5",
@@ -31,7 +34,10 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.6-dev"
+            "dev-master": "3.0-dev"
         }
+    },
+    "suggest": {
+        "eonx-com/easy-pagination": "Used to pagined due webhooks for sendAfter feature"
     }
 }

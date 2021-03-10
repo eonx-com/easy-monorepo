@@ -11,26 +11,40 @@ abstract class AbstractWebhook implements WebhookInterface
     /**
      * @var string[]
      */
-    protected static $integers = ['current_attempt', 'max_attempt'];
+    protected static $integers = [self::OPTION_CURRENT_ATTEMPT, self::OPTION_MAX_ATTEMPT];
 
     /**
      * @var string[]
      */
     protected static $setters = [
-        'body' => 'body',
-        'current_attempt' => 'currentAttempt',
-        'event' => 'event',
-        'http_options' => 'httpClientOptions',
-        'max_attempt' => 'maxAttempt',
-        'method' => 'method',
-        'status' => 'status',
-        'url' => 'url',
+        self::OPTION_BODY => 'body',
+        self::OPTION_BODY_AS_STRING => 'bodyAsString',
+        self::OPTION_CURRENT_ATTEMPT => 'currentAttempt',
+        self::OPTION_EVENT => 'event',
+        self::OPTION_ID => 'id',
+        self::OPTION_HTTP_OPTIONS => 'httpClientOptions',
+        self::OPTION_MAX_ATTEMPT => 'maxAttempt',
+        self::OPTION_METHOD => 'method',
+        self::OPTION_SECRET => 'secret',
+        self::OPTION_SEND_AFTER => 'sendAfter',
+        self::OPTION_STATUS => 'status',
+        self::OPTION_URL => 'url',
     ];
+
+    /**
+     * @var null|bool
+     */
+    private $allowRerun;
 
     /**
      * @var null|mixed[]
      */
     private $body;
+
+    /**
+     * @var null|string
+     */
+    private $bodyAsString;
 
     /**
      * @var null|bool
@@ -53,6 +67,11 @@ abstract class AbstractWebhook implements WebhookInterface
     private $extra;
 
     /**
+     * @var mixed[]
+     */
+    private $headers;
+
+    /**
      * @var null|mixed[]
      */
     private $httpClientOptions;
@@ -73,9 +92,19 @@ abstract class AbstractWebhook implements WebhookInterface
     private $method;
 
     /**
+     * @var mixed[]
+     */
+    private $queries;
+
+    /**
      * @var null|string
      */
     private $secret;
+
+    /**
+     * @var null|\DateTimeInterface
+     */
+    private $sendAfter;
 
     /**
      * @var null|bool
@@ -85,7 +114,7 @@ abstract class AbstractWebhook implements WebhookInterface
     /**
      * @var null|string
      */
-    private $status;
+    private $status = self::STATUS_PENDING;
 
     /**
      * @var null|string
@@ -129,12 +158,26 @@ abstract class AbstractWebhook implements WebhookInterface
         return $webhook;
     }
 
+    public function allowRerun(?bool $allowRerun = null): WebhookInterface
+    {
+        $this->allowRerun = $allowRerun ?? true;
+
+        return $this;
+    }
+
     /**
      * @param mixed[] $body
      */
     public function body(array $body): WebhookInterface
     {
         $this->body = $body;
+
+        return $this;
+    }
+
+    public function bodyAsString(string $body): WebhookInterface
+    {
+        $this->bodyAsString = $body;
 
         return $this;
     }
@@ -178,9 +221,14 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this->body;
     }
 
+    public function getBodyAsString(): ?string
+    {
+        return $this->bodyAsString;
+    }
+
     public function getCurrentAttempt(): int
     {
-        return $this->currentAttempt ?? 0;
+        return $this->currentAttempt ?? self::DEFAULT_CURRENT_ATTEMPT;
     }
 
     public function getEvent(): ?string
@@ -201,7 +249,21 @@ abstract class AbstractWebhook implements WebhookInterface
      */
     public function getHttpClientOptions(): ?array
     {
-        return $this->httpClientOptions;
+        if ($this->headers === null && $this->queries === null && $this->httpClientOptions === null) {
+            return null;
+        }
+
+        $return = $this->httpClientOptions ?? [];
+
+        if ($this->headers !== null) {
+            $return['headers'] = \array_merge($return['headers'] ?? [], $this->headers);
+        }
+
+        if ($this->queries !== null) {
+            $return['query'] = \array_merge($return['query'] ?? [], $this->queries);
+        }
+
+        return $return;
     }
 
     public function getId(): ?string
@@ -224,6 +286,11 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this->secret;
     }
 
+    public function getSendAfter(): ?\DateTimeInterface
+    {
+        return $this->sendAfter;
+    }
+
     public function getStatus(): string
     {
         return $this->status ?? WebhookInterface::STATUS_PENDING;
@@ -232,6 +299,30 @@ abstract class AbstractWebhook implements WebhookInterface
     public function getUrl(): ?string
     {
         return $this->url;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function header(string $name, $value): WebhookInterface
+    {
+        if ($this->headers === null) {
+            $this->headers = [];
+        }
+
+        $this->headers[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed[] $headers
+     */
+    public function headers(array $headers): WebhookInterface
+    {
+        $this->headers = $headers;
+
+        return $this;
     }
 
     /**
@@ -254,6 +345,11 @@ abstract class AbstractWebhook implements WebhookInterface
     public function isConfigured(): bool
     {
         return $this->configured ?? false;
+    }
+
+    public function isRerunAllowed(): bool
+    {
+        return $this->allowRerun ?? false;
     }
 
     public function isSendNow(): bool
@@ -295,9 +391,40 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
+    /**
+     * @param mixed[] $queries
+     */
+    public function queries(array $queries): WebhookInterface
+    {
+        $this->queries = $queries;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function query(string $name, $value): WebhookInterface
+    {
+        if ($this->queries === null) {
+            $this->queries = [];
+        }
+
+        $this->queries[$name] = $value;
+
+        return $this;
+    }
+
     public function secret(string $secret): WebhookInterface
     {
         $this->secret = $secret;
+
+        return $this;
+    }
+
+    public function sendAfter(\DateTimeInterface $after): WebhookInterface
+    {
+        $this->sendAfter = $after;
 
         return $this;
     }
@@ -327,6 +454,7 @@ abstract class AbstractWebhook implements WebhookInterface
             'http_options' => $this->getHttpClientOptions(),
             'max_attempt' => $this->getMaxAttempt(),
             'method' => $this->getMethod(),
+            'send_after' => $this->getSendAfter(),
             'status' => $this->getStatus(),
             'url' => $this->getUrl(),
         ];

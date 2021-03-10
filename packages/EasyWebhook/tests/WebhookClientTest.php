@@ -4,23 +4,28 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests;
 
-use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
-use EonX\EasyWebhook\Configurators\BodyFormatterWebhookConfigurator;
-use EonX\EasyWebhook\Configurators\EventWebhookConfigurator;
-use EonX\EasyWebhook\Configurators\IdWebhookConfigurator;
-use EonX\EasyWebhook\Configurators\MethodWebhookConfigurator;
-use EonX\EasyWebhook\Configurators\SignatureWebhookConfigurator;
-use EonX\EasyWebhook\Exceptions\InvalidWebhookUrlException;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
+use EonX\EasyWebhook\Interfaces\MiddlewareInterface;
+use EonX\EasyWebhook\Interfaces\StackInterface;
+use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
+use EonX\EasyWebhook\Middleware\BodyFormatterMiddleware;
+use EonX\EasyWebhook\Middleware\EventHeaderMiddleware;
+use EonX\EasyWebhook\Middleware\IdHeaderMiddleware;
+use EonX\EasyWebhook\Middleware\MethodMiddleware;
+use EonX\EasyWebhook\Middleware\SendWebhookMiddleware;
+use EonX\EasyWebhook\Middleware\SignatureHeaderMiddleware;
+use EonX\EasyWebhook\Middleware\StoreMiddleware;
 use EonX\EasyWebhook\Signers\Rs256Signer;
-use EonX\EasyWebhook\Stores\ArrayWebhookResultStore;
-use EonX\EasyWebhook\Tests\Stubs\ArrayWebhookResultStoreStub;
+use EonX\EasyWebhook\Stack;
+use EonX\EasyWebhook\Stores\ArrayResultStore;
+use EonX\EasyWebhook\Stores\ArrayStore;
+use EonX\EasyWebhook\Tests\Stubs\ArrayStoreStub;
 use EonX\EasyWebhook\Tests\Stubs\HttpClientStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookClient;
-use EonX\EasyWebhook\WebhookResultHandler;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class WebhookClientTest extends AbstractTestCase
 {
@@ -45,7 +50,7 @@ final class WebhookClientTest extends AbstractTestCase
             'PUT',
             'https://eonx.com',
             [],
-            [new MethodWebhookConfigurator('PATCH')],
+            [new MethodMiddleware('PATCH')],
         ];
 
         yield 'Body formatter with header' => [
@@ -62,7 +67,7 @@ final class WebhookClientTest extends AbstractTestCase
                 ],
                 'body' => '{"key":"value"}',
             ],
-            [new BodyFormatterWebhookConfigurator(new JsonFormatter())],
+            [new BodyFormatterMiddleware(new JsonFormatter())],
         ];
 
         yield 'Configurator priorities run higher last' => [
@@ -70,7 +75,7 @@ final class WebhookClientTest extends AbstractTestCase
             'PUT',
             'https://eonx.com',
             [],
-            [new MethodWebhookConfigurator('PATCH', 200), new MethodWebhookConfigurator('PUT', 100)],
+            [new MethodMiddleware('PATCH', 200), new MethodMiddleware('PUT', 100)],
         ];
 
         yield 'Configurators as Traversable' => [
@@ -97,8 +102,8 @@ final class WebhookClientTest extends AbstractTestCase
                 'body' => '{"key":"value"}',
             ],
             [
-                new BodyFormatterWebhookConfigurator(new JsonFormatter()),
-                new SignatureWebhookConfigurator(new Rs256Signer(), 'my-secret'),
+                new BodyFormatterMiddleware(new JsonFormatter()),
+                new SignatureHeaderMiddleware(new Rs256Signer(), 'my-secret'),
             ],
         ];
 
@@ -113,7 +118,7 @@ final class WebhookClientTest extends AbstractTestCase
                     'X-Webhook-Event' => 'my-event',
                 ],
             ],
-            [new EventWebhookConfigurator()],
+            [new EventHeaderMiddleware()],
         ];
 
         yield 'Id header' => [
@@ -125,20 +130,17 @@ final class WebhookClientTest extends AbstractTestCase
                     'X-Webhook-Id' => '78981b69-535d-4483-8d94-2ef7cbdb07c8',
                 ],
             ],
-            [new IdWebhookConfigurator(new ArrayWebhookResultStoreStub('78981b69-535d-4483-8d94-2ef7cbdb07c8'))],
+            [
+                new IdHeaderMiddleware(new ArrayStoreStub(
+                    $this->getRandomGenerator(),
+                    '78981b69-535d-4483-8d94-2ef7cbdb07c8'
+                )),
+            ],
         ];
     }
 
-    public function testInvalidUrlExceptionThrownWhenEmptyUrl(): void
-    {
-        $this->expectException(InvalidWebhookUrlException::class);
-
-        $client = (new WebhookClient(new HttpClientStub(), new WebhookResultHandler($this->getArrayStore())));
-        $client->sendWebhook(new Webhook());
-    }
-
     /**
-     * @param \EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface[] $configurators
+     * @param null|iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface> $middleware
      * @param mixed[] $httpClientOptions
      *
      * @dataProvider providerTestSend
@@ -148,21 +150,51 @@ final class WebhookClientTest extends AbstractTestCase
         string $method,
         string $url,
         array $httpClientOptions,
-        ?iterable $configurators = null
+        ?iterable $middleware = null
     ): void {
         $httpClient = new HttpClientStub();
         $store = $this->getArrayStore();
-        $webhookClient = new WebhookClient($httpClient, new WebhookResultHandler($store), $configurators);
+        $resultStore = $this->getArrayResultStore();
+        $webhookClient = new WebhookClient($this->getStack($httpClient, $store, $resultStore, $middleware));
 
         $webhookClient->sendWebhook($webhook);
 
+        self::assertInstanceOf(StackInterface::class, $webhookClient->getStack());
         self::assertEquals($method, $httpClient->getMethod());
         self::assertEquals($url, $httpClient->getUrl());
         self::assertEquals($httpClientOptions, $httpClient->getOptions());
     }
 
-    private function getArrayStore(): ArrayWebhookResultStore
+    private function getArrayResultStore(): ArrayResultStore
     {
-        return new ArrayWebhookResultStore((new RandomGenerator())->setUuidV4Generator(new RamseyUuidV4Generator()));
+        return new ArrayResultStore($this->getRandomGenerator());
+    }
+
+    private function getArrayStore(): ArrayStore
+    {
+        return new ArrayStore($this->getRandomGenerator());
+    }
+
+    /**
+     * @param null|iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface> $middleware
+     */
+    private function getStack(
+        HttpClientInterface $httpClient,
+        StoreInterface $store,
+        ResultStoreInterface $resultStore,
+        ?iterable $middleware = null
+    ): StackInterface {
+        $middlewareArray = [
+            new StoreMiddleware($store, $resultStore, MiddlewareInterface::PRIORITY_CORE_AFTER),
+            new SendWebhookMiddleware($httpClient, MiddlewareInterface::PRIORITY_CORE_AFTER + 1),
+        ];
+
+        if ($middleware !== null) {
+            foreach ($middleware as $item) {
+                $middlewareArray[] = $item;
+            }
+        }
+
+        return new Stack($middlewareArray);
     }
 }

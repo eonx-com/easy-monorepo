@@ -53,7 +53,7 @@ final class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterf
     {
         $delay = (int)($this->delayMilliseconds * \pow($this->multiplier, $webhook->getCurrentAttempt()));
 
-        return $delay > $this->maxDelayMilliseconds && $this->maxDelayMilliseconds !== null
+        return $this->maxDelayMilliseconds !== null && $delay > $this->maxDelayMilliseconds
             ? $this->maxDelayMilliseconds
             : $delay;
     }

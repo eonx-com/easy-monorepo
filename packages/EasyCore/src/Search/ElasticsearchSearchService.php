@@ -46,8 +46,8 @@ final class ElasticsearchSearchService implements SearchServiceInterface
         }
 
         $query = $body['query'] ?? [
-            'match_all' => new stdClass(),
-        ];
+                'match_all' => new stdClass(),
+            ];
         $query = $this->replaceEmptyArrayWithEmptyObjectInMatchAllRecursively($query);
 
         $body['query'] = [

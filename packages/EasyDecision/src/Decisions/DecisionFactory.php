@@ -4,28 +4,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Decisions;
 
-use EonX\EasyDecision\Configurators\AddRulesConfigurator;
-use EonX\EasyDecision\Configurators\SetDefaultOutputConfigurator;
-use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
-use EonX\EasyDecision\Configurators\SetNameConfigurator;
-use EonX\EasyDecision\Exceptions\InvalidDecisionException;
-use EonX\EasyDecision\Exceptions\InvalidRuleProviderException;
-use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
-use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
-use EonX\EasyDecision\Interfaces\DecisionConfigInterface;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\MappingProviderInterface;
 use EonX\EasyDecision\Interfaces\RestrictedDecisionConfiguratorInterface;
-use EonX\EasyDecision\Interfaces\RuleProviderInterface;
 use EonX\EasyUtils\CollectorHelper;
-use Psr\Container\ContainerInterface;
 
 final class DecisionFactory implements DecisionFactoryInterface
 {
     /**
-     * @var \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
+     * @var \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface
      */
     private $configurators;
 
@@ -35,19 +24,9 @@ final class DecisionFactory implements DecisionFactoryInterface
     private $configuredDecisions = [];
 
     /**
-     * @var \Psr\Container\ContainerInterface
-     */
-    private $container;
-
-    /**
      * @var mixed[]
      */
     private $decisionConfigurators = [];
-
-    /**
-     * @var null|\EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface
-     */
-    private $expressionLanguageFactory;
 
     /**
      * @var \EonX\EasyDecision\Interfaces\MappingProviderInterface
@@ -57,67 +36,13 @@ final class DecisionFactory implements DecisionFactoryInterface
     /**
      * @param null|iterable<mixed> $configurators
      */
-    public function __construct(
-        MappingProviderInterface $mappingProvider,
-        ?ExpressionLanguageFactoryInterface $languageFactory = null,
-        ?iterable $configurators = null
-    ) {
-        if ($languageFactory !== null) {
-            @\trigger_error(\sprintf(
-                'Passing %s in %s constructor is deprecated since 2.3.7 and will be removed in 3.0. Use a %s instead',
-                ExpressionLanguageFactoryInterface::class,
-                static::class,
-                DecisionConfiguratorInterface::class
-            ), \E_USER_DEPRECATED);
-        }
-
+    public function __construct(MappingProviderInterface $mappingProvider, ?iterable $configurators = null)
+    {
         $this->mappingProvider = $mappingProvider;
-        $this->expressionLanguageFactory = $languageFactory;
 
-        $this->configurators = CollectorHelper::orderLowerPriorityFirst(
+        $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators ?? [], DecisionConfiguratorInterface::class)
         );
-    }
-
-    /**
-     * @deprecated since 2.3.7
-     */
-    public function create(DecisionConfigInterface $config): DecisionInterface
-    {
-        @\trigger_error(\sprintf(
-            '%s::%s() is deprecated since 2.3.7 and will be removed in 3.0, use one of %s methods instead',
-            static::class,
-            __METHOD__,
-            \implode(', ', [
-                'createAffirmativeDecision',
-                'createConsensusDecision',
-                'createUnanimousDecision',
-                'createValueDecision',
-            ])
-        ), \E_USER_DEPRECATED);
-
-        $decision = $this->instantiateDecision($config->getDecisionType());
-
-        $this->configurators[] = new SetNameConfigurator($config->getName());
-        $this->configurators[] = new SetDefaultOutputConfigurator($config->getDefaultOutput());
-        $this->configurators[] = new SetExpressionLanguageConfigurator(
-            $this->expressionLanguageFactory ?? new ExpressionLanguageFactory()
-        );
-        $params = $config->getParams();
-
-        foreach ($config->getRuleProviders() as $provider) {
-            if (($provider instanceof RuleProviderInterface) === false) {
-                throw new InvalidRuleProviderException(\sprintf(
-                    'RuleProvider "%s" does not implement %s',
-                    \get_class($provider),
-                    RuleProviderInterface::class
-                ));
-            }
-
-            $this->configurators[] = new AddRulesConfigurator($provider->getRules($params));
-        }
-
-        return $this->configureDecision($decision);
     }
 
     public function createAffirmativeDecision(?string $name = null): DecisionInterface
@@ -164,14 +89,6 @@ final class DecisionFactory implements DecisionFactoryInterface
     }
 
     /**
-     * @deprecated since 2.3.7
-     */
-    public function setContainer(ContainerInterface $container): void
-    {
-        $this->container = $container;
-    }
-
-    /**
      * @param \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[] $configurators
      */
     private function addConfiguredDecision(DecisionInterface $decision, array $configurators): void
@@ -198,35 +115,5 @@ final class DecisionFactory implements DecisionFactoryInterface
         $this->addConfiguredDecision($decision, $decisionConfigs);
 
         return $decision;
-    }
-
-    /**
-     * @deprecated since 2.3.7
-     */
-    private function instantiateDecision(string $decisionType): DecisionInterface
-    {
-        $decision = null;
-
-        try {
-            if ($this->container !== null && $this->container->has($decisionType)) {
-                $decision = $this->container->get($decisionType);
-            }
-
-            if ($decision === null && \class_exists($decisionType)) {
-                $decision = new $decisionType();
-            }
-        } catch (\Throwable $exception) {
-            throw new InvalidDecisionException(\sprintf('Unable to instantiate decision for type "%s"', $decisionType));
-        }
-
-        if ($decision instanceof DecisionInterface) {
-            return $decision;
-        }
-
-        throw new InvalidDecisionException(\sprintf(
-            'Configured decision "%s" does not implement %s',
-            $decisionType,
-            DecisionInterface::class
-        ));
     }
 }

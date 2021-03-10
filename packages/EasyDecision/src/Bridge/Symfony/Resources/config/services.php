@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use EonX\EasyDecision\Bridge\Interfaces\TagsInterface;
+use EonX\EasyDecision\Bridge\BridgeConstantsInterface;
 use EonX\EasyDecision\Bridge\Symfony\DataCollector\DecisionDataCollector;
 use EonX\EasyDecision\Configurators\AddRulesDecisionConfigurator;
 use EonX\EasyDecision\Decisions\DecisionFactory;
@@ -23,7 +23,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services->set(AddRulesDecisionConfigurator::class)
-        ->arg('$rules', tagged_iterator(TagsInterface::DECISION_RULE));
+        ->arg('$rules', tagged_iterator(BridgeConstantsInterface::TAG_DECISION_RULE));
 
     $services->set(DecisionFactoryInterface::class, DecisionFactory::class)
         ->arg('$configurators', tagged_iterator('easy_decision.decision_configurator'));

@@ -4,15 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Interfaces;
 
-use Psr\Container\ContainerInterface;
-
 interface DecisionFactoryInterface
 {
-    /**
-     * @deprecated since 2.3.7
-     */
-    public function create(DecisionConfigInterface $config): DecisionInterface;
-
     public function createAffirmativeDecision(?string $name = null): DecisionInterface;
 
     public function createByName(string $name): DecisionInterface;
@@ -32,11 +25,6 @@ interface DecisionFactoryInterface
      * @return \EonX\EasyDecision\Interfaces\DecisionInterface[]
      */
     public function getConfiguredDecisions(): array;
-
-    /**
-     * @deprecated since 2.3.7
-     */
-    public function setContainer(ContainerInterface $container): void;
 
     public function reset(): void;
 }

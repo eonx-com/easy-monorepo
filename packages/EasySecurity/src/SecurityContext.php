@@ -14,7 +14,7 @@ use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
 
 /**
- * Class not final because each app MUST extend it and define their own return types.
+ * Class not final to allow apps to extend it.
  */
 class SecurityContext implements SecurityContextInterface
 {
@@ -131,7 +131,7 @@ class SecurityContext implements SecurityContextInterface
     }
 
     /**
-     * @return \EonX\EasySecurity\Interfaces\RoleInterface[]
+     * @return \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
     public function getRoles(): array
     {

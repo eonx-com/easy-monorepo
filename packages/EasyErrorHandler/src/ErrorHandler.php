@@ -120,7 +120,7 @@ final class ErrorHandler implements ErrorHandlerInterface
             }
         }
 
-        $this->builders = CollectorHelper::orderLowerPriorityFirst($builders);
+        $this->builders = CollectorHelper::orderLowerPriorityFirstAsArray($builders);
     }
 
     /**
@@ -140,7 +140,7 @@ final class ErrorHandler implements ErrorHandlerInterface
             }
         }
 
-        $this->reporters = CollectorHelper::orderLowerPriorityFirst($reporters);
+        $this->reporters = CollectorHelper::orderLowerPriorityFirstAsArray($reporters);
     }
 
     /**

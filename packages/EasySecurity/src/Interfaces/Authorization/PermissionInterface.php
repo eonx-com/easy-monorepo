@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Interfaces\Authorization;
 
-interface PermissionInterface extends \EonX\EasySecurity\Interfaces\PermissionInterface
+interface PermissionInterface
 {
     public function __toString(): string;
 

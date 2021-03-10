@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use EonX\EasyMonorepo\Release\PackagesListInReadmeReleaseWorker;
 use EonX\EasyMonorepo\Release\PushNextDevReleaseWorker;
 use EonX\EasyMonorepo\Release\TagVersionReleaseWorker;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -31,6 +32,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     # release workers - in order to execute
+    $services->set(PackagesListInReadmeReleaseWorker::class);
     $services->set(SetCurrentMutualDependenciesReleaseWorker::class);
     $services->set(AddTagToChangelogReleaseWorker::class);
     $services->set(TagVersionReleaseWorker::class);
