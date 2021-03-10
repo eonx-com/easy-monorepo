@@ -116,8 +116,14 @@ final class EasyCoreExtension extends Extension
      */
     private function loadIfBundlesExists(string $resource, $bundles): void
     {
+        $kernelBundles = $this->container->getParameter('kernel.bundles');
+
+        if (\is_array($kernelBundles) === false || \count($kernelBundles) < 1) {
+            return;
+        }
+
         foreach ((array)$bundles as $bundle) {
-            if (\in_array($bundle, $this->container->getParameter('kernel.bundles'), true) === false) {
+            if (\in_array($bundle, $kernelBundles, true) === false) {
                 return;
             }
         }

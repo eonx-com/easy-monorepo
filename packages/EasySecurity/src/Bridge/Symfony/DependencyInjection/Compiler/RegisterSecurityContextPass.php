@@ -34,11 +34,22 @@ final class RegisterSecurityContextPass implements CompilerPassInterface
         // Set definition using security context factory
         $container
             ->setDefinition($contextServiceId, new Definition(SecurityContextInterface::class))
-            ->setFactory([new Reference(SecurityContextFactoryInterface::class), 'create']);
+            ->setFactory([new Reference(SecurityContextFactoryInterface::class), 'create'])
+            ->setPublic(true);
+
+        if ($contextServiceId !== SecurityContextInterface::class) {
+            $container->setAlias(SecurityContextInterface::class, $contextServiceId);
+        }
     }
 
     private function getParameter(ContainerBuilder $container, string $param): ?string
     {
-        return $container->hasParameter($param) ? $container->getParameter($param) : null;
+        if ($container->hasParameter($param) === false) {
+            return null;
+        }
+
+        $value = $container->getParameter($param);
+
+        return \is_string($value) ? $value : null;
     }
 }

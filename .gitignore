@@ -8,5 +8,8 @@ coverage_output.txt
 # env
 .env.local.php
 
+# local secret stuff
+/secret
+
 # Symfony
 /var

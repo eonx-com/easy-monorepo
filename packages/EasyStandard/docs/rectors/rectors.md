@@ -3,15 +3,17 @@ title: 'EasyStandard: Rectors'
 weight: 2001
 ---eonx_docs---
 ##### [\EonX\EasyStandard\Rector\AddCoversAnnotationRector][1]
+
 Adds `@covers` annotation for test classes.
+
 ```php
-// before
+// Before
 class SomeServiceTest extends \PHPUnit\Framework\TestCase
 {
 }
 ```
 ```php
-// after
+// After
 /**
  * @covers \SomeService
  */
@@ -24,9 +26,11 @@ class SomeServiceTest extends \PHPUnit\Framework\TestCase
 - `replaceArray` - An array of strings that will be cut from the FQCN (Fully Qualified Class Name) when searching for the class covered by this test. Default value: `[]`.
 
 ##### [\EonX\EasyStandard\Rector\AddSeeAnnotationRector][2]
+
 Adds `@see` annotation for data providers.
+
 ```php
-// before
+// Before
 /**
  * Provides some data.
  *
@@ -37,7 +41,7 @@ public function provideSomeData(): array
 }
 ```
 ```php
-// after
+// After
 /**
  * Provides some data.
  *
@@ -50,30 +54,12 @@ public function provideSomeData(): array
 }
 ```
 
-##### [\EonX\EasyStandard\Rector\AnnotationsCommentsRector][3]
-Comments should have punctuation marks at the end of the sentence.
-```php
-// before
-/**
- * Some class
- */
-class SomeClass
-{
-}
-```
-```php
-// after
-/**
- * Some class.
- */
-class SomeClass
-{
-}
-```
-##### [\EonX\EasyStandard\Rector\ExplicitBoolCompareRector][4]
+##### [\EonX\EasyStandard\Rector\ExplicitBoolCompareRector][3]
+
 Makes bool conditions prettier.
+
 ```php
-// before
+// Before
 final class SomeController
 {
     public function run($items)
@@ -85,7 +71,7 @@ final class SomeController
 }
 ```
 ```php
-// after
+// After
 final class SomeController
 {
     public function run($items)
@@ -97,10 +83,12 @@ final class SomeController
 }
 ```
 
-##### [\EonX\EasyStandard\Rector\InheritDocRector][5]
+##### [\EonX\EasyStandard\Rector\InheritDocRector][4]
+
 Replaces `{@inheritdoc}` annotation with `{@inheritDoc}`.
+
 ```php
-// before
+// Before
 /**
  * {@inheritdoc}
  */
@@ -109,7 +97,7 @@ public function someMethod(): array
 }
 ```
 ```php
-//after
+// After
 /**
  * {@inheritDoc}
  */
@@ -118,10 +106,36 @@ public function someMethod(): array
 }
 ```
 
-##### [\EonX\EasyStandard\Rector\RestoreDefaultNullToNullableTypeParameterRector][6]
-Adds default null value to function arguments with PHP 7.1 nullable type.
+##### [\EonX\EasyStandard\Rector\PhpDocCommentRector][5]
+
+Applies the company standards to PHPDoc descriptions.
+
 ```php
-// before
+// Before
+/**
+ * some class
+ */
+class SomeClass()
+{
+}
+```
+
+```php
+// After
+/**
+ * Some class.
+ */
+class SomeClass()
+{
+}
+```
+
+##### [\EonX\EasyStandard\Rector\RestoreDefaultNullToNullableTypeParameterRector][6]
+
+Adds default null value to function arguments with PHP 7.1 nullable type.
+
+```php
+// Before
 class SomeClass
 {
     public function __construct(?string $value)
@@ -131,7 +145,7 @@ class SomeClass
 }
 ```
 ```php
-// after
+// After
 class SomeClass
 {
     public function __construct(?string $value = null)
@@ -141,21 +155,45 @@ class SomeClass
 }
 ```
 
-##### [\EonX\EasyStandard\Rector\StrictInArrayRector][7]
-Makes in_array calls strict.
+##### [\EonX\EasyStandard\Rector\SingleLineCommentRector][7]
+
+Applies the company standards to single-line comments.
+
 ```php
-// before
+// Before
+// some class.
+class SomeClass
+{
+}
+```
+
+```php
+// After
+// Some class
+class SomeClass
+{
+}
+```
+
+##### [\EonX\EasyStandard\Rector\StrictInArrayRector][8]
+
+Makes in_array calls strict.
+
+```php
+// Before
 \in_array($value, $items);
 ```
 ```php
-// after
+// After
 \in_array($value, $items, true);
 ```
 
-##### [\EonX\EasyStandard\Rector\UselessSingleAnnotationRector][8]
+##### [\EonX\EasyStandard\Rector\UselessSingleAnnotationRector][9]
+
 Removes PHPDoc completely if it contains only useless single annotation.
+
 ```php
-// before
+// Before
 /**
  * {@inheritDoc}
  */
@@ -164,7 +202,7 @@ public function someMethod(): array
 }
 ```
 ```php
-// after
+// After
 public function someMethod(): array
 {
 }
@@ -172,9 +210,10 @@ public function someMethod(): array
 
 [1]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/AddCoversAnnotationRector.php
 [2]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/AddSeeAnnotationRector.php
-[3]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/AnnotationsCommentsRector.php
-[4]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/ExplicitBoolCompareRector.php
-[5]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/InheritDocRector.php
+[3]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/ExplicitBoolCompareRector.php
+[4]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/InheritDocRector.php
+[5]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/PhpDocCommentRector.php
 [6]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/RestoreDefaultNullToNullableTypeParameterRector.php
 [7]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/StrictInArrayRector.php
 [8]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/UselessSingleAnnotationRector.php
+[9]: https://github.com/eonx-com/easy-monorepo/blob/master/packages/EasyStandard/src/Rector/UselessSingleAnnotationRector.php
