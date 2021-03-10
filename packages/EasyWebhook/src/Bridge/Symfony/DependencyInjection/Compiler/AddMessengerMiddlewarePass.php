@@ -20,12 +20,13 @@ final class AddMessengerMiddlewarePass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        if ($container->hasParameter(BridgeConstantsInterface::PARAM_BUS) === false ||
-            $container->hasDefinition($container->getParameter(BridgeConstantsInterface::PARAM_BUS)) === false) {
+        $busParam = $this->getParameter($container, BridgeConstantsInterface::PARAM_BUS);
+
+        if (\is_string($busParam) === false || $busParam === '') {
             return;
         }
 
-        $busDef = $container->getDefinition($container->getParameter(BridgeConstantsInterface::PARAM_BUS));
+        $busDef = $container->getDefinition($busParam);
         $middleware = $busDef->getArgument(0);
 
         if (($middleware instanceof IteratorArgument) === false) {
@@ -45,5 +46,16 @@ final class AddMessengerMiddlewarePass implements CompilerPassInterface
                 ->getDefinition(RetrySendWebhookMiddleware::class)
                 ->setArgument('$container', $def->getArgument(0));
         }
+    }
+
+    private function getParameter(ContainerBuilder $container, string $param): ?string
+    {
+        if ($container->hasParameter($param) === false) {
+            return null;
+        }
+
+        $value = $container->getParameter($param);
+
+        return \is_string($value) ? $value : null;
     }
 }

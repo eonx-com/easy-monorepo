@@ -44,6 +44,12 @@ final class RegisterSecurityContextPass implements CompilerPassInterface
 
     private function getParameter(ContainerBuilder $container, string $param): ?string
     {
-        return $container->hasParameter($param) ? $container->getParameter($param) : null;
+        if ($container->hasParameter($param) === false) {
+            return null;
+        }
+
+        $value = $container->getParameter($param);
+
+        return \is_string($value) ? $value : null;
     }
 }
