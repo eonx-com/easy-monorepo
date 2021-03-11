@@ -5,6 +5,7 @@ declare(strict_types=1);
 use EonX\EasyAsync\Batch\BatchFactory;
 use EonX\EasyAsync\Batch\BatchItemFactory;
 use EonX\EasyAsync\Batch\BatchItemProcessor;
+use EonX\EasyAsync\Batch\BatchUpdater;
 use EonX\EasyAsync\Batch\Store\DoctrineDbalBatchItemStore;
 use EonX\EasyAsync\Batch\Store\DoctrineDbalBatchStore;
 use EonX\EasyAsync\Bridge\BridgeConstantsInterface;
@@ -18,6 +19,7 @@ use EonX\EasyAsync\Interfaces\Batch\BatchItemFactoryInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemProcessorInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemStoreInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
+use EonX\EasyAsync\Interfaces\Batch\BatchUpdaterInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
@@ -61,4 +63,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$batchesTable', '%' . BridgeConstantsInterface::PARAM_BATCHES_TABLE . '%')
         ->arg('$batchItemsTable', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEMS_TABLE . '%')
         ->public();
+
+    // Updater
+    $services->set(BatchUpdaterInterface::class, BatchUpdater::class);
 };

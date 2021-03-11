@@ -10,7 +10,6 @@ use EonX\EasyAsync\Batch\Batch;
 use EonX\EasyAsync\Exceptions\Batch\BatchIdRequiredException;
 use EonX\EasyAsync\Exceptions\Batch\BatchNotFoundException;
 use EonX\EasyAsync\Interfaces\Batch\BatchInterface;
-use EonX\EasyAsync\Interfaces\Batch\BatchItemInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
 
 final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements BatchStoreInterface
@@ -18,6 +17,11 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
     public function __construct(Connection $conn, ?string $table = null)
     {
         parent::__construct($conn, $table ?? self::DEFAULT_TABLE);
+    }
+
+    public function cancelUpdate(): void
+    {
+        $this->conn->rollBack();
     }
 
     public function find(string $batchId): ?BatchInterface
@@ -29,6 +33,35 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
         ]);
 
         return \is_array($data) ? $this->instantiateBatch($data, $batchId) : null;
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \EonX\EasyAsync\Exceptions\Batch\BatchNotFoundException
+     * @throws \Throwable
+     */
+    public function findForUpdate(string $batchId): BatchInterface
+    {
+        $sql = \sprintf('SELECT * FROM %s WHERE id = :id FOR UPDATE', $this->table);
+
+        // Start transaction for concurrency
+        $this->conn->beginTransaction();
+
+        try {
+            $data = $this->conn->fetchAssociative($sql, [
+                'id' => $batchId,
+            ]);
+
+            if (\is_array($data) === false) {
+                throw new BatchNotFoundException(\sprintf('Batch "%s" not found for update', $batchId));
+            }
+
+            return $this->instantiateBatch($data, $batchId);
+        } catch (\Throwable $throwable) {
+            $this->cancelUpdate();
+
+            throw $throwable;
+        }
     }
 
     public function store(BatchInterface $batch): BatchInterface
@@ -60,76 +93,12 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
         return $batch;
     }
 
-    public function updateForItem(BatchInterface $batch, BatchItemInterface $batchItem): BatchInterface
+    public function storeForUpdate(BatchInterface $batch): BatchInterface
     {
-        if ($batch->getId() === null) {
-            throw new BatchIdRequiredException('Batch ID is required to store it.');
-        }
-
-        // We lock the batch to handle concurrency
-        $this->conn->beginTransaction();
-
-        try {
-            $batchData = $this->getBatchEssentialData($batch->getId());
-
-            // Update processed only on first attempt
-            if ($batchItem->isRetried() === false) {
-                $batch->setProcessed($batchData['processed'] + 1);
-            }
-
-            switch ($batchItem->getStatus()) {
-                case BatchItemInterface::STATUS_FAILED:
-                    $batch->setFailed($batchData['failed'] + 1);
-                    break;
-                case BatchItemInterface::STATUS_SUCCESS:
-                    $batch->setSucceeded($batchData['succeeded'] + 1);
-            }
-
-            // Start the batch timer
-            if ($batch->getStartedAt() === null) {
-                $batch->setStartedAt(Carbon::now('UTC'));
-                $batch->setStatus(BatchInterface::STATUS_PROCESSING);
-            }
-
-            // Last item of the batch
-            if ($batch->countTotal() === $batch->countProcessed()) {
-                $batch->setFinishedAt(Carbon::now('UTC'));
-                $batch->setStatus($batch->countFailed() > 0 ? BatchInterface::STATUS_FAILED : BatchInterface::STATUS_SUCCESS);
-            }
-
-            $this->conn->update($this->table, $this->formatData($batch->toArray()), ['id' => $batch->getId()]);
-            $this->conn->commit();
-        } catch (\Throwable $throwable) {
-            $this->conn->rollBack();
-
-            throw $throwable;
-        }
+        $this->conn->update($this->table, $this->formatData($batch->toArray()), ['id' => $batch->getId()]);
+        $this->conn->commit();
 
         return $batch;
-    }
-
-    /**
-     * @return mixed[]
-     *
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \EonX\EasyAsync\Exceptions\Batch\BatchNotFoundException
-     */
-    private function getBatchEssentialData(string $batchId): array
-    {
-        $sql = \sprintf(
-            'SELECT failed, processed, succeeded, total, status FROM %s WHERE id = :id FOR UPDATE',
-            $this->table
-        );
-
-        $data = $this->conn->fetchAssociative($sql, [
-            'id' => $batchId,
-        ]);
-
-        if (\is_array($data)) {
-            return $data;
-        }
-
-        throw new BatchNotFoundException(\sprintf('Batch "%s" not found for update', $batchId));
     }
 
     /**

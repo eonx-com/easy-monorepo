@@ -15,6 +15,7 @@ use EonX\EasyAsync\Interfaces\Batch\BatchItemInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemProcessorInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemStoreInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
+use EonX\EasyAsync\Interfaces\Batch\BatchUpdaterInterface;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class BatchItemProcessor implements BatchItemProcessorInterface
@@ -30,15 +31,22 @@ final class BatchItemProcessor implements BatchItemProcessorInterface
     private $batchStore;
 
     /**
+     * @var \EonX\EasyAsync\Interfaces\Batch\BatchUpdaterInterface
+     */
+    private $batchUpdater;
+
+    /**
      * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
      */
     private $dispatcher;
 
     public function __construct(
+        BatchUpdaterInterface $batchUpdater,
         BatchStoreInterface $batchStore,
         BatchItemStoreInterface $batchItemStore,
         EventDispatcherInterface $dispatcher
     ) {
+        $this->batchUpdater = $batchUpdater;
         $this->batchStore = $batchStore;
         $this->batchItemStore = $batchItemStore;
         $this->dispatcher = $dispatcher;
@@ -95,7 +103,7 @@ final class BatchItemProcessor implements BatchItemProcessorInterface
             $batchItem->setFinishedAt(Carbon::now('UTC'));
 
             $this->batchItemStore->store($batchItem);
-            $this->batchStore->updateForItem($batch, $batchItem);
+            $this->batchUpdater->updateForItem($batch, $batchItem);
         }
     }
 

@@ -11,9 +11,16 @@ interface BatchStoreInterface
      */
     public const DEFAULT_TABLE = 'easy_async_batches';
 
+    public function cancelUpdate(): void;
+
     public function find(string $batchId): ?BatchInterface;
+
+    /**
+     * @throws \EonX\EasyAsync\Exceptions\Batch\BatchNotFoundException
+     */
+    public function findForUpdate(string $batchId): BatchInterface;
 
     public function store(BatchInterface $batch): BatchInterface;
 
-    public function updateForItem(BatchInterface $batch, BatchItemInterface $batchItem): BatchInterface;
+    public function storeForUpdate(BatchInterface $batch): BatchInterface;
 }

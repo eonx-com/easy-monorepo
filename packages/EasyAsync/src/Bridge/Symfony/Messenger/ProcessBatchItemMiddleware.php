@@ -49,7 +49,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         $batchItemAttempts = $batchItemStamp !== null ? $batchItemStamp->getAttempts() : 0;
 
         $batchItem = $this->batchItemFactory->create($batchId, \get_class($envelope->getMessage()), $batchItemId);
-        $batchItem->setAttempts($batchItemAttempts + 1);
+        $batchItem->setAttempts($batchItemAttempts);
 
         try {
             return $this->processor->process($batchItem, $func);
@@ -58,7 +58,8 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
             throw new UnrecoverableMessageHandlingException($exception->getMessage());
         } catch (\Throwable $throwable) {
             // Allow to handle retry for existing batchItem by setting id, attempts on envelope for retry
-            $withBatchItemId = $envelope->with(new BatchItemStamp((string)$batchItem->getId(), $batchItemAttempts));
+            $newBatchItemStamp = new BatchItemStamp((string)$batchItem->getId(), $batchItem->getAttempts());
+            $withBatchItemId = $envelope->with($newBatchItemStamp);
 
             throw new HandlerFailedException($withBatchItemId, [$throwable]);
         }
