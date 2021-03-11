@@ -64,7 +64,7 @@ final class BatchUpdater implements BatchUpdaterInterface
                 $freshBatch->setStatus($batch->countFailed() > 0 ? BatchInterface::STATUS_FAILED : BatchInterface::STATUS_SUCCESS);
             }
 
-            $freshBatch = $this->store->storeForUpdate($freshBatch);
+            $freshBatch = $this->store->update($freshBatch);
 
             $this->store->finishUpdate();
 
