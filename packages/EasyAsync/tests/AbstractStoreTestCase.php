@@ -6,6 +6,7 @@ namespace EonX\EasyAsync\Tests;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use EonX\EasyAsync\Bridge\Doctrine\DbalStatementsProvider;
 use EonX\EasyAsync\Bridge\Doctrine\StatementProviders\SqliteStatementProvider;
 
 abstract class AbstractStoreTestCase extends AbstractTestCase
@@ -14,6 +15,11 @@ abstract class AbstractStoreTestCase extends AbstractTestCase
      * @var \Doctrine\DBAL\Connection
      */
     protected $doctrineDbal;
+
+    /**
+     * @var \EonX\EasyAsync\Bridge\Doctrine\DbalStatementsProvider
+     */
+    private $statementsProvider;
 
     /**
      * @throws \Doctrine\DBAL\Exception
@@ -29,12 +35,21 @@ abstract class AbstractStoreTestCase extends AbstractTestCase
         ]);
     }
 
+    protected function getStatementsProvider(): DbalStatementsProvider
+    {
+        if ($this->statementsProvider !== null) {
+            return $this->statementsProvider;
+        }
+
+        return $this->statementsProvider = new DbalStatementsProvider($this->getDoctrineDbalConnection());
+    }
+
     protected function setUp(): void
     {
         $conn = $this->getDoctrineDbalConnection();
         $conn->connect();
 
-        foreach (SqliteStatementProvider::migrateStatements() as $statement) {
+        foreach ($this->getStatementsProvider()->migrateStatements() as $statement) {
             $conn->executeStatement($statement);
         }
 
@@ -45,7 +60,7 @@ abstract class AbstractStoreTestCase extends AbstractTestCase
     {
         $conn = $this->getDoctrineDbalConnection();
 
-        foreach (SqliteStatementProvider::rollbackStatements() as $statement) {
+        foreach ($this->getStatementsProvider()->rollbackStatements() as $statement) {
             $conn->executeStatement($statement);
         }
 
