@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Batch\Store;
 
 use Doctrine\DBAL\Connection;
+use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
 use Nette\Utils\Json;
 
 abstract class AbstractDoctrineDbalStore
@@ -47,7 +48,7 @@ abstract class AbstractDoctrineDbalStore
             }
 
             if ($value instanceof \DateTimeInterface) {
-                return $value->format(self::DATETIME_FORMAT);
+                return $value->format(BatchStoreInterface::DATETIME_FORMAT);
             }
 
             if ($value instanceof \Throwable) {
