@@ -22,7 +22,7 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
 
     public function find(string $batchId): ?BatchInterface
     {
-        $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->getTableForQuery());
+        $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->table);
 
         $data = $this->conn->fetchAssociative($sql, [
             'id' => $batchId,
@@ -71,14 +71,18 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
 
         try {
             $batchData = $this->getBatchEssentialData($batch->getId());
-            $batch->setProcessed($batchData['processed']++);
+
+            // Update processed only on first attempt
+            if ($batchItem->isRetried() === false) {
+                $batch->setProcessed($batchData['processed'] + 1);
+            }
 
             switch ($batchItem->getStatus()) {
                 case BatchItemInterface::STATUS_FAILED:
-                    $batch->setFailed($batchData['failed']++);
+                    $batch->setFailed($batchData['failed'] + 1);
                     break;
                 case BatchItemInterface::STATUS_SUCCESS:
-                    $batch->setSucceeded($batchData['succeeded']++);
+                    $batch->setSucceeded($batchData['succeeded'] + 1);
             }
 
             // Start the batch timer
@@ -88,7 +92,7 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
             }
 
             // Last item of the batch
-            if ($batchData['total'] === $batchData['processed']) {
+            if ($batch->countTotal() === $batch->countProcessed()) {
                 $batch->setFinishedAt(Carbon::now('UTC'));
                 $batch->setStatus($batch->countFailed() > 0 ? BatchInterface::STATUS_FAILED : BatchInterface::STATUS_SUCCESS);
             }
@@ -114,7 +118,7 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
     {
         $sql = \sprintf(
             'SELECT failed, processed, succeeded, total, status FROM %s WHERE id = :id FOR UPDATE',
-            $this->getTableForQuery()
+            $this->table
         );
 
         $data = $this->conn->fetchAssociative($sql, [

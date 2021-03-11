@@ -120,6 +120,11 @@ final class BatchItem implements BatchItemInterface
         return $this->throwable;
     }
 
+    public function isRetried(): bool
+    {
+        return $this->getAttempts() > 1;
+    }
+
     public function setAttempts(int $attempts): BatchItemInterface
     {
         $this->attempts = $attempts;

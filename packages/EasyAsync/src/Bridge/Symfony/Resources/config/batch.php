@@ -59,5 +59,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(DbalStatementsProvider::class)
         ->arg('$conn', ref('doctrine.dbal.default_connection'))
         ->arg('$batchesTable', '%' . BridgeConstantsInterface::PARAM_BATCHES_TABLE . '%')
-        ->arg('$batchItemsTable', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEMS_TABLE . '%');
+        ->arg('$batchItemsTable', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEMS_TABLE . '%')
+        ->public();
 };

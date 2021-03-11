@@ -43,9 +43,13 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
             return $func();
         }
 
-        // Set batchItemId from envelope so we update existing batchItem
-        $batchItemId = $this->getBatchItemId($envelope);
+        // Check for existing batchItem data on envelope
+        $batchItemStamp = $this->getBatchItemStamp($envelope);
+        $batchItemId = $batchItemStamp !== null ? $batchItemStamp->getBatchItemId() : null;
+        $batchItemAttempts = $batchItemStamp !== null ? $batchItemStamp->getAttempts() : 0;
+
         $batchItem = $this->batchItemFactory->create($batchId, \get_class($envelope->getMessage()), $batchItemId);
+        $batchItem->setAttempts($batchItemAttempts + 1);
 
         try {
             return $this->processor->process($batchItem, $func);
@@ -53,8 +57,8 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
             // Do not retry if batch either not found or cancelled
             throw new UnrecoverableMessageHandlingException($exception->getMessage());
         } catch (\Throwable $throwable) {
-            // Allow to handle retry for existing batchItem by setting id on envelope for retry
-            $withBatchItemId = $envelope->with(new BatchItemStamp((string)$batchItem->getId()));
+            // Allow to handle retry for existing batchItem by setting id, attempts on envelope for retry
+            $withBatchItemId = $envelope->with(new BatchItemStamp((string)$batchItem->getId(), $batchItemAttempts));
 
             throw new HandlerFailedException($withBatchItemId, [$throwable]);
         }
@@ -73,12 +77,12 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         return $stamp !== null ? $stamp->getBatchId() : null;
     }
 
-    private function getBatchItemId(Envelope $envelope): ?string
+    private function getBatchItemStamp(Envelope $envelope): ?BatchItemStamp
     {
         /** @var null|\EonX\EasyAsync\Bridge\Symfony\Messenger\BatchItemStamp $stamp */
         $stamp = $envelope->last(BatchItemStamp::class);
 
-        return $stamp !== null ? $stamp->getBatchItemId() : null;
+        return $stamp;
     }
 
     private function getNextClosure(Envelope $envelope, StackInterface $stack): \Closure

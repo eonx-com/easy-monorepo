@@ -49,6 +49,8 @@ interface BatchItemInterface
 
     public function getThrowable(): ?\Throwable;
 
+    public function isRetried(): bool;
+
     public function setAttempts(int $attempts): self;
 
     public function setFinishedAt(\DateTimeInterface $finishedAt): self;
