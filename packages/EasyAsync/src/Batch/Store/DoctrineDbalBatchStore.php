@@ -120,6 +120,12 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
 
     private function insert(BatchInterface $batch): BatchInterface
     {
+        $now = Carbon::now('UTC');
+
+        $batch
+            ->setCreatedAt($now)
+            ->setUpdatedAt($now);
+
         $this->conn->insert($this->table, $this->formatData($batch->toArray()));
 
         return $batch;

@@ -6,17 +6,15 @@ namespace EonX\EasyAsync\Interfaces\Batch;
 
 interface BatchFactoryInterface
 {
-    public function create(?callable $itemsProvider = null): BatchInterface;
-
-    public function createFromCallable(callable $itemsProvider): BatchInterface;
+    public function createFromCallable(callable $itemsProvider, ?string $class = null): BatchInterface;
 
     /**
      * @param iterable<object> $items
      */
-    public function createFromIterable(iterable $items): BatchInterface;
+    public function createFromIterable(iterable $items, ?string $class = null): BatchInterface;
 
     /**
      * @param object $item
      */
-    public function createFromObject($item): BatchInterface;
+    public function createFromObject($item, ?string $class = null): BatchInterface;
 }

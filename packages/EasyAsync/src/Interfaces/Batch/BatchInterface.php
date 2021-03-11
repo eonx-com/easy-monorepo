@@ -39,6 +39,8 @@ interface BatchInterface
 
     public function countTotal(): int;
 
+    public function getCancelledAt(): ?\DateTimeInterface;
+
     public function getCreatedAt(): \DateTimeInterface;
 
     public function getFinishedAt(): ?\DateTimeInterface;
@@ -50,6 +52,8 @@ interface BatchInterface
      */
     public function getItems(): iterable;
 
+    public function getName(): ?string;
+
     public function getStartedAt(): ?\DateTimeInterface;
 
     public function getStatus(): string;
@@ -57,6 +61,8 @@ interface BatchInterface
     public function getThrowable(): ?\Throwable;
 
     public function getUpdatedAt(): \DateTimeInterface;
+
+    public function setCancelledAt(\DateTimeInterface $cancelledAt): self;
 
     public function setCreatedAt(\DateTimeInterface $createdAt): self;
 
@@ -72,6 +78,8 @@ interface BatchInterface
     public function setItems(iterable $items): self;
 
     public function setItemsProvider(callable $itemsProvider): self;
+
+    public function setName(string $name): self;
 
     public function setProcessed(int $processed): self;
 

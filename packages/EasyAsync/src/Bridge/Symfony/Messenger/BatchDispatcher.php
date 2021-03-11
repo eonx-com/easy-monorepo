@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Bridge\Symfony\Messenger;
 
 use EonX\EasyAsync\Exceptions\Batch\BatchIdRequiredException;
+use EonX\EasyAsync\Interfaces\Batch\BatchCancellerInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchDispatcherInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
@@ -18,13 +19,22 @@ final class BatchDispatcher implements BatchDispatcherInterface
     private $bus;
 
     /**
+     * @var \EonX\EasyAsync\Interfaces\Batch\BatchCancellerInterface
+     */
+    private $canceller;
+
+    /**
      * @var \EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface
      */
     private $store;
 
-    public function __construct(MessageBusInterface $bus, BatchStoreInterface $store)
-    {
+    public function __construct(
+        MessageBusInterface $bus,
+        BatchCancellerInterface $canceller,
+        BatchStoreInterface $store
+    ) {
         $this->bus = $bus;
+        $this->canceller = $canceller;
         $this->store = $store;
     }
 
@@ -56,9 +66,7 @@ final class BatchDispatcher implements BatchDispatcherInterface
             $batch->setTotal($total);
         } catch (\Throwable $throwable) {
             // If anything happens during dispatch, cancel batch
-            $batch
-                ->setThrowable($throwable)
-                ->setStatus(BatchInterface::STATUS_CANCELLED);
+            $this->canceller->cancel($batch, $throwable);
 
             throw $throwable;
         } finally {

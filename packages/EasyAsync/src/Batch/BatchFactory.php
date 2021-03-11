@@ -11,39 +11,55 @@ use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 final class BatchFactory implements BatchFactoryInterface
 {
     /**
+     * @var string
+     */
+    private $class;
+
+    /**
      * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
      */
     private $random;
 
-    public function __construct(RandomGeneratorInterface $random)
+    public function __construct(RandomGeneratorInterface $random, ?string $class = null)
     {
         $this->random = $random;
+        $this->class = $class ?? Batch::class;
     }
 
-    public function create(?callable $itemsProvider = null): BatchInterface
+    public function createFromCallable(callable $itemsProvider, ?string $class = null): BatchInterface
     {
-        return $this->modifyBatch(new Batch($itemsProvider));
-    }
+        $batch = $this
+            ->instantiateBatch($class)
+            ->setItemsProvider($itemsProvider);
 
-    public function createFromCallable(callable $itemsProvider): BatchInterface
-    {
-        return $this->modifyBatch(Batch::fromCallable($itemsProvider));
+        return $this->modifyBatch($batch);
     }
 
     /**
      * @param iterable<object> $items
      */
-    public function createFromIterable(iterable $items): BatchInterface
+    public function createFromIterable(iterable $items, ?string $class = null): BatchInterface
     {
-        return $this->modifyBatch(Batch::fromIterable($items));
+        $batch = $this
+            ->instantiateBatch($class)
+            ->setItems($items);
+
+        return $this->modifyBatch($batch);
     }
 
     /**
      * @param object $item
      */
-    public function createFromObject($item): BatchInterface
+    public function createFromObject($item, ?string $class = null): BatchInterface
     {
-        return $this->modifyBatch(Batch::fromObject($item));
+        return $this->createFromIterable([$item], $class);
+    }
+
+    private function instantiateBatch(?string $class = null): BatchInterface
+    {
+        $class = $class ?? $this->class;
+
+        return new $class();
     }
 
     private function modifyBatch(BatchInterface $batch): BatchInterface

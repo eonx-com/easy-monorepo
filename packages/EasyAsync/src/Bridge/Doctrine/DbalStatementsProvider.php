@@ -49,6 +49,8 @@ final class DbalStatementsProvider
         $batchesTable->addColumn('processed', 'integer');
         $batchesTable->addColumn('total', 'integer');
         $batchesTable->addColumn('status', 'string', ['length' => 50]);
+        $batchesTable->addColumn('name', 'string', ['notNull' => false]);
+        $batchesTable->addColumn('cancelled_at', 'datetime', ['notNull' => false]);
         $batchesTable->addColumn('started_at', 'datetime', ['notNull' => false]);
         $batchesTable->addColumn('finished_at', 'datetime', ['notNull' => false]);
         $batchesTable->addColumn('throwable', 'text');
