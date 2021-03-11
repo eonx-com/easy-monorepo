@@ -267,6 +267,7 @@ final class Batch implements BatchInterface
     public function toArray(): array
     {
         return [
+            'created_at' => $this->getCreatedAt(),
             'id' => $this->getId(),
             'failed' => $this->countFailed(),
             'finished_at' => $this->getFinishedAt(),
@@ -276,6 +277,7 @@ final class Batch implements BatchInterface
             'started_at' => $this->getStartedAt(),
             'status' => $this->getStatus(),
             'throwable' => $this->getThrowable(),
+            'updated_at' => $this->getUpdatedAt(),
         ];
     }
 
