@@ -29,9 +29,11 @@ final class BatchUpdater implements BatchUpdaterInterface
             throw new BatchIdRequiredException('Batch ID is required to store it.');
         }
 
-        $freshBatch = $this->store->findForUpdate($batch->getId());
+        $this->store->startUpdate();
 
         try {
+            $freshBatch = $this->store->findForUpdate($batch->getId());
+
             // Update processed only on first attempt
             if ($batchItem->isRetried() === false) {
                 $freshBatch->setProcessed($freshBatch->countProcessed() + 1);
@@ -62,7 +64,11 @@ final class BatchUpdater implements BatchUpdaterInterface
                 $freshBatch->setStatus($batch->countFailed() > 0 ? BatchInterface::STATUS_FAILED : BatchInterface::STATUS_SUCCESS);
             }
 
-            return $this->store->storeForUpdate($freshBatch);
+            $freshBatch = $this->store->storeForUpdate($freshBatch);
+
+            $this->store->finishUpdate();
+
+            return $freshBatch;
         } catch (\Throwable $throwable) {
             $this->store->cancelUpdate();
 

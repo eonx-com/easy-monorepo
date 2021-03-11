@@ -14,6 +14,16 @@ use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
 
 final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements BatchStoreInterface
 {
+    /**
+     * @var string
+     */
+    private const SAVEPOINT = 'easy_async_batch_savepoint';
+
+    /**
+     * @var bool
+     */
+    private $savepointActive = false;
+
     public function __construct(Connection $conn, ?string $table = null)
     {
         parent::__construct($conn, $table ?? self::DEFAULT_TABLE);
@@ -21,7 +31,9 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
 
     public function cancelUpdate(): void
     {
-        $this->conn->rollBack();
+        $this->savepointActive
+            ? $this->conn->rollbackSavepoint(self::SAVEPOINT)
+            : $this->conn->rollBack();
     }
 
     public function find(string $batchId): ?BatchInterface
@@ -44,24 +56,37 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
     {
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id FOR UPDATE', $this->table);
 
-        // Start transaction for concurrency
-        $this->conn->beginTransaction();
+        $data = $this->conn->fetchAssociative($sql, [
+            'id' => $batchId,
+        ]);
 
-        try {
-            $data = $this->conn->fetchAssociative($sql, [
-                'id' => $batchId,
-            ]);
-
-            if (\is_array($data) === false) {
-                throw new BatchNotFoundException(\sprintf('Batch "%s" not found for update', $batchId));
-            }
-
-            return $this->instantiateBatch($data, $batchId);
-        } catch (\Throwable $throwable) {
-            $this->cancelUpdate();
-
-            throw $throwable;
+        if (\is_array($data) === false) {
+            throw new BatchNotFoundException(\sprintf('Batch "%s" not found for update', $batchId));
         }
+
+        return $this->instantiateBatch($data, $batchId);
+    }
+
+    public function finishUpdate(): void
+    {
+        $this->savepointActive
+            ? $this->conn->releaseSavepoint(self::SAVEPOINT)
+            : $this->conn->commit();
+    }
+
+    public function startUpdate(): void
+    {
+        // If transaction active and savepoint supported, create new savepoint
+        if ($this->conn->isTransactionActive() && $this->conn->getDatabasePlatform()->supportsSavepoints()) {
+            $this->conn->createSavepoint(self::SAVEPOINT);
+            $this->savepointActive = true;
+
+            return;
+        }
+
+        // Otherwise create transaction
+        $this->savepointActive = false;
+        $this->conn->beginTransaction();
     }
 
     public function store(BatchInterface $batch): BatchInterface

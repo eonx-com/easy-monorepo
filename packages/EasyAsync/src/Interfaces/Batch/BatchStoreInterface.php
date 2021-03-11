@@ -20,6 +20,10 @@ interface BatchStoreInterface
      */
     public function findForUpdate(string $batchId): BatchInterface;
 
+    public function finishUpdate(): void;
+
+    public function startUpdate(): void;
+
     public function store(BatchInterface $batch): BatchInterface;
 
     public function storeForUpdate(BatchInterface $batch): BatchInterface;
