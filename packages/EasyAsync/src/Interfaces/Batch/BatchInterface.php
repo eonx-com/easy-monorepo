@@ -39,6 +39,8 @@ interface BatchInterface
 
     public function countTotal(): int;
 
+    public function getCreatedAt(): \DateTimeInterface;
+
     public function getFinishedAt(): ?\DateTimeInterface;
 
     public function getId(): ?string;
@@ -53,6 +55,10 @@ interface BatchInterface
     public function getStatus(): string;
 
     public function getThrowable(): ?\Throwable;
+
+    public function getUpdatedAt(): \DateTimeInterface;
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self;
 
     public function setFailed(int $failed): self;
 
@@ -78,6 +84,8 @@ interface BatchInterface
     public function setThrowable(\Throwable $throwable): self;
 
     public function setTotal(int $total): self;
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self;
 
     /**
      * @return mixed[]

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use EonX\EasyAsync\Batch\BatchFactory;
+use EonX\EasyAsync\Batch\BatchInstantiator;
 use EonX\EasyAsync\Batch\BatchItemFactory;
 use EonX\EasyAsync\Batch\BatchItemProcessor;
 use EonX\EasyAsync\Batch\BatchUpdater;
@@ -15,6 +16,7 @@ use EonX\EasyAsync\Bridge\Symfony\Messenger\DispatchBatchMiddleware;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\ProcessBatchItemMiddleware;
 use EonX\EasyAsync\Interfaces\Batch\BatchDispatcherInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchFactoryInterface;
+use EonX\EasyAsync\Interfaces\Batch\BatchInstantiatorInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemFactoryInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemProcessorInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemStoreInterface;
@@ -36,6 +38,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(BatchFactoryInterface::class, BatchFactory::class)
         ->set(BatchItemFactoryInterface::class, BatchItemFactory::class);
+
+    // Instantiator
+    $services->set(BatchInstantiatorInterface::class, BatchInstantiator::class);
 
     // Messenger
     $services

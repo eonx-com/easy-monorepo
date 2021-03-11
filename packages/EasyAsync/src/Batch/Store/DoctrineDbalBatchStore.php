@@ -6,9 +6,9 @@ namespace EonX\EasyAsync\Batch\Store;
 
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
-use EonX\EasyAsync\Batch\Batch;
 use EonX\EasyAsync\Exceptions\Batch\BatchIdRequiredException;
 use EonX\EasyAsync\Exceptions\Batch\BatchNotFoundException;
+use EonX\EasyAsync\Interfaces\Batch\BatchInstantiatorInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
 
@@ -20,12 +20,19 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
     private const SAVEPOINT = 'easy_async_batch_savepoint';
 
     /**
+     * @var \EonX\EasyAsync\Interfaces\Batch\BatchInstantiatorInterface
+     */
+    private $batchInstantiator;
+
+    /**
      * @var bool
      */
     private $savepointActive = false;
 
-    public function __construct(Connection $conn, ?string $table = null)
+    public function __construct(BatchInstantiatorInterface $batchInstantiator, Connection $conn, ?string $table = null)
     {
+        $this->batchInstantiator = $batchInstantiator;
+
         parent::__construct($conn, $table ?? self::DEFAULT_TABLE);
     }
 
@@ -44,7 +51,7 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
             'id' => $batchId,
         ]);
 
-        return \is_array($data) ? $this->instantiateBatch($data, $batchId) : null;
+        return \is_array($data) ? $this->batchInstantiator->instantiateFromArray($data) : null;
     }
 
     /**
@@ -64,7 +71,7 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
             throw new BatchNotFoundException(\sprintf('Batch "%s" not found for update', $batchId));
         }
 
-        return $this->instantiateBatch($data, $batchId);
+        return $this->batchInstantiator->instantiateFromArray($data);
     }
 
     public function finishUpdate(): void
@@ -96,64 +103,24 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
         }
 
         $exists = $this->existsInDb($batch->getId());
-        $data = $batch->toArray();
-        $now = Carbon::now('UTC');
 
-        // Always set updated_at
-        $data['updated_at'] = $now;
-
-        // New batch item, insert
-        if ($exists === false) {
-            // Set created_at on new batch item only
-            $data['created_at'] = $now;
-
-            $this->conn->insert($this->table, $this->formatData($data));
-
-            return $batch;
-        }
-
-        // Existing batch item, update
-        $this->conn->update($this->table, $this->formatData($data), ['id' => $batch->getId()]);
-
-        return $batch;
+        return $exists === false
+            ? $this->insert($batch)
+            : $this->update($batch);
     }
 
-    public function storeForUpdate(BatchInterface $batch): BatchInterface
+    public function update(BatchInterface $batch): BatchInterface
     {
+        $batch->setUpdatedAt(Carbon::now('UTC'));
+
         $this->conn->update($this->table, $this->formatData($batch->toArray()), ['id' => $batch->getId()]);
-        $this->conn->commit();
 
         return $batch;
     }
 
-    /**
-     * @param mixed[] $data
-     */
-    private function instantiateBatch(array $data, string $batchId): BatchInterface
+    private function insert(BatchInterface $batch): BatchInterface
     {
-        $batch = (new Batch())
-            ->setFailed((int)($data['failed'] ?? 0))
-            ->setId($data['id'] ?? $batchId)
-            ->setProcessed((int)($data['processed'] ?? 0))
-            ->setStatus($data['status'] ?? BatchInterface::STATUS_PENDING)
-            ->setSucceeded((int)($data['succeeded'] ?? 0))
-            ->setTotal((int)($data['total'] ?? 0));
-
-        if (isset($data['finished_at'])) {
-            $finishedAt = Carbon::createFromFormat(self::DATETIME_FORMAT, $data['finished_at']);
-
-            if ($finishedAt instanceof Carbon) {
-                $batch->setFinishedAt($finishedAt);
-            }
-        }
-
-        if (isset($data['started_at'])) {
-            $startedAt = Carbon::createFromFormat(self::DATETIME_FORMAT, $data['started_at']);
-
-            if ($startedAt instanceof Carbon) {
-                $batch->setFinishedAt($startedAt);
-            }
-        }
+        $this->conn->insert($this->table, $this->formatData($batch->toArray()));
 
         return $batch;
     }

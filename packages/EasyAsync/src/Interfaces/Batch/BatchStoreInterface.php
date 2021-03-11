@@ -9,6 +9,11 @@ interface BatchStoreInterface
     /**
      * @var string
      */
+    public const DATETIME_FORMAT = 'Y-m-d H:i:s';
+
+    /**
+     * @var string
+     */
     public const DEFAULT_TABLE = 'easy_async_batches';
 
     public function cancelUpdate(): void;
@@ -26,5 +31,5 @@ interface BatchStoreInterface
 
     public function store(BatchInterface $batch): BatchInterface;
 
-    public function storeForUpdate(BatchInterface $batch): BatchInterface;
+    public function update(BatchInterface $batch): BatchInterface;
 }

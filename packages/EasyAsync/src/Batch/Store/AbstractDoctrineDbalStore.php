@@ -10,11 +10,6 @@ use Nette\Utils\Json;
 abstract class AbstractDoctrineDbalStore
 {
     /**
-     * @var string
-     */
-    public const DATETIME_FORMAT = 'Y-m-d H:i:s';
-
-    /**
      * @var \Doctrine\DBAL\Connection
      */
     protected $conn;

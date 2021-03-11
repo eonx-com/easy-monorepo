@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Batch;
 
+use Carbon\Carbon;
 use EonX\EasyAsync\Interfaces\Batch\BatchInterface;
 
 final class Batch implements BatchInterface
 {
+    /**
+     * @var \DateTimeInterface
+     */
+    private $createdAt;
+
     /**
      * @var int
      */
@@ -58,14 +64,23 @@ final class Batch implements BatchInterface
      */
     private $total;
 
+    /**
+     * @var \DateTimeInterface
+     */
+    private $updatedAt;
+
     public function __construct(?callable $itemsProvider = null)
     {
+        $now = Carbon::now('UTC');
+
+        $this->createdAt = $now;
         $this->itemsProvider = $itemsProvider;
         $this->status = self::STATUS_PENDING;
         $this->failed = 0;
         $this->processed = 0;
         $this->succeeded = 0;
         $this->total = 0;
+        $this->updatedAt = $now;
     }
 
     public static function fromCallable(callable $itemsProvider): self
@@ -109,6 +124,11 @@ final class Batch implements BatchInterface
         return $this->total;
     }
 
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
     public function getFinishedAt(): ?\DateTimeInterface
     {
         return $this->finishedAt;
@@ -140,6 +160,18 @@ final class Batch implements BatchInterface
     public function getThrowable(): ?\Throwable
     {
         return $this->throwable;
+    }
+
+    public function getUpdatedAt(): \DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): BatchInterface
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     public function setFailed(int $failed): BatchInterface
@@ -218,6 +250,13 @@ final class Batch implements BatchInterface
     public function setTotal(int $total): BatchInterface
     {
         $this->total = $total;
+
+        return $this;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): BatchInterface
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
