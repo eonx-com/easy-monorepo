@@ -39,7 +39,7 @@ abstract class AbstractBatch implements BatchInterface
     private $itemsProvider;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $name;
 
@@ -205,7 +205,7 @@ abstract class AbstractBatch implements BatchInterface
         return $this;
     }
 
-    public function setName(string $name): BatchInterface
+    public function setName(?string $name = null): BatchInterface
     {
         $this->name = $name;
 

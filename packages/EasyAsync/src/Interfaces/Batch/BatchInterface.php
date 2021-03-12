@@ -79,7 +79,7 @@ interface BatchInterface
 
     public function setItemsProvider(callable $itemsProvider): self;
 
-    public function setName(string $name): self;
+    public function setName(?string $name = null): self;
 
     public function setProcessed(int $processed): self;
 

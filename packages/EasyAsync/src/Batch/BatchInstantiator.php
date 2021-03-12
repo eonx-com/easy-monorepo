@@ -15,6 +15,7 @@ final class BatchInstantiator implements BatchInstantiatorInterface
      * @var string[]
      */
     private const DATE_TIMES = [
+        'cancelled_at' => 'setCancelledAt',
         'finished_at' => 'setFinishedAt',
         'started_at' => 'setStartedAt',
         'created_at' => 'setCreatedAt',
@@ -38,6 +39,7 @@ final class BatchInstantiator implements BatchInstantiatorInterface
     {
         $batch = (new Batch())
             ->setId($data['id'])
+            ->setName($data['name'] ?? null)
             ->setFailed((int)($data['failed'] ?? 0))
             ->setProcessed((int)($data['processed'] ?? 0))
             ->setStatus($data['status'] ?? BatchInterface::STATUS_PENDING)

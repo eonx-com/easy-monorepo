@@ -53,7 +53,7 @@ final class DbalStatementsProvider
         $batchesTable->addColumn('cancelled_at', 'datetime', ['notNull' => false]);
         $batchesTable->addColumn('started_at', 'datetime', ['notNull' => false]);
         $batchesTable->addColumn('finished_at', 'datetime', ['notNull' => false]);
-        $batchesTable->addColumn('throwable', 'text');
+        $batchesTable->addColumn('throwable', 'text', ['notNull' => false]);
         $batchesTable->addColumn('created_at', 'datetime');
         $batchesTable->addColumn('updated_at', 'datetime');
         $batchesTable->setPrimaryKey(['id']);
