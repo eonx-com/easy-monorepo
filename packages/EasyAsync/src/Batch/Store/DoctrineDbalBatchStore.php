@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use EonX\EasyAsync\Exceptions\Batch\BatchIdRequiredException;
 use EonX\EasyAsync\Exceptions\Batch\BatchNotFoundException;
-use EonX\EasyAsync\Interfaces\Batch\BatchInstantiatorInterface;
+use EonX\EasyAsync\Interfaces\Batch\BatchFactoryInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
 
@@ -20,18 +20,18 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
     private const SAVEPOINT = 'easy_async_batch_savepoint';
 
     /**
-     * @var \EonX\EasyAsync\Interfaces\Batch\BatchInstantiatorInterface
+     * @var \EonX\EasyAsync\Interfaces\Batch\BatchFactoryInterface
      */
-    private $batchInstantiator;
+    private $batchFactory;
 
     /**
      * @var bool
      */
     private $savepointActive = false;
 
-    public function __construct(BatchInstantiatorInterface $batchInstantiator, Connection $conn, ?string $table = null)
+    public function __construct(BatchFactoryInterface $batchFactory, Connection $conn, ?string $table = null)
     {
-        $this->batchInstantiator = $batchInstantiator;
+        $this->batchFactory = $batchFactory;
 
         parent::__construct($conn, $table ?? self::DEFAULT_TABLE);
     }
@@ -51,7 +51,7 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
             'id' => $batchId,
         ]);
 
-        return \is_array($data) ? $this->batchInstantiator->instantiateFromArray($data) : null;
+        return \is_array($data) ? $this->batchFactory->instantiateFromArray($data) : null;
     }
 
     /**
@@ -71,7 +71,7 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
             throw new BatchNotFoundException(\sprintf('Batch "%s" not found for update', $batchId));
         }
 
-        return $this->batchInstantiator->instantiateFromArray($data);
+        return $this->batchFactory->instantiateFromArray($data);
     }
 
     public function finishUpdate(): void

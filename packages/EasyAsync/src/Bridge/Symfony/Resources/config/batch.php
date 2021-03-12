@@ -18,7 +18,6 @@ use EonX\EasyAsync\Bridge\Symfony\Messenger\ProcessBatchItemMiddleware;
 use EonX\EasyAsync\Interfaces\Batch\BatchCancellerInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchDispatcherInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchFactoryInterface;
-use EonX\EasyAsync\Interfaces\Batch\BatchInstantiatorInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemFactoryInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemProcessorInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemStoreInterface;
@@ -45,9 +44,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_DEFAULT_CLASS . '%');
 
     $services->set(BatchItemFactoryInterface::class, BatchItemFactory::class);
-
-    // Instantiator
-    $services->set(BatchInstantiatorInterface::class, BatchInstantiator::class);
 
     // Messenger
     $services

@@ -267,6 +267,7 @@ abstract class AbstractBatch implements BatchInterface
     public function toArray(): array
     {
         return [
+            'class' => \get_class($this),
             'cancelled_at' => $this->getCancelledAt(),
             'created_at' => $this->getCreatedAt(),
             'id' => $this->getId(),

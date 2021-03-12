@@ -17,4 +17,9 @@ interface BatchFactoryInterface
      * @param object $item
      */
     public function createFromObject($item, ?string $class = null): BatchInterface;
+
+    /**
+     * @param mixed[] $data
+     */
+    public function instantiateFromArray(array $data): BatchInterface;
 }

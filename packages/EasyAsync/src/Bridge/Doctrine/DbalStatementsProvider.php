@@ -44,6 +44,7 @@ final class DbalStatementsProvider
 
         $batchesTable = $schema->createTable($this->batchesTable);
         $batchesTable->addColumn('id', 'guid');
+        $batchesTable->addColumn('class', 'string', ['length' => 191]);
         $batchesTable->addColumn('failed', 'integer');
         $batchesTable->addColumn('succeeded', 'integer');
         $batchesTable->addColumn('processed', 'integer');
