@@ -14,7 +14,7 @@ final class DoctrineDbalBatchStoreTest extends AbstractStoreTestCase
     public function testFindReturnsNull(): void
     {
         $conn = $this->getDoctrineDbalConnection();
-        $store = new DoctrineDbalBatchStore($conn);
+        $store = new DoctrineDbalBatchStore($this->getBatchFactory(), $conn);
 
         self::assertNull($store->find('invalid'));
     }
@@ -22,7 +22,7 @@ final class DoctrineDbalBatchStoreTest extends AbstractStoreTestCase
     public function testStoreAndFind(): void
     {
         $conn = $this->getDoctrineDbalConnection();
-        $store = new DoctrineDbalBatchStore($conn);
+        $store = new DoctrineDbalBatchStore($this->getBatchFactory(), $conn);
         $batchId = 'batch-id';
 
         $batch = new Batch();

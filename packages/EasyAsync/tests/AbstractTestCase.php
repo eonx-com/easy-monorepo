@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests;
 
+use EonX\EasyAsync\Batch\BatchFactory;
+use EonX\EasyAsync\Interfaces\Batch\BatchFactoryInterface;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
@@ -14,9 +16,19 @@ use Symfony\Component\Filesystem\Filesystem;
 abstract class AbstractTestCase extends TestCase
 {
     /**
+     * @var \EonX\EasyAsync\Interfaces\Batch\BatchFactoryInterface
+     */
+    private $batchFactory;
+
+    /**
      * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
      */
     private $random;
+
+    protected function getBatchFactory(): BatchFactoryInterface
+    {
+        return $this->batchFactory = $this->batchFactory ?? new BatchFactory($this->getRandomGenerator());
+    }
 
     protected function getRandomGenerator(): RandomGeneratorInterface
     {

@@ -7,7 +7,6 @@ namespace EonX\EasyAsync\Tests;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use EonX\EasyAsync\Bridge\Doctrine\DbalStatementsProvider;
-use EonX\EasyAsync\Bridge\Doctrine\StatementProviders\SqliteStatementProvider;
 
 abstract class AbstractStoreTestCase extends AbstractTestCase
 {
