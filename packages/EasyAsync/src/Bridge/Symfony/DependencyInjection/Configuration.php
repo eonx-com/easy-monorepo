@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\DependencyInjection;
 
+use EonX\EasyAsync\Batch\Batch;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemStoreInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -20,6 +21,7 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('batch')
                     ->addDefaultsIfNotSet()
                     ->children()
+                        ->scalarNode('default_batch_class')->defaultValue(Batch::class)->end()
                         ->scalarNode('batches_table')->defaultValue(BatchStoreInterface::DEFAULT_TABLE)->end()
                         ->scalarNode('batch_items_table')->defaultValue(BatchItemStoreInterface::DEFAULT_TABLE)->end()
                         ->arrayNode('messenger_buses')

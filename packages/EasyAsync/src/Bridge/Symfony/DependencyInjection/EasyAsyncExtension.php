@@ -25,6 +25,7 @@ final class EasyAsyncExtension extends Extension
      * @var string[]
      */
     private const BATCH_PARAMS = [
+        'default_batch_class' => BridgeConstantsInterface::PARAM_BATCH_DEFAULT_CLASS,
         'batches_table' => BridgeConstantsInterface::PARAM_BATCHES_TABLE,
         'batch_items_table' => BridgeConstantsInterface::PARAM_BATCH_ITEMS_TABLE,
         'messenger_buses' => BridgeConstantsInterface::PARAM_BATCH_MESSENGER_BUSES,

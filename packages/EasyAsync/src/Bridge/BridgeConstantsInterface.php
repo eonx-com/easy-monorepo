@@ -9,6 +9,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_BATCH_DEFAULT_CLASS = 'easy_async.batch_default_class';
+
+    /**
+     * @var string
+     */
     public const PARAM_BATCHES_TABLE = 'easy_async.batches_table';
 
     /**
