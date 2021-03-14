@@ -113,7 +113,9 @@ final class DoctrineDbalBatchStore extends AbstractDoctrineDbalStore implements 
     {
         $batch->setUpdatedAt(Carbon::now('UTC'));
 
-        $this->conn->update($this->table, $this->formatData($batch->toArray()), ['id' => $batch->getId()]);
+        $this->conn->update($this->table, $this->formatData($batch->toArray()), [
+            'id' => $batch->getId(),
+        ]);
 
         return $batch;
     }

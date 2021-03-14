@@ -11,12 +11,9 @@ abstract class AbstractBatchTestCase extends AbstractTestCase
      */
     public function providerTestFromCallable(): iterable
     {
-        yield 'simple' => [
-            static function (): iterable {
-                yield new \stdClass();
-            },
-            1,
-        ];
+        yield 'simple' => [static function (): iterable {
+            yield new \stdClass();
+        }, 1];
     }
 
     /**
@@ -24,9 +21,6 @@ abstract class AbstractBatchTestCase extends AbstractTestCase
      */
     public function providerTestFromIterable(): iterable
     {
-        yield 'array' => [
-            [new \stdClass()],
-            1,
-        ];
+        yield 'array' => [[new \stdClass()], 1];
     }
 }

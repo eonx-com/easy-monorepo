@@ -21,6 +21,7 @@ use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayOpenerNewlineFixer;
@@ -153,6 +154,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         UselessVariableSniff::class . '.UselessVariable' => [__DIR__ . '/packages/EasySchedule/src/Schedule.php'],
         UnusedPrivateElementsSniff::class . '.WriteOnlyProperty' => [
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php',
+        ],
+        UnusedVariableSniff::class . '.UnusedVariable' => [
+            __DIR__ . '/packages/EasyAsync/src/Bridge/Symfony/DependencyInjection/Compiler/AddBatchMiddlewareToMessengerBusesPass.php',
         ],
         ReferenceThrowableOnlySniff::class . '.ReferencedGeneralException' => [
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php',

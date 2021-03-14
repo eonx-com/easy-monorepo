@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use EonX\EasyAsync\Batch\BatchCanceller;
 use EonX\EasyAsync\Batch\BatchFactory;
-use EonX\EasyAsync\Batch\BatchInstantiator;
 use EonX\EasyAsync\Batch\BatchItemFactory;
 use EonX\EasyAsync\Batch\BatchItemProcessor;
 use EonX\EasyAsync\Batch\BatchUpdater;
@@ -24,6 +23,7 @@ use EonX\EasyAsync\Interfaces\Batch\BatchItemStoreInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchUpdaterInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {

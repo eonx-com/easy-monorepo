@@ -10,7 +10,8 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanity(): void
     {
-        $container = $this->getKernel()->getContainer();
+        $container = $this->getKernel()
+            ->getContainer();
 
         self::assertInstanceOf(BatchFactoryInterface::class, $container->get(BatchFactoryInterface::class));
     }

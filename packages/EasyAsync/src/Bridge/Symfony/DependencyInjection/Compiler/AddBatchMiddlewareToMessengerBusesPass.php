@@ -36,7 +36,7 @@ final class AddBatchMiddlewareToMessengerBusesPass implements CompilerPassInterf
                 ? $busId
                 : \sprintf('%s%s', self::MESSENGER_BUS_PREFIX, $busId);
         }, $buses);
-        
+
         foreach ($container->findTaggedServiceIds(self::MESSENGER_BUS_TAG) as $busId => $tags) {
             // Add middleware only to configured buses
             if ($allBuses === false && \in_array($busId, $buses, true) === false) {

@@ -36,7 +36,9 @@ final class DoctrineDbalBatchItemStore extends AbstractDoctrineDbalStore impleme
         }
 
         // Existing batch item, update
-        $this->conn->update($this->table, $this->formatData($data), ['id' => $batchItem->getId()]);
+        $this->conn->update($this->table, $this->formatData($data), [
+            'id' => $batchItem->getId(),
+        ]);
 
         return $batchItem;
     }

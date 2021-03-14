@@ -68,17 +68,31 @@ final class DbalStatementsProvider
 
         $batchesTable = $schema->createTable($this->batchesTable);
         $batchesTable->addColumn('id', 'guid');
-        $batchesTable->addColumn('class', 'string', ['length' => 191]);
+        $batchesTable->addColumn('class', 'string', [
+            'length' => 191,
+        ]);
         $batchesTable->addColumn('failed', 'integer');
         $batchesTable->addColumn('succeeded', 'integer');
         $batchesTable->addColumn('processed', 'integer');
         $batchesTable->addColumn('total', 'integer');
-        $batchesTable->addColumn('status', 'string', ['length' => 50]);
-        $batchesTable->addColumn('name', 'string', ['notNull' => false]);
-        $batchesTable->addColumn('cancelled_at', 'datetime', ['notNull' => false]);
-        $batchesTable->addColumn('started_at', 'datetime', ['notNull' => false]);
-        $batchesTable->addColumn('finished_at', 'datetime', ['notNull' => false]);
-        $batchesTable->addColumn('throwable', 'text', ['notNull' => false]);
+        $batchesTable->addColumn('status', 'string', [
+            'length' => 50,
+        ]);
+        $batchesTable->addColumn('name', 'string', [
+            'notNull' => false,
+        ]);
+        $batchesTable->addColumn('cancelled_at', 'datetime', [
+            'notNull' => false,
+        ]);
+        $batchesTable->addColumn('started_at', 'datetime', [
+            'notNull' => false,
+        ]);
+        $batchesTable->addColumn('finished_at', 'datetime', [
+            'notNull' => false,
+        ]);
+        $batchesTable->addColumn('throwable', 'text', [
+            'notNull' => false,
+        ]);
         $batchesTable->addColumn('created_at', 'datetime');
         $batchesTable->addColumn('updated_at', 'datetime');
         $batchesTable->setPrimaryKey(['id']);
@@ -86,14 +100,25 @@ final class DbalStatementsProvider
         $batchItemsTable = $schema->createTable($this->batchItemsTable);
         $batchItemsTable->addColumn('id', 'guid');
         $batchItemsTable->addColumn('batch_id', 'guid');
-        $batchItemsTable->addColumn('target_class', 'string', ['length' => 191]);
-        $batchItemsTable->addColumn('status', 'string', ['length' => 50]);
+        $batchItemsTable->addColumn('target_class', 'string', [
+            'length' => 191,
+        ]);
+        $batchItemsTable->addColumn('status', 'string', [
+            'length' => 50,
+        ]);
         $batchItemsTable->addColumn('started_at', 'datetime');
         $batchItemsTable->addColumn('finished_at', 'datetime');
         $batchItemsTable->addColumn('attempts', 'integer');
-        $batchItemsTable->addColumn('reason', 'string', ['length' => 191, 'notNull' => false]);
-        $batchItemsTable->addColumn('reason_params', 'text', ['notNull' => false]);
-        $batchItemsTable->addColumn('throwable', 'text', ['notNull' => false]);
+        $batchItemsTable->addColumn('reason', 'string', [
+            'length' => 191,
+            'notNull' => false,
+        ]);
+        $batchItemsTable->addColumn('reason_params', 'text', [
+            'notNull' => false,
+        ]);
+        $batchItemsTable->addColumn('throwable', 'text', [
+            'notNull' => false,
+        ]);
         $batchItemsTable->addColumn('created_at', 'datetime');
         $batchItemsTable->addColumn('updated_at', 'datetime');
         $batchItemsTable->setPrimaryKey(['id']);
