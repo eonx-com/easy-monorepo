@@ -7,6 +7,9 @@ namespace EonX\EasyAsync\Helpers;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
 use Nette\Utils\Strings;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 3.1. Use Batch features instead.
+ */
 final class PropertyHelper
 {
     public static function getSetterName(string $property): string

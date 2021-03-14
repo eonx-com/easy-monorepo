@@ -11,6 +11,9 @@ use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 3.1. Use Batch features instead.
+ */
 abstract class AbstractPersister
 {
     /**

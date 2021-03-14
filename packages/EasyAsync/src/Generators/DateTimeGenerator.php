@@ -7,6 +7,9 @@ namespace EonX\EasyAsync\Generators;
 use EonX\EasyAsync\Exceptions\UnableToGenerateDateTimeException;
 use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 3.1. Use Batch features instead.
+ */
 final class DateTimeGenerator implements DateTimeGeneratorInterface
 {
     /**

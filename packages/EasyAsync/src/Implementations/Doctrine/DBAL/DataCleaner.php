@@ -13,6 +13,9 @@ use EonX\EasyAsync\Interfaces\JobPersisterInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 3.1. Use Batch features instead.
+ */
 final class DataCleaner implements DataCleanerInterface
 {
     /**

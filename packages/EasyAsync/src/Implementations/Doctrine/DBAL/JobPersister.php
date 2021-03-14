@@ -15,6 +15,9 @@ use EonX\EasyAsync\Interfaces\TargetInterface;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 3.1. Use Batch features instead.
+ */
 final class JobPersister extends AbstractPersister implements JobPersisterInterface
 {
     public function find(string $jobId): JobInterface
