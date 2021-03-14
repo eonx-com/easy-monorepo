@@ -26,11 +26,35 @@ final class DbalStatementsProvider
      */
     private $conn;
 
+    /**
+     * @var callable
+     */
+    private $extendBatchItemsTable;
+
+    /**
+     * @var callable
+     */
+    private $extendBatchesTable;
+
     public function __construct(Connection $conn, ?string $batchesTable = null, ?string $batchItemsTable = null)
     {
         $this->conn = $conn;
         $this->batchesTable = $batchesTable ?? BatchStoreInterface::DEFAULT_TABLE;
         $this->batchItemsTable = $batchItemsTable ?? BatchItemStoreInterface::DEFAULT_TABLE;
+    }
+
+    public function extendBatchItemsTable(callable $callable): self
+    {
+        $this->extendBatchItemsTable = $callable;
+
+        return $this;
+    }
+
+    public function extendBatchesTable(callable $callable): self
+    {
+        $this->extendBatchesTable = $callable;
+
+        return $this;
     }
 
     /**
@@ -73,6 +97,14 @@ final class DbalStatementsProvider
         $batchItemsTable->addColumn('created_at', 'datetime');
         $batchItemsTable->addColumn('updated_at', 'datetime');
         $batchItemsTable->setPrimaryKey(['id']);
+
+        if ($this->extendBatchesTable !== null) {
+            \call_user_func($this->extendBatchesTable, $batchesTable);
+        }
+
+        if ($this->extendBatchItemsTable !== null) {
+            \call_user_func($this->extendBatchItemsTable, $batchItemsTable);
+        }
 
         return $schema->toSql($this->conn->getDatabasePlatform());
     }
