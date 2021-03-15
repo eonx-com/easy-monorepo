@@ -15,7 +15,6 @@ jobs:
                     - { name: monorepo, coverage: none, run: composer check-monorepo }
                     - { name: composer, coverage: none, run: composer check-composer }
                     - { name: phpstan, coverage: none, run: composer check-phpstan }
-                    # - { name: security, coverage: none, run: composer check-security }
                     # - { name: rector, coverage: none, run: composer check-rector }
 
                     # -   name: tests
@@ -40,3 +39,10 @@ jobs:
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
                 shell: bash
+
+    security-checker:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-security-checker@v2
