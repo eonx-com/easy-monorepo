@@ -7,6 +7,9 @@ namespace EonX\EasyAsync\Events;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
 use Throwable;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 3.1. Use Batch features instead.
+ */
 final class JobLogFailedEvent extends AbstractJobLogEvent
 {
     /**

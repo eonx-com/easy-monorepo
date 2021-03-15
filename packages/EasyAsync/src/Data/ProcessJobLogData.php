@@ -7,6 +7,9 @@ namespace EonX\EasyAsync\Data;
 use EonX\EasyAsync\Interfaces\ProcessJobLogDataInterface;
 use EonX\EasyAsync\Interfaces\TargetInterface;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 3.1. Use Batch features instead.
+ */
 final class ProcessJobLogData implements ProcessJobLogDataInterface
 {
     /**
