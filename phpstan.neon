@@ -1,6 +1,10 @@
 includes:
     - 'vendor/symplify/phpstan-extensions/config/config.neon'
 
+services:
+    - class: EonX\EasyMonorepo\PHPStan\SymfonyMessengerEnvelopeLastReturnType
+      tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
 parameters:
     paths:
         - packages
@@ -94,9 +98,6 @@ parameters:
           path: packages/EasyErrorHandler/tests
 
         # ---- EasyLock ----
-        - message: '#Method EonX\\EasyLock\\Bridge\\Symfony\\Messenger\\ProcessWithLockMiddleware\:\:getLockData\(\) should return EonX\\EasyLock\\Interfaces\\WithLockDataInterface\|null but returns Symfony\\Component\\Messenger\\Stamp\\StampInterface\|null#'
-          path: packages/EasyLock/src/Bridge/Symfony/Messenger/ProcessWithLockMiddleware.php
-
         # ---- EasyLogging ----
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php

@@ -80,7 +80,6 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
 
     private function getBatchItemStamp(Envelope $envelope): ?BatchItemStamp
     {
-        /** @var null|\EonX\EasyAsync\Bridge\Symfony\Messenger\BatchItemStamp $stamp */
         return $envelope->last(BatchItemStamp::class);
     }
 
