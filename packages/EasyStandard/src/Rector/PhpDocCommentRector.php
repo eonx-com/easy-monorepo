@@ -85,6 +85,7 @@ PHP
 
     private function checkGenericTagValueNode(AttributeAwarePhpDocTagNode $attributeAwarePhpDocTagNode): void
     {
+        var_dump($attributeAwarePhpDocTagNode);
         if ($this->isMultilineTagNode && Strings::startsWith($attributeAwarePhpDocTagNode->name, '@')) {
             return;
         }
@@ -109,7 +110,7 @@ PHP
                 $valueAsArray[1] = Strings::substring($valueAsArray[1], 0, -1);
             }
 
-            $valueAsArray[1] = Strings::firstLower(Strings::trim($valueAsArray[1]));
+            $valueAsArray[1] = Strings::firstUpper(Strings::trim($valueAsArray[1]));
 
             $newValue = implode(') ', $valueAsArray);
 
@@ -261,7 +262,7 @@ PHP
             return;
         }
 
-        $newDescription = Strings::trim($varTagValueNode->description);
+        $newDescription = Strings::firstUpper(Strings::trim($varTagValueNode->description));
 
         if ($this->isLineEndingWithAllowed($newDescription)) {
             $newDescription = Strings::substring($newDescription, 0, -1);
