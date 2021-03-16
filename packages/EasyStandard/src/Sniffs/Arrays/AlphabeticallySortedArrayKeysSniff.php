@@ -46,7 +46,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     /**
      * @var bool
      */
-    private $isChanged = false;
+    private $isChanged;
 
     /**
      * @var \EonX\EasyStandard\Output\Printer
@@ -249,22 +249,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         });
 
         return $items;
-    }
-
-    /**
-     * @param \PhpParser\Node\Expr\ArrayItem[] $items
-     *
-     * @return bool
-     */
-    private function isAssociativeOnly(array $items): bool
-    {
-        $isAssociative = 1;
-
-        foreach ($items as $arrayItem) {
-            $isAssociative &= $arrayItem->key !== null;
-        }
-
-        return (bool)$isAssociative;
     }
 
     private function refactor(Array_ $node): Array_
