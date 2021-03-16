@@ -32,9 +32,6 @@ jobs:
             matrix:
                 mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
-        env:
-            GITHUB_TOKEN: ${{ secrets.MONOREPO_GITHUB_TOKEN }}
-
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
@@ -44,6 +41,7 @@ jobs:
             -   run: |
                     git config --global user.email "nathan.page@eonx.com"
                     git config --global user.name "natepage"
+                    git config --global user.password "${{ secrets.MONOREPO_GITHUB_TOKEN }}"
 
             -   run: git remote add split https://github.com/eonx-com/${{ matrix.mapping.repo }}.git
             -   run: git checkout ${{ steps.branch_name.outputs.branch }}
