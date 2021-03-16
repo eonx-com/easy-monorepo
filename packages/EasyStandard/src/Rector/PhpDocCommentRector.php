@@ -85,7 +85,6 @@ PHP
 
     private function checkGenericTagValueNode(AttributeAwarePhpDocTagNode $attributeAwarePhpDocTagNode): void
     {
-        var_dump($attributeAwarePhpDocTagNode);
         if ($this->isMultilineTagNode && Strings::startsWith($attributeAwarePhpDocTagNode->name, '@')) {
             return;
         }
