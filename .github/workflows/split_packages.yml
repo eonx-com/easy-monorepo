@@ -38,11 +38,11 @@ jobs:
             -   id: branch_name
                 run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
 
+            -   run: git remote add split https://github.com/eonx-com/${{ matrix.mapping.repo }}.git
+            -   run: git checkout ${{ steps.branch_name.outputs.branch }}
+
             -   run: |
                     git config --global user.email "nathan.page@eonx.com"
                     git config --global user.name "natepage"
                     git config --global user.password "${{ secrets.MONOREPO_GITHUB_TOKEN }}"
-
-            -   run: git remote add split https://github.com/eonx-com/${{ matrix.mapping.repo }}.git
-            -   run: git checkout ${{ steps.branch_name.outputs.branch }}
-            -   run: git subtree push --prefix=packages/${{ matrix.mapping.dir }} split ${{ steps.branch_name.outputs.branch }}
+                    git subtree push --prefix=packages/${{ matrix.mapping.dir }} split ${{ steps.branch_name.outputs.branch }}
