@@ -109,8 +109,6 @@ PHP
                 $valueAsArray[1] = Strings::substring($valueAsArray[1], 0, -1);
             }
 
-            $valueAsArray[1] = Strings::firstLower(Strings::trim($valueAsArray[1]));
-
             $newValue = implode(') ', $valueAsArray);
 
             if ($value->value !== $newValue) {
