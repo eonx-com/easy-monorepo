@@ -32,9 +32,6 @@ jobs:
 
         name: ${{ matrix.package.dir }}
 
-        env:
-            GITHUB_TOKEN: ${{ secrets.MONOREPO_GITHUB_TOKEN }}
-
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
