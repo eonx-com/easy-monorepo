@@ -44,6 +44,11 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     private static $parsedLine = [];
 
     /**
+     * @var bool
+     */
+    private $isChanged = false;
+
+    /**
      * @var \EonX\EasyStandard\Output\Printer
      */
     private $prettyPrinter;
@@ -53,6 +58,8 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      */
     public function process(File $phpcsFile, $bracketOpenerPointer): void
     {
+        $this->isChanged = false;
+
         if ($this->shouldSkip($phpcsFile, $bracketOpenerPointer)) {
             return;
         }
@@ -105,7 +112,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $this->prettyPrinter = new Printer();
         $refactoredArray = $this->refactor($array);
 
-        if ($refactoredArray->hasAttribute('isChanged') === false) {
+        if ($this->isChanged === false) {
             return;
         }
 
@@ -169,7 +176,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                     if ($argument->value instanceof Array_) {
                         /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                         $subItems = $argument->value->items;
-                        if (\count($subItems) > 1) {
+                        if (\count($subItems) > 0) {
                             $argument->value->items = $this->fixMultiLineOutput($subItems);
                         }
 
@@ -214,11 +221,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     {
         foreach ($items as $index => $arrayItem) {
             if ($arrayItem->value instanceof Array_) {
-                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
-                $subItems = $arrayItem->value->items;
-                if (\count($subItems) > 1) {
-                    $arrayItem->value->items = $this->getSortedItems($subItems);
-                }
+                $arrayItem->value = $this->refactor($arrayItem->value);
 
                 $items[$index] = $arrayItem;
             }
@@ -228,11 +231,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                 $value = $arrayItem->value;
                 foreach ($value->args as $argIndex => $argument) {
                     if ($argument->value instanceof Array_) {
-                        /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
-                        $subItems = $argument->value->items;
-                        if (\count($subItems) > 1) {
-                            $argument->value->items = $this->getSortedItems($subItems);
-                        }
+                        $argument->value = $this->refactor($argument->value);
 
                         $value->args[$argIndex] = $argument;
                     }
@@ -240,10 +239,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
                 $items[$index] = $arrayItem;
             }
-        }
-
-        if ($this->isAssociativeOnly($items) === false) {
-            return $items;
         }
 
         \usort($items, function (ArrayItem $firstItem, ArrayItem $secondItem): int {
@@ -277,14 +272,13 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         /** @var \PhpParser\Node\Expr\ArrayItem[] $items */
         $items = $node->items;
 
-        if ($this->isAssociativeOnly($items)) {
-            $items = $this->getSortedItems($items);
+        $items = $this->getSortedItems($items);
 
-            if ($node->items !== $items) {
-                $node->items = $this->fixMultiLineOutput($items);
-                $node->setAttribute('isChanged', true);
-            }
+        if ($node->items !== $items) {
+            $this->isChanged = true;
         }
+
+        $node->items = $this->fixMultiLineOutput($items);
 
         return $node;
     }
