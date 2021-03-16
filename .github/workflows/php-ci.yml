@@ -1,6 +1,6 @@
 name: PHP-CI
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
     # 2nd run with cache + parallel
@@ -42,7 +42,17 @@ jobs:
 
     security-checker:
         runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '7.3' ]
         steps:
             -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   uses: eonx-com/actions-composer-install@v1
 
             -   uses: eonx-com/actions-security-checker@v2
