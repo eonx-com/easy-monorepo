@@ -44,6 +44,7 @@ final class SqlStatementProvider implements StatementsProviderInterface
                 `webhook_id` CHAR(36) NOT NULL,
                 `created_at` DATETIME DEFAULT NULL,
                 `updated_at` DATETIME DEFAULT NULL,
+                PRIMARY KEY(`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ';
     }

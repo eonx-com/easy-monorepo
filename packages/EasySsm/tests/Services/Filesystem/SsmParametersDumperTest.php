@@ -42,13 +42,14 @@ final class SsmParametersDumperTest extends AbstractTestCase
             __DIR__ . '/../../Fixtures/SsmParametersDumper/2_namespaces.yaml',
         ];
 
-        yield 'multilines param values' => [
-            [
-                new SsmParameter('secure', 'SecureString', "my\nmultiline\nvalue"),
-                new SsmParameter('not_secure', 'String', "my\nmultiline\nvalue"),
-            ],
-            __DIR__ . '/../../Fixtures/SsmParametersDumper/multilines_param_values.yaml',
-        ];
+        // TODO: Until https://github.com/symfony/symfony/pull/40431 is fixed
+        //yield 'multilines param values' => [
+        //    [
+        //        new SsmParameter('secure', 'SecureString', "my\nmultiline\nvalue"),
+        //        new SsmParameter('not_secure', 'String', "my\nmultiline\nvalue"),
+        //    ],
+        //    __DIR__ . '/../../Fixtures/SsmParametersDumper/multilines_param_values.yaml',
+        //];
     }
 
     /**

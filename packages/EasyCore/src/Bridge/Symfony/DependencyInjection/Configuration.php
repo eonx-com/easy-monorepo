@@ -19,7 +19,6 @@ final class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('custom_pagination_enabled')->defaultValue(true)->end()
-                        ->booleanNode('no_properties_api_resource_enabled')->defaultValue(true)->end()
                         ->booleanNode('simple_data_persister_enabled')->defaultValue(true)->end()
                     ->end()
                 ->end()

@@ -8,6 +8,9 @@ use EonX\EasyAsync\Interfaces\DateTimeGeneratorInterface;
 use EonX\EasyAsync\Interfaces\EasyAsyncDataInterface;
 use EonX\EasyAsync\Interfaces\TargetInterface;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 3.1. Use Batch features instead.
+ */
 abstract class AbstractEasyAsyncData implements EasyAsyncDataInterface
 {
     /**

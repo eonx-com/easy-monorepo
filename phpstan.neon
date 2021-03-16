@@ -1,6 +1,10 @@
 includes:
     - 'vendor/symplify/phpstan-extensions/config/config.neon'
 
+services:
+    - class: EonX\EasyMonorepo\PHPStan\SymfonyMessengerEnvelopeLastReturnType
+      tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
 parameters:
     paths:
         - packages
@@ -22,7 +26,6 @@ parameters:
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
-        - '#Parameter \#1 \$app of class [A-Z][\w\\]+ constructor expects Illuminate\\(Contracts\\)?Foundation\\Application, Laravel\\Lumen\\Application given.#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
 
         # ---- EasyApiToken ----
@@ -34,9 +37,6 @@ parameters:
           path: packages/EasyAsync/src/Generators
 
         - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'
-          path: packages/EasyAsync/tests
-
-        - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\)#'
           path: packages/EasyAsync/tests
 
         - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
@@ -98,12 +98,6 @@ parameters:
           path: packages/EasyErrorHandler/tests
 
         # ---- EasyLock ----
-        - message: '#Method EonX\\EasyLock\\Bridge\\Symfony\\Messenger\\ProcessWithLockMiddleware\:\:getLockData\(\) should return EonX\\EasyLock\\Interfaces\\WithLockDataInterface\|null but returns Symfony\\Component\\Messenger\\Stamp\\StampInterface\|null#'
-          path: packages/EasyLock/src/Bridge/Symfony/Messenger/ProcessWithLockMiddleware.php
-
-        - message: '#Unable to resolve the template type T in call to method static method Doctrine\\DBAL\\DriverManager\:\:getConnection\(\)#'
-          path: packages/EasyLock/tests/Bridge/Laravel/AbstractLaravelTestCase.php
-
         # ---- EasyLogging ----
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
@@ -113,9 +107,6 @@ parameters:
           path: packages/EasyPagination/tests/Bridge/Laravel
 
         - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
-          path: packages/EasyPagination/tests
-
-        - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\)#'
           path: packages/EasyPagination/tests
 
         - message: '#Method EonX\\EasyPagination\\Tests\\AbstractWithMockTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
@@ -156,9 +147,6 @@ parameters:
         - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
           path: packages/EasyRepository/tests
 
-        - message: '#Unable to resolve the template type ExpectedType in call to method static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\)#'
-          path: packages/EasyRepository/tests
-
         - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
           path: packages/EasyRepository/tests
 
@@ -173,9 +161,6 @@ parameters:
           path: packages/EasyRequestId/src/RequestIdService.php
 
         # ---- EasySchedule ----
-        - message: '#Parameter \#1 \$var of function count expects array\|Countable, EonX\\EasySchedule\\Interfaces\\EventInterface given#'
-          path: packages/EasySchedule/src/Bridge/Symfony/DataCollector/ScheduleDataCollector.php
-
         - message: '#Parameter \#1 \$app of method EonX\\EasySchedule\\Interfaces\\ScheduleInterface\:\:setApplication\(\) expects Symfony\\Component\\Console\\Application, Symfony\\Component\\Console\\Application\|null given#'
           path: packages/EasySchedule/src/Command/ScheduleRunCommand.php
 
@@ -210,9 +195,9 @@ parameters:
         - message: '#Cannot cast array<string>\|string\|null to string.#'
           path: packages/EasyTest/src/Console/Commands
 
-        - message: '#Unsafe usage of new static\(\)#'
-          path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
-
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: packages/EasyWebhook/src/AbstractWebhook.php
+
+        - message: '#Cannot cast array<string\>\|bool\|string\|null to (int|string)#'
+          path: packages/EasyWebhook/src/Bridge/Symfony/Command/SendDueWebhooksCommand.php

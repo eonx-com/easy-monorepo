@@ -11,6 +11,9 @@ use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Interfaces\JobLogUpdaterInterface;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 3.1. Use Batch features instead.
+ */
 final class WithEventsJobLogUpdater implements JobLogUpdaterInterface
 {
     /**

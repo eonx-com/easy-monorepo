@@ -9,6 +9,9 @@ use EonX\EasyAsync\Helpers\PropertyHelper;
 use EonX\EasyAsync\Interfaces\JobLogInterface;
 use EonX\EasyAsync\Interfaces\TargetInterface;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 3.1. Use Batch features instead.
+ */
 final class JobLog extends AbstractEasyAsyncData implements JobLogInterface
 {
     /**
