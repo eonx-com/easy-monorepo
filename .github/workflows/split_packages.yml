@@ -3,8 +3,7 @@ name: Split Packages
 on:
     push:
         branches:
-            - master
-            - feature/easy-async-refactor
+            - feature/git-subtree-for-split
 
 jobs:
     provide_packages_json:
@@ -35,23 +34,10 @@ jobs:
 
         steps:
             -   uses: eonx-com/actions-checkout@v2
-            -   run: git fetch --prune --unshallow
-
-            -   id: previous_tag
-                uses: eonx-com/github-action-get-previous-tag@master
 
             -   id: branch_name
                 run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
 
-            -   name: Split ${{ matrix.mapping.dir }}
-                uses: eonx-com/github-action-monorepo-split@master
-                env:
-                    GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
-                with:
-                    branch: ${{ steps.branch_name.outputs.branch }}
-                    package-directory: 'packages/${{ matrix.mapping.dir }}'
-                    split-repository-organization: 'eonx-com'
-                    split-repository-name: '${{ matrix.mapping.repo }}'
-                    tag: ${{ steps.previous_tag.outputs.tag }}
-                    user-email: 'nathan.page@eonx.com'
-                    user-name: 'natepage'
+            -   run: git remote add split ${{ matrix.mapping.repo }}
+            -   run: git checkout ${{ steps.branch_name.outputs.branch }}
+            -   run: git subtree push --prefix=packages/${{ matrix.mapping.dir }} split ${{ steps.branch_name.outputs.branch }}
