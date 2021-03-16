@@ -157,15 +157,16 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      *
      * @return \PhpParser\Node\Expr\ArrayItem[]
      */
-    private function fixMultiLineOutput(array $items): array
+    private function fixMultiLineOutput(array $items, ?int $currentLine = null): array
     {
-        $currentLine = (int)$items[0]->getAttribute('startLine');
+        $currentLine = $currentLine ?? 0;
 
         foreach ($items as $index => $arrayItem) {
-            if ($arrayItem->value instanceof Array_ && \count($arrayItem->value->items) > 0) {
+            if ($arrayItem->value instanceof Array_) {
                 /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                 $subItems = $arrayItem->value->items;
-                $arrayItem->value->items = $this->fixMultiLineOutput($subItems);
+                $arrayItem->value->items = $this->fixMultiLineOutput($subItems,
+                    $arrayItem->value->getAttribute('startLine'));
                 $items[$index] = $arrayItem;
             }
 
@@ -176,19 +177,13 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                     if ($argument->value instanceof Array_) {
                         /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                         $subItems = $argument->value->items;
-                        if (\count($subItems) > 0) {
-                            $argument->value->items = $this->fixMultiLineOutput($subItems);
-                        }
-
+                        $argument->value->items = $this->fixMultiLineOutput($subItems,
+                            $argument->value->getAttribute('startLine'));
                         $value->args[$argIndex] = $argument;
                     }
                 }
 
                 $items[$index] = $arrayItem;
-            }
-
-            if ($index === 0) {
-                continue;
             }
 
             $nextLine = (int)$arrayItem->getAttribute('startLine');
@@ -203,10 +198,15 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         return $items;
     }
 
-    private function getArrayKeyAsString(ArrayItem $node): string
+    private function getArrayKeyAsString(ArrayItem $node): ?string
     {
         /** @var \PhpParser\Node\Expr $key */
         $key = $node->key;
+
+        if ($key === null) {
+            return null;
+        }
+
         $nodeKeyName = $this->prettyPrinter->prettyPrint([$key]);
 
         return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
@@ -244,6 +244,9 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         \usort($items, function (ArrayItem $firstItem, ArrayItem $secondItem): int {
             $firstName = $this->getArrayKeyAsString($firstItem);
             $secondName = $this->getArrayKeyAsString($secondItem);
+            if ($firstName === null || $secondName === null) {
+                return 0;
+            }
 
             return $firstName <=> $secondName;
         });
@@ -256,13 +259,17 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         /** @var \PhpParser\Node\Expr\ArrayItem[] $items */
         $items = $node->items;
 
+        if (\count($items) === 0) {
+            return $node;
+        }
+
         $items = $this->getSortedItems($items);
 
         if ($node->items !== $items) {
             $this->isChanged = true;
         }
 
-        $node->items = $this->fixMultiLineOutput($items);
+        $node->items = $this->fixMultiLineOutput($items, $node->getAttribute('startLine'));
 
         return $node;
     }
