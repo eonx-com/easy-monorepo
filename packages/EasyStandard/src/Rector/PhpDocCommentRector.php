@@ -109,6 +109,8 @@ PHP
                 $valueAsArray[1] = Strings::substring($valueAsArray[1], 0, -1);
             }
 
+            $valueAsArray[1] = Strings::firstLower(Strings::trim($valueAsArray[1]));
+
             $newValue = implode(') ', $valueAsArray);
 
             if ($value->value !== $newValue) {
@@ -259,7 +261,7 @@ PHP
             return;
         }
 
-        $newDescription = Strings::firstLower(Strings::trim($varTagValueNode->description));
+        $newDescription = Strings::trim($varTagValueNode->description);
 
         if ($this->isLineEndingWithAllowed($newDescription)) {
             $newDescription = Strings::substring($newDescription, 0, -1);

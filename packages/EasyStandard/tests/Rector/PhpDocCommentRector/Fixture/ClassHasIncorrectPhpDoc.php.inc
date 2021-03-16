@@ -110,7 +110,7 @@ class ClassHasIncorrectPhpDoc
     /**
      * My property comment.
      *
-     * @Assert\NotNull() Some description
+     * @Assert\NotNull() some description
      *
      * @see Another code
      *
@@ -148,7 +148,7 @@ class ClassHasIncorrectPhpDoc
                 /**
                  * Some text.
                  *
-                 * @var mixed[]|string $value       May be refactor
+                 * @var mixed[]|string $value       may be refactor
                  */
                 if (\is_array($value)) {
                     // Try to loop
@@ -159,7 +159,7 @@ class ClassHasIncorrectPhpDoc
                     /**
                      * Another text.
                      *
-                     * @var string[] $test3 Some text
+                     * @var string[] $test3 some text
                      */
                     $test3['123'] = '123';
                 }
