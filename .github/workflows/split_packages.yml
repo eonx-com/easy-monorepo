@@ -40,4 +40,6 @@ jobs:
 
             -   run: git checkout ${{ steps.branch_name.outputs.branch }}
 
+            -   run: git config
+
             -   run: git subtree push --prefix=packages/${{ matrix.mapping.dir }} https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git ${{ steps.branch_name.outputs.branch }}
