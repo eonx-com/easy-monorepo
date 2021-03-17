@@ -80,6 +80,10 @@ abstract class AbstractStoreTestCase extends AbstractTestCase
 
     private function getStmtsProvider(): DbalStatementsProvider
     {
-        return $this->stmtsProvider = $this->stmtsProvider ?? new DbalStatementsProvider($this->getDoctrineDbalConnection());
+        if ($this->stmtsProvider !== null) {
+            return $this->stmtsProvider;
+        }
+
+        return $this->stmtsProvider = new DbalStatementsProvider($this->getDoctrineDbalConnection());
     }
 }
