@@ -42,8 +42,9 @@ jobs:
                 run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
 
             -   run: |
-                    git remote add split https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
-                    git subtree add --prefix=packages/${{ matrix.mapping.dir }} --squash split ${{ steps.branch_name.outputs.branch }}
+                    git remote add split-remote https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
+                    git subtree split --prefix=packages/${{ matrix.mapping.dir }} -b split-branch
+                    git push split-remote split-branch:${{ steps.branch_name.outputs.branch }}
 
 #            -   run: git init split_dir
 #
