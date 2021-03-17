@@ -13,6 +13,11 @@ interface StoreInterface
      */
     public const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
+    /**
+     * @var string
+     */
+    public const DEFAULT_TABLE = 'easy_webhooks';
+
     public function find(string $id): ?WebhookInterface;
 
     public function generateWebhookId(): string;
