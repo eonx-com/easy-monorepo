@@ -34,17 +34,26 @@ jobs:
                 mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
         steps:
-            -   uses: eonx-com/actions-checkout@v2
-
             -   run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
 
-            -   id: branch_name
-                run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-
-            -   run: git init --bare "split_dir"
-            -   run: git subtree split --prefix=packages/${{ matrix.mapping.dir }} -b split
-            -   run: git push "split_dir" split:"${{ steps.branch_name.outputs.branch }}"
+            -   run: git init --bare split_dir
             -   run: |
                     cd split_dir
                     git remote add split https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
-                    git push -u split "${{ steps.branch_name.outputs.branch }}"
+                    git subtree add --prefix=packages/${{ matrix.mapping.dir }} --squash split ${{ steps.branch_name.outputs.branch }}
+                    ls -la packages/${{ matrix.mapping.dir }}
+
+#            -   uses: eonx-com/actions-checkout@v2
+#
+#
+#
+#            -   id: branch_name
+#                run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+#
+#            -   run: git init --bare "split_dir"
+#            -   run: git subtree split --prefix=packages/${{ matrix.mapping.dir }} -b split
+#            -   run: git push "split_dir" split:"${{ steps.branch_name.outputs.branch }}"
+#            -   run: |
+#                    cd split_dir
+#                    git remote add split https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
+#                    git push -u split "${{ steps.branch_name.outputs.branch }}"
