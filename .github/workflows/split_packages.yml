@@ -36,27 +36,33 @@ jobs:
         steps:
             # -   run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
 
+            -   uses: eonx-com/actions-checkout@v2
+
             -   id: branch_name
                 run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
 
-            -   run: git init split_dir
-
             -   run: |
-                    cd split_dir
-                    git config user.email "nathan.page@eonx.com"
-                    git config user.name "natepage"
-                    git commit --allow-empty -m "initial commit"
                     git remote add split https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
                     git subtree add --prefix=packages/${{ matrix.mapping.dir }} --squash split ${{ steps.branch_name.outputs.branch }}
-                    ls -la packages/${{ matrix.mapping.dir }}
 
-            -   run: |
-                    git clone https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/easy-monorepo.git monorepo_dir
-                    cd monorepo_dir
-                    git checkout ${{ steps.branch_name.outputs.branch }}
-                    ls -la packages/${{ matrix.mapping.dir }}
+#            -   run: git init split_dir
+#
+#            -   run: |
+#                    cd split_dir
+#                    git config user.email "nathan.page@eonx.com"
+#                    git config user.name "natepage"
+#                    git commit --allow-empty -m "initial commit"
+#                    git remote add split https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
+#                    git subtree add --prefix=packages/${{ matrix.mapping.dir }} --squash split ${{ steps.branch_name.outputs.branch }}
+#                    ls -la packages/${{ matrix.mapping.dir }}
+#
+#            -   run: |
+#                    git clone https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/easy-monorepo.git monorepo_dir
+#                    cd monorepo_dir
+#                    git checkout ${{ steps.branch_name.outputs.branch }}
+#                    ls -la packages/${{ matrix.mapping.dir }}
 
-#            -   uses: eonx-com/actions-checkout@v2
+#
 #
 #
 #
