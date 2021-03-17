@@ -46,7 +46,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     /**
      * @var bool
      */
-    private $isChanged;
+    private $isChanged = false;
 
     /**
      * @var \EonX\EasyStandard\Output\Printer

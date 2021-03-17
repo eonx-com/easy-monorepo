@@ -33,6 +33,7 @@ $array2 = array(
     SomeFile::TEST_CONST => 'abc',
     'sub' => $someObject->getValue(),
 );
+
 $array3 = [
     'description' => $someObject->getStatementDescriptor(),
     'matures_at' => Carbon::now()->toIso8601ZuluString(),
