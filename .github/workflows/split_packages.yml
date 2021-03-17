@@ -36,7 +36,7 @@ jobs:
         steps:
             # -   run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
 
-            -   run: git init --bare split_dir
+            -   run: git init split_dir
 
             -   run: |
                     cd split_dir
