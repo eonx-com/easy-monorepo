@@ -41,7 +41,7 @@ jobs:
             -   run: |
                     cd split_dir
                     echo "placeholder" >> readme.md
-                    commit -am "initial commit"
+                    git commit -am "initial commit"
 
             -   run: |
                     cd split_dir
