@@ -58,3 +58,20 @@ jobs:
                     git push --force split-remote local-$BRANCH:$BRANCH
 
             -   run: echo ${{ github.event.head_commit.message }}
+
+    release_tag:
+        needs:
+            - provide_packages_json
+            - split_packages
+        if: contains(github.event.head_commit.message, '[Release]')
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
+
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   name: Remove Git Extra Header
+                run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
