@@ -46,5 +46,5 @@ jobs:
             -   run: git push "split_dir" split:"${{ steps.branch_name.outputs.branch }}"
             -   run: |
                     cd split_dir
-                    git remote add origin subtree:"eonx-com/${{ matrix.mapping.repo }}"
-                    git push -u origin "${{ steps.branch_name.outputs.branch }}"
+                    git remote add split https://github.com/eonx-com/${{ matrix.mapping.repo }}.git
+                    git push -u split "${{ steps.branch_name.outputs.branch }}"
