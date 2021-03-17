@@ -41,4 +41,6 @@ jobs:
             -   run: git remote add split https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
             -   run: git checkout ${{ steps.branch_name.outputs.branch }}
             -   run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
+
+            -   run: git subtree pull --prefix=packages/${{ matrix.mapping.dir }} split ${{ steps.branch_name.outputs.branch }} --squash
             -   run: git subtree push --prefix=packages/${{ matrix.mapping.dir }} split ${{ steps.branch_name.outputs.branch }}
