@@ -36,13 +36,21 @@ jobs:
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
-#            -   run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
+            -   name: Remove Git Extra Header
+                run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
 
-            -   id: branch_name
+            -   name: Resolve current branch
+                id: branch_name
                 run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
 
-            -   run: |
-                    git remote add split-remote https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
-                    git checkout -b "local-${{ steps.branch_name.outputs.branch }}-checkout" "${{ steps.branch_name.outputs.branch }}"
-                    git subtree split --prefix="packages/${{ matrix.mapping.dir }}" --branch="local-${{ steps.branch_name.outputs.branch }}" "${{ steps.branch_name.outputs.branch }}"
-                    git push --force split-remote local-${{ steps.branch_name.outputs.branch }}:${{ steps.branch_name.outputs.branch }}
+            -   name: Add Repo Remote
+                run: git remote add split-remote https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
+
+            -   name: Split packages/${{ matrix.mapping.dir }}
+                env:
+                    BRANCH: ${{ steps.branch_name.outputs.branch }}
+                    DIR: packages/${{ matrix.mapping.dir }}
+                run: |
+                    git checkout -b "local-$BRANCH-checkout" "$BRANCH"
+                    git subtree split --prefix="packages/${{ matrix.mapping.dir }}" --branch="local-$BRANCH" "$BRANCH"
+                    git push --force split-remote local-$BRANCH:$BRANCH
