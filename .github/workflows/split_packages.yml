@@ -34,9 +34,9 @@ jobs:
                 mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
         steps:
-            # -   run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
-
             -   uses: eonx-com/actions-checkout@v2
+
+            -   run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
 
             -   id: branch_name
                 run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
