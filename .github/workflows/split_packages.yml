@@ -56,3 +56,5 @@ jobs:
                     git checkout -b "local-$BRANCH-checkout" "$BRANCH"
                     git subtree split --prefix="packages/${{ matrix.mapping.dir }}" --branch="local-$BRANCH" "$BRANCH"
                     git push --force split-remote local-$BRANCH:$BRANCH
+
+            -   run: echo ${{ github.event.head_commit.message }}
