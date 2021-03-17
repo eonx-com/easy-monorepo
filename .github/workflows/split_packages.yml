@@ -37,6 +37,9 @@ jobs:
             # -   run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
 
             -   run: git init --bare split_dir
+            -   run: cd split_dir
+            -   run: ls -la
+
             -   run: |
                     cd split_dir
                     git remote add split https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
