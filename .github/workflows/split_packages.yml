@@ -40,8 +40,7 @@ jobs:
 
             -   run: git checkout ${{ steps.branch_name.outputs.branch }}
 
+            -   run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
             -   run: git config -l
-            -   run: git config --get http.@.extraheader
-            -   run: git config --global --unset http.@.extraheader
 
             -   run: git subtree push --prefix=packages/${{ matrix.mapping.dir }} https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git ${{ steps.branch_name.outputs.branch }}
