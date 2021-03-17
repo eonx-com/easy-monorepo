@@ -21,12 +21,12 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
 {
     public function __construct(RandomGeneratorInterface $random, Connection $conn, ?string $table = null)
     {
-        parent::__construct($random, $conn, $table ?? 'easy_webhooks');
+        parent::__construct($random, $conn, $table ?? self::DEFAULT_TABLE);
     }
 
     public function find(string $id): ?WebhookInterface
     {
-        $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->getTableForQuery());
+        $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->table);
 
         $data = $this->conn->fetchAssociative($sql, [
             'id' => $id,
@@ -84,6 +84,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
         $now = Carbon::now('UTC');
         $data = \array_merge($webhook->getExtra() ?? [], $webhook->toArray());
         $data['class'] = \get_class($webhook);
+        $data['updated_at'] = $now;
 
         // New result with no id
         if ($webhook->getId() === null) {

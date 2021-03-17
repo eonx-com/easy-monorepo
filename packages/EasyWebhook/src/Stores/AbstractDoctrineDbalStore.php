@@ -29,13 +29,8 @@ abstract class AbstractDoctrineDbalStore extends AbstractStore
 
     protected function existsInDb(string $id): bool
     {
-        $sql = \sprintf('SELECT id FROM %s WHERE id = :id', $this->getTableForQuery());
+        $sql = \sprintf('SELECT id FROM %s WHERE id = :id', $this->table);
 
         return \is_array($this->conn->fetchAssociative($sql, \compact('id')));
-    }
-
-    protected function getTableForQuery(): string
-    {
-        return \sprintf('`%s`', $this->table);
     }
 }

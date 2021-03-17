@@ -6,7 +6,7 @@ namespace EonX\EasyWebhook\Tests;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use EonX\EasyWebhook\Bridge\Doctrine\StatementProviders\SqliteStatementProvider;
+use EonX\EasyWebhook\Bridge\Doctrine\DbalStatementsProvider;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Webhook;
 
@@ -16,6 +16,11 @@ abstract class AbstractStoreTestCase extends AbstractTestCase
      * @var \Doctrine\DBAL\Connection
      */
     protected $doctrineDbal;
+
+    /**
+     * @var \EonX\EasyWebhook\Bridge\Doctrine\DbalStatementsProvider
+     */
+    private $stmtsProvider;
 
     protected function createWebhookForSendAfter(
         ?\DateTimeInterface $sendAfter = null,
@@ -53,7 +58,7 @@ abstract class AbstractStoreTestCase extends AbstractTestCase
         $conn = $this->getDoctrineDbalConnection();
         $conn->connect();
 
-        foreach (SqliteStatementProvider::migrateStatements() as $statement) {
+        foreach ($this->getStmtsProvider()->migrateStatements() as $statement) {
             $conn->executeStatement($statement);
         }
 
@@ -64,12 +69,21 @@ abstract class AbstractStoreTestCase extends AbstractTestCase
     {
         $conn = $this->getDoctrineDbalConnection();
 
-        foreach (SqliteStatementProvider::rollbackStatements() as $statement) {
+        foreach ($this->getStmtsProvider()->rollbackStatements() as $statement) {
             $conn->executeStatement($statement);
         }
 
         $conn->close();
 
         parent::tearDown();
+    }
+
+    private function getStmtsProvider(): DbalStatementsProvider
+    {
+        if ($this->stmtsProvider !== null) {
+            return $this->stmtsProvider;
+        }
+
+        return $this->stmtsProvider = new DbalStatementsProvider($this->getDoctrineDbalConnection());
     }
 }
