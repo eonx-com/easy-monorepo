@@ -8,6 +8,7 @@ use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyWebhook\Async\NullAsyncDispatcher;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
+use EonX\EasyWebhook\Bridge\Doctrine\DbalStatementsProvider;
 use EonX\EasyWebhook\Bridge\Laravel\Commands\SendDueWebhooksCommand;
 use EonX\EasyWebhook\Bridge\Laravel\Jobs\AsyncDispatcher;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
@@ -67,6 +68,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         $this->registerEventHeaderServices();
         $this->registerIdHeaderServices();
         $this->registerSignatureServices();
+        $this->registerStatementsProvider();
     }
 
     private function registerAsyncServices(): void
@@ -249,5 +251,10 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         });
 
         $this->app->tag(SignatureHeaderMiddleware::class, [BridgeConstantsInterface::TAG_MIDDLEWARE]);
+    }
+
+    private function registerStatementsProvider(): void
+    {
+        $this->app->singleton(DbalStatementsProvider::class);
     }
 }
