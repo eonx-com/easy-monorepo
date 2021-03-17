@@ -40,6 +40,8 @@ jobs:
 
             -   run: |
                     cd split_dir
+                    git config user.email "nathan.page@eonx.com"
+                    git config user.name "natepage"
                     echo "placeholder" >> readme.md
                     git commit -am "initial commit"
 
