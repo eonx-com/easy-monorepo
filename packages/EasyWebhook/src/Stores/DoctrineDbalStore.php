@@ -84,6 +84,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
         $now = Carbon::now('UTC');
         $data = \array_merge($webhook->getExtra() ?? [], $webhook->toArray());
         $data['class'] = \get_class($webhook);
+        $data['updated_at'] = $now;
 
         // New result with no id
         if ($webhook->getId() === null) {
