@@ -33,6 +33,8 @@ jobs:
             matrix:
                 mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
+        name: Split packages/${{ matrix.mapping.dir }}
+
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
