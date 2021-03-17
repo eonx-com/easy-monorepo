@@ -21,12 +21,12 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
 {
     public function __construct(RandomGeneratorInterface $random, Connection $conn, ?string $table = null)
     {
-        parent::__construct($random, $conn, $table ?? 'easy_webhooks');
+        parent::__construct($random, $conn, $table ?? self::DEFAULT_TABLE);
     }
 
     public function find(string $id): ?WebhookInterface
     {
-        $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->getTableForQuery());
+        $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->table);
 
         $data = $this->conn->fetchAssociative($sql, [
             'id' => $id,

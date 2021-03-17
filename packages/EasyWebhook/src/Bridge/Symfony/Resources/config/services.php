@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyWebhook\Async\NullAsyncDispatcher;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
+use EonX\EasyWebhook\Bridge\Doctrine\DbalStatementsProvider;
 use EonX\EasyWebhook\Bridge\Symfony\Command\SendDueWebhooksCommand;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\HttpClientFactory;
@@ -62,4 +63,9 @@ return static function (ContainerConfigurator $container): void {
     // Stores (Default)
     $services->set(StoreInterface::class, NullStore::class);
     $services->set(ResultStoreInterface::class, NullResultStore::class);
+
+    // StatementsProvider (Helper)
+    $services
+        ->set(DbalStatementsProvider::class)
+        ->public();
 };
