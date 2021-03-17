@@ -46,11 +46,14 @@ jobs:
                     git config user.email "nathan.page@eonx.com"
                     git config user.name "natepage"
                     git commit --allow-empty -m "initial commit"
-
-            -   run: |
-                    cd split_dir
                     git remote add split https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
                     git subtree add --prefix=packages/${{ matrix.mapping.dir }} --squash split ${{ steps.branch_name.outputs.branch }}
+                    ls -la packages/${{ matrix.mapping.dir }}
+
+            -   run: |
+                    git clone https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/easy-monorepo.git monorepo_dir
+                    cd monorepo_dir
+                    git checkout ${{ steps.branch_name.outputs.branch }}
                     ls -la packages/${{ matrix.mapping.dir }}
 
 #            -   uses: eonx-com/actions-checkout@v2
