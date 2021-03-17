@@ -42,7 +42,7 @@ jobs:
                     cd split_dir
                     git config user.email "nathan.page@eonx.com"
                     git config user.name "natepage"
-                    git commit --allow-empty "initial commit"
+                    git commit --allow-empty -m "initial commit"
 
             -   run: |
                     cd split_dir
