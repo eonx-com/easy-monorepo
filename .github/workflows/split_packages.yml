@@ -43,8 +43,9 @@ jobs:
 
             -   run: |
                     git remote add split-remote https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
-                    git subtree split --prefix=packages/${{ matrix.mapping.dir }} -b split-branch
-                    git push split-remote split-branch:${{ steps.branch_name.outputs.branch }}
+                    git checkout -b "local-${{ steps.branch_name.outputs.branch }}-checkout" "${{ steps.branch_name.outputs.branch }}"
+                    git subtree split --prefix="packages/${{ matrix.mapping.dir }}" --branch="local-${{ steps.branch_name.outputs.branch }}" "${{ steps.branch_name.outputs.branch }}"
+                    git push --force split-remote local-${{ steps.branch_name.outputs.branch }}:${{ steps.branch_name.outputs.branch }}
 
 #            -   run: git init split_dir
 #
