@@ -244,25 +244,43 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             }
         }
 
-        \usort($items, function (ArrayItem $firstItem, ArrayItem $secondItem): int {
-            $firstName = $this->getArrayKeyAsString($firstItem);
-            $secondName = $this->getArrayKeyAsString($secondItem);
-            if ($firstName === null && $secondName === null) {
-                return 0;
-            }
+        if ($this->isNotAssociativeOnly($items) === false) {
+            \uasort($items, function (ArrayItem $firstItem, ArrayItem $secondItem): int {
+                $firstName = $this->getArrayKeyAsString($firstItem);
+                $secondName = $this->getArrayKeyAsString($secondItem);
+                if ($firstName === null && $secondName === null) {
+                    return 0;
+                }
 
-            if ($firstName === null) {
-                return -1;
-            }
+                if ($firstName === null) {
+                    return -1;
+                }
 
-            if ($secondName === null) {
-                return 1;
-            }
+                if ($secondName === null) {
+                    return 1;
+                }
 
-            return $firstName <=> $secondName;
-        });
+                return $firstName <=> $secondName;
+            });
+        }
 
         return $items;
+    }
+
+    /**
+     * @param \PhpParser\Node\Expr\ArrayItem[] $items
+     *
+     * @return bool
+     */
+    private function isNotAssociativeOnly(array $items): bool
+    {
+        $isNotAssociative = 1;
+
+        foreach ($items as $arrayItem) {
+            $isNotAssociative &= $arrayItem->key === null;
+        }
+
+        return (bool)$isNotAssociative;
     }
 
     private function refactor(Array_ $node): Array_
