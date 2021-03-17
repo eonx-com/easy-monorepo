@@ -58,8 +58,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      */
     public function process(File $phpcsFile, $bracketOpenerPointer): void
     {
-        $this->isChanged = false;
-
         if ($this->shouldSkip($phpcsFile, $bracketOpenerPointer)) {
             return;
         }
@@ -142,6 +140,8 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
             $phpcsFile->fixer->endChangeset();
         }
+
+        $this->isChanged = false;
     }
 
     /**
@@ -165,10 +165,8 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             if ($arrayItem->value instanceof Array_) {
                 /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                 $subItems = $arrayItem->value->items;
-                $arrayItem->value->items = $this->fixMultiLineOutput(
-                    $subItems,
-                    $arrayItem->value->getAttribute('startLine')
-                );
+                $arrayItem->value->items = $this->fixMultiLineOutput($subItems,
+                    $arrayItem->value->getAttribute('startLine'));
                 $items[$index] = $arrayItem;
             }
 
@@ -179,10 +177,8 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                     if ($argument->value instanceof Array_) {
                         /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                         $subItems = $argument->value->items;
-                        $argument->value->items = $this->fixMultiLineOutput(
-                            $subItems,
-                            $argument->value->getAttribute('startLine')
-                        );
+                        $argument->value->items = $this->fixMultiLineOutput($subItems,
+                            $argument->value->getAttribute('startLine'));
                         $value->args[$argIndex] = $argument;
                     }
                 }
@@ -204,6 +200,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
     private function getArrayKeyAsString(ArrayItem $node): ?string
     {
+        /** @var \PhpParser\Node\Expr $key */
         $key = $node->key;
 
         if ($key === null) {
@@ -247,8 +244,16 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         \usort($items, function (ArrayItem $firstItem, ArrayItem $secondItem): int {
             $firstName = $this->getArrayKeyAsString($firstItem);
             $secondName = $this->getArrayKeyAsString($secondItem);
-            if ($firstName === null || $secondName === null) {
+            if ($firstName === null && $secondName === null) {
                 return 0;
+            }
+
+            if ($firstName === null) {
+                return -1;
+            }
+
+            if ($secondName === null) {
+                return 1;
             }
 
             return $firstName <=> $secondName;
