@@ -3,8 +3,6 @@ title: Introduction
 weight: 0
 ---eonx_docs---
 
-Change for subtree test
-
 It is common to restrict access to the endpoints of an API by implementing an authentication mechanism.
 To do so, you have a lot of available solutions: Basic Auth, API keys, JWTs, etc.
 Which one to pick?
