@@ -80,6 +80,7 @@ jobs:
                 run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
 
             -   name: Release eonx-com/${{ matrix.mapping.repo }}:${{ matrix.tag }}
+                shell: bash
                 run: |
                     if [ -d "$DIR" ] && [ git rev-parse $TAG ];
                     then
