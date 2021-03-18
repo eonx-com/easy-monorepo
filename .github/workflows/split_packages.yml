@@ -41,6 +41,7 @@ jobs:
 
         steps:
             -   uses: eonx-com/actions-checkout@v2
+            -   run: git fetch --prune --unshallow
 
             -   name: Remove Git Extra Header
                 run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
