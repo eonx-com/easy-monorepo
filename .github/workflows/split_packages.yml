@@ -70,6 +70,6 @@ jobs:
 
                         if [ -d "$DIR" ]; then
                             git subtree split -q --prefix="$DIR" --branch="local-$TAG" "$TAG"
-                            git push -q --force origin local-$TAG:refs/tags/$TAG
+                            git push -q --force split-remote local-$TAG:refs/tags/$TAG
                         fi
                     fi
