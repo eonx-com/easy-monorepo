@@ -1,9 +1,0 @@
-{
-    "name": "eonx-com/subtree-test",
-    "description": "Testing subtree for monorepo",
-    "type": "library",
-    "license": "MIT",
-    "require": {
-        "php": "^7.2"
-    }
-}
