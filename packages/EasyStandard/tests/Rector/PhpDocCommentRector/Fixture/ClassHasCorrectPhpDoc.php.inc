@@ -47,7 +47,7 @@ class ClassHasCorrectPhpDoc
     /**
      * My property.
      *
-     * @Assert\NotNull() some description
+     * @Assert\NotNull() Some description
      *
      * @see Another code
      *
@@ -88,7 +88,7 @@ class ClassHasCorrectPhpDoc
                 /**
                  * Some text.
                  *
-                 * @var mixed[]|string $value may be refactor
+                 * @var mixed[]|string $value May be refactor
                  */
                 if (\is_array($value)) {
                     foreach ($value as $key2 => $value2) {
@@ -100,7 +100,7 @@ class ClassHasCorrectPhpDoc
                      *
                      * Another text 2.
                      *
-                     * @var string[]    $test3     some text
+                     * @var string[]    $test3     Some text
                      */
                     $test3['123'] = '123';
                 }
