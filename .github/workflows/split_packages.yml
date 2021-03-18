@@ -68,6 +68,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
+                tag: [ '3.0.11-alpha1' ]
                 mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
         steps:
@@ -75,3 +76,15 @@ jobs:
 
             -   name: Remove Git Extra Header
                 run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
+
+            -   name: Release eonx-com/${{ matrix.mapping.repo }}:${{ matrix.tag }}
+                env:
+                    DIR: packages/${{ matrix.mapping.dir }}
+                    TAG: ${{ matrix.tag }}
+                run: |
+                    git checkout -b "local-$TAG-checkout" "tags/$TAG"
+                    if [ -d "$DIR" ]
+                    then
+                        git subtree split -q --prefix="$DIR" --branch="local-$TAG" "$TAG"
+                        git push -q --force origin local-$TAG:refs/tags/$TAG
+                    fi
