@@ -71,5 +71,9 @@ jobs:
                         if [ -d "$DIR" ]; then
                             git subtree split --prefix="$DIR" --branch="local-$TAG" "$TAG"
                             git push --force split-remote local-$TAG:refs/tags/$TAG
+                        else
+                            echo "Dir \"$DIR\" does not exist for tag \"$TAG\""
                         fi
+                    else
+                        echo "Tag \"$TAG\" does not exist, skip"
                     fi
