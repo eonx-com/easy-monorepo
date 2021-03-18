@@ -69,6 +69,8 @@ jobs:
                 tag: [ '3.0.11-alpha1' ]
                 mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
+        name: Release ${{ matrix.mapping.repo }}:${{ matrix.tag }}
+
         env:
             DIR: packages/${{ matrix.mapping.dir }}
             TAG: ${{ matrix.tag }}
