@@ -31,7 +31,7 @@ jobs:
             fail-fast: false
             matrix:
                 mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
-                tag: [ '3.0.11' ]
+                tag: [ '3.0.12' ]
 
         name: Split ${{ matrix.mapping.dir }}
 
