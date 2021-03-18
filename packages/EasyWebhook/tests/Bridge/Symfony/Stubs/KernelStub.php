@@ -37,7 +37,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         // TODO: Find proper way to work with dbal connection
-        $container->setDefinition('doctrine.dbal.default_connection', new Definition(\EonX\EasyAsync\Tests\Stubs\EventDispatcherStub::class));
+        $container->setDefinition('doctrine.dbal.default_connection', new Definition(EventDispatcherStub::class));
         $container->setDefinition(Connection::class, new Definition(EventDispatcherStub::class));
 
         $container->setDefinition(EventDispatcherInterface::class, new Definition(EventDispatcherStub::class));
