@@ -3,8 +3,7 @@ name: Split Packages
 on:
     push:
         branches:
-            - feature/git-subtree-for-split
-            - feature/git-subtree-for-split-1
+            - master
 
 jobs:
     provide_packages_json:
