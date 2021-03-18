@@ -32,8 +32,13 @@ jobs:
             fail-fast: false
             matrix:
                 mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
+                tag: [ '3.0.11-alpha1' ]
 
         name: Split ${{ matrix.mapping.dir }}
+
+        env:
+            DIR: packages/${{ matrix.mapping.dir }}
+            TAG: ${{ matrix.tag }}
 
         steps:
             -   uses: eonx-com/actions-checkout@v2
@@ -51,37 +56,13 @@ jobs:
             -   name: Split packages/${{ matrix.mapping.dir }}
                 env:
                     BRANCH: ${{ steps.branch_name.outputs.branch }}
-                    DIR: packages/${{ matrix.mapping.dir }}
                 run: |
                     git checkout -b "local-$BRANCH-checkout" "$BRANCH"
                     git subtree split --prefix="packages/${{ matrix.mapping.dir }}" --branch="local-$BRANCH" "$BRANCH"
                     git push --force split-remote local-$BRANCH:$BRANCH
 
-    release_tag:
-        needs:
-            - provide_packages_json
-            - split_packages
-        if: contains(github.event.head_commit.message, '[Release]')
-        runs-on: ubuntu-latest
-        strategy:
-            fail-fast: false
-            matrix:
-                tag: [ '3.0.11-alpha1' ]
-                mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
-
-        name: Release ${{ matrix.mapping.repo }}:${{ matrix.tag }}
-
-        env:
-            DIR: packages/${{ matrix.mapping.dir }}
-            TAG: ${{ matrix.tag }}
-
-        steps:
-            -   uses: eonx-com/actions-checkout@v2
-
-            -   name: Remove Git Extra Header
-                run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
-
-            -   name: Release eonx-com/${{ matrix.mapping.repo }}:${{ matrix.tag }}
+            -   if: contains(github.event.head_commit.message, '[Release]')
+                name: Release eonx-com/${{ matrix.mapping.repo }}:${{ matrix.tag }}
                 shell: bash
                 run: |
                     if [ -d "$DIR" ]; then
