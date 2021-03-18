@@ -4,7 +4,6 @@ on:
     push:
         branches:
             - master
-            - feature/easy-async-refactor
 
 jobs:
     provide_packages_json:
@@ -32,26 +31,44 @@ jobs:
             fail-fast: false
             matrix:
                 mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
+                tag: [ '3.0.11-alpha1' ]
+
+        name: Split ${{ matrix.mapping.dir }}
+
+        env:
+            DIR: packages/${{ matrix.mapping.dir }}
+            TAG: ${{ matrix.tag }}
 
         steps:
             -   uses: eonx-com/actions-checkout@v2
-            -   run: git fetch --prune --unshallow
 
-            -   id: previous_tag
-                uses: eonx-com/github-action-get-previous-tag@master
+            -   name: Remove Git Extra Header
+                run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
 
-            -   id: branch_name
+            -   name: Resolve current branch
+                id: branch_name
                 run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
 
-            -   name: Split ${{ matrix.mapping.dir }}
-                uses: eonx-com/github-action-monorepo-split@master
+            -   name: Add Repo Remote
+                run: git remote add split-remote https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git
+
+            -   name: Split packages/${{ matrix.mapping.dir }}
                 env:
-                    GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
-                with:
-                    branch: ${{ steps.branch_name.outputs.branch }}
-                    package-directory: 'packages/${{ matrix.mapping.dir }}'
-                    split-repository-organization: 'eonx-com'
-                    split-repository-name: '${{ matrix.mapping.repo }}'
-                    tag: ${{ steps.previous_tag.outputs.tag }}
-                    user-email: 'nathan.page@eonx.com'
-                    user-name: 'natepage'
+                    BRANCH: ${{ steps.branch_name.outputs.branch }}
+                run: |
+                    git checkout -b "local-$BRANCH-checkout" "$BRANCH"
+                    git subtree split --prefix="packages/${{ matrix.mapping.dir }}" --branch="local-$BRANCH" "$BRANCH"
+                    git push --force split-remote local-$BRANCH:$BRANCH
+
+            -   if: contains(github.event.head_commit.message, '[Release]')
+                name: Release eonx-com/${{ matrix.mapping.repo }}:${{ matrix.tag }}
+                shell: bash
+                run: |
+                    if git rev-parse "$TAG" >/dev/null 2>&1; then
+                        git checkout -b "local-$TAG-checkout" "tags/$TAG"
+
+                        if [ -d "$DIR" ]; then
+                            git subtree split -q --prefix="$DIR" --branch="local-$TAG" "$TAG"
+                            git push -q --force split-remote local-$TAG:refs/tags/$TAG
+                        fi
+                    fi

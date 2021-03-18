@@ -11,13 +11,13 @@ problem you're trying to solve.
 
 
 This package will decode the incoming HTTP Request to extract the "ApiToken" as a PHP object that your application can
-then use. It comes with built-in decoders for: 
-- Basic Auth 
+then use. It comes with built-in decoders for:
+- Basic Auth
 - API keys
 - JWTs (Auth0, Firebase)
 
 So you can start supporting each of those strategies with no effort. It also provides a "chain" decoder allowing you
-to support multiple ApiToken strategies for the same API endpoint. 
+to support multiple ApiToken strategies for the same API endpoint.
 
 
 Each ApiToken implements a common interface allowing you to use them as parameters regardless of the ApiToken strategy
