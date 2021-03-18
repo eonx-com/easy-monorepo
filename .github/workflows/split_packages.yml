@@ -69,6 +69,10 @@ jobs:
                 tag: [ '3.0.11-alpha1' ]
                 mapping: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
+        env:
+            DIR: packages/${{ matrix.mapping.dir }}
+            TAG: ${{ matrix.tag }}
+
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
@@ -76,13 +80,10 @@ jobs:
                 run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
 
             -   name: Release eonx-com/${{ matrix.mapping.repo }}:${{ matrix.tag }}
-                env:
-                    DIR: packages/${{ matrix.mapping.dir }}
-                    TAG: ${{ matrix.tag }}
                 run: |
-                    git checkout -b "local-$TAG-checkout" "tags/$TAG"
-                    if [ -d "$DIR" ]
+                    if [ -d "$DIR" ] && [ git rev-parse $TAG ];
                     then
+                        git checkout -b "local-$TAG-checkout" "tags/$TAG"
                         git subtree split -q --prefix="$DIR" --branch="local-$TAG" "$TAG"
                         git push -q --force origin local-$TAG:refs/tags/$TAG
                     fi
