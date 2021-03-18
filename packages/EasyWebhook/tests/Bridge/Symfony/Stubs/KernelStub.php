@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Bridge\Symfony\Stubs;
 
+use Doctrine\DBAL\Connection;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyWebhook\Bridge\Symfony\EasyWebhookBundle;
@@ -35,6 +36,10 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        // TODO: Find proper way to work with dbal connection
+        $container->setDefinition('doctrine.dbal.default_connection', new Definition(\EonX\EasyAsync\Tests\Stubs\EventDispatcherStub::class));
+        $container->setDefinition(Connection::class, new Definition(EventDispatcherStub::class));
+
         $container->setDefinition(EventDispatcherInterface::class, new Definition(EventDispatcherStub::class));
         $container->setDefinition(LockServiceInterface::class, new Definition(LockServiceStub::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
