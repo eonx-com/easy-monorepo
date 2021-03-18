@@ -68,7 +68,7 @@ jobs:
                         git checkout -b "local-$TAG-checkout" "tags/$TAG"
 
                         if [ -d "$DIR" ]; then
-                            git subtree split -q --prefix="$DIR" --branch="local-$TAG" "$TAG"
-                            git push -q --force split-remote local-$TAG:refs/tags/$TAG
+                            git subtree split --prefix="$DIR" --branch="local-$TAG" "$TAG"
+                            git push --force split-remote local-$TAG:refs/tags/$TAG
                         fi
                     fi
