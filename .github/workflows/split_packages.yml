@@ -57,8 +57,6 @@ jobs:
                     git subtree split --prefix="packages/${{ matrix.mapping.dir }}" --branch="local-$BRANCH" "$BRANCH"
                     git push --force split-remote local-$BRANCH:$BRANCH
 
-            -   run: echo ${{ github.event.head_commit.message }}
-
     release_tag:
         needs:
             - provide_packages_json
