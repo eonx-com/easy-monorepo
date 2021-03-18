@@ -65,9 +65,11 @@ jobs:
                 name: Release eonx-com/${{ matrix.mapping.repo }}:${{ matrix.tag }}
                 shell: bash
                 run: |
-                    git checkout -b "local-$TAG-checkout" "tags/$TAG"
+                    if git rev-parse "$TAG" >/dev/null 2>&1; then
+                        git checkout -b "local-$TAG-checkout" "tags/$TAG"
 
-                    if [ -d "$DIR" ]; then
-                        git subtree split --prefix="$DIR" --branch="local-$TAG" "$TAG"
-                        git push --force split-remote local-$TAG:refs/tags/$TAG
+                        if [ -d "$DIR" ]; then
+                            git subtree split --prefix="$DIR" --branch="local-$TAG" "$TAG"
+                            git push --force split-remote local-$TAG:refs/tags/$TAG
+                        fi
                     fi
