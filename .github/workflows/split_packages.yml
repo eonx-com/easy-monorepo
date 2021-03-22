@@ -58,7 +58,7 @@ jobs:
                     git subtree split --prefix="packages/${{ matrix.mapping.dir }}" --branch="local-$BRANCH" "$BRANCH"
                     git push --force split-remote local-$BRANCH:$BRANCH
             -
-                if: 'contains(github.event.head_commit.message, "[Release]")'
+                if: 'contains(github.event.head_commit.message, ''[Release]'')'
                 name: 'Release eonx-com/${{ matrix.mapping.repo }}:${{ matrix.tag }}'
                 shell: bash
                 run: |
