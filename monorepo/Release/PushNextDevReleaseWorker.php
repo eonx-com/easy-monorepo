@@ -38,8 +38,9 @@ final class PushNextDevReleaseWorker implements ReleaseWorkerInterface
     {
         $versionInString = $this->getVersionDev($version);
 
-        $gitAddCommitCommand = sprintf(
-            'git add . && git commit --allow-empty -m "open %s" && git push',
+        $gitAddCommitCommand = \sprintf(
+            'git add . && git commit --allow-empty -m "[Release] %s and Open %s" && git push',
+            $version->getVersionString(),
             $versionInString
         );
 
