@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyEventDispatcher\Tests\Bridge\Symfony\Stubs;
 
-use EonX\EasyEventDispatcher\Bridge\Symfony\EasyEventDispatcherBundle;
+use EonX\EasyEventDispatcher\Bridge\Symfony\EasyEventDispatcherSymfonyBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -28,7 +28,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyEventDispatcherBundle();
+        yield new EasyEventDispatcherSymfonyBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

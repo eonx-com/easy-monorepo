@@ -13,7 +13,8 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyEventDispatcher\\": "src"
+            "EonX\\EasyEventDispatcher\\": "src",
+            "EonX\\EasyEventDispatcher\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {
