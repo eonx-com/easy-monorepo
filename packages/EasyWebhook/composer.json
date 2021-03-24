@@ -24,7 +24,8 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyWebhook\\": "src"
+            "EonX\\EasyWebhook\\": "src",
+            "EonX\\EasyWebhook\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {

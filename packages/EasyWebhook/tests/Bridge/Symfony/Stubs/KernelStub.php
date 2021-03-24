@@ -7,7 +7,7 @@ namespace EonX\EasyWebhook\Tests\Bridge\Symfony\Stubs;
 use Doctrine\DBAL\Connection;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
-use EonX\EasyWebhook\Bridge\Symfony\EasyWebhookBundle;
+use EonX\EasyWebhook\Bridge\Symfony\EasyWebhookSymfonyBundle;
 use EonX\EasyWebhook\Tests\Stubs\EventDispatcherStub;
 use EonX\EasyWebhook\Tests\Stubs\LockServiceStub;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -58,7 +58,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyWebhookBundle();
+        yield new EasyWebhookSymfonyBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
