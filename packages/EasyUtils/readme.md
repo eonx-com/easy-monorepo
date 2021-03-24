@@ -18,6 +18,7 @@ $ composer require eonx-com/easy-utils
 ## Helper list
 
 - `CollectorHelper`: provides methods to facilitate implementation of the [Collector Design Pattern][2]
+- `Math`: provides methods to facilitate numbers manipulation
 
 ## CollectorHelper
 
@@ -263,6 +264,18 @@ $objects = CollectorHelper::orderLowerPriorityFirst($objects); // [$foo, $bar]
 The `orderLowerPriorityFirst()` method still returns an iterable (or, more precisely, a generator). If you need an `array`, you
 can use the `orderLowerPriorityFirstAsArray()` method instead.
 :::
+
+## Math
+
+The Math helper provides the following methods:
+
+- `abs:` returns the absolute value for the given number
+- `add:` adds two numbers and returns the result
+- `comp:` compares two numbers
+- `divide:` divides one number by the other and returns the result
+- `multiply:` multiplies one number by the other and returns the result
+- `round:` rounds the given number and returns the result
+- `sub:` subs tow numbers and returns the result
 
 [1]: https://getcomposer.org/
 [2]: https://tomasvotruba.com/blog/2018/06/14/collector-pattern-for-dummies/
