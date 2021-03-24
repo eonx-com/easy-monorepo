@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests\Bridge\Laravel;
@@ -14,7 +15,6 @@ trait LaravelTestCaseTrait
     private $app;
 
     /**
-     * @param null|string[] $providers
      * @param null|mixed[] $config
      */
     protected function getApplication(?array $config = null): Application

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests\Bridge\Symfony;
@@ -12,7 +13,8 @@ final class MathTest extends AbstractMathTestCase
 
     protected function getMath(): MathInterface
     {
-        $container = $this->getKernel()->getContainer();
+        $container = $this->getKernel()
+            ->getContainer();
 
         return $container->get(MathInterface::class);
     }

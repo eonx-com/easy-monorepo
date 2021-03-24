@@ -16,11 +16,29 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     public function provideAbsData(): array
     {
         return [
-            ['value' => '-10.4', 'result' => '10.4', 'precision' => 1],
-            ['value' => '-10', 'result' => '10'],
-            ['value' => '0.0', 'result' => '0.0', 'precision' => 1],
-            ['value' => '10', 'result' => '10'],
-            ['value' => '10.4', 'result' => '10.4', 'precision' => 1],
+            [
+                'value' => '-10.4',
+                'result' => '10.4',
+                'precision' => 1,
+            ],
+            [
+                'value' => '-10',
+                'result' => '10',
+            ],
+            [
+                'value' => '0.0',
+                'result' => '0.0',
+                'precision' => 1,
+            ],
+            [
+                'value' => '10',
+                'result' => '10',
+            ],
+            [
+                'value' => '10.4',
+                'result' => '10.4',
+                'precision' => 1,
+            ],
         ];
     }
 
@@ -32,9 +50,21 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     public function provideCompData(): array
     {
         return [
-            ['leftOperand' => '10000000', 'rightOperand' => '10000001', 'result' => -1],
-            ['leftOperand' => '10000000', 'rightOperand' => '10000000', 'result' => 0],
-            ['leftOperand' => '10000001', 'rightOperand' => '10000000', 'result' => 1],
+            [
+                'leftOperand' => '10000000',
+                'rightOperand' => '10000001',
+                'result' => -1,
+            ],
+            [
+                'leftOperand' => '10000000',
+                'rightOperand' => '10000000',
+                'result' => 0,
+            ],
+            [
+                'leftOperand' => '10000001',
+                'rightOperand' => '10000000',
+                'result' => 1,
+            ],
         ];
     }
 
@@ -69,12 +99,30 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     public function provideRoundData(): array
     {
         return [
-            ['value' => '10.4', 'expected' => '10'],
-            ['value' => '10.5', 'expected' => '10'],
-            ['value' => '10.6', 'expected' => '11'],
-            ['value' => '11.5', 'expected' => '12'],
-            ['value' => '12.5', 'expected' => '12'],
-            ['value' => '13.5', 'expected' => '14'],
+            [
+                'value' => '10.4',
+                'expected' => '10',
+            ],
+            [
+                'value' => '10.5',
+                'expected' => '10',
+            ],
+            [
+                'value' => '10.6',
+                'expected' => '11',
+            ],
+            [
+                'value' => '11.5',
+                'expected' => '12',
+            ],
+            [
+                'value' => '12.5',
+                'expected' => '12',
+            ],
+            [
+                'value' => '13.5',
+                'expected' => '14',
+            ],
         ];
     }
 
