@@ -16,7 +16,8 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyPagination\\": "src"
+            "EonX\\EasyPagination\\": "src",
+            "EonX\\EasyPagination\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {

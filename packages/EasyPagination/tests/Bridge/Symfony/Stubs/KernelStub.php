@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Bridge\Symfony\Stubs;
 
-use EonX\EasyPagination\Bridge\Symfony\EasyPaginationBundle;
+use EonX\EasyPagination\Bridge\Symfony\EasyPaginationSymfonyBundle;
 use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPsr7Factory\Bridge\Symfony\EasyPsr7FactoryBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -69,7 +69,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyPaginationBundle();
+        yield new EasyPaginationSymfonyBundle();
         yield new EasyPsr7FactoryBundle();
     }
 
