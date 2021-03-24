@@ -15,8 +15,8 @@ yourself:
 
 return [
     // Other bundles ...
-    
-    EonX\EasyBugsnag\Bridge\Symfony\EasyBugsnagBundle::class => ['all' => true],
+
+    EonX\EasyBugsnag\Bridge\Symfony\EasyBugsnagSymfonyBundle::class => ['all' => true],
 ];
 ```
 
