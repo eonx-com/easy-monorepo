@@ -15,8 +15,8 @@ yourself:
 
 return [
     // Other bundles ...
-    
-    EonX\EasyLogging\Bridge\Symfony\EasyLoggingBundle::class => ['all' => true],
+
+    EonX\EasyLogging\Bridge\Symfony\EasyLoggingSymfonyBundle::class => ['all' => true],
 ];
 ```
 
