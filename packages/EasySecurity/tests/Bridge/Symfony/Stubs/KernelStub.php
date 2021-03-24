@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Tests\Bridge\Symfony\Stubs;
 
 use EonX\EasyApiToken\Bridge\BridgeConstantsInterface as EasyApiTokenConstantsInterface;
-use EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenBundle;
+use EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenSymfonyBundle;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EasyEventDispatcherBundle;
 use EonX\EasySecurity\Bridge\Symfony\EasySecurityBundle;
 use EonX\EasySecurity\Tests\Stubs\ApiTokenDecoderProviderStub;
@@ -72,7 +72,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyApiTokenBundle();
+        yield new EasyApiTokenSymfonyBundle();
         yield new EasySecurityBundle();
         yield new EasyEventDispatcherBundle();
     }

@@ -15,8 +15,8 @@ yourself:
 
 return [
     // Other bundles ...
-    
-    EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenBundle::class => ['all' => true],
+
+    EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenSymfonyBundle::class => ['all' => true],
 ];
 ```
 
