@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncSymfonyBundle;
 use EonX\EasyAsync\Tests\Stubs\EventDispatcherStub;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
-use EonX\EasyRandom\Bridge\Symfony\EasyRandomBundle;
+use EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -59,7 +59,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyRandomBundle();
+        yield new EasyRandomSymfonyBundle();
         yield new EasyAsyncSymfonyBundle();
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests\Bridge\Symfony\Stubs;
 
-use EonX\EasyRandom\Bridge\Symfony\EasyRandomBundle;
+use EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle;
 use EonX\EasyRequestId\Bridge\Symfony\EasyRequestIdBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -48,7 +48,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyRandomBundle();
+        yield new EasyRandomSymfonyBundle();
         yield new EasyRequestIdBundle();
     }
 
