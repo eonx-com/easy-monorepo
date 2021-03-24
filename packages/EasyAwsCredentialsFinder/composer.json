@@ -18,7 +18,8 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyAwsCredentialsFinder\\": "src"
+            "EonX\\EasyAwsCredentialsFinder\\": "src",
+            "EonX\\EasyAwsCredentialsFinder\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {

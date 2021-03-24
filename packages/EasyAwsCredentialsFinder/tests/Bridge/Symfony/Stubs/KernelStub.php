@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyAwsCredentialsFinder\Tests\Bridge\Symfony\Stubs;
 
-use EonX\EasyAwsCredentialsFinder\Bridge\Symfony\EasyAwsCredentialsFinderBundle;
+use EonX\EasyAwsCredentialsFinder\Bridge\Symfony\EasyAwsCredentialsFinderSymfonyBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -38,7 +38,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyAwsCredentialsFinderBundle();
+        yield new EasyAwsCredentialsFinderSymfonyBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
