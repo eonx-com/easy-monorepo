@@ -15,8 +15,8 @@ yourself:
 
 return [
     // Other bundles ...
-    
-    EonX\EasyCore\Bridge\Symfony\EasyCoreBundle::class => ['all' => true],
+
+    EonX\EasyCore\Bridge\Symfony\EasyCoreSymfonyBundle::class => ['all' => true],
 ];
 ```
 
