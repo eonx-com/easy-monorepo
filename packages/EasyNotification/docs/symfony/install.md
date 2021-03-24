@@ -15,8 +15,8 @@ yourself:
 
 return [
     // Other bundles ...
-    
-    EonX\EasyNotification\Bridge\Symfony\EasyNotificationBundle::class => ['all' => true],
+
+    EonX\EasyNotification\Bridge\Symfony\EasyNotificationSymfonyBundle::class => ['all' => true],
 ];
 ```
 

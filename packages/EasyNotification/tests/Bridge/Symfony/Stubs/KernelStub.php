@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Bridge\Symfony\Stubs;
 
-use EonX\EasyNotification\Bridge\Symfony\EasyNotificationBundle;
+use EonX\EasyNotification\Bridge\Symfony\EasyNotificationSymfonyBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -43,7 +43,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyNotificationBundle();
+        yield new EasyNotificationSymfonyBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

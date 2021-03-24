@@ -17,7 +17,8 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyNotification\\": "src"
+            "EonX\\EasyNotification\\": "src",
+            "EonX\\EasyNotification\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {
