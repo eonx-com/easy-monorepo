@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Bridge\Symfony\Stubs;
 
-use EonX\EasyDecision\Bridge\Symfony\EasyDecisionBundle;
+use EonX\EasyDecision\Bridge\Symfony\EasyDecisionSymfonyBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -39,7 +39,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): array
     {
-        return [new EasyDecisionBundle()];
+        return [new EasyDecisionSymfonyBundle()];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
