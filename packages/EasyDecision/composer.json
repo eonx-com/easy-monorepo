@@ -16,6 +16,7 @@
     "autoload": {
         "psr-4": {
             "EonX\\EasyDecision\\": "src",
+            "EonX\\EasyDecision\\Bridge\\Symfony\\": "src/Bridge/Symfony",
             "EonX\\EasyDecision\\Expressions\\": "packages/expressions/src"
         }
     },

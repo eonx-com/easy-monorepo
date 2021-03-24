@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Tests\Bridge\Symfony\Stubs;
 
 use Doctrine\DBAL\Connection;
-use EonX\EasyAsync\Bridge\Symfony\EasyAsyncBundle;
+use EonX\EasyAsync\Bridge\Symfony\EasyAsyncSymfonyBundle;
 use EonX\EasyAsync\Tests\Stubs\EventDispatcherStub;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
-use EonX\EasyRandom\Bridge\Symfony\EasyRandomBundle;
+use EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -59,8 +59,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyRandomBundle();
-        yield new EasyAsyncBundle();
+        yield new EasyRandomSymfonyBundle();
+        yield new EasyAsyncSymfonyBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

@@ -15,8 +15,8 @@ yourself:
 
 return [
     // Other bundles ...
-    
-    EonX\EasyRandom\Bridge\Symfony\EasyRandomBundle::class => ['all' => true],
+
+    EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle::class => ['all' => true],
 ];
 ```
 

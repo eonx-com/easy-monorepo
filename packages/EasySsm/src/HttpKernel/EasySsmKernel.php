@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySsm\HttpKernel;
 
-use EonX\EasyAwsCredentialsFinder\Bridge\Symfony\EasyAwsCredentialsFinderBundle;
+use EonX\EasyAwsCredentialsFinder\Bridge\Symfony\EasyAwsCredentialsFinderSymfonyBundle;
 use EonX\EasyRandom\RandomGenerator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -51,7 +51,7 @@ final class EasySsmKernel extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyAwsCredentialsFinderBundle();
+        yield new EasyAwsCredentialsFinderSymfonyBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

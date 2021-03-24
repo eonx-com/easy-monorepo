@@ -15,8 +15,8 @@ yourself:
 
 return [
     // Other bundles ...
-    
-    EonX\EasyErrorHandler\Bridge\Symfony\EasyErrorHandlerBundle::class => ['all' => true],
+
+    EonX\EasyErrorHandler\Bridge\Symfony\EasyErrorHandlerSymfonyBundle::class => ['all' => true],
 ];
 ```
 

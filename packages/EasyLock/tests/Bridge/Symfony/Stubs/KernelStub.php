@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock\Tests\Bridge\Symfony\Stubs;
 
-use EonX\EasyLock\Bridge\Symfony\EasyLockBundle;
+use EonX\EasyLock\Bridge\Symfony\EasyLockSymfonyBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -43,7 +43,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyLockBundle();
+        yield new EasyLockSymfonyBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

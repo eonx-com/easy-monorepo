@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs;
 
 use EonX\EasyApiToken\Bridge\BridgeConstantsInterface;
-use EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenBundle;
+use EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenSymfonyBundle;
 use EonX\EasyApiToken\Tests\Stubs\DecoderProviderStub;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -43,7 +43,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyApiTokenBundle();
+        yield new EasyApiTokenSymfonyBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

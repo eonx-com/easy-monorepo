@@ -15,7 +15,8 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyLock\\": "src"
+            "EonX\\EasyLock\\": "src",
+            "EonX\\EasyLock\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {
