@@ -6,7 +6,7 @@ namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony\Stubs;
 
 use ApiPlatform\Core\Bridge\Symfony\Validator\EventListener\ValidationExceptionListener;
 use Bugsnag\Client;
-use EonX\EasyErrorHandler\Bridge\Symfony\EasyErrorHandlerBundle;
+use EonX\EasyErrorHandler\Bridge\Symfony\EasyErrorHandlerSymfonyBundle;
 use EonX\EasyErrorHandler\Tests\Stubs\BugsnagClientStub;
 use EonX\EasyLogging\Bridge\Symfony\EasyLoggingBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -57,7 +57,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     public function registerBundles(): iterable
     {
         yield new EasyLoggingBundle();
-        yield new EasyErrorHandlerBundle();
+        yield new EasyErrorHandlerSymfonyBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
