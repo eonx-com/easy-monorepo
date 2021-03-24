@@ -16,7 +16,8 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasySchedule\\": "src"
+            "EonX\\EasySchedule\\": "src",
+            "EonX\\EasySchedule\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {
