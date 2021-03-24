@@ -6,10 +6,12 @@ namespace EonX\EasySecurity\Bridge\Symfony;
 
 use EonX\EasySecurity\Bridge\Symfony\DependencyInjection\Compiler\RegisterPermissionExpressionFunctionPass;
 use EonX\EasySecurity\Bridge\Symfony\DependencyInjection\Compiler\RegisterSecurityContextPass;
+use EonX\EasySecurity\Bridge\Symfony\DependencyInjection\EasySecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class EasySecurityBundle extends Bundle
+final class EasySecuritySymfonyBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {
@@ -17,5 +19,10 @@ final class EasySecurityBundle extends Bundle
 
         $container->addCompilerPass(new RegisterPermissionExpressionFunctionPass());
         $container->addCompilerPass(new RegisterSecurityContextPass());
+    }
+
+    public function getContainerExtension(): ExtensionInterface
+    {
+        return new EasySecurityExtension();
     }
 }
