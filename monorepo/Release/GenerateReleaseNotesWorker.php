@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Release;
 
+use Nette\Utils\Strings;
 use PharIo\Version\Version;
 use Symplify\ChangelogLinker\Analyzer\IdsAnalyzer;
 use Symplify\ChangelogLinker\Application\ChangelogLinkerApplication;
@@ -17,6 +18,12 @@ use Symplify\SmartFileSystem\SmartFileSystem;
 
 final class GenerateReleaseNotesWorker implements ReleaseWorkerInterface
 {
+    /**
+     * @var string
+     * @see https://regex101.com/r/5KOvEb/1
+     */
+    private const UNRELEASED_HEADLINE_REGEX = '#\#\# Unreleased#';
+
     /**
      * @var \Symplify\ChangelogLinker\ChangelogCleaner
      */
@@ -84,6 +91,7 @@ final class GenerateReleaseNotesWorker implements ReleaseWorkerInterface
 
     public function work(Version $version): void
     {
+        $filename = \sprintf(__DIR__ . '/../../secret/release_%s.md', $version->getVersionString());
         $currentBranch = $this->gitManager->getCurrentBranch();
         $existingContent = $this->changelogFileSystem->readChangelog();
         $id = $this->findHighestIdMergedInBranch($existingContent, $currentBranch);
@@ -99,7 +107,9 @@ final class GenerateReleaseNotesWorker implements ReleaseWorkerInterface
         $content = $this->changelogLinker->processContentWithLinkAppends($content);
         $content = $this->changelogCleaner->processContent($content);
 
-        $filename = \sprintf(__DIR__ . '/../../secret/release_%s.md', $version->getVersionString());
+        $headLine = \sprintf('## Changelog - %s', $version->getVersionString());
+
+        $content = Strings::replace($content, self::UNRELEASED_HEADLINE_REGEX, $headLine);
 
         $this->smartFileSystem->dumpFile($filename, $content);
     }
