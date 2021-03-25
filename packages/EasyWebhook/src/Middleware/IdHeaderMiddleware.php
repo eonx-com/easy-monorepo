@@ -32,7 +32,11 @@ final class IdHeaderMiddleware extends AbstractConfigureOnceMiddleware
     protected function doProcess(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
         $webhook->id($webhook->getId() ?? $this->store->generateWebhookId());
-        $webhook->header($this->idHeader, $webhook->getId());
+
+        // Set header only if id isn't the default one
+        if ($webhook->getId() !== StoreInterface::DEFAULT_WEBHOOK_ID) {
+            $webhook->header($this->idHeader, $webhook->getId());
+        }
 
         return $stack
             ->next()

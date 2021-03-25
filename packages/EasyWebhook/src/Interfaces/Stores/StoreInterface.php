@@ -18,6 +18,11 @@ interface StoreInterface
      */
     public const DEFAULT_TABLE = 'easy_webhooks';
 
+    /**
+     * @var string
+     */
+    public const DEFAULT_WEBHOOK_ID = 'webhook-id';
+
     public function find(string $id): ?WebhookInterface;
 
     public function generateWebhookId(): string;
