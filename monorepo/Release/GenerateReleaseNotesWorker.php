@@ -104,12 +104,14 @@ final class GenerateReleaseNotesWorker implements ReleaseWorkerInterface
             false
         );
 
+        $content = Strings::replace(
+            $content,
+            self::UNRELEASED_HEADLINE_REGEX,
+            \sprintf('## Changelog - %s', $version->getVersionString())
+        );
+
         $content = $this->changelogLinker->processContentWithLinkAppends($content);
         $content = $this->changelogCleaner->processContent($content);
-
-        $headLine = \sprintf('## Changelog - %s', $version->getVersionString());
-
-        $content = Strings::replace($content, self::UNRELEASED_HEADLINE_REGEX, $headLine);
 
         $this->smartFileSystem->dumpFile($filename, $content);
     }
