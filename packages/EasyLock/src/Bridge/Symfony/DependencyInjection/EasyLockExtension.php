@@ -25,7 +25,7 @@ final class EasyLockExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
 
-        $container->setAlias(BridgeConstantsInterface::SERVICE_CONNECTION, $config['connection']);
+        $container->setParameter(BridgeConstantsInterface::PARAM_CONNECTION, $config['connection']);
 
         if (\class_exists(MessengerPass::class)) {
             $loader->load('messenger_middleware.php');
