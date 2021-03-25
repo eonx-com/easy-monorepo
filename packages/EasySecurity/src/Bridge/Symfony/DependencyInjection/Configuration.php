@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\DependencyInjection;
 
+use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -25,6 +26,9 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('voters')
                     ->children()
+                        ->integerNode('priority')
+                            ->defaultValue(BridgeConstantsInterface::TAG_SECURITY_VOTER_PRIORITY)
+                        ->end()
                         ->booleanNode('permission_enabled')->defaultFalse()->end()
                         ->booleanNode('provider_enabled')->defaultFalse()->end()
                         ->booleanNode('role_enabled')->defaultFalse()->end()
