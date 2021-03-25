@@ -39,6 +39,16 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const TAG_SECURITY_VOTER = 'security.voter';
+
+    /**
+     * @var int
+     */
+    public const TAG_SECURITY_VOTER_PRIORITY = 100;
+
+    /**
+     * @var string
+     */
     public const SERVICE_API_TOKEN_DECODER = 'easy_security.api_token_decoder';
 
     /**

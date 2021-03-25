@@ -72,7 +72,14 @@ final class EasySecurityExtension extends Extension
 
             $voterDefinition = (new Definition($class))
                 ->setAutowired(true)
-                ->setAutoconfigured(true);
+                ->setAutoconfigured(true)
+                ->setTags([
+                    BridgeConstantsInterface::TAG_SECURITY_VOTER => [
+                        [
+                            'priority' => $config['voters']['priority'],
+                        ],
+                    ],
+                ]);
 
             $container->setDefinition($class, $voterDefinition);
         }
