@@ -70,11 +70,11 @@ final class EasyWebhookExtension extends Extension
 
     private function async(): void
     {
-        $enabled = $config['async']['enabled'] ?? true;
+        $enabled = \class_exists(MessengerPass::class) && ($config['async']['enabled'] ?? true);
 
         $this->container->setParameter(BridgeConstantsInterface::PARAM_ASYNC, $enabled);
 
-        if ($enabled && \class_exists(MessengerPass::class)) {
+        if ($enabled) {
             $this->container->setParameter(BridgeConstantsInterface::PARAM_BUS, $this->config['async']['bus']);
             $this->loader->load('async.php');
         }

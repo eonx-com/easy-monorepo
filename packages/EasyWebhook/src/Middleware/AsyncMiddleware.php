@@ -45,6 +45,9 @@ final class AsyncMiddleware extends AbstractMiddleware
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
         if ($this->enabled === false || $webhook->isSendNow()) {
+            // If async disabled, make sure webhook is sendNow
+            $webhook->sendNow(true);
+
             return $stack
                 ->next()
                 ->process($webhook, $stack);
