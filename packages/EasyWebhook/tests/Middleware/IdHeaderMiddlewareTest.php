@@ -26,7 +26,7 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
                     ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey(WebhookInterface::HEADER_ID, $headers);
-                self::assertEquals('webhook-id', $headers[WebhookInterface::HEADER_ID]);
+                self::assertEquals('not-default-webhook-id', $headers[WebhookInterface::HEADER_ID]);
             },
         ];
 
@@ -68,7 +68,7 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ?StoreInterface $store = null
     ): void {
         // Fix webhook id
-        $store = $store ?? new ArrayStoreStub($this->getRandomGenerator(), 'webhook-id');
+        $store = $store ?? new ArrayStoreStub($this->getRandomGenerator(), 'not-default-webhook-id');
         $middleware = new IdHeaderMiddleware($store, $idHeader);
 
         $test($this->process($middleware, $webhook));

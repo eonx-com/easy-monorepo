@@ -16,7 +16,7 @@ final class NullStore implements StoreInterface
 
     public function generateWebhookId(): string
     {
-        return 'webhook-id';
+        return self::DEFAULT_WEBHOOK_ID;
     }
 
     public function store(WebhookInterface $webhook): WebhookInterface
