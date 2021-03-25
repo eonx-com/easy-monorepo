@@ -9,9 +9,25 @@ use EonX\EasyLock\LockService;
 
 final class EasyLockBundleTest extends AbstractSymfonyTestCase
 {
-    public function testSanity(): void
+    /**
+     * @return iterable<mixed>
+     */
+    public function providerTestSanity(): iterable
     {
-        $container = $this->getKernel([__DIR__ . '/Fixtures/config/in_memory_connection.yaml'])->getContainer();
+        yield 'default config, no connection' => [null];
+
+        yield 'in memory connection' => [[__DIR__ . '/Fixtures/config/in_memory_connection.yaml']];
+    }
+
+    /**
+     * @param null|string[] $configs
+     *
+     * @dataProvider providerTestSanity
+     */
+    public function testSanity(?array $configs = null): void
+    {
+        $container = $this->getKernel($configs)
+            ->getContainer();
 
         self::assertInstanceOf(LockService::class, $container->get(LockServiceInterface::class));
     }
