@@ -22,7 +22,7 @@ use Symplify\MonorepoBuilder\ValueObject\Option;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
-    $parameters->set(ChangelogLinkerOption::AUTHORS_TO_IGNORE, []);
+    $parameters->set(ChangelogLinkerOption::AUTHORS_TO_IGNORE, ['natepage']);
     $parameters->set(ChangelogLinkerOption::NAMES_TO_URLS, []);
     $parameters->set(ChangelogLinkerOption::PACKAGE_ALIASES, []);
     $parameters->set('env(GITHUB_TOKEN)', null);
