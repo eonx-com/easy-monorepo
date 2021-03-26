@@ -1,5 +1,72 @@
 <!-- changelog-linker -->
 
+## [3.0.14-alpha3]
+
+- [#509] [EasyLock] Default lock store connection to flock
+
+## [3.0.14-alpha2]
+
+- [#508] [EasyWebhook] Override getContainerExtension for EasyWebhook bundle
+
+## [3.0.14-alpha1]
+
+- [#505] [EasyUtils] Add MathInterface
+- [#506] [EasyPagination] Flex compatibility for bundle to be installed auto
+- [#507] Improve Symfony Flex integration
+
+## [3.0.12] - 2021-03-19
+
+- [#504] [EasyBugsnag] Use ShutdownStrategy on WorkerRunningEvent for Messenger
+
+## [3.0.11] - 2021-03-19
+
+- [#503] Feature/git subtree for split 1
+
+## [3.0.10] - 2021-03-18
+
+- [#499] [EasyStandard] Hotfix/Fix PhpDocCommentRector, Thanks to [@DKeeper]
+- [#500] [EasyStandard] Hotfix/Fix AlphabeticallySortedArrayKeysSniff, Thanks to [@DKeeper]
+
+## [3.0.9] - 2021-03-18
+
+- [#502] [EasyWebhook] Clean up
+
+## [3.0.7] - 2021-03-17
+
+- [#497] [CI] Use symfonycorp security checker action
+- [#496] [EasyAsync] Implement Batch
+- [#501] [EasyWebhook] Refactor statements provider to use dbal schema
+
+## [3.0.6] - 2021-03-11
+
+- [#495] [EasyCore] Delete unused config, Thanks to [@ERuban]
+
+## [3.0.5] - 2021-03-10
+
+- [#494] Merge 2.x into 3.x
+
+## [3.0.5-alpha4]
+
+- [#493] [EasyWebhook] Implement rewind on stack
+
+## [3.0.5-alpha3]
+
+- [#492] [EasySecurity] Fix symfony bridge for context service
+
+## [2.5.33] - 2021-03-09
+
+- [#477] [EasyStandard] Implement PhpDocCommentRector & SingleLineCommentRector, Thanks to [@DKeeper]
+
+## 3.0.14 - 2021-03-26
+
+- [#513] [EasySecurity] Allow to control security voter priority
+- [#511] [EasyWebhook] Disable async properly if Messenger not installed
+- [#512] [EasyWebhook] Don't send webhook-id header if default id
+- [#488] [EasyWebhook] Improve docs, Thanks to [@nick-lc]
+- [#515] [EasyWebhook] Fix method config in laravel
+
+
+
 ## [3.0.14-alpha2]
 
 - [#508] [EasyWebhook] Override getContainerExtension for EasyWebhook bundle
@@ -53,7 +120,7 @@
 
 - [#477] [EasyStandard] Implement PhpDocCommentRector & SingleLineCommentRector, Thanks to [@DKeeper]
 
-## 3.0.14-alpha3 - 2021-03-25
+## [3.0.14-alpha3] - 2021-03-25
 
 - [#509] [EasyLock] Default lock store connection to flock
 
@@ -3046,3 +3113,10 @@
 [3.0.14-alpha1]: https://github.com/eonx-com/easy-monorepo/compare/3.0.12...3.0.14-alpha1
 [#509]: https://github.com/eonx-com/easy-monorepo/pull/509
 [3.0.14-alpha2]: https://github.com/eonx-com/easy-monorepo/compare/3.0.12...3.0.14-alpha2
+[#515]: https://github.com/eonx-com/easy-monorepo/pull/515
+[#513]: https://github.com/eonx-com/easy-monorepo/pull/513
+[#512]: https://github.com/eonx-com/easy-monorepo/pull/512
+[#511]: https://github.com/eonx-com/easy-monorepo/pull/511
+[#488]: https://github.com/eonx-com/easy-monorepo/pull/488
+[@nick-lc]: https://github.com/nick-lc
+[3.0.14-alpha3]: https://github.com/eonx-com/easy-monorepo/compare/3.0.14-alpha1...3.0.14-alpha3
