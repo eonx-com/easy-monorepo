@@ -53,13 +53,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     # release workers - in order to execute
     $services->set(GenerateReleaseNotesWorker::class);
-    $services->set(UpdateChangelogWorker::class);
-    $services->set(AddTagToChangelogReleaseWorker::class);
-    $services->set(UpdateTagInGithubWorkflow::class);
-    $services->set(PackagesListInReadmeReleaseWorker::class);
-    $services->set(SetCurrentMutualDependenciesReleaseWorker::class);
-    $services->set(TagVersionReleaseWorker::class);
-    $services->set(SetNextMutualDependenciesReleaseWorker::class);
-    $services->set(UpdateBranchAliasReleaseWorker::class);
+    //$services->set(UpdateChangelogWorker::class);
+    //$services->set(AddTagToChangelogReleaseWorker::class);
+    //$services->set(UpdateTagInGithubWorkflow::class);
+    //$services->set(PackagesListInReadmeReleaseWorker::class);
+    //$services->set(SetCurrentMutualDependenciesReleaseWorker::class);
+    //$services->set(TagVersionReleaseWorker::class);
+    //$services->set(SetNextMutualDependenciesReleaseWorker::class);
+    //$services->set(UpdateBranchAliasReleaseWorker::class);
     $services->set(PushNextDevReleaseWorker::class);
 };

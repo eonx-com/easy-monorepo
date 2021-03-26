@@ -97,20 +97,20 @@ final class GenerateReleaseNotesWorker implements ReleaseWorkerInterface
         $id = $this->findHighestIdMergedInBranch($existingContent, $currentBranch);
         $pullRequests = $this->githubApi->getMergedPullRequestsSinceId($id ?? 491, $currentBranch);
 
-        $content = $this->changelogLinkerApplication->createContentFromPullRequestsBySortPriority(
-            $pullRequests,
-            null,
-            false,
-            false
-        );
+        //$content = $this->changelogLinkerApplication->createContentFromPullRequestsBySortPriority(
+        //    $pullRequests,
+        //    null,
+        //    false,
+        //    false
+        //);
+        //
+        //$content = Strings::replace(
+        //    $content,
+        //    self::UNRELEASED_HEADLINE_REGEX,
+        //    \sprintf('## [%s]', $version->getVersionString())
+        //);
 
-        $content = Strings::replace(
-            $content,
-            self::UNRELEASED_HEADLINE_REGEX,
-            \sprintf('## Changelog - %s', $version->getVersionString())
-        );
-
-        $content = $this->changelogLinker->processContentWithLinkAppends($content);
+        $content = $this->changelogLinker->processContentWithLinkAppends($this->smartFileSystem->readFile($filename));
         $content = $this->changelogCleaner->processContent($content);
 
         $this->smartFileSystem->dumpFile($filename, $content);
