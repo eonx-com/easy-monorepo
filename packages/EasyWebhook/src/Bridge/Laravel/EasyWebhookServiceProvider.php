@@ -117,7 +117,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
         $this->app->singleton(MethodMiddleware::class, function (): MethodMiddleware {
             return new MethodMiddleware(
-                \config('easy-webhooks.method'),
+                \config('easy-webhook.method'),
                 MiddlewareInterface::PRIORITY_CORE_AFTER + 10
             );
         });
