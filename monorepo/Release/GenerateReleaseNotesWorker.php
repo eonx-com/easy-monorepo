@@ -7,6 +7,7 @@ namespace EonX\EasyMonorepo\Release;
 use Nette\Utils\Strings;
 use PharIo\Version\Version;
 use Symplify\ChangelogLinker\Analyzer\IdsAnalyzer;
+use Symplify\ChangelogLinker\Analyzer\VersionsAnalyzer;
 use Symplify\ChangelogLinker\Application\ChangelogLinkerApplication;
 use Symplify\ChangelogLinker\ChangelogCleaner;
 use Symplify\ChangelogLinker\ChangelogLinker;
@@ -95,23 +96,32 @@ final class GenerateReleaseNotesWorker implements ReleaseWorkerInterface
         $currentBranch = $this->gitManager->getCurrentBranch();
         $existingContent = $this->changelogFileSystem->readChangelog();
         $id = $this->findHighestIdMergedInBranch($existingContent, $currentBranch);
+        $previousVersion = $this->getPreviousVersion($existingContent);
         $pullRequests = $this->githubApi->getMergedPullRequestsSinceId($id ?? 491, $currentBranch);
 
-        //$content = $this->changelogLinkerApplication->createContentFromPullRequestsBySortPriority(
-        //    $pullRequests,
-        //    null,
-        //    false,
-        //    false
-        //);
-        //
-        //$content = Strings::replace(
-        //    $content,
-        //    self::UNRELEASED_HEADLINE_REGEX,
-        //    \sprintf('## [%s]', $version->getVersionString())
-        //);
+        $content = $this->changelogLinkerApplication->createContentFromPullRequestsBySortPriority(
+            $pullRequests,
+            null,
+            false,
+            false
+        );
 
-        $content = $this->changelogLinker->processContentWithLinkAppends($this->smartFileSystem->readFile($filename));
+        $content = Strings::replace(
+            $content,
+            self::UNRELEASED_HEADLINE_REGEX,
+            \sprintf('## [%s]', $version->getVersionString())
+        );
+
+        $content = $this->changelogLinker->processContentWithLinkAppends($content);
         $content = $this->changelogCleaner->processContent($content);
+
+        $content .= \sprintf(
+            '[%s]: %s/compare/%s...%s',
+            $version->getVersionString(),
+            'http://github.com/eonx-com/easy-monorepo',
+            $previousVersion,
+            $version->getVersionString()
+        );
 
         $this->smartFileSystem->dumpFile($filename, $content);
     }
@@ -135,5 +145,13 @@ final class GenerateReleaseNotesWorker implements ReleaseWorkerInterface
         }
 
         return null;
+    }
+
+    private function getPreviousVersion(string $existingContent): string
+    {
+        $versionAnalyzer = new VersionsAnalyzer();
+        $versionAnalyzer->analyzeContent($existingContent);
+
+        return $versionAnalyzer->getVersions()[0] ?? '1.0.0';
     }
 }
