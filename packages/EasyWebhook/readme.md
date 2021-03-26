@@ -55,4 +55,7 @@ Webhooks can be configured to be sent after a particular date and time. You can 
 `easy-webhooks:send-due-webhooks` console command in a cron job to send due webhooks. See [Console](console.md) for more
 information.
 
+Global settings for the EasyWebhook package can be configured via a configuration file in your application. See
+[Configuration](config.md) for more information.
+
 [1]: https://getcomposer.org/

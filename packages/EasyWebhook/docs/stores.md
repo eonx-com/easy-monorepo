@@ -14,8 +14,8 @@ store and Doctrine DBAL store.
 To set the **webhook store**, set the `EonX\EasyWebhook\Interfaces\Stores\StoreInterface` service to be one of:
 
 - `EonX\EasyWebhook\Stores\NullStore`: Webhooks are not stored. This is the default store option for webhooks.
-- `EonX\EasyWebhook\Stores\ArrayStore`: Webhooks are stored in an array. Note that the array store will not persist
-  beyond the life of your application.
+- `EonX\EasyWebhook\Stores\ArrayStore`: Webhooks are stored in an array in memory. Note that the array store will not
+  persist beyond the life of your application.
 - `EonX\EasyWebhook\Stores\DoctrineDbalStore`: Webhooks are stored in a database accessed through Doctrine DBAL. Provide
   a `Doctrine\DBAL\Connection` connection and an optional table name (the default table name is `easy_webhooks`).
 - Your own webhook store implementation.
@@ -25,8 +25,8 @@ one of:
 
 - `EonX\EasyWebhook\Stores\NullResultStore`: Webhook results are not stored. This is the default store option for
   webhook results.
-- `EonX\EasyWebhook\Stores\ArrayResultStore`: Webhook results are stored in an array. Note that the array store will not
-  persist beyond the life of your application.
+- `EonX\EasyWebhook\Stores\ArrayResultStore`: Webhook results are stored in an array in memory. Note that the array
+  store will not persist beyond the life of your application.
 - `EonX\EasyWebhook\Stores\DoctrineDbalResultStore`: Webhook results are stored in a database accessed through Doctrine
   DBAL. Provide a `Doctrine\DBAL\Connection` connection and an optional table name (the default table name is
   `easy_webhook_results`).

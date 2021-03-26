@@ -12,24 +12,27 @@ responsible for sending the webhook.
 
 A Webhook object has the following properties:
 
-- `$allowRerun`: Boolean indicating whether a webhook can be rerun multiple times.
-- `$body`: Body of the webhook HTTP request, provided as an array of key-value pairs, which will be formatted as a JSON
-  string in the request.
-- `$bodyAsString`: Body of the webhook HTTP request, provided as a JSON string, e.g. `{"event":"showcase"}`. Note that
-  `$bodyAsString` takes priority over `$body` if both are set.
+- `$allowRerun`: Boolean indicating whether a webhook can be rerun multiple times after the webhook is in a final state
+  (i.e. success or failed).
+- `$body`: Body of the webhook HTTP request, provided as an array of key-value pairs. The body will be formatted by the
+  BodyFormatterMiddleware (which formats the body as JSON by default).
+- `$bodyAsString`: Body of the webhook HTTP request, provided as a string. The body will be formatted by the
+  BodyFormatterMiddleware (which formats the body as JSON by default). Note that `$bodyAsString` takes priority over
+  `$body` if both are set.
 - `$configured`: Boolean indicating whether a webhook is **configured**, meaning that some configure once middleware
   will not be processed for the webhook, e.g. the event header middleware. See [Middleware](middleware.md) for more
   information.
 - `$currentAttempt`: Current attempt of the webhook.
-- `$event`: Event descriptor, which will be sent in the `X-Webhook-Event` header of the webhook HTTP request.
+- `$event`: Event descriptor, which will be sent in the Event header of the webhook HTTP request. The Event header is
+  called `X-Webhook-Event` by default.
 - `$extra`: Array of extra information pertaining to the webhook.
 - `$httpClientOptions`: Array of HTTP client options for the webhook HTTP request.
-- `$id`: A unique identifier for the webhook, which will be sent in the `X-Webhook-Id` header of the webhook HTTP
-  request.
+- `$id`: A unique identifier for the webhook, which will be sent in the ID header of the webhook HTTP request. The ID
+  header is called `X-Webhook-Id` by default.
 - `$maxAttempt`: Maximum number of times to try to send the webhook before giving up.
 - `$method`: HTTP method to use to send the webhook HTTP request, e.g. `PUT`. The HTTP method is `POST` by default.
-- `$secret`: Secret key which will be used to construct a HMAC (Hash-based Message Authentication Code) of the webhook
-  HTTP request that will be sent in the `X-Webhook-Signature` header of the webhook HTTP request.
+- `$secret`: Secret key which will be used to construct a signature of the webhook HTTP request body that will be sent
+  in the Signature header of the webhook HTTP request. The Signature header is called `X-Webhook-Signature` by default.
 - `$sendAfter`: Timestamp after which a webhook may be sent. You can initiate sending of delayed webhooks via the
   console command `easy-webhooks:send-due-webhooks`.
 - `$sendNow`: Boolean indicating that the webhook should be sent synchronously instead of asynchronously. Note that it

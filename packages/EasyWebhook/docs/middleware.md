@@ -9,19 +9,19 @@ The EasyWebhook package uses a **middleware stack** that is processed every time
 middleware proceeds down the stack to where the webhook is sent in a HTTP request, and then proceeds back up the stack.
 Actions may be taken on the way down and/or the way back up.
 
-Middleware are services implementing `EonX\EasyWebhook\Interfaces\MiddlewareInterface`. You can write custom middleware,
-e.g. to add a custom header to webhook HTTP requests.
+Middleware are services implementing `EonX\EasyWebhook\Interfaces\MiddlewareInterface`. This package provides **core
+middleware**, but you can also write **custom middleware**, e.g. to add a custom header to webhook HTTP requests.
 
 The middleware is ordered by **priority** in the stack, whereby the lower the priority, the earlier in the stack the
 middleware is placed.
 
-The core middleware can have priorities between -5000 and 5000. If not specified, the default priority is 0. Some
-middleware provided by this package must run before the core middleware, e.g. to lock the Webhook object, and some
-middleware must run after the core middleware, e.g. to send the webhook HTTP request.
+Custom middleware can have priorities between -5000 and 5000. If not specified, the default priority is 0. Some core
+middleware provided by this package must run before the custom middleware, e.g. to lock the Webhook object, and some
+core middleware must run after the core middleware, e.g. to send the webhook HTTP request.
 
 ## Configure once middleware
 
-Some middleware is **configure once** middleware. If the webhook is flagged as **configured**, i.e. its `$configured`
+Some middleware are **configure once** middleware. If the webhook is flagged as **configured**, i.e. its `$configured`
 property is `true`, then configure once middleware will not operate on the webhook.
 
 Note that if a webhook is retrieved from a webhook store, then it is automatically flagged as configured.
@@ -42,15 +42,22 @@ operate on the webhook.
 
 ### `BodyFormatterMiddleware`
 
-This middleware formats the body of the webhook HTTP request as a JSON string and sets the `Content-Type` header of the
-HTTP request to be `application/json`.
+This middleware formats the body of the webhook HTTP request.
+
+By default, this package uses the `EonX\EasyWebhook\Formatters\JsonFormatter` body formatter, which formats the request
+body as a JSON string and sets the `Content-Type` header of the HTTP request to be `application/json`.
+
+You can use your own body formatter by setting the `EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface` service
+to your own implementation.
 
 *This is configure once middleware.*
 
 ### `EventHeaderMiddleware`
 
-This middleware sets the `X-Webhook-Event` header of the webhook HTTP request to the webhook's `$event` property (if it
-exists).
+This middleware sets the **Event header** of the webhook HTTP request to the webhook's `$event` property (if it exists).
+
+The default name of the Event header is `X-Webhook-Event`, but the name is configurable (see
+[Configuration](config.md)).
 
 *This is configure once middleware.*
 
@@ -61,8 +68,10 @@ for more information.
 
 ### `IdHeaderMiddleware`
 
-This middleware sets the `X-Webhook-Id` header of the webhook HTTP request. It uses the webhook's `$id` property (if it
-exists) or generates a new ID.
+This middleware sets the **ID header** of the webhook HTTP request to the webhook's `$id` property (if it exists) or
+generates a new ID.
+
+The default name of the ID header is `X-Webhook-Id`, but the name is configurable (see [Configuration](config.md)).
 
 *This is configure once middleware.*
 
@@ -70,9 +79,14 @@ exists) or generates a new ID.
 
 This middleware locks the Webhook object at the start of middleware processing and unlocks it at the end.
 
+This middleware prevents the same webhook from being sent more than once if there are concurrency issues with multiple
+workers consuming the asynchronous webhook queue.
+
 ### `MethodMiddleware`
 
-This middleware sets the HTTP method for sending the webhook HTTP request.
+This middleware sets the HTTP method for sending the webhook HTTP request to the webhook's `$method` property (if it
+exists) or the method defined in the package configuration (see [Configuration](config.md)). The default method is
+`POST`.
 
 *This is configure once middleware.*
 
@@ -81,9 +95,15 @@ This middleware sets the HTTP method for sending the webhook HTTP request.
 If the webhook is in a final state (i.e. success or failed), this middleware checks if rerun is allowed for the webhook,
 and if so, resets its `$currentAttempt` and its `$status` to `pending`, which allows the webhook to be rerun.
 
+This middleware ensures that webhooks will not be rerun after reaching a final state unless explicitly allowed by the
+webhook.
+
 ### `ResetStoreMiddleware`
 
 This middleware resets the webhook store and webhook results store. See [Stores](stores.md) for more information.
+
+This middleware prevents memory issues when sending webhooks asynchronously with stores that use memory for their
+storage, such as the array stores.
 
 Note that the stores must implement `EonX\EasyWebhook\Interfaces\Stores\ResetStoreInterface`. Of the stores provided by
 the EasyWebhook package, only the array stores support reset.
@@ -105,9 +125,17 @@ This middleware sends the webhook HTTP request and returns the result in a [Webh
 
 ### `SignatureHeaderMiddleware`
 
-This middleware sets the `X-Webhook-Signature` header of the webhook HTTP request. The header contains a SHA-256 HMAC
-(Hash-based Message Authentication Code) constructed by hashing the request body with either the webhook's `$secret`
-property (if it exists) or the default secret.
+This middleware sets the **Signature header** of the webhook HTTP request.
+
+By default, this package uses the `EonX\EasyWebhook\Signers\Rs256Signer` signer. The header will contain a SHA-256 HMAC
+(Hash-based Message Authentication Code) constructed by hashing the webhook's request body with either the webhook's
+`$secret` property (if it exists) or the secret defined in the package configuration (see [Configuration](config.md)).
+
+You can use your own signer by setting the `EonX\EasyWebhook\Interfaces\WebhookSignerInterface` service to your own
+implementation.
+
+The default name of the Signature header is `X-Webhook-Signature`, but the name is configurable (see
+[Configuration](config.md)).
 
 *This is configure once middleware.*
 
@@ -136,27 +164,27 @@ The following table show the middleware stack in priority order, with summaries 
 
 | Middleware | Action forward :arrow_down: | Action back :arrow_up: |
 | ---------- | --------------------------- | ---------------------- |
+| *Begin initial core middleware* | | |
 | `LockMiddleware` | Lock webhook | Unlock webhook |
+| `SendAfterMiddleware` | If time is before `$sendAfter`, store webhook and return up stack<br/>If time is after `$sendAfter`, continue down stack | |
 | `RerunMiddleware` | If rerun allowed, reset status and current attempt<br/>If not allowed, throw exception | |
-| *Begin core middleware*<br/>*(processed in priority order)* | | |
+| *End initial core middleware* | | |
+| *Begin custom middleware*<br/>*(processed in priority order)* | | |
 | `BodyFormatterMiddleware`| Format request body | |
-| `EventHeaderMiddleware` | Set `X-Webhook-Event` request header | |
-| `IdHeaderMiddleware` | Set `X-Webhook-Id` request header | |
-| `SignatureHeaderMiddleware` | Set `X-Webhook-Signature` request header | |
+| `EventHeaderMiddleware` | Set Event request header | |
+| `IdHeaderMiddleware` | Set ID request header | |
+| `SignatureHeaderMiddleware` | Set Signature request header | |
 | Custom middleware | Custom pre-processing | Custom post-processing |
-| *End core middleware* | | |
+| *End custom middleware* | | |
+| *Begin final core middleware* | | |
 | `ResetStoreMiddleware` | Reset webhook and result stores | |
 | `MethodMiddleware` | Set request method | |
-| `SendAfterMiddleware` | If time is before `$sendAfter`, store webhook and return up stack<br/>If time is after `$sendAfter`, continue down stack | |
 | `AsyncMiddleware` | If asynchronous, store webhook and return up stack<br/>If synchronous, continue down stack | |
 | `StoreMiddleware` | | Store webhook and result |
 | `EventsMiddleware` | | Dispatch event |
 | `StatusAndAttemptMiddleware` | | Update status and attempt |
 | `SendWebhookMiddleware` | Send request and return up stack | |
-
-::: warning FIXME
-Priority of `SendAfterMiddleware`?
-:::
+| *End final core middleware* | | |
 
 ## Custom middleware
 
