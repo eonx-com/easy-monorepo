@@ -3,12 +3,22 @@ title: Introduction
 weight: 0
 ---eonx_docs---
 
-[ ] Refactor bridges
-[ ] Refactor tests
+# Introduction
 
-Send webhooks asynchronously, retry if it fails, and persist them into the store of your choice, all that out of the box!
+The **EasyWebhook** package allows you to implement flexible, configurable webhook functionality in your projects. A
+**webhook** is a mechanism for sending HTTP requests to URLs, typically with information about an event that has
+occurred in your application.
 
-### Require package (Composer)
+Using the EasyWebhook package, you can:
+
+- Configure webhooks
+- Send webhooks as HTTP requests to URLs and retry them if they fail
+- Send webhooks synchronously or asynchronously
+- Receive webhook responses
+- Persist webhooks and results into a store of your choice
+- Dispatch events upon success or failure of webhooks
+
+## Require package (Composer)
 
 The recommended way to install this package is to use [Composer][1]:
 
@@ -16,146 +26,36 @@ The recommended way to install this package is to use [Composer][1]:
 $ composer require eonx-com/easy-webhook
 ```
 
-<br>
+## Usage overview
 
-### Usage
+The **[Webhook class](webhook.md)** defines the configuration for a webhook, e.g. the URL to send webhook HTTP requests.
 
-The webhook client to send webhooks is automatically registered within the service container, so you can use
-dependency injection to access the fully configured client easily.
+The **[WebhookClient class](webhook-client.md)** triggers the processing of the stack of middleware that applies to the
+webhook.
 
-```php
-// MyService.php
+The **middleware stack** is the workhorse of the EasyWebhook package. Each middleware in the stack is responsible for a
+distinct part of the webhook processing, including:
 
-use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
-use EonX\EasyWebhook\Webhook;
+- Sending webhooks as HTTP requests.
+- Getting the responses of the HTTP requests, using the **[WebhookResult class](webhook-result.md)** class to hold the
+  responses.
+- Retrying webhooks if necessary. The EasyWebhook package has a default retry strategy but you can implement your own.
+  See [Retry strategies](retry-strategies.md) for more information.
+- Persisting webhooks and their responses in stores. You can implement your own stores, but the EasyWebhook package
+  comes with three store options out of the box: null store, array store and Doctrine DBAL store. See
+  [Stores](stores.md) for more information.
+- Dispatching events upon success or failure of webhooks. See [Events](events.md) for more information.
 
-final class MyService
-{
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookClientInterface
-     */
-    private $webhookClient;
+See [Middleware](middleware.md) for detailed information about middleware, including how to implement custom middleware.
 
-    public function __construct(WebhookClientInterface $webhookClient)
-    {
-        $this->webhookClient = $webhookClient;
-    }
+By default, webhooks are sent asynchronously, but you can configure a webhook to be sent synchronously. See
+[Sending synchronously](sync.md) for more information.
 
-    public function send(): void
-    {
-        // Create simple webhook with limited config
-        $webhook = Webhook::create('https://eonx.com/webhook', ['event' => 'showcase'], 'PUT');
+Webhooks can be configured to be sent after a particular date and time. You can run the
+`easy-webhooks:send-due-webhooks` console command in a cron job to send due webhooks. See [Console](console.md) for more
+information.
 
-        // Create webhook from array
-        $webhook = Webhook::fromArray([
-            'url' => 'https://eonx.com/webhook',
-            'body' => ['event' => 'showcase'],
-            'method' => 'PUT',
-            'max_attempt' => 5,
-        ]);
-
-        // Create webhook using fluent setters
-        $webhook = (new Webhook())
-            ->url('https://eonx.com/webhook')
-            ->body(['event' => 'showcase'])
-            ->method('PUT')
-            ->maxAttempt(5);
-
-        // Send the webhook
-        $this->webhookClient->sendWebhook($webhook);
-    }
-}
-```
-
-If not set the default method of a webhook is `POST`.
-
-<br>
-
-### Send webhooks synchronously
-
-By default, this package will send webhooks asynchronously if possible. This logic can be changed for every webhook
-at the configuration level by setting `send_async = false`. It can also be changed for specific webhook using the
-`sendNow()` method.
-
-```php
-$webhookClient->sendWebhook(Webhook::create('https://eonx.com')->sendNow());
-```
-
-<br>
-
-### Retry Strategy
-
-By default, this package uses a retry-strategy which will increase the delay between retries exponentially. To modify
-the retry-strategy simply override the `EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface` service with your
-own implementation, or the default one with different arguments.
-
-<br>
-
-### Webhook Configurators
-
-This package has concept of webhook configurators which are used every time a webhook is sent. This mechanism is used
-internally to format the request body as an example. Configurators can also be used by the applications for manipulating
-every webhooks before sending them.
-
-A webhook configurator is a service implementing `EonX\EasyWebhook\Interfaces\WebhookConfiguratorInterface`.
-
-<p style="display: none;"></p>
-
-::: tip | Tip
-Depends on the framework used by the application, the configurators might be automatically injected in the webhook
-client or you might have to manually tag them when registering them.
-:::
-
-The configurators are executed according to their priority, the higher the priority is and the later the configurator
-will be executed. The default configurators of this package have a priority of `5000`.
-
-Here is how you would add a custom header to every webhook sent:
-
-```php
-use EonX\EasyWebhook\Configurators\AbstractWebhookConfigurator;
-use EonX\EasyWebhook\Interfaces\WebhookInterface;
-
-/**
- * Extend the AbstractWebhookConfigurator so you don't have to worry about priority.
- */
-final class MyCustomHeaderWebhookConfigurator extends AbstractWebhookConfigurator
-{
-    public function configure(WebhookInterface $webhook): void
-    {
-        $webhook->mergeHttpClientOptions([
-            'headers' => [
-                'X-My-Header' => 'my-value',
-            ],
-        ]);
-    }
-}
-```
-
-<br>
-
-### Webhook Result store
-
-This package allows you to store webhook results within the persisting layer of your choice. By default, it will not
-store them anywhere.
-
-To change the storing logic, simply override the `EonX\EasyWebhook\Interfaces\WebhookResultStoreInterface` service
-with you own.
-
-<p style="display: none;"></p>
-
-::: tip | Tip
-This package comes with a Doctrine DBAL store implementation you can use by simply providing it with your own connection.
-This store will persist each extra information on the webhook as a separate column.
-:::
-
-<br>
-
-### Events
-
-Events containing the webhook result are dispatched so you can have business logic associated to it:
-
-- `EonX\EasyWebhook\Events\SuccessWebhookEvent`: dispatched when webhook sent successfully
-- `EonX\EasyWebhook\Events\FailedWebhookEvent`: dispatched when webhook failed and is waiting to be retried
-- `EonX\EasyWebhook\Events\FinalFailedWebhookEvent`: dispatched when webhook failed and cannot be retried anymore
+Global settings for the EasyWebhook package can be configured via a configuration file in your application. See
+[Configuration](config.md) for more information.
 
 [1]: https://getcomposer.org/
