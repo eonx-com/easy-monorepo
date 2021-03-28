@@ -1,4 +1,7 @@
----eonx_docs--- title: 'EasyStandard: Sniffs' weight: 1001 ---eonx_docs---
+---eonx_docs---
+title: 'EasyStandard: Sniffs'
+weight: 1001
+---eonx_docs---
 
 #### Arrays
 
