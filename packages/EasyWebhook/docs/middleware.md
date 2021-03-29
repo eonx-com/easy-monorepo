@@ -160,8 +160,9 @@ the webhook HTTP request. See [Stores](stores.md) for more information.
 
 ### `SyncRetryMiddleware`
 
-This middleware retries sending the webhook when sent synchronously, it provides a simple solution out-the-box to handle
-retries. However, we strongly recommend using the async functionalities to use proper retry strategy.
+If the webhook was sent synchronously, and it failed, this middleware retries sending the webhook.
+It provides a simple out-of-the-box solution for handling retries. However, we strongly recommend sending webhooks
+asynchronously, so your application is not blocked by retries.
 
 ## Middleware stack
 
