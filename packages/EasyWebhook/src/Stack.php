@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook;
 
 use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyWebhook\Exceptions\InvalidStackIndexException;
 use EonX\EasyWebhook\Exceptions\NoNextMiddlewareException;
 use EonX\EasyWebhook\Interfaces\MiddlewareInterface;
 use EonX\EasyWebhook\Interfaces\StackInterface;
@@ -29,6 +30,11 @@ final class Stack implements StackInterface
         $this->middleware = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($middleware, MiddlewareInterface::class)
         );
+    }
+
+    public function getCurrentIndex(): int
+    {
+        return $this->index;
     }
 
     /**
@@ -56,5 +62,14 @@ final class Stack implements StackInterface
     public function rewind(): void
     {
         $this->index = 0;
+    }
+
+    public function rewindTo(int $index): void
+    {
+        if ($index < 0) {
+            throw new InvalidStackIndexException(\sprintf('Stack index must be positive, %s given', $index));
+        }
+
+        $this->index = $index;
     }
 }

@@ -158,6 +158,11 @@ The status can be set to one of:
 This middleware stores the webhook and webhook result in the configured stores after a response has been received from
 the webhook HTTP request. See [Stores](stores.md) for more information.
 
+### `SyncRetryMiddleware`
+
+This middleware retries sending the webhook when sent synchronously, it provides a simple solution out-the-box to handle
+retries. However, we strongly recommend using the async functionalities to use proper retry strategy.
+
 ## Middleware stack
 
 The following table show the middleware stack in priority order, with summaries of their actions:
@@ -180,6 +185,7 @@ The following table show the middleware stack in priority order, with summaries 
 | `ResetStoreMiddleware` | Reset webhook and result stores | |
 | `MethodMiddleware` | Set request method | |
 | `AsyncMiddleware` | If asynchronous, store webhook and return up stack<br/>If synchronous, continue down stack | |
+| `SyncRetryMiddleware` | If asynchronous, continue down stack<br/>If synchronous, retries webhook if not successful | |
 | `StoreMiddleware` | | Store webhook and result |
 | `EventsMiddleware` | | Dispatch event |
 | `StatusAndAttemptMiddleware` | | Update status and attempt |
