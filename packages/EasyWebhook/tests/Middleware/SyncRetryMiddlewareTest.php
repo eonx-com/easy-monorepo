@@ -24,15 +24,9 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt(): iterable
     {
-        yield 'async enabled' => [
-            true,
-            3,
-        ];
+        yield 'async enabled' => [true, 3];
 
-        yield 'max attempt is one' => [
-            false,
-            1,
-        ];
+        yield 'max attempt is one' => [false, 1];
     }
 
     /**
