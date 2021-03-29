@@ -16,6 +16,8 @@ use EonX\EasyWebhook\Middleware\SendAfterMiddleware;
 use EonX\EasyWebhook\Middleware\SendWebhookMiddleware;
 use EonX\EasyWebhook\Middleware\StatusAndAttemptMiddleware;
 use EonX\EasyWebhook\Middleware\StoreMiddleware;
+use EonX\EasyWebhook\Middleware\SyncRetryMiddleware;
+use Psr\Log\LoggerInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -52,20 +54,26 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 20);
 
     $services
-        ->set(StoreMiddleware::class)
+        ->set(SyncRetryMiddleware::class)
+        ->arg('$asyncEnabled', '%' . BridgeConstantsInterface::PARAM_ASYNC . '%')
+        ->arg('$logger', ref(LoggerInterface::class))
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 30);
 
     $services
-        ->set(EventsMiddleware::class)
+        ->set(StoreMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 40);
 
     $services
-        ->set(StatusAndAttemptMiddleware::class)
+        ->set(EventsMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 50);
+
+    $services
+        ->set(StatusAndAttemptMiddleware::class)
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 60);
 
     // Make sure SendWebhookMiddleware is always last
     $services
         ->set(SendWebhookMiddleware::class)
         ->arg('$httpClient', ref(BridgeConstantsInterface::HTTP_CLIENT))
-        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 60);
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 70);
 };

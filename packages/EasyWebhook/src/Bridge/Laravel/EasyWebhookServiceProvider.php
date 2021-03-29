@@ -37,6 +37,7 @@ use EonX\EasyWebhook\Middleware\SendWebhookMiddleware;
 use EonX\EasyWebhook\Middleware\SignatureHeaderMiddleware;
 use EonX\EasyWebhook\Middleware\StatusAndAttemptMiddleware;
 use EonX\EasyWebhook\Middleware\StoreMiddleware;
+use EonX\EasyWebhook\Middleware\SyncRetryMiddleware;
 use EonX\EasyWebhook\RetryStrategies\MultiplierWebhookRetryStrategy;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stack;
@@ -44,6 +45,7 @@ use EonX\EasyWebhook\Stores\NullResultStore;
 use EonX\EasyWebhook\Stores\NullStore;
 use EonX\EasyWebhook\WebhookClient;
 use Illuminate\Support\ServiceProvider;
+use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class EasyWebhookServiceProvider extends ServiceProvider
@@ -131,29 +133,38 @@ final class EasyWebhookServiceProvider extends ServiceProvider
             );
         });
 
+        $this->app->singleton(SyncRetryMiddleware::class, function (): SyncRetryMiddleware {
+            return new SyncRetryMiddleware(
+                $this->app->make(WebhookRetryStrategyInterface::class),
+                \config('easy-webhook.send_async', true),
+                $this->app->make(LoggerInterface::class),
+                MiddlewareInterface::PRIORITY_CORE_AFTER + 30
+            );
+        });
+
         $this->app->singleton(StoreMiddleware::class, function (): StoreMiddleware {
             return new StoreMiddleware(
                 $this->app->make(StoreMiddleware::class),
                 $this->app->make(ResultStoreInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 30
+                MiddlewareInterface::PRIORITY_CORE_AFTER + 40
             );
         });
 
         $this->app->singleton(EventsMiddleware::class, function (): EventsMiddleware {
             return new EventsMiddleware(
                 $this->app->make(EventDispatcherInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 40
+                MiddlewareInterface::PRIORITY_CORE_AFTER + 50
             );
         });
 
         $this->app->singleton(StatusAndAttemptMiddleware::class, function (): StatusAndAttemptMiddleware {
-            return new StatusAndAttemptMiddleware(MiddlewareInterface::PRIORITY_CORE_AFTER + 50);
+            return new StatusAndAttemptMiddleware(MiddlewareInterface::PRIORITY_CORE_AFTER + 60);
         });
 
         $this->app->singleton(SendWebhookMiddleware::class, function (): SendWebhookMiddleware {
             return new SendWebhookMiddleware(
                 $this->app->make(BridgeConstantsInterface::HTTP_CLIENT),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 60
+                MiddlewareInterface::PRIORITY_CORE_AFTER + 70
             );
         });
     }
