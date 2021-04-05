@@ -10,6 +10,22 @@ use Monolog\Logger;
 
 final class BaseExceptionTest extends AbstractTestCase
 {
+    /**
+     * @return iterable<mixed>
+     */
+    public function providerTestLogLevelConvenientMethods(): iterable
+    {
+        yield 'critical' => ['setCriticalLogLevel', Logger::CRITICAL];
+
+        yield 'debug' => ['setDebugLogLevel', Logger::DEBUG];
+
+        yield 'error' => ['setErrorLogLevel', Logger::ERROR];
+
+        yield 'info' => ['setInfoLogLevel', Logger::INFO];
+
+        yield 'warning' => ['setWarningLogLevel', Logger::WARNING];
+    }
+
     public function testGetLogLevel(): void
     {
         $logLevel = Logger::CRITICAL;
@@ -60,6 +76,16 @@ final class BaseExceptionTest extends AbstractTestCase
         $exception = (new BaseExceptionStub())->setUserMessageParams($userMessageParams);
 
         self::assertSame($userMessageParams, $exception->getUserMessageParams());
+    }
+
+    /**
+     * @dataProvider providerTestLogLevelConvenientMethods
+     */
+    public function testLogLevelConvenientMethods(string $method, int $logLevel): void
+    {
+        $exception = (new BaseExceptionStub())->{$method}();
+
+        self::assertEquals($logLevel, $exception->getLogLevel());
     }
 
     public function testSetLogLevel(): void

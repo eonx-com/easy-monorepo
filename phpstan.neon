@@ -201,3 +201,6 @@ parameters:
 
         - message: '#Cannot cast array<string\>\|bool\|string\|null to (int|string)#'
           path: packages/EasyWebhook/src/Bridge/Symfony/Command/SendDueWebhooksCommand.php
+
+        - message: '#Parameter \#5 \$default of method Symfony\\Component\\Console\\Command\\Command\:\:addOption\(\) expects array<string\>\|bool\|string\|null, int given#'
+          path: packages/EasyWebhook/src/Bridge/Symfony/Command/SendDueWebhooksCommand.php

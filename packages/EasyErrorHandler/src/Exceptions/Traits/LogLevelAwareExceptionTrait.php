@@ -18,6 +18,31 @@ trait LogLevelAwareExceptionTrait
         return $this->logLevel;
     }
 
+    public function setCriticalLogLevel(): self
+    {
+        return $this->setLogLevel(Logger::CRITICAL);
+    }
+
+    public function setDebugLogLevel(): self
+    {
+        return $this->setLogLevel(Logger::DEBUG);
+    }
+
+    public function setErrorLogLevel(): self
+    {
+        return $this->setLogLevel(Logger::ERROR);
+    }
+
+    public function setInfoLogLevel(): self
+    {
+        return $this->setLogLevel(Logger::INFO);
+    }
+
+    public function setWarningLogLevel(): self
+    {
+        return $this->setLogLevel(Logger::WARNING);
+    }
+
     public function setLogLevel(int $logLevel): self
     {
         $this->logLevel = $logLevel;
