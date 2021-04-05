@@ -15,15 +15,15 @@ final class BaseExceptionTest extends AbstractTestCase
      */
     public function providerTestLogLevelConvenientMethods(): iterable
     {
-        yield 'critical' => ['logAsCritical', Logger::CRITICAL];
+        yield 'critical' => ['setCriticalLogLevel', Logger::CRITICAL];
 
-        yield 'debug' => ['logAsDebug', Logger::DEBUG];
+        yield 'debug' => ['setDebugLogLevel', Logger::DEBUG];
 
-        yield 'error' => ['logAsError', Logger::ERROR];
+        yield 'error' => ['setErrorLogLevel', Logger::ERROR];
 
-        yield 'info' => ['logAsInfo', Logger::INFO];
+        yield 'info' => ['setInfoLogLevel', Logger::INFO];
 
-        yield 'warning' => ['logAsWarning', Logger::WARNING];
+        yield 'warning' => ['setWarningLogLevel', Logger::WARNING];
     }
 
     public function testGetLogLevel(): void
