@@ -136,7 +136,10 @@ class AbstractTestCase extends TestCase
             new \Exception(),
             static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
-                self::assertRegExp('/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/', $content['time']);
+                self::assertMatchesRegularExpression(
+                    '/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/',
+                    $content['time']
+                );
             },
         ];
 
