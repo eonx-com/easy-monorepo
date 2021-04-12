@@ -10,6 +10,7 @@ use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\BugsnagReporterProvider;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\ErrorDetailsClientConfigurator;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\SeverityClientConfigurator;
+use EonX\EasyErrorHandler\Bridge\EasyWebhook\WebhookFinalFailedListener;
 use EonX\EasyErrorHandler\Bridge\Laravel\ExceptionHandler;
 use EonX\EasyErrorHandler\Bridge\Laravel\Translator;
 use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
@@ -21,6 +22,7 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
+use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,6 +35,12 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/easy-error-handler.php' => \base_path('config/easy-error-handler.php'),
         ]);
+
+        // EasyWebhook Bridge
+        if (\class_exists(FinalFailedWebhookEvent::class)) {
+            $this->app->make('events')
+                ->listen(FinalFailedWebhookEvent::class, WebhookFinalFailedListener::class);
+        }
     }
 
     public function register(): void

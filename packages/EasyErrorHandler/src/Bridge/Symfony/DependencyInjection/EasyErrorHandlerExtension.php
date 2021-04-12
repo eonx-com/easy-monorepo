@@ -8,6 +8,7 @@ use Bugsnag\Client;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
+use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -63,6 +64,11 @@ final class EasyErrorHandlerExtension extends Extension
 
         if (($config['bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
             $loader->load('bugsnag_reporter.php');
+        }
+
+        // EasyWebhook Bridge
+        if (\class_exists(FinalFailedWebhookEvent::class)) {
+            $loader->load('easy_webhook.php');
         }
     }
 }
