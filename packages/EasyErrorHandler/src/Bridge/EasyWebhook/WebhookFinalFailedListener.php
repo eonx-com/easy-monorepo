@@ -26,7 +26,8 @@ final class WebhookFinalFailedListener
 
     public function handle(FinalFailedWebhookEvent $event): void
     {
-        $throwable = $event->getResult()->getThrowable();
+        $throwable = $event->getResult()
+            ->getThrowable();
 
         if ($throwable === null) {
             return;

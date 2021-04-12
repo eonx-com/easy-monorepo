@@ -38,7 +38,8 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
         // EasyWebhook Bridge
         if (\class_exists(FinalFailedWebhookEvent::class)) {
-            $this->app->make('events')->listen(FinalFailedWebhookEvent::class, WebhookFinalFailedListener::class);
+            $this->app->make('events')
+                ->listen(FinalFailedWebhookEvent::class, WebhookFinalFailedListener::class);
         }
     }
 
