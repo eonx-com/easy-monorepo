@@ -12,6 +12,7 @@ use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyWebhook\Exceptions\InvalidDateTimeException;
+use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\SendAfterStoreInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
@@ -19,9 +20,13 @@ use EonX\EasyWebhook\Webhook;
 
 final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements StoreInterface, SendAfterStoreInterface
 {
-    public function __construct(RandomGeneratorInterface $random, Connection $conn, ?string $table = null)
-    {
-        parent::__construct($random, $conn, $table ?? self::DEFAULT_TABLE);
+    public function __construct(
+        RandomGeneratorInterface $random,
+        Connection $conn,
+        DataCleanerInterface $dataCleaner,
+        ?string $table = null
+    ) {
+        parent::__construct($random, $conn, $dataCleaner, $table ?? self::DEFAULT_TABLE);
     }
 
     public function find(string $id): ?WebhookInterface

@@ -57,8 +57,8 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
     public function testRetryWhenResultNotSuccessful(): void
     {
         $webhook = Webhook::create('https://eonx.com')->maxAttempt(3);
-        $store = new ArrayStore($this->getRandomGenerator());
-        $resultsStore = new ArrayResultStore($this->getRandomGenerator());
+        $store = new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
+        $resultsStore = new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
 
         $stack = new StackStub(new Stack([
             new MethodMiddleware('POST'),

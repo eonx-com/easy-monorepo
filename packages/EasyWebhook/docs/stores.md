@@ -31,3 +31,16 @@ one of:
   DBAL. Provide a `Doctrine\DBAL\Connection` connection and an optional table name (the default table name is
   `easy_webhook_results`).
 - Your own webhook results store implementation.
+
+## DataCleaner
+
+In case the webhooks and/or webhook results contain sensitive data, it is possible to remove it before persisting them.
+To do so, create your own implementation of `EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface` and replace the
+existing service into your service container.
+
+This interface defines a single method `cleanUpData(array $data): array`, it will receive the formatted data that you
+can modify as desired and return it.
+
+::: info
+Because the data given to `cleanUpData` is formatted, any array will be represented as JSON string.
+:::

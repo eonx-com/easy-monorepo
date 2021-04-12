@@ -12,6 +12,7 @@ use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\HttpClientFactory;
 use EonX\EasyWebhook\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyWebhook\Interfaces\HttpClientFactoryInterface;
+use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface;
@@ -19,6 +20,7 @@ use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
 use EonX\EasyWebhook\RetryStrategies\MultiplierWebhookRetryStrategy;
 use EonX\EasyWebhook\Stack;
+use EonX\EasyWebhook\Stores\NullDataCleaner;
 use EonX\EasyWebhook\Stores\NullResultStore;
 use EonX\EasyWebhook\Stores\NullStore;
 use EonX\EasyWebhook\WebhookClient;
@@ -38,6 +40,9 @@ return static function (ContainerConfigurator $container): void {
 
     // Commands
     $services->set(SendDueWebhooksCommand::class);
+
+    // Data Cleaner (Default)
+    $services->set(DataCleanerInterface::class, NullDataCleaner::class);
 
     // HTTP Client
     $services

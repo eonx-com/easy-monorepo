@@ -8,14 +8,19 @@ use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Doctrine\DBAL\Connection;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements ResultStoreInterface
 {
-    public function __construct(RandomGeneratorInterface $random, Connection $conn, ?string $table = null)
-    {
-        parent::__construct($random, $conn, $table ?? 'easy_webhook_results');
+    public function __construct(
+        RandomGeneratorInterface $random,
+        Connection $conn,
+        DataCleanerInterface $dataCleaner,
+        ?string $table = null
+    ) {
+        parent::__construct($random, $conn, $dataCleaner, $table ?? 'easy_webhook_results');
     }
 
     public function store(WebhookResultInterface $result): WebhookResultInterface
