@@ -17,6 +17,7 @@ use EonX\EasyWebhook\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyWebhook\Interfaces\HttpClientFactoryInterface;
 use EonX\EasyWebhook\Interfaces\MiddlewareInterface;
 use EonX\EasyWebhook\Interfaces\StackInterface;
+use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface;
@@ -41,6 +42,7 @@ use EonX\EasyWebhook\Middleware\SyncRetryMiddleware;
 use EonX\EasyWebhook\RetryStrategies\MultiplierWebhookRetryStrategy;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stack;
+use EonX\EasyWebhook\Stores\NullDataCleaner;
 use EonX\EasyWebhook\Stores\NullResultStore;
 use EonX\EasyWebhook\Stores\NullStore;
 use EonX\EasyWebhook\WebhookClient;
@@ -187,6 +189,9 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
         // Body Formatter (Default)
         $this->app->singleton(WebhookBodyFormatterInterface::class, JsonFormatter::class);
+
+        // Data Cleaner (Default)
+        $this->app->singleton(DataCleanerInterface::class, NullDataCleaner::class);
 
         // HTTP Client
         $this->app->singleton(HttpClientFactoryInterface::class, HttpClientFactory::class);

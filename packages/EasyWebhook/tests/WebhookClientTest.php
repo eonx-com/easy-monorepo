@@ -167,12 +167,12 @@ final class WebhookClientTest extends AbstractTestCase
 
     private function getArrayResultStore(): ArrayResultStore
     {
-        return new ArrayResultStore($this->getRandomGenerator());
+        return new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
     }
 
     private function getArrayStore(): ArrayStore
     {
-        return new ArrayStore($this->getRandomGenerator());
+        return new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
     }
 
     /**

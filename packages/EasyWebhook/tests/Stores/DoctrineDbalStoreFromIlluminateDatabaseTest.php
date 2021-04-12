@@ -17,7 +17,7 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
     {
         $conn = $this->getDoctrineDbalConnection();
         $id = 'my-id';
-        $store = new DoctrineDbalStore($this->getRandomGenerator(), $conn);
+        $store = new DoctrineDbalStore($this->getRandomGenerator(), $conn, $this->getDataCleaner());
         $webhook = Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD)->id($id);
 
         // Save new result with set id

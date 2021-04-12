@@ -40,7 +40,7 @@ final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function testProcess(WebhookInterface $webhook, bool $shouldSend): void
     {
-        $store = new ArrayStore($this->getRandomGenerator());
+        $store = new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
         $middleware = new SendAfterMiddleware($store);
 
         $this->process($middleware, $webhook);

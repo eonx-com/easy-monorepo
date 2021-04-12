@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Stubs;
 
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Stores\AbstractStore;
+use EonX\EasyWebhook\Stores\NullDataCleaner;
 
 final class ArrayStoreStub extends AbstractStore implements StoreInterface
 {
@@ -21,11 +23,14 @@ final class ArrayStoreStub extends AbstractStore implements StoreInterface
      */
     private $webhooks = [];
 
-    public function __construct(RandomGeneratorInterface $random, ?string $id = null)
-    {
+    public function __construct(
+        RandomGeneratorInterface $random,
+        ?string $id = null,
+        ?DataCleanerInterface $dataCleaner = null
+    ) {
         $this->id = $id;
 
-        parent::__construct($random);
+        parent::__construct($random, $dataCleaner ?? new NullDataCleaner());
     }
 
     public function find(string $id): ?WebhookInterface

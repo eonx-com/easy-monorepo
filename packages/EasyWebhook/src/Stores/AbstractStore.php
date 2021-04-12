@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Stores;
 
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use Nette\Utils\Json;
 
@@ -15,9 +16,15 @@ abstract class AbstractStore
      */
     protected $random;
 
-    public function __construct(RandomGeneratorInterface $random)
+    /**
+     * @var \EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface
+     */
+    private $dataCleaner;
+
+    public function __construct(RandomGeneratorInterface $random, DataCleanerInterface $dataCleaner)
     {
         $this->random = $random;
+        $this->dataCleaner = $dataCleaner;
     }
 
     /**
@@ -29,7 +36,7 @@ abstract class AbstractStore
      */
     protected function formatData(array $data): array
     {
-        return \array_map(static function ($value) {
+        $data = \array_map(static function ($value) {
             if (\is_array($value)) {
                 return Json::encode($value);
             }
@@ -40,5 +47,7 @@ abstract class AbstractStore
 
             return $value;
         }, $data);
+
+        return $this->dataCleaner->cleanUpData($data);
     }
 }

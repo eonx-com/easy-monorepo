@@ -14,7 +14,11 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
 {
     public function testStore(): void
     {
-        $store = new DoctrineDbalResultStore($this->getRandomGenerator(), $this->getDoctrineDbalConnection());
+        $store = new DoctrineDbalResultStore(
+            $this->getRandomGenerator(),
+            $this->getDoctrineDbalConnection(),
+            $this->getDataCleaner()
+        );
         $webhook = Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD)
             ->id('webhook-id');
         $result = new WebhookResult($webhook);

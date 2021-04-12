@@ -7,6 +7,8 @@ namespace EonX\EasyWebhook\Tests;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
+use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
+use EonX\EasyWebhook\Stores\NullDataCleaner;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -17,9 +19,19 @@ use Symfony\Component\Filesystem\Filesystem;
 abstract class AbstractTestCase extends TestCase
 {
     /**
+     * @var \EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface
+     */
+    private $dataCleaner;
+
+    /**
      * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
      */
     private $random;
+
+    protected function getDataCleaner(): DataCleanerInterface
+    {
+        return $this->dataCleaner = $this->dataCleaner ?? new NullDataCleaner();
+    }
 
     protected function getRandomGenerator(): RandomGeneratorInterface
     {

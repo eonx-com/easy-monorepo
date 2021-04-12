@@ -15,8 +15,8 @@ final class StoreMiddlewareTest extends AbstractMiddlewareTestCase
     public function testProcess(): void
     {
         $webhook = new Webhook();
-        $store = new ArrayStore($this->getRandomGenerator());
-        $resultStore = new ArrayResultStore($this->getRandomGenerator());
+        $store = new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
+        $resultStore = new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
         $middleware = new StoreMiddleware($store, $resultStore);
 
         $result = $this->process($middleware, $webhook);
