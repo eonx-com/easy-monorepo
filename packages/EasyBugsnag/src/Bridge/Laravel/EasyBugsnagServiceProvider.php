@@ -12,6 +12,7 @@ use EonX\EasyBugsnag\ClientFactory;
 use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
 use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use LaravelDoctrine\ORM\Loggers\Logger;
@@ -38,32 +39,46 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     private function registerClient(): void
     {
         // Client Factory + Client
-        $this->app->singleton(ClientFactoryInterface::class, function (): ClientFactoryInterface {
-            return (new ClientFactory())
-                ->setConfigurators($this->app->tagged(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR))
-                ->setRequestResolver($this->app->make(LaravelRequestResolver::class));
-        });
+        $this->app->singleton(
+            ClientFactoryInterface::class,
+            static function (Container $app): ClientFactoryInterface {
+                return (new ClientFactory())
+                    ->setConfigurators($app->tagged(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR))
+                    ->setRequestResolver($app->make(LaravelRequestResolver::class));
+            }
+        );
 
-        $this->app->singleton(Client::class, function (): Client {
-            return $this->app->make(ClientFactoryInterface::class)->create(\config('easy-bugsnag.api_key'));
-        });
+        $this->app->singleton(
+            Client::class,
+            static function (Container $app): Client {
+                return $app->make(ClientFactoryInterface::class)->create(\config('easy-bugsnag.api_key'));
+            }
+        );
     }
 
     private function registerConfigurators(): void
     {
-        $this->app->singleton(BasicsConfigurator::class, function (): BasicsConfigurator {
-            $basePath = $this->app->basePath();
+        $this->app->singleton(
+            BasicsConfigurator::class,
+            static function (Container $app): BasicsConfigurator {
+                /** @var \Illuminate\Contracts\Foundation\Application $app */
+                $basePath = $app->basePath();
 
-            return new BasicsConfigurator($basePath . '/app', $basePath, (string)$this->app->environment());
-        });
+                return new BasicsConfigurator($basePath . '/app', $basePath, (string)$app->environment());
+            }
+        );
         $this->app->tag(BasicsConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
 
-        $this->app->singleton(RuntimeVersionConfigurator::class, function (): RuntimeVersionConfigurator {
-            $version = $this->app->version();
-            $runtime = Str::contains($version, 'Lumen') ? 'lumen' : 'laravel';
+        $this->app->singleton(
+            RuntimeVersionConfigurator::class,
+            static function (Container $app): RuntimeVersionConfigurator {
+                /** @var \Illuminate\Contracts\Foundation\Application $app */
+                $version = $app->version();
+                $runtime = Str::contains($version, 'Lumen') ? 'lumen' : 'laravel';
 
-            return new RuntimeVersionConfigurator($runtime, $version);
-        });
+                return new RuntimeVersionConfigurator($runtime, $version);
+            }
+        );
         $this->app->tag(RuntimeVersionConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
     }
 
