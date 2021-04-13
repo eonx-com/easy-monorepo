@@ -8,6 +8,7 @@ use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
 use EonX\EasyLogging\Config\StreamHandlerConfigProvider;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use EonX\EasyLogging\LoggerFactory;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
 
@@ -24,22 +25,25 @@ final class EasyLoggingServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-logging.php', 'easy-logging');
 
-        $this->app->singleton(LoggerFactoryInterface::class, function (): LoggerFactoryInterface {
-            $factory = new LoggerFactory(\config('easy-logging.default_channel'));
+        $this->app->singleton(
+            LoggerFactoryInterface::class,
+            static function (Container $app): LoggerFactoryInterface {
+                $factory = new LoggerFactory(\config('easy-logging.default_channel'));
 
-            $factory
-                ->setHandlerConfigProviders($this->app->tagged(BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER))
-                ->setLoggerConfigurators($this->app->tagged(BridgeConstantsInterface::TAG_LOGGER_CONFIGURATOR))
-                ->setProcessorConfigProviders(
-                    $this->app->tagged(BridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER)
-                );
+                $factory
+                    ->setHandlerConfigProviders($app->tagged(BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER))
+                    ->setLoggerConfigurators($app->tagged(BridgeConstantsInterface::TAG_LOGGER_CONFIGURATOR))
+                    ->setProcessorConfigProviders(
+                        $app->tagged(BridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER)
+                    );
 
-            return $factory;
-        });
+                return $factory;
+            }
+        );
 
         // Override PSR Logger
-        $this->app->singleton(LoggerInterface::class, function (): LoggerInterface {
-            return $this->app->make(LoggerFactoryInterface::class)->create(\config('easy-logging.default_channel'));
+        $this->app->singleton(LoggerInterface::class, static function (Container $app): LoggerInterface {
+            return $app->make(LoggerFactoryInterface::class)->create(\config('easy-logging.default_channel'));
         });
 
         // Override default logger alias
@@ -47,7 +51,7 @@ final class EasyLoggingServiceProvider extends ServiceProvider
 
         // Default stream handler
         if (\config('easy-logging.stream_handler', true)) {
-            $this->app->singleton(StreamHandlerConfigProvider::class, function (): StreamHandlerConfigProvider {
+            $this->app->singleton(StreamHandlerConfigProvider::class, static function (): StreamHandlerConfigProvider {
                 $level = \config('easy-logging.stream_handler_level')
                     ? (int)\config('easy-logging.stream_handler_level')
                     : null;
