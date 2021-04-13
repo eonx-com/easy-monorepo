@@ -7,6 +7,7 @@ namespace EonX\EasyPipeline\Bridge\Laravel;
 use EonX\EasyPipeline\Exceptions\EmptyPipelinesListException;
 use EonX\EasyPipeline\Implementations\Illuminate\IlluminatePipelineFactory;
 use EonX\EasyPipeline\Interfaces\PipelineFactoryInterface;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
@@ -35,9 +36,9 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             PipelineFactoryInterface::class,
-            function (): IlluminatePipelineFactory {
+            static function (Container $app): IlluminatePipelineFactory {
                 return new IlluminatePipelineFactory(
-                    $this->app,
+                    $app,
                     \array_keys(\config('easy-pipeline.pipelines', [])),
                     self::PIPELINES_PREFIX
                 );
