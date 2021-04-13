@@ -6,6 +6,7 @@ namespace EonX\EasyWebhook\Tests;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Schema\Table;
 use EonX\EasyWebhook\Bridge\Doctrine\DbalStatementsProvider;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Webhook;
@@ -58,7 +59,14 @@ abstract class AbstractStoreTestCase extends AbstractTestCase
         $conn = $this->getDoctrineDbalConnection();
         $conn->connect();
 
-        foreach ($this->getStmtsProvider()->migrateStatements() as $statement) {
+        $stmtsProvider = $this->getStmtsProvider();
+        $stmtsProvider->extendWebhooksTable(static function (Table $table): void {
+            $table->addColumn('extra_column', 'string', [
+                'notNull' => false,
+            ]);
+        });
+
+        foreach ($stmtsProvider->migrateStatements() as $statement) {
             $conn->executeStatement($statement);
         }
 

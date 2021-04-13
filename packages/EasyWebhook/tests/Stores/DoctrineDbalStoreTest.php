@@ -70,11 +70,20 @@ final class DoctrineDbalStoreTest extends AbstractStoreTestCase
                 ],
             ],
         ]);
+        $webhook->extra([
+            'extra_column' => 'value',
+        ]);
 
         $store->store($webhook);
+        $found = $store->find((string)$webhook->getId());
 
-        self::assertInstanceOf(WebhookInterface::class, $store->find((string)$webhook->getId()));
         self::assertNull($store->find('invalid'));
+        self::assertInstanceOf(WebhookInterface::class, $found);
+
+        if ($found !== null) {
+            self::assertArrayHasKey('extra_column', $found->getExtra() ?? []);
+            self::assertEquals('value', ($found->getExtra() ?? [])['extra_column']);
+        }
     }
 
     public function testStore(): void
