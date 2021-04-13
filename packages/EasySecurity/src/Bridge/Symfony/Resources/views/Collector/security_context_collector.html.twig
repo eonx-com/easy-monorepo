@@ -2,7 +2,7 @@
 
 {% block toolbar %}
     {% set icon %}
-        {{ include('@EasySecurity/Icon/lock.svg') }}
+        {{ include('@EasySecuritySymfony/Icon/lock.svg') }}
     {% endset %}
 
     {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': profiler_url }) }}
@@ -11,7 +11,7 @@
 {% block menu %}
     {# This left-hand menu appears when using the full-screen profiler. #}
     <span class="label">
-        <span class="icon">{{ include('@EasySecurity/Icon/lock.svg') }}</span>
+        <span class="icon">{{ include('@EasySecuritySymfony/Icon/lock.svg') }}</span>
         <strong>EasySecurity</strong>
     </span>
 {% endblock %}

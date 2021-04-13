@@ -3,7 +3,7 @@
 {% block toolbar %}
     {% if collector.events|length > 0 or collector.providers|length > 0 %}
         {% set icon %}
-            {{ include('@EasySchedule/Icon/business-time-solid.svg') }}
+            {{ include('@EasyScheduleSymfony/Icon/business-time-solid.svg') }}
             <span class="sf-toolbar-value">{{ collector.events|length }}</span>
         {% endset %}
 
@@ -25,7 +25,7 @@
 {% block menu %}
     {# This left-hand menu appears when using the full-screen profiler. #}
     <span class="label {{ 0 == collector.events|length and 0 == collector.providers|length ? 'disabled' }}">
-        <span class="icon">{{ include('@EasySchedule/Icon/business-time-solid.svg') }}</span>
+        <span class="icon">{{ include('@EasyScheduleSymfony/Icon/business-time-solid.svg') }}</span>
         <strong>Schedule</strong>
     </span>
 {% endblock %}
