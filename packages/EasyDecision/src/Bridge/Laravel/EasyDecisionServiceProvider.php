@@ -16,6 +16,7 @@ use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
 use EonX\EasyDecision\Interfaces\MappingProviderInterface;
 use EonX\EasyDecision\Providers\ConfigMappingProvider;
 use EonX\EasyDecision\Rules\ExpressionLanguageRuleFactory;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyDecisionServiceProvider extends ServiceProvider
@@ -35,15 +36,15 @@ final class EasyDecisionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             ExpressionLanguageFactoryInterface::class,
-            function (): ExpressionLanguageFactoryInterface {
+            static function (): ExpressionLanguageFactoryInterface {
                 return new ExpressionLanguageFactory();
             }
         );
 
         $this->app->singleton(
             AddRulesDecisionConfigurator::class,
-            function (): DecisionConfiguratorInterface {
-                return new AddRulesDecisionConfigurator($this->app->tagged(
+            static function (Container $app): DecisionConfiguratorInterface {
+                return new AddRulesDecisionConfigurator($app->tagged(
                     BridgeConstantsInterface::TAG_DECISION_RULE
                 ));
             }
@@ -52,11 +53,14 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         $defaultConfigurators = [AddRulesDecisionConfigurator::class];
 
         if (\config('easy-decision.use_expression_language', false)) {
-            $this->app->bind(SetExpressionLanguageConfigurator::class, function (): SetExpressionLanguageConfigurator {
-                return new SetExpressionLanguageConfigurator(
-                    $this->app->make(ExpressionLanguageFactoryInterface::class)
-                );
-            });
+            $this->app->bind(
+                SetExpressionLanguageConfigurator::class,
+                static function (Container $app): SetExpressionLanguageConfigurator {
+                    return new SetExpressionLanguageConfigurator(
+                        $app->make(ExpressionLanguageFactoryInterface::class)
+                    );
+                }
+            );
 
             $defaultConfigurators[] = SetExpressionLanguageConfigurator::class;
         }
@@ -67,12 +71,15 @@ final class EasyDecisionServiceProvider extends ServiceProvider
             return new ConfigMappingProvider(\config('easy-decision.type_mapping', []));
         });
 
-        $this->app->singleton(BaseDecisionFactoryInterface::class, function (): BaseDecisionFactoryInterface {
-            return new BaseDecisionFactory(
-                $this->app->make(MappingProviderInterface::class),
-                $this->app->tagged(BridgeConstantsInterface::TAG_DECISION_CONFIGURATOR)
-            );
-        });
+        $this->app->singleton(
+            BaseDecisionFactoryInterface::class,
+            static function (Container $app): BaseDecisionFactoryInterface {
+                return new BaseDecisionFactory(
+                    $app->make(MappingProviderInterface::class),
+                    $app->tagged(BridgeConstantsInterface::TAG_DECISION_CONFIGURATOR)
+                );
+            }
+        );
 
         $this->app->singleton(ExpressionLanguageRuleFactoryInterface::class, ExpressionLanguageRuleFactory::class);
     }
