@@ -21,7 +21,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-utils.php', 'easy-utils');
 
-        $this->app->singleton(MathInterface::class, function (): MathInterface {
+        $this->app->singleton(MathInterface::class, static function (): MathInterface {
             return new Math(
                 \config('easy-utils.round-precision'),
                 \config('easy-utils.round-mode'),
