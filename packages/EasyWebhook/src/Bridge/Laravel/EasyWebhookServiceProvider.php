@@ -199,10 +199,12 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
         // HTTP Client
         $this->app->singleton(HttpClientFactoryInterface::class, HttpClientFactory::class);
-        $this->app->singleton(BridgeConstantsInterface::HTTP_CLIENT,
+        $this->app->singleton(
+            BridgeConstantsInterface::HTTP_CLIENT,
             static function (Container $app): HttpClientInterface {
                 return $app->make(HttpClientFactoryInterface::class)->create();
-            });
+            }
+        );
 
         // Stack
         $this->app->singleton(BridgeConstantsInterface::STACK, static function (Container $app): StackInterface {
@@ -242,10 +244,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         }
 
         $this->app->singleton(IdHeaderMiddleware::class, static function (Container $app): IdHeaderMiddleware {
-            return new IdHeaderMiddleware(
-                $app->make(StoreInterface::class),
-                \config('easy-webhook.id.id_header')
-            );
+            return new IdHeaderMiddleware($app->make(StoreInterface::class), \config('easy-webhook.id.id_header'));
         });
 
         $this->app->tag(IdHeaderMiddleware::class, [BridgeConstantsInterface::TAG_MIDDLEWARE]);
@@ -262,7 +261,8 @@ final class EasyWebhookServiceProvider extends ServiceProvider
             \config('easy-webhook.signature.signer', Rs256Signer::class)
         );
 
-        $this->app->singleton(SignatureHeaderMiddleware::class,
+        $this->app->singleton(
+            SignatureHeaderMiddleware::class,
             static function (Container $app): SignatureHeaderMiddleware {
                 return new SignatureHeaderMiddleware(
                     $app->make(WebhookSignerInterface::class),
@@ -270,7 +270,8 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                     \config('easy-webhook.signature.signature_header'),
                     100
                 );
-            });
+            }
+        );
 
         $this->app->tag(SignatureHeaderMiddleware::class, [BridgeConstantsInterface::TAG_MIDDLEWARE]);
     }

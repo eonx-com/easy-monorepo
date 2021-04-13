@@ -19,9 +19,7 @@ final class EasyPsr7FactoryServiceProvider extends ServiceProvider
 
         // Not singleton on purpose
         $this->app->bind(ServerRequestInterface::class, static function (Container $app): ServerRequestInterface {
-            return $app->make(EasyPsr7FactoryInterface::class)->createRequest(
-                $app->make(Request::class)
-            );
+            return $app->make(EasyPsr7FactoryInterface::class)->createRequest($app->make(Request::class));
         });
     }
 }

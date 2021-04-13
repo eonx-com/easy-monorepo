@@ -44,9 +44,7 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         $this->app->singleton(
             AddRulesDecisionConfigurator::class,
             static function (Container $app): DecisionConfiguratorInterface {
-                return new AddRulesDecisionConfigurator($app->tagged(
-                    BridgeConstantsInterface::TAG_DECISION_RULE
-                ));
+                return new AddRulesDecisionConfigurator($app->tagged(BridgeConstantsInterface::TAG_DECISION_RULE));
             }
         );
 
