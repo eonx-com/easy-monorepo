@@ -13,6 +13,7 @@ use EonX\EasyCore\Helpers\StringsTrimmerInterface;
 use EonX\EasyCore\Search\ElasticsearchSearchServiceFactory;
 use EonX\EasyCore\Search\SearchServiceFactoryInterface;
 use EonX\EasyCore\Search\SearchServiceInterface;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Events\WorkerStopping;
@@ -74,13 +75,16 @@ final class EasyCoreServiceProvider extends ServiceProvider
             return;
         }
 
-        $this->app->singleton(SearchServiceFactoryInterface::class, function (): SearchServiceFactoryInterface {
+        $this->app->singleton(SearchServiceFactoryInterface::class, static function (): SearchServiceFactoryInterface {
             return new ElasticsearchSearchServiceFactory(\config('easy-core.search.elasticsearch_host'));
         });
 
-        $this->app->singleton(SearchServiceInterface::class, function (): SearchServiceInterface {
-            return $this->app->make(SearchServiceFactoryInterface::class)->create();
-        });
+        $this->app->singleton(
+            SearchServiceInterface::class,
+            static function (Container $app): SearchServiceInterface {
+                return $app->make(SearchServiceFactoryInterface::class)->create();
+            }
+        );
     }
 
     private function trimStrings(): void
@@ -92,7 +96,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
         /** @var \Laravel\Lumen\Application $app */
         $app = $this->app;
         $app->singleton(StringsTrimmerInterface::class, RecursiveStringsTrimmer::class);
-        $app->singleton(TrimStrings::class, function () use ($app): TrimStrings {
+        $app->singleton(TrimStrings::class, static function (Container $app): TrimStrings {
             return new TrimStrings(
                 $app->get(StringsTrimmerInterface::class),
                 \config('easy-core.trim_strings.except', [])
