@@ -139,7 +139,19 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
             $data['send_after'] = Carbon::createFromFormat(self::DATETIME_FORMAT, $data['send_after']);
         }
 
+        // Recover extra
+        $extra = [];
+        foreach ($data as $column => $value) {
+            if (\in_array($column, self::DEFAULT_COLUMNS, true)) {
+                continue;
+            }
+
+            $extra[$column] = $value;
+        }
+
         // Webhook from the store are already configured
-        return $class::fromArray($data)->configured(true);
+        return $class::fromArray($data)
+            ->extra($extra)
+            ->configured(true);
     }
 }
