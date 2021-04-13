@@ -23,6 +23,7 @@ use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\SecurityContextFactory;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -58,8 +59,8 @@ final class EasySecurityServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             BridgeConstantsInterface::SERVICE_API_TOKEN_DECODER,
-            function (): ApiTokenDecoderInterface {
-                return $this->app
+            static function (Container $app): ApiTokenDecoderInterface {
+                return $app
                     ->make(ApiTokenDecoderFactoryInterface::class)
                     ->build(\config('easy-security.token_decoder'));
             }
@@ -72,20 +73,23 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             AuthorizationMatrixFactoryInterface::class,
-            function (): AuthorizationMatrixFactoryInterface {
+            static function (Container $app): AuthorizationMatrixFactoryInterface {
                 return new CachedAuthorizationMatrixFactory(
-                    $this->app->make(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE),
+                    $app->make(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE),
                     new AuthorizationMatrixFactory(
-                        $this->app->tagged(BridgeConstantsInterface::TAG_ROLES_PROVIDER),
-                        $this->app->tagged(BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER)
+                        $app->tagged(BridgeConstantsInterface::TAG_ROLES_PROVIDER),
+                        $app->tagged(BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER)
                     )
                 );
             }
         );
 
-        $this->app->singleton(AuthorizationMatrixInterface::class, function (): AuthorizationMatrixInterface {
-            return $this->app->get(AuthorizationMatrixFactoryInterface::class)->create();
-        });
+        $this->app->singleton(
+            AuthorizationMatrixInterface::class,
+            static function (Container $app): AuthorizationMatrixInterface {
+                return $app->get(AuthorizationMatrixFactoryInterface::class)->create();
+            }
+        );
     }
 
     private function registerDefaultConfigurators(): void
@@ -94,19 +98,22 @@ final class EasySecurityServiceProvider extends ServiceProvider
             return;
         }
 
-        $this->app->singleton(ApiTokenConfigurator::class, function (): ApiTokenConfigurator {
+        $this->app->singleton(ApiTokenConfigurator::class, static function (Container $app): ApiTokenConfigurator {
             return new ApiTokenConfigurator(
-                $this->app->make(BridgeConstantsInterface::SERVICE_API_TOKEN_DECODER),
+                $app->make(BridgeConstantsInterface::SERVICE_API_TOKEN_DECODER),
                 SecurityContextConfiguratorInterface::SYSTEM_PRIORITY
             );
         });
 
-        $this->app->singleton(AuthorizationMatrixConfigurator::class, function (): AuthorizationMatrixConfigurator {
-            return new AuthorizationMatrixConfigurator(
-                $this->app->make(AuthorizationMatrixInterface::class),
-                SecurityContextConfiguratorInterface::SYSTEM_PRIORITY
-            );
-        });
+        $this->app->singleton(
+            AuthorizationMatrixConfigurator::class,
+            static function (Container $app): AuthorizationMatrixConfigurator {
+                return new AuthorizationMatrixConfigurator(
+                    $app->make(AuthorizationMatrixInterface::class),
+                    SecurityContextConfiguratorInterface::SYSTEM_PRIORITY
+                );
+            }
+        );
 
         $this->app->tag(
             [ApiTokenConfigurator::class, AuthorizationMatrixConfigurator::class],
@@ -118,8 +125,8 @@ final class EasySecurityServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             DeferredSecurityContextProviderInterface::class,
-            function () use ($contextServiceId): DeferredSecurityContextProviderInterface {
-                return new DeferredSecurityContextProvider($this->app, $contextServiceId);
+            static function (Container $app) use ($contextServiceId): DeferredSecurityContextProviderInterface {
+                return new DeferredSecurityContextProvider($app, $contextServiceId);
             }
         );
     }
@@ -133,9 +140,9 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             SecurityContextClientConfigurator::class,
-            function (): SecurityContextClientConfigurator {
+            static function (Container $app): SecurityContextClientConfigurator {
                 return new SecurityContextClientConfigurator(
-                    $this->app->make(DeferredSecurityContextProviderInterface::class)
+                    $app->make(DeferredSecurityContextProviderInterface::class)
                 );
             }
         );
@@ -147,12 +154,15 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
     private function registerListeners(): void
     {
-        $this->app->singleton(ConfigureSecurityContextListener::class, function (): ConfigureSecurityContextListener {
-            return new ConfigureSecurityContextListener(
-                $this->app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR),
-                $this->app->make(Request::class)
-            );
-        });
+        $this->app->singleton(
+            ConfigureSecurityContextListener::class,
+            static function (Container $app): ConfigureSecurityContextListener {
+                return new ConfigureSecurityContextListener(
+                    $app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR),
+                    $app->make(Request::class)
+                );
+            }
+        );
     }
 
     private function registerSecurityContext(string $contextServiceId): void
@@ -161,8 +171,8 @@ final class EasySecurityServiceProvider extends ServiceProvider
         $this->app->singleton(SecurityContextFactoryInterface::class, SecurityContextFactory::class);
 
         // SecurityContext
-        $this->app->singleton($contextServiceId, function (): SecurityContextInterface {
-            return $this->app->make(SecurityContextFactoryInterface::class)->create();
+        $this->app->singleton($contextServiceId, static function (Container $app): SecurityContextInterface {
+            return $app->make(SecurityContextFactoryInterface::class)->create();
         });
     }
 }

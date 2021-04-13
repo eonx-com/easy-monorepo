@@ -10,8 +10,8 @@ final class StartSizeInQueryEasyPaginationProvider extends AbstractStartSizeEasy
 {
     protected function getResolverClosure(): \Closure
     {
-        return function (): StartSizeInQueryResolver {
-            return new StartSizeInQueryResolver($this->createConfig());
+        return static function (): StartSizeInQueryResolver {
+            return new StartSizeInQueryResolver(static::createConfig());
         };
     }
 }

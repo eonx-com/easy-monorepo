@@ -10,6 +10,7 @@ use EonX\EasyPagination\Interfaces\StartSizeDataFactoryInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
@@ -43,10 +44,9 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
 
     abstract protected function getResolverClosure(): Closure;
 
-    protected function createConfig(): StartSizeConfig
+    protected static function createConfig(): StartSizeConfig
     {
-        $config = $this->app->make('config')
-            ->get('pagination.start_size', []);
+        $config = \config('pagination.start_size', []);
 
         return new StartSizeConfig(
             $config['start_attribute'] ?? static::$defaultConfig['start_attribute'],
@@ -58,22 +58,11 @@ abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
 
     private function getDataClosure(): Closure
     {
-        return function (): StartSizeDataInterface {
-            return $this->app->get(StartSizeDataResolverInterface::class)->resolve($this->getRequest());
+        return static function (Container $app): StartSizeDataInterface {
+            /** @var \Illuminate\Contracts\Foundation\Application $app */
+            $request = $app->get($app->runningInConsole() ? 'request' : Request::class);
+
+            return $app->get(StartSizeDataResolverInterface::class)->resolve($request);
         };
-    }
-
-    private function getRequest(): Request
-    {
-        if ($this->app->runningInConsole()) {
-            /**
-             * When running in console, a request instance is created and bound to `request` alias.
-             *
-             * @see \Laravel\Lumen\Console\Kernel::setRequestForConsole
-             */
-            return $this->app->get('request');
-        }
-
-        return $this->app->get(Request::class);
     }
 }

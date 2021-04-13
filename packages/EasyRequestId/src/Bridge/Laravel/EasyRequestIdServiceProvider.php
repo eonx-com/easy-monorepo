@@ -19,6 +19,7 @@ use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\UuidV4FallbackResolver;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyRequestIdServiceProvider extends ServiceProvider
@@ -36,16 +37,19 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
 
         $this->app->singleton(FallbackResolverInterface::class, UuidV4FallbackResolver::class);
 
-        $this->app->singleton(RequestIdServiceInterface::class, function (): RequestIdServiceInterface {
-            return new RequestIdService(
-                $this->app->tagged(BridgeConstantsInterface::TAG_REQUEST_ID_RESOLVER),
-                $this->app->tagged(BridgeConstantsInterface::TAG_CORRELATION_ID_RESOLVER),
-                $this->app->make(FallbackResolverInterface::class)
-            );
-        });
+        $this->app->singleton(
+            RequestIdServiceInterface::class,
+            static function (Container $app): RequestIdServiceInterface {
+                return new RequestIdService(
+                    $app->tagged(BridgeConstantsInterface::TAG_REQUEST_ID_RESOLVER),
+                    $app->tagged(BridgeConstantsInterface::TAG_CORRELATION_ID_RESOLVER),
+                    $app->make(FallbackResolverInterface::class)
+                );
+            }
+        );
 
         if ((bool)\config('easy-request-id.default_resolver', true)) {
-            $this->app->singleton(DefaultResolver::class, function (): DefaultResolver {
+            $this->app->singleton(DefaultResolver::class, static function (): DefaultResolver {
                 return new DefaultResolver(
                     \config('easy-request-id.default_request_id_header'),
                     \config('easy-request-id.default_correlation_id_header')

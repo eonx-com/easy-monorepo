@@ -23,6 +23,7 @@ use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyAsyncServiceProvider extends ServiceProvider
@@ -50,19 +51,25 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             $this->app->singleton($abstract, $concrete);
         }
 
-        $this->app->singleton(JobPersisterInterface::class, function (): JobPersisterInterface {
-            return new WithEventsJobPersister(
-                $this->app->get('default_job_persister'),
-                $this->app->get(EventDispatcherInterface::class)
-            );
-        });
+        $this->app->singleton(
+            JobPersisterInterface::class,
+            static function (Container $app): JobPersisterInterface {
+                return new WithEventsJobPersister(
+                    $app->get('default_job_persister'),
+                    $app->get(EventDispatcherInterface::class)
+                );
+            }
+        );
 
-        $this->app->singleton(JobLogUpdaterInterface::class, function (): JobLogUpdaterInterface {
-            return new WithEventsJobLogUpdater(
-                $this->app->get(EventDispatcherInterface::class),
-                $this->app->get('default_job_log_updater')
-            );
-        });
+        $this->app->singleton(
+            JobLogUpdaterInterface::class,
+            static function (Container $app): JobLogUpdaterInterface {
+                return new WithEventsJobLogUpdater(
+                    $app->get(EventDispatcherInterface::class),
+                    $app->get('default_job_log_updater')
+                );
+            }
+        );
 
         $implementation = \config('easy-async.implementation', ImplementationsInterface::IMPLEMENTATION_DOCTRINE);
 
