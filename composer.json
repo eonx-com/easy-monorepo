@@ -11,7 +11,7 @@
         "php": "^7.2",
         "ext-json": "*",
         "doctrine/orm": "^2.6",
-        "nesbot/carbon": "^2.22",
+        "nesbot/carbon": "^1.39 || ^2.22",
         "dragonmantank/cron-expression": "^2.3",
         "ramsey/uuid": "^3.9",
         "symfony/cache": "^4.4 || ^5.1.5",

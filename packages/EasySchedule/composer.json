@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "nesbot/carbon": "^2.22",
+        "nesbot/carbon": "^1.39 || ^2.22",
         "dragonmantank/cron-expression": "^2.3",
         "symfony/console": "^4.4 || ^5.1.5",
         "eonx-com/easy-lock": "^3.1"

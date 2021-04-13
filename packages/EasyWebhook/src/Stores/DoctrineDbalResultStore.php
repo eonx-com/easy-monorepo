@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Stores;
 
 use Carbon\Carbon;
-use Carbon\CarbonInterface;
 use Doctrine\DBAL\Connection;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
@@ -66,7 +65,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    private function getData(WebhookResultInterface $result, CarbonInterface $now): array
+    private function getData(WebhookResultInterface $result, Carbon $now): array
     {
         $webhook = $result->getWebhook();
         $response = $result->getResponse();
