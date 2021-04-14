@@ -16,7 +16,9 @@ final class LinebreakAfterEqualsSignSniffTest extends AbstractCheckerTestCase
      */
     public function providerTestSniff(): iterable
     {
-        yield ['filePath' => '/Fixture/LinebreakAfterEqualsSignSniffTest.php.inc'];
+        yield [
+            'filePath' => '/Fixture/LinebreakAfterEqualsSignSniffTest.php.inc',
+        ];
     }
 
     /**
