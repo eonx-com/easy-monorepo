@@ -45,11 +45,7 @@ final class LinebreakAfterEqualsSignSniff implements Sniff
         $phpcsFile->fixer->replaceToken($equalsSignPointer + 1, ' ');
         $phpcsFile->fixer->replaceToken($equalsSignPointer + 2, '');
 
-        $endOfExpressionPointer = TokenHelper::findNext(
-            $phpcsFile,
-            \T_SEMICOLON,
-            $equalsSignPointer
-        );
+        $endOfExpressionPointer = TokenHelper::findNext($phpcsFile, \T_SEMICOLON, $equalsSignPointer);
 
         $whitespaces = TokenHelper::findNextAll(
             $phpcsFile,
@@ -69,11 +65,7 @@ final class LinebreakAfterEqualsSignSniff implements Sniff
             if ($tokens[$whitespace]['length'] > 1 && ctype_space($whitespaceContent)) {
                 $phpcsFile->fixer->replaceToken(
                     $whitespace,
-                    \str_pad(
-                        $firstLineIdentationContent,
-                        $firstLineIdentationLength + self::IDENTATION_LENGTH,
-                        ' '
-                    )
+                    \str_pad($firstLineIdentationContent, $firstLineIdentationLength + self::IDENTATION_LENGTH, ' ')
                 );
             }
         }

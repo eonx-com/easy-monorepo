@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyStandard\Tests\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
@@ -7,6 +8,11 @@ use EonX\EasyStandard\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
+/**
+ * @covers \EonX\EasyStandard\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff
+ *
+ * @internal
+ */
 final class LinebreakAfterEqualsSignSniffTest extends AbstractCheckerTestCase
 {
     /**
