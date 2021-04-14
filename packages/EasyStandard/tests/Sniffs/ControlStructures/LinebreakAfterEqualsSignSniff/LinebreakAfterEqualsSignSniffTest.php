@@ -24,6 +24,7 @@ final class LinebreakAfterEqualsSignSniffTest extends AbstractCheckerTestCase
     {
         yield [
             'filePath' => '/Fixture/LinebreakAfterEqualsSignSniffTest.php.inc',
+            'expectedErrorCount' => 1,
         ];
     }
 
@@ -34,10 +35,10 @@ final class LinebreakAfterEqualsSignSniffTest extends AbstractCheckerTestCase
      *
      * @dataProvider providerTestSniff
      */
-    public function testSniff(string $filePath): void
+    public function testSniff(string $filePath, int $expectedErrorCount): void
     {
         $smartFileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestFileInfo($smartFileInfo);
+        $this->doTestFileInfoWithErrorCountOf($smartFileInfo, $expectedErrorCount);
     }
 
     protected function getCheckerClass(): string
