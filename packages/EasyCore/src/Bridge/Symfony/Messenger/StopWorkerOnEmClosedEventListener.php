@@ -9,6 +9,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 
+/**
+ * @deprecated since 3.0.19, will be removed in 4.0.
+ * Use EonX\EasyAsync\Bridge\Symfony\Messenger\DoctrineManagersSanityCheckMiddleware instead.
+ */
 final class StopWorkerOnEmClosedEventListener
 {
     /**

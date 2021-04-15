@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Tests\Bridge\Symfony\Stubs;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyAsync\Bridge\Symfony\EasyAsyncSymfonyBundle;
 use EonX\EasyAsync\Tests\Stubs\EventDispatcherStub;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
@@ -40,6 +41,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         // TODO: Find proper way to work with dbal connection
         $container->setDefinition('doctrine.dbal.default_connection', new Definition(EventDispatcherStub::class));
         $container->setDefinition(Connection::class, new Definition(EventDispatcherStub::class));
+        $container->setDefinition(ManagerRegistry::class, new Definition(ManagerRegistry::class));
 
         $container->setDefinition(LoggerInterface::class, new Definition(NullLogger::class));
         $container->setDefinition(EventDispatcherInterface::class, new Definition(EventDispatcherStub::class));
