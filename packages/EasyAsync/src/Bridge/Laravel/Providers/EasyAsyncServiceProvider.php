@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Laravel\Providers;
 
+use Doctrine\ORM\EntityManagerInterface;
+use EonX\EasyAsync\Bridge\Laravel\Queue\DoctrineManagersSanityCheckListener;
+use EonX\EasyAsync\Bridge\Laravel\Queue\ShouldKillWorkerListener;
 use EonX\EasyAsync\Exceptions\InvalidImplementationException;
 use EonX\EasyAsync\Factories\JobFactory;
 use EonX\EasyAsync\Factories\JobLogFactory;
@@ -24,6 +27,8 @@ use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyAsyncServiceProvider extends ServiceProvider
@@ -33,6 +38,14 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/easy-async.php' => \base_path('config/easy-async.php'),
         ]);
+
+        $this->app->make('events')
+            ->listen(JobFailed::class, ShouldKillWorkerListener::class);
+
+        if (\interface_exists(EntityManagerInterface::class)) {
+            $this->app->make('events')
+                ->listen(JobProcessing::class, DoctrineManagersSanityCheckListener::class);
+        }
     }
 
     public function register(): void

@@ -12,6 +12,10 @@ use Illuminate\Support\InteractsWithTime;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
+/**
+ * @deprecated since 3.0.19, will be removed in 4.0.
+ * Use EonX\EasyAsync\Bridge\Laravel\Queue\DoctrineManagersSanityCheckListener instead.
+ */
 final class DoctrineRestartQueueOnConnectionFailedListener
 {
     use InteractsWithTime;
