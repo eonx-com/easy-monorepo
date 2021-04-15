@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Tests\Doctrine\Stubs;
 
 use Doctrine\Common\EventManager;
-use Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Mysqli\Driver;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Mapping\Driver\StaticPHPDriver;
 
 final class EntityManagerForSanityStub extends EntityManagerDecorator implements EntityManagerInterface
 {
