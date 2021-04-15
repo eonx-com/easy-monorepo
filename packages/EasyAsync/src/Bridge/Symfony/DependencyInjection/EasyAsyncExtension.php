@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\DependencyInjection;
 
+use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyAsync\Bridge\BridgeConstantsInterface;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\ProcessJobLogMiddleware;
 use EonX\EasyAsync\Exceptions\InvalidImplementationException;
@@ -59,6 +60,7 @@ final class EasyAsyncExtension extends Extension
 
         $this->batch();
         $this->jobLog();
+        $this->messenger();
     }
 
     private function batch(): void
@@ -95,6 +97,19 @@ final class EasyAsyncExtension extends Extension
             $jobLogMidDef->addMethodCall('setJobLogUpdater', [new Reference(JobLogUpdaterInterface::class)]);
 
             $this->container->setDefinition(ProcessJobLogMiddleware::class, $jobLogMidDef);
+        }
+    }
+
+    private function messenger(): void
+    {
+        if (\class_exists(MessengerPass::class) === false) {
+            return;
+        }
+
+        $this->loader->load('messenger.php');
+
+        if (\interface_exists(EntityManagerInterface::class)) {
+            $this->loader->load('messenger_doctrine.php');
         }
     }
 }
