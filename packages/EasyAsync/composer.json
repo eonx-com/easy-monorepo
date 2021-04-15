@@ -13,7 +13,7 @@
     },
     "require-dev": {
         "ramsey/uuid": "^3.9",
-        "doctrine/dbal": "^2.6",
+        "doctrine/orm": "^2.6",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "symfony/symfony": "^4.4 || ^5.1.5",
         "mockery/mockery": "^1.2",
