@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Bridge\Laravel\Providers;
 
 use Doctrine\ORM\EntityManagerInterface;
+use EonX\EasyAsync\Bridge\Laravel\Queue\DoctrineManagersClearListener;
 use EonX\EasyAsync\Bridge\Laravel\Queue\DoctrineManagersSanityCheckListener;
 use EonX\EasyAsync\Bridge\Laravel\Queue\ShouldKillWorkerListener;
 use EonX\EasyAsync\Exceptions\InvalidImplementationException;
@@ -45,6 +46,9 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         if (\interface_exists(EntityManagerInterface::class)) {
             $this->app->make('events')
                 ->listen(JobProcessing::class, DoctrineManagersSanityCheckListener::class);
+
+            $this->app->make('events')
+                ->listen(JobProcessing::class, DoctrineManagersClearListener::class);
         }
     }
 
