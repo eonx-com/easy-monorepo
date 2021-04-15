@@ -92,87 +92,82 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
     private function registerCoreMiddleware(): void
     {
-        // BEFORE MIDDLEWARE
-        $this->app->singleton(LockMiddleware::class, static function (Container $app): LockMiddleware {
-            return new LockMiddleware(
-                $app->make(LockServiceInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_BEFORE - 2
-            );
-        });
-
-        $this->app->singleton(SendAfterMiddleware::class, static function (Container $app): SendAfterMiddleware {
-            return new SendAfterMiddleware(
-                $app->make(StoreInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_BEFORE - 1
-            );
-        });
-
-        $this->app->singleton(RerunMiddleware::class, static function (): RerunMiddleware {
-            return new RerunMiddleware(MiddlewareInterface::PRIORITY_CORE_BEFORE);
-        });
-
-        // AFTER MIDDLEWARE
-        $this->app->singleton(ResetStoreMiddleware::class, static function (Container $app): ResetStoreMiddleware {
-            return new ResetStoreMiddleware(
-                $app->make(StoreInterface::class),
-                $app->make(ResultStoreInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_AFTER
-            );
-        });
-
-        $this->app->singleton(MethodMiddleware::class, static function (): MethodMiddleware {
-            return new MethodMiddleware(
-                \config('easy-webhook.method'),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 10
-            );
-        });
-
-        $this->app->singleton(AsyncMiddleware::class, static function (Container $app): AsyncMiddleware {
-            return new AsyncMiddleware(
-                $app->make(AsyncDispatcherInterface::class),
-                $app->make(StoreInterface::class),
-                \config('easy-webhook.send_async', true),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 20
-            );
-        });
-
-        $this->app->singleton(SyncRetryMiddleware::class, static function (Container $app): SyncRetryMiddleware {
-            return new SyncRetryMiddleware(
-                $app->make(WebhookRetryStrategyInterface::class),
-                \config('easy-webhook.send_async', true),
-                $app->make(LoggerInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 30
-            );
-        });
-
-        $this->app->singleton(StoreMiddleware::class, static function (Container $app): StoreMiddleware {
-            return new StoreMiddleware(
-                $app->make(StoreMiddleware::class),
-                $app->make(ResultStoreInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 40
-            );
-        });
-
-        $this->app->singleton(EventsMiddleware::class, static function (Container $app): EventsMiddleware {
-            return new EventsMiddleware(
-                $app->make(EventDispatcherInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 50
-            );
-        });
-
-        $this->app->singleton(
-            StatusAndAttemptMiddleware::class,
-            static function (): StatusAndAttemptMiddleware {
+        // Middleware::class => Closure
+        $coreMiddlewareList = [
+            // BEFORE MIDDLEWARE
+            LockMiddleware::class => static function (Container $app): LockMiddleware {
+                return new LockMiddleware(
+                    $app->make(LockServiceInterface::class),
+                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 2
+                );
+            },
+            SendAfterMiddleware::class => static function (Container $app): SendAfterMiddleware {
+                return new SendAfterMiddleware(
+                    $app->make(StoreInterface::class),
+                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 1
+                );
+            },
+            RerunMiddleware::class => static function (): RerunMiddleware {
+                return new RerunMiddleware(MiddlewareInterface::PRIORITY_CORE_BEFORE);
+            },
+            // AFTER MIDDLEWARE
+            ResetStoreMiddleware::class => static function (Container $app): ResetStoreMiddleware {
+                return new ResetStoreMiddleware(
+                    $app->make(StoreInterface::class),
+                    $app->make(ResultStoreInterface::class),
+                    MiddlewareInterface::PRIORITY_CORE_AFTER
+                );
+            },
+            MethodMiddleware::class => static function (): MethodMiddleware {
+                return new MethodMiddleware(
+                    \config('easy-webhook.method'),
+                    MiddlewareInterface::PRIORITY_CORE_AFTER + 10
+                );
+            },
+            AsyncMiddleware::class => static function (Container $app): AsyncMiddleware {
+                return new AsyncMiddleware(
+                    $app->make(AsyncDispatcherInterface::class),
+                    $app->make(StoreInterface::class),
+                    \config('easy-webhook.send_async', true),
+                    MiddlewareInterface::PRIORITY_CORE_AFTER + 20
+                );
+            },
+            SyncRetryMiddleware::class => static function (Container $app): SyncRetryMiddleware {
+                return new SyncRetryMiddleware(
+                    $app->make(WebhookRetryStrategyInterface::class),
+                    \config('easy-webhook.send_async', true),
+                    $app->make(LoggerInterface::class),
+                    MiddlewareInterface::PRIORITY_CORE_AFTER + 30
+                );
+            },
+            StoreMiddleware::class => static function (Container $app): StoreMiddleware {
+                return new StoreMiddleware(
+                    $app->make(StoreInterface::class),
+                    $app->make(ResultStoreInterface::class),
+                    MiddlewareInterface::PRIORITY_CORE_AFTER + 40
+                );
+            },
+            EventsMiddleware::class => static function (Container $app): EventsMiddleware {
+                return new EventsMiddleware(
+                    $app->make(EventDispatcherInterface::class),
+                    MiddlewareInterface::PRIORITY_CORE_AFTER + 50
+                );
+            },
+            StatusAndAttemptMiddleware::class => static function (): StatusAndAttemptMiddleware {
                 return new StatusAndAttemptMiddleware(MiddlewareInterface::PRIORITY_CORE_AFTER + 60);
-            }
-        );
+            },
+            SendWebhookMiddleware::class => static function (Container $app): SendWebhookMiddleware {
+                return new SendWebhookMiddleware(
+                    $app->make(BridgeConstantsInterface::HTTP_CLIENT),
+                    MiddlewareInterface::PRIORITY_CORE_AFTER + 70
+                );
+            },
+        ];
 
-        $this->app->singleton(SendWebhookMiddleware::class, static function (Container $app): SendWebhookMiddleware {
-            return new SendWebhookMiddleware(
-                $app->make(BridgeConstantsInterface::HTTP_CLIENT),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 70
-            );
-        });
+        foreach ($coreMiddlewareList as $class => $closure) {
+            $this->app->singleton($class, $closure);
+            $this->app->tag([$class], [BridgeConstantsInterface::TAG_MIDDLEWARE]);
+        }
     }
 
     private function registerDefaultMiddleware(): void
