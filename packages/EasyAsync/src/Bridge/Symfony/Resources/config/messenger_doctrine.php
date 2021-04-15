@@ -8,6 +8,7 @@ use EonX\EasyAsync\Doctrine\ManagersClearer;
 use EonX\EasyAsync\Doctrine\ManagersSanityChecker;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
