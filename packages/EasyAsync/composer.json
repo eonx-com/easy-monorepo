@@ -22,7 +22,7 @@
     "autoload": {
         "psr-4": {
             "EonX\\EasyAsync\\": "src",
-            "EonX\\EasyApiToken\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyAsync\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {
