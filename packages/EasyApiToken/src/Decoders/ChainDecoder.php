@@ -21,7 +21,7 @@ final class ChainDecoder extends AbstractApiTokenDecoder
      */
     public function __construct(array $decoders, ?string $name = null)
     {
-        $this->decoders = CollectorHelper::filterByClass($decoders, ApiTokenDecoderInterface::class);
+        $this->decoders = CollectorHelper::filterByClassAsArray($decoders, ApiTokenDecoderInterface::class);
 
         parent::__construct($name ?? self::NAME_CHAIN);
     }
