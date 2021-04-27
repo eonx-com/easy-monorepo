@@ -19,6 +19,11 @@ final class ShouldKillWorkerSubscriber implements EventSubscriberInterface
     private $logger;
 
     /**
+     * @var string
+     */
+    private $message;
+
+    /**
      * @var bool
      */
     private $shouldKillWorker = false;
@@ -42,11 +47,7 @@ final class ShouldKillWorkerSubscriber implements EventSubscriberInterface
     public function onWorkerMessageFailed(WorkerMessageFailedEvent $event): void
     {
         if ($event->getThrowable() instanceof ShouldKillWorkerExceptionInterface) {
-            $this->logger->info(\sprintf(
-                'Kill worker because of exception "%s"',
-                \get_class($event->getThrowable())
-            ));
-
+            $this->message = \sprintf('Kill worker because of exception "%s"', \get_class($event->getThrowable()));
             $this->shouldKillWorker = true;
         }
     }
@@ -54,7 +55,10 @@ final class ShouldKillWorkerSubscriber implements EventSubscriberInterface
     public function onWorkerRunning(WorkerRunningEvent $event): void
     {
         if ($this->shouldKillWorker) {
-            $event->getWorker()
+            $this->logger->warning($this->message);
+
+            $event
+                ->getWorker()
                 ->stop();
         }
     }
