@@ -86,7 +86,14 @@ final class ManagerRegistryStub implements ManagerRegistry
      */
     public function getManagerNames(): array
     {
-        return \array_keys($this->managers);
+        $return = [];
+
+        // To reproduce doctrine behavior
+        foreach ($this->managers as $name => $manager) {
+            $return[$name] = \get_class($manager);
+        }
+
+        return $return;
     }
 
     /**
