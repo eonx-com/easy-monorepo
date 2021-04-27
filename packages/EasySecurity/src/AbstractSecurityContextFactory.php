@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
-use EonX\EasySecurity\Events\SecurityContextCreatedEvent;
 use EonX\EasySecurity\Interfaces\RequestResolverInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
