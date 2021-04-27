@@ -67,7 +67,7 @@ final class ManagersSanityChecker
         // Check connection ok
         try {
             $conn = $entityManager->getConnection();
-            $conn->executeStatement($conn->getDatabasePlatform()->getDummySelectSQL());
+            $conn->fetchAllAssociative($conn->getDatabasePlatform()->getDummySelectSQL());
         } catch (\Throwable $throwable) {
             throw new DoctrineConnectionNotOkException(
                 \sprintf('Connection for manager "%s" not ok: %s', $name, $throwable->getMessage()),
