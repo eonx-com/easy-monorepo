@@ -12,6 +12,7 @@ use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\EasyBugsnag\SecurityContextClientConfigurator;
 use EonX\EasySecurity\Bridge\Laravel\Listeners\ConfigureSecurityContextListener;
+use EonX\EasySecurity\Bridge\Laravel\Request\RequestResolver;
 use EonX\EasySecurity\Configurators\ApiTokenConfigurator;
 use EonX\EasySecurity\Configurators\AuthorizationMatrixConfigurator;
 use EonX\EasySecurity\DeferredSecurityContextProvider;
@@ -19,12 +20,12 @@ use EonX\EasySecurity\Events\SecurityContextCreatedEvent;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
+use EonX\EasySecurity\Interfaces\RequestResolverInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\SecurityContextFactory;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
@@ -50,7 +51,6 @@ final class EasySecurityServiceProvider extends ServiceProvider
         $this->registerAuthorizationMatrix();
         $this->registerDefaultConfigurators();
         $this->registerEasyBugsnag();
-        $this->registerListeners();
         $this->registerSecurityContext($contextServiceId);
         $this->registerDeferredSecurityContextProvider($contextServiceId);
     }
@@ -152,23 +152,21 @@ final class EasySecurityServiceProvider extends ServiceProvider
         );
     }
 
-    private function registerListeners(): void
+    private function registerSecurityContext(string $contextServiceId): void
     {
+        // RequestResolver
+        $this->app->singleton(RequestResolverInterface::class, RequestResolver::class);
+
+        // SecurityContextFactory
         $this->app->singleton(
-            ConfigureSecurityContextListener::class,
-            static function (Container $app): ConfigureSecurityContextListener {
-                return new ConfigureSecurityContextListener(
+            SecurityContextFactoryInterface::class,
+            static function (Container $app): SecurityContextFactoryInterface {
+                return new SecurityContextFactory(
                     $app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR),
-                    $app->make(Request::class)
+                    $app->make(RequestResolverInterface::class)
                 );
             }
         );
-    }
-
-    private function registerSecurityContext(string $contextServiceId): void
-    {
-        // SecurityContextFactory
-        $this->app->singleton(SecurityContextFactoryInterface::class, SecurityContextFactory::class);
 
         // SecurityContext
         $this->app->singleton($contextServiceId, static function (Container $app): SecurityContextInterface {

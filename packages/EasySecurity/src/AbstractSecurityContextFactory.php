@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
-use EonX\EasySecurity\Events\SecurityContextCreatedEvent;
+use EonX\EasySecurity\Interfaces\RequestResolverInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
+use EonX\EasyUtils\CollectorHelper;
 
 abstract class AbstractSecurityContextFactory implements SecurityContextFactoryInterface
 {
@@ -17,13 +18,25 @@ abstract class AbstractSecurityContextFactory implements SecurityContextFactoryI
     private $cached;
 
     /**
-     * @var null|\EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
+     * @var \EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface[]
      */
-    private $eventDispatcher;
+    private $configurators;
 
-    public function __construct(?EventDispatcherInterface $eventDispatcher = null)
+    /**
+     * @var \EonX\EasySecurity\Interfaces\RequestResolverInterface
+     */
+    private $requestResolver;
+
+    /**
+     * @param iterable<mixed> $configurators
+     */
+    public function __construct(iterable $configurators, RequestResolverInterface $requestResolver)
     {
-        $this->eventDispatcher = $eventDispatcher;
+        $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
+            CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class)
+        );
+
+        $this->requestResolver = $requestResolver;
     }
 
     public function create(): SecurityContextInterface
@@ -34,8 +47,12 @@ abstract class AbstractSecurityContextFactory implements SecurityContextFactoryI
 
         $context = $this->doCreate();
 
-        if ($this->eventDispatcher !== null) {
-            $this->eventDispatcher->dispatch(new SecurityContextCreatedEvent($context));
+        if (\count($this->configurators) > 0) {
+            $request = $this->requestResolver->getRequest();
+
+            foreach ($this->configurators as $configurator) {
+                $configurator->configure($context, $request);
+            }
         }
 
         return $this->cached = $context;

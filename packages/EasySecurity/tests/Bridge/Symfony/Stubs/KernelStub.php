@@ -6,19 +6,16 @@ namespace EonX\EasySecurity\Tests\Bridge\Symfony\Stubs;
 
 use EonX\EasyApiToken\Bridge\BridgeConstantsInterface as EasyApiTokenConstantsInterface;
 use EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenSymfonyBundle;
-use EonX\EasyEventDispatcher\Bridge\Symfony\EasyEventDispatcherSymfonyBundle;
 use EonX\EasySecurity\Bridge\Symfony\EasySecuritySymfonyBundle;
 use EonX\EasySecurity\Tests\Stubs\ApiTokenDecoderProviderStub;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
@@ -50,9 +47,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
             ->setDefinition(ApiTokenDecoderProviderStub::class, new Definition(ApiTokenDecoderProviderStub::class))
             ->addTag(EasyApiTokenConstantsInterface::TAG_DECODER_PROVIDER);
 
-        // EventDispatcher
-        $container->setDefinition(EventDispatcherInterface::class, new Definition(EventDispatcher::class));
-
         // RequestStack
         $requestStackDef = new Definition(RequestStack::class);
 
@@ -74,7 +68,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     {
         yield new EasyApiTokenSymfonyBundle();
         yield new EasySecuritySymfonyBundle();
-        yield new EasyEventDispatcherSymfonyBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
