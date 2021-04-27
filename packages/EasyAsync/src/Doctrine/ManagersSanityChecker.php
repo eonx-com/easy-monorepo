@@ -38,7 +38,7 @@ final class ManagersSanityChecker
     public function checkSanity(?array $managers = null): void
     {
         // If no managers given, default to all
-        $managers = $managers ?? $this->registry->getManagerNames();
+        $managers = $managers ?? \array_keys($this->registry->getManagerNames());
 
         foreach ($managers as $managerName) {
             $manager = $this->registry->getManager($managerName);
