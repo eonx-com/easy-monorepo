@@ -74,7 +74,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     {
         yield new EasyApiTokenSymfonyBundle();
         yield new EasySecuritySymfonyBundle();
-        yield new EasyEventDispatcherSymfonyBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
