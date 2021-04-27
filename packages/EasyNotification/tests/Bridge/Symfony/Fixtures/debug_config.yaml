@@ -1,0 +1,2 @@
+easy_notification:
+    api_url: 'https://api.prod.v1.notifications.eonx.com'
