@@ -187,10 +187,11 @@ trait DoctrinePaginatorTrait
         // Apply pagination to get primary keys only for current page
         $this->applyPagination($newQueryBuilder);
 
-        $primaryKeys = \array_map(static function (array $row) use ($primaryKeyIndex): string {
+        $primaryKeysMap = static function (array $row) use ($primaryKeyIndex): string {
             return $row[$primaryKeyIndex];
-        }, $newQueryBuilder->getQuery()
-            ->getResult());
+        };
+
+        $primaryKeys = \array_map($primaryKeysMap, $this->doGetResult($newQueryBuilder));
 
         // If no primary keys, no items for current pagination
         if (\count($primaryKeys) === 0) {
