@@ -31,17 +31,17 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 2);
 
     $services
-        ->set(SendAfterMiddleware::class)
-        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 1);
-
-    $services
         ->set(RerunMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE);
 
     // AFTER MIDDLEWARE
     $services
-        ->set(ResetStoreMiddleware::class)
+        ->set(SendAfterMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER);
+
+    $services
+        ->set(ResetStoreMiddleware::class)
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 1);
 
     $services
         ->set(MethodMiddleware::class)
