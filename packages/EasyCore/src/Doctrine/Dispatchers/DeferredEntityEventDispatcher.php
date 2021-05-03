@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Doctrine\Dispatchers;
 
-use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
 use EonX\EasyCore\Doctrine\Events\EntityCreatedEvent;
 use EonX\EasyCore\Doctrine\Events\EntityUpdatedEvent;
+use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
@@ -40,13 +40,13 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     public function clear(?int $transactionNestingLevel = null): void
     {
         if ($transactionNestingLevel !== null) {
-            foreach ($this->entityInsertions as $level => $entities) {
+            foreach (\array_keys($this->entityInsertions) as $level) {
                 if ($level >= $transactionNestingLevel) {
                     $this->entityInsertions[$level] = [];
                 }
             }
 
-            foreach ($this->entityUpdates as $level => $entities) {
+            foreach (\array_keys($this->entityUpdates) as $level) {
                 if ($level >= $transactionNestingLevel) {
                     $this->entityUpdates[$level] = [];
                 }
@@ -103,11 +103,11 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             return;
         }
 
-        \array_walk_recursive($entityInsertions, function (DatabaseEntityInterface $entity) {
+        \array_walk_recursive($entityInsertions, function (DatabaseEntityInterface $entity): void {
             $this->eventDispatcher->dispatch(new EntityCreatedEvent($entity), EntityCreatedEvent::NAME);
         });
 
-        \array_walk_recursive($entityUpdates, function (DatabaseEntityInterface $entity) {
+        \array_walk_recursive($entityUpdates, function (DatabaseEntityInterface $entity): void {
             $this->eventDispatcher->dispatch(new EntityUpdatedEvent($entity), EntityUpdatedEvent::NAME);
         });
     }

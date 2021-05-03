@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Doctrine\Subscribers;
 
-use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
-use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
+use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
+use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
 
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
 {
@@ -40,7 +40,8 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     {
         $entityManager = $eventArgs->getEntityManager();
         $unitOfWork = $entityManager->getUnitOfWork();
-        $transactionNestingLevel = $entityManager->getConnection()->getTransactionNestingLevel();
+        $transactionNestingLevel = $entityManager->getConnection()
+            ->getTransactionNestingLevel();
         $scheduledEntityInsertions = $this->filterEntities($unitOfWork->getScheduledEntityInsertions());
         $scheduledEntityUpdates = $this->filterEntities($unitOfWork->getScheduledEntityUpdates());
 

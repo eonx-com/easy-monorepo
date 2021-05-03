@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Doctrine\EntityManagers;
 
-use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\Decorator\EntityManagerDecorator as DoctrineEntityManagerDecorator;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
+use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use InvalidArgumentException;
 use Throwable;
@@ -47,7 +47,8 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
 
     public function rollback(): void
     {
-        $transactionNestingLevel = $this->getConnection()->getTransactionNestingLevel();
+        $transactionNestingLevel = $this->getConnection()
+            ->getTransactionNestingLevel();
 
         if ($transactionNestingLevel > 0) {
             parent::rollback();

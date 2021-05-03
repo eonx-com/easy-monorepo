@@ -26,24 +26,80 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
     {
         return [
             'transaction nesting level is null' => [
-                'entityInsertions' => [1 => ['foo' => 'bar']],
-                'entityUpdates' => [2 => ['foo' => 'bar']],
+                'entityInsertions' => [
+                    1 => [
+                        'foo' => 'bar',
+                    ],
+                ],
+                'entityUpdates' => [
+                    2 => [
+                        'foo' => 'bar',
+                    ],
+                ],
                 'expectedEntityInsertions' => [],
                 'expectedEntityUpdates' => [],
                 'transactionNestingLevel' => null,
             ],
             'transaction nesting level is not null' => [
-                'entityInsertions' => [1 => ['foo' => 'bar'], 2 => ['key' => 'value'], 3 => ['john' => 'doe']],
-                'entityUpdates' => [1 => ['foo' => 'bar'], 2 => ['key' => 'value'], 3 => ['john' => 'doe']],
-                'expectedEntityInsertions' => [1 => ['foo' => 'bar'], 2 => [], 3 => []],
-                'expectedEntityUpdates' => [1 => ['foo' => 'bar'], 2 => [], 3 => []],
+                'entityInsertions' => [
+                    1 => [
+                        'foo' => 'bar',
+                    ],
+                    2 => [
+                        'key' => 'value',
+                    ],
+                    3 => [
+                        'john' => 'doe',
+                    ],
+                ],
+                'entityUpdates' => [
+                    1 => [
+                        'foo' => 'bar',
+                    ],
+                    2 => [
+                        'key' => 'value',
+                    ],
+                    3 => [
+                        'john' => 'doe',
+                    ],
+                ],
+                'expectedEntityInsertions' => [
+                    1 => [
+                        'foo' => 'bar',
+                    ],
+                    2 => [],
+                    3 => [],
+                ],
+                'expectedEntityUpdates' => [
+                    1 => [
+                        'foo' => 'bar',
+                    ],
+                    2 => [],
+                    3 => [],
+                ],
                 'transactionNestingLevel' => 2,
             ],
             'transaction nesting level does not exist' => [
-                'entityInsertions' => [1 => ['foo' => 'bar']],
-                'entityUpdates' => [1 => ['foo' => 'bar']],
-                'expectedEntityInsertions' => [1 => ['foo' => 'bar']],
-                'expectedEntityUpdates' => [1 => ['foo' => 'bar']],
+                'entityInsertions' => [
+                    1 => [
+                        'foo' => 'bar',
+                    ],
+                ],
+                'entityUpdates' => [
+                    1 => [
+                        'foo' => 'bar',
+                    ],
+                ],
+                'expectedEntityInsertions' => [
+                    1 => [
+                        'foo' => 'bar',
+                    ],
+                ],
+                'expectedEntityUpdates' => [
+                    1 => [
+                        'foo' => 'bar',
+                    ],
+                ],
                 'transactionNestingLevel' => 3,
             ],
         ];
@@ -92,11 +148,23 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
             $this->prophesize(EventDispatcherInterface::class)->reveal()
         );
 
-        $deferredEntityEventDispatcher->deferInsertions(['key-1' => $entityA, 'key-2' => $entityB], 0);
-        $deferredEntityEventDispatcher->deferInsertions(['key-1' => $entityD, 'key-3' => $entityC], 0);
+        $deferredEntityEventDispatcher->deferInsertions([
+            'key-1' => $entityA,
+            'key-2' => $entityB,
+        ], 0);
+        $deferredEntityEventDispatcher->deferInsertions([
+            'key-1' => $entityD,
+            'key-3' => $entityC,
+        ], 0);
 
         self::assertSame(
-            [0 => ['key-1' => $entityD, 'key-2' => $entityB, 'key-3' => $entityC]],
+            [
+                0 => [
+                    'key-1' => $entityD,
+                    'key-2' => $entityB,
+                    'key-3' => $entityC,
+                ],
+            ],
             $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityInsertions')
         );
     }
@@ -111,11 +179,23 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
             $this->prophesize(EventDispatcherInterface::class)->reveal()
         );
 
-        $deferredEntityEventDispatcher->deferUpdates(['key-1' => $entityA, 'key-2' => $entityB], 0);
-        $deferredEntityEventDispatcher->deferUpdates(['key-1' => $entityD, 'key-3' => $entityC], 0);
+        $deferredEntityEventDispatcher->deferUpdates([
+            'key-1' => $entityA,
+            'key-2' => $entityB,
+        ], 0);
+        $deferredEntityEventDispatcher->deferUpdates([
+            'key-1' => $entityD,
+            'key-3' => $entityC,
+        ], 0);
 
         self::assertSame(
-            [0 => ['key-1' => $entityD, 'key-2' => $entityB, 'key-3' => $entityC]],
+            [
+                0 => [
+                    'key-1' => $entityD,
+                    'key-2' => $entityB,
+                    'key-3' => $entityC,
+                ],
+            ],
             $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityUpdates')
         );
     }

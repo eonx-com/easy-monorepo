@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Doctrine\Subscribers;
 
-use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
-use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
-use EonX\EasyCore\Doctrine\Subscribers\EntityEventSubscriber;
-use EonX\EasyCore\Tests\AbstractTestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\UnitOfWork;
+use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
+use EonX\EasyCore\Doctrine\Subscribers\EntityEventSubscriber;
+use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
+use EonX\EasyCore\Tests\AbstractTestCase;
 use stdClass;
 
 /**
@@ -41,15 +41,21 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             ->willImplement(DatabaseEntityInterface::class)
             ->reveal();
         $unitOfWork = $this->prophesize(UnitOfWork::class);
-        $unitOfWork->getScheduledEntityInsertions()->willReturn([$newEntity, $notAcceptableEntity]);
-        $unitOfWork->getScheduledEntityUpdates()->willReturn([$existedEntity, $notAcceptableEntity]);
+        $unitOfWork->getScheduledEntityInsertions()
+            ->willReturn([$newEntity, $notAcceptableEntity]);
+        $unitOfWork->getScheduledEntityUpdates()
+            ->willReturn([$existedEntity, $notAcceptableEntity]);
         $connection = $this->prophesize(Connection::class);
-        $connection->getTransactionNestingLevel()->willReturn(0);
+        $connection->getTransactionNestingLevel()
+            ->willReturn(0);
         $entityManager = $this->prophesize(EntityManagerInterface::class);
-        $entityManager->getUnitOfWork()->willReturn($unitOfWork->reveal());
-        $entityManager->getConnection()->willReturn($connection->reveal());
+        $entityManager->getUnitOfWork()
+            ->willReturn($unitOfWork->reveal());
+        $entityManager->getConnection()
+            ->willReturn($connection->reveal());
         $eventArgs = $this->prophesize(OnFlushEventArgs::class);
-        $eventArgs->getEntityManager()->willReturn($entityManager->reveal());
+        $eventArgs->getEntityManager()
+            ->willReturn($entityManager->reveal());
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
         $entityEventSubscriber = new EntityEventSubscriber(
             $deferredEntityEventDispatcher->reveal(),
@@ -58,51 +64,71 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 
         $entityEventSubscriber->onFlush($eventArgs->reveal());
 
-        $eventArgs->getEntityManager()->shouldHaveBeenCalledOnce();
-        $entityManager->getUnitOfWork()->shouldHaveBeenCalledOnce();
-        $unitOfWork->getScheduledEntityInsertions()->shouldHaveBeenCalledOnce();
-        $unitOfWork->getScheduledEntityUpdates()->shouldHaveBeenCalledOnce();
+        $eventArgs->getEntityManager()
+            ->shouldHaveBeenCalledOnce();
+        $entityManager->getUnitOfWork()
+            ->shouldHaveBeenCalledOnce();
+        $unitOfWork->getScheduledEntityInsertions()
+            ->shouldHaveBeenCalledOnce();
+        $unitOfWork->getScheduledEntityUpdates()
+            ->shouldHaveBeenCalledOnce();
         $deferredEntityEventDispatcher->deferInsertions([$newEntity], 0)->shouldHaveBeenCalledOnce();
         $deferredEntityEventDispatcher->deferUpdates([$existedEntity], 0)->shouldHaveBeenCalledOnce();
-        $entityManager->getConnection()->shouldHaveBeenCalledOnce();
-        $connection->getTransactionNestingLevel()->shouldHaveBeenCalledOnce();
+        $entityManager->getConnection()
+            ->shouldHaveBeenCalledOnce();
+        $connection->getTransactionNestingLevel()
+            ->shouldHaveBeenCalledOnce();
     }
 
     public function testPostFlushSucceedsAndDispatchesEvents(): void
     {
         $connection = $this->prophesize(Connection::class);
-        $connection->getTransactionNestingLevel()->willReturn(0);
+        $connection->getTransactionNestingLevel()
+            ->willReturn(0);
         $entityManager = $this->prophesize(EntityManagerInterface::class);
-        $entityManager->getConnection()->willReturn($connection->reveal());
+        $entityManager->getConnection()
+            ->willReturn($connection->reveal());
         $eventArgs = $this->prophesize(PostFlushEventArgs::class);
-        $eventArgs->getEntityManager()->willReturn($entityManager->reveal());
+        $eventArgs->getEntityManager()
+            ->willReturn($entityManager->reveal());
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
         $entityEventSubscriber = new EntityEventSubscriber($deferredEntityEventDispatcher->reveal(), []);
 
         $entityEventSubscriber->postFlush($eventArgs->reveal());
 
-        $eventArgs->getEntityManager()->shouldHaveBeenCalledOnce();
-        $entityManager->getConnection()->shouldHaveBeenCalledOnce();
-        $connection->getTransactionNestingLevel()->shouldHaveBeenCalledOnce();
-        $deferredEntityEventDispatcher->dispatch()->shouldHaveBeenCalledOnce();
+        $eventArgs->getEntityManager()
+            ->shouldHaveBeenCalledOnce();
+        $entityManager->getConnection()
+            ->shouldHaveBeenCalledOnce();
+        $connection->getTransactionNestingLevel()
+            ->shouldHaveBeenCalledOnce();
+        $deferredEntityEventDispatcher->dispatch()
+            ->shouldHaveBeenCalledOnce();
     }
 
     public function testPostFlushSucceedsAndDoesNotDispatchEvents(): void
     {
         $connection = $this->prophesize(Connection::class);
-        $connection->getTransactionNestingLevel()->willReturn(1);
+        $connection->getTransactionNestingLevel()
+            ->willReturn(1);
         $entityManager = $this->prophesize(EntityManagerInterface::class);
-        $entityManager->getConnection()->willReturn($connection->reveal());
+        $entityManager->getConnection()
+            ->willReturn($connection->reveal());
         $eventArgs = $this->prophesize(PostFlushEventArgs::class);
-        $eventArgs->getEntityManager()->willReturn($entityManager->reveal());
+        $eventArgs->getEntityManager()
+            ->willReturn($entityManager->reveal());
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
         $entityEventSubscriber = new EntityEventSubscriber($deferredEntityEventDispatcher->reveal(), []);
 
         $entityEventSubscriber->postFlush($eventArgs->reveal());
 
-        $eventArgs->getEntityManager()->shouldHaveBeenCalledOnce();
-        $entityManager->getConnection()->shouldHaveBeenCalledOnce();
-        $connection->getTransactionNestingLevel()->shouldHaveBeenCalledOnce();
-        $deferredEntityEventDispatcher->dispatch()->shouldNotHaveBeenCalled();
+        $eventArgs->getEntityManager()
+            ->shouldHaveBeenCalledOnce();
+        $entityManager->getConnection()
+            ->shouldHaveBeenCalledOnce();
+        $connection->getTransactionNestingLevel()
+            ->shouldHaveBeenCalledOnce();
+        $deferredEntityEventDispatcher->dispatch()
+            ->shouldNotHaveBeenCalled();
     }
 }
