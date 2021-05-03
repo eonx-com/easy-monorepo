@@ -66,6 +66,15 @@ The default name of the Event header is `X-Webhook-Event`, but the name is confi
 This middleware dispatches an event depending on the outcome of the webhook HTTP request. See see [Events](events.md))
 for more information.
 
+### `HandleExceptionsMiddleware`
+
+This middleware catches exceptions that are thrown within the stack and handles them gracefully by returning a
+failed WebhookResult containing the actual exception.
+
+::: info
+To prevent an exception to be handled by this middleware, simply implement `EonX\EasyWebhook\Interfaces\DoNotHandleMeEasyWebhookExceptionInterface`.
+:::
+
 ### `IdHeaderMiddleware`
 
 This middleware sets the **ID header** of the webhook HTTP request to the webhook's `$id` property (if it exists) or
