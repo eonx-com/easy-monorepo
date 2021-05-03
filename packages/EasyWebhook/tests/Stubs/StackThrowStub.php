@@ -16,7 +16,7 @@ final class StackThrowStub implements StackInterface
     private $index = 0;
 
     /**
-     * @var \Throwable $throwable
+     * @var \Throwable
      */
     private $throwable;
 
