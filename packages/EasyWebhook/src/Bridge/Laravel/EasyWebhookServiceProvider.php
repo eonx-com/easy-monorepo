@@ -28,6 +28,7 @@ use EonX\EasyWebhook\Middleware\AsyncMiddleware;
 use EonX\EasyWebhook\Middleware\BodyFormatterMiddleware;
 use EonX\EasyWebhook\Middleware\EventHeaderMiddleware;
 use EonX\EasyWebhook\Middleware\EventsMiddleware;
+use EonX\EasyWebhook\Middleware\HandleExceptionsMiddleware;
 use EonX\EasyWebhook\Middleware\IdHeaderMiddleware;
 use EonX\EasyWebhook\Middleware\LockMiddleware;
 use EonX\EasyWebhook\Middleware\MethodMiddleware;
@@ -95,6 +96,15 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         // Middleware::class => Closure
         $coreMiddlewareList = [
             // BEFORE MIDDLEWARE
+            EventsMiddleware::class => static function (Container $app): EventsMiddleware {
+                return new EventsMiddleware(
+                    $app->make(EventDispatcherInterface::class),
+                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 4
+                );
+            },
+            HandleExceptionsMiddleware::class => static function (): HandleExceptionsMiddleware {
+                return new HandleExceptionsMiddleware(MiddlewareInterface::PRIORITY_CORE_BEFORE - 3);
+            },
             LockMiddleware::class => static function (Container $app): LockMiddleware {
                 return new LockMiddleware(
                     $app->make(LockServiceInterface::class),
@@ -147,19 +157,13 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                     MiddlewareInterface::PRIORITY_CORE_AFTER + 40
                 );
             },
-            EventsMiddleware::class => static function (Container $app): EventsMiddleware {
-                return new EventsMiddleware(
-                    $app->make(EventDispatcherInterface::class),
-                    MiddlewareInterface::PRIORITY_CORE_AFTER + 50
-                );
-            },
             StatusAndAttemptMiddleware::class => static function (): StatusAndAttemptMiddleware {
-                return new StatusAndAttemptMiddleware(MiddlewareInterface::PRIORITY_CORE_AFTER + 60);
+                return new StatusAndAttemptMiddleware(MiddlewareInterface::PRIORITY_CORE_AFTER + 50);
             },
             SendWebhookMiddleware::class => static function (Container $app): SendWebhookMiddleware {
                 return new SendWebhookMiddleware(
                     $app->make(BridgeConstantsInterface::HTTP_CLIENT),
-                    MiddlewareInterface::PRIORITY_CORE_AFTER + 70
+                    MiddlewareInterface::PRIORITY_CORE_AFTER + 60
                 );
             },
         ];
