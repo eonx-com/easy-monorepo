@@ -15,6 +15,11 @@ use Symfony\Component\Filesystem\Filesystem;
 abstract class AbstractTestCase extends TestCase
 {
     /**
+     * @var \Exception|null
+     */
+    protected $thrownException = null;
+
+    /**
      * @param mixed $target
      */
     protected function mock($target, ?callable $expectations = null): MockInterface
@@ -83,5 +88,30 @@ abstract class AbstractTestCase extends TestCase
         return (function ($method, $args) {
             return $this->{$method}(...$args);
         })->call($object, $method, $args);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function assertThrownException(
+        string $expectedException,
+        int $code,
+        ?string $previousException = null
+    ): void {
+        self::assertNotNull($this->thrownException);
+
+        if ($this->thrownException instanceof $expectedException === false) {
+            throw $this->thrownException;
+        }
+
+        self::assertSame($code, $this->thrownException->getCode());
+
+        if ($previousException === null) {
+            self::assertNull($this->thrownException->getPrevious());
+        }
+
+        if ($previousException !== null) {
+            self::assertTrue($this->thrownException->getPrevious() instanceof $previousException);
+        }
     }
 }
