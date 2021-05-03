@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests;
 
+use Closure;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -15,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 abstract class AbstractTestCase extends TestCase
 {
     /**
-     * @var \Exception|null
+     * @var \Throwable|null
      */
     protected $thrownException = null;
 
@@ -90,6 +91,15 @@ abstract class AbstractTestCase extends TestCase
         })->call($object, $method, $args);
     }
 
+    protected function safeCall(Closure $func): void
+    {
+        try {
+            $func();
+        } catch (\Throwable $exception) {
+            $this->thrownException = $exception;
+        }
+    }
+
     /**
      * @throws \Exception
      */
@@ -99,6 +109,10 @@ abstract class AbstractTestCase extends TestCase
         ?string $previousException = null
     ): void {
         self::assertNotNull($this->thrownException);
+
+        if ($this->thrownException === null) {
+            return;
+        }
 
         if ($this->thrownException instanceof $expectedException === false) {
             throw $this->thrownException;

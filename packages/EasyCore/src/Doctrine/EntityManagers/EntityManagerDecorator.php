@@ -9,14 +9,14 @@ use Doctrine\ORM\Decorator\EntityManagerDecorator as DoctrineEntityManagerDecora
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+//use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use InvalidArgumentException;
 use Throwable;
 
 final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
 {
     /**
-     * @var EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface
+     * @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface
      */
     private $eventDispatcher;
 
@@ -66,7 +66,7 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
      */
     public function transactional($func)
     {
-        if (\is_callable($func) === false) {
+        if (!\is_callable($func)) {
             throw new InvalidArgumentException('Expected argument of type "callable", got "' . \gettype($func) . '"');
         }
 

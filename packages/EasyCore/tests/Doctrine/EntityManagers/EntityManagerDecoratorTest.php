@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Doctrine\EntityManagers;
 
-use Closure;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -197,14 +196,5 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         });
 
         $this->assertThrownException(InvalidArgumentException::class, 0);
-    }
-
-    protected function safeCall(Closure $func): void
-    {
-        try {
-            $func();
-        } catch (\Throwable $exception) {
-            $this->thrownException = $exception;
-        }
     }
 }
