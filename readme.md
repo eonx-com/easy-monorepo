@@ -58,14 +58,10 @@ The release of a new version MUST be done from the `master` branch.
 # 1. Make sure to pull the latest version of master in your local copy of the repository
 $ git checkout master && git pull
 
-# 2. Generate changelog. Make sure to verify the content of CHANGELOG.md after each run
-$ composer changelog
-
-# 3. Release the new version
-$ vendor/bin/monorepo-builder release vX.X.X
-
-# 4. Split new version to each package
-$ composer split
+# Generate changelog. Make sure to verify the content of CHANGELOG.md after each run
+# Release the new version
+# Split new version to each package
+$ composer release vX.X.X
 ```
 
 [1]: https://en.wikipedia.org/wiki/Monorepo
