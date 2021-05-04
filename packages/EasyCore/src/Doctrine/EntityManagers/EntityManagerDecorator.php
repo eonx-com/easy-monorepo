@@ -66,7 +66,7 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
      */
     public function transactional($func)
     {
-        if (!\is_callable($func)) {
+        if (\is_callable($func) === false) {
             throw new InvalidArgumentException('Expected argument of type "callable", got "' . \gettype($func) . '"');
         }
 

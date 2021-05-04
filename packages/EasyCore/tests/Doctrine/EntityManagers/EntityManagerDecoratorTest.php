@@ -76,8 +76,12 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManager = $this->prophesize(EntityManagerInterface::class);
         $entityManager->getConnection()
             ->willReturn($connection->reveal());
+        /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
+        $entityManagerReveal = $entityManager->reveal();
         $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        $entityManagerDecorator = new EntityManagerDecorator($eventDispatcher->reveal(), $entityManager->reveal());
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator($eventDispatcherReveal, $entityManagerReveal);
 
         $result = $entityManagerDecorator->transactional($callableArgument);
 
@@ -115,8 +119,12 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManager = $this->prophesize(EntityManagerInterface::class);
         $entityManager->getConnection()
             ->willReturn($connection->reveal());
+        /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
+        $entityManagerReveal = $entityManager->reveal();
         $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        $entityManagerDecorator = new EntityManagerDecorator($eventDispatcher->reveal(), $entityManager->reveal());
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator($eventDispatcherReveal, $entityManagerReveal);
 
         $this->safeCall(static function () use ($entityManagerDecorator, $callableArgument): void {
             $entityManagerDecorator->transactional($callableArgument);
@@ -156,8 +164,12 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManager = $this->prophesize(EntityManagerInterface::class);
         $entityManager->getConnection()
             ->willReturn($connection->reveal());
+        /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
+        $entityManagerReveal = $entityManager->reveal();
         $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        $entityManagerDecorator = new EntityManagerDecorator($eventDispatcher->reveal(), $entityManager->reveal());
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator($eventDispatcherReveal, $entityManagerReveal);
 
         $this->safeCall(static function () use ($entityManagerDecorator, $callableArgument): void {
             $entityManagerDecorator->transactional($callableArgument);
@@ -184,10 +196,12 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
     public function testTransactionalThrowsExceptionWhenArgumentNotCallable(): void
     {
         $entityManager = $this->prophesize(EntityManagerInterface::class);
-        $entityManagerDecorator = new EntityManagerDecorator(
-            $this->prophesize(DeferredEntityEventDispatcherInterface::class)->reveal(),
-            $entityManager->reveal()
-        );
+        /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
+        $entityManagerReveal = $entityManager->reveal();
+        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator($eventDispatcherReveal, $entityManagerReveal);
 
         $this->safeCall(static function () use ($entityManagerDecorator): void {
             /** @var callable $callableFake */

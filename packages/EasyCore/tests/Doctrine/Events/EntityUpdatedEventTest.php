@@ -15,6 +15,7 @@ final class EntityUpdatedEventTest extends AbstractTestCase
 {
     public function testGetEntitySucceeds(): void
     {
+        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface $expectedEntity */
         $expectedEntity = $this->prophesize(DatabaseEntityInterface::class)->reveal();
         $event = new EntityUpdatedEvent($expectedEntity);
 

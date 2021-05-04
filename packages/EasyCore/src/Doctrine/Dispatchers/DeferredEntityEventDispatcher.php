@@ -17,12 +17,12 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     private $enabled;
 
     /**
-     * @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[]
+     * @var array<int, \EonX\EasyCore\Interfaces\DatabaseEntityInterface[]>
      */
     private $entityInsertions = [];
 
     /**
-     * @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[]
+     * @var array<int, \EonX\EasyCore\Interfaces\DatabaseEntityInterface[]>
      */
     private $entityUpdates = [];
 
@@ -104,11 +104,11 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         }
 
         \array_walk_recursive($entityInsertions, function (DatabaseEntityInterface $entity): void {
-            $this->eventDispatcher->dispatch(new EntityCreatedEvent($entity), EntityCreatedEvent::NAME);
+            $this->eventDispatcher->dispatch(new EntityCreatedEvent($entity));
         });
 
         \array_walk_recursive($entityUpdates, function (DatabaseEntityInterface $entity): void {
-            $this->eventDispatcher->dispatch(new EntityUpdatedEvent($entity), EntityUpdatedEvent::NAME);
+            $this->eventDispatcher->dispatch(new EntityUpdatedEvent($entity));
         });
     }
 

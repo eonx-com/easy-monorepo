@@ -23,10 +23,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 {
     public function testGetSubscribedEventsSucceeds(): void
     {
-        $entityEventSubscriber = new EntityEventSubscriber(
-            $this->prophesize(DeferredEntityEventDispatcherInterface::class)->reveal(),
-            []
-        );
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcher */
+        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class)->reveal();
+        $entityEventSubscriber = new EntityEventSubscriber($eventDispatcher, []);
 
         $subscribedEvents = $entityEventSubscriber->getSubscribedEvents();
 
@@ -57,12 +56,16 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $eventArgs->getEntityManager()
             ->willReturn($entityManager->reveal());
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcherReveal */
+        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $entityEventSubscriber = new EntityEventSubscriber(
-            $deferredEntityEventDispatcher->reveal(),
+            $deferredEntityEventDispatcherReveal,
             [\get_class($newEntity), \get_class($existedEntity)]
         );
+        /** @var \Doctrine\ORM\Event\OnFlushEventArgs $eventArgsReveal */
+        $eventArgsReveal = $eventArgs->reveal();
 
-        $entityEventSubscriber->onFlush($eventArgs->reveal());
+        $entityEventSubscriber->onFlush($eventArgsReveal);
 
         $eventArgs->getEntityManager()
             ->shouldHaveBeenCalledOnce();
@@ -92,9 +95,13 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $eventArgs->getEntityManager()
             ->willReturn($entityManager->reveal());
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        $entityEventSubscriber = new EntityEventSubscriber($deferredEntityEventDispatcher->reveal(), []);
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcherReveal */
+        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        $entityEventSubscriber = new EntityEventSubscriber($deferredEntityEventDispatcherReveal, []);
+        /** @var \Doctrine\ORM\Event\PostFlushEventArgs $eventArgsReveal */
+        $eventArgsReveal = $eventArgs->reveal();
 
-        $entityEventSubscriber->postFlush($eventArgs->reveal());
+        $entityEventSubscriber->postFlush($eventArgsReveal);
 
         $eventArgs->getEntityManager()
             ->shouldHaveBeenCalledOnce();
@@ -118,9 +125,13 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $eventArgs->getEntityManager()
             ->willReturn($entityManager->reveal());
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        $entityEventSubscriber = new EntityEventSubscriber($deferredEntityEventDispatcher->reveal(), []);
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcherReveal */
+        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        $entityEventSubscriber = new EntityEventSubscriber($deferredEntityEventDispatcherReveal, []);
+        /** @var \Doctrine\ORM\Event\PostFlushEventArgs $eventArgsReveal */
+        $eventArgsReveal = $eventArgs->reveal();
 
-        $entityEventSubscriber->postFlush($eventArgs->reveal());
+        $entityEventSubscriber->postFlush($eventArgsReveal);
 
         $eventArgs->getEntityManager()
             ->shouldHaveBeenCalledOnce();

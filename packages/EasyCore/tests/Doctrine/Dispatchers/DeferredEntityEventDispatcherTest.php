@@ -120,9 +120,9 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         array $expectedEntityUpdates,
         ?int $transactionNestingLevel = null
     ): void {
-        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher(
-            $this->prophesize(EventDispatcherInterface::class)->reveal()
-        );
+        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
+        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
         $this->setPrivatePropertyValue($deferredEntityEventDispatcher, 'entityInsertions', $entityInsertions);
         $this->setPrivatePropertyValue($deferredEntityEventDispatcher, 'entityUpdates', $entityUpdates);
 
@@ -144,26 +144,20 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         $entityB = $this->prophesize(DatabaseEntityInterface::class)->reveal();
         $entityC = $this->prophesize(DatabaseEntityInterface::class)->reveal();
         $entityD = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher(
-            $this->prophesize(EventDispatcherInterface::class)->reveal()
-        );
+        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
+        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
 
-        $deferredEntityEventDispatcher->deferInsertions([
-            'key-1' => $entityA,
-            'key-2' => $entityB,
-        ], 0);
-        $deferredEntityEventDispatcher->deferInsertions([
-            'key-1' => $entityD,
-            'key-3' => $entityC,
-        ], 0);
+        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityAB */
+        $entityAB = [$entityA, $entityB];
+        $deferredEntityEventDispatcher->deferInsertions($entityAB, 0);
+        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityCD */
+        $entityCD = [$entityC, $entityD];
+        $deferredEntityEventDispatcher->deferInsertions($entityCD, 0);
 
         self::assertSame(
             [
-                0 => [
-                    'key-1' => $entityD,
-                    'key-2' => $entityB,
-                    'key-3' => $entityC,
-                ],
+                0 => [$entityA, $entityB, $entityC, $entityD],
             ],
             $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityInsertions')
         );
@@ -175,26 +169,20 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         $entityB = $this->prophesize(DatabaseEntityInterface::class)->reveal();
         $entityC = $this->prophesize(DatabaseEntityInterface::class)->reveal();
         $entityD = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher(
-            $this->prophesize(EventDispatcherInterface::class)->reveal()
-        );
+        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
+        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
 
-        $deferredEntityEventDispatcher->deferUpdates([
-            'key-1' => $entityA,
-            'key-2' => $entityB,
-        ], 0);
-        $deferredEntityEventDispatcher->deferUpdates([
-            'key-1' => $entityD,
-            'key-3' => $entityC,
-        ], 0);
+        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityAB */
+        $entityAB = [$entityA, $entityB];
+        $deferredEntityEventDispatcher->deferUpdates($entityAB, 0);
+        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityCD */
+        $entityCD = [$entityC, $entityD];
+        $deferredEntityEventDispatcher->deferUpdates($entityCD, 0);
 
         self::assertSame(
             [
-                0 => [
-                    'key-1' => $entityD,
-                    'key-2' => $entityB,
-                    'key-3' => $entityC,
-                ],
+                0 => [$entityA, $entityB, $entityC, $entityD],
             ],
             $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityUpdates')
         );
@@ -202,21 +190,29 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
 
     public function testDispatchSucceedsWithEntities(): void
     {
+        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface $newEntity */
         $newEntity = $this->prophesize(DatabaseEntityInterface::class)->reveal();
+        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface $existedEntity */
         $existedEntity = $this->prophesize(DatabaseEntityInterface::class)->reveal();
         $entityCreatedEvent = new EntityCreatedEvent($newEntity);
         $entityUpdatedEvent = new EntityUpdatedEvent($existedEntity);
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $eventDispatcher->dispatch($entityCreatedEvent, EntityCreatedEvent::NAME)->willReturnArgument(0);
-        $eventDispatcher->dispatch($entityUpdatedEvent, EntityUpdatedEvent::NAME)->willReturnArgument(0);
-        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcher->reveal());
+        $eventDispatcher->dispatch($entityCreatedEvent)
+            ->willReturnArgument(0);
+        $eventDispatcher->dispatch($entityUpdatedEvent)
+            ->willReturnArgument(0);
+        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
 
         $deferredEntityEventDispatcher->deferInsertions([$newEntity], 0);
         $deferredEntityEventDispatcher->deferUpdates([$existedEntity], 0);
         $deferredEntityEventDispatcher->dispatch();
 
-        $eventDispatcher->dispatch($entityCreatedEvent, EntityCreatedEvent::NAME)->shouldHaveBeenCalledOnce();
-        $eventDispatcher->dispatch($entityUpdatedEvent, EntityUpdatedEvent::NAME)->shouldHaveBeenCalledOnce();
+        $eventDispatcher->dispatch($entityCreatedEvent)
+            ->shouldHaveBeenCalledOnce();
+        $eventDispatcher->dispatch($entityUpdatedEvent)
+            ->shouldHaveBeenCalledOnce();
         self::assertSame([], $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityInsertions'));
         self::assertSame([], $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityUpdates'));
     }
@@ -224,13 +220,15 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
     public function testDispatchSucceedsWithoutEntities(): void
     {
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcher->reveal());
+        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
 
         $deferredEntityEventDispatcher->dispatch();
 
-        $eventDispatcher->dispatch(Argument::type(EntityCreatedEvent::class), EntityCreatedEvent::NAME)
+        $eventDispatcher->dispatch(Argument::type(EntityCreatedEvent::class))
             ->shouldNotHaveBeenCalled();
-        $eventDispatcher->dispatch(Argument::type(EntityUpdatedEvent::class), EntityUpdatedEvent::NAME)
+        $eventDispatcher->dispatch(Argument::type(EntityUpdatedEvent::class))
             ->shouldNotHaveBeenCalled();
         self::assertSame([], $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityInsertions'));
         self::assertSame([], $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityUpdates'));
