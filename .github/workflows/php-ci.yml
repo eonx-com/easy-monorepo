@@ -36,6 +36,8 @@ jobs:
 
             -   uses: eonx-com/actions-composer-install@v1
 
+            -   run: composer install
+
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
                 shell: bash

@@ -167,7 +167,7 @@
         "propagate": "vendor/bin/monorepo-builder propagate --ansi",
         "split": "vendor/bin/monorepo-builder split --ansi",
         "post-install-cmd": [
-            "cd .quality && composer install --no-dev"
+            "cd .quality && composer install --dev"
         ]
     },
     "suggest": {
