@@ -193,8 +193,7 @@
     },
     "extra": {
         "eonx_docs": {
-            "finder_pattern": "readme.md",
-            "finder_depth": 0
+            "ignore": true
         },
         "branch-alias": {
             "dev-master": "2.5-dev"
