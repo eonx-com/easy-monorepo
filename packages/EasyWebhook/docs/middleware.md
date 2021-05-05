@@ -71,7 +71,7 @@ for more information.
 This middleware catches exceptions that are thrown within the stack and handles them gracefully by returning a
 failed WebhookResult containing the actual exception.
 
-::: info
+::: tip
 To prevent an exception to be handled by this middleware, simply implement `EonX\EasyWebhook\Interfaces\DoNotHandleMeEasyWebhookExceptionInterface`.
 :::
 
