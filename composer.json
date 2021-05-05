@@ -150,7 +150,7 @@
         "check-ecs": ".quality/vendor/bin/ecs check --ansi",
         "check-monorepo": "vendor/bin/monorepo-builder validate --ansi",
         "check-composer": "@composer validate --strict",
-        "check-phpstan": ".quality/vendor/bin/phpstan analyse --error-format symplify --ansi",
+        "check-phpstan": ".quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=1000M",
         "check-security": "vendor/bin/security-checker security:check",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
         "check-rector": ".quality/vendor/bin/rector process --ansi --config rector-ci.php --dry-run",
@@ -166,7 +166,7 @@
         "propagate": "vendor/bin/monorepo-builder propagate --ansi",
         "split": "vendor/bin/monorepo-builder split --ansi",
         "post-install-cmd": [
-            "cd .quality && composer install --dev"
+            "cd .quality && composer install --dev --no-interaction"
         ]
     },
     "suggest": {
@@ -188,11 +188,6 @@
         },
         "branch-alias": {
             "dev-master": "2.5-dev"
-        },
-        "patches": {
-            "nesbot/carbon": [
-                "patches/nesbot-carbon-src-carbon-traits-localization-php.patch"
-            ]
         }
     }
 }

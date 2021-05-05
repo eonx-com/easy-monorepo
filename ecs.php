@@ -116,7 +116,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',
             __DIR__ . '/packages/EasyCore/tests/Bridge/Symfony/Stubs/NormalizerStub.php',
             __DIR__ . '/packages/EasyCore/tests/Stubs/LockStub.php',
-            __DIR__ . '/packages/EasyQuality/src/Sniffs',
             __DIR__ . '/packages/EasySsm/tests/Stubs/BaseSsmClientStub.php',
             __DIR__ . '/packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
             __DIR__ . '/packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',
