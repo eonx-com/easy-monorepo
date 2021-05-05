@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use EonX\EasyQuality\Sniffs\ControlStructures\NoElseSniff;
+use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
+use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
@@ -113,6 +116,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',
             __DIR__ . '/packages/EasyCore/tests/Bridge/Symfony/Stubs/NormalizerStub.php',
             __DIR__ . '/packages/EasyCore/tests/Stubs/LockStub.php',
+            __DIR__ . '/packages/EasyQuality/src/Sniffs',
             __DIR__ . '/packages/EasySsm/tests/Stubs/BaseSsmClientStub.php',
             __DIR__ . '/packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
             __DIR__ . '/packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',
@@ -174,6 +178,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'less_and_greater' => false,
             ],
         ]);
+
+    $services->set(NoElseSniff::class);
+    $services->set(NoNotOperatorSniff::class);
+    $services->set(Psr4Sniff::class);
 
     // sypmlify rules - see https://github.com/symplify/coding-standard/blob/master/docs/phpcs_fixer_fixers.md
     // arrays
