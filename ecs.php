@@ -175,10 +175,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ],
         ]);
 
-    $services->set(NoElseSniff::class);
-    $services->set(NoNotOperatorSniff::class);
-    $services->set(Psr4Sniff::class);
-
     // sypmlify rules - see https://github.com/symplify/coding-standard/blob/master/docs/phpcs_fixer_fixers.md
     // arrays
     $services->set(ArrayOpenerNewlineFixer::class);
