@@ -11,6 +11,7 @@ use Doctrine\ORM\ORMException;
 use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyCore\Doctrine\EntityManagers\EntityManagerDecorator;
 use EonX\EasyCore\Tests\AbstractTestCase;
+use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use Exception;
 use InvalidArgumentException;
 use stdClass;
@@ -81,7 +82,14 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
         /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
-        $entityManagerDecorator = new EntityManagerDecorator($eventDispatcherReveal, $entityManagerReveal);
+        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
+        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
+        $errorHandlerReveal = $errorHandler->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator(
+            $eventDispatcherReveal,
+            $errorHandlerReveal,
+            $entityManagerReveal
+        );
 
         $result = $entityManagerDecorator->transactional($callableArgument);
 
@@ -124,7 +132,14 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
         /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
-        $entityManagerDecorator = new EntityManagerDecorator($eventDispatcherReveal, $entityManagerReveal);
+        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
+        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
+        $errorHandlerReveal = $errorHandler->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator(
+            $eventDispatcherReveal,
+            $errorHandlerReveal,
+            $entityManagerReveal
+        );
 
         $this->safeCall(static function () use ($entityManagerDecorator, $callableArgument): void {
             $entityManagerDecorator->transactional($callableArgument);
@@ -135,6 +150,8 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $entityManager->close()
             ->shouldNotHaveBeenCalled();
+        $errorHandler->report($exception)
+            ->shouldHaveBeenCalledOnce();
         $entityManager->rollback()
             ->shouldHaveBeenCalledOnce();
         $entityManager->getConnection()
@@ -169,7 +186,14 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
         /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
-        $entityManagerDecorator = new EntityManagerDecorator($eventDispatcherReveal, $entityManagerReveal);
+        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
+        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
+        $errorHandlerReveal = $errorHandler->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator(
+            $eventDispatcherReveal,
+            $errorHandlerReveal,
+            $entityManagerReveal
+        );
 
         $this->safeCall(static function () use ($entityManagerDecorator, $callableArgument): void {
             $entityManagerDecorator->transactional($callableArgument);
@@ -179,6 +203,8 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManager->beginTransaction()
             ->shouldHaveBeenCalledOnce();
         $entityManager->close()
+            ->shouldHaveBeenCalledOnce();
+        $errorHandler->report($doctrineException)
             ->shouldHaveBeenCalledOnce();
         $entityManager->rollback()
             ->shouldHaveBeenCalledOnce();
@@ -201,7 +227,14 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
         /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
-        $entityManagerDecorator = new EntityManagerDecorator($eventDispatcherReveal, $entityManagerReveal);
+        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
+        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
+        $errorHandlerReveal = $errorHandler->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator(
+            $eventDispatcherReveal,
+            $errorHandlerReveal,
+            $entityManagerReveal
+        );
 
         $this->safeCall(static function () use ($entityManagerDecorator): void {
             /** @var callable $callableFake */

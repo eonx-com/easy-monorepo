@@ -9,7 +9,7 @@ use Doctrine\ORM\Decorator\EntityManagerDecorator as DoctrineEntityManagerDecora
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
-//use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use InvalidArgumentException;
 use Throwable;
 
@@ -20,20 +20,20 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
      */
     private $eventDispatcher;
 
-//    /**
-//     * @var EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface
-//     */
-//    private $errorHandler;
+    /**
+     * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+     */
+    private $errorHandler;
 
     public function __construct(
         DeferredEntityEventDispatcherInterface $eventDispatcher,
-//        ErrorHandlerInterface $errorHandler,
+        ErrorHandlerInterface $errorHandler,
         EntityManagerInterface $wrapped
     ) {
         parent::__construct($wrapped);
 
         $this->eventDispatcher = $eventDispatcher;
-//        $this->errorHandler = $errorHandler;
+        $this->errorHandler = $errorHandler;
     }
 
     public function commit(): void
@@ -81,7 +81,7 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
             return $return ?? true;
         } catch (Throwable $exception) {
             // Report exception before calling close() or rollback() as they throw exception too
-            // $this->errorHandler->report($exception);
+            $this->errorHandler->report($exception);
 
             if ($exception instanceof ORMException || $exception instanceof DBALException) {
                 $this->close();
