@@ -31,7 +31,7 @@ This package comes with a Messenger Middleware handling lock out of the box. Two
 - Make your message implement `EonX\EasyLock\Interfaces\WithLockDataInterface`
 - Add `EonX\EasyLock\Bridge\Symfony\Messenger\WithLockDataStamp` to the envelope
 
-::: tip | Tip
+::: tip
 Remember to update your messenger configuration to add the middleware
 :::
 

@@ -9,7 +9,7 @@ yet! Please feel free to contribute.
 
 <p style="display: none">Required not to break format below</p>
 
-::: info | PSR7
+::: tip PSR7
 Decoders will expect a PSR7 Request to work, you can use any library to convert Symfony Requests to PSR7 ones.
 In the following examples we will be using <a href="https://github.com/eonx-com/easy-psr7-factory">EasyPsr7Factory</a>
 :::
@@ -124,7 +124,7 @@ final class MyController
 
 ### Decoding BasicAuth and User ApiKey
 
-We now know how to decode BasicAuth or User ApiKey, good but... 
+We now know how to decode BasicAuth or User ApiKey, good but...
 How are we supposed to know when to use one or the other?
 
 Here comes the `chain` decoder, this decoder isn't made to handle any ApiToken strategy but to accept a list of decoders
@@ -192,7 +192,7 @@ final class MyController
 <br>
 <p style="display: none">Required not to break format below</p>
 
-::: tip | Congratulations
+::: tip Congratulations
 The logic illustrated within the previous examples applies to any decoders, so you now know how to handle multiple
 authentication mechanism (ApiToken strategy) for any of your API endpoints and with only 3 lines of code!
 :::
