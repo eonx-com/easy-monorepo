@@ -91,7 +91,6 @@
             "EonX\\EasySecurity\\": "packages/EasySecurity/src",
             "EonX\\EasySchedule\\": "packages/EasySchedule/src",
             "EonX\\EasySsm\\": "packages/EasySsm/src",
-            "EonX\\EasyStandard\\": "packages/EasyStandard/src",
             "EonX\\EasyTest\\": "packages/EasyTest/src",
             "EonX\\EasyUtils\\": "packages/EasyUtils/src",
             "EonX\\EasyWebhook\\": "packages/EasyWebhook/src"
@@ -121,7 +120,6 @@
             "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
             "EonX\\EasySchedule\\Tests\\": "packages/EasySchedule/tests",
             "EonX\\EasySsm\\Tests\\": "packages/EasySsm/tests",
-            "EonX\\EasyStandard\\Tests\\": "packages/EasyStandard/tests",
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests",
             "EonX\\EasyUtils\\Tests\\": "packages/EasyUtils/tests",
             "EonX\\EasyWebhook\\Tests\\": "packages/EasyWebhook/tests"
@@ -144,7 +142,6 @@
         "eonx-com/easy-test": "self.version",
         "eonx-com/easy-schedule": "self.version",
         "eonx-com/easy-ssm": "self.version",
-        "eonx-com/easy-standard": "self.version",
         "eonx-com/easy-async": "self.version",
         "eonx-com/easy-webhook": "self.version",
         "eonx-com/easy-bugsnag": "self.version",

@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-use EonX\EasyStandard\Sniffs\ControlStructures\NoElseSniff;
-use EonX\EasyStandard\Sniffs\ControlStructures\NoNotOperatorSniff;
-use EonX\EasyStandard\Sniffs\Namespaces\Psr4Sniff;
 use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
@@ -48,7 +45,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         'packages/*/var/*php',
         '*/vendor/*.php',
         __DIR__ . '/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php',
-        __DIR__ . '/packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php',
     ]);
 
     $parameters->set(Option::SETS, [
@@ -96,7 +92,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',
             __DIR__ . '/packages/EasyCore/tests/Bridge/Symfony/Stubs/NormalizerStub.php',
             __DIR__ . '/packages/EasyCore/tests/Stubs/LockStub.php',
-            __DIR__ . '/packages/EasyStandard/src/Sniffs',
             __DIR__ . '/packages/EasySsm/tests/Stubs/BaseSsmClientStub.php',
             __DIR__ . '/packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
             __DIR__ . '/packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',
@@ -118,7 +113,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',
             __DIR__ . '/packages/EasyCore/tests/Bridge/Symfony/Stubs/NormalizerStub.php',
             __DIR__ . '/packages/EasyCore/tests/Stubs/LockStub.php',
-            __DIR__ . '/packages/EasyStandard/src/Sniffs',
             __DIR__ . '/packages/EasySsm/tests/Stubs/BaseSsmClientStub.php',
             __DIR__ . '/packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
             __DIR__ . '/packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',

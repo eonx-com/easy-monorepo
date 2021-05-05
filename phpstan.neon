@@ -18,7 +18,6 @@ parameters:
         - packages/*/var/*
         - packages/*/vendor/*
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
-        - packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php
         - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
         - packages/EasyApiToken/src/Interfaces/*
         - packages/EasyApiToken/tests/Bridge/Symfony/*
@@ -184,7 +183,6 @@ parameters:
         - message: '#Cannot cast array<string\>\|bool\|string\|null to string#'
           path: packages/EasySsm/src/Console/Commands/ExportEnvsCommand.php
 
-        # ---- EasyStandard ----
         # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
           path: packages/EasyTest/src/Console/Commands
