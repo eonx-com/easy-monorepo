@@ -53,7 +53,7 @@
         "symplify/monorepo-builder": "^8.3.41",
         "symplify/changelog-linker": "^8.3.41",
         "sensiolabs/security-checker": "^5.0",
-        "symplify/easy-coding-standard": "^8.3.41",
+        "symplify/easy-coding-standard-prefixed": "^8.3.41",
         "symplify/phpstan-extensions": "^8.3.41",
         "slevomat/coding-standard": "^6.4",
         "symplify/easy-coding-standard-tester": "^8.3.41",
