@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Doctrine\EntityManagers;
+namespace EonX\EasyCore\Doctrine\ORM\Decorators;
 
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\Decorator\EntityManagerDecorator as DoctrineEntityManagerDecorator;

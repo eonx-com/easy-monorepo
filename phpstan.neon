@@ -93,7 +93,7 @@ parameters:
           path: packages/EasyCore/tests/Bridge/Symfony/Traits/TranslatorAwareTraitTest.php
 
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
-          path: packages/EasyCore/src/Doctrine/EntityManagers/EntityManagerDecorator.php
+          path: packages/EasyCore/src/Doctrine/ORM/Decorators/EntityManagerDecorator.php
 
         # ---- EasyDecision ----
         # ---- EasyErrorHandler ----

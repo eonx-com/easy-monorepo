@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Tests\Doctrine\EntityManagers;
+namespace EonX\EasyCore\Tests\Doctrine\ORM\Decorators;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
-use EonX\EasyCore\Doctrine\EntityManagers\EntityManagerDecorator;
+use EonX\EasyCore\Doctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyCore\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use Exception;
@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use stdClass;
 
 /**
- * @covers \EonX\EasyCore\Doctrine\EntityManagers\EntityManagerDecorator
+ * @covers \EonX\EasyCore\Doctrine\ORM\Decorators\EntityManagerDecorator
  */
 final class EntityManagerDecoratorTest extends AbstractTestCase
 {
@@ -51,6 +51,145 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
                 'transactionalReturns' => true,
             ],
         ];
+    }
+
+    public function testCommitSucceedsWithoutTransactionNestingLevel(): void
+    {
+        $transactionNestingLevel = 0;
+        $connection = $this->prophesize(Connection::class);
+        $connection->getTransactionNestingLevel()
+            ->willReturn($transactionNestingLevel);
+        $entityManager = $this->prophesize(EntityManagerInterface::class);
+        $entityManager->getConnection()
+            ->willReturn($connection->reveal());
+        /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
+        $entityManagerReveal = $entityManager->reveal();
+        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
+        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
+        $errorHandlerReveal = $errorHandler->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator(
+            $eventDispatcherReveal,
+            $errorHandlerReveal,
+            $entityManagerReveal
+        );
+
+        $entityManagerDecorator->commit();
+
+        $entityManager->commit()
+            ->shouldHaveBeenCalledOnce();
+        $entityManager->getConnection()
+            ->shouldHaveBeenCalledOnce();
+        $connection->getTransactionNestingLevel()
+            ->shouldHaveBeenCalledOnce();
+        $eventDispatcher->dispatch()
+            ->shouldHaveBeenCalledOnce();
+    }
+
+    public function testCommitSucceedsWithTransactionNestingLevel(): void
+    {
+        $transactionNestingLevel = 1;
+        $connection = $this->prophesize(Connection::class);
+        $connection->getTransactionNestingLevel()
+            ->willReturn($transactionNestingLevel);
+        $entityManager = $this->prophesize(EntityManagerInterface::class);
+        $entityManager->getConnection()
+            ->willReturn($connection->reveal());
+        /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
+        $entityManagerReveal = $entityManager->reveal();
+        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
+        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
+        $errorHandlerReveal = $errorHandler->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator(
+            $eventDispatcherReveal,
+            $errorHandlerReveal,
+            $entityManagerReveal
+        );
+
+        $entityManagerDecorator->commit();
+
+        $entityManager->commit()
+            ->shouldHaveBeenCalledOnce();
+        $entityManager->getConnection()
+            ->shouldHaveBeenCalledOnce();
+        $connection->getTransactionNestingLevel()
+            ->shouldHaveBeenCalledOnce();
+        $eventDispatcher->dispatch()
+            ->shouldNotBeCalled();
+    }
+    public function testRollbackSucceedsWithoutTransactionNestingLevel(): void
+    {
+        $transactionNestingLevel = 0;
+        $connection = $this->prophesize(Connection::class);
+        $connection->getTransactionNestingLevel()
+            ->willReturn($transactionNestingLevel);
+        $entityManager = $this->prophesize(EntityManagerInterface::class);
+        $entityManager->getConnection()
+            ->willReturn($connection->reveal());
+        /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
+        $entityManagerReveal = $entityManager->reveal();
+        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
+        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
+        $errorHandlerReveal = $errorHandler->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator(
+            $eventDispatcherReveal,
+            $errorHandlerReveal,
+            $entityManagerReveal
+        );
+
+        $entityManagerDecorator->rollback();
+
+        $entityManager->rollback()
+            ->shouldNotBeCalled();
+        $entityManager->getConnection()
+            ->shouldHaveBeenCalledOnce();
+        $connection->getTransactionNestingLevel()
+            ->shouldHaveBeenCalledOnce();
+        $eventDispatcher->clear($transactionNestingLevel)
+            ->shouldHaveBeenCalledOnce();
+    }
+
+    public function testRollbackSucceedsWithTransactionNestingLevel(): void
+    {
+        $transactionNestingLevel = 1;
+        $connection = $this->prophesize(Connection::class);
+        $connection->getTransactionNestingLevel()
+            ->willReturn($transactionNestingLevel);
+        $entityManager = $this->prophesize(EntityManagerInterface::class);
+        $entityManager->getConnection()
+            ->willReturn($connection->reveal());
+        /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
+        $entityManagerReveal = $entityManager->reveal();
+        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
+        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
+        $errorHandlerReveal = $errorHandler->reveal();
+        $entityManagerDecorator = new EntityManagerDecorator(
+            $eventDispatcherReveal,
+            $errorHandlerReveal,
+            $entityManagerReveal
+        );
+
+        $entityManagerDecorator->rollback();
+
+        $entityManager->rollback()
+            ->shouldHaveBeenCalledOnce();
+        $entityManager->getConnection()
+            ->shouldHaveBeenCalledOnce();
+        $connection->getTransactionNestingLevel()
+            ->shouldHaveBeenCalledOnce();
+        $eventDispatcher->clear($transactionNestingLevel)
+            ->shouldHaveBeenCalledOnce();
     }
 
     /**
