@@ -7,7 +7,7 @@ namespace EonX\EasyCore\Doctrine\Dispatchers;
 use EonX\EasyCore\Doctrine\Events\EntityCreatedEvent;
 use EonX\EasyCore\Doctrine\Events\EntityUpdatedEvent;
 use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
 {
@@ -27,7 +27,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     private $entityUpdates = [];
 
     /**
-     * @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
+     * @var \Psr\EventDispatcher\EventDispatcherInterface
      */
     private $eventDispatcher;
 

@@ -10,7 +10,7 @@ use EonX\EasyCore\Doctrine\Events\EntityUpdatedEvent;
 use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
 use EonX\EasyCore\Tests\AbstractTestCase;
 use Prophecy\Argument;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @covers \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcher
@@ -120,7 +120,7 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         array $expectedEntityUpdates,
         ?int $transactionNestingLevel = null
     ): void {
-        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
         $this->setPrivatePropertyValue($deferredEntityEventDispatcher, 'entityInsertions', $entityInsertions);
@@ -148,7 +148,7 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         $entityD = $this->prophesize(DatabaseEntityInterface::class)->reveal();
         /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityCD */
         $entityCD = [$entityC, $entityD];
-        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
 
@@ -169,7 +169,7 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         $entityB = $this->prophesize(DatabaseEntityInterface::class)->reveal();
         /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityAB */
         $entityAB = [$entityA, $entityB];
-        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
         $deferredEntityEventDispatcher->disable();
@@ -192,7 +192,7 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         $entityD = $this->prophesize(DatabaseEntityInterface::class)->reveal();
         /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityCD */
         $entityCD = [$entityC, $entityD];
-        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
 
@@ -213,7 +213,7 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         $entityB = $this->prophesize(DatabaseEntityInterface::class)->reveal();
         /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityAB */
         $entityAB = [$entityA, $entityB];
-        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
         $deferredEntityEventDispatcher->disable();
@@ -228,7 +228,7 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
 
     public function testDisableSucceeds(): void
     {
-        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
 
@@ -250,7 +250,7 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
             ->willReturnArgument(0);
         $eventDispatcher->dispatch($entityUpdatedEvent)
             ->willReturnArgument(0);
-        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
 
@@ -269,7 +269,7 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
     public function testDispatchSucceedsWithoutEntities(): void
     {
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
 
@@ -285,7 +285,7 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
 
     public function testEnableSucceeds(): void
     {
-        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
         $deferredEntityEventDispatcher->disable();
@@ -297,7 +297,7 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
 
     public function testEnabledSucceedsAndContainsTrueByDefault(): void
     {
-        /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
 

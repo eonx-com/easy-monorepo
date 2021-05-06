@@ -6,5 +6,5 @@ namespace EonX\EasyCore\Interfaces;
 
 interface DatabaseEntityInterface
 {
-    public function getId(): string;
+    // No body needed
 }
