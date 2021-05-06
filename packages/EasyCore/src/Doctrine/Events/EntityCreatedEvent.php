@@ -10,11 +10,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class EntityCreatedEvent extends Event
 {
     /**
-     * @var string
-     */
-    public const NAME = 'entity.created';
-
-    /**
      * @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface
      */
     private $entity;

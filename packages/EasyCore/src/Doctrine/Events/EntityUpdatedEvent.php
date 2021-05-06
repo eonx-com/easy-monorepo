@@ -10,11 +10,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class EntityUpdatedEvent extends Event
 {
     /**
-     * @var string
-     */
-    public const NAME = 'entity.updated';
-
-    /**
      * @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface
      */
     private $entity;
