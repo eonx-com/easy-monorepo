@@ -15,8 +15,8 @@ not familiar with this concept make sure to have a look at the [documentation][1
 
 'providers' => [
     // Other Service Providers...
-    
-    \EonX\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider::class
+
+    \EonX\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider::class,
 ],
 ```
 

@@ -25,8 +25,8 @@ not familiar with this concept make sure to have a look at the [documentation][4
 
 'providers' => [
     // Other Service Providers...
-    
-    \EonX\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider::class
+
+    \EonX\EasyDecision\Bridge\Laravel\EasyDecisionServiceProvider::class,
 ],
 ```
 

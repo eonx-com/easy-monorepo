@@ -15,8 +15,8 @@ not familiar with this concept make sure to have a look at the [documentation][1
 
 'providers' => [
     // Other Service Providers...
-    
-    \EonX\EasyLock\Bridge\Laravel\EasyLockServiceProvider::class
+
+    \EonX\EasyLock\Bridge\Laravel\EasyLockServiceProvider::class,
 ],
 ```
 

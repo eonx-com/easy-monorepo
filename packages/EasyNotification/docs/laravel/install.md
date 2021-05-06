@@ -15,8 +15,8 @@ not familiar with this concept make sure to have a look at the [documentation][1
 
 'providers' => [
     // Other Service Providers...
-    
-    \EonX\EasyNotification\Bridge\Laravel\EasyNotificationServiceProvider::class
+
+    \EonX\EasyNotification\Bridge\Laravel\EasyNotificationServiceProvider::class,
 ],
 ```
 
@@ -50,7 +50,7 @@ return [
 
     // You can optionally customise the expiry time for the cached config here.
     'config_expires_after' => 500, // Number of seconds
-]; 
+];
 ```
 
 #### Configuration in Lumen

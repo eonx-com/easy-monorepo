@@ -22,8 +22,8 @@ automatically. Make sure to register it:
 
 'providers' => [
     // Other Service Providers...
-    
-    \EonX\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class
+
+    \EonX\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class,
 ],
 ```
 
@@ -39,11 +39,11 @@ so you will use the configuration file `src/Bridge/Laravel/config/easy-repositor
 return [
     'repositories' => [
         \App\Repositories\PostRepositoryInterface::class => \App\Repositories\PostRepository::class,
-        \App\Repositories\CommentRepositoryInterface::class => \App\Repositories\CommentRepository::class
-    ]
+        \App\Repositories\CommentRepositoryInterface::class => \App\Repositories\CommentRepository::class,
+    ],
 ```
 
-Repositories list must be an associative array where the keys are the abstraction of your repositories 
+Repositories list must be an associative array where the keys are the abstraction of your repositories
 and the values the concrete class of your repositories. The keys of this array can technically be anything, however,
 we strongly recommend you to use the [FQCN][5] of the interface your repository implements this way you can use
 [autowiring][6] for your dependency injection.

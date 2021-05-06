@@ -28,8 +28,8 @@ automatically. Make sure to register it:
 
 'providers' => [
     // Other Service Providers...
-    
-    \EonX\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider::class
+
+    \EonX\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider::class,
 ],
 ```
 
@@ -37,9 +37,9 @@ automatically. Make sure to register it:
 
 # Config
 
-To allow this package to work with your own pipelines you must let it know about your pipelines and 
-middleware providers structure. To do so you will use the configuration file 
-`src/Bridge/Laravel/config/easy-pipeline.php`. Copy/Paste this file into your `config` folder and then 
+To allow this package to work with your own pipelines you must let it know about your pipelines and
+middleware providers structure. To do so you will use the configuration file
+`src/Bridge/Laravel/config/easy-pipeline.php`. Copy/Paste this file into your `config` folder and then
 update it with your own pipelines list.
 
 ```php
@@ -51,7 +51,7 @@ return [
 ];
 ```
 
-Pipelines list must be an associative array where the keys are the names of your pipelines 
+Pipelines list must be an associative array where the keys are the names of your pipelines
 and the values the class of your middleware provider for each pipeline.
 
 <br>
@@ -100,7 +100,7 @@ Prior to be able to use the pipelines in your application you will need create y
 of your pipeline, for more information please have a look at the [documentation](middleware_providers.md).
 
 That's it you're all setup! You're now able to use your pipelines anywhere you want, using dependency
-injection or service locator (we strongly recommend using the first one haha). To do so, you need to use the 
+injection or service locator (we strongly recommend using the first one haha). To do so, you need to use the
 `EonX\EasyPipeline\Interfaces\PipelineFactoryInterface` to create your pipelines and their middleware list.
 
 ```php
@@ -109,23 +109,23 @@ use EonX\EasyPipeline\Interfaces\PipelineFactoryInterface;
 final class MyClass
 {
     // Dependency Injection
-    public function processMyPipeline(PipelineFactoryInterface $pipelineFactory, $input) 
+    public function processMyPipeline(PipelineFactoryInterface $pipelineFactory, $input)
     {
         $pipeline = $pipelineFactory->create('my-pipeline'); // Will be your configured pipeline implementation
-        
+
         $output = $pipeline->process($input); // Return the potentially modified version of $input
-        
+
         $logs = $pipeline->getLogs(); // Return the logs from last process
     }
-    
+
     // Service Locator
     public function processMyPipelineToo($input)
     {
         // Will be your configured repository implementation as well
         $pipeline = $app->make(\EonX\EasyPipeline\Interfaces\PipelineFactoryInterface::class)->create('my-pipeline');
-        
+
         $output = $pipeline->process($input); // Return the potentially modified version of $input
-                
+
         $logs = $pipeline->getLogs(); // Return the logs from last process
     }
 }
