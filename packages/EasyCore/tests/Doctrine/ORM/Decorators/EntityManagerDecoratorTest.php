@@ -148,7 +148,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManagerDecorator->rollback();
 
         $entityManager->rollback()
-            ->shouldNotBeCalled();
+            ->shouldNotHaveBeenCalled();
         $entityManager->getConnection()
             ->shouldHaveBeenCalledOnce();
         $connection->getTransactionNestingLevel()

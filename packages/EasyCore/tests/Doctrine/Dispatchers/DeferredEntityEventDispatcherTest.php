@@ -172,8 +172,8 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
-
         $deferredEntityEventDispatcher->disable();
+
         $deferredEntityEventDispatcher->deferInsertions($entityAB, 0);
 
         self::assertSame(
@@ -216,8 +216,8 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
-
         $deferredEntityEventDispatcher->disable();
+
         $deferredEntityEventDispatcher->deferUpdates($entityAB, 0);
 
         self::assertSame(
@@ -288,14 +288,14 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
-
         $deferredEntityEventDispatcher->disable();
+
         $deferredEntityEventDispatcher->enable();
 
         self::assertTrue($this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'enabled'));
     }
 
-    public function testEnableSucceedsDefaultValue(): void
+    public function testEnabledSucceedsAndContainsTrueByDefault(): void
     {
         /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
