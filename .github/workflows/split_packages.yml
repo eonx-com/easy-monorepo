@@ -7,18 +7,17 @@ jobs:
     provide_packages_json:
         runs-on: ubuntu-latest
         steps:
-            -   uses: eonx-com/actions-checkout@v2
-                -
-            -   uses: eonx-com/actions-setup-php@v2
+            -
+                uses: eonx-com/actions-checkout@v2
+            -
+                uses: eonx-com/actions-setup-php@v2
                 with:
                     php-version: 7.3
                     coverage: none
-
-            -   uses: eonx-com/actions-composer-install@v1
-
-            -   run: composer install
-
-            -   id: output_data
+            -
+                uses: eonx-com/actions-composer-install@v1
+            -
+                id: output_data
                 run: 'echo "::set-output name=matrix::$(bin/monorepo export-packages)"'
         outputs:
             matrix: '${{ steps.output_data.outputs.matrix }}'
