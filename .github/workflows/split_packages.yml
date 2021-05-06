@@ -16,6 +16,10 @@ jobs:
                     coverage: none
             -
                 uses: eonx-com/actions-composer-install@v1
+
+            -
+                run: composer install
+
             -
                 id: output_data
                 run: 'echo "::set-output name=matrix::$(bin/monorepo export-packages)"'
