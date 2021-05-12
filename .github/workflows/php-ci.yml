@@ -36,7 +36,7 @@ jobs:
 
             -   uses: eonx-com/actions-composer-install@v1
 
-            -   run: composer install
+            -   run: composer install --working-dir=.quality
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
