@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Doctrine\Events;
 
 use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 
-final class EntityCreatedEvent extends Event
+final class EntityCreatedEvent
 {
     /**
      * @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface

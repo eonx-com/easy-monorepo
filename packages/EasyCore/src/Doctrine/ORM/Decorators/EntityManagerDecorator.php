@@ -78,7 +78,7 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
             $this->flush();
             $this->commit();
 
-            return $return ?? true;
+            return $return;
         } catch (Throwable $exception) {
             // Report exception before calling close() or rollback() as they throw exception too
             $this->errorHandler->report($exception);

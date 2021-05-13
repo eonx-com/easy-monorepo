@@ -31,6 +31,9 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $this->entities = $entities;
     }
 
+    /**
+     * @return string[]
+     */
     public function getSubscribedEvents(): array
     {
         return [Events::onFlush, Events::postFlush];

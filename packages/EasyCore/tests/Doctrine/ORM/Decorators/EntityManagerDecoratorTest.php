@@ -48,7 +48,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ],
             'callable returns null' => [
                 'callableReturns' => null,
-                'transactionalReturns' => true,
+                'transactionalReturns' => null,
             ],
         ];
     }

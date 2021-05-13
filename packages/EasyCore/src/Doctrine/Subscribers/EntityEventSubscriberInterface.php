@@ -10,6 +10,9 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
 
 interface EntityEventSubscriberInterface extends EventSubscriber
 {
+    /**
+     * @return string[]
+     */
     public function getSubscribedEvents(): array;
 
     public function onFlush(OnFlushEventArgs $eventArgs): void;
