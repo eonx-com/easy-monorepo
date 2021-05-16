@@ -13,12 +13,7 @@ final class SymfonyEventDispatcherStub implements EventDispatcherInterface
      */
     private $dispatched = [];
 
-    /**
-     * @param object $event The event to pass to the event handlers/listeners
-     *
-     * @return object The passed $event MUST be returned
-     */
-    public function dispatch($event)
+    public function dispatch(object $event, string $eventName = null): object
     {
         $this->dispatched[] = $event;
 
