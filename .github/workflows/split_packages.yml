@@ -18,7 +18,7 @@ jobs:
                 uses: eonx-com/actions-composer-install@v1
             -
                 id: output_data
-                run: 'echo "::set-output name=matrix::$(bin/monorepo export-packages)"'
+                run: 'composer install && echo "::set-output name=matrix::$(bin/monorepo export-packages)"'
         outputs:
             matrix: '${{ steps.output_data.outputs.matrix }}'
     split_packages:

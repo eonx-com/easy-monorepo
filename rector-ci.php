@@ -32,4 +32,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php',
         ],
     ]);
+
+    $services = $containerConfigurator->services();
+    $services->load('EonX\EasyQuality\Rector\\', __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector')
+        ->exclude([
+            __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector/PhpDocCommentRector.php',
+            __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector/SingleLineCommentRector.php',
+        ]);
 };
