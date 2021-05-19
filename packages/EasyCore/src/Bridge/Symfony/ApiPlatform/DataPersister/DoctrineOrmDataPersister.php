@@ -13,6 +13,9 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
 {
     use ClassInfoTrait;
 
+    /**
+     * @var \Doctrine\Persistence\ManagerRegistry
+     */
     private $managerRegistry;
 
     public function __construct(ManagerRegistry $managerRegistry)
@@ -21,9 +24,9 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
     }
 
     /**
-     * {@inheritdoc}
+     * @param object $data
      */
-    public function supports($data, array $context = []): bool
+    public function supports($data, ?array $context = null): bool
     {
         return null !== $this->getManager($data);
     }
@@ -33,7 +36,7 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
      *
      * @return object
      */
-    public function persist($data, array $context = [])
+    public function persist($data, ?array $context = null)
     {
         $manager = $this->getManager($data);
 
@@ -51,9 +54,9 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
     }
 
     /**
-     * {@inheritdoc}
+     * @param object $data
      */
-    public function remove($data, array $context = [])
+    public function remove($data, ?array $context = null): void
     {
         $manager = $this->getManager($data);
 
