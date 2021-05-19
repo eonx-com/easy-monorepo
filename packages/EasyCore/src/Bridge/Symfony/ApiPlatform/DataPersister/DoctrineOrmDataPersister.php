@@ -4,47 +4,69 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
 
-use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
+use ApiPlatform\Core\Util\ClassInfoTrait;
+use Doctrine\Persistence\ObjectManager as DoctrineObjectManager;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\DoctrineOrmDataPersisterInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterface
 {
-    /**
-     * @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface
-     */
-    private $decorated;
+    use ClassInfoTrait;
 
-    public function __construct(ContextAwareDataPersisterInterface $decorated)
+    private $managerRegistry;
+
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this->decorated = $decorated;
+        $this->managerRegistry = $managerRegistry;
     }
 
     /**
-     * @param mixed $data
-     * @param null|mixed[] $context
+     * {@inheritdoc}
+     */
+    public function supports($data, array $context = []): bool
+    {
+        return null !== $this->getManager($data);
+    }
+
+    /**
+     * @param object $data
      *
-     * @return mixed
+     * @return object
      */
-    public function persist($data, ?array $context = null)
+    public function persist($data, array $context = [])
     {
-        return $this->decorated->persist($data, $context ?? []);
+        $manager = $this->getManager($data);
+
+        if ($manager === null) {
+            return $data;
+        }
+
+        if ($manager->contains($data) === false) {
+            $manager->persist($data);
+        }
+
+        $manager->flush();
+
+        return $data;
     }
 
     /**
-     * @param mixed $data
-     * @param null|mixed[] $context
+     * {@inheritdoc}
      */
-    public function remove($data, ?array $context = null): void
+    public function remove($data, array $context = [])
     {
-        $this->decorated->remove($data, $context ?? []);
+        $manager = $this->getManager($data);
+
+        if ($manager === null) {
+            return;
+        }
+
+        $manager->remove($data);
+        $manager->flush();
     }
 
-    /**
-     * @param mixed $data
-     * @param null|mixed[] $context
-     */
-    public function supports($data, ?array $context = null): bool
+    private function getManager($data): ?DoctrineObjectManager
     {
-        return $this->decorated->supports($data, $context ?? []);
+        return \is_object($data) ? $this->managerRegistry->getManagerForClass($this->getObjectClass($data)) : null;
     }
 }
