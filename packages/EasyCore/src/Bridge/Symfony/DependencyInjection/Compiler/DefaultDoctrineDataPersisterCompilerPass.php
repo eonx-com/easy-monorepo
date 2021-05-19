@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler;
 
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\DoctrineOrmDataPersister;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\DoctrineOrmDataPersisterInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -21,6 +21,6 @@ class DefaultDoctrineDataPersisterCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $container->setDefinition(self::ORIGINAL_ID, $container->getDefinition(DoctrineOrmDataPersister::class));
+        $container->setDefinition(self::ORIGINAL_ID, $container->getDefinition(DoctrineOrmDataPersisterInterface::class));
     }
 }
