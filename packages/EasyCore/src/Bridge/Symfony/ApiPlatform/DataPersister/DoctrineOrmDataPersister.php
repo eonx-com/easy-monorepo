@@ -25,6 +25,7 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
 
     /**
      * @param object $data
+     * @param null|mixed[] $context
      */
     public function supports($data, ?array $context = null): bool
     {
@@ -33,6 +34,7 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
 
     /**
      * @param object $data
+     * @param null|mixed[] $context
      *
      * @return object
      */
@@ -55,6 +57,7 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
 
     /**
      * @param object $data
+     * @param null|mixed[] $context
      */
     public function remove($data, ?array $context = null): void
     {
@@ -68,6 +71,11 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
         $manager->flush();
     }
 
+    /**
+     * @param null|object $data
+     *
+     * @return null|\Doctrine\Persistence\ObjectManager
+     */
     private function getManager($data): ?DoctrineObjectManager
     {
         return \is_object($data) ? $this->managerRegistry->getManagerForClass($this->getObjectClass($data)) : null;
