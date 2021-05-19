@@ -1,5 +1,5 @@
 includes:
-    - 'vendor/symplify/phpstan-extensions/config/config.neon'
+    - '.quality/vendor/symplify/phpstan-extensions/config/config.neon'
 
 services:
     - class: EonX\EasyMonorepo\PHPStan\SymfonyMessengerEnvelopeLastReturnType
@@ -18,7 +18,6 @@ parameters:
         - packages/*/var/*
         - packages/*/vendor/*
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
-        - packages/EasyStandard/src/Sniffs/Commenting/FunctionCommentSniff.php
         - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
         - packages/EasyApiToken/src/Interfaces/*
         - packages/EasyApiToken/tests/Bridge/Symfony/*
@@ -184,16 +183,12 @@ parameters:
         - message: '#Cannot cast array<string\>\|bool\|string\|null to string#'
           path: packages/EasySsm/src/Console/Commands/ExportEnvsCommand.php
 
-        # ---- EasyStandard ----
         # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
           path: packages/EasyTest/src/Console/Commands
 
         - message: '#Cannot cast array<string>\|string\|null to string.#'
           path: packages/EasyTest/src/Console/Commands
-
-        - message: '#Unsafe usage of new static\(\)#'
-          path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
 
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
