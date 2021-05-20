@@ -10,6 +10,7 @@ use EonX\EasyBugsnag\ClientFactory;
 use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
 use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
+use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
@@ -42,7 +43,7 @@ return static function (ContainerConfigurator $container): void {
         ->set(ClientFactoryInterface::class, ClientFactory::class)
         ->call('setConfigurators', [tagged_iterator(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR)])
         ->call('setRequestResolver', [ref(SymfonyRequestResolver::class)])
-        ->call('setShutdownStrategy', [ref(ShutdownStrategyListener::class)]);
+        ->call('setShutdownStrategy', [ref(ShutdownStrategy::class)]);
 
     $services
         ->set(Client::class)
@@ -53,6 +54,8 @@ return static function (ContainerConfigurator $container): void {
     $services->set(SymfonyRequestResolver::class);
 
     // Shutdown Strategy
+    $services->set(ShutdownStrategy::class);
+
     $services
         ->set(ShutdownStrategyListener::class)
         ->tag('kernel.event_listener', [
