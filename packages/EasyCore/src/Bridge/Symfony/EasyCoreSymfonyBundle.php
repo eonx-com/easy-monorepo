@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony;
 
-use EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler\ApiPlatformSimpleDataPersisterPass;
+use EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler\ApiPlatformDataPersistersPass;
 use EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler\AutoConfigureEventListenersPass;
-use EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler\DefaultDoctrineDataPersisterCompilerPass;
 use EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler\ReplaceProfilerStoragePass;
 use EonX\EasyCore\Bridge\Symfony\DependencyInjection\EasyCoreExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -22,9 +21,8 @@ final class EasyCoreSymfonyBundle extends Bundle
 
         // To be executed before Doctrine passes
         $container->addCompilerPass(new AutoConfigureEventListenersPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
-        $container->addCompilerPass(new ApiPlatformSimpleDataPersisterPass());
+        $container->addCompilerPass(new ApiPlatformDataPersistersPass());
         $container->addCompilerPass(new ReplaceProfilerStoragePass());
-        $container->addCompilerPass(new DefaultDoctrineDataPersisterCompilerPass());
     }
 
     public function getContainerExtension(): ExtensionInterface
