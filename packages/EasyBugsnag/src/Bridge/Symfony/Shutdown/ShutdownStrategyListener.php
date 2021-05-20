@@ -24,6 +24,7 @@ final class ShutdownStrategyListener implements ShutdownStrategyInterface
         }
 
         $this->client->flush();
+        $this->client->clearBreadcrumbs();
     }
 
     public function registerShutdownStrategy(Client $client): void

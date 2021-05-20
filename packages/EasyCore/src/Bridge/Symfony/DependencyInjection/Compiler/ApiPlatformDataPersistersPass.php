@@ -19,6 +19,11 @@ final class ApiPlatformDataPersistersPass implements CompilerPassInterface
     /**
      * @var string
      */
+    private const ORIGINAL_DEBUG_PERSISTER_ID = 'debug.api_platform.data_persister';
+
+    /**
+     * @var string
+     */
     private const ORIGINAL_PERSISTER_ID = 'api_platform.data_persister';
 
     /**
@@ -86,6 +91,7 @@ final class ApiPlatformDataPersistersPass implements CompilerPassInterface
             ->setArgument('$decorated', new Reference(self::CHAIN_SIMPLE_PERSISTER_ID));
 
         $container->setDefinition(self::ORIGINAL_PERSISTER_ID, $traceablePersisterDef);
+        $container->setDefinition(self::ORIGINAL_DEBUG_PERSISTER_ID, $traceablePersisterDef);
     }
 
     /**
