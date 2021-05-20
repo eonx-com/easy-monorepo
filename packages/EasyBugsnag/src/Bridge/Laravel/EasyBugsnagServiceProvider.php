@@ -12,10 +12,12 @@ use EonX\EasyBugsnag\ClientFactory;
 use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
 use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
+use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use LaravelDoctrine\ORM\Loggers\Logger;
+use function GuzzleHttp\Promise\queue;
 
 final class EasyBugsnagServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,9 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         ]);
     }
 
+    /**
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-bugsnag.php', 'easy-bugsnag');
@@ -34,6 +39,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         $this->registerConfigurators();
         $this->registerDoctrineOrm();
         $this->registerRequestResolver();
+        $this->registerShutdownStrategy();
     }
 
     private function registerClient(): void
@@ -44,7 +50,8 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
             static function (Container $app): ClientFactoryInterface {
                 return (new ClientFactory())
                     ->setConfigurators($app->tagged(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR))
-                    ->setRequestResolver($app->make(LaravelRequestResolver::class));
+                    ->setRequestResolver($app->make(LaravelRequestResolver::class))
+                    ->setShutdownStrategy($app->make(ShutdownStrategy::class));
             }
         );
 
@@ -96,5 +103,18 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     {
         // Request Resolver
         $this->app->singleton(LaravelRequestResolver::class);
+    }
+
+    /**
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    private function registerShutdownStrategy(): void
+    {
+        $this->app->singleton(ShutdownStrategy::class);
+
+        // Make sure client is shutdown in worker
+        $this->app->make('queue')->looping(function (): void {
+            $this->app->make(ShutdownStrategy::class)->shutdown();
+        });
     }
 }

@@ -4,31 +4,22 @@ declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Bridge\Symfony\Shutdown;
 
-use Bugsnag\Client;
-use Bugsnag\Shutdown\ShutdownStrategyInterface;
+use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
 
-/**
- * Thanks to https://github.com/bugsnag/bugsnag-symfony for this.
- */
-final class ShutdownStrategyListener implements ShutdownStrategyInterface
+final class ShutdownStrategyListener
 {
     /**
-     * @var \Bugsnag\Client
+     * @var \EonX\EasyBugsnag\Shutdown\ShutdownStrategy
      */
-    private $client;
+    private $shutdownStrategy;
+
+    public function __construct(ShutdownStrategy $shutdownStrategy)
+    {
+        $this->shutdownStrategy = $shutdownStrategy;
+    }
 
     public function __invoke(): void
     {
-        if ($this->client === null) {
-            return;
-        }
-
-        $this->client->flush();
-        $this->client->clearBreadcrumbs();
-    }
-
-    public function registerShutdownStrategy(Client $client): void
-    {
-        $this->client = $client;
+        $this->shutdownStrategy->shutdown();
     }
 }
