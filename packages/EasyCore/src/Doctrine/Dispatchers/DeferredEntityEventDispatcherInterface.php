@@ -9,12 +9,12 @@ interface DeferredEntityEventDispatcherInterface
     public function clear(?int $transactionNestingLevel = null): void;
 
     /**
-     * @param \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityInsertions
+     * @param object[] $entityInsertions
      */
     public function deferInsertions(array $entityInsertions, int $transactionNestingLevel): void;
 
     /**
-     * @param \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityUpdates
+     * @param object[] $entityUpdates
      */
     public function deferUpdates(array $entityUpdates, int $transactionNestingLevel): void;
 

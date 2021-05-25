@@ -12,7 +12,6 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\UnitOfWork;
 use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyCore\Doctrine\Subscribers\EntityEventSubscriber;
-use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
 use EonX\EasyCore\Tests\AbstractTestCase;
 use stdClass;
 
@@ -34,16 +33,13 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 
     public function testOnFlushSucceeds(): void
     {
-        $newEntity = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        $existedEntity = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        $notAcceptableEntity = $this->prophesize(stdClass::class)
-            ->willImplement(DatabaseEntityInterface::class)
-            ->reveal();
+        $newEntity = $this->prophesize(stdClass::class)->reveal();
+        $existedEntity = $this->prophesize(stdClass::class)->reveal();
         $unitOfWork = $this->prophesize(UnitOfWork::class);
         $unitOfWork->getScheduledEntityInsertions()
-            ->willReturn([$newEntity, $notAcceptableEntity]);
+            ->willReturn([$newEntity]);
         $unitOfWork->getScheduledEntityUpdates()
-            ->willReturn([$existedEntity, $notAcceptableEntity]);
+            ->willReturn([$existedEntity]);
         $connection = $this->prophesize(Connection::class);
         $connection->getTransactionNestingLevel()
             ->willReturn(0);

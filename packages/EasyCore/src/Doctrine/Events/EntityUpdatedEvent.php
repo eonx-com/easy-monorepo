@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Doctrine\Events;
 
-use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
-
 final class EntityUpdatedEvent
 {
     /**
-     * @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface
+     * @var object
      */
     private $entity;
 
-    public function __construct(DatabaseEntityInterface $entity)
+    public function __construct(object $entity)
     {
         $this->entity = $entity;
     }
 
-    public function getEntity(): DatabaseEntityInterface
+    public function getEntity(): object
     {
         return $this->entity;
     }

@@ -8,7 +8,6 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
-use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
 
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
 {
@@ -45,8 +44,8 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $unitOfWork = $entityManager->getUnitOfWork();
         $transactionNestingLevel = $entityManager->getConnection()
             ->getTransactionNestingLevel();
-        $scheduledEntityInsertions = $this->filterEntities($unitOfWork->getScheduledEntityInsertions());
-        $scheduledEntityUpdates = $this->filterEntities($unitOfWork->getScheduledEntityUpdates());
+        $scheduledEntityInsertions = $unitOfWork->getScheduledEntityInsertions();
+        $scheduledEntityUpdates = $unitOfWork->getScheduledEntityUpdates();
 
         if (\count($scheduledEntityInsertions) > 0) {
             $this->eventDispatcher->deferInsertions($scheduledEntityInsertions, $transactionNestingLevel);
@@ -64,23 +63,5 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         if ($entityManager->getConnection()->getTransactionNestingLevel() === 0) {
             $this->eventDispatcher->dispatch();
         }
-    }
-
-    /**
-     * @param \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entities
-     *
-     * @return \EonX\EasyCore\Interfaces\DatabaseEntityInterface[]
-     */
-    private function filterEntities(array $entities): array
-    {
-        return \array_filter($entities, function (DatabaseEntityInterface $entity): bool {
-            foreach ($this->entities as $acceptableEntityClass) {
-                if (\is_a($entity, $acceptableEntityClass)) {
-                    return true;
-                }
-            }
-
-            return false;
-        });
     }
 }

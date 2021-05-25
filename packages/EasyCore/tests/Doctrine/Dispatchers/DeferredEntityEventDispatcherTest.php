@@ -7,10 +7,10 @@ namespace EonX\EasyCore\Tests\Doctrine\Dispatchers;
 use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyCore\Doctrine\Events\EntityCreatedEvent;
 use EonX\EasyCore\Doctrine\Events\EntityUpdatedEvent;
-use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
 use EonX\EasyCore\Tests\AbstractTestCase;
 use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use stdClass;
 
 /**
  * @covers \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcher
@@ -140,13 +140,13 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
 
     public function testDeferInsertionsSucceeds(): void
     {
-        $entityA = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        $entityB = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityAB */
+        $entityA = $this->prophesize(stdClass::class)->reveal();
+        $entityB = $this->prophesize(stdClass::class)->reveal();
+        /** @var object[] $entityAB */
         $entityAB = [$entityA, $entityB];
-        $entityC = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        $entityD = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityCD */
+        $entityC = $this->prophesize(stdClass::class)->reveal();
+        $entityD = $this->prophesize(stdClass::class)->reveal();
+        /** @var object[] $entityCD */
         $entityCD = [$entityC, $entityD];
         /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
@@ -165,9 +165,9 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
 
     public function testDeferInsertionsSucceedsWithDisabled(): void
     {
-        $entityA = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        $entityB = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityAB */
+        $entityA = $this->prophesize(stdClass::class)->reveal();
+        $entityB = $this->prophesize(stdClass::class)->reveal();
+        /** @var object[] $entityAB */
         $entityAB = [$entityA, $entityB];
         /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
@@ -184,13 +184,13 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
 
     public function testDeferUpdatesSucceeds(): void
     {
-        $entityA = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        $entityB = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityAB */
+        $entityA = $this->prophesize(stdClass::class)->reveal();
+        $entityB = $this->prophesize(stdClass::class)->reveal();
+        /** @var object[] $entityAB */
         $entityAB = [$entityA, $entityB];
-        $entityC = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        $entityD = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityCD */
+        $entityC = $this->prophesize(stdClass::class)->reveal();
+        $entityD = $this->prophesize(stdClass::class)->reveal();
+        /** @var object[] $entityCD */
         $entityCD = [$entityC, $entityD];
         /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
@@ -209,9 +209,9 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
 
     public function testDeferUpdatesSucceedsWidthDisabled(): void
     {
-        $entityA = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        $entityB = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $entityAB */
+        $entityA = $this->prophesize(stdClass::class)->reveal();
+        $entityB = $this->prophesize(stdClass::class)->reveal();
+        /** @var object[] $entityAB */
         $entityAB = [$entityA, $entityB];
         /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $this->prophesize(EventDispatcherInterface::class)->reveal();
@@ -239,10 +239,10 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
 
     public function testDispatchSucceedsWithEntities(): void
     {
-        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface $newEntity */
-        $newEntity = $this->prophesize(DatabaseEntityInterface::class)->reveal();
-        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface $existedEntity */
-        $existedEntity = $this->prophesize(DatabaseEntityInterface::class)->reveal();
+        /** @var object $newEntity */
+        $newEntity = $this->prophesize(stdClass::class)->reveal();
+        /** @var object $existedEntity */
+        $existedEntity = $this->prophesize(stdClass::class)->reveal();
         $entityCreatedEvent = new EntityCreatedEvent($newEntity);
         $entityUpdatedEvent = new EntityUpdatedEvent($existedEntity);
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);

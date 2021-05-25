@@ -6,7 +6,6 @@ namespace EonX\EasyCore\Doctrine\Dispatchers;
 
 use EonX\EasyCore\Doctrine\Events\EntityCreatedEvent;
 use EonX\EasyCore\Doctrine\Events\EntityUpdatedEvent;
-use EonX\EasyCore\Interfaces\DatabaseEntityInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
@@ -17,12 +16,12 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     private $enabled;
 
     /**
-     * @var array<int, \EonX\EasyCore\Interfaces\DatabaseEntityInterface[]>
+     * @var array<int, object[]>
      */
     private $entityInsertions = [];
 
     /**
-     * @var array<int, \EonX\EasyCore\Interfaces\DatabaseEntityInterface[]>
+     * @var array<int, object[]>
      */
     private $entityUpdates = [];
 
@@ -65,7 +64,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             return;
         }
 
-        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $mergedEntityInsertions */
+        /** @var object[] $mergedEntityInsertions */
         $mergedEntityInsertions = \array_merge(
             (array)($this->entityInsertions[$transactionNestingLevel] ?? []),
             $entityInsertions
@@ -79,7 +78,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             return;
         }
 
-        /** @var \EonX\EasyCore\Interfaces\DatabaseEntityInterface[] $mergedEntityUpdates */
+        /** @var object[] $mergedEntityUpdates */
         $mergedEntityUpdates = \array_merge(
             (array)($this->entityUpdates[$transactionNestingLevel] ?? []),
             $entityUpdates
@@ -103,11 +102,11 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             return;
         }
 
-        \array_walk_recursive($entityInsertions, function (DatabaseEntityInterface $entity): void {
+        \array_walk_recursive($entityInsertions, function (object $entity): void {
             $this->eventDispatcher->dispatch(new EntityCreatedEvent($entity));
         });
 
-        \array_walk_recursive($entityUpdates, function (DatabaseEntityInterface $entity): void {
+        \array_walk_recursive($entityUpdates, function (object $entity): void {
             $this->eventDispatcher->dispatch(new EntityUpdatedEvent($entity));
         });
     }
