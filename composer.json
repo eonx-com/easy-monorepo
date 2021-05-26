@@ -30,7 +30,8 @@
         "aws/aws-sdk-php": "^3.134",
         "illuminate/support": "^5.5 || ^6.0",
         "bugsnag/bugsnag": "^3.19",
-        "elasticsearch/elasticsearch": "^7.8"
+        "elasticsearch/elasticsearch": "^7.8",
+        "psr/event-dispatcher": "^1.0"
     },
     "require-dev": {
         "api-platform/core": "^2.5",

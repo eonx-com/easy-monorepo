@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests;
 
+use Closure;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -14,6 +15,11 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    /**
+     * @var \Throwable|null
+     */
+    protected $thrownException = null;
+
     /**
      * @param mixed $target
      */
@@ -83,5 +89,43 @@ abstract class AbstractTestCase extends TestCase
         return (function ($method, $args) {
             return $this->{$method}(...$args);
         })->call($object, $method, $args);
+    }
+
+    protected function safeCall(Closure $func): void
+    {
+        try {
+            $func();
+        } catch (\Throwable $exception) {
+            $this->thrownException = $exception;
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function assertThrownException(
+        string $expectedException,
+        int $code,
+        ?string $previousException = null
+    ): void {
+        self::assertNotNull($this->thrownException);
+
+        if ($this->thrownException === null) {
+            return;
+        }
+
+        if ($this->thrownException instanceof $expectedException === false) {
+            throw $this->thrownException;
+        }
+
+        self::assertSame($code, $this->thrownException->getCode());
+
+        if ($previousException === null) {
+            self::assertNull($this->thrownException->getPrevious());
+        }
+
+        if ($previousException !== null) {
+            self::assertTrue($this->thrownException->getPrevious() instanceof $previousException);
+        }
     }
 }

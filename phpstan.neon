@@ -91,6 +91,9 @@ parameters:
         - message: '#Parameter \#1 \$translator of method class@anonymous/EasyCore/tests/Bridge/Symfony/Traits/TranslatorAwareTraitTest\.php\:15\:\:setTranslator\(\) expects Symfony\\Contracts\\Translation\\TranslatorInterface, Mockery\\MockInterface given#'
           path: packages/EasyCore/tests/Bridge/Symfony/Traits/TranslatorAwareTraitTest.php
 
+        - message: '#Strict comparison using === between true and false will always evaluate to false.#'
+          path: packages/EasyCore/src/Doctrine/ORM/Decorators/EntityManagerDecorator.php
+
         # ---- EasyDecision ----
         # ---- EasyErrorHandler ----
         - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
