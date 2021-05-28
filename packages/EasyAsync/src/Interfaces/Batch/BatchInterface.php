@@ -62,6 +62,8 @@ interface BatchInterface
 
     public function getUpdatedAt(): \DateTimeInterface;
 
+    public function isCompleted(): bool;
+
     public function setCancelledAt(\DateTimeInterface $cancelledAt): self;
 
     public function setCreatedAt(\DateTimeInterface $createdAt): self;

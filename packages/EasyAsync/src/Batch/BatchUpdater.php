@@ -5,21 +5,29 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Batch;
 
 use Carbon\Carbon;
+use EonX\EasyAsync\Events\Batch\BatchCompletedEvent;
 use EonX\EasyAsync\Exceptions\Batch\BatchIdRequiredException;
 use EonX\EasyAsync\Interfaces\Batch\BatchInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchUpdaterInterface;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class BatchUpdater implements BatchUpdaterInterface
 {
+    /**
+     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
+     */
+    private $dispatcher;
+
     /**
      * @var \EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface
      */
     private $store;
 
-    public function __construct(BatchStoreInterface $store)
+    public function __construct(EventDispatcherInterface $dispatcher, BatchStoreInterface $store)
     {
+        $this->dispatcher = $dispatcher;
         $this->store = $store;
     }
 
@@ -69,6 +77,11 @@ final class BatchUpdater implements BatchUpdaterInterface
             $freshBatch = $this->store->update($freshBatch);
 
             $this->store->finishUpdate();
+
+            // Dispatch completed event if needed
+            if ($freshBatch->isCompleted()) {
+                $this->dispatcher->dispatch(new BatchCompletedEvent($freshBatch));
+            }
 
             return $freshBatch;
         } catch (\Throwable $throwable) {

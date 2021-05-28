@@ -151,6 +151,11 @@ abstract class AbstractBatch implements BatchInterface
         return $this->updatedAt;
     }
 
+    public function isCompleted(): bool
+    {
+        return \in_array($this->status, [self::STATUS_FAILED, self::STATUS_SUCCESS], true);
+    }
+
     public function setCancelledAt(\DateTimeInterface $cancelledAt): BatchInterface
     {
         $this->cancelledAt = $cancelledAt;
