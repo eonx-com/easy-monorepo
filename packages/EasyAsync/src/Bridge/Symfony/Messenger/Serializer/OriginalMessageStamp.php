@@ -18,7 +18,7 @@ final class OriginalMessageStamp implements NonSendableStampInterface
     private $headers;
 
     /**
-     * @var mixed[] $headers
+     * @param mixed[] $headers
      */
     public function __construct(string $body, array $headers)
     {

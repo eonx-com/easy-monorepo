@@ -17,6 +17,9 @@ final class QueueEnvelope implements QueueEnvelopeInterface
      */
     private $headers;
 
+    /**
+     * @var string
+     */
     private $originalBody;
 
     /**
