@@ -27,19 +27,20 @@ final class SendAfterMiddleware extends AbstractMiddleware
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        $sendAfter = $webhook->getSendAfter();
-
-        if ($sendAfter !== null) {
-            $now = Carbon::now($sendAfter->getTimezone());
-
-            // If sendAfter is in the future, simply store webhook
-            if ($sendAfter > $now) {
-                return new WebhookResult($this->store->store($webhook));
-            }
+        if ($webhook->getStatus() === WebhookInterface::STATUS_PENDING_SEND_AFTER_TRIGGERED
+            || $webhook->isSendNow()
+            || $webhook->getSendAfter() === null) {
+            return $this->passOn($webhook, $stack);
         }
 
-        return $stack
-            ->next()
-            ->process($webhook, $stack);
+        $sendAfter = $webhook->getSendAfter();
+        $now = Carbon::now($sendAfter->getTimezone());
+
+        // If sendAfter is in the future, simply store webhook
+        if ($sendAfter > $now) {
+            return new WebhookResult($this->store->store($webhook));
+        }
+
+        return $this->passOn($webhook, $stack);
     }
 }

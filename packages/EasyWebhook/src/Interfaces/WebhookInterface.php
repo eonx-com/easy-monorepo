@@ -116,6 +116,7 @@ interface WebhookInterface
         self::STATUS_FAILED,
         self::STATUS_FAILED_PENDING_RETRY,
         self::STATUS_PENDING,
+        self::STATUS_PENDING_SEND_AFTER_TRIGGERED,
         self::STATUS_SUCCESS,
     ];
 
@@ -133,6 +134,11 @@ interface WebhookInterface
      * @var string
      */
     public const STATUS_PENDING = 'pending';
+
+    /**
+     * @var string
+     */
+    public const STATUS_PENDING_SEND_AFTER_TRIGGERED = 'pending_send_after_triggered';
 
     /**
      * @var string
