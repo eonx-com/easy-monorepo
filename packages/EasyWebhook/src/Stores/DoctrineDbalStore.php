@@ -46,8 +46,8 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
         ?string $timezone = null
     ): LengthAwarePaginatorInterface {
         $sendAfter = $sendAfter !== null
-            ? Carbon::createFromFormat(self::DATETIME_FORMAT, $sendAfter->format(self::DATETIME_FORMAT))
-            : Carbon::now('UTC');
+            ? Carbon::createFromFormat(self::DATETIME_FORMAT, $sendAfter->format(self::DATETIME_FORMAT), $timezone)
+            : Carbon::now($timezone);
 
         if ($sendAfter instanceof Carbon === false) {
             throw new InvalidDateTimeException(\sprintf(
@@ -55,10 +55,6 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
                 self::class,
                 __METHOD__
             ));
-        }
-
-        if ($timezone !== null) {
-            $sendAfter->setTimezone($timezone);
         }
 
         $paginator = new DoctrineDbalLengthAwarePaginator($this->conn, $this->table, $startSize);
@@ -73,7 +69,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
                     ]);
             })
             ->setTransformer(function (array $item): WebhookInterface {
-                return $this->instantiateWebhook($item);
+                return $this->instantiateWebhook($item)->sendNow(true);
             });
 
         return $paginator;
