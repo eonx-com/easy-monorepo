@@ -69,7 +69,8 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
                     ]);
             })
             ->setTransformer(function (array $item): WebhookInterface {
-                return $this->instantiateWebhook($item)->sendNow(true);
+                return $this->instantiateWebhook($item)
+                    ->status(WebhookInterface::STATUS_PENDING_SEND_AFTER_TRIGGERED);
             });
 
         return $paginator;
