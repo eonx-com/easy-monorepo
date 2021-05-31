@@ -46,10 +46,10 @@ final class SendDueWebhooksCommand extends Command
         $page = 1;
         $perPage = $this->getIntOption('bulk') ?? 15;
         $sendAfterString = $this->getStringOption('sendAfter');
-        $timezone = $this->getStringOption('timezone');
+        $timezone = $this->getStringOption('timezone') ?? 'UTC';
 
         if ($sendAfterString !== null) {
-            $sendAfter = Carbon::createFromFormat(StoreInterface::DATETIME_FORMAT, $sendAfterString);
+            $sendAfter = Carbon::createFromFormat(StoreInterface::DATETIME_FORMAT, $sendAfterString, $timezone);
 
             if ($sendAfter instanceof Carbon === false) {
                 throw new InvalidDateTimeException(\sprintf('Invalid DateTime provided, "%s"', $sendAfterString));
@@ -75,13 +75,13 @@ final class SendDueWebhooksCommand extends Command
     {
         $option = $this->option($name);
 
-        return \is_array($option) || \is_bool($option) ? null : (int)$option;
+        return \is_array($option) || \is_bool($option) || $option === null ? null : (int)$option;
     }
 
     private function getStringOption(string $name): ?string
     {
         $option = $this->option($name);
 
-        return \is_array($option) || \is_bool($option) ? null : (string)$option;
+        return \is_array($option) || \is_bool($option) || $option === null ? null : (string)$option;
     }
 }
