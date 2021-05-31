@@ -49,7 +49,8 @@ trait DoctrinePaginatorTrait
 
         $fromAlias = $this->getFromAlias(true);
         $countAlias = \sprintf('_count_%s', $fromAlias);
-        $sql = \sprintf('COUNT(DISTINCT %s) as %s', $fromAlias, $countAlias);
+        $countSelect = $fromAlias !== '1' ? \sprintf('DISTINCT %s', $fromAlias) : $fromAlias;
+        $sql = \sprintf('COUNT(%s) as %s', $countSelect, $countAlias);
 
         $queryBuilder = $this->createQueryBuilder()
             ->select($sql);
