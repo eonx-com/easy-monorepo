@@ -27,9 +27,7 @@ final class SendAfterMiddleware extends AbstractMiddleware
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        if ($webhook->getStatus() === WebhookInterface::STATUS_PENDING_SEND_AFTER_TRIGGERED
-            || $webhook->isSendNow()
-            || $webhook->getSendAfter() === null) {
+        if ($webhook->isSendAfterBypassed() || $webhook->isSendNow() || $webhook->getSendAfter() === null) {
             return $this->passOn($webhook, $stack);
         }
 

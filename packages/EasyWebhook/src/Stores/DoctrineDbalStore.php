@@ -66,11 +66,11 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
                     ->setParameters([
                         'status' => WebhookInterface::STATUS_PENDING,
                         'sendAfter' => $sendAfter->format(self::DATETIME_FORMAT),
-                    ]);
+                    ])
+                    ->orderBy('created_at');
             })
             ->setTransformer(function (array $item): WebhookInterface {
-                return $this->instantiateWebhook($item)
-                    ->status(WebhookInterface::STATUS_PENDING_SEND_AFTER_TRIGGERED);
+                return $this->instantiateWebhook($item)->bypassSendAfter(true);
             });
 
         return $paginator;
