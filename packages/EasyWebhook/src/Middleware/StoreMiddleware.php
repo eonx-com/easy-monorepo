@@ -9,6 +9,7 @@ use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
+use EonX\EasyWebhook\ShouldNotBeStoredWebhookResult;
 
 final class StoreMiddleware extends AbstractMiddleware
 {
@@ -36,6 +37,8 @@ final class StoreMiddleware extends AbstractMiddleware
 
         $this->store->store($webhook);
 
-        return $this->resultStore->store($webhookResult);
+        return $webhookResult instanceof ShouldNotBeStoredWebhookResult
+            ? $webhookResult
+            : $this->resultStore->store($webhookResult);
     }
 }
