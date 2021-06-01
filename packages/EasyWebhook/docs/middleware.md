@@ -181,6 +181,11 @@ The following table show the middleware stack in priority order, with summaries 
 | ---------- | --------------------------- | ---------------------- |
 | *Begin initial core middleware* | | |
 | `LockMiddleware` | Lock webhook | Unlock webhook |
+| `StoreMiddleware` | | Store webhook and result |
+| `StatusAndAttemptMiddleware` | | Update status and attempt |
+| `HandleExceptionsMiddleware` | | Handle exception thrown within the stack |
+| `ResetStoreMiddleware` | Reset webhook and result stores | |
+| `EventsMiddleware` | | Dispatch event |
 | `RerunMiddleware` | If rerun allowed, reset status and current attempt<br/>If not allowed, throw exception | |
 | *End initial core middleware* | | |
 | *Begin custom middleware*<br/>*(processed in priority order)* | | |
@@ -191,14 +196,10 @@ The following table show the middleware stack in priority order, with summaries 
 | Custom middleware | Custom pre-processing | Custom post-processing |
 | *End custom middleware* | | |
 | *Begin final core middleware* | | |
-| `SendAfterMiddleware` | If time is before `$sendAfter`, store webhook and return up stack<br/>If time is after `$sendAfter`, continue down stack | |
-| `ResetStoreMiddleware` | Reset webhook and result stores | |
 | `MethodMiddleware` | Set request method | |
+| `SendAfterMiddleware` | If time is before `$sendAfter`, store webhook and return up stack<br/>If time is after `$sendAfter`, continue down stack | |
 | `AsyncMiddleware` | If asynchronous, store webhook and return up stack<br/>If synchronous, continue down stack | |
 | `SyncRetryMiddleware` | If asynchronous, continue down stack<br/>If synchronous, retries webhook if not successful | |
-| `StoreMiddleware` | | Store webhook and result |
-| `EventsMiddleware` | | Dispatch event |
-| `StatusAndAttemptMiddleware` | | Update status and attempt |
 | `SendWebhookMiddleware` | Send request and return up stack | |
 | *End final core middleware* | | |
 

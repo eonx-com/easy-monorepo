@@ -35,9 +35,10 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
     public function testDoNotRetryIfAsyncEnabledOrMaxAttemptIsOne(bool $asyncEnabled, int $maxAttempt): void
     {
         $webhook = Webhook::create('https://eonx.com')->maxAttempt($maxAttempt);
+        $resultsStore = new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
 
         $stack = new StackStub(new Stack([
-            new SyncRetryMiddleware(new MultiplierWebhookRetryStrategy(), $asyncEnabled),
+            new SyncRetryMiddleware($resultsStore, new MultiplierWebhookRetryStrategy(), $asyncEnabled),
             new MiddlewareStub(null, new \Exception('my-message')),
         ]));
 
@@ -61,10 +62,10 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
         $resultsStore = new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
 
         $stack = new StackStub(new Stack([
-            new MethodMiddleware('POST'),
-            new SyncRetryMiddleware(new MultiplierWebhookRetryStrategy(), false),
             new StoreMiddleware($store, $resultsStore),
             new StatusAndAttemptMiddleware(),
+            new MethodMiddleware('POST'),
+            new SyncRetryMiddleware($resultsStore, new MultiplierWebhookRetryStrategy(), false),
             new MiddlewareStub(null, new \Exception('my-message')),
         ]));
 
@@ -73,10 +74,10 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
             ->process($webhook, $stack);
 
         $expectedStackCalls = [
+            StoreMiddleware::class => 1,
+            StatusAndAttemptMiddleware::class => 1,
             MethodMiddleware::class => 1,
             SyncRetryMiddleware::class => 1,
-            StoreMiddleware::class => 3,
-            StatusAndAttemptMiddleware::class => 3,
             MiddlewareStub::class => 3,
         ];
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Middleware;
 
 use EonX\EasyWebhook\Interfaces\StackInterface;
+use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
@@ -24,16 +25,23 @@ final class SyncRetryMiddleware extends AbstractMiddleware
     private $logger;
 
     /**
+     * @var \EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface
+     */
+    private $resultStore;
+
+    /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface
      */
     private $retryStrategy;
 
     public function __construct(
+        ResultStoreInterface $resultStore,
         WebhookRetryStrategyInterface $retryStrategy,
         ?bool $asyncEnabled = null,
         ?LoggerInterface $logger = null,
         ?int $priority = null
     ) {
+        $this->resultStore = $resultStore;
         $this->retryStrategy = $retryStrategy;
         $this->asyncEnabled = $asyncEnabled ?? true;
         $this->logger = $logger ?? new NullLogger();
@@ -68,6 +76,13 @@ final class SyncRetryMiddleware extends AbstractMiddleware
             $shouldLoop = $result->isSuccessful() === false
                 && $this->retryStrategy->isRetryable($webhook)
                 && $safety < $webhook->getMaxAttempt();
+
+            // Handle attempts "locally" since middleware to do it, are not ran after this one anymore
+            if ($shouldLoop) {
+                $webhook->currentAttempt($webhook->getCurrentAttempt() + 1);
+
+                $this->resultStore->store($result);
+            }
         } while ($shouldLoop);
 
         return $result;

@@ -14,25 +14,37 @@ use EonX\EasyWebhook\WebhookResult;
 final class LockMiddleware extends AbstractMiddleware
 {
     /**
+     * @var string
+     */
+    private const DEFAULT_LOCK_RESOURCE_PATTERN = 'easy_webhook_send_%s';
+
+    /**
      * @var \EonX\EasyLock\Interfaces\LockServiceInterface
      */
     private $lockService;
 
-    public function __construct(LockServiceInterface $lockService, ?int $priority = null)
-    {
+    /**
+     * @var string
+     */
+    private $resourcePattern;
+
+    public function __construct(
+        LockServiceInterface $lockService,
+        ?string $lockResourcePattern = null,
+        ?int $priority = null
+    ) {
         $this->lockService = $lockService;
+        $this->resourcePattern = $lockResourcePattern ?? self::DEFAULT_LOCK_RESOURCE_PATTERN;
 
         parent::__construct($priority);
     }
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        $data = LockData::create(\sprintf('easy_webhook_send_%s', $webhook->getId() ?? \spl_object_hash($webhook)));
+        $data = LockData::create(\sprintf($this->resourcePattern, $webhook->getId() ?? \spl_object_hash($webhook)));
 
-        $func = static function () use ($webhook, $stack): WebhookResultInterface {
-            return $stack
-                ->next()
-                ->process($webhook, $stack);
+        $func = function () use ($webhook, $stack): WebhookResultInterface {
+            return $this->passOn($webhook, $stack);
         };
 
         $result = $this->lockService->processWithLock($data, $func);

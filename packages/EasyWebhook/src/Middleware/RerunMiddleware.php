@@ -32,8 +32,6 @@ final class RerunMiddleware extends AbstractMiddleware
                 ->currentAttempt(WebhookInterface::DEFAULT_CURRENT_ATTEMPT);
         }
 
-        return $stack
-            ->next()
-            ->process($webhook, $stack);
+        return $this->passOn($webhook, $stack);
     }
 }
