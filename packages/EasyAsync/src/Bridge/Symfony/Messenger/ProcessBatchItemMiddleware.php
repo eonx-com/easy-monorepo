@@ -48,8 +48,12 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         $batchItemId = $batchItemStamp !== null ? $batchItemStamp->getBatchItemId() : null;
         $batchItemAttempts = $batchItemStamp !== null ? $batchItemStamp->getAttempts() : 0;
 
+        // Check if batch item requires approval
+        $batchItemRequiresApprovalStamp = $this->getBatchItemRequiresApprovalStamp($envelope);
+
         $batchItem = $this->batchItemFactory->create($batchId, \get_class($envelope->getMessage()), $batchItemId);
         $batchItem->setAttempts($batchItemAttempts);
+        $batchItem->setRequiresApproval($batchItemRequiresApprovalStamp instanceof BatchItemRequiresApprovalStamp);
 
         try {
             return $this->processor->process($batchItem, $func);
@@ -58,10 +62,15 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
             throw new UnrecoverableMessageHandlingException($exception->getMessage());
         } catch (\Throwable $throwable) {
             // Allow to handle retry for existing batchItem by setting id, attempts on envelope for retry
-            $newBatchItemStamp = new BatchItemStamp((string)$batchItem->getId(), $batchItem->getAttempts());
-            $withBatchItemId = $envelope->with($newBatchItemStamp);
+            $newBatchItemStamp = new BatchItemStamp($batchItem->getId(), $batchItem->getAttempts());
+            $newEnvelope = $envelope->with($newBatchItemStamp);
 
-            throw new HandlerFailedException($withBatchItemId, [$throwable]);
+            // Make sure to carry approval through retries
+            if ($batchItemRequiresApprovalStamp instanceof BatchItemRequiresApprovalStamp) {
+                $newEnvelope = $newEnvelope->with($batchItemRequiresApprovalStamp);
+            }
+
+            throw new HandlerFailedException($newEnvelope, [$throwable]);
         }
     }
 
@@ -76,6 +85,11 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         $stamp = $envelope->last(BatchStamp::class);
 
         return $stamp !== null ? $stamp->getBatchId() : null;
+    }
+
+    private function getBatchItemRequiresApprovalStamp(Envelope $envelope): ?BatchItemRequiresApprovalStamp
+    {
+        return $envelope->last(BatchItemRequiresApprovalStamp::class);
     }
 
     private function getBatchItemStamp(Envelope $envelope): ?BatchItemStamp

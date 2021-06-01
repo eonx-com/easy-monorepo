@@ -26,6 +26,13 @@ interface BatchItemInterface
      */
     public const STATUS_SUCCESS = 'success';
 
+    /**
+     * @var string
+     */
+    public const STATUS_SUCCESS_PENDING_APPROVAL = 'success_pending_approval';
+
+    public function doesRequireApproval(): bool;
+
     public function getAttempts(): int;
 
     public function getBatchId(): string;
@@ -63,6 +70,8 @@ interface BatchItemInterface
      * @param mixed[] $params
      */
     public function setReasonParams(array $params): self;
+
+    public function setRequiresApproval(?bool $requiresApproval = null): self;
 
     public function setStartedAt(\DateTimeInterface $startedAt): self;
 

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\Messenger;
 
+use EonX\EasyAsync\Batch\BatchItemRequiresApprovalDecorator;
 use EonX\EasyAsync\Exceptions\Batch\BatchIdRequiredException;
 use EonX\EasyAsync\Interfaces\Batch\BatchCancellerInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchDispatcherInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchInterface;
+use EonX\EasyAsync\Interfaces\Batch\BatchItemRequiresApprovalInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -38,6 +40,10 @@ final class BatchDispatcher implements BatchDispatcherInterface
         $this->store = $store;
     }
 
+    /**
+     * @throws \EonX\EasyAsync\Exceptions\Batch\BatchIdRequiredException
+     * @throws \Throwable
+     */
     public function dispatch(BatchInterface $batch): void
     {
         // Store batch first, so we're sure it is there before any item is handled
@@ -57,7 +63,17 @@ final class BatchDispatcher implements BatchDispatcherInterface
         try {
             // Dispatch each item to the queue
             foreach ($batch->getItems() as $item) {
-                $this->bus->dispatch($item, [$stamp]);
+                $stamps = [$stamp];
+
+                if ($item instanceof BatchItemRequiresApprovalInterface) {
+                    $stamps[] = new BatchItemRequiresApprovalStamp();
+                }
+
+                if ($item instanceof BatchItemRequiresApprovalDecorator) {
+                    $item = $item->getItem();
+                }
+
+                $this->bus->dispatch($item, $stamps);
 
                 $total++;
             }
