@@ -48,9 +48,7 @@ final class AsyncMiddleware extends AbstractMiddleware
             // If async disabled, make sure webhook is sendNow
             $webhook->sendNow(true);
 
-            return $stack
-                ->next()
-                ->process($webhook, $stack);
+            return $this->passOn($webhook, $stack);
         }
 
         $webhook = $this->store->store($webhook);

@@ -24,12 +24,8 @@ final class MethodMiddleware extends AbstractConfigureOnceMiddleware
 
     protected function doProcess(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        if (empty($webhook->getMethod())) {
-            $webhook->method($this->method);
-        }
+        $webhook->method($webhook->getMethod() ?? $this->method);
 
-        return $stack
-            ->next()
-            ->process($webhook, $stack);
+        return $this->passOn($webhook, $stack);
     }
 }

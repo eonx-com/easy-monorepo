@@ -39,8 +39,6 @@ final class ResetStoreMiddleware extends AbstractMiddleware
             }
         }
 
-        return $stack
-            ->next()
-            ->process($webhook, $stack);
+        return $this->passOn($webhook, $stack);
     }
 }

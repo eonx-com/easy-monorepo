@@ -32,9 +32,7 @@ final class StoreMiddleware extends AbstractMiddleware
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        $webhookResult = $stack
-            ->next()
-            ->process($webhook, $stack);
+        $webhookResult = $this->passOn($webhook, $stack);
 
         $this->store->store($webhook);
 

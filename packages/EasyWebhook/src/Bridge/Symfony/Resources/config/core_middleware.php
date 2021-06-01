@@ -28,7 +28,15 @@ return static function (ContainerConfigurator $container): void {
 
     // BEFORE MIDDLEWARE
     $services
-        ->set(EventsMiddleware::class)
+        ->set(LockMiddleware::class)
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 6);
+
+    $services
+        ->set(StoreMiddleware::class)
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 5);
+
+    $services
+        ->set(StatusAndAttemptMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 4);
 
     $services
@@ -36,8 +44,12 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 3);
 
     $services
-        ->set(LockMiddleware::class)
+        ->set(ResetStoreMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 2);
+
+    $services
+        ->set(EventsMiddleware::class)
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 1);
 
     $services
         ->set(RerunMiddleware::class)
@@ -45,40 +57,28 @@ return static function (ContainerConfigurator $container): void {
 
     // AFTER MIDDLEWARE
     $services
-        ->set(SendAfterMiddleware::class)
+        ->set(MethodMiddleware::class)
+        ->arg('$method', '%' . BridgeConstantsInterface::PARAM_METHOD . '%')
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER);
 
     $services
-        ->set(ResetStoreMiddleware::class)
+        ->set(SendAfterMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 1);
-
-    $services
-        ->set(MethodMiddleware::class)
-        ->arg('$method', '%' . BridgeConstantsInterface::PARAM_METHOD . '%')
-        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 10);
 
     $services
         ->set(AsyncMiddleware::class)
         ->arg('$enabled', '%' . BridgeConstantsInterface::PARAM_ASYNC . '%')
-        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 20);
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 2);
 
     $services
         ->set(SyncRetryMiddleware::class)
         ->arg('$asyncEnabled', '%' . BridgeConstantsInterface::PARAM_ASYNC . '%')
         ->arg('$logger', ref(LoggerInterface::class))
-        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 30);
-
-    $services
-        ->set(StoreMiddleware::class)
-        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 40);
-
-    $services
-        ->set(StatusAndAttemptMiddleware::class)
-        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 50);
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 3);
 
     // Make sure SendWebhookMiddleware is always last
     $services
         ->set(SendWebhookMiddleware::class)
         ->arg('$httpClient', ref(BridgeConstantsInterface::HTTP_CLIENT))
-        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 60);
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 4);
 };

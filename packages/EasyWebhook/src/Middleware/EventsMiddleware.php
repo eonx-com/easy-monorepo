@@ -37,12 +37,9 @@ final class EventsMiddleware extends AbstractMiddleware
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        $webhookResult = $stack
-            ->next()
-            ->process($webhook, $stack);
+        $webhookResult = $this->passOn($webhook, $stack);
 
-        $status = $webhookResult
-            ->getWebhook()
+        $status = $webhookResult->getWebhook()
             ->getStatus();
 
         $eventClass = self::EVENT_CLASSES[$status] ?? null;
