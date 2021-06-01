@@ -116,7 +116,6 @@ interface WebhookInterface
         self::STATUS_FAILED,
         self::STATUS_FAILED_PENDING_RETRY,
         self::STATUS_PENDING,
-        self::STATUS_PENDING_SEND_AFTER_TRIGGERED,
         self::STATUS_SUCCESS,
     ];
 
@@ -138,11 +137,6 @@ interface WebhookInterface
     /**
      * @var string
      */
-    public const STATUS_PENDING_SEND_AFTER_TRIGGERED = 'pending_send_after_triggered';
-
-    /**
-     * @var string
-     */
     public const STATUS_SUCCESS = 'success';
 
     public function allowRerun(?bool $allowRerun = null): self;
@@ -153,6 +147,8 @@ interface WebhookInterface
     public function body(array $body): self;
 
     public function bodyAsString(string $body): self;
+
+    public function bypassSendAfter(?bool $bypassSendAfter = null): self;
 
     public function configured(?bool $configured = null): self;
 
@@ -225,6 +221,8 @@ interface WebhookInterface
     public function isConfigured(): bool;
 
     public function isRerunAllowed(): bool;
+
+    public function isSendAfterBypassed(): bool;
 
     public function isSendNow(): bool;
 

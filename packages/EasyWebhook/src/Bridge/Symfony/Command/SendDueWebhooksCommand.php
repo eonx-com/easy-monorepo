@@ -74,9 +74,10 @@ final class SendDueWebhooksCommand extends Command
         $perPage = (int)$input->getOption('bulk');
         $sendAfterString = $input->getOption('sendAfter') ? (string)$input->getOption('sendAfter') : null;
         $timezone = $input->getOption('timezone') ? (string)$input->getOption('timezone') : null;
+        $webhooksSent = 0;
 
         if ($sendAfterString !== null) {
-            $sendAfter = Carbon::createFromFormat(StoreInterface::DATETIME_FORMAT, $sendAfterString);
+            $sendAfter = Carbon::createFromFormat(StoreInterface::DATETIME_FORMAT, $sendAfterString, $timezone);
 
             if ($sendAfter instanceof Carbon === false) {
                 throw new InvalidDateTimeException(\sprintf('Invalid DateTime provided, "%s"', $sendAfterString));
@@ -88,12 +89,14 @@ final class SendDueWebhooksCommand extends Command
 
             foreach ($dueWebhooks->getItems() as $webhook) {
                 $this->client->sendWebhook($webhook);
+
+                $webhooksSent++;
             }
 
             $page++;
         } while ($dueWebhooks->hasNextPage());
 
-        $style->success(\sprintf('Sent %d due webhooks', $dueWebhooks->getTotalItems()));
+        $style->success(\sprintf('Sent %d due webhooks', $webhooksSent));
 
         return 0;
     }

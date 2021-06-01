@@ -49,6 +49,11 @@ abstract class AbstractWebhook implements WebhookInterface
     /**
      * @var null|bool
      */
+    private $bypassSendAfter;
+
+    /**
+     * @var null|bool
+     */
     private $configured;
 
     /**
@@ -178,6 +183,13 @@ abstract class AbstractWebhook implements WebhookInterface
     public function bodyAsString(string $body): WebhookInterface
     {
         $this->bodyAsString = $body;
+
+        return $this;
+    }
+
+    public function bypassSendAfter(?bool $bypassSendAfter = null): WebhookInterface
+    {
+        $this->bypassSendAfter = $bypassSendAfter;
 
         return $this;
     }
@@ -350,6 +362,11 @@ abstract class AbstractWebhook implements WebhookInterface
     public function isRerunAllowed(): bool
     {
         return $this->allowRerun ?? false;
+    }
+
+    public function isSendAfterBypassed(): bool
+    {
+        return $this->bypassSendAfter ?? false;
     }
 
     public function isSendNow(): bool

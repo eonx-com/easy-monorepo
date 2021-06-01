@@ -47,6 +47,7 @@ final class SendDueWebhooksCommand extends Command
         $perPage = $this->getIntOption('bulk') ?? 15;
         $sendAfterString = $this->getStringOption('sendAfter');
         $timezone = $this->getStringOption('timezone') ?? 'UTC';
+        $webhooksSent = 0;
 
         if ($sendAfterString !== null) {
             $sendAfter = Carbon::createFromFormat(StoreInterface::DATETIME_FORMAT, $sendAfterString, $timezone);
@@ -61,12 +62,14 @@ final class SendDueWebhooksCommand extends Command
 
             foreach ($dueWebhooks->getItems() as $webhook) {
                 $client->sendWebhook($webhook);
+
+                $webhooksSent++;
             }
 
             $page++;
         } while ($dueWebhooks->hasNextPage());
 
-        $this->output->success(\sprintf('Sent %d due webhooks', $dueWebhooks->getTotalItems()));
+        $this->output->success(\sprintf('Sent %d due webhooks', $webhooksSent));
 
         return 0;
     }
