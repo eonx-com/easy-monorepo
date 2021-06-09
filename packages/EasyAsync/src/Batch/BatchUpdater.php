@@ -31,6 +31,11 @@ final class BatchUpdater implements BatchUpdaterInterface
         $this->store = $store;
     }
 
+    /**
+     * @throws \EonX\EasyAsync\Exceptions\Batch\BatchIdRequiredException
+     * @throws \EonX\EasyAsync\Exceptions\Batch\BatchNotFoundException
+     * @throws \Throwable
+     */
     public function updateForItem(BatchInterface $batch, BatchItemInterface $batchItem): BatchInterface
     {
         if ($batch->getId() === null) {
@@ -42,8 +47,7 @@ final class BatchUpdater implements BatchUpdaterInterface
         try {
             $freshBatch = $this->store->findForUpdate($batch->getId());
 
-            // Update processed only on first attempt
-            if ($batchItem->isRetried() === false) {
+            if ($this->shouldUpdateProcessedCount($batchItem)) {
                 $freshBatch->setProcessed($freshBatch->countProcessed() + 1);
             }
 
@@ -89,5 +93,12 @@ final class BatchUpdater implements BatchUpdaterInterface
 
             throw $throwable;
         }
+    }
+
+    private function shouldUpdateProcessedCount(BatchItemInterface $batchItem): bool
+    {
+        // Update processed only on first attempt and/or if not pending approval
+        return $batchItem->isRetried() === false
+            && $batchItem->getStatus() !== BatchItemInterface::STATUS_SUCCESS_PENDING_APPROVAL;
     }
 }

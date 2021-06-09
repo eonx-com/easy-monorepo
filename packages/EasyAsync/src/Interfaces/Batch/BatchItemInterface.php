@@ -26,6 +26,11 @@ interface BatchItemInterface
      */
     public const STATUS_SUCCESS = 'success';
 
+    /**
+     * @var string
+     */
+    public const STATUS_SUCCESS_PENDING_APPROVAL = 'success_pending_approval';
+
     public function getAttempts(): int;
 
     public function getBatchId(): string;
@@ -49,7 +54,11 @@ interface BatchItemInterface
 
     public function getThrowable(): ?\Throwable;
 
+    public function isApprovalRequired(): bool;
+
     public function isRetried(): bool;
+
+    public function setApprovalRequired(?bool $approvalRequired = null): self;
 
     public function setAttempts(int $attempts): self;
 

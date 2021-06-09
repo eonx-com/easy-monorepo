@@ -39,6 +39,11 @@ final class BatchItem implements BatchItemInterface
     private $reasonParams;
 
     /**
+     * @var bool
+     */
+    private $approvalRequired = false;
+
+    /**
      * @var \DateTimeInterface
      */
     private $startedAt;
@@ -120,9 +125,21 @@ final class BatchItem implements BatchItemInterface
         return $this->throwable;
     }
 
+    public function isApprovalRequired(): bool
+    {
+        return $this->approvalRequired;
+    }
+
     public function isRetried(): bool
     {
         return $this->getAttempts() > 1;
+    }
+
+    public function setApprovalRequired(?bool $approvalRequired = null): BatchItemInterface
+    {
+        $this->approvalRequired = $approvalRequired ?? true;
+
+        return $this;
     }
 
     public function setAttempts(int $attempts): BatchItemInterface
