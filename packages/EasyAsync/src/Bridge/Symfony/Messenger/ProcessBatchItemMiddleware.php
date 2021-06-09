@@ -53,7 +53,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
 
         $batchItem = $this->batchItemFactory->create($batchId, \get_class($envelope->getMessage()), $batchItemId);
         $batchItem->setAttempts($batchItemAttempts);
-        $batchItem->setRequiresApproval($batchItemRequiresApprovalStamp instanceof BatchItemRequiresApprovalStamp);
+        $batchItem->setApprovalRequired($batchItemRequiresApprovalStamp instanceof BatchItemRequiresApprovalStamp);
 
         try {
             return $this->processor->process($batchItem, $func);
