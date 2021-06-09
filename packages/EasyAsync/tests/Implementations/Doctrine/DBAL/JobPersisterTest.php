@@ -169,7 +169,7 @@ final class JobPersisterTest extends AbstractTestCase
                 ->atLeast()
                 ->once()
                 ->withArgs(static function (string $select): bool {
-                    return \in_array($select, ['COUNT(DISTINCT 1) as _count_1', '*'], true);
+                    return \in_array($select, ['COUNT(1) as _count_1', '*'], true);
                 })
                 ->andReturnSelf();
 
