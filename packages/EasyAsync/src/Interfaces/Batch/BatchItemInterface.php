@@ -31,8 +31,6 @@ interface BatchItemInterface
      */
     public const STATUS_SUCCESS_PENDING_APPROVAL = 'success_pending_approval';
 
-    public function doesRequireApproval(): bool;
-
     public function getAttempts(): int;
 
     public function getBatchId(): string;
@@ -56,7 +54,11 @@ interface BatchItemInterface
 
     public function getThrowable(): ?\Throwable;
 
+    public function isApprovalRequired(): bool;
+
     public function isRetried(): bool;
+
+    public function setApprovalRequired(?bool $approvalRequired = null): self;
 
     public function setAttempts(int $attempts): self;
 
@@ -70,8 +72,6 @@ interface BatchItemInterface
      * @param mixed[] $params
      */
     public function setReasonParams(array $params): self;
-
-    public function setRequiresApproval(?bool $requiresApproval = null): self;
 
     public function setStartedAt(\DateTimeInterface $startedAt): self;
 

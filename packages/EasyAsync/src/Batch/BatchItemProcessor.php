@@ -88,7 +88,7 @@ final class BatchItemProcessor implements BatchItemProcessorInterface
             $result = $func();
 
             $batchItem->setStatus(
-                $batchItem->doesRequireApproval()
+                $batchItem->isApprovalRequired()
                     ? BatchItemInterface::STATUS_SUCCESS_PENDING_APPROVAL
                     : BatchItemInterface::STATUS_SUCCESS
             );

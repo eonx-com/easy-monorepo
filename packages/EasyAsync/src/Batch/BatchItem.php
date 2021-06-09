@@ -39,9 +39,9 @@ final class BatchItem implements BatchItemInterface
     private $reasonParams;
 
     /**
-     * @var null|bool
+     * @var bool
      */
-    private $requiresApproval;
+    private $approvalRequired = false;
 
     /**
      * @var \DateTimeInterface
@@ -70,11 +70,6 @@ final class BatchItem implements BatchItemInterface
         $this->targetClass = $targetClass;
         $this->id = $id;
         $this->status = self::STATUS_PENDING;
-    }
-
-    public function doesRequireApproval(): bool
-    {
-        return $this->requiresApproval ?? false;
     }
 
     public function getAttempts(): int
@@ -130,9 +125,21 @@ final class BatchItem implements BatchItemInterface
         return $this->throwable;
     }
 
+    public function isApprovalRequired(): bool
+    {
+        return $this->approvalRequired;
+    }
+
     public function isRetried(): bool
     {
         return $this->getAttempts() > 1;
+    }
+
+    public function setApprovalRequired(?bool $approvalRequired = null): BatchItemInterface
+    {
+        $this->approvalRequired = $approvalRequired ?? true;
+
+        return $this;
     }
 
     public function setAttempts(int $attempts): BatchItemInterface
@@ -169,13 +176,6 @@ final class BatchItem implements BatchItemInterface
     public function setReasonParams(array $params): BatchItemInterface
     {
         $this->reasonParams = $params;
-
-        return $this;
-    }
-
-    public function setRequiresApproval(?bool $requiresApproval = null): BatchItemInterface
-    {
-        $this->requiresApproval = $requiresApproval;
 
         return $this;
     }
