@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler;
 
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
+use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\TraceableErrorHandlerInterface;
+use EonX\EasyErrorHandler\Bridge\Symfony\TraceableErrorHandler;
+use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 class ApiPlatformCompilerPass implements CompilerPassInterface
 {
