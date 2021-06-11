@@ -36,6 +36,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ErrorHandlerDataCollector::class)
         ->tag('data_collector', [
             'id' => 'error_handler.error_handler_collector',
+            'template' => '@EasyErrorHandlerSymfony/Collector/error_handler_collector.html.twig',
         ]);
 
     // EventListener

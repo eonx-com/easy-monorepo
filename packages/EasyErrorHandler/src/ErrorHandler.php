@@ -55,6 +55,16 @@ final class ErrorHandler implements ErrorHandlerInterface
         $this->isVerbose = $isVerbose ?? false;
     }
 
+    public function getBuilders(): array
+    {
+        return $this->builders;
+    }
+
+    public function getReporters(): array
+    {
+        return $this->reporters;
+    }
+
     public function isVerbose(): bool
     {
         return $this->isVerbose;
