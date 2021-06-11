@@ -3,7 +3,7 @@
 {% block toolbar %}
     {% if collector.renderedErrorResponses|length > 0 or collector.reportedErrors|length > 0 %}
         {% set icon %}
-            {{ include('@EasyErrorHandlerSymfony/Icon/business-time-solid.svg') }}
+            {{ include('@EasyErrorHandlerSymfony/Icon/exclamation-circle-solid.svg') }}
             <span class="sf-toolbar-value">{{ collector.reportedErrors|length }}</span>
         {% endset %}
 
@@ -25,7 +25,7 @@
 {% block menu %}
     {# This left-hand menu appears when using the full-screen profiler. #}
     <span class="label {{ collector.renderedErrorResponses|length == 0 and collector.reportedErrors|length == 0 ? 'disabled' }}">
-        <span class="icon">{{ include('@EasyErrorHandlerSymfony/Icon/business-time-solid.svg') }}</span>
+        <span class="icon">{{ include('@EasyErrorHandlerSymfony/Icon/exclamation-circle-solid.svg') }}</span>
         <strong>Error Handler</strong>
     </span>
 {% endblock %}
