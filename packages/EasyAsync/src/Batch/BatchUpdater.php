@@ -74,7 +74,7 @@ final class BatchUpdater implements BatchUpdaterInterface
             if ($freshBatch->countTotal() === $freshBatch->countProcessed()) {
                 $freshBatch->setFinishedAt(Carbon::now('UTC'));
                 $freshBatch->setStatus(
-                    $batch->countFailed() > 0 ? BatchInterface::STATUS_FAILED : BatchInterface::STATUS_SUCCESS
+                    $freshBatch->countFailed() > 0 ? BatchInterface::STATUS_FAILED : BatchInterface::STATUS_SUCCESS
                 );
             }
 
