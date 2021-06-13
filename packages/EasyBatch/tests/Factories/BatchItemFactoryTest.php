@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Factories;
 
-use EonX\EasyBatch\BatchItem;
+use EonX\EasyBatch\Objects\BatchItem;
 use EonX\EasyBatch\Events\BatchItemCreatedEvent;
 use EonX\EasyBatch\Factories\BatchItemFactory;
 use EonX\EasyBatch\Tests\AbstractTestCase;
@@ -62,7 +62,7 @@ final class BatchItemFactoryTest extends AbstractTestCase
         $sfEventDispatcher->addListener(BatchItemCreatedEvent::class, $listener);
         $eventDispatcher = new EventDispatcher($sfEventDispatcher);
 
-        $factory = new BatchItemFactory(null, $eventDispatcher);
+        $factory = new BatchItemFactory(null, null, $eventDispatcher);
 
         $batchItem = $factory->create('batch-id', 'target-class');
 

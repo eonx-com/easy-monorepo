@@ -26,6 +26,8 @@ use EonX\EasyBatch\BatchUpdater;
 use EonX\EasyBatch\Interfaces\BatchStoreInterface;
 use EonX\EasyBatch\Stores\DoctrineDbalStore;
 use EonX\EasyBatch\Interfaces\BatchItemStoreInterface;
+use EonX\EasyBatch\Interfaces\BatchItemProcessorInterface;
+use EonX\EasyBatch\BatchItemProcessor;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -37,7 +39,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure()
         ->bind('$dateTimeFormat', '%' . BridgeConstantsInterface::PARAM_DATE_TIME_FORMAT . '%')
-        ->bind('$eventDispatcher', ref(EventDispatcherInterface::class));
+        ->bind('$dispatcher', ref(EventDispatcherInterface::class));
 
     // Approver
     $services->set(BatchObjectApproverInterface::class, BatchObjectApprover::class);
@@ -73,6 +75,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Middleware
     $services->set(DispatchBatchMiddleware::class);
     $services->set(ProcessBatchItemMiddleware::class);
+
+    // Processor
+    $services->set(BatchItemProcessorInterface::class, BatchItemProcessor::class);
 
     // Repositories
     $services->set(BatchRepositoryInterface::class, BatchRepository::class);
