@@ -12,9 +12,9 @@ Coming soon...
 ## Roadmap
 
 - [ ] Handle Timezones properly
-- [ ] ID strategy
+- [x] ID strategy
 - [ ] Batch status strategy
 - [ ] Store exceptions
-- [ ] Batch in Batch
+- [x] Batch in Batch
 - [ ] Add items to existing batch
-- [ ] Symfony bridge
+- [x] Symfony bridge
