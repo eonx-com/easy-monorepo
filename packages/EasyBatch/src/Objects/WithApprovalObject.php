@@ -6,7 +6,7 @@ namespace EonX\EasyBatch\Objects;
 
 use EonX\EasyBatch\Interfaces\BatchObjectRequiresApprovalInterface;
 
-final class WithApprovalBatchObject extends AbstractBatchObjectDecorator implements BatchObjectRequiresApprovalInterface
+final class WithApprovalObject extends AbstractObjectDecorator implements BatchObjectRequiresApprovalInterface
 {
     // No body needed.
 }

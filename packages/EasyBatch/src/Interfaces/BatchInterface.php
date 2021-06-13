@@ -15,6 +15,11 @@ interface BatchInterface extends BatchObjectInterface
     public function countTotal(): int;
 
     /**
+     * @return null|int|string
+     */
+    public function getBatchItemId();
+
+    /**
      * @return iterable<object>
      */
     public function getItems(): iterable;
@@ -22,6 +27,11 @@ interface BatchInterface extends BatchObjectInterface
     public function getName(): ?string;
 
     public function isCompleted(): bool;
+
+    /**
+     * @param int|string $batchItemId
+     */
+    public function setBatchItemId($batchItemId): self;
 
     public function setFailed(int $failed): self;
 

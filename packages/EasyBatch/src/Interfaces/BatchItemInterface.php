@@ -6,6 +6,11 @@ namespace EonX\EasyBatch\Interfaces;
 
 interface BatchItemInterface extends BatchObjectInterface
 {
+    /**
+     * @var string
+     */
+    public const STATUS_BATCH_PENDING_APPROVAL = 'batch_pending_approval';
+
     public function getAttempts(): int;
 
     public function getBatchId(): string;

@@ -61,18 +61,42 @@ final class BatchUpdater implements BatchUpdaterInterface
                 $freshBatch->setStatus(BatchInterface::STATUS_PROCESSING);
             }
 
-            // Last item of the batch
-            if ($freshBatch->countTotal() === $freshBatch->countProcessed()) {
-                $freshBatch->setFinishedAt(Carbon::now('UTC'));
-                $freshBatch->setStatus(
-                    $freshBatch->countFailed() > 0 ? BatchInterface::STATUS_FAILED : BatchInterface::STATUS_SUCCESS
-                );
-            }
-
-            return $freshBatch;
+            return $this->handleBatchStatus($freshBatch);
         };
 
         return $this->updateAtomic($batch, $update);
+    }
+
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchIdRequiredException
+     */
+    public function updateTotal(BatchInterface $batch, int $add): BatchInterface
+    {
+        $update = function (BatchInterface $freshBatch) use ($add): BatchInterface {
+            $freshBatch->setTotal($freshBatch->countTotal() + $add);
+
+            return $this->handleBatchStatus($freshBatch);
+        };
+
+        return $this->updateAtomic($batch, $update);
+    }
+
+    private function handleBatchStatus(BatchInterface $batch): BatchInterface
+    {
+        // Last item of the batch
+        if ($batch->countTotal() === $batch->countProcessed()) {
+            $batch->setFinishedAt(Carbon::now('UTC'));
+            $batch->setStatus(
+                $batch->countFailed() > 0 ? BatchInterface::STATUS_FAILED : BatchInterface::STATUS_SUCCESS
+            );
+        }
+
+        // Handle previously completed batch
+        if ($batch->isCompleted() === false && $batch->countProcessed() > 0) {
+            $batch->setStatus(BatchInterface::STATUS_PROCESSING);
+        }
+
+        return $batch;
     }
 
     private function shouldUpdateProcessedCount(BatchItemInterface $batchItem): bool

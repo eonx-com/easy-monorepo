@@ -12,4 +12,11 @@ interface BatchItemRepositoryInterface
      * @param int|string $id
      */
     public function find($id): ?BatchItemInterface;
+
+    /**
+     * @param int|string $id
+     *
+     * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
+     */
+    public function findOrFail($id): BatchItemInterface;
 }

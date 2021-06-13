@@ -10,6 +10,7 @@ use EonX\EasyBatch\Bridge\Symfony\Listeners\BatchItemFailedAttemptsAndIdListener
 use EonX\EasyBatch\Bridge\Symfony\Listeners\BatchItemFailedClassListener;
 use EonX\EasyBatch\Bridge\Symfony\Listeners\BatchItemFailedRequiresApprovalListener;
 use EonX\EasyBatch\Bridge\Symfony\Listeners\BatchItemRequiresApprovalListener;
+use EonX\EasyBatch\Listeners\ChildBatchCompletedListener;
 
 interface BridgeConstantsInterface
 {
@@ -23,6 +24,7 @@ interface BridgeConstantsInterface
         BatchItemFailedClassListener::class,
         BatchItemFailedRequiresApprovalListener::class,
         BatchItemRequiresApprovalListener::class,
+        ChildBatchCompletedListener::class,
     ];
 
     /**

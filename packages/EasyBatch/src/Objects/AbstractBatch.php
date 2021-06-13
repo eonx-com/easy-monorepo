@@ -9,6 +9,11 @@ use EonX\EasyBatch\Interfaces\BatchInterface;
 abstract class AbstractBatch extends AbstractBatchObject implements BatchInterface
 {
     /**
+     * @var int|string
+     */
+    private $batchItemId;
+
+    /**
      * @var int
      */
     private $failed = 0;
@@ -59,6 +64,14 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     }
 
     /**
+     * @return null|int|string
+     */
+    public function getBatchItemId()
+    {
+        return $this->batchItemId;
+    }
+
+    /**
      * @return iterable<object>
      */
     public function getItems(): iterable
@@ -74,6 +87,16 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     public function isCompleted(): bool
     {
         return \in_array($this->getStatus(), [self::STATUS_FAILED, self::STATUS_SUCCESS], true);
+    }
+
+    /**
+     * @param int|string $batchItemId
+     */
+    public function setBatchItemId($batchItemId): BatchInterface
+    {
+        $this->batchItemId = $batchItemId;
+
+        return $this;
     }
 
     public function setFailed(int $failed): BatchInterface
@@ -136,6 +159,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     public function toArray(): array
     {
         return \array_merge(parent::toArray(), [
+            'batch_item_id' => $this->getBatchItemId(),
             'failed' => $this->countFailed(),
             'name' => $this->getName(),
             'processed' => $this->countProcessed(),
