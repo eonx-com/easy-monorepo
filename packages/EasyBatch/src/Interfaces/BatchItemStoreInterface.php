@@ -6,5 +6,8 @@ namespace EonX\EasyBatch\Interfaces;
 
 interface BatchItemStoreInterface extends BatchObjectStoreInterface
 {
-    // No body needed.
+    /**
+     * @var string
+     */
+    public const DEFAULT_BATCH_ITEM_TABLE = 'easy_batch_items';
 }

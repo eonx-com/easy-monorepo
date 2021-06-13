@@ -14,9 +14,12 @@ use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class BatchItemFactory extends AbstractBatchObjectFactory implements BatchItemFactoryInterface
 {
-    public function __construct(?string $class = null, ?EventDispatcherInterface $dispatcher = null)
-    {
-        parent::__construct($class ?? BatchItem::class, null, $dispatcher);
+    public function __construct(
+        ?string $class = null,
+        ?string $dateTimeFormat = null,
+        ?EventDispatcherInterface $dispatcher = null
+    ) {
+        parent::__construct($class ?? BatchItem::class, $dateTimeFormat, $dispatcher);
     }
 
     /**

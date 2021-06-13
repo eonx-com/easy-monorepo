@@ -14,9 +14,12 @@ use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class BatchFactory extends AbstractBatchObjectFactory implements BatchFactoryInterface
 {
-    public function __construct(?string $class = null, ?EventDispatcherInterface $dispatcher = null)
-    {
-        parent::__construct($class ?? Batch::class, null, $dispatcher);
+    public function __construct(
+        ?string $class = null,
+        ?string $dateTimeFormat = null,
+        ?EventDispatcherInterface $dispatcher = null
+    ) {
+        parent::__construct($class ?? Batch::class, $dateTimeFormat, $dispatcher);
     }
 
     public function createFromCallable(callable $itemsProvider, ?string $class = null): BatchInterface

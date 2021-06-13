@@ -9,23 +9,13 @@ interface BatchStoreInterface extends BatchObjectStoreInterface
     /**
      * @var string
      */
-    public const DATETIME_FORMAT = 'Y-m-d H:i:s';
-
-    /**
-     * @var string
-     */
-    public const DEFAULT_TABLE = 'easy_async_batches';
+    public const DEFAULT_BATCH_TABLE = 'easy_batches';
 
     public function cancelUpdate(): void;
 
-    /**
-     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
-     */
-    public function findForUpdate(string $batchId): BatchInterface;
-
     public function finishUpdate(): void;
 
-    public function startUpdate(): void;
+    public function lockForUpdate($batchId): void;
 
-    public function store(BatchInterface $batch): BatchInterface;
+    public function startUpdate(): void;
 }

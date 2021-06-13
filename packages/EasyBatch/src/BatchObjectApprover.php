@@ -6,15 +6,12 @@ namespace EonX\EasyBatch;
 
 use EonX\EasyBatch\Events\BatchObjectApprovedEvent;
 use EonX\EasyBatch\Exceptions\BatchItemStatusInvalidException;
-use EonX\EasyBatch\Exceptions\BatchNotFoundException;
 use EonX\EasyBatch\Interfaces\BatchInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectApproverInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
-use EonX\EasyBatch\Interfaces\BatchStoreInterface;
-use EonX\EasyBatch\Interfaces\BatchUpdaterInterface;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class BatchObjectApprover implements BatchObjectApproverInterface
