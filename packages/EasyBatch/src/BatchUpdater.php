@@ -102,8 +102,7 @@ final class BatchUpdater implements BatchUpdaterInterface
     private function shouldUpdateProcessedCount(BatchItemInterface $batchItem): bool
     {
         // Update processed only on first attempt and/or if not pending approval
-        return $batchItem->isRetried() === false
-            && $batchItem->getStatus() !== BatchItemInterface::STATUS_SUCCESS_PENDING_APPROVAL;
+        return $batchItem->isRetried() === false && $batchItem->isCompleted();
     }
 
     /**

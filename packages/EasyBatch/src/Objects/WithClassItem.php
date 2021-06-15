@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Objects;
 
-use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemWithClassInterface;
 
 class WithClassItem extends AbstractObjectDecorator implements BatchItemWithClassInterface
@@ -13,11 +12,11 @@ class WithClassItem extends AbstractObjectDecorator implements BatchItemWithClas
      */
     private $class;
 
-    public function __construct(BatchItemInterface $batchItem, string $class)
+    public function __construct(object $item, string $class)
     {
         $this->class = $class;
 
-        parent::__construct($batchItem);
+        parent::__construct($item);
     }
 
     public function getClass(): string

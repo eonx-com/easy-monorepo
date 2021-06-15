@@ -26,8 +26,6 @@ interface BatchInterface extends BatchObjectInterface
 
     public function getName(): ?string;
 
-    public function isCompleted(): bool;
-
     /**
      * @param int|string $batchItemId
      */

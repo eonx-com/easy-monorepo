@@ -84,11 +84,6 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
         return $this->name;
     }
 
-    public function isCompleted(): bool
-    {
-        return \in_array($this->getStatus(), [self::STATUS_FAILED, self::STATUS_SUCCESS], true);
-    }
-
     /**
      * @param int|string $batchItemId
      */
