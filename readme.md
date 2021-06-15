@@ -16,6 +16,7 @@ you can look [there][1].
 - [EasyAsync](https://github.com/eonx-com/easy-async): Makes dealing with async processes easier
 - [EasyAwsCredentialsFinder](https://github.com/eonx-com/easy-aws-credentials-finder): Tool to ease finding aws credentials in project/machine
 - [EasyBankFiles](https://github.com/eonx-com/easy-bank-files): Parsers/Generators for common bank files
+- [EasyBatch](https://github.com/eonx-com/easy-batch): Batching async processes made easy
 - [EasyBugsnag](https://github.com/eonx-com/easy-bugsnag): Ease integrating bugsnag in your PHP projects
 - [EasyCore](https://github.com/eonx-com/easy-core): Provides core features for Lumen applications
 - [EasyDecision](https://github.com/eonx-com/easy-decision): Your most complex decisions taken the easiest way
