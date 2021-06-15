@@ -29,6 +29,8 @@ use EonX\EasyBatch\Interfaces\BatchItemStoreInterface;
 use EonX\EasyBatch\Interfaces\BatchItemProcessorInterface;
 use EonX\EasyBatch\BatchItemProcessor;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyBatch\Interfaces\BatchItemUpdaterInterface;
+use EonX\EasyBatch\BatchItemUpdater;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
@@ -92,6 +94,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(BatchItemStoreInterface::class, DoctrineDbalStore::class)
         ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_TABLE . '%');
 
-    // Updater
+    // Updaters
     $services->set(BatchUpdaterInterface::class, BatchUpdater::class);
+    $services->set(BatchItemUpdaterInterface::class, BatchItemUpdater::class);
 };

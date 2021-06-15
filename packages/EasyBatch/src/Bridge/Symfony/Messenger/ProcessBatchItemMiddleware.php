@@ -6,6 +6,7 @@ namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
 
 use EonX\EasyBatch\Bridge\Symfony\Events\BatchItemCreatedForEnvelopeEvent;
 use EonX\EasyBatch\Bridge\Symfony\Events\BatchItemFailedForEnvelopeEvent;
+use EonX\EasyBatch\Bridge\Symfony\Events\BatchItemHandledForEnvelopeEvent;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemClassStamp;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchStamp;
 use EonX\EasyBatch\Exceptions\BatchCancelledException;
@@ -65,7 +66,14 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         $batchItem = $event->getBatchItem();
 
         try {
-            return $this->processor->process($batchItem, $func);
+            /** @var \Symfony\Component\Messenger\Envelope $newEnvelope */
+            $newEnvelope = $this->processor->process($batchItem, $func);
+
+            $handledEvent = new BatchItemHandledForEnvelopeEvent($batchItem, $newEnvelope);
+
+            $this->dispatcher->dispatch($handledEvent);
+
+            return $handledEvent->getEnvelope();
         } catch (BatchNotFoundException | BatchCancelledException $exception) {
             // Do not retry if batch either not found or cancelled
             throw new UnrecoverableMessageHandlingException($exception->getMessage());

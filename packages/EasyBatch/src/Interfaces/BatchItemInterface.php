@@ -13,7 +13,10 @@ interface BatchItemInterface extends BatchObjectInterface
 
     public function getAttempts(): int;
 
-    public function getBatchId(): string;
+    /**
+     * @return int|string
+     */
+    public function getBatchId();
 
     public function getReason(): ?string;
 
