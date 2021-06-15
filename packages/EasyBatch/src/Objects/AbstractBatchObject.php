@@ -92,7 +92,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
 
     public function isCompleted(): bool
     {
-        return \in_array($this->getStatus(), [self::STATUS_FAILED, self::STATUS_SUCCESS], true);
+        return \in_array($this->getStatus(), [self::STATUS_FAILED, self::STATUS_SUCCEEDED], true);
     }
 
     public function setCancelledAt(\DateTimeInterface $cancelledAt): BatchObjectInterface

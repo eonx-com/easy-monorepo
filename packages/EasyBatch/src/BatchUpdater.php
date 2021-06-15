@@ -51,7 +51,7 @@ final class BatchUpdater implements BatchUpdaterInterface
                 case BatchItemInterface::STATUS_FAILED:
                     $freshBatch->setFailed($freshBatch->countFailed() + 1);
                     break;
-                case BatchItemInterface::STATUS_SUCCESS:
+                case BatchItemInterface::STATUS_SUCCEEDED:
                     $freshBatch->setSucceeded($freshBatch->countSucceeded() + 1);
             }
 
@@ -87,7 +87,7 @@ final class BatchUpdater implements BatchUpdaterInterface
         if ($batch->countTotal() === $batch->countProcessed()) {
             $batch->setFinishedAt(Carbon::now('UTC'));
             $batch->setStatus(
-                $batch->countFailed() > 0 ? BatchInterface::STATUS_FAILED : BatchInterface::STATUS_SUCCESS
+                $batch->countFailed() > 0 ? BatchInterface::STATUS_FAILED : BatchInterface::STATUS_SUCCEEDED
             );
         }
 

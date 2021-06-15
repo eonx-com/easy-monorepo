@@ -47,19 +47,19 @@ final class BatchObjectApprover implements BatchObjectApproverInterface
      */
     public function approve(BatchObjectInterface $batchObject): BatchObjectInterface
     {
-        if ($batchObject->getStatus() === BatchObjectInterface::STATUS_SUCCESS) {
+        if ($batchObject->getStatus() === BatchObjectInterface::STATUS_SUCCEEDED) {
             return $batchObject;
         }
 
-        if ($batchObject->getStatus() !== BatchObjectInterface::STATUS_SUCCESS_PENDING_APPROVAL) {
+        if ($batchObject->getStatus() !== BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL) {
             throw new BatchItemStatusInvalidException(\sprintf(
                 'BatchItem must have status "%s" to be approved, "%s" given',
-                BatchItemInterface::STATUS_SUCCESS_PENDING_APPROVAL,
+                BatchItemInterface::STATUS_SUCCEEDED_PENDING_APPROVAL,
                 $batchObject->getStatus()
             ));
         }
 
-        $batchObject->setStatus(BatchObjectInterface::STATUS_SUCCESS);
+        $batchObject->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
 
         if ($batchObject instanceof BatchInterface) {
             $this->batchRepository->save($batchObject);

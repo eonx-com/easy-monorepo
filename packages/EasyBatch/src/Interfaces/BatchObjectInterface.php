@@ -44,12 +44,12 @@ interface BatchObjectInterface
     /**
      * @var string
      */
-    public const STATUS_SUCCESS = 'success';
+    public const STATUS_SUCCEEDED = 'succeeded';
 
     /**
      * @var string
      */
-    public const STATUS_SUCCESS_PENDING_APPROVAL = 'success_pending_approval';
+    public const STATUS_SUCCEEDED_PENDING_APPROVAL = 'succeeded_pending_approval';
 
     public function getCancelledAt(): ?\DateTimeInterface;
 
