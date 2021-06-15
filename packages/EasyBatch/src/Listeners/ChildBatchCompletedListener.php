@@ -60,7 +60,7 @@ final class ChildBatchCompletedListener
     public function __invoke(BatchCompletedEvent $event): void
     {
         $batch = $event->getBatch();
-        $batchItemId = $batch->getBatchItemId();
+        $batchItemId = $batch->getParentBatchItemId();
 
         // Batch does not belong to another batch
         if ($batchItemId === null) {

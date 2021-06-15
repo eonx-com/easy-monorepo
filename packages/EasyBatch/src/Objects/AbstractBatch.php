@@ -11,7 +11,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     /**
      * @var int|string
      */
-    private $batchItemId;
+    private $parentBatchItemId;
 
     /**
      * @var int
@@ -66,9 +66,9 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     /**
      * @return null|int|string
      */
-    public function getBatchItemId()
+    public function getParentBatchItemId()
     {
-        return $this->batchItemId;
+        return $this->parentBatchItemId;
     }
 
     /**
@@ -87,9 +87,9 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     /**
      * @param int|string $batchItemId
      */
-    public function setBatchItemId($batchItemId): BatchInterface
+    public function setParentBatchItemId($batchItemId): BatchInterface
     {
-        $this->batchItemId = $batchItemId;
+        $this->parentBatchItemId = $batchItemId;
 
         return $this;
     }

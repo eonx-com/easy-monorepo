@@ -125,7 +125,7 @@ final class BatchDispatcher implements BatchDispatcherInterface
         $batchItem = $this->batchItemRepository->save($batchItem);
 
         // Associate childBatch with batchItem "placeholder"
-        $childBatch->setBatchItemId($batchItem->getId());
+        $childBatch->setParentBatchItemId($batchItem->getId());
 
         // Dispatch childBatch
         $this->dispatch($childBatch);

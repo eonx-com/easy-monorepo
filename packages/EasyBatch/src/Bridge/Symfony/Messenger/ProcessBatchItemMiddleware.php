@@ -20,6 +20,7 @@ use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 final class ProcessBatchItemMiddleware implements MiddlewareInterface
 {
@@ -82,7 +83,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
 
             $this->dispatcher->dispatch($event);
 
-            throw new HandlerFailedException($failedEvent->getEnvelope(), [$failedEvent->getEnvelope()]);
+            throw new HandlerFailedException($failedEvent->getEnvelope(), [$failedEvent->getThrowable()]);
         }
     }
 
