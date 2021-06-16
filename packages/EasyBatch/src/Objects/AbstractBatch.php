@@ -11,7 +11,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     /**
      * @var int|string
      */
-    private $batchItemId;
+    private $parentBatchItemId;
 
     /**
      * @var int
@@ -66,9 +66,9 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     /**
      * @return null|int|string
      */
-    public function getBatchItemId()
+    public function getParentBatchItemId()
     {
-        return $this->batchItemId;
+        return $this->parentBatchItemId;
     }
 
     /**
@@ -87,9 +87,9 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     /**
      * @param int|string $batchItemId
      */
-    public function setBatchItemId($batchItemId): BatchInterface
+    public function setParentBatchItemId($batchItemId): BatchInterface
     {
-        $this->batchItemId = $batchItemId;
+        $this->parentBatchItemId = $batchItemId;
 
         return $this;
     }
@@ -154,9 +154,9 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     public function toArray(): array
     {
         return \array_merge(parent::toArray(), [
-            'batch_item_id' => $this->getBatchItemId(),
             'failed' => $this->countFailed(),
             'name' => $this->getName(),
+            'parent_batch_item_id' => $this->getParentBatchItemId(),
             'processed' => $this->countProcessed(),
             'succeeded' => $this->countSucceeded(),
             'total' => $this->countTotal(),

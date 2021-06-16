@@ -14,11 +14,14 @@ final class BatchItemStamp implements StampInterface
     private $attempts;
 
     /**
-     * @var string
+     * @var int|string
      */
     private $batchItemId;
 
-    public function __construct(string $batchItemId, int $attempts)
+    /**
+     * @param int|string $batchItemId
+     */
+    public function __construct($batchItemId, int $attempts)
     {
         $this->batchItemId = $batchItemId;
         $this->attempts = $attempts;
@@ -29,7 +32,10 @@ final class BatchItemStamp implements StampInterface
         return $this->attempts;
     }
 
-    public function getBatchItemId(): string
+    /**
+     * @return int|string
+     */
+    public function getBatchItemId()
     {
         return $this->batchItemId;
     }

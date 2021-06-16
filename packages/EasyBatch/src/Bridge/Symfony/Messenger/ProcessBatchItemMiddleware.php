@@ -6,6 +6,7 @@ namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
 
 use EonX\EasyBatch\Bridge\Symfony\Events\BatchItemCreatedForEnvelopeEvent;
 use EonX\EasyBatch\Bridge\Symfony\Events\BatchItemFailedForEnvelopeEvent;
+use EonX\EasyBatch\Bridge\Symfony\Events\BatchItemHandledForEnvelopeEvent;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemClassStamp;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchStamp;
 use EonX\EasyBatch\Exceptions\BatchCancelledException;
@@ -19,6 +20,7 @@ use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 final class ProcessBatchItemMiddleware implements MiddlewareInterface
 {
@@ -65,7 +67,14 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         $batchItem = $event->getBatchItem();
 
         try {
-            return $this->processor->process($batchItem, $func);
+            /** @var \Symfony\Component\Messenger\Envelope $newEnvelope */
+            $newEnvelope = $this->processor->process($batchItem, $func);
+
+            $handledEvent = new BatchItemHandledForEnvelopeEvent($batchItem, $newEnvelope);
+
+            $this->dispatcher->dispatch($handledEvent);
+
+            return $handledEvent->getEnvelope();
         } catch (BatchNotFoundException | BatchCancelledException $exception) {
             // Do not retry if batch either not found or cancelled
             throw new UnrecoverableMessageHandlingException($exception->getMessage());
@@ -74,7 +83,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
 
             $this->dispatcher->dispatch($event);
 
-            throw new HandlerFailedException($failedEvent->getEnvelope(), [$failedEvent->getEnvelope()]);
+            throw new HandlerFailedException($failedEvent->getEnvelope(), [$failedEvent->getThrowable()]);
         }
     }
 

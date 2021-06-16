@@ -14,7 +14,7 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
     private $attempts = 0;
 
     /**
-     * @var string
+     * @var int|string
      */
     private $batchId;
 
@@ -43,7 +43,10 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
         return $this->attempts;
     }
 
-    public function getBatchId(): string
+    /**
+     * @return int|string
+     */
+    public function getBatchId()
     {
         return $this->batchId;
     }

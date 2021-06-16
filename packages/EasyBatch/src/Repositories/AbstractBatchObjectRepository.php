@@ -39,17 +39,21 @@ abstract class AbstractBatchObjectRepository
 
     protected function doSave(BatchObjectInterface $batchObject): void
     {
+        $batchObjectId = $batchObject->getId() ?? $this->idStrategy->generateId();
         $now = Carbon::now('UTC');
 
-        $batchObject->setId($batchObject->getId() ?? $this->idStrategy->generateId());
+        $batchObject->setId($batchObjectId);
         $batchObject->setCreatedAt($batchObject->getCreatedAt() ?? $now);
         $batchObject->setUpdatedAt($now);
 
-        $this->store->has($batchObject->getId()) === false
+        $this->store->has($batchObjectId) === false
             ? $this->store->persist($batchObject->toArray())
-            : $this->store->update($batchObject->getId(), $batchObject->toArray());
+            : $this->store->update($batchObjectId, $batchObject->toArray());
     }
 
+    /**
+     * @param int|string $id
+     */
     protected function doFind($id): ?BatchObjectInterface
     {
         $data = $this->store->find($id);

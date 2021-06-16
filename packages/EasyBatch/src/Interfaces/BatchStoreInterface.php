@@ -15,6 +15,9 @@ interface BatchStoreInterface extends BatchObjectStoreInterface
 
     public function finishUpdate(): void;
 
+    /**
+     * @param int|string $batchId
+     */
     public function lockForUpdate($batchId): void;
 
     public function startUpdate(): void;

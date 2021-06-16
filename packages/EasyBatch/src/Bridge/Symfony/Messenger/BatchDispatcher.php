@@ -8,6 +8,7 @@ use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemClassStamp;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchObjectRequiresApprovalStamp;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchStamp;
 use EonX\EasyBatch\Exceptions\BatchIdRequiredException;
+use EonX\EasyBatch\Exceptions\BatchItemIdRequiredException;
 use EonX\EasyBatch\Interfaces\BatchCancellerInterface;
 use EonX\EasyBatch\Interfaces\BatchDispatcherInterface;
 use EonX\EasyBatch\Interfaces\BatchInterface;
@@ -117,15 +118,27 @@ final class BatchDispatcher implements BatchDispatcherInterface
      */
     private function dispatchChildBatch(BatchInterface $parentBatch, BatchInterface $childBatch): void
     {
+        // Already validated that parentBatch id is set in dispatch()
+        /** @var int|string $parentBatchId */
+        $parentBatchId = $parentBatch->getId();
+
         // Create batchItem "placeholder" for childBatch in parentBatch
-        $batchItem = $this->batchItemFactory->create($parentBatch->getId(), \get_class($childBatch));
+        $batchItem = $this->batchItemFactory->create($parentBatchId, \get_class($childBatch));
         $batchItem->setStatus(BatchItemInterface::STATUS_BATCH_PENDING_APPROVAL);
 
         // Save batchItem "placeholder"
         $batchItem = $this->batchItemRepository->save($batchItem);
 
+        if ($batchItem->getId() === null) {
+            throw new BatchItemIdRequiredException(\sprintf(
+                'BatchItem is required to have an ID before dispatching associated Batch, make sure you set
+                 this ID manually, or that your implementation of %s is setting it.',
+                BatchItemRepositoryInterface::class
+            ));
+        }
+
         // Associate childBatch with batchItem "placeholder"
-        $childBatch->setBatchItemId($batchItem->getId());
+        $childBatch->setParentBatchItemId($batchItem->getId());
 
         // Dispatch childBatch
         $this->dispatch($childBatch);

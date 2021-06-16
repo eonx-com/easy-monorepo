@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Listeners;
 
 use EonX\EasyBatch\Events\BatchCompletedEvent;
-use EonX\EasyBatch\Events\BatchItemFailedEvent;
 use EonX\EasyBatch\Interfaces\BatchInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
@@ -18,6 +17,21 @@ final class ChildBatchCompletedListener
      * @var \EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface
      */
     private $batchItemRepository;
+
+    /**
+     * @var \EonX\EasyBatch\Interfaces\BatchItemUpdaterInterface
+     */
+    private $batchItemUpdater;
+
+    /**
+     * @var \EonX\EasyBatch\Interfaces\BatchRepositoryInterface
+     */
+    private $batchRepository;
+
+    /**
+     * @var \EonX\EasyBatch\Interfaces\BatchUpdaterInterface
+     */
+    private $batchUpdater;
 
     /**
      * @var \EonX\EasyBatch\Interfaces\BatchObjectApproverInterface
@@ -41,31 +55,27 @@ final class ChildBatchCompletedListener
 
     /**
      * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
      */
     public function __invoke(BatchCompletedEvent $event): void
     {
         $batch = $event->getBatch();
-        $batchItemId = $batch->getBatchItemId();
+        $batchItemId = $batch->getParentBatchItemId();
 
         // Batch does not belong to another batch
         if ($batchItemId === null) {
             return;
         }
 
+        // Update batchItem and parent batch
+
         $batchItem = $this->batchItemRepository->findOrFail($batchItemId);
+        $parentBatch = $this->batchRepository->findOrFail($batchItem->getBatchId());
 
-        // If batch successful, approval batchItem "placeholder" in parent batch
-        if ($batch->getStatus() === BatchInterface::STATUS_SUCCESS) {
-            $this->batchObjectApprover->approve($batchItem);
+        $batchItem->setStatus($batch->getStatus());
 
-            return;
-        }
+        $batchItem = $this->batchItemUpdater->update($batchItem);
 
-        // Otherwise, fail batchItem "placeholder"
-        $batchItem->setStatus(BatchItemInterface::STATUS_FAILED);
-
-        $this->batchItemRepository->save($batchItem);
-
-        $this->dispatcher->dispatch(new BatchItemFailedEvent($batchItem));
+        $this->batchUpdater->updateForItem($parentBatch, $batchItem);
     }
 }

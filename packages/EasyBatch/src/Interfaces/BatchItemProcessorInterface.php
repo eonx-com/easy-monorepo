@@ -9,8 +9,8 @@ interface BatchItemProcessorInterface
     /**
      * @return mixed The return from $func
      *
-     * @throws \EonX\EasyBatch\Exceptions\Batch\BatchCancelledException
-     * @throws \EonX\EasyBatch\Exceptions\Batch\BatchNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchCancelledException
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
      */
     public function process(BatchItemInterface $batchItem, callable $func);
 }

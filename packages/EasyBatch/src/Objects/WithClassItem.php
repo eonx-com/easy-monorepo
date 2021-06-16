@@ -5,7 +5,7 @@ namespace EonX\EasyBatch\Objects;
 
 use EonX\EasyBatch\Interfaces\BatchItemWithClassInterface;
 
-class WithClassItem extends AbstractObjectDecorator implements BatchItemWithClassInterface
+final class WithClassItem extends AbstractObjectDecorator implements BatchItemWithClassInterface
 {
     /**
      * @var string
