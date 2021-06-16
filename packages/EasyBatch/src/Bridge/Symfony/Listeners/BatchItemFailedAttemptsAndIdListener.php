@@ -13,9 +13,11 @@ final class BatchItemFailedAttemptsAndIdListener
     {
         $batchItem = $event->getBatchItem();
 
-        // Allow to handle retry for existing batchItem by setting id, attempts on envelope for retry
-        $newBatchItemStamp = new BatchItemStamp($batchItem->getId(), $batchItem->getAttempts());
+        if ($batchItem->getId() !== null) {
+            // Allow to handle retry for existing batchItem by setting id, attempts on envelope for retry
+            $newBatchItemStamp = new BatchItemStamp($batchItem->getId(), $batchItem->getAttempts());
 
-        $event->setEnvelope($event->getEnvelope()->with($newBatchItemStamp));
+            $event->setEnvelope($event->getEnvelope()->with($newBatchItemStamp));
+        }
     }
 }

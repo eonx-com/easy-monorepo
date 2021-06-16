@@ -154,9 +154,9 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     public function toArray(): array
     {
         return \array_merge(parent::toArray(), [
-            'batch_item_id' => $this->getBatchItemId(),
             'failed' => $this->countFailed(),
             'name' => $this->getName(),
+            'parent_batch_item_id' => $this->getParentBatchItemId(),
             'processed' => $this->countProcessed(),
             'succeeded' => $this->countSucceeded(),
             'total' => $this->countTotal(),

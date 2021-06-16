@@ -14,11 +14,13 @@ final class BatchItemAttemptsAndIdListener
         $batchItem = $event->getBatchItem();
         $batchItemStamp = $event->getEnvelope()->last(BatchItemStamp::class);
 
-        $batchItemId = $batchItemStamp !== null ? $batchItemStamp->getBatchItemId() : null;
         $batchItemAttempts = $batchItemStamp !== null ? $batchItemStamp->getAttempts() : 0;
+        $batchItemId = $batchItemStamp !== null ? $batchItemStamp->getBatchItemId() : null;
 
-        $batchItem
-            ->setAttempts($batchItemAttempts)
-            ->setId($batchItemId);
+        $batchItem->setAttempts($batchItemAttempts);
+
+        if ($batchItemId !== null) {
+            $batchItem->setId($batchItemId);
+        }
     }
 }

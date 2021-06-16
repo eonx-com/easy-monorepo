@@ -50,6 +50,9 @@ abstract class AbstractBatchObjectRepository
             : $this->store->update($batchObject->getId(), $batchObject->toArray());
     }
 
+    /**
+     * @param int|string $id
+     */
     protected function doFind($id): ?BatchObjectInterface
     {
         $data = $this->store->find($id);

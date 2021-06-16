@@ -29,6 +29,9 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         return $batch;
     }
 
+    /**
+     * @param int|string $id
+     */
     public function find($id): ?BatchInterface
     {
         /** @var null|\EonX\EasyBatch\Interfaces\BatchInterface $batch */
@@ -37,6 +40,11 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         return $batch;
     }
 
+    /**
+     * @param int|string $id
+     *
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     */
     public function findOrFail($id): BatchInterface
     {
         $batch = $this->find($id);

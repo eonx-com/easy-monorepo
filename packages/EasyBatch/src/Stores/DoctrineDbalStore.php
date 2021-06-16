@@ -148,7 +148,7 @@ final class DoctrineDbalStore implements BatchStoreInterface, BatchItemStoreInte
      */
     protected function formatData(array $data): array
     {
-        return \array_map(static function ($value) {
+        return \array_map(function ($value) {
             if (\is_array($value)) {
                 return \json_encode($value);
             }

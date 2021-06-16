@@ -14,7 +14,7 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
     private $attempts = 0;
 
     /**
-     * @var string
+     * @var int|string
      */
     private $batchId;
 
