@@ -81,6 +81,10 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
             /** @var \EonX\EasyBatch\Interfaces\BatchInterface $freshBatch */
             $freshBatch = $func($batch);
 
+            if ($freshBatch->getId() === null) {
+                throw new BatchIdRequiredException('Batch ID is required to update it.');
+            }
+
             $store->update($freshBatch->getId(), $freshBatch->toArray());
             $store->finishUpdate();
 

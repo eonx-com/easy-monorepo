@@ -39,6 +39,8 @@ final class BatchItemFactoryTest extends AbstractTestCase
     }
 
     /**
+     * @phpstan-param class-string $class
+     *
      * @dataProvider providerTestCreateSuccess
      */
     public function testCreateSuccess(?string $class = null): void
