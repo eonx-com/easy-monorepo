@@ -10,16 +10,6 @@ use Throwable;
 
 interface ErrorHandlerInterface
 {
-    /**
-     * @return \EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface[]
-     */
-    public function getBuilders(): array;
-
-    /**
-     * @return \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
-     */
-    public function getReporters(): array;
-
     public function isVerbose(): bool;
 
     public function render(Request $request, Throwable $throwable): Response;

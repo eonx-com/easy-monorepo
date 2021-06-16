@@ -55,11 +55,17 @@ final class ErrorHandler implements ErrorHandlerInterface
         $this->isVerbose = $isVerbose ?? false;
     }
 
+    /**
+     * @return \EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface[]
+     */
     public function getBuilders(): array
     {
         return $this->builders;
     }
 
+    /**
+     * @return \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
+     */
     public function getReporters(): array
     {
         return $this->reporters;
