@@ -28,10 +28,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // ErrorHandler
     $services
-        ->set(ErrorHandlerInterface::class, ErrorHandler::class)
+        ->set('eonx.error_handler', ErrorHandler::class)
         ->arg('$builderProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER))
         ->arg('$reporterProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER))
-        ->arg('$isVerbose', '%' . BridgeConstantsInterface::PARAM_IS_VERBOSE . '%');
+        ->arg('$isVerbose', '%' . BridgeConstantsInterface::PARAM_IS_VERBOSE . '%')
+        ->alias(ErrorHandlerInterface::class, 'eonx.error_handler');
 
     // EventListener
     $services
