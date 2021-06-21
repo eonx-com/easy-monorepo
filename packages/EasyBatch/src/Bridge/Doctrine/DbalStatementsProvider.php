@@ -93,7 +93,7 @@ final class DbalStatementsProvider
         $batchesTable->addColumn('throwable', 'text', [
             'notNull' => false,
         ]);
-        $batchesTable->addColumn('batch_item_id', 'guid', [
+        $batchesTable->addColumn('parent_batch_item_id', 'guid', [
             'notNull' => false,
         ]);
         $batchesTable->addColumn('created_at', 'datetime');

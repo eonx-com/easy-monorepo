@@ -16,11 +16,11 @@ final class DispatchBatchMiddleware implements MiddlewareInterface
     /**
      * @var \EonX\EasyBatch\Interfaces\BatchDispatcherInterface
      */
-    private $dispatcher;
+    private $batchDispatcher;
 
-    public function __construct(BatchDispatcherInterface $dispatcher)
+    public function __construct(BatchDispatcherInterface $batchDispatcher)
     {
-        $this->dispatcher = $dispatcher;
+        $this->batchDispatcher = $batchDispatcher;
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
@@ -30,7 +30,7 @@ final class DispatchBatchMiddleware implements MiddlewareInterface
             $message = $envelope->getMessage();
 
             if ($message instanceof BatchInterface) {
-                $this->dispatcher->dispatch($message);
+                $this->batchDispatcher->dispatch($message);
 
                 // Do not proceed with normal flow, handled by the batch dispatcher
                 return $envelope;
