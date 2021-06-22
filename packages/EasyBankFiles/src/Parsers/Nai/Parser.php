@@ -336,7 +336,11 @@ final class Parser extends AbstractLineByLineParser
         $this->previousFull = false;
 
         if (Strings::endsWith($line, '/')) {
-            $this->previousFull = true;
+            // Prevent logic to add extra coma on continuation logic if already there
+            if (Strings::endsWith($line, ',/') === false) {
+                $this->previousFull = true;
+            }
+
             // Remove trailing slash
             $line = \substr($line, 0, -1);
         }
