@@ -13,6 +13,8 @@ use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
+use EonX\EasyBatch\Interfaces\CurrentBatchAwareInterface;
+use EonX\EasyBatch\Interfaces\CurrentBatchItemAwareInterface;
 use EonX\EasyBatch\Interfaces\EasyBatchExceptionInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
@@ -66,6 +68,15 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         try {
             $batchItem = $this->findBatchItem($batchItemStamp->getBatchItemId());
             $batch = $this->findBatch($batchItem->getBatchId());
+            $message = $envelope->getMessage();
+
+            if ($message instanceof CurrentBatchAwareInterface) {
+                $message->setCurrentBatch($batch);
+            }
+
+            if ($message instanceof CurrentBatchItemAwareInterface) {
+                $message->setCurrentBatchItem($batchItem);
+            }
 
             return $this->batchManager->processItem($batch, $batchItem, $func);
         } catch (EasyBatchExceptionInterface $exception) {
