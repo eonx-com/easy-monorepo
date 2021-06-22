@@ -136,6 +136,9 @@ final class BatchManager implements BatchManagerInterface
         ));
     }
 
+    /**
+     * @param int|string $batchId
+     */
     public function iterateThroughItems($batchId, ?string $dependsOnName, callable $func): void
     {
         $page = 1;
@@ -263,9 +266,10 @@ final class BatchManager implements BatchManagerInterface
             $message = $item->getMessage();
 
             if ($message instanceof BatchInterface) {
-                $batchItem = $this->persistBatchItem($batch->getId(), $item);
+                /** @var int|string $batchItemId */
+                $batchItemId = $this->persistBatchItem($batch->getId(), $item)->getId();
 
-                $message->setParentBatchItemId($batchItem->getId());
+                $message->setParentBatchItemId($batchItemId);
 
                 $this->persistBatchRecursive($message);
 
@@ -280,6 +284,9 @@ final class BatchManager implements BatchManagerInterface
         return $this->batchRepository->save($batch);
     }
 
+    /**
+     * @param int|string $batchId
+     */
     private function persistBatchItem($batchId, MessageDecorator $item, ?object $message = null): BatchItemInterface
     {
         $batchItem = $this->batchItemFactory->create($batchId, $message, $item->getClass());

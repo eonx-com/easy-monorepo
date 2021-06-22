@@ -14,6 +14,9 @@ interface BatchItemRepositoryInterface
      */
     public const DEFAULT_TABLE = 'easy_batch_items';
 
+    /**
+     * @param int|string $batchId
+     */
     public function findForDispatch(
         StartSizeDataInterface $startSizeData,
         $batchId,

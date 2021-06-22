@@ -109,23 +109,6 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
         return $this;
     }
 
-    public function setReason(string $reason): BatchItemInterface
-    {
-        $this->reason = $reason;
-
-        return $this;
-    }
-
-    /**
-     * @param mixed[] $params
-     */
-    public function setReasonParams(array $params): BatchItemInterface
-    {
-        $this->reasonParams = $params;
-
-        return $this;
-    }
-
     /**
      * @return mixed[]
      */

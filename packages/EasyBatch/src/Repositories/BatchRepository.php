@@ -62,7 +62,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         $sql = \sprintf('SELECT * FROM %s WHERE parent_batch_item_id = :id', $this->table);
         $data = $this->conn->fetchAssociative($sql, ['id' => $parentBatchItemId]);
 
-        if ($data !== null) {
+        if (\is_array($data)) {
             /** @var \EonX\EasyBatch\Interfaces\BatchInterface $batch */
             $batch = $this->factory->createFromArray($data);
 

@@ -14,6 +14,9 @@ use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
 
 final class BatchItemRepository extends AbstractBatchObjectRepository implements BatchItemRepositoryInterface
 {
+    /**
+     * @param int|string $batchId
+     */
     public function findForDispatch(
         StartSizeDataInterface $startSizeData,
         $batchId,

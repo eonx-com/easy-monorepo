@@ -16,6 +16,9 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
 {
+    /**
+     * @return iterable<mixed>
+     */
     public function providerTestFindForDispatch(): iterable
     {
         yield 'Fetch only batchItems for batch and no dependency' => [
@@ -79,26 +82,5 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
         $paginator = $repo->findForDispatch(new StartSizeData(1, 15), 'batch-id', $dependsOnName);
 
         \call_user_func($test, $paginator);
-    }
-
-    public function testShowcase(): void
-    {
-        $batchFactory = $this->getBatchFactory();
-
-        $itemsProvider = static function (): iterable {
-            $message1 = MessageDecorator::wrap(new \stdClass());
-            $message1->setName('BatchItem1');
-
-            $message2Envelope = Envelope::wrap(new \stdClass(), [new DelayStamp(6000)]);
-
-            $message2 = MessageDecorator::wrap($message2Envelope);
-            $message2->setDependsOn('BatchItem1');
-
-            yield $message1;
-            yield $message2;
-        };
-
-        $batch = $batchFactory->createFromCallable($itemsProvider);
-        $batch->setName('Master Batch');
     }
 }

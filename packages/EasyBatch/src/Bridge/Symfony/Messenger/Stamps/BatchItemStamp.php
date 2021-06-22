@@ -13,6 +13,9 @@ final class BatchItemStamp implements StampInterface
      */
     private $batchItemId;
 
+    /**
+     * @param int|string $batchItemId
+     */
     public function __construct($batchItemId)
     {
         $this->batchItemId = $batchItemId;

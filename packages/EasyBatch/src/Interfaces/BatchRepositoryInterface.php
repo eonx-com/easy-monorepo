@@ -23,6 +23,9 @@ interface BatchRepositoryInterface
      */
     public function findOrFail($id): BatchInterface;
 
+    /**
+     * @param int|string $parentBatchItemId
+     */
     public function findNestedOrFail($parentBatchItemId): BatchInterface;
 
     public function save(BatchInterface $batch): BatchInterface;
