@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Symfony;
 
 use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler\ApiPlatformCompilerPass;
+use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler\ErrorHandlerCompilerPass;
 use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\EasyErrorHandlerExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
@@ -16,7 +17,9 @@ final class EasyErrorHandlerSymfonyBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new ApiPlatformCompilerPass());
+        $container
+            ->addCompilerPass(new ApiPlatformCompilerPass())
+            ->addCompilerPass(new ErrorHandlerCompilerPass());
     }
 
     public function getContainerExtension(): ExtensionInterface
