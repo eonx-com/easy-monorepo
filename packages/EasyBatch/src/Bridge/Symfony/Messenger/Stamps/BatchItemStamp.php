@@ -9,27 +9,13 @@ use Symfony\Component\Messenger\Stamp\StampInterface;
 final class BatchItemStamp implements StampInterface
 {
     /**
-     * @var int
-     */
-    private $attempts;
-
-    /**
      * @var int|string
      */
     private $batchItemId;
 
-    /**
-     * @param int|string $batchItemId
-     */
-    public function __construct($batchItemId, int $attempts)
+    public function __construct($batchItemId)
     {
         $this->batchItemId = $batchItemId;
-        $this->attempts = $attempts;
-    }
-
-    public function getAttempts(): int
-    {
-        return $this->attempts;
     }
 
     /**

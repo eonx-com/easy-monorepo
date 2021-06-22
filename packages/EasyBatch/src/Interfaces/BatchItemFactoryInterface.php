@@ -9,5 +9,5 @@ interface BatchItemFactoryInterface extends BatchObjectFactoryInterface
     /**
      * @param int|string $batchId
      */
-    public function create($batchId, string $targetClass, ?string $class = null): BatchItemInterface;
+    public function create($batchId, ?object $message = null, ?string $class = null): BatchItemInterface;
 }

@@ -11,6 +11,16 @@ interface BatchItemInterface extends BatchObjectInterface
      */
     public const STATUS_BATCH_PENDING_APPROVAL = 'batch_pending_approval';
 
+    /**
+     * @var string
+     */
+    public const TYPE_MESSAGE = 'message';
+
+    /**
+     * @var string
+     */
+    public const TYPE_NESTED_BATCH = 'nested_batch';
+
     public function getAttempts(): int;
 
     /**
@@ -18,14 +28,9 @@ interface BatchItemInterface extends BatchObjectInterface
      */
     public function getBatchId();
 
-    public function getReason(): ?string;
+    public function getDependsOnName(): ?string;
 
-    /**
-     * @return null|mixed[]
-     */
-    public function getReasonParams(): ?array;
-
-    public function getTargetClass(): string;
+    public function getMessage(): ?object;
 
     public function isApprovalRequired(): bool;
 
@@ -40,12 +45,7 @@ interface BatchItemInterface extends BatchObjectInterface
      */
     public function setBatchId($batchId): self;
 
-    public function setReason(string $reason): self;
+    public function setDependsOnName(string $name): self;
 
-    /**
-     * @param mixed[] $params
-     */
-    public function setReasonParams(array $params): self;
-
-    public function setTargetClass(string $targetClass): self;
+    public function setMessage(object $message): self;
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Exceptions;
 
-final class BatchItemStatusInvalidException extends AbstractEasyBatchException
+final class BatchObjectIdRequiredException extends AbstractEasyBatchException
 {
     // No body needed.
 }

@@ -6,8 +6,9 @@ namespace EonX\EasyBatch\Bridge\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
-use EonX\EasyAsync\Interfaces\Batch\BatchItemStoreInterface;
-use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
+use Doctrine\DBAL\Schema\Table;
+use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
+use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 
 final class DbalStatementsProvider
 {
@@ -39,8 +40,8 @@ final class DbalStatementsProvider
     public function __construct(Connection $conn, ?string $batchesTable = null, ?string $batchItemsTable = null)
     {
         $this->conn = $conn;
-        $this->batchesTable = $batchesTable ?? BatchStoreInterface::DEFAULT_TABLE;
-        $this->batchItemsTable = $batchItemsTable ?? BatchItemStoreInterface::DEFAULT_TABLE;
+        $this->batchesTable = $batchesTable ?? BatchRepositoryInterface::DEFAULT_TABLE;
+        $this->batchItemsTable = $batchItemsTable ?? BatchItemRepositoryInterface::DEFAULT_TABLE;
     }
 
     public function extendBatchItemsTable(callable $callable): self
@@ -67,64 +68,28 @@ final class DbalStatementsProvider
         $schema = new Schema();
 
         $batchesTable = $schema->createTable($this->batchesTable);
-        $batchesTable->addColumn('id', 'guid');
-        $batchesTable->addColumn('class', 'string', [
-            'length' => 191,
-        ]);
         $batchesTable->addColumn('failed', 'integer');
         $batchesTable->addColumn('succeeded', 'integer');
         $batchesTable->addColumn('processed', 'integer');
         $batchesTable->addColumn('total', 'integer');
-        $batchesTable->addColumn('status', 'string', [
-            'length' => 50,
-        ]);
-        $batchesTable->addColumn('name', 'string', [
+        $batchesTable->addColumn('parent_batch_item_id', 'guid', [
             'notNull' => false,
         ]);
-        $batchesTable->addColumn('cancelled_at', 'datetime', [
-            'notNull' => false,
-        ]);
-        $batchesTable->addColumn('started_at', 'datetime', [
-            'notNull' => false,
-        ]);
-        $batchesTable->addColumn('finished_at', 'datetime', [
-            'notNull' => false,
-        ]);
-        $batchesTable->addColumn('throwable', 'text', [
-            'notNull' => false,
-        ]);
-        $batchesTable->addColumn('batch_item_id', 'guid', [
-            'notNull' => false,
-        ]);
-        $batchesTable->addColumn('created_at', 'datetime');
-        $batchesTable->addColumn('updated_at', 'datetime');
-        $batchesTable->setPrimaryKey(['id']);
 
         $batchItemsTable = $schema->createTable($this->batchItemsTable);
-        $batchItemsTable->addColumn('id', 'guid');
         $batchItemsTable->addColumn('batch_id', 'guid');
-        $batchItemsTable->addColumn('target_class', 'string', [
-            'length' => 191,
-        ]);
-        $batchItemsTable->addColumn('status', 'string', [
-            'length' => 50,
-        ]);
-        $batchItemsTable->addColumn('started_at', 'datetime');
-        $batchItemsTable->addColumn('finished_at', 'datetime');
         $batchItemsTable->addColumn('attempts', 'integer');
-        $batchItemsTable->addColumn('reason', 'string', [
+        $batchItemsTable->addColumn('requires_approval', 'integer');
+        $batchItemsTable->addColumn('message', 'text', [
+            'notNull' => false,
+        ]);
+        $batchItemsTable->addColumn('depends_on_name', 'string', [
             'length' => 191,
             'notNull' => false,
         ]);
-        $batchItemsTable->addColumn('reason_params', 'text', [
-            'notNull' => false,
-        ]);
-        $batchItemsTable->addColumn('throwable', 'text', [
-            'notNull' => false,
-        ]);
-        $batchItemsTable->addColumn('created_at', 'datetime');
-        $batchItemsTable->addColumn('updated_at', 'datetime');
-        $batchItemsTable->setPrimaryKey(['id']);
+
+        $this->addSharedColumns($batchesTable);
+        $this->addSharedColumns($batchItemsTable);
 
         if ($this->extendBatchesTable !== null) {
             \call_user_func($this->extendBatchesTable, $batchesTable);
@@ -148,5 +113,48 @@ final class DbalStatementsProvider
             \sprintf('DROP TABLE %s;', $this->batchItemsTable),
             \sprintf('DROP TABLE %s;', $this->batchesTable),
         ];
+    }
+
+    private function addSharedColumns(Table $table): void
+    {
+        $table->addColumn('id', 'guid');
+        $table->setPrimaryKey(['id']);
+
+        $table->addColumn('class', 'string', [
+            'length' => 191,
+        ]);
+
+        $table->addColumn('name', 'string', [
+            'length' => 191,
+            'notNull' => false,
+        ]);
+
+        $table->addColumn('status', 'string', [
+            'length' => 50,
+        ]);
+
+        $table->addColumn('throwable', 'text', [
+            'notNull' => false,
+        ]);
+
+        $table->addColumn('type', 'string', [
+            'length' => 191,
+            'notNull' => false,
+        ]);
+
+        $table->addColumn('cancelled_at', 'datetime', [
+            'notNull' => false,
+        ]);
+
+        $table->addColumn('started_at', 'datetime', [
+            'notNull' => false,
+        ]);
+
+        $table->addColumn('finished_at', 'datetime', [
+            'notNull' => false,
+        ]);
+
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime');
     }
 }

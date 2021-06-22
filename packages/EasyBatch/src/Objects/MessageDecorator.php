@@ -1,0 +1,96 @@
+<?php
+
+declare(strict_types=1);
+
+namespace EonX\EasyBatch\Objects;
+
+final class MessageDecorator
+{
+    /**
+     * @var string
+     */
+    private $class;
+
+    /**
+     * @var string
+     */
+    private $dependsOn;
+
+    /**
+     * @var object
+     */
+    private $message;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var bool
+     */
+    private $requiresApproval = false;
+
+    public function __construct(object $message)
+    {
+        $this->message = $message;
+    }
+
+    public static function wrap(object $message): self
+    {
+        return $message instanceof self ? $message : new self($message);
+    }
+
+    public function getClass(): ?string
+    {
+        return $this->class;
+    }
+
+    public function getDependsOn(): ?string
+    {
+        return $this->dependsOn;
+    }
+
+    public function getMessage(): object
+    {
+        return $this->message;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function isApprovalRequired(): bool
+    {
+        return $this->requiresApproval;
+    }
+
+    public function setApprovalRequired(bool $isApprovalRequired): self
+    {
+        $this->requiresApproval = $isApprovalRequired;
+
+        return $this;
+    }
+
+    public function setClass(string $class): self
+    {
+        $this->class = $class;
+
+        return $this;
+    }
+
+    public function setDependsOn(string $dependsOn): self
+    {
+        $this->dependsOn = $dependsOn;
+
+        return $this;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+}
