@@ -28,6 +28,11 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     private $id;
 
     /**
+     * @var null|string
+     */
+    private $name;
+
+    /**
      * @var \DateTimeInterface
      */
     private $startedAt;
@@ -43,6 +48,11 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     private $throwable;
 
     /**
+     * @var string
+     */
+    private $type;
+
+    /**
      * @var \DateTimeInterface
      */
     private $updatedAt;
@@ -52,7 +62,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->cancelledAt;
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -70,6 +80,11 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->id;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
     public function getStartedAt(): ?\DateTimeInterface
     {
         return $this->startedAt;
@@ -85,14 +100,34 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->throwable;
     }
 
-    public function getUpdatedAt(): \DateTimeInterface
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
+    }
+
+    public function isCancelled(): bool
+    {
+        return $this->getStatus() === self::STATUS_CANCELLED;
     }
 
     public function isCompleted(): bool
     {
         return \in_array($this->getStatus(), [self::STATUS_FAILED, self::STATUS_SUCCEEDED], true);
+    }
+
+    public function isFailed(): bool
+    {
+        return $this->getStatus() === self::STATUS_FAILED;
+    }
+
+    public function isSucceeded(): bool
+    {
+        return $this->getStatus() === self::STATUS_SUCCEEDED;
     }
 
     public function setCancelledAt(\DateTimeInterface $cancelledAt): BatchObjectInterface
@@ -126,6 +161,13 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
+    public function setName(?string $name = null): BatchObjectInterface
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     public function setStartedAt(\DateTimeInterface $startedAt): BatchObjectInterface
     {
         $this->startedAt = $startedAt;
@@ -147,6 +189,13 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
+    public function setType(string $type): BatchObjectInterface
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
     public function setUpdatedAt(\DateTimeInterface $updatedAt): BatchObjectInterface
     {
         $this->updatedAt = $updatedAt;
@@ -164,10 +213,12 @@ abstract class AbstractBatchObject implements BatchObjectInterface
             'cancelled_at' => $this->getCancelledAt(),
             'created_at' => $this->getCreatedAt(),
             'id' => $this->getId(),
+            'name' => $this->getName(),
             'finished_at' => $this->getFinishedAt(),
             'started_at' => $this->getStartedAt(),
             'status' => $this->getStatus(),
             'throwable' => $this->getThrowable(),
+            'type' => $this->getType(),
             'updated_at' => $this->getUpdatedAt(),
         ];
     }

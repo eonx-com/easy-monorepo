@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
 
-use EonX\EasyBatch\Interfaces\BatchDispatcherInterface;
 use EonX\EasyBatch\Interfaces\BatchInterface;
+use EonX\EasyBatch\Interfaces\BatchManagerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
@@ -14,31 +14,31 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 final class DispatchBatchMiddleware implements MiddlewareInterface
 {
     /**
-     * @var \EonX\EasyBatch\Interfaces\BatchDispatcherInterface
+     * @var \EonX\EasyBatch\Interfaces\BatchManagerInterface
      */
-    private $dispatcher;
+    private $batchManager;
 
-    public function __construct(BatchDispatcherInterface $dispatcher)
+    public function __construct(BatchManagerInterface $batchManager)
     {
-        $this->dispatcher = $dispatcher;
+        $this->batchManager = $batchManager;
     }
 
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchItemInvalidException
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     */
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
-        // Act only when not consume from worker
-        if ($envelope->last(ConsumedByWorkerStamp::class) === null) {
-            $message = $envelope->getMessage();
+        $consumedByWorker = $envelope->last(ConsumedByWorkerStamp::class);
+        $message = $envelope->getMessage();
 
-            if ($message instanceof BatchInterface) {
-                $this->dispatcher->dispatch($message);
+        if ($consumedByWorker === null && $message instanceof BatchInterface) {
+            $this->batchManager->dispatch($message);
 
-                // Do not proceed with normal flow, handled by the batch dispatcher
-                return $envelope;
-            }
+            return $envelope;
         }
 
-        return $stack
-            ->next()
+        return $stack->next()
             ->handle($envelope, $stack);
     }
 }

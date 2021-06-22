@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge;
 
-use EonX\EasyBatch\Listeners\BatchObjectApprovedListener;
-use EonX\EasyBatch\Bridge\Symfony\Listeners\BatchItemAttemptsAndIdListener;
-use EonX\EasyBatch\Bridge\Symfony\Listeners\BatchItemFailedAttemptsAndIdListener;
-use EonX\EasyBatch\Bridge\Symfony\Listeners\BatchItemFailedClassListener;
-use EonX\EasyBatch\Bridge\Symfony\Listeners\BatchItemFailedRequiresApprovalListener;
-use EonX\EasyBatch\Bridge\Symfony\Listeners\BatchItemRequiresApprovalListener;
-use EonX\EasyBatch\Listeners\ChildBatchCompletedListener;
+use EonX\EasyBatch\Listeners\BatchCancelledListener;
+use EonX\EasyBatch\Listeners\BatchCompletedListener;
+use EonX\EasyBatch\Listeners\BatchItemCancelledListener;
+use EonX\EasyBatch\Listeners\BatchItemCompletedListener;
 
 interface BridgeConstantsInterface
 {
@@ -18,13 +15,10 @@ interface BridgeConstantsInterface
      * @var string[]
      */
     public const LISTENERS = [
-        BatchObjectApprovedListener::class,
-        BatchItemAttemptsAndIdListener::class,
-        BatchItemFailedAttemptsAndIdListener::class,
-        BatchItemFailedClassListener::class,
-        BatchItemFailedRequiresApprovalListener::class,
-        BatchItemRequiresApprovalListener::class,
-        ChildBatchCompletedListener::class,
+        BatchCancelledListener::class,
+        BatchCompletedListener::class,
+        BatchItemCancelledListener::class,
+        BatchItemCompletedListener::class,
     ];
 
     /**
@@ -41,6 +35,11 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_BATCH_ITEM_CLASS = 'easy_batch.batch_item.class';
+
+    /**
+     * @var string
+     */
+    public const PARAM_BATCH_ITEM_PER_PAGE = 'easy_batch.batch_item.per_page';
 
     /**
      * @var string

@@ -4,109 +4,107 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
 
-use EonX\EasyBatch\Bridge\Symfony\Events\BatchItemCreatedForEnvelopeEvent;
-use EonX\EasyBatch\Bridge\Symfony\Events\BatchItemFailedForEnvelopeEvent;
-use EonX\EasyBatch\Bridge\Symfony\Events\BatchItemHandledForEnvelopeEvent;
-use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemClassStamp;
-use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchStamp;
+use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemStamp;
 use EonX\EasyBatch\Exceptions\BatchCancelledException;
+use EonX\EasyBatch\Exceptions\BatchItemNotFoundException;
 use EonX\EasyBatch\Exceptions\BatchNotFoundException;
-use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
-use EonX\EasyBatch\Interfaces\BatchItemProcessorInterface;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyBatch\Interfaces\BatchInterface;
+use EonX\EasyBatch\Interfaces\BatchItemInterface;
+use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
+use EonX\EasyBatch\Interfaces\BatchManagerInterface;
+use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
+use EonX\EasyBatch\Interfaces\CurrentBatchAwareInterface;
+use EonX\EasyBatch\Interfaces\CurrentBatchItemAwareInterface;
+use EonX\EasyBatch\Interfaces\EasyBatchExceptionInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 final class ProcessBatchItemMiddleware implements MiddlewareInterface
 {
     /**
-     * @var \EonX\EasyBatch\Interfaces\BatchItemFactoryInterface
+     * @var \EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface
      */
-    private $batchItemFactory;
+    private $batchItemRepository;
 
     /**
-     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
+     * @var \EonX\EasyBatch\Interfaces\BatchManagerInterface
      */
-    private $dispatcher;
+    private $batchManager;
 
     /**
-     * @var \EonX\EasyBatch\Interfaces\BatchItemProcessorInterface
+     * @var \EonX\EasyBatch\Interfaces\BatchRepositoryInterface
      */
-    private $processor;
+    private $batchRepository;
 
     public function __construct(
-        BatchItemFactoryInterface $batchItemFactory,
-        BatchItemProcessorInterface $processor,
-        EventDispatcherInterface $dispatcher
+        BatchRepositoryInterface $batchRepository,
+        BatchItemRepositoryInterface $batchItemRepository,
+        BatchManagerInterface $batchManager
     ) {
-        $this->batchItemFactory = $batchItemFactory;
-        $this->processor = $processor;
-        $this->dispatcher = $dispatcher;
+        $this->batchRepository = $batchRepository;
+        $this->batchItemRepository = $batchItemRepository;
+        $this->batchManager = $batchManager;
     }
 
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     */
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
-        $batchId = $this->getBatchId($envelope);
         $func = $this->getNextClosure($envelope, $stack);
+        $batchItemStamp = $envelope->last(BatchItemStamp::class);
+        $consumedByWorkerStamp = $envelope->last(ConsumedByWorkerStamp::class);
 
-        // Skip if not from queue or no batchId on envelope
-        if ($this->fromQueue($envelope) === false || $batchId === null) {
+        // Proceed only if consumed by worker or current envelope is for a batchItem
+        if ($consumedByWorkerStamp === null || $batchItemStamp === null) {
             return $func();
         }
 
-        $batchItem = $this->batchItemFactory->create($batchId, \get_class($envelope->getMessage()), $this->getBatchItemClass($envelope));
-        $event = new BatchItemCreatedForEnvelopeEvent($batchItem, $envelope);
-
-        $this->dispatcher->dispatch($event);
-
-        $batchItem = $event->getBatchItem();
-
         try {
-            /** @var \Symfony\Component\Messenger\Envelope $newEnvelope */
-            $newEnvelope = $this->processor->process($batchItem, $func);
+            $batchItem = $this->findBatchItem($batchItemStamp->getBatchItemId());
+            $batch = $this->findBatch($batchItem->getBatchId());
+            $message = $envelope->getMessage();
 
-            $handledEvent = new BatchItemHandledForEnvelopeEvent($batchItem, $newEnvelope);
+            if ($message instanceof CurrentBatchAwareInterface) {
+                $message->setCurrentBatch($batch);
+            }
 
-            $this->dispatcher->dispatch($handledEvent);
+            if ($message instanceof CurrentBatchItemAwareInterface) {
+                $message->setCurrentBatchItem($batchItem);
+            }
 
-            return $handledEvent->getEnvelope();
-        } catch (BatchNotFoundException | BatchCancelledException $exception) {
-            // Do not retry if batch either not found or cancelled
+            return $this->batchManager->processItem($batch, $batchItem, $func);
+        } catch (EasyBatchExceptionInterface $exception) {
+            // Do not retry if exception from package
             throw new UnrecoverableMessageHandlingException($exception->getMessage());
         } catch (\Throwable $throwable) {
-            $failedEvent = new BatchItemFailedForEnvelopeEvent($batchItem, $envelope, $throwable);
-
-            $this->dispatcher->dispatch($event);
-
-            throw new HandlerFailedException($failedEvent->getEnvelope(), [$failedEvent->getThrowable()]);
+            throw new HandlerFailedException($envelope, [$throwable]);
         }
     }
 
-    private function fromQueue(Envelope $envelope): bool
+    /**
+     * @param int|string $batchId
+     *
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     */
+    private function findBatch($batchId): BatchInterface
     {
-        return $envelope->last(ConsumedByWorkerStamp::class) !== null;
+        return $this->batchRepository->findOrFail($batchId);
     }
 
     /**
-     * @return null|int|string
+     * @param int|string $batchItemId
+     *
+     * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
      */
-    private function getBatchId(Envelope $envelope)
+    private function findBatchItem($batchItemId): BatchItemInterface
     {
-        $stamp = $envelope->last(BatchStamp::class);
-
-        return $stamp !== null ? $stamp->getBatchId() : null;
-    }
-
-    private function getBatchItemClass(Envelope $envelope): ?string
-    {
-        $stamp = $envelope->last(BatchItemClassStamp::class);
-
-        return $stamp !== null ? $stamp->getClass() : null;
+        return $this->batchItemRepository->findOrFail($batchItemId);
     }
 
     private function getNextClosure(Envelope $envelope, StackInterface $stack): \Closure

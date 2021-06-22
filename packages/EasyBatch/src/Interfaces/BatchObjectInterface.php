@@ -53,7 +53,7 @@ interface BatchObjectInterface
 
     public function getCancelledAt(): ?\DateTimeInterface;
 
-    public function getCreatedAt(): \DateTimeInterface;
+    public function getCreatedAt(): ?\DateTimeInterface;
 
     public function getFinishedAt(): ?\DateTimeInterface;
 
@@ -62,15 +62,25 @@ interface BatchObjectInterface
      */
     public function getId();
 
+    public function getName(): ?string;
+
     public function getStartedAt(): ?\DateTimeInterface;
 
     public function getStatus(): string;
 
     public function getThrowable(): ?\Throwable;
 
-    public function getUpdatedAt(): \DateTimeInterface;
+    public function getType(): ?string;
+
+    public function getUpdatedAt(): ?\DateTimeInterface;
+
+    public function isCancelled(): bool;
 
     public function isCompleted(): bool;
+
+    public function isFailed(): bool;
+
+    public function isSucceeded(): bool;
 
     public function setCancelledAt(\DateTimeInterface $cancelledAt): self;
 
@@ -83,11 +93,15 @@ interface BatchObjectInterface
      */
     public function setId($id): self;
 
+    public function setName(?string $name = null): self;
+
     public function setStartedAt(\DateTimeInterface $startedAt): self;
 
     public function setStatus(string $status): self;
 
     public function setThrowable(\Throwable $throwable): self;
+
+    public function setType(string $type): self;
 
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self;
 

@@ -4,19 +4,31 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Interfaces;
 
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
+
 interface BatchItemRepositoryInterface
 {
-    public function save(BatchItemInterface $batchItem): BatchItemInterface;
-
     /**
-     * @param int|string $id
+     * @var string
      */
-    public function find($id): ?BatchItemInterface;
+    public const DEFAULT_TABLE = 'easy_batch_items';
 
     /**
-     * @param int|string $id
+     * @param int|string $batchId
+     */
+    public function findForDispatch(
+        StartSizeDataInterface $startSizeData,
+        $batchId,
+        ?string $dependsOnName = null
+    ): LengthAwarePaginatorInterface;
+
+    /**
+     * @param int|string $batchItemId
      *
      * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
      */
-    public function findOrFail($id): BatchItemInterface;
+    public function findOrFail($batchItemId): BatchItemInterface;
+
+    public function save(BatchItemInterface $batchItem): BatchItemInterface;
 }

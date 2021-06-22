@@ -24,11 +24,6 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     private $itemsProvider;
 
     /**
-     * @var null|string
-     */
-    private $name;
-
-    /**
      * @var int
      */
     private $processed = 0;
@@ -79,11 +74,6 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
         return $this->itemsProvider !== null ? \call_user_func($this->itemsProvider) : [];
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
     /**
      * @param int|string $batchItemId
      */
@@ -120,13 +110,6 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
         return $this;
     }
 
-    public function setName(?string $name = null): BatchInterface
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function setProcessed(int $processed): BatchInterface
     {
         $this->processed = $processed;
@@ -155,7 +138,6 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     {
         return \array_merge(parent::toArray(), [
             'failed' => $this->countFailed(),
-            'name' => $this->getName(),
             'parent_batch_item_id' => $this->getParentBatchItemId(),
             'processed' => $this->countProcessed(),
             'succeeded' => $this->countSucceeded(),

@@ -21,22 +21,22 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
     /**
      * @var string
      */
-    private $reason;
+    private $dependsOnName;
 
     /**
-     * @var mixed[]
+     * @var object
      */
-    private $reasonParams;
+    private $message;
 
     /**
      * @var bool
      */
     private $approvalRequired = false;
 
-    /**
-     * @var string
-     */
-    private $targetClass;
+    public function __construct()
+    {
+        $this->setType(BatchItemInterface::TYPE_MESSAGE);
+    }
 
     public function getAttempts(): int
     {
@@ -51,22 +51,14 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
         return $this->batchId;
     }
 
-    public function getReason(): ?string
+    public function getDependsOnName(): ?string
     {
-        return $this->reason;
+        return $this->dependsOnName;
     }
 
-    /**
-     * @return null|mixed[]
-     */
-    public function getReasonParams(): ?array
+    public function getMessage(): ?object
     {
-        return $this->reasonParams;
-    }
-
-    public function getTargetClass(): string
-    {
-        return $this->targetClass;
+        return $this->message;
     }
 
     public function isApprovalRequired(): bool
@@ -103,26 +95,16 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
         return $this;
     }
 
-    public function setReason(string $reason): BatchItemInterface
+    public function setDependsOnName(string $name): BatchItemInterface
     {
-        $this->reason = $reason;
+        $this->dependsOnName = $name;
 
         return $this;
     }
 
-    /**
-     * @param mixed[] $params
-     */
-    public function setReasonParams(array $params): BatchItemInterface
+    public function setMessage(object $message): BatchItemInterface
     {
-        $this->reasonParams = $params;
-
-        return $this;
-    }
-
-    public function setTargetClass(string $targetClass): BatchItemInterface
-    {
-        $this->targetClass = $targetClass;
+        $this->message = $message;
 
         return $this;
     }
@@ -135,9 +117,9 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
         return \array_merge(parent::toArray(), [
             'attempts' => $this->getAttempts(),
             'batch_id' => $this->getBatchId(),
-            'target_class' => $this->getTargetClass(),
-            'reason' => $this->getReason(),
-            'reason_params' => $this->getReasonParams(),
+            'depends_on_name' => $this->getDependsOnName(),
+            'message' => $this->getMessage() ? \serialize($this->getMessage()) : null,
+            'requires_approval' => $this->isApprovalRequired() ? 1 : 0,
         ]);
     }
 }

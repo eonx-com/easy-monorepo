@@ -4,33 +4,27 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Repositories;
 
-use EonX\EasyBatch\Exceptions\BatchIdRequiredException;
 use EonX\EasyBatch\Exceptions\BatchNotFoundException;
-use EonX\EasyBatch\Interfaces\BatchFactoryInterface;
+use EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Interfaces\BatchInterface;
-use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
-use EonX\EasyBatch\Interfaces\BatchStoreInterface;
 
 final class BatchRepository extends AbstractBatchObjectRepository implements BatchRepositoryInterface
 {
-    public function __construct(
-        BatchFactoryInterface $factory,
-        BatchObjectIdStrategyInterface $idStrategy,
-        BatchStoreInterface $store
-    ) {
-        parent::__construct($factory, $idStrategy, $store);
-    }
+    /**
+     * @var string
+     */
+    private const SAVEPOINT = 'easy_batch_conn_savepoint';
 
-    public function save(BatchInterface $batch): BatchInterface
-    {
-        $this->doSave($batch);
-
-        return $batch;
-    }
+    /**
+     * @var bool
+     */
+    private $savepointActive = false;
 
     /**
      * @param int|string $id
+     *
+     * @throws \Doctrine\DBAL\Exception
      */
     public function find($id): ?BatchInterface
     {
@@ -44,6 +38,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
      * @param int|string $id
      *
      * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function findOrFail($id): BatchInterface
     {
@@ -57,42 +52,111 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     }
 
     /**
-     * @param \EonX\EasyBatch\Interfaces\BatchInterface $batch
-     * @param callable $func
+     * @param int|string $parentBatchItemId
      *
-     * @return \EonX\EasyBatch\Interfaces\BatchInterface
-     * @throws \EonX\EasyBatch\Exceptions\BatchIdRequiredException
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     */
+    public function findNestedOrFail($parentBatchItemId): BatchInterface
+    {
+        $sql = \sprintf('SELECT * FROM %s WHERE parent_batch_item_id = :id', $this->table);
+        $data = $this->conn->fetchAssociative($sql, ['id' => $parentBatchItemId]);
+
+        if (\is_array($data)) {
+            /** @var \EonX\EasyBatch\Interfaces\BatchInterface $batch */
+            $batch = $this->factory->createFromArray($data);
+
+            return $batch;
+        }
+
+        throw new BatchNotFoundException(\sprintf(
+            'Batch for parent_batch_item_id "%s" not found',
+            $parentBatchItemId
+        ));
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function save(BatchInterface $batch): BatchInterface
+    {
+        $this->doSave($batch);
+
+        return $batch;
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
      * @throws \Throwable
      */
     public function updateAtomic(BatchInterface $batch, callable $func): BatchInterface
     {
         if ($batch->getId() === null) {
-            throw new BatchIdRequiredException('Batch ID is required to update it.');
+            throw new BatchObjectIdRequiredException('Batch ID is required to update it.');
         }
 
-        /** @var \EonX\EasyBatch\Interfaces\BatchStoreInterface $store */
-        $store = $this->store;
-
-        $store->startUpdate();
+        $this->beginTransaction();
 
         try {
-            $store->lockForUpdate($batch->getId());
+            $sql = \sprintf('SELECT id FROM %s WHERE id = :id FOR UPDATE', $this->table);
+            $data = $this->conn->fetchAssociative($sql, ['id' => $batch->getId()]);
+            $freshBatch = \is_array($data) ? $this->factory->createFromArray($data) : null;
 
-            /** @var \EonX\EasyBatch\Interfaces\BatchInterface $freshBatch */
-            $freshBatch = $func($batch);
-
-            if ($freshBatch->getId() === null) {
-                throw new BatchIdRequiredException('Batch ID is required to update it.');
+            if ($freshBatch === null) {
+                throw new BatchNotFoundException(\sprintf('Batch for id "%s" not found', $batch->getId()));
             }
 
-            $store->update($freshBatch->getId(), $freshBatch->toArray());
-            $store->finishUpdate();
+            $freshBatch = $this->save($func($freshBatch));
+
+            $this->commit();
 
             return $freshBatch;
         } catch (\Throwable $throwable) {
-            $store->cancelUpdate();
+            $this->rollback();
 
             throw $throwable;
         }
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function beginTransaction(): void
+    {
+        // If transaction active and savepoint supported, create new savepoint
+        if ($this->conn->isTransactionActive() && $this->conn->getDatabasePlatform()->supportsSavepoints()) {
+            $this->conn->createSavepoint(self::SAVEPOINT);
+            $this->savepointActive = true;
+
+            return;
+        }
+
+        // Otherwise create transaction
+        $this->savepointActive = false;
+        $this->conn->beginTransaction();
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\ConnectionException
+     */
+    private function commit(): void
+    {
+        $this->savepointActive
+            ? $this->conn->releaseSavepoint(self::SAVEPOINT)
+            : $this->conn->commit();
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\ConnectionException
+     */
+    private function rollback(): void
+    {
+        $this->savepointActive
+            ? $this->conn->rollbackSavepoint(self::SAVEPOINT)
+            : $this->conn->rollBack();
     }
 }
