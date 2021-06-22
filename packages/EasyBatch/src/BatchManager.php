@@ -117,7 +117,9 @@ final class BatchManager implements BatchManagerInterface
             $batchItem = $this->updateItem($batchObject);
 
             if ($batchItem->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
-                $nestedBatch = $this->batchRepository->findNestedOrFail($batchItem->getId());
+                /** @var int|string $batchItemId */
+                $batchItemId = $batchItem->getId();
+                $nestedBatch = $this->batchRepository->findNestedOrFail($batchItemId);
 
                 $nestedBatch
                     ->setCancelledAt(Carbon::now('UTC'))
@@ -257,6 +259,8 @@ final class BatchManager implements BatchManagerInterface
     private function persistBatchRecursive(BatchInterface $batch): BatchInterface
     {
         $batch = $this->batchRepository->save($batch);
+        /** @var int|string $batchId */
+        $batchId = $batch->getId();
         $totalItems = 0;
 
         foreach ($batch->getItems() as $item) {
@@ -267,7 +271,7 @@ final class BatchManager implements BatchManagerInterface
 
             if ($message instanceof BatchInterface) {
                 /** @var int|string $batchItemId */
-                $batchItemId = $this->persistBatchItem($batch->getId(), $item)->getId();
+                $batchItemId = $this->persistBatchItem($batchId, $item)->getId();
 
                 $message->setParentBatchItemId($batchItemId);
 
@@ -276,7 +280,7 @@ final class BatchManager implements BatchManagerInterface
                 continue;
             }
 
-            $this->persistBatchItem($batch->getId(), $item, $message);
+            $this->persistBatchItem($batchId, $item, $message);
         }
 
         $batch->setTotal($totalItems);

@@ -29,6 +29,7 @@ final class BatchItemCancelledListener
             return;
         }
 
+        /** @var int|string $batchId */
         $batchId = $batchItem->getId();
         $dependsOnName = $batchItem->getName();
         $func = function (BatchItemInterface $batchItem): void {

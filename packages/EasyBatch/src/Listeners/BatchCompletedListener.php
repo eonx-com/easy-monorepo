@@ -32,6 +32,7 @@ final class BatchCompletedListener
      */
     public function __invoke(BatchCompletedEvent $event): void
     {
+        /** @var int|string $parentBatchItemId */
         $parentBatchItemId = $event->getBatch()->getParentBatchItemId();
 
         if ($parentBatchItemId === null) {

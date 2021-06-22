@@ -29,6 +29,7 @@ final class BatchItemCompletedListener
             return;
         }
 
+        /** @var int|string $batchId */
         $batchId = $batchItem->getId();
         $dependsOnName = $batchItem->getName();
         $status = $batchItem->getStatus();
