@@ -14,5 +14,6 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(LockServiceInterface::class, LockService::class)
-        ->args([ref(BridgeConstantsInterface::SERVICE_STORE), ref(LoggerInterface::class)]);
+        ->args([ref(BridgeConstantsInterface::SERVICE_STORE), ref(LoggerInterface::class)])
+        ->tag('monolog.logger', ['channel' => BridgeConstantsInterface::LOG_CHANNEL]);
 };
