@@ -22,27 +22,25 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         $batchId,
         ?string $dependsOnName = null
     ): LengthAwarePaginatorInterface {
-        $paginator = new DoctrineDbalLengthAwarePaginator($this->conn, $this->table, $startSizeData, 'bi');
+        $paginator = new DoctrineDbalLengthAwarePaginator($this->conn, $this->table, $startSizeData);
 
         $paginator->setCriteria(static function (QueryBuilder $queryBuilder) use ($batchId, $dependsOnName): void {
             $queryBuilder
-                ->where('bi.batch_id = :batchId')
+                ->where('batch_id = :batchId')
                 ->setParameter('batchId', $batchId);
 
             // Make sure to get only batchItems with no dependency
             if ($dependsOnName === null) {
-                $queryBuilder->andWhere('bi.depends_on_name is null');
+                $queryBuilder->andWhere('depends_on_name is null');
             }
 
             // Make sure to get only batchItems for given dependency
             if ($dependsOnName !== null) {
                 $queryBuilder
-                    ->andWhere('bi.depends_on_name = :dependsOnName')
+                    ->andWhere('depends_on_name = :dependsOnName')
                     ->setParameter('dependsOnName', $dependsOnName);
             }
         });
-
-        $paginator->setSelect('bi.*');
 
         $paginator->setTransformer(function (array $item): BatchItemInterface {
             /** @var \EonX\EasyBatch\Interfaces\BatchItemInterface $batchItem */
