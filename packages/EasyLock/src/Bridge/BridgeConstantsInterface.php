@@ -9,6 +9,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const LOG_CHANNEL = 'lock';
+
+    /**
+     * @var string
+     */
     public const PARAM_CONNECTION = 'easy_lock.param.connection';
 
     /**
