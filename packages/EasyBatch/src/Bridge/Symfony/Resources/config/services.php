@@ -65,6 +65,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ProcessBatchItemMiddleware::class);
 
     // Repositories
-    $services->set(BatchRepositoryInterface::class, BatchRepository::class);
-    $services->set(BatchItemRepositoryInterface::class, BatchItemRepository::class);
+    $services
+        ->set(BatchRepositoryInterface::class, BatchRepository::class)
+        ->arg('$factory', ref(BatchFactoryInterface::class))
+        ->arg('$idStrategy', ref(BridgeConstantsInterface::SERVICE_BATCH_ID_STRATEGY))
+        ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_TABLE . '%');
+
+    $services
+        ->set(BatchItemRepositoryInterface::class, BatchItemRepository::class)
+        ->arg('$factory', ref(BatchItemFactoryInterface::class))
+        ->arg('$idStrategy', ref(BridgeConstantsInterface::SERVICE_BATCH_ITEM_ID_STRATEGY))
+        ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_TABLE . '%');
 };
