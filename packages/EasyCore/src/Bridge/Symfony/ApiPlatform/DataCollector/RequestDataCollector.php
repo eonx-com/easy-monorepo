@@ -137,6 +137,11 @@ final class RequestDataCollector extends DataCollector
         ];
     }
 
+    public function getVersion(): ?string
+    {
+        return $this->decorated ? $this->decorated->getVersion() : null;
+    }
+
     public function reset(): void
     {
         $this->data = [];
