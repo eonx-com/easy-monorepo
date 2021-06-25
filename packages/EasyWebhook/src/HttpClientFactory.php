@@ -12,6 +12,8 @@ final class HttpClientFactory implements HttpClientFactoryInterface
 {
     public function create(): HttpClientInterface
     {
-        return HttpClient::create();
+        return HttpClient::create([
+            'http_version' => '1.1',
+        ]);
     }
 }
