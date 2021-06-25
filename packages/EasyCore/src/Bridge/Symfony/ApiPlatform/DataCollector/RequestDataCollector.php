@@ -42,6 +42,8 @@ final class RequestDataCollector extends DataCollector
         $this->data['dataPersisters'] = [
             'responses' => $this->dataPersister->getPersistersResponse() ?? [],
         ];
+
+        $this->data['version'] = $this->decorated->getVersion();
     }
 
     /**
@@ -135,6 +137,11 @@ final class RequestDataCollector extends DataCollector
             'context' => [],
             'responses' => [],
         ];
+    }
+
+    public function getVersion(): ?string
+    {
+        return $this->data['version'] ?? null;
     }
 
     public function reset(): void
