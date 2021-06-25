@@ -118,7 +118,7 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
             'attempts' => $this->getAttempts(),
             'batch_id' => $this->getBatchId(),
             'depends_on_name' => $this->getDependsOnName(),
-            'message' => $this->getMessage() ? \serialize($this->getMessage()) : null,
+            'message' => $this->getMessage(),
             'requires_approval' => $this->isApprovalRequired() ? 1 : 0,
         ]);
     }

@@ -60,4 +60,14 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const SERVICE_BATCH_ITEM_ID_STRATEGY = 'easy_batch.batch_item.id_strategy';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_BATCH_TRANSFORMER = 'easy_batch.batch.transformer';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_BATCH_ITEM_TRANSFORMER = 'easy_batch.batch_item.transformer';
 }
