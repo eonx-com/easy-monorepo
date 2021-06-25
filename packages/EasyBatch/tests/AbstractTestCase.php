@@ -10,6 +10,8 @@ use EonX\EasyBatch\IdStrategies\UuidV4Strategy;
 use EonX\EasyBatch\Interfaces\BatchFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
+use EonX\EasyBatch\Transformers\BatchItemTransformer;
+use EonX\EasyBatch\Transformers\BatchTransformer;
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use PHPUnit\Framework\TestCase;
@@ -34,12 +36,12 @@ abstract class AbstractTestCase extends TestCase
 
     protected function getBatchFactory(): BatchFactoryInterface
     {
-        return $this->batchFactory = $this->batchFactory ?? new BatchFactory();
+        return $this->batchFactory = $this->batchFactory ?? new BatchFactory(new BatchTransformer());
     }
 
     protected function getBatchItemFactory(): BatchItemFactoryInterface
     {
-        return $this->batchItemFactory = $this->batchItemFactory ?? new BatchItemFactory();
+        return $this->batchItemFactory = $this->batchItemFactory ?? new BatchItemFactory(new BatchItemTransformer());
     }
 
     protected function getIdStrategy(): BatchObjectIdStrategyInterface

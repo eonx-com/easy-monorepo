@@ -19,6 +19,8 @@ use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Repositories\BatchRepository;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Repositories\BatchItemRepository;
+use EonX\EasyBatch\Transformers\BatchTransformer;
+use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -38,11 +40,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Factories
     $services
         ->set(BatchFactoryInterface::class, BatchFactory::class)
-        ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_CLASS . '%');
+        ->arg('$transformer', ref(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER));
 
     $services
         ->set(BatchItemFactoryInterface::class, BatchItemFactory::class)
-        ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_CLASS . '%');
+        ->arg('$transformer', ref(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
 
     // IdStrategies
     $services
@@ -76,4 +78,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$factory', ref(BatchItemFactoryInterface::class))
         ->arg('$idStrategy', ref(BridgeConstantsInterface::SERVICE_BATCH_ITEM_ID_STRATEGY))
         ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_TABLE . '%');
+
+    // Transformers
+    $services
+        ->set(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER, BatchTransformer::class)
+        ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_CLASS . '%');
+
+    $services
+        ->set(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER, BatchItemTransformer::class)
+        ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_CLASS . '%');
 };
