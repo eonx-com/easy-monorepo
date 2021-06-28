@@ -8,16 +8,17 @@ use Bugsnag\Client;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
 use EonX\EasyBugsnag\Bridge\Laravel\Doctrine\SqlOrmLogger;
 use EonX\EasyBugsnag\Bridge\Laravel\Request\LaravelRequestResolver;
+use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingListener;
 use EonX\EasyBugsnag\ClientFactory;
 use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
 use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use LaravelDoctrine\ORM\Loggers\Logger;
-use function GuzzleHttp\Promise\queue;
 
 final class EasyBugsnagServiceProvider extends ServiceProvider
 {
@@ -39,6 +40,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         $this->registerConfigurators();
         $this->registerDoctrineOrm();
         $this->registerRequestResolver();
+        $this->registerSessionTracking();
         $this->registerShutdownStrategy();
     }
 
@@ -103,6 +105,16 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     {
         // Request Resolver
         $this->app->singleton(LaravelRequestResolver::class);
+    }
+
+    /**
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    private function registerSessionTracking(): void
+    {
+        if (\config('easy-bugsnag.session_tracking', false) === false) {
+            $this->app->make('events')->listen(RouteMatched::class, SessionTrackingListener::class);
+        }
     }
 
     /**

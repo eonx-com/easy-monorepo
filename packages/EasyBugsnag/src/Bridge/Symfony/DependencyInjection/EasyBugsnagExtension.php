@@ -38,5 +38,9 @@ final class EasyBugsnagExtension extends Extension
         $container
             ->registerForAutoconfiguration(ClientConfiguratorInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR);
+
+        if ($config['session_tracking'] ?? false) {
+            $loader->load('sessions.php');
+        }
     }
 }
