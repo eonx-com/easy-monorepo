@@ -31,7 +31,7 @@ The following set of error response builders are provided to the ErrorHandler by
   - line
   - message
   - trace
-- **StatusCodeBuilder**: Sets the HTTP response status code to the exceptions `$statusCode` property. For example, it
+- **StatusCodeBuilder**: Sets the HTTP response status code to the exception's `$statusCode` property. For example, it
   would set the status code to 404 for a NotFoundException.
 - **SubCodeBuilder**: Adds the exception sub-code to the response body.
 - **TimeBuilder**: Adds a timestamp to the response body.
@@ -39,6 +39,9 @@ The following set of error response builders are provided to the ErrorHandler by
 - **ViolationsBuilder**: Adds violations information to the response body if the exception implements
   `EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface` (such as
   [ValidationException](exceptions.md))
+- **HttpExceptionBuilder**: For HTTP exceptions in Symfony applications (i.e. exceptions that implement
+  `Symfony\Component\HttpKernel\Exception\HttpExceptionInterface`), sets the message in the response body to the
+  exception's `$message` property and the HTTP response status code to the exception's `$statusCode` property.
 
 ## Custom builders
 
@@ -52,7 +55,7 @@ Provide your error response builders to the ErrorHandler by using
 method which returns a collection of your `EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface`
 implementations. The ErrorHandler accepts a collection of all error response builder providers via its constructor.
 
-For example, to provide your custom error response builder, `StatusCodeBuilder` to the ErrorHandler, create a builder
+For example, to provide your custom error response builder, StatusCodeBuilder, to the ErrorHandler, create a builder
 provider implementing `EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface`:
 
 ```php

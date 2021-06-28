@@ -9,12 +9,12 @@ You can configure global settings for the EasyErrorHandler package via a configu
 
 ## Configuration files
 
-For Laravel applications, the EasyErrorHandler configuration file must be called `easy-error-handler.php` and be located in the
-`config` directory.
+For Laravel applications, the EasyErrorHandler configuration file must be called `easy-error-handler.php` and be located
+in the `config` directory.
 
 For Symfony applications, the EasyErrorHandler configuration file can be a YAML, XML or PHP file located under the
-`config/packages` directory, with a name like `easy_error_handler.<format>`. The root node of the configuration must be called
-`easy_error_handler`.
+`config/packages` directory, with a name like `easy_error_handler.<format>`. The root node of the configuration must be
+called `easy_error_handler`.
 
 ## Configuration options
 
@@ -23,7 +23,7 @@ The common configuration options for Laravel and Symfony are as follows:
 | Configuration | Default | Description |
 | ------------- | ------- | ----------- |
 | `bugsnag_enabled` | `true` | Automatically register the error reporter for easy-bugsnag integration. |
-| `bugsnag_ignored_exceptions` | | List of exceptions that will not be reported to Bugsnag. |
+| `bugsnag_ignored_exceptions` | `[]` | List of exceptions that will not be reported to Bugsnag. |
 | `bugsnag_threshold` | `null` | Log level threshold for reporting to Bugsnag. |
 | `response.code` | `code` | Attribute name for exception code. |
 | `response.exception` | `exception` | Attribute name for exception text. |
@@ -36,8 +36,8 @@ The common configuration options for Laravel and Symfony are as follows:
 | `response.sub_code` | `sub_code` | Attribute name for exception sub-code. |
 | `response.time` | `time` | Attribute name for exception timestamp. |
 | `response.violations` | `violations` | Attribute name for exception violations. |
-| `use_default_builders` | `true` | Use the default set of error response builders. |
-| `use_default_reporters` | `true` | Use the default set of error reporters. |
+| `use_default_builders` | `true` | Use the default set of [error response builders](response-builders.md). |
+| `use_default_reporters` | `true` | Use the default set of [error reporters](reporters.md). |
 
 Laravel has the following additional configuration option:
 

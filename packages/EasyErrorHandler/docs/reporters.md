@@ -1,6 +1,6 @@
 ---eonx_docs---
 title: 'Error reporters'
-weight: 1006
+weight: 1007
 ---eonx_docs---
 
 # Error reporters
@@ -16,8 +16,7 @@ Error reporters are provided to the ErrorHandler via implementations of
 
 ## Default reporters
 
-The default error reporter logs to the main logging channel of your application, but you can implement additional error
-reporters, e.g. to send email.
+The default error reporter logs to the main logging channel of your application.
 
 If you use the [easy-bugsnag][1] package, then the ErrorHandler will also notify Bugsnag based on the log level of the
 exception.
