@@ -34,6 +34,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->booleanNode('session_tracking')->defaultFalse()->end()
             ->end();
 
         return $treeBuilder;
