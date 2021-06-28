@@ -10,6 +10,7 @@ use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\BugsnagReporterProvider;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\ErrorDetailsClientConfigurator;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\SeverityClientConfigurator;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\UnhandledClientConfigurator;
 use EonX\EasyErrorHandler\Bridge\EasyWebhook\WebhookFinalFailedListener;
 use EonX\EasyErrorHandler\Bridge\Laravel\ExceptionHandler;
 use EonX\EasyErrorHandler\Bridge\Laravel\Translator;
@@ -29,6 +30,15 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyErrorHandlerServiceProvider extends ServiceProvider
 {
+    /**
+     * @var string[]
+     */
+    private const BUGSNAG_CONFIGURATORS = [
+        ErrorDetailsClientConfigurator::class,
+        SeverityClientConfigurator::class,
+        UnhandledClientConfigurator::class,
+    ];
+
     public function boot(): void
     {
         $this->loadTranslationsFrom(__DIR__ . '/../translations', BridgeConstantsInterface::TRANSLATION_NAMESPACE);
@@ -113,12 +123,10 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             );
             $this->app->tag(BugsnagReporterProvider::class, [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER]);
 
-            $this->app->singleton(ErrorDetailsClientConfigurator::class);
-            $this->app->singleton(SeverityClientConfigurator::class);
-            $this->app->tag(
-                [ErrorDetailsClientConfigurator::class, SeverityClientConfigurator::class],
-                [EasyBugsnagConstantsInterface::TAG_CLIENT_CONFIGURATOR]
-            );
+            foreach (self::BUGSNAG_CONFIGURATORS as $configurator) {
+                $this->app->singleton($configurator);
+                $this->app->tag($configurator, [EasyBugsnagConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
+            }
         }
     }
 }
