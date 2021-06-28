@@ -24,6 +24,9 @@ final class UnhandledClientConfigurator extends AbstractClientConfigurator
      */
     private $handledExceptionClasses;
 
+    /**
+     * @param null|string[] $handledExceptionClasses
+     */
     public function __construct(?array $handledExceptionClasses = null, ?int $priority = null)
     {
         $this->handledExceptionClasses = \array_merge($handledExceptionClasses ?? [], [
