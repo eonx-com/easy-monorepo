@@ -2,28 +2,27 @@
 
 declare(strict_types=1);
 
-use EonX\EasyBatch\Interfaces\BatchManagerInterface;
 use EonX\EasyBatch\BatchManager;
-use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
-use EonX\EasyBatch\Bridge\Symfony\Messenger\AsyncDispatcher;
-use EonX\EasyBatch\Interfaces\BatchFactoryInterface;
-use EonX\EasyBatch\Factories\BatchFactory;
-use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
-use EonX\EasyBatch\Factories\BatchItemFactory;
-use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
-use EonX\EasyBatch\IdStrategies\UuidV4Strategy;
 use EonX\EasyBatch\Bridge\BridgeConstantsInterface;
+use EonX\EasyBatch\Bridge\Symfony\Messenger\AsyncDispatcher;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\DispatchBatchMiddleware;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\ProcessBatchItemMiddleware;
-use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
-use EonX\EasyBatch\Repositories\BatchRepository;
+use EonX\EasyBatch\Factories\BatchFactory;
+use EonX\EasyBatch\Factories\BatchItemFactory;
+use EonX\EasyBatch\IdStrategies\UuidV4Strategy;
+use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
+use EonX\EasyBatch\Interfaces\BatchFactoryInterface;
+use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
+use EonX\EasyBatch\Interfaces\BatchManagerInterface;
+use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
+use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Repositories\BatchItemRepository;
-use EonX\EasyBatch\Transformers\BatchTransformer;
+use EonX\EasyBatch\Repositories\BatchRepository;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
+use EonX\EasyBatch\Transformers\BatchTransformer;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -31,7 +30,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->defaults()
         ->autowire()
         ->autoconfigure()
-        ->bind('$dateTimeFormat', '%' . BridgeConstantsInterface::PARAM_DATE_TIME_FORMAT . '%')
+        ->bind('$datetimeFormat', '%' . BridgeConstantsInterface::PARAM_DATE_TIME_FORMAT . '%')
         ->bind('$eventDispatcher', ref(EventDispatcherInterface::class));
 
     // AsyncDispatcher
