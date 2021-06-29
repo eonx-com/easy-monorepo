@@ -22,6 +22,7 @@ you can look [there][1].
 - [EasyDecision](https://github.com/eonx-com/easy-decision): Your most complex decisions taken the easiest way
 - [EasyErrorHandler](https://github.com/eonx-com/easy-error-handler): Provides customizable ready-to-use error handler for applications
 - [EasyEventDispatcher](https://github.com/eonx-com/easy-event-dispatcher): Framework agnostic event dispatcher
+- [EasyHttpClient](https://github.com/eonx-com/easy-http-client): Utils around HTTP client
 - [EasyLock](https://github.com/eonx-com/easy-lock): Framework agnostic locking features
 - [EasyLogging](https://github.com/eonx-com/easy-logging): Create and configure Monolog Loggers easily
 - [EasyNotification](https://github.com/eonx-com/easy-notification): Client for dispatching notifications at EonX
