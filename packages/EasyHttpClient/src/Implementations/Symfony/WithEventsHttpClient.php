@@ -44,7 +44,7 @@ final class WithEventsHttpClient implements HttpClientInterface
     {
         $options = $options ?? [];
         $subscribers = $options[HttpOptionsInterface::REQUEST_DATA_SUBSCRIBERS] ?? [];
-        \unset($options[HttpOptionsInterface::REQUEST_DATA_SUBSCRIBERS]);
+        unset($options[HttpOptionsInterface::REQUEST_DATA_SUBSCRIBERS]);
 
         $requestData = new RequestData($method, $options, Carbon::now('UTC'), $url);
         $response = $this->decorated->request($method, $url, $options);
