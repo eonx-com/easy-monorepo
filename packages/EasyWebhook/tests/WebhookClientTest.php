@@ -10,18 +10,21 @@ use EonX\EasyWebhook\Interfaces\StackInterface;
 use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
+use EonX\EasyWebhook\Middleware\AsyncMiddleware;
 use EonX\EasyWebhook\Middleware\BodyFormatterMiddleware;
 use EonX\EasyWebhook\Middleware\EventHeaderMiddleware;
 use EonX\EasyWebhook\Middleware\IdHeaderMiddleware;
 use EonX\EasyWebhook\Middleware\MethodMiddleware;
 use EonX\EasyWebhook\Middleware\SendWebhookMiddleware;
 use EonX\EasyWebhook\Middleware\SignatureHeaderMiddleware;
+use EonX\EasyWebhook\Middleware\StatusAndAttemptMiddleware;
 use EonX\EasyWebhook\Middleware\StoreMiddleware;
 use EonX\EasyWebhook\Signers\Rs256Signer;
 use EonX\EasyWebhook\Stack;
 use EonX\EasyWebhook\Stores\ArrayResultStore;
 use EonX\EasyWebhook\Stores\ArrayStore;
 use EonX\EasyWebhook\Tests\Stubs\ArrayStoreStub;
+use EonX\EasyWebhook\Tests\Stubs\AsyncDispatcherStub;
 use EonX\EasyWebhook\Tests\Stubs\HttpClientStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookClient;
@@ -137,6 +140,19 @@ final class WebhookClientTest extends AbstractTestCase
                 )),
             ],
         ];
+    }
+
+    public function testDispatchAsyncKeepsStatusPending(): void
+    {
+        $webhook = Webhook::create('https://eonx.com');
+        $webhookClient = new WebhookClient(new Stack([
+            new StatusAndAttemptMiddleware(),
+            new AsyncMiddleware(new AsyncDispatcherStub(), $this->getArrayStore()),
+        ]));
+
+        $webhookClient->sendWebhook($webhook);
+
+        self::assertEquals(WebhookInterface::STATUS_PENDING, $webhook->getStatus());
     }
 
     /**

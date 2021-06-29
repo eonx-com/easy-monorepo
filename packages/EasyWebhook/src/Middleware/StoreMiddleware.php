@@ -35,10 +35,12 @@ final class StoreMiddleware extends AbstractMiddleware
     {
         $webhookResult = $this->passOn($webhook, $stack);
 
+        if ($webhookResult instanceof ShouldNotBeStoredWebhookResult) {
+            return $webhookResult;
+        }
+
         $this->store->store($webhook);
 
-        return $webhookResult instanceof ShouldNotBeStoredWebhookResult
-            ? $webhookResult
-            : $this->resultStore->store($webhookResult);
+        return $this->resultStore->store($webhookResult);
     }
 }

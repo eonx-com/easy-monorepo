@@ -13,6 +13,12 @@ final class StatusAndAttemptMiddleware extends AbstractMiddleware
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
         $webhookResult = $this->passOn($webhook, $stack);
+
+        // Early return if result wasn't even attempted
+        if ($webhookResult->isAttempted() === false) {
+            return $webhookResult;
+        }
+
         $webhook = $webhookResult->getWebhook();
 
         // Update current attempt only if needed
