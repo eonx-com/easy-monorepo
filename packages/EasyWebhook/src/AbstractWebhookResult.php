@@ -59,6 +59,11 @@ abstract class AbstractWebhookResult implements WebhookResultInterface
         return $this->webhook;
     }
 
+    public function isAttempted(): bool
+    {
+        return $this->response !== null || $this->throwable !== null;
+    }
+
     public function isSuccessful(): bool
     {
         return $this->throwable === null;

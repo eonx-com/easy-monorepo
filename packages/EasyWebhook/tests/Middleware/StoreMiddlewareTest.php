@@ -43,11 +43,11 @@ final class StoreMiddlewareTest extends AbstractMiddlewareTestCase
         $firstWebhook = \reset($webhooks);
         $firstResult = \reset($results);
 
-        self::assertCount(1, $webhooks);
-        self::assertSame($firstWebhook, $webhook);
+        self::assertCount($resultsCount, $webhooks);
         self::assertCount($resultsCount, $results);
 
         if ($resultsCount > 0) {
+            self::assertSame($firstWebhook, $webhook);
             self::assertSame($firstResult, $result);
         }
     }

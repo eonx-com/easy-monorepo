@@ -16,6 +16,8 @@ interface WebhookResultInterface
 
     public function getWebhook(): WebhookInterface;
 
+    public function isAttempted(): bool;
+
     public function isSuccessful(): bool;
 
     public function setId(string $id): self;

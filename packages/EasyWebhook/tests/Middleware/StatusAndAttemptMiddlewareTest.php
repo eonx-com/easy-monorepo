@@ -10,6 +10,7 @@ use EonX\EasyWebhook\Middleware\StatusAndAttemptMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
+use Symfony\Component\HttpClient\Response\MockResponse;
 
 final class StatusAndAttemptMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -18,7 +19,7 @@ final class StatusAndAttemptMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function providerTestProcess(): iterable
     {
-        yield 'successful' => [new WebhookResult(new Webhook()), WebhookInterface::STATUS_SUCCESS];
+        yield 'successful' => [new WebhookResult(new Webhook(), new MockResponse()), WebhookInterface::STATUS_SUCCESS];
 
         yield 'failed pending retry' => [
             new WebhookResult(Webhook::fromArray([
