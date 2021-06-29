@@ -1,0 +1,29 @@
+{
+    "name": "eonx-com/easy-http-client",
+    "description": "Utils around HTTP client",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "require": {
+        "php": "^7.2",
+        "eonx-com/easy-event-dispatcher": "^3.2",
+        "nesbot/carbon": "^1.39 || ^2.22"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.4 || ^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasyHttpClient\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasyHttpClient\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.2-dev"
+        }
+    }
+}
