@@ -112,7 +112,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
      */
     private function registerSessionTracking(): void
     {
-        if (\config('easy-bugsnag.session_tracking', false) === false) {
+        if (\config('easy-bugsnag.session_tracking', false)) {
             $this->app->make('events')->listen(RouteMatched::class, SessionTrackingListener::class);
         }
     }
