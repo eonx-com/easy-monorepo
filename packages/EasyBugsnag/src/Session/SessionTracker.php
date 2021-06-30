@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class SessionTracker
 {
     /**
-     * @var null|string[]
+     * @var string[]
      */
     private $exclude;
 

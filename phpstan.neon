@@ -197,6 +197,9 @@ parameters:
         - message: '#Cannot cast array<string>\|string\|null to string.#'
           path: packages/EasyTest/src/Console/Commands
 
+        - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
+          path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
+
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: packages/EasyWebhook/src/AbstractWebhook.php
