@@ -9,16 +9,19 @@ use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
 use EonX\EasyBugsnag\Bridge\Laravel\Doctrine\SqlOrmLogger;
 use EonX\EasyBugsnag\Bridge\Laravel\Request\LaravelRequestResolver;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingListener;
+use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingMiddleware;
 use EonX\EasyBugsnag\ClientFactory;
 use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
 use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
+use EonX\EasyBugsnag\Session\SessionTracker;
 use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use LaravelDoctrine\ORM\Loggers\Logger;
+use Laravel\Lumen\Application as LumenApplication;
 
 final class EasyBugsnagServiceProvider extends ServiceProvider
 {
@@ -113,6 +116,19 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     private function registerSessionTracking(): void
     {
         if (\config('easy-bugsnag.session_tracking', false)) {
+            $this->app->singleton(SessionTracker::class, static function (Container $app): SessionTracker {
+                return new SessionTracker(
+                    $app->make(Client::class),
+                    \config('easy-bugsnag.session_tracking_exclude', []),
+                    \config('easy-bugsnag.session_tracking_exclude_delimiter', '#')
+                );
+            });
+
+            if ($this->app instanceof LumenApplication) {
+                $this->app->singleton(SessionTrackingMiddleware::class);
+                $this->app->middleware([SessionTrackingMiddleware::class]);
+            }
+
             $this->app->make('events')->listen(RouteMatched::class, SessionTrackingListener::class);
         }
     }

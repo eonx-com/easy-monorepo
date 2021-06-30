@@ -24,5 +24,15 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_SESSION_TRACKING_EXCLUDE = 'easy_bugsnag.session_tracking_exclude';
+
+    /**
+     * @var string
+     */
+    public const PARAM_SESSION_TRACKING_EXCLUDE_DELIMITER = 'easy_bugsnag.session_tracking_exclude_delimiter';
+
+    /**
+     * @var string
+     */
     public const TAG_CLIENT_CONFIGURATOR = 'easy_bugsnag.client_configurator';
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Tests\Bridge\Symfony;
 
 use Bugsnag\Client;
+use EonX\EasyBugsnag\Session\SessionTracker;
 
 final class EasyBugsnagBundleTest extends AbstractSymfonyTestCase
 {
@@ -13,5 +14,6 @@ final class EasyBugsnagBundleTest extends AbstractSymfonyTestCase
         $container = $this->getKernel([__DIR__ . '/Fixtures/default_config.yaml'])->getContainer();
 
         self::assertInstanceOf(Client::class, $container->get(Client::class));
+        self::assertInstanceOf(SessionTracker::class, $container->get(SessionTracker::class));
     }
 }
