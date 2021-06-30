@@ -40,6 +40,16 @@ final class EasyBugsnagExtension extends Extension
             ->addTag(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR);
 
         if ($config['session_tracking'] ?? false) {
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_SESSION_TRACKING_EXCLUDE,
+                $config['session_tracking_exclude'] ?? []
+            );
+
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_SESSION_TRACKING_EXCLUDE_DELIMITER,
+                $config['session_tracking_exclude_delimiter'] ?? '#'
+            );
+
             $loader->load('sessions.php');
         }
     }

@@ -35,6 +35,11 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->booleanNode('session_tracking')->defaultFalse()->end()
+                ->arrayNode('session_tracking_exclude')
+                    ->beforeNormalization()->castToArray()->end()
+                    ->scalarPrototype()->end()
+                ->end()
+                ->scalarNode('session_tracking_exclude_delimiter')->defaultValue('#')->end()
             ->end();
 
         return $treeBuilder;
