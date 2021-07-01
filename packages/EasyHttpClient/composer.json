@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "eonx-com/easy-event-dispatcher": "^3.1.5",
+        "eonx-com/easy-event-dispatcher": "^3.1",
         "nesbot/carbon": "^1.39 || ^2.22"
     },
     "require-dev": {
@@ -23,7 +23,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.2-dev"
+            "dev-master": "3.1-dev"
         }
     }
 }
