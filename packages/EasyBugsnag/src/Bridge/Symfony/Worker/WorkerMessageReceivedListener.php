@@ -40,7 +40,7 @@ final class WorkerMessageReceivedListener
     private $varCloner;
 
     /**
-     * @var \Symfony\Component\VarDumper\VarDumper
+     * @var \Symfony\Component\VarDumper\Dumper\CliDumper
      */
     private $varDumper;
 
@@ -84,7 +84,7 @@ final class WorkerMessageReceivedListener
      */
     private function dump($var): string
     {
-        return $this->getDumper()->dump($this->getCloner()->cloneVar($var), true);
+        return (string)$this->getDumper()->dump($this->getCloner()->cloneVar($var), true);
     }
 
     private function getCloner(): VarCloner
