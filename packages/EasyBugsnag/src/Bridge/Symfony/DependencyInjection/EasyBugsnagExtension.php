@@ -39,6 +39,18 @@ final class EasyBugsnagExtension extends Extension
             ->registerForAutoconfiguration(ClientConfiguratorInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR);
 
+        if ($config['aws_ecs_fargate'] ?? false) {
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_AWS_ECS_FARGATE_META_STORAGE_FILENAME,
+                $config['aws_ecs_fargate_meta_storage_filename']
+            );
+
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_AWS_ECS_FARGATE_META_URL,
+                $config['aws_ecs_fargate_meta_url']
+            );
+        }
+
         if ($config['session_tracking'] ?? false) {
             $container->setParameter(
                 BridgeConstantsInterface::PARAM_SESSION_TRACKING_EXCLUDE,

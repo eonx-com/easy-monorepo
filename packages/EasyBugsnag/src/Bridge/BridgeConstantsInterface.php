@@ -14,6 +14,16 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_AWS_ECS_FARGATE_META_STORAGE_FILENAME = 'easy_bugsnag.aws_ecs_fargate_meta_storage_filename';
+
+    /**
+     * @var string
+     */
+    public const PARAM_AWS_ECS_FARGATE_META_URL = 'easy_bugsnag.aws_ecs_fargate_meta_url';
+
+    /**
+     * @var string
+     */
     public const PARAM_DOCTRINE_DBAL_CONNECTIONS = 'easy_bugsnag.doctrine_dbal.connections';
 
     /**

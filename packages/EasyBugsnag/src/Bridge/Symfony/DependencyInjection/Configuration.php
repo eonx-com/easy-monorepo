@@ -16,6 +16,13 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->children()
                 ->scalarNode('api_key')->isRequired()->end()
+                ->booleanNode('aws_ecs_fargate')->defaultFalse()->end()
+                ->scalarNode('aws_ecs_fargate_meta_url')
+                    ->defaultValue('env(ECS_CONTAINER_METADATA_URI_V4)/task')
+                ->end()
+                ->scalarNode('aws_ecs_fargate_meta_storage_filename')
+                    ->defaultValue('/var/www/var/aws_ecs_fargate_meta.json')
+                ->end()
                 ->arrayNode('doctrine_dbal')
                     ->beforeNormalization()
                         ->always(static function ($v): array {
