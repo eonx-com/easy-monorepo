@@ -52,5 +52,9 @@ final class EasyBugsnagExtension extends Extension
 
             $loader->load('sessions.php');
         }
+
+        if ($config['worker_info'] ?? false) {
+            $loader->load('worker.php');
+        }
     }
 }

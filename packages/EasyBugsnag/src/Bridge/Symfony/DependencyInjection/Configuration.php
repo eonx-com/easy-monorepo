@@ -40,6 +40,7 @@ final class Configuration implements ConfigurationInterface
                     ->scalarPrototype()->end()
                 ->end()
                 ->scalarNode('session_tracking_exclude_delimiter')->defaultValue('#')->end()
+                ->booleanNode('worker_info')->defaultFalse()->end()
             ->end();
 
         return $treeBuilder;
