@@ -44,8 +44,8 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $unitOfWork = $entityManager->getUnitOfWork();
         $transactionNestingLevel = $entityManager->getConnection()
             ->getTransactionNestingLevel();
-        $scheduledEntityInsertions = $unitOfWork->getScheduledEntityInsertions();
-        $scheduledEntityUpdates = $unitOfWork->getScheduledEntityUpdates();
+        $scheduledEntityInsertions = $this->filterEntities($unitOfWork->getScheduledEntityInsertions());
+        $scheduledEntityUpdates = $this->filterEntities($unitOfWork->getScheduledEntityUpdates());
 
         if (\count($scheduledEntityInsertions) > 0) {
             $this->eventDispatcher->deferInsertions($scheduledEntityInsertions, $transactionNestingLevel);
@@ -63,5 +63,23 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         if ($entityManager->getConnection()->getTransactionNestingLevel() === 0) {
             $this->eventDispatcher->dispatch();
         }
+    }
+
+    /**
+     * @param object[] $entities
+     *
+     * @return object[]
+     */
+    private function filterEntities(array $entities): array
+    {
+        return \array_filter($entities, function (object $entity): bool {
+            foreach ($this->entities as $acceptableEntityClass) {
+                if (\is_a($entity, $acceptableEntityClass)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
     }
 }
