@@ -11,6 +11,7 @@ use EonX\EasyBugsnag\Bridge\Laravel\Request\LaravelRequestResolver;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingListener;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingMiddleware;
 use EonX\EasyBugsnag\ClientFactory;
+use EonX\EasyBugsnag\Configurators\AwsEcsFargateConfigurator;
 use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
 use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
@@ -20,8 +21,8 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use LaravelDoctrine\ORM\Loggers\Logger;
 use Laravel\Lumen\Application as LumenApplication;
+use LaravelDoctrine\ORM\Loggers\Logger;
 
 final class EasyBugsnagServiceProvider extends ServiceProvider
 {
@@ -39,12 +40,26 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-bugsnag.php', 'easy-bugsnag');
 
+        $this->registerAwsEcsFargate();
         $this->registerClient();
         $this->registerConfigurators();
         $this->registerDoctrineOrm();
         $this->registerRequestResolver();
         $this->registerSessionTracking();
         $this->registerShutdownStrategy();
+    }
+
+    private function registerAwsEcsFargate(): void
+    {
+        if (\config('easy-bugsnag.aws_ecs_fargate', false)) {
+            $this->app->singleton(AwsEcsFargateConfigurator::class, static function (): AwsEcsFargateConfigurator {
+                return new AwsEcsFargateConfigurator(
+                    \config('easy-bugsnag.aws_ecs_fargate_meta_storage_filename'),
+                    \config('easy-bugsnag.aws_ecs_fargate_meta_url')
+                );
+            });
+            $this->app->tag(AwsEcsFargateConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
+        }
     }
 
     private function registerClient(): void
