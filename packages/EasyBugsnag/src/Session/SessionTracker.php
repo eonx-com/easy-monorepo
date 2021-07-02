@@ -35,11 +35,6 @@ final class SessionTracker
         $this->excludeDelimiter = $excludeDelimiter ?? '#';
     }
 
-    public function sendSessions(): void
-    {
-        $this->sessionTracker->sendSessions();
-    }
-
     public function startSession(Request $request): void
     {
         $requestUri = $request->getUri();

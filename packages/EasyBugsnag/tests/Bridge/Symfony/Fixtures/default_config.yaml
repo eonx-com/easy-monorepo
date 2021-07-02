@@ -1,8 +1,9 @@
 easy_bugsnag:
     api_key: 'my-bugsnag-api-key'
-    session_tracking: true
-    session_tracking_exclude:
-        - ^/ping
+    session_tracking:
+        enabled: true
+        exclude_urls:
+            - ^/ping
 
 services:
     doctrine.dbal.logger.chain.default:

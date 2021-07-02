@@ -34,12 +34,32 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_SESSION_TRACKING_EXCLUDE = 'easy_bugsnag.session_tracking_exclude';
+    public const PARAM_SESSION_TRACKING_CACHE_DIRECTORY = 'easy_bugsnag.session_tracking_cache_directory';
 
     /**
      * @var string
      */
-    public const PARAM_SESSION_TRACKING_EXCLUDE_DELIMITER = 'easy_bugsnag.session_tracking_exclude_delimiter';
+    public const PARAM_SESSION_TRACKING_CACHE_EXPIRES_AFTER = 'easy_bugsnag.session_tracking_cache_expires_after';
+
+    /**
+     * @var string
+     */
+    public const PARAM_SESSION_TRACKING_CACHE_NAMESPACE = 'easy_bugsnag.session_tracking_cache_namespace';
+
+    /**
+     * @var string
+     */
+    public const PARAM_SESSION_TRACKING_EXCLUDE_URLS = 'easy_bugsnag.session_tracking_exclude_urls';
+
+    /**
+     * @var string
+     */
+    public const PARAM_SESSION_TRACKING_EXCLUDE_URLS_DELIMITER = 'easy_bugsnag.session_tracking_exclude_urls_delimiter';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_SESSION_TRACKING_CACHE = 'easy_bugsnag.session_tracking.cache';
 
     /**
      * @var string
