@@ -49,6 +49,8 @@ final class EasyBugsnagExtension extends Extension
                 BridgeConstantsInterface::PARAM_AWS_ECS_FARGATE_META_URL,
                 $config['aws_ecs_fargate_meta_url']
             );
+
+            $loader->load('aws_ecs_fargate.php');
         }
 
         if ($config['session_tracking'] ?? false) {
