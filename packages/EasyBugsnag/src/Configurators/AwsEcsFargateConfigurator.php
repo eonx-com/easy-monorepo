@@ -22,6 +22,11 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
     private $storageFilename;
 
     /**
+     * @var \Throwable
+     */
+    private $throwable;
+
+    /**
      * @var string
      */
     private $url;
@@ -45,6 +50,19 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
             ->getPipeline()
             ->pipe(new CallbackBridge(function (Report $report): void {
                 $awsData = $this->getAwsFargateTaskData();
+
+                // Something happened...
+                if ($awsData === null) {
+                    $message = $this->throwable !== null ? $this->throwable->getMessage() : 'Something went wrong...';
+
+                    $report->addMetaData([
+                        'aws' => [
+                            'Error' => $message,
+                        ],
+                    ]);
+
+                    return;
+                }
 
                 $report->addMetaData([
                     'aws' => [
@@ -72,14 +90,20 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
     }
 
     /**
-     * @return mixed[]
+     * @return null|mixed[]
      */
-    private function getAwsFargateTaskData(): array
+    private function getAwsFargateTaskData(): ?array
     {
-        if ($this->filesystem->exists($this->storageFilename) === false) {
-            $this->filesystem->dumpFile($this->storageFilename, (string)\file_get_contents($this->url));
-        }
+        try {
+            if ($this->filesystem->exists($this->storageFilename) === false) {
+                $this->filesystem->dumpFile($this->storageFilename, (string)\file_get_contents($this->url));
+            }
 
-        return \json_decode((string)\file_get_contents($this->storageFilename), true);
+            return \json_decode((string)\file_get_contents($this->storageFilename), true);
+        } catch (\Throwable $throwable) {
+            $this->throwable = $throwable;
+
+            return null;
+        }
     }
 }
