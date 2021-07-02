@@ -86,7 +86,13 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
         $awsData = $this->getAwsFargateTaskData();
         $image = (string)($awsData['Containers'][0]['Image'] ?? '');
 
-        return \explode(':', $image)[1] ?? null;
+        $appVersion = \explode(':', $image)[1] ?? null;
+
+        if ($appVersion !== null) {
+            \putenv(\sprintf('APP_VERSION=%s', (string)$appVersion));
+        }
+
+        return $appVersion;
     }
 
     /**
