@@ -8,6 +8,7 @@ use Bugsnag\Client;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
 use EonX\EasyBugsnag\Bridge\Laravel\Doctrine\SqlOrmLogger;
 use EonX\EasyBugsnag\Bridge\Laravel\Request\LaravelRequestResolver;
+use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingConfigurator;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingListener;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingMiddleware;
 use EonX\EasyBugsnag\ClientFactory;
@@ -51,11 +52,11 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
 
     private function registerAwsEcsFargate(): void
     {
-        if (\config('easy-bugsnag.aws_ecs_fargate', false)) {
+        if (\config('easy-bugsnag.aws_ecs_fargate.enabled', false)) {
             $this->app->singleton(AwsEcsFargateConfigurator::class, static function (): AwsEcsFargateConfigurator {
                 return new AwsEcsFargateConfigurator(
-                    \config('easy-bugsnag.aws_ecs_fargate_meta_storage_filename'),
-                    \config('easy-bugsnag.aws_ecs_fargate_meta_url')
+                    \config('easy-bugsnag.aws_ecs_fargate.meta_storage_filename'),
+                    \config('easy-bugsnag.aws_ecs_fargate.meta_url')
                 );
             });
             $this->app->tag(AwsEcsFargateConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
@@ -130,14 +131,25 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
      */
     private function registerSessionTracking(): void
     {
-        if (\config('easy-bugsnag.session_tracking', false)) {
+        if (\config('easy-bugsnag.session_tracking.enabled', false)) {
             $this->app->singleton(SessionTracker::class, static function (Container $app): SessionTracker {
                 return new SessionTracker(
                     $app->make(Client::class),
-                    \config('easy-bugsnag.session_tracking_exclude', []),
-                    \config('easy-bugsnag.session_tracking_exclude_delimiter', '#')
+                    \config('easy-bugsnag.session_tracking.exclude_urls', []),
+                    \config('easy-bugsnag.session_tracking.exclude_urls_delimiter', '#')
                 );
             });
+
+            $this->app->singleton(
+                SessionTrackingConfigurator::class,
+                static function (Container $app): SessionTrackingConfigurator {
+                    return new SessionTrackingConfigurator(
+                        $app->make('cache')->store('file'),
+                        \config('easy-bugsnag.session_tracking.cache_expires_after', 3600)
+                    );
+                }
+            );
+            $this->app->tag(SessionTrackingConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
 
             if ($this->app instanceof LumenApplication) {
                 $this->app->singleton(SessionTrackingMiddleware::class);

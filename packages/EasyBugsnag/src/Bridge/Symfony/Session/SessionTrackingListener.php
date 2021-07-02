@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBugsnag\Bridge\Laravel\Session;
+namespace EonX\EasyBugsnag\Bridge\Symfony\Session;
 
 use EonX\EasyBugsnag\Session\SessionTracker;
-use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-trait TracksSessionTrait
+final class SessionTrackingListener
 {
     /**
      * @var \EonX\EasyBugsnag\Session\SessionTracker
@@ -19,8 +19,8 @@ trait TracksSessionTrait
         $this->sessionTracker = $sessionTracker;
     }
 
-    private function trackSession(Request $request): void
+    public function __invoke(RequestEvent $event): void
     {
-        $this->sessionTracker->startSession($request);
+        $this->sessionTracker->startSession($event->getRequest());
     }
 }

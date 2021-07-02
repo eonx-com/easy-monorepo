@@ -8,30 +8,49 @@ return [
      */
     'api_key' => \env('BUGSNAG_API_KEY'),
 
-    /**
-     * Enable AWS ECS Fargate info in bugsnag.
-     */
-    'aws_ecs_fargate' => false,
+    'aws_ecs_fargate' => [
+        /**
+         * Enable AWS ECS Fargate info in bugsnag.
+         */
+        'enabled' => false,
 
-    /**
-     * Filename to store AWS ECS Fargate meta, prevent requesting them each time.
-     */
-    'aws_ecs_fargate_meta_storage_filename' => '/var/www/storage/aws_ecs_fargate_meta.json',
+        /**
+         * URL used to fetch AWS ECS Fargate task metadata.
+         */
+        'meta_url' => \sprintf('%s/task', \env('ECS_CONTAINER_METADATA_URI_V4')),
 
-    /**
-     * URL to request AWS ECS Fargate meta from.
-     */
-    'aws_ecs_fargate_meta_url' => \sprintf('%s/task', \env('ECS_CONTAINER_METADATA_URI_V4')),
+        /**
+         * Filename to cache AWS ECS Fargate task metadata into.
+         */
+        'meta_storage_filename' => \storage_path('aws_ecs_fargate_meta.json'),
+    ],
 
     /**
      * Enable Doctrine SQL Queries Breadcrumbs.
      */
     'doctrine_orm' => true,
 
-    /**
-     * Enable session tracking.
-     */
-    'session_tracking' => false,
+    'session_tracking' => [
+        /**
+         * Enable session tracking.
+         */
+        'enabled' => false,
+
+        /**
+         * Expiry for sessions cache in minutes.
+         */
+        'cache_expires_after' => 3600,
+
+        /**
+         * List of URLs or Regex to exclude from session tracking.
+         */
+        'session_tracking_exclude_urls' => [],
+
+        /**
+         * Delimiter used in Regex to resolve excluded URLs.
+         */
+        'session_tracking_exclude_urls_delimiter' => '#'
+    ],
 
     /**
      * List of Regex to exclude URLs from session tracking.
