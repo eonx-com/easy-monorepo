@@ -35,11 +35,14 @@ final class EntityEventSubscriberTest extends AbstractTestCase
     {
         $newEntity = $this->prophesize(stdClass::class)->reveal();
         $existedEntity = $this->prophesize(stdClass::class)->reveal();
+        $notAcceptableEntity = $this->prophesize(stdClass::class)
+            ->willImplement(EntityManagerInterface::class)
+            ->reveal();
         $unitOfWork = $this->prophesize(UnitOfWork::class);
         $unitOfWork->getScheduledEntityInsertions()
-            ->willReturn([$newEntity]);
+            ->willReturn([$newEntity, $notAcceptableEntity]);
         $unitOfWork->getScheduledEntityUpdates()
-            ->willReturn([$existedEntity]);
+            ->willReturn([$existedEntity, $notAcceptableEntity]);
         $connection = $this->prophesize(Connection::class);
         $connection->getTransactionNestingLevel()
             ->willReturn(0);
