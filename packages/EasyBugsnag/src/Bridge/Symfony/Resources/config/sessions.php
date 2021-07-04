@@ -21,7 +21,8 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(BridgeConstantsInterface::SERVICE_SESSION_TRACKING_CACHE, PhpFilesAdapter::class)
         ->arg('$namespace', '%' . BridgeConstantsInterface::PARAM_SESSION_TRACKING_CACHE_NAMESPACE . '%')
-        ->arg('$directory', '%' . BridgeConstantsInterface::PARAM_SESSION_TRACKING_CACHE_DIRECTORY . '%');
+        ->arg('$directory', '%' . BridgeConstantsInterface::PARAM_SESSION_TRACKING_CACHE_DIRECTORY . '%')
+        ->tag('monolog.logger', ['channel' => 'cache']);
 
     $services
         ->set(SessionTracker::class)
