@@ -9,6 +9,7 @@ use Doctrine\DBAL\Connection;
 use EonX\EasyBatch\Interfaces\BatchObjectFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
+use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
 
 abstract class AbstractBatchObjectRepository
 {
@@ -28,6 +29,11 @@ abstract class AbstractBatchObjectRepository
     protected $table;
 
     /**
+     * @var \EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface
+     */
+    private $transformer;
+
+    /**
      * @var \EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface
      */
     private $idStrategy;
@@ -35,11 +41,13 @@ abstract class AbstractBatchObjectRepository
     public function __construct(
         BatchObjectFactoryInterface $factory,
         BatchObjectIdStrategyInterface $idStrategy,
+        BatchObjectTransformerInterface $transformer,
         Connection $conn,
         string $table
     ) {
         $this->factory = $factory;
         $this->idStrategy = $idStrategy;
+        $this->transformer = $transformer;
         $this->conn = $conn;
         $this->table = $table;
     }
@@ -56,9 +64,11 @@ abstract class AbstractBatchObjectRepository
         $batchObject->setCreatedAt($batchObject->getCreatedAt() ?? $now);
         $batchObject->setUpdatedAt($now);
 
+        $data = $this->transformer->transformToArray($batchObject);
+
         $this->has($batchObjectId) === false
-            ? $this->conn->insert($this->table, $batchObject->toArray())
-            : $this->conn->update($this->table, $batchObject->toArray(), ['id' => $batchObjectId]);
+            ? $this->conn->insert($this->table, $data)
+            : $this->conn->update($this->table, $data, ['id' => $batchObjectId]);
     }
 
     /**
