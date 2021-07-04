@@ -70,13 +70,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(BatchRepositoryInterface::class, BatchRepository::class)
         ->arg('$factory', ref(BatchFactoryInterface::class))
         ->arg('$idStrategy', ref(BridgeConstantsInterface::SERVICE_BATCH_ID_STRATEGY))
-        ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_TABLE . '%');
+        ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_TABLE . '%')
+        ->arg('$transformer', ref(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER));
 
     $services
         ->set(BatchItemRepositoryInterface::class, BatchItemRepository::class)
         ->arg('$factory', ref(BatchItemFactoryInterface::class))
         ->arg('$idStrategy', ref(BridgeConstantsInterface::SERVICE_BATCH_ITEM_ID_STRATEGY))
-        ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_TABLE . '%');
+        ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_TABLE . '%')
+        ->arg('$transformer', ref(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
 
     // Transformers
     $services

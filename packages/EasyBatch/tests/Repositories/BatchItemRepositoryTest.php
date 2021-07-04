@@ -9,6 +9,7 @@ use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Objects\MessageDecorator;
 use EonX\EasyBatch\Repositories\BatchItemRepository;
 use EonX\EasyBatch\Tests\AbstractRepositoriesTestCase;
+use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use Symfony\Component\Messenger\Envelope;
@@ -73,6 +74,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
         $repo = new BatchItemRepository(
             $factory,
             $this->getIdStrategy(),
+            new BatchItemTransformer(),
             $this->getDoctrineDbalConnection(),
             BatchItemRepository::DEFAULT_TABLE
         );
