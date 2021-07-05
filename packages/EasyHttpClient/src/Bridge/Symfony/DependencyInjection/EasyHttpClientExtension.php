@@ -21,7 +21,7 @@ final class EasyHttpClientExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
-        $loader = new PhpFileLoader($container, new FileLocator([__DIR__ . '../Resources/config']));
+        $loader = new PhpFileLoader($container, new FileLocator([__DIR__ . '/../Resources/config']));
 
          if (($config['easy_bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
              $loader->load('easy_bugsnag.php');
