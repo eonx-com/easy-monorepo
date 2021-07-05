@@ -32,11 +32,6 @@ final class BatchManager implements BatchManagerInterface
     private $asyncDispatcher;
 
     /**
-     * @var \EonX\EasyBatch\Interfaces\BatchRepositoryInterface
-     */
-    private $batchRepository;
-
-    /**
      * @var \EonX\EasyBatch\Interfaces\BatchItemFactoryInterface
      */
     private $batchItemFactory;
@@ -50,6 +45,11 @@ final class BatchManager implements BatchManagerInterface
      * @var int
      */
     private $batchItemsPerPage;
+
+    /**
+     * @var \EonX\EasyBatch\Interfaces\BatchRepositoryInterface
+     */
+    private $batchRepository;
 
     /**
      * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
@@ -139,28 +139,6 @@ final class BatchManager implements BatchManagerInterface
     }
 
     /**
-     * @param int|string $batchId
-     */
-    public function iterateThroughItems($batchId, ?string $dependsOnName, callable $func): void
-    {
-        $page = 1;
-
-        do {
-            $paginator = $this->batchItemRepository->findForDispatch(
-                new StartSizeData($page, $this->batchItemsPerPage),
-                $batchId,
-                $dependsOnName
-            );
-
-            foreach ($paginator->getItems() as $item) {
-                \call_user_func($func, $item);
-            }
-
-            $page++;
-        } while ($paginator->hasNextPage());
-    }
-
-    /**
      * @throws \EonX\EasyBatch\Exceptions\BatchItemInvalidException
      * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
      */
@@ -184,6 +162,28 @@ final class BatchManager implements BatchManagerInterface
         $this->asyncDispatcher->dispatch($batchItem);
 
         return $batchItem;
+    }
+
+    /**
+     * @param int|string $batchId
+     */
+    public function iterateThroughItems($batchId, ?string $dependsOnName, callable $func): void
+    {
+        $page = 1;
+
+        do {
+            $paginator = $this->batchItemRepository->findForDispatch(
+                new StartSizeData($page, $this->batchItemsPerPage),
+                $batchId,
+                $dependsOnName
+            );
+
+            foreach ($paginator->getItems() as $item) {
+                \call_user_func($func, $item);
+            }
+
+            $page++;
+        } while ($paginator->hasNextPage());
     }
 
     /**
@@ -256,6 +256,30 @@ final class BatchManager implements BatchManagerInterface
         }
     }
 
+    /**
+     * @param int|string $batchId
+     */
+    private function persistBatchItem($batchId, MessageDecorator $item, ?object $message = null): BatchItemInterface
+    {
+        $batchItem = $this->batchItemFactory->create($batchId, $message, $item->getClass());
+
+        $batchItem->setApprovalRequired($item->isApprovalRequired());
+
+        if ($item->getDependsOn() !== null) {
+            $batchItem->setDependsOnName($item->getDependsOn());
+        }
+
+        if ($item->getMetadata() !== null) {
+            $batchItem->setMetadata($item->getMetadata());
+        }
+
+        if ($item->getName() !== null) {
+            $batchItem->setName($item->getName());
+        }
+
+        return $this->batchItemRepository->save($batchItem);
+    }
+
     private function persistBatchRecursive(BatchInterface $batch): BatchInterface
     {
         $batch = $this->batchRepository->save($batch);
@@ -286,26 +310,6 @@ final class BatchManager implements BatchManagerInterface
         $batch->setTotal($totalItems);
 
         return $this->batchRepository->save($batch);
-    }
-
-    /**
-     * @param int|string $batchId
-     */
-    private function persistBatchItem($batchId, MessageDecorator $item, ?object $message = null): BatchItemInterface
-    {
-        $batchItem = $this->batchItemFactory->create($batchId, $message, $item->getClass());
-
-        $batchItem->setApprovalRequired($item->isApprovalRequired());
-
-        if ($item->getDependsOn() !== null) {
-            $batchItem->setDependsOnName($item->getDependsOn());
-        }
-
-        if ($item->getName() !== null) {
-            $batchItem->setName($item->getName());
-        }
-
-        return $this->batchItemRepository->save($batchItem);
     }
 
     private function updateBatch(BatchInterface $batch): BatchInterface

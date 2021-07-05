@@ -18,9 +18,9 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
     /**
      * @return mixed[]
      */
-    public function transformToArray(BatchObjectInterface $batchObject): array
+    protected function doTransformToArray(BatchObjectInterface $batchObject): array
     {
-        $array = parent::transformToArray($batchObject);
+        $array = parent::doTransformToArray($batchObject);
 
         if (isset($array['message'])) {
             $array['message'] = $this->serialize($array['message']);

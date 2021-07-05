@@ -26,6 +26,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
             static function (BatchItemFactoryInterface $factory, BatchItemRepositoryInterface $repo): void {
                 $batchItem1 = $factory->create('batch-id');
                 $batchItem1->setName('right-one');
+                $batchItem1->setMetadata(['key' => 'value']);
 
                 $batchItem2 = $factory->create('another-batch-id');
                 $batchItem3 = $factory->create('batch-id')->setDependsOnName('dependency');

@@ -124,6 +124,10 @@ final class DbalStatementsProvider
             'length' => 191,
         ]);
 
+        $table->addColumn('metadata', 'text', [
+            'notNull' => false,
+        ]);
+
         $table->addColumn('name', 'string', [
             'length' => 191,
             'notNull' => false,

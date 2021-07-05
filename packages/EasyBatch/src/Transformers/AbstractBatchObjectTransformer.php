@@ -38,7 +38,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
      */
     public function transformToArray(BatchObjectInterface $batchObject): array
     {
-        return $batchObject->toArray();
+        return $this->formatData($this->doTransformToArray($batchObject));
     }
 
     public function transformToObject(array $data): BatchObjectInterface
@@ -55,6 +55,34 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
      * @param mixed[] $data
      */
     abstract protected function hydrateBatchObject(BatchObjectInterface $batchObject, array $data): void;
+
+    /**
+     * @return mixed[]
+     */
+    protected function doTransformToArray(BatchObjectInterface $batchObject): array
+    {
+        return $batchObject->toArray();
+    }
+
+    /**
+     * @param mixed[] $data
+     *
+     * @return mixed[]
+     */
+    private function formatData(array $data): array
+    {
+        foreach ($data as $name => $value) {
+            if (\is_array($value)) {
+                $data[$name] = \json_encode($value);
+            }
+
+            if ($value instanceof \DateTimeInterface) {
+                $data[$name] = $value->format($this->datetimeFormat);
+            }
+        }
+
+        return $data;
+    }
 
     /**
      * @param mixed[] $data
