@@ -22,6 +22,11 @@ final class MessageDecorator
     private $message;
 
     /**
+     * @var mixed[]
+     */
+    private $metadata;
+
+    /**
      * @var string
      */
     private $name;
@@ -56,6 +61,14 @@ final class MessageDecorator
         return $this->message;
     }
 
+    /**
+     * @return null|mixed[]
+     */
+    public function getMetadata(): ?array
+    {
+        return $this->metadata;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -83,6 +96,18 @@ final class MessageDecorator
     public function setDependsOn(string $dependsOn): self
     {
         $this->dependsOn = $dependsOn;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed[] $metadata
+     *
+     * @return $this
+     */
+    public function setMetadata(array $metadata): self
+    {
+        $this->metadata = $metadata;
 
         return $this;
     }

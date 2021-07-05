@@ -28,6 +28,11 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     private $id;
 
     /**
+     * @var mixed[]
+     */
+    private $metadata;
+
+    /**
      * @var null|string
      */
     private $name;
@@ -78,6 +83,14 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return null|mixed[]
+     */
+    public function getMetadata(): ?array
+    {
+        return $this->metadata;
     }
 
     public function getName(): ?string
@@ -161,6 +174,16 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
+    /**
+     * @param mixed[] $metadata
+     */
+    public function setMetadata(array $metadata): BatchObjectInterface
+    {
+        $this->metadata = $metadata;
+
+        return $this;
+    }
+
     public function setName(?string $name = null): BatchObjectInterface
     {
         $this->name = $name;
@@ -213,6 +236,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
             'cancelled_at' => $this->getCancelledAt(),
             'created_at' => $this->getCreatedAt(),
             'id' => $this->getId(),
+            'metadata' => $this->getMetadata(),
             'name' => $this->getName(),
             'finished_at' => $this->getFinishedAt(),
             'started_at' => $this->getStartedAt(),

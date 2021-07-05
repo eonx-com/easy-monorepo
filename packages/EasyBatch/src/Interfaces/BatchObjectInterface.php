@@ -8,7 +8,7 @@ interface BatchObjectInterface
     /**
      * @var string
      */
-    public const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    public const DATETIME_FORMAT = 'Y-m-d H:i:s.u';
 
     /**
      * @var string[]
@@ -62,6 +62,11 @@ interface BatchObjectInterface
      */
     public function getId();
 
+    /**
+     * @return null|mixed[]
+     */
+    public function getMetadata(): ?array;
+
     public function getName(): ?string;
 
     public function getStartedAt(): ?\DateTimeInterface;
@@ -92,6 +97,11 @@ interface BatchObjectInterface
      * @param int|string $id
      */
     public function setId($id): self;
+
+    /**
+     * @param mixed[] $metadata
+     */
+    public function setMetadata(array $metadata): self;
 
     public function setName(?string $name = null): self;
 
