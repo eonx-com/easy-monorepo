@@ -90,6 +90,10 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
 
     private function registerConfigurators(): void
     {
+        if (\config('easy-bugsnag.use_default_configurators', true) === false) {
+            return;
+        }
+
         $this->app->singleton(
             BasicsConfigurator::class,
             static function (Container $app): BasicsConfigurator {

@@ -49,6 +49,11 @@ final class EasyBugsnagExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
 
+        // Default configurators
+        if ($config['use_default_configurators'] ?? true) {
+            $loader->load('default_configurators.php');
+        }
+
         $container->setParameter(BridgeConstantsInterface::PARAM_API_KEY, $config['api_key']);
         $container->setParameter(
             BridgeConstantsInterface::PARAM_DOCTRINE_DBAL_ENABLED,

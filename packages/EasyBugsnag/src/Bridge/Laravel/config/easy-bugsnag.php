@@ -58,7 +58,7 @@ return [
     ],
 
     /**
-     * List of Regex to exclude URLs from session tracking.
+     * Enable/Disable default configurators.
      */
-    'session_tracking_exclude' => [],
+    'use_default_configurators' => true,
 ];
