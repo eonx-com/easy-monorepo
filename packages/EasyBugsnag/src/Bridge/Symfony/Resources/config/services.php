@@ -26,18 +26,6 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure()
         ->autowire();
 
-    // Configurators
-    $services
-        ->set(BasicsConfigurator::class)
-        ->arg('$projectRoot', '%kernel.project_dir%/src')
-        ->arg('$stripPath', '%kernel.project_dir%')
-        ->arg('$releaseStage', '%env(APP_ENV)%');
-
-    $services
-        ->set(RuntimeVersionConfigurator::class)
-        ->arg('$runtime', 'symfony')
-        ->arg('$version', Kernel::VERSION);
-
     // Client Factory + Client
     $services
         ->set(ClientFactoryInterface::class, ClientFactory::class)
