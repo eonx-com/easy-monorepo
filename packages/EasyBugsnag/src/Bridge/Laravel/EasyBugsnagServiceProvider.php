@@ -41,6 +41,10 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-bugsnag.php', 'easy-bugsnag');
 
+        if (\config('easy-bugsnag.enabled', true) === false) {
+            return;
+        }
+
         $this->registerAwsEcsFargate();
         $this->registerClient();
         $this->registerConfigurators();

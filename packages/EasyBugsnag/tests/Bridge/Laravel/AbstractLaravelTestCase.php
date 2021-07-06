@@ -25,12 +25,13 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
         }
 
         $app = new Application(__DIR__);
-        $app->register(EasyBugsnagServiceProvider::class);
-        $app->boot();
 
         if ($config !== null) {
             \config($config);
         }
+
+        $app->register(EasyBugsnagServiceProvider::class);
+        $app->boot();
 
         return $this->app = $app;
     }
