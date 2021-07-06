@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 return [
     /**
+     * Enable/Disable the entire package.
+     */
+    'enabled' => true,
+
+    /**
      * Bugsnag API Key of your project.
      */
     'api_key' => \env('BUGSNAG_API_KEY'),

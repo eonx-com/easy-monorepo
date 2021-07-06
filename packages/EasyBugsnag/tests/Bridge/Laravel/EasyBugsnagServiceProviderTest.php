@@ -9,6 +9,18 @@ use EonX\EasyBugsnag\Session\SessionTracker;
 
 final class EasyBugsnagServiceProviderTest extends AbstractLaravelTestCase
 {
+    public function testDisableEntirePackage(): void
+    {
+        $app = $this->getApp([
+            'easy-bugsnag' => [
+                'enabled' => false,
+                'api_key' => 'my-bugsnag-api-key',
+            ],
+        ]);
+
+        self::assertFalse($app->has(Client::class));
+    }
+
     public function testSanity(): void
     {
         $app = $this->getApp([
