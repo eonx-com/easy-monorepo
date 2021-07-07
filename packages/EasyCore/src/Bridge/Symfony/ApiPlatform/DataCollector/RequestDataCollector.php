@@ -43,7 +43,9 @@ final class RequestDataCollector extends DataCollector
             'responses' => $this->dataPersister->getPersistersResponse() ?? [],
         ];
 
-        $this->data['version'] = $this->decorated->getVersion();
+        $this->data['version'] = \method_exists($this->decorated, 'getVersion')
+            ? $this->decorated->getVersion()
+            : null;
     }
 
     /**
