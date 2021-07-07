@@ -30,8 +30,8 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(ClientFactoryInterface::class, ClientFactory::class)
         ->call('setConfigurators', [tagged_iterator(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR)])
-        ->call('setRequestResolver', [ref(SymfonyRequestResolver::class)])
-        ->call('setShutdownStrategy', [ref(ShutdownStrategy::class)]);
+        ->call('setRequestResolver', [ref(BridgeConstantsInterface::SERVICE_REQUEST_RESOLVER)])
+        ->call('setShutdownStrategy', [ref(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY)]);
 
     $services
         ->set(Client::class)
@@ -39,13 +39,14 @@ return static function (ContainerConfigurator $container): void {
         ->args(['%' . BridgeConstantsInterface::PARAM_API_KEY . '%']);
 
     // Request Resolver
-    $services->set(SymfonyRequestResolver::class);
+    $services->set(BridgeConstantsInterface::SERVICE_REQUEST_RESOLVER, SymfonyRequestResolver::class);
 
     // Shutdown Strategy
-    $services->set(ShutdownStrategy::class);
+    $services->set(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY, ShutdownStrategy::class);
 
     $services
         ->set(ShutdownStrategyListener::class)
+        ->arg('$shutdownStrategy', ref(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY))
         ->tag('kernel.event_listener', [
             'event' => TerminateEvent::class,
         ])

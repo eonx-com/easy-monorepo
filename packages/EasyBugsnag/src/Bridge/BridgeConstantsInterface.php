@@ -84,7 +84,17 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const SERVICE_REQUEST_RESOLVER = 'easy_bugsnag.request_resolver';
+
+    /**
+     * @var string
+     */
     public const SERVICE_SESSION_TRACKING_CACHE = 'easy_bugsnag.session_tracking.cache';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_SHUTDOWN_STRATEGY = 'easy_bugsnag.shutdown_strategy';
 
     /**
      * @var string
