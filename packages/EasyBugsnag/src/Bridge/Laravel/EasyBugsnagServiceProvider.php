@@ -75,8 +75,8 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
             static function (Container $app): ClientFactoryInterface {
                 return (new ClientFactory())
                     ->setConfigurators($app->tagged(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR))
-                    ->setRequestResolver($app->make(LaravelRequestResolver::class))
-                    ->setShutdownStrategy($app->make(ShutdownStrategy::class));
+                    ->setRequestResolver($app->make(BridgeConstantsInterface::SERVICE_REQUEST_RESOLVER))
+                    ->setShutdownStrategy($app->make(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY));
             }
         );
 
@@ -132,7 +132,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     private function registerRequestResolver(): void
     {
         // Request Resolver
-        $this->app->singleton(LaravelRequestResolver::class);
+        $this->app->singleton(BridgeConstantsInterface::SERVICE_REQUEST_RESOLVER, LaravelRequestResolver::class);
     }
 
     /**
@@ -174,11 +174,11 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
      */
     private function registerShutdownStrategy(): void
     {
-        $this->app->singleton(ShutdownStrategy::class);
+        $this->app->singleton(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY, ShutdownStrategy::class);
 
         // Make sure client is shutdown in worker
         $this->app->make('queue')->looping(function (): void {
-            $this->app->make(ShutdownStrategy::class)->shutdown();
+            $this->app->make(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY)->shutdown();
         });
     }
 }
