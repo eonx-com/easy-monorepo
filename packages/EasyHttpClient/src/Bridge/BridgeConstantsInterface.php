@@ -15,4 +15,9 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_DECORATE_DEFAULT_CLIENT = 'easy_http_client.decorate_default_client';
+
+    /**
+     * @var string
+     */
+    public const PARAM_DECORATE_EASY_WEBHOOK_CLIENT = 'easy_http_client.decorate_easy_webhook_client';
 }

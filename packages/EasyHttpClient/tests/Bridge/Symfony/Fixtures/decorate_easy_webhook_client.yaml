@@ -1,0 +1,4 @@
+easy_http_client:
+    decorate_easy_webhook_client: true
+    easy_bugsnag_enabled: false
+    psr_logger_enabled: false
