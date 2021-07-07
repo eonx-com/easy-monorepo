@@ -34,6 +34,26 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_PROJECT_ROOT = 'easy_bugsnag.project_root';
+
+    /**
+     * @var string
+     */
+    public const PARAM_RELEASE_STAGE = 'easy_bugsnag.release_stage';
+
+    /**
+     * @var string
+     */
+    public const PARAM_RUNTIME = 'easy_bugsnag.runtime';
+
+    /**
+     * @var string
+     */
+    public const PARAM_RUNTIME_VERSION = 'easy_bugsnag.runtime_version';
+
+    /**
+     * @var string
+     */
     public const PARAM_SESSION_TRACKING_CACHE_DIRECTORY = 'easy_bugsnag.session_tracking_cache_directory';
 
     /**
@@ -55,6 +75,11 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_SESSION_TRACKING_EXCLUDE_URLS_DELIMITER = 'easy_bugsnag.session_tracking_exclude_urls_delimiter';
+
+    /**
+     * @var string
+     */
+    public const PARAM_STRIP_PATH = 'easy_bugsnag.strip_path';
 
     /**
      * @var string
