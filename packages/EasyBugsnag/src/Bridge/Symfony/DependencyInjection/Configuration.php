@@ -85,7 +85,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                         ->integerNode('cache_expires_after')
                             ->defaultValue(3600)
-                            ->info('Expiry for sessions cache in minutes')
+                            ->info('Expiry for sessions cache in seconds')
                         ->end()
                         ->scalarNode('cache_namespace')
                             ->defaultValue('easy_bugsnag_sessions')
