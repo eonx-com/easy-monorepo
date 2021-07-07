@@ -24,6 +24,17 @@ final class EasyBugsnagExtension extends Extension
     /**
      * @var string[]
      */
+    private const BASICS_CONFIG = [
+        'project_root' => BridgeConstantsInterface::PARAM_PROJECT_ROOT,
+        'release_stage' => BridgeConstantsInterface::PARAM_RELEASE_STAGE,
+        'runtime' => BridgeConstantsInterface::PARAM_RUNTIME,
+        'runtime_version' => BridgeConstantsInterface::PARAM_RUNTIME_VERSION,
+        'strip_path' => BridgeConstantsInterface::PARAM_STRIP_PATH,
+    ];
+
+    /**
+     * @var string[]
+     */
     private const SESSION_TRACKING_CONFIG = [
         'cache_directory' => BridgeConstantsInterface::PARAM_SESSION_TRACKING_CACHE_DIRECTORY,
         'cache_expires_after' => BridgeConstantsInterface::PARAM_SESSION_TRACKING_CACHE_EXPIRES_AFTER,
@@ -44,6 +55,11 @@ final class EasyBugsnagExtension extends Extension
         // Disabled completely
         if (($config['enabled'] ?? true) === false) {
             return;
+        }
+
+        // Basics config
+        foreach (self::BASICS_CONFIG as $name => $param) {
+            $container->setParameter($param, $config[$name]);
         }
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

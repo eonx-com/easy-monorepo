@@ -6,6 +6,7 @@ namespace EonX\EasyBugsnag\Bridge\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -23,6 +24,23 @@ final class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->info('Bugsnag Notifier API key, can be found in project settings')
                 ->end()
+                // Basics
+                ->scalarNode('project_root')
+                    ->defaultValue('%kernel.project_dir%/src')
+                ->end()
+                ->scalarNode('release_stage')
+                    ->defaultValue('%env(APP_ENV)%')
+                ->end()
+                ->scalarNode('runtime')
+                    ->defaultValue('symfony')
+                ->end()
+                ->scalarNode('runtime_version')
+                    ->defaultValue(Kernel::VERSION)
+                ->end()
+                ->scalarNode('strip_path')
+                    ->defaultValue('%kernel.project_dir%')
+                ->end()
+                // AWS ECS FARGATE
                 ->arrayNode('aws_ecs_fargate')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -37,6 +55,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                // Doctrine DBAL
                 ->arrayNode('doctrine_dbal')
                     ->beforeNormalization()
                         ->always(static function ($v): array {
@@ -55,6 +74,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                // Session Tracking
                 ->arrayNode('session_tracking')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -82,6 +102,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                // Worker Info
                 ->arrayNode('worker_info')
                     ->addDefaultsIfNotSet()
                     ->children()

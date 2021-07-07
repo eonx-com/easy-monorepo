@@ -13,6 +13,21 @@ return [
      */
     'api_key' => \env('BUGSNAG_API_KEY'),
 
+    /**
+     * Project root.
+     */
+    'project_root' => \base_path('app'),
+
+    /**
+     * Release stage.
+     */
+    'release_stage' => \env('APP_ENV'),
+
+    /**
+     * Strip path.
+     */
+    'strip_path' => \base_path(),
+
     'aws_ecs_fargate' => [
         /**
          * Enable AWS ECS Fargate info in bugsnag.
