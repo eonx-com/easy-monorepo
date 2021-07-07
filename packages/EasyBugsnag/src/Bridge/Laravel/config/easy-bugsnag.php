@@ -57,7 +57,7 @@ return [
         'enabled' => false,
 
         /**
-         * Expiry for sessions cache in minutes.
+         * Expiry for sessions cache in seconds.
          */
         'cache_expires_after' => 3600,
 
