@@ -29,6 +29,11 @@ return [
     'bugsnag_threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', null),
 
     /**
+     * List of handled exceptions that will set the bugsnag report as handled.
+     */
+    'bugsnag_handled_exceptions' => null,
+
+    /**
      * List of Ignored Exceptions that'll not be reported to bugsnag.
      */
     'bugsnag_ignored_exceptions' => null,
