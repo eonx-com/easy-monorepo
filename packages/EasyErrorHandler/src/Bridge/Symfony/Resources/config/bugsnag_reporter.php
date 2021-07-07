@@ -22,6 +22,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(ErrorDetailsClientConfigurator::class)
-        ->set(SeverityClientConfigurator::class)
-        ->set(UnhandledClientConfigurator::class);
+        ->set(SeverityClientConfigurator::class);
+
+    $services
+        ->set(UnhandledClientConfigurator::class)
+        ->arg('$handledExceptionClasses', '%' . BridgeConstantsInterface::PARAM_BUGSNAG_HANDLED_EXCEPTIONS . '%');
 };

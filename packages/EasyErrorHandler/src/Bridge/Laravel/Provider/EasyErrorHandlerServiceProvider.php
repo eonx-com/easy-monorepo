@@ -36,7 +36,6 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
     private const BUGSNAG_CONFIGURATORS = [
         ErrorDetailsClientConfigurator::class,
         SeverityClientConfigurator::class,
-        UnhandledClientConfigurator::class,
     ];
 
     public function boot(): void
@@ -127,6 +126,10 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                 $this->app->singleton($configurator);
                 $this->app->tag($configurator, [EasyBugsnagConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
             }
+
+            $this->app->singleton(UnhandledClientConfigurator::class, static function (): UnhandledClientConfigurator {
+                return new UnhandledClientConfigurator(\config('easy-error-handler.bugsnag_handled_exceptions'));
+            });
         }
     }
 }
