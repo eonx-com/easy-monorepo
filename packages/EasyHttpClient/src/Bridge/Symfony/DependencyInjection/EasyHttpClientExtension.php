@@ -29,6 +29,11 @@ final class EasyHttpClientExtension extends Extension
             $config['decorate_default_client'] ?? false
         );
 
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_DECORATE_EASY_WEBHOOK_CLIENT,
+            $config['decorate_easy_webhook_client'] ?? false
+        );
+
         if (($config['easy_bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
             $loader->load('easy_bugsnag.php');
         }
