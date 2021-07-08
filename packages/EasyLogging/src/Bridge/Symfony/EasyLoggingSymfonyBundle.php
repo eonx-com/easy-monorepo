@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Bridge\Symfony;
 
+use EonX\EasyLogging\Bridge\Symfony\DependencyInjection\Compiler\DefaultStreamHandlerPass;
 use EonX\EasyLogging\Bridge\Symfony\DependencyInjection\Compiler\ReplaceChannelsDefinitionPass;
 use EonX\EasyLogging\Bridge\Symfony\DependencyInjection\EasyLoggingExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -15,6 +16,7 @@ final class EasyLoggingSymfonyBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {
+        $container->addCompilerPass(new DefaultStreamHandlerPass());
         $container->addCompilerPass(new ReplaceChannelsDefinitionPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10);
     }
 

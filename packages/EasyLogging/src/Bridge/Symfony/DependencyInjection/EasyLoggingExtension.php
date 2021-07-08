@@ -21,7 +21,7 @@ final class EasyLoggingExtension extends Extension
     /**
      * @var string[]
      */
-    protected static $autoConfigs = [
+    private const AUTO_CONFIGS = [
         HandlerConfigProviderInterface::class => BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER,
         LoggerConfiguratorInterface::class => BridgeConstantsInterface::TAG_LOGGER_CONFIGURATOR,
         ProcessorConfigProviderInterface::class => BridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER,
@@ -49,16 +49,12 @@ final class EasyLoggingExtension extends Extension
             \class_exists(SymfonyBridgeLogger::class) ? SymfonyBridgeLogger::class : Logger::class
         );
 
+        $container->setParameter(BridgeConstantsInterface::PARAM_STREAM_HANDLER, $config['stream_handler']);
         $container->setParameter(BridgeConstantsInterface::PARAM_STREAM_HANDLER_LEVEL, $config['stream_handler_level']);
 
-        foreach (static::$autoConfigs as $interface => $tag) {
+        foreach (self::AUTO_CONFIGS as $interface => $tag) {
             $container->registerForAutoconfiguration($interface)
                 ->addTag($tag);
-        }
-
-        // Default stream handler
-        if ($config['stream_handler'] ?? true) {
-            $loader->load('default_stream_handler.php');
         }
     }
 }
