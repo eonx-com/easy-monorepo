@@ -100,6 +100,10 @@ final class Configuration implements ConfigurationInterface
                             ->defaultValue('#')
                             ->info('Delimiter used in Regex to resolve excluded URLs')
                         ->end()
+                        ->booleanNode('messenger_message_count_for_sessions')
+                            ->defaultFalse()
+                            ->info('Enable/Disable session tracking for messenger messages')
+                        ->end()
                     ->end()
                 ->end()
                 // Worker Info

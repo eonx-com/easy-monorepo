@@ -98,6 +98,10 @@ final class EasyBugsnagExtension extends Extension
             }
 
             $loader->load('sessions.php');
+
+            if ($config['session_tracking']['messenger_message_count_for_sessions'] ?? false) {
+                $loader->load('sessions_messenger.php');
+            }
         }
 
         if ($config['worker_info']['enabled'] ?? false) {
