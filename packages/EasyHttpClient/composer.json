@@ -5,13 +5,13 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "eonx-com/easy-event-dispatcher": "^3.1.8",
+        "eonx-com/easy-event-dispatcher": "^3.2",
         "nesbot/carbon": "^1.39 || ^2.22"
     },
     "require-dev": {
         "doctrine/dbal": "^2.6",
-        "eonx-com/easy-lock": "^3.1.8",
-        "eonx-com/easy-webhook": "^3.1.8",
+        "eonx-com/easy-lock": "^3.2",
+        "eonx-com/easy-webhook": "^3.2",
         "laravel/lumen-framework": "^5.5",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "symfony/symfony": "^4.4 || ^5.1.5"
