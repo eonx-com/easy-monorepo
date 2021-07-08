@@ -14,6 +14,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_STREAM_HANDLER = 'easy_logging.stream_handler';
+
+    /**
+     * @var string
+     */
     public const PARAM_STREAM_HANDLER_LEVEL = 'easy_logging.stream_handler_level';
 
     /**

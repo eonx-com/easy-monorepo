@@ -8,6 +8,7 @@ use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
 use EonX\EasyLogging\Config\StreamHandlerConfigProvider;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use EonX\EasyLogging\LoggerFactory;
+use EonX\EasyUtils\CollectorHelper;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -30,8 +31,20 @@ final class EasyLoggingServiceProvider extends ServiceProvider
             static function (Container $app): LoggerFactoryInterface {
                 $factory = new LoggerFactory(\config('easy-logging.default_channel'));
 
+                // Add default stream handler only if no handler config providers
+                $handlerConfigProviders = $app->tagged(BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER);
+                $handlerConfigProviders = CollectorHelper::convertToArray($handlerConfigProviders);
+
+                if (\config('easy-logging.stream_handler', true) && \count($handlerConfigProviders) < 1) {
+                    $level = \config('easy-logging.stream_handler_level')
+                        ? (int)\config('easy-logging.stream_handler_level')
+                        : null;
+
+                    $handlerConfigProviders = [new StreamHandlerConfigProvider(null, $level)];
+                }
+
                 $factory
-                    ->setHandlerConfigProviders($app->tagged(BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER))
+                    ->setHandlerConfigProviders($handlerConfigProviders)
                     ->setLoggerConfigurators($app->tagged(BridgeConstantsInterface::TAG_LOGGER_CONFIGURATOR))
                     ->setProcessorConfigProviders(
                         $app->tagged(BridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER)
@@ -48,20 +61,5 @@ final class EasyLoggingServiceProvider extends ServiceProvider
 
         // Override default logger alias
         $this->app->alias(LoggerInterface::class, 'logger');
-
-        // Default stream handler
-        if (\config('easy-logging.stream_handler', true)) {
-            $this->app->singleton(StreamHandlerConfigProvider::class, static function (): StreamHandlerConfigProvider {
-                $level = \config('easy-logging.stream_handler_level')
-                    ? (int)\config('easy-logging.stream_handler_level')
-                    : null;
-
-                return new StreamHandlerConfigProvider(null, $level);
-            });
-            $this->app->tag(
-                StreamHandlerConfigProvider::class,
-                [BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER]
-            );
-        }
     }
 }
