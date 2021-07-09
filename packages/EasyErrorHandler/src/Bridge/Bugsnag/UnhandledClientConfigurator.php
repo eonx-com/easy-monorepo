@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag;
 
 use Bugsnag\Client;
-use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
 use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
 use EonX\EasyErrorHandler\Exceptions\BaseException;
@@ -70,6 +69,6 @@ final class UnhandledClientConfigurator extends AbstractClientConfigurator
 
         $bugsnag
             ->getPipeline()
-            ->pipe(new CallbackBridge($func));
+            ->pipe(new UnhandledCallbackBridge($func));
     }
 }
