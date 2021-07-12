@@ -6,15 +6,11 @@ namespace EonX\EasyRequestId\Bridge\EasyErrorHandler;
 
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
-use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
-use EonX\EasyRequestId\Traits\RequestIdKeysAwareTrait;
 use Throwable;
 
-final class RequestIdErrorResponseBuilder extends AbstractErrorResponseBuilder implements RequestIdKeysAwareInterface, ErrorResponseBuilderProviderInterface
+final class RequestIdErrorResponseBuilder extends AbstractErrorResponseBuilder implements ErrorResponseBuilderProviderInterface
 {
-    use RequestIdKeysAwareTrait;
-
     /**
      * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
      */
@@ -30,8 +26,8 @@ final class RequestIdErrorResponseBuilder extends AbstractErrorResponseBuilder i
     public function buildHeaders(Throwable $throwable, ?array $headers = null): ?array
     {
         $headers = $headers ?? [];
-        $headers[$this->getCorrelationIdKey()] = $this->requestIdService->getCorrelationId();
-        $headers[$this->getRequestIdKey()] = $this->requestIdService->getRequestId();
+        $headers[$this->requestIdService->getCorrelationIdHeaderName()] = $this->requestIdService->getCorrelationId();
+        $headers[$this->requestIdService->getRequestIdHeaderName()] = $this->requestIdService->getRequestId();
 
         return parent::buildHeaders($throwable, $headers);
     }

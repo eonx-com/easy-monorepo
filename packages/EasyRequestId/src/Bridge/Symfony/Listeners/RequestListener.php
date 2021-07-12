@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Bridge\Symfony\Listeners;
 
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
+use EonX\EasyRequestId\Traits\ResolvesFromHttpFoundationRequest;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-final class RequestIdListener
+final class RequestListener
 {
+    use ResolvesFromHttpFoundationRequest;
+
     /**
      * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
      */
@@ -22,7 +25,7 @@ final class RequestIdListener
     public function __invoke(RequestEvent $event): void
     {
         if ($event->isMasterRequest()) {
-            $this->requestIdService->setRequest($event->getRequest());
+            $this->setResolver($event->getRequest(), $this->requestIdService);
         }
     }
 }

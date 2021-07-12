@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Bridge\Laravel;
 
-use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagBridgeConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface as EasyErrorHandlerBridgeConstantsInterface;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
-use EonX\EasyRequestId\Bridge\BridgeConstantsInterface;
-use EonX\EasyRequestId\Bridge\EasyBugsnag\RequestIdConfigurator;
 use EonX\EasyRequestId\Bridge\EasyErrorHandler\RequestIdErrorResponseBuilder;
 use EonX\EasyRequestId\Bridge\EasyLogging\RequestIdProcessor;
 use EonX\EasyRequestId\Bridge\EasyWebhook\RequestIdWebhookMiddleware;
-use EonX\EasyRequestId\DefaultResolver;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
-use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\UuidV4FallbackResolver;
@@ -41,40 +36,16 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
             RequestIdServiceInterface::class,
             static function (Container $app): RequestIdServiceInterface {
                 return new RequestIdService(
-                    $app->tagged(BridgeConstantsInterface::TAG_REQUEST_ID_RESOLVER),
-                    $app->tagged(BridgeConstantsInterface::TAG_CORRELATION_ID_RESOLVER),
-                    $app->make(FallbackResolverInterface::class)
+                    $app->make(FallbackResolverInterface::class),
+                    \config('easy-request-id.http_headers.correlation_id'),
+                    \config('easy-request-id.http_headers.request_id')
                 );
             }
         );
 
-        if ((bool)\config('easy-request-id.default_resolver', true)) {
-            $this->app->singleton(DefaultResolver::class, static function (): DefaultResolver {
-                return new DefaultResolver(
-                    \config('easy-request-id.default_request_id_header'),
-                    \config('easy-request-id.default_correlation_id_header')
-                );
-            });
-            $this->app->tag(DefaultResolver::class, [
-                BridgeConstantsInterface::TAG_CORRELATION_ID_RESOLVER,
-                BridgeConstantsInterface::TAG_REQUEST_ID_RESOLVER,
-            ]);
-        }
-
-        // EasyBugsnag
-        if ($this->bridgeEnabled('easy_bugsnag', EasyBugsnagBridgeConstantsInterface::class)) {
-            $this->app->singleton(RequestIdConfigurator::class);
-            $this->app->extend(RequestIdConfigurator::class, $this->getSetKeysClosure());
-            $this->app->tag(
-                RequestIdConfigurator::class,
-                [EasyBugsnagBridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]
-            );
-        }
-
         // EasyErrorHandler
         if ($this->bridgeEnabled('easy_error_handler', EasyErrorHandlerBridgeConstantsInterface::class)) {
             $this->app->singleton(RequestIdErrorResponseBuilder::class);
-            $this->app->extend(RequestIdErrorResponseBuilder::class, $this->getSetKeysClosure());
             $this->app->tag(
                 RequestIdErrorResponseBuilder::class,
                 [EasyErrorHandlerBridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER]
@@ -84,7 +55,6 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         // EasyLogging
         if ($this->bridgeEnabled('easy_logging', EasyLoggingBridgeConstantsInterface::class)) {
             $this->app->singleton(RequestIdProcessor::class);
-            $this->app->extend(RequestIdProcessor::class, $this->getSetKeysClosure());
             $this->app->tag(
                 RequestIdProcessor::class,
                 [EasyLoggingBridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER]
@@ -94,7 +64,6 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         // EasyWebhook
         if ($this->bridgeEnabled('easy_webhook', EasyWebhookBridgeConstantsInterface::class)) {
             $this->app->singleton(RequestIdWebhookMiddleware::class);
-            $this->app->extend(RequestIdWebhookMiddleware::class, $this->getSetKeysClosure());
             $this->app->tag(
                 RequestIdWebhookMiddleware::class,
                 [EasyWebhookBridgeConstantsInterface::TAG_MIDDLEWARE]
@@ -107,15 +76,5 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         $enabled = (bool)\config(\sprintf('easy-request-id.%s', $config), true);
 
         return $enabled && \interface_exists($interface);
-    }
-
-    private function getSetKeysClosure(): \Closure
-    {
-        return static function (RequestIdKeysAwareInterface $requestIdKeysAware): RequestIdKeysAwareInterface {
-            $requestIdKeysAware->setCorrelationIdKey(\config('easy-request-id.correlation_id_key'));
-            $requestIdKeysAware->setRequestIdKey(\config('easy-request-id.request_id_key'));
-
-            return $requestIdKeysAware;
-        };
     }
 }

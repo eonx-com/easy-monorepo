@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Bridge\Laravel;
 
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
+use EonX\EasyRequestId\Traits\ResolvesFromHttpFoundationRequest;
 use Illuminate\Http\Request;
 
 final class RequestIdMiddleware
 {
+    use ResolvesFromHttpFoundationRequest;
+
     /**
      * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
      */
@@ -24,7 +27,7 @@ final class RequestIdMiddleware
      */
     public function handle(Request $request, \Closure $next)
     {
-        $this->requestIdService->setRequest($request);
+        $this->setResolver($request, $this->requestIdService);
 
         return $next($request);
     }

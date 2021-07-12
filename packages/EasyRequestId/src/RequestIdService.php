@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId;
 
-use EonX\EasyRequestId\Interfaces\CorrelationIdResolverInterface;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
-use EonX\EasyRequestId\Interfaces\RequestIdResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
-use EonX\EasyUtils\CollectorHelper;
-use Symfony\Component\HttpFoundation\Request;
 
 final class RequestIdService implements RequestIdServiceInterface
 {
@@ -19,9 +15,9 @@ final class RequestIdService implements RequestIdServiceInterface
     private $correlationId;
 
     /**
-     * @var \EonX\EasyRequestId\Interfaces\CorrelationIdResolverInterface[]
+     * @var string
      */
-    private $correlationIdResolvers;
+    private $correlationIdHeaderName;
 
     /**
      * @var \EonX\EasyRequestId\Interfaces\FallbackResolverInterface
@@ -34,25 +30,18 @@ final class RequestIdService implements RequestIdServiceInterface
     private $requestId;
 
     /**
-     * @var \EonX\EasyRequestId\Interfaces\RequestIdResolverInterface[]
+     * @var string
      */
-    private $requestIdResolvers;
+    private $requestIdHeaderName;
 
-    /**
-     * @param iterable<mixed> $requestIdResolvers
-     * @param iterable<mixed> $correlationIdResolvers
-     */
     public function __construct(
-        iterable $requestIdResolvers,
-        iterable $correlationIdResolvers,
-        FallbackResolverInterface $fallback
+        FallbackResolverInterface $fallback,
+        ?string $correlationIdHeaderName = null,
+        ?string $requestIdHeaderName = null
     ) {
-        $this->requestIdResolvers = $this->filterResolvers($requestIdResolvers, RequestIdResolverInterface::class);
-        $this->correlationIdResolvers = $this->filterResolvers(
-            $correlationIdResolvers,
-            CorrelationIdResolverInterface::class
-        );
         $this->fallback = $fallback;
+        $this->correlationIdHeaderName = $correlationIdHeaderName ?? self::DEFAULT_HTTP_HEADER_CORRELATION_ID;
+        $this->requestIdHeaderName = $requestIdHeaderName ?? self::DEFAULT_HTTP_HEADER_REQUEST_ID;
     }
 
     public function getCorrelationId(): string
@@ -60,48 +49,28 @@ final class RequestIdService implements RequestIdServiceInterface
         return $this->correlationId = $this->correlationId ?? $this->fallback->fallbackCorrelationId();
     }
 
+    public function getCorrelationIdHeaderName(): string
+    {
+        return $this->correlationIdHeaderName;
+    }
+
     public function getRequestId(): string
     {
         return $this->requestId = $this->requestId ?? $this->fallback->fallbackRequestId();
     }
 
-    public function setRequest(Request $request): RequestIdServiceInterface
+    public function getRequestIdHeaderName(): string
     {
-        // Reset ids
-        $this->correlationId = null;
-        $this->requestId = null;
-
-        foreach ($this->correlationIdResolvers as $resolver) {
-            $correlationId = $resolver->getCorrelationId($request);
-
-            if ($correlationId !== null) {
-                $this->correlationId = $correlationId;
-
-                break;
-            }
-        }
-
-        foreach ($this->requestIdResolvers as $resolver) {
-            $requestId = $resolver->getRequestId($request);
-
-            if ($requestId !== null) {
-                $this->requestId = $requestId;
-
-                break;
-            }
-        }
-
-        return $this;
+        return $this->requestIdHeaderName;
     }
 
-    /**
-     * @param iterable<mixed> $resolvers
-     * @param class-string $class
-     *
-     * @return \EonX\EasyRequestId\Interfaces\ResolverInterface[]
-     */
-    private function filterResolvers(iterable $resolvers, string $class): array
+    public function setResolver(callable $resolver): RequestIdServiceInterface
     {
-        return CollectorHelper::orderLowerPriorityFirstAsArray(CollectorHelper::filterByClass($resolvers, $class));
+        $ids = $resolver();
+
+        $this->correlationId = $ids[self::KEY_RESOLVED_CORRELATION_ID] ?? null;
+        $this->requestId = $ids[self::KEY_RESOLVED_REQUEST_ID] ?? null;
+
+        return $this;
     }
 }
