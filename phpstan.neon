@@ -157,12 +157,6 @@ parameters:
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractDoctrineOrmRepository.php
 
         # ---- EasyRequestId ----
-        - message: '#Property EonX\\EasyRequestId\\RequestIdService\:\:\$requestIdResolvers \(array<EonX\\EasyRequestId\\Interfaces\\RequestIdResolverInterface\>\) does not accept array<EonX\\EasyRequestId\\Interfaces\\ResolverInterface\>#'
-          path: packages/EasyRequestId/src/RequestIdService.php
-
-        - message: '#Property EonX\\EasyRequestId\\RequestIdService\:\:\$correlationIdResolvers \(array<EonX\\EasyRequestId\\Interfaces\\CorrelationIdResolverInterface\>\) does not accept array<EonX\\EasyRequestId\\Interfaces\\ResolverInterface\>#'
-          path: packages/EasyRequestId/src/RequestIdService.php
-
         # ---- EasySchedule ----
         - message: '#Parameter \#1 \$app of method EonX\\EasySchedule\\Interfaces\\ScheduleInterface\:\:setApplication\(\) expects Symfony\\Component\\Console\\Application, Symfony\\Component\\Console\\Application\|null given#'
           path: packages/EasySchedule/src/Command/ScheduleRunCommand.php

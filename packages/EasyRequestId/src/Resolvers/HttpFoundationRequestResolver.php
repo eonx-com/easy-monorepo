@@ -26,7 +26,7 @@ final class HttpFoundationRequestResolver
     }
 
     /**
-     * @return string[]
+     * @return null[]|string[]
      */
     public function __invoke(): array
     {
