@@ -6,12 +6,12 @@ namespace EonX\EasyBugsnag\Bridge\Laravel\Session;
 
 use Bugsnag\Client;
 use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
-use Illuminate\Contracts\Cache\Store;
+use Illuminate\Contracts\Cache\Repository;
 
 final class SessionTrackingConfigurator extends AbstractClientConfigurator
 {
     /**
-     * @var \Illuminate\Contracts\Cache\Store
+     * @var \Illuminate\Contracts\Cache\Repository
      */
     private $cache;
 
@@ -20,7 +20,7 @@ final class SessionTrackingConfigurator extends AbstractClientConfigurator
      */
     private $expiresAfter;
 
-    public function __construct(Store $cache, int $expiresAfter, ?int $priority = null)
+    public function __construct(Repository $cache, int $expiresAfter, ?int $priority = null)
     {
         $this->cache = $cache;
         $this->expiresAfter = $expiresAfter;
