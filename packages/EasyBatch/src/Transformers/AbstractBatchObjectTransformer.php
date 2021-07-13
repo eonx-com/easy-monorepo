@@ -44,6 +44,24 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
     public function transformToObject(array $data): BatchObjectInterface
     {
         $object = $this->instantiateForClass($data['class'] ?? null);
+        $object
+            ->setName($data['name'] ?? null)
+            ->setId($data['id'])
+            ->setStatus((string)($data['status'] ?? BatchObjectInterface::STATUS_PENDING));
+
+        if (\is_array($data['metadata'] ?? null)) {
+            $object->setMetadata($data['metadata']);
+        }
+
+        if (isset($data['throwable'])) {
+            /** @var \Throwable $throwable */
+            $throwable = $this->unserialize((string)$data['throwable']);
+            $object->setThrowable($throwable);
+        }
+
+        if (isset($data['type'])) {
+            $object->setType((string)$data['type']);
+        }
 
         $this->hydrateBatchObject($object, $data);
         $this->setDateTimes($object, $data);
@@ -64,6 +82,26 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         return $batchObject->toArray();
     }
 
+    protected function serialize(object $message): string
+    {
+        $body = \addslashes(\serialize($message));
+
+        if (\preg_match('//u', $body) === false) {
+            $body = \base64_encode($body);
+        }
+
+        return $body;
+    }
+
+    protected function unserialize(string $message): object
+    {
+        if (\strpos($message, '}', -1) === false) {
+            $message = \base64_decode($message);
+        }
+
+        return \unserialize(\stripslashes($message));
+    }
+
     /**
      * @param mixed[] $data
      *
@@ -78,6 +116,10 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
 
             if ($value instanceof \DateTimeInterface) {
                 $data[$name] = $value->format($this->datetimeFormat);
+            }
+
+            if ($value instanceof \Throwable) {
+                $data[$name] = $this->serialize($value);
             }
         }
 
