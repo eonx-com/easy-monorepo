@@ -9,7 +9,9 @@ use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyRequestId\DefaultResolver;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
+use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
+use EonX\EasyRequestId\Resolvers\HttpFoundationRequestResolver;
 use EonX\EasyRequestId\UuidV4FallbackResolver;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,8 +27,6 @@ final class RequestIdServiceTest extends AbstractTestCase
     {
         yield 'Default fallback to UUID' => [
             new Request(),
-            [],
-            [],
             null,
             null,
             static function (string $requestId, string $correlationId): void {
@@ -35,38 +35,29 @@ final class RequestIdServiceTest extends AbstractTestCase
             },
         ];
 
-        $defaultResolver = new DefaultResolver();
-
         yield 'Default resolver with default values' => [
             $this->getRequestWithHeaders([
-                RequestIdKeysAwareInterface::KEY_CORRELATION_ID => 'correlation-id',
-                RequestIdKeysAwareInterface::KEY_REQUEST_ID => 'request-id',
+                RequestIdServiceInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID => 'correlation-id',
+                RequestIdServiceInterface::DEFAULT_HTTP_HEADER_REQUEST_ID => 'request-id',
             ]),
-            [$defaultResolver],
-            [$defaultResolver],
             'request-id',
             'correlation-id',
         ];
     }
 
     /**
-     * @param mixed[] $requestIdResolvers
-     * @param mixed[] $correlationIdResolvers
-     *
      * @dataProvider providerTestGetIds
      */
     public function testGetIds(
         Request $request,
-        array $requestIdResolvers,
-        array $correlationIdResolvers,
         ?string $requestId = null,
         ?string $correlationId = null,
         ?callable $assert = null,
         ?FallbackResolverInterface $fallbackResolver = null
     ): void {
         $fallbackResolver = $fallbackResolver ?? $this->defaultFallbackResolver();
-        $service = new RequestIdService($requestIdResolvers, $correlationIdResolvers, $fallbackResolver);
-        $service->setRequest($request);
+        $service = new RequestIdService($fallbackResolver);
+        $service->setResolver(new HttpFoundationRequestResolver($request, $service));
 
         // For caching coverage
         $service->getCorrelationId();

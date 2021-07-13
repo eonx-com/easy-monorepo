@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Bridge\Symfony\DependencyInjection;
 
-use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
+use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -16,23 +16,21 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                // Keys
-                ->scalarNode('correlation_id_key')
-                    ->defaultValue(RequestIdKeysAwareInterface::KEY_CORRELATION_ID)
+                ->arrayNode('http_headers')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('correlation_id')
+                            ->defaultValue(RequestIdServiceInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID)
+                            ->info('Header used to resolve/send the correlation id from the HTTP request')
+                        ->end()
+                        ->scalarNode('request_id')
+                            ->defaultValue(RequestIdServiceInterface::DEFAULT_HTTP_HEADER_REQUEST_ID)
+                            ->info('Header used to resolve/send the request id from the HTTP request')
+                        ->end()
+                    ->end()
                 ->end()
-                ->scalarNode('request_id_key')
-                    ->defaultValue(RequestIdKeysAwareInterface::KEY_REQUEST_ID)
-                ->end()
-                // Defaults
-                ->booleanNode('default_resolver')->defaultTrue()->end()
-                ->scalarNode('default_request_id_header')
-                    ->defaultValue(RequestIdKeysAwareInterface::KEY_REQUEST_ID)
-                ->end()
-                ->scalarNode('default_correlation_id_header')
-                    ->defaultValue(RequestIdKeysAwareInterface::KEY_CORRELATION_ID)
-                ->end()
+
                 // Bridges
-                ->booleanNode('easy_bugsnag')->defaultTrue()->end()
                 ->booleanNode('easy_error_handler')->defaultTrue()->end()
                 ->booleanNode('easy_logging')->defaultTrue()->end()
                 ->booleanNode('easy_webhook')->defaultTrue()->end()

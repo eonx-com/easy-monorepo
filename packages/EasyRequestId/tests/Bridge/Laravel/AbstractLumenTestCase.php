@@ -9,6 +9,7 @@ use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyRequestId\Bridge\Laravel\EasyRequestIdServiceProvider;
 use EonX\EasyRequestId\Tests\AbstractTestCase;
+use Illuminate\Bus\BusServiceProvider;
 use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
@@ -25,6 +26,7 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         }
 
         $app = new Application(__DIR__);
+        $app->register(BusServiceProvider::class);
         $app->register(EasyRequestIdServiceProvider::class);
         $app->register(EasyRandomServiceProvider::class);
 

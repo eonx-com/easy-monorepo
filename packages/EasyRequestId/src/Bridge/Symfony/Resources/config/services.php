@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 use EonX\EasyRequestId\Bridge\BridgeConstantsInterface;
-use EonX\EasyRequestId\Bridge\Symfony\Listeners\RequestIdListener;
+use EonX\EasyRequestId\Bridge\Symfony\Listeners\RequestListener;
+use EonX\EasyRequestId\Bridge\Symfony\Messenger\SendMessageToTransportsListener;
+use EonX\EasyRequestId\Bridge\Symfony\Messenger\WorkerMessageReceivedListener;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\UuidV4FallbackResolver;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -24,14 +24,22 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // RequestIdService
     $services
         ->set(RequestIdServiceInterface::class, RequestIdService::class)
-        ->arg('$correlationIdResolvers', tagged_iterator(BridgeConstantsInterface::TAG_CORRELATION_ID_RESOLVER))
-        ->arg('$requestIdResolvers', tagged_iterator(BridgeConstantsInterface::TAG_REQUEST_ID_RESOLVER))
-        ->public();
+        ->arg('$correlationIdHeaderName', '%' . BridgeConstantsInterface::PARAM_HTTP_HEADER_CORRELATION_ID . '%')
+        ->arg('$requestIdHeaderName', '%' . BridgeConstantsInterface::PARAM_HTTP_HEADER_REQUEST_ID . '%');
 
     // Listener
     $services
-        ->set(RequestIdListener::class)
+        ->set(RequestListener::class)
         ->tag('kernel.event_listener', [
             'priority' => 10000,
         ]);
+
+    // Messenger
+    $services
+        ->set(SendMessageToTransportsListener::class)
+        ->tag('kernel.event_listener');
+
+    $services
+        ->set(WorkerMessageReceivedListener::class)
+        ->tag('kernel.event_listener');
 };

@@ -5,14 +5,10 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Bridge\EasyLogging;
 
 use EonX\EasyLogging\Config\AbstractSelfProcessorConfigProvider;
-use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
-use EonX\EasyRequestId\Traits\RequestIdKeysAwareTrait;
 
-final class RequestIdProcessor extends AbstractSelfProcessorConfigProvider implements RequestIdKeysAwareInterface
+final class RequestIdProcessor extends AbstractSelfProcessorConfigProvider
 {
-    use RequestIdKeysAwareTrait;
-
     /**
      * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
      */
@@ -31,8 +27,8 @@ final class RequestIdProcessor extends AbstractSelfProcessorConfigProvider imple
     public function __invoke(array $records): array
     {
         $extra = $records['extra'] ?? [];
-        $extra[$this->getRequestIdKey()] = $this->requestIdService->getRequestId();
-        $extra[$this->getCorrelationIdKey()] = $this->requestIdService->getCorrelationId();
+        $extra[$this->requestIdService->getCorrelationIdHeaderName()] = $this->requestIdService->getCorrelationId();
+        $extra[$this->requestIdService->getRequestIdHeaderName()] = $this->requestIdService->getRequestId();
 
         $records['extra'] = $extra;
 
