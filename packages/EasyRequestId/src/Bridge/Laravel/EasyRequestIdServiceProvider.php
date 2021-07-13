@@ -17,7 +17,9 @@ use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstan
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Queue;
+use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application as LumenApplication;
 
 final class EasyRequestIdServiceProvider extends ServiceProvider
 {
@@ -66,6 +68,9 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         );
     }
 
+    /**
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-request-id.php', 'easy-request-id');
@@ -82,6 +87,15 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
                 );
             }
         );
+
+        // Resolve from request
+        $this->app->make('events')->listen(RouteMatched::class, RequestIdRouteMatchedListener::class);
+
+        if ($this->app instanceof LumenApplication) {
+            $this->app->middleware([
+                RequestIdMiddleware::class,
+            ]);
+        }
 
         // EasyErrorHandler
         if ($this->bridgeEnabled('easy_error_handler', EasyErrorHandlerBridgeConstantsInterface::class)) {
