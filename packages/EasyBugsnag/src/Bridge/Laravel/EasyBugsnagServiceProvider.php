@@ -11,6 +11,7 @@ use EonX\EasyBugsnag\Bridge\Laravel\Request\LaravelRequestResolver;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingConfigurator;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingListener;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingMiddleware;
+use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingQueueListener;
 use EonX\EasyBugsnag\ClientFactory;
 use EonX\EasyBugsnag\Configurators\AwsEcsFargateConfigurator;
 use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
@@ -19,6 +20,7 @@ use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use EonX\EasyBugsnag\Session\SessionTracker;
 use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -165,7 +167,15 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
                 $this->app->middleware([SessionTrackingMiddleware::class]);
             }
 
-            $this->app->make('events')->listen(RouteMatched::class, SessionTrackingListener::class);
+            $events = $this->app->make('events');
+
+            $this->app->singleton(SessionTrackingListener::class);
+            $events->listen(RouteMatched::class, SessionTrackingListener::class);
+
+            if (\config('easy-bugsnag.session_tracking.queue_job_count_for_sessions', false)) {
+                $this->app->singleton(SessionTrackingQueueListener::class);
+                $events->listen(JobProcessing::class, SessionTrackingQueueListener::class);
+            }
         }
     }
 
