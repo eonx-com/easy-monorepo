@@ -25,9 +25,6 @@ final class BatchTransformer extends AbstractBatchObjectTransformer
             ->setFailed((int)($data['failed'] ?? 0))
             ->setProcessed((int)($data['processed'] ?? 0))
             ->setSucceeded((int)($data['succeeded'] ?? 0))
-            ->setTotal((int)($data['total'] ?? 0))
-            ->setName($data['name'] ?? null)
-            ->setStatus($data['status'] ?? BatchInterface::STATUS_PENDING)
-            ->setId($data['id']);
+            ->setTotal((int)($data['total'] ?? 0));
     }
 }

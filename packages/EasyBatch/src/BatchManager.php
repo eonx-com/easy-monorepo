@@ -72,6 +72,11 @@ final class BatchManager implements BatchManagerInterface
         $this->batchItemsPerPage = $batchItemsPerPage ?? self::DEFAULT_BATCH_ITEMS_PER_PAGE;
     }
 
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectNotSupportedException
+     */
     public function approve(BatchObjectInterface $batchObject): BatchObjectInterface
     {
         if ($batchObject->isCancelled() || $batchObject->isFailed()) {
@@ -93,7 +98,14 @@ final class BatchManager implements BatchManagerInterface
         }
 
         if ($batchObject instanceof BatchItemInterface) {
-            return $this->updateItem($batchObject);
+            $batchItem = $this->updateItem($batchObject);
+
+            $this->updateBatchForItem(
+                $this->batchRepository->findOrFail($batchItem->getBatchId()),
+                $batchItem
+            );
+
+            return $batchItem;
         }
 
         throw new BatchObjectNotSupportedException(\sprintf(
