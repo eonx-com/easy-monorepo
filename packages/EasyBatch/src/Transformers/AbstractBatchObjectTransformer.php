@@ -49,8 +49,8 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
             ->setId($data['id'])
             ->setStatus((string)($data['status'] ?? BatchObjectInterface::STATUS_PENDING));
 
-        if (\is_array($data['metadata'] ?? null)) {
-            $object->setMetadata($data['metadata']);
+        if (\is_string($data['metadata'] ?? null)) {
+            $object->setMetadata(\json_decode($data['metadata'], true));
         }
 
         if (isset($data['throwable'])) {
