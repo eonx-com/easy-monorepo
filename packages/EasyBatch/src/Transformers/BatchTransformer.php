@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Transformers;
 
-use EonX\EasyBatch\Interfaces\BatchInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Objects\Batch;
 
@@ -26,5 +25,9 @@ final class BatchTransformer extends AbstractBatchObjectTransformer
             ->setProcessed((int)($data['processed'] ?? 0))
             ->setSucceeded((int)($data['succeeded'] ?? 0))
             ->setTotal((int)($data['total'] ?? 0));
+
+        if (isset($data['parent_batch_item_id'])) {
+            $batchObject->setParentBatchItemId((string)$data['parent_batch_item_id']);
+        }
     }
 }
