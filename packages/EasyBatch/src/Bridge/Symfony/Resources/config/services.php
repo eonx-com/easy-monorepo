@@ -55,7 +55,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     foreach (BridgeConstantsInterface::LISTENERS as $listener) {
         $services
             ->set($listener)
-            ->tag($listener);
+            ->tag('kernel.event_listener');
     }
 
     // Manager
