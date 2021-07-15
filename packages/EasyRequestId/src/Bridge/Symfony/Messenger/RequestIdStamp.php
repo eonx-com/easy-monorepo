@@ -9,27 +9,27 @@ use Symfony\Component\Messenger\Stamp\StampInterface;
 final class RequestIdStamp implements StampInterface
 {
     /**
-     * @var string
+     * @var null|string
      */
     private $correlationId;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $requestId;
 
-    public function __construct(string $correlationId, string $requestId)
+    public function __construct(?string $correlationId = null, ?string $requestId = null)
     {
         $this->correlationId = $correlationId;
         $this->requestId = $requestId;
     }
 
-    public function getCorrelationId(): string
+    public function getCorrelationId(): ?string
     {
         return $this->correlationId;
     }
 
-    public function getRequestId(): string
+    public function getRequestId(): ?string
     {
         return $this->requestId;
     }
