@@ -65,6 +65,8 @@ final class ArrayPaginatorTest extends AbstractTestCase
 
         self::assertEquals([], $paginator->getItems());
         self::assertEquals(10, $paginator->getTotalItems());
+        self::assertFalse($paginator->hasPreviousPage());
+        self::assertFalse($paginator->hasNextPage());
     }
 
     /**
