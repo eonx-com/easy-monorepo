@@ -6,6 +6,9 @@ namespace EonX\EasyPagination\Bridge\Symfony\Factories;
 
 use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
 
+/**
+ * @deprecated since 3.2, will be removed in 4.0.
+ */
 final class StartSizeConfigFactory
 {
     /**

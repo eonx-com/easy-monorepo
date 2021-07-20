@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests\Bridge\Symfony\Stubs;
 
 use EonX\EasyPagination\Bridge\Symfony\EasyPaginationSymfonyBundle;
-use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPsr7Factory\Bridge\Symfony\EasyPsr7FactorySymfonyBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -23,11 +22,11 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     private static $request;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $config;
 
-    public function __construct(string $config)
+    public function __construct(?string $config = null)
     {
         $this->config = $config;
 
@@ -52,12 +51,14 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        $container->getAlias(StartSizeDataResolverInterface::class)->setPublic(true);
-
         $requestStackDef = new Definition(RequestStack::class);
         $requestStackDef->setFactory([static::class, 'createRequestStack']);
 
         $container->setDefinition(RequestStack::class, $requestStackDef);
+
+        foreach ($container->getAliases() as $alias) {
+            $alias->setPublic(true);
+        }
 
         foreach ($container->getDefinitions() as $def) {
             $def->setPublic(true);
@@ -73,8 +74,13 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         yield new EasyPsr7FactorySymfonyBundle();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load($this->config);
+        if ($this->config !== null) {
+            $loader->load($this->config);
+        }
     }
 }

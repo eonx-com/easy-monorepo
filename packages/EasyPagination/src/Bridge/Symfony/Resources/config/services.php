@@ -2,46 +2,31 @@
 
 declare(strict_types=1);
 
-use EonX\EasyPagination\Bridge\Symfony\Factories\StartSizeConfigFactory;
-use EonX\EasyPagination\Bridge\Symfony\Factories\StartSizeDataFactory as BridgeStartSizeDataFactory;
-use EonX\EasyPagination\Data\StartSizeData;
-use EonX\EasyPagination\Factories\StartSizeDataFactory;
-use EonX\EasyPagination\Interfaces\StartSizeConfigInterface;
-use EonX\EasyPagination\Interfaces\StartSizeDataFactoryInterface;
-use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
-use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
-use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
-use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
+use EonX\EasyPagination\Bridge\BridgeConstantsInterface;
+use EonX\EasyPagination\Interfaces\PaginationConfigInterface;
+use EonX\EasyPagination\Interfaces\PaginationInterface;
+use EonX\EasyPagination\Interfaces\PaginationProviderInterface;
+use EonX\EasyPagination\PaginationConfig;
+use EonX\EasyPagination\PaginationProvider;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
-
     $services->defaults()
         ->autowire()
         ->autoconfigure();
 
-    # Config
-    $services->set(StartSizeConfigFactory::class)
-        ->arg('$config', '%easy_pagination.start_size_config%');
+    $services
+        ->set(PaginationConfigInterface::class, PaginationConfig::class)
+        ->arg('$pageAttribute', '%' . BridgeConstantsInterface::PARAM_PAGE_ATTRIBUTE . '%')
+        ->arg('$pageDefault', '%' . BridgeConstantsInterface::PARAM_PAGE_DEFAULT . '%')
+        ->arg('$perPageAttribute', '%' . BridgeConstantsInterface::PARAM_PER_PAGE_ATTRIBUTE . '%')
+        ->arg('$perPageDefault', '%' . BridgeConstantsInterface::PARAM_PER_PAGE_DEFAULT . '%');
 
-    $services->set(StartSizeConfigInterface::class, StartSizeConfig::class)
-        ->factory([ref(StartSizeConfigFactory::class), '__invoke']);
+    $services->set(PaginationProviderInterface::class, PaginationProvider::class);
 
-    # Data
-    $services->set(BridgeStartSizeDataFactory::class);
-
-    $services->set(StartSizeDataInterface::class, StartSizeData::class)
-        ->factory([ref(BridgeStartSizeDataFactory::class), '__invoke']);
-
-    # Data Factory to be used by apps
-    $services->set(StartSizeDataFactoryInterface::class, StartSizeDataFactory::class);
-
-    # Resolvers
-    $services->set(StartSizeAsArrayInQueryResolver::class)
-        ->arg('$queryAttr', '%easy_pagination.array_in_query_attr%');
-
-    $services->set(StartSizeInQueryResolver::class);
+    $services
+        ->set(PaginationInterface::class)
+        ->factory([ref(PaginationProviderInterface::class), 'getPagination']);
 };

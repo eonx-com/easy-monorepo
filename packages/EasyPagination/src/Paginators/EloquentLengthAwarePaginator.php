@@ -8,6 +8,9 @@ use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @deprecated since 3.2, will be removed in 4.0. Will be replace by new implementation using Pagination.
+ */
 final class EloquentLengthAwarePaginator extends AbstractTransformableLengthAwarePaginator
 {
     /**

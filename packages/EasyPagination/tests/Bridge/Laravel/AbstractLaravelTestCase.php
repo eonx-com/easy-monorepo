@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Bridge\Laravel;
 
+use EonX\EasyPagination\Bridge\Laravel\Providers\EasyPaginationServiceProvider;
 use EonX\EasyPagination\Tests\AbstractTestCase;
 use EonX\EasyPsr7Factory\Bridge\Laravel\EasyPsr7FactoryServiceProvider;
 use Laravel\Lumen\Application;
@@ -27,6 +28,7 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
         }
 
         $app = $this->app = $this->createApplication($pretendInConsole);
+        $app->register(EasyPaginationServiceProvider::class);
         $app->register(EasyPsr7FactoryServiceProvider::class);
 
         return $app;

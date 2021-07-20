@@ -7,6 +7,9 @@ namespace EonX\EasyPagination\Bridge\Laravel;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorContract;
 
+/**
+ * @deprecated since 3.2, will be removed in 4.0.
+ */
 final class LengthAwarePaginator implements LengthAwarePaginatorInterface
 {
     /**
