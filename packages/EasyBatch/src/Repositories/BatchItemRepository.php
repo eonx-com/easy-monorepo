@@ -42,6 +42,10 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             }
         });
 
+        $paginator->setGetItemsCriteria(static function (QueryBuilder $queryBuilder): void {
+            $queryBuilder->orderBy('created_at');
+        });
+
         $paginator->setTransformer(function (array $item): BatchItemInterface {
             /** @var \EonX\EasyBatch\Interfaces\BatchItemInterface $batchItem */
             $batchItem = $this->factory->createFromArray($item);
