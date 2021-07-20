@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Resolvers;
 
+use EonX\EasyPagination\Interfaces\PaginationConfigInterface;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
-use EonX\EasyPagination\PaginationConfig;
 use Symfony\Component\HttpFoundation\Request;
 
 final class FromHttpFoundationRequestResolver
 {
     /**
-     * @var \EonX\EasyPagination\PaginationConfig
+     * @var \EonX\EasyPagination\Interfaces\PaginationConfigInterface
      */
     private $config;
 
@@ -21,7 +21,7 @@ final class FromHttpFoundationRequestResolver
      */
     private $request;
 
-    public function __construct(PaginationConfig $config, Request $request)
+    public function __construct(PaginationConfigInterface $config, Request $request)
     {
         $this->config = $config;
         $this->request = $request;

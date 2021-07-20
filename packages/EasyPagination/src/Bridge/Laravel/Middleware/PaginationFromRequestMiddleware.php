@@ -20,6 +20,9 @@ final class PaginationFromRequestMiddleware
         $this->paginationProvider = $paginationProvider;
     }
 
+    /**
+     * @return mixed
+     */
     public function handle(Request $request, \Closure $next)
     {
         $resolver = new FromHttpFoundationRequestResolver(
