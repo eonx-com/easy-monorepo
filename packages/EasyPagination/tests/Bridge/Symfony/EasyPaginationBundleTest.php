@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Bridge\Symfony;
 
+use EonX\EasyPagination\Interfaces\PaginationInterface;
+use EonX\EasyPagination\Interfaces\PaginationProviderInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataFactoryInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
+use EonX\EasyPagination\Resolvers\DefaultPaginationResolver;
 use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
 use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
 use EonX\EasyPagination\Tests\AbstractTestCase;
@@ -76,6 +79,19 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         $kernel->boot();
 
         self::assertInstanceOf($instance, $kernel->getContainer()->get(StartSizeDataResolverInterface::class));
+    }
+
+    public function testSanity(): void
+    {
+        $kernel = new KernelStub();
+        $kernel->boot();
+        $container = $kernel->getContainer();
+
+        $paginationProvider = $container->get(PaginationProviderInterface::class);
+        $paginationProvider->setResolver(new DefaultPaginationResolver($paginationProvider->getPaginationConfig()));
+
+        self::assertInstanceOf(PaginationProviderInterface::class, $paginationProvider);
+        self::assertInstanceOf(PaginationInterface::class, $container->get(PaginationInterface::class));
     }
 
     public function testStartSizeDataFactory(): void

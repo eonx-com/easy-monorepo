@@ -6,6 +6,9 @@ namespace EonX\EasyPagination\Resolvers\Config;
 
 use EonX\EasyPagination\Interfaces\StartSizeConfigInterface;
 
+/**
+ * @deprecated since 3.2, will be removed in 4.0. Use PaginationConfig instead.
+ */
 final class StartSizeConfig implements StartSizeConfigInterface
 {
     /**

@@ -14,6 +14,9 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * @deprecated since 3.2, will be removed in 4.0. Use EasyPaginationServiceProvider instead.
+ */
 abstract class AbstractStartSizeEasyPaginationProvider extends ServiceProvider
 {
     /**

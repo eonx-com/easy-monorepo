@@ -9,6 +9,9 @@ use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * @deprecated since 3.2, will be removed in 4.0.
+ */
 final class StartSizeDataFactory
 {
     /**

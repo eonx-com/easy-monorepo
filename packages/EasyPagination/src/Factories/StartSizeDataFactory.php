@@ -8,6 +8,9 @@ use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Interfaces\StartSizeDataFactoryInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 
+/**
+ * @deprecated since 3.2, will be removed in 4.0.
+ */
 final class StartSizeDataFactory implements StartSizeDataFactoryInterface
 {
     /**

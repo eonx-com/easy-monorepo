@@ -6,6 +6,9 @@ namespace EonX\EasyPagination\Bridge\Laravel\Providers;
 
 use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
 
+/**
+ * @deprecated since 3.2, will be removed in 4.0. Use EasyPaginationServiceProvider instead.
+ */
 final class StartSizeAsArrayInQueryEasyPaginationProvider extends AbstractStartSizeEasyPaginationProvider
 {
     /**

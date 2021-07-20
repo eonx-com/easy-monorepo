@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
 
+/**
+ * @deprecated since 3.2, will be removed in 4.0. Use dbal or orm trait based on your needs.
+ */
 trait DoctrinePaginatorTrait
 {
     /**

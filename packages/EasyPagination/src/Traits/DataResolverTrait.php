@@ -9,6 +9,9 @@ use EonX\EasyPagination\Interfaces\StartSizeConfigInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @deprecated since 3.2, will be removed in 4.0.
+ */
 trait DataResolverTrait
 {
     /**

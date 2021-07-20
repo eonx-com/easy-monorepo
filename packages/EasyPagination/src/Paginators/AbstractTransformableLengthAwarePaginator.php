@@ -6,6 +6,9 @@ namespace EonX\EasyPagination\Paginators;
 
 use EonX\EasyPagination\Interfaces\TransformableLengthAwarePaginatorInterface as Transformable;
 
+/**
+ * @deprecated since 3.2, will be removed in 4.0.
+ */
 abstract class AbstractTransformableLengthAwarePaginator extends AbstractLengthAwarePaginator implements Transformable
 {
     /**
