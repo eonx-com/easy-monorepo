@@ -10,7 +10,7 @@ use EonX\EasyUtils\CollectorHelper;
 final class IterablePaginator extends AbstractPaginator
 {
     /**
-     * @var iterable
+     * @var iterable<mixed>
      */
     private $iterable;
 

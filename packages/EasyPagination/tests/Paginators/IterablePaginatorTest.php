@@ -82,7 +82,7 @@ final class IterablePaginatorTest extends AbstractTestCase
      */
     public function testPaginatorGetItems(iterable $items, callable $assert, ?callable $transformer = null): void
     {
-        $paginator = new IterablePaginator($items, Pagination::create(1, 15));
+        $paginator = new IterablePaginator(Pagination::create(1, 15), $items);
         $paginator->setTransformer($transformer);
 
         $assert($paginator->getItems());

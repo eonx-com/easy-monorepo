@@ -128,6 +128,8 @@ parameters:
         - '#Access to an undefined property EonX\\EasyPagination\\Tests\\Stubs\\Model\\Item\:\:\$id#'
         - '#Call to an undefined method Illuminate\\Support\\Fluent\:\:references\(\)#'
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineOrmPaginator\:\:fetchResults\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
+        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalLengthAwarePaginatorNew\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
+        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalPaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
 
         # ---- EasyPipeline ----
         - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
