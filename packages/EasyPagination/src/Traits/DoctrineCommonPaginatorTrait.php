@@ -108,6 +108,7 @@ trait DoctrineCommonPaginatorTrait
             return $row[$primaryKeyIndex];
         };
 
+        /** @var string[] $primaryKeys */
         $primaryKeys = \array_map($primaryKeysMap, $this->fetchResults($newQueryBuilder));
 
         // If no primary keys, no items for current pagination

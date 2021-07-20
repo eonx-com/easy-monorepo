@@ -21,7 +21,7 @@ abstract class AbstractPaginator implements PaginatorInterface
     private $pagination;
 
     /**
-     * @var mixed[]
+     * @var null|mixed[]
      */
     private $transformedItems;
 

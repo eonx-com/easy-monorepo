@@ -70,7 +70,7 @@ trait DatabaseCommonPaginatorTrait
     }
 
     /**
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder|\Illuminate\Database\Eloquent\Builder $queryBuilder
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $queryBuilder
      */
     private function applyCriteria($queryBuilder): void
     {
@@ -80,7 +80,7 @@ trait DatabaseCommonPaginatorTrait
     }
 
     /**
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder|\Illuminate\Database\Eloquent\Builder $queryBuilder
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $queryBuilder
      */
     private function applyGetItemsCriteria($queryBuilder): void
     {

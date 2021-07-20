@@ -14,6 +14,36 @@ final class IterablePaginatorTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      */
+    public function providerTestPaginatorGetItems(): iterable
+    {
+        yield 'Empty array' => [
+            [],
+            static function (array $items): void {
+                self::assertEquals([], $items);
+            },
+        ];
+
+        yield 'Iterable to array' => [
+            new \ArrayIterator(),
+            static function (array $items): void {
+                self::assertEquals([], $items);
+            },
+        ];
+
+        yield 'Transform null to 1' => [
+            [null, null],
+            static function (array $items): void {
+                self::assertEquals([1, 1], $items);
+            },
+            static function ($item) {
+                return $item === null ? 1 : $item;
+            },
+        ];
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
     public function providerTestPaginatorPageMethods(): iterable
     {
         yield 'Default' => [
@@ -46,33 +76,16 @@ final class IterablePaginatorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
+     * @param iterable<mixed> $items
+     *
+     * @dataProvider providerTestPaginatorGetItems
      */
-    public function providerTestPaginatorGetItems(): iterable
+    public function testPaginatorGetItems(iterable $items, callable $assert, ?callable $transformer = null): void
     {
-        yield 'Empty array' => [
-            [],
-            static function (array $items): void {
-                self::assertEquals([], $items);
-            }
-        ];
+        $paginator = new IterablePaginator($items, Pagination::create(1, 15));
+        $paginator->setTransformer($transformer);
 
-        yield 'Iterable to array' => [
-            new \ArrayIterator(),
-            static function (array $items): void {
-                self::assertEquals([], $items);
-            }
-        ];
-
-        yield 'Transform null to 1' => [
-            [null, null],
-            static function (array $items): void {
-                self::assertEquals([1, 1], $items);
-            },
-            static function ($item) {
-                return $item === null ? 1 : $item;
-            },
-        ];
+        $assert($paginator->getItems());
     }
 
     /**
@@ -86,24 +99,11 @@ final class IterablePaginatorTest extends AbstractTestCase
         string $previousPageUrl,
         string $nextPageUrl
     ): void {
-        $paginator = new IterablePaginator($items, $pagination);
+        $paginator = new IterablePaginator($pagination, $items);
 
         self::assertEquals($pagination->getPage(), $paginator->getCurrentPage());
         self::assertEquals($pagination->getPerPage(), $paginator->getItemsPerPage());
         self::assertEquals($previousPageUrl, $paginator->getPreviousPageUrl());
         self::assertEquals($nextPageUrl, $paginator->getNextPageUrl());
-    }
-
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @dataProvider providerTestPaginatorGetItems
-     */
-    public function testPaginatorGetItems(iterable $items, callable $assert, ?callable $transformer = null): void
-    {
-        $paginator = new IterablePaginator($items, Pagination::create(1, 15));
-        $paginator->setTransformer($transformer);
-
-        $assert($paginator->getItems());
     }
 }

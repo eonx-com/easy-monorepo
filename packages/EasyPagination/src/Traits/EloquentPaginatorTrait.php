@@ -28,7 +28,10 @@ trait EloquentPaginatorTrait
         return $this->fetchItems();
     }
 
-    private function applyPagination(Builder $queryBuilder): void
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $queryBuilder
+     */
+    private function applyPagination($queryBuilder): void
     {
         $queryBuilder->forPage($this->getCurrentPage(), $this->getItemsPerPage());
     }
