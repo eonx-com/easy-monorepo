@@ -30,6 +30,11 @@ abstract class AbstractPaginator implements PaginatorInterface
      */
     private $transformer;
 
+    /**
+     * @var string[]
+     */
+    private $urls = [];
+
     public function __construct(PaginationInterface $pagination)
     {
         $this->pagination = $pagination;
@@ -65,6 +70,21 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this->getPageUrl($this->getCurrentPage() + 1);
     }
 
+    public function getPageUrl(int $page): string
+    {
+        if (isset($this->urls[$page])) {
+            return $this->urls[$page];
+        }
+
+        $uri = new Uri($this->pagination->getUrl());
+        $query = $uri->getQueryAsArray();
+
+        $query[$this->pagination->getPageAttribute()] = $page > 0 ? $page : 1;
+        $query[$this->pagination->getPerPageAttribute()] = $this->pagination->getPerPage();
+
+        return $this->urls[$page] = $uri->setQuery($query)->toString();
+    }
+
     public function getPreviousPageUrl(): ?string
     {
         return $this->getPageUrl($this->getCurrentPage() - 1);
@@ -82,15 +102,4 @@ abstract class AbstractPaginator implements PaginatorInterface
      * @return mixed[]
      */
     abstract protected function doGetItems(): array;
-
-    private function getPageUrl(int $page): string
-    {
-        $uri = new Uri($this->pagination->getUrl());
-        $query = $uri->getQueryAsArray();
-
-        $query[$this->pagination->getPageAttribute()] = $page > 0 ? $page : 1;
-        $query[$this->pagination->getPerPageAttribute()] = $this->pagination->getPerPage();
-
-        return $uri->setQuery($query)->toString();
-    }
 }
