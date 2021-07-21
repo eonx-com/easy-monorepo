@@ -13,6 +13,16 @@ abstract class AbstractLengthAwarePaginatorNew extends AbstractPaginator impleme
      */
     private $totalPages;
 
+    public function getFirstPageUrl(): ?string
+    {
+        return $this->getPageUrl(1);
+    }
+
+    public function getLastPageUrl(): ?string
+    {
+        return $this->getPageUrl($this->getTotalPages());
+    }
+
     public function getNextPageUrl(): ?string
     {
         return $this->hasNextPage() ? parent::getNextPageUrl() : null;

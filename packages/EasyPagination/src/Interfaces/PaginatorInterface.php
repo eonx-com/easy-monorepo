@@ -17,6 +17,8 @@ interface PaginatorInterface
 
     public function getNextPageUrl(): ?string;
 
+    public function getPageUrl(int $page): ?string;
+
     public function getPreviousPageUrl(): ?string;
 
     public function setTransformer(?callable $transformer = null): self;

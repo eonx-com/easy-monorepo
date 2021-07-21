@@ -28,6 +28,11 @@ final class DoctrineDbalLengthAwarePaginatorNewTest extends AbstractDoctrineDbal
             static function (DoctrineDbalLengthAwarePaginatorNew $paginator): void {
                 self::assertEmpty($paginator->getItems());
                 self::assertEquals(0, $paginator->getTotalItems());
+                self::assertEquals('/?page=1&perPage=15', $paginator->getFirstPageUrl());
+                self::assertEquals('/?page=1&perPage=15', $paginator->getLastPageUrl());
+                self::assertNull($paginator->getNextPageUrl());
+                self::assertEquals('/?page=1&perPage=15', $paginator->getLastPageUrl());
+                self::assertEquals('/?page=10&perPage=15', $paginator->getPageUrl(10));
             },
         ];
 
