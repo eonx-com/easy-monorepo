@@ -48,7 +48,7 @@ final class SignatureHeaderMiddleware extends AbstractConfigureOnceMiddleware
         if (\is_string($body)) {
             $secret = $webhook->getSecret() ?? $this->secret;
 
-            if (empty($secret)) {
+            if ($secret === null || $secret === '') {
                 throw new InvalidWebhookSecretException('Secret for signature is required');
             }
 
