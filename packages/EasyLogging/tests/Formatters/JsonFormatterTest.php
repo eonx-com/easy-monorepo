@@ -44,6 +44,11 @@ final class JsonFormatterTest extends AbstractTestCase
     public function testCreateLogFormat(callable $log, callable $assert): void
     {
         $stream = \fopen('php://memory', 'rw+');
+
+        if (\is_resource($stream) === false) {
+            return;
+        }
+
         $handler = (new StreamHandler($stream))->setFormatter(new JsonFormatter());
         $logger = new Logger('test', [$handler]);
 
