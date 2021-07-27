@@ -7,6 +7,9 @@ namespace EonX\EasyLogging\Formatters;
 use DateTime;
 use Monolog\Formatter\JsonFormatter;
 
+/**
+ * @deprecated since 3.10, will be removed in 4.0. Use JsonFormatter instead.
+ */
 final class SumoJsonFormatter extends JsonFormatter
 {
     /**
