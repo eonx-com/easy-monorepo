@@ -16,7 +16,7 @@ final class JsonFormatter extends BaseJsonFormatter
      */
     protected function normalize($data, $depth = null)
     {
-        return parent::normalize($this->formatDateTimes($data), $depth);
+        return parent::normalize($this->formatDateTimes($data), $depth ?? 0);
     }
 
     /**
