@@ -1,5 +1,348 @@
 <!-- changelog-linker -->
 
+## [3.2.10] - 2021-07-27
+
+- [#670] [EasyLogging] JsonFormatter which explicitly formats DateTimes
+- [#669] [EasyLogging] Allow to pass channel as Laravel:make parameter
+
+## [3.2.9] - 2021-07-26
+
+- [#668] [EasyBankFiles] Create DE Return parser
+
+## [3.2.8] - 2021-07-23
+
+- [#666] [EasyPagination] Add missing dependency for eonx-com/easy-utils
+- [#667] [EasyErrorHandler] Report Symfony Console errors
+- [#665] [EasyWebhook] Improve strings that can be used for signature secret
+
+## [3.2.7] - 2021-07-21
+
+- [#664] [EasyPagination] Improve pagination urls
+
+## [3.2.6] - 2021-07-20
+
+- [#663] [EasyBatch] Order batch item pagination query
+- [#662] [EasyPagination] Clean up + Refactor pagination and paginators
+
+## [3.2.5] - 2021-07-17
+
+- [#661] [EasyBatch] Fix batchId in batch item listeners
+
+## [3.2.4] - 2021-07-15
+
+- [#660] [EasyLock] Fix logger di for log channel
+
+## [3.2.3] - 2021-07-15
+
+- [#659] [EasyRequestId] RequestIdStamp getters nullable + Implement FromArrayResolver
+
+## [3.2.2] - 2021-07-14
+
+- [#658] [EasyBatch] Fix batch transformer and Symfony listeners definition
+
+## [3.2.1] - 2021-07-14
+
+- [#657] [EasyBatch] Fix metadata logic from array in transformer
+
+## [3.2.0-alpha4]
+
+- [#653] [EasyRequestId] Laravel resolve IDs from request automatically
+- [#656] [EasyBatch] Update batch for item on approve + Fix transformers
+
+## [3.2.0-alpha3]
+
+- [#655] [EasyBugsnag] Session tracking for laravel queue job
+
+## [3.2.0-alpha2]
+
+- [#654] [EasyBugsnag] Use right laravel cache class for session tracking
+
+## [3.2.0-alpha1]
+
+- [#651] [EasyRequestId] Improve resolvers
+
+## [3.1.9] - 2021-07-09
+
+- [#649] [EasyErrorHandler] Fix bugsnag unhandled errors implementation
+
+## [3.1.8] - 2021-07-09
+
+- [#648] [EasyBugsnag] Count Symfony Messenger messages as sessions
+
+## [3.1.7] - 2021-07-08
+
+- [#644] [EasyCore] Work with api-platform 2.5 and 2.6
+- [#647] [EasyLogging] Use default StreamHandler only when no other handlers
+
+## [3.1.6] - 2021-07-07
+
+- [#637] [EasyBugsnag] Add Laravel config to enable/disable entire package
+- [#640] [EasyBugsnag] Add service ids for request resolver and shutdown strategy
+- [#639] [EasyBugsnag] Add config for bugsnag basics options
+- [#638] [EasyBugsnag] Add config to disable default configurators
+- [#642] [EasyErrorHandler] Add config for handled exceptions
+- [#641] [EasyBugsnag] Session cache expiry in seconds
+- [#643] [EasyHttpClient] Bridge for easy-webhook
+
+## [3.1.5-alpha8]
+
+- [#629] [EasyBatch] Implement metadata on batch object
+
+## [3.1.5-alpha7]
+
+- [#628] [EasyHttpClient] Add Symfony config to decorate default http client
+- [#627] [EasyHttpClient] Fix Symfony DI config file locator
+
+## [3.1.5-alpha6]
+
+- [#625] [EasyBatch] Use transform in repository
+- [#626] [EasyBugsnag] Use cache channel for bugsnag session cache
+- [#617] [EasyCore] DeferredEntityEventDispatcher service, Thanks to [@vlukiashka]
+- [#622] [EasyWebhook] Fixed the DataCollector template path, Thanks to [@itorgov]
+
+## [3.1.5-alpha5]
+
+- [#623] [EasyBugsnag] Implement session tracking using cache
+
+## [3.1.5-alpha4]
+
+- [#621] [EasyBugsnag] Cache app version in env var once resolved
+
+## [3.1.5-alpha3]
+
+- [#620] [EasyBugsnag] Handle errors in aws ecs fargate configurator
+
+## [3.1.5-alpha2]
+
+- [#619] [EasyBugsnag] Fix symfony integration for aws ecs fargate
+
+## [3.1.5-alpha1]
+
+- [#616] [EasyBugsnag] Support Symfony Messenger Message info
+- [#614] [EasyBugsnag] Improve session tracking
+- [#618] [EasyBugsnag] Implement AWS ECS Fargate integration
+- [#601] [EasyErrorHandler] Improve docs, Thanks to [@nick-lc]
+
+## [3.1.4] - 2021-06-30
+
+- [#610] [EasyBatch] Fix the typo in the binded parameter name, Thanks to [@ERuban]
+- [#611] [EasyBugsnag] Fix session_tracking enable in Laravel
+
+## [3.1.3] - 2021-06-30
+
+- [#608] [EasyHttpClient] Create package
+- [#609] [EasyWebhook] Fix status when result not attempted
+
+## [3.1.2] - 2021-06-28
+
+- [#606] [EasyBugsnag] Improve handled/unhandled flag logic
+- [#605] [EasyBugsnag] Implement session tracking
+
+## [3.1.2-alpha4]
+
+- [#602] [EasyCore] Add getVersion to api-platform data collector decorator
+- [#603] [EasyWebhook] Explicitly use http 1.1 in default http client
+- [#604] [EasyBatch] Fix BatchItem::$message serialization
+
+## [3.1.2-alpha3]
+
+- [#598] [EasyLock] Add monolog.logger tag to lock service for symfony for dedicated channel
+- [#600] [EasyBatch] Fix BatchRepository select for update sql query
+- [#599] [EasyBatch] Remove fromAlias for batch items paginator
+
+## [3.1.2-alpha2]
+
+- [#597] [EasyBatch] Fix repositories service definitions + batch item per page config in extension
+
+## [3.1.2-alpha1]
+
+- [#587] [EasyErrorHandler] Add Symfony Profiler DataCollector, Thanks to [@ERuban]
+- [#596] [EasyBatch] Support ordered batches
+
+## [3.1.1] - 2021-06-22
+
+- [#595] [EasyBankFiles] Fix BAI parsing for long text
+
+## [3.1.1-alpha2]
+
+- [#590] [EasyBatch] Clean up
+
+## [3.1.1-alpha1]
+
+- [#589] [EasyBatch] Create package
+
+## [3.1.0] - 2021-06-11
+
+- [#584] [EasyAsync] Implement approval for batch items
+- [#588] [EasyAsync] Fix batch status resolving for failed batch on its update., Thanks to [@ERuban]
+
+## [3.1.0-rc2]
+
+- [#583] [EasyWebhook] Prevent extra results to be stored
+
+## [3.1.0-rc1]
+
+- [#582] [EasyWebhook] Rework middleware order for consistent failure handling
+
+## [3.0.30] - 2021-06-01
+
+- [#581] [EasyWebhook] Fix send after trigger logic for real
+
+## [3.0.29] - 2021-06-01
+
+- [#579] [EasyPaginator] Fix getTotalItems for Doctrine paginator when no fromAlias
+- [#580] [EasyWebhook] Fix send after trigger logic
+
+## [3.0.28] - 2021-05-31
+
+- [#578] [EasyWebhook] Fix SendDueWebhooksCommand logic
+
+## [3.0.27] - 2021-05-28
+
+- [#577] [EasyAsync] Dispatch BatchCompletedEvent
+- [#576] [EasyAsync] Implement custom Messenger Message Serializer
+
+## [3.0.26] - 2021-05-26
+
+- [#565] [EasyCore] Doctrine helpers, Thanks to [@vlukiashka]
+- [#572] [EasyErrorHandler] Map log level to bugsnag severity
+
+## [3.0.25] - 2021-05-21
+
+- [#567] [easy-monorepo] Remove EasyStandard and add EasyQuality for quality checks, Thanks to [@ERuban]
+- [#569] [EasyCore] Improve DoctrineOrmDataPersister and replace default one
+- [#562] [EasyWebhook] Implement HandleExceptionMiddleware
+- [#564] Update release example in readme.md
+- [#571] [EasyBugsnag] Make shutdown strategy consistent + fix notify in laravel queue
+- [#570] [EasyCore] Fix di for chain simple data persister
+- [#563] [EasyWebhook] Fix illuminate/database version for security
+
+## [3.0.24] - 2021-04-30
+
+- [#559] [EasyWebhook] Move SendAfterMiddleware to core after middleware so http client options are populated
+
+## [3.0.23] - 2021-04-29
+
+- [#558] [EasyPagination] Fix doGetItemsUsingPrimaryKeys for doctrine/dbal
+
+## [3.0.22] - 2021-04-27
+
+- [#555] [EasyAsync] ManagersSanityChecker - fetchAllAssociative instead of executeStatement
+- [#556] [EasyAsync] Improve ShouldKillWorkerSubscriber log
+- [#557] [EasySecurity] Do not use event in SecurityContextFactory
+
+## [3.0.21] - 2021-04-27
+
+- [#550] hotfix/easy-async-issue-with-default-all-managers-logic, Thanks to [@buddyshontogan]
+- [#549] [EasyApiToken] Fix ChainDecoder to use CollectorHelper::filterByClassArray, Thanks to [@dextercampos]
+
+## [3.0.20] - 2021-04-22
+
+- [#546] [EasyAsync] Fix composer autoload for Symfony bridge
+
+## [3.0.19] - 2021-04-16
+
+- [#541] [EasyAsync] Symfony Messenger DoctrineSanityCheck + ShouldKillWorker
+- [#543] [EasyAsync] Doctrine Managers Clearer
+- [#542] [EasyAsync] ShouldKillWorker + DoctrineManagersSanityCheck in Laravel
+- [#545] [EasyLogging] Require monolog
+- [#538] [EasyStandard] Implement LinebreakAfterEqualsSignSniff, Thanks to [@ERuban]
+
+## [3.0.18] - 2021-04-15
+
+- [#540] [EasyWebhook] Fix core middleware not tagged in Laravel
+
+## [3.0.17] - 2021-04-14
+
+- [#532] [EasyRandom] Automatically resolve uuid v4 generator when possible
+- [#534] [EasyWebhook] Recover webhook extra from dbal store
+- [#536] Refactor Laravel ServiceProviders Closures
+- [#535] Fix WebProfiler integration for new bundles names
+
+## [3.0.16] - 2021-04-13
+
+- [#529] Support Carbon V1
+
+## [3.0.15] - 2021-04-12
+
+- [#520] [EasyErrorHandler] Add convenient methods to set log level on exception
+- [#526] [EasyErrorHandler] EasyWehbook Bridge
+- [#525] [EasyWebhook] Introduce DataCleanerInterface
+- [#517] [EasyWebhook] Implement synchronous retries
+- [#516] [EasyStandard] Fix title block for Sniffs, Thanks to [@nick-lc]
+- [#521] [EasyErrorHandler] Remove SeverityAwareExceptionTrait.php
+
+## [3.0.14] - 2021-03-26
+
+- [#513] [EasySecurity] Allow to control security voter priority
+- [#511] [EasyWebhook] Disable async properly if Messenger not installed
+- [#488] [EasyWebhook] Improve docs, Thanks to [@nick-lc]
+- [#512] [EasyWebhook] Don't send webhook-id header if default id
+- [#515] [EasyWebhook] Fix method config in laravel
+
+## [3.0.14-alpha3]
+
+- [#509] [EasyLock] Default lock store connection to flock
+
+## [3.0.14-alpha2]
+
+- [#508] [EasyWebhook] Override getContainerExtension for EasyWebhook bundle
+
+## [3.0.14-alpha1]
+
+- [#505] [EasyUtils] Add MathInterface
+- [#506] [EasyPagination] Flex compatibility for bundle to be installed auto
+- [#507] Improve Symfony Flex integration
+
+## [3.0.12] - 2021-03-19
+
+- [#504] [EasyBugsnag] Use ShutdownStrategy on WorkerRunningEvent for Messenger
+
+## [3.0.11] - 2021-03-19
+
+- [#503] Feature/git subtree for split 1
+
+## [3.0.10] - 2021-03-18
+
+- [#500] [EasyStandard] Hotfix/Fix AlphabeticallySortedArrayKeysSniff, Thanks to [@DKeeper]
+- [#499] [EasyStandard] Hotfix/Fix PhpDocCommentRector, Thanks to [@DKeeper]
+
+## [3.0.9] - 2021-03-18
+
+- [#502] [EasyWebhook] Clean up
+
+## [3.0.7] - 2021-03-17
+
+- [#497] [CI] Use symfonycorp security checker action
+- [#496] [EasyAsync] Implement Batch
+- [#501] [EasyWebhook] Refactor statements provider to use dbal schema
+
+## [3.0.6] - 2021-03-11
+
+- [#495] [EasyCore] Delete unused config, Thanks to [@ERuban]
+
+## [3.0.5] - 2021-03-10
+
+- [#494] Merge 2.x into 3.x
+
+## [3.0.5-alpha4]
+
+- [#493] [EasyWebhook] Implement rewind on stack
+
+## [3.0.5-alpha3]
+
+- [#492] [EasySecurity] Fix symfony bridge for context service
+
+## [2.5.33] - 2021-03-09
+
+- [#477] [EasyStandard] Implement PhpDocCommentRector & SingleLineCommentRector, Thanks to [@DKeeper]
+
+## 3.2.11 - 2021-07-27
+
+- [#673] [EasyLogging] Fixed the JsonFormatter parent call, Thanks to [@itorgov]
+
+
+
 ## [3.2.9] - 2021-07-26
 
 - [#668] [EasyBankFiles] Create DE Return parser
@@ -332,7 +675,7 @@
 
 - [#477] [EasyStandard] Implement PhpDocCommentRector & SingleLineCommentRector, Thanks to [@DKeeper]
 
-## 3.2.10 - 2021-07-27
+## [3.2.10] - 2021-07-27
 
 - [#669] [EasyLogging] Allow to pass channel as Laravel:make parameter
 - [#670] [EasyLogging] JsonFormatter which explicitly formats DateTimes
@@ -16017,3 +16360,5 @@
 [#670]: https://github.com/eonx-com/easy-monorepo/pull/670
 [#669]: https://github.com/eonx-com/easy-monorepo/pull/669
 [3.2.9]: https://github.com/eonx-com/easy-monorepo/compare/3.2.7...3.2.9
+[#673]: https://github.com/eonx-com/easy-monorepo/pull/673
+[3.2.10]: https://github.com/eonx-com/easy-monorepo/compare/3.2.8...3.2.10
