@@ -9,6 +9,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const KEY_CHANNEL = 'easy_logging_channel';
+
+    /**
+     * @var string
+     */
     public const PARAM_DEFAULT_CHANNEL = 'easy_logging.default_channel';
 
     /**
