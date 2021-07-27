@@ -189,9 +189,6 @@ parameters:
         - message: '#Return type \(array\) of method EonX\\EasySsm\\Tests\\Stubs\\BaseSsmClientStub\:\:getPaginator\(\) should be compatible with return type \(Aws\\ResultPaginator\) of method Aws\\Aws(Client|ClientInterface)\:\:getPaginator\(\)#'
           path: packages/EasySsm/tests/Stubs/BaseSsmClientStub.php
 
-        - message: '#Cannot cast array<string\>\|bool\|string\|null to string#'
-          path: packages/EasySsm/src/Console/Commands/ExportEnvsCommand.php
-
         # ---- EasyTest ----
         - message: '#Cannot cast array<string>\|bool\|string\|null to float.#'
           path: packages/EasyTest/src/Console/Commands
@@ -205,9 +202,3 @@ parameters:
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: packages/EasyWebhook/src/AbstractWebhook.php
-
-        - message: '#Cannot cast array<string\>\|bool\|string\|null to (int|string)#'
-          path: packages/EasyWebhook/src/Bridge/Symfony/Command/SendDueWebhooksCommand.php
-
-        - message: '#Parameter \#5 \$default of method Symfony\\Component\\Console\\Command\\Command\:\:addOption\(\) expects array<string\>\|bool\|string\|null, int given#'
-          path: packages/EasyWebhook/src/Bridge/Symfony/Command/SendDueWebhooksCommand.php
