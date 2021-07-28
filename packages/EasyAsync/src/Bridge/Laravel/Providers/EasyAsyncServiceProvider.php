@@ -171,7 +171,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             DoctrineManagersSanityCheckListener::class,
             static function (Container $app): DoctrineManagersSanityCheckListener {
                 return new DoctrineManagersSanityCheckListener(
-                    $app->make('cache'),
+                    $app->make('cache.store'),
                     $app->make(ManagersSanityChecker::class),
                     \config('easy-async.queue.managers_to_check'),
                     $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
