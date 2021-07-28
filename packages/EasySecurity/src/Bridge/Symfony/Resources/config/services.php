@@ -21,7 +21,6 @@ use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\SecurityContextFactory;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
@@ -77,6 +76,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR));
 
     // Symfony Security
-    $services->set(AuthenticationFailureResponseFactoryInterface::class, AuthenticationFailureResponseFactory::class);
+    $services
+        ->set(AuthenticationFailureResponseFactoryInterface::class, AuthenticationFailureResponseFactory::class)
+        ->tag('monolog.logger', ['channel' => BridgeConstantsInterface::LOG_CHANNEL]);
+
     $services->set(ContextAuthenticator::class);
 };

@@ -14,6 +14,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const LOG_CHANNEL = 'webhook';
+
+    /**
+     * @var string
+     */
     public const PARAM_ASYNC = 'easy_webhooks.async';
 
     /**

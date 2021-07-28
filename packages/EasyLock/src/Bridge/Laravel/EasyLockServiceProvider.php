@@ -7,6 +7,7 @@ namespace EonX\EasyLock\Bridge\Laravel;
 use EonX\EasyLock\Bridge\BridgeConstantsInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockService;
+use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstants;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -37,9 +38,13 @@ final class EasyLockServiceProvider extends ServiceProvider
         $this->app->singleton(
             LockServiceInterface::class,
             static function (Container $app): LockServiceInterface {
+                $loggerParams = \interface_exists(EasyLoggingBridgeConstants::class)
+                    ? [EasyLoggingBridgeConstants::KEY_CHANNEL => BridgeConstantsInterface::LOG_CHANNEL]
+                    : [];
+
                 return new LockService(
                     $app->make(BridgeConstantsInterface::SERVICE_STORE),
-                    $app->make(LoggerInterface::class)
+                    $app->make(LoggerInterface::class, $loggerParams)
                 );
             }
         );

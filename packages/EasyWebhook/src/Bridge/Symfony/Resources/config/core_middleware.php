@@ -73,8 +73,8 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(SyncRetryMiddleware::class)
         ->arg('$asyncEnabled', '%' . BridgeConstantsInterface::PARAM_ASYNC . '%')
-        ->arg('$logger', ref(LoggerInterface::class))
-        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 3);
+        ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 3)
+        ->tag('monolog.logger', ['channel' => BridgeConstantsInterface::LOG_CHANNEL]);
 
     // Make sure SendWebhookMiddleware is always last
     $services

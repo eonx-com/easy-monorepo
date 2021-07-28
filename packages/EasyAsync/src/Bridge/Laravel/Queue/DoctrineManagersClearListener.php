@@ -39,6 +39,10 @@ final class DoctrineManagersClearListener
         $this->logger = $logger ?? new NullLogger();
     }
 
+    /**
+     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException
+     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException
+     */
     public function handle(JobProcessing $event): void
     {
         $this->logger->info('Clearing doctrine managers before job', [

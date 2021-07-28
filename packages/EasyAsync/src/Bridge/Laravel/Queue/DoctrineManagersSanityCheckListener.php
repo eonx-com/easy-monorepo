@@ -37,6 +37,11 @@ final class DoctrineManagersSanityCheckListener extends AbstractQueueListener
         parent::__construct($cache, $logger);
     }
 
+    /**
+     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException
+     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException
+     * @throws \Throwable
+     */
     public function handle(JobProcessing $event): void
     {
         $this->logger->info('Checking doctrine connection before job', [

@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
+use EonX\EasyAsync\Bridge\BridgeConstantsInterface;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\DoctrineManagersClearMiddleware;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\DoctrineManagersSanityCheckMiddleware;
 use EonX\EasyAsync\Doctrine\ManagersClearer;
 use EonX\EasyAsync\Doctrine\ManagersSanityChecker;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -23,7 +21,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Default managers sanity checker
     $services
         ->set(ManagersSanityChecker::class)
-        ->arg('$logger', ref(LoggerInterface::class));
+        ->tag('monolog.logger', ['channel' => BridgeConstantsInterface::LOG_CHANNEL]);
 
     // Default managers clearer middleware (clear all managers)
     $services->set(DoctrineManagersClearMiddleware::class);
