@@ -32,7 +32,9 @@ final class RegisterPermissionExpressionFunctionPass implements CompilerPassInte
         $exprLangDef->addMethodCall('registerProvider', [new Reference($providerClass)]);
 
         if ($container->hasDefinition('logger')) {
-            $providerDef->setArgument('$logger', new Reference('logger'));
+            $providerDef
+                ->setArgument('$logger', new Reference('logger'))
+                ->addTag('monolog.logger', ['channel' => BridgeConstantsInterface::LOG_CHANNEL]);
         }
     }
 }

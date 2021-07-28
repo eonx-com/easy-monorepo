@@ -31,6 +31,10 @@ final class DoctrineManagersClearMiddleware implements MiddlewareInterface
         $this->managers = $managers;
     }
 
+    /**
+     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException
+     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException
+     */
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         $fromWorker = $envelope->last(ConsumedByWorkerStamp::class);

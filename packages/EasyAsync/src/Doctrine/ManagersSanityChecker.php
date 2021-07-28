@@ -57,6 +57,10 @@ final class ManagersSanityChecker
         }
     }
 
+    /**
+     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException
+     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException
+     */
     private function checkEntityManager(EntityManagerInterface $entityManager, string $name): void
     {
         // Check if closed

@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
+use EonX\EasyAsync\Bridge\BridgeConstantsInterface;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\Interfaces\MessageBodyDecoderInterface;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\JsonMessageBodyDecoder;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\ShouldKillWorkerSubscriber;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -20,5 +18,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(ShouldKillWorkerSubscriber::class)
-        ->arg('$logger', ref(LoggerInterface::class));
+        ->tag('monolog.logger', ['channel' => BridgeConstantsInterface::LOG_CHANNEL]);
 };

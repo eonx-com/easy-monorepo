@@ -9,6 +9,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const LOG_CHANNEL = 'async';
+
+    /**
+     * @var string
+     */
     public const PARAM_BATCH_DEFAULT_CLASS = 'easy_async.batch_default_class';
 
     /**
@@ -25,4 +30,9 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_BATCH_MESSENGER_BUSES = 'easy_async.messenger_buses';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_LOGGER = 'easy_async.logger';
 }

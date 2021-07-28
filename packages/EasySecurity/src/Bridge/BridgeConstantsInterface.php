@@ -9,6 +9,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const LOG_CHANNEL = 'security';
+
+    /**
+     * @var string
+     */
     public const PARAM_CONTEXT_SERVICE_ID = 'easy_security.context_service_id';
 
     /**
