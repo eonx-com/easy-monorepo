@@ -128,9 +128,15 @@ final class BatchManager implements BatchManagerInterface
         if ($batchObject instanceof BatchItemInterface) {
             $batchItem = $this->updateItem($batchObject);
 
+            /** @var int|string $batchItemId */
+            $batchItemId = $batchItem->getId();
+            $batch = $this->batchRepository->findOrFail($batchItem->getBatchId());
+
+            $batch->setProcessed($batch->countProcessed() + 1);
+
+            $this->updateBatch($batch);
+
             if ($batchItem->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
-                /** @var int|string $batchItemId */
-                $batchItemId = $batchItem->getId();
                 $nestedBatch = $this->batchRepository->findNestedOrFail($batchItemId);
 
                 $nestedBatch
