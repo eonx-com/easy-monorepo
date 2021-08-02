@@ -275,15 +275,13 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 $this->addParentToTable($conn, 'my-parent', 1);
 
                 $paginator->hasJoinsInQuery();
-                $paginator->setCriteria(static function (QueryBuilder $queryBuilder): void {
+                $paginator->setCommonCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
                         ->join('p', 'items', 'i', 'i.title = :title')
                         ->setParameter('title', 'my-title');
                 });
                 $paginator->setGetItemsCriteria(static function (QueryBuilder $queryBuilder): void {
-                    $queryBuilder
-                        ->join('p', 'items', 'i', 'i.id = p.item_id')
-                        ->addSelect('i.*');
+                    $queryBuilder->addSelect('i.*');
                 });
             },
             static function (DoctrineDbalPaginator $paginator): void {

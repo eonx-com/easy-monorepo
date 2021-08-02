@@ -49,7 +49,8 @@ trait EloquentPaginatorTrait
 
         $queryBuilder = $this->createQueryBuilder();
 
-        $this->applyCriteria($queryBuilder);
+        $this->applyCommonCriteria($queryBuilder);
+        $this->applyFilterCriteria($queryBuilder);
 
         return $queryBuilder->count();
     }
@@ -66,6 +67,7 @@ trait EloquentPaginatorTrait
         }
 
         // Get items criteria are applied regardless of fetching method
+        $this->applyCommonCriteria($queryBuilder);
         $this->applyGetItemsCriteria($queryBuilder);
 
         return $this->hasJoinsInQuery === false
@@ -78,17 +80,20 @@ trait EloquentPaginatorTrait
      */
     private function fetchItemsUsingPrimaryKeys(Builder $queryBuilder): array
     {
-        // Prefix primaryKey with table to avoid ambiguous conflicts
-        $prefixedPrimaryKey = \sprintf('%s.%s', $this->model->getTable(), $this->primaryKeyIndex);
-
-        $newQueryBuilder = $this->createQueryBuilder()
-            ->select($prefixedPrimaryKey);
+        $primaryKeyQueryBuilder = $this->createQueryBuilder();
 
         // Apply pagination and criteria to get primary keys only for current page, and criteria
-        $this->applyCriteria($newQueryBuilder);
-        $this->applyPagination($newQueryBuilder);
+        $this->applyCommonCriteria($primaryKeyQueryBuilder);
+        $this->applyFilterCriteria($primaryKeyQueryBuilder);
+        $this->applyGetItemsCriteria($primaryKeyQueryBuilder);
+        $this->applyPagination($primaryKeyQueryBuilder);
 
-        $primaryKeys = $newQueryBuilder->get()->pluck($this->primaryKeyIndex)->all();
+        // Prefix primaryKey with table to avoid ambiguous conflicts
+        $prefixedPrimaryKey = \sprintf('%s.%s', $this->model->getTable(), $this->primaryKeyIndex);
+        // Override select to fetch only primary key
+        $primaryKeyQueryBuilder->select($prefixedPrimaryKey);
+
+        $primaryKeys = $primaryKeyQueryBuilder->get()->pluck($this->primaryKeyIndex)->all();
 
         // If no primary keys, no items for current pagination
         if (\count($primaryKeys) === 0) {
@@ -106,7 +111,7 @@ trait EloquentPaginatorTrait
      */
     private function fetchItemsUsingQuery(Builder $queryBuilder): array
     {
-        $this->applyCriteria($queryBuilder);
+        $this->applyFilterCriteria($queryBuilder);
         $this->applyPagination($queryBuilder);
 
         return $this->fetchResults($queryBuilder);

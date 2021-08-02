@@ -9,7 +9,12 @@ trait DatabaseCommonPaginatorTrait
     /**
      * @var null|callable
      */
-    private $criteria;
+    private $commonCriteria;
+
+    /**
+     * @var null|callable
+     */
+    private $filterCriteria;
 
     /**
      * @var null|callable
@@ -38,9 +43,29 @@ trait DatabaseCommonPaginatorTrait
         return $this;
     }
 
+    public function setCommonCriteria(?callable $commonCriteria = null): self
+    {
+        $this->commonCriteria = $commonCriteria;
+
+        return $this;
+    }
+
+    /**
+     * @deprecated since 3.2, will be removed in 4.0. Use setFilterCriteria() instead.
+     */
     public function setCriteria(?callable $criteria = null): self
     {
-        $this->criteria = $criteria;
+        @\trigger_error(
+            'setCriteria() is deprecated since 3.2 and will be removed in 4.0. Use setFilterCriteria() instead.',
+            \E_USER_DEPRECATED
+        );
+
+        return $this->setFilterCriteria($criteria);
+    }
+
+    public function setFilterCriteria(?callable $filterCriteria = null): self
+    {
+        $this->filterCriteria = $filterCriteria;
 
         return $this;
     }
@@ -72,10 +97,20 @@ trait DatabaseCommonPaginatorTrait
     /**
      * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $queryBuilder
      */
-    private function applyCriteria($queryBuilder): void
+    private function applyCommonCriteria($queryBuilder): void
     {
-        if ($this->criteria !== null) {
-            \call_user_func($this->criteria, $queryBuilder);
+        if ($this->commonCriteria !== null) {
+            \call_user_func($this->commonCriteria, $queryBuilder);
+        }
+    }
+
+    /**
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $queryBuilder
+     */
+    private function applyFilterCriteria($queryBuilder): void
+    {
+        if ($this->filterCriteria !== null) {
+            \call_user_func($this->filterCriteria, $queryBuilder);
         }
     }
 
