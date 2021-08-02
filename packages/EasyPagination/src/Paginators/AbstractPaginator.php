@@ -6,7 +6,6 @@ namespace EonX\EasyPagination\Paginators;
 
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Interfaces\PaginatorInterface;
-use Laminas\Uri\Uri;
 
 abstract class AbstractPaginator implements PaginatorInterface
 {
@@ -72,17 +71,7 @@ abstract class AbstractPaginator implements PaginatorInterface
 
     public function getPageUrl(int $page): string
     {
-        if (isset($this->urls[$page])) {
-            return $this->urls[$page];
-        }
-
-        $uri = new Uri($this->pagination->getUrl());
-        $query = $uri->getQueryAsArray();
-
-        $query[$this->pagination->getPageAttribute()] = $page > 0 ? $page : 1;
-        $query[$this->pagination->getPerPageAttribute()] = $this->pagination->getPerPage();
-
-        return $this->urls[$page] = $uri->setQuery($query)->toString();
+        return $this->urls[$page] = $this->urls[$page] ?? $this->pagination->getUrl($page);
     }
 
     public function getPreviousPageUrl(): ?string
