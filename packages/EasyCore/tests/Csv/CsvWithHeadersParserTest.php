@@ -91,7 +91,7 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     }
 
     /**
-     * @phpstan-param class-string $expectedException
+     * @phpstan-param class-string<\Throwable> $expectedException
      *
      * @dataProvider providerTestFromFileForException
      *
