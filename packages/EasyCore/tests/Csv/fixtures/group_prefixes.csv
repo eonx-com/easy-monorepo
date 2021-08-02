@@ -1,0 +1,3 @@
+accountMetadata.name, accountMetadata.age, anotherPrefix.key, not_prefixed
+name, age, key, not_prefixed
+name1, age1, key1, not_prefixed
