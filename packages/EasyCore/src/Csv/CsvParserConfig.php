@@ -28,6 +28,7 @@ final class CsvParserConfig implements CsvParserConfigInterface
 
     /**
      * @param null|string[] $requiredHeaders
+     * @param null|string[] $groupPrefixes
      */
     public static function create(?array $requiredHeaders = null, ?array $groupPrefixes = null): self
     {

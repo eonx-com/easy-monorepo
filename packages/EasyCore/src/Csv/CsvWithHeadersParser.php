@@ -85,7 +85,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
             $keyHadPrefix = false;
 
             // For each prefix
-            foreach ($this->config->getGroupPrefixes() as $prefix) {
+            foreach ($this->config->getGroupPrefixes() ?? [] as $prefix) {
                 // User give prefix without dot, add it
                 $prefixWithDot = \sprintf('%s.', $prefix);
                 // Extract prefix from current key
@@ -139,7 +139,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
     private function resolveHeaders(array $headers): array
     {
         if ($this->hasRequiredHeaders) {
-            $missingHeaders = \array_diff($this->config->getRequiredHeaders(), $headers);
+            $missingHeaders = \array_diff($this->config->getRequiredHeaders() ?? [], $headers);
 
             if (\count($missingHeaders) > 0) {
                 throw new MissingRequiredHeadersException(\sprintf(
@@ -166,7 +166,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
             return;
         }
 
-        $missingValues = \array_diff($this->config->getRequiredHeaders(), \array_keys($record));
+        $missingValues = \array_diff($this->config->getRequiredHeaders() ?? [], \array_keys($record));
 
         if (\count($missingValues) > 0) {
             throw new MissingValueForRequiredHeadersException(\sprintf(

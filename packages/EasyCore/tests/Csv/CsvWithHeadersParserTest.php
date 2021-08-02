@@ -91,6 +91,8 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     }
 
     /**
+     * @phpstan-param class-string $expectedException
+     *
      * @dataProvider providerTestFromFileForException
      *
      * @throws \EonX\EasyCore\Csv\Exceptions\MissingRequiredHeadersException
