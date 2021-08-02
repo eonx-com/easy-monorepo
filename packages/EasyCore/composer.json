@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.2",
         "elasticsearch/elasticsearch": "^7.8",
-        "eonx-com/easy-error-handler": "^3.3",
+        "eonx-com/easy-error-handler": "^3.2.13",
         "psr/event-dispatcher": "^1.0"
     },
     "require-dev": {

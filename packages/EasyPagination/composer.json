@@ -5,12 +5,12 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "eonx-com/easy-utils": "^3.3",
+        "eonx-com/easy-utils": "^3.2.13",
         "laminas/laminas-uri": "^2.8"
     },
     "require-dev": {
         "doctrine/orm": "^2.6",
-        "eonx-com/easy-psr7-factory": "^3.3",
+        "eonx-com/easy-psr7-factory": "^3.2.13",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "laravel/lumen-framework": "^5.5",
         "vlucas/phpdotenv": "^3.3",
