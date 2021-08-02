@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination;
 
 use EonX\EasyPagination\Interfaces\PaginationInterface;
+use Laminas\Uri\Uri;
 
 final class Pagination implements PaginationInterface
 {
@@ -32,6 +33,11 @@ final class Pagination implements PaginationInterface
      * @var string
      */
     private $url;
+
+    /**
+     * @var null|callable
+     */
+    private $urlResolver;
 
     public function __construct(
         int $page,
@@ -77,8 +83,29 @@ final class Pagination implements PaginationInterface
         return $this->perPageAttribute;
     }
 
-    public function getUrl(): string
+    public function getUrl(int $page): string
     {
-        return $this->url;
+        $urlResolver = $this->urlResolver ?? $this->getDefaultUrlResolver();
+
+        return $urlResolver(new Uri($this->url), $this, $page)->toString();
+    }
+
+    public function setUrlResolver(?callable $urlResolver = null): PaginationInterface
+    {
+        $this->urlResolver = $urlResolver;
+
+        return $this;
+    }
+
+    private function getDefaultUrlResolver(): callable
+    {
+        return static function (Uri $uri, PaginationInterface $pagination, int $page): Uri {
+            $query = $uri->getQueryAsArray();
+
+            $query[$pagination->getPageAttribute()] = $page > 0 ? $page : 1;
+            $query[$pagination->getPerPageAttribute()] = $pagination->getPerPage();
+
+            return $uri->setQuery($query);
+        };
     }
 }
