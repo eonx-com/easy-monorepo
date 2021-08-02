@@ -167,13 +167,11 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
                 (new ParentModel(['title' => 'my-parent', 'item_id' => 1]))->save();
 
                 $paginator->hasJoinsInQuery();
-                $paginator->setCriteria(static function (Builder $queryBuilder): void {
+                $paginator->setCommonCriteria(static function (Builder $queryBuilder): void {
                     $queryBuilder->join('items', 'items.title', '=', 'my-title');
                 });
                 $paginator->setGetItemsCriteria(static function (Builder $queryBuilder): void {
-                    $queryBuilder
-                        ->join('items', 'items.id', '=', 'parents.item_id')
-                        ->with('item');
+                    $queryBuilder->with('item');
                 });
             },
             static function (EloquentPaginator $paginator): void {

@@ -188,15 +188,13 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
                 $this->addParentToTable($manager, 'my-parent', $item);
 
                 $paginator->hasJoinsInQuery();
-                $paginator->setCriteria(static function (QueryBuilder $queryBuilder): void {
+                $paginator->setCommonCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
                         ->join('p.item', 'i', 'WITH', 'i.title = :title')
                         ->setParameter('title', 'my-title');
                 });
                 $paginator->setGetItemsCriteria(static function (QueryBuilder $queryBuilder): void {
-                    $queryBuilder
-                        ->join('p.item', 'i')
-                        ->addSelect('i');
+                    $queryBuilder->addSelect('i');
                 });
             },
             static function (DoctrineOrmLengthAwarePaginatorNew $paginator): void {

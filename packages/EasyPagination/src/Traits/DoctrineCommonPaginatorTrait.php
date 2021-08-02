@@ -61,7 +61,8 @@ trait DoctrineCommonPaginatorTrait
         $queryBuilder = $this->createQueryBuilder()
             ->select(\sprintf('COUNT(%s) as %s', $countSelect, $countAlias));
 
-        $this->applyCriteria($queryBuilder);
+        $this->applyCommonCriteria($queryBuilder);
+        $this->applyFilterCriteria($queryBuilder);
 
         $results = $this->fetchResults($queryBuilder);
 
@@ -78,7 +79,8 @@ trait DoctrineCommonPaginatorTrait
         $queryBuilder = $this->createQueryBuilder()
             ->select($this->resolveSelect());
 
-        // Get items criteria are applied regardless of fetching method
+        // Common and GetItems criteria are applied regardless of fetching method
+        $this->applyCommonCriteria($queryBuilder);
         $this->applyGetItemsCriteria($queryBuilder);
 
         return $this->hasJoinsInQuery === false
@@ -95,21 +97,25 @@ trait DoctrineCommonPaginatorTrait
      */
     private function fetchItemsUsingPrimaryKeys($queryBuilder): array
     {
+        $fetchPrimaryKeysQueryBuilder = $this->createQueryBuilder();
+
+        // Fetch PrimaryKey for current page, and all criteria
+        $this->applyCommonCriteria($fetchPrimaryKeysQueryBuilder);
+        $this->applyFilterCriteria($fetchPrimaryKeysQueryBuilder);
+        $this->applyGetItemsCriteria($fetchPrimaryKeysQueryBuilder);
+        $this->applyPagination($fetchPrimaryKeysQueryBuilder);
+
+        // Override select to fetch only primary key
         $primaryKeyIndex = $this->primaryKeyIndex;
         $select = \sprintf('%s.%s', $this->fromAlias ?? $this->from, $primaryKeyIndex);
-        $newQueryBuilder = $this->createQueryBuilder()
-            ->select($select);
-
-        // Apply pagination and criteria to get primary keys only for current page, and criteria
-        $this->applyCriteria($newQueryBuilder);
-        $this->applyPagination($newQueryBuilder);
+        $fetchPrimaryKeysQueryBuilder->select($select);
 
         $primaryKeysMap = static function (array $row) use ($primaryKeyIndex) {
             return $row[$primaryKeyIndex];
         };
 
         /** @var string[] $primaryKeys */
-        $primaryKeys = \array_map($primaryKeysMap, $this->fetchResults($newQueryBuilder));
+        $primaryKeys = \array_map($primaryKeysMap, $this->fetchResults($fetchPrimaryKeysQueryBuilder));
 
         // If no primary keys, no items for current pagination
         if (\count($primaryKeys) === 0) {
@@ -131,7 +137,7 @@ trait DoctrineCommonPaginatorTrait
      */
     private function fetchItemsUsingQuery($queryBuilder): array
     {
-        $this->applyCriteria($queryBuilder);
+        $this->applyFilterCriteria($queryBuilder);
         $this->applyPagination($queryBuilder);
 
         return $this->fetchResults($queryBuilder);
