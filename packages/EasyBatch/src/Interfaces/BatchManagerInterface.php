@@ -17,14 +17,10 @@ interface BatchManagerInterface
     public function approve(BatchObjectInterface $batchObject): BatchObjectInterface;
 
     /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
      * @throws \EonX\EasyBatch\Exceptions\BatchObjectNotSupportedException
      */
     public function cancel(BatchObjectInterface $batchObject): BatchObjectInterface;
-
-    /**
-     * @param int|string $batchId
-     */
-    public function iterateThroughItems($batchId, ?string $dependsOnName, callable $func): void;
 
     /**
      * @throws \EonX\EasyBatch\Exceptions\BatchItemInvalidException
@@ -33,6 +29,11 @@ interface BatchManagerInterface
     public function dispatch(BatchInterface $batch): BatchInterface;
 
     public function dispatchItem(BatchItemInterface $batchItem): BatchItemInterface;
+
+    /**
+     * @param int|string $batchId
+     */
+    public function iterateThroughItems($batchId, ?string $dependsOnName, callable $func): void;
 
     /**
      * @return mixed

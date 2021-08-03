@@ -117,6 +117,10 @@ final class BatchManager implements BatchManagerInterface
 
     public function cancel(BatchObjectInterface $batchObject): BatchObjectInterface
     {
+        if ($batchObject->isCancelled()) {
+            return $batchObject;
+        }
+
         $batchObject
             ->setCancelledAt(Carbon::now('UTC'))
             ->setStatus(BatchItemInterface::STATUS_CANCELLED);
@@ -128,9 +132,13 @@ final class BatchManager implements BatchManagerInterface
         if ($batchObject instanceof BatchItemInterface) {
             $batchItem = $this->updateItem($batchObject);
 
+            /** @var int|string $batchItemId */
+            $batchItemId = $batchItem->getId();
+            $batch = $this->batchRepository->findOrFail($batchItem->getBatchId());
+
+            $this->updateBatchForItem($batch, $batchItem);
+
             if ($batchItem->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
-                /** @var int|string $batchItemId */
-                $batchItemId = $batchItem->getId();
                 $nestedBatch = $this->batchRepository->findNestedOrFail($batchItemId);
 
                 $nestedBatch
