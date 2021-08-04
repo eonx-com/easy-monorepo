@@ -81,6 +81,9 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         return $maxDepth === -1 || $depth < $maxDepth;
     }
 
+    /**
+     * @return mixed[]
+     */
     private function doResolveExtendedDetails(\Throwable $throwable, ?bool $withTrace = null): array
     {
         $details = $this->resolveSimpleDetails($throwable, $withTrace);
