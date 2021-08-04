@@ -33,6 +33,14 @@ final class ErrorDetailsResolverTest extends AbstractTestCase
             },
             -1,
         ];
+
+        yield 'all previous in root level' => [
+            $this->createExceptionChain(2),
+            static function (array $details): void {
+                self::assertNotNull($details['previous_1'] ?? null);
+                self::assertNotNull($details['previous_2'] ?? null);
+            },
+        ];
     }
 
     /**

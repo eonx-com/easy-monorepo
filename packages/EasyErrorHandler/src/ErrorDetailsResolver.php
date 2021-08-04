@@ -36,7 +36,12 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         // Reset throwable chain
         $this->chain = [];
 
-        return $this->doResolve($throwable, $maxDepth ?? self::DEFAULT_MAX_DEPTH, 1);
+        return $this->doResolvePreviousDetails(
+            $this->doResolveExtendedDetails($throwable),
+            $throwable,
+            1,
+            $maxDepth ?? self::DEFAULT_MAX_DEPTH
+        );
     }
 
     /**
@@ -79,16 +84,9 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
     /**
      * @return mixed[]
      */
-    private function doResolve(\Throwable $throwable, int $maxDepth, int $depth, ?bool $withTrace = null): array
+    private function doResolveExtendedDetails(\Throwable $throwable, ?bool $withTrace = null): array
     {
-        $this->chain[] = \spl_object_hash($throwable);
-
         $details = $this->resolveSimpleDetails($throwable, $withTrace);
-
-        $previous = $throwable->getPrevious();
-        if ($previous !== null && $this->canResolvePrevious($previous, $maxDepth, $depth)) {
-            $details[\sprintf('previous_%d', $depth)] = $this->doResolve($previous, $maxDepth, $depth + 1, false);
-        }
 
         if ($throwable instanceof SubCodeAwareExceptionInterface) {
             $details['sub_code'] = $throwable->getSubCode();
@@ -109,5 +107,31 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         }
 
         return $details;
+    }
+
+    /**
+     * @param mixed[] $previousDetails
+     * @param \Throwable $throwable
+     * @param int $depth
+     * @param int $maxDepth
+     *
+     * @return mixed[]
+     */
+    private function doResolvePreviousDetails(
+        array $previousDetails,
+        \Throwable $throwable,
+        int $depth,
+        int $maxDepth
+    ): array {
+        $this->chain[] = \spl_object_hash($throwable);
+
+        $previous = $throwable->getPrevious();
+        if ($previous !== null && $this->canResolvePrevious($previous, $maxDepth, $depth)) {
+            $previousDetails[\sprintf('previous_%d', $depth)] = $this->doResolveExtendedDetails($previous, false);
+
+            return $this->doResolvePreviousDetails($previousDetails, $previous, $depth + 1, $maxDepth);
+        }
+
+        return $previousDetails;
     }
 }
