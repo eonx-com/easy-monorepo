@@ -6,7 +6,7 @@ namespace EonX\EasyBugsnag\Bridge\Doctrine\DBAL;
 
 use Bugsnag\Breadcrumbs\Breadcrumb;
 use Bugsnag\Client;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Logging\SQLLogger as BaseSqlLoggerInterface;
 
 final class SqlLogger implements BaseSqlLoggerInterface
@@ -17,7 +17,7 @@ final class SqlLogger implements BaseSqlLoggerInterface
     private $client;
 
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var \Doctrine\DBAL\Driver\Connection
      */
     private $conn;
 
@@ -61,6 +61,11 @@ final class SqlLogger implements BaseSqlLoggerInterface
         $this->conn = $conn;
         $this->connName = $connName;
         $this->decorated = $decorated;
+    }
+
+    public function getDecorated(): ?BaseSqlLoggerInterface
+    {
+        return $this->decorated;
     }
 
     /**
