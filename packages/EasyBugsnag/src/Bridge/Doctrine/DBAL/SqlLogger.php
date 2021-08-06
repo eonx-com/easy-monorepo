@@ -93,15 +93,22 @@ final class SqlLogger implements BaseSqlLoggerInterface
             $name .= \sprintf(' | %s', $this->connName);
         }
 
-        $this->client->leaveBreadcrumb($name, Breadcrumb::PROCESS_TYPE, [
+        $metadata = [
             'SQL' => $this->sql,
             'Params' => \json_encode($this->params),
             'Types' => \json_encode($this->types),
             'Time (ms)' => \number_format((\microtime(true) - $this->start) * 1000, 2),
-            'DB' => $this->conn->getDatabase(),
-            'Platform' => $this->conn->getDatabasePlatform()
-                ->getName(),
-        ]);
+        ];
+
+        if (\method_exists($this->conn, 'getDatabase')) {
+            $metadata['DB'] = $this->conn->getDatabase();
+        }
+
+        if (\method_exists($this->conn, 'getDatabasePlatform')) {
+            $metadata['Platform'] = $this->conn->getDatabasePlatform()->getName();
+        }
+
+        $this->client->leaveBreadcrumb($name, Breadcrumb::PROCESS_TYPE, $metadata);
 
         $this->sql = null;
         $this->params = null;

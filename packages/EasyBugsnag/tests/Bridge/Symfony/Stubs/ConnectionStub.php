@@ -9,53 +9,92 @@ use Doctrine\DBAL\ParameterType;
 
 final class ConnectionStub implements Connection
 {
-    public function prepare($sql)
-    {
-        // TODO: Implement prepare() method.
-    }
-
-    public function query()
-    {
-        // TODO: Implement query() method.
-    }
-
-    public function quote($value, $type = ParameterType::STRING)
-    {
-        // TODO: Implement quote() method.
-    }
-
-    public function exec($sql)
-    {
-        // TODO: Implement exec() method.
-    }
-
-    public function lastInsertId($name = null)
-    {
-        // TODO: Implement lastInsertId() method.
-    }
-
+    /**
+     * @return void
+     */
     public function beginTransaction()
     {
         // TODO: Implement beginTransaction() method.
     }
 
+    /**
+     * @return void
+     */
     public function commit()
     {
         // TODO: Implement commit() method.
     }
 
-    public function rollBack()
-    {
-        // TODO: Implement rollBack() method.
-    }
-
+    /**
+     * @return void
+     */
     public function errorCode()
     {
         // TODO: Implement errorCode() method.
     }
 
+    /**
+     * @return void
+     */
     public function errorInfo()
     {
         // TODO: Implement errorInfo() method.
+    }
+
+    /**
+     * @param string $sql
+     *
+     * @return void
+     */
+    public function exec($sql)
+    {
+        // TODO: Implement exec() method.
+    }
+
+    /**
+     * @param null $name
+     *
+     * @return void
+     */
+    public function lastInsertId($name = null)
+    {
+        // TODO: Implement lastInsertId() method.
+    }
+
+    /**
+     * @param string $sql
+     *
+     * @return void
+     */
+    public function prepare($sql)
+    {
+        // TODO: Implement prepare() method.
+    }
+
+    /**
+     * @return void
+     */
+    public function query()
+    {
+        // TODO: Implement query() method.
+    }
+
+    /**
+     * @param mixed $value
+     * @param int $type
+     *
+     * @return void
+     */
+    public function quote($value, $type = ParameterType::STRING)
+    {
+        // TODO: Implement quote() method.
+    }
+
+    /**
+     * @return void
+     */
+    public function rollBack()
+    {
+        // TODO: Implement rollBack() method.
     }
 }

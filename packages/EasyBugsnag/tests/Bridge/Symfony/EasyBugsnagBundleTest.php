@@ -49,6 +49,9 @@ final class EasyBugsnagBundleTest extends AbstractSymfonyTestCase
 
         self::assertInstanceOf(Configuration::class, $configuration);
         self::assertInstanceOf(SqlLogger::class, $sqlLogger);
-        self::assertInstanceOf(SqlLoggerStub::class, $sqlLogger->getDecorated());
+
+        if ($sqlLogger instanceof SqlLogger) {
+            self::assertInstanceOf(SqlLoggerStub::class, $sqlLogger->getDecorated());
+        }
     }
 }
