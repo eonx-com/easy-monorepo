@@ -9,74 +9,54 @@ use Doctrine\DBAL\ParameterType;
 
 final class ConnectionStub implements Connection
 {
-    /**
-     * @return void
-     */
-    public function beginTransaction()
+    public function beginTransaction(): bool
     {
-        // TODO: Implement beginTransaction() method.
+        return false;
+    }
+
+    public function commit(): bool
+    {
+        return false;
+    }
+
+    public function errorCode(): ?string
+    {
+        return 'errorCode';
     }
 
     /**
-     * @return void
+     * @return mixed[]
      */
-    public function commit()
+    public function errorInfo(): array
     {
-        // TODO: Implement commit() method.
-    }
-
-    /**
-     * @return void
-     */
-    public function errorCode()
-    {
-        // TODO: Implement errorCode() method.
-    }
-
-    /**
-     * @return void
-     */
-    public function errorInfo()
-    {
-        // TODO: Implement errorInfo() method.
+        return [];
     }
 
     /**
      * @param string $sql
-     *
-     * @return void
      */
-    public function exec($sql)
+    public function exec($sql): int
     {
-        // TODO: Implement exec() method.
+        return 0;
     }
 
     /**
      * @param null $name
-     *
-     * @return void
      */
-    public function lastInsertId($name = null)
+    public function lastInsertId($name = null): string
     {
-        // TODO: Implement lastInsertId() method.
+        return 'last-insert-id';
     }
 
     /**
      * @param string $sql
-     *
-     * @return void
      */
-    public function prepare($sql)
+    public function prepare($sql): void
     {
-        // TODO: Implement prepare() method.
     }
 
-    /**
-     * @return void
-     */
-    public function query()
+    public function query(): void
     {
-        // TODO: Implement query() method.
     }
 
     /**
@@ -90,11 +70,8 @@ final class ConnectionStub implements Connection
         // TODO: Implement quote() method.
     }
 
-    /**
-     * @return void
-     */
-    public function rollBack()
+    public function rollBack(): bool
     {
-        // TODO: Implement rollBack() method.
+        return false;
     }
 }
