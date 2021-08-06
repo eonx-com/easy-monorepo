@@ -29,7 +29,12 @@ final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterfac
     /**
      * @var string
      */
-    private const DBAL_CHAIN_LOGGER_PATTERN = 'doctrine.dbal.logger.chain.%s';
+    private const DBAL_CONFIGURATION_METHOD_CALL = 'setSQLLogger';
+
+    /**
+     * @var string
+     */
+    private const DBAL_CONFIGURATION_PATTERN = 'doctrine.dbal.%s_connection.configuration';
 
     /**
      * @var string
@@ -58,28 +63,57 @@ final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterfac
 
         foreach ($connections as $conn) {
             $bugsnagSqlLoggerId = \sprintf(self::BUGSNAG_SQL_LOGGER_PATTERN, $conn);
-            $chainLoggerId = \sprintf(self::DBAL_CHAIN_LOGGER_PATTERN, $conn);
+            $configId = \sprintf(self::DBAL_CONFIGURATION_PATTERN, $conn);
             $connId = \sprintf(self::DBAL_CONNECTION_PATTERN, $conn);
 
-            // Check if chain logger for given connection name exists
-            if ($container->hasDefinition($chainLoggerId) === false) {
-                throw $this->invalidDbalConn($conn, 'logger.chain');
+            // Check if dbal configuration for given connection name exists
+            if ($container->hasDefinition($configId) === false) {
+                throw new InvalidArgumentException(\sprintf(
+                    'DBAL configuration for connection "%s" does not exist',
+                    $conn
+                ));
             }
 
-            // Check if dbal connection for given connection name exists
-            if ($container->hasDefinition($connId) === false) {
-                throw $this->invalidDbalConn($conn, 'connection');
+            $confDef = $container->getDefinition($configId);
+
+            // Set logger definition for current connection
+            $bugsnagSqlLoggerDef = (new ChildDefinition(self::BUGSNAG_ABSTRACT_LOGGER))
+                ->setArgument('$conn', new Reference($connId))
+                ->setArgument('$connName', $conn);
+            $container->setDefinition($bugsnagSqlLoggerId, $bugsnagSqlLoggerDef);
+
+            $sqlLoggerMethodCall = $this->getMethodCall($confDef);
+
+            // Config has method call for sql logger, extend it
+            if ($sqlLoggerMethodCall !== null) {
+                // Get first argument of method call
+                $decorated = $sqlLoggerMethodCall[1][0] ?? null;
+
+                // If first argument is a reference, set it as decorated on our logger definition
+                if ($decorated instanceof Reference) {
+                    $bugsnagSqlLoggerDef->setArgument('$decorated', $decorated);
+                }
+
+                // Remove original method call
+                $confDef->removeMethodCall(self::DBAL_CONFIGURATION_METHOD_CALL);
             }
 
-            $chainLoggerDef = $container->getDefinition($chainLoggerId);
-
-            $container->setDefinition(
-                $bugsnagSqlLoggerId,
-                (new ChildDefinition(self::BUGSNAG_ABSTRACT_LOGGER))->setArgument('$conn', new Reference($connId))
-            );
-
-            $chainLoggerDef->addMethodCall('addLogger', [new Reference($bugsnagSqlLoggerId)]);
+            $confDef->addMethodCall(self::DBAL_CONFIGURATION_METHOD_CALL, [new Reference($bugsnagSqlLoggerId)]);
         }
+    }
+
+    /**
+     * @return null|mixed[]
+     */
+    private function getMethodCall(Definition $definition): ?array
+    {
+        foreach ($definition->getMethodCalls() as $call) {
+            if ($call[0] === self::DBAL_CONFIGURATION_METHOD_CALL) {
+                return $call;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -90,10 +124,5 @@ final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterfac
     private function getParam(ContainerBuilder $container, string $param, $default = null)
     {
         return $container->hasParameter($param) ? $container->getParameter($param) : $default;
-    }
-
-    private function invalidDbalConn(string $conn, string $type): InvalidArgumentException
-    {
-        return new InvalidArgumentException(\sprintf('DBAL %s for connection "%s" does not exist', $type, $conn));
     }
 }

@@ -6,7 +6,7 @@ namespace EonX\EasyBugsnag\Bridge\Doctrine\DBAL;
 
 use Bugsnag\Breadcrumbs\Breadcrumb;
 use Bugsnag\Client;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Logging\SQLLogger as BaseSqlLoggerInterface;
 
 final class SqlLogger implements BaseSqlLoggerInterface
@@ -17,7 +17,7 @@ final class SqlLogger implements BaseSqlLoggerInterface
     private $client;
 
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var \Doctrine\DBAL\Driver\Connection
      */
     private $conn;
 
@@ -63,6 +63,11 @@ final class SqlLogger implements BaseSqlLoggerInterface
         $this->decorated = $decorated;
     }
 
+    public function getDecorated(): ?BaseSqlLoggerInterface
+    {
+        return $this->decorated;
+    }
+
     /**
      * @param string $sql
      * @param mixed[]|null $params The SQL parameters.
@@ -88,15 +93,22 @@ final class SqlLogger implements BaseSqlLoggerInterface
             $name .= \sprintf(' | %s', $this->connName);
         }
 
-        $this->client->leaveBreadcrumb($name, Breadcrumb::PROCESS_TYPE, [
+        $metadata = [
             'SQL' => $this->sql,
             'Params' => \json_encode($this->params),
             'Types' => \json_encode($this->types),
             'Time (ms)' => \number_format((\microtime(true) - $this->start) * 1000, 2),
-            'DB' => $this->conn->getDatabase(),
-            'Platform' => $this->conn->getDatabasePlatform()
-                ->getName(),
-        ]);
+        ];
+
+        if (\method_exists($this->conn, 'getDatabase')) {
+            $metadata['DB'] = $this->conn->getDatabase();
+        }
+
+        if (\method_exists($this->conn, 'getDatabasePlatform')) {
+            $metadata['Platform'] = $this->conn->getDatabasePlatform()->getName();
+        }
+
+        $this->client->leaveBreadcrumb($name, Breadcrumb::PROCESS_TYPE, $metadata);
 
         $this->sql = null;
         $this->params = null;
