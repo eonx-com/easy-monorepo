@@ -68,6 +68,7 @@ final class DbalStatementsProvider
         $schema = new Schema();
 
         $batchesTable = $schema->createTable($this->batchesTable);
+        $batchesTable->addColumn('cancelled', 'integer');
         $batchesTable->addColumn('failed', 'integer');
         $batchesTable->addColumn('succeeded', 'integer');
         $batchesTable->addColumn('processed', 'integer');

@@ -28,12 +28,14 @@ final class BatchCompletedListener
 
     /**
      * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
      * @throws \EonX\EasyBatch\Exceptions\BatchObjectNotSupportedException
      */
     public function __invoke(BatchCompletedEvent $event): void
     {
+        $batch = $event->getBatch();
         /** @var null|int|string $parentBatchItemId */
-        $parentBatchItemId = $event->getBatch()->getParentBatchItemId();
+        $parentBatchItemId = $batch->getParentBatchItemId();
 
         if ($parentBatchItemId === null) {
             return;
@@ -41,6 +43,16 @@ final class BatchCompletedListener
 
         $parentBatchItem = $this->batchItemRepository->findOrFail($parentBatchItemId);
 
-        $this->batchManager->approve($parentBatchItem);
+        if ($batch->isCancelled()) {
+            $this->batchManager->cancel($parentBatchItem);
+        }
+
+        if ($batch->isFailed()) {
+            $this->batchManager->failItem($parentBatchItem);
+        }
+
+        if ($batch->isSucceeded()) {
+            $this->batchManager->approve($parentBatchItem);
+        }
     }
 }

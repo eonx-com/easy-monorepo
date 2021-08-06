@@ -30,6 +30,8 @@ interface BatchManagerInterface
 
     public function dispatchItem(BatchItemInterface $batchItem): BatchItemInterface;
 
+    public function failItem(BatchItemInterface $batchItem): BatchItemInterface;
+
     /**
      * @param int|string $batchId
      */

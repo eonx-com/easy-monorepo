@@ -9,9 +9,9 @@ use EonX\EasyBatch\Interfaces\BatchInterface;
 abstract class AbstractBatch extends AbstractBatchObject implements BatchInterface
 {
     /**
-     * @var int|string
+     * @var int
      */
-    private $parentBatchItemId;
+    private $cancelled = 0;
 
     /**
      * @var int
@@ -22,6 +22,11 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
      * @var null|callable
      */
     private $itemsProvider;
+
+    /**
+     * @var int|string
+     */
+    private $parentBatchItemId;
 
     /**
      * @var int
@@ -37,6 +42,11 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
      * @var int
      */
     private $total = 0;
+
+    public function countCancelled(): int
+    {
+        return $this->cancelled;
+    }
 
     public function countFailed(): int
     {
@@ -59,14 +69,6 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     }
 
     /**
-     * @return null|int|string
-     */
-    public function getParentBatchItemId()
-    {
-        return $this->parentBatchItemId;
-    }
-
-    /**
      * @return iterable<object>
      */
     public function getItems(): iterable
@@ -75,11 +77,16 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     }
 
     /**
-     * @param int|string $batchItemId
+     * @return null|int|string
      */
-    public function setParentBatchItemId($batchItemId): BatchInterface
+    public function getParentBatchItemId()
     {
-        $this->parentBatchItemId = $batchItemId;
+        return $this->parentBatchItemId;
+    }
+
+    public function setCancelled(int $cancelled): BatchInterface
+    {
+        $this->cancelled = $cancelled;
 
         return $this;
     }
@@ -106,6 +113,16 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     public function setItemsProvider(callable $itemsProvider): BatchInterface
     {
         $this->itemsProvider = $itemsProvider;
+
+        return $this;
+    }
+
+    /**
+     * @param int|string $batchItemId
+     */
+    public function setParentBatchItemId($batchItemId): BatchInterface
+    {
+        $this->parentBatchItemId = $batchItemId;
 
         return $this;
     }
@@ -137,6 +154,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
     public function toArray(): array
     {
         return \array_merge(parent::toArray(), [
+            'cancelled' => $this->countCancelled(),
             'failed' => $this->countFailed(),
             'parent_batch_item_id' => $this->getParentBatchItemId(),
             'processed' => $this->countProcessed(),
