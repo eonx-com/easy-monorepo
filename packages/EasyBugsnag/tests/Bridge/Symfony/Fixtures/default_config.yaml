@@ -6,8 +6,8 @@ easy_bugsnag:
             - ^/ping
 
 services:
-    doctrine.dbal.logger.chain.default:
-        class: Doctrine\DBAL\Logging\LoggerChain
+    doctrine.dbal.default_connection.configuration:
+        class: Doctrine\DBAL\Configuration
 
     doctrine.dbal.default_connection:
-        class: Doctrine\DBAL\Driver\Connection
+        class: EonX\EasyBugsnag\Tests\Bridge\Symfony\Stubs\ConnectionStub
