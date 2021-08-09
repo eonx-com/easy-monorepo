@@ -20,12 +20,18 @@ final class FromRequestSecurityContextConfiguratorMiddleware
      */
     private $securityContextResolver;
 
+    /**
+     * @param iterable<\EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface> $configurators
+     */
     public function __construct(SecurityContextResolverInterface $securityContextResolver, iterable $configurators)
     {
         $this->securityContextResolver = $securityContextResolver;
         $this->configurators = $configurators;
     }
 
+    /**
+     * @return mixed
+     */
     public function handle(Request $request, \Closure $next)
     {
         $this->securityContextResolver->setConfigurator(new FromRequestConfigurator(

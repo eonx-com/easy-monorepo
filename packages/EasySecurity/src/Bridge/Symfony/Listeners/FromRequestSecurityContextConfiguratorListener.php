@@ -20,6 +20,9 @@ final class FromRequestSecurityContextConfiguratorListener
      */
     private $securityContextResolver;
 
+    /**
+     * @param iterable<\EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface> $configurators
+     */
     public function __construct(SecurityContextResolverInterface $securityContextResolver, iterable $configurators)
     {
         $this->securityContextResolver = $securityContextResolver;
