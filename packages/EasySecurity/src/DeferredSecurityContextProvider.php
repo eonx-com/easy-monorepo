@@ -6,28 +6,31 @@ namespace EonX\EasySecurity;
 
 use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
-use Psr\Container\ContainerInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 
+/**
+ * @deprecated since 3.3, will be removed in 4.0. Use SecurityContextResolverInterface instead.
+ */
 final class DeferredSecurityContextProvider implements DeferredSecurityContextProviderInterface
 {
     /**
-     * @var \Psr\Container\ContainerInterface
+     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
      */
-    private $container;
+    private $securityContextResolver;
 
-    /**
-     * @var string
-     */
-    private $contextServiceId;
-
-    public function __construct(ContainerInterface $container, string $contextServiceId)
+    public function __construct(SecurityContextResolverInterface $securityContextResolver)
     {
-        $this->container = $container;
-        $this->contextServiceId = $contextServiceId;
+        $this->securityContextResolver = $securityContextResolver;
     }
 
     public function getSecurityContext(): SecurityContextInterface
     {
-        return $this->container->get($this->contextServiceId);
+        @\trigger_error(\sprintf(
+            '%s::getSecurityContext() is deprecated since 3.3 and will be removed in 4.0. Use %s::resolveContext() instead.',
+            DeferredSecurityContextProviderInterface::class,
+            SecurityContextResolverInterface::class
+        ), \E_USER_DEPRECATED);
+
+        return $this->securityContextResolver->resolveContext();
     }
 }

@@ -9,9 +9,9 @@ use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
-use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
 use EonX\EasyUtils\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,20 +36,20 @@ final class SecurityContextDataCollector extends DataCollector
     private $configurators;
 
     /**
-     * @var \EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface
+     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
      */
-    private $securityContextProvider;
+    private $securityContextResolver;
 
     /**
      * @param iterable<mixed> $configurators
      */
     public function __construct(
         AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
-        DeferredSecurityContextProviderInterface $securityContextProvider,
+        SecurityContextResolverInterface $securityContextResolver,
         iterable $configurators
     ) {
         $this->authorizationMatrixFactory = $authorizationMatrixFactory;
-        $this->securityContextProvider = $securityContextProvider;
+        $this->securityContextResolver = $securityContextResolver;
 
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class)
@@ -58,7 +58,7 @@ final class SecurityContextDataCollector extends DataCollector
 
     public function collect(Request $request, Response $response, ?\Throwable $throwable = null): void
     {
-        $securityContext = $this->securityContextProvider->getSecurityContext();
+        $securityContext = $this->securityContextResolver->resolveContext();
 
         $this->data['authorization_matrix'] = $securityContext->getAuthorizationMatrix();
         $this->data['permissions'] = $securityContext->getPermissions();

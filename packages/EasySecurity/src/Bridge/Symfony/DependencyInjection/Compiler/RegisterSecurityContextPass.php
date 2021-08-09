@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Bridge\Symfony\DependencyInjection\Compiler;
 
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
-use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -16,7 +16,7 @@ final class RegisterSecurityContextPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        $contextServiceId = $this->getParameter($container, BridgeConstantsInterface::PARAM_CONTEXT_SERVICE_ID);
+        $contextServiceId = $this->getParameter($container);
 
         if ($contextServiceId === null) {
             return;
@@ -34,7 +34,7 @@ final class RegisterSecurityContextPass implements CompilerPassInterface
         // Set definition using security context factory
         $container
             ->setDefinition($contextServiceId, new Definition(SecurityContextInterface::class))
-            ->setFactory([new Reference(SecurityContextFactoryInterface::class), 'create'])
+            ->setFactory([new Reference(SecurityContextResolverInterface::class), 'resolveContext'])
             ->setPublic(true);
 
         if ($contextServiceId !== SecurityContextInterface::class) {
@@ -42,13 +42,13 @@ final class RegisterSecurityContextPass implements CompilerPassInterface
         }
     }
 
-    private function getParameter(ContainerBuilder $container, string $param): ?string
+    private function getParameter(ContainerBuilder $container): ?string
     {
-        if ($container->hasParameter($param) === false) {
+        if ($container->hasParameter(BridgeConstantsInterface::PARAM_CONTEXT_SERVICE_ID) === false) {
             return null;
         }
 
-        $value = $container->getParameter($param);
+        $value = $container->getParameter(BridgeConstantsInterface::PARAM_CONTEXT_SERVICE_ID);
 
         return \is_string($value) ? $value : null;
     }
