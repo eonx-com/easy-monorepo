@@ -3,24 +3,22 @@ title: Introduction
 weight: 0
 ---eonx_docs---
 
-This package is a simple drop-in implementation of [Bugsnag][2] in your favourite PHP frameworks or plain PHP app.
+# Introduction
 
-<br>
+This EasyBugsnag package provides a simple drop-in implementation of [Bugsnag][1] in your favourite PHP frameworks or
+plain PHP app.
 
-### Require package (Composer)
+::: tip
+The only configuration required for the package is to set the Bugsnag Integration API Key for your project. See
+[Configuration](config.md) for more information.
+:::
 
-The recommended way to install this package is to use [Composer][1]:
+## Usage overview
 
-```bash
-$ composer require eonx-com/easy-bugsnag
-```
+Once installed in your PHP framework, this package will allow you to inject the Bugsnag client anywhere you like and
+start notifying Bugsnag about your errors and exceptions.
 
-<br>
-
-### Usage
-
-Once installed in your favourite PHP framework, this package will allow you to inject the Bugsnag Client anywhere you
-like and start notifying your errors and exceptions:
+For example:
 
 ```php
 // src/Exception/Handler.php
@@ -43,58 +41,43 @@ final class ExceptionHandler
 
     public function report(\Throwable $throwable): void
     {
-        // Notify bugsnag of your throwable
+        // Notify Bugsnag of your throwable
         $this->client->notifyException($throwable);
     }
 }
 ```
 
-<br>
+### Client factory
 
-### Client Factory
-
-The core functionality of this package is to create a Bugsnag Client instance and make it available to your application,
-so you can focus on notifying your errors/exceptions instead of the boilerplate setup. To do so, it uses a factory.
-
-This factory implements `EonX\EasyBugsnag\Interfaces\ClientFactoryInterface` which is able to create the client from
-just the api key you can find in your Bugsnag dashboard, handy! However, if needed you can set your own implementations
-of the additional objects used by the Bugsnag Client such as:
-
-- **HttpClient:** [Guzzle Client][3] used to send notifications to Bugsnag API
-- **RequestResolver:** used to resolve the request information
-- **ShutdownStrategy:** used to send bulk notifications while the application is shutting down
-
-<br>
+The core functionality of the EasyBugsnag package is to create a Bugsnag client instance and make it available to your
+application, so you can focus on notifying your errors/exceptions instead of the boilerplate Bugsnag setup. It uses a
+**client factory** to do this. For more information, see [Client factory](client-factory.md).
 
 ### Configurators
 
-Additionally, the client factory allows you to set a collection of "configurators". Once the client instantiated, the
-factory will loop through the configurators, providing them the client instance to be configured.
+The client factory allows you to set a collection of **client configurators**. Once the client has been instantiated,
+the client factory will loop through the configurators, providing them the client instance to be configured. See
+[Client configurators](configurators.md) for more information.
 
-A configurator is a PHP class implementing `EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface`. When used within
-your favourite PHP framework, the configurators will be set on the factory for you so any created client will be configured
-before being injected into your services. Each configurator must define a priority, an integer value, which will be
-used to define the order of execution of the entire collection.
+### Session tracking
 
-Here is an example of a configurator to set the release stage:
+Bugsnag can track the number of **sessions** that happen in your application, which enables Bugsnag to provide stability
+scores for comparison across releases of your application. You can enable and configure session tracking for
+EasyBugsnag. See [Session tracking](session-tracking.md) for more information.
 
-```php
-// src/Bugsnag/ReleaseStageConfigurator.php
+### Worker information
 
-namespace App\Bugsnag;
+For Symfony applications, you can include information about the worker as metadata in Bugsnag reports. See
+[Worker information](worker-info.md) for more information.
 
-use Bugsnag\Client;
-use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
+### AWS information
 
-final class ReleaseStageConfigurator extends AbstractClientConfigurator
-{
-    public function configure(Client $bugsnag): void
-    {
-        $bugsnag->setReleaseStage('dev');
-    }
-}
-```
+You can include information about the AWS ECS Fargate task as metadata in Bugsnag reports. See
+[AWS information](aws.md) for more information.
 
-[1]: https://getcomposer.org/
-[2]: https://docs.bugsnag.com/platforms/php/other/
-[3]: http://docs.guzzlephp.org/en/stable/
+### SQL query logging
+
+The EasyBugsnag package provides support for logging of SQL queries for Bugsnag. See [SQL query logging](sql-logging.md)
+for more information.
+
+[1]: https://docs.bugsnag.com/platforms/php/other/
