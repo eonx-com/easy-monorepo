@@ -6,6 +6,8 @@ namespace EonX\EasyBatch\Interfaces;
 
 interface BatchInterface extends BatchObjectInterface
 {
+    public function countCancelled(): int;
+
     public function countFailed(): int;
 
     public function countProcessed(): int;
@@ -15,19 +17,16 @@ interface BatchInterface extends BatchObjectInterface
     public function countTotal(): int;
 
     /**
-     * @return null|int|string
-     */
-    public function getParentBatchItemId();
-
-    /**
      * @return iterable<object>
      */
     public function getItems(): iterable;
 
     /**
-     * @param int|string $batchItemId
+     * @return null|int|string
      */
-    public function setParentBatchItemId($batchItemId): self;
+    public function getParentBatchItemId();
+
+    public function setCancelled(int $cancelled): self;
 
     public function setFailed(int $failed): self;
 
@@ -37,6 +36,11 @@ interface BatchInterface extends BatchObjectInterface
     public function setItems(iterable $items): self;
 
     public function setItemsProvider(callable $itemsProvider): self;
+
+    /**
+     * @param int|string $batchItemId
+     */
+    public function setParentBatchItemId($batchItemId): self;
 
     public function setProcessed(int $processed): self;
 

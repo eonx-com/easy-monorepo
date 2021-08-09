@@ -11,6 +11,7 @@ use EonX\EasyBatch\Events\BatchItemCancelledEvent;
 use EonX\EasyBatch\Events\BatchItemCompletedEvent;
 use EonX\EasyBatch\Exceptions\BatchCancelledException;
 use EonX\EasyBatch\Exceptions\BatchItemCancelledException;
+use EonX\EasyBatch\Exceptions\BatchItemInvalidException;
 use EonX\EasyBatch\Exceptions\BatchObjectNotSupportedException;
 use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyBatch\Interfaces\BatchInterface;
@@ -115,6 +116,11 @@ final class BatchManager implements BatchManagerInterface
         ));
     }
 
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectNotSupportedException
+     */
     public function cancel(BatchObjectInterface $batchObject): BatchObjectInterface
     {
         if ($batchObject->isCancelled()) {
@@ -123,7 +129,7 @@ final class BatchManager implements BatchManagerInterface
 
         $batchObject
             ->setCancelledAt(Carbon::now('UTC'))
-            ->setStatus(BatchItemInterface::STATUS_CANCELLED);
+            ->setStatus(BatchObjectInterface::STATUS_CANCELLED);
 
         if ($batchObject instanceof BatchInterface) {
             return $this->updateBatch($batchObject);
@@ -139,13 +145,7 @@ final class BatchManager implements BatchManagerInterface
             $this->updateBatchForItem($batch, $batchItem);
 
             if ($batchItem->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
-                $nestedBatch = $this->batchRepository->findNestedOrFail($batchItemId);
-
-                $nestedBatch
-                    ->setCancelledAt(Carbon::now('UTC'))
-                    ->setStatus(BatchItemInterface::STATUS_CANCELLED);
-
-                $this->updateBatch($nestedBatch);
+                $this->cancel($this->batchRepository->findNestedOrFail($batchItemId));
             }
 
             return $batchItem;
@@ -182,6 +182,26 @@ final class BatchManager implements BatchManagerInterface
         $this->asyncDispatcher->dispatch($batchItem);
 
         return $batchItem;
+    }
+
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchItemInvalidException
+     */
+    public function failItem(BatchItemInterface $batchItem): BatchItemInterface
+    {
+        if ($batchItem->isSucceeded()) {
+            throw new BatchItemInvalidException(\sprintf('BatchItem "%s" already succeeded', $batchItem->getId()));
+        }
+
+        if ($batchItem->isCancelled() || $batchItem->isFailed()) {
+            return $batchItem;
+        }
+
+        $batchItem
+            ->setStatus(BatchObjectInterface::STATUS_FAILED)
+            ->setFinishedAt(Carbon::now('UTC'));
+
+        return $this->updateItem($batchItem);
     }
 
     /**
@@ -237,13 +257,13 @@ final class BatchManager implements BatchManagerInterface
 
             $batchItem->setStatus(
                 $batchItem->isApprovalRequired()
-                    ? BatchItemInterface::STATUS_SUCCEEDED_PENDING_APPROVAL
-                    : BatchItemInterface::STATUS_SUCCEEDED
+                    ? BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL
+                    : BatchObjectInterface::STATUS_SUCCEEDED
             );
 
             return $result;
         } catch (\Throwable $throwable) {
-            $batchItem->setStatus(BatchItemInterface::STATUS_FAILED);
+            $batchItem->setStatus(BatchObjectInterface::STATUS_FAILED);
             $batchItem->setThrowable($throwable);
 
             throw $throwable;
@@ -357,6 +377,10 @@ final class BatchManager implements BatchManagerInterface
                 $freshBatch->setFailed($freshBatch->countFailed() - 1);
             }
 
+            if ($batchItem->isCancelled()) {
+                $freshBatch->setCancelled($freshBatch->countCancelled() + 1);
+            }
+
             if ($batchItem->isFailed()) {
                 $freshBatch->setFailed($freshBatch->countFailed() + 1);
             }
@@ -368,20 +392,32 @@ final class BatchManager implements BatchManagerInterface
             // Start the batch timer
             if ($freshBatch->getStartedAt() === null) {
                 $freshBatch->setStartedAt(Carbon::now('UTC'));
-                $freshBatch->setStatus(BatchInterface::STATUS_PROCESSING);
+                $freshBatch->setStatus(BatchObjectInterface::STATUS_PROCESSING);
             }
 
             // Last item of the batch
             if ($freshBatch->countTotal() === $freshBatch->countProcessed()) {
                 $freshBatch->setFinishedAt(Carbon::now('UTC'));
-                $freshBatch->setStatus(
-                    $freshBatch->countFailed() > 0 ? BatchInterface::STATUS_FAILED : BatchInterface::STATUS_SUCCEEDED
-                );
+
+                // All items are cancelled, cancel batch
+                if ($freshBatch->countCancelled() === $freshBatch->countTotal()) {
+                    $freshBatch->setStatus(BatchObjectInterface::STATUS_CANCELLED);
+                }
+
+                // If batch not cancelled from statement above, set status
+                if ($freshBatch->isCancelled() === false) {
+                    // Batch failed if not all items succeeded
+                    $freshBatch->setStatus(
+                        $freshBatch->countSucceeded() < $freshBatch->countTotal()
+                            ? BatchObjectInterface::STATUS_FAILED
+                            : BatchObjectInterface::STATUS_SUCCEEDED
+                    );
+                }
             }
 
             // Handle previously completed batch
             if ($freshBatch->isCompleted() === false && $freshBatch->countProcessed() > 0) {
-                $freshBatch->setStatus(BatchInterface::STATUS_PROCESSING);
+                $freshBatch->setStatus(BatchObjectInterface::STATUS_PROCESSING);
             }
 
             return $freshBatch;
