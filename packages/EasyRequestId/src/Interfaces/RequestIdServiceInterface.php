@@ -9,12 +9,12 @@ interface RequestIdServiceInterface
     /**
      * @var string
      */
-    public const DEFAULT_HTTP_HEADER_CORRELATION_ID = 'X-EONX-CORRELATION-ID';
+    public const DEFAULT_HTTP_HEADER_CORRELATION_ID = 'X-CORRELATION-ID';
 
     /**
      * @var string
      */
-    public const DEFAULT_HTTP_HEADER_REQUEST_ID = 'X-EONX-REQUEST-ID';
+    public const DEFAULT_HTTP_HEADER_REQUEST_ID = 'X-REQUEST-ID';
 
     /**
      * @var string
