@@ -19,6 +19,7 @@ use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use EonX\EasyBugsnag\Session\SessionTracker;
 use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Routing\Events\RouteMatched;
@@ -152,10 +153,17 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
             });
 
             $this->app->singleton(
+                BridgeConstantsInterface::SERVICE_SESSION_TRACKING_CACHE,
+                static function (Container $app): Repository {
+                    return $app->make('cache')->store(\config('easy-bugsnag.session_tracking.cache_store', 'file'));
+                }
+            );
+
+            $this->app->singleton(
                 SessionTrackingConfigurator::class,
                 static function (Container $app): SessionTrackingConfigurator {
                     return new SessionTrackingConfigurator(
-                        $app->make('cache')->store('file'),
+                        $app->make(BridgeConstantsInterface::SERVICE_SESSION_TRACKING_CACHE),
                         \config('easy-bugsnag.session_tracking.cache_expires_after', 3600)
                     );
                 }

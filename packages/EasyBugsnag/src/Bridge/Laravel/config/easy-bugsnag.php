@@ -62,6 +62,11 @@ return [
         'cache_expires_after' => 3600,
 
         /**
+         * Name of the cache store to use for session tracking.
+         */
+        'cache_store' => 'file',
+
+        /**
          * List of URLs or Regex to exclude from session tracking.
          */
         'session_tracking_exclude_urls' => [],
