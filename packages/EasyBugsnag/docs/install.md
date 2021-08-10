@@ -32,7 +32,7 @@ return [
 
 ### Configuration
 
-The minimum configuration required is your Bugsnag Notifier API key. See [Configuration](config.md) for more
+The minimum configuration required is your Bugsnag Integration API key. See [Configuration](config.md) for more
 information about configuration options.
 
 ## Laravel
@@ -56,7 +56,7 @@ For example:
 
 ### Configuration
 
-The minimum configuration required is your Bugsnag Notifier API key. See [Configuration](config.md) for more
+The minimum configuration required is your Bugsnag Integration API key. See [Configuration](config.md) for more
 information about configuration options.
 
 ## Lumen
@@ -91,7 +91,7 @@ $app->configure('easy-bugsnag');
 // ...
 ```
 
-The minimum configuration required is your Bugsnag Notifier API key. See [Configuration](config.md) for more
+The minimum configuration required is your Bugsnag Integration API key. See [Configuration](config.md) for more
 information about configuration options.
 
 [1]: https://getcomposer.org/

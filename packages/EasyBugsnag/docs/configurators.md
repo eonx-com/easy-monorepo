@@ -13,6 +13,11 @@ your favourite PHP framework, the configurators will be set on the factory for y
 configured before being injected into your services. Each configurator must define a priority (an integer value) which
 will be used to define the order of execution of the entire configurator collection.
 
+:::tip
+To simplify the process of creating configurators, you can extend
+`EonX\EasyBugsnag\Configurators\AbstractClientConfigurator`, which uses a default priority of 0.
+:::
+
 For example, the following configurator sets the *release stage* attribute of the application data for Bugsnag:
 
 ```php
@@ -35,7 +40,7 @@ final class ReleaseStageConfigurator extends AbstractClientConfigurator
 ## Default configurators
 
 The package comes with a set of configurators that are enabled by default. You can disable the default configurators by
-setting `use_default_configurators` to `false` in your configuration. See [Configuration](config.md).
+setting the `use_default_configurators` configuration option to `false`. See [Configuration](config.md).
 
 The default configurators are:
 
@@ -44,11 +49,11 @@ The default configurators are:
   - The release stage
   - The strip path
 - `RuntimeVersionConfigurator`: Sets the runtime and version in the *runtime versions* of the device data for Bugsnag:
-  - For Symfony applications, sets the runtime to the value of the `runtime` configuration (`symfony` by default) and
-    sets the version to the value of the `runtime_version` configuration (the Symfony runtime version).
+  - For Symfony applications, sets the runtime to the value of the `runtime` configuration option (`symfony` by default)
+    and sets the version to the value of the `runtime_version` configuration option (the Symfony runtime version).
   - For Laravel/Lumen applications, sets the runtime to either `lumen` or `laravel` as applicable and sets the version
     to the application version.
-- `AwsEcsFargateConfigurator`: If the `aws_ecs_fargate.enabled` configuration is set to `true`, then the
+- `AwsEcsFargateConfigurator`: If the `aws_ecs_fargate.enabled` configuration option is set to `true`, then the
   `AwsEcsFargateConfigurator` automatically resolves information about the AWS ECS Fargate task (`AvailabilityZone`,
   `Cluster`, `TaskARN` and `TaskDefinition`) and adds it as metadata to Bugsnag reports.
 
@@ -111,6 +116,7 @@ constant `TAG_CLIENT_CONFIGURATOR` provided for this purpose. This should be don
 
 use App\Bugsnag\RuntimeVersionConfigurator;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
 final class BugsnagServiceProvider extends ServiceProvider
@@ -118,8 +124,8 @@ final class BugsnagServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Register your configurator as a service
-        $this->app->singleton(RuntimeVersionConfigurator::class, function (): RuntimeVersionConfigurator {
-            return new RuntimeVersionConfigurator($this->app);
+        $this->app->singleton(RuntimeVersionConfigurator::class, static function (Container $app): RuntimeVersionConfigurator {
+            return new RuntimeVersionConfigurator($app);
         });
 
         // Tag it as a client configurator

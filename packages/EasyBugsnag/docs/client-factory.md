@@ -10,13 +10,13 @@ application, so you can focus on notifying your errors/exceptions instead of the
 **client factory** to do this.
 
 This factory implements `EonX\EasyBugsnag\Interfaces\ClientFactoryInterface` which is able to create the client from
-just the API key you can find in your Bugsnag dashboard.
+just your Bugsnag Integration API key.
 
 However, if needed you can set your own implementations of the following additional objects used by the Bugsnag client:
 
 - `HttpClient`: HTTP client used to send notifications to Bugsnag.
-- `RequestResolver`: used to resolve the request information
-- `ShutdownStrategy`: used to send bulk notifications while the application is shutting down
+- `RequestResolver`: used to resolve request information for sending to Bugsnag.
+- `ShutdownStrategy`: used for determining when to send notifications to Bugsnag.
 
 ## HTTP client
 

@@ -28,12 +28,12 @@ The common configuration options for Laravel and Symfony are as follows:
 | ------------- | ------- | ----------- |
 | `enabled` | `true` | Enable/disable the entire EasyBugsnag package. |
 | `api_key` | N/A | Bugsnag Integration API Key of your project. |
-| `project_root` | `%kernel.project_dir%/src` | Project root. |
-| `release_stage` | `%env(APP_ENV)%` | Release stage. |
-| `strip_path` | `%kernel.project_dir%` | Strip path. |
-| `aws_ecs_fargate.enabled` | `false` | Enable/disable AWS ECS Fargate data in Bugsnag. |
-| `aws_ecs_fargate.meta_url` | `%env(ECS_CONTAINER_METADATA_URI_V4)%/task` | URL used to fetch AWS ECS Fargate task metadata. |
-| `aws_ecs_fargate.meta_storage_filename` | `aws_ecs_fargate_meta.json` | Filename to cache AWS ECS Fargate task metadata into. |
+| `project_root` | `%kernel.project_dir%/src` (Symfony)<br/>`\base_path('app')` (Laravel) | Project root. |
+| `release_stage` | `%env(APP_ENV)%` (Symfony)<br/>`\env('APP_ENV')` (Laravel) | Release stage. |
+| `strip_path` | `%kernel.project_dir%` (Symfony)<br/>`\base_path()` (Laravel) | Strip path. |
+| `aws_ecs_fargate.enabled` | `false` | Enable/disable AWS ECS Fargate data in Bugsnag. See [AWS ECS Fargate information](aws.md) for more information. |
+| `aws_ecs_fargate.meta_url` | `%env(ECS_CONTAINER_METADATA_URI_V4)%/task` (Symfony)<br/> `\sprintf('%s/task', \env('ECS_CONTAINER_METADATA_URI_V4'))` (Laravel) | URL used to fetch AWS ECS Fargate task metadata. |
+| `aws_ecs_fargate.meta_storage_filename` | `%kernel.cache_dir%/aws_ecs_fargate_meta.json` (Symfony)<br/> `\storage_path('aws_ecs_fargate_meta.json')` (Laravel) | Filename to cache AWS ECS Fargate task metadata into. |
 | `session_tracking.enabled` | `false` | Enable session tracking. See [Session tracking](session-tracking.md) for more information. |
 | `session_tracking.cache_expires_after` | `3600` | Expiry for sessions cache in seconds. |
 | `session_tracking.exclude_urls` | `[]` | List of URLs (or regular expression) to exclude from session tracking. |
