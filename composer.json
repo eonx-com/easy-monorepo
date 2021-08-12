@@ -32,7 +32,8 @@
         "bugsnag/bugsnag": "^3.19",
         "elasticsearch/elasticsearch": "^7.8",
         "psr/event-dispatcher": "^1.0",
-        "laminas/laminas-uri": "^2.8"
+        "laminas/laminas-uri": "^2.8",
+        "doctrine/migrations": "^3.2"
     },
     "require-dev": {
         "api-platform/core": "^2.5",
