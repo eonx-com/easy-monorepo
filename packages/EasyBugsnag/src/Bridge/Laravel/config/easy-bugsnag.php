@@ -69,12 +69,12 @@ return [
         /**
          * List of URLs or Regex to exclude from session tracking.
          */
-        'session_tracking_exclude_urls' => [],
+        'exclude_urls' => [],
 
         /**
          * Delimiter used in Regex to resolve excluded URLs.
          */
-        'session_tracking_exclude_urls_delimiter' => '#',
+        'exclude_urls_delimiter' => '#',
 
         /**
          * Enable/Disable session tracking for queue jobs.
