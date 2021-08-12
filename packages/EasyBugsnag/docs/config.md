@@ -45,6 +45,7 @@ Laravel has the following additional configuration option:
 | Configuration | Default | Description |
 | ------------- | ------- | ----------- |
 | `doctrine_orm` | `true` |  Enable SQL query logging (see [SQL query logging](sql-logging.md)). |
+| `session_tracking.cache_store` | `file` | Cache store used by the default cache implementation provided by the package. |
 | `session_tracking.queue_job_count_for_sessions` | `false` | Enable/disable session tracking for queue jobs. |
 
 Symfony has the following additional configuration options:
@@ -55,8 +56,8 @@ Symfony has the following additional configuration options:
 | `runtime_version` | `Kernel::VERSION` | Set the Symfony runtime version. |
 | `doctrine_dbal.enabled` | `true` | Enable SQL query logging (see [SQL query logging](sql-logging.md)). |
 | `doctrine_dbal.connections` | `['default']` | Connections to log SQL queries for. |
-| `session_tracking.cache_directory` | `%kernel.cache_dir%` | Directory used by default cache adapter provided by the package. |
-| `session_tracking.cache_namespace` | `easy_bugsnag_sessions` | Namespace used by default cache adapter provided by the package. |
+| `session_tracking.cache_directory` | `%kernel.cache_dir%` | Directory used by the default cache implementation provided by the package. |
+| `session_tracking.cache_namespace` | `easy_bugsnag_sessions` | Namespace used by the default cache implementation provided by the package. |
 | `session_tracking.messenger_message_count_for_sessions` | `false` | Enable/disable session tracking for messenger messages. |
 | `worker_info.enabled` | `false` | Enable/disable worker information data in Bugsnag. See [Worker information](worker-info.md) for more information. |
 
@@ -120,6 +121,7 @@ return [
     'session_tracking' => [
         'enabled' => true,
         'cache_expires_after' => 3600,
+        'cache_store' => 'file',
         'exclude_urls' => [],
         'exclude_urls_delimiter' => '#',
         'queue_job_count_for_sessions' => false,

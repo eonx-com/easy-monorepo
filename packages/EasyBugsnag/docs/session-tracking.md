@@ -33,20 +33,28 @@ uses a default cache implementation for both Symfony and Laravel frameworks, whi
 The default cache expiry is set to one hour for performance reasons. If necessary, you can explicitly set the cache
 expiry via the `session_tracking.cache_expires_after` configuration option.
 
-You can tweak the Symfony cache implementation through the following configuration options:
+You can tweak the default Symfony cache implementation through the following configuration options:
 - `session_tracking.cache_directory`: Set the cache directory (the default is `%kernel.cache_dir%`).
 - `session_tracking.cache_namespace`: Set the cache namespace (the default is `easy_bugsnag_sessions`).
 
-For Symfony applications, you can even create your own cache implementation if required. Create a cache that implements
-`Symfony\Contracts\Cache\CacheInterface`. When registering your cache implementation as a service, use the
-`SERVICE_SESSION_TRACKING_CACHE` from `EonX\EasyBugsnag\Bridge\BridgeConstantsInterface` as the service ID.
+You can tweak the default Laravel cache implementation through the following configuration option:
+- `session_tracking.cache_store`: Set the cache store to use (the default is `file`).
 
-## Tracking queue jobs
+### Custom cache implementation
+
+You can even create your own cache implementation if required. For Symfony applications, create a cache that implements
+`Symfony\Contracts\Cache\CacheInterface`. For Laravel applications, create a cache that implements
+`Illuminate\Contracts\Cache\Repository`.
+
+When you register your cache implementation as a service, use the `SERVICE_SESSION_TRACKING_CACHE` constant from
+`EonX\EasyBugsnag\Bridge\BridgeConstantsInterface` as the service ID.
+
+## Tracking queue jobs in Laravel
 
 For Laravel applications, you can enable session tracking for queue jobs by setting the
 `session_tracking.queue_job_count_for_sessions` configuration option to `true`.
 
-## Tracking messages
+## Tracking messages in Symfony
 
 For Symfony applications, you can enable session tracking for messenger messages by setting the
 `session_tracking.messenger_message_count_for_sessions` configuration option to `true`.
