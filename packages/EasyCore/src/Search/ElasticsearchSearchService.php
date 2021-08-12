@@ -25,6 +25,21 @@ final class ElasticsearchSearchService implements SearchServiceInterface
     }
 
     /**
+     * @param string[] $indices
+     */
+    public function deleteIndices(array $indices): void
+    {
+        $indicesNamespace = $this->client->indices();
+
+        foreach ($indices as $index) {
+            $indicesNamespace->delete([
+                'allow_no_indices' => true,
+                'index' => $index,
+            ]);
+        }
+    }
+
+    /**
      * @param null|mixed[] $body
      * @param null|mixed[] $accessTokens
      * @param null|mixed[] $options

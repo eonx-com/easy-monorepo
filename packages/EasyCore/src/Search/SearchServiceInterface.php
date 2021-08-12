@@ -7,6 +7,11 @@ namespace EonX\EasyCore\Search;
 interface SearchServiceInterface
 {
     /**
+     * @param string[] $indices
+     */
+    public function deleteIndices(array $indices): void;
+
+    /**
      * @param null|mixed[] $body
      * @param null|mixed[] $accessTokens
      * @param null|mixed[] $options
