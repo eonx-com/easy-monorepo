@@ -52,10 +52,13 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
         Container $app,
         ?HttpClientInterface $client = null
     ): HttpClientInterface {
+        /** @var iterable<\EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface> $modifiers */
+        $modifiers = $app->tagged(BridgeConstantsInterface::TAG_REQUEST_DATA_MODIFIER);
+
         return new WithEventsHttpClient(
             $app->make(EventDispatcherInterface::class),
             $client,
-            $app->tagged(BridgeConstantsInterface::TAG_REQUEST_DATA_MODIFIER),
+            $modifiers,
             \config('easy-http-client.modifiers.enabled'),
             \config('easy-http-client.modifiers.whitelist')
         );
