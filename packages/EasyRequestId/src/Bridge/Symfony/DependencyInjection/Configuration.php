@@ -33,6 +33,7 @@ final class Configuration implements ConfigurationInterface
                 // Bridges
                 ->booleanNode('easy_error_handler')->defaultTrue()->end()
                 ->booleanNode('easy_logging')->defaultTrue()->end()
+                ->booleanNode('easy_http_client')->defaultTrue()->end()
                 ->booleanNode('easy_webhook')->defaultTrue()->end()
             ->end();
 
