@@ -6,6 +6,7 @@ namespace EonX\EasyHttpClient\Bridge\Laravel;
 
 use Bugsnag\Client;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyHttpClient\Bridge\BridgeConstantsInterface;
 use EonX\EasyHttpClient\Bridge\EasyBugsnag\HttpRequestSentBreadcrumbListener;
 use EonX\EasyHttpClient\Bridge\PsrLogger\LogHttpRequestSentListener;
 use EonX\EasyHttpClient\Events\HttpRequestSentEvent;
@@ -32,6 +33,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-http-client.php', 'easy-http-client');
 
+        $this->registerHttpClient();
         $this->registerEasyWebhookBridge();
 
         if (\config('easy-http-client.easy_bugsnag_enabled', true) && \class_exists(Client::class)) {
@@ -41,6 +43,25 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
         if (\config('easy-http-client.psr_logger_enabled', true) && \interface_exists(LoggerInterface::class)) {
             $this->app->make('events')->listen(HttpRequestSentEvent::class, LogHttpRequestSentListener::class);
         }
+    }
+
+    /**
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    protected static function instantiateClient(
+        Container $app,
+        ?HttpClientInterface $client = null
+    ): HttpClientInterface {
+        /** @var iterable<\EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface> $modifiers */
+        $modifiers = $app->tagged(BridgeConstantsInterface::TAG_REQUEST_DATA_MODIFIER);
+
+        return new WithEventsHttpClient(
+            $app->make(EventDispatcherInterface::class),
+            $client,
+            $modifiers,
+            \config('easy-http-client.modifiers.enabled'),
+            \config('easy-http-client.modifiers.whitelist')
+        );
     }
 
     private function registerEasyWebhookBridge(): void
@@ -54,10 +75,17 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
         $this->app->extend(
             EasyWebhookBridgeConstantsInterface::HTTP_CLIENT,
             static function (HttpClientInterface $decorated, Container $app): HttpClientInterface {
-                return new WithEventsHttpClient(
-                    $app->make(EventDispatcherInterface::class),
-                    $decorated
-                );
+                return self::instantiateClient($app, $decorated);
+            }
+        );
+    }
+
+    private function registerHttpClient(): void
+    {
+        $this->app->singleton(
+            BridgeConstantsInterface::SERVICE_HTTP_CLIENT,
+            static function (Container $app): HttpClientInterface {
+                return self::instantiateClient($app);
             }
         );
     }

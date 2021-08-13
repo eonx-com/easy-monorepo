@@ -61,4 +61,14 @@ final class RequestData implements RequestDataInterface
     {
         return $this->url;
     }
+
+    /**
+     * @param mixed[] $options
+     */
+    public function setOptions(array $options): RequestDataInterface
+    {
+        $this->options = $options;
+
+        return $this;
+    }
 }

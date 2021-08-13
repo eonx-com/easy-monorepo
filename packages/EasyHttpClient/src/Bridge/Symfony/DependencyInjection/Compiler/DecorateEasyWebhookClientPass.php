@@ -20,7 +20,7 @@ final class DecorateEasyWebhookClientPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        // Apply only if enabled, easy-webhook is install and client definition exists
+        // Apply only if enabled, easy-webhook is installed and client definition exists
         if ($this->isEnabled($container) === false
             || \interface_exists(EasyWebhookBridgeConstantsInterface::class) === false
             || $container->has(EasyWebhookBridgeConstantsInterface::HTTP_CLIENT) === false) {
