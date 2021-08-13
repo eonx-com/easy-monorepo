@@ -6,6 +6,7 @@
     "require": {
         "php": "^7.2",
         "eonx-com/easy-event-dispatcher": "^3.4",
+        "eonx-com/easy-utils": "^3.4",
         "nesbot/carbon": "^1.39 || ^2.22"
     },
     "require-dev": {

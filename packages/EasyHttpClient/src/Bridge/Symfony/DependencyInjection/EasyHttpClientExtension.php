@@ -6,6 +6,7 @@ namespace EonX\EasyHttpClient\Bridge\Symfony\DependencyInjection;
 
 use Bugsnag\Client;
 use EonX\EasyHttpClient\Bridge\BridgeConstantsInterface;
+use EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,6 +25,10 @@ final class EasyHttpClientExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new PhpFileLoader($container, new FileLocator([__DIR__ . '/../Resources/config']));
 
+        $container
+            ->registerForAutoconfiguration(RequestDataModifierInterface::class)
+            ->addTag(BridgeConstantsInterface::TAG_REQUEST_DATA_MODIFIER);
+
         $container->setParameter(
             BridgeConstantsInterface::PARAM_DECORATE_DEFAULT_CLIENT,
             $config['decorate_default_client'] ?? false
@@ -33,6 +38,19 @@ final class EasyHttpClientExtension extends Extension
             BridgeConstantsInterface::PARAM_DECORATE_EASY_WEBHOOK_CLIENT,
             $config['decorate_easy_webhook_client'] ?? false
         );
+
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_MODIFIERS_ENABLED,
+            $config['modifiers']['enabled'] ?? true
+        );
+
+        $modifiersWhitelist = $config['modifiers']['whitelist'] ?? [null];
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_MODIFIERS_WHITELIST,
+            \count($modifiersWhitelist) === 1 && ($modifiersWhitelist[0] === null) ? null : $modifiersWhitelist
+        );
+
+        $loader->load('http_client.php');
 
         if (($config['easy_bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
             $loader->load('easy_bugsnag.php');
