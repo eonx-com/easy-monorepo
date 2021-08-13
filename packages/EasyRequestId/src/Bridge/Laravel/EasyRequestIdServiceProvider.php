@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Bridge\Laravel;
 
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface as EasyErrorHandlerBridgeConstantsInterface;
+use EonX\EasyHttpClient\Bridge\BridgeConstantsInterface as EasyHttpClientBridgeConstantsInterface;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
 use EonX\EasyRequestId\Bridge\EasyErrorHandler\RequestIdErrorResponseBuilder;
+use EonX\EasyRequestId\Bridge\EasyHttpClient\RequestIdRequestDataModifier;
 use EonX\EasyRequestId\Bridge\EasyLogging\RequestIdProcessor;
 use EonX\EasyRequestId\Bridge\EasyWebhook\RequestIdWebhookMiddleware;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
@@ -112,6 +114,15 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
             $this->app->tag(
                 RequestIdProcessor::class,
                 [EasyLoggingBridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER]
+            );
+        }
+
+        // EasyHttpClient
+        if ($this->bridgeEnabled('easy_http_client', EasyHttpClientBridgeConstantsInterface::class)) {
+            $this->app->singleton(RequestIdRequestDataModifier::class);
+            $this->app->tag(
+                RequestIdRequestDataModifier::class,
+                [EasyHttpClientBridgeConstantsInterface::TAG_REQUEST_DATA_MODIFIER]
             );
         }
 

@@ -28,6 +28,11 @@ return [
     'easy_logging' => true,
 
     /**
+     * Enable bridge for eonx-com/easy-http-client.
+     */
+    'easy_http_client' => true,
+
+    /**
      * Enable bridge for eonx-com/easy-webhook.
      */
     'easy_webhook' => true,
