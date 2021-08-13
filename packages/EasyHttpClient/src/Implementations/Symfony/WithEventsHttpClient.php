@@ -45,6 +45,10 @@ final class WithEventsHttpClient implements HttpClientInterface
      */
     private $modifiersWhitelist;
 
+    /**
+     * @param null|iterable<\EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface> $modifiers
+     * @param null|string[] $modifiersWhitelist
+     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         ?HttpClientInterface $decorated = null,
