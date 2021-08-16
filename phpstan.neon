@@ -21,12 +21,12 @@ parameters:
         - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
         - packages/EasyApiToken/src/Interfaces/*
         - packages/EasyApiToken/tests/Bridge/Symfony/*
+        - packages/EasySecurity/src/Bridge/Symfony/Security/SecurityContextAuthenticator.php
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-        - '#Class Symfony\\Component\\Security\\Http\\Authenticator\\AbstractAuthenticator not found#'
 
         # ---- EasyApiToken ----
         - message: '#Parameter \#[0-9] \$(.*?) of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource\|string\|null, resource\|string\|false given#'
