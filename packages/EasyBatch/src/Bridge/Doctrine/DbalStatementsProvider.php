@@ -7,6 +7,7 @@ namespace EonX\EasyBatch\Bridge\Doctrine;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Type;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 
@@ -37,11 +38,19 @@ final class DbalStatementsProvider
      */
     private $extendBatchesTable;
 
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function __construct(Connection $conn, ?string $batchesTable = null, ?string $batchItemsTable = null)
     {
         $this->conn = $conn;
         $this->batchesTable = $batchesTable ?? BatchRepositoryInterface::DEFAULT_TABLE;
         $this->batchItemsTable = $batchItemsTable ?? BatchItemRepositoryInterface::DEFAULT_TABLE;
+
+        // Register types
+        if (Type::hasType(DateTimeWithMicroSeconds::NAME) === false) {
+            Type::addType(DateTimeWithMicroSeconds::NAME, DateTimeWithMicroSeconds::class);
+        }
     }
 
     public function extendBatchItemsTable(callable $callable): self
@@ -150,19 +159,19 @@ final class DbalStatementsProvider
             'notNull' => false,
         ]);
 
-        $table->addColumn('cancelled_at', 'datetime', [
+        $table->addColumn('cancelled_at', DateTimeWithMicroSeconds::NAME, [
             'notNull' => false,
         ]);
 
-        $table->addColumn('started_at', 'datetime', [
+        $table->addColumn('started_at', DateTimeWithMicroSeconds::NAME, [
             'notNull' => false,
         ]);
 
-        $table->addColumn('finished_at', 'datetime', [
+        $table->addColumn('finished_at', DateTimeWithMicroSeconds::NAME, [
             'notNull' => false,
         ]);
 
-        $table->addColumn('created_at', 'datetime');
-        $table->addColumn('updated_at', 'datetime');
+        $table->addColumn('created_at', DateTimeWithMicroSeconds::NAME);
+        $table->addColumn('updated_at', DateTimeWithMicroSeconds::NAME);
     }
 }
