@@ -23,6 +23,9 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
      */
     private $responseFactory;
 
+    /**
+     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
+     */
     private $securityContextResolver;
 
     public function __construct(

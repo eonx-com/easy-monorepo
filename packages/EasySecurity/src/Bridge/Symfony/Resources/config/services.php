@@ -11,19 +11,19 @@ use EonX\EasySecurity\Bridge\Symfony\DataCollector\SecurityContextDataCollector;
 use EonX\EasySecurity\Bridge\Symfony\Factories\AuthenticationFailureResponseFactory;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface;
 use EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener;
-use EonX\EasySecurity\Bridge\Symfony\Request\RequestResolver;
 use EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator;
+use EonX\EasySecurity\Bridge\Symfony\Security\SecurityContextAuthenticator;
 use EonX\EasySecurity\DeferredSecurityContextProvider;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
-use EonX\EasySecurity\Interfaces\RequestResolverInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\SecurityContextFactory;
 use EonX\EasySecurity\SecurityContextResolver;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
@@ -85,4 +85,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag('monolog.logger', ['channel' => BridgeConstantsInterface::LOG_CHANNEL]);
 
     $services->set(ContextAuthenticator::class);
+
+    // New Symfony Security
+    if (\interface_exists(PassportInterface::class)) {
+        $services->set(SecurityContextAuthenticator::class);
+    }
 };
