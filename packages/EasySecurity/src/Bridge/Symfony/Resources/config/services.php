@@ -10,6 +10,7 @@ use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\Symfony\DataCollector\SecurityContextDataCollector;
 use EonX\EasySecurity\Bridge\Symfony\Factories\AuthenticationFailureResponseFactory;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface;
+use EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener;
 use EonX\EasySecurity\Bridge\Symfony\Request\RequestResolver;
 use EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator;
 use EonX\EasySecurity\DeferredSecurityContextProvider;
@@ -18,7 +19,9 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
 use EonX\EasySecurity\Interfaces\RequestResolverInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\SecurityContextFactory;
+use EonX\EasySecurity\SecurityContextResolver;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
@@ -63,17 +66,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ]);
 
     // Deferred Security Provider
-    $services
-        ->set(DeferredSecurityContextProviderInterface::class, DeferredSecurityContextProvider::class)
-        ->arg('$contextServiceId', '%' . BridgeConstantsInterface::PARAM_CONTEXT_SERVICE_ID . '%');
+    $services->set(DeferredSecurityContextProviderInterface::class, DeferredSecurityContextProvider::class);
 
     // Request
-    $services->set(RequestResolverInterface::class, RequestResolver::class);
+    $services
+        ->set(FromRequestSecurityContextConfiguratorListener::class)
+        ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR));
+
+    // Resolver
+    $services->set(SecurityContextResolverInterface::class, SecurityContextResolver::class);
 
     // SecurityContextFactory
-    $services
-        ->set(SecurityContextFactoryInterface::class, SecurityContextFactory::class)
-        ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR));
+    $services->set(SecurityContextFactoryInterface::class, SecurityContextFactory::class);
 
     // Symfony Security
     $services
