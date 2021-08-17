@@ -21,6 +21,8 @@ parameters:
         - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
         - packages/EasyApiToken/src/Interfaces/*
         - packages/EasyApiToken/tests/Bridge/Symfony/*
+        - packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
+        - packages/EasySecurity/src/Bridge/Symfony/Security/SecurityContextAuthenticator.php
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
