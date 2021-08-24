@@ -39,5 +39,10 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const SERVICE_LOGGER = 'easy_http_client.logger';
+
+    /**
+     * @var string
+     */
     public const TAG_REQUEST_DATA_MODIFIER = 'easy_http_client.request_data_modifier';
 }
