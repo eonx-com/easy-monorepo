@@ -274,6 +274,8 @@ final class RandomString implements RandomStringInterface
             $currentAlphabet = \array_diff($currentAlphabet, $this->resolveAlphabetCharacters($alphabet));
         }
 
+        $currentAlphabet = \array_unique($currentAlphabet);
+
         return $this->resolvedAlphabet = $this->validateAlphabet(\implode('', $currentAlphabet));
     }
 
