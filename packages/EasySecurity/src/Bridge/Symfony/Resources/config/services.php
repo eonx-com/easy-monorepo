@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
+use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
@@ -21,6 +22,7 @@ use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\SecurityContextFactory;
 use EonX\EasySecurity\SecurityContextResolver;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
@@ -74,20 +76,30 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR));
 
     // Resolver
-    $services->set(SecurityContextResolverInterface::class, SecurityContextResolver::class);
+    $securityContextResolver = $services->set(SecurityContextResolverInterface::class, SecurityContextResolver::class);
 
     // SecurityContextFactory
     $services->set(SecurityContextFactoryInterface::class, SecurityContextFactory::class);
 
     // Symfony Security
-    $services
-        ->set(AuthenticationFailureResponseFactoryInterface::class, AuthenticationFailureResponseFactory::class)
-        ->tag('monolog.logger', ['channel' => BridgeConstantsInterface::LOG_CHANNEL]);
+    $responseFactory = $services
+        ->set(AuthenticationFailureResponseFactoryInterface::class, AuthenticationFailureResponseFactory::class);
 
     $services->set(ContextAuthenticator::class);
 
     // New Symfony Security
     if (\interface_exists(PassportInterface::class)) {
         $services->set(SecurityContextAuthenticator::class);
+    }
+
+    // Logger
+    if (\interface_exists(LoggerFactoryInterface::class)) {
+        $services
+            ->set(BridgeConstantsInterface::SERVICE_LOGGER, LoggerInterface::class)
+            ->factory([ref(LoggerFactoryInterface::class), 'create'])
+            ->args([BridgeConstantsInterface::LOG_CHANNEL]);
+
+        $securityContextResolver->arg('$logger', ref(BridgeConstantsInterface::SERVICE_LOGGER));
+        $responseFactory->arg('$logger', ref(BridgeConstantsInterface::SERVICE_LOGGER));
     }
 };

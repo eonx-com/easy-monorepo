@@ -7,6 +7,7 @@ namespace EonX\EasySecurity\Bridge\Laravel;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagBridgeConstantsInterface;
+use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
@@ -28,6 +29,7 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 final class EasySecurityServiceProvider extends ServiceProvider
@@ -55,6 +57,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
         $this->registerAuthorizationMatrix();
         $this->registerDefaultConfigurators();
         $this->registerEasyBugsnag();
+        $this->registerLogger();
         $this->registerRequestConfigurators();
         $this->registerSecurityContext($contextServiceId);
         $this->registerDeferredSecurityContextProvider();
@@ -147,6 +150,20 @@ final class EasySecurityServiceProvider extends ServiceProvider
         );
     }
 
+    private function registerLogger(): void
+    {
+        $this->app->singleton(
+            BridgeConstantsInterface::SERVICE_LOGGER,
+            static function (Container $app): LoggerInterface {
+                $loggerParams = \interface_exists(EasyLoggingBridgeConstantsInterface::class)
+                    ? [EasyLoggingBridgeConstantsInterface::KEY_CHANNEL => BridgeConstantsInterface::LOG_CHANNEL]
+                    : [];
+
+                return $app->make(LoggerInterface::class, $loggerParams);
+            }
+        );
+    }
+
     private function registerRequestConfigurators(): void
     {
         if ($this->app instanceof LumenApplication) {
@@ -183,7 +200,8 @@ final class EasySecurityServiceProvider extends ServiceProvider
             static function (Container $app): SecurityContextResolverInterface {
                 return new SecurityContextResolver(
                     $app->make(AuthorizationMatrixInterface::class),
-                    $app->make(SecurityContextFactoryInterface::class)
+                    $app->make(SecurityContextFactoryInterface::class),
+                    $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
                 );
             }
         );

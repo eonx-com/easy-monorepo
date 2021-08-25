@@ -60,4 +60,9 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const SERVICE_AUTHORIZATION_MATRIX_CACHE = 'easy_security.authorization_matrix_cache';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_LOGGER = 'easy_security.logger';
 }
