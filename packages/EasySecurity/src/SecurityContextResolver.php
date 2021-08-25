@@ -20,7 +20,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
     private $authorizationMatrix;
 
     /**
-     * @var callable
+     * @var null|callable
      */
     private $configurator;
 
