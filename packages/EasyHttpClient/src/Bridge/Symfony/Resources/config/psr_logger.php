@@ -5,6 +5,7 @@ declare(strict_types=1);
 use EonX\EasyHttpClient\Bridge\BridgeConstantsInterface;
 use EonX\EasyHttpClient\Bridge\PsrLogger\LogHttpRequestSentListener;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
@@ -22,7 +23,7 @@ return static function (ContainerConfigurator $container): void {
 
     if (\interface_exists(LoggerFactoryInterface::class)) {
         $services
-            ->set(BridgeConstantsInterface::SERVICE_LOGGER)
+            ->set(BridgeConstantsInterface::SERVICE_LOGGER, LoggerInterface::class)
             ->factory([ref(LoggerFactoryInterface::class), 'create'])
             ->args([BridgeConstantsInterface::LOG_CHANNEL]);
 
