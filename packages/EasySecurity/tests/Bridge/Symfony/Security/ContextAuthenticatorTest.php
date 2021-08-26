@@ -22,8 +22,6 @@ final class ContextAuthenticatorTest extends AbstractSymfonyTestCase
         ]);
         $user = new SymfonyUserStub();
 
-        $container->get(SecurityContextResolverInterface::class)->setConfigurator(new DefaultSecurityContextConfigurator());
-
         $contextAuthenticator = $container->get(ContextAuthenticator::class);
         $context = $contextAuthenticator->getCredentials($request);
 
