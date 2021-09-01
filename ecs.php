@@ -5,6 +5,7 @@ declare(strict_types=1);
 use EonX\EasyQuality\Sniffs\ControlStructures\NoElseSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\AssignmentInConditionSniff;
 use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
@@ -66,6 +67,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ClassAttributesSeparationFixer::class,
         ArrayOpenerAndCloserNewlineFixer::class,
         RemoveUselessDefaultCommentFixer::class,
+        AssignmentInConditionSniff::class,
 
         FileHeaderSniff::class . '.SpacingAfterBlock' => [
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Resources/config/default_configurators.php',

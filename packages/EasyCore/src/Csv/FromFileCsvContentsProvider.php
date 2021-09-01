@@ -27,17 +27,14 @@ final class FromFileCsvContentsProvider implements CsvContentsProviderInterface
     {
         if (\file_exists($this->filename) === false
             || \is_readable($this->filename) === false
-            || \fopen($this->filename, 'r') === false) {
+            || ($handle = \fopen($this->filename, 'r')) === false) {
             throw new InvalidCsvFilenameException(\sprintf(
                 'File %s does not exist or is not readable',
                 $this->filename
             ));
         }
 
-        $handle = \fopen($this->filename, 'r');
-        $row = \fgetcsv($handle);
-
-        while ($row !== false) {
+        while (($row = \fgetcsv($handle)) !== false) {
             yield $row;
         }
 
