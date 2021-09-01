@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer;
@@ -47,11 +48,6 @@ final class QueueEnvelope implements QueueEnvelopeInterface
         return $this->body;
     }
 
-    public function getOriginalBody(): string
-    {
-        return $this->originalBody;
-    }
-
     /**
      * @param null|mixed $default
      *
@@ -68,5 +64,10 @@ final class QueueEnvelope implements QueueEnvelopeInterface
     public function getHeaders(): array
     {
         return $this->headers;
+    }
+
+    public function getOriginalBody(): string
+    {
+        return $this->originalBody;
     }
 }

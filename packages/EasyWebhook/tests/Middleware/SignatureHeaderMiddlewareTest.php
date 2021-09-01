@@ -45,7 +45,7 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
             ]),
             static function (WebhookResultInterface $webhookResult, SignerStub $signer): void {
                 $headers = $webhookResult->getWebhook()
-                        ->getHttpClientOptions()['headers'] ?? [];
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey(Webhook::HEADER_SIGNATURE, $headers);
                 self::assertEquals('not empty', $signer->getPayload());
@@ -61,7 +61,7 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
             ]),
             static function (WebhookResultInterface $webhookResult, SignerStub $signer): void {
                 $headers = $webhookResult->getWebhook()
-                        ->getHttpClientOptions()['headers'] ?? [];
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey('X-My-Signature', $headers);
                 self::assertEquals('not empty', $signer->getPayload());
@@ -79,7 +79,7 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
             ]),
             static function (WebhookResultInterface $webhookResult, SignerStub $signer): void {
                 $headers = $webhookResult->getWebhook()
-                        ->getHttpClientOptions()['headers'] ?? [];
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey('X-My-Signature', $headers);
                 self::assertEquals('not empty', $signer->getPayload());
@@ -97,7 +97,7 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
             ]),
             static function (WebhookResultInterface $webhookResult, SignerStub $signer): void {
                 $headers = $webhookResult->getWebhook()
-                        ->getHttpClientOptions()['headers'] ?? [];
+                    ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey(WebhookInterface::HEADER_SIGNATURE, $headers);
                 self::assertEquals('not empty', $signer->getPayload());

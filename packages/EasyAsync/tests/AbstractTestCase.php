@@ -16,12 +16,12 @@ use Symfony\Component\Filesystem\Filesystem;
 abstract class AbstractTestCase extends TestCase
 {
     /**
-     * @var \EonX\EasyAsync\Interfaces\Batch\BatchFactoryInterface
+     * @var \EonX\EasyAsync\Interfaces\Batch\BatchFactoryInterface|null
      */
     private $batchFactory;
 
     /**
-     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
+     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface|null
      */
     private $random;
 

@@ -156,14 +156,12 @@
         "check-all": [
             "@check-ecs",
             "@check-phpstan",
-            "@check-security",
             "@check-tests"
         ],
         "check-ecs": ".quality/vendor/bin/ecs check --ansi",
         "check-monorepo": "vendor/bin/monorepo-builder validate --ansi",
         "check-composer": "@composer validate --strict",
         "check-phpstan": ".quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=1000M",
-        "check-security": "vendor/bin/security-checker security:check",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
         "check-rector": ".quality/vendor/bin/rector process --ansi --config rector-ci.php --dry-run",
         "changelog": [

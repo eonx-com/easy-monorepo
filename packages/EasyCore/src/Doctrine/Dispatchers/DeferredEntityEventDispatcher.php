@@ -66,7 +66,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
         /** @var object[] $mergedEntityInsertions */
         $mergedEntityInsertions = \array_merge(
-            (array)($this->entityInsertions[$transactionNestingLevel] ?? []),
+            $this->entityInsertions[$transactionNestingLevel] ?? [],
             $entityInsertions
         );
         $this->entityInsertions[$transactionNestingLevel] = $mergedEntityInsertions;
@@ -80,7 +80,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
         /** @var object[] $mergedEntityUpdates */
         $mergedEntityUpdates = \array_merge(
-            (array)($this->entityUpdates[$transactionNestingLevel] ?? []),
+            $this->entityUpdates[$transactionNestingLevel] ?? [],
             $entityUpdates
         );
         $this->entityUpdates[$transactionNestingLevel] = $mergedEntityUpdates;

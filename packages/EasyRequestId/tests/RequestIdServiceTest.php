@@ -6,9 +6,7 @@ namespace EonX\EasyRequestId\Tests;
 
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
-use EonX\EasyRequestId\DefaultResolver;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
-use EonX\EasyRequestId\Interfaces\RequestIdKeysAwareInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\Resolvers\HttpFoundationRequestResolver;

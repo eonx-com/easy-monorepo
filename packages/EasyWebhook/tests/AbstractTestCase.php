@@ -19,14 +19,14 @@ use Symfony\Component\Filesystem\Filesystem;
 abstract class AbstractTestCase extends TestCase
 {
     /**
-     * @var \EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface
+     * @var \EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface|null
      */
-    private $dataCleaner;
+    private $dataCleaner = null;
 
     /**
-     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
+     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface|null
      */
-    private $random;
+    private $random = null;
 
     protected function getDataCleaner(): DataCleanerInterface
     {

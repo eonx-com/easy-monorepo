@@ -62,8 +62,6 @@ final class ConnectionStub implements Connection
     /**
      * @param mixed $value
      * @param int $type
-     *
-     * @return void
      */
     public function quote($value, $type = ParameterType::STRING)
     {

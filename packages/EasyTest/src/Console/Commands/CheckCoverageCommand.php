@@ -49,9 +49,13 @@ final class CheckCoverageCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $style = new SymfonyStyle($input, $output);
-        $checkCoverage = (float)$input->getOption('coverage');
+        /** @var string $coverageValue */
+        $coverageValue = $input->getOption('coverage');
+        $checkCoverage = (float)$coverageValue;
 
-        $coverage = $this->coverageResolver->resolve($this->coverageLoader->load((string)$input->getArgument('file')));
+        /** @var string $fileArgumentValue */
+        $fileArgumentValue = $input->getArgument('file');
+        $coverage = $this->coverageResolver->resolve($this->coverageLoader->load($fileArgumentValue));
 
         if ($checkCoverage > $coverage) {
             $style->error(\sprintf('Coverage "%d%%" is lower than expectation "%d%%"', $coverage, $checkCoverage));

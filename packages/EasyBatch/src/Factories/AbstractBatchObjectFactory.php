@@ -36,8 +36,10 @@ abstract class AbstractBatchObjectFactory
     {
         $batchObject = $this->transformer->transformToObject($data);
         $eventClass = $this->getCreatedFromArrayEventClass();
+        /** @var \EonX\EasyBatch\Events\AbstractBatchObjectEvent $eventClassInstance */
+        $eventClassInstance = new $eventClass($batchObject, $data);
 
-        return $this->modifyBatchObject(new $eventClass($batchObject, $data));
+        return $this->modifyBatchObject($eventClassInstance);
     }
 
     abstract protected function getCreatedFromArrayEventClass(): string;

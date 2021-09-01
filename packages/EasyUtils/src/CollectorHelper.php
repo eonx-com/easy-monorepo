@@ -16,7 +16,7 @@ final class CollectorHelper
      */
     public static function convertToArray(iterable $items): array
     {
-        return $items instanceof \Traversable ? \iterator_to_array($items) : (array)$items;
+        return $items instanceof \Traversable ? \iterator_to_array($items) : $items;
     }
 
     /**

@@ -20,14 +20,14 @@ use Symfony\Component\Filesystem\Filesystem;
 abstract class AbstractTestCase extends TestCase
 {
     /**
-     * @var \EonX\EasyBatch\Interfaces\BatchFactoryInterface
+     * @var \EonX\EasyBatch\Interfaces\BatchFactoryInterface|null
      */
-    private $batchFactory;
+    private $batchFactory = null;
 
     /**
-     * @var \EonX\EasyBatch\Interfaces\BatchItemFactoryInterface
+     * @var \EonX\EasyBatch\Interfaces\BatchItemFactoryInterface|null
      */
-    private $batchItemFactory;
+    private $batchItemFactory = null;
 
     /**
      * @var \EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface

@@ -29,7 +29,6 @@ final class PaginationProvider implements PaginationProviderInterface
     public function __construct(PaginationConfigInterface $config)
     {
         $this->config = $config;
-
     }
 
     public function getPagination(): PaginationInterface

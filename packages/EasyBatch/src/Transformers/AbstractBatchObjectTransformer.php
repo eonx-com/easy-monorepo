@@ -29,8 +29,10 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
     public function instantiateForClass(?string $class = null): BatchObjectInterface
     {
         $class = $class ?? $this->class;
+        /** @var \EonX\EasyBatch\Interfaces\BatchObjectInterface $classInstance */
+        $classInstance = new $class();
 
-        return new $class();
+        return $classInstance;
     }
 
     /**
@@ -96,7 +98,8 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
     protected function unserialize(string $message): object
     {
         if (\strpos($message, '}', -1) === false) {
-            $message = \base64_decode($message);
+            /** @var string $message */
+            $message = \base64_decode($message, true);
         }
 
         return \unserialize(\stripslashes($message));

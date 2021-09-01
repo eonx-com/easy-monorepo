@@ -100,7 +100,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->factory([ref(LoggerFactoryInterface::class), 'create'])
             ->args([BridgeConstantsInterface::LOG_CHANNEL]);
 
-        $securityContextResolver->arg('$logger', ref(BridgeConstantsInterface::SERVICE_LOGGER));
-        $responseFactory->arg('$logger', ref(BridgeConstantsInterface::SERVICE_LOGGER));
+        $securityContextResolver
+            ->arg('$logger', ref(BridgeConstantsInterface::SERVICE_LOGGER));
+        $responseFactory
+            ->arg('$logger', ref(BridgeConstantsInterface::SERVICE_LOGGER));
     }
 };

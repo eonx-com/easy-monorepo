@@ -38,7 +38,7 @@ final class DateTimeGenerator implements DateTimeGeneratorInterface
         try {
             return new \DateTime('now', $this->timezone);
             // @codeCoverageIgnoreStart
-        } catch (\Throwable $exception) {
+        } catch (\Exception $exception) {
             throw new UnableToGenerateDateTimeException($exception->getMessage(), $exception->getCode(), $exception);
         }
         // @codeCoverageIgnoreEnd

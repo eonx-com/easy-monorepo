@@ -25,22 +25,22 @@ final class WorkerMessageReceivedListener
     private $event;
 
     /**
-     * @var \DateTimeInterface
-     */
-    private $receivedAt;
-
-    /**
      * @var bool
      */
     private $isSetup = false;
 
     /**
-     * @var \Symfony\Component\VarDumper\Cloner\VarCloner
+     * @var \DateTimeInterface
+     */
+    private $receivedAt;
+
+    /**
+     * @var \Symfony\Component\VarDumper\Cloner\VarCloner|null
      */
     private $varCloner;
 
     /**
-     * @var \Symfony\Component\VarDumper\Dumper\CliDumper
+     * @var \Symfony\Component\VarDumper\Dumper\CliDumper|null
      */
     private $varDumper;
 

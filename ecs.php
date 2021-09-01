@@ -7,16 +7,19 @@ use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
+use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
+use PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer;
 use PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer;
+use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocTrimConsecutiveBlankLineSeparationFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer;
 use PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
-use SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff;
 use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
@@ -24,13 +27,11 @@ use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayOpenerNewlineFixer;
+use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayOpenerAndCloserNewlineFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
 use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
-use Symplify\CodingStandard\Fixer\Commenting\RemoveSuperfluousDocBlockWhitespaceFixer;
-use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
+use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
 use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
-use Symplify\CodingStandard\Fixer\Spacing\RemoveSpacingAroundModifierAndConstFixer;
 use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
@@ -44,43 +45,44 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/ecs.php',
     ]);
 
-    $parameters->set(Option::EXCLUDE_PATHS, [
+    $containerConfigurator->import(SetList::COMMON);
+    $containerConfigurator->import(SetList::CLEAN_CODE);
+    $containerConfigurator->import(SetList::PSR_12);
+    $containerConfigurator->import(SetList::ARRAY);
+
+    $parameters->set(Option::SKIP, [
         'packages/*/var/*php',
         '*/vendor/*.php',
         __DIR__ . '/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php',
-    ]);
 
-    $parameters->set(Option::SETS, [
-        SetList::COMMON,
-        SetList::CLEAN_CODE,
-        SetList::PHP_70,
-        SetList::PHP_71,
-        SetList::PSR_12,
-        SetList::DEAD_CODE,
-        SetList::ARRAY,
-    ]);
+        NotOperatorWithSuccessorSpaceFixer::class,
+        CastSpacesFixer::class,
+        OrderedClassElementsFixer::class,
+        NoSuperfluousPhpdocTagsFixer::class,
+        PhpdocVarWithoutNameFixer::class,
+        PhpUnitStrictFixer::class,
+        BlankLineAfterOpeningTagFixer::class,
+        MethodChainingNewlineFixer::class,
+        ClassAttributesSeparationFixer::class,
+        ArrayOpenerAndCloserNewlineFixer::class,
+        RemoveUselessDefaultCommentFixer::class,
 
-    $parameters->set(Option::SKIP, [
-        NotOperatorWithSuccessorSpaceFixer::class => null,
-        CastSpacesFixer::class => null,
-        OrderedClassElementsFixer::class => null,
-        NoSuperfluousPhpdocTagsFixer::class => null,
-        PhpdocVarWithoutNameFixer::class => null,
-        PhpUnitStrictFixer::class => null,
-        BlankLineAfterOpeningTagFixer::class => null,
-
-        MethodChainingIndentationFixer::class => ['*/Configuration.php'],
-
-        MethodChainingNewlineFixer::class => [
-            // bug, to be fixed in symplify
-            '*/Configuration.php',
-            __DIR__ . '/packages/EasyCore/tests/Doctrine/DBAL/Types/DateTimeMicrosecondsTypeTest.php',
+        FileHeaderSniff::class . '.SpacingAfterBlock' => [
+            __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Resources/config/default_configurators.php',
+            __DIR__ . '/packages/EasyPagination/src/Bridge/Symfony/Resources/config/services.php',
+            __DIR__ . '/packages/EasyHttpClient/src/Bridge/Symfony/Resources/config/http_client.php',
+            __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Symfony/Resources/config/services.php',
+            __DIR__ . '/packages/EasyCore/src/Bridge/Symfony/Resources/config/api_platform/debug.php',
+            __DIR__ . '/packages/EasyBatch/src/Bridge/Symfony/Resources/config/services.php',
+            __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php',
+            __DIR__ . '/packages/EasyBugsnag/src/Bridge/Symfony/Resources/config/services.php',
         ],
-        NullTypeHintOnLastPositionSniff::class . '.NullTypeHintNotOnLastPosition' => null,
-        ParameterTypeHintSniff::class . '.MissingAnyTypeHint' => null,
-        ReturnTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
-        ParameterTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
-        ReturnTypeHintSniff::class . '.MissingAnyTypeHint' => null,
+        MethodChainingIndentationFixer::class => ['*/Configuration.php'],
+        NullTypeHintOnLastPositionSniff::class . '.NullTypeHintNotOnLastPosition',
+        ParameterTypeHintSniff::class . '.MissingAnyTypeHint',
+        ReturnTypeHintSniff::class . '.MissingTraversableTypeHintSpecification',
+        ParameterTypeHintSniff::class . '.MissingTraversableTypeHintSpecification',
+        ReturnTypeHintSniff::class . '.MissingAnyTypeHint',
         ParameterTypeHintSniff::class . '.MissingNativeTypeHint' => [
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php',
             __DIR__ . '/packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php',
@@ -149,9 +151,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
         ],
         UselessVariableSniff::class . '.UselessVariable' => [__DIR__ . '/packages/EasySchedule/src/Schedule.php'],
-        UnusedPrivateElementsSniff::class . '.WriteOnlyProperty' => [
-            __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/Handler/Handler.php',
-        ],
         UnusedVariableSniff::class . '.UnusedVariable' => [
             __DIR__ . '/packages/EasyAsync/src/Bridge/Symfony/DependencyInjection/Compiler/AddBatchMiddlewareToMessengerBusesPass.php',
         ],
@@ -182,18 +181,19 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(NoNotOperatorSniff::class);
     $services->set(Psr4Sniff::class);
 
-    // sypmlify rules - see https://github.com/symplify/coding-standard/blob/master/docs/phpcs_fixer_fixers.md
+    // symplify rules - see https://github.com/symplify/coding-standard/blob/master/docs/phpcs_fixer_fixers.md
     // arrays
-    $services->set(ArrayOpenerNewlineFixer::class);
     $services->set(StandaloneLineInMultilineArrayFixer::class);
 
     // annotations
     $services->set(ParamReturnAndVarTagMalformsFixer::class);
 
     // extra spaces
-    $services->set(RemoveSuperfluousDocBlockWhitespaceFixer::class);
-    $services->set(RemoveSpacingAroundModifierAndConstFixer::class);
+    $services->set(PhpdocTrimConsecutiveBlankLineSeparationFixer::class);
+    $services->set(BinaryOperatorSpacesFixer::class);
+
+    $services->set(VisibilityRequiredFixer::class);
 
     // line length 120
-    $services->set(LineLengthFixer::class);
+    // $services->set(LineLengthFixer::class);
 };

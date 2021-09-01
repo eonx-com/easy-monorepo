@@ -35,7 +35,7 @@ interface BatchManagerInterface
     /**
      * @param int|string $batchId
      */
-    public function iterateThroughItems($batchId, ?string $dependsOnName, callable $func): void;
+    public function iterateThroughItems($batchId, ?string $dependsOnName = null, callable $func): void;
 
     /**
      * @return mixed
