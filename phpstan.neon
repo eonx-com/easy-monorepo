@@ -14,8 +14,6 @@ parameters:
     bootstrapFiles:
         - %currentWorkingDirectory%/tests/bootstrap.php
 
-    reportUnmatchedIgnoredErrors: false
-
     excludes_analyse:
         - packages/*/var/*
         - packages/*/vendor/*
@@ -188,9 +186,6 @@ parameters:
           path: packages/EasySsm/tests/Stubs/BaseSsmClientStub.php
 
         # ---- EasyTest ----
-        - message: '#Unsafe usage of new static\(\)#'
-          path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
-
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: packages/EasyWebhook/src/AbstractWebhook.php
