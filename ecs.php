@@ -64,22 +64,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         PhpdocVarWithoutNameFixer::class,
         PhpUnitStrictFixer::class,
         BlankLineAfterOpeningTagFixer::class,
-        MethodChainingNewlineFixer::class,
         ArrayOpenerAndCloserNewlineFixer::class,
         RemoveUselessDefaultCommentFixer::class,
 
+        MethodChainingNewlineFixer::class => [
+            // bug, to be fixed in symplify
+            '*/Configuration.php',
+            __DIR__ . '/packages/EasyCore/tests/Doctrine/DBAL/Types/DateTimeMicrosecondsTypeTest.php',
+        ],
         AssignmentInConditionSniff::class => [
             __DIR__ . '/packages/EasyCore/src/Csv\FromFileCsvContentsProvider.php',
-        ],
-        FileHeaderSniff::class . '.SpacingAfterBlock' => [
-            __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Resources/config/default_configurators.php',
-            __DIR__ . '/packages/EasyPagination/src/Bridge/Symfony/Resources/config/services.php',
-            __DIR__ . '/packages/EasyHttpClient/src/Bridge/Symfony/Resources/config/http_client.php',
-            __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Symfony/Resources/config/services.php',
-            __DIR__ . '/packages/EasyCore/src/Bridge/Symfony/Resources/config/api_platform/debug.php',
-            __DIR__ . '/packages/EasyBatch/src/Bridge/Symfony/Resources/config/services.php',
-            __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php',
-            __DIR__ . '/packages/EasyBugsnag/src/Bridge/Symfony/Resources/config/services.php',
         ],
         MethodChainingIndentationFixer::class => ['*/Configuration.php'],
         NullTypeHintOnLastPositionSniff::class . '.NullTypeHintNotOnLastPosition',

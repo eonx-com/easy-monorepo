@@ -73,7 +73,8 @@ final class WorkerMessageReceivedListener
             ]);
         };
 
-        $this->client->getPipeline()->pipe(new CallbackBridge($func));
+        $this->client->getPipeline()
+            ->pipe(new CallbackBridge($func));
         $this->isSetup = true;
     }
 
@@ -84,7 +85,8 @@ final class WorkerMessageReceivedListener
      */
     private function dump($var): string
     {
-        return (string)$this->getDumper()->dump($this->getCloner()->cloneVar($var), true);
+        return (string)$this->getDumper()
+            ->dump($this->getCloner()->cloneVar($var), true);
     }
 
     private function getCloner(): VarCloner

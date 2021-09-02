@@ -54,7 +54,8 @@ final class SessionTrackerTest extends AbstractTestCase
         $sessionTracker = new SessionTracker($bugsnag, $exclude, $excludeDelimiter);
 
         $sessionTracker->startSession($request);
-        $currentSession = $bugsnag->getSessionTracker()->getCurrentSession();
+        $currentSession = $bugsnag->getSessionTracker()
+            ->getCurrentSession();
 
         $trackSession ? self::assertNotEmpty($currentSession) : self::assertEmpty($currentSession);
     }

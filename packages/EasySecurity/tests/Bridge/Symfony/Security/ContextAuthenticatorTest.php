@@ -14,7 +14,8 @@ final class ContextAuthenticatorTest extends AbstractSymfonyTestCase
 {
     public function testSanityCheck(): void
     {
-        $container = $this->getKernel()->getContainer();
+        $container = $this->getKernel()
+            ->getContainer();
         $request = new Request([], [], [], [], [], [
             'HTTP_HOST' => 'eonx.com',
         ]);

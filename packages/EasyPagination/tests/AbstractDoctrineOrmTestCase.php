@@ -90,7 +90,8 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
         $schema = $schemaTool->getSchemaFromMetadata([$manager->getClassMetadata($entity)]);
 
         foreach ($schema->toSql($manager->getConnection()->getDatabasePlatform()) as $sql) {
-            $manager->getConnection()->executeStatement($sql);
+            $manager->getConnection()
+                ->executeStatement($sql);
         }
     }
 }

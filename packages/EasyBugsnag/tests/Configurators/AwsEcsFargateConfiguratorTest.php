@@ -28,8 +28,9 @@ final class AwsEcsFargateConfiguratorTest extends AbstractTestCase
         $report = Report::fromPHPThrowable($bugsnag->getConfig(), new \RuntimeException('message'));
 
         (new AwsEcsFargateConfigurator('invalid', 'invalid'))->configure($bugsnag);
-        $bugsnag->getPipeline()->execute($report, function () {
-        });
+        $bugsnag->getPipeline()
+            ->execute($report, function () {
+            });
 
         self::assertArrayHasKey('Error', $report->getMetaData()['aws']);
     }

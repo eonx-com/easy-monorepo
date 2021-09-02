@@ -87,7 +87,8 @@ final class Pagination implements PaginationInterface
     {
         $urlResolver = $this->urlResolver ?? $this->getDefaultUrlResolver();
 
-        return $urlResolver(new Uri($this->url), $this, $page)->toString();
+        return $urlResolver(new Uri($this->url), $this, $page)
+            ->toString();
     }
 
     public function setUrlResolver(?callable $urlResolver = null): PaginationInterface

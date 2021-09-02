@@ -26,7 +26,8 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
                 $batchItem1->setMetadata(['key' => 'value']);
 
                 $batchItem2 = $factory->create('another-batch-id');
-                $batchItem3 = $factory->create('batch-id')->setDependsOnName('dependency');
+                $batchItem3 = $factory->create('batch-id')
+                    ->setDependsOnName('dependency');
 
                 $repo->save($batchItem1);
                 $repo->save($batchItem2);
