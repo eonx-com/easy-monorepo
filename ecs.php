@@ -195,7 +195,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(BinaryOperatorSpacesFixer::class);
 
     $services->set(VisibilityRequiredFixer::class);
-
-    // line length 120
-    // $services->set(LineLengthFixer::class);
 };
