@@ -62,8 +62,10 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
                     $ids = $body['easy_request_id'] ?? [];
 
                     return [
-                        RequestIdServiceInterface::KEY_RESOLVED_CORRELATION_ID => $ids[$requestIdService->getCorrelationIdHeaderName()] ?? null,
-                        RequestIdServiceInterface::KEY_RESOLVED_REQUEST_ID => $ids[$requestIdService->getRequestIdHeaderName()] ?? null,
+                        RequestIdServiceInterface::KEY_RESOLVED_CORRELATION_ID =>
+                            $ids[$requestIdService->getCorrelationIdHeaderName()] ?? null,
+                        RequestIdServiceInterface::KEY_RESOLVED_REQUEST_ID =>
+                            $ids[$requestIdService->getRequestIdHeaderName()] ?? null,
                     ];
                 });
             }

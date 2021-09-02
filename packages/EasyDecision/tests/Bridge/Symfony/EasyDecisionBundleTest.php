@@ -168,6 +168,18 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         $kernel->boot();
     }
 
+    public function testCreateByNameDecisionSucceeds(): void
+    {
+        $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.php']);
+        $kernel->boot();
+        $factory = $kernel->getContainer()
+            ->get(DecisionFactoryInterface::class);
+
+        $decision = $factory->createByName('global_event_value_decision');
+
+        self::assertInstanceOf(ValueDecision::class, $decision);
+    }
+
     public function testCreateByNameDecisionThrowsInvalidMappingException(): void
     {
         $this->expectException(InvalidMappingException::class);
@@ -179,18 +191,6 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             ->get(DecisionFactoryInterface::class);
 
         $factory->createByName('non-configured-decision');
-    }
-
-    public function testCreateByNameDecisionSucceeds(): void
-    {
-        $kernel = new KernelStub([__DIR__ . '/Fixtures/decision_by_name.php']);
-        $kernel->boot();
-        $factory = $kernel->getContainer()
-            ->get(DecisionFactoryInterface::class);
-
-        $decision = $factory->createByName('global_event_value_decision');
-
-        self::assertInstanceOf(ValueDecision::class, $decision);
     }
 
     /**
@@ -214,7 +214,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
     {
         $this->expectException(UnableToMakeDecisionException::class);
         $this->expectExceptionMessage(
-            'Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": Expression language not set, to use it in your rules you must set it on the decision instance'
+            'Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": ' .
+            'Expression language not set, to use it in your rules you must set it on the decision instance'
         );
 
         $kernel = new KernelStub([

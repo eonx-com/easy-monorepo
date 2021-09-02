@@ -52,7 +52,9 @@ final class XmlFailureMitigationTest extends TestCase
 <CustomerId>LOYC01AU</CustomerId>
 <CompanyName>Loyalty Corp Australia Pty Ltd</CompanyName>
 <UserMessage>Payment status is PROCESSED WITH INVALID TRANSACTIONS</UserMessage>
-<DetailedMessage>Payment has been successfully processed and invalid items have been returned to your account.</DetailedMessage>
+<DetailedMessage>
+    Payment has been successfully processed and invalid items have been returned to your account.
+</DetailedMessage>
 <OriginalFilename>credit-mer_584aaa43110d77d1b224c20a20171016_221504.txt.ENC</OriginalFilename>
 <OriginalReference>Encrypted file</OriginalReference>
 <Issues>

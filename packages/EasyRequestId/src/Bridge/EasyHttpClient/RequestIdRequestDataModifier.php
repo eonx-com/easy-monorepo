@@ -28,7 +28,8 @@ final class RequestIdRequestDataModifier implements RequestDataModifierInterface
         $correlationIdHeaderName = $this->requestIdService->getCorrelationIdHeaderName();
         $requestIdHeaderName = $this->requestIdService->getRequestIdHeaderName();
 
-        $headers[$correlationIdHeaderName] = $headers[$correlationIdHeaderName] ?? $this->requestIdService->getCorrelationId();
+        $headers[$correlationIdHeaderName] = $headers[$correlationIdHeaderName] ??
+            $this->requestIdService->getCorrelationId();
         $headers[$requestIdHeaderName] = $headers[$requestIdHeaderName] ?? $this->requestIdService->getRequestId();
 
         $options['headers'] = $headers;

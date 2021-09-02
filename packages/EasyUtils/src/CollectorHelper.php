@@ -88,8 +88,12 @@ final class CollectorHelper
         $items = self::convertToArray($items);
 
         \usort($items, static function ($first, $second): int {
-            $firstPriority = $first instanceof HasPriorityInterface ? $first->getPriority() : HasPriorityInterface::DEFAULT_PRIORITY;
-            $secondPriority = $second instanceof HasPriorityInterface ? $second->getPriority() : HasPriorityInterface::DEFAULT_PRIORITY;
+            $firstPriority = $first instanceof HasPriorityInterface ?
+                $first->getPriority() :
+                HasPriorityInterface::DEFAULT_PRIORITY;
+            $secondPriority = $second instanceof HasPriorityInterface ?
+                $second->getPriority() :
+                HasPriorityInterface::DEFAULT_PRIORITY;
 
             return $secondPriority <=> $firstPriority;
         });
@@ -119,8 +123,12 @@ final class CollectorHelper
         $items = self::convertToArray($items);
 
         \usort($items, static function ($first, $second): int {
-            $firstPriority = $first instanceof HasPriorityInterface ? $first->getPriority() : HasPriorityInterface::DEFAULT_PRIORITY;
-            $secondPriority = $second instanceof HasPriorityInterface ? $second->getPriority() : HasPriorityInterface::DEFAULT_PRIORITY;
+            $firstPriority = $first instanceof HasPriorityInterface ?
+                $first->getPriority() :
+                HasPriorityInterface::DEFAULT_PRIORITY;
+            $secondPriority = $second instanceof HasPriorityInterface ?
+                $second->getPriority() :
+                HasPriorityInterface::DEFAULT_PRIORITY;
 
             return $firstPriority <=> $secondPriority;
         });

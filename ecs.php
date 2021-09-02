@@ -6,6 +6,7 @@ use EonX\EasyQuality\Sniffs\ControlStructures\NoElseSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\AssignmentInConditionSniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
@@ -66,8 +67,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         MethodChainingNewlineFixer::class,
         ArrayOpenerAndCloserNewlineFixer::class,
         RemoveUselessDefaultCommentFixer::class,
-        AssignmentInConditionSniff::class,
 
+        AssignmentInConditionSniff::class => [
+            __DIR__ . '/packages/EasyCore/src/Csv\FromFileCsvContentsProvider.php',
+        ],
         FileHeaderSniff::class . '.SpacingAfterBlock' => [
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Resources/config/default_configurators.php',
             __DIR__ . '/packages/EasyPagination/src/Bridge/Symfony/Resources/config/services.php',
@@ -153,7 +156,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ],
         UselessVariableSniff::class . '.UselessVariable' => [__DIR__ . '/packages/EasySchedule/src/Schedule.php'],
         UnusedVariableSniff::class . '.UnusedVariable' => [
-            __DIR__ . '/packages/EasyAsync/src/Bridge/Symfony/DependencyInjection/Compiler/AddBatchMiddlewareToMessengerBusesPass.php',
+            __DIR__ .
+            '/packages/EasyAsync/src/Bridge/Symfony/DependencyInjection/Compiler/' .
+            'AddBatchMiddlewareToMessengerBusesPass.php',
         ],
         ReferenceThrowableOnlySniff::class . '.ReferencedGeneralException' => [
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php',
@@ -205,4 +210,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 ],
             ],
         ]);
+
+    $services->set(LineLengthSniff::class)
+        ->property('absoluteLineLimit', 120)
+        ->property('ignoreComments', true);
 };
