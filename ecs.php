@@ -64,7 +64,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         PhpUnitStrictFixer::class,
         BlankLineAfterOpeningTagFixer::class,
         MethodChainingNewlineFixer::class,
-        ClassAttributesSeparationFixer::class,
         ArrayOpenerAndCloserNewlineFixer::class,
         RemoveUselessDefaultCommentFixer::class,
         AssignmentInConditionSniff::class,
@@ -195,4 +194,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(BinaryOperatorSpacesFixer::class);
 
     $services->set(VisibilityRequiredFixer::class);
+
+    $services->set(ClassAttributesSeparationFixer::class)
+        ->call('configure', [
+            [
+                'elements' => [
+                    'const' => 'one',
+                    'method' => 'one',
+                    'property' => 'one',
+                ],
+            ],
+        ]);
 };
