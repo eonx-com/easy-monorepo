@@ -21,14 +21,24 @@ abstract class AbstractInvalidDataMaker
     private const PLURAL_PARAM = '%count%';
 
     /**
+     * @var string[]
+     */
+    protected static $translations = ['vendor/symfony/validator/Resources/translations/validators.en.xlf'];
+
+    /**
      * @var string
      */
     protected $property;
 
     /**
-     * @var string[]
+     * @var string
      */
-    protected static $translations = ['vendor/symfony/validator/Resources/translations/validators.en.xlf'];
+    protected $relatedProperty;
+
+    /**
+     * @var string
+     */
+    protected $relatedPropertyValue;
 
     /**
      * @var \Symfony\Contracts\Translation\TranslatorInterface
@@ -95,6 +105,10 @@ abstract class AbstractInvalidDataMaker
         $invalidData = [
             $this->property => $value,
         ];
+
+        if ($this->relatedProperty !== null && $this->relatedPropertyValue !== null) {
+            $invalidData[$this->relatedProperty] = $this->relatedPropertyValue;
+        }
 
         $data = [
             $caseName => [
