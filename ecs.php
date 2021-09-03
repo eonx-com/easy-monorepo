@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use EonX\EasyQuality\Sniffs\ControlStructures\NoElseSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\AssignmentInConditionSniff;
