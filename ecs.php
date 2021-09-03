@@ -177,7 +177,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ],
         ]);
 
-    $services->set(NoElseSniff::class);
     $services->set(NoNotOperatorSniff::class);
     $services->set(Psr4Sniff::class);
 

@@ -5,6 +5,9 @@ services:
     - class: EonX\EasyMonorepo\PHPStan\SymfonyMessengerEnvelopeLastReturnType
       tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
+    - class: Symplify\PHPStanRules\ObjectCalisthenics\Rules\NoElseAndElseIfRule
+      tags: [phpstan.rules.rule]
+
 parameters:
     paths:
         - packages
