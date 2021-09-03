@@ -322,14 +322,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         $value = ($integerPart ?? 0) + \round(1 / 3, $precision + 1);
 
         yield from $this->create("{$this->property} has invalid precision", $value);
-
-        $value = 'abc';
-
-        yield from $this->create("{$this->property} is a string", $value);
-
-        $value = 10;
-
-        yield from $this->create("{$this->property} is an integer", $value);
     }
 
     /**
