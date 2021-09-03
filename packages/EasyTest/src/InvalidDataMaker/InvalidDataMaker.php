@@ -348,7 +348,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
      */
     public function yieldInvalidUrl(): iterable
     {
-        $value = 'invalid-url';
+        $value = 'some invalid url';
         $message = $this->translateMessage((new Url())->message);
 
         yield from $this->create("{$this->property} is invalid url", $value, $message);
