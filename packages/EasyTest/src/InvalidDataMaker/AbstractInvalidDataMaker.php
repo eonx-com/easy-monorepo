@@ -82,6 +82,9 @@ abstract class AbstractInvalidDataMaker
         self::$translations[] = $translations;
     }
 
+    /**
+     * @return static
+     */
     final public static function make(string $property): self
     {
         return new static($property);
@@ -223,6 +226,9 @@ abstract class AbstractInvalidDataMaker
         return $propertyName;
     }
 
+    /**
+     * @return static
+     */
     final public function asArrayElement(): self
     {
         $this->asArrayElement = true;
@@ -230,6 +236,9 @@ abstract class AbstractInvalidDataMaker
         return $this;
     }
 
+    /**
+     * @return static
+     */
     final public function asString(): self
     {
         $this->asString = true;
@@ -237,6 +246,9 @@ abstract class AbstractInvalidDataMaker
         return $this;
     }
 
+    /**
+     * @return static
+     */
     final public function message(string $message): self
     {
         $this->message = $message;
@@ -244,6 +256,9 @@ abstract class AbstractInvalidDataMaker
         return $this;
     }
 
+    /**
+     * @return static
+     */
     final public function propertyPath(string $propertyPath): self
     {
         $this->propertyPath = $propertyPath;
@@ -251,6 +266,9 @@ abstract class AbstractInvalidDataMaker
         return $this;
     }
 
+    /**
+     * @return static
+     */
     final public function wrapWith(string $wrapWith): self
     {
         $this->wrapWith = $wrapWith;
