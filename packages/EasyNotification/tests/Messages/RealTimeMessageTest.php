@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Messages;
 
+use EonX\EasyNotification\Exceptions\InvalidRealTimeMessageTypeException;
 use EonX\EasyNotification\Interfaces\MessageInterface;
 use EonX\EasyNotification\Messages\RealTimeMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
@@ -83,5 +84,19 @@ final class RealTimeMessageTest extends AbstractTestCase
         self::assertEquals(MessageInterface::TYPE_REAL_TIME, $message->getType());
         self::assertEquals(Json::encode($body), $message->getBody());
         self::assertEquals($topics, $message->getTopics());
+    }
+
+    public function testInvalidTypeException(): void
+    {
+        $this->expectException(InvalidRealTimeMessageTypeException::class);
+
+        RealTimeMessage::create(null, null, 'invalid');
+    }
+
+    public function testMessageCanHaveFlashType(): void
+    {
+        $message = RealTimeMessage::create(null, null, MessageInterface::TYPE_FLASH);
+
+        self::assertEquals(MessageInterface::TYPE_FLASH, $message->getType());
     }
 }

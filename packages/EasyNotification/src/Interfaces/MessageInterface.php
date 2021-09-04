@@ -9,6 +9,11 @@ interface MessageInterface
     /**
      * @var string
      */
+    public const TYPE_FLASH = 'flash';
+
+    /**
+     * @var string
+     */
     public const TYPE_REAL_TIME = 'real_time';
 
     /**

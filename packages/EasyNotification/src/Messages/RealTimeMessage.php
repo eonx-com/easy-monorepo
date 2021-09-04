@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Messages;
 
+use EonX\EasyNotification\Exceptions\InvalidRealTimeMessageTypeException;
+
 final class RealTimeMessage extends AbstractMessage
 {
+    /**
+     * @var string[]
+     */
+    public const REAL_TIME_TYPES = [self::TYPE_FLASH, self::TYPE_REAL_TIME];
+
     /**
      * @var string[]
      */
@@ -32,11 +39,18 @@ final class RealTimeMessage extends AbstractMessage
     private $topics;
 
     /**
+     * @var string
+     */
+    private $type;
+
+    /**
      * @param null|mixed[] $body
      * @param null|string[] $topics
      */
-    public function __construct(?array $body = null, ?array $topics = null)
+    public function __construct(?array $body = null, ?array $topics = null, ?string $type = null)
     {
+        $this->type($type ?? self::TYPE_REAL_TIME);
+
         if ($topics !== null) {
             $this->topics = $topics;
         }
@@ -48,9 +62,9 @@ final class RealTimeMessage extends AbstractMessage
      * @param null|mixed[] $body
      * @param null|string[] $topics
      */
-    public static function create(?array $body = null, ?array $topics = null): self
+    public static function create(?array $body = null, ?array $topics = null, ?string $type = null): self
     {
-        return new self($body, $topics);
+        return new self($body, $topics, $type);
     }
 
     public static function isStatusValid(string $status): bool
@@ -68,7 +82,7 @@ final class RealTimeMessage extends AbstractMessage
 
     public function getType(): string
     {
-        return self::TYPE_REAL_TIME;
+        return $this->type;
     }
 
     /**
@@ -77,6 +91,21 @@ final class RealTimeMessage extends AbstractMessage
     public function topics(array $topics): self
     {
         $this->topics = $topics;
+
+        return $this;
+    }
+
+    public function type(string $type): self
+    {
+        if (\in_array($type, self::REAL_TIME_TYPES, true) === false) {
+            throw new InvalidRealTimeMessageTypeException(\sprintf(
+                'Given type "%s" invalid. Valid types: ["%s"]',
+                $type,
+                implode('", "', self::REAL_TIME_TYPES)
+            ));
+        }
+
+        $this->type = $type;
 
         return $this;
     }
