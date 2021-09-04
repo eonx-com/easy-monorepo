@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector\RequestDataCollector;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\TraceableChainSimpleDataPersister;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;

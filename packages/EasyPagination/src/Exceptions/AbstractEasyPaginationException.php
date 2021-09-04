@@ -6,7 +6,8 @@ namespace EonX\EasyPagination\Exceptions;
 
 use EonX\EasyPagination\Interfaces\EasyPaginationExceptionInterface;
 
-abstract class AbstractEasyPaginationException extends \InvalidArgumentException implements EasyPaginationExceptionInterface
+abstract class AbstractEasyPaginationException extends \InvalidArgumentException implements
+    EasyPaginationExceptionInterface
 {
     // No bod needed.
 }

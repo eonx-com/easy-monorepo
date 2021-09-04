@@ -207,7 +207,7 @@ final class BatchManager implements BatchManagerInterface
     /**
      * @param int|string $batchId
      */
-    public function iterateThroughItems($batchId, ?string $dependsOnName, callable $func): void
+    public function iterateThroughItems($batchId, ?string $dependsOnName = null, callable $func): void
     {
         $page = 1;
 
@@ -335,7 +335,8 @@ final class BatchManager implements BatchManagerInterface
 
             if ($message instanceof BatchInterface) {
                 /** @var int|string $batchItemId */
-                $batchItemId = $this->persistBatchItem($batchId, $item)->getId();
+                $batchItemId = $this->persistBatchItem($batchId, $item)
+                    ->getId();
 
                 $message->setParentBatchItemId($batchItemId);
 

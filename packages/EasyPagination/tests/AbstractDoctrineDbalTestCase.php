@@ -28,7 +28,10 @@ abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
      */
     protected function addParentToTable(Connection $conn, string $title, int $itemId): void
     {
-        $conn->insert('parents', ['parent_title' => $title, 'item_id' => $itemId]);
+        $conn->insert('parents', [
+            'parent_title' => $title,
+            'item_id' => $itemId,
+        ]);
     }
 
     /**

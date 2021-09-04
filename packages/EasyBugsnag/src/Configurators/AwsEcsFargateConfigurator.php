@@ -75,26 +75,6 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
             }));
     }
 
-    private function resolveAppVersion(): ?string
-    {
-        $appVersion = \getenv('APP_VERSION');
-
-        if (\is_string($appVersion)) {
-            return $appVersion;
-        }
-
-        $awsData = $this->getAwsFargateTaskData();
-        $image = (string)($awsData['Containers'][0]['Image'] ?? '');
-
-        $appVersion = \explode(':', $image)[1] ?? null;
-
-        if ($appVersion !== null) {
-            \putenv(\sprintf('APP_VERSION=%s', (string)$appVersion));
-        }
-
-        return $appVersion;
-    }
-
     /**
      * @return null|mixed[]
      */
@@ -111,5 +91,25 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
 
             return null;
         }
+    }
+
+    private function resolveAppVersion(): ?string
+    {
+        $appVersion = \getenv('APP_VERSION');
+
+        if (\is_string($appVersion)) {
+            return $appVersion;
+        }
+
+        $awsData = $this->getAwsFargateTaskData();
+        $image = (string)($awsData['Containers'][0]['Image'] ?? '');
+
+        $appVersion = \explode(':', $image)[1] ?? null;
+
+        if ($appVersion !== null) {
+            \putenv(\sprintf('APP_VERSION=%s', $appVersion));
+        }
+
+        return $appVersion;
     }
 }

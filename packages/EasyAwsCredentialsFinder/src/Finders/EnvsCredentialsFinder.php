@@ -24,7 +24,9 @@ final class EnvsCredentialsFinder extends AbstractAwsCredentialsFinder
 
     private function getEnv(string $key): ?string
     {
-        if ($value = \getenv($key)) {
+        $value = \getenv($key);
+
+        if ($value !== false) {
             return $value;
         }
 

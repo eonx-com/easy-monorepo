@@ -33,14 +33,16 @@ final class LogHttpRequestSentListener
         $requestMessage = \sprintf('Request: "%s %s"', $request->getMethod(), $request->getUrl());
         $requestContext = [
             'http_options' => $request->getOptions(),
-            'sent_at' => $request->getSentAt()->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
+            'sent_at' => $request->getSentAt()
+                ->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
         ];
 
         $responseMessage = \sprintf('Response: "%d %s"', $response->getStatusCode(), $request->getUrl());
         $responseContext = [
             'content' => $response->getContent(),
             'headers' => $response->getHeaders(),
-            'received_at' => $response->getReceivedAt()->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
+            'received_at' => $response->getReceivedAt()
+                ->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
         ];
 
         $this->logger->debug($requestMessage, $requestContext);

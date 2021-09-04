@@ -31,17 +31,18 @@ final class SessionTrackingConfigurator extends AbstractClientConfigurator
 
     public function configure(Client $bugsnag): void
     {
-        $bugsnag->getSessionTracker()->setStorageFunction(function (string $key, $value = null) {
-            $callback = function (ItemInterface $item) use ($value) {
-                $item->expiresAfter($this->expiresAfter);
+        $bugsnag->getSessionTracker()
+            ->setStorageFunction(function (string $key, $value = null) {
+                $callback = function (ItemInterface $item) use ($value) {
+                    $item->expiresAfter($this->expiresAfter);
 
-                return $value;
-            };
+                    return $value;
+                };
 
-            // If value not null, we want to expire the item straight away to replace the value
-            $beta = $value === null ? 0 : \INF;
+                // If value not null, we want to expire the item straight away to replace the value
+                $beta = $value === null ? 0 : \INF;
 
-            return $this->cache->get($key, $callback, $beta);
-        });
+                return $this->cache->get($key, $callback, $beta);
+            });
     }
 }

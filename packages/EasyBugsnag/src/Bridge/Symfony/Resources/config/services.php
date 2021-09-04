@@ -7,14 +7,11 @@ use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
 use EonX\EasyBugsnag\Bridge\Symfony\Request\SymfonyRequestResolver;
 use EonX\EasyBugsnag\Bridge\Symfony\Shutdown\ShutdownStrategyListener;
 use EonX\EasyBugsnag\ClientFactory;
-use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
-use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;

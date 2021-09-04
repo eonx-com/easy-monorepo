@@ -64,6 +64,7 @@ final class LoggerFactory implements LoggerFactoryInterface
         }
 
         $loggerClass = $this->loggerClass;
+        /** @var \Monolog\Logger $logger */
         $logger = new $loggerClass($channel, $this->getHandlers($channel), $this->getProcessors($channel));
 
         /** @var \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface $configurator */

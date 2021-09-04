@@ -62,7 +62,7 @@ final class Parser extends AbstractLineByLineParser
     private $currentAccount;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $currentGroup;
 
@@ -390,7 +390,7 @@ final class Parser extends AbstractLineByLineParser
     private function continuePrevious(string $line): void
     {
         // Remove 88, from the current line
-        $line = (string)\substr($line, 3);
+        $line = \substr($line, 3);
         // Add coma at the start of the line if previous record fits completely on the line
         if ($this->previousFull) {
             $line = ',' . $line;

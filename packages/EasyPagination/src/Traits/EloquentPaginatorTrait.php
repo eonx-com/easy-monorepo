@@ -93,7 +93,9 @@ trait EloquentPaginatorTrait
         // Override select to fetch only primary key
         $primaryKeyQueryBuilder->select($prefixedPrimaryKey);
 
-        $primaryKeys = $primaryKeyQueryBuilder->get()->pluck($this->primaryKeyIndex)->all();
+        $primaryKeys = $primaryKeyQueryBuilder->get()
+            ->pluck($this->primaryKeyIndex)
+            ->all();
 
         // If no primary keys, no items for current pagination
         if (\count($primaryKeys) === 0) {

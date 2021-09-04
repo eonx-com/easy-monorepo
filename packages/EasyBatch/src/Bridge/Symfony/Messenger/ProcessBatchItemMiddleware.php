@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
 
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemStamp;
-use EonX\EasyBatch\Exceptions\BatchCancelledException;
-use EonX\EasyBatch\Exceptions\BatchItemNotFoundException;
-use EonX\EasyBatch\Exceptions\BatchNotFoundException;
 use EonX\EasyBatch\Interfaces\BatchInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;

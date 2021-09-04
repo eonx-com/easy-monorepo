@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
 
 use ApiPlatform\Core\Util\ClassInfoTrait;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager as DoctrineObjectManager;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\DoctrineOrmDataPersisterInterface;
-use Doctrine\Persistence\ManagerRegistry;
 
 final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterface
 {
@@ -21,15 +21,6 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
     public function __construct(ManagerRegistry $managerRegistry)
     {
         $this->managerRegistry = $managerRegistry;
-    }
-
-    /**
-     * @param object $data
-     * @param null|mixed[] $context
-     */
-    public function supports($data, ?array $context = null): bool
-    {
-        return null !== $this->getManager($data);
     }
 
     /**
@@ -69,6 +60,15 @@ final class DoctrineOrmDataPersister implements DoctrineOrmDataPersisterInterfac
 
         $manager->remove($data);
         $manager->flush();
+    }
+
+    /**
+     * @param object $data
+     * @param null|mixed[] $context
+     */
+    public function supports($data, ?array $context = null): bool
+    {
+        return $this->getManager($data) !== null;
     }
 
     /**

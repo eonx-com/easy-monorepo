@@ -70,7 +70,7 @@ final class EasyWebhookExtension extends Extension
 
     private function async(): void
     {
-        $enabled = \class_exists(MessengerPass::class) && ($config['async']['enabled'] ?? true);
+        $enabled = \class_exists(MessengerPass::class) && ($this->config['async']['enabled'] ?? true);
 
         $this->container->setParameter(BridgeConstantsInterface::PARAM_ASYNC, $enabled);
 
@@ -89,7 +89,7 @@ final class EasyWebhookExtension extends Extension
 
     private function eventHeader(): void
     {
-        if (($config['event']['enabled'] ?? true) === false) {
+        if (($this->config['event']['enabled'] ?? true) === false) {
             return;
         }
 
@@ -101,11 +101,11 @@ final class EasyWebhookExtension extends Extension
 
     private function idHeader(): void
     {
-        if (($config['id']['enabled'] ?? true) === false) {
+        if (($this->config['id']['enabled'] ?? true) === false) {
             return;
         }
 
-        $header = $config['id']['id_header'] ?? null;
+        $header = $this->config['id']['id_header'] ?? null;
 
         $this->container->setParameter(BridgeConstantsInterface::PARAM_ID_HEADER, $header);
         $this->loader->load('id.php');

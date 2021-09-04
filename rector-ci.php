@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 use Rector\Core\Configuration\Option;
-use Rector\Core\ValueObject\ProjectType;
+use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
+use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
+use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
 use Rector\DeadCode\Rector\Stmt\RemoveUnreachableStatementRector;
 use Rector\Set\ValueObject\SetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -12,16 +14,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // get parameters
     $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::PROJECT_TYPE, ProjectType::OPEN_SOURCE);
 
     $parameters->set(Option::PATHS, [
         __DIR__ . '/packages',
         __DIR__ . '/tests',
     ]);
 
-    $parameters->set(Option::SETS, [
-        SetList::DEAD_CODE,
-    ]);
+    $containerConfigurator->import(SetList::DEAD_CODE);
 
     $parameters->set(Option::AUTOLOAD_PATHS, [
         __DIR__ . '/tests/rector_bootstrap.php',
@@ -31,6 +30,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         RemoveUnreachableStatementRector::class => [
             __DIR__ . '/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php',
         ],
+        RemoveUselessParamTagRector::class,
+        RemoveUselessReturnTagRector::class,
+        RemoveUnusedPrivatePropertyRector::class,
     ]);
 
     $services = $containerConfigurator->services();
@@ -38,5 +40,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->exclude([
             __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector/PhpDocCommentRector.php',
             __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector/SingleLineCommentRector.php',
+            __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector/PhpDocReturnForIterableRector.php',
+            __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector/ReturnArrayToYieldRector.php',
         ]);
 };

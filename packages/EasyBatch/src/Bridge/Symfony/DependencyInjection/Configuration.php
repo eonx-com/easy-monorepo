@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\DependencyInjection;
 
+use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
+use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Objects\Batch;
 use EonX\EasyBatch\Objects\BatchItem;
-use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 

@@ -25,7 +25,8 @@ abstract class AbstractEloquentTestCase extends AbstractTestCase
 
         $schema->create('items', static function (Blueprint $table): void {
             $table->integer('id', true);
-            $table->string('title')->nullable(true);
+            $table->string('title')
+                ->nullable(true);
         });
     }
 
@@ -35,10 +36,13 @@ abstract class AbstractEloquentTestCase extends AbstractTestCase
 
         $schema->create('parents', static function (Blueprint $table): void {
             $table->integer('id', true);
-            $table->string('title')->nullable(true);
+            $table->string('title')
+                ->nullable(true);
             $table->integer('item_id', false, true);
 
-            $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('item_id')
+                ->references('id')
+                ->on('items');
         });
     }
 

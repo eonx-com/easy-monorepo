@@ -75,7 +75,8 @@ final class WithEventsHttpClient implements HttpClientInterface
     {
         $options = $options ?? [];
         $modifiers = \array_merge($this->modifiers, $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS] ?? []);
-        $modifiersEnabled = $this->modifiersEnabled ?? $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_ENABLED] ?? true;
+        $modifiersEnabled = $this->modifiersEnabled ??
+            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_ENABLED] ?? true;
         $modifiersWhitelist = \array_merge(
             $this->modifiersWhitelist,
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST] ?? []

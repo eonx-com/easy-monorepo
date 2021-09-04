@@ -1,11 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer;
 
 use EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\Interfaces\MessageBodyDecoderInterface;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\Interfaces\MessageObjectFactoryInterface;
-use EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\Interfaces\QueueEnvelopeInterface;
 use RuntimeException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
@@ -16,17 +16,17 @@ class MessageSerializer implements SerializerInterface
     /**
      * @var string
      */
+    private const HEADER_RETRY = 'retry';
+
+    /**
+     * @var string
+     */
     private const KEY_BODY = 'body';
 
     /**
      * @var string
      */
     private const KEY_HEADERS = 'headers';
-
-    /**
-     * @var string
-     */
-    private const HEADER_RETRY = 'retry';
 
     /**
      * @var \EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\Interfaces\MessageBodyDecoderInterface

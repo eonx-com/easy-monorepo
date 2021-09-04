@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Objects;
@@ -236,7 +237,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     public function toArray(): array
     {
         return [
-            'class' => \get_class($this),
+            'class' => static::class,
             'cancelled_at' => $this->getCancelledAt(),
             'created_at' => $this->getCreatedAt(),
             'id' => $this->getId(),

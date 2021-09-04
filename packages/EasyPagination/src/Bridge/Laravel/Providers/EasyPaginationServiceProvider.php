@@ -64,7 +64,8 @@ final class EasyPaginationServiceProvider extends ServiceProvider
                 return new FromRequestPaginationListener($app->make(PaginationProviderInterface::class));
             }
         );
-        $this->app->make('events')->listen(RouteMatched::class, FromRequestPaginationListener::class);
+        $this->app->make('events')
+            ->listen(RouteMatched::class, FromRequestPaginationListener::class);
     }
 
     private function registerPaginationProvider(): void

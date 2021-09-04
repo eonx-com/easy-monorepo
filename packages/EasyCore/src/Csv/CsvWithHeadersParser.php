@@ -124,7 +124,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
     /**
      * @param null|mixed[] $array
      */
-    private function hasValuesInArray(?array $array): bool
+    private function hasValuesInArray(?array $array = null): bool
     {
         return \is_array($array) && \count($array) > 0;
     }

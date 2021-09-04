@@ -11,7 +11,6 @@ use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\ShouldNotBeStoredWebhookResult;
-use EonX\EasyWebhook\WebhookResult;
 
 final class AsyncMiddleware extends AbstractMiddleware
 {

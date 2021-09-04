@@ -25,7 +25,8 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
      */
     public function testChannelParameterOnMake(?string $channel): void
     {
-        $logger = $this->getApp()->make(LoggerInterface::class, [BridgeConstantsInterface::KEY_CHANNEL => $channel]);
+        $logger = $this->getApp()
+            ->make(LoggerInterface::class, [BridgeConstantsInterface::KEY_CHANNEL => $channel]);
 
         self::assertEquals($channel ?? LoggerFactoryInterface::DEFAULT_CHANNEL, $logger->getName());
     }

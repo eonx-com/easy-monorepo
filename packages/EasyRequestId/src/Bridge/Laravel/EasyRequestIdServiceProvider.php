@@ -49,25 +49,28 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         });
 
         // Resolve IDs from jobs from the queue
-        $this->app->make('events')->listen(
-            JobProcessing::class,
-            static function (JobProcessing $event) use ($requestIdService): void {
-                $body = \json_decode($event->job->getRawBody(), true);
+        $this->app->make('events')
+            ->listen(
+                JobProcessing::class,
+                static function (JobProcessing $event) use ($requestIdService): void {
+                    $body = \json_decode($event->job->getRawBody(), true);
 
-                if (\is_array($body) === false) {
-                    return;
+                    if (\is_array($body) === false) {
+                        return;
+                    }
+
+                    $requestIdService->setResolver(static function () use ($body, $requestIdService): array {
+                        $ids = $body['easy_request_id'] ?? [];
+
+                        return [
+                            RequestIdServiceInterface::KEY_RESOLVED_CORRELATION_ID =>
+                                $ids[$requestIdService->getCorrelationIdHeaderName()] ?? null,
+                            RequestIdServiceInterface::KEY_RESOLVED_REQUEST_ID =>
+                                $ids[$requestIdService->getRequestIdHeaderName()] ?? null,
+                        ];
+                    });
                 }
-
-                $requestIdService->setResolver(static function () use ($body, $requestIdService): array {
-                    $ids = $body['easy_request_id'] ?? [];
-
-                    return [
-                        RequestIdServiceInterface::KEY_RESOLVED_CORRELATION_ID => $ids[$requestIdService->getCorrelationIdHeaderName()] ?? null,
-                        RequestIdServiceInterface::KEY_RESOLVED_REQUEST_ID => $ids[$requestIdService->getRequestIdHeaderName()] ?? null,
-                    ];
-                });
-            }
-        );
+            );
     }
 
     /**
@@ -91,7 +94,8 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         );
 
         // Resolve from request
-        $this->app->make('events')->listen(RouteMatched::class, RequestIdRouteMatchedListener::class);
+        $this->app->make('events')
+            ->listen(RouteMatched::class, RequestIdRouteMatchedListener::class);
 
         if ($this->app instanceof LumenApplication) {
             $this->app->middleware([

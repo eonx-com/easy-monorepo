@@ -33,7 +33,8 @@ trait DoctrineOrmPaginatorTrait
      */
     private function fetchResults(QueryBuilder $queryBuilder): array
     {
-        return $queryBuilder->getQuery()->getResult();
+        return $queryBuilder->getQuery()
+            ->getResult();
     }
 
     /**

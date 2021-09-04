@@ -7,7 +7,6 @@ namespace EonX\EasyPagination\Tests\Paginators;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\EloquentLengthAwarePaginatorNew;
-use EonX\EasyPagination\Paginators\EloquentPaginator;
 use EonX\EasyPagination\Tests\AbstractEloquentTestCase;
 use EonX\EasyPagination\Tests\Stubs\Model\Item;
 use EonX\EasyPagination\Tests\Stubs\Model\ParentModel;
@@ -182,7 +181,10 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
                 $this->createParentsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
-                (new ParentModel(['title' => 'my-parent', 'item_id' => 1]))->save();
+                (new ParentModel([
+                    'title' => 'my-parent',
+                    'item_id' => 1,
+                ]))->save();
 
                 $paginator->hasJoinsInQuery();
                 $paginator->setCommonCriteria(static function (Builder $queryBuilder): void {

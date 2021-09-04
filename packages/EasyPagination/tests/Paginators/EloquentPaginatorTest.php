@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Paginators;
@@ -164,7 +165,10 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
                 $this->createParentsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
-                (new ParentModel(['title' => 'my-parent', 'item_id' => 1]))->save();
+                (new ParentModel([
+                    'title' => 'my-parent',
+                    'item_id' => 1,
+                ]))->save();
 
                 $paginator->hasJoinsInQuery();
                 $paginator->setCommonCriteria(static function (Builder $queryBuilder): void {

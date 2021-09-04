@@ -155,7 +155,8 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
             $this->app->singleton(
                 BridgeConstantsInterface::SERVICE_SESSION_TRACKING_CACHE,
                 static function (Container $app): Repository {
-                    return $app->make('cache')->store(\config('easy-bugsnag.session_tracking.cache_store', 'file'));
+                    return $app->make('cache')
+                        ->store(\config('easy-bugsnag.session_tracking.cache_store', 'file'));
                 }
             );
 
@@ -195,8 +196,9 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         $this->app->singleton(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY, ShutdownStrategy::class);
 
         // Make sure client is shutdown in worker
-        $this->app->make('queue')->looping(function (): void {
-            $this->app->make(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY)->shutdown();
-        });
+        $this->app->make('queue')
+            ->looping(function (): void {
+                $this->app->make(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY)->shutdown();
+            });
     }
 }
