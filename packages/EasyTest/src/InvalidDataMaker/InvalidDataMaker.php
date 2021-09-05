@@ -319,10 +319,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
      */
     public function yieldInvalidFloat(int $precision, ?int $integerPart = null): iterable
     {
-        $value = ($integerPart ?? 0) + \round(1 / 3, $precision + 1);
-
-        yield from $this->create("{$this->property} has invalid precision", $value);
-
         /*
          * @todo add types validation and invalid relationships validation cases if/when API Platform starts
          * to return 400 instead of 500
@@ -330,10 +326,14 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
          *
          * $value = 'abc';
          * yield from $this->create("{$this->property} is a string", $value);
-         *
-         * $value = 10;
-         * yield from $this->create("{$this->property} is an integer", $value);
          */
+        $value = ($integerPart ?? 0) + \round(1 / 3, $precision + 1);
+
+        yield from $this->create("{$this->property} has invalid precision", $value);
+
+        $value = 10;
+
+        yield from $this->create("{$this->property} is an integer", $value);
     }
 
     /**
