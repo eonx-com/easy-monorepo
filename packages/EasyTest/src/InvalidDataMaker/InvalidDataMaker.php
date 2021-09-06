@@ -86,6 +86,8 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     }
 
     /**
+     * @param mixed|null $itemValue
+     *
      * @return iterable<mixed>
      */
     public function yieldArrayWithMoreItems(int $maxElements, $itemValue = null): iterable
