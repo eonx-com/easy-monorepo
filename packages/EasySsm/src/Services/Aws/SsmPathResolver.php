@@ -8,6 +8,8 @@ final class SsmPathResolver implements SsmPathResolverInterface
 {
     public function resolvePath(?string $path = null): string
     {
-        return (string)($path ?? \getenv('SSM_PATH') ?: '/');
+        /** @var string $ssmPathEnvValue */
+        $ssmPathEnvValue = \getenv('SSM_PATH') ?: '/';
+        return $path ?? $ssmPathEnvValue;
     }
 }

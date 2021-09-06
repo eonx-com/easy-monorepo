@@ -18,14 +18,14 @@ use Symfony\Component\Messenger\MessageBusInterface;
 final class AsyncDispatcher implements AsyncDispatcherInterface
 {
     /**
-     * @var \EonX\EasyBatch\Interfaces\BatchRepositoryInterface
-     */
-    private $batchRepository;
-
-    /**
      * @var \EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface
      */
     private $batchItemRepository;
+
+    /**
+     * @var \EonX\EasyBatch\Interfaces\BatchRepositoryInterface
+     */
+    private $batchRepository;
 
     /**
      * @var \Symfony\Component\Messenger\MessageBusInterface
@@ -77,7 +77,7 @@ final class AsyncDispatcher implements AsyncDispatcherInterface
             }
 
             $page++;
-        } while($paginator->hasNextPage());
+        } while ($paginator->hasNextPage());
     }
 
     /**

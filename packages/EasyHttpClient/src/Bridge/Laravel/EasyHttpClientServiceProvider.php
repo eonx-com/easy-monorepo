@@ -37,11 +37,13 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
         $this->registerEasyWebhookBridge();
 
         if (\config('easy-http-client.easy_bugsnag_enabled', true) && \class_exists(Client::class)) {
-            $this->app->make('events')->listen(HttpRequestSentEvent::class, HttpRequestSentBreadcrumbListener::class);
+            $this->app->make('events')
+                ->listen(HttpRequestSentEvent::class, HttpRequestSentBreadcrumbListener::class);
         }
 
         if (\config('easy-http-client.psr_logger_enabled', true) && \interface_exists(LoggerInterface::class)) {
-            $this->app->make('events')->listen(HttpRequestSentEvent::class, LogHttpRequestSentListener::class);
+            $this->app->make('events')
+                ->listen(HttpRequestSentEvent::class, LogHttpRequestSentListener::class);
         }
     }
 

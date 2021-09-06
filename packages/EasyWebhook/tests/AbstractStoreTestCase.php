@@ -14,9 +14,9 @@ use EonX\EasyWebhook\Webhook;
 abstract class AbstractStoreTestCase extends AbstractTestCase
 {
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var \Doctrine\DBAL\Connection|null
      */
-    protected $doctrineDbal;
+    protected $doctrineDbal = null;
 
     /**
      * @var \EonX\EasyWebhook\Bridge\Doctrine\DbalStatementsProvider

@@ -1,9 +1,12 @@
 includes:
-    - '.quality/vendor/symplify/phpstan-extensions/config/config.neon'
+    - .quality/vendor/symplify/phpstan-extensions/config/config.neon
 
 services:
     - class: EonX\EasyMonorepo\PHPStan\SymfonyMessengerEnvelopeLastReturnType
       tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+    - class: Symplify\PHPStanRules\ObjectCalisthenics\Rules\NoElseAndElseIfRule
+      tags: [phpstan.rules.rule]
 
 parameters:
     paths:
@@ -42,9 +45,6 @@ parameters:
 
         - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
           path: packages/EasyAsync/tests/Persisters
-
-        - message: '#Cannot call method format\(\) on DateTime\|null#'
-          path: packages/EasyAsync/src/Data/AbstractEasyAsyncData.php
 
         - message: '#Parameter \#1 \$(finished|started)At of method EonX\\EasyAsync\\Interfaces\\EasyAsyncDataInterface\:\:set(Finished|Started)At\(\) expects DateTime, DateTime\|null given#'
           path: packages/EasyAsync/src/Implementations/Doctrine/DBAL/JobLogPersister.php
@@ -85,17 +85,8 @@ parameters:
         - message: '#Call to an undefined method ApiPlatform\\Core\\DataPersister\\DataPersisterInterface\:\:getPersistersResponse\(\)#'
           path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataCollector/RequestDataCollector.php
 
-        - message: '#Method EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\DataPersister\\ChainSimpleDataPersister\:\:getSimpleDataPersister\(\) should return ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\|null but returns object\|null#'
-          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/ChainSimpleDataPersister.php
-
         - message: '#Call to an undefined method ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\:\:(getSimpleDataPersisters|getDataPersisters)\(\)#'
           path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/TraceableChainSimpleDataPersister.php
-
-        - message: '#Parameter \#1 \$entityManager of method class@anonymous/EasyCore/tests/Bridge/Symfony/Traits/EntityManagerAwareTraitTest\.php\:15\:\:setEntityManager\(\) expects Doctrine\\ORM\\EntityManagerInterface, Mockery\\MockInterface given#'
-          path: packages/EasyCore/tests/Bridge/Symfony/Traits/EntityManagerAwareTraitTest.php
-
-        - message: '#Parameter \#1 \$translator of method class@anonymous/EasyCore/tests/Bridge/Symfony/Traits/TranslatorAwareTraitTest\.php\:15\:\:setTranslator\(\) expects Symfony\\Contracts\\Translation\\TranslatorInterface, Mockery\\MockInterface given#'
-          path: packages/EasyCore/tests/Bridge/Symfony/Traits/TranslatorAwareTraitTest.php
 
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyCore/src/Doctrine/ORM/Decorators/EntityManagerDecorator.php
@@ -186,6 +177,9 @@ parameters:
         # ---- EasySecurity ----
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
           path: packages/EasySecurity/tests/Authorization/RoleTest.php
+
+        - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Security\\FakeKernel\:\:handle\(\) should return Symfony\\Component\\HttpFoundation\\Response but return statement is missing#'
+          path: packages/EasySecurity/src/Bridge/Symfony/Security/FakeKernel.php
 
         # ---- EasySsm ----
         - message: '#Parameter \#1 \$stream of class Symfony\\Component\\Console\\Output\\StreamOutput constructor expects resource, resource\|false given#'

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer;
@@ -29,7 +30,7 @@ final class OriginalMessageStamp implements NonSendableStampInterface
     /**
      * @param mixed[] $headers
      */
-    public static function create(string $body, array $headers): OriginalMessageStamp
+    public static function create(string $body, array $headers): self
     {
         return new self($body, $headers);
     }

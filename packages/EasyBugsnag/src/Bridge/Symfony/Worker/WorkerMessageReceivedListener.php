@@ -25,22 +25,22 @@ final class WorkerMessageReceivedListener
     private $event;
 
     /**
-     * @var \DateTimeInterface
-     */
-    private $receivedAt;
-
-    /**
      * @var bool
      */
     private $isSetup = false;
 
     /**
-     * @var \Symfony\Component\VarDumper\Cloner\VarCloner
+     * @var \DateTimeInterface
+     */
+    private $receivedAt;
+
+    /**
+     * @var \Symfony\Component\VarDumper\Cloner\VarCloner|null
      */
     private $varCloner;
 
     /**
-     * @var \Symfony\Component\VarDumper\Dumper\CliDumper
+     * @var \Symfony\Component\VarDumper\Dumper\CliDumper|null
      */
     private $varDumper;
 
@@ -73,7 +73,8 @@ final class WorkerMessageReceivedListener
             ]);
         };
 
-        $this->client->getPipeline()->pipe(new CallbackBridge($func));
+        $this->client->getPipeline()
+            ->pipe(new CallbackBridge($func));
         $this->isSetup = true;
     }
 
@@ -84,7 +85,8 @@ final class WorkerMessageReceivedListener
      */
     private function dump($var): string
     {
-        return (string)$this->getDumper()->dump($this->getCloner()->cloneVar($var), true);
+        return (string)$this->getDumper()
+            ->dump($this->getCloner()->cloneVar($var), true);
     }
 
     private function getCloner(): VarCloner

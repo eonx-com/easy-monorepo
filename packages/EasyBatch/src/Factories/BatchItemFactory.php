@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Factories;
 
-use EonX\EasyBatch\Objects\BatchItem;
 use EonX\EasyBatch\Events\BatchItemCreatedEvent;
 use EonX\EasyBatch\Events\BatchItemCreatedFromArrayEvent;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
-use EonX\EasyBatch\Interfaces\BatchObjectInterface;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class BatchItemFactory extends AbstractBatchObjectFactory implements BatchItemFactoryInterface
 {

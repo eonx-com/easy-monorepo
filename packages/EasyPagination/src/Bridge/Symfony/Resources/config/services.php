@@ -9,6 +9,7 @@ use EonX\EasyPagination\Interfaces\PaginationProviderInterface;
 use EonX\EasyPagination\PaginationConfig;
 use EonX\EasyPagination\PaginationProvider;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {

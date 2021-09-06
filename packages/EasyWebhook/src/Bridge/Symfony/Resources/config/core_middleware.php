@@ -18,7 +18,6 @@ use EonX\EasyWebhook\Middleware\SendWebhookMiddleware;
 use EonX\EasyWebhook\Middleware\StatusAndAttemptMiddleware;
 use EonX\EasyWebhook\Middleware\StoreMiddleware;
 use EonX\EasyWebhook\Middleware\SyncRetryMiddleware;
-use Psr\Log\LoggerInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

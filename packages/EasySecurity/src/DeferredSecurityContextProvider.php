@@ -26,7 +26,8 @@ final class DeferredSecurityContextProvider implements DeferredSecurityContextPr
     public function getSecurityContext(): SecurityContextInterface
     {
         @\trigger_error(\sprintf(
-            '%s::getSecurityContext() is deprecated since 3.3 and will be removed in 4.0. Use %s::resolveContext() instead.',
+            '%s::getSecurityContext() is deprecated since 3.3 and will be removed in 4.0. ' .
+            'Use %s::resolveContext() instead.',
             DeferredSecurityContextProviderInterface::class,
             SecurityContextResolverInterface::class
         ), \E_USER_DEPRECATED);

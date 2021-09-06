@@ -236,7 +236,7 @@ final class ResultsContext implements ResultsContextInterface
 
         foreach ($attributes as $index => $attribute) {
             $value = $lineArray[$index] ?? '';
-            $endsWithSlash = Strings::endsWith((string)$value, '/');
+            $endsWithSlash = Strings::endsWith($value, '/');
             $data[$attribute] = $endsWithSlash ? \substr($value, 0, -1) : $value;
 
             // If attribute ends with slash, it's the last one of line, exit

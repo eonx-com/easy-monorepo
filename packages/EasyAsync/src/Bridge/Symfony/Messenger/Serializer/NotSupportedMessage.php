@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer;
@@ -24,7 +25,7 @@ final class NotSupportedMessage
         $this->throwable = $throwable;
     }
 
-    public static function create(QueueEnvelopeInterface $envelope, ?Throwable $throwable = null): NotSupportedMessage
+    public static function create(QueueEnvelopeInterface $envelope, ?Throwable $throwable = null): self
     {
         return new static($envelope, $throwable);
     }

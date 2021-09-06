@@ -51,7 +51,9 @@ final class AwsConfigurationProvider extends AbstractConfigurationProvider imple
 
     public function getCurrentProfile(): string
     {
-        if ($profile = \getenv('AWS_PROFILE')) {
+        $profile = \getenv('AWS_PROFILE');
+
+        if ($profile !== false) {
             return $profile;
         }
 

@@ -6,14 +6,11 @@ namespace EonX\EasyBatch\Tests\Repositories;
 
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Objects\MessageDecorator;
 use EonX\EasyBatch\Repositories\BatchItemRepository;
 use EonX\EasyBatch\Tests\AbstractRepositoriesTestCase;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
 {
@@ -29,7 +26,8 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
                 $batchItem1->setMetadata(['key' => 'value']);
 
                 $batchItem2 = $factory->create('another-batch-id');
-                $batchItem3 = $factory->create('batch-id')->setDependsOnName('dependency');
+                $batchItem3 = $factory->create('batch-id')
+                    ->setDependsOnName('dependency');
 
                 $repo->save($batchItem1);
                 $repo->save($batchItem2);

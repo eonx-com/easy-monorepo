@@ -34,14 +34,16 @@ final class SessionTrackingMessengerSubscriber implements EventSubscriberInterfa
 
     public function onMessageReceived(WorkerMessageReceivedEvent $event): void
     {
-        $this->client->getSessionTracker()->startSession();
+        $this->client->getSessionTracker()
+            ->startSession();
     }
 
     public function onWorkerStarted(WorkerStartedEvent $event): void
     {
         // Make sure sessions are sent when worker stops
         \register_shutdown_function(function (): void {
-            $this->client->getSessionTracker()->sendSessions();
+            $this->client->getSessionTracker()
+                ->sendSessions();
         });
     }
 }

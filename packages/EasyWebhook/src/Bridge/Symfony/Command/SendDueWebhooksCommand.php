@@ -44,7 +44,7 @@ final class SendDueWebhooksCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('bulk', null, InputOption::VALUE_OPTIONAL, 'How many webhooks to process at once', 15)
+            ->addOption('bulk', null, InputOption::VALUE_OPTIONAL, 'How many webhooks to process at once', '15')
             ->addOption(
                 'sendAfter',
                 null,
@@ -71,9 +71,15 @@ final class SendDueWebhooksCommand extends Command
 
         $sendAfter = null;
         $page = 1;
-        $perPage = (int)$input->getOption('bulk');
-        $sendAfterString = $input->getOption('sendAfter') ? (string)$input->getOption('sendAfter') : null;
-        $timezone = $input->getOption('timezone') ? (string)$input->getOption('timezone') : null;
+        /** @var string|false $bulkValue */
+        $bulkValue = $input->getOption('bulk');
+        $perPage = (int)$bulkValue;
+        /** @var string|false $sendAfterValue */
+        $sendAfterValue = $input->getOption('sendAfter');
+        $sendAfterString = $sendAfterValue !== false ? $sendAfterValue : null;
+        /** @var string|false $timezoneValue */
+        $timezoneValue = $input->getOption('timezone');
+        $timezone = $timezoneValue !== false ? $timezoneValue : null;
         $webhooksSent = 0;
 
         if ($sendAfterString !== null) {

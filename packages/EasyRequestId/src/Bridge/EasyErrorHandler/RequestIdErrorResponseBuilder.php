@@ -9,7 +9,8 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use Throwable;
 
-final class RequestIdErrorResponseBuilder extends AbstractErrorResponseBuilder implements ErrorResponseBuilderProviderInterface
+final class RequestIdErrorResponseBuilder extends AbstractErrorResponseBuilder implements
+    ErrorResponseBuilderProviderInterface
 {
     /**
      * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface

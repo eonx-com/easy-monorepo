@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Shutdown;
@@ -13,6 +14,13 @@ class ShutdownStrategy implements ShutdownStrategyInterface
      */
     private $client;
 
+    public function registerShutdownStrategy(Client $client): void
+    {
+        $this->client = $client;
+
+        \register_shutdown_function([$this, 'shutdown']);
+    }
+
     public function shutdown(): void
     {
         if ($this->client === null) {
@@ -21,12 +29,5 @@ class ShutdownStrategy implements ShutdownStrategyInterface
 
         $this->client->flush();
         $this->client->clearBreadcrumbs();
-    }
-
-    public function registerShutdownStrategy(Client $client): void
-    {
-        $this->client = $client;
-
-        \register_shutdown_function([$this, 'shutdown']);
     }
 }

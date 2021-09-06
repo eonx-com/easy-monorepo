@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Security;
@@ -39,7 +40,8 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
     public function authenticate(Request $request): PassportInterface
     {
         try {
-            $user = $this->securityContextResolver->resolveContext()->getUserOrFail();
+            $user = $this->securityContextResolver->resolveContext()
+                ->getUserOrFail();
         } catch (\Throwable $throwable) {
             throw new AuthenticationException($throwable->getMessage());
         }
