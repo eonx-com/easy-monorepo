@@ -310,33 +310,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     }
 
     /**
-     * This method is intended to be used with a custom constraint, so a custom message should be passed, e.g.:
-     * InvalidDataMaker::make('amount')
-     *     ->message('This value is not a valid decimal number or has more than 3 digits in a precision.')
-     *     ->yieldInvalidFloat(3);
-     *
-     * @return iterable<mixed>
-     */
-    public function yieldInvalidFloat(int $precision, ?int $integerPart = null): iterable
-    {
-        /*
-         * @todo add types validation and invalid relationships validation cases if/when API Platform starts
-         * to return 400 instead of 500
-         * @see https://github.com/api-platform/api-platform/issues/788
-         *
-         * $value = 'abc';
-         * yield from $this->create("{$this->property} is a string", $value);
-         */
-        $value = ($integerPart ?? 0) + \round(1 / 3, $precision + 1);
-
-        yield from $this->create("{$this->property} has invalid precision", $value);
-
-        $value = 10;
-
-        yield from $this->create("{$this->property} is an integer", $value);
-    }
-
-    /**
      * @return iterable<mixed>
      */
     public function yieldInvalidTimezone(): iterable
