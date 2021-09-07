@@ -21,6 +21,11 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 final class ContextAuthenticator extends AbstractGuardAuthenticator
 {
     /**
+     * @var \EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener
+     */
+    private $configuratorListener;
+
+    /**
      * @var \EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface
      */
     private $responseFactory;
@@ -29,11 +34,6 @@ final class ContextAuthenticator extends AbstractGuardAuthenticator
      * @var \EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface
      */
     private $securityContextProvider;
-
-    /**
-     * @var \EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener
-     */
-    private $configuratorListener;
 
     public function __construct(
         DeferredSecurityContextProviderInterface $securityContextProvider,

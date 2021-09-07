@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Bridge\Symfony\Security;
 
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface;
+use EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,6 +22,11 @@ use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface
 final class SecurityContextAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
     /**
+     * @var \EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener
+     */
+    private $configuratorListener;
+
+    /**
      * @var \EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface
      */
     private $responseFactory;
@@ -31,16 +38,23 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
 
     public function __construct(
         SecurityContextResolverInterface $securityContextResolver,
-        AuthenticationFailureResponseFactoryInterface $respFactory
+        AuthenticationFailureResponseFactoryInterface $respFactory,
+        FromRequestSecurityContextConfiguratorListener $configuratorListener
     ) {
         $this->securityContextResolver = $securityContextResolver;
         $this->responseFactory = $respFactory;
+        $this->configuratorListener = $configuratorListener;
     }
 
     public function authenticate(Request $request): PassportInterface
     {
         try {
-            $user = $this->securityContextResolver->resolveContext()
+            // Fake event to trigger configurator for given request
+            $event = new RequestEvent(new FakeKernel(), $request, 1);
+            $this->configuratorListener->__invoke($event);
+
+            $user = $this->securityContextResolver
+                ->resolveContext()
                 ->getUserOrFail();
         } catch (\Throwable $throwable) {
             throw new AuthenticationException($throwable->getMessage());
