@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Security\Voters;
 
-use EonX\EasySecurity\Interfaces\SecurityContextInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class PermissionVoter extends Voter
 {
     /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextInterface
+     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
      */
-    private $securityContext;
+    private $securityContextResolver;
 
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(SecurityContextResolverInterface $securityContextResolver)
     {
-        $this->securityContext = $securityContext;
+        $this->securityContextResolver = $securityContextResolver;
     }
 
     /**
@@ -26,7 +26,9 @@ final class PermissionVoter extends Voter
      */
     protected function supports($attribute, $subject): bool
     {
-        return $this->securityContext->getAuthorizationMatrix()
+        return $this->securityContextResolver
+            ->resolveContext()
+            ->getAuthorizationMatrix()
             ->isPermission((string)$attribute);
     }
 
@@ -36,6 +38,8 @@ final class PermissionVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        return $this->securityContext->hasPermission((string)$attribute);
+        return $this->securityContextResolver
+            ->resolveContext()
+            ->hasPermission((string)$attribute);
     }
 }
