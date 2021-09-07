@@ -10,6 +10,7 @@ use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\ProviderRestrictedStub;
+use EonX\EasySecurity\Tests\Stubs\SecurityContextResolverStub;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -57,7 +58,7 @@ final class ProviderVoterTest extends AbstractTestCase
      */
     public function testVoter(SecurityContextInterface $securityContext, $subject, int $expectedVote): void
     {
-        $voter = new ProviderVoter($securityContext);
+        $voter = new ProviderVoter(new SecurityContextResolverStub($securityContext));
         $token = new AnonymousToken('secret', 'user');
 
         self::assertEquals($expectedVote, $voter->vote($token, $subject, ['attr']));

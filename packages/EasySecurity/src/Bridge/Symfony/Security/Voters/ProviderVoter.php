@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Bridge\Symfony\Security\Voters;
 
 use EonX\EasySecurity\Interfaces\ProviderRestrictedInterface;
-use EonX\EasySecurity\Interfaces\SecurityContextInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class ProviderVoter extends Voter
 {
     /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextInterface
+     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
      */
-    private $securityContext;
+    private $securityContextResolver;
 
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(SecurityContextResolverInterface $securityContextResolver)
     {
-        $this->securityContext = $securityContext;
+        $this->securityContextResolver = $securityContextResolver;
     }
 
     /**
@@ -42,7 +42,9 @@ final class ProviderVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        $provider = $this->securityContext->getProvider();
+        $provider = $this->securityContextResolver
+            ->resolveContext()
+            ->getProvider();
 
         if ($provider === null) {
             // AccessDenied if no provider on context

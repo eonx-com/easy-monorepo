@@ -10,6 +10,7 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\AbstractTestCase;
+use EonX\EasySecurity\Tests\Stubs\SecurityContextResolverStub;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -58,7 +59,7 @@ final class PermissionVoterTest extends AbstractTestCase
     ): void {
         $securityContext->setAuthorizationMatrix($authorizationMatrix);
 
-        $voter = new PermissionVoter($securityContext);
+        $voter = new PermissionVoter(new SecurityContextResolverStub($securityContext));
         $token = new AnonymousToken('secret', 'user');
 
         self::assertEquals($expectedVote, $voter->vote($token, null, [$permission]));
