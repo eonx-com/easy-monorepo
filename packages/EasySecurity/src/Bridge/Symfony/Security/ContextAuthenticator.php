@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Bridge\Symfony\Security;
 
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface;
-use EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener;
 use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\Interfaces\UserInterface as EonxUserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,11 +18,6 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 final class ContextAuthenticator extends AbstractGuardAuthenticator
 {
-    /**
-     * @var \EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener
-     */
-    private $configuratorListener;
-
     /**
      * @var \EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface
      */
@@ -37,12 +30,10 @@ final class ContextAuthenticator extends AbstractGuardAuthenticator
 
     public function __construct(
         DeferredSecurityContextProviderInterface $securityContextProvider,
-        AuthenticationFailureResponseFactoryInterface $respFactory,
-        FromRequestSecurityContextConfiguratorListener $configuratorListener
+        AuthenticationFailureResponseFactoryInterface $respFactory
     ) {
         $this->securityContextProvider = $securityContextProvider;
         $this->responseFactory = $respFactory;
-        $this->configuratorListener = $configuratorListener;
     }
 
     /**
@@ -55,10 +46,6 @@ final class ContextAuthenticator extends AbstractGuardAuthenticator
 
     public function getCredentials(Request $request): SecurityContextInterface
     {
-        // Fake event to trigger configurator for given request
-        $event = new RequestEvent(new FakeKernel(), $request, 1);
-        $this->configuratorListener->__invoke($event);
-
         return $this->securityContextProvider->getSecurityContext();
     }
 
