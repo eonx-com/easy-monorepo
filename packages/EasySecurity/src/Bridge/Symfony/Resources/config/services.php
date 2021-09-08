@@ -75,7 +75,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(FromRequestSecurityContextConfiguratorListener::class)
         ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR))
-        ->tag('kernel.event_listener');
+        ->tag('kernel.event_listener', ['priority' => 9999]);
 
     // Resolver
     $securityContextResolver = $services->set(SecurityContextResolverInterface::class, SecurityContextResolver::class);
