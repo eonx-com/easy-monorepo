@@ -33,4 +33,9 @@ final class UnanimousDecision extends AbstractDecision
     {
         return true;
     }
+
+    protected function reset(): void
+    {
+        $this->output = true;
+    }
 }

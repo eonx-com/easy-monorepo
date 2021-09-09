@@ -9,7 +9,7 @@ final class AffirmativeDecision extends AbstractDecision
     /**
      * @var bool
      */
-    private $output = false;
+    private $output;
 
     /**
      * @param mixed $output
@@ -32,5 +32,10 @@ final class AffirmativeDecision extends AbstractDecision
     protected function getDefaultOutput(): bool
     {
         return true;
+    }
+
+    protected function reset(): void
+    {
+        $this->output = false;
     }
 }

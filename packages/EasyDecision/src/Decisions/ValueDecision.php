@@ -48,4 +48,9 @@ final class ValueDecision extends AbstractDecision
     {
         return $this->input['value'];
     }
+
+    protected function reset(): void
+    {
+        // Nothing to do here
+    }
 }

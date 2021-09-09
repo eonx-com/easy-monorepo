@@ -9,12 +9,12 @@ final class ConsensusDecision extends AbstractDecision
     /**
      * @var int
      */
-    private $countFalse = 0;
+    private $countFalse;
 
     /**
      * @var int
      */
-    private $countTrue = 0;
+    private $countTrue;
 
     /**
      * @param mixed $output
@@ -32,5 +32,11 @@ final class ConsensusDecision extends AbstractDecision
     protected function getDefaultOutput(): bool
     {
         return true;
+    }
+
+    protected function reset(): void
+    {
+        $this->countFalse = 0;
+        $this->countTrue = 0;
     }
 }

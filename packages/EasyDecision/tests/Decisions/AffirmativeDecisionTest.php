@@ -7,9 +7,18 @@ namespace EonX\EasyDecision\Tests\Decisions;
 use EonX\EasyDecision\Decisions\AffirmativeDecision;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
+use EonX\EasyDecision\Tests\Stubs\OutputFromInputRuleStub;
 
 final class AffirmativeDecisionTest extends AbstractTestCase
 {
+    public function testDecisionResetItsOutputOnEachMake(): void
+    {
+        $decision = (new AffirmativeDecision())->addRule(new OutputFromInputRuleStub());
+
+        self::assertTrue($decision->make(['output' => true]));
+        self::assertFalse($decision->make(['output' => false]));
+    }
+
     public function testReturnFalseWhenNoTrue(): void
     {
         $decision = (new AffirmativeDecision())->addRules([

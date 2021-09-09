@@ -22,4 +22,9 @@ final class DecisionStub extends AbstractDecision
     {
         return true;
     }
+
+    protected function reset(): void
+    {
+        // No body needed.
+    }
 }

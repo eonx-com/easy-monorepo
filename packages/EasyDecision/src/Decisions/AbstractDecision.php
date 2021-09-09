@@ -111,6 +111,9 @@ abstract class AbstractDecision implements DecisionInterface
      */
     public function make(array $input)
     {
+        // Reset decision before each make, so a single decision instance can be used more than once
+        $this->reset();
+
         // Index "context" cannot be used by users to avoid conflicts
         // because context is injected in expression language rules
         if (isset($input['context'])) {
@@ -120,7 +123,7 @@ abstract class AbstractDecision implements DecisionInterface
         }
 
         $this->input = $input;
-        $this->context = $context = new Context(static::class, $input);
+        $this->context = new Context(static::class, $input);
 
         // If no rules provided, return default output
         if (empty($this->rules)) {
@@ -185,6 +188,8 @@ abstract class AbstractDecision implements DecisionInterface
      * @return mixed
      */
     abstract protected function getDefaultOutput();
+
+    abstract protected function reset(): void;
 
     protected function getExceptionMessage(string $message): string
     {
