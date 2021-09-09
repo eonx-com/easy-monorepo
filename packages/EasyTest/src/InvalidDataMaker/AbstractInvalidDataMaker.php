@@ -21,14 +21,24 @@ abstract class AbstractInvalidDataMaker
     private const PLURAL_PARAM = '%count%';
 
     /**
+     * @var string[]
+     */
+    protected static $translations = ['vendor/symfony/validator/Resources/translations/validators.en.xlf'];
+
+    /**
      * @var string
      */
     protected $property;
 
     /**
-     * @var string[]
+     * @var string
      */
-    protected static $translations = ['vendor/symfony/validator/Resources/translations/validators.en.xlf'];
+    protected $relatedProperty;
+
+    /**
+     * @var string
+     */
+    protected $relatedPropertyValue;
 
     /**
      * @var \Symfony\Contracts\Translation\TranslatorInterface
@@ -72,6 +82,9 @@ abstract class AbstractInvalidDataMaker
         self::$translations[] = $translations;
     }
 
+    /**
+     * @return static
+     */
     final public static function make(string $property): self
     {
         return new static($property);
@@ -95,6 +108,10 @@ abstract class AbstractInvalidDataMaker
         $invalidData = [
             $this->property => $value,
         ];
+
+        if ($this->relatedProperty !== null && $this->relatedPropertyValue !== null) {
+            $invalidData[$this->relatedProperty] = $this->relatedPropertyValue;
+        }
 
         $data = [
             $caseName => [
@@ -209,6 +226,9 @@ abstract class AbstractInvalidDataMaker
         return $propertyName;
     }
 
+    /**
+     * @return static
+     */
     final public function asArrayElement(): self
     {
         $this->asArrayElement = true;
@@ -216,6 +236,9 @@ abstract class AbstractInvalidDataMaker
         return $this;
     }
 
+    /**
+     * @return static
+     */
     final public function asString(): self
     {
         $this->asString = true;
@@ -223,6 +246,9 @@ abstract class AbstractInvalidDataMaker
         return $this;
     }
 
+    /**
+     * @return static
+     */
     final public function message(string $message): self
     {
         $this->message = $message;
@@ -230,6 +256,9 @@ abstract class AbstractInvalidDataMaker
         return $this;
     }
 
+    /**
+     * @return static
+     */
     final public function propertyPath(string $propertyPath): self
     {
         $this->propertyPath = $propertyPath;
@@ -237,6 +266,9 @@ abstract class AbstractInvalidDataMaker
         return $this;
     }
 
+    /**
+     * @return static
+     */
     final public function wrapWith(string $wrapWith): self
     {
         $this->wrapWith = $wrapWith;

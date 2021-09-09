@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace EonX\EasyTest\InvalidDataMaker;
 
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints\CardScheme;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Country;
 use Symfony\Component\Validator\Constraints\Currency;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\Length;
@@ -17,6 +20,7 @@ use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\Luhn;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotEqualTo;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
 use Symfony\Component\Validator\Constraints\Range;
@@ -37,9 +41,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     {
         $value = new ArrayCollection(\array_fill(0, $minElements - 1, null));
         $message = $this->translateMessage(
-            (new Count([
-                'min' => $minElements,
-            ]))->minMessage,
+            (new Count(['min' => $minElements]))->minMessage,
             [
                 '{{ limit }}' => $minElements,
             ],
@@ -56,9 +58,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     {
         $value = new ArrayCollection(\array_fill(0, $maxElements - 1, null));
         $message = $this->translateMessage(
-            (new Count([
-                'max' => $maxElements,
-            ]))->maxMessage,
+            (new Count(['max' => $maxElements]))->maxMessage,
             [
                 '{{ limit }}' => $maxElements,
             ],
@@ -75,9 +75,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     {
         $value = \array_fill(0, $minElements - 1, null);
         $message = $this->translateMessage(
-            (new Count([
-                'min' => $minElements,
-            ]))->minMessage,
+            (new Count(['min' => $minElements]))->minMessage,
             [
                 '{{ limit }}' => $minElements,
             ],
@@ -88,15 +86,15 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     }
 
     /**
+     * @param mixed|null $itemValue
+     *
      * @return iterable<mixed>
      */
-    public function yieldArrayWithMoreItems(int $maxElements): iterable
+    public function yieldArrayWithMoreItems(int $maxElements, $itemValue = null): iterable
     {
-        $value = \array_fill(0, $maxElements + 1, null);
+        $value = \array_fill(0, $maxElements + 1, $itemValue);
         $message = $this->translateMessage(
-            (new Count([
-                'max' => $maxElements,
-            ]))->maxMessage,
+            (new Count(['max' => $maxElements]))->maxMessage,
             [
                 '{{ limit }}' => $maxElements,
             ],
@@ -124,9 +122,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     {
         $dateTime = Carbon::now();
         $message = $this->translateMessage(
-            (new GreaterThan([
-                'value' => 'now',
-            ]))->message,
+            (new GreaterThan(['value' => 'now']))->message,
             [
                 '{{ compared_value }}' => 'now',
             ]
@@ -135,10 +131,38 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         $value = $dateTime->clone()
             ->subSecond()
             ->toAtomString();
+
         yield from $this->create("{$this->property} has less datetime", $value, $message);
 
         $value = $dateTime->toAtomString();
+
         yield from $this->create("{$this->property} has equal datetime", $value, $message);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public function yieldDateTimeLessThanRelatedProperty(string $relatedProperty): iterable
+    {
+        $dateTime = Carbon::now();
+        $message = $this->translateMessage(
+            (new GreaterThan(['value' => 'now']))->message,
+            [
+                '{{ compared_value }}' => 'now',
+            ]
+        );
+
+        $value = $dateTime->clone()
+            ->subSecond()
+            ->toAtomString();
+        $this->relatedPropertyValue = $dateTime->toAtomString();
+        $this->relatedProperty = $relatedProperty;
+
+        yield from $this->create(
+            "{$this->property} has less datetime than {$this->relatedProperty}",
+            $value,
+            $message
+        );
     }
 
     /**
@@ -164,9 +188,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     {
         $value = $lessThanOrEqualValue + 1;
         $message = $this->translateMessage(
-            (new LessThanOrEqual([
-                'value' => $value,
-            ]))->message,
+            (new LessThanOrEqual(['value' => $value]))->message,
             [
                 '{{ compared_value }}' => $lessThanOrEqualValue,
             ]
@@ -182,24 +204,22 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     {
         $value = $lessThanValue + 1;
         $message = $this->translateMessage(
-            (new LessThan([
-                'value' => $value,
-            ]))->message,
+            (new LessThan(['value' => $value]))->message,
             [
                 '{{ compared_value }}' => $lessThanValue,
             ]
         );
+
         yield from $this->create("{$this->property} has greater value", $value, $message);
 
         $value = $lessThanValue;
         $message = $this->translateMessage(
-            (new LessThan([
-                'value' => $value,
-            ]))->message,
+            (new LessThan(['value' => $value]))->message,
             [
                 '{{ compared_value }}' => $lessThanValue,
             ]
         );
+
         yield from $this->create("{$this->property} has equal value", $value, $message);
     }
 
@@ -217,12 +237,21 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     /**
      * @return iterable<mixed>
      */
+    public function yieldInvalidCountry(): iterable
+    {
+        $value = 'invalid-country';
+        $message = $this->translateMessage((new Country())->message);
+
+        yield from $this->create("{$this->property} is invalid country", $value, $message);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
     public function yieldInvalidCreditCardNumber(): iterable
     {
         $value = '1111222233334444';
-        $message = $this->translateMessage((new CardScheme([
-            'schemes' => null,
-        ]))->message);
+        $message = $this->translateMessage((new CardScheme(['schemes' => null]))->message);
 
         yield from $this->create("{$this->property} is not a valid credit card number", $value, $message);
     }
@@ -236,6 +265,17 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         $message = $this->translateMessage((new Currency())->message);
 
         yield from $this->create("{$this->property} is invalid currency", $value, $message);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public function yieldInvalidDateTime(): iterable
+    {
+        $value = 'invalid-datetime';
+        $message = $this->translateMessage((new DateTime())->message);
+
+        yield from $this->create("{$this->property} is invalid datetime", $value, $message);
     }
 
     /**
@@ -255,10 +295,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     public function yieldInvalidExactLengthString(int $exactLength): iterable
     {
         $message = $this->translateMessage(
-            (new Length([
-                'max' => $exactLength,
-                'min' => $exactLength,
-            ]))->exactMessage,
+            (new Length(['max' => $exactLength, 'min' => $exactLength]))->exactMessage,
             [
                 '{{ limit }}' => $exactLength,
             ],
@@ -266,30 +303,12 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         );
 
         $value = \str_pad('1', $exactLength + 1, '1');
+
         yield from $this->create("{$this->property} has length more than expected", $value, $message);
 
         $value = \str_pad('', $exactLength - 1, '1');
+
         yield from $this->create("{$this->property} has length less than expected", $value, $message);
-    }
-
-    /**
-     * This method is intended to be used with a custom constraint, so a custom message should be passed, e.g.:
-     * InvalidDataMaker::make('amount')
-     *     ->message('This value is not a valid decimal number or has more than 3 digits in a precision.')
-     *     ->yieldInvalidFloat(3);
-     *
-     * @return iterable<mixed>
-     */
-    public function yieldInvalidFloat(int $precision, ?int $integerPart = null): iterable
-    {
-        $value = ($integerPart ?? 0) + \round(1 / 3, $precision + 1);
-        yield from $this->create("{$this->property} has invalid precision", $value);
-
-        $value = 'abc';
-        yield from $this->create("{$this->property} is a string", $value);
-
-        $value = 10;
-        yield from $this->create("{$this->property} is an integer", $value);
     }
 
     /**
@@ -308,7 +327,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
      */
     public function yieldInvalidUrl(): iterable
     {
-        $value = 'invalid-url';
+        $value = 'some invalid url';
         $message = $this->translateMessage((new Url())->message);
 
         yield from $this->create("{$this->property} is invalid url", $value, $message);
@@ -344,9 +363,11 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         $message = $this->translateMessage((new Positive())->message);
 
         $value = -1;
+
         yield from $this->create("{$this->property} has negative value", $value, $message);
 
         $value = 0;
+
         yield from $this->create("{$this->property} has zero value", $value, $message);
     }
 
@@ -357,9 +378,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     {
         $value = '111-aaa';
         $message = $this->translateMessage(
-            (new Type([
-                'type' => 'digit',
-            ]))->message,
+            (new Type(['type' => 'digit']))->message,
             [
                 '{{ type }}' => 'digit',
             ]
@@ -382,6 +401,25 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     /**
      * @return iterable<mixed>
      */
+    public function yieldNotEqualTo(string $value): iterable
+    {
+        $message = $this->translateMessage(
+            (new NotEqualTo())->message,
+            [
+                '{{ compared_value }}' => $value,
+            ]
+        );
+
+        yield from $this->create(
+            "{$this->property} is not equal to {$value}",
+            'not-equal-to' . $value,
+            $message
+        );
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
     public function yieldOutOfRangeNumber(int $min, int $max): iterable
     {
         $message = $this->translateMessage(
@@ -393,9 +431,11 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         );
 
         $value = $max + 1;
+
         yield from $this->create("{$this->property} is out of range (above)", $value, $message);
 
         $value = $min - 1;
+
         yield from $this->create("{$this->property} is out of range (below)", $value, $message);
     }
 
@@ -406,9 +446,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     {
         $value = \str_pad('g', $maxLength + 1, 'g');
         $message = $this->translateMessage(
-            (new Length([
-                'max' => $maxLength,
-            ]))->maxMessage,
+            (new Length(['max' => $maxLength]))->maxMessage,
             [
                 '{{ limit }}' => $maxLength,
             ],
@@ -425,9 +463,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     {
         $value = $minLength > 1 ? \str_pad('g', $minLength - 1, 'g') : '';
         $message = $this->translateMessage(
-            (new Length([
-                'min' => $minLength,
-            ]))->minMessage,
+            (new Length(['min' => $minLength]))->minMessage,
             [
                 '{{ limit }}' => $minLength,
             ],
