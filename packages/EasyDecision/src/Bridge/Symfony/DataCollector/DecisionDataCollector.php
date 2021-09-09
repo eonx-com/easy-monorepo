@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Bridge\Symfony\DataCollector;
 
+use EonX\EasyDecision\Exceptions\ContextNotSetException;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,14 +79,18 @@ final class DecisionDataCollector extends DataCollector
         $decisions = [];
 
         foreach ($this->decisionFactory->getConfiguredDecisions() as $decision) {
-            $context = $decision->getContext();
+            try {
+                $context = $decision->getContext();
+            } catch (ContextNotSetException $exception) {
+                $context = null;
+            }
 
             $decisions[] = [
                 'name' => $decision->getName(),
                 'context' => [
-                    'decision_type' => $context->getDecisionType(),
-                    'original_input' => $context->getOriginalInput(),
-                    'rule_output' => $context->getRuleOutputs(),
+                    'decision_type' => $context ? $context->getDecisionType() : \get_class($decision),
+                    'original_input' => $context ? $context->getOriginalInput() : 'Decision not made...',
+                    'rule_output' => $context ? $context->getRuleOutputs() : [],
                 ],
                 'configurators' => $this->mapConfigurators($decision),
             ];
