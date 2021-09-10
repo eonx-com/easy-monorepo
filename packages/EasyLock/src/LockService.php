@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasyLock;
 
 use Closure;
+use Doctrine\DBAL\Driver\PDO\Exception as PdoException;
+use EonX\EasyAsync\Interfaces\ShouldKillWorkerExceptionInterface;
+use EonX\EasyLock\Bridge\EasyAsync\Exceptions\LockAcquiringException;
 use EonX\EasyLock\Exceptions\ShouldRetryException;
 use EonX\EasyLock\Interfaces\LockDataInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\Lock\Exception\LockAcquiringException as BaseLockAcquiringException;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Lock\PersistingStoreInterface;
@@ -61,6 +65,16 @@ final class LockService implements LockServiceInterface
 
         try {
             return $func();
+        } catch (BaseLockAcquiringException $exception) {
+            $previous = $exception->getPrevious();
+            $easyAsyncInstalled = \interface_exists(ShouldKillWorkerExceptionInterface::class);
+
+            // If eonx-com/easy-async installed, and previous is because SQL connection not ok, kill worker
+            if ($easyAsyncInstalled && $previous instanceof PdoException && $previous->getCode() === 'HY000') {
+                throw new LockAcquiringException($exception->getMessage(), $exception->getCode(), $previous);
+            }
+
+            throw $exception;
         } finally {
             $lock->release();
         }
