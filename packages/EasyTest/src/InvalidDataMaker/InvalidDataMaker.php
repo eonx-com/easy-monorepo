@@ -313,7 +313,10 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     public function yieldInvalidExactLengthString(int $exactLength): iterable
     {
         $message = $this->translateMessage(
-            (new Length(['max' => $exactLength, 'min' => $exactLength]))->exactMessage,
+            (new Length([
+                'max' => $exactLength,
+                'min' => $exactLength,
+            ]))->exactMessage,
             ['{{ limit }}' => $exactLength],
             $exactLength
         );
