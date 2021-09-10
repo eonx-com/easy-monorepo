@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints\Currency;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
@@ -145,24 +146,42 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     public function yieldDateTimeLessThanRelatedProperty(string $relatedProperty): iterable
     {
         $dateTime = Carbon::now();
-        $message = $this->translateMessage(
-            (new GreaterThan(['value' => 'now']))->message,
-            [
-                '{{ compared_value }}' => 'now',
-            ]
-        );
-
         $value = $dateTime->clone()
             ->subSecond()
             ->toAtomString();
         $this->relatedPropertyValue = $dateTime->toAtomString();
         $this->relatedProperty = $relatedProperty;
 
-        yield from $this->create(
-            "{$this->property} has less datetime than {$this->relatedProperty}",
-            $value,
-            $message
+        $message = $this->translateMessage(
+            (new GreaterThan(['value' => 'now']))->message,
+            [
+                '{{ compared_value }}' => \sprintf('"%s"', $this->relatedPropertyValue),
+            ]
         );
+
+        yield from $this->create("{$this->property} has less datetime than {$this->relatedProperty}", $value, $message);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public function yieldDateTimeLessThanOrEqualRelatedProperty(string $relatedProperty): iterable
+    {
+        $dateTime = Carbon::now();
+        $value = $dateTime->clone()
+            ->subSecond()
+            ->toAtomString();
+        $this->relatedPropertyValue = $dateTime->toAtomString();
+        $this->relatedProperty = $relatedProperty;
+
+        $message = $this->translateMessage(
+            (new GreaterThanOrEqual(['value' => 'now']))->message,
+            [
+                '{{ compared_value }}' => \sprintf('"%s"', $this->relatedPropertyValue),
+            ]
+        );
+
+        yield from $this->create("{$this->property} has less datetime than {$this->relatedProperty}", $value, $message);
     }
 
     /**
