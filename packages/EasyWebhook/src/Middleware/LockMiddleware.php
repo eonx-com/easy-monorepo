@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
 
+use EonX\EasyLock\Interfaces\LockDataInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockData;
 use EonX\EasyWebhook\Interfaces\StackInterface;
@@ -41,14 +42,19 @@ final class LockMiddleware extends AbstractMiddleware
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        $data = LockData::create(\sprintf($this->resourcePattern, $webhook->getId() ?? \spl_object_hash($webhook)));
-
         $func = function () use ($webhook, $stack): WebhookResultInterface {
             return $this->passOn($webhook, $stack);
         };
 
-        $result = $this->lockService->processWithLock($data, $func);
+        $result = $webhook->getId() !== null
+            ? $this->lockService->processWithLock($this->getLockData($webhook), $func)
+            : $func();
 
         return $result instanceof WebhookResultInterface ? $result : new WebhookResult($webhook);
+    }
+
+    private function getLockData(WebhookInterface $webhook): LockDataInterface
+    {
+        return LockData::create(\sprintf($this->resourcePattern, $webhook->getId()));
     }
 }
