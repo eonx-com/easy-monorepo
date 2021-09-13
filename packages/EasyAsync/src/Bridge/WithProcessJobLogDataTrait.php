@@ -9,6 +9,9 @@ use EonX\EasyAsync\Data\Target;
 use EonX\EasyAsync\Interfaces\ProcessJobLogDataInterface;
 use EonX\EasyAsync\Interfaces\TargetInterface;
 
+/**
+ * @deprecated since 3.3, will be removed in 4.0. Use eonx-com/easy-batch instead.
+ */
 trait WithProcessJobLogDataTrait
 {
     /**

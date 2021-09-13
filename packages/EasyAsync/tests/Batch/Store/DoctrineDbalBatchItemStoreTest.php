@@ -9,6 +9,9 @@ use EonX\EasyAsync\Batch\BatchItem;
 use EonX\EasyAsync\Batch\Store\DoctrineDbalBatchItemStore;
 use EonX\EasyAsync\Tests\AbstractStoreTestCase;
 
+/**
+ * @deprecated since 3.3, will be removed in 4.0. Use eonx-com/easy-batch instead.
+ */
 final class DoctrineDbalBatchItemStoreTest extends AbstractStoreTestCase
 {
     public function testStoreAndUpdate(): void

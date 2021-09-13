@@ -7,6 +7,9 @@ namespace EonX\EasyAsync\Tests\Batch;
 use EonX\EasyAsync\Batch\Batch;
 use EonX\EasyAsync\Tests\AbstractBatchTestCase;
 
+/**
+ * @deprecated since 3.3, will be removed in 4.0. Use eonx-com/easy-batch instead.
+ */
 final class BatchTest extends AbstractBatchTestCase
 {
     public function testSetItems(): void
