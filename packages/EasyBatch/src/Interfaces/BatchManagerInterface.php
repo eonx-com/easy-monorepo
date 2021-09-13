@@ -26,7 +26,7 @@ interface BatchManagerInterface
      * @throws \EonX\EasyBatch\Exceptions\BatchItemInvalidException
      * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
      */
-    public function dispatch(BatchInterface $batch): BatchInterface;
+    public function dispatch(BatchInterface $batch, ?callable $beforeFirstDispatch = null): BatchInterface;
 
     public function dispatchItem(BatchItemInterface $batchItem): BatchItemInterface;
 
