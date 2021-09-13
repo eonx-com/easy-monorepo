@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External;
 
+use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use Firebase\JWT\JWT;
 
@@ -38,9 +39,18 @@ final class FirebaseJwtDriver implements JwtDriverInterface
      * @param string|resource $publicKey
      * @param string|resource $privateKey
      * @param null|mixed[] $allowedAlgos
+     *
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */
     public function __construct(string $algo, $publicKey, $privateKey, ?array $allowedAlgos = null, ?int $leeway = null)
     {
+        if (\is_string($publicKey) === false && \is_resource($publicKey) === false) {
+            throw new InvalidArgumentException(\sprintf(
+                '$publicKey must be either a string or a resource, %s given',
+                \gettype($publicKey)
+            ));
+        }
+
         $this->algo = $algo;
         $this->publicKey = $publicKey;
         $this->privateKey = $privateKey;
