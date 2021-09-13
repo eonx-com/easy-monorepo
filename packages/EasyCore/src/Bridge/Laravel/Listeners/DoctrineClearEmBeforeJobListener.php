@@ -9,6 +9,10 @@ use Illuminate\Queue\Events\JobProcessing;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
+/**
+ * @deprecated since 3.3.12, will be removed in 4.0.
+ * Use EonX\EasyAsync\Bridge\Laravel\Queue\DoctrineManagersClearListener instead.
+ */
 final class DoctrineClearEmBeforeJobListener
 {
     /**

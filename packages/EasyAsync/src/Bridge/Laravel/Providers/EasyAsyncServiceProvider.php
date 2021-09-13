@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyAsync\Bridge\BridgeConstantsInterface;
 use EonX\EasyAsync\Bridge\Laravel\Queue\DoctrineManagersClearListener;
 use EonX\EasyAsync\Bridge\Laravel\Queue\DoctrineManagersSanityCheckListener;
+use EonX\EasyAsync\Bridge\Laravel\Queue\QueueWorkerStoppingListener;
 use EonX\EasyAsync\Bridge\Laravel\Queue\ShouldKillWorkerListener;
 use EonX\EasyAsync\Doctrine\ManagersClearer;
 use EonX\EasyAsync\Doctrine\ManagersSanityChecker;
@@ -35,6 +36,7 @@ use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstan
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Queue\Events\WorkerStopping;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
 
@@ -49,15 +51,14 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             __DIR__ . '/../config/easy-async.php' => \base_path('config/easy-async.php'),
         ]);
 
-        $this->app->make('events')
-            ->listen(JobFailed::class, ShouldKillWorkerListener::class);
+        $events = $this->app->make('events');
+
+        $events->listen(JobFailed::class, ShouldKillWorkerListener::class);
+        $events->listen(WorkerStopping::class, QueueWorkerStoppingListener::class);
 
         if (\interface_exists(EntityManagerInterface::class)) {
-            $this->app->make('events')
-                ->listen(JobProcessing::class, DoctrineManagersSanityCheckListener::class);
-
-            $this->app->make('events')
-                ->listen(JobProcessing::class, DoctrineManagersClearListener::class);
+            $events->listen(JobProcessing::class, DoctrineManagersSanityCheckListener::class);
+            $events->listen(JobProcessing::class, DoctrineManagersClearListener::class);
         }
     }
 
@@ -69,7 +70,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/easy-async.php', 'easy-async');
 
         $this->registerAsyncLogger();
-        $this->registerDoctrineQueueListeners();
+        $this->registerQueueListeners();
 
         $simples = [
             DateTimeGeneratorInterface::class => DateTimeGenerator::class,
@@ -147,7 +148,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             ->give(\config('easy-async.jobs_table', 'easy_async_jobs'));
     }
 
-    private function registerDoctrineQueueListeners(): void
+    private function registerQueueListeners(): void
     {
         $this->app->singleton(ManagersSanityChecker::class, static function (Container $app): ManagersSanityChecker {
             return new ManagersSanityChecker(
@@ -176,6 +177,13 @@ final class EasyAsyncServiceProvider extends ServiceProvider
                     \config('easy-async.queue.managers_to_check'),
                     $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
                 );
+            }
+        );
+
+        $this->app->singleton(
+            QueueWorkerStoppingListener::class,
+            static function (Container $app): QueueWorkerStoppingListener {
+                return new QueueWorkerStoppingListener($app->make(BridgeConstantsInterface::SERVICE_LOGGER));
             }
         );
     }
