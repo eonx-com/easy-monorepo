@@ -15,6 +15,9 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
+/**
+ * @deprecated since 3.3, will be removed in 4.0. Use eonx-com/easy-batch instead.
+ */
 final class ProcessBatchItemMiddleware implements MiddlewareInterface
 {
     /**

@@ -13,6 +13,9 @@ use EonX\EasyAsync\Interfaces\Batch\BatchItemRequiresApprovalInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @deprecated since 3.3, will be removed in 4.0. Use eonx-com/easy-batch instead.
+ */
 final class BatchDispatcher implements BatchDispatcherInterface
 {
     /**
