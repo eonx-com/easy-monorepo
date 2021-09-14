@@ -56,6 +56,8 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
     }
 
     /**
+     * @var mixed $value
+     *
      * @dataProvider provideInvalidValues
      */
     public function testValidateFailsWithInvalidValue($value, int $minPrecision, int $maxPrecision): void
