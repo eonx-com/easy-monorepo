@@ -21,11 +21,6 @@ final class Decimal extends Constraint
     /**
      * @var int
      */
-    public $minPrecision;
-
-    /**
-     * @var int
-     */
     public $maxPrecision;
 
     /**
@@ -33,14 +28,21 @@ final class Decimal extends Constraint
      */
     public $message = 'This value is not a valid decimal number or has not {{ minPrecision }} - {{ maxPrecision }} digits in precision.';
 
+    /**
+     * @var int
+     */
+    public $minPrecision;
+
     public function __construct($options = null)
     {
-        if ((int) $options['minPrecision'] < 1){
+        if ((int)$options['minPrecision'] < 1) {
             throw new ConstraintDefinitionException('The "minPrecision" option must be an integer greater than zero.');
         }
 
-        if ((int) $options['maxPrecision'] < (int) $options['minPrecision']){
-            throw new ConstraintDefinitionException('The "maxPrecision" option must be an integer greater than "minPrecision".');
+        if ((int)$options['maxPrecision'] < (int)$options['minPrecision']) {
+            throw new ConstraintDefinitionException(
+                'The "maxPrecision" option must be an integer greater than "minPrecision".'
+            );
         }
 
         parent::__construct($options);

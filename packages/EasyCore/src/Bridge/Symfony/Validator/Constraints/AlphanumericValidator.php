@@ -13,7 +13,7 @@ final class AlphanumericValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof Alphanumeric) {
+        if ($constraint instanceof Alphanumeric === false) {
             throw new UnexpectedTypeException($constraint, Alphanumeric::class);
         }
 
@@ -21,7 +21,8 @@ final class AlphanumericValidator extends ConstraintValidator
             return;
         }
 
-        if (!\is_scalar($value) && !(\is_object($value) && \method_exists($value, '__toString'))) {
+        if (\is_scalar($value) === false
+            && (\is_object($value) && \method_exists($value, '__toString')) === false) {
             throw new UnexpectedValueException($value, 'string');
         }
 

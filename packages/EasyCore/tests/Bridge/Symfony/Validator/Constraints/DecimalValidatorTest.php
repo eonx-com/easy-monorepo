@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Symfony\Validator\Constraints;
 
-use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Abn;
-use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\AbnValidator;
 use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Decimal;
 use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\DecimalValidator;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
@@ -86,7 +84,10 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
             }
         };
         $validator = new DecimalValidator();
-        $constraint = new Decimal(['minPrecision' => 1, 'maxPrecision' => 3]);
+        $constraint = new Decimal([
+            'minPrecision' => 1,
+            'maxPrecision' => 3
+        ]);
         $context = $this->mockExecutionContextWithoutCalls();
         $validator->initialize($context);
 
@@ -117,7 +118,10 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         $this->expectException(ConstraintDefinitionException::class);
         $this->expectExceptionMessage('The "maxPrecision" option must be an integer greater than "minPrecision".');
 
-        new Decimal(['minPrecision' => 2, 'maxPrecision' => 1]);
+        new Decimal([
+            'minPrecision' => 2,
+            'maxPrecision' => 1
+        ]);
     }
 
     public function testValidateThrowsConstraintDefinitionExceptionExceptionWhenMinPrecisionLessThanOne(): void
@@ -125,7 +129,10 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         $this->expectException(ConstraintDefinitionException::class);
         $this->expectExceptionMessage('The "minPrecision" option must be an integer greater than zero.');
 
-        new Decimal(['minPrecision' => 0, 'maxPrecision' => 2]);
+        new Decimal([
+            'minPrecision' => 0,
+            'maxPrecision' => 2
+        ]);
     }
 
     public function testValidateThrowsUnexpectedTypeException(): void
@@ -144,13 +151,16 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
 
     public function testValidateThrowsUnexpectedValueExceptionIfObjectGiven(): void
     {
-        $abn = new stdClass();
+        $value = new stdClass();
         $validator = new DecimalValidator();
-        $constraint = new Decimal(['minPrecision' => 1, 'maxPrecision' => 2]);
+        $constraint = new Decimal([
+            'minPrecision' => 1,
+            'maxPrecision' => 2
+        ]);
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Expected argument of type "scalar", "stdClass" given');
 
-        $validator->validate($abn, $constraint);
+        $validator->validate($value, $constraint);
     }
 
     private function mockConstraintViolationBuilder(

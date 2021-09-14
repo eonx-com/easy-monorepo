@@ -13,7 +13,7 @@ final class DecimalValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof Decimal) {
+        if ($constraint instanceof Decimal === false) {
             throw new UnexpectedTypeException($constraint, Decimal::class);
         }
 
@@ -21,7 +21,8 @@ final class DecimalValidator extends ConstraintValidator
             return;
         }
 
-        if (!\is_scalar($value) && !(\is_object($value) && \method_exists($value, '__toString'))) {
+        if (\is_scalar($value) === false
+            && (\is_object($value) && \method_exists($value, '__toString')) === false) {
             throw new UnexpectedValueException($value, 'scalar');
         }
 

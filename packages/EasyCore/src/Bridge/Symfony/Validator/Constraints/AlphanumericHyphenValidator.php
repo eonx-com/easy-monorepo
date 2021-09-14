@@ -13,7 +13,7 @@ final class AlphanumericHyphenValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof AlphanumericHyphen) {
+        if ($constraint instanceof AlphanumericHyphen === false) {
             throw new UnexpectedTypeException($constraint, AlphanumericHyphen::class);
         }
 
@@ -21,11 +21,12 @@ final class AlphanumericHyphenValidator extends ConstraintValidator
             return;
         }
 
-        if (!\is_scalar($value) && !(\is_object($value) && \method_exists($value, '__toString'))) {
+        if (\is_scalar($value) === false
+            && (\is_object($value) && \method_exists($value, '__toString')) === false) {
             throw new UnexpectedValueException($value, 'string');
         }
 
-        $value = (string) $value;
+        $value = (string)$value;
 
         if (\preg_match('/^[a-z0-9_-]+$/i', $value) === 0) {
             $this->context->buildViolation($constraint->message)

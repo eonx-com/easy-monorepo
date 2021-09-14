@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Symfony\Validator\Constraints;
 
-use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Abn;
-use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\AbnValidator;
 use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\DateInterval;
 use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\DateIntervalValidator;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Mockery\MockInterface;
-use stdClass;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
