@@ -26,8 +26,8 @@ final class Decimal extends Constraint
     /**
      * @var string
      */
-    public $message = 'This value is not a valid decimal number or has ' .
-    'not {{ minPrecision }} - {{ maxPrecision }} digits in precision.';
+    public $message = 'This value is not a valid decimal or integer number' .
+    ', has less than {{ minPrecision }} or more than {{ maxPrecision }} digits in precision.';
 
     /**
      * @var int

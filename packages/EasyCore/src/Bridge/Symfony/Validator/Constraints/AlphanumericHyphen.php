@@ -20,5 +20,5 @@ final class AlphanumericHyphen extends Constraint
     /**
      * @var string
      */
-    public $message = 'This value may only contain letters, numbers and hyphens.';
+    public $message = 'This value may only contain letters, numbers, and hyphens.';
 }
