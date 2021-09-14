@@ -56,7 +56,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @var mixed $value
+     * @param mixed $value
      *
      * @dataProvider provideInvalidValues
      */
