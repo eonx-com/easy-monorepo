@@ -86,7 +86,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         $validator = new DecimalValidator();
         $constraint = new Decimal([
             'minPrecision' => 1,
-            'maxPrecision' => 3
+            'maxPrecision' => 3,
         ]);
         $context = $this->mockExecutionContextWithoutCalls();
         $validator->initialize($context);
@@ -120,7 +120,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
 
         new Decimal([
             'minPrecision' => 2,
-            'maxPrecision' => 1
+            'maxPrecision' => 1,
         ]);
     }
 
@@ -131,7 +131,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
 
         new Decimal([
             'minPrecision' => 0,
-            'maxPrecision' => 2
+            'maxPrecision' => 2,
         ]);
     }
 
@@ -155,7 +155,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         $validator = new DecimalValidator();
         $constraint = new Decimal([
             'minPrecision' => 1,
-            'maxPrecision' => 2
+            'maxPrecision' => 2,
         ]);
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Expected argument of type "scalar", "stdClass" given');
@@ -174,12 +174,12 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
             static function (MockInterface $mock) use ($code, $minPrecision, $maxPrecision): void {
                 $mock->shouldReceive('setParameter')
                     ->once()
-                    ->withArgs(['{{ minPrecision }}', (string) $minPrecision])
+                    ->withArgs(['{{ minPrecision }}', (string)$minPrecision])
                     ->andReturnSelf();
 
                 $mock->shouldReceive('setParameter')
                     ->once()
-                    ->withArgs(['{{ maxPrecision }}', (string) $maxPrecision])
+                    ->withArgs(['{{ maxPrecision }}', (string)$maxPrecision])
                     ->andReturnSelf();
 
                 $mock->shouldReceive('setCode')
