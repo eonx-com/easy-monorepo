@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class DecimalValidatorTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return string[][]
+     * @return mixed[]
      *
      * @see testValidateFailsWithInvalidValue
      */

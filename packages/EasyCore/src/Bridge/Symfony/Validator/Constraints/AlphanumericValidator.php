@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 final class AlphanumericValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if ($constraint instanceof Alphanumeric === false) {
             throw new UnexpectedTypeException($constraint, Alphanumeric::class);
