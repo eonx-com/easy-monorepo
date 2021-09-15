@@ -102,13 +102,23 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             return;
         }
 
-        \array_walk_recursive($entityInsertions, function (object $entity): void {
-            $this->eventDispatcher->dispatch(new EntityCreatedEvent($entity));
-        });
+        $processedEntities = [];
+        foreach ($entityInsertions as $entities) {
+            foreach ($entities as $oid => $entity) {
+                $processedEntities[$oid] = $entity;
+                $this->eventDispatcher->dispatch(new EntityCreatedEvent($entity));
+            }
+        }
 
-        \array_walk_recursive($entityUpdates, function (object $entity): void {
-            $this->eventDispatcher->dispatch(new EntityUpdatedEvent($entity));
-        });
+        foreach ($entityUpdates as $entities) {
+            foreach ($entities as $oid => $entity) {
+                if (\array_key_exists($oid, $processedEntities)) {
+                    continue;
+                }
+                $processedEntities[$oid] = $entity;
+                $this->eventDispatcher->dispatch(new EntityUpdatedEvent($entity));
+            }
+        }
     }
 
     public function enable(): void

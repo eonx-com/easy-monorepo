@@ -241,8 +241,10 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
     {
         /** @var object $newEntity */
         $newEntity = $this->prophesize(stdClass::class)->reveal();
+        $newOid = \spl_object_hash($newEntity);
         /** @var object $existedEntity */
         $existedEntity = $this->prophesize(stdClass::class)->reveal();
+        $existedOid = \spl_object_hash($existedEntity);
         $entityCreatedEvent = new EntityCreatedEvent($newEntity);
         $entityUpdatedEvent = new EntityUpdatedEvent($existedEntity);
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
@@ -254,12 +256,65 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
 
-        $deferredEntityEventDispatcher->deferInsertions([$newEntity], 0);
-        $deferredEntityEventDispatcher->deferUpdates([$existedEntity], 0);
+        $deferredEntityEventDispatcher->deferInsertions([$newOid => $newEntity], 0);
+        $deferredEntityEventDispatcher->deferUpdates([$existedOid => $existedEntity], 0);
         $deferredEntityEventDispatcher->dispatch();
 
         $eventDispatcher->dispatch($entityCreatedEvent)
             ->shouldHaveBeenCalledOnce();
+        $eventDispatcher->dispatch($entityUpdatedEvent)
+            ->shouldHaveBeenCalledOnce();
+        self::assertSame([], $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityInsertions'));
+        self::assertSame([], $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityUpdates'));
+    }
+
+    public function testDispatchSucceedsWithOneEventForNewEntity(): void
+    {
+        /** @var object $newEntity */
+        $newEntity = $this->prophesize(stdClass::class)->reveal();
+        $oid = \spl_object_hash($newEntity);
+        $entityCreatedEvent = new EntityCreatedEvent($newEntity);
+        $entityUpdatedEvent = new EntityUpdatedEvent($newEntity);
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch($entityCreatedEvent)
+            ->willReturnArgument(0);
+        $eventDispatcher->dispatch($entityUpdatedEvent)
+            ->willReturnArgument(0);
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
+
+        $deferredEntityEventDispatcher->deferInsertions([$oid => $newEntity], 0);
+        $deferredEntityEventDispatcher->deferUpdates([$oid => $newEntity], 0);
+        $deferredEntityEventDispatcher->deferUpdates([$oid => $newEntity], 1);
+        $deferredEntityEventDispatcher->dispatch();
+
+        $eventDispatcher->dispatch($entityCreatedEvent)
+            ->shouldHaveBeenCalledOnce();
+        $eventDispatcher->dispatch($entityUpdatedEvent)
+            ->shouldNotHaveBeenCalled();
+        self::assertSame([], $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityInsertions'));
+        self::assertSame([], $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityUpdates'));
+    }
+
+    public function testDispatchSucceedsWithOneEventForUpdatedEntity(): void
+    {
+        /** @var object $existedEntity */
+        $existedEntity = $this->prophesize(stdClass::class)->reveal();
+        $oid = \spl_object_hash($existedEntity);
+        $entityUpdatedEvent = new EntityUpdatedEvent($existedEntity);
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch($entityUpdatedEvent)
+            ->willReturnArgument(0);
+        /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherReveal = $eventDispatcher->reveal();
+        $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
+
+        $deferredEntityEventDispatcher->deferUpdates([$oid => $existedEntity], 0);
+        $deferredEntityEventDispatcher->deferUpdates([$oid => $existedEntity], 1);
+        $deferredEntityEventDispatcher->deferUpdates([$oid => $existedEntity], 3);
+        $deferredEntityEventDispatcher->dispatch();
+
         $eventDispatcher->dispatch($entityUpdatedEvent)
             ->shouldHaveBeenCalledOnce();
         self::assertSame([], $this->getPrivatePropertyValue($deferredEntityEventDispatcher, 'entityInsertions'));
