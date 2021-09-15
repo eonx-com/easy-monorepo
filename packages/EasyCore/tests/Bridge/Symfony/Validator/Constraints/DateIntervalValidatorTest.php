@@ -37,18 +37,6 @@ final class DateIntervalValidatorTest extends AbstractSymfonyTestCase
     /**
      * @return mixed[]
      *
-     * @see testValidateThrowsUnexpectedValueException
-     */
-    public function provideUnexpectedValues(): array
-    {
-        return [
-            'integer' => [53004085616, 'Expected argument of type "string", "integer" given'],
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     *
      * @see testValidateSucceedsWithValidDateInterval
      */
     public function provideValidDateIntervalValues(): array
@@ -105,21 +93,6 @@ final class DateIntervalValidatorTest extends AbstractSymfonyTestCase
         $this->expectExceptionMessage(
             'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\DateInterval"'
         );
-
-        $validator->validate($dateInterval, $constraint);
-    }
-
-    /**
-     * @param mixed $dateInterval
-     *
-     * @dataProvider provideUnexpectedValues
-     */
-    public function testValidateThrowsUnexpectedValueException($dateInterval, string $message): void
-    {
-        $validator = new DateIntervalValidator();
-        $constraint = new DateInterval();
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage($message);
 
         $validator->validate($dateInterval, $constraint);
     }
