@@ -116,8 +116,8 @@ abstract class AbstractInvalidDataMaker
         $data = [
             $caseName => [
                 'data' => $invalidData,
-                'message' => (string)($this->message ?? $message),
                 'propertyPath' => $this->resolvePropertyPath($invalidData),
+                'validationErrorMessage' => (string)($this->message ?? $message),
             ],
         ];
 
