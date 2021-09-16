@@ -37,6 +37,16 @@ final class EasyErrorHandlerExtension extends Extension
         );
 
         $container->setParameter(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose']);
+
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_LOGGER_EXCEPTION_LOG_LEVELS,
+            \count($config['logger_exception_log_levels']) > 0 ? $config['logger_exception_log_levels'] : null
+        );
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_LOGGER_IGNORED_EXCEPTIONS,
+            \count($config['logger_ignored_exceptions']) > 0 ? $config['logger_ignored_exceptions'] : null
+        );
+
         $container->setParameter(
             BridgeConstantsInterface::PARAM_OVERRIDE_API_PLATFORM_LISTENER,
             $config['override_api_platform_listener']

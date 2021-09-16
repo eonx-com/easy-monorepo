@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Reporters;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use Psr\Log\LoggerInterface;
 
@@ -16,14 +17,33 @@ final class DefaultReporterProvider implements ErrorReporterProviderInterface
     private $errorDetailsResolver;
 
     /**
+     * @var \EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface
+     */
+    private $errorLogLevelResolver;
+
+    /**
+     * @var null|string[]
+     */
+    private $ignoredExceptions;
+
+    /**
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
 
-    public function __construct(ErrorDetailsResolverInterface $errorDetailsResolver, LoggerInterface $logger)
-    {
+    /**
+     * @param null|string[] $ignoredExceptions
+     */
+    public function __construct(
+        ErrorDetailsResolverInterface $errorDetailsResolver,
+        ErrorLogLevelResolverInterface $errorLogLevelResolver,
+        LoggerInterface $logger,
+        ?array $ignoredExceptions = null
+    ) {
         $this->errorDetailsResolver = $errorDetailsResolver;
+        $this->errorLogLevelResolver = $errorLogLevelResolver;
         $this->logger = $logger;
+        $this->ignoredExceptions = $ignoredExceptions;
     }
 
     /**
@@ -31,6 +51,11 @@ final class DefaultReporterProvider implements ErrorReporterProviderInterface
      */
     public function getReporters(): iterable
     {
-        yield new LoggerReporter($this->errorDetailsResolver, $this->logger);
+        yield new LoggerReporter(
+            $this->errorDetailsResolver,
+            $this->errorLogLevelResolver,
+            $this->logger,
+            $this->ignoredExceptions
+        );
     }
 }

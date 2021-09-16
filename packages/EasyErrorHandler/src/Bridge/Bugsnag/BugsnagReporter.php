@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag;
 
 use Bugsnag\Client;
+use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Reporters\AbstractErrorReporter;
 use Monolog\Logger;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -32,6 +33,7 @@ final class BugsnagReporter extends AbstractErrorReporter
      */
     public function __construct(
         Client $bugsnag,
+        ErrorLogLevelResolverInterface $errorLogLevelResolver,
         ?int $threshold = null,
         ?array $ignoreExceptions = null,
         ?int $priority = null
@@ -41,7 +43,7 @@ final class BugsnagReporter extends AbstractErrorReporter
 
         $this->ignoreExceptions = $ignoreExceptions ?? [HttpExceptionInterface::class];
 
-        parent::__construct($priority);
+        parent::__construct($errorLogLevelResolver, $priority);
     }
 
     /**
@@ -56,7 +58,7 @@ final class BugsnagReporter extends AbstractErrorReporter
             }
         }
 
-        $logLevel = $this->getLogLevel($throwable);
+        $logLevel = $this->errorLogLevelResolver->getLogLevel($throwable);
 
         if ($logLevel >= $this->threshold) {
             $this->bugsnag->notifyException($throwable);

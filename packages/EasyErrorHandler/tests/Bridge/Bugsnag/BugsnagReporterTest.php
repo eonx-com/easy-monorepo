@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests\Bridge\Bugsnag;
 
 use EonX\EasyErrorHandler\Bridge\Bugsnag\BugsnagReporter;
+use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stubs\BugsnagClientStub;
@@ -57,7 +58,8 @@ final class BugsnagReporterTest extends AbstractTestCase
         ?array $ignoredExceptions = null
     ): void {
         $stub = new BugsnagClientStub();
-        $reporter = new BugsnagReporter($stub, $threshold, $ignoredExceptions);
+        $logLevelResolver = new ErrorLogLevelResolver();
+        $reporter = new BugsnagReporter($stub, $logLevelResolver, $threshold, $ignoredExceptions);
 
         $reporter->report($throwable);
 

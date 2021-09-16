@@ -15,6 +15,8 @@ use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
+use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
+use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
@@ -27,6 +29,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // ErrorDetailsResolver
     $services->set(ErrorDetailsResolverInterface::class, ErrorDetailsResolver::class);
+
+    // ErrorLogLevelResolver
+    $services
+        ->set(ErrorLogLevelResolverInterface::class, ErrorLogLevelResolver::class)
+        ->arg('$exceptionLogLevels', '%' . BridgeConstantsInterface::PARAM_LOGGER_EXCEPTION_LOG_LEVELS . '%');
 
     // ErrorHandler
     $services

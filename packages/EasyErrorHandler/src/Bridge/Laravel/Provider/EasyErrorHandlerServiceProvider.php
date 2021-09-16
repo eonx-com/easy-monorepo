@@ -17,8 +17,10 @@ use EonX\EasyErrorHandler\Bridge\Laravel\Translator;
 use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
+use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
@@ -27,6 +29,7 @@ use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
 use Illuminate\Support\ServiceProvider;
+use Psr\Log\LoggerInterface;
 
 final class EasyErrorHandlerServiceProvider extends ServiceProvider
 {
@@ -58,6 +61,13 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/easy-error-handler.php', 'easy-error-handler');
 
         $this->app->singleton(ErrorDetailsResolverInterface::class, ErrorDetailsResolver::class);
+
+        $this->app->singleton(
+            ErrorLogLevelResolverInterface::class,
+            static function (): ErrorLogLevelResolverInterface {
+                return new ErrorLogLevelResolver(\config('easy-error-handler.logger_exception_log_levels'));
+            }
+        );
 
         $this->app->singleton(ErrorResponseFactoryInterface::class, ErrorResponseFactory::class);
 
@@ -105,7 +115,17 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         }
 
         if ((bool)\config('easy-error-handler.use_default_reporters', true)) {
-            $this->app->singleton(DefaultReporterProvider::class);
+            $this->app->singleton(
+                DefaultReporterProvider::class,
+                static function (Container $app): DefaultReporterProvider {
+                    return new DefaultReporterProvider(
+                        $app->make(ErrorDetailsResolverInterface::class),
+                        $app->make(ErrorLogLevelResolverInterface::class),
+                        $app->make(LoggerInterface::class),
+                        \config('easy-error-handler.logger_ignored_exceptions')
+                    );
+                }
+            );
             $this->app->tag(DefaultReporterProvider::class, [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER]);
         }
 
@@ -115,6 +135,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                 static function (Container $app): BugsnagReporterProvider {
                     return new BugsnagReporterProvider(
                         $app->make(Client::class),
+                        $app->make(ErrorLogLevelResolverInterface::class),
                         \config('easy-error-handler.bugsnag_threshold'),
                         \config('easy-error-handler.bugsnag_ignored_exceptions')
                     );
