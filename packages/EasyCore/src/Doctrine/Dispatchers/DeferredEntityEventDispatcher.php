@@ -112,7 +112,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
         foreach ($entityUpdates as $entities) {
             foreach ($entities as $oid => $entity) {
-                if (\array_key_exists($oid, $processedEntities)) {
+                if (isset($processedEntities[$oid])) {
                     continue;
                 }
                 $processedEntities[$oid] = $entity;
