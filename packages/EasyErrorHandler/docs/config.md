@@ -25,6 +25,8 @@ The common configuration options for Laravel and Symfony are as follows:
 | `bugsnag_enabled` | `true` | Automatically register the error reporter for easy-bugsnag integration. |
 | `bugsnag_ignored_exceptions` | `[]` | List of exceptions that will not be reported to Bugsnag. |
 | `bugsnag_threshold` | `null` | Log level threshold for reporting to Bugsnag. |
+| `logger_exception_log_levels` | `[]` | List of exceptions and their associated log levels. |
+| `logger_ignored_exceptions` | `[]` | List of exceptions that will not be reported to Logger. |
 | `response.code` | `code` | Attribute name for exception code. |
 | `response.exception` | `exception` | Attribute name for exception text. |
 | `response.extended_exception_keys.class` | `class` | Attribute name for exception class. |
@@ -62,8 +64,13 @@ In Symfony, you could have a configuration file called `easy_error_handler.yaml`
 ```yaml
 easy_error_handler:
     bugsnag_enabled: true
-    bugsnag_ignored_exceptions: null
+    bugsnag_ignored_exceptions:
+        - InvalidArgumentException
     bugsnag_threshold: null
+    logger_exception_log_level:
+        InvalidArgumentException: 300
+    logger_ignored_exceptions:
+        - App\MyCustomException
     override_api_platform_listener: true
     response:
         code: 'code'
@@ -95,8 +102,16 @@ declare(strict_types=1);
 
 return [
     'bugsnag_enabled' => true,
-    'bugsnag_ignored_exceptions' => [],
+    'bugsnag_ignored_exceptions' => [
+        \InvalidArgumentException::class,
+    ],
     'bugsnag_threshold' => null,
+    'logger_exception_log_levels' => [
+        \InvalidArgumentException::class => 300,
+    ],
+    'logger_ignored_exceptions' => [
+        \App\MyCustomException::class,
+    ],
     'response' => [
         'code' => 'code',
         'exception' => 'exception',
