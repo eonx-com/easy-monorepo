@@ -45,8 +45,11 @@ final class ErrorLogLevelResolverTest extends AbstractTestCase
      *
      * @dataProvider providerTestGetErrorLogLevel
      */
-    public function testGetErrorLogLevel(\Throwable $throwable, int $expectedLogLevel, ?array $exceptionLogLevels = null): void
-    {
+    public function testGetErrorLogLevel(
+        \Throwable $throwable,
+        int $expectedLogLevel,
+        ?array $exceptionLogLevels = null
+    ): void {
         $resolver = new ErrorLogLevelResolver($exceptionLogLevels);
 
         self::assertEquals($expectedLogLevel, $resolver->getLogLevel($throwable));
