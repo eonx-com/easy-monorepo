@@ -8,14 +8,12 @@ use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
 use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
+use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\SeverityAwareExceptionInterface;
-use EonX\EasyErrorHandler\Traits\DealsWithErrorLogLevelTrait;
 use Monolog\Logger;
 
 final class SeverityClientConfigurator extends AbstractClientConfigurator
 {
-    use DealsWithErrorLogLevelTrait;
-
     /**
      * @var string[]
      */
@@ -26,12 +24,22 @@ final class SeverityClientConfigurator extends AbstractClientConfigurator
     ];
 
     /**
+     * @var \EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface
+     */
+    private $errorLogLevelResolver;
+
+    /**
      * @var null|int
      */
     private $threshold;
 
-    public function __construct(?int $threshold = null, ?int $priority = null)
-    {
+    public function __construct(
+        ErrorLogLevelResolverInterface $errorLogLevelResolver,
+        ?int $threshold = null,
+        ?int $priority = null
+    ) {
+        $this->errorLogLevelResolver = $errorLogLevelResolver;
+
         if ($threshold !== null) {
             @\trigger_error(
                 'Passing $threshold is deprecated since 3.0 and will be removed in 4.0.',
@@ -66,7 +74,7 @@ final class SeverityClientConfigurator extends AbstractClientConfigurator
             return $severity;
         }
 
-        $logLevel = $this->getLogLevel($throwable);
+        $logLevel = $this->errorLogLevelResolver->getLogLevel($throwable);
 
         if ($this->threshold !== null && $logLevel > $this->threshold) {
             // If log level greater than threshold, severity to error

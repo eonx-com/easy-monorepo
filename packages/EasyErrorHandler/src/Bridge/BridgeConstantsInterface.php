@@ -29,6 +29,16 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_LOGGER_EXCEPTION_LOG_LEVELS = 'easy_error_handler.param_logger_exception_log_levels';
+
+    /**
+     * @var string
+     */
+    public const PARAM_LOGGER_IGNORED_EXCEPTIONS = 'easy_error_handler.param_logger_ignored_exceptions';
+
+    /**
+     * @var string
+     */
     public const PARAM_OVERRIDE_API_PLATFORM_LISTENER = 'easy_error_handler.param_override_api_platform_listener';
 
     /**

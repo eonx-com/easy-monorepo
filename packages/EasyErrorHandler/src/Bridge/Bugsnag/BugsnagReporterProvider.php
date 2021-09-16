@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag;
 
 use Bugsnag\Client;
+use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 
 final class BugsnagReporterProvider implements ErrorReporterProviderInterface
@@ -13,6 +14,11 @@ final class BugsnagReporterProvider implements ErrorReporterProviderInterface
      * @var \Bugsnag\Client
      */
     private $bugsnag;
+
+    /**
+     * @var \EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface
+     */
+    private $errorLogLevelResolver;
 
     /**
      * @var null|string[]
@@ -27,9 +33,14 @@ final class BugsnagReporterProvider implements ErrorReporterProviderInterface
     /**
      * @param null|string[] $ignoredExceptions
      */
-    public function __construct(Client $bugsnag, ?int $threshold = null, ?array $ignoredExceptions = null)
-    {
+    public function __construct(
+        Client $bugsnag,
+        ErrorLogLevelResolverInterface $errorLogLevelResolver,
+        ?int $threshold = null,
+        ?array $ignoredExceptions = null
+    ) {
         $this->bugsnag = $bugsnag;
+        $this->errorLogLevelResolver = $errorLogLevelResolver;
         $this->threshold = $threshold;
         $this->ignoredExceptions = $ignoredExceptions;
     }
@@ -39,6 +50,11 @@ final class BugsnagReporterProvider implements ErrorReporterProviderInterface
      */
     public function getReporters(): iterable
     {
-        yield new BugsnagReporter($this->bugsnag, $this->threshold, $this->ignoredExceptions);
+        yield new BugsnagReporter(
+            $this->bugsnag,
+            $this->errorLogLevelResolver,
+            $this->threshold,
+            $this->ignoredExceptions
+        );
     }
 }

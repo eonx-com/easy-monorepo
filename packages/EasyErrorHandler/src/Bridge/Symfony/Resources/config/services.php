@@ -10,8 +10,10 @@ use EonX\EasyErrorHandler\Bridge\Symfony\Messenger\ReportErrorEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Translator;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
+use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
@@ -27,6 +29,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // ErrorDetailsResolver
     $services->set(ErrorDetailsResolverInterface::class, ErrorDetailsResolver::class);
+
+    // ErrorLogLevelResolver
+    $services
+        ->set(ErrorLogLevelResolverInterface::class, ErrorLogLevelResolver::class)
+        ->arg('$exceptionLogLevels', '%' . BridgeConstantsInterface::PARAM_LOGGER_EXCEPTION_LOG_LEVELS . '%');
 
     // ErrorHandler
     $services

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -11,5 +12,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->set(DefaultReporterProvider::class);
+    $services
+        ->set(DefaultReporterProvider::class)
+        ->arg('$ignoredExceptions', '%' . BridgeConstantsInterface::PARAM_LOGGER_IGNORED_EXCEPTIONS . '%');
 };
