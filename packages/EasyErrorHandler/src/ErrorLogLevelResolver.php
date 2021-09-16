@@ -18,7 +18,7 @@ final class ErrorLogLevelResolver implements ErrorLogLevelResolverInterface
     private $exceptionLogLevels;
 
     /**
-     * @param null|string[] $exceptionLogLevels
+     * @param null|int[] $exceptionLogLevels
      */
     public function __construct(?array $exceptionLogLevels = null)
     {

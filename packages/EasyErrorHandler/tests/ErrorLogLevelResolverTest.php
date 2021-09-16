@@ -31,7 +31,7 @@ final class ErrorLogLevelResolverTest extends AbstractTestCase
             Logger::INFO,
             [
                 \InvalidArgumentException::class => Logger::INFO,
-            ]
+            ],
         ];
 
         yield 'Critical from exception log level aware' => [
