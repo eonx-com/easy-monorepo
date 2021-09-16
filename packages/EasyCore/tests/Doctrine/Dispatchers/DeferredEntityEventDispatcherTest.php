@@ -278,8 +278,6 @@ final class DeferredEntityEventDispatcherTest extends AbstractTestCase
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcher->dispatch($entityCreatedEvent)
             ->willReturnArgument(0);
-        $eventDispatcher->dispatch($entityUpdatedEvent)
-            ->willReturnArgument(0);
         /** @var \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $deferredEntityEventDispatcher = new DeferredEntityEventDispatcher($eventDispatcherReveal);
