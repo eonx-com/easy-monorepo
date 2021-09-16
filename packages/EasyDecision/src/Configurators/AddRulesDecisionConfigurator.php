@@ -23,7 +23,7 @@ final class AddRulesDecisionConfigurator extends AbstractConfigurator
     {
         parent::__construct($priority);
 
-        $this->rules = CollectorHelper::filterByClass($rules, RuleInterface::class);
+        $this->rules = CollectorHelper::filterByClassAsArray($rules, RuleInterface::class);
     }
 
     public function configure(DecisionInterface $decision): void
