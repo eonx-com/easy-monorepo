@@ -387,7 +387,10 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         $value = ($integerPart ?? 0) + \round(1 / 3, $precision + 1);
 
         $message = $this->translateMessage(
-            (new Decimal(['minPrecision' => $precision, 'maxPrecision' => $precision]))->message,
+            (new Decimal([
+                'minPrecision' => $precision,
+                'maxPrecision' => $precision,
+            ]))->message,
             [
                 '{{ minPrecision }}' => $precision,
                 '{{ maxPrecision }}' => $precision,
