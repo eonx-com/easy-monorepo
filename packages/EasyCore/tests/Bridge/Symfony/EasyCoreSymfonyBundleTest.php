@@ -11,7 +11,8 @@ final class EasyCoreSymfonyBundleTest extends AbstractSymfonyTestCase
      */
     public function testSanity(): void
     {
-        $this->getKernel()->getContainer();
+        $this->getKernel()
+            ->getContainer();
 
         self::assertTrue(true);
     }
