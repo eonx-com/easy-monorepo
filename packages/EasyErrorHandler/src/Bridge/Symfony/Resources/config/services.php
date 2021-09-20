@@ -18,7 +18,6 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -40,7 +39,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(ErrorHandlerInterface::class, ErrorHandler::class)
         ->arg('$builderProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER))
         ->arg('$reporterProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER))
-        ->arg('$isVerbose', '%' . BridgeConstantsInterface::PARAM_IS_VERBOSE . '%');
+        ->arg('$isVerbose', '%' . BridgeConstantsInterface::PARAM_IS_VERBOSE . '%')
+        ->arg('$ignoredExceptionsForReport', '%' . BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS . '%');
 
     $services->set(ErrorHandlerDataCollector::class)
         ->tag('data_collector', [
