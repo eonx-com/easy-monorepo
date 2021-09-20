@@ -46,20 +46,20 @@ final class EasyCoreExtension extends Extension
         $this->autoconfigTag(EventListenerInterface::class, TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
         $this->autoconfigTag(SimpleDataPersisterInterface::class, TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG);
 
-        $this->loadIfBundlesExists('easy_async_listeners.php', EasyAsyncSymfonyBundle::class);
-        $this->loadIfBundlesExists('api_platform/iri_converter.php', ApiPlatformBundle::class);
-        $this->loadIfBundlesExists('api_platform/maker_commands.php', [ApiPlatformBundle::class, MakerBundle::class]);
+        $this->loadIfBundlesExist('easy_async_listeners.php', EasyAsyncSymfonyBundle::class);
+        $this->loadIfBundlesExist('api_platform/iri_converter.php', ApiPlatformBundle::class);
+        $this->loadIfBundlesExist('api_platform/maker_commands.php', [ApiPlatformBundle::class, MakerBundle::class]);
 
         if ($config['api_platform']['custom_pagination_enabled'] ?? false) {
-            $this->loadIfBundlesExists('api_platform/pagination.php', ApiPlatformBundle::class);
+            $this->loadIfBundlesExist('api_platform/pagination.php', ApiPlatformBundle::class);
         }
 
         if ($config['api_platform']['simple_data_persister_enabled'] ?? false) {
-            $this->loadIfBundlesExists('api_platform/simple_data_persister.php', ApiPlatformBundle::class);
+            $this->loadIfBundlesExist('api_platform/simple_data_persister.php', ApiPlatformBundle::class);
 
             // This debug file is only for when simple data persister is enabled
             if ($container->hasParameter('kernel.debug') && $container->getParameter('kernel.debug')) {
-                $loader->load('api_platform/debug.php');
+                $this->loadIfBundlesExist('api_platform/debug.php', ApiPlatformBundle::class);
             }
         }
 
@@ -89,10 +89,12 @@ final class EasyCoreExtension extends Extension
         }
 
         // Aliases for custom collection operations HTTP methods
-        foreach (['PATCH', 'PUT'] as $method) {
-            $alias = \sprintf('api_platform.action.%s_collection', \strtolower($method));
-            $container->setAlias($alias, 'api_platform.action.placeholder')
-                ->setPublic(true);
+        if ($this->bundlesExist(ApiPlatformBundle::class)) {
+            foreach (['PATCH', 'PUT'] as $method) {
+                $alias = \sprintf('api_platform.action.%s_collection', \strtolower($method));
+                $container->setAlias($alias, 'api_platform.action.placeholder')
+                    ->setPublic(true);
+            }
         }
     }
 
@@ -107,23 +109,31 @@ final class EasyCoreExtension extends Extension
 
     /**
      * @param string|string[] $bundles
-     *
-     * @throws \Exception
      */
-    private function loadIfBundlesExists(string $resource, $bundles): void
+    private function bundlesExist($bundles): bool
     {
         $kernelBundles = $this->container->getParameter('kernel.bundles');
 
-        if (\is_array($kernelBundles) === false || \count($kernelBundles) < 1) {
-            return;
-        }
-
-        foreach ((array)$bundles as $bundle) {
-            if (\in_array($bundle, $kernelBundles, true) === false) {
-                return;
+        if (\is_array($kernelBundles) && \count($kernelBundles) > 0) {
+            foreach ((array)$bundles as $bundle) {
+                if (\in_array($bundle, $kernelBundles, true)) {
+                    return true;
+                }
             }
         }
 
-        $this->loader->load($resource);
+        return false;
+    }
+
+    /**
+     * @param string|string[] $bundles
+     *
+     * @throws \Exception
+     */
+    private function loadIfBundlesExist(string $resource, $bundles): void
+    {
+        if ($this->bundlesExist($bundles)) {
+            $this->loader->load($resource);
+        }
     }
 }
