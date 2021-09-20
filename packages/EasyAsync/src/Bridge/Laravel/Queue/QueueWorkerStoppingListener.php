@@ -4,20 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Laravel\Queue;
 
+use EonX\EasyAsync\Bridge\Laravel\Interfaces\QueueWorkerStoppingReasonsInterface;
 use Illuminate\Queue\Events\WorkerStopping;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 final class QueueWorkerStoppingListener
 {
-    /**
-     * @var string[]
-     */
-    private const REASONS = [
-        1 => 'Timeout',
-        12 => 'Memory exceeded',
-    ];
-
     /**
      * @var \Psr\Log\LoggerInterface
      */
@@ -30,7 +23,7 @@ final class QueueWorkerStoppingListener
 
     public function handle(WorkerStopping $event): void
     {
-        $reason = self::REASONS[$event->status] ?? null;
+        $reason = QueueWorkerStoppingReasonsInterface::REASONS[$event->status] ?? null;
 
         $this->logger->warning(\sprintf(
             'Worker stopping with status "%s"%s',
