@@ -25,6 +25,11 @@ final class ErrorHandler implements ErrorHandlerInterface
     private $builders;
 
     /**
+     * @var string[]
+     */
+    private $ignoredExceptionsForReport;
+
+    /**
      * @var bool
      */
     private $isVerbose;
@@ -42,17 +47,20 @@ final class ErrorHandler implements ErrorHandlerInterface
     /**
      * @param iterable<mixed> $builderProviders
      * @param iterable<mixed> $reporterProviders
+     * @param null|string[] $ignoredExceptionsForReport
      */
     public function __construct(
         ErrorResponseFactoryInterface $errorResponseFactory,
         iterable $builderProviders,
         iterable $reporterProviders,
-        ?bool $isVerbose = null
+        ?bool $isVerbose = null,
+        ?array $ignoredExceptionsForReport = null
     ) {
         $this->responseFactory = $errorResponseFactory;
         $this->setBuilders($builderProviders);
         $this->setReporters($reporterProviders);
         $this->isVerbose = $isVerbose ?? false;
+        $this->ignoredExceptionsForReport = $ignoredExceptionsForReport ?? [];
     }
 
     /**
@@ -92,6 +100,12 @@ final class ErrorHandler implements ErrorHandlerInterface
 
     public function report(Throwable $throwable): void
     {
+        foreach ($this->ignoredExceptionsForReport as $class) {
+            if (\is_a($throwable, $class)) {
+                return;
+            }
+        }
+
         foreach ($this->reporters as $reporter) {
             // Stop reporting if reporter returns false
             if ($reporter->report($throwable) === false) {
