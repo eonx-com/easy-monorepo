@@ -10,6 +10,7 @@ use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
 use EonX\EasyDecision\Decisions\DecisionFactory as BaseDecisionFactory;
 use EonX\EasyDecision\Expressions\ExpressionLanguageFactory;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
+use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
 use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface as BaseDecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
@@ -40,6 +41,8 @@ final class EasyDecisionServiceProvider extends ServiceProvider
                 return new ExpressionLanguageFactory();
             }
         );
+
+        $this->app->singleton(ValueExpressionFunctionProvider::class);
 
         $this->app->singleton(
             AddRulesDecisionConfigurator::class,
