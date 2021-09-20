@@ -85,5 +85,9 @@ interface RandomStringInterface
 
     public function maxAttempts(int $maxAttempts): self;
 
+    public function prefix(string $prefix): self;
+
+    public function suffix(string $suffix): self;
+
     public function userFriendly(): self;
 }
