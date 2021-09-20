@@ -12,6 +12,8 @@ use EonX\EasyRandom\Interfaces\RandomStringInterface;
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\Tests\Stubs\AlwaysValidRandomStringConstraintStub;
 
+use function Symfony\Component\String\u;
+
 final class RandomStringTest extends AbstractTestCase
 {
     /**
@@ -71,6 +73,43 @@ final class RandomStringTest extends AbstractTestCase
                 self::assertAlphabetExcluded(RandomStringInterface::SYMBOL, $randomString);
                 self::assertAlphabetExcluded(RandomStringInterface::SIMILAR, $randomString);
                 self::assertAlphabetExcluded(RandomStringInterface::VOWEL, $randomString);
+            },
+        ];
+
+        yield 'Prefix respect length' => [
+            16,
+            static function (RandomStringInterface $randomString): void {
+                $randomString
+                    ->prefix('eonx_')
+                    ->userFriendly();
+            },
+            static function (string $randomString): void {
+                self::assertEquals(16, u($randomString)->length());
+            },
+        ];
+
+        yield 'Suffix respect length' => [
+            16,
+            static function (RandomStringInterface $randomString): void {
+                $randomString
+                    ->suffix('_eonx')
+                    ->userFriendly();
+            },
+            static function (string $randomString): void {
+                self::assertEquals(16, u($randomString)->length());
+            },
+        ];
+
+        yield 'Prefix and Suffix respect length' => [
+            16,
+            static function (RandomStringInterface $randomString): void {
+                $randomString
+                    ->prefix('eonx_')
+                    ->suffix('_eonx')
+                    ->userFriendly();
+            },
+            static function (string $randomString): void {
+                self::assertEquals(16, u($randomString)->length());
             },
         ];
     }
