@@ -14,6 +14,7 @@ final class QueueWorkerStoppingListener
      * @var string[]
      */
     private const REASONS = [
+        1 => 'Timeout',
         12 => 'Memory exceeded',
     ];
 
