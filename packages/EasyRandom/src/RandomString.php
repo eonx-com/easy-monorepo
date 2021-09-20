@@ -330,7 +330,8 @@ final class RandomString implements RandomStringInterface
 
         foreach ([$this->prefix, $this->suffix] as $string) {
             if ($string !== null) {
-                $length -= u($string)->length();
+                $length -= u($string)
+                    ->length();
             }
         }
 

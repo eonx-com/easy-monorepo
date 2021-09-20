@@ -11,6 +11,7 @@ use EonX\EasyRandom\Exceptions\InvalidRandomStringException;
 use EonX\EasyRandom\Interfaces\RandomStringInterface;
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\Tests\Stubs\AlwaysValidRandomStringConstraintStub;
+
 use function Symfony\Component\String\u;
 
 final class RandomStringTest extends AbstractTestCase
