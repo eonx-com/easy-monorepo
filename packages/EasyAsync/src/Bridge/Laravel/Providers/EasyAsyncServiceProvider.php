@@ -7,6 +7,7 @@ namespace EonX\EasyAsync\Bridge\Laravel\Providers;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyAsync\Bridge\BridgeConstantsInterface;
+use EonX\EasyAsync\Bridge\EasyErrorHandler\WorkerStoppingListener;
 use EonX\EasyAsync\Bridge\Laravel\Queue\DoctrineManagersClearListener;
 use EonX\EasyAsync\Bridge\Laravel\Queue\DoctrineManagersSanityCheckListener;
 use EonX\EasyAsync\Bridge\Laravel\Queue\QueueWorkerStoppingListener;
@@ -31,6 +32,8 @@ use EonX\EasyAsync\Interfaces\JobPersisterInterface;
 use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
+use EonX\EasyErrorHandler\Bridge\Laravel\Provider\EasyErrorHandlerServiceProvider;
+use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
 use Illuminate\Contracts\Container\Container;
@@ -60,6 +63,11 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             $events->listen(JobProcessing::class, DoctrineManagersSanityCheckListener::class);
             $events->listen(JobProcessing::class, DoctrineManagersClearListener::class);
         }
+
+        if (\config('easy-async.easy_error_handler_worker_stopping_enabled', true)
+            && \class_exists(EasyErrorHandlerServiceProvider::class)) {
+            $events->listen(WorkerStopping::class, WorkerStoppingListener::class);
+        }
     }
 
     /**
@@ -70,6 +78,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/easy-async.php', 'easy-async');
 
         $this->registerAsyncLogger();
+        $this->registerEasyErrorHandlerBridge();
         $this->registerQueueListeners();
 
         $simples = [
@@ -146,6 +155,21 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             ->when(JobPersister::class)
             ->needs('$table')
             ->give(\config('easy-async.jobs_table', 'easy_async_jobs'));
+    }
+
+    private function registerEasyErrorHandlerBridge(): void
+    {
+        if (\config('easy-async.easy_error_handler_worker_stopping_enabled', true) === false
+            || \class_exists(EasyErrorHandlerServiceProvider::class) === false) {
+            return;
+        }
+
+        $this->app->singleton(
+            WorkerStoppingListener::class,
+            static function (Container $app): WorkerStoppingListener {
+                return new WorkerStoppingListener($app->make(ErrorHandlerInterface::class));
+            }
+        );
     }
 
     private function registerQueueListeners(): void
