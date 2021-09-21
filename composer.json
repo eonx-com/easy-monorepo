@@ -24,7 +24,7 @@
         "symfony/process": "^4.4 || ^5.1.5",
         "symfony/string": "^4.4 || ^5.1.5",
         "symfony/uid": "^4.4 || ^5.1.5",
-        "symfony/psr-http-message-bridge": "^1.1",
+        "symfony/psr-http-message-bridge": "^1.1 || ^2.0",
         "nyholm/psr7": "^1.1",
         "nette/utils": "^3.1",
         "aws/aws-sdk-php": "^3.134",

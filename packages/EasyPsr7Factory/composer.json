@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "symfony/psr-http-message-bridge": "^1.1",
+        "symfony/psr-http-message-bridge": "^1.1 || ^2.0",
         "nyholm/psr7": "^1.1"
     },
     "require-dev": {
