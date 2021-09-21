@@ -45,6 +45,20 @@ parameters:
         - message: '#Parameter \#2 \$publicKey of class EonX\\EasyApiToken\\External\\FirebaseJwtDriver constructor expects resource\|string, array given#'
           path: packages/EasyApiToken/tests/External/FirebaseJwtDriverTest.php
 
+        - message: '#Property EonX\\EasyApiToken\\External\\Auth0JwtDriver\:\:\$cache has unknown class Auth0\\SDK\\Helpers\\Cache\\CacheHandler as its type#'
+          path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
+
+        - message: '#Parameter \$cache of method EonX\\EasyApiToken\\External\\Auth0JwtDriver\:\:__construct\(\) has invalid typehint type Auth0\\SDK\\Helpers\\Cache\\CacheHandler#'
+          path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
+
+        - message: '#Instantiated class Auth0\\SDK\\JWTVerifier not found#'
+          path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
+
+        - message: '#Call to method verifyAndDecode\(\) on an unknown class Auth0\\SDK\\JWTVerifier#'
+          path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
+
+
+
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Generators\\DateTimeGenerator::fromString\(\) should return DateTime but returns DateTime\|false.#'
           path: packages/EasyAsync/src/Generators

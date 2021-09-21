@@ -143,14 +143,29 @@ final class TokenVerifier
 
     /**
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      */
     private function resolveSignatureVerifier(string $algo): SignatureVerifier
     {
         if ($algo === AlgorithmsInterface::HS256) {
+            if (\is_string($this->privateKey) === false) {
+                throw new InvalidConfigurationException(\sprintf(
+                    'PrivateKey must be a string when using algorithm "%s"',
+                    $algo
+                ));
+            }
+
             return new SymmetricVerifier($this->privateKey);
         }
 
         if ($algo === AlgorithmsInterface::RS256) {
+            if ($this->jwks === null) {
+                throw new InvalidConfigurationException(\sprintf(
+                    'Jwks must be set when using algorithm "%s"',
+                    $algo
+                ));
+            }
+
             return new AsymmetricVerifier($this->jwks);
         }
 
