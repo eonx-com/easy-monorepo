@@ -9,7 +9,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ '7.3' ]
+                php: [ '7.3', '7.4' ]
                 actions:
                     - { name: ecs, coverage: none, run: composer check-ecs }
                     - { name: monorepo, coverage: none, run: composer check-monorepo }
@@ -46,7 +46,8 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: [ '7.3' ]
+                php: [ '7.3', '7.4' ]
+        name: Security Check (${{ matrix.php }})
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
