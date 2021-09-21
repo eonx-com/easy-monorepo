@@ -11,7 +11,7 @@
         "mockery/mockery": "^1.2",
         "doctrine/orm": "^2.6",
         "eonx-com/easy-pagination": "^3.4",
-        "laravel/lumen-framework": "^5.5",
+        "laravel/lumen-framework": "^5.5 || ^8.1",
         "vlucas/phpdotenv": "^3.3"
     },
     "autoload": {

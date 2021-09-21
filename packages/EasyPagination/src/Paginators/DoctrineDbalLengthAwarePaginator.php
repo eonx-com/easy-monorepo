@@ -50,12 +50,12 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function doGetResult(QueryBuilder $queryBuilder): array
+    protected function doGetResult($queryBuilder): array
     {
         return $this->conn->fetchAllAssociative($queryBuilder->getSQL(), $queryBuilder->getParameters());
     }
 
-    protected function doGetTotalItems(QueryBuilder $queryBuilder, string $countAlias): int
+    protected function doGetTotalItems($queryBuilder, string $countAlias): int
     {
         $result = (array)$this->conn->fetchAssoc($queryBuilder->getSQL(), $queryBuilder->getParameters());
 

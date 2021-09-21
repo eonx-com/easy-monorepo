@@ -27,7 +27,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ '7.3', '7.4' ]
+                php: [ '7.3', '7.4', '8.0' ]
                 package: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
         name: ${{ matrix.package.dir }} (${{ matrix.php }})

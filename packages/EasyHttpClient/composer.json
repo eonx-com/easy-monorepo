@@ -13,7 +13,7 @@
         "doctrine/dbal": "^2.6",
         "eonx-com/easy-lock": "^3.4",
         "eonx-com/easy-webhook": "^3.4",
-        "laravel/lumen-framework": "^5.5",
+        "laravel/lumen-framework": "^5.5 || ^8.1",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "symfony/symfony": "^4.4 || ^5.1.5"
     },

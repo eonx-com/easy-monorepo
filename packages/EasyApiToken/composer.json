@@ -14,7 +14,7 @@
         "eonx-com/easy-utils": "^3.4",
         "auth0/auth0-php": "^5.4 || ^7.6",
         "psr/container": "^1.0",
-        "laravel/lumen-framework": "^5.5",
+        "laravel/lumen-framework": "^5.5 || ^8.1",
         "symfony/dependency-injection": "^4.4 || ^5.1.5",
         "symfony/config": "^4.4 || ^5.1.5",
         "symfony/yaml": "^4.4 || ^5.1.5"

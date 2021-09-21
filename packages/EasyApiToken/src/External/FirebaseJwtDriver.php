@@ -44,9 +44,12 @@ final class FirebaseJwtDriver implements JwtDriverInterface
      */
     public function __construct(string $algo, $publicKey, $privateKey, ?array $allowedAlgos = null, ?int $leeway = null)
     {
-        if (\is_string($publicKey) === false && \is_resource($publicKey) === false) {
+        if (\is_string($publicKey) === false
+            && \is_resource($publicKey) === false
+            // Support for PHP8
+            && (\class_exists(\OpenSSLAsymmetricKey::class) && $publicKey instanceof \OpenSSLAsymmetricKey) === false) {
             throw new InvalidArgumentException(\sprintf(
-                '$publicKey must be either a string or a resource, %s given',
+                '$publicKey must be either a string or a resource or a \OpenSSLAsymmetricKey since PHP8, %s given',
                 \gettype($publicKey)
             ));
         }

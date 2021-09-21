@@ -12,12 +12,12 @@
         "nesbot/carbon": "^1.39 || ^2.22"
     },
     "require-dev": {
-        "ramsey/uuid": "^3.9",
+        "ramsey/uuid": "^3.9 || ^4.0",
         "doctrine/orm": "^2.6",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "symfony/symfony": "^4.4 || ^5.1.5",
         "mockery/mockery": "^1.2",
-        "laravel/lumen-framework": "^5.5"
+        "laravel/lumen-framework": "^5.5 || ^8.1"
     },
     "autoload": {
         "psr-4": {
