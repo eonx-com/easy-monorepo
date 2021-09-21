@@ -11,7 +11,6 @@
         "phpunit/phpunit": "^8.4 || ^9.5",
         "ext-openssl": "*",
         "firebase/php-jwt": "^5.0",
-        "eonx-com/easy-psr7-factory": "^3.4",
         "eonx-com/easy-utils": "^3.4",
         "auth0/auth0-php": "^5.4 || ^7.6",
         "psr/container": "^1.0",
