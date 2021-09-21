@@ -135,6 +135,9 @@ final class Auth0JwtDriver implements JwtDriverInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     private function auth0V5Decode(string $token)
     {
         $verifier = new JWTVerifier([
