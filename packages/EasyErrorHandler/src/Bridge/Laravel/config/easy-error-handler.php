@@ -39,6 +39,11 @@ return [
     'bugsnag_ignored_exceptions' => null,
 
     /**
+     * List of Ignored Exceptions that'll not be reported to any reporter.
+     */
+    'ignored_exceptions' => null,
+
+    /**
      * List of Exceptions and their associated log levels.
      */
     'logger_exception_log_levels' => null,

@@ -78,7 +78,8 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                     $app->make(ErrorResponseFactoryInterface::class),
                     $app->tagged(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER),
                     $app->tagged(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER),
-                    (bool)\config('easy-error-handler.use_extended_response', false)
+                    (bool)\config('easy-error-handler.use_extended_response', false),
+                    \config('easy-error-handler.ignored_exceptions')
                 );
             }
         );

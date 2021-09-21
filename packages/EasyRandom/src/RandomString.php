@@ -10,6 +10,8 @@ use EonX\EasyRandom\Exceptions\InvalidRandomStringException;
 use EonX\EasyRandom\Interfaces\RandomStringInterface;
 use Symfony\Component\String\ByteString;
 
+use function Symfony\Component\String\u;
+
 final class RandomString implements RandomStringInterface
 {
     /**
@@ -45,12 +47,22 @@ final class RandomString implements RandomStringInterface
     /**
      * @var string
      */
+    private $prefix;
+
+    /**
+     * @var string
+     */
     private $randomString;
 
     /**
      * @var string
      */
     private $resolvedAlphabet;
+
+    /**
+     * @var string
+     */
+    private $suffix;
 
     public function __construct(int $length)
     {
@@ -212,6 +224,20 @@ final class RandomString implements RandomStringInterface
         return $this;
     }
 
+    public function prefix(string $prefix): RandomStringInterface
+    {
+        $this->prefix = $prefix;
+
+        return $this;
+    }
+
+    public function suffix(string $suffix): RandomStringInterface
+    {
+        $this->suffix = $suffix;
+
+        return $this;
+    }
+
     public function userFriendly(): RandomStringInterface
     {
         $this
@@ -236,7 +262,7 @@ final class RandomString implements RandomStringInterface
         $attempts = 0;
 
         do {
-            $randomString = ByteString::fromRandom($this->length, $this->resolveAlphabet())->toString();
+            $randomString = ByteString::fromRandom($this->resolveLength(), $this->resolveAlphabet())->toString();
             $attempts++;
         } while ($this->validateString($randomString) === false && $attempts < $this->maxAttempts);
 
@@ -245,6 +271,14 @@ final class RandomString implements RandomStringInterface
                 'Could not generate valid random string for alphabet "%s"',
                 $this->resolveAlphabet()
             ));
+        }
+
+        if ($this->prefix !== null) {
+            $randomString = $this->prefix . $randomString;
+        }
+
+        if ($this->suffix !== null) {
+            $randomString .= $this->suffix;
         }
 
         return $this->randomString = $randomString;
@@ -289,6 +323,20 @@ final class RandomString implements RandomStringInterface
         }
 
         throw new InvalidAlphabetNameException(\sprintf('Alphabet with name "%s" does not exist', $alphabetName));
+    }
+
+    private function resolveLength(): int
+    {
+        $length = $this->length;
+
+        foreach ([$this->prefix, $this->suffix] as $string) {
+            if ($string !== null) {
+                $length -= u($string)
+                    ->length();
+            }
+        }
+
+        return $length;
     }
 
     private function validateAlphabet(string $alphabet): string

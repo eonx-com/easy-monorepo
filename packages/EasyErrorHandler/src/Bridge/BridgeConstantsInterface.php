@@ -24,6 +24,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_IGNORED_EXCEPTIONS = 'easy_error_handler.param_ignored_exceptions';
+
+    /**
+     * @var string
+     */
     public const PARAM_IS_VERBOSE = 'easy_error_handler.param_is_verbose';
 
     /**

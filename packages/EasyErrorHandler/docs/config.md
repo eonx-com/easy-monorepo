@@ -1,7 +1,4 @@
----eonx_docs---
-title: Configuration
-weight: 1001
----eonx_docs---
+---eonx_docs--- title: Configuration weight: 1001 ---eonx_docs---
 
 # Configuration
 
@@ -25,6 +22,7 @@ The common configuration options for Laravel and Symfony are as follows:
 | `bugsnag_enabled` | `true` | Automatically register the error reporter for easy-bugsnag integration. |
 | `bugsnag_ignored_exceptions` | `[]` | List of exceptions that will not be reported to Bugsnag. |
 | `bugsnag_threshold` | `null` | Log level threshold for reporting to Bugsnag. |
+| `ignored_exceptions` | `[]` | List of exceptions that will not reported by any reporter. |
 | `logger_exception_log_levels` | `[]` | List of exceptions and their associated log levels. |
 | `logger_ignored_exceptions` | `[]` | List of exceptions that will not be reported to Logger. |
 | `response.code` | `code` | Attribute name for exception code. |
