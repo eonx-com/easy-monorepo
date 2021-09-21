@@ -6,6 +6,10 @@ namespace EonX\EasyTest\InvalidDataMaker;
 
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
+use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Alphanumeric;
+use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\AlphanumericHyphen;
+use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\DateInterval;
+use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Decimal;
 use Symfony\Component\Validator\Constraints\CardScheme;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Count;
@@ -244,6 +248,28 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     /**
      * @return iterable<mixed>
      */
+    public function yieldInvalidAlphanumeric(): iterable
+    {
+        $value = 'invalid alphanumeric value';
+        $message = $this->translateMessage((new Alphanumeric())->message);
+
+        yield from $this->create("{$this->property} is invalid alphanumeric value", $value, $message);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public function yieldInvalidAlphanumericHyphen(): iterable
+    {
+        $value = 'invalid alphanumeric-hyphen value';
+        $message = $this->translateMessage((new AlphanumericHyphen())->message);
+
+        yield from $this->create("{$this->property} is invalid alphanumeric hyphen value", $value, $message);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
     public function yieldInvalidChoice(): iterable
     {
         $value = 'invalid-choice';
@@ -283,6 +309,17 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         $message = $this->translateMessage((new Currency())->message);
 
         yield from $this->create("{$this->property} is invalid currency", $value, $message);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public function yieldInvalidDateInterval(): iterable
+    {
+        $value = 'invalid-date-interval';
+        $message = $this->translateMessage((new DateInterval())->message);
+
+        yield from $this->create("{$this->property} is invalid date interval", $value, $message);
     }
 
     /**
@@ -328,6 +365,39 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         $value = \str_pad('', $exactLength - 1, '1');
 
         yield from $this->create("{$this->property} has length less than expected", $value, $message);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public function yieldInvalidFloat(int $precision, ?int $integerPart = null): iterable
+    {
+        /*
+         * @todo add types validation and invalid relationships validation cases if/when API Platform starts
+         * to return 400 instead of 500
+         * @see https://github.com/api-platform/api-platform/issues/788
+         *
+         * $value = 'abc';
+         * yield from $this->create("{$this->property} is a string", $value);
+         *
+         * $value = 10;
+         *
+         * yield from $this->create("{$this->property} is an integer", $value);
+         */
+        $value = ($integerPart ?? 0) + \round(1 / 3, $precision + 1);
+
+        $message = $this->translateMessage(
+            (new Decimal([
+                'minPrecision' => $precision,
+                'maxPrecision' => $precision,
+            ]))->message,
+            [
+                '{{ minPrecision }}' => $precision,
+                '{{ maxPrecision }}' => $precision,
+            ]
+        );
+
+        yield from $this->create("{$this->property} has invalid precision", $value, $message);
     }
 
     /**
