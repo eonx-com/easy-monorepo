@@ -47,7 +47,7 @@ jobs:
         strategy:
             matrix:
                 php: [ '7.3', '7.4' ]
-        name: Security Check (${{ matrix.php }})
+        name: security-checker (${{ matrix.php }})
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
