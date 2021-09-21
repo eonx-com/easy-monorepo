@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External\Auth0;
 
-use Auth0\SDK\API\Helpers\TokenGenerator as BaseTokenGenerator;
 use EonX\EasyApiToken\External\Auth0\Interfaces\TokenGeneratorInterface;
 use Firebase\JWT\JWT;
 
@@ -18,16 +17,22 @@ final class TokenGenerator implements TokenGeneratorInterface
     private $audience;
 
     /**
+     * @var null|string
+     */
+    private $issuer;
+
+    /**
      * Secret used to encode the token.
      *
      * @var string|null
      */
     private $secret;
 
-    public function __construct(?string $audience = null, ?string $secret = null)
+    public function __construct(?string $audience = null, ?string $secret = null, ?string $issuer = null)
     {
         $this->audience = $audience;
         $this->secret = $secret;
+        $this->issuer = $issuer;
     }
 
     /**
@@ -42,7 +47,7 @@ final class TokenGenerator implements TokenGeneratorInterface
         ?bool $secretEncoded = null
     ): string {
         $secretEncoded = $secretEncoded ?? true;
-        $lifetime = $lifetime ?? BaseTokenGenerator::DEFAULT_LIFETIME;
+        $lifetime = $lifetime ?? 3600;
 
         $time = \time();
         $payload = [
@@ -58,6 +63,10 @@ final class TokenGenerator implements TokenGeneratorInterface
 
         if ($roles !== null) {
             $payload = \array_merge($payload, $roles);
+        }
+
+        if ($this->issuer !== null) {
+            $payload['iss'] = $this->issuer;
         }
 
         $payload['jti'] = \md5((string)\json_encode($payload));
