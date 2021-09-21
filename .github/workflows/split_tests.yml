@@ -27,10 +27,10 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ '7.3' ]
+                php: [ '7.3', '7.4' ]
                 package: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
-        name: ${{ matrix.package.dir }}
+        name: ${{ matrix.package.dir }} (${{ matrix.php }})
 
         steps:
             -   uses: eonx-com/actions-checkout@v2
