@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\External;
 
 use Auth0\SDK\Helpers\Cache\CacheHandler;
+use Auth0\SDK\Helpers\Tokens\SignatureVerifier;
 use Auth0\SDK\JWTVerifier;
+use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
 use EonX\EasyApiToken\External\Auth0\TokenGenerator;
+use EonX\EasyApiToken\External\Auth0V7\TokenVerifier;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use EonX\EasyApiToken\Interfaces\AlgorithmsInterface;
 
 final class Auth0JwtDriver implements JwtDriverInterface
 {
@@ -32,6 +36,16 @@ final class Auth0JwtDriver implements JwtDriverInterface
      * @var null|\Auth0\SDK\Helpers\Cache\CacheHandler
      */
     private $cache;
+
+    /**
+     * @var string
+     */
+    private $issuerForEncode;
+
+    /**
+     * @var null|string[]|\Auth0\SDK\Helpers\JWKFetcher
+     */
+    private $jwks;
 
     /**
      * @var null|string|resource
@@ -64,11 +78,67 @@ final class Auth0JwtDriver implements JwtDriverInterface
         $this->authorizedIss = $authorizedIss;
         $this->privateKey = $privateKey;
         $this->audienceForEncode = $audienceForEncode ?? (string)\reset($validAudiences);
-        $this->allowedAlgos = $allowedAlgos ?? ['HS256', 'RS256'];
+        $this->allowedAlgos = $allowedAlgos ?? AlgorithmsInterface::ALL;
         $this->cache = $cache;
+        $this->issuerForEncode = (string)\reset($authorizedIss);
     }
 
+    /**
+     * @return mixed
+     *
+     * @throws \Auth0\SDK\Exception\InvalidTokenException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     */
     public function decode(string $token)
+    {
+        // Auth0 v5
+        if (\class_exists(JWTVerifier::class)) {
+            return $this->auth0V5Decode($token);
+        }
+
+        // Auth0 v7
+        if (\class_exists(SignatureVerifier::class)) {
+            return $this->auth0V7Decode($token);
+        }
+
+        throw new InvalidConfigurationException('No supported version of auth0-php installed. Supports only v5 and v7');
+    }
+
+    /**
+     * @param mixed[] $input
+     */
+    public function encode($input): string
+    {
+        /** @var string $privateKey */
+        $privateKey = $this->privateKey;
+
+        $generator = new TokenGenerator($this->audienceForEncode, $privateKey, $this->issuerForEncode);
+
+        return $generator->generate(
+            $input['scopes'] ?? [],
+            $input['roles'] ?? [],
+            $input['sub'] ?? null,
+            $input['lifetime'] ?? null,
+            \class_exists(JWTVerifier::class)
+        );
+    }
+
+    /**
+     * @param null|string[]|\Auth0\SDK\Helpers\JWKFetcher $jwks
+     */
+    public function setJwks($jwks): self
+    {
+        $this->jwks = $jwks;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function auth0V5Decode(string $token)
     {
         $verifier = new JWTVerifier([
             'authorized_iss' => $this->authorizedIss,
@@ -82,20 +152,30 @@ final class Auth0JwtDriver implements JwtDriverInterface
     }
 
     /**
-     * @param mixed[] $input
+     * @return mixed[]
+     *
+     * @throws \Auth0\SDK\Exception\InvalidTokenException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
-    public function encode($input): string
+    private function auth0V7Decode(string $token): array
     {
-        /** @var string $privateKey */
-        $privateKey = $this->privateKey;
+        if (\is_string($this->privateKey) === false) {
+            throw new InvalidConfigurationException(\sprintf(
+                'Auth0 v7 accepts privateKey as string only, %s given',
+                \gettype($this->privateKey)
+            ));
+        }
 
-        $generator = new TokenGenerator($this->audienceForEncode, $privateKey);
-
-        return $generator->generate(
-            $input['scopes'] ?? [],
-            $input['roles'] ?? [],
-            $input['sub'] ?? null,
-            $input['lifetime'] ?? null
+        $verifier = new TokenVerifier(
+            $this->authorizedIss,
+            $this->validAudiences,
+            $this->allowedAlgos,
+            $this->privateKey,
+            $this->jwks
         );
+
+        return $verifier->verifyAndDecode($token);
     }
 }
