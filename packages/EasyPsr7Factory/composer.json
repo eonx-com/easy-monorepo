@@ -4,7 +4,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^7.2 || ^8.0",
         "symfony/psr-http-message-bridge": "^1.1 || ^2.0",
         "nyholm/psr7": "^1.1"
     },
