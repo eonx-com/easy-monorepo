@@ -24,7 +24,11 @@ final class ReplaceAsteriskWithDevMasterCommand extends Command
             $updatedContents = \str_replace('*', 'dev-feature/php8-the-better-way', \file_get_contents($filename));
             $updatedContents = \str_replace('"canonical": false', '"canonical": true', $updatedContents);
 
-            $filesystem->dumpFile($filename, $updatedContents);
+            $jsonContents = \json_decode($updatedContents, true);
+            $jsonContents['minimum-stability'] = 'dev';
+            $jsonContents['prefer-stable'] = true;
+
+            $filesystem->dumpFile($filename, \json_encode($jsonContents));
 
             $output->writeln(\sprintf('Successfully updated %s', $filename));
         }
