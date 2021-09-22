@@ -17,7 +17,7 @@ final class CoverageReportDto
     private $violations;
 
     /**
-     * @var string[] $violations
+     * @param string[] $violations
      */
     public function __construct(float $coverage, array $violations = [])
     {
