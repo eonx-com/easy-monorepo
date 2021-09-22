@@ -67,7 +67,7 @@ final class LaravelEventDispatcherStub implements Dispatcher
      * @param string|string[] $events
      * @param mixed $listener
      */
-    public function listen($events, $listener): void
+    public function listen($events, $listener = null): void
     {
         // No body needed.
     }
