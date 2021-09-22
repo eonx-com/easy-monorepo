@@ -15,7 +15,7 @@
         "laravel/lumen-framework": "^5.5 || ^8.1",
         "vlucas/phpdotenv": "^3.3",
         "symfony/symfony": "^4.4 || ^5.1.5",
-        "mockery/mockery": "^1.2"
+        "mockery/mockery": "^1.4"
     },
     "autoload": {
         "psr-4": {
