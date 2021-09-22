@@ -37,5 +37,11 @@
         "branch-alias": {
             "dev-master": "3.4-dev"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../packages/EasyUtils"
+        }
+    ]
 }
