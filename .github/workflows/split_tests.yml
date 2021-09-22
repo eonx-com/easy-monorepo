@@ -44,6 +44,7 @@ jobs:
             -   uses: eonx-com/actions-composer-install@v1
 
             -   run: vendor/bin/monorepo-builder localize-composer-paths --ansi
+            -   run: bin/monorepo replace-asterisk-with-dev-master packages/${{ matrix.package.dir }}
             -   run: cat packages/${{ matrix.package.dir }}/composer.json
             -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
             -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit tests
