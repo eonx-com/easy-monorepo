@@ -60,6 +60,9 @@ final class LocalizePackageRepositoriesCommand extends Command
             $composerJsonFileContents['repositories'] = $repositories;
             $composerJsonFileContents['minimum-stability'] = 'dev';
             $composerJsonFileContents['prefer-stable'] = true;
+            $composerJsonFileContents['conflict'] = [
+                'symfony/dependency-injection' => '5.3.7',
+            ];
 
             $filesystem->dumpFile($filename, \json_encode($composerJsonFileContents));
 
