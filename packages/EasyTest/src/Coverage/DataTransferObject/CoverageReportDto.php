@@ -6,12 +6,15 @@ namespace EonX\EasyTest\Coverage\DataTransferObject;
 
 final class CoverageReportDto
 {
-    private float $coverage;
+    /**
+     * @var float
+     */
+    private $coverage;
 
     /**
      * @var string[]
      */
-    private array $violations;
+    private $violations;
 
     /**
      * @var string[] $violations
@@ -37,6 +40,6 @@ final class CoverageReportDto
 
     public function hasViolations(): bool
     {
-        return empty($this->violations) !== false;
+        return empty($this->violations) === false;
     }
 }
