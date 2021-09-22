@@ -59,7 +59,8 @@
         "tracy/tracy": "^2.7",
         "migrify/vendor-patches": "^0.3.48",
         "dg/bypass-finals": "^1.2",
-        "league/flysystem": "^1.1"
+        "league/flysystem": "^1.1",
+        "phpspec/prophecy-phpunit": "^2.0"
     },
     "autoload": {
         "psr-4": {
