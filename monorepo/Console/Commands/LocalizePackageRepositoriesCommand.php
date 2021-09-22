@@ -35,29 +35,26 @@ final class LocalizePackageRepositoriesCommand extends Command
         $filesystem = new Filesystem();
         $monorepoPackages = $this->getMonorepoPackages($composerJsonFiles);
         $monorepoPackageNames = \array_keys($monorepoPackages);
+        $repositories = [];
+
+        foreach ($monorepoPackages as $dir) {
+            $repositories[] = [
+                'type' => 'path',
+                'url' => \sprintf('../%s', $dir),
+            ];
+        }
 
         foreach ($composerJsonFiles as $composerJsonFile) {
             $filename = $composerJsonFile->getRealPath();
-            $localMonorepoPackages = [];
-            $repositories = [];
             $composerJsonFileContents = $this->getComposerJsonFileContents($composerJsonFile);
 
             // Replace monorepo packages version with dev one
             foreach (['require', 'require-dev'] as $section) {
                 foreach (\array_keys($composerJsonFileContents[$section]) as $package) {
                     if (\in_array($package, $monorepoPackageNames, true)) {
-                        $localMonorepoPackages[] = $package;
                         $composerJsonFileContents[$section][$package] = $devVersion;
                     }
                 }
-            }
-
-            // Add local repositories for monorepo packages
-            foreach ($localMonorepoPackages as $package) {
-                $repositories[] = [
-                    'type' => 'path',
-                    'url' => \sprintf('../%s', $monorepoPackages[$package]),
-                ];
             }
 
             $composerJsonFileContents['repositories'] = $repositories;
