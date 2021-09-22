@@ -37,7 +37,7 @@ final class ExceptionHandler implements IlluminateExceptionHandlerInterface
     /**
      * @param \Illuminate\Http\Request $request
      */
-    public function render($request, Exception $exception): Response
+    public function render($request, $exception): Response
     {
         return $this->errorHandler->render($request, $exception);
     }
@@ -45,7 +45,7 @@ final class ExceptionHandler implements IlluminateExceptionHandlerInterface
     /**
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      */
-    public function renderForConsole($output, Exception $exception): void
+    public function renderForConsole($output, $exception): void
     {
         (new Application())->renderThrowable($exception, $output);
 
@@ -53,12 +53,12 @@ final class ExceptionHandler implements IlluminateExceptionHandlerInterface
         $this->renderValidationFailuresToConsoleIfNeeded($output, $exception);
     }
 
-    public function report(Exception $exception): void
+    public function report($exception): void
     {
         $this->errorHandler->report($exception);
     }
 
-    public function shouldReport(Exception $exception): bool
+    public function shouldReport($exception): bool
     {
         // Delegate decision to error reporters
         return true;
