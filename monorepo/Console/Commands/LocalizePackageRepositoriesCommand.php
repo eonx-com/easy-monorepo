@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Console\Commands;
 
+use EonX\EasyMonorepo\Git\GitManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symplify\MonorepoBuilder\Split\Git\GitManager;
 use Symplify\SmartFileSystem\Finder\FinderSanitizer;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
@@ -17,7 +17,7 @@ final class LocalizePackageRepositoriesCommand extends Command
     protected static $defaultName = 'localize-monorepo-packages';
 
     /**
-     * @var \Symplify\MonorepoBuilder\Split\Git\GitManager
+     * @var \EonX\EasyMonorepo\Git\GitManager
      */
     private $gitManager;
 
