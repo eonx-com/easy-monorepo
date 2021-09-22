@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1632223900">
+    <project timestamp="1632223900">
+        <package name="Foo\Bar">
+            <file name="/var/www/src/Foo/Bar/Baz.php">
+                <class name="Foo\Bar\Baz" namespace="Foo\Bar">
+                    <metrics complexity="24" methods="19" coveredmethods="19" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="30" elements="100" coveredelements="70"/>
+                </class>
+                <metrics loc="315" ncloc="182" classes="1" methods="19" coveredmethods="19" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="30" elements="100" coveredelements="70"/>
+            </file>
+        </package>
+        <metrics files="1" loc="315" ncloc="182" classes="1" methods="19" coveredmethods="19" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="30" elements="100" coveredelements="70"/>
+    </project>
+</coverage>

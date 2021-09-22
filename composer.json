@@ -8,8 +8,8 @@
         "packages/EasyTest/bin/easy-test"
     ],
     "require": {
-        "php": "^7.2",
         "ext-json": "*",
+        "ext-simplexml": "*",
         "doctrine/orm": "^2.6",
         "nesbot/carbon": "^1.39 || ^2.22",
         "dragonmantank/cron-expression": "^2.3",

@@ -9,3 +9,4 @@ services:
         exclude:
             - '../src/HttpKernel/*'
             - '../src/InvalidDataMaker/*'
+            - '../src/Coverage/DataTransferObject/*'
