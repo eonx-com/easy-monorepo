@@ -30,7 +30,6 @@ use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use Psr\Log\LoggerInterface;
 
 final class EasyErrorHandlerServiceProvider extends ServiceProvider
@@ -89,15 +88,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         $this->app->singleton(
             IlluminateExceptionHandlerInterface::class,
             static function (Container $app): IlluminateExceptionHandlerInterface {
-                $isV8OrLater = false;
-
-                if (\method_exists($app, 'version')) {
-                    $isV8OrLater = Str::contains($app->version(), ['^8.', '^9.']);
-                }
-
-                $exceptionHandlerClass = $isV8OrLater ? Laravel8ExceptionHandler::class : ExceptionHandler::class;
-
-                return new $exceptionHandlerClass(
+                return new ExceptionHandler(
                     $app->make(ErrorHandlerInterface::class),
                     $app->make(TranslatorInterface::class)
                 );
