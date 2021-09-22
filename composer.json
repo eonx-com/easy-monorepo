@@ -9,7 +9,6 @@
     ],
     "require": {
         "php": "^7.2 || ^8.0",
-        "ext-json": "^7.2 || ^8.0",
         "doctrine/orm": "^2.6",
         "nesbot/carbon": "^1.39 || ^2.22",
         "dragonmantank/cron-expression": "^2.3 || ^3.0",
@@ -40,7 +39,6 @@
         "auth0/auth0-php": "^5.4 || ^7.6",
         "bugsnag/bugsnag-laravel": "^2.17",
         "doctrine/dbal": "^2.6",
-        "ext-openssl": "^7.2 || ^8.0",
         "firebase/php-jwt": "^5.0",
         "laravel-doctrine/orm": "^1.4",
         "laravel/lumen-framework": "^5.5 || ^8.1",
