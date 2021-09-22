@@ -19,7 +19,7 @@ final class ReplaceAsteriskWithDevMasterCommand extends Command
         $filesystem = new Filesystem();
 
         foreach ($this->getComposerJsonFiles() as $composerJsonFile) {
-            $filename = $composerJsonFile->getFilename();
+            $filename = $composerJsonFile->getRealPath();
 
             $updatedContents = \str_replace('*', 'dev-feature/php8-the-better-way', \file_get_contents($filename));
             $updatedContents = \str_replace('"canonical": false', '"canonical": true', $updatedContents);
