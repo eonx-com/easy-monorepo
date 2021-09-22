@@ -61,7 +61,7 @@ final class LocalizePackageRepositoriesCommand extends Command
             $composerJsonFileContents['minimum-stability'] = 'dev';
             $composerJsonFileContents['prefer-stable'] = true;
 
-            $filesystem->dumpFile($filename, \json_encode($composerJsonFileContents, \JSON_PRETTY_PRINT));
+            $filesystem->dumpFile($filename, \json_encode($composerJsonFileContents));
 
             $output->writeln(\sprintf('Successfully updated %s', $filename));
         }

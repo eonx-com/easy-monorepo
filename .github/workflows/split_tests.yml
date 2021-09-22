@@ -10,7 +10,7 @@ jobs:
 
             -   uses: eonx-com/actions-setup-php@v2
                 with:
-                    php-version: 7.3
+                    php-version: 7.4
                     coverage: none
 
             -   uses: eonx-com/actions-composer-install@v1
@@ -44,6 +44,5 @@ jobs:
             -   uses: eonx-com/actions-composer-install@v1
 
             -   run: bin/monorepo localize-monorepo-packages
-            -   run: cat packages/${{ matrix.package.dir }}/composer.json
             -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
             -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit tests
