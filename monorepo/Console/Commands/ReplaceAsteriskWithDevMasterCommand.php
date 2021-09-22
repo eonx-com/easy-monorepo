@@ -29,7 +29,8 @@ final class ReplaceAsteriskWithDevMasterCommand extends Command
             return self::FAILURE;
         }
 
-        $updatedContents = \str_replace('*', 'dev-master', \file_get_contents($filename));
+        $updatedContents = \str_replace('*', 'dev-feature/php8-the-better-way', \file_get_contents($filename));
+        $updatedContents = \str_replace('"canonical": false', '"canonical": true', $updatedContents);
         $filesystem->dumpFile($filename, $updatedContents);
 
         $output->writeln(\sprintf('Successfully updated %s', $filename));
