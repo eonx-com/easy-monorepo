@@ -103,7 +103,7 @@ final class DateIntervalValidatorTest extends AbstractSymfonyTestCase
         $validator = new DateIntervalValidator();
         $constraint = new DateInterval();
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('Expected argument of type "string", "integer" given');
+        $this->expectExceptionMessage('Expected argument of type "string", "int" given');
 
         $validator->validate($dateInterval, $constraint);
     }
