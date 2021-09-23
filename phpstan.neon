@@ -58,6 +58,9 @@ parameters:
         - message: '#Call to method verifyAndDecode\(\) on an unknown class Auth0\\SDK\\JWTVerifier#'
           path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
 
+        - message: '#Instanceof between \*NEVER\* and OpenSSLAsymmetricKey will always evaluate to false#'
+          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
+
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Generators\\DateTimeGenerator::fromString\(\) should return DateTime but returns DateTime\|false.#'
           path: packages/EasyAsync/src/Generators
@@ -123,9 +126,12 @@ parameters:
           path: packages/EasyHttpClient/src/Bridge/EasyBugsnag/HttpRequestSentBreadcrumbListener.php
 
         # ---- EasyLock ----
-        # ---- EasyLogging ----
+        # ---- EasyLogging ----DoctrineDbalLengthAwarePaginator
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
+
+        - message: '#Parameter \#2 \$level of class Monolog\\Handler\\StreamHandler constructor expects 100\|200\|250\|300\|400\|500\|550\|600\|string, int given#'
+          path: packages/EasyLogging/src/Config/StreamHandlerConfigProvider.php
 
         # ---- EasyPagination ----
         - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
@@ -180,6 +186,12 @@ parameters:
         - message: '#Cannot call method getRepository\(\) on Doctrine\\Persistence\\ObjectManager\|null#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractDoctrineOrmRepository.php
 
+        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
+          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
+
+        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
+          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
+
         # ---- EasyRequestId ----
         # ---- EasySchedule ----
         - message: '#Parameter \#1 \$app of method EonX\\EasySchedule\\Interfaces\\ScheduleInterface\:\:setApplication\(\) expects Symfony\\Component\\Console\\Application, Symfony\\Component\\Console\\Application\|null given#'
@@ -207,6 +219,9 @@ parameters:
 
         - message: '#Return type \(array\) of method EonX\\EasySsm\\Tests\\Stubs\\BaseSsmClientStub\:\:getPaginator\(\) should be compatible with return type \(Aws\\ResultPaginator\) of method Aws\\Aws(Client|ClientInterface)\:\:getPaginator\(\)#'
           path: packages/EasySsm/tests/Stubs/BaseSsmClientStub.php
+
+        - message: '#Parameter \#1 \$envKey of class Symfony\\Component\\Dotenv\\Dotenv constructor expects string, true given#'
+          path: packages/EasySsm/src/Services/Dotenv/Loaders/DotenvLoader.php
 
         # ---- EasyTest ----
         # ---- EasyWebhook ----

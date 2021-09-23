@@ -8,6 +8,7 @@ use EonX\EasyCore\Bridge\Laravel\ApiFormats\Interfaces\FormattedApiResponseInter
 use EonX\EasyCore\Bridge\Laravel\ApiFormats\Interfaces\SerializableInterface;
 use EonX\EasyCore\Bridge\Laravel\ApiFormats\Responses\NoContentApiResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,9 @@ final class ReplaceApiFormatsMiddleware
         $decoded = \json_decode((string)$request->getContent(), true);
 
         if ($decoded !== null) {
-            $request->request = new ParameterBag($decoded);
+            $request->request = \class_exists(InputBag::class)
+                ? new InputBag($decoded)
+                : new ParameterBag($decoded);
         }
 
         $response = $next($request);

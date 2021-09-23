@@ -46,6 +46,8 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
     }
 
     /**
+     * @param \Doctrine\DBAL\Query\QueryBuilder $queryBuilder
+     *
      * @return mixed[]
      *
      * @throws \Doctrine\DBAL\Exception
@@ -55,6 +57,11 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
         return $this->conn->fetchAllAssociative($queryBuilder->getSQL(), $queryBuilder->getParameters());
     }
 
+    /**
+     * @param \Doctrine\DBAL\Query\QueryBuilder $queryBuilder
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
     protected function doGetTotalItems($queryBuilder, string $countAlias): int
     {
         $result = (array)$this->conn->fetchAssoc($queryBuilder->getSQL(), $queryBuilder->getParameters());

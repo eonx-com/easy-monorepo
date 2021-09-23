@@ -46,6 +46,8 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
     }
 
     /**
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
+     *
      * @return mixed[]
      */
     protected function doGetResult($queryBuilder): array
@@ -54,6 +56,9 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthA
             ->getResult();
     }
 
+    /**
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
+     */
     protected function doGetTotalItems($queryBuilder, string $countAlias): int
     {
         return (int)($queryBuilder->getQuery()->getResult()[0][$countAlias] ?? 0);
