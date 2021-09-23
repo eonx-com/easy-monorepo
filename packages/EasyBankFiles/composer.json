@@ -10,7 +10,7 @@
         "monolog/monolog": "~1.22 || ~2.0"
     },
     "require-dev": {
-        "mockery/mockery": "^1.2",
+        "mockery/mockery": "^1.4",
         "phpunit/phpunit": "^8.4 || ^9.5"
     },
     "autoload": {

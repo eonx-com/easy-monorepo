@@ -17,7 +17,7 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "api-platform/core": "^2.5",
         "doctrine/orm": "^2.6",
-        "mockery/mockery": "^1.2",
+        "mockery/mockery": "^1.4",
         "symfony/symfony": "^4.4 || ^5.1.5",
         "symfony/maker-bundle": "^1.15"
     },

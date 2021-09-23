@@ -16,7 +16,7 @@
         "doctrine/orm": "^2.6",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "symfony/symfony": "^4.4 || ^5.1.5",
-        "mockery/mockery": "^1.2",
+        "mockery/mockery": "^1.4",
         "laravel/lumen-framework": "^5.5 || ^8.1"
     },
     "autoload": {

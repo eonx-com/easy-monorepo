@@ -43,7 +43,7 @@
         "laravel-doctrine/orm": "^1.4",
         "laravel/lumen-framework": "^5.5 || ^8.1",
         "mikey179/vfsstream": "~1",
-        "mockery/mockery": "^1.2",
+        "mockery/mockery": "^1.4",
         "phpspec/prophecy": "~1.0",
         "symplify/phpstan-extensions": "^8.3.41",
         "phpunit/phpunit": "^8.4 || ^9.5",
