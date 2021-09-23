@@ -40,7 +40,7 @@ final class ConsoleOutputLoaderTest extends AbstractTestCase
      */
     public function testLoadEnv(array $envs, string $expected): void
     {
-        $output = new StreamOutput(\fopen('data://text/plain,', 'r'));
+        $output = new StreamOutput(\fopen('php://memory', 'w+'));
 
         (new ConsoleOutputLoader($output))->loadEnv($envs);
 
