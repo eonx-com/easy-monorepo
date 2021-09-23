@@ -34,7 +34,7 @@ final class StartSizeAsArrayInQueryResolver implements StartSizeDataResolverInte
 
     public function resolve(Request $request): StartSizeDataInterface
     {
-        $queryAttr = $request->query->get($this->queryAttr, []);
+        $queryAttr = $request->query->get($this->queryAttr) ?? [];
 
         return $this->createStartSizeData($this->config, $queryAttr, $request);
     }

@@ -7,6 +7,7 @@ namespace EonX\EasyCore\Tests;
 use Closure;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -15,6 +16,8 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var \Throwable|null
      */

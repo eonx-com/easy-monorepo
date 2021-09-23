@@ -1,6 +1,6 @@
 name: Split Tests
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
     provide_packages_json:
@@ -10,7 +10,7 @@ jobs:
 
             -   uses: eonx-com/actions-setup-php@v2
                 with:
-                    php-version: 7.3
+                    php-version: 7.4
                     coverage: none
 
             -   uses: eonx-com/actions-composer-install@v1
@@ -27,7 +27,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ '7.3', '7.4' ]
+                php: [ '7.3', '7.4', '8.0' ]
                 package: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
         name: ${{ matrix.package.dir }} (${{ matrix.php }})
@@ -43,6 +43,6 @@ jobs:
 
             -   uses: eonx-com/actions-composer-install@v1
 
-            -   run: vendor/bin/monorepo-builder localize-composer-paths --ansi
+            -   run: bin/monorepo localize-monorepo-packages
             -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
             -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit tests

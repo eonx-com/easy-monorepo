@@ -4,13 +4,13 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^7.2 || ^8.0",
         "eonx-com/easy-utils": "^3.4",
         "monolog/monolog": "~1.22 || ~2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.4 || ^9.5",
-        "laravel/lumen-framework": "^5.5",
+        "laravel/lumen-framework": "^5.5 || ^8.1",
         "laravel-doctrine/orm": "^1.4",
         "bugsnag/bugsnag": "^3.19",
         "bugsnag/bugsnag-laravel": "^2.17",

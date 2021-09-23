@@ -4,7 +4,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^7.2 || ^8.0",
         "eonx-com/easy-event-dispatcher": "^3.4",
         "eonx-com/easy-utils": "^3.4",
         "nesbot/carbon": "^1.39 || ^2.22"
@@ -13,7 +13,7 @@
         "doctrine/dbal": "^2.6",
         "eonx-com/easy-lock": "^3.4",
         "eonx-com/easy-webhook": "^3.4",
-        "laravel/lumen-framework": "^5.5",
+        "laravel/lumen-framework": "^5.5 || ^8.1",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "symfony/symfony": "^4.4 || ^5.1.5"
     },
