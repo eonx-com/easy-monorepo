@@ -13,7 +13,6 @@ use EonX\EasyErrorHandler\Bridge\Bugsnag\SeverityClientConfigurator;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\UnhandledClientConfigurator;
 use EonX\EasyErrorHandler\Bridge\EasyWebhook\WebhookFinalFailedListener;
 use EonX\EasyErrorHandler\Bridge\Laravel\ExceptionHandler;
-use EonX\EasyErrorHandler\Bridge\Laravel\Laravel8ExceptionHandler;
 use EonX\EasyErrorHandler\Bridge\Laravel\Translator;
 use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
