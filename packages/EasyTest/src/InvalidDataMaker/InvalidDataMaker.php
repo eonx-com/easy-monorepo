@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints\Country;
 use Symfony\Component\Validator\Constraints\Currency;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Length;
@@ -24,7 +25,6 @@ use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\Luhn;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotEqualTo;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
 use Symfony\Component\Validator\Constraints\Range;
@@ -493,9 +493,9 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     public function yieldNotEqualTo(string $value): iterable
     {
         $message = $this->translateMessage(
-            (new NotEqualTo())->message,
+            (new EqualTo(['value' => $value]))->message,
             [
-                '{{ compared_value }}' => $value,
+                '{{ compared_value }}' => \sprintf('"%s"', $value),
             ]
         );
 
