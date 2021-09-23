@@ -105,27 +105,27 @@ abstract class AbstractInvalidDataMaker
             $value = [$value];
         }
 
-        $invalidData = [
-            $this->property => $value,
-        ];
+        $invalidData = [$this->property => $value];
 
         if ($this->relatedProperty !== null && $this->relatedPropertyValue !== null) {
             $invalidData[$this->relatedProperty] = $this->relatedPropertyValue;
         }
 
-        $data = [
+        $propertyPath = $this->resolvePropertyPath($invalidData);
+
+        if ($this->wrapWith !== null) {
+            $propertyPath = $this->wrapWith . '.' . $propertyPath;
+            $caseName = \str_replace($this->property, $propertyPath, $caseName);
+            $invalidData = [$this->wrapWith => $invalidData];
+        }
+
+        return [
             $caseName => [
                 'data' => $invalidData,
                 'propertyPath' => $this->resolvePropertyPath($invalidData),
                 'validationErrorMessage' => (string)($this->message ?? $message),
             ],
         ];
-
-        if ($this->wrapWith !== null) {
-            $data = $this->applyWrapWith($data);
-        }
-
-        return $data;
     }
 
     /**
@@ -167,32 +167,6 @@ abstract class AbstractInvalidDataMaker
         }
 
         self::$translator = $translator;
-    }
-
-    /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     */
-    private function applyWrapWith(array $data): array
-    {
-        /** @var string $caseName */
-        $caseName = \current(\array_keys($data));
-        $caseData = $data[$caseName]['data'];
-
-        $wrappedPropertyPath = "{$this->wrapWith}.{$this->property}";
-        /** @var string $newCaseName */
-        $newCaseName = \str_replace($this->property, $wrappedPropertyPath, $caseName);
-
-        return [
-            $newCaseName => [
-                'data' => [
-                    $this->wrapWith => $caseData,
-                ],
-                'message' => $data[$caseName]['message'],
-                'propertyPath' => $wrappedPropertyPath,
-            ],
-        ];
     }
 
     /**
