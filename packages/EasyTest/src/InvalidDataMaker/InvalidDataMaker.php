@@ -493,7 +493,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     public function yieldNotEqualTo(string $value): iterable
     {
         $message = $this->translateMessage(
-            (new EqualTo(['value' => 'now']))->message,
+            (new EqualTo(['value' => $value]))->message,
             [
                 '{{ compared_value }}' => \sprintf('"%s"', $value),
             ]
