@@ -12,18 +12,18 @@ use InvalidArgumentException;
 
 final class CoverageResolverFactory implements CoverageResolverFactoryInterface
 {
-    private const CLOVER_EXTENSION = 'clover';
+    private const EXTENSION_CLOVER = 'clover';
 
-    private const TXT_EXTENSION = 'txt';
+    private const EXTENSION_TXT = 'txt';
 
     public function create(string $filePath): CoverageResolverInterface
     {
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
         switch ($ext) {
-            case self::CLOVER_EXTENSION:
+            case self::EXTENSION_CLOVER:
                 $resolver = new CloverCoverageResolver();
                 break;
-            case self::TXT_EXTENSION:
+            case self::EXTENSION_TXT:
                 $resolver = new TextCoverageResolver();
                 break;
             default:
