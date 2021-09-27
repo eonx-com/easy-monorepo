@@ -28,14 +28,14 @@ final class CheckCoverageCommand extends Command
     /**
      * @var \EonX\EasyTest\Interfaces\CoverageResolverLocatorInterface
      */
-    private $coverageResolverFactory;
+    private $coverageResolverLocator;
 
     public function __construct(
         CoverageLoaderInterface $coverageLoader,
-        CoverageResolverLocatorInterface $coverageResolverFactory
+        CoverageResolverLocatorInterface $coverageResolverLocator
     ) {
         $this->coverageLoader = $coverageLoader;
-        $this->coverageResolverFactory = $coverageResolverFactory;
+        $this->coverageResolverLocator = $coverageResolverLocator;
 
         parent::__construct(null);
     }
@@ -57,7 +57,7 @@ final class CheckCoverageCommand extends Command
 
         /** @var string $fileArgumentValue */
         $fileArgumentValue = $input->getArgument('file');
-        $coverageResolver = $this->coverageResolverFactory->getCoverageResolver($fileArgumentValue);
+        $coverageResolver = $this->coverageResolverLocator->getCoverageResolver($fileArgumentValue);
         $coverageReport = $coverageResolver->resolve($this->coverageLoader->load($fileArgumentValue));
 
         if ($checkCoverage > $coverageReport->getCoverage()) {
