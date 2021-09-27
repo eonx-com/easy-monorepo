@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyTest\Tests\Coverage\Factory;
+namespace EonX\EasyTest\Tests\Coverage\Locators;
 
-use EonX\EasyTest\Coverage\Factory\CoverageResolverFactory;
+use EonX\EasyTest\Coverage\Locators\CoverageResolverLocator;
 use EonX\EasyTest\Coverage\Resolvers\CloverCoverageResolver;
 use EonX\EasyTest\Coverage\Resolvers\TextCoverageResolver;
+use EonX\EasyTest\HttpKernel\EasyTestKernel;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-class CoverageResolverFactoryTest extends TestCase
+class CoverageResolverLocatorTest extends TestCase
 {
     /**
      * @return mixed[]
@@ -36,18 +37,24 @@ class CoverageResolverFactoryTest extends TestCase
      */
     public function testCreateResolverSucceeds(string $filePath, string $expectedResolverClass): void
     {
-        $factory = new CoverageResolverFactory();
+        $kernel = new EasyTestKernel('test', true);
+        $kernel->boot();
+        $resolverLocator = $kernel->getContainer()
+            ->get(CoverageResolverLocator::class);
 
-        $resolver = $factory->create($filePath);
+        $resolver = $resolverLocator->getCoverageResolver($filePath);
 
         self::assertInstanceOf($expectedResolverClass, $resolver);
     }
 
     public function testFailedIfUnsupportedReportFormat(): void
     {
-        $factory = new CoverageResolverFactory();
+        $kernel = new EasyTestKernel('test', true);
+        $kernel->boot();
+        $resolverLocator = $kernel->getContainer()
+            ->get(CoverageResolverLocator::class);
 
         $this->expectException(InvalidArgumentException::class);
-        $factory->create('/foo/bar/report.unsupported');
+        $resolverLocator->getCoverageResolver('/foo/bar/report.unsupported');
     }
 }

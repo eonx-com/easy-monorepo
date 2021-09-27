@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyTest\Console\Commands;
 
 use EonX\EasyTest\Interfaces\CoverageLoaderInterface;
-use EonX\EasyTest\Interfaces\CoverageResolverFactoryInterface;
+use EonX\EasyTest\Interfaces\CoverageResolverLocatorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,13 +26,13 @@ final class CheckCoverageCommand extends Command
     private $coverageLoader;
 
     /**
-     * @var \EonX\EasyTest\Interfaces\CoverageResolverFactoryInterface
+     * @var \EonX\EasyTest\Interfaces\CoverageResolverLocatorInterface
      */
     private $coverageResolverFactory;
 
     public function __construct(
         CoverageLoaderInterface $coverageLoader,
-        CoverageResolverFactoryInterface $coverageResolverFactory
+        CoverageResolverLocatorInterface $coverageResolverFactory
     ) {
         $this->coverageLoader = $coverageLoader;
         $this->coverageResolverFactory = $coverageResolverFactory;
@@ -57,7 +57,7 @@ final class CheckCoverageCommand extends Command
 
         /** @var string $fileArgumentValue */
         $fileArgumentValue = $input->getArgument('file');
-        $coverageResolver = $this->coverageResolverFactory->create($fileArgumentValue);
+        $coverageResolver = $this->coverageResolverFactory->getCoverageResolver($fileArgumentValue);
         $coverageReport = $coverageResolver->resolve($this->coverageLoader->load($fileArgumentValue));
 
         if ($checkCoverage > $coverageReport->getCoverage()) {

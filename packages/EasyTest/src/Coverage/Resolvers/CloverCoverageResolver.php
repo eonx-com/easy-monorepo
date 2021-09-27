@@ -43,12 +43,12 @@ final class CloverCoverageResolver implements CoverageResolverInterface
         $metrics = $xml->xpath('//file/metrics');
 
         foreach ($metrics as $metric) {
-            $elements = (int)$this->extractXMLAttribute($metric, self::ATTRIBUTE_NAME_ELEMENTS);
-            $coveredElements = (int)$this->extractXMLAttribute($metric, self::ATTRIBUTE_NAME_COVERED_ELEMENTS);
+            $elements = (int)$this->extractXmlAttribute($metric, self::ATTRIBUTE_NAME_ELEMENTS);
+            $coveredElements = (int)$this->extractXmlAttribute($metric, self::ATTRIBUTE_NAME_COVERED_ELEMENTS);
 
             if ($elements !== $coveredElements) {
                 $file = $metric->xpath('parent::*')[0];
-                $violations[] = $this->extractXMLAttribute($file, self::ATTRIBUTE_NAME_FILE_NAME);
+                $violations[] = $this->extractXmlAttribute($file, self::ATTRIBUTE_NAME_FILE_NAME);
             }
         }
 
@@ -59,7 +59,7 @@ final class CloverCoverageResolver implements CoverageResolverInterface
         return new CoverageReportDto($coverage, $violations);
     }
 
-    private function extractXMLAttribute(SimpleXMLElement $element, string $attributeName): string
+    private function extractXmlAttribute(SimpleXMLElement $element, string $attributeName): string
     {
         $attr = $element->attributes();
 
