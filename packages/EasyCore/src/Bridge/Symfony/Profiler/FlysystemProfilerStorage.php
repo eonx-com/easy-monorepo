@@ -30,8 +30,8 @@ final class FlysystemProfilerStorage implements ProfilerStorageInterface
      *
      * @param string $ip The IP
      * @param string $url The URL
-     * @param string $limit The maximum number of tokens to return
-     * @param string $method The request method
+     * @param string|null $limit The maximum number of tokens to return
+     * @param string|null $method The request method
      * @param int|null $start The start date to search from
      * @param int|null $end The end date to search to
      *

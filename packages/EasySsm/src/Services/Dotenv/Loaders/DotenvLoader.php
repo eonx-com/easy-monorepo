@@ -13,7 +13,11 @@ final class DotenvLoader extends AbstractEnvLoader
      */
     protected function doLoadEnv(array $envs): void
     {
-        (new Dotenv(true))->populate($this->getEnvsAsKeyValue($envs), true);
+        $dotenv = \method_exists(Dotenv::class, 'usePutenv')
+            ? (new Dotenv())->usePutenv(true)
+            : new Dotenv(true);
+
+        $dotenv->populate($this->getEnvsAsKeyValue($envs), true);
     }
 
     /**

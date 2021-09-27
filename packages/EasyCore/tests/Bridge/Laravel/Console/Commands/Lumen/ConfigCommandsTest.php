@@ -29,6 +29,6 @@ final class ConfigCommandsTest extends AbstractTestCase
 
         $kernel->call('config:clear');
 
-        self::assertFileNotExists($expectedPath);
+        self::assertFileDoesNotExist($expectedPath);
     }
 }

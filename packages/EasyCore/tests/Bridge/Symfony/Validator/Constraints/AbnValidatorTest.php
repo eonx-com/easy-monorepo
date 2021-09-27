@@ -42,7 +42,7 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
     {
         return [
             'class without __toString' => [new stdClass(), 'Expected argument of type "string", "stdClass" given'],
-            'integer' => [53004085616, 'Expected argument of type "string", "integer" given'],
+            'integer' => [53004085616, 'Expected argument of type "string", "int" given'],
         ];
     }
 
@@ -160,7 +160,7 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $validator = new AbnValidator();
         $constraint = new Abn();
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('Expected argument of type "string", "integer" given');
+        $this->expectExceptionMessage('Expected argument of type "string", "int" given');
 
         $validator->validate($abn, $constraint);
     }
