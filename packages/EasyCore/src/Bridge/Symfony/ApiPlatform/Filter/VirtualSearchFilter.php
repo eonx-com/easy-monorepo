@@ -15,8 +15,8 @@ use Doctrine\ORM\QueryBuilder;
  * ApiFilter(
  *     VirtualSearchFilter::class,
  *     properties={
- *         "number_partial": {"number": "ipartial"}, --> Virtual search property to number partial
- *         "number_exact": {"number": "exact"}, --> Virtual search property to number exact
+ *         "number[partial]": {"number": "ipartial"}, --> Virtual search property to number partial
+ *         "number[exact]": {"number": "exact"}, --> Virtual search property to number exact
  *         "email": "ipartial" --> Normal search property definition
  *     }
  * )
@@ -117,6 +117,12 @@ final class VirtualSearchFilter extends SearchFilter
         // Keep virtual properties on private property because parent uses `$properties`
         if ($this->virtualProperties === null) {
             $this->virtualProperties = $this->properties ?? [];
+        }
+
+        // Allow square brackets in filter property
+        if (\is_array($value)) {
+            $property .= '[' . \array_keys($value)[0] . ']';
+            $value = \array_values($value)[0];
         }
 
         $props = $this->virtualProperties[$property] ?? null;
