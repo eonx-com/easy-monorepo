@@ -20,7 +20,7 @@ jobs:
                 run: git clone https://github.com/eonx-com/symfony-recipes.git .github/remote-repo
 
             -   name: Update remote repo content
-                run: mv symfony-recipes/* .github/remote-repo/
+                run: cp -TRv symfony-recipes/ .github/remote-repo/
 
             -   name: Commit and push changes to remote repo
                 run: |
