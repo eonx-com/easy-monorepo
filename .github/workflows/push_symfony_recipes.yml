@@ -21,7 +21,7 @@ jobs:
                 run: git config -l | grep ''http\..*\.extraheader'' | cut -d= -f1 | xargs -L1 git config --unset-all
 
             -   name: Add EonX Symfony Recipes Repo Remote
-                run: git remote add split-remote https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/symfony-recipes.git
+                run: git remote add split-remote https://natepage:${{ secrets.MONOREPO_WITH_WORKFLOW_GITHUB_TOKEN }}@github.com/eonx-com/symfony-recipes.git
 
             -   name: Resolve current branch
                 id: branch_name
