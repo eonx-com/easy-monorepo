@@ -15,20 +15,22 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   uses: eonx-com/actions-checkout@v2
+            -   run: git fetch --prune --unshallow
 
-            -   name: Clone remote EonX Symfony Recipes repo
+            -   name: Remove Git Extra Header
+                run: git config -l | grep ''http\..*\.extraheader'' | cut -d= -f1 | xargs -L1 git config --unset-all
+
+            -   name: Add EonX Symfony Recipes Repo Remote
+                run: git remote add split-remote https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/symfony-recipes.git
+
+            -   name: Resolve current branch
+                id: branch_name
+                run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+
+            -   name: Push Symfony Recipes Changes
+                env:
+                    BRANCH: ${{ steps.branch_name.outputs.branch }}
                 run: |
-                    git config --global user.email "nathan.page@eonx.com"
-                    git config --global user.name "natepage"
-                    git clone https://github.com/eonx-com/symfony-recipes.git .github/remote-repo
-
-            -   name: Copy changes
-                run: cp -TRv symfony-recipes/ .github/remote-repo/
-
-            -   name: Commit and push changes to remote repo
-                run: |
-                    cd .github/remote-repo
-                    git config -l | grep ''http\..*\.extraheader'' | cut -d= -f1 | xargs -L1 git config --unset-all
-                    git add .
-                    git commit -m 'Update Symfony Recipes' || true
-                    git push origin -f push-from-monorepo
+                    git checkout -b "local-$BRANCH-checkout" "$BRANCH"
+                    git subtree split --prefix="symfony-recipes" --branch="local-$BRANCH" "$BRANCH"
+                    git push --force split-remote local-$BRANCH:$BRANCH
