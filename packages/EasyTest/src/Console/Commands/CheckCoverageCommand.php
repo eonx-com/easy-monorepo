@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyTest\Console\Commands;
 
 use EonX\EasyTest\Interfaces\CoverageLoaderInterface;
-use EonX\EasyTest\Interfaces\CoverageResolverInterface;
+use EonX\EasyTest\Interfaces\CoverageResolverLocatorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,14 +26,16 @@ final class CheckCoverageCommand extends Command
     private $coverageLoader;
 
     /**
-     * @var \EonX\EasyTest\Interfaces\CoverageResolverInterface
+     * @var \EonX\EasyTest\Interfaces\CoverageResolverLocatorInterface
      */
-    private $coverageResolver;
+    private $coverageResolverLocator;
 
-    public function __construct(CoverageLoaderInterface $coverageLoader, CoverageResolverInterface $coverageResolver)
-    {
+    public function __construct(
+        CoverageLoaderInterface $coverageLoader,
+        CoverageResolverLocatorInterface $coverageResolverLocator
+    ) {
         $this->coverageLoader = $coverageLoader;
-        $this->coverageResolver = $coverageResolver;
+        $this->coverageResolverLocator = $coverageResolverLocator;
 
         parent::__construct(null);
     }
@@ -55,15 +57,30 @@ final class CheckCoverageCommand extends Command
 
         /** @var string $fileArgumentValue */
         $fileArgumentValue = $input->getArgument('file');
-        $coverage = $this->coverageResolver->resolve($this->coverageLoader->load($fileArgumentValue));
+        $coverageResolver = $this->coverageResolverLocator->getCoverageResolver($fileArgumentValue);
+        $coverageReport = $coverageResolver->resolve($this->coverageLoader->load($fileArgumentValue));
 
-        if ($checkCoverage > $coverage) {
-            $style->error(\sprintf('Coverage "%d%%" is lower than expectation "%d%%"', $coverage, $checkCoverage));
+        if ($checkCoverage > $coverageReport->getCoverage()) {
+            $style->error(
+                \sprintf(
+                    'Coverage "%d%%" is lower than expectation "%d%%"',
+                    $coverageReport->getCoverage(),
+                    $checkCoverage
+                )
+            );
+
+            if ($coverageReport->hasViolations()) {
+                $style->error(
+                    \sprintf('Violations: %s', implode(PHP_EOL, $coverageReport->getViolations()))
+                );
+            }
 
             return 1;
         }
 
-        $style->success(\sprintf('Yeah nah yeah nah yeah!! Good coverage mate! "%d%%"', $coverage));
+        $style->success(
+            \sprintf('Yeah nah yeah nah yeah!! Good coverage mate! "%d%%"', $coverageReport->getCoverage())
+        );
 
         return 0;
     }

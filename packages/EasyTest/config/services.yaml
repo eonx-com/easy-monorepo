@@ -9,3 +9,16 @@ services:
         exclude:
             - '../src/HttpKernel/*'
             - '../src/InvalidDataMaker/*'
+            - '../src/Coverage/DataTransferObject/*'
+
+    EonX\EasyTest\Coverage\Resolvers\CloverCoverageResolver:
+        tags:
+            - {name: 'app.easy_test.coverage_resolver', key: 'clover'}
+
+    EonX\EasyTest\Coverage\Resolvers\TextCoverageResolver:
+        tags:
+            - {name: 'app.easy_test.coverage_resolver', key: 'txt'}
+
+    EonX\EasyTest\Coverage\Locators\CoverageResolverLocator:
+        arguments:
+            - !tagged_locator {tag: 'app.easy_test.coverage_resolver', index_by: 'key'}

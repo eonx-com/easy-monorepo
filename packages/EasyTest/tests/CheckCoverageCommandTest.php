@@ -16,7 +16,7 @@ final class CheckCoverageCommandTest extends AbstractTestCase
      */
     public function providerCheckCoverage(): iterable
     {
-        yield 'File but coverage too low' => [
+        yield 'Txt file but coverage too low' => [
             [
                 'file' => __DIR__ . '/fixtures/coverage-70.txt',
                 '--coverage' => 71,
@@ -24,9 +24,33 @@ final class CheckCoverageCommandTest extends AbstractTestCase
             '[ERROR] Coverage "70%" is lower than expectation "71%"',
         ];
 
-        yield 'File and good coverage' => [
+        yield 'Txf file and good coverage' => [
             [
                 'file' => __DIR__ . '/fixtures/coverage-70.txt',
+                '--coverage' => 70,
+            ],
+            '[OK] Yeah nah yeah nah yeah!! Good coverage mate! "70%"',
+        ];
+
+        yield 'Clover file but coverage too low' => [
+            [
+                'file' => __DIR__ . '/fixtures/coverage-70.clover',
+                '--coverage' => 71,
+            ],
+            '[ERROR] Coverage "70%" is lower than expectation "71%"',
+        ];
+
+        yield 'Clover file but coverage too low and violations are shown' => [
+            [
+                'file' => __DIR__ . '/fixtures/coverage-70.clover',
+                '--coverage' => 71,
+            ],
+            '[ERROR] Violations:',
+        ];
+
+        yield 'Clover file and good coverage' => [
+            [
+                'file' => __DIR__ . '/fixtures/coverage-70.clover',
                 '--coverage' => 70,
             ],
             '[OK] Yeah nah yeah nah yeah!! Good coverage mate! "70%"',
@@ -47,16 +71,23 @@ final class CheckCoverageCommandTest extends AbstractTestCase
             UnableToLoadCoverageException::class,
         ];
 
-        yield 'File but no coverage' => [
+        yield 'Txt file but no coverage' => [
             [
                 'file' => __DIR__ . '/fixtures/no-coverage.txt',
             ],
             UnableToResolveCoverageException::class,
         ];
 
-        yield 'File and Lines but no coverage' => [
+        yield 'Txt file and Lines but no coverage' => [
             [
                 'file' => __DIR__ . '/fixtures/lines-but-no-coverage.txt',
+            ],
+            UnableToResolveCoverageException::class,
+        ];
+
+        yield 'Clover file but wrong format' => [
+            [
+                'file' => __DIR__ . '/fixtures/wrong-format.clover',
             ],
             UnableToResolveCoverageException::class,
         ];
