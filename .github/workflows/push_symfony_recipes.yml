@@ -3,7 +3,7 @@ name: Push Symfony Recipes
 on:
     push:
         branches:
-            - feature/eonx-symfony-recipes
+            - master
 
 defaults:
     run:

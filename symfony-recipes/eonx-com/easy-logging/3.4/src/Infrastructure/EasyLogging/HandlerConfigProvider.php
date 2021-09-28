@@ -12,15 +12,25 @@ use Monolog\Logger;
 final class HandlerConfigProvider implements HandlerConfigProviderInterface
 {
     /**
+     * @var string
+     */
+    private const APP_CHANNEL = 'app';
+
+    /**
+     * @var string
+     */
+    private const STREAM = 'php://stdout';
+
+    /**
      * @return iterable<\EonX\EasyLogging\Interfaces\Config\HandlerConfigInterface>
      */
     public function handlers(): iterable
     {
         $formatter = new JsonFormatter();
-        $appHandler = (new StreamHandler('php://stdout', Logger::DEBUG))->setFormatter($formatter);
-        $restHandler = (new StreamHandler('php://stdout', Logger::WARNING))->setFormatter($formatter);
+        $appHandler = (new StreamHandler(self::STREAM, Logger::DEBUG))->setFormatter($formatter);
+        $restHandler = (new StreamHandler(self::STREAM, Logger::WARNING))->setFormatter($formatter);
 
-        yield (new HandlerConfig($appHandler))->channels(['app']);
-        yield (new HandlerConfig($restHandler))->exceptChannels(['app']);
+        yield (new HandlerConfig($appHandler))->channels([self::APP_CHANNEL]);
+        yield (new HandlerConfig($restHandler))->exceptChannels([self::APP_CHANNEL]);
     }
 }
