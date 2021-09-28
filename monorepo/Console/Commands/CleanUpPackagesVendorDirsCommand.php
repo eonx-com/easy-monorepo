@@ -15,6 +15,11 @@ final class CleanUpPackagesVendorDirsCommand extends Command
 {
     protected static $defaultName = 'clean-up-packages-vendor-dirs';
 
+    protected function configure(): void
+    {
+        $this->addArgument('version');
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filesystem = new Filesystem();
