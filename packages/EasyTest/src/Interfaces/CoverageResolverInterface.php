@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Interfaces;
 
-use EonX\EasyTest\Coverage\DataTransferObject\CoverageReportDto;
+use EonX\EasyTest\Coverage\DataTransferObjects\CoverageReportDto;
 
 interface CoverageResolverInterface
 {

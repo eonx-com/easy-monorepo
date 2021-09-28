@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyTest\Coverage\DataTransferObject;
+namespace EonX\EasyTest\Coverage\DataTransferObjects;
 
 final class CoverageReportDto
 {

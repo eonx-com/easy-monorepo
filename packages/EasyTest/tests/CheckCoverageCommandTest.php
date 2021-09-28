@@ -64,7 +64,7 @@ final class CheckCoverageCommandTest extends AbstractTestCase
      */
     public function providerCheckCoverageExceptions(): iterable
     {
-        yield 'Txt file not found' => [
+        yield 'File not found' => [
             [
                 'file' => 'invalid-file.txt',
             ],

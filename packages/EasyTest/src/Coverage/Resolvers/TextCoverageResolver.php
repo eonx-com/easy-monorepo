@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Coverage\Resolvers;
 
-use EonX\EasyTest\Coverage\DataTransferObject\CoverageReportDto;
+use EonX\EasyTest\Coverage\DataTransferObjects\CoverageReportDto;
 use EonX\EasyTest\Exceptions\UnableToResolveCoverageException;
 use EonX\EasyTest\Interfaces\CoverageResolverInterface;
 use Nette\Utils\Strings;
