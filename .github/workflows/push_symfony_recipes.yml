@@ -17,15 +17,14 @@ jobs:
             -   uses: eonx-com/actions-checkout@v2
 
             -   name: Clone remote EonX Symfony Recipes repo
-                run: git clone https://github.com/eonx-com/symfony-recipes.git .github/remote-repo
-
-            -   name: Update remote repo content
-                run: cp -TRv symfony-recipes/ .github/remote-repo/
-
-            -   name: Commit and push changes to remote repo
                 run: |
                     git config --global user.email "nathan.page@eonx.com"
                     git config --global user.name "natepage"
+                    git clone https://github.com/eonx-com/symfony-recipes.git .github/remote-repo
+
+            -   name: Commit and push changes to remote repo
+                run: |
+                    cp -TRv symfony-recipes/ .github/remote-repo/
                     cd .github/remote-repo
                     git add .
                     git commit -m 'Update Symfony Recipes' || true
