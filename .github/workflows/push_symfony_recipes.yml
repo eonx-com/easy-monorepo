@@ -24,6 +24,8 @@ jobs:
 
             -   name: Commit and push changes to remote repo
                 run: |
+                    git config --global user.email "nathan.page@eonx.com"
+                    git config --global user.name "natepage"
                     cd .github/remote-repo
                     git add .
                     git commit -m 'Update Symfony Recipes' || true
