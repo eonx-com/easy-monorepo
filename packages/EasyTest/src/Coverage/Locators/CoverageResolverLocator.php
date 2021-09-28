@@ -23,10 +23,10 @@ final class CoverageResolverLocator implements CoverageResolverLocatorInterface
 
     public function getCoverageResolver(string $filePath): CoverageResolverInterface
     {
-        $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+        $extension = \pathinfo($filePath, \PATHINFO_EXTENSION);
 
         if ($this->serviceLocator->has($extension) === false) {
-            throw new InvalidArgumentException(sprintf('Unsupported file extension: `%s`', $extension));
+            throw new InvalidArgumentException(\sprintf('Unsupported file extension: `%s`', $extension));
         }
 
         return $this->serviceLocator->get($extension);
