@@ -22,7 +22,7 @@ final class ReplaceApiFormatsMiddleware
     {
         $decoded = \json_decode((string)$request->getContent(), true);
 
-        if ($decoded !== null) {
+        if (\is_array($decoded)) {
             $request->request = \class_exists(InputBag::class)
                 ? new InputBag($decoded)
                 : new ParameterBag($decoded);
