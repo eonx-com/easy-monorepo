@@ -22,10 +22,13 @@ jobs:
                     git config --global user.name "natepage"
                     git clone https://github.com/eonx-com/symfony-recipes.git .github/remote-repo
 
+            -   name: Copy changes
+                run: cp -TRv symfony-recipes/ .github/remote-repo/
+
             -   name: Commit and push changes to remote repo
                 run: |
-                    cp -TRv symfony-recipes/ .github/remote-repo/
                     cd .github/remote-repo
+                    git config -l | grep ''http\..*\.extraheader'' | cut -d= -f1 | xargs -L1 git config --unset-all
                     git add .
                     git commit -m 'Update Symfony Recipes' || true
                     git push origin -f push-from-monorepo
