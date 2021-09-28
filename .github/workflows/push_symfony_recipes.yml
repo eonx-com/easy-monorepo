@@ -1,0 +1,30 @@
+name: Push Symfony Recipes
+
+on:
+    push:
+        branches:
+            - feature/eonx-symfony-recipes
+
+defaults:
+    run:
+        shell: bash
+
+jobs:
+    push_symfony_recipes:
+        name: Push Symfony Recipes
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   name: Clone remote EonX Symfony Recipes repo
+                run: git clone https://github.com/eonx-com/symfony-recipes.git .github/remote-repo
+
+            -   name: Update remote repo content
+                run: mv symfony-recipes/* .github/remote-repo/
+
+            -   name: Commit and push changes to remote repo
+                run: |
+                    cd .github/remote-repo
+                    git add .
+                    git commit -m 'Update Symfony Recipes' || true
+                    git push origin -f push-from-monorepo
