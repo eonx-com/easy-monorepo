@@ -399,7 +399,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         if ($minPrecision > 1) {
             $value = ($integerPart ?? 0) + \round(1 / 3, $minPrecision - 1);
 
-            yield from $this->create("{$this->property} has lover precision", $value, $message);
+            yield from $this->create("{$this->property} has lower precision", $value, $message);
         }
     }
 
