@@ -370,7 +370,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     /**
      * @return iterable<mixed>
      */
-    public function yieldInvalidFloat(int $precision, ?int $integerPart = null): iterable
+    public function yieldInvalidFloat(int $minPrecision, int $maxPrecision, ?int $integerPart = null): iterable
     {
         /*
          * @todo add types validation and invalid relationships validation cases if/when API Platform starts
@@ -384,20 +384,23 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
          *
          * yield from $this->create("{$this->property} is an integer", $value);
          */
-        $value = ($integerPart ?? 0) + \round(1 / 3, $precision + 1);
-
         $message = $this->translateMessage(
-            (new Decimal([
-                'minPrecision' => $precision,
-                'maxPrecision' => $precision,
-            ]))->message,
+            (new Decimal(\compact('minPrecision', 'maxPrecision')))->message,
             [
-                '{{ minPrecision }}' => $precision,
-                '{{ maxPrecision }}' => $precision,
+                '{{ minPrecision }}' => $minPrecision,
+                '{{ maxPrecision }}' => $maxPrecision,
             ]
         );
 
-        yield from $this->create("{$this->property} has invalid precision", $value, $message);
+        $value = ($integerPart ?? 0) + \round(1 / 3, $maxPrecision + 1);
+
+        yield from $this->create("{$this->property} has higher precision", $value, $message);
+
+        if ($minPrecision > 1) {
+            $value = ($integerPart ?? 0) + \round(1 / 3, $minPrecision - 1);
+
+            yield from $this->create("{$this->property} has lower precision", $value, $message);
+        }
     }
 
     /**
