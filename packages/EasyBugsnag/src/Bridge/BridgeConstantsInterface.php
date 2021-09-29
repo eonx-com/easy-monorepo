@@ -14,6 +14,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_APP_NAME_ENV_VAR = 'easy_bugsnag.app_name_env_var';
+
+    /**
+     * @var string
+     */
     public const PARAM_AWS_ECS_FARGATE_META_STORAGE_FILENAME = 'easy_bugsnag.aws_ecs_fargate_meta_storage_filename';
 
     /**

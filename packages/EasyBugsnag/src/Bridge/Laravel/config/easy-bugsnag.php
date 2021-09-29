@@ -28,6 +28,18 @@ return [
      */
     'strip_path' => \base_path(),
 
+    'app_name' => [
+        /**
+         * Enable APP Name info in bugsnag.
+         */
+        'enabled' => false,
+
+        /**
+         * Env variable used to resolve APP name by default resolver.
+         */
+        'env_var' => 'APP_NAME',
+    ],
+
     'aws_ecs_fargate' => [
         /**
          * Enable AWS ECS Fargate info in bugsnag.
