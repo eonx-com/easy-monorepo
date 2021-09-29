@@ -1,0 +1,15 @@
+easy_bugsnag:
+    api_key: '%env(for_build:BUGSNAG_API_KEY)%'
+
+    aws_ecs_fargate:
+        enabled: true
+        meta_url: '%env(for_build:ECS_CONTAINER_METADATA_URI_V4)%/task'
+
+    session_tracking:
+        enabled: true
+        exclude_urls:
+            - '^/ping'
+        messenger_message_count_for_sessions: true
+
+    worker_info:
+        enabled: true
