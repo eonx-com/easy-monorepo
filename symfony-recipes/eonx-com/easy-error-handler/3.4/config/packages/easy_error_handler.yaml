@@ -1,0 +1,2 @@
+easy_error_handler:
+    verbose: '%env(bool:APP_DEBUG)%'
