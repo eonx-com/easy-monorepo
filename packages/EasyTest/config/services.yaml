@@ -9,7 +9,7 @@ services:
         exclude:
             - '../src/HttpKernel/*'
             - '../src/InvalidDataMaker/*'
-            - '../src/Coverage/DataTransferObject/*'
+            - '../src/Coverage/DataTransferObjects/*'
 
     EonX\EasyTest\Coverage\Resolvers\CloverCoverageResolver:
         tags:
