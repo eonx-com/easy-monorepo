@@ -24,6 +24,14 @@ final class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->info('Bugsnag Notifier API key, can be found in project settings')
                 ->end()
+                // Application Name
+                ->arrayNode('app_name')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
+                        ->scalarNode('env_var')->defaultValue('APP_NAME')->end()
+                    ->end()
+                ->end()
                 // Basics
                 ->scalarNode('project_root')
                     ->defaultValue('%kernel.project_dir%/src')

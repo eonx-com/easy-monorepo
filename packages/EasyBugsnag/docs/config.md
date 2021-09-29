@@ -31,6 +31,8 @@ The common configuration options for Laravel and Symfony are as follows:
 | `project_root` | `%kernel.project_dir%/src` (Symfony)<br/>`\base_path('app')` (Laravel) | Project root. |
 | `release_stage` | `%env(APP_ENV)%` (Symfony)<br/>`\env('APP_ENV')` (Laravel) | Release stage. |
 | `strip_path` | `%kernel.project_dir%` (Symfony)<br/>`\base_path()` (Laravel) | Strip path. |
+| `app_name.enabled` | `false` | Enable/disable APP name data in Bugsnag. |
+| `app_name.env_var` | `APP_NAME` | Env var used by default APP name resolver. |
 | `aws_ecs_fargate.enabled` | `false` | Enable/disable AWS ECS Fargate data in Bugsnag. See [AWS ECS Fargate information](aws.md) for more information. |
 | `aws_ecs_fargate.meta_url` | `%env(ECS_CONTAINER_METADATA_URI_V4)%/task` (Symfony)<br/> `\sprintf('%s/task', \env('ECS_CONTAINER_METADATA_URI_V4'))` (Laravel) | URL used to fetch AWS ECS Fargate task metadata. |
 | `aws_ecs_fargate.meta_storage_filename` | `%kernel.cache_dir%/aws_ecs_fargate_meta.json` (Symfony)<br/> `\storage_path('aws_ecs_fargate_meta.json')` (Laravel) | Filename to cache AWS ECS Fargate task metadata into. |

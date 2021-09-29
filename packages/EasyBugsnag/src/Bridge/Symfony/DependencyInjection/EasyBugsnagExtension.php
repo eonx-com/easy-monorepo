@@ -84,6 +84,11 @@ final class EasyBugsnagExtension extends Extension
             ->registerForAutoconfiguration(ClientConfiguratorInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR);
 
+        if ($config['app_name']['enabled'] ?? false) {
+            $container->setParameter(BridgeConstantsInterface::PARAM_APP_NAME_ENV_VAR, $config['app_name']['env_var']);
+            $loader->load('app_name.php');
+        }
+
         if ($config['aws_ecs_fargate']['enabled'] ?? false) {
             foreach (self::AWS_ECS_FARGATE_CONFIG as $name => $param) {
                 $container->setParameter($param, $config['aws_ecs_fargate'][$name]);

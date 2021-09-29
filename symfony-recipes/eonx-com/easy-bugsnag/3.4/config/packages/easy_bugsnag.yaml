@@ -1,6 +1,10 @@
 easy_bugsnag:
     api_key: '%env(for_build:BUGSNAG_API_KEY)%'
 
+    app_name:
+        enabled: true
+        env_var: 'AWS_ECS_TASK_NAME'
+
     aws_ecs_fargate:
         enabled: true
         meta_url: '%env(for_build:ECS_CONTAINER_METADATA_URI_V4)%/task'

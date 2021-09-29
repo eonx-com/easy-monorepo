@@ -13,10 +13,13 @@ use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingListener;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingMiddleware;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingQueueListener;
 use EonX\EasyBugsnag\ClientFactory;
+use EonX\EasyBugsnag\Configurators\AppNameConfigurator;
 use EonX\EasyBugsnag\Configurators\AwsEcsFargateConfigurator;
 use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
 use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
+use EonX\EasyBugsnag\Interfaces\AppNameResolverInterface;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
+use EonX\EasyBugsnag\Resolvers\DefaultAppNameResolver;
 use EonX\EasyBugsnag\Session\SessionTracker;
 use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
 use Illuminate\Contracts\Cache\Repository;
@@ -48,6 +51,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
             return;
         }
 
+        $this->registerAppName();
         $this->registerAwsEcsFargate();
         $this->registerClient();
         $this->registerConfigurators();
@@ -55,6 +59,20 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         $this->registerRequestResolver();
         $this->registerSessionTracking();
         $this->registerShutdownStrategy();
+    }
+
+    private function registerAppName(): void
+    {
+        if (\config('easy-bugsnag.app_name.enabled', false)) {
+            $this->app->singleton(AppNameResolverInterface::class, static function (): AppNameResolverInterface {
+                return new DefaultAppNameResolver(\config('easy-bugsnag.app_name.env_var'));
+            });
+
+            $this->app->singleton(AppNameConfigurator::class, static function (Container $app): AppNameConfigurator {
+                return new AppNameConfigurator($app->make(AppNameResolverInterface::class));
+            });
+            $this->app->tag(AppNameConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
+        }
     }
 
     private function registerAwsEcsFargate(): void
