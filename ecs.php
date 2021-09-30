@@ -54,6 +54,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set(Option::SKIP, [
         'packages/*/var/*php',
         '*/vendor/*.php',
+        '*/tests/*/temp/*',
         __DIR__ . '/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php',
 
         NotOperatorWithSuccessorSpaceFixer::class,

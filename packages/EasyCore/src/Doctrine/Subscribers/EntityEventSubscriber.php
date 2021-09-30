@@ -14,7 +14,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     /**
      * @var string[]
      */
-    private $entities;
+    private $acceptableEntities;
 
     /**
      * @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface
@@ -27,7 +27,16 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     public function __construct(DeferredEntityEventDispatcherInterface $eventDispatcher, array $entities)
     {
         $this->eventDispatcher = $eventDispatcher;
-        $this->entities = $entities;
+        $this->acceptableEntities = $entities;
+    }
+
+    public function addAcceptableEntity(string $acceptableEntityClass): void
+    {
+        if (\in_array($acceptableEntityClass, $this->acceptableEntities, true)) {
+            return;
+        }
+
+        $this->acceptableEntities[] = $acceptableEntityClass;
     }
 
     /**
@@ -48,11 +57,19 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $scheduledEntityUpdates = $this->filterEntities($unitOfWork->getScheduledEntityUpdates());
 
         if (\count($scheduledEntityInsertions) > 0) {
-            $this->eventDispatcher->deferInsertions($scheduledEntityInsertions, $transactionNestingLevel);
+            foreach ($scheduledEntityInsertions as $oid => $object) {
+                $changeSet = $unitOfWork->getEntityChangeSet($object);
+                $this->eventDispatcher->addEntityChangeSet($transactionNestingLevel, $oid, $changeSet);
+                $this->eventDispatcher->deferInsert($transactionNestingLevel, $oid, $object);
+            }
         }
 
         if (\count($scheduledEntityUpdates) > 0) {
-            $this->eventDispatcher->deferUpdates($scheduledEntityUpdates, $transactionNestingLevel);
+            foreach ($scheduledEntityUpdates as $oid => $object) {
+                $changeSet = $unitOfWork->getEntityChangeSet($object);
+                $this->eventDispatcher->addEntityChangeSet($transactionNestingLevel, $oid, $changeSet);
+                $this->eventDispatcher->deferUpdate($transactionNestingLevel, $oid, $object);
+            }
         }
     }
 
@@ -73,7 +90,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     private function filterEntities(array $entities): array
     {
         return \array_filter($entities, function (object $entity): bool {
-            foreach ($this->entities as $acceptableEntityClass) {
+            foreach ($this->acceptableEntities as $acceptableEntityClass) {
                 if (\is_a($entity, $acceptableEntityClass)) {
                     return true;
                 }

@@ -20,6 +20,7 @@ parameters:
     excludes_analyse:
         - packages/*/var/*
         - packages/*/vendor/*
+        - packages/*/tests/*/temp/*
         - packages/EasyApiToken/src/Interfaces/*
         - packages/EasyApiToken/tests/Bridge/Symfony/*
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php

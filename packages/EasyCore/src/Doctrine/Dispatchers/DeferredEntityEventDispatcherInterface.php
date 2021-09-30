@@ -6,17 +6,18 @@ namespace EonX\EasyCore\Doctrine\Dispatchers;
 
 interface DeferredEntityEventDispatcherInterface
 {
+    /**
+     * @param int $transactionNestingLevel
+     * @param string $oid
+     * @param array<string, array{mixed, mixed}> $entityChangeSet
+     */
+    public function addEntityChangeSet(int $transactionNestingLevel, string $oid, array $entityChangeSet): void;
+
     public function clear(?int $transactionNestingLevel = null): void;
 
-    /**
-     * @param object[] $entityInsertions
-     */
-    public function deferInsertions(array $entityInsertions, int $transactionNestingLevel): void;
+    public function deferInsert(int $transactionNestingLevel, string $oid, object $entity): void;
 
-    /**
-     * @param object[] $entityUpdates
-     */
-    public function deferUpdates(array $entityUpdates, int $transactionNestingLevel): void;
+    public function deferUpdate(int $transactionNestingLevel, string $oid, object $entity): void;
 
     public function disable(): void;
 

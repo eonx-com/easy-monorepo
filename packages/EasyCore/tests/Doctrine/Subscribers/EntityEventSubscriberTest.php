@@ -4,141 +4,409 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Doctrine\Subscribers;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\Event\PostFlushEventArgs;
-use Doctrine\ORM\Events;
-use Doctrine\ORM\UnitOfWork;
-use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
+use Doctrine\Common\EventManager;
+use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcher;
+use EonX\EasyCore\Doctrine\Events\EntityCreatedEvent;
+use EonX\EasyCore\Doctrine\Events\EntityUpdatedEvent;
 use EonX\EasyCore\Doctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyCore\Tests\AbstractTestCase;
-use stdClass;
+use EonX\EasyCore\Tests\Doctrine\Fixtures\Category;
+use EonX\EasyCore\Tests\Doctrine\Fixtures\Product;
+use EonX\EasyCore\Tests\Doctrine\Stubs\EntityManagerStub;
+use EonX\EasyCore\Tests\Doctrine\Stubs\EventDispatcherStub;
 
 /**
  * @covers \EonX\EasyCore\Doctrine\Subscribers\EntityEventSubscriber
+ * @covers \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcher
  */
 final class EntityEventSubscriberTest extends AbstractTestCase
 {
-    public function testGetSubscribedEventsSucceeds(): void
+    public function testEventsAreDispatchedAfterEnablingDispatcher(): void
     {
-        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcher */
-        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class)->reveal();
-        $entityEventSubscriber = new EntityEventSubscriber($eventDispatcher, []);
-
-        $subscribedEvents = $entityEventSubscriber->getSubscribedEvents();
-
-        self::assertSame([Events::onFlush, Events::postFlush], $subscribedEvents);
-    }
-
-    public function testOnFlushSucceeds(): void
-    {
-        $newEntity = $this->prophesize(stdClass::class)->reveal();
-        $existedEntity = $this->prophesize(stdClass::class)->reveal();
-        $notAcceptableEntity = $this->prophesize(stdClass::class)
-            ->willImplement(EntityManagerInterface::class)
-            ->reveal();
-        $unitOfWork = $this->prophesize(UnitOfWork::class);
-        $unitOfWork->getScheduledEntityInsertions()
-            ->willReturn([$newEntity, $notAcceptableEntity]);
-        $unitOfWork->getScheduledEntityUpdates()
-            ->willReturn([$existedEntity, $notAcceptableEntity]);
-        $connection = $this->prophesize(Connection::class);
-        $connection->getTransactionNestingLevel()
-            ->willReturn(0);
-        $entityManager = $this->prophesize(EntityManagerInterface::class);
-        $entityManager->getUnitOfWork()
-            ->willReturn($unitOfWork->reveal());
-        $entityManager->getConnection()
-            ->willReturn($connection->reveal());
-        $eventArgs = $this->prophesize(OnFlushEventArgs::class);
-        $eventArgs->getEntityManager()
-            ->willReturn($entityManager->reveal());
-        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcherReveal */
-        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
-        $entityEventSubscriber = new EntityEventSubscriber(
-            $deferredEntityEventDispatcherReveal,
-            [\get_class($newEntity), \get_class($existedEntity)]
+        $eventDispatcher = new EventDispatcherStub();
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+        $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
+            $dispatcher,
+            [Product::class],
+            [Product::class]
         );
-        /** @var \Doctrine\ORM\Event\OnFlushEventArgs $eventArgsReveal */
-        $eventArgsReveal = $eventArgs->reveal();
 
-        $entityEventSubscriber->onFlush($eventArgsReveal);
+        $dispatcher->disable();
+        $dispatcher->enable();
+        $product = new Product();
+        $product->setName('Description 1');
+        $product->setPrice('1000');
+        $entityManager->persist($product);
 
-        $eventArgs->getEntityManager()
-            ->shouldHaveBeenCalledOnce();
-        $entityManager->getUnitOfWork()
-            ->shouldHaveBeenCalledOnce();
-        $unitOfWork->getScheduledEntityInsertions()
-            ->shouldHaveBeenCalledOnce();
-        $unitOfWork->getScheduledEntityUpdates()
-            ->shouldHaveBeenCalledOnce();
-        $deferredEntityEventDispatcher->deferInsertions([$newEntity], 0)->shouldHaveBeenCalledOnce();
-        $deferredEntityEventDispatcher->deferUpdates([$existedEntity], 0)->shouldHaveBeenCalledOnce();
-        $entityManager->getConnection()
-            ->shouldHaveBeenCalledOnce();
-        $connection->getTransactionNestingLevel()
-            ->shouldHaveBeenCalledOnce();
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
     }
 
-    public function testPostFlushSucceedsAndDispatchesEvents(): void
+    public function testEventsAreDispatchedForEntitiesAddedLater(): void
     {
-        $connection = $this->prophesize(Connection::class);
-        $connection->getTransactionNestingLevel()
-            ->willReturn(0);
-        $entityManager = $this->prophesize(EntityManagerInterface::class);
-        $entityManager->getConnection()
-            ->willReturn($connection->reveal());
-        $eventArgs = $this->prophesize(PostFlushEventArgs::class);
-        $eventArgs->getEntityManager()
-            ->willReturn($entityManager->reveal());
-        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcherReveal */
-        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
-        $entityEventSubscriber = new EntityEventSubscriber($deferredEntityEventDispatcherReveal, []);
-        /** @var \Doctrine\ORM\Event\PostFlushEventArgs $eventArgsReveal */
-        $eventArgsReveal = $eventArgs->reveal();
+        $eventDispatcher = new EventDispatcherStub();
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+        $eventSubscriber = new EntityEventSubscriber($dispatcher, []);
+        $eventManager = new EventManager();
+        $eventManager->addEventSubscriber($eventSubscriber);
+        $entityManager = EntityManagerStub::createFromEventManager($eventManager, [Product::class]);
 
-        $entityEventSubscriber->postFlush($eventArgsReveal);
+        $eventSubscriber->addAcceptableEntity(Product::class);
+        $eventSubscriber->addAcceptableEntity(Product::class);
 
-        $eventArgs->getEntityManager()
-            ->shouldHaveBeenCalledOnce();
-        $entityManager->getConnection()
-            ->shouldHaveBeenCalledOnce();
-        $connection->getTransactionNestingLevel()
-            ->shouldHaveBeenCalledOnce();
-        $deferredEntityEventDispatcher->dispatch()
-            ->shouldHaveBeenCalledOnce();
+        $product = new Product();
+        $product->setName('Product 1');
+        $product->setPrice('1000');
+        $entityManager->persist($product);
+        $entityManager->flush();
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
     }
 
-    public function testPostFlushSucceedsAndDoesNotDispatchEvents(): void
+    public function testEventsAreDispatchedWhenMultipleEntitiesAreChanged(): void
     {
-        $connection = $this->prophesize(Connection::class);
-        $connection->getTransactionNestingLevel()
-            ->willReturn(1);
-        $entityManager = $this->prophesize(EntityManagerInterface::class);
-        $entityManager->getConnection()
-            ->willReturn($connection->reveal());
-        $eventArgs = $this->prophesize(PostFlushEventArgs::class);
-        $eventArgs->getEntityManager()
-            ->willReturn($entityManager->reveal());
-        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcherReveal */
-        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
-        $entityEventSubscriber = new EntityEventSubscriber($deferredEntityEventDispatcherReveal, []);
-        /** @var \Doctrine\ORM\Event\PostFlushEventArgs $eventArgsReveal */
-        $eventArgsReveal = $eventArgs->reveal();
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Category::class, Product::class],
+            [Category::class, Product::class]
+        );
+        $category = new Category();
+        $category->setName('Computer');
+        $entityManager->persist($category);
+        $product = new Product();
+        $product->setName('Keyboard');
+        $product->setPrice('1000');
+        $entityManager->persist($product);
 
-        $entityEventSubscriber->postFlush($eventArgsReveal);
+        $entityManager->flush();
 
-        $eventArgs->getEntityManager()
-            ->shouldHaveBeenCalledOnce();
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(2, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityCreatedEvent(
+                $category,
+                [
+                    'name' => [null, 'Computer'],
+                ]
+            ),
+            $events[0]
+        );
+        self::assertEqualsCanonicalizing(
+            new EntityCreatedEvent(
+                $product,
+                [
+                    'name' => [null, 'Keyboard'],
+                    'price' => [null, '1000'],
+                    'category' => [null, null],
+                ]
+            ),
+            $events[1]
+        );
+    }
+
+    public function testEventsAreDispatchedWhenMultipleEntitiesAreUpdated(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Category::class, Product::class],
+            [Category::class, Product::class]
+        );
         $entityManager->getConnection()
-            ->shouldHaveBeenCalledOnce();
-        $connection->getTransactionNestingLevel()
-            ->shouldHaveBeenCalledOnce();
-        $deferredEntityEventDispatcher->dispatch()
-            ->shouldNotHaveBeenCalled();
+            ->insert(
+                'category',
+                [
+                    'id' => 1,
+                    'name' => 'Computer',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000',
+                ]
+            );
+        /** @var Category $category */
+        $category = $entityManager->getRepository(Category::class)->find(1);
+        /** @var Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        $category->setName('Computer Peripherals');
+        $product->setPrice('2000');
+
+        $entityManager->persist($category);
+        $entityManager->persist($product);
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(2, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $category,
+                [
+                    'name' => ['Computer', 'Computer Peripherals'],
+                ]
+            ),
+            $events[0]
+        );
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $product,
+                [
+                    'price' => ['1000', '2000'],
+                ]
+            ),
+            $events[1]
+        );
+    }
+
+    public function testEventsAreDispatchedWithRelatedEntityInChangeSet(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class, Category::class]
+        );
+
+        $category = new Category();
+        $category->setName('Computer');
+        $entityManager->persist($category);
+        $product = new Product();
+        $product->setName('Keyboard');
+        $product->setPrice('1000');
+        $product->setCategory($category);
+        $entityManager->persist($product);
+
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityCreatedEvent(
+                $product,
+                [
+                    'name' => [null, 'Keyboard'],
+                    'price' => [null, '1000'],
+                    'category' => [null, $category],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
+    public function testEventsAreNotDispatchedWhenDispatcherIsDisabled(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+        $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
+            $dispatcher,
+            [Product::class],
+            [Product::class]
+        );
+
+        $dispatcher->disable();
+        $product = new Product();
+        $product->setName('Description 1');
+        $product->setPrice('1000');
+        $entityManager->persist($product);
+        $entityManager->flush();
+        $product->setPrice('2000');
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(0, $events);
+    }
+
+    public function testEventsAreNotDispatchedWhenExceptionIsThrown(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class]
+        );
+
+        $this->safeCall(function () use ($entityManager) {
+            $product = new Product();
+
+            $entityManager->transactional(function () use ($entityManager, $product) {
+                $product->setName('Description 1');
+                $product->setPrice('1000');
+                $entityManager->persist($product);
+                $entityManager->flush();
+                $entityManager->transactional(function () use ($entityManager, $product) {
+                    $product->setPrice('2000');
+                    $entityManager->persist($product);
+                    $entityManager->flush();
+                    throw new \RuntimeException('Test', 1);
+                });
+            });
+
+            $entityManager->flush();
+        });
+
+        $this->assertThrownException(\RuntimeException::class, 1);
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(0, $events);
+    }
+
+    public function testEventsAreNotDispatchedWhenNoChangesMade(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class]
+        );
+
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(0, $events);
+    }
+
+    public function testEventsAreNotDispatchedWhenRelatedEntitiesAreChanged(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class, Category::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'category',
+                [
+                    'id' => 1,
+                    'name' => 'Computer',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000',
+                    'category_id' => 1,
+                ]
+            );
+
+        /** @var Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        /** @var Category $category */
+        $category = $product->getCategory();
+        $category->setName('Computer Peripherals');
+
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(0, $events);
+    }
+
+    public function testEventsAreNotDispatchedWhenSubscriptionDoesNotExist(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [],
+            [Product::class]
+        );
+        $product = new Product();
+        $product->setName('Product 1');
+        $product->setPrice('1000');
+        $entityManager->persist($product);
+
+        $entityManager->flush();
+
+        self::assertCount(0, $eventDispatcher->getDispatchedEvents());
+    }
+
+    public function testOneEventIsDispatchedForMultipleUpdatedEntity(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000',
+                ]
+            );
+        /** @var Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+
+        $entityManager->transactional(function () use ($entityManager, $product) {
+            $product->setPrice('2000');
+            $entityManager->persist($product);
+            $entityManager->flush();
+            $entityManager->transactional(function () use ($entityManager, $product) {
+                $product->setPrice('3000');
+                $product->setName('Keyboard 2');
+                $entityManager->flush();
+            });
+        });
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $product,
+                [
+                    'price' => ['1000', '3000'],
+                    'name' => ['Keyboard', 'Keyboard 2'],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
+    public function testOneEventIsDispatchedForNewEntity(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class]
+        );
+
+        $product = new Product();
+        $entityManager->transactional(function () use ($entityManager, $product) {
+            $product->setName('Description 1');
+            $product->setPrice('1000');
+            $entityManager->persist($product);
+            $entityManager->flush();
+            $entityManager->transactional(function () use ($entityManager, $product) {
+                $product->setPrice('2000');
+                $entityManager->flush();
+            });
+        });
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityCreatedEvent(
+                $product,
+                [
+                    'description' => [null, 'Description 1'],
+                    'price' => [null, '2000'],
+                    'category' => [null, null],
+                ]
+            ),
+            $events[0]
+        );
     }
 }

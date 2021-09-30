@@ -13,11 +13,22 @@ use stdClass;
  */
 final class EntityUpdatedEventTest extends AbstractTestCase
 {
+    public function testGetChangeSetSucceeds(): void
+    {
+        /** @var object $expectedEntity */
+        $expectedEntity = $this->prophesize(stdClass::class)->reveal();
+        $event = new EntityUpdatedEvent($expectedEntity, ['changedField' => '1']);
+
+        $changeSet = $event->getChangeSet();
+
+        self::assertSame(['changedField' => '1'], $changeSet);
+    }
+
     public function testGetEntitySucceeds(): void
     {
         /** @var object $expectedEntity */
         $expectedEntity = $this->prophesize(stdClass::class)->reveal();
-        $event = new EntityUpdatedEvent($expectedEntity);
+        $event = new EntityUpdatedEvent($expectedEntity, ['changedField' => '1']);
 
         $actualEntity = $event->getEntity();
 
