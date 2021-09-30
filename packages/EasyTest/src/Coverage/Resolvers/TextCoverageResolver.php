@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Coverage\Resolvers;
 
+use EonX\EasyTest\Coverage\DataTransferObjects\CoverageReportDto;
 use EonX\EasyTest\Exceptions\UnableToResolveCoverageException;
 use EonX\EasyTest\Interfaces\CoverageResolverInterface;
 use Nette\Utils\Strings;
 
 final class TextCoverageResolver implements CoverageResolverInterface
 {
-    public function resolve(string $coverageOutput): float
+    public function resolve(string $coverageOutput): CoverageReportDto
     {
         // Lower and remove spaces
         $output = Strings::replace(Strings::lower($coverageOutput), '/ /', '');
@@ -25,7 +26,7 @@ final class TextCoverageResolver implements CoverageResolverInterface
         $match = Strings::match($output, '/lines:(\d+.\d+\d+)%/i') ?? [];
 
         if (isset($match[1])) {
-            return (float)$match[1];
+            return new CoverageReportDto((float)$match[1]);
         }
 
         throw new UnableToResolveCoverageException(\sprintf(

@@ -1,0 +1,2 @@
+easy_error_handler:
+    bugsnag_enabled: false
