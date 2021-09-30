@@ -7,7 +7,6 @@ easy_bugsnag:
 
     aws_ecs_fargate:
         enabled: true
-        meta_url: '%env(for_build:ECS_CONTAINER_METADATA_URI_V4)%/task'
 
     session_tracking:
         enabled: true
