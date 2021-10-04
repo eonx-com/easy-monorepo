@@ -6,6 +6,7 @@ namespace EonX\EasyLogging\Tests\Bridge\Laravel;
 
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
+use Illuminate\Container\EntryNotFoundException;
 use Psr\Log\LoggerInterface;
 
 final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
@@ -29,6 +30,17 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
             ->make(LoggerInterface::class, [BridgeConstantsInterface::KEY_CHANNEL => $channel]);
 
         self::assertEquals($channel ?? LoggerFactoryInterface::DEFAULT_CHANNEL, $logger->getName());
+    }
+
+    public function testDefaultLoggerNotOverriddenBecauseOfConfig(): void
+    {
+        $this->expectException(EntryNotFoundException::class);
+
+        $app = $this->getApp([
+            'easy-logging.override_default_logger' => false,
+        ]);
+
+        $app->get(LoggerInterface::class);
     }
 
     public function testSanity(): void
