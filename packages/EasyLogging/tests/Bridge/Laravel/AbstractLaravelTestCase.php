@@ -25,12 +25,13 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
         }
 
         $app = new Application(__DIR__);
-        $app->register(EasyLoggingServiceProvider::class);
-        $app->boot();
 
         if ($config !== null) {
             \config($config);
         }
+
+        $app->register(EasyLoggingServiceProvider::class);
+        $app->boot();
 
         return $this->app = $app;
     }
