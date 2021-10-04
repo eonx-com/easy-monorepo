@@ -16,6 +16,7 @@
         "phpspec/prophecy": "~1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "api-platform/core": "^2.5",
+        "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
         "mockery/mockery": "^1.4",
         "symfony/symfony": "^4.4 || ^5.1.5",
