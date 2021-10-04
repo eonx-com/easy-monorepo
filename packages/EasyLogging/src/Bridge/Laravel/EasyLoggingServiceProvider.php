@@ -59,8 +59,6 @@ final class EasyLoggingServiceProvider extends ServiceProvider
             return;
         }
 
-        \dump('here', \config('easy-logging.override_default_logger'));
-
         // Override PSR Logger
         $this->app->singleton(
             LoggerInterface::class,
