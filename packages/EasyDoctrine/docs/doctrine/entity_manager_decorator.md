@@ -21,7 +21,6 @@ Register the decorator
 services:
     EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator:
         arguments:
-            $eventDispatcher: '@EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher'
             $wrapped: '@.inner'
         decorates: doctrine.orm.default_entity_manager
 ```
@@ -40,7 +39,6 @@ Events **cleared** when making `rollback` of the lowest transaction level.
 services:
     EonX\EasyDoctrine\Subscribers\EntityEventSubscriber:
         arguments:
-            $eventDispatcher: '@EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher'
             $entities:
                 - 'App\Entity\SomeEntity'
                 - 'App\Entity\AnotherEntity'

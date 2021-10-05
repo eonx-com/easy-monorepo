@@ -15,7 +15,7 @@ Register the listener:
 ```yaml
 // services_dev.yaml
 services:
-    \EonX\EasyDoctrine\Listeners\FixPostgreSqlDefaultSchemaListener:
+    EonX\EasyDoctrine\Listeners\FixPostgreSqlDefaultSchemaListener:
         tags:
             - { name: doctrine.event_listener, event: postGenerateSchema }
 ```

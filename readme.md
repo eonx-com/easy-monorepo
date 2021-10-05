@@ -20,6 +20,7 @@ you can look [there][1].
 - [EasyBugsnag](https://github.com/eonx-com/easy-bugsnag): Ease integrating bugsnag in your PHP projects
 - [EasyCore](https://github.com/eonx-com/easy-core): Provides core features for Lumen applications
 - [EasyDecision](https://github.com/eonx-com/easy-decision): Your most complex decisions taken the easiest way
+- [EasyDoctrine](https://github.com/eonx-com/easy-doctrine): Provides extensions for Doctrine
 - [EasyErrorHandler](https://github.com/eonx-com/easy-error-handler): Provides customizable ready-to-use error handler for applications
 - [EasyEventDispatcher](https://github.com/eonx-com/easy-event-dispatcher): Framework agnostic event dispatcher
 - [EasyHttpClient](https://github.com/eonx-com/easy-http-client): Utils around HTTP client
