@@ -9,14 +9,18 @@ interface DeferredEntityEventDispatcherInterface
     public function clear(?int $transactionNestingLevel = null): void;
 
     /**
-     * @param object[] $entityInsertions
+     * @param int $transactionNestingLevel
+     * @param object $object
+     * @param array<string, array{mixed, mixed}> $entityChangeSet
      */
-    public function deferInsertions(array $entityInsertions, int $transactionNestingLevel): void;
+    public function deferInsert(int $transactionNestingLevel, object $object, array $entityChangeSet): void;
 
     /**
-     * @param object[] $entityUpdates
+     * @param int $transactionNestingLevel
+     * @param object $object
+     * @param array<string, array{mixed, mixed}> $entityChangeSet
      */
-    public function deferUpdates(array $entityUpdates, int $transactionNestingLevel): void;
+    public function deferUpdate(int $transactionNestingLevel, object $object, array $entityChangeSet): void;
 
     public function disable(): void;
 

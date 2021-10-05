@@ -6,6 +6,7 @@ namespace EonX\EasyDoctrine\Dispatchers;
 
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
+use LogicException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
@@ -16,12 +17,17 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     private $enabled;
 
     /**
-     * @var array<int, object[]>
+     * @var array<int, array<string, array<string, array{mixed, mixed}>>>
+     */
+    private $entityChangeSets = [];
+
+    /**
+     * @var array<string, object>
      */
     private $entityInsertions = [];
 
     /**
-     * @var array<int, object[]>
+     * @var array<string, object>
      */
     private $entityUpdates = [];
 
@@ -39,51 +45,65 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     public function clear(?int $transactionNestingLevel = null): void
     {
         if ($transactionNestingLevel !== null) {
-            foreach (\array_keys($this->entityInsertions) as $level) {
+            foreach (\array_keys($this->entityChangeSets) as $level) {
                 if ($level >= $transactionNestingLevel) {
-                    $this->entityInsertions[$level] = [];
+                    $this->entityChangeSets[$level] = [];
                 }
             }
 
-            foreach (\array_keys($this->entityUpdates) as $level) {
-                if ($level >= $transactionNestingLevel) {
-                    $this->entityUpdates[$level] = [];
+            $activeOids = [];
+            foreach ($this->entityChangeSets as $levelEntityChangeSets) {
+                foreach ($levelEntityChangeSets as $oid => $changeSet) {
+                    $activeOids[$oid] = true;
+                }
+            }
+
+            foreach ($this->entityInsertions as $oid => $value) {
+                if (isset($activeOids[$oid]) === false) {
+                    unset($this->entityInsertions[$oid]);
+                }
+            }
+
+            foreach ($this->entityUpdates as $oid => $value) {
+                if (isset($activeOids[$oid]) === false) {
+                    unset($this->entityUpdates[$oid]);
                 }
             }
 
             return;
         }
 
+        $this->entityChangeSets = [];
         $this->entityInsertions = [];
         $this->entityUpdates = [];
     }
 
-    public function deferInsertions(array $entityInsertions, int $transactionNestingLevel): void
+    /**
+     * @inheritdoc
+     */
+    public function deferInsert(int $transactionNestingLevel, object $object, array $entityChangeSet): void
     {
         if ($this->enabled === false) {
             return;
         }
 
-        /** @var object[] $mergedEntityInsertions */
-        $mergedEntityInsertions = \array_merge(
-            $this->entityInsertions[$transactionNestingLevel] ?? [],
-            $entityInsertions
-        );
-        $this->entityInsertions[$transactionNestingLevel] = $mergedEntityInsertions;
+        $oid = \spl_object_hash($object);
+        $this->entityInsertions[$oid] = $object;
+        $this->entityChangeSets[$transactionNestingLevel][$oid] = $entityChangeSet;
     }
 
-    public function deferUpdates(array $entityUpdates, int $transactionNestingLevel): void
+    /**
+     * @inheritdoc
+     */
+    public function deferUpdate(int $transactionNestingLevel, object $object, array $entityChangeSet): void
     {
         if ($this->enabled === false) {
             return;
         }
 
-        /** @var object[] $mergedEntityUpdates */
-        $mergedEntityUpdates = \array_merge(
-            $this->entityUpdates[$transactionNestingLevel] ?? [],
-            $entityUpdates
-        );
-        $this->entityUpdates[$transactionNestingLevel] = $mergedEntityUpdates;
+        $oid = \spl_object_hash($object);
+        $this->entityUpdates[$oid] = $object;
+        $this->entityChangeSets[$transactionNestingLevel][$oid] = $entityChangeSet;
     }
 
     public function disable(): void
@@ -93,36 +113,73 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
     public function dispatch(): void
     {
-        $entityInsertions = $this->entityInsertions;
-        $entityUpdates = $this->entityUpdates;
-
-        $this->clear();
-
         if ($this->enabled === false) {
             return;
         }
 
-        $processedEntities = [];
-        foreach ($entityInsertions as $entities) {
-            foreach ($entities as $oid => $entity) {
-                $processedEntities[$oid] = $entity;
-                $this->eventDispatcher->dispatch(new EntityCreatedEvent($entity));
-            }
-        }
-
-        foreach ($entityUpdates as $entities) {
-            foreach ($entities as $oid => $entity) {
-                if (isset($processedEntities[$oid])) {
-                    continue;
+        try {
+            $mergedEntityChangeSets = [];
+            foreach ($this->entityChangeSets as $levelChangeSets) {
+                foreach ($levelChangeSets as $oid => $changeSet) {
+                    $mergedEntityChangeSets[$oid] = $this->mergeChangeSet(
+                        $mergedEntityChangeSets[$oid] ?? [],
+                        $changeSet
+                    );
                 }
-                $processedEntities[$oid] = $entity;
-                $this->eventDispatcher->dispatch(new EntityUpdatedEvent($entity));
             }
+
+            foreach ($mergedEntityChangeSets as $oid => $entityChangeSet) {
+                $event = $this->createEntityEvent($oid, $entityChangeSet);
+
+                $this->eventDispatcher->dispatch($event);
+            }
+        } finally {
+            $this->clear();
         }
     }
 
     public function enable(): void
     {
         $this->enabled = true;
+    }
+
+    /**
+     * @param string $oid
+     * @param array<string, array{mixed, mixed}> $entityChangeSet
+     *
+     * @return \EonX\EasyDoctrine\Events\EntityCreatedEvent|\EonX\EasyDoctrine\Events\EntityUpdatedEvent
+     */
+    private function createEntityEvent(string $oid, array $entityChangeSet)
+    {
+        if (isset($this->entityInsertions[$oid]) !== false) {
+            return new EntityCreatedEvent($this->entityInsertions[$oid], $entityChangeSet);
+        }
+
+        if (isset($this->entityUpdates[$oid]) !== false) {
+            return new EntityUpdatedEvent($this->entityUpdates[$oid], $entityChangeSet);
+        }
+
+        // @codeCoverageIgnoreStart
+        throw new LogicException('Entity for event not found.');
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * @param array<string, array{mixed, mixed}> $array1
+     * @param array<string, array{mixed, mixed}> $array2
+     *
+     * @return array<string, array{mixed, mixed}>
+     */
+    private function mergeChangeSet(array $array1, array $array2): array
+    {
+        foreach ($array2 as $key => [$old, $new]) {
+            if (isset($array1[$key]) === false) {
+                $array1[$key] = [$old, $new];
+                continue;
+            }
+            $array1[$key][1] = $new;
+        }
+
+        return $array1;
     }
 }
