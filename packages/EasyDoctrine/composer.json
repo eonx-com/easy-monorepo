@@ -1,6 +1,10 @@
 {
     "name": "eonx-com/easy-doctrine",
-    "description": "Provides extensions to Doctrine 2",
+    "description": "Provides extensions for Doctrine",
+    "keywords": [
+        "doctrine2",
+        "extensions"
+    ],
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {

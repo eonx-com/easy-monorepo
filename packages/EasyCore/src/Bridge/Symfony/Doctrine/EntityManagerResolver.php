@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @deprecated since 3.5, will be removed in 4.0. Use EonX\EasyDoctrine\Bridge\Symfony\EntityManagerResolver instead.
+ * @deprecated since 3.5, will be removed in 4.0. Use EasyDoctrine instead.
  */
 final class EntityManagerResolver
 {

@@ -11,6 +11,6 @@ final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        return new TreeBuilder('easy_doctine');
+        return new TreeBuilder('easy_doctrine');
     }
 }

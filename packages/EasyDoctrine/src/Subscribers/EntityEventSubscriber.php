@@ -59,11 +59,13 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $scheduledEntityUpdates = $this->filterEntities($unitOfWork->getScheduledEntityUpdates());
 
         foreach ($scheduledEntityInsertions as $object) {
+            /** @var array<string, array{mixed, mixed}> $changeSet */
             $changeSet = $unitOfWork->getEntityChangeSet($object);
             $this->eventDispatcher->deferInsert($transactionNestingLevel, $object, $changeSet);
         }
 
         foreach ($scheduledEntityUpdates as $object) {
+            /** @var array<string, array{mixed, mixed}> $changeSet */
             $changeSet = $unitOfWork->getEntityChangeSet($object);
             $this->eventDispatcher->deferUpdate($transactionNestingLevel, $object, $changeSet);
         }
