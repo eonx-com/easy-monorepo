@@ -50,6 +50,25 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
                 }
             }
 
+            $activeOids = [];
+            foreach ($this->entityChangeSets as $levelEntityChangeSets) {
+                foreach ($levelEntityChangeSets as $oid => $changeSet) {
+                    $activeOids[$oid] = true;
+                }
+            }
+
+            foreach ($this->entityInsertions as $oid => $value) {
+                if (isset($activeOids[$oid]) === false) {
+                    unset($this->entityInsertions[$oid]);
+                }
+            }
+
+            foreach ($this->entityUpdates as $oid => $value) {
+                if (isset($activeOids[$oid]) === false) {
+                    unset($this->entityUpdates[$oid]);
+                }
+            }
+
             return;
         }
 
@@ -89,7 +108,6 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     public function disable(): void
     {
         $this->enabled = false;
-        $this->clear();
     }
 
     public function dispatch(): void
@@ -141,7 +159,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         }
 
         // @codeCoverageIgnoreStart
-        throw new \LogicException('Entity fot event not found');
+        throw new \LogicException('Entity for event not found.');
         // @codeCoverageIgnoreEnd
     }
 

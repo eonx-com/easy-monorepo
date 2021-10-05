@@ -76,6 +76,9 @@ final class EntityManagerStub extends EntityManager
         $schemaTool->dropSchema([]);
         $schemaTool->createSchema($schema);
 
+        $entityManager->getConnection()
+            ->setNestTransactionsWithSavepoints(true);
+
         return $entityManager;
     }
 

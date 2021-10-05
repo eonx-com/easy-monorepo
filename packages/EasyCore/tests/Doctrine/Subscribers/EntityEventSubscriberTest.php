@@ -65,6 +65,48 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         self::assertCount(1, $events);
     }
 
+    public function testEventsAreDispatchedWhenExceptionIsThrownAndCatched(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class]
+        );
+
+        $product = new Product();
+
+        $entityManager->transactional(function () use ($entityManager, $product) {
+            $product->setName('Description 1');
+            $product->setPrice('1000');
+            $entityManager->persist($product);
+            $entityManager->flush();
+            try {
+                $entityManager->transactional(function () use ($entityManager, $product) {
+                    $product->setPrice('2000');
+                    $entityManager->persist($product);
+                    $entityManager->flush();
+                    throw new \RuntimeException('Test', 1);
+                });
+            } catch (\RuntimeException $exception) {
+            }
+        });
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityCreatedEvent(
+                $product,
+                [
+                    'category' => [null, null],
+                    'name' => [null, 'Description 1'],
+                    'price' => [null, '1000'],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
     public function testEventsAreDispatchedWhenMultipleEntitiesAreChanged(): void
     {
         $eventDispatcher = new EventDispatcherStub();
