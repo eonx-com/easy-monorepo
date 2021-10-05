@@ -6,6 +6,9 @@ namespace EonX\EasyCore\Bridge\Symfony\Event;
 
 use EonX\EasyCore\Bridge\Symfony\DependencyInjection\Event\DoctrineEntityEventTag;
 
+/**
+ * @deprecated since 3.5, will be removed in 4.0. Use EonX\EasyDoctrine\Bridge\Symfony\Event\DoctrineEntityEventListenerTrait instead.
+ */
 trait DoctrineEntityEventListenerTrait
 {
     /**

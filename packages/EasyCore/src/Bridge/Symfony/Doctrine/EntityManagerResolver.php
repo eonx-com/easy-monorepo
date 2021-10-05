@@ -7,6 +7,9 @@ namespace EonX\EasyCore\Bridge\Symfony\Doctrine;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @deprecated since 3.5, will be removed in 4.0. Use EonX\EasyDoctrine\Bridge\Symfony\EntityManagerResolver instead.
+ */
 final class EntityManagerResolver
 {
     /**

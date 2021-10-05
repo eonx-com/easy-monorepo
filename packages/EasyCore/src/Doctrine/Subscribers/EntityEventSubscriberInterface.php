@@ -8,6 +8,9 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
+/**
+ * @deprecated since 3.5, will be removed in 4.0. Use EasyDoctrine instead.
+ */
 interface EntityEventSubscriberInterface extends EventSubscriber
 {
     /**

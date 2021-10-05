@@ -9,6 +9,9 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 
+/**
+ * @deprecated since 3.5, will be removed in 4.0. Use EasyDoctrine instead.
+ */
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
 {
     /**

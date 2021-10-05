@@ -11,6 +11,9 @@ use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeType;
 
+/**
+ * @deprecated since 3.5, will be removed in 4.0. Use EasyDoctrine instead.
+ */
 final class DateTimeMicrosecondsType extends DateTimeType
 {
     /**

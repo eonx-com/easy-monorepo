@@ -13,17 +13,20 @@ use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use InvalidArgumentException;
 use Throwable;
 
+/**
+ * @deprecated since 3.5, will be removed in 4.0. Use EasyDoctrine instead.
+ */
 final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
 {
-    /**
-     * @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface
-     */
-    private $eventDispatcher;
-
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
      */
     private $errorHandler;
+
+    /**
+     * @var \EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     public function __construct(
         DeferredEntityEventDispatcherInterface $eventDispatcher,
