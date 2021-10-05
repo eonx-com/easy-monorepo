@@ -11,6 +11,11 @@ return [
     'default_channel' => LoggerFactoryInterface::DEFAULT_CHANNEL,
 
     /**
+     * Enable/Disable the override of the default logger.
+     */
+    'override_default_logger' => true,
+
+    /**
      * Enable/Disable the default stream handler.
      */
     'stream_handler' => true,
