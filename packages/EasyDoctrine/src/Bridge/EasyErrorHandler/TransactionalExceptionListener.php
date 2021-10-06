@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Bridge\EasyErrorHandler;
 
 use EonX\EasyDoctrine\Events\TransactionalExceptionEvent;
-use EonX\EasyErrorHandler\ErrorHandler;
+use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 
 final class TransactionalExceptionListener
 {
     /**
-     * @var \EonX\EasyErrorHandler\ErrorHandler
+     * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface
      */
     private $errorHandler;
 
-    public function __construct(ErrorHandler $errorHandler)
+    public function __construct(ErrorHandlerInterface $errorHandler)
     {
         $this->errorHandler = $errorHandler;
     }

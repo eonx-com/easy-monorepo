@@ -12,7 +12,6 @@ Two main features of EntityManagerDecorator are Transactional and Deferred entit
 
 `$entityManager->transactional(callable $callback)` provide:
 - flush and commit or rollback if something goes wrong
-- report of any thrown exception with [easy-error-handler][1]
 - close EntityManager if `Doctrine\ORM\ORMException` or `Doctrine\DBAL\Exception` is thrown
 
 #### Configuration
@@ -120,5 +119,3 @@ final class SomeService
         }
     }
 ```
-
-[1]: https://packages.eonx.com/packages/easy-error-handler/

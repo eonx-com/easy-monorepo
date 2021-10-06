@@ -13,7 +13,7 @@ final class EasyDoctrineServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/easy-doctrine.php' => \base_path('config/easy-core.php'),
+            __DIR__ . '/../config/easy-doctrine.php' => \base_path('config/easy-doctrine.php'),
         ]);
     }
 
