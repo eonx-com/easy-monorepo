@@ -19,7 +19,7 @@ final class EasyDoctrineServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        if ((bool)\config('easy-core.easy_error_handler_enabled', true) === false) {
+        if ((bool)\config('easy-doctrine.easy_error_handler_enabled', true) === false) {
             return;
         }
 
