@@ -13,9 +13,9 @@ use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
-use EonX\EasyErrorHandler\ErrorHandler;
-use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 
 final class EntityManagerStub extends EntityManager
 {
@@ -37,11 +37,11 @@ final class EntityManagerStub extends EntityManager
         $eventManager = new EventManager();
         $eventManager->addEventSubscriber($eventSubscriber);
         $entityManagerStub = self::createFromEventManager($eventManager, $fixtures);
-        $errorHandler = new ErrorHandler(new ErrorResponseFactory(), [], []);
+        $eventDispatcher = new EventDispatcher(new SymfonyEventDispatcher());
 
         return new EntityManagerDecorator(
             $dispatcher,
-            $errorHandler,
+            $eventDispatcher,
             $entityManagerStub
         );
     }
@@ -83,7 +83,7 @@ final class EntityManagerStub extends EntityManager
     }
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param EventDispatcherInterface $eventDispatcher
      * @param string[] $subscribedEntities
      * @param string[] $fixtures
      *
@@ -92,7 +92,7 @@ final class EntityManagerStub extends EntityManager
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
     public static function createFromSymfonyEventDispatcher(
-        EventDispatcher $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         array $subscribedEntities = [],
         array $fixtures = []
     ) {

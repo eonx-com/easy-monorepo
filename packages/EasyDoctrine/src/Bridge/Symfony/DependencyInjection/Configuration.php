@@ -11,6 +11,14 @@ final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        return new TreeBuilder('easy_doctrine');
+        $treeBuilder = new TreeBuilder('easy_doctrine');
+
+        $treeBuilder->getRootNode()
+            ->children()
+                ->booleanNode('easy_error_handler_enabled')
+                ->defaultValue(true)
+            ->end();
+
+        return $treeBuilder;
     }
 }

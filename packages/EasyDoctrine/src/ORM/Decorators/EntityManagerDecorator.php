@@ -9,31 +9,47 @@ use Doctrine\ORM\Decorator\EntityManagerDecorator as DoctrineEntityManagerDecora
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyDoctrine\Events\TransactionalExceptionEvent;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use InvalidArgumentException;
 use Throwable;
 
 final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
 {
     /**
+     * @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface
+     */
+    private $deferredEntityEventDispatcher;
+
+    /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
      */
     private $errorHandler;
 
     /**
-     * @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface
+     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
      */
     private $eventDispatcher;
 
     public function __construct(
-        DeferredEntityEventDispatcherInterface $eventDispatcher,
-        ErrorHandlerInterface $errorHandler,
+        DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         EntityManagerInterface $wrapped
     ) {
         parent::__construct($wrapped);
 
+        $this->deferredEntityEventDispatcher = $deferredEntityEventDispatcher;
         $this->eventDispatcher = $eventDispatcher;
-        $this->errorHandler = $errorHandler;
+        $this->errorHandler = $eventDispatcher;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function clear($objectName = null)
+    {
+        parent::clear($objectName);
+        $this->deferredEntityEventDispatcher->clear();
     }
 
     public function commit(): void
@@ -41,7 +57,7 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
         parent::commit();
 
         if ($this->getConnection()->getTransactionNestingLevel() === 0) {
-            $this->eventDispatcher->dispatch();
+            $this->deferredEntityEventDispatcher->dispatch();
         }
     }
 
@@ -54,7 +70,7 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
             parent::rollback();
         }
 
-        $this->eventDispatcher->clear($transactionNestingLevel);
+        $this->deferredEntityEventDispatcher->clear($transactionNestingLevel);
     }
 
     /**
@@ -80,8 +96,8 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
 
             return $return;
         } catch (Throwable $exception) {
-            // Report exception before calling close() or rollback() as they throw exception too
-            $this->errorHandler->report($exception);
+            // Dispatch event before calling close() or rollback() as they throw exception too
+            $this->eventDispatcher->dispatch(new TransactionalExceptionEvent($exception));
 
             if ($exception instanceof ORMException || $exception instanceof DBALException) {
                 $this->close();

@@ -9,9 +9,10 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
+use EonX\EasyDoctrine\Events\TransactionalExceptionEvent;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
-use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Exception;
 use InvalidArgumentException;
 use stdClass;
@@ -64,15 +65,15 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->willReturn($connection->reveal());
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
-        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
         /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
+        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
-        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
-        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
-        $errorHandlerReveal = $errorHandler->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
+            $deferredEntityEventDispatcherReveal,
             $eventDispatcherReveal,
-            $errorHandlerReveal,
             $entityManagerReveal
         );
 
@@ -84,7 +85,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $connection->getTransactionNestingLevel()
             ->shouldHaveBeenCalledOnce();
-        $eventDispatcher->dispatch()
+        $deferredEntityEventDispatcher->dispatch()
             ->shouldNotBeCalled();
     }
 
@@ -99,15 +100,15 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->willReturn($connection->reveal());
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
-        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherReveal = $eventDispatcher->reveal();
-        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
-        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
-        $errorHandlerReveal = $errorHandler->reveal();
+        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
+        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $eventDispatcherReveal,
-            $errorHandlerReveal,
+            $deferredEntityEventDispatcherReveal,
+            $eventDispatcherRevealReveal,
             $entityManagerReveal
         );
 
@@ -119,7 +120,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $connection->getTransactionNestingLevel()
             ->shouldHaveBeenCalledOnce();
-        $eventDispatcher->dispatch()
+        $deferredEntityEventDispatcher->dispatch()
             ->shouldHaveBeenCalledOnce();
     }
 
@@ -134,15 +135,15 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->willReturn($connection->reveal());
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
-        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherReveal = $eventDispatcher->reveal();
-        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
-        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
-        $errorHandlerReveal = $errorHandler->reveal();
+        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
+        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $eventDispatcherReveal,
-            $errorHandlerReveal,
+            $deferredEntityEventDispatcherReveal,
+            $eventDispatcherRevealReveal,
             $entityManagerReveal
         );
 
@@ -154,7 +155,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $connection->getTransactionNestingLevel()
             ->shouldHaveBeenCalledOnce();
-        $eventDispatcher->clear($transactionNestingLevel)
+        $deferredEntityEventDispatcher->clear($transactionNestingLevel)
             ->shouldHaveBeenCalledOnce();
     }
 
@@ -169,15 +170,15 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->willReturn($connection->reveal());
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
-        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherReveal = $eventDispatcher->reveal();
-        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
-        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
-        $errorHandlerReveal = $errorHandler->reveal();
+        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
+        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $eventDispatcherReveal,
-            $errorHandlerReveal,
+            $deferredEntityEventDispatcherReveal,
+            $eventDispatcherRevealReveal,
             $entityManagerReveal
         );
 
@@ -189,7 +190,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $connection->getTransactionNestingLevel()
             ->shouldHaveBeenCalledOnce();
-        $eventDispatcher->clear($transactionNestingLevel)
+        $deferredEntityEventDispatcher->clear($transactionNestingLevel)
             ->shouldHaveBeenCalledOnce();
     }
 
@@ -219,15 +220,15 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->willReturn($connection->reveal());
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
-        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherReveal = $eventDispatcher->reveal();
-        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
-        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
-        $errorHandlerReveal = $errorHandler->reveal();
+        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
+        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $eventDispatcherReveal,
-            $errorHandlerReveal,
+            $deferredEntityEventDispatcherReveal,
+            $eventDispatcherRevealReveal,
             $entityManagerReveal
         );
 
@@ -246,7 +247,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $connection->getTransactionNestingLevel()
             ->shouldHaveBeenCalledOnce();
-        $eventDispatcher->dispatch()
+        $deferredEntityEventDispatcher->dispatch()
             ->shouldHaveBeenCalledOnce();
         self::assertSame($transactionalReturns, $result);
     }
@@ -269,15 +270,15 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->willReturn($connection->reveal());
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
-        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherReveal = $eventDispatcher->reveal();
-        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
-        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
-        $errorHandlerReveal = $errorHandler->reveal();
+        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
+        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $eventDispatcherReveal,
-            $errorHandlerReveal,
+            $deferredEntityEventDispatcherReveal,
+            $eventDispatcherRevealReveal,
             $entityManagerReveal
         );
 
@@ -290,7 +291,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $entityManager->close()
             ->shouldNotHaveBeenCalled();
-        $errorHandler->report($exception)
+        $eventDispatcher->dispatch(new TransactionalExceptionEvent($exception))
             ->shouldHaveBeenCalledOnce();
         $entityManager->rollback()
             ->shouldHaveBeenCalledOnce();
@@ -298,7 +299,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $connection->getTransactionNestingLevel()
             ->shouldHaveBeenCalledOnce();
-        $eventDispatcher->clear($transactionNestingLevel)
+        $deferredEntityEventDispatcher->clear($transactionNestingLevel)
             ->shouldHaveBeenCalledOnce();
     }
 
@@ -323,15 +324,15 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->willReturn($connection->reveal());
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
-        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherReveal = $eventDispatcher->reveal();
-        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
-        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
-        $errorHandlerReveal = $errorHandler->reveal();
+        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
+        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $eventDispatcherReveal,
-            $errorHandlerReveal,
+            $deferredEntityEventDispatcherReveal,
+            $eventDispatcherRevealReveal,
             $entityManagerReveal
         );
 
@@ -344,7 +345,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $entityManager->close()
             ->shouldHaveBeenCalledOnce();
-        $errorHandler->report($doctrineException)
+        $eventDispatcher->dispatch(new TransactionalExceptionEvent($doctrineException))
             ->shouldHaveBeenCalledOnce();
         $entityManager->rollback()
             ->shouldHaveBeenCalledOnce();
@@ -352,7 +353,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $connection->getTransactionNestingLevel()
             ->shouldHaveBeenCalledOnce();
-        $eventDispatcher->clear($transactionNestingLevel)
+        $deferredEntityEventDispatcher->clear($transactionNestingLevel)
             ->shouldHaveBeenCalledOnce();
     }
 
@@ -364,15 +365,15 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManager = $this->prophesize(EntityManagerInterface::class);
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
-        $eventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherReveal = $eventDispatcher->reveal();
-        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
-        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface $errorHandlerReveal */
-        $errorHandlerReveal = $errorHandler->reveal();
+        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
+        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $eventDispatcherReveal,
-            $errorHandlerReveal,
+            $deferredEntityEventDispatcherReveal,
+            $eventDispatcherRevealReveal,
             $entityManagerReveal
         );
 

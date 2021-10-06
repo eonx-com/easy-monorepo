@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Stubs;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
-final class EventDispatcherStub extends EventDispatcher
+final class EventDispatcherStub implements EventDispatcherInterface
 {
     /**
      * @var object[]
      */
     private $events = [];
 
-    public function dispatch(object $event, string $eventName = null): object
+    /**
+     * @param object $event
+     */
+    public function dispatch($event)
     {
         $this->events[] = $event;
-
-        return parent::dispatch($event, $eventName);
     }
 
     /**

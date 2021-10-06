@@ -18,7 +18,16 @@ final class EasyDoctrineExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $config = $this->processConfiguration(new Configuration(), $configs);
+
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
+
+        /** @var array<string, string> $bundles */
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if ($config['easy_error_handler_enabled'] && isset($bundles['EasyErrorHandlerSymfonyBundle']) === true) {
+            $loader->load('easy-error-handler-listener.php');
+        }
     }
 }

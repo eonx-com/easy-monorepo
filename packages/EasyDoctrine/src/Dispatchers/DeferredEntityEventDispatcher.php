@@ -6,8 +6,8 @@ namespace EonX\EasyDoctrine\Dispatchers;
 
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use LogicException;
-use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
 {
@@ -32,7 +32,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     private $entityUpdates = [];
 
     /**
-     * @var \Psr\EventDispatcher\EventDispatcherInterface
+     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
      */
     private $eventDispatcher;
 
