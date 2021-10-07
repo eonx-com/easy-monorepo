@@ -66,13 +66,13 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $eventDispatcherReveal */
-        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $entityEventDispatcherReveal */
+        $entityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $deferredEntityEventDispatcherReveal,
+            $entityEventDispatcherReveal,
             $eventDispatcherReveal,
             $entityManagerReveal
         );
@@ -101,14 +101,14 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
-        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
+        $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
+        $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $deferredEntityEventDispatcherReveal,
-            $eventDispatcherRevealReveal,
+            $deferredDispatcherReveal,
+            $eventDispatcherReveal,
             $entityManagerReveal
         );
 
@@ -136,14 +136,14 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
-        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
+        $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
+        $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $deferredEntityEventDispatcherReveal,
-            $eventDispatcherRevealReveal,
+            $deferredDispatcherReveal,
+            $eventDispatcherReveal,
             $entityManagerReveal
         );
 
@@ -171,14 +171,14 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
-        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
+        $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
+        $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $deferredEntityEventDispatcherReveal,
-            $eventDispatcherRevealReveal,
+            $deferredDispatcherReveal,
+            $eventDispatcherReveal,
             $entityManagerReveal
         );
 
@@ -221,14 +221,14 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
-        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
+        $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
+        $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $deferredEntityEventDispatcherReveal,
-            $eventDispatcherRevealReveal,
+            $deferredDispatcherReveal,
+            $eventDispatcherReveal,
             $entityManagerReveal
         );
 
@@ -271,14 +271,14 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
-        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
+        $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
+        $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $deferredEntityEventDispatcherReveal,
-            $eventDispatcherRevealReveal,
+            $deferredDispatcherReveal,
+            $eventDispatcherReveal,
             $entityManagerReveal
         );
 
@@ -325,14 +325,14 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
-        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
+        $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
+        $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $deferredEntityEventDispatcherReveal,
-            $eventDispatcherRevealReveal,
+            $deferredDispatcherReveal,
+            $eventDispatcherReveal,
             $entityManagerReveal
         );
 
@@ -366,14 +366,14 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
         $entityManagerReveal = $entityManager->reveal();
         $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher */
-        $deferredEntityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
+        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
+        $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherRevealReveal = $eventDispatcher->reveal();
+        $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
-            $deferredEntityEventDispatcherReveal,
-            $eventDispatcherRevealReveal,
+            $deferredDispatcherReveal,
+            $eventDispatcherReveal,
             $entityManagerReveal
         );
 

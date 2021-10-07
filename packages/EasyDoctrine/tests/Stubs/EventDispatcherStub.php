@@ -19,6 +19,8 @@ final class EventDispatcherStub implements EventDispatcherInterface
     public function dispatch($event)
     {
         $this->events[] = $event;
+
+        return $event;
     }
 
     /**

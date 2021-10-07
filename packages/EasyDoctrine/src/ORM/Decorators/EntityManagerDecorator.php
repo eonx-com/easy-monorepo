@@ -22,11 +22,6 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
     private $deferredEntityEventDispatcher;
 
     /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
-     */
-    private $errorHandler;
-
-    /**
      * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -40,7 +35,6 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
 
         $this->deferredEntityEventDispatcher = $deferredEntityEventDispatcher;
         $this->eventDispatcher = $eventDispatcher;
-        $this->errorHandler = $eventDispatcher;
     }
 
     /**

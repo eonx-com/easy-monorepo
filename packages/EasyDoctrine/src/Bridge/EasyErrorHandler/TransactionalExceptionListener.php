@@ -19,7 +19,7 @@ final class TransactionalExceptionListener
         $this->errorHandler = $errorHandler;
     }
 
-    public function __invoke(TransactionalExceptionEvent $event)
+    public function __invoke(TransactionalExceptionEvent $event): void
     {
         $this->errorHandler->report($event->getException());
     }

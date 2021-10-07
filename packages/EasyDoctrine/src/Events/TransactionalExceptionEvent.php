@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Events;
 
+use Throwable;
+
 final class TransactionalExceptionEvent
 {
     /**
-     * @var \Throwable
+     * @var Throwable
      */
     private $exception;
 
-    public function __construct(\Throwable $exception)
+    public function __construct(Throwable $exception)
     {
         $this->exception = $exception;
     }
 
-    public function getException(): \Throwable
+    public function getException(): Throwable
     {
         return $this->exception;
     }
