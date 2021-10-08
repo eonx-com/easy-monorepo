@@ -1,0 +1,3 @@
+easy_activity:
+    subjects:
+        EonX\EasyActivity\Tests\Fixtures\Article: ~
