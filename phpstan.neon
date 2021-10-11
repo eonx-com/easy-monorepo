@@ -133,7 +133,7 @@ parameters:
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
 
-        - message: '#Parameter \#2 \$level of class Monolog\\Handler\\StreamHandler constructor expects 100\|200\|250\|300\|400\|500\|550\|600\|string, int given#'
+        - message: '#Parameter \#2 \$level of class Monolog\\Handler\\StreamHandler constructor expects (.*?), int given#'
           path: packages/EasyLogging/src/Config/StreamHandlerConfigProvider.php
 
         # ---- EasyPagination ----

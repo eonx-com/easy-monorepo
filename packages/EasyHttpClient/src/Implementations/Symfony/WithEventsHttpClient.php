@@ -74,6 +74,7 @@ final class WithEventsHttpClient implements HttpClientInterface
     public function request(string $method, string $url, ?array $options = null): ResponseInterface
     {
         $options = $options ?? [];
+        $extra = $options[HttpOptionsInterface::REQUEST_DATA_EXTRA] ?? null;
         $modifiers = \array_merge($this->modifiers, $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS] ?? []);
         $modifiersEnabled = $this->modifiersEnabled ??
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_ENABLED] ?? true;
@@ -83,6 +84,7 @@ final class WithEventsHttpClient implements HttpClientInterface
         );
         $subscribers = $options[HttpOptionsInterface::REQUEST_DATA_SUBSCRIBERS] ?? [];
         unset(
+            $options[HttpOptionsInterface::REQUEST_DATA_EXTRA],
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS],
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_ENABLED],
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST],
@@ -104,7 +106,7 @@ final class WithEventsHttpClient implements HttpClientInterface
             $response->getStatusCode()
         );
 
-        $this->eventDispatcher->dispatch(new HttpRequestSentEvent($requestData, $responseData));
+        $this->eventDispatcher->dispatch(new HttpRequestSentEvent($requestData, $responseData, $extra));
 
         foreach ($subscribers as $subscriber) {
             if (\is_callable($subscriber)) {
