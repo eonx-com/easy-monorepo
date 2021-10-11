@@ -9,6 +9,11 @@ interface HttpOptionsInterface
     /**
      * @var string
      */
+    public const REQUEST_DATA_EXTRA = 'easy_http_client.request_data_extra';
+
+    /**
+     * @var string
+     */
     public const REQUEST_DATA_MODIFIERS = 'easy_http_client.request_data_modifiers';
 
     /**
