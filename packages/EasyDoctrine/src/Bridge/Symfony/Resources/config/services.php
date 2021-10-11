@@ -17,5 +17,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(DeferredEntityEventDispatcherInterface::class, DeferredEntityEventDispatcher::class);
     $services->set(EntityEventSubscriberInterface::class, EntityEventSubscriber::class)
+        ->public()
         ->arg('$entities', []);
 };

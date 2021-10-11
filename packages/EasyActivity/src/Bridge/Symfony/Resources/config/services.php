@@ -7,6 +7,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyActivity\ActivityLogEntryFactory;
 use EonX\EasyActivity\Bridge\EasyDoctrine\EasyDoctrineEntityEventsSubscriber;
 use EonX\EasyActivity\Bridge\Symfony\BridgeConstantsInterface;
+use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
 use EonX\EasyActivity\Bridge\Symfony\SymfonyNormalizer;
 use EonX\EasyActivity\DefaultActorResolver;
@@ -41,6 +42,9 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(EasyDoctrineEntityEventsSubscriber::class)
         ->tag('kernel.event_subscriber');
+
+    $services
+        ->set(ActivityLogEntryMessageHandler::class);
 
     $services
         ->set(AsyncDispatcherInterface::class, AsyncDispatcher::class);
