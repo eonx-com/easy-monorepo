@@ -21,6 +21,6 @@ final class TransactionalExceptionListener
 
     public function __invoke(TransactionalExceptionEvent $event): void
     {
-        $this->errorHandler->report($event->getException());
+        $this->errorHandler->report($event->getThrowable());
     }
 }

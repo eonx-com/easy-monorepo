@@ -89,16 +89,16 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
             $this->commit();
 
             return $return;
-        } catch (Throwable $exception) {
+        } catch (Throwable $throwable) {
             // Dispatch event before calling close() or rollback() as they throw exception too
-            $this->eventDispatcher->dispatch(new TransactionalExceptionEvent($exception));
+            $this->eventDispatcher->dispatch(new TransactionalExceptionEvent($throwable));
 
-            if ($exception instanceof ORMException || $exception instanceof DBALException) {
+            if ($throwable instanceof ORMException || $throwable instanceof DBALException) {
                 $this->close();
             }
             $this->rollback();
 
-            throw $exception;
+            throw $throwable;
         }
     }
 }

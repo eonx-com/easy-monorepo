@@ -11,15 +11,15 @@ final class TransactionalExceptionEvent
     /**
      * @var Throwable
      */
-    private $exception;
+    private $throwable;
 
-    public function __construct(Throwable $exception)
+    public function __construct(Throwable $throwable)
     {
-        $this->exception = $exception;
+        $this->throwable = $throwable;
     }
 
-    public function getException(): Throwable
+    public function getThrowable(): Throwable
     {
-        return $this->exception;
+        return $this->throwable;
     }
 }
