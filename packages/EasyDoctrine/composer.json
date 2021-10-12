@@ -1,19 +1,17 @@
 {
     "name": "eonx-com/easy-doctrine",
     "description": "Provides functionalities to enhance Doctrine integration in your project",
-    "keywords": [
-        "doctrine"
-    ],
+    "keywords": ["doctrine"],
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
         "php": "^7.2 || ^8.0",
-        "eonx-com/easy-event-dispatcher": "^3.5"
+        "eonx-com/easy-event-dispatcher": "^3.4.6"
     },
     "require-dev": {
         "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
-        "eonx-com/easy-error-handler": "^3.5",
+        "eonx-com/easy-error-handler": "^3.4.6",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "symfony/symfony": "^4.4 || ^5.1.5"
