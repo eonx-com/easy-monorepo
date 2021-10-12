@@ -20,7 +20,8 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyDoctrine\\": "src"
+            "EonX\\EasyDoctrine\\": "src",
+            "EonX\\EasyDoctrine\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {
