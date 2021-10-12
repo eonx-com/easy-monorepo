@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Doctrine\Dispatchers;
 
+/**
+ * @deprecated since 3.5, will be removed in 4.0. Use EasyDoctrine instead.
+ */
 interface DeferredEntityEventDispatcherInterface
 {
     public function clear(?int $transactionNestingLevel = null): void;

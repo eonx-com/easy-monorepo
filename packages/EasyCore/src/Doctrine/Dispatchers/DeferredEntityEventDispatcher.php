@@ -8,6 +8,9 @@ use EonX\EasyCore\Doctrine\Events\EntityCreatedEvent;
 use EonX\EasyCore\Doctrine\Events\EntityUpdatedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @deprecated since 3.5, will be removed in 4.0. Use EasyDoctrine instead.
+ */
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
 {
     /**

@@ -1,0 +1,5 @@
+# Composer
+composer.lock
+/vendor
+
+tests/var

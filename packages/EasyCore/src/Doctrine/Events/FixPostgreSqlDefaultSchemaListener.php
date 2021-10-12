@@ -12,6 +12,8 @@ use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
  *
  * @author https://github.com/vudaltsov
  *
+ * @deprecated since 3.5, will be removed in 4.0. Use EasyDoctrine instead.
+ *
  * @codeCoverageIgnore
  */
 final class FixPostgreSqlDefaultSchemaListener
