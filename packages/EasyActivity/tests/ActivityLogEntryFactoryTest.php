@@ -14,7 +14,6 @@ use EonX\EasyActivity\Stores\NullStore;
 use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
-use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -186,23 +185,6 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             ],
             \json_decode((string)$result->getData(), true)
         );
-    }
-
-    public function testCreateThrowsErrorWhenChangeSetHasNotSerializableValue(): void
-    {
-        $factory = new ActivityLogEntryFactory(
-            new DefaultActorResolver(),
-            new NullStore(),
-            new SymfonyNormalizer(new Serializer([new ObjectNormalizer()])),
-            [Article::class => ['type' => 'article']],
-            []
-        );
-
-        $this->safeCall(function () use ($factory) {
-            $factory->create(ActivityLogEntry::ACTION_UPDATE, new Article(), ['value' => \curl_init()]);
-        });
-
-        $this->assertThrownException(NotNormalizableValueException::class, 0);
     }
 
     /**
