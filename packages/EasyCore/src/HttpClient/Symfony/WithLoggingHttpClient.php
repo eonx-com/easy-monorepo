@@ -9,6 +9,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
+/**
+ * @deprecated since 3.4, will be removed in 4.0. Use EonX\EasyHttpClient\Implementations\Symfony\WithEventsHttpClient instead.
+ */
 final class WithLoggingHttpClient implements HttpClientInterface
 {
     /**
