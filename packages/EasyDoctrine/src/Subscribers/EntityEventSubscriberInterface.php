@@ -10,8 +10,6 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
 
 interface EntityEventSubscriberInterface extends EventSubscriber
 {
-    public function addAcceptableEntity(string $acceptableEntityClass): void;
-
     /**
      * @return string[]
      */

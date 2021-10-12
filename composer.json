@@ -64,6 +64,7 @@
     "autoload": {
         "psr-4": {
             "EonX\\EasyMonorepo\\": "monorepo",
+            "EonX\\EasyActivity\\": "packages/EasyActivity/src",
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
             "EonX\\EasyAsync\\": "packages/EasyAsync/src",
             "EonX\\EasyAwsCredentialsFinder\\": "packages/EasyAwsCredentialsFinder/src",
@@ -97,6 +98,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "EonX\\EasyActivity\\Tests\\": "packages/EasyActivity/tests",
             "EonX\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
             "EonX\\EasyAsync\\Tests\\": "packages/EasyAsync/tests",
             "EonX\\EasyAwsCredentialsFinder\\Tests\\": "packages/EasyAwsCredentialsFinder/tests",

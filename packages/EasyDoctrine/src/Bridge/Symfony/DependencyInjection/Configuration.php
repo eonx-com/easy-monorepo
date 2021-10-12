@@ -15,8 +15,13 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
+                ->arrayNode('entities')
+                    ->defaultValue([])
+                    ->prototype('scalar')->end()
+                ->end()
                 ->booleanNode('easy_error_handler_enabled')
-                ->defaultValue(true)
+                    ->defaultValue(true)
+                ->end()
             ->end();
 
         return $treeBuilder;

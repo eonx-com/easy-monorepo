@@ -16,6 +16,7 @@ parameters:
 
     bootstrapFiles:
         - %currentWorkingDirectory%/tests/bootstrap.php
+        - %currentWorkingDirectory%/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Loader/Configurator/ContainerConfigurator.php
 
     excludes_analyse:
         - packages/*/var/*
