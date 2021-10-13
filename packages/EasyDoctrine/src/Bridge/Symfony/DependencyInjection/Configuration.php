@@ -15,7 +15,7 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->arrayNode('entities')
+                ->arrayNode('deferred_dispatcher_entities')
                     ->defaultValue([])
                     ->prototype('scalar')->end()
                 ->end()

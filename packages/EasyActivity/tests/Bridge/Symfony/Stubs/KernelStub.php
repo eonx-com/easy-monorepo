@@ -71,7 +71,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
             EntityEventSubscriberInterface::class,
             new Definition(
                 EntityEventSubscriber::class,
-                [$deferredEntityDefinition, '%' . BridgeConstantsInterface::PARAM_ENTITIES . '%']
+                [$deferredEntityDefinition, '%' . BridgeConstantsInterface::PARAM_DEFERRED_DISPATCHER_ENTITIES . '%']
             )
         );
 

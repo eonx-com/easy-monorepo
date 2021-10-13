@@ -21,7 +21,10 @@ final class EasyDoctrineExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $container->setParameter(BridgeConstantsInterface::PARAM_ENTITIES, $config['entities']);
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_DEFERRED_DISPATCHER_ENTITIES,
+            $config['deferred_dispatcher_entities']
+        );
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');

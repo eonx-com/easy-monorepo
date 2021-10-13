@@ -1,5 +1,5 @@
 easy_doctrine:
-    entities:
+    deferred_dispatcher_entities:
         - EonX\EasyActivity\Tests\Fixtures\Article
         - EonX\EasyActivity\Tests\Fixtures\Author
 

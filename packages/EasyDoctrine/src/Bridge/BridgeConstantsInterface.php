@@ -9,5 +9,5 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_ENTITIES = 'easy_doctrine.entities';
+    public const PARAM_DEFERRED_DISPATCHER_ENTITIES = 'easy_doctrine.deferred_dispatcher_entities';
 }

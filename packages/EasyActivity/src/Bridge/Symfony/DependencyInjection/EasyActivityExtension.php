@@ -43,7 +43,7 @@ final class EasyActivityExtension extends Extension implements PrependExtensionI
         }
 
         $easyDoctrineBundleConfig = $container->getExtensionConfig('easy_doctrine')[0] ?? [];
-        $easyDoctrineEntities = $easyDoctrineBundleConfig['entities'] ?? [];
+        $easyDoctrineEntities = $easyDoctrineBundleConfig['deferred_dispatcher_entities'] ?? [];
 
         $configs = $container->getExtensionConfig($this->getAlias());
 
@@ -53,7 +53,7 @@ final class EasyActivityExtension extends Extension implements PrependExtensionI
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $easyDoctrinePrependedConfig = [
-            'entities' => \array_diff(\array_keys($config['subjects']), $easyDoctrineEntities),
+            'deferred_dispatcher_entities' => \array_diff(\array_keys($config['subjects']), $easyDoctrineEntities),
         ];
 
         $container->prependExtensionConfig('easy_doctrine', $easyDoctrinePrependedConfig);
