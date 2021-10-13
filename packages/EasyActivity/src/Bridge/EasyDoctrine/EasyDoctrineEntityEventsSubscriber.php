@@ -9,9 +9,8 @@ use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class EasyDoctrineEntityEventsSubscriber implements EventSubscriberInterface
+final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEventsSubscriberInterface
 {
     /**
      * @var \EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface
@@ -23,12 +22,19 @@ final class EasyDoctrineEntityEventsSubscriber implements EventSubscriberInterfa
      */
     private $dispatcher;
 
+    /**
+     * @var bool
+     */
+    private $enabled;
+
     public function __construct(
         AsyncDispatcherInterface $dispatcher,
-        ActivityLogEntryFactoryInterface $activityLogEntryFactory
+        ActivityLogEntryFactoryInterface $activityLogEntryFactory,
+        bool $enabled
     ) {
         $this->dispatcher = $dispatcher;
         $this->activityLogEntryFactory = $activityLogEntryFactory;
+        $this->enabled = $enabled;
     }
 
     public static function getSubscribedEvents(): array
@@ -37,6 +43,16 @@ final class EasyDoctrineEntityEventsSubscriber implements EventSubscriberInterfa
             EntityCreatedEvent::class => ['onCreate'],
             EntityUpdatedEvent::class => ['onUpdate'],
         ];
+    }
+
+    public function disable(): void
+    {
+        $this->enabled = false;
+    }
+
+    public function enable(): void
+    {
+        $this->enabled = true;
     }
 
     public function onCreate(EntityCreatedEvent $event): void
@@ -56,6 +72,10 @@ final class EasyDoctrineEntityEventsSubscriber implements EventSubscriberInterfa
      */
     private function dispatchLogEntry(string $action, object $entity, array $changeSet): void
     {
+        if ($this->enabled === false) {
+            return;
+        }
+
         $oldData = [];
         $data = [];
         foreach ($changeSet as $field => [$oldValue, $newValue]) {

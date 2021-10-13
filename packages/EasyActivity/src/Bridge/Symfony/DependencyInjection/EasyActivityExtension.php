@@ -26,6 +26,10 @@ final class EasyActivityExtension extends Extension implements PrependExtensionI
             BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES,
             $config['disallowed_properties']
         );
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_DOCTRINE_SUBSCRIBER_ENABLED,
+            $config['doctrine_subscriber_enabled']
+        );
         $container->setParameter(BridgeConstantsInterface::PARAM_SUBJECTS, $config['subjects']);
         $container->setParameter(BridgeConstantsInterface::PARAM_TABLE_NAME, $config['table_name']);
 

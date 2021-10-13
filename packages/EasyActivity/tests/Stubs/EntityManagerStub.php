@@ -115,7 +115,7 @@ final class EntityManagerStub extends EntityManager
             ])),
         ]);
         $asyncDispatcher = new AsyncDispatcher($messageBus);
-        $subscriber = new EasyDoctrineEntityEventsSubscriber($asyncDispatcher, $activityLogEntryFactory);
+        $subscriber = new EasyDoctrineEntityEventsSubscriber($asyncDispatcher, $activityLogEntryFactory, true);
 
         $symfonyEventDispatcher->addSubscriber($subscriber);
 

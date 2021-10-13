@@ -14,6 +14,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_DOCTRINE_SUBSCRIBER_ENABLED = 'easy_activity.doctrine_subscriber_enabled';
+
+    /**
+     * @var string
+     */
     public const PARAM_SUBJECTS = 'easy_activity.subjects';
 
     /**

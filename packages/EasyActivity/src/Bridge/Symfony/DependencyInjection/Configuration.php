@@ -15,6 +15,10 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
+                ->booleanNode('doctrine_subscriber_enabled')
+                    ->defaultValue(true)
+                    ->info('Whether doctrine subscriber should handle events.')
+                    ->end()
                 ->scalarNode('table_name')
                     ->defaultValue('easy_activity_logs')
                     ->info('The name for table with logs. Defaults to "easy_activity_logs".')
