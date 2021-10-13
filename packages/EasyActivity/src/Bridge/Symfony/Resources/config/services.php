@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyActivity\ActivityLogEntryFactory;
 use EonX\EasyActivity\Bridge\BridgeConstantsInterface;
+use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStore;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
 use EonX\EasyActivity\Bridge\Symfony\Normalizers\SymfonyNormalizer;
@@ -15,7 +16,6 @@ use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyActivity\Interfaces\NormalizerInterface;
 use EonX\EasyActivity\Interfaces\StoreInterface;
-use EonX\EasyActivity\Stores\DoctrineDbalStore;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -25,7 +25,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(StoreInterface::class, DoctrineDbalStore::class)
-        ->arg('$table', 'easy_activity_logs');
+        ->arg('$table', '%' . BridgeConstantsInterface::PARAM_TABLE_NAME . '%');
 
     $services
         ->set(ActorResolverInterface::class, DefaultActorResolver::class);

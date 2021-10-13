@@ -10,10 +10,10 @@ use EonX\EasyActivity\ActivityLogEntry;
 use EonX\EasyActivity\ActivityLogEntryFactory;
 use EonX\EasyActivity\Bridge\Symfony\Normalizers\SymfonyNormalizer;
 use EonX\EasyActivity\DefaultActorResolver;
-use EonX\EasyActivity\Stores\NullStore;
 use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
+use EonX\EasyActivity\Tests\Stubs\ActivityLogStoreStub;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -66,7 +66,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     {
         $factory = new ActivityLogEntryFactory(
             new DefaultActorResolver(),
-            new NullStore(),
+            new ActivityLogStoreStub(),
             new SymfonyNormalizer(new Serializer([new ObjectNormalizer()])),
             [],
             []
@@ -82,7 +82,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         Carbon::setTestNow('2021-10-10 00:00:00');
         $factory = new ActivityLogEntryFactory(
             new DefaultActorResolver(),
-            new NullStore(),
+            new ActivityLogStoreStub(),
             new SymfonyNormalizer(new Serializer([new ObjectNormalizer()])),
             [Article::class => ['type' => 'article']],
             []
@@ -120,7 +120,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     {
         $factory = new ActivityLogEntryFactory(
             new DefaultActorResolver(),
-            new NullStore(),
+            new ActivityLogStoreStub(),
             new SymfonyNormalizer(new Serializer([new ObjectNormalizer()])),
             [Article::class => ['type' => 'article']],
             []
@@ -154,7 +154,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     {
         $factory = new ActivityLogEntryFactory(
             new DefaultActorResolver(),
-            new NullStore(),
+            new ActivityLogStoreStub(),
             new SymfonyNormalizer(new Serializer([new ObjectNormalizer()])),
             [Article::class => ['type' => 'article']],
             []
@@ -203,7 +203,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     ): void {
         $factory = new ActivityLogEntryFactory(
             new DefaultActorResolver(),
-            new NullStore(),
+            new ActivityLogStoreStub(),
             new SymfonyNormalizer(new Serializer([new ObjectNormalizer()])),
             [
                 Article::class => [

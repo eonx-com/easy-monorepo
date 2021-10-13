@@ -15,4 +15,9 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_SUBJECTS = 'easy_activity.subjects';
+
+    /**
+     * @var string
+     */
+    public const PARAM_TABLE_NAME = 'easy_activity.table_name';
 }

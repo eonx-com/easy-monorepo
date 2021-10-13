@@ -15,6 +15,10 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
+                ->scalarNode('table_name')
+                    ->defaultValue('easy_activity_logs')
+                    ->info('The name for table with logs. Defaults to "easy_activity_logs".')
+                    ->end()
                 ->arrayNode('disallowed_properties')
                     ->defaultValue([])
                     ->prototype('scalar')

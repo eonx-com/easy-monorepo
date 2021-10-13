@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyActivity\Stores;
+namespace EonX\EasyActivity\Bridge\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyActivity\ActivityLogEntry;

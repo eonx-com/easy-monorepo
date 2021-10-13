@@ -27,6 +27,7 @@ final class EasyActivityExtension extends Extension implements PrependExtensionI
             $config['disallowed_properties']
         );
         $container->setParameter(BridgeConstantsInterface::PARAM_SUBJECTS, $config['subjects']);
+        $container->setParameter(BridgeConstantsInterface::PARAM_TABLE_NAME, $config['table_name']);
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
