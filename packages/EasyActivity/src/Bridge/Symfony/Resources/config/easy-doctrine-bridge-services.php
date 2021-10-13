@@ -16,6 +16,6 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(EasyDoctrineEntityEventsSubscriberInterface::class, EasyDoctrineEntityEventsSubscriber::class)
-        ->arg('$enabled', '%' . BridgeConstantsInterface::PARAM_DOCTRINE_SUBSCRIBER_ENABLED . '%')
+        ->arg('$enabled', '%' . BridgeConstantsInterface::PARAM_EASY_DOCTRINE_SUBSCRIBER_ENABLED . '%')
         ->tag('kernel.event_subscriber');
 };
