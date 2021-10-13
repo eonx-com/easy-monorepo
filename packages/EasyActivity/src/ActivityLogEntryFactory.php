@@ -12,7 +12,7 @@ use EonX\EasyActivity\Interfaces\NormalizerInterface;
 use EonX\EasyActivity\Interfaces\StoreInterface;
 use ReflectionClass;
 
-class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
+final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
 {
     /**
      * @var \EonX\EasyActivity\Interfaces\ActorResolverInterface
@@ -99,9 +99,13 @@ class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
 
     private function getSubjectType(object $subject): string
     {
-        $reflection = new ReflectionClass($subject);
+        $subjectType = $this->subjects[\get_class($subject)]['type'] ?? null;
+        if ($subjectType === null) {
+            $reflection = new ReflectionClass($subject);
+            $subjectType = $reflection->getShortName();
+        }
 
-        return $this->subjects[\get_class($subject)]['type'] ?? $reflection->getShortName();
+        return $subjectType;
     }
 
     /**
@@ -146,7 +150,6 @@ class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
         if ($encodedData === false) {
             throw new InvalidChangeSetException('Failed to encode activity log data.');
         }
-
         // @codeCoverageIgnoreEnd
 
         return $encodedData;

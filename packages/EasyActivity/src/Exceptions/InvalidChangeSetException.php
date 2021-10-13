@@ -6,4 +6,5 @@ namespace EonX\EasyActivity\Exceptions;
 
 final class InvalidChangeSetException extends \RuntimeException
 {
+    // No body needed.
 }

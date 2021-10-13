@@ -20,7 +20,7 @@ final class Configuration implements ConfigurationInterface
                     ->prototype('scalar')
                     ->end()
                     ->info(
-                        'Field names disallowed to be stored in store.'
+                        'Property names disallowed to be stored in store.'
                     )
                 ->end()
                 ->arrayNode('subjects')
@@ -28,10 +28,12 @@ final class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('type')->end()
                             ->arrayNode('disallowed_properties')
+                                ->info('Property names disallowed to be stored in store.')
                                 ->defaultValue([])
                                 ->prototype('scalar')->end()
                             ->end()
                             ->arrayNode('allowed_properties')
+                                ->info('Property names allowed to be stored in store.')
                                 ->defaultValue([])
                                 ->prototype('scalar')->end()
                             ->end()

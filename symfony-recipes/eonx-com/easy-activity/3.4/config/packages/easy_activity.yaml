@@ -4,10 +4,10 @@ easy_activity:
         - createdAt
 
     subjects:
-        App\Entity\SomeEntity:
-            allowed_properties:
-                - content
-                - description
-            #disallowed_properties:
-            #    - author
-            #type: SomeEntity
+#        App\Entity\SomeEntity:
+#            allowed_properties:
+#                - content
+#                - description
+#            disallowed_properties:
+#                - author
+#            type: SomeEntity
