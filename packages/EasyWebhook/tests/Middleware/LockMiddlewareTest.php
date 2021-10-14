@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
 
+use EonX\EasyLock\Interfaces\LockDataInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Middleware\LockMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
@@ -18,12 +19,29 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function providerTestProcess(): iterable
     {
-        yield 'acquire lock -> return result from stack' => [Webhook::fromArray([]), true];
+        yield 'should not lock (no id, not send now) -> return result from stack' => [Webhook::fromArray([]), false];
 
-        yield 'do not acquire lock -> return new result' => [
+        yield 'should not lock (id, not send now) -> return result from stack' => [
             Webhook::fromArray([
-                'id' => 'my-id',
+                WebhookInterface::OPTION_ID => 'my-id',
             ]),
+            false,
+        ];
+
+        yield 'should lock and acquire lock -> return result from stack' => [
+            Webhook::fromArray([
+                WebhookInterface::OPTION_ID => 'my-id',
+                WebhookInterface::OPTION_SEND_NOW => true,
+            ]),
+            true,
+        ];
+
+        yield 'should lock but not acquire lock -> return new result' => [
+            Webhook::fromArray([
+                WebhookInterface::OPTION_ID => 'my-id',
+                WebhookInterface::OPTION_SEND_NOW => true,
+            ]),
+            true,
             false,
         ];
     }
@@ -31,17 +49,25 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @dataProvider providerTestProcess
      */
-    public function testProcess(WebhookInterface $webhook, bool $canProcess): void
+    public function testProcess(WebhookInterface $webhook, bool $shouldLock, ?bool $canProcess = null): void
     {
-        $expectedResource = \sprintf('easy_webhook_send_%s', $webhook->getId() ?? \spl_object_hash($webhook));
+        $canProcess = $canProcess ?? true;
+        $expectedResource = \sprintf('easy_webhook_send_%s', $webhook->getId());
         $expectedResult = new WebhookResult($webhook);
         $lockService = new LockServiceStub($canProcess);
         $middleware = new LockMiddleware($lockService);
 
         $result = $this->process($middleware, $webhook, $expectedResult);
+        $lockData = $lockService->getLockData();
 
-        if ($lockService->getLockData() !== null) {
-            self::assertEquals($expectedResource, $lockService->getLockData()->getResource());
+        switch ($shouldLock) {
+            case true:
+                self::assertInstanceOf(LockDataInterface::class, $lockData);
+                /** @var \EonX\EasyLock\Interfaces\LockDataInterface $lockData */
+                self::assertEquals($expectedResource, $lockData);
+                break;
+            case false:
+                self::assertNull($lockService->getLockData());
         }
 
         $canProcess
