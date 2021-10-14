@@ -64,7 +64,7 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
             case true:
                 self::assertInstanceOf(LockDataInterface::class, $lockData);
                 /** @var \EonX\EasyLock\Interfaces\LockDataInterface $lockData */
-                self::assertEquals($expectedResource, $lockData);
+                self::assertEquals($expectedResource, $lockData->getResource());
                 break;
             case false:
                 self::assertNull($lockService->getLockData());
