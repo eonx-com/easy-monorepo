@@ -11,6 +11,11 @@ abstract class AbstractWebhook implements WebhookInterface
     /**
      * @var string[]
      */
+    protected static $booleans = [self::OPTION_SEND_NOW];
+
+    /**
+     * @var string[]
+     */
     protected static $integers = [self::OPTION_CURRENT_ATTEMPT, self::OPTION_MAX_ATTEMPT];
 
     /**
@@ -27,6 +32,7 @@ abstract class AbstractWebhook implements WebhookInterface
         self::OPTION_METHOD => 'method',
         self::OPTION_SECRET => 'secret',
         self::OPTION_SEND_AFTER => 'sendAfter',
+        self::OPTION_SEND_NOW => 'sendNow',
         self::OPTION_STATUS => 'status',
         self::OPTION_URL => 'url',
     ];
@@ -151,6 +157,10 @@ abstract class AbstractWebhook implements WebhookInterface
         foreach (static::$setters as $name => $setter) {
             if (($data[$name] ?? null) !== null) {
                 $value = $data[$name];
+
+                if (\in_array($name, static::$booleans, true)) {
+                    $value = (bool)$value;
+                }
 
                 if (\in_array($name, static::$integers, true)) {
                     $value = (int)$value;

@@ -102,6 +102,11 @@ interface WebhookInterface
     /**
      * @var string
      */
+    public const OPTION_SEND_NOW = 'send_now';
+
+    /**
+     * @var string
+     */
     public const OPTION_STATUS = 'status';
 
     /**
