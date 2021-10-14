@@ -54,17 +54,8 @@ final class LockService implements LockServiceInterface
     {
         $lock = $this->createLock($lockData->getResource(), $lockData->getTtl());
 
-        if ($lock->acquire() === false) {
-            // Throw exception to indicate we want ot retry
-            if ($lockData->shouldRetry()) {
-                throw new ShouldRetryException(\sprintf('Should retry "%s"', $lockData->getResource()));
-            }
-
-            return null;
-        }
-
         try {
-            return $func();
+            $lockAcquired = $lock->acquire();
         } catch (BaseLockAcquiringException $exception) {
             $previous = $exception->getPrevious();
             $easyAsyncInstalled = \interface_exists(ShouldKillWorkerExceptionInterface::class);
@@ -75,6 +66,19 @@ final class LockService implements LockServiceInterface
             }
 
             throw $exception;
+        }
+
+        if ($lockAcquired === false) {
+            // Throw exception to indicate we want ot retry
+            if ($lockData->shouldRetry()) {
+                throw new ShouldRetryException(\sprintf('Should retry "%s"', $lockData->getResource()));
+            }
+
+            return null;
+        }
+
+        try {
+            return $func();
         } finally {
             $lock->release();
         }
