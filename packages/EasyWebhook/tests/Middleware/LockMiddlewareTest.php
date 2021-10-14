@@ -58,11 +58,13 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
         $middleware = new LockMiddleware($lockService);
 
         $result = $this->process($middleware, $webhook, $expectedResult);
+        $lockData = $lockService->getLockData();
 
         switch ($shouldLock) {
             case true:
-                self::assertInstanceOf(LockDataInterface::class, $lockService->getLockData());
-                self::assertEquals($expectedResource, $lockService->getLockData()->getResource());
+                self::assertInstanceOf(LockDataInterface::class, $lockData);
+                /** @var \EonX\EasyLock\Interfaces\LockDataInterface $lockData */
+                self::assertEquals($expectedResource, $lockData);
                 break;
             case false:
                 self::assertNull($lockService->getLockData());
