@@ -70,6 +70,7 @@ final class WithEventsHttpClient implements HttpClientInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws \Throwable
      */
     public function request(string $method, string $url, ?array $options = null): ResponseInterface
     {
@@ -97,24 +98,50 @@ final class WithEventsHttpClient implements HttpClientInterface
             $requestData = $this->modifyRequestData($requestData, $modifiersWhitelist, $modifiers);
         }
 
-        $response = $this->decorated->request($method, $url, $options);
+        $responseData = null;
+        $throwable = null;
+        $throwableThrownAt = null;
 
-        $responseData = new ResponseData(
-            $response->getContent(false),
-            $response->getHeaders(false),
-            Carbon::now('UTC'),
-            $response->getStatusCode()
-        );
+        try {
+            $response = $this->decorated->request($method, $url, $options);
 
-        $this->eventDispatcher->dispatch(new HttpRequestSentEvent($requestData, $responseData, $extra));
+            $responseData = new ResponseData(
+                $response->getContent(false),
+                $response->getHeaders(false),
+                Carbon::now('UTC'),
+                $response->getStatusCode()
+            );
 
-        foreach ($subscribers as $subscriber) {
-            if (\is_callable($subscriber)) {
-                $subscriber($requestData, $responseData);
+            if (\count($subscribers) > 0) {
+                @\trigger_error(\sprintf(
+                    'Using option "%s" is deprecated since 3.4 and will be removed in 4.0.
+                        Use option "%s" and listen to %s event instead.',
+                    HttpOptionsInterface::REQUEST_DATA_SUBSCRIBERS,
+                    HttpOptionsInterface::REQUEST_DATA_EXTRA,
+                    HttpRequestSentEvent::class
+                ), \E_USER_DEPRECATED);
+
+                foreach ($subscribers as $subscriber) {
+                    if (\is_callable($subscriber)) {
+                        $subscriber($requestData, $responseData);
+                    }
+                }
             }
-        }
 
-        return $response;
+            return $response;
+        } catch (\Throwable $throwable) {
+            $throwableThrownAt = Carbon::now('UTC');
+
+            throw $throwable;
+        } finally {
+            $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
+                $requestData,
+                $responseData,
+                $throwable,
+                $throwableThrownAt,
+                $extra
+            ));
+        }
     }
 
     /**

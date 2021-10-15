@@ -29,21 +29,42 @@ final class HttpRequestSentBreadcrumbListener
 
     public function handle(HttpRequestSentEvent $event): void
     {
+        $receivedAt = null;
         $request = $event->getRequestData();
         $response = $event->getResponseData();
+        $throwable = $event->getThrowable();
 
-        $this->client->leaveBreadcrumb('HTTP Request Sent', Breadcrumb::REQUEST_TYPE, [
+        $metaData = [
             'Request' => \sprintf('%s - %s', $request->getMethod(), $request->getUrl()),
             'Request Options' => \json_encode($request->getOptions()),
-            'Response Status Code' => $response->getStatusCode(),
-            'Response Content' => $response->getContent(),
-            'Response Headers' => \json_encode($response->getHeaders()),
-            'Timing' => $this->getTimingMessage($request->getSentAt(), $response->getReceivedAt()),
-        ]);
+        ];
+
+        if ($response !== null) {
+            $metaData['Response Status Code'] = $response->getStatusCode();
+            $metaData['Response Content'] = $response->getContent();
+            $metaData['Response Headers'] = \json_encode($response->getHeaders());
+
+            $receivedAt = $response->getReceivedAt();
+        }
+
+        if ($throwable !== null) {
+            $metaData['Throwable Class'] = \get_class($throwable);
+            $metaData['Throwable Message'] = $throwable->getMessage();
+
+            $receivedAt = $event->getThrowableThrownAt();
+        }
+
+        $metaData['Timing'] = $this->getTimingMessage($request->getSentAt(), $receivedAt);
+
+        $this->client->leaveBreadcrumb('HTTP Request Sent', Breadcrumb::REQUEST_TYPE, $metaData);
     }
 
     private function getCarbon(\DateTimeInterface $dateTime): Carbon
     {
+        if ($dateTime instanceof Carbon) {
+            return $dateTime;
+        }
+
         return Carbon::createFromFormat(
             EasyHttpClientConstantsInterface::DATE_TIME_FORMAT,
             $dateTime->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
@@ -51,8 +72,12 @@ final class HttpRequestSentBreadcrumbListener
         );
     }
 
-    private function getTimingMessage(\DateTimeInterface $sentAt, \DateTimeInterface $receivedAt): string
+    private function getTimingMessage(\DateTimeInterface $sentAt, ?\DateTimeInterface $receivedAt = null): string
     {
+        if ($receivedAt === null) {
+            return 'No timing available';
+        }
+
         $sentAt = $this->getCarbon($sentAt);
         $receivedAt = $this->getCarbon($receivedAt);
 
