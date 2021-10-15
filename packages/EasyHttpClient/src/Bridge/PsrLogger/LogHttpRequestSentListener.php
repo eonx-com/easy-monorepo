@@ -29,6 +29,7 @@ final class LogHttpRequestSentListener
     {
         $request = $event->getRequestData();
         $response = $event->getResponseData();
+        $throwable = $event->getThrowable();
 
         $requestMessage = \sprintf('Request: "%s %s"', $request->getMethod(), $request->getUrl());
         $requestContext = [
@@ -37,15 +38,28 @@ final class LogHttpRequestSentListener
                 ->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
         ];
 
-        $responseMessage = \sprintf('Response: "%d %s"', $response->getStatusCode(), $request->getUrl());
-        $responseContext = [
-            'content' => $response->getContent(),
-            'headers' => $response->getHeaders(),
-            'received_at' => $response->getReceivedAt()
-                ->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
-        ];
-
         $this->logger->debug($requestMessage, $requestContext);
-        $this->logger->debug($responseMessage, $responseContext);
+
+        if ($response !== null) {
+            $responseMessage = \sprintf('Response: "%d %s"', $response->getStatusCode(), $request->getUrl());
+            $responseContext = [
+                'content' => $response->getContent(),
+                'headers' => $response->getHeaders(),
+                'received_at' => $response->getReceivedAt()
+                    ->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
+            ];
+
+            $this->logger->debug($responseMessage, $responseContext);
+        }
+
+        if ($throwable !== null) {
+            $throwableMessage = \sprintf('Throwable: "%s"', $request->getUrl());
+            $throwableContext = [
+                'class' => \get_class($throwable),
+                'message' => $throwable->getMessage(),
+            ];
+
+            $this->logger->debug($throwableMessage, $throwableContext);
+        }
     }
 }
