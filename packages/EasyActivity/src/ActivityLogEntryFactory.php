@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace EonX\EasyActivity;
 
 use Carbon\Carbon;
-use EonX\EasyActivity\Exceptions\InvalidChangeSetException;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
-use EonX\EasyActivity\Interfaces\NormalizerInterface;
-use EonX\EasyActivity\Interfaces\StoreInterface;
-use ReflectionClass;
+use EonX\EasyActivity\Interfaces\SerializerInterface;
+use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 
 final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
 {
@@ -20,44 +18,28 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
     private $actorResolver;
 
     /**
-     * @var string[]|null
+     * @var \EonX\EasyActivity\Interfaces\SerializerInterface
      */
-    private $disallowedProperties;
+    private $serializer;
 
     /**
-     * @var \EonX\EasyActivity\Interfaces\NormalizerInterface
+     * @var \EonX\EasyActivity\Interfaces\SubjectResolverInterface
      */
-    private $normalizer;
-
-    /**
-     * @var \EonX\EasyActivity\Interfaces\StoreInterface
-     */
-    private $store;
-
-    /**
-     * @var array<string, array<string, mixed>>
-     */
-    private $subjects;
+    private $subjectResolver;
 
     /**
      * @param \EonX\EasyActivity\Interfaces\ActorResolverInterface $actorResolver
-     * @param \EonX\EasyActivity\Interfaces\StoreInterface $store
-     * @param \EonX\EasyActivity\Interfaces\NormalizerInterface $normalizer
-     * @param array<string, array<string, mixed>> $subjects
-     * @param string[]|null $disallowedProperties
+     * @param \EonX\EasyActivity\Interfaces\SubjectResolverInterface $subjectResolver
+     * @param \EonX\EasyActivity\Interfaces\SerializerInterface $serializer
      */
     public function __construct(
         ActorResolverInterface $actorResolver,
-        StoreInterface $store,
-        NormalizerInterface $normalizer,
-        array $subjects,
-        ?array $disallowedProperties
+        SubjectResolverInterface $subjectResolver,
+        SerializerInterface $serializer
     ) {
         $this->actorResolver = $actorResolver;
-        $this->disallowedProperties = $disallowedProperties;
-        $this->subjects = $subjects;
-        $this->store = $store;
-        $this->normalizer = $normalizer;
+        $this->serializer = $serializer;
+        $this->subjectResolver = $subjectResolver;
     }
 
     /**
@@ -65,93 +47,39 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
      */
     public function create(
         string $action,
-        object $subject,
+        object $object,
         ?array $data = null,
         ?array $oldData = null
     ): ?ActivityLogEntry {
-        if (isset($this->subjects[\get_class($subject)]) === false) {
+        $subject = $this->subjectResolver->resolveSubject($object);
+
+        if ($subject === null || $subject->isSubjectEnabled() === false) {
             return null;
         }
 
-        $serializedData = $this->serializeData($subject, $data);
-        $serializedOldData = $this->serializeData($subject, $oldData);
+        $serializedData = $data !== null ? $this->serializer->serialize($data, $subject) : null;
+        $serializedOldData = $oldData !== null ? $this->serializer->serialize($oldData, $subject) : null;
 
         if ($serializedData === null && $serializedOldData === null) {
             return null;
         }
 
+        $actor = $this->actorResolver->resolveActor();
+
         $now = Carbon::now();
         $logEntry = new ActivityLogEntry();
         $logEntry
             ->setAction($action)
-            ->setActorId($this->actorResolver->getId())
-            ->setActorType($this->actorResolver->getType())
-            ->setActorName($this->actorResolver->getName())
+            ->setActorId($actor->getActorId())
+            ->setActorType($actor->getActorType())
+            ->setActorName($actor->getActorName())
             ->setData($serializedData)
             ->setOldData($serializedOldData)
-            ->setSubjectType($this->getSubjectType($subject))
-            ->setSubjectId($this->store->getIdentifier($subject))
+            ->setSubjectType($subject->getSubjectType())
+            ->setSubjectId($subject->getSubjectId())
             ->setCreatedAt($now)
             ->setUpdatedAt($now);
 
         return $logEntry;
-    }
-
-    private function getSubjectType(object $subject): string
-    {
-        $subjectType = $this->subjects[\get_class($subject)]['type'] ?? null;
-        if ($subjectType === null) {
-            $reflection = new ReflectionClass($subject);
-            $subjectType = $reflection->getShortName();
-        }
-
-        return $subjectType;
-    }
-
-    /**
-     * @param object $subject
-     * @param array<string, mixed>|null $data
-     *
-     * @return string|null
-     */
-    private function serializeData(object $subject, ?array $data = null): ?string
-    {
-        if ($data === null) {
-            return null;
-        }
-
-        $entityDisallowedProperties = $this->subjects[\get_class($subject)]['disallowed_properties'] ?? [];
-        $disallowedProperties = \array_unique(\array_merge(
-            $this->disallowedProperties ?? [],
-            $entityDisallowedProperties
-        ));
-        $allowedProperties = $this->subjects[\get_class($subject)]['allowed_properties'] ?? [];
-
-        foreach ($data as $key => $value) {
-            if (count($allowedProperties) > 0 && \in_array($key, $allowedProperties, true) === false) {
-                unset($data[$key]);
-                continue;
-            }
-
-            if (count($disallowedProperties) > 0 && \in_array($key, $disallowedProperties, true) === true) {
-                unset($data[$key]);
-                continue;
-            }
-
-            $data[$key] = $this->normalizer->normalize($value);
-        }
-
-        if (count($data) === 0) {
-            return null;
-        }
-        $encodedData = \json_encode($data);
-
-        // @codeCoverageIgnoreStart
-        if ($encodedData === false) {
-            throw new InvalidChangeSetException('Failed to encode activity log data.');
-        }
-        // @codeCoverageIgnoreEnd
-
-        return $encodedData;
     }
 }

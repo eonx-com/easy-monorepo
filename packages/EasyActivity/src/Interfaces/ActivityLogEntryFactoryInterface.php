@@ -10,7 +10,7 @@ interface ActivityLogEntryFactoryInterface
 {
     /**
      * @param string $action
-     * @param object $subject
+     * @param object $object
      * @param array<string, mixed>|null $data
      * @param array<string, mixed>|null $oldData
      *
@@ -18,7 +18,7 @@ interface ActivityLogEntryFactoryInterface
      */
     public function create(
         string $action,
-        object $subject,
+        object $object,
         ?array $data = null,
         ?array $oldData = null
     ): ?ActivityLogEntry;

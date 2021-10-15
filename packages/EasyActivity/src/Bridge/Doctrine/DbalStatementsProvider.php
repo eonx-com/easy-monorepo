@@ -55,7 +55,6 @@ final class DbalStatementsProvider
         ]);
         $activityLogsTable->addColumn('subject_id', 'string', [
             'length' => 255,
-            'notNull' => false,
         ]);
         $activityLogsTable->addColumn('data', 'text', [
             'notNull' => false,

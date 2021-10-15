@@ -18,9 +18,11 @@ use EonX\EasyActivity\Bridge\EasyDoctrine\EasyDoctrineEntityEventsSubscriber;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessage;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
-use EonX\EasyActivity\Bridge\Symfony\Normalizers\SymfonyNormalizer;
+use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonySerializer;
 use EonX\EasyActivity\DefaultActorResolver;
+use EonX\EasyActivity\DefaultSubjectResolver;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
+use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
@@ -35,6 +37,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -80,6 +83,7 @@ final class EntityManagerStub extends EntityManager
     public static function createFromEasyActivityConfig(
         array $easyActivityConfig,
         ?ActorResolverInterface $actorResolver = null,
+        ?SubjectResolverInterface $subjectResolver = null,
         ?array $fixtures = null
     ): EntityManagerInterface {
         $symfonyEventDispatcher = new SymfonyEventDispatcher();
@@ -101,14 +105,21 @@ final class EntityManagerStub extends EntityManager
         }
         $randomGenerator = new RandomGenerator();
         $randomGenerator->setUuidV4Generator(new SymfonyUidUuidV4Generator());
-        $dbalStore = new DoctrineDbalStore($randomGenerator, $entityManager, self::ACTIVITY_TABLE_NAME);
+        if ($subjectResolver === null) {
+            $subjectResolver = new DefaultSubjectResolver(
+                $easyActivityConfig['subjects'] ?? null,
+                $easyActivityConfig['disallowed_properties'] ?? null
+            );
+        }
         $activityLogEntryFactory = new ActivityLogEntryFactory(
             $actorResolver ?? new DefaultActorResolver(),
-            $dbalStore,
-            new SymfonyNormalizer(new Serializer([new DateTimeNormalizer(), new ObjectNormalizer()])),
-            $easyActivityConfig['subjects'] ?? [],
-            $easyActivityConfig['disallowed_properties'] ?? []
+            $subjectResolver,
+            new SymfonySerializer(new Serializer(
+                    [new DateTimeNormalizer(), new ObjectNormalizer()],
+                    [new JsonEncoder()])
+            )
         );
+        $dbalStore = new DoctrineDbalStore($randomGenerator, $entityManager, self::ACTIVITY_TABLE_NAME);
         $messageBus = new MessageBus([
             new HandleMessageMiddleware(new HandlersLocator([
                 ActivityLogEntryMessage::class => [new ActivityLogEntryMessageHandler($dbalStore)],

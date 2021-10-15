@@ -9,13 +9,15 @@ use EonX\EasyActivity\Bridge\BridgeConstantsInterface;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStore;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
-use EonX\EasyActivity\Bridge\Symfony\Normalizers\SymfonyNormalizer;
+use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonySerializer;
 use EonX\EasyActivity\DefaultActorResolver;
+use EonX\EasyActivity\DefaultSubjectResolver;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Interfaces\AsyncDispatcherInterface;
-use EonX\EasyActivity\Interfaces\NormalizerInterface;
+use EonX\EasyActivity\Interfaces\SerializerInterface;
 use EonX\EasyActivity\Interfaces\StoreInterface;
+use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -31,12 +33,15 @@ return static function (ContainerConfigurator $container): void {
         ->set(ActorResolverInterface::class, DefaultActorResolver::class);
 
     $services
-        ->set(NormalizerInterface::class, SymfonyNormalizer::class);
-
-    $services
-        ->set(ActivityLogEntryFactoryInterface::class, ActivityLogEntryFactory::class)
+        ->set(SubjectResolverInterface::class, DefaultSubjectResolver::class)
         ->arg('$disallowedProperties', '%' . BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES . '%')
         ->arg('$subjects', '%' . BridgeConstantsInterface::PARAM_SUBJECTS . '%');
+
+    $services
+        ->set(SerializerInterface::class, SymfonySerializer::class);
+
+    $services
+        ->set(ActivityLogEntryFactoryInterface::class, ActivityLogEntryFactory::class);
 
     $services
         ->set(ActivityLogEntryMessageHandler::class);

@@ -75,7 +75,7 @@ class Article
         return $this;
     }
 
-    public function getAuthor(): Author
+    public function getAuthor(): ?Author
     {
         return $this->author;
     }
@@ -96,6 +96,11 @@ class Article
     public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getTitle(): string
@@ -120,6 +125,13 @@ class Article
     public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
 
         return $this;
     }

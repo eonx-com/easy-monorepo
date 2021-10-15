@@ -9,8 +9,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyActivity\Bridge\Symfony\EasyActivitySymfonyBundle;
-use EonX\EasyActivity\Bridge\Symfony\Normalizers\SymfonyNormalizer;
-use EonX\EasyActivity\Interfaces\NormalizerInterface;
+use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonySerializer;
+use EonX\EasyActivity\Interfaces\SerializerInterface;
 use EonX\EasyDoctrine\Bridge\BridgeConstantsInterface;
 use EonX\EasyDoctrine\Bridge\Symfony\EasyDoctrineSymfonyBundle;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
@@ -59,7 +59,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(EntityManagerInterface::class, new Definition(EntityManager::class));
         $container->setDefinition('doctrine.orm.default_entity_manager', new Definition(EntityManager::class));
         $container->setDefinition(SymfonyNormalizerInterface::class, new Definition(ObjectNormalizer::class));
-        $container->setDefinition(NormalizerInterface::class, new Definition(SymfonyNormalizer::class));
+        $container->setDefinition(SerializerInterface::class, new Definition(SymfonySerializer::class));
         $deferredEntityDefinition = new Definition(DeferredEntityEventDispatcher::class, [
             new Definition(EventDispatcher::class, [new Definition(SymfonyEventDispatcher::class)]),
         ]);

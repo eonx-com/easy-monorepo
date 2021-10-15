@@ -6,9 +6,5 @@ namespace EonX\EasyActivity\Interfaces;
 
 interface ActorResolverInterface
 {
-    public function getId(): ?string;
-
-    public function getName(): ?string;
-
-    public function getType(): string;
+    public function resolveActor(): ActorInterface;
 }

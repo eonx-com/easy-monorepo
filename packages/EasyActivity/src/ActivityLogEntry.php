@@ -8,12 +8,24 @@ use DateTimeInterface;
 
 class ActivityLogEntry
 {
+    /**
+     * @var string
+     */
     public const ACTION_CREATE = 'create';
 
+    /**
+     * @var string
+     */
     public const ACTION_DELETE = 'delete';
 
+    /**
+     * @var string
+     */
     public const ACTION_UPDATE = 'update';
 
+    /**
+     * @var string
+     */
     public const DEFAULT_ACTOR_TYPE = 'system';
 
     /**
@@ -106,7 +118,7 @@ class ActivityLogEntry
         return $this->oldData;
     }
 
-    public function getSubjectId(): ?string
+    public function getSubjectId(): string
     {
         return $this->subjectId;
     }

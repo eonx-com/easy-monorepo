@@ -6,6 +6,8 @@ namespace EonX\EasyActivity\Tests\Bridge\EasyDoctrine;
 
 use Carbon\Carbon;
 use EonX\EasyActivity\ActivityLogEntry;
+use EonX\EasyActivity\DefaultActor;
+use EonX\EasyActivity\Interfaces\ActorInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyActivity\Tests\Fixtures\Article;
@@ -83,7 +85,6 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             [
                 'subjects' => [
                     Article::class => [
-                        'type' => 'article',
                         'allowed_properties' => ['title', 'content'],
                     ],
                 ],
@@ -108,7 +109,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'actor_id' => null,
             'actor_name' => null,
             'action' => ActivityLogEntry::ACTION_CREATE,
-            'subject_type' => 'article',
+            'subject_type' => 'Article',
             'subject_id' => '1',
             'data' => \json_encode([
                 'content' => 'Content',
@@ -123,7 +124,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'actor_id' => null,
             'actor_name' => null,
             'action' => ActivityLogEntry::ACTION_UPDATE,
-            'subject_type' => 'article',
+            'subject_type' => 'Article',
             'subject_id' => '1',
             'data' => \json_encode([
                 'title' => 'Title 2',
@@ -142,7 +143,6 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             [
                 'subjects' => [
                     Article::class => [
-                        'type' => 'article',
                         'allowed_properties' => [
                             'title',
                             'comments',
@@ -150,6 +150,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                     ],
                 ],
             ],
+            null,
             null,
             [Article::class, Comment::class]
         );
@@ -176,23 +177,13 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $entityManager = EntityManagerStub::createFromEasyActivityConfig(
             [
                 'subjects' => [
-                    Article::class => ['type' => 'article'],
+                    Article::class => [],
                 ],
             ],
             new class() implements ActorResolverInterface {
-                public function getId(): ?string
+                public function resolveActor(): ActorInterface
                 {
-                    return 'actor-id';
-                }
-
-                public function getName(): ?string
-                {
-                    return 'actor-name';
-                }
-
-                public function getType(): string
-                {
-                    return 'actor-type';
+                    return new DefaultActor('actor-type', 'actor-id', 'actor-name');
                 }
             }
         );
@@ -217,15 +208,12 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             [
                 'subjects' => [
                     Article::class => [
-                        'type' => 'article',
                         'allowed_properties' => [
                             'title',
                             'author',
                         ],
                     ],
-                    Author::class => [
-                        'type' => 'author',
-                    ],
+                    Author::class => [],
                 ],
             ]
         );
@@ -278,7 +266,6 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             [
                 'subjects' => [
                     Article::class => [
-                        'type' => 'article',
                         'allowed_properties' => $allowedProperties,
                         'disallowed_properties' => $disallowedProperties,
                     ],

@@ -18,9 +18,6 @@ final class ActivityLogEntryMessage
         $this->logEntry = $logEntry;
     }
 
-    /**
-     * @return \EonX\EasyActivity\ActivityLogEntry
-     */
     public function getLogEntry(): ActivityLogEntry
     {
         return $this->logEntry;
