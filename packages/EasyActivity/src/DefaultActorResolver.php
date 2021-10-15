@@ -11,6 +11,6 @@ final class DefaultActorResolver implements ActorResolverInterface
 {
     public function resolveActor(): ActorInterface
     {
-        return new DefaultActor(ActivityLogEntry::DEFAULT_ACTOR_TYPE);
+        return new Actor(ActivityLogEntry::DEFAULT_ACTOR_TYPE);
     }
 }

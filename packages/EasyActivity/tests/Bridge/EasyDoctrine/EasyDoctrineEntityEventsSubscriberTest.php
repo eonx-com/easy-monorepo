@@ -6,7 +6,7 @@ namespace EonX\EasyActivity\Tests\Bridge\EasyDoctrine;
 
 use Carbon\Carbon;
 use EonX\EasyActivity\ActivityLogEntry;
-use EonX\EasyActivity\DefaultActor;
+use EonX\EasyActivity\Actor;
 use EonX\EasyActivity\Interfaces\ActorInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
@@ -85,6 +85,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             [
                 'subjects' => [
                     Article::class => [
+                        'type' => 'article',
                         'allowed_properties' => ['title', 'content'],
                     ],
                 ],
@@ -109,7 +110,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'actor_id' => null,
             'actor_name' => null,
             'action' => ActivityLogEntry::ACTION_CREATE,
-            'subject_type' => 'Article',
+            'subject_type' => 'article',
             'subject_id' => '1',
             'data' => \json_encode([
                 'content' => 'Content',
@@ -124,7 +125,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'actor_id' => null,
             'actor_name' => null,
             'action' => ActivityLogEntry::ACTION_UPDATE,
-            'subject_type' => 'Article',
+            'subject_type' => 'article',
             'subject_id' => '1',
             'data' => \json_encode([
                 'title' => 'Title 2',
@@ -183,7 +184,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             new class() implements ActorResolverInterface {
                 public function resolveActor(): ActorInterface
                 {
-                    return new DefaultActor('actor-type', 'actor-id', 'actor-name');
+                    return new Actor('actor-type', 'actor-id', 'actor-name');
                 }
             }
         );

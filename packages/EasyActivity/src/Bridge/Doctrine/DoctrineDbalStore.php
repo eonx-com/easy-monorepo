@@ -6,6 +6,7 @@ namespace EonX\EasyActivity\Bridge\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyActivity\ActivityLogEntry;
+use EonX\EasyActivity\Exceptions\UnableToResolveIdentifier;
 use EonX\EasyActivity\Interfaces\StoreInterface;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 
@@ -36,20 +37,16 @@ final class DoctrineDbalStore implements StoreInterface
         $this->table = $table;
     }
 
-    public function generateActivityLogId(): string
-    {
-        return $this->random->uuidV4();
-    }
-
-    public function getIdentifier(object $subject): ?string
+    public function getIdentifier(object $subject): string
     {
         $unitOfWork = $this->entityManager->getUnitOfWork();
 
-        if ($unitOfWork->isInIdentityMap($subject) === false) {
-            return null;
-        }
-
         $identifier = $unitOfWork->getSingleIdentifierValue($subject);
+        if ($identifier === null) {
+            throw new UnableToResolveIdentifier(
+                \sprintf('Failed to resolver identifier for %s', \get_class($subject))
+            );
+        }
 
         return (string)$identifier;
     }

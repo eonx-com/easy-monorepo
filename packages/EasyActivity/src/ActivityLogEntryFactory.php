@@ -7,7 +7,6 @@ namespace EonX\EasyActivity;
 use Carbon\Carbon;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
-use EonX\EasyActivity\Interfaces\SerializerInterface;
 use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 
 final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
@@ -18,11 +17,6 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
     private $actorResolver;
 
     /**
-     * @var \EonX\EasyActivity\Interfaces\SerializerInterface
-     */
-    private $serializer;
-
-    /**
      * @var \EonX\EasyActivity\Interfaces\SubjectResolverInterface
      */
     private $subjectResolver;
@@ -30,15 +24,12 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
     /**
      * @param \EonX\EasyActivity\Interfaces\ActorResolverInterface $actorResolver
      * @param \EonX\EasyActivity\Interfaces\SubjectResolverInterface $subjectResolver
-     * @param \EonX\EasyActivity\Interfaces\SerializerInterface $serializer
      */
     public function __construct(
         ActorResolverInterface $actorResolver,
-        SubjectResolverInterface $subjectResolver,
-        SerializerInterface $serializer
+        SubjectResolverInterface $subjectResolver
     ) {
         $this->actorResolver = $actorResolver;
-        $this->serializer = $serializer;
         $this->subjectResolver = $subjectResolver;
     }
 
@@ -48,19 +39,11 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
     public function create(
         string $action,
         object $object,
-        ?array $data = null,
-        ?array $oldData = null
+        array $changeSet
     ): ?ActivityLogEntry {
-        $subject = $this->subjectResolver->resolveSubject($object);
+        $subject = $this->subjectResolver->resolveSubject($action, $object, $changeSet);
 
-        if ($subject === null || $subject->isSubjectEnabled() === false) {
-            return null;
-        }
-
-        $serializedData = $data !== null ? $this->serializer->serialize($data, $subject) : null;
-        $serializedOldData = $oldData !== null ? $this->serializer->serialize($oldData, $subject) : null;
-
-        if ($serializedData === null && $serializedOldData === null) {
+        if ($subject === null) {
             return null;
         }
 
@@ -73,8 +56,8 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
             ->setActorId($actor->getActorId())
             ->setActorType($actor->getActorType())
             ->setActorName($actor->getActorName())
-            ->setData($serializedData)
-            ->setOldData($serializedOldData)
+            ->setData($subject->getSubjectData())
+            ->setOldData($subject->getSubjectOldData())
             ->setSubjectType($subject->getSubjectType())
             ->setSubjectId($subject->getSubjectId())
             ->setCreatedAt($now)

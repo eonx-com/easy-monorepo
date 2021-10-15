@@ -75,8 +75,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         $result = $factory->create(
             ActivityLogEntry::ACTION_CREATE,
             (new Article())->setId(2),
-            ['title' => 'New Title'],
-            ['title' => 'Old Title']
+            ['title' => [null, 'New Title']]
         );
 
         self::assertNotNull($result);
@@ -86,10 +85,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             '{"title":"New Title"}',
             $result->getData()
         );
-        self::assertSame(
-            '{"title":"Old Title"}',
-            $result->getOldData()
-        );
+        self::assertNull($result->getOldData());
         self::assertSame(ActivityLogEntry::DEFAULT_ACTOR_TYPE, $result->getActorType());
         self::assertSame(ActivityLogEntry::ACTION_CREATE, $result->getAction());
         self::assertNull($result->getActorName());
@@ -120,12 +116,18 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         $result = $factory->create(
             ActivityLogEntry::ACTION_CREATE,
             new Article(),
-            ['content' => $article->getContent(), 'comments' => $article->getComments()]
+            [
+                'content' => [null, $article->getContent()],
+                'comments' => [null, $article->getComments()],
+            ]
         );
 
         self::assertNotNull($result);
         self::assertEquals(
-            ['content' => 'Content', 'comments' => [['id' => 1], ['id' => 2]]],
+            [
+                'content' => 'Content',
+                'comments' => [['id' => 1], ['id' => 2]],
+            ],
             \json_decode((string)$result->getData(), true)
         );
     }
@@ -148,8 +150,8 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             ActivityLogEntry::ACTION_CREATE,
             new Article(),
             [
-                'title' => $article->getTitle(),
-                'author' => $article->getAuthor(),
+                'title' => [null, $article->getTitle()],
+                'author' => [null, $article->getAuthor()],
             ]
         );
 
@@ -179,7 +181,6 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     ): void {
         $factory = new ActivityLogFactoryStub([
             Article::class => [
-                'type' => 'article',
                 'allowed_properties' => $allowedProperties,
                 'disallowed_properties' => $disallowedProperties,
             ],
@@ -193,16 +194,13 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             ActivityLogEntry::ACTION_UPDATE,
             new Article(),
             [
-                'title' => 'Title',
-                'content' => 'Content',
-                'author' => $author,
-                'createdAt' => new DateTime('2021-10-10 00:00:00'),
-            ],
-            [
-                'title' => 'Title 2',
-                'content' => 'Content 2',
-                'author' => $author,
-                'createdAt' => new DateTime('2021-10-10 00:00:00'),
+                'title' => ['Title 2', 'Title'],
+                'content' => ['Content 2', 'Content'],
+                'author' => [$author, $author],
+                'createdAt' => [
+                    new DateTime('2021-10-10 00:00:00'),
+                    new DateTime('2021-10-10 00:00:00'),
+                ],
             ]
         );
 

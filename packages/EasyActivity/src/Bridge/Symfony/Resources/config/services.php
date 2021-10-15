@@ -7,11 +7,11 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyActivity\ActivityLogEntryFactory;
 use EonX\EasyActivity\Bridge\BridgeConstantsInterface;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStore;
+use EonX\EasyActivity\Bridge\Doctrine\DoctrineSubjectResolver;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonySerializer;
 use EonX\EasyActivity\DefaultActorResolver;
-use EonX\EasyActivity\DefaultSubjectResolver;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Interfaces\AsyncDispatcherInterface;
@@ -33,12 +33,12 @@ return static function (ContainerConfigurator $container): void {
         ->set(ActorResolverInterface::class, DefaultActorResolver::class);
 
     $services
-        ->set(SubjectResolverInterface::class, DefaultSubjectResolver::class)
-        ->arg('$disallowedProperties', '%' . BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES . '%')
+        ->set(SubjectResolverInterface::class, DoctrineSubjectResolver::class)
         ->arg('$subjects', '%' . BridgeConstantsInterface::PARAM_SUBJECTS . '%');
 
     $services
-        ->set(SerializerInterface::class, SymfonySerializer::class);
+        ->set(SerializerInterface::class, SymfonySerializer::class)
+        ->arg('$disallowedProperties', '%' . BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES . '%');
 
     $services
         ->set(ActivityLogEntryFactoryInterface::class, ActivityLogEntryFactory::class);

@@ -5,29 +5,44 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Bridge\Symfony\Serializers;
 
 use EonX\EasyActivity\Interfaces\SerializerInterface;
-use EonX\EasyActivity\Interfaces\SubjectInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterface;
 
 final class SymfonySerializer implements SerializerInterface
 {
     /**
+     * @var string[]|null
+     */
+    private $disallowedProperties;
+
+    /**
      * @var \Symfony\Component\Serializer\SerializerInterface
      */
     private $serializer;
 
-    public function __construct(SymfonySerializerInterface $serializer)
-    {
+    /**
+     * @param string[]|null $disallowedProperties
+     */
+    public function __construct(
+        SymfonySerializerInterface $serializer,
+        ?array $disallowedProperties = null
+    ) {
         $this->serializer = $serializer;
+        $this->disallowedProperties = $disallowedProperties;
     }
 
     /**
      * @inheritdoc
      */
-    public function serialize(array $data, SubjectInterface $subject)
+    public function serialize(array $data, array $context): ?string
     {
-        $allowedProperties = $subject->getSubjectAllowedProperties();
-        $disallowedProperties = $subject->getSubjectDisallowedProperties();
+        $allowedProperties = $context['allowed_properties'] ?? null;
+        $disallowedProperties = $context['disallowed_properties'] ?? null;
+        if ($this->disallowedProperties !== null) {
+            $disallowedProperties = \array_filter(
+                \array_merge($this->disallowedProperties, $disallowedProperties ?? [])
+            );
+        }
 
         $context = [];
 

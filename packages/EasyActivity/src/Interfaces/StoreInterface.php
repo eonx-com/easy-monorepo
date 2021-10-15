@@ -8,7 +8,7 @@ use EonX\EasyActivity\ActivityLogEntry;
 
 interface StoreInterface
 {
-    public function getIdentifier(object $subject): ?string;
+    public function getIdentifier(object $subject): string;
 
     public function store(ActivityLogEntry $logEntry): ActivityLogEntry;
 }

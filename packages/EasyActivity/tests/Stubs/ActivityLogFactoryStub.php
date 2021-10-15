@@ -6,10 +6,13 @@ namespace EonX\EasyActivity\Tests\Stubs;
 
 use EonX\EasyActivity\ActivityLogEntry;
 use EonX\EasyActivity\ActivityLogEntryFactory;
+use EonX\EasyActivity\Bridge\Doctrine\DoctrineSubjectResolver;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonySerializer;
 use EonX\EasyActivity\DefaultActorResolver;
-use EonX\EasyActivity\DefaultSubjectResolver;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
+use EonX\EasyActivity\Interfaces\ActorResolverInterface;
+use EonX\EasyActivity\Interfaces\StoreInterface;
+use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -22,25 +25,42 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
      */
     private $factory;
 
-    public function __construct(array $subjectsConfig, ?array $globalDisallowedProperties = null)
-    {
-        $serializer = new Serializer(
-            [new DateTimeNormalizer(), new ObjectNormalizer()],
-            [new JsonEncoder()]
-        );
+    /**
+     * @param array<string, mixed> $subjects
+     * @param string[]|null $globalDisallowedProperties
+     */
+    public function __construct(
+        array $subjects,
+        ?array $globalDisallowedProperties = null,
+        ?ActorResolverInterface $actorResolver = null,
+        ?SubjectResolverInterface $subjectResolver = null,
+        ?StoreInterface $store = null
+    ) {
+        if ($subjectResolver === null) {
+            $serializer = new Serializer(
+                [new DateTimeNormalizer(), new ObjectNormalizer()],
+                [new JsonEncoder()]
+            );
+            $subjectResolver = new DoctrineSubjectResolver(
+                new SymfonySerializer($serializer, $globalDisallowedProperties),
+                $store ?? new ActivityLogStoreStub(),
+                $subjects
+            );
+        }
         $this->factory = new ActivityLogEntryFactory(
-            new DefaultActorResolver(),
-            new DefaultSubjectResolver($subjectsConfig, $globalDisallowedProperties),
-            new SymfonySerializer($serializer)
+            $actorResolver ?? new DefaultActorResolver(),
+            $subjectResolver
         );
     }
 
+    /**
+     * @inheritdoc
+     */
     public function create(
         string $action,
         object $object,
-        ?array $data = null,
-        ?array $oldData = null
+        array $changeSet
     ): ?ActivityLogEntry {
-        return $this->factory->create($action, $object, $data, $oldData);
+        return $this->factory->create($action, $object, $changeSet);
     }
 }

@@ -69,7 +69,7 @@ class ActivityLogEntry
     private $oldData;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $subjectId;
 
@@ -182,7 +182,7 @@ class ActivityLogEntry
         return $this;
     }
 
-    public function setSubjectId(?string $subjectId = null): self
+    public function setSubjectId(string $subjectId): self
     {
         $this->subjectId = $subjectId;
 

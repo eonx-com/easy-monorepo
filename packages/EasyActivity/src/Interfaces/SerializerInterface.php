@@ -7,10 +7,10 @@ namespace EonX\EasyActivity\Interfaces;
 interface SerializerInterface
 {
     /**
-     * @param array|null $data
-     * @param SubjectInterface $subject
+     * @param array<string, mixed> $data
+     * @param array<string, mixed> $context
      *
-     * @return mixed
+     * @return string|null
      */
-    public function serialize(array $data, SubjectInterface $subject);
+    public function serialize(array $data, array $context): ?string;
 }

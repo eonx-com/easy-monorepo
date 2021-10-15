@@ -76,22 +76,7 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
             return;
         }
 
-        $oldData = [];
-        $data = [];
-        foreach ($changeSet as $field => [$oldValue, $newValue]) {
-            $data[$field] = $newValue;
-            $oldData[$field] = $oldValue;
-        }
-
-        if ($action === ActivityLogEntry::ACTION_CREATE) {
-            $oldData = null;
-        }
-
-        if ($action === ActivityLogEntry::ACTION_DELETE) {
-            $data = null;
-        }
-
-        $logEntry = $this->activityLogEntryFactory->create($action, $entity, $data, $oldData);
+        $logEntry = $this->activityLogEntryFactory->create($action, $entity, $changeSet);
 
         if ($logEntry !== null) {
             $this->dispatcher->dispatch($logEntry);

@@ -6,5 +6,10 @@ namespace EonX\EasyActivity\Interfaces;
 
 interface SubjectResolverInterface
 {
-    public function resolveSubject(object $object): ?SubjectInterface;
+    /**
+     * @param string $action
+     * @param object $object
+     * @param array<string, mixed> $changeSet
+     */
+    public function resolveSubject(string $action, object $object, array $changeSet): ?SubjectInterface;
 }

@@ -6,19 +6,11 @@ namespace EonX\EasyActivity\Interfaces;
 
 interface SubjectInterface
 {
-    /**
-     * @return string[]|null
-     */
-    public function getSubjectAllowedProperties(): ?array;
-
-    /**
-     * @return string[]|null
-     */
-    public function getSubjectDisallowedProperties(): ?array;
+    public function getSubjectData(): ?string;
 
     public function getSubjectId(): string;
 
-    public function getSubjectType(): string;
+    public function getSubjectOldData(): ?string;
 
-    public function isSubjectEnabled(): bool;
+    public function getSubjectType(): string;
 }
