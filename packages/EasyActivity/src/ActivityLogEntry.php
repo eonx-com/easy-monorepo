@@ -6,7 +6,7 @@ namespace EonX\EasyActivity;
 
 use DateTimeInterface;
 
-class ActivityLogEntry
+final class ActivityLogEntry
 {
     /**
      * @var string
