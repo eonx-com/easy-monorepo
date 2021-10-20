@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyActivity;
 
 use DateTimeInterface;
+use EonX\EasyActivity\Interfaces\ActorInterface;
+use EonX\EasyActivity\Interfaces\SubjectInterface;
 
 final class ActivityLogEntry
 {
@@ -140,23 +142,11 @@ final class ActivityLogEntry
         return $this;
     }
 
-    public function setActorId(?string $actorId = null): self
+    public function setActor(ActorInterface $actor): self
     {
-        $this->actorId = $actorId;
-
-        return $this;
-    }
-
-    public function setActorName(?string $actorName = null): self
-    {
-        $this->actorName = $actorName;
-
-        return $this;
-    }
-
-    public function setActorType(string $actorType): self
-    {
-        $this->actorType = $actorType;
+        $this->actorId = $actor->getActorId();
+        $this->actorName = $actor->getActorName();
+        $this->actorType = $actor->getActorType();
 
         return $this;
     }
@@ -168,30 +158,12 @@ final class ActivityLogEntry
         return $this;
     }
 
-    public function setData(?string $data = null): self
+    public function setSubject(SubjectInterface $subject): self
     {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    public function setOldData(?string $oldData = null): self
-    {
-        $this->oldData = $oldData;
-
-        return $this;
-    }
-
-    public function setSubjectId(string $subjectId): self
-    {
-        $this->subjectId = $subjectId;
-
-        return $this;
-    }
-
-    public function setSubjectType(string $subjectType): self
-    {
-        $this->subjectType = $subjectType;
+        $this->subjectId = $subject->getSubjectId();
+        $this->subjectType = $subject->getSubjectType();
+        $this->data = $subject->getSubjectData();
+        $this->oldData = $subject->getSubjectOldData();
 
         return $this;
     }

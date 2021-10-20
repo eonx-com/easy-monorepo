@@ -53,13 +53,8 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
         $logEntry = new ActivityLogEntry();
         $logEntry
             ->setAction($action)
-            ->setActorId($actor->getActorId())
-            ->setActorType($actor->getActorType())
-            ->setActorName($actor->getActorName())
-            ->setData($subject->getSubjectData())
-            ->setOldData($subject->getSubjectOldData())
-            ->setSubjectType($subject->getSubjectType())
-            ->setSubjectId($subject->getSubjectId())
+            ->setActor($actor)
+            ->setSubject($subject)
             ->setCreatedAt($now)
             ->setUpdatedAt($now);
 
