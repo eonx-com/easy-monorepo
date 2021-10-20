@@ -46,7 +46,7 @@ final class LockMiddleware extends AbstractMiddleware
             return $this->passOn($webhook, $stack);
         };
 
-        $result = $webhook->getId() !== null
+        $result = $webhook->getId() !== null && $webhook->isSendNow()
             ? $this->lockService->processWithLock($this->getLockData($webhook), $func)
             : $func();
 
