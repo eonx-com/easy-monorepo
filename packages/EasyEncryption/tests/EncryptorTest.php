@@ -47,8 +47,10 @@ final class EncryptorTest extends AbstractTestCase
         yield 'Direct public + secret as array' => [
             $message,
             [
-                EncryptionKeyFactoryInterface::OPTION_PUBLIC_KEY => $encryptionKeyPair->getPublicKey()->getRawKeyMaterial(),
-                EncryptionKeyFactoryInterface::OPTION_SECRET_KEY => $encryptionKeyPair->getSecretKey()->getRawKeyMaterial(),
+                EncryptionKeyFactoryInterface::OPTION_PUBLIC_KEY => $encryptionKeyPair->getPublicKey()
+                    ->getRawKeyMaterial(),
+                EncryptionKeyFactoryInterface::OPTION_SECRET_KEY => $encryptionKeyPair->getSecretKey()
+                    ->getRawKeyMaterial(),
             ],
         ];
 
