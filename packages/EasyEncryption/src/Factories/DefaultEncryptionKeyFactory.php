@@ -8,6 +8,7 @@ use EonX\EasyEncryption\Exceptions\CouldNotCreateEncryptionKeyException;
 use EonX\EasyEncryption\Exceptions\InvalidEncryptionKeyException;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use ParagonIE\ConstantTime\Binary;
+use ParagonIE\Halite\Asymmetric\EncryptionPublicKey;
 use ParagonIE\Halite\Asymmetric\EncryptionSecretKey;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\KeyFactory;
@@ -58,10 +59,10 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
             return $this->doCreateFromArray($key);
         }
 
-        throw new InvalidEncryptionKeyException(
+        throw new InvalidEncryptionKeyException(\sprintf(
             'Invalid key type "%s" given, supports only "array, string"',
             \is_object($key) ? \get_class($key) : \gettype($key)
-        );
+        ));
     }
 
     /**
@@ -80,6 +81,13 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
             return KeyFactory::deriveEncryptionKey(
                 new HiddenString((string)$key[self::OPTION_KEY]),
                 (string)$key[self::OPTION_SALT]
+            );
+        }
+
+        if (isset($key[self::OPTION_SECRET_KEY], $key[self::OPTION_PUBLIC_KEY])) {
+            return new EncryptionKeyPair(
+                new EncryptionSecretKey(new HiddenString($key[self::OPTION_SECRET_KEY])),
+                new EncryptionPublicKey(new HiddenString($key[self::OPTION_PUBLIC_KEY]))
             );
         }
 

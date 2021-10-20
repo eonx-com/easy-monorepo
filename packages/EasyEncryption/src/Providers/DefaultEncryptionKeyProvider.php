@@ -33,6 +33,9 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
      */
     private $resolving = [];
 
+    /**
+     * @param iterable<\EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface> $keyResolvers
+     */
     public function __construct(EncryptionKeyFactoryInterface $keyFactory, iterable $keyResolvers)
     {
         $this->keyFactory = $keyFactory;

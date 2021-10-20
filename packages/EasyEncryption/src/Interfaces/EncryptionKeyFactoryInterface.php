@@ -14,7 +14,17 @@ interface EncryptionKeyFactoryInterface
     /**
      * @var string
      */
+    public const OPTION_PUBLIC_KEY = 'public_key';
+
+    /**
+     * @var string
+     */
     public const OPTION_SALT = 'salt';
+
+    /**
+     * @var string
+     */
+    public const OPTION_SECRET_KEY = 'secret_key';
 
     /**
      * @param mixed $key

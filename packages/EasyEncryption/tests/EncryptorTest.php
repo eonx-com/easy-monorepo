@@ -43,6 +43,15 @@ final class EncryptorTest extends AbstractTestCase
             ],
         ];
 
+        $encryptionKeyPair = KeyFactory::generateEncryptionKeyPair();
+        yield 'Direct public + secret as array' => [
+            $message,
+            [
+                EncryptionKeyFactoryInterface::OPTION_PUBLIC_KEY => $encryptionKeyPair->getPublicKey()->getRawKeyMaterial(),
+                EncryptionKeyFactoryInterface::OPTION_SECRET_KEY => $encryptionKeyPair->getSecretKey()->getRawKeyMaterial(),
+            ],
+        ];
+
         yield 'Direct key + salt (same) as array' => [
             $message,
             [

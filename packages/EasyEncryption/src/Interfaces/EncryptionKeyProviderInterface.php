@@ -7,7 +7,7 @@ namespace EonX\EasyEncryption\Interfaces;
 interface EncryptionKeyProviderInterface
 {
     /**
-     * @param string $name
+     * @param string $keyName
      *
      * @return \ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair
      */
