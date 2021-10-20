@@ -14,6 +14,16 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 final class EasyActivityExtension extends Extension implements PrependExtensionInterface
 {
     /**
+     * @var array<string, string>
+     */
+    private const EASY_ACTIVITY_CONFIG = [
+        'disallowed_properties' => BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES,
+        'easy_doctrine_subscriber_enabled' => BridgeConstantsInterface::PARAM_EASY_DOCTRINE_SUBSCRIBER_ENABLED,
+        'subjects' => BridgeConstantsInterface::PARAM_SUBJECTS,
+        'table_name' => BridgeConstantsInterface::PARAM_TABLE_NAME,
+    ];
+
+    /**
      * @param mixed[] $configs
      *
      * @throws \Exception
@@ -22,16 +32,9 @@ final class EasyActivityExtension extends Extension implements PrependExtensionI
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $container->setParameter(
-            BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES,
-            $config['disallowed_properties']
-        );
-        $container->setParameter(
-            BridgeConstantsInterface::PARAM_EASY_DOCTRINE_SUBSCRIBER_ENABLED,
-            $config['easy_doctrine_subscriber_enabled']
-        );
-        $container->setParameter(BridgeConstantsInterface::PARAM_SUBJECTS, $config['subjects']);
-        $container->setParameter(BridgeConstantsInterface::PARAM_TABLE_NAME, $config['table_name']);
+        foreach (self::EASY_ACTIVITY_CONFIG as $name => $param) {
+            $container->setParameter($param, $config[$name]);
+        }
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
