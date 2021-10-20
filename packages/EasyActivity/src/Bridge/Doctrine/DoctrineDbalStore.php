@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Bridge\Doctrine;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Connection;
 use EonX\EasyActivity\ActivityLogEntry;
-use EonX\EasyActivity\Exceptions\UnableToResolveIdentifier;
 use EonX\EasyActivity\Interfaces\StoreInterface;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 
 final class DoctrineDbalStore implements StoreInterface
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Doctrine\DBAL\Connection
      */
-    private $entityManager;
+    private $connection;
 
     /**
      * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
@@ -29,26 +28,12 @@ final class DoctrineDbalStore implements StoreInterface
 
     public function __construct(
         RandomGeneratorInterface $random,
-        EntityManagerInterface $entityManager,
+        Connection $connection,
         string $table
     ) {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
         $this->random = $random;
         $this->table = $table;
-    }
-
-    public function getIdentifier(object $subject): string
-    {
-        $unitOfWork = $this->entityManager->getUnitOfWork();
-
-        $identifier = $unitOfWork->getSingleIdentifierValue($subject);
-        if ($identifier === null) {
-            throw new UnableToResolveIdentifier(
-                \sprintf('Failed to resolver identifier for %s', \get_class($subject))
-            );
-        }
-
-        return (string)$identifier;
     }
 
     public function store(ActivityLogEntry $logEntry): ActivityLogEntry
@@ -67,8 +52,7 @@ final class DoctrineDbalStore implements StoreInterface
             'old_data' => $logEntry->getOldData(),
         ];
 
-        $this->entityManager->getConnection()
-            ->insert($this->table, $data);
+        $this->connection->insert($this->table, $data);
 
         return $logEntry;
     }

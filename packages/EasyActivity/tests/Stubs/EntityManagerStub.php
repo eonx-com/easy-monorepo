@@ -97,14 +97,17 @@ final class EntityManagerStub extends EntityManager
         }
         $randomGenerator = new RandomGenerator();
         $randomGenerator->setUuidV4Generator(new SymfonyUidUuidV4Generator());
-        $dbalStore = new DoctrineDbalStore($randomGenerator, $entityManager, self::ACTIVITY_TABLE_NAME);
+        $dbalStore = new DoctrineDbalStore(
+            $randomGenerator,
+            $entityManager->getConnection(),
+            self::ACTIVITY_TABLE_NAME
+        );
 
         $activityLogEntryFactory = new ActivityLogFactoryStub(
             $easyActivityConfig['subjects'] ?? null,
             $easyActivityConfig['disallowed_properties'] ?? null,
             $actorResolver,
-            $subjectResolver,
-            $dbalStore
+            $subjectResolver
         );
 
         $messageBus = new MessageBus([

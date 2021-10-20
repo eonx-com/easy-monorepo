@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Bridge\Doctrine;
 
 use EonX\EasyActivity\ActivityLogEntry;
+use EonX\EasyActivity\Exceptions\UnableToResolveIdentifier;
 use EonX\EasyActivity\Interfaces\SerializerInterface;
-use EonX\EasyActivity\Interfaces\StoreInterface;
 use EonX\EasyActivity\Interfaces\SubjectInterface;
 use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 use EonX\EasyActivity\Subject;
@@ -19,11 +19,6 @@ final class DoctrineSubjectResolver implements SubjectResolverInterface
     private $serializer;
 
     /**
-     * @var \EonX\EasyActivity\Interfaces\StoreInterface
-     */
-    private $store;
-
-    /**
      * @var array<string, mixed>
      */
     private $subjects;
@@ -33,11 +28,9 @@ final class DoctrineSubjectResolver implements SubjectResolverInterface
      */
     public function __construct(
         SerializerInterface $serializer,
-        StoreInterface $store,
         array $subjects
     ) {
         $this->serializer = $serializer;
-        $this->store = $store;
         $this->subjects = $subjects;
     }
 
@@ -61,10 +54,14 @@ final class DoctrineSubjectResolver implements SubjectResolverInterface
             return null;
         }
 
-        $objectId = $this->store->getIdentifier($object);
+        if (\method_exists($object, 'getId') === false) {
+            throw new UnableToResolveIdentifier(
+                \sprintf('Failed to resolver identifier for %s', \get_class($object))
+            );
+        }
 
         return new Subject(
-            $objectId,
+            (string)$object->getId(),
             $this->getSubjectType($object),
             $serializedData,
             $serializedOldData
