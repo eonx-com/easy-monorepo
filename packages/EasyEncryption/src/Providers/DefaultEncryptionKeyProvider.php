@@ -1,0 +1,107 @@
+<?php
+
+declare(strict_types=1);
+
+namespace EonX\EasyEncryption\Providers;
+
+use EonX\EasyEncryption\Exceptions\CircularReferenceDetectedException;
+use EonX\EasyEncryption\Exceptions\CouldNotProvideEncryptionKeyException;
+use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
+use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
+use EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface;
+use EonX\EasyUtils\CollectorHelper;
+
+final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterface
+{
+    /**
+     * @var \EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface
+     */
+    private $keyFactory;
+
+    /**
+     * @var \EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[]
+     */
+    private $keyResolvers;
+
+    /**
+     * @var \ParagonIE\Halite\Symmetric\EncryptionKey[]|\ParagonIE\Halite\EncryptionKeyPair[]
+     */
+    private $resolved = [];
+
+    /**
+     * @var string[]
+     */
+    private $resolving = [];
+
+    public function __construct(EncryptionKeyFactoryInterface $keyFactory, iterable $keyResolvers)
+    {
+        $this->keyFactory = $keyFactory;
+
+        /** @var \EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[] $keyResolvers */
+        $keyResolvers = CollectorHelper::orderLowerPriorityFirstAsArray(
+            CollectorHelper::filterByClass($keyResolvers, EncryptionKeyResolverInterface::class)
+        );
+
+        foreach ($keyResolvers as $keyResolver) {
+            foreach ($keyResolver->getSupportedKeyNames() as $keyName) {
+                if (isset($this->keyResolvers[$keyName]) === false) {
+                    $this->keyResolvers[$keyName] = $keyResolver;
+                }
+            }
+        }
+    }
+
+    public function getKey(string $keyName)
+    {
+        if (isset($this->resolved[$keyName])) {
+            return $this->resolved[$keyName];
+        }
+
+        if (isset($this->resolving[$keyName])) {
+            $this->circularReference($keyName);
+        }
+
+        $this->resolving[$keyName] = $keyName;
+
+        try {
+            return $this->doGetKey($keyName);
+        } catch (\Throwable $throwable) {
+            throw new CouldNotProvideEncryptionKeyException(
+                \sprintf('Could not provide encryption key: %s', $throwable->getMessage()),
+                $throwable->getCode(),
+                $throwable
+            );
+        } finally {
+            unset($this->resolving[$keyName]);
+        }
+    }
+
+    public function hasKey(string $keyName): bool
+    {
+        return isset($this->keyResolvers[$keyName]);
+    }
+
+    private function circularReference(string $keyName): void
+    {
+        $this->resolving = [];
+
+        throw new CircularReferenceDetectedException(\sprintf(
+            'Circular reference detected for key "%s"',
+            $keyName
+        ));
+    }
+
+    /**
+     * @return \ParagonIE\Halite\EncryptionKeyPair|\ParagonIE\Halite\Symmetric\EncryptionKey
+     */
+    private function doGetKey(string $keyName)
+    {
+        if (isset($this->keyResolvers[$keyName])) {
+            $keyResolver = $this->keyResolvers[$keyName];
+
+            return $this->keyFactory->create($keyResolver->resolveKey($keyName));
+        }
+
+        throw new CouldNotProvideEncryptionKeyException(\sprintf('No resolver found for key "%s"', $keyName));
+    }
+}
