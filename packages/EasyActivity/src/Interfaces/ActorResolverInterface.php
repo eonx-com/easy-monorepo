@@ -6,5 +6,5 @@ namespace EonX\EasyActivity\Interfaces;
 
 interface ActorResolverInterface
 {
-    public function resolveActor(): ActorInterface;
+    public function resolveActor(object $object): ActorInterface;
 }

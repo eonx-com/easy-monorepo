@@ -9,7 +9,7 @@ use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 
 final class DefaultActorResolver implements ActorResolverInterface
 {
-    public function resolveActor(): ActorInterface
+    public function resolveActor(object $object): ActorInterface
     {
         return new Actor(ActivityLogEntry::DEFAULT_ACTOR_TYPE);
     }

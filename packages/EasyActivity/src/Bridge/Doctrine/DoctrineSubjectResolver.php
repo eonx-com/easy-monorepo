@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Bridge\Doctrine;
 
 use EonX\EasyActivity\ActivityLogEntry;
-use EonX\EasyActivity\Exceptions\UnableToResolveIdentifier;
+use EonX\EasyActivity\Exceptions\UnableToResolveIdentifierException;
 use EonX\EasyActivity\Interfaces\SerializerInterface;
 use EonX\EasyActivity\Interfaces\SubjectInterface;
 use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 use EonX\EasyActivity\Subject;
+use ReflectionClass;
 
 final class DoctrineSubjectResolver implements SubjectResolverInterface
 {
@@ -55,7 +56,7 @@ final class DoctrineSubjectResolver implements SubjectResolverInterface
         }
 
         if (\method_exists($object, 'getId') === false) {
-            throw new UnableToResolveIdentifier(
+            throw new UnableToResolveIdentifierException(
                 \sprintf('Failed to resolver identifier for %s', \get_class($object))
             );
         }
@@ -72,7 +73,7 @@ final class DoctrineSubjectResolver implements SubjectResolverInterface
     {
         $type = $this->subjects[\get_class($object)]['type'] ?? null;
         if ($type === null) {
-            $reflection = new \ReflectionClass($object);
+            $reflection = new ReflectionClass($object);
             $type = $reflection->getShortName();
         }
 
@@ -80,7 +81,6 @@ final class DoctrineSubjectResolver implements SubjectResolverInterface
     }
 
     /**
-     * @param string $action
      * @param array<string, mixed> $changeSet
      *
      * @return array[]|null[]

@@ -47,7 +47,7 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
             return null;
         }
 
-        $actor = $this->actorResolver->resolveActor();
+        $actor = $this->actorResolver->resolveActor($object);
 
         $now = Carbon::now();
         $logEntry = new ActivityLogEntry();

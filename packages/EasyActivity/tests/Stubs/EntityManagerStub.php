@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\SchemaTool;
-use EonX\EasyActivity\Bridge\Doctrine\DbalStatementsProvider;
+use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStatementsProvider;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStore;
 use EonX\EasyActivity\Bridge\EasyDoctrine\EasyDoctrineEntityEventsSubscriber;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessage;
@@ -87,7 +87,7 @@ final class EntityManagerStub extends EntityManager
             $subscribedEntities,
             $fixtures ?? [Article::class, Comment::class, Author::class]
         );
-        $dbalStatementsProvider = new DbalStatementsProvider(
+        $dbalStatementsProvider = new DoctrineDbalStatementsProvider(
             $entityManager->getConnection(),
             self::ACTIVITY_TABLE_NAME
         );

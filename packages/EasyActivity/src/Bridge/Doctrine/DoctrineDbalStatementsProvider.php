@@ -7,7 +7,7 @@ namespace EonX\EasyActivity\Bridge\Doctrine;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 
-final class DbalStatementsProvider
+final class DoctrineDbalStatementsProvider
 {
     /**
      * @var string

@@ -182,7 +182,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                 ],
             ],
             new class() implements ActorResolverInterface {
-                public function resolveActor(): ActorInterface
+                public function resolveActor(object $object): ActorInterface
                 {
                     return new Actor('actor-type', 'actor-id', 'actor-name');
                 }

@@ -27,7 +27,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             ],
             [],
             new class() implements ActorResolverInterface {
-                public function resolveActor(): ActorInterface
+                public function resolveActor(object $object): ActorInterface
                 {
                     return new Actor(
                         'custom-actor-type',

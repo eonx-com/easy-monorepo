@@ -66,8 +66,6 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
     }
 
     /**
-     * @param string $action
-     * @param object $entity
      * @param array<string, array<string, mixed>> $changeSet
      */
     private function dispatchLogEntry(string $action, object $entity, array $changeSet): void
