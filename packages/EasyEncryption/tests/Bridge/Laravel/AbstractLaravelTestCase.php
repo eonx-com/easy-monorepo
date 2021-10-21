@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyEncryption\Tests\Bridge\Laravel;
 
 use EonX\EasyEncryption\Bridge\Laravel\Provider\EasyEncryptionServiceProvider;
-use EonX\EasyErrorHandler\Tests\AbstractTestCase;
+use EonX\EasyEncryption\Tests\AbstractTestCase;
 use Laravel\Lumen\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractTestCase
