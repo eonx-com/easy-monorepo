@@ -19,6 +19,7 @@ use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
+use EonX\EasyActivity\Logger\AsyncActivityLogger;
 use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
@@ -117,8 +118,7 @@ final class EntityManagerStub extends EntityManager
         ]);
         $asyncDispatcher = new AsyncDispatcher($messageBus);
         $subscriber = new EasyDoctrineEntityEventsSubscriber(
-            $asyncDispatcher,
-            $activityLogEntryFactory,
+            new AsyncActivityLogger($activityLogEntryFactory, $asyncDispatcher),
             true
         );
 

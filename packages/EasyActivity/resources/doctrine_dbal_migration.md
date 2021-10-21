@@ -17,8 +17,9 @@ final class EasyActivityMigration
                 `actor_name` varchar(255),
                 `action` varchar(255) NOT NULL,
                 `subject_type` varchar(255) NOT NULL,
-                `subject_id` varchar(255),
+                `subject_id` varchar(255) NOT NULL,
                 `data` text,
+                `old_data` text,
                 `created_at` datetime DEFAULT NULL,
                 `updated_at` datetime DEFAULT NULL,
                 PRIMARY KEY (`id`)

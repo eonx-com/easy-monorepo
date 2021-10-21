@@ -52,7 +52,7 @@ final class ActivityLogEntry
     private $actorType;
 
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
     private $createdAt;
 
@@ -60,11 +60,6 @@ final class ActivityLogEntry
      * @var string|null
      */
     private $data;
-
-    /**
-     * @var string|null
-     */
-    private $id;
 
     /**
      * @var string|null
@@ -82,7 +77,7 @@ final class ActivityLogEntry
     private $subjectType;
 
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
     private $updatedAt;
 

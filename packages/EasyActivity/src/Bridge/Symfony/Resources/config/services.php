@@ -14,12 +14,14 @@ use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonySerializer;
 use EonX\EasyActivity\DefaultActorResolver;
 use EonX\EasyActivity\DefaultSubjectResolver;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
+use EonX\EasyActivity\Interfaces\ActivityLoggerInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyActivity\Interfaces\SerializerInterface;
 use EonX\EasyActivity\Interfaces\StoreInterface;
 use EonX\EasyActivity\Interfaces\SubjectDataResolverInterface;
 use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
+use EonX\EasyActivity\Logger\AsyncActivityLogger;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -40,6 +42,9 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(SubjectDataResolverInterface::class, DoctrineSubjectDataResolver::class);
+
+    $services
+        ->set(ActivityLoggerInterface::class, AsyncActivityLogger::class);
 
     $services
         ->set(SerializerInterface::class, SymfonySerializer::class)

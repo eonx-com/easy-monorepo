@@ -73,6 +73,8 @@ final class DoctrineDbalStatementsProvider
      * @return string[]
      *
      * @throws \Doctrine\DBAL\Exception
+     *
+     * @codeCoverageIgnore
      */
     public function rollbackStatements(): array
     {
