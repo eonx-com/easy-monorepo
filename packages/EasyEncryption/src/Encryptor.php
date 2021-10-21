@@ -7,10 +7,13 @@ namespace EonX\EasyEncryption;
 use EonX\EasyEncryption\Exceptions\CouldNotDecryptException;
 use EonX\EasyEncryption\Exceptions\CouldNotEncryptException;
 use EonX\EasyEncryption\Exceptions\InvalidEncryptionKeyException;
+use EonX\EasyEncryption\Interfaces\DecryptedStringInterface;
 use EonX\EasyEncryption\Interfaces\EasyEncryptionExceptionInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
+use EonX\EasyEncryption\ValueObjects\DecryptedString;
+use ParagonIE\ConstantTime\Encoding;
 use ParagonIE\Halite\Asymmetric\Crypto as AsymmetricCrypto;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\HiddenString;
@@ -44,44 +47,61 @@ final class Encryptor implements EncryptorInterface
         $this->defaultKeyName = $defaultKeyName ?? self::DEFAULT_KEY_NAME;
     }
 
-    /**
-     * @param null|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key
-     */
-    public function decrypt(string $text, $key = null): string
+    public function decrypt(string $text): DecryptedStringInterface
     {
-        try {
-            return $this->doDecrypt($text, $this->getKey($key));
-        } catch (\Throwable $throwable) {
-            if ($throwable instanceof EasyEncryptionExceptionInterface) {
-                throw $throwable;
-            }
+        $toDecrypt = $this->execSafely(CouldNotDecryptException::class, function () use ($text): array {
+            $toDecryptArray = \json_decode(Encoding::base64Decode($text), true);
 
-            throw new CouldNotDecryptException(
-                \sprintf('Could not decrypt: %s', $throwable->getMessage()),
-                $throwable->getCode(),
-                $throwable
-            );
+            return \is_array($toDecryptArray) ? $toDecryptArray : [];
+        });
+
+        if (isset($toDecrypt[self::ENCRYPTED_KEY_NAME], $toDecrypt[self::ENCRYPTED_KEY_VALUE]) === false) {
+            throw new CouldNotDecryptException('Given encrypted text has invalid structure');
         }
+
+        return $this->execSafely(
+            CouldNotDecryptException::class,
+            function () use ($toDecrypt): DecryptedStringInterface {
+                $keyName = $toDecrypt[self::ENCRYPTED_KEY_NAME];
+
+                return new DecryptedString(
+                    $this->decryptRaw($toDecrypt[self::ENCRYPTED_KEY_VALUE], $this->getKey($keyName, true)),
+                    $keyName
+                );
+            }
+        );
     }
 
     /**
      * @param null|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key
      */
-    public function encrypt(string $text, $key = null): string
+    public function decryptRaw(string $text, $key = null): string
     {
-        try {
-            return $this->doEncrypt($text, $this->getKey($key));
-        } catch (\Throwable $throwable) {
-            if ($throwable instanceof EasyEncryptionExceptionInterface) {
-                throw $throwable;
-            }
+        return $this->execSafely(CouldNotDecryptException::class, function () use ($text, $key): string {
+            return $this->doDecrypt($text, $this->getKey($key));
+        });
+    }
 
-            throw new CouldNotEncryptException(
-                \sprintf('Could not encrypt: %s', $throwable->getMessage()),
-                $throwable->getCode(),
-                $throwable
-            );
-        }
+    public function encrypt(string $text, ?string $keyName = null): string
+    {
+        return $this->execSafely(CouldNotEncryptException::class, function () use ($text, $keyName): string {
+            $keyName = $this->getKeyName($keyName);
+
+            return Encoding::base64Encode((string)\json_encode([
+                self::ENCRYPTED_KEY_NAME => $keyName,
+                self::ENCRYPTED_KEY_VALUE => $this->encryptRaw($text, $this->getKey($keyName, true)),
+            ]));
+        });
+    }
+
+    /**
+     * @param null|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key
+     */
+    public function encryptRaw(string $text, $key = null): string
+    {
+        return $this->execSafely(CouldNotEncryptException::class, function () use ($text, $key): string {
+            return $this->doEncrypt($text, $this->getKey($key));
+        });
     }
 
     /**
@@ -144,16 +164,41 @@ final class Encryptor implements EncryptorInterface
     }
 
     /**
+     * @return mixed
+     */
+    private function execSafely(string $throwableClass, callable $func)
+    {
+        try {
+            return $func();
+        } catch (\Throwable $throwable) {
+            if ($throwable instanceof EasyEncryptionExceptionInterface) {
+                throw $throwable;
+            }
+
+            throw new $throwableClass($throwable->getMessage(), $throwable->getCode(), $throwable);
+        }
+    }
+
+    /**
      * @param null|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key
      *
      * @return \ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair
      */
-    private function getKey($key = null)
+    private function getKey($key = null, ?bool $forceKeyName = null)
     {
-        if (($key === null || \is_string($key)) && $this->keyProvider->hasKey($key ?? $this->defaultKeyName)) {
+        if (($key === null || \is_string($key)) && $this->keyProvider->hasKey($this->getKeyName($key))) {
             return $this->keyProvider->getKey($key ?? $this->defaultKeyName);
         }
 
+        if ($forceKeyName ?? false) {
+            throw new InvalidEncryptionKeyException('Key must be created from its name');
+        }
+
         return $this->keyFactory->create($key);
+    }
+
+    private function getKeyName(?string $keyName = null): string
+    {
+        return $keyName ?? $this->defaultKeyName;
     }
 }

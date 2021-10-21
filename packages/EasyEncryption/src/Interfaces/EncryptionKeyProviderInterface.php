@@ -14,4 +14,9 @@ interface EncryptionKeyProviderInterface
     public function getKey(string $keyName);
 
     public function hasKey(string $keyName): bool;
+
+    /**
+     * Clear local cache of resolved encryption keys.
+     */
+    public function reset(): void;
 }

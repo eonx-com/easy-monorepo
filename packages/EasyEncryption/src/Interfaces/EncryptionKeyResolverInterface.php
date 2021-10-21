@@ -9,12 +9,9 @@ use EonX\EasyUtils\Interfaces\HasPriorityInterface;
 interface EncryptionKeyResolverInterface extends HasPriorityInterface
 {
     /**
-     * @return string[]
-     */
-    public function getSupportedKeyNames(): array;
-
-    /**
      * @return string|mixed[]|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair
      */
     public function resolveKey(string $keyName);
+
+    public function supportsKey(string $keyName): bool;
 }

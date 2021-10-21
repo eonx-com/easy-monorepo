@@ -7,7 +7,7 @@ namespace EonX\EasyEncryption\Factories;
 use EonX\EasyEncryption\Exceptions\CouldNotCreateEncryptionKeyException;
 use EonX\EasyEncryption\Exceptions\InvalidEncryptionKeyException;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
-use ParagonIE\ConstantTime\Binary;
+use EonX\EasyEncryption\Utils\KeyLength;
 use ParagonIE\Halite\Asymmetric\EncryptionPublicKey;
 use ParagonIE\Halite\Asymmetric\EncryptionSecretKey;
 use ParagonIE\Halite\EncryptionKeyPair;
@@ -102,17 +102,15 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
      */
     private function doCreateFromString(string $key)
     {
-        $binaryLength = Binary::safeStrlen($key);
-
-        if ($binaryLength === \SODIUM_CRYPTO_STREAM_KEYBYTES) {
+        if (KeyLength::isEncryptionKeyLength($key)) {
             return new EncryptionKey(new HiddenString($key));
         }
 
-        if ($binaryLength === \SODIUM_CRYPTO_BOX_SECRETKEYBYTES) {
+        if (KeyLength::isSecretKeyLength($key)) {
             return new EncryptionKeyPair(new EncryptionSecretKey(new HiddenString($key)));
         }
 
-        if ($binaryLength === \SODIUM_CRYPTO_BOX_PUBLICKEYBYTES) {
+        if (KeyLength::isPublicKeyLength($key)) {
             throw new InvalidEncryptionKeyException('Passing only public key is not supported');
         }
 

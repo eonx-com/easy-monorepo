@@ -9,6 +9,7 @@ use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
 use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
+use EonX\EasyEncryption\Resolvers\SimpleEncryptionKeyResolver;
 use EonX\EasyEncryption\Tests\Stubs\EncryptionKeyResolverStub;
 use ParagonIE\Halite\KeyFactory;
 
@@ -22,6 +23,53 @@ final class EncryptorTest extends AbstractTestCase
      * @throws \SodiumException
      */
     public function providerTestEncrypt(): iterable
+    {
+        $message = 'My message';
+
+        yield 'From resolver encryption key as string' => [
+            $message,
+            null,
+            [
+                new EncryptionKeyResolverStub([
+                    EncryptorInterface::DEFAULT_KEY_NAME => KeyFactory::generateEncryptionKey()->getRawKeyMaterial(),
+                ]),
+            ],
+        ];
+
+        yield 'From resolver encryption secret key as string' => [
+            $message,
+            null,
+            [
+                new EncryptionKeyResolverStub([
+                    EncryptorInterface::DEFAULT_KEY_NAME => KeyFactory::generateEncryptionKeyPair()
+                        ->getSecretKey()
+                        ->getRawKeyMaterial(),
+                ]),
+            ],
+        ];
+
+        yield 'From resolver key + salt as array' => [
+            $message,
+            null,
+            [
+                new EncryptionKeyResolverStub([
+                    EncryptorInterface::DEFAULT_KEY_NAME => [
+                        EncryptionKeyFactoryInterface::OPTION_KEY => 'IP70gUSWQ3qhl1Nf',
+                        EncryptionKeyFactoryInterface::OPTION_SALT => 'xOI68z0AeksgNYAm',
+                    ],
+                ]),
+            ],
+        ];
+    }
+
+    /**
+     * @return iterable<mixed>
+     *
+     * @throws \ParagonIE\Halite\Alerts\CannotPerformOperation
+     * @throws \ParagonIE\Halite\Alerts\InvalidKey
+     * @throws \SodiumException
+     */
+    public function providerTestEncryptRaw(): iterable
     {
         $message = 'My message';
 
@@ -62,38 +110,11 @@ final class EncryptorTest extends AbstractTestCase
             ],
         ];
 
-        yield 'From resolver encryption key as string' => [
+        yield 'From simple resolver key itself' => [
             $message,
-            null,
+            'myKeyName',
             [
-                new EncryptionKeyResolverStub([
-                    EncryptorInterface::DEFAULT_KEY_NAME => KeyFactory::generateEncryptionKey()->getRawKeyMaterial(),
-                ]),
-            ],
-        ];
-
-        yield 'From resolver encryption secret key as string' => [
-            $message,
-            null,
-            [
-                new EncryptionKeyResolverStub([
-                    EncryptorInterface::DEFAULT_KEY_NAME => KeyFactory::generateEncryptionKeyPair()
-                        ->getSecretKey()
-                        ->getRawKeyMaterial(),
-                ]),
-            ],
-        ];
-
-        yield 'From resolver key + salt as array' => [
-            $message,
-            null,
-            [
-                new EncryptionKeyResolverStub([
-                    EncryptorInterface::DEFAULT_KEY_NAME => [
-                        EncryptionKeyFactoryInterface::OPTION_KEY => 'IP70gUSWQ3qhl1Nf',
-                        EncryptionKeyFactoryInterface::OPTION_SALT => 'xOI68z0AeksgNYAm',
-                    ],
-                ]),
+                new SimpleEncryptionKeyResolver('myKeyName', 'f42a3968db6a957300c4f0c46a341c80'),
             ],
         ];
     }
@@ -112,6 +133,23 @@ final class EncryptorTest extends AbstractTestCase
 
         $encrypted = $encryptor->encrypt($text, $key);
 
-        self::assertEquals($text, $encryptor->decrypt($encrypted, $key));
+        self::assertEquals($text, (string)$encryptor->decrypt($encrypted));
+    }
+
+    /**
+     * @param mixed $key
+     * @param null|\EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[] $resolvers
+     *
+     * @dataProvider providerTestEncryptRaw
+     */
+    public function testEncryptRaw(string $text, $key = null, ?array $resolvers = null): void
+    {
+        $keyFactory = new DefaultEncryptionKeyFactory();
+        $keyProvider = new DefaultEncryptionKeyProvider($keyFactory, $resolvers ?? []);
+        $encryptor = new Encryptor($keyFactory, $keyProvider);
+
+        $encrypted = $encryptor->encryptRaw($text, $key);
+
+        self::assertEquals($text, $encryptor->decryptRaw($encrypted, $key));
     }
 }

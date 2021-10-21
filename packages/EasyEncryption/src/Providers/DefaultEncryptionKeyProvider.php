@@ -39,19 +39,9 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
     public function __construct(EncryptionKeyFactoryInterface $keyFactory, iterable $keyResolvers)
     {
         $this->keyFactory = $keyFactory;
-
-        /** @var \EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[] $keyResolvers */
-        $keyResolvers = CollectorHelper::orderLowerPriorityFirstAsArray(
+        $this->keyResolvers = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($keyResolvers, EncryptionKeyResolverInterface::class)
         );
-
-        foreach ($keyResolvers as $keyResolver) {
-            foreach ($keyResolver->getSupportedKeyNames() as $keyName) {
-                if (isset($this->keyResolvers[$keyName]) === false) {
-                    $this->keyResolvers[$keyName] = $keyResolver;
-                }
-            }
-        }
     }
 
     public function getKey(string $keyName)
@@ -81,7 +71,18 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
 
     public function hasKey(string $keyName): bool
     {
-        return isset($this->keyResolvers[$keyName]);
+        foreach ($this->keyResolvers as $keyResolver) {
+            if ($keyResolver->supportsKey($keyName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function reset(): void
+    {
+        $this->resolved = [];
     }
 
     private function circularReference(string $keyName): void
@@ -99,10 +100,10 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
      */
     private function doGetKey(string $keyName)
     {
-        if (isset($this->keyResolvers[$keyName])) {
-            $keyResolver = $this->keyResolvers[$keyName];
-
-            return $this->keyFactory->create($keyResolver->resolveKey($keyName));
+        foreach ($this->keyResolvers as $keyResolver) {
+            if ($keyResolver->supportsKey($keyName)) {
+                return $this->keyFactory->create($keyResolver->resolveKey($keyName));
+            }
         }
 
         throw new CouldNotProvideEncryptionKeyException(\sprintf('No resolver found for key "%s"', $keyName));

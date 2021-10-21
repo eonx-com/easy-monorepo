@@ -21,18 +21,15 @@ final class EncryptionKeyResolverStub extends AbstractEncryptionKeyResolver
         $this->config = \is_array($config) ? $config : \call_user_func($config);
     }
 
-    /**
-     * @return string[]
-     */
-    public function getSupportedKeyNames(): array
+    public function supportsKey(string $keyName): bool
     {
-        return \array_keys($this->config);
+        return isset($this->config[$keyName]);
     }
 
     /**
      * @return string|mixed[]|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair
      */
-    public function resolveKey(string $keyName)
+    protected function doResolveKey(string $keyName)
     {
         return $this->config[$keyName];
     }
