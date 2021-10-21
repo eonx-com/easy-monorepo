@@ -165,6 +165,47 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         );
     }
 
+    public function testCreateSucceedsWithRelatedObjects2(): void
+    {
+        $factory = new ActivityLogFactoryStub([
+            Article::class => [
+                'allowed_properties' => [
+                    'title',
+                    'author' => ['name', 'position'],
+                ],
+            ],
+        ]);
+        $author = new Author();
+        $author->setId(2);
+        $author->setName('John');
+        $author->setPosition(1);
+        $article = new Article();
+        $article->setTitle('Related objects');
+        $article->setAuthor($author);
+
+        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
+        $result = $factory->create(
+            ActivityLogEntry::ACTION_CREATE,
+            new Article(),
+            [
+                'title' => [null, 'Related objects'],
+                'author' => [null, $article->getAuthor()],
+            ]
+        );
+
+        self::assertNotNull($result);
+        self::assertEquals(
+            [
+                'title' => 'Related objects',
+                'author' => [
+                    'name' => 'John',
+                    'position' => 1,
+                ],
+            ],
+            \json_decode((string)$result->getData(), true)
+        );
+    }
+
     /**
      * @param string[]|null $globalDisallowedProperties
      * @param string[]|null $allowedProperties

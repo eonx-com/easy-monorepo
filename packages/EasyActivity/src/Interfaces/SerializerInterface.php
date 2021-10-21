@@ -8,9 +8,6 @@ interface SerializerInterface
 {
     /**
      * @param array<string, mixed> $data
-     * @param array<string, mixed> $context
-     *
-     * @return string|null
      */
-    public function serialize(array $data, array $context): ?string;
+    public function serialize(array $data, ActivitySubjectInterface $subject): ?string;
 }

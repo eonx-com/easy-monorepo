@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Bridge\Symfony\Serializers;
 
+use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 use EonX\EasyActivity\Interfaces\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterface;
@@ -34,10 +35,10 @@ final class SymfonySerializer implements SerializerInterface
     /**
      * @inheritdoc
      */
-    public function serialize(array $data, array $context): ?string
+    public function serialize(array $data, ActivitySubjectInterface $subject): ?string
     {
-        $allowedProperties = $context['allowed_properties'] ?? null;
-        $disallowedProperties = $context['disallowed_properties'] ?? null;
+        $allowedProperties = $subject->getActivityAllowedProperties();
+        $disallowedProperties = $subject->getActivityDisallowedProperties();
         if ($this->disallowedProperties !== null) {
             $disallowedProperties = \array_filter(
                 \array_merge($this->disallowedProperties, $disallowedProperties ?? [])
@@ -47,7 +48,10 @@ final class SymfonySerializer implements SerializerInterface
         $context = [];
 
         foreach ($data as $key => $value) {
-            if ($allowedProperties !== null && \in_array($key, $allowedProperties, true) === false) {
+            if ($allowedProperties !== null
+                && \in_array($key, $allowedProperties, true) === false
+                && isset($allowedProperties[$key]) === false
+            ) {
                 unset($data[$key]);
                 continue;
             }
@@ -58,7 +62,7 @@ final class SymfonySerializer implements SerializerInterface
             }
 
             if (\is_object($value)) {
-                $context[AbstractNormalizer::ATTRIBUTES][$key] = ['id'];
+                $context[AbstractNormalizer::ATTRIBUTES][$key] = $allowedProperties[$key] ?? ['id'];
             }
         }
 

@@ -6,16 +6,15 @@ namespace EonX\EasyActivity\Tests;
 
 use EonX\EasyActivity\ActivityLogEntry;
 use EonX\EasyActivity\Actor;
+use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 use EonX\EasyActivity\Interfaces\ActorInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
-use EonX\EasyActivity\Interfaces\SubjectInterface;
-use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
-use EonX\EasyActivity\Subject;
+use EonX\EasyActivity\Interfaces\SubjectDataInterface;
+use EonX\EasyActivity\Interfaces\SubjectDataResolverInterface;
+use EonX\EasyActivity\SubjectData;
 use EonX\EasyActivity\Tests\Fixtures\ActivityLogEntity;
-use EonX\EasyActivity\Tests\Fixtures\ActivityLogEntityInterface;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Stubs\ActivityLogFactoryStub;
-use RuntimeException;
 
 final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
 {
@@ -53,50 +52,68 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
         self::assertSame('custom-actor-name', $result->getActorName());
     }
 
-    public function testCreateSucceedsWithCustomSubjectResolver(): void
+    public function testCreateSucceedsWithCustomSubjectDataResolver(): void
     {
         $factory = new ActivityLogFactoryStub(
-            [], // ignore config option `easy_activity.subjects`
-            [], // ignore config option `easy_activity.disallowed_properties`
+            [
+                Author::class => [],
+            ],
+            [],
             null,
-            new class() implements SubjectResolverInterface {
-                public function resolveSubject(string $action, object $object, array $changeSet): SubjectInterface
-                {
-                    if ($object instanceof ActivityLogEntityInterface === false) {
-                        throw new RuntimeException('Wrong argument');
-                    }
-                    foreach ($changeSet as $property => $value) {
-                        if (\in_array($property, $object->getActivityLoggableProperties(), true) === false) {
-                            unset($changeSet[$property]);
-                        }
+            null,
+            new class() implements SubjectDataResolverInterface {
+                public function resolveSubjectData(
+                    string $action,
+                    ActivitySubjectInterface $subject,
+                    array $changeSet
+                ): ?SubjectDataInterface {
+                    $data = [];
+                    $oldData = [];
+                    foreach ($changeSet as $key => [$newValue, $oldValue]) {
+                        $data[$key] = $newValue;
+                        $oldData[$key] = $oldValue;
                     }
 
-                    return new Subject(
-                        $object->getActivitySubjectId(),
-                        $object->getActivitySubjectType(),
-                        (string)\json_encode($changeSet),
-                        (string)\json_encode($changeSet)
-                    );
+                    return new SubjectData(\serialize($data), \serialize($oldData));
                 }
             }
         );
-        $activityLogEntity = new ActivityLogEntity('11', 'p1', 'p2', 'p3');
+        $author = new Author();
+        $author->setId(1);
+
+        $result = $factory->create(
+            ActivityLogEntry::ACTION_UPDATE,
+            $author,
+            ['field' => [1, 2]]
+        );
+
+        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
+        self::assertNotNull($result);
+        self::assertSame('a:1:{s:5:"field";i:1;}', $result->getData());
+        self::assertSame('a:1:{s:5:"field";i:2;}', $result->getOldData());
+    }
+
+    public function testCreateSucceedsWithObjectThatImplementsSubjectInterface(): void
+    {
+        $factory = new ActivityLogFactoryStub([], []);
+        $subjectId = 'subject-id';
+        $subjectType = 'subject-type';
+        $activityLogEntity = new ActivityLogEntity($subjectId, $subjectType, ['field1']);
 
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
             $activityLogEntity,
             [
-                'property1' => 'p11',
-                'property2' => 'p22',
-                'property3' => 'p33',
+                'field1' => [1, 2],
+                'field2' => [2, 3],
             ]
         );
 
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         self::assertNotNull($result);
-        self::assertSame($activityLogEntity->getActivitySubjectId(), $result->getSubjectId());
-        self::assertSame($activityLogEntity->getActivitySubjectType(), $result->getSubjectType());
-        self::assertSame('{"property1":"p11","property2":"p22"}', $result->getData());
-        self::assertSame('{"property1":"p11","property2":"p22"}', $result->getOldData());
+        self::assertSame($subjectId, $result->getSubjectId());
+        self::assertSame($subjectType, $result->getSubjectType());
+        self::assertSame('{"field1":2}', $result->getData());
+        self::assertSame('{"field1":1}', $result->getOldData());
     }
 }

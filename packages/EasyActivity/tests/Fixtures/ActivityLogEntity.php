@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Fixtures;
 
-final class ActivityLogEntity implements ActivityLogEntityInterface
+use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
+
+final class ActivityLogEntity implements ActivitySubjectInterface
 {
+    /**
+     * @var array<string>|array<string, mixed>
+     */
+    private $allowedPropeties;
+
     /**
      * @var string
      */
@@ -14,29 +21,26 @@ final class ActivityLogEntity implements ActivityLogEntityInterface
     /**
      * @var string
      */
-    private $property1;
+    private $subjectType;
 
     /**
-     * @var string
+     * @param array<string>|array<string, mixed> $allowedPropeties
      */
-    private $property2;
-
-    /**
-     * @var string
-     */
-    private $property3;
-
-    public function __construct(string $id, string $property1, string $property2, string $property3)
+    public function __construct(string $id, string $subjectType, array $allowedPropeties)
     {
         $this->id = $id;
-        $this->property1 = $property1;
-        $this->property2 = $property2;
-        $this->property3 = $property3;
+        $this->subjectType = $subjectType;
+        $this->allowedPropeties = $allowedPropeties;
     }
 
-    public function getActivityLoggableProperties(): array
+    public function getActivityAllowedProperties(): array
     {
-        return ['property1', 'property2'];
+        return $this->allowedPropeties;
+    }
+
+    public function getActivityDisallowedProperties(): ?array
+    {
+        return null;
     }
 
     public function getActivitySubjectId(): string
@@ -46,21 +50,6 @@ final class ActivityLogEntity implements ActivityLogEntityInterface
 
     public function getActivitySubjectType(): string
     {
-        return 'subject-type';
-    }
-
-    public function getProperty1(): string
-    {
-        return $this->property1;
-    }
-
-    public function getProperty2(): string
-    {
-        return $this->property2;
-    }
-
-    public function getProperty3(): string
-    {
-        return $this->property3;
+        return $this->subjectType;
     }
 }

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasyActivity;
 
 use DateTimeInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 use EonX\EasyActivity\Interfaces\ActorInterface;
-use EonX\EasyActivity\Interfaces\SubjectInterface;
+use EonX\EasyActivity\Interfaces\SubjectDataInterface;
 
 final class ActivityLogEntry
 {
@@ -158,12 +159,18 @@ final class ActivityLogEntry
         return $this;
     }
 
-    public function setSubject(SubjectInterface $subject): self
+    public function setSubject(ActivitySubjectInterface $subject): self
     {
-        $this->subjectId = $subject->getSubjectId();
-        $this->subjectType = $subject->getSubjectType();
-        $this->data = $subject->getSubjectData();
-        $this->oldData = $subject->getSubjectOldData();
+        $this->subjectId = $subject->getActivitySubjectId();
+        $this->subjectType = $subject->getActivitySubjectType();
+
+        return $this;
+    }
+
+    public function setSubjectData(SubjectDataInterface $subjectData): self
+    {
+        $this->data = $subjectData->getData();
+        $this->oldData = $subjectData->getOldData();
 
         return $this;
     }

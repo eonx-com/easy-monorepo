@@ -7,6 +7,7 @@ namespace EonX\EasyActivity;
 use Carbon\Carbon;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
+use EonX\EasyActivity\Interfaces\SubjectDataResolverInterface;
 use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 
 final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
@@ -17,33 +18,38 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
     private $actorResolver;
 
     /**
+     * @var \EonX\EasyActivity\Interfaces\SubjectDataResolverInterface
+     */
+    private $subjectDataResolver;
+
+    /**
      * @var \EonX\EasyActivity\Interfaces\SubjectResolverInterface
      */
     private $subjectResolver;
 
-    /**
-     * @param \EonX\EasyActivity\Interfaces\ActorResolverInterface $actorResolver
-     * @param \EonX\EasyActivity\Interfaces\SubjectResolverInterface $subjectResolver
-     */
     public function __construct(
         ActorResolverInterface $actorResolver,
-        SubjectResolverInterface $subjectResolver
+        SubjectResolverInterface $subjectResolver,
+        SubjectDataResolverInterface $subjectDataResolver
     ) {
         $this->actorResolver = $actorResolver;
         $this->subjectResolver = $subjectResolver;
+        $this->subjectDataResolver = $subjectDataResolver;
     }
 
     /**
      * @inheritdoc
      */
-    public function create(
-        string $action,
-        object $object,
-        array $changeSet
-    ): ?ActivityLogEntry {
-        $subject = $this->subjectResolver->resolveSubject($action, $object, $changeSet);
+    public function create(string $action, object $object, array $changeSet): ?ActivityLogEntry
+    {
+        $subject = $this->subjectResolver->resolveSubject($object);
 
         if ($subject === null) {
+            return null;
+        }
+
+        $subjectData = $this->subjectDataResolver->resolveSubjectData($action, $subject, $changeSet);
+        if ($subjectData === null) {
             return null;
         }
 
@@ -55,6 +61,7 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
             ->setAction($action)
             ->setActor($actor)
             ->setSubject($subject)
+            ->setSubjectData($subjectData)
             ->setCreatedAt($now)
             ->setUpdatedAt($now);
 

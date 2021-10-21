@@ -11,9 +11,5 @@ interface ActivityLogEntryFactoryInterface
     /**
      * @param array<string, mixed> $changeSet
      */
-    public function create(
-        string $action,
-        object $object,
-        array $changeSet
-    ): ?ActivityLogEntry;
+    public function create(string $action, object $object, array $changeSet): ?ActivityLogEntry;
 }
