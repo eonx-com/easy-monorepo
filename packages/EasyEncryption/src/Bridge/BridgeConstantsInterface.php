@@ -24,5 +24,10 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const SERVICE_DEFAULT_KEY_RESOLVER = 'easy_encryption.default_key_resolver';
+
+    /**
+     * @var string
+     */
     public const TAG_ENCRYPTION_KEY_RESOLVER = 'easy_encryption.encryption_key_resolver';
 }
