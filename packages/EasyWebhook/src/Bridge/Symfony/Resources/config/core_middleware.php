@@ -35,19 +35,19 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 5);
 
     $services
-        ->set(StatusAndAttemptMiddleware::class)
+        ->set(EventsMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 4);
 
     $services
-        ->set(HandleExceptionsMiddleware::class)
+        ->set(StatusAndAttemptMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 3);
 
     $services
-        ->set(ResetStoreMiddleware::class)
+        ->set(HandleExceptionsMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 2);
 
     $services
-        ->set(EventsMiddleware::class)
+        ->set(ResetStoreMiddleware::class)
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_BEFORE - 1);
 
     $services
