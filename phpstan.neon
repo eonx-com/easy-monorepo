@@ -128,9 +128,6 @@ parameters:
         - message: '#Unreachable statement \- code above always terminates#'
           path: packages/EasyEncryption/src/Encryptor.php
 
-        - message: '#Strict comparison using \=\=\= between int<min, 31\>\|int<33, max\> and 32 will always evaluate to false#'
-          path: packages/EasyEncryption/src/Factories/DefaultEncryptionKeyFactory.php
-
         # ---- EasyErrorHandler ----
         - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
           path: packages/EasyErrorHandler/tests

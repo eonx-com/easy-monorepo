@@ -12,7 +12,8 @@ final class EasyEncryptionSymfonyBundleTest extends AbstractSymfonyTestCase
     {
         $this->setAppSecret('f42a3968db6a957300c4f0c46a341c80');
 
-        $container = $this->getKernel()->getContainer();
+        $container = $this->getKernel()
+            ->getContainer();
         $encryptor = $container->get(EncryptorInterface::class);
         $message = 'my message to encrypt';
 

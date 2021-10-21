@@ -21,7 +21,7 @@ abstract class AbstractEncryptionKeyResolver implements EncryptionKeyResolverInt
             throw new CouldNotResolveEncryptionKeyException(\sprintf(
                 'Given key name "%s" not supported by %s',
                 $keyName,
-                \get_class($this)
+                static::class
             ));
         }
 

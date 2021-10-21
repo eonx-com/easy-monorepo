@@ -30,22 +30,22 @@ final class KeyLength
 
     public static function isEncryptionKeyLength(string $key): bool
     {
-        return KeyLength::isLengthEqual($key, KeyLength::getEncryptionKeyLength());
+        return self::isLengthEqual($key, self::getEncryptionKeyLength());
     }
 
     public static function isPublicKeyLength(string $key): bool
     {
-        return KeyLength::isLengthEqual($key, KeyLength::getPublicKeyLength());
+        return self::isLengthEqual($key, self::getPublicKeyLength());
     }
 
     public static function isSaltLength(string $key): bool
     {
-        return KeyLength::isLengthEqual($key, KeyLength::getSaltLength());
+        return self::isLengthEqual($key, self::getSaltLength());
     }
 
     public static function isSecretKeyLength(string $key): bool
     {
-        return KeyLength::isLengthEqual($key, KeyLength::getSecretKeyLength());
+        return self::isLengthEqual($key, self::getSecretKeyLength());
     }
 
     private static function isLengthEqual(string $key, int $length): bool

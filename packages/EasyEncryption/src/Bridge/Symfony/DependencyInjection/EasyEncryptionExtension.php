@@ -27,7 +27,7 @@ final class EasyEncryptionExtension extends Extension
      *
      * @throws \Exception
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new PhpFileLoader($container, new FileLocator([__DIR__ . '/../Resources/config']));
