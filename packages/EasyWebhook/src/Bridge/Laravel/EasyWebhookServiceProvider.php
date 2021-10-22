@@ -111,22 +111,22 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                     MiddlewareInterface::PRIORITY_CORE_BEFORE - 5
                 );
             },
+            EventsMiddleware::class => static function (Container $app): EventsMiddleware {
+                return new EventsMiddleware(
+                    $app->make(EventDispatcherInterface::class),
+                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 4
+                );
+            },
             StatusAndAttemptMiddleware::class => static function (): StatusAndAttemptMiddleware {
-                return new StatusAndAttemptMiddleware(MiddlewareInterface::PRIORITY_CORE_BEFORE - 4);
+                return new StatusAndAttemptMiddleware(MiddlewareInterface::PRIORITY_CORE_BEFORE - 3);
             },
             HandleExceptionsMiddleware::class => static function (): HandleExceptionsMiddleware {
-                return new HandleExceptionsMiddleware(MiddlewareInterface::PRIORITY_CORE_BEFORE - 3);
+                return new HandleExceptionsMiddleware(MiddlewareInterface::PRIORITY_CORE_BEFORE - 2);
             },
             ResetStoreMiddleware::class => static function (Container $app): ResetStoreMiddleware {
                 return new ResetStoreMiddleware(
                     $app->make(StoreInterface::class),
                     $app->make(ResultStoreInterface::class),
-                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 2
-                );
-            },
-            EventsMiddleware::class => static function (Container $app): EventsMiddleware {
-                return new EventsMiddleware(
-                    $app->make(EventDispatcherInterface::class),
                     MiddlewareInterface::PRIORITY_CORE_BEFORE - 1
                 );
             },
