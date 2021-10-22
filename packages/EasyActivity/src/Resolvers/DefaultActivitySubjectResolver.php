@@ -7,10 +7,10 @@ namespace EonX\EasyActivity\Resolvers;
 use EonX\EasyActivity\ActivitySubject;
 use EonX\EasyActivity\Exceptions\UnableToResolveActivitySubjectException;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
-use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
 use ReflectionClass;
 
-final class DefaultSubjectResolver implements SubjectResolverInterface
+final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInterface
 {
     /**
      * @var array<string, mixed>

@@ -8,10 +8,10 @@ use EonX\EasyActivity\ActivityLogEntry;
 use EonX\EasyActivity\ActivitySubjectData;
 use EonX\EasyActivity\Actor;
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 use EonX\EasyActivity\Interfaces\ActorInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
-use EonX\EasyActivity\Interfaces\SubjectDataResolverInterface;
 use EonX\EasyActivity\Tests\Fixtures\ActivityLogEntity;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Stubs\ActivityLogFactoryStub;
@@ -61,7 +61,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             [],
             null,
             null,
-            new class() implements SubjectDataResolverInterface {
+            new class() implements ActivitySubjectDataResolverInterface {
                 public function resolve(
                     string $action,
                     ActivitySubjectInterface $subject,

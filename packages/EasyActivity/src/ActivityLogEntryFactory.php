@@ -6,9 +6,9 @@ namespace EonX\EasyActivity;
 
 use Carbon\Carbon;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
-use EonX\EasyActivity\Interfaces\SubjectDataResolverInterface;
-use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 
 final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
 {
@@ -18,19 +18,19 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
     private $actorResolver;
 
     /**
-     * @var \EonX\EasyActivity\Interfaces\SubjectDataResolverInterface
+     * @var \EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface
      */
     private $subjectDataResolver;
 
     /**
-     * @var \EonX\EasyActivity\Interfaces\SubjectResolverInterface
+     * @var \EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface
      */
     private $subjectResolver;
 
     public function __construct(
         ActorResolverInterface $actorResolver,
-        SubjectResolverInterface $subjectResolver,
-        SubjectDataResolverInterface $subjectDataResolver
+        ActivitySubjectResolverInterface $subjectResolver,
+        ActivitySubjectDataResolverInterface $subjectDataResolver
     ) {
         $this->actorResolver = $actorResolver;
         $this->subjectResolver = $subjectResolver;

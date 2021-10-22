@@ -6,14 +6,14 @@ namespace EonX\EasyActivity\Tests\Stubs;
 
 use EonX\EasyActivity\ActivityLogEntry;
 use EonX\EasyActivity\ActivityLogEntryFactory;
-use EonX\EasyActivity\Bridge\Doctrine\DoctrineSubjectDataResolver;
+use EonX\EasyActivity\Bridge\Doctrine\DoctrineActivitySubjectDataResolver;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonyActivitySubjectDataSerializer;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
-use EonX\EasyActivity\Interfaces\SubjectDataResolverInterface;
-use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
+use EonX\EasyActivity\Resolvers\DefaultActivitySubjectResolver;
 use EonX\EasyActivity\Resolvers\DefaultActorResolver;
-use EonX\EasyActivity\Resolvers\DefaultSubjectResolver;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -34,18 +34,18 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
         array $subjects,
         ?array $globalDisallowedProperties = null,
         ?ActorResolverInterface $actorResolver = null,
-        ?SubjectResolverInterface $subjectResolver = null,
-        ?SubjectDataResolverInterface $subjectDataResolver = null
+        ?ActivitySubjectResolverInterface $subjectResolver = null,
+        ?ActivitySubjectDataResolverInterface $subjectDataResolver = null
     ) {
         if ($subjectResolver === null) {
-            $subjectResolver = new DefaultSubjectResolver($subjects);
+            $subjectResolver = new DefaultActivitySubjectResolver($subjects);
         }
         if ($subjectDataResolver === null) {
             $serializer = new Serializer(
                 [new DateTimeNormalizer(), new ObjectNormalizer()],
                 [new JsonEncoder()]
             );
-            $subjectDataResolver = new DoctrineSubjectDataResolver(
+            $subjectDataResolver = new DoctrineActivitySubjectDataResolver(
                 new SymfonyActivitySubjectDataSerializer($serializer, $globalDisallowedProperties)
             );
         }

@@ -17,8 +17,8 @@ use EonX\EasyActivity\Bridge\EasyDoctrine\EasyDoctrineEntityEventsSubscriber;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessage;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
+use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
-use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 use EonX\EasyActivity\Logger\AsyncActivityLogger;
 use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
@@ -76,7 +76,7 @@ final class EntityManagerStub extends EntityManager
     public static function createFromEasyActivityConfig(
         array $easyActivityConfig,
         ?ActorResolverInterface $actorResolver = null,
-        ?SubjectResolverInterface $subjectResolver = null,
+        ?ActivitySubjectResolverInterface $subjectResolver = null,
         ?array $fixtures = null
     ): EntityManagerInterface {
         $symfonyEventDispatcher = new SymfonyEventDispatcher();

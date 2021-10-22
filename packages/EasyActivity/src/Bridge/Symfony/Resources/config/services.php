@@ -6,22 +6,22 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyActivity\ActivityLogEntryFactory;
 use EonX\EasyActivity\Bridge\BridgeConstantsInterface;
+use EonX\EasyActivity\Bridge\Doctrine\DoctrineActivitySubjectDataResolver;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStore;
-use EonX\EasyActivity\Bridge\Doctrine\DoctrineSubjectDataResolver;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonyActivitySubjectDataSerializer;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\ActivityLoggerInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyActivity\Interfaces\StoreInterface;
-use EonX\EasyActivity\Interfaces\SubjectDataResolverInterface;
-use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 use EonX\EasyActivity\Logger\AsyncActivityLogger;
+use EonX\EasyActivity\Resolvers\DefaultActivitySubjectResolver;
 use EonX\EasyActivity\Resolvers\DefaultActorResolver;
-use EonX\EasyActivity\Resolvers\DefaultSubjectResolver;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -37,11 +37,11 @@ return static function (ContainerConfigurator $container): void {
         ->set(ActorResolverInterface::class, DefaultActorResolver::class);
 
     $services
-        ->set(SubjectResolverInterface::class, DefaultSubjectResolver::class)
+        ->set(ActivitySubjectResolverInterface::class, DefaultActivitySubjectResolver::class)
         ->arg('$subjects', '%' . BridgeConstantsInterface::PARAM_SUBJECTS . '%');
 
     $services
-        ->set(SubjectDataResolverInterface::class, DoctrineSubjectDataResolver::class);
+        ->set(ActivitySubjectDataResolverInterface::class, DoctrineActivitySubjectDataResolver::class);
 
     $services
         ->set(ActivityLoggerInterface::class, AsyncActivityLogger::class);

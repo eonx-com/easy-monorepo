@@ -7,11 +7,11 @@ namespace EonX\EasyActivity\Bridge\Doctrine;
 use EonX\EasyActivity\ActivityLogEntry;
 use EonX\EasyActivity\ActivitySubjectData;
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
-use EonX\EasyActivity\Interfaces\SubjectDataResolverInterface;
 
-final class DoctrineSubjectDataResolver implements SubjectDataResolverInterface
+final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
     /**
      * @var \EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface
