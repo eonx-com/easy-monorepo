@@ -7,13 +7,13 @@ namespace EonX\EasyActivity\Tests\Stubs;
 use EonX\EasyActivity\ActivityLogEntry;
 use EonX\EasyActivity\ActivityLogEntryFactory;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineSubjectDataResolver;
-use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonySerializer;
-use EonX\EasyActivity\DefaultActorResolver;
-use EonX\EasyActivity\DefaultSubjectResolver;
+use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonyActivitySubjectDataSerializer;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Interfaces\SubjectDataResolverInterface;
 use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
+use EonX\EasyActivity\Resolvers\DefaultActorResolver;
+use EonX\EasyActivity\Resolvers\DefaultSubjectResolver;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -46,7 +46,7 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
                 [new JsonEncoder()]
             );
             $subjectDataResolver = new DoctrineSubjectDataResolver(
-                new SymfonySerializer($serializer, $globalDisallowedProperties)
+                new SymfonyActivitySubjectDataSerializer($serializer, $globalDisallowedProperties)
             );
         }
         $this->factory = new ActivityLogEntryFactory(

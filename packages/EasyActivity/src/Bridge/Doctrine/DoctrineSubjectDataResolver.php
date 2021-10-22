@@ -5,29 +5,29 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Bridge\Doctrine;
 
 use EonX\EasyActivity\ActivityLogEntry;
+use EonX\EasyActivity\ActivitySubjectData;
+use EonX\EasyActivity\Interfaces\ActivitySubjectDataInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
-use EonX\EasyActivity\Interfaces\SerializerInterface;
-use EonX\EasyActivity\Interfaces\SubjectDataInterface;
 use EonX\EasyActivity\Interfaces\SubjectDataResolverInterface;
-use EonX\EasyActivity\SubjectData;
 
 final class DoctrineSubjectDataResolver implements SubjectDataResolverInterface
 {
     /**
-     * @var \EonX\EasyActivity\Interfaces\SerializerInterface
+     * @var \EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface
      */
     private $serializer;
 
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(ActivitySubjectDataSerializerInterface $serializer)
     {
         $this->serializer = $serializer;
     }
 
-    public function resolveSubjectData(
+    public function resolve(
         string $action,
         ActivitySubjectInterface $subject,
         array $changeSet
-    ): ?SubjectDataInterface {
+    ): ?ActivitySubjectDataInterface {
         [$oldData, $data] = $this->resolveChangeData($action, $changeSet);
 
         $serializedData = $data !== null ? $this->serializer->serialize($data, $subject) : null;
@@ -37,7 +37,7 @@ final class DoctrineSubjectDataResolver implements SubjectDataResolverInterface
             return null;
         }
 
-        return new SubjectData($serializedData, $serializedOldData);
+        return new ActivitySubjectData($serializedData, $serializedOldData);
     }
 
     /**

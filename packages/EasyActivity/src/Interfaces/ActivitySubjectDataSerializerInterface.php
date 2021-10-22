@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Interfaces;
 
-interface SerializerInterface
+interface ActivitySubjectDataSerializerInterface
 {
     /**
      * @param array<string, mixed> $data

@@ -6,17 +6,17 @@ namespace EonX\EasyActivity\Interfaces;
 
 interface ActivitySubjectInterface
 {
-    /**
-     * @return array<string>|array<string, mixed>
-     */
-    public function getActivityAllowedProperties(): ?array;
-
-    /**
-     * @return array<string>|array<string, mixed>
-     */
-    public function getActivityDisallowedProperties(): ?array;
-
     public function getActivitySubjectId(): string;
 
     public function getActivitySubjectType(): string;
+
+    /**
+     * @return array<string>|array<string, mixed>
+     */
+    public function getAllowedActivityProperties(): ?array;
+
+    /**
+     * @return array<string>|array<string, mixed>
+     */
+    public function getDisallowedActivityProperties(): ?array;
 }

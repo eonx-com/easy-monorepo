@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity;
 
-use EonX\EasyActivity\Interfaces\SubjectDataInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectDataInterface;
 
-final class SubjectData implements SubjectDataInterface
+final class ActivitySubjectData implements ActivitySubjectDataInterface
 {
     /**
      * @var string|null

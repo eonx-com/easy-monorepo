@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Bridge\Symfony\Serializers;
 
+use EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
-use EonX\EasyActivity\Interfaces\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterface;
 
-final class SymfonySerializer implements SerializerInterface
+final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataSerializerInterface
 {
     /**
      * @var string[]|null
@@ -37,8 +37,8 @@ final class SymfonySerializer implements SerializerInterface
      */
     public function serialize(array $data, ActivitySubjectInterface $subject): ?string
     {
-        $allowedProperties = $subject->getActivityAllowedProperties();
-        $disallowedProperties = $subject->getActivityDisallowedProperties();
+        $allowedProperties = $subject->getAllowedActivityProperties();
+        $disallowedProperties = $subject->getDisallowedActivityProperties();
         if ($this->disallowedProperties !== null) {
             $disallowedProperties = \array_filter(
                 \array_merge($this->disallowedProperties, $disallowedProperties ?? [])

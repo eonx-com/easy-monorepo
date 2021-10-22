@@ -33,16 +33,6 @@ final class ActivityLogEntity implements ActivitySubjectInterface
         $this->allowedPropeties = $allowedPropeties;
     }
 
-    public function getActivityAllowedProperties(): array
-    {
-        return $this->allowedPropeties;
-    }
-
-    public function getActivityDisallowedProperties(): ?array
-    {
-        return null;
-    }
-
     public function getActivitySubjectId(): string
     {
         return $this->id;
@@ -51,5 +41,15 @@ final class ActivityLogEntity implements ActivitySubjectInterface
     public function getActivitySubjectType(): string
     {
         return $this->subjectType;
+    }
+
+    public function getAllowedActivityProperties(): array
+    {
+        return $this->allowedPropeties;
+    }
+
+    public function getDisallowedActivityProperties(): ?array
+    {
+        return null;
     }
 }

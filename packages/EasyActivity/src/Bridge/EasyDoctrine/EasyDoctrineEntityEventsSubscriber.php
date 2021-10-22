@@ -21,10 +21,8 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
      */
     private $enabled;
 
-    public function __construct(
-        ActivityLoggerInterface $activityLogger,
-        bool $enabled
-    ) {
+    public function __construct(ActivityLoggerInterface $activityLogger, bool $enabled)
+    {
         $this->activityLogger = $activityLogger;
         $this->enabled = $enabled;
     }

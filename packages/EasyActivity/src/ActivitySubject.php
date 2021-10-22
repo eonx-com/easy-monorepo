@@ -44,22 +44,6 @@ final class ActivitySubject implements ActivitySubjectInterface
         $this->disallowedProperties = $disallowedProperties;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getActivityAllowedProperties(): ?array
-    {
-        return $this->allowedProperties;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getActivityDisallowedProperties(): ?array
-    {
-        return $this->disallowedProperties;
-    }
-
     public function getActivitySubjectId(): string
     {
         return $this->id;
@@ -68,5 +52,21 @@ final class ActivitySubject implements ActivitySubjectInterface
     public function getActivitySubjectType(): string
     {
         return $this->type;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAllowedActivityProperties(): ?array
+    {
+        return $this->allowedProperties;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDisallowedActivityProperties(): ?array
+    {
+        return $this->disallowedProperties;
     }
 }

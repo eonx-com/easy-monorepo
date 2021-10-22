@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Tests;
 
 use EonX\EasyActivity\ActivityLogEntry;
+use EonX\EasyActivity\ActivitySubjectData;
 use EonX\EasyActivity\Actor;
+use EonX\EasyActivity\Interfaces\ActivitySubjectDataInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 use EonX\EasyActivity\Interfaces\ActorInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
-use EonX\EasyActivity\Interfaces\SubjectDataInterface;
 use EonX\EasyActivity\Interfaces\SubjectDataResolverInterface;
-use EonX\EasyActivity\SubjectData;
 use EonX\EasyActivity\Tests\Fixtures\ActivityLogEntity;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Stubs\ActivityLogFactoryStub;
@@ -26,7 +26,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             ],
             [],
             new class() implements ActorResolverInterface {
-                public function resolveActor(object $object): ActorInterface
+                public function resolve(object $object): ActorInterface
                 {
                     return new Actor(
                         'custom-actor-type',
@@ -62,11 +62,11 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             null,
             null,
             new class() implements SubjectDataResolverInterface {
-                public function resolveSubjectData(
+                public function resolve(
                     string $action,
                     ActivitySubjectInterface $subject,
                     array $changeSet
-                ): ?SubjectDataInterface {
+                ): ?ActivitySubjectDataInterface {
                     $data = [];
                     $oldData = [];
                     foreach ($changeSet as $key => [$newValue, $oldValue]) {
@@ -74,7 +74,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
                         $oldData[$key] = $oldValue;
                     }
 
-                    return new SubjectData(\serialize($data), \serialize($oldData));
+                    return new ActivitySubjectData(\serialize($data), \serialize($oldData));
                 }
             }
         );

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyActivity;
+namespace EonX\EasyActivity\Resolvers;
 
-use EonX\EasyActivity\Exceptions\UnableToResolveSubject;
+use EonX\EasyActivity\ActivitySubject;
+use EonX\EasyActivity\Exceptions\UnableToResolveActivitySubjectException;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 use EonX\EasyActivity\Interfaces\SubjectResolverInterface;
 use ReflectionClass;
@@ -27,7 +28,7 @@ final class DefaultSubjectResolver implements SubjectResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolveSubject(object $object): ?ActivitySubjectInterface
+    public function resolve(object $object): ?ActivitySubjectInterface
     {
         if ($object instanceof ActivitySubjectInterface) {
             return $object;
@@ -39,7 +40,7 @@ final class DefaultSubjectResolver implements SubjectResolverInterface
         }
 
         if (\method_exists($object, 'getId') === false) {
-            throw new UnableToResolveSubject('Given object does not have getId() method');
+            throw new UnableToResolveActivitySubjectException('Given object does not have getId() method');
         }
 
         return new ActivitySubject(

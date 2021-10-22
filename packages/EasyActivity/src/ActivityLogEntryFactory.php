@@ -42,18 +42,18 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
      */
     public function create(string $action, object $object, array $changeSet): ?ActivityLogEntry
     {
-        $subject = $this->subjectResolver->resolveSubject($object);
+        $subject = $this->subjectResolver->resolve($object);
 
         if ($subject === null) {
             return null;
         }
 
-        $subjectData = $this->subjectDataResolver->resolveSubjectData($action, $subject, $changeSet);
+        $subjectData = $this->subjectDataResolver->resolve($action, $subject, $changeSet);
         if ($subjectData === null) {
             return null;
         }
 
-        $actor = $this->actorResolver->resolveActor($object);
+        $actor = $this->actorResolver->resolve($object);
 
         $now = Carbon::now();
         $logEntry = new ActivityLogEntry();

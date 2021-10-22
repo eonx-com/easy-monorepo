@@ -6,5 +6,5 @@ namespace EonX\EasyActivity\Interfaces;
 
 interface SubjectResolverInterface
 {
-    public function resolveSubject(object $object): ?ActivitySubjectInterface;
+    public function resolve(object $object): ?ActivitySubjectInterface;
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Bridge\Symfony;
 
-use EonX\EasyActivity\DefaultActorResolver;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
+use EonX\EasyActivity\Resolvers\DefaultActorResolver;
 use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
