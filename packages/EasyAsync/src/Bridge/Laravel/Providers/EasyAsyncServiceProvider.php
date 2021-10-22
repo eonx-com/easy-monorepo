@@ -32,7 +32,7 @@ use EonX\EasyAsync\Interfaces\JobPersisterInterface;
 use EonX\EasyAsync\Persisters\WithEventsJobPersister;
 use EonX\EasyAsync\Updaters\JobLogUpdater;
 use EonX\EasyAsync\Updaters\WithEventsJobLogUpdater;
-use EonX\EasyErrorHandler\Bridge\Laravel\Provider\EasyErrorHandlerServiceProvider;
+use EonX\EasyErrorHandler\Bridge\Laravel\Provider\EasyEncryptionServiceProvider;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
@@ -65,7 +65,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         }
 
         if (\config('easy-async.easy_error_handler_worker_stopping_enabled', true)
-            && \class_exists(EasyErrorHandlerServiceProvider::class)) {
+            && \class_exists(EasyEncryptionServiceProvider::class)) {
             $events->listen(WorkerStopping::class, WorkerStoppingListener::class);
         }
     }
@@ -160,7 +160,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
     private function registerEasyErrorHandlerBridge(): void
     {
         if (\config('easy-async.easy_error_handler_worker_stopping_enabled', true) === false
-            || \class_exists(EasyErrorHandlerServiceProvider::class) === false) {
+            || \class_exists(EasyEncryptionServiceProvider::class) === false) {
             return;
         }
 

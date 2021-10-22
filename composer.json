@@ -33,7 +33,8 @@
         "elasticsearch/elasticsearch": "^7.8",
         "psr/event-dispatcher": "^1.0",
         "laminas/laminas-uri": "^2.8",
-        "doctrine/migrations": "^3.2"
+        "doctrine/migrations": "^3.2",
+        "paragonie/halite": "^4.8"
     },
     "require-dev": {
         "api-platform/core": "^2.5",
@@ -75,6 +76,7 @@
             "EonX\\EasyDecision\\": "packages/EasyDecision/src",
             "EonX\\EasyDecision\\Expressions\\": "packages/EasyDecision/packages/expressions/src",
             "EonX\\EasyDoctrine\\": "packages/EasyDoctrine/src",
+            "EonX\\EasyEncryption\\": "packages/EasyEncryption/src",
             "EonX\\EasyErrorHandler\\": "packages/EasyErrorHandler/src",
             "EonX\\EasyEventDispatcher\\": "packages/EasyEventDispatcher/src",
             "EonX\\EasyHttpClient\\": "packages/EasyHttpClient/src",
@@ -108,6 +110,7 @@
             "EonX\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
             "EonX\\EasyDecision\\Expressions\\Tests\\": "packages/EasyDecision/packages/expressions/tests",
             "EonX\\EasyDoctrine\\Tests\\": "packages/EasyDoctrine/tests",
+            "EonX\\EasyEncryption\\Tests\\": "packages/EasyEncryption/tests",
             "EonX\\EasyErrorHandler\\Tests\\": "packages/EasyErrorHandler/tests",
             "EonX\\EasyEventDispatcher\\Tests\\": "packages/EasyEventDispatcher/tests",
             "EonX\\EasyHttpClient\\Tests\\": "packages/EasyHttpClient/tests",
@@ -138,6 +141,8 @@
         "eonx-com/easy-lock": "self.version",
         "eonx-com/easy-decision": "self.version",
         "eonx-com/easy-core": "self.version",
+        "eonx-com/easy-doctrine": "self.version",
+        "eonx-com/easy-encryption": "self.version",
         "eonx-com/easy-error-handler": "self.version",
         "eonx-com/easy-event-dispatcher": "self.version",
         "eonx-com/easy-http-client": "self.version",

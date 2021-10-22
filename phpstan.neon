@@ -119,11 +119,15 @@ parameters:
         - message: '#Property Symfony\\Component\\HttpFoundation\\Request\:\:\$request \(Symfony\\Component\\HttpFoundation\\InputBag\) does not accept Symfony\\Component\\HttpFoundation\\ParameterBag#'
           path: packages/EasyCore/src/Bridge/Laravel/ApiFormats/Middleware/ReplaceApiFormatsMiddleware.php
 
+        # ---- EasyDecision ----
         # ---- EasyDoctrine ----
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDoctrine/src/ORM/Decorators/EntityManagerDecorator.php
 
-        # ---- EasyDecision ----
+        # ---- EasyEncryption ----
+        - message: '#Unreachable statement \- code above always terminates#'
+          path: packages/EasyEncryption/src/Encryptor.php
+
         # ---- EasyErrorHandler ----
         - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
           path: packages/EasyErrorHandler/tests

@@ -1,0 +1,33 @@
+{
+    "name": "eonx-com/easy-encryption",
+    "description": "Encryption made easy",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.2 || ^8.0",
+        "eonx-com/easy-utils": "^3.5",
+        "paragonie/halite": "^4.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.4 || ^9.5",
+        "laravel/lumen-framework": "^5.5 || ^8.1",
+        "symfony/symfony": "^4.4 || ^5.1.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasyEncryption\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasyEncryption\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.5-dev"
+        }
+    }
+}
