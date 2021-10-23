@@ -112,13 +112,13 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'action' => ActivityLogEntry::ACTION_CREATE,
             'subject_type' => 'article',
             'subject_id' => '1',
-            'data' => \json_encode([
+            'subject_data' => \json_encode([
                 'content' => 'Content',
                 'title' => 'Title 1',
             ]),
+            'subject_old_data' => null,
             'created_at' => '2021-10-10 10:00:00',
             'updated_at' => '2021-10-10 10:00:00',
-            'old_data' => null,
         ], $logEntries[0]);
         self::assertEquals([
             'actor_type' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
@@ -127,10 +127,10 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'action' => ActivityLogEntry::ACTION_UPDATE,
             'subject_type' => 'article',
             'subject_id' => '1',
-            'data' => \json_encode([
+            'subject_data' => \json_encode([
                 'title' => 'Title 2',
             ]),
-            'old_data' => \json_encode([
+            'subject_old_data' => \json_encode([
                 'title' => 'Title 1',
             ]),
             'created_at' => '2021-10-10 10:00:00',
@@ -169,7 +169,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         self::assertCount(1, $logEntries);
         self::assertSame(
             ['title' => 'Test collections'],
-            \json_decode($logEntries[0]['data'], true)
+            \json_decode($logEntries[0]['subject_data'], true)
         );
     }
 
@@ -238,14 +238,14 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                 'name' => 'John',
                 'position' => 1,
             ],
-            \json_decode($logEntries[0]['data'], true)
+            \json_decode($logEntries[0]['subject_data'], true)
         );
         self::assertSame(
             [
                 'title' => 'Resolver',
                 'author' => ['id' => 1],
             ],
-            \json_decode($logEntries[1]['data'], true)
+            \json_decode($logEntries[1]['subject_data'], true)
         );
     }
 
@@ -291,7 +291,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         self::assertCount(1, $logEntries);
         self::assertEqualsCanonicalizing(
             $expectedDataProperties,
-            \array_keys(\json_decode($logEntries[0]['data'], true))
+            \array_keys(\json_decode($logEntries[0]['subject_data'], true))
         );
     }
 }

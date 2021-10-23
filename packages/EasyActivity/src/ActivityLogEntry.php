@@ -59,17 +59,17 @@ final class ActivityLogEntry
     /**
      * @var string|null
      */
-    private $data;
-
-    /**
-     * @var string|null
-     */
-    private $oldData;
+    private $subjectData;
 
     /**
      * @var string
      */
     private $subjectId;
+
+    /**
+     * @var string|null
+     */
+    private $subjectOldData;
 
     /**
      * @var string
@@ -106,19 +106,19 @@ final class ActivityLogEntry
         return $this->createdAt;
     }
 
-    public function getData(): ?string
+    public function getSubjectData(): ?string
     {
-        return $this->data;
-    }
-
-    public function getOldData(): ?string
-    {
-        return $this->oldData;
+        return $this->subjectData;
     }
 
     public function getSubjectId(): string
     {
         return $this->subjectId;
+    }
+
+    public function getSubjectOldData(): ?string
+    {
+        return $this->subjectOldData;
     }
 
     public function getSubjectType(): string
@@ -164,8 +164,8 @@ final class ActivityLogEntry
 
     public function setSubjectData(ActivitySubjectDataInterface $subjectData): self
     {
-        $this->data = $subjectData->getData();
-        $this->oldData = $subjectData->getOldData();
+        $this->subjectData = $subjectData->getSubjectData();
+        $this->subjectOldData = $subjectData->getSubjectOldData();
 
         return $this;
     }

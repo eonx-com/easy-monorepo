@@ -83,9 +83,9 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertNull($result->getActorId());
         self::assertSame(
             '{"title":"New Title"}',
-            $result->getData()
+            $result->getSubjectData()
         );
-        self::assertNull($result->getOldData());
+        self::assertNull($result->getSubjectOldData());
         self::assertSame(ActivityLogEntry::DEFAULT_ACTOR_TYPE, $result->getActorType());
         self::assertSame(ActivityLogEntry::ACTION_CREATE, $result->getAction());
         self::assertNull($result->getActorName());
@@ -115,7 +115,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
             ActivityLogEntry::ACTION_CREATE,
-            new Article(),
+            $article,
             [
                 'content' => [null, $article->getContent()],
                 'comments' => [null, $article->getComments()],
@@ -128,7 +128,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
                 'content' => 'Content',
                 'comments' => [['id' => 1], ['id' => 2]],
             ],
-            \json_decode((string)$result->getData(), true)
+            \json_decode((string)$result->getSubjectData(), true)
         );
     }
 
@@ -148,7 +148,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
             ActivityLogEntry::ACTION_CREATE,
-            new Article(),
+            $article,
             [
                 'title' => [null, $article->getTitle()],
                 'author' => [null, $article->getAuthor()],
@@ -161,7 +161,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
                 'title' => 'Related objects',
                 'author' => ['id' => 2],
             ],
-            \json_decode((string)$result->getData(), true)
+            \json_decode((string)$result->getSubjectData(), true)
         );
     }
 
@@ -186,7 +186,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
             ActivityLogEntry::ACTION_CREATE,
-            new Article(),
+            $article,
             [
                 'title' => [null, 'Related objects'],
                 'author' => [null, $article->getAuthor()],
@@ -202,7 +202,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
                     'position' => 1,
                 ],
             ],
-            \json_decode((string)$result->getData(), true)
+            \json_decode((string)$result->getSubjectData(), true)
         );
     }
 
@@ -254,7 +254,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertNotNull($result);
         self::assertEqualsCanonicalizing(
             $expectedDataProperties,
-            \array_keys(\json_decode($result->getData() ?? '', true))
+            \array_keys(\json_decode($result->getSubjectData() ?? '', true))
         );
     }
 }

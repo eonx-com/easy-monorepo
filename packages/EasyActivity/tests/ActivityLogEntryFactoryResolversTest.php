@@ -89,8 +89,8 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
 
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         self::assertNotNull($result);
-        self::assertSame('a:1:{s:5:"field";i:1;}', $result->getData());
-        self::assertSame('a:1:{s:5:"field";i:2;}', $result->getOldData());
+        self::assertSame('a:1:{s:5:"field";i:1;}', $result->getSubjectData());
+        self::assertSame('a:1:{s:5:"field";i:2;}', $result->getSubjectOldData());
     }
 
     public function testCreateSucceedsWithObjectThatImplementsSubjectInterface(): void
@@ -113,7 +113,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
         self::assertNotNull($result);
         self::assertSame($subjectId, $result->getSubjectId());
         self::assertSame($subjectType, $result->getSubjectType());
-        self::assertSame('{"field1":2}', $result->getData());
-        self::assertSame('{"field1":1}', $result->getOldData());
+        self::assertSame('{"field1":2}', $result->getSubjectData());
+        self::assertSame('{"field1":1}', $result->getSubjectOldData());
     }
 }

@@ -6,7 +6,7 @@ namespace EonX\EasyActivity\Interfaces;
 
 interface ActivitySubjectDataInterface
 {
-    public function getData(): ?string;
+    public function getSubjectData(): ?string;
 
-    public function getOldData(): ?string;
+    public function getSubjectOldData(): ?string;
 }

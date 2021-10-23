@@ -24,12 +24,12 @@ final class ActivitySubjectData implements ActivitySubjectDataInterface
         $this->oldData = $oldData;
     }
 
-    public function getData(): ?string
+    public function getSubjectData(): ?string
     {
         return $this->data;
     }
 
-    public function getOldData(): ?string
+    public function getSubjectOldData(): ?string
     {
         return $this->oldData;
     }

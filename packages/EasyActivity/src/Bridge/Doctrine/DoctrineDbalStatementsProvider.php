@@ -56,10 +56,10 @@ final class DoctrineDbalStatementsProvider
         $activityLogsTable->addColumn('subject_id', 'string', [
             'length' => 255,
         ]);
-        $activityLogsTable->addColumn('data', 'text', [
+        $activityLogsTable->addColumn('subject_data', 'text', [
             'notNull' => false,
         ]);
-        $activityLogsTable->addColumn('old_data', 'text', [
+        $activityLogsTable->addColumn('subject_old_data', 'text', [
             'notNull' => false,
         ]);
         $activityLogsTable->addColumn('created_at', 'datetime');

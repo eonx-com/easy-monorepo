@@ -48,8 +48,8 @@ final class DoctrineDbalStore implements StoreInterface
             'action' => $logEntry->getAction(),
             'subject_type' => $logEntry->getSubjectType(),
             'subject_id' => $logEntry->getSubjectId(),
-            'data' => $logEntry->getData(),
-            'old_data' => $logEntry->getOldData(),
+            'subject_data' => $logEntry->getSubjectData(),
+            'subject_old_data' => $logEntry->getSubjectOldData(),
         ];
 
         $this->connection->insert($this->table, $data);
