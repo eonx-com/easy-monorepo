@@ -314,6 +314,17 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     /**
      * @return iterable<mixed>
      */
+    public function yieldInvalidDate(): iterable
+    {
+        $value = 'invalid-date';
+        $message = $this->translateMessage((new DateTime())->message);
+
+        yield from $this->create("{$this->property} is invalid date", $value, $message);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
     public function yieldInvalidDateInterval(): iterable
     {
         $value = 'invalid-date-interval';
