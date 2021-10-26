@@ -43,7 +43,6 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
     public function create(string $action, object $object, array $changeSet): ?ActivityLogEntry
     {
         $subject = $this->subjectResolver->resolve($object);
-
         if ($subject === null) {
             return null;
         }

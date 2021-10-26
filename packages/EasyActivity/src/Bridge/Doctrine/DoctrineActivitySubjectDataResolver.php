@@ -23,6 +23,9 @@ final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataRe
         $this->serializer = $serializer;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function resolve(
         string $action,
         ActivitySubjectInterface $subject,
