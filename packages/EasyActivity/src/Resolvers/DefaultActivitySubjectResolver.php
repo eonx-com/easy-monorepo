@@ -8,7 +8,6 @@ use EonX\EasyActivity\ActivitySubject;
 use EonX\EasyActivity\Exceptions\UnableToResolveActivitySubjectException;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
-use ReflectionClass;
 
 final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInterface
 {
@@ -34,7 +33,8 @@ final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInt
             return $object;
         }
 
-        $subjectConfig = $this->subjects[\get_class($object)] ?? null;
+        $subjectClass = \get_class($object);
+        $subjectConfig = $this->subjects[$subjectClass] ?? null;
         if ($subjectConfig === null) {
             return null;
         }
@@ -45,20 +45,9 @@ final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInt
 
         return new ActivitySubject(
             (string)$object->getId(),
-            $this->getSubjectType($object),
+            $subjectConfig['type'] ?? $subjectClass,
             $subjectConfig['allowed_properties'] ?? null,
-            $subjectConfig['disallowed_properties'] ?? null,
+            $subjectConfig['disallowed_properties'] ?? null
         );
-    }
-
-    private function getSubjectType(object $object): string
-    {
-        $type = $this->subjects[\get_class($object)]['type'] ?? null;
-        if ($type === null) {
-            $reflection = new ReflectionClass($object);
-            $type = $reflection->getShortName();
-        }
-
-        return $type;
     }
 }

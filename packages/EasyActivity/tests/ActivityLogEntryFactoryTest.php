@@ -90,7 +90,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertSame(ActivityLogEntry::ACTION_CREATE, $result->getAction());
         self::assertNull($result->getActorName());
         self::assertSame('2', $result->getSubjectId());
-        self::assertSame('Article', $result->getSubjectType());
+        self::assertSame(Article::class, $result->getSubjectType());
         self::assertEqualsCanonicalizing(Carbon::getTestNow(), $result->getCreatedAt());
         self::assertEqualsCanonicalizing(Carbon::getTestNow(), $result->getUpdatedAt());
     }
