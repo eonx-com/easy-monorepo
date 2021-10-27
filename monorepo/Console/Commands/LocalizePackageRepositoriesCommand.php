@@ -37,8 +37,6 @@ final class LocalizePackageRepositoriesCommand extends Command
         $monorepoPackageNames = \array_keys($monorepoPackages);
         $repositories = [];
 
-        $output->writeln(\sprintf('Dev Version: %s', $devVersion));
-
         foreach ($monorepoPackages as $dir) {
             $repositories[] = [
                 'type' => 'path',
