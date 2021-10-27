@@ -82,8 +82,8 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
                 throw new UnrecoverableMessageHandlingException($throwable->getMessage());
             }
 
-            // Support UnrecoverableMessageHandlingException thrown by logic
-            if ($throwable instanceof UnrecoverableMessageHandlingException) {
+            if (($throwable instanceof HandlerFailedException)
+                || ($throwable instanceof UnrecoverableMessageHandlingException)) {
                 throw $throwable;
             }
 
