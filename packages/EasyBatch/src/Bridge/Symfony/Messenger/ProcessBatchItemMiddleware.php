@@ -76,10 +76,17 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
             }
 
             return $this->batchManager->processItem($batch, $batchItem, $func);
-        } catch (EasyBatchExceptionInterface $exception) {
-            // Do not retry if exception from package
-            throw new UnrecoverableMessageHandlingException($exception->getMessage());
         } catch (\Throwable $throwable) {
+            // Do not retry if exception from package
+            if ($throwable instanceof EasyBatchExceptionInterface) {
+                throw new UnrecoverableMessageHandlingException($throwable->getMessage());
+            }
+
+            // Support UnrecoverableMessageHandlingException thrown by logic
+            if ($throwable instanceof UnrecoverableMessageHandlingException) {
+                throw $throwable;
+            }
+
             throw new HandlerFailedException($envelope, [$throwable]);
         }
     }
