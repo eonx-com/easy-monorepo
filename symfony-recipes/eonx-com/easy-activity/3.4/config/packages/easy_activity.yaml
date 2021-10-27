@@ -1,0 +1,13 @@
+easy_activity:
+    disallowed_properties:
+        - updatedAt
+        - createdAt
+
+    subjects:
+#        App\Entity\SomeEntity:
+#            allowed_properties:
+#                - content
+#                - description
+#            disallowed_properties:
+#                - author
+#            type: SomeEntity

@@ -1,0 +1,186 @@
+<?php
+
+declare(strict_types=1);
+
+namespace EonX\EasyActivity\Tests\Stubs;
+
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\EventManager;
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Tools\SchemaTool;
+use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStatementsProvider;
+use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStore;
+use EonX\EasyActivity\Bridge\EasyDoctrine\EasyDoctrineEntityEventsSubscriber;
+use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessage;
+use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
+use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
+use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
+use EonX\EasyActivity\Interfaces\ActorResolverInterface;
+use EonX\EasyActivity\Logger\AsyncActivityLogger;
+use EonX\EasyActivity\Tests\Fixtures\Article;
+use EonX\EasyActivity\Tests\Fixtures\Author;
+use EonX\EasyActivity\Tests\Fixtures\Comment;
+use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
+use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
+use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
+use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyRandom\RandomGenerator;
+use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
+use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
+use Symfony\Component\Messenger\Handler\HandlersLocator;
+use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
+
+final class EntityManagerStub extends EntityManager
+{
+    public const ACTIVITY_TABLE_NAME = 'test_easy_activity_logs';
+
+    /**
+     * @param \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher $dispatcher
+     * @param string[] $subscribedEntities
+     * @param string[] $fixtures
+     *
+     * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\Tools\ToolsException
+     */
+    public static function createFromDeferredEntityEventDispatcher(
+        DeferredEntityEventDispatcher $dispatcher,
+        array $subscribedEntities = [],
+        array $fixtures = []
+    ) {
+        $eventSubscriber = new EntityEventSubscriber($dispatcher, $subscribedEntities);
+        $eventManager = new EventManager();
+        $eventManager->addEventSubscriber($eventSubscriber);
+        $entityManagerStub = self::createFromEventManager($eventManager, $fixtures);
+        $eventDispatcher = new EventDispatcher(new SymfonyEventDispatcher());
+
+        return new EntityManagerDecorator(
+            $dispatcher,
+            $eventDispatcher,
+            $entityManagerStub
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $easyActivityConfig
+     * @param \EonX\EasyActivity\Interfaces\ActorResolverInterface|null $actorResolver
+     * @param string[]|null $fixtures
+     *
+     * @return \Doctrine\ORM\EntityManagerInterface
+     */
+    public static function createFromEasyActivityConfig(
+        array $easyActivityConfig,
+        ?ActorResolverInterface $actorResolver = null,
+        ?ActivitySubjectResolverInterface $subjectResolver = null,
+        ?array $fixtures = null
+    ): EntityManagerInterface {
+        $symfonyEventDispatcher = new SymfonyEventDispatcher();
+        $eventDispatcher = new EventDispatcher($symfonyEventDispatcher);
+        /** @var string[] $subscribedEntities */
+        $subscribedEntities = \array_keys($easyActivityConfig['subjects'] ?? []);
+        $entityManager = self::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            $subscribedEntities,
+            $fixtures ?? [Article::class, Comment::class, Author::class]
+        );
+        $dbalStatementsProvider = new DoctrineDbalStatementsProvider(
+            $entityManager->getConnection(),
+            self::ACTIVITY_TABLE_NAME
+        );
+        foreach ($dbalStatementsProvider->migrateStatements() as $migrateStatement) {
+            $entityManager->getConnection()
+                ->executeQuery($migrateStatement);
+        }
+        $randomGenerator = new RandomGenerator();
+        $randomGenerator->setUuidV4Generator(new SymfonyUidUuidV4Generator());
+        $dbalStore = new DoctrineDbalStore(
+            $randomGenerator,
+            $entityManager->getConnection(),
+            self::ACTIVITY_TABLE_NAME
+        );
+
+        $activityLogEntryFactory = new ActivityLogFactoryStub(
+            $easyActivityConfig['subjects'] ?? null,
+            $easyActivityConfig['disallowed_properties'] ?? null,
+            $actorResolver,
+            $subjectResolver
+        );
+
+        $messageBus = new MessageBus([
+            new HandleMessageMiddleware(new HandlersLocator([
+                ActivityLogEntryMessage::class => [new ActivityLogEntryMessageHandler($dbalStore)],
+            ])),
+        ]);
+        $asyncDispatcher = new AsyncDispatcher($messageBus);
+        $subscriber = new EasyDoctrineEntityEventsSubscriber(
+            new AsyncActivityLogger($activityLogEntryFactory, $asyncDispatcher),
+            true
+        );
+
+        $symfonyEventDispatcher->addSubscriber($subscriber);
+
+        return $entityManager;
+    }
+
+    /**
+     * @param \Doctrine\Common\EventManager|null $eventManager
+     * @param string[] $fixtures
+     *
+     * @return \Doctrine\ORM\EntityManager
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\Tools\ToolsException
+     */
+    public static function createFromEventManager(?EventManager $eventManager = null, array $fixtures = [])
+    {
+        $conn = [
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
+        ];
+
+        $config = new Configuration();
+        $config->setProxyDir(__DIR__ . '/../var');
+        $config->setProxyNamespace('Proxy');
+
+        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+
+        $entityManager = parent::create($conn, $config, $eventManager);
+        $schema = \array_map(function ($class) use ($entityManager) {
+            return $entityManager->getClassMetadata($class);
+        }, $fixtures);
+
+        $schemaTool = new SchemaTool($entityManager);
+        $schemaTool->dropSchema([]);
+        $schemaTool->createSchema($schema);
+
+        $entityManager->getConnection()
+            ->setNestTransactionsWithSavepoints(true);
+
+        return $entityManager;
+    }
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string[] $subscribedEntities
+     * @param string[] $fixtures
+     *
+     * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
+     */
+    public static function createFromSymfonyEventDispatcher(
+        EventDispatcherInterface $eventDispatcher,
+        array $subscribedEntities = [],
+        array $fixtures = []
+    ) {
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+
+        return self::createFromDeferredEntityEventDispatcher(
+            $dispatcher,
+            $subscribedEntities,
+            $fixtures
+        );
+    }
+}

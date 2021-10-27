@@ -12,6 +12,7 @@ you can look [there][1].
 ### Packages
 
 <!-- monorepo-packages -->
+- [EasyActivity](https://github.com/eonx-com/easy-activity): Tracking your record changes.
 - [EasyApiToken](https://github.com/eonx-com/easy-api-token): Make your API accept multiple authentication strategies in a convenient way (Basic, ApiKey, JWT, ...)
 - [EasyAsync](https://github.com/eonx-com/easy-async): Makes dealing with async processes easier
 - [EasyAwsCredentialsFinder](https://github.com/eonx-com/easy-aws-credentials-finder): Tool to ease finding aws credentials in project/machine

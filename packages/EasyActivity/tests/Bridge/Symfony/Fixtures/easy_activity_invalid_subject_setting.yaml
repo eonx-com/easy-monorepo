@@ -1,0 +1,6 @@
+easy_activity:
+    subjects:
+        EonX\EasyActivity\Tests\Fixtures\Article:
+            undefined_property:
+                - title
+                - content

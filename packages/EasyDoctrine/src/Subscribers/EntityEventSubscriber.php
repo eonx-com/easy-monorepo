@@ -32,15 +32,6 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $this->acceptableEntities = $entities;
     }
 
-    public function addAcceptableEntity(string $acceptableEntityClass): void
-    {
-        if (\in_array($acceptableEntityClass, $this->acceptableEntities, true)) {
-            return;
-        }
-
-        $this->acceptableEntities[] = $acceptableEntityClass;
-    }
-
     /**
      * @return string[]
      */

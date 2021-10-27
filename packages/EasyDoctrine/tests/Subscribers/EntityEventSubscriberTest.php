@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Subscribers;
 
-use Doctrine\Common\EventManager;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
-use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Category;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
@@ -40,27 +38,6 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 
         $entityManager->flush();
 
-        $events = $eventDispatcher->getDispatchedEvents();
-        self::assertCount(1, $events);
-    }
-
-    public function testEventsAreDispatchedForEntitiesAddedLater(): void
-    {
-        $eventDispatcher = new EventDispatcherStub();
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
-        $eventSubscriber = new EntityEventSubscriber($dispatcher, []);
-        $eventManager = new EventManager();
-        $eventManager->addEventSubscriber($eventSubscriber);
-        $entityManager = EntityManagerStub::createFromEventManager($eventManager, [Product::class]);
-
-        $eventSubscriber->addAcceptableEntity(Product::class);
-        $eventSubscriber->addAcceptableEntity(Product::class);
-
-        $product = new Product();
-        $product->setName('Product 1');
-        $product->setPrice('1000');
-        $entityManager->persist($product);
-        $entityManager->flush();
         $events = $eventDispatcher->getDispatchedEvents();
         self::assertCount(1, $events);
     }

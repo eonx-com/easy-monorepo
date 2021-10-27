@@ -1,0 +1,10 @@
+easy_activity:
+    disallowed_properties:
+        - updatedAt
+        - createdAt
+
+    subjects:
+        EonX\EasyActivity\Tests\Fixtures\Article:
+            allowed_properties:
+                - title
+                - content

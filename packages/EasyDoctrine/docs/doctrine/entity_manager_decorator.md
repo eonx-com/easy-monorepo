@@ -35,15 +35,19 @@ Events **cleared** when making `rollback` of the lowest transaction level.
 #### Configuration
 
 ```yaml
+easy_doctrine:
+    entities:
+        - 'App\Entity\SomeEntity'
+        - 'App\Entity\AnotherEntity'
+```
+
+```yaml
 services:
     EonX\EasyDoctrine\Subscribers\EntityEventSubscriber:
         arguments:
-            $entities:
-                - 'App\Entity\SomeEntity'
-                - 'App\Entity\AnotherEntity'
+            $entities: '%easy_doctrine.entities%'
         tags:
-            -
-                name: doctrine.event_subscriber
+            -   name: doctrine.event_subscriber
                 connection: default
 ```
 
