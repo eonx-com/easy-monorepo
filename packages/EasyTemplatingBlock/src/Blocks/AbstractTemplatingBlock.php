@@ -21,13 +21,9 @@ abstract class AbstractTemplatingBlock implements TemplatingBlockInterface
      */
     private $name;
 
-    public function __construct(string $name, ?int $priority = null)
+    public function __construct(string $name)
     {
         $this->name = $name;
-
-        if ($priority !== null) {
-            $this->priority = $priority;
-        }
     }
 
     /**
@@ -49,6 +45,13 @@ abstract class AbstractTemplatingBlock implements TemplatingBlockInterface
     public function setContext(?array $context = null): TemplatingBlockInterface
     {
         $this->context = $context;
+
+        return $this;
+    }
+
+    public function setPriority(int $priority): TemplatingBlockInterface
+    {
+        $this->priority = $priority;
 
         return $this;
     }

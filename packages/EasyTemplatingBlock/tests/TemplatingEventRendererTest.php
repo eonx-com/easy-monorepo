@@ -34,7 +34,7 @@ final class TemplatingEventRendererTest extends AbstractTestCase
             [
                 new ArrayTemplatingBlockProvider([
                     'my-event' => [
-                        (new TextBlock('my-text-block'))->setContents('my event text'),
+                        TextBlock::create('my-text-block', 'my event text'),
                     ],
                 ]),
             ],
