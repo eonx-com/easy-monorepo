@@ -1,0 +1,31 @@
+{
+    "name": "eonx-com/easy-templating-block",
+    "description": "Allow to dynamically render blocks in templating engines",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.2 || ^8.0",
+        "eonx-com/easy-utils": "^3.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.4 || ^9.5",
+        "laravel/lumen-framework": "^5.5 || ^8.1",
+        "symfony/symfony": "^4.4 || ^5.1.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasyTemplatingBlock\\": "src",
+            "EonX\\EasyTemplatingBlock\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasyTemplatingBlock\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.5-dev"
+        }
+    }
+}
