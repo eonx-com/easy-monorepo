@@ -53,7 +53,8 @@ final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
     public function testRenderEvent(array $events, ?array $context, ?array $configs = null): void
     {
         $kernel = $this->getKernel($configs);
-        $templatingEventRenderer = $kernel->getContainer()->get(TemplatingEventRendererInterface::class);
+        $templatingEventRenderer = $kernel->getContainer()
+            ->get(TemplatingEventRendererInterface::class);
 
         foreach ($events as $event => $expectedRendered) {
             $rendered = $templatingEventRenderer->renderEvent($event, $context);
@@ -64,7 +65,9 @@ final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
 
     public function testSanity(): void
     {
-        $templatingEventRenderer = $this->getKernel()->getContainer()->get(TemplatingEventRendererInterface::class);
+        $templatingEventRenderer = $this->getKernel()
+            ->getContainer()
+            ->get(TemplatingEventRendererInterface::class);
 
         self::assertInstanceOf(TemplatingEventRendererInterface::class, $templatingEventRenderer);
     }

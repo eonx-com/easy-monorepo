@@ -57,6 +57,7 @@ final class TemplatingEventRendererTest extends AbstractTestCase
     }
 
     /**
+     * @param mixed[] $events
      * @param null|mixed[] $context
      * @param \EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockProviderInterface[] $providers
      * @param null|\EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockRendererInterface[] $renderers

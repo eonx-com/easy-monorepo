@@ -29,8 +29,8 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
     private $renderers;
 
     /**
-     * @param iterable<\EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockProviderInterface>
-     * @param iterable<\EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockRendererInterface>
+     * @param iterable<\EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockProviderInterface> $providers
+     * @param iterable<\EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockRendererInterface> $renderers
      */
     public function __construct(iterable $providers, iterable $renderers, ?bool $isDebug = null)
     {
