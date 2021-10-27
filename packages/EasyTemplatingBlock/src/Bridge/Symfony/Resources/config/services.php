@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use EonX\EasyTemplatingBlock\Bridge\BridgeConstantsInterface;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingEventRendererInterface;
+use EonX\EasyTemplatingBlock\Renderers\TextBlockRenderer;
 use EonX\EasyTemplatingBlock\TemplatingEventRenderer;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -14,6 +15,8 @@ return static function (ContainerConfigurator $container): void {
     $services->defaults()
         ->autoconfigure()
         ->autowire();
+
+    $services->set(BridgeConstantsInterface::SERVICE_TEXT_BLOCK_RENDERER, TextBlockRenderer::class);
 
     $services
         ->set(TemplatingEventRendererInterface::class, TemplatingEventRenderer::class)

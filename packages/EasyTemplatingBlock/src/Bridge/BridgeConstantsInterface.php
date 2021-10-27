@@ -24,5 +24,10 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const SERVICE_TEXT_BLOCK_RENDERER = 'easy_templating_block.text_renderer';
+
+    /**
+     * @var string
+     */
     public const SERVICE_TWIG_BLOCK_RENDERER = 'easy_templating_block.twig_renderer';
 }
