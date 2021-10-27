@@ -14,7 +14,15 @@ final class GitManager
         $process->run();
 
         $currentBranch = \trim($process->getOutput());
+        $currentSha = $this->getCurrentSha();
 
-        return $currentBranch === 'HEAD' ? 'master' : $currentBranch;
+        return \in_array($currentBranch, ['HEAD', $currentSha], true) ? 'master' : $currentBranch;
+    }
+
+    private function getCurrentSha(): string
+    {
+        $sha = \getenv('GITHUB_SHA');
+
+        return \is_string($sha) ? $sha : 'invalid-sha';
     }
 }
