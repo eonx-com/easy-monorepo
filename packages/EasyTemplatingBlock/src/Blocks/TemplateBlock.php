@@ -23,7 +23,11 @@ final class TemplateBlock extends AbstractTemplatingBlock implements TemplateBlo
      */
     public function getTemplateContext(): ?array
     {
-        return $this->templateContext;
+        if ($this->templateContext === null && $this->getContext() === null) {
+            return null;
+        }
+
+        return \array_merge($this->getContext() ?? [], $this->templateContext ?? []);
     }
 
     public function getTemplateName(): string
