@@ -43,6 +43,8 @@ jobs:
 
             -   uses: eonx-com/actions-composer-install@v1
 
+            -   run: printenv
+            -   run: echo ${{ github }}
             -   run: bin/monorepo localize-monorepo-packages
             -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
             -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit tests
