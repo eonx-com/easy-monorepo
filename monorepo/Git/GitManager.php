@@ -16,6 +16,9 @@ final class GitManager
         $currentBranch = \trim($process->getOutput());
         $currentSha = $this->getCurrentSha();
 
+        \var_dump('Current Branch: ' . $currentBranch);
+        \var_dump('Current SHA: ' . $currentSha);
+
         return \in_array($currentBranch, ['HEAD', $currentSha], true) ? 'master' : $currentBranch;
     }
 
