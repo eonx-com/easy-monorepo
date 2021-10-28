@@ -19,6 +19,19 @@ final class TemplateBlock extends AbstractTemplatingBlock implements TemplateBlo
     private $templateName;
 
     /**
+     * @param null|mixed[] $templateContext
+     */
+    public static function create(
+        string $name,
+        string $templateName,
+        ?array $templateContext = null
+    ): TemplateBlockInterface {
+        return (new self($name))
+            ->setTemplateName($templateName)
+            ->setTemplateContext($templateContext);
+    }
+
+    /**
      * @return null|mixed[]
      */
     public function getTemplateContext(): ?array
