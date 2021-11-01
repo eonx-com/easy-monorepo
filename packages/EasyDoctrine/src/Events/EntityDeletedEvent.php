@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Events;
 
-final class EntityDeletedEvent
+final class EntityDeletedEvent implements EntityActionEventInterface
 {
     /**
      * @var array<string, mixed>
@@ -27,7 +27,7 @@ final class EntityDeletedEvent
     }
 
     /**
-     * @return array<string, mixed>
+     * @inheritdoc
      */
     public function getChangeSet(): array
     {

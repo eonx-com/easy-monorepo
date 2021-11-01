@@ -7,6 +7,7 @@ namespace EonX\EasyActivity\Bridge\EasyDoctrine;
 use EonX\EasyActivity\ActivityLogEntry;
 use EonX\EasyActivity\Interfaces\ActivityLoggerInterface;
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
+use EonX\EasyDoctrine\Events\EntityDeletedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
 
 final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEventsSubscriberInterface
@@ -31,6 +32,7 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
     {
         return [
             EntityCreatedEvent::class => ['onCreate'],
+            EntityDeletedEvent::class => ['onDelete'],
             EntityUpdatedEvent::class => ['onUpdate'],
         ];
     }
@@ -48,6 +50,11 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
     public function onCreate(EntityCreatedEvent $event): void
     {
         $this->dispatchLogEntry(ActivityLogEntry::ACTION_CREATE, $event->getEntity(), $event->getChangeSet());
+    }
+
+    public function onDelete(EntityDeletedEvent $event): void
+    {
+        $this->dispatchLogEntry(ActivityLogEntry::ACTION_DELETE, $event->getEntity(), $event->getChangeSet());
     }
 
     public function onUpdate(EntityUpdatedEvent $event): void

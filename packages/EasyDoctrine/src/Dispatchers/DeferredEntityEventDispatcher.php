@@ -95,7 +95,8 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         }
 
         $oid = \spl_object_hash($object);
-        $this->entityDeletions[$oid] = $object;
+        // `clone` is used to preserve the identifier that is removed after deleting entity
+        $this->entityDeletions[$oid] = clone $object;
         $this->entityChangeSets[$transactionNestingLevel][$oid] = $entityChangeSet;
     }
 
@@ -168,7 +169,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
      * @param string $oid
      * @param array<string, array{mixed, mixed}> $entityChangeSet
      *
-     * @return \EonX\EasyDoctrine\Events\EntityCreatedEvent|\EonX\EasyDoctrine\Events\EntityUpdatedEvent|\EonX\EasyDoctrine\Events\EntityDeletedEvent
+     * @return \EonX\EasyDoctrine\Events\EntityActionEventInterface
      */
     private function createEntityEvent(string $oid, array $entityChangeSet)
     {

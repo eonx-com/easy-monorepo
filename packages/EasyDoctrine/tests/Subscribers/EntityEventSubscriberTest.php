@@ -392,7 +392,17 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             'category_id' => [1, null],
             'category' => [$product->getCategory(), null],
         ]);
-        self::assertSame($actualEvent->getEntity(), $product);
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $actualEvent->getEntity();
+        self::assertInstanceOf(Product::class, $product);
+        self::assertSame(1, $product->getId());
+        self::assertSame('Keyboard', $product->getName());
+        self::assertSame('1000', $product->getPrice());
+        self::assertNotNull($product->getCategory());
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
+        $category = $product->getCategory();
+        self::assertSame(1, $category->getId());
+        self::assertSame('Computer', $category->getName());
     }
 
     public function testOneEventIsDispatchedForMultipleUpdatedEntity(): void
