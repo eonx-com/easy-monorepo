@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Dispatchers;
 
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
+use EonX\EasyDoctrine\Events\EntityDeletedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use LogicException;
@@ -20,6 +21,11 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
      * @var array<int, array<string, array<string, array{mixed, mixed}>>>
      */
     private $entityChangeSets = [];
+
+    /**
+     * @var array<string, object>
+     */
+    private $entityDeletions = [];
 
     /**
      * @var array<string, object>
@@ -74,8 +80,23 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         }
 
         $this->entityChangeSets = [];
+        $this->entityDeletions = [];
         $this->entityInsertions = [];
         $this->entityUpdates = [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function deferDelete(int $transactionNestingLevel, object $object, array $entityChangeSet): void
+    {
+        if ($this->enabled === false) {
+            return;
+        }
+
+        $oid = \spl_object_hash($object);
+        $this->entityDeletions[$oid] = $object;
+        $this->entityChangeSets[$transactionNestingLevel][$oid] = $entityChangeSet;
     }
 
     /**
@@ -147,7 +168,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
      * @param string $oid
      * @param array<string, array{mixed, mixed}> $entityChangeSet
      *
-     * @return \EonX\EasyDoctrine\Events\EntityCreatedEvent|\EonX\EasyDoctrine\Events\EntityUpdatedEvent
+     * @return \EonX\EasyDoctrine\Events\EntityCreatedEvent|\EonX\EasyDoctrine\Events\EntityUpdatedEvent|\EonX\EasyDoctrine\Events\EntityDeletedEvent
      */
     private function createEntityEvent(string $oid, array $entityChangeSet)
     {
@@ -157,6 +178,10 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
         if (isset($this->entityUpdates[$oid]) !== false) {
             return new EntityUpdatedEvent($this->entityUpdates[$oid], $entityChangeSet);
+        }
+
+        if (isset($this->entityDeletions[$oid]) !== false) {
+            return new EntityDeletedEvent($this->entityDeletions[$oid], $entityChangeSet);
         }
 
         // @codeCoverageIgnoreStart

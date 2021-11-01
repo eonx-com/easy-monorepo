@@ -6,6 +6,7 @@ namespace EonX\EasyDoctrine\Tests\Subscribers;
 
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
+use EonX\EasyDoctrine\Events\EntityDeletedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Category;
@@ -344,6 +345,54 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager->flush();
 
         self::assertCount(0, $eventDispatcher->getDispatchedEvents());
+    }
+
+    public function testOneEventIsDispatchedForDeletedEntity(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class, Category::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'category',
+                [
+                    'id' => 1,
+                    'name' => 'Computer',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000',
+                    'category_id' => 1,
+                ]
+            );
+
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+
+        $entityManager->remove($product);
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        /** @var \EonX\EasyDoctrine\Events\EntityDeletedEvent $actualEvent */
+        $actualEvent = $events[0];
+        self::assertInstanceOf(EntityDeletedEvent::class, $actualEvent);
+        self::assertSame($actualEvent->getChangeSet(), [
+            'id' => [1, null],
+            'name' => ['Keyboard', null],
+            'price' => ['1000', null],
+            'category_id' => [1, null],
+            'category' => [$product->getCategory(), null],
+        ]);
+        self::assertSame($actualEvent->getEntity(), $product);
     }
 
     public function testOneEventIsDispatchedForMultipleUpdatedEntity(): void
