@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Events;
 
-final class EntityCreatedEvent implements EntityActionEventInterface
+final class EntityDeletedEvent implements EntityActionEventInterface
 {
     /**
      * @var array<string, mixed>

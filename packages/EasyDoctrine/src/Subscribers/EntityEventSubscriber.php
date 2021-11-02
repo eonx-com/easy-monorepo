@@ -48,6 +48,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
             ->getTransactionNestingLevel();
         $scheduledEntityInsertions = $this->filterEntities($unitOfWork->getScheduledEntityInsertions());
         $scheduledEntityUpdates = $this->filterEntities($unitOfWork->getScheduledEntityUpdates());
+        $scheduledEntityDeletions = $this->filterEntities($unitOfWork->getScheduledEntityDeletions());
 
         foreach ($scheduledEntityInsertions as $object) {
             /** @var array<string, array{mixed, mixed}> $changeSet */
@@ -59,6 +60,16 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
             /** @var array<string, array{mixed, mixed}> $changeSet */
             $changeSet = $unitOfWork->getEntityChangeSet($object);
             $this->eventDispatcher->deferUpdate($transactionNestingLevel, $object, $changeSet);
+        }
+
+        foreach ($scheduledEntityDeletions as $object) {
+            /** @var array<string, array{mixed, mixed}> $changeSet */
+            $changeSet = [];
+            $originalEntityData = $unitOfWork->getOriginalEntityData($object);
+            foreach ($originalEntityData as $attribute => $value) {
+                $changeSet[$attribute] = [$value, null];
+            }
+            $this->eventDispatcher->deferDelete($transactionNestingLevel, $object, $changeSet);
         }
     }
 

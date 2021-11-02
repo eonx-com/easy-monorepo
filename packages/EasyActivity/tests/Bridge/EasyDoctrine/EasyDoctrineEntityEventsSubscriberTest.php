@@ -78,6 +78,57 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         self::assertCount(0, $logEntries);
     }
 
+    public function testLoggerSucceedsForDeletedSubjects(): void
+    {
+        Carbon::setTestNow('2021-10-10 10:00:00');
+        $entityManager = EntityManagerStub::createFromEasyActivityConfig(
+            [
+                'subjects' => [
+                    Article::class => [
+                        'type' => 'article',
+                    ],
+                ],
+            ]
+        );
+        $author = new Author();
+        $author->setPosition(1);
+        $author->setName('John');
+        $entityManager->persist($author);
+        $article = new Article();
+        $article->setTitle('Title 1');
+        $article->setContent('Content');
+        $article->setAuthor($author);
+        $entityManager->persist($article);
+        $entityManager->flush();
+
+        $entityManager->remove($article);
+        $entityManager->flush();
+
+        $logEntries = $this->getLogEntries($entityManager);
+        self::assertCount(2, $logEntries);
+        self::assertEquals([
+            'actor_type' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
+            'actor_id' => null,
+            'actor_name' => null,
+            'action' => ActivityLogEntry::ACTION_DELETE,
+            'subject_type' => 'article',
+            'subject_id' => '1',
+            'subject_data' => null,
+            'subject_old_data' => \json_encode([
+                'content' => 'Content',
+                'createdAt' => '2021-10-10T10:00:00+00:00',
+                'title' => 'Title 1',
+                'author' => [
+                    'id' => 1,
+                ],
+                'comments' => [],
+                'id' => 1,
+            ]),
+            'created_at' => '2021-10-10 10:00:00',
+            'updated_at' => '2021-10-10 10:00:00',
+        ], $logEntries[1]);
+    }
+
     public function testLoggerSucceedsForUpdatedSubjects(): void
     {
         Carbon::setTestNow('2021-10-10 10:00:00');
