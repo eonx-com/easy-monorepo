@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Country;
 use Symfony\Component\Validator\Constraints\Currency;
+use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\EqualTo;
@@ -317,7 +318,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     public function yieldInvalidDate(): iterable
     {
         $value = 'invalid-date';
-        $message = $this->translateMessage((new DateTime())->message);
+        $message = $this->translateMessage((new Date())->message);
 
         yield from $this->create("{$this->property} is invalid date", $value, $message);
     }
