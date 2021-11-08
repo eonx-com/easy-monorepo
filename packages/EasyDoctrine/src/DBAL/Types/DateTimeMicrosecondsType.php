@@ -7,7 +7,7 @@ namespace EonX\EasyDoctrine\DBAL\Types;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeType;
 
@@ -86,7 +86,7 @@ final class DateTimeMicrosecondsType extends DateTimeType
      */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
-        if ($platform instanceof PostgreSqlPlatform) {
+        if ($platform instanceof PostgreSQL94Platform) {
             return self::FORMAT_DB_TIMESTAMP_WO_TIMEZONE;
         }
 
