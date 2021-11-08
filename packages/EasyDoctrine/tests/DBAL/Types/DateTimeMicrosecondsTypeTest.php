@@ -8,7 +8,7 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use EonX\EasyDoctrine\DBAL\Types\DateTimeMicrosecondsType;
@@ -82,19 +82,19 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
                 DateTimeMicrosecondsType::FORMAT_DB_DATETIME,
             ],
             'postgresql' => [
-                PostgreSqlPlatform::class,
+                PostgreSQL94Platform::class,
                 [],
                 DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
             ],
             'postgresql, with version = true' => [
-                PostgreSqlPlatform::class,
+                PostgreSQL94Platform::class,
                 [
                     'version' => true,
                 ],
                 DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
             ],
             'postgresql, with version = false' => [
-                PostgreSqlPlatform::class,
+                PostgreSQL94Platform::class,
                 [
                     'version' => false,
                 ],
