@@ -7,7 +7,7 @@ namespace EonX\EasyDoctrine\Tests\ORM\Decorators;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\ORMException;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Events\TransactionalExceptionEvent;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
