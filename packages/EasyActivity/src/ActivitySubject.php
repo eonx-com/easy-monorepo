@@ -9,12 +9,12 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 final class ActivitySubject implements ActivitySubjectInterface
 {
     /**
-     * @var array<string|array<string, mixed>>|null
+     * @var array<string|array<string, mixed>>
      */
     private $allowedProperties;
 
     /**
-     * @var array<string|array<string, mixed>>|null
+     * @var array<string|array<string, mixed>>
      */
     private $disallowedProperties;
 

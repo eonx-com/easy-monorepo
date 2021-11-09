@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterfa
 final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataSerializerInterface
 {
     /**
-     * @var string[]|null
+     * @var string[]
      */
     private $disallowedProperties;
 
@@ -26,7 +26,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
      */
     public function __construct(
         SymfonySerializerInterface $serializer,
-        ?array $disallowedProperties = null
+        array $disallowedProperties
     ) {
         $this->serializer = $serializer;
         $this->disallowedProperties = $disallowedProperties;
