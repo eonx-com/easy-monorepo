@@ -59,14 +59,14 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
     public function testCreateReturnsNullWhenNoSubjectConfigured(): void
     {
-        $factory = new ActivityLogFactoryStub([]);
+        $factory = new ActivityLogFactoryStub([], []);
 
         $result = $factory->create(ActivityLogEntry::ACTION_UPDATE, new Article(), ['key' => 'value']);
 
         self::assertNull($result);
     }
 
-    public function testCreateSuccedes(): void
+    public function testCreateSucceeds(): void
     {
         Carbon::setTestNow('2021-10-10 00:00:00');
         $factory = new ActivityLogFactoryStub([Article::class => []], []);
