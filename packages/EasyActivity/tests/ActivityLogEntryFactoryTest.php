@@ -69,7 +69,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     public function testCreateSuccedes(): void
     {
         Carbon::setTestNow('2021-10-10 00:00:00');
-        $factory = new ActivityLogFactoryStub([Article::class => []]);
+        $factory = new ActivityLogFactoryStub([Article::class => []], []);
 
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
@@ -97,9 +97,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
     public function testCreateSucceedsWithCollections(): void
     {
-        $factory = new ActivityLogFactoryStub([
-            Article::class => [],
-        ]);
+        $factory = new ActivityLogFactoryStub([Article::class => []], []);
         $comment1 = (new Comment())
             ->setId(1)
             ->setMessage('Test 1');
@@ -134,9 +132,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
     public function testCreateSucceedsWithRelatedObjects(): void
     {
-        $factory = new ActivityLogFactoryStub([
-            Article::class => [],
-        ]);
+        $factory = new ActivityLogFactoryStub([Article::class => []], []);
         $author = new Author();
         $author->setId(2);
         $author->setName('John');
@@ -167,14 +163,17 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
     public function testCreateSucceedsWithRelatedObjects2(): void
     {
-        $factory = new ActivityLogFactoryStub([
-            Article::class => [
-                'allowed_properties' => [
-                    'title',
-                    'author' => ['name', 'position'],
+        $factory = new ActivityLogFactoryStub(
+            [
+                Article::class => [
+                    'allowed_properties' => [
+                        'title',
+                        'author' => ['name', 'position'],
+                    ],
                 ],
             ],
-        ]);
+            []
+        );
         $author = new Author();
         $author->setId(2);
         $author->setName('John');
@@ -207,7 +206,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @param string[]|null $globalDisallowedProperties
+     * @param string[] $globalDisallowedProperties
      * @param string[]|null $allowedProperties
      * @param string[]|null $disallowedProperties
      * @param string[]|null $expectedDataProperties
@@ -215,7 +214,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
      * @dataProvider providerProperties
      */
     public function testPropertyFilters(
-        ?array $globalDisallowedProperties = null,
+        array $globalDisallowedProperties,
         ?array $allowedProperties = null,
         ?array $disallowedProperties = null,
         ?array $expectedDataProperties = null

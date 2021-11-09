@@ -28,11 +28,11 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
 
     /**
      * @param array<string, mixed> $subjects
-     * @param string[]|null $globalDisallowedProperties
+     * @param string[] $globalDisallowedProperties
      */
     public function __construct(
         array $subjects,
-        ?array $globalDisallowedProperties = null,
+        array $globalDisallowedProperties,
         ?ActorResolverInterface $actorResolver = null,
         ?ActivitySubjectResolverInterface $subjectResolver = null,
         ?ActivitySubjectDataResolverInterface $subjectDataResolver = null

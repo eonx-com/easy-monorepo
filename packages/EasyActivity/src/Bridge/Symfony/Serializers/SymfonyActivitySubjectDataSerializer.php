@@ -22,7 +22,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
     private $serializer;
 
     /**
-     * @param string[]|null $disallowedProperties
+     * @param string[] $disallowedProperties
      */
     public function __construct(
         SymfonySerializerInterface $serializer,
