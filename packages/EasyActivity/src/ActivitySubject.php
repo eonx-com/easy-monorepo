@@ -29,14 +29,14 @@ final class ActivitySubject implements ActivitySubjectInterface
     private $type;
 
     /**
-     * @param array<string|array<string, mixed>>|null $allowedProperties
-     * @param array<string|array<string, mixed>>|null $disallowedProperties
+     * @param array<string|array<string, mixed>> $allowedProperties
+     * @param array<string|array<string, mixed>> $disallowedProperties
      */
     public function __construct(
         string $id,
         string $type,
-        ?array $allowedProperties = null,
-        ?array $disallowedProperties = null
+        array $allowedProperties,
+        array $disallowedProperties
     ) {
         $this->id = $id;
         $this->type = $type;
@@ -57,7 +57,7 @@ final class ActivitySubject implements ActivitySubjectInterface
     /**
      * @inheritdoc
      */
-    public function getAllowedActivityProperties(): ?array
+    public function getAllowedActivityProperties(): array
     {
         return $this->allowedProperties;
     }
@@ -65,7 +65,7 @@ final class ActivitySubject implements ActivitySubjectInterface
     /**
      * @inheritdoc
      */
-    public function getDisallowedActivityProperties(): ?array
+    public function getDisallowedActivityProperties(): array
     {
         return $this->disallowedProperties;
     }

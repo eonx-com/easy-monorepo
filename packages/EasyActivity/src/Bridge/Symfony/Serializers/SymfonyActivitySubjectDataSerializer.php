@@ -39,7 +39,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
     {
         $allowedProperties = $subject->getAllowedActivityProperties();
         $disallowedProperties = $subject->getDisallowedActivityProperties();
-        if ($this->disallowedProperties !== null) {
+        if ($this->disallowedProperties !== []) {
             $disallowedProperties = \array_filter(
                 \array_merge($this->disallowedProperties, $disallowedProperties ?? [])
             );
@@ -48,7 +48,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
         $context = [];
 
         foreach ($data as $key => $value) {
-            if ($allowedProperties !== null
+            if ($allowedProperties !== []
                 && \in_array($key, $allowedProperties, true) === false
                 && isset($allowedProperties[$key]) === false
             ) {

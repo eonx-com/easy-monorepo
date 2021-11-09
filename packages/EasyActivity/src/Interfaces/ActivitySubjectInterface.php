@@ -13,10 +13,10 @@ interface ActivitySubjectInterface
     /**
      * @return array<string>|array<string, mixed>
      */
-    public function getAllowedActivityProperties(): ?array;
+    public function getAllowedActivityProperties(): array;
 
     /**
      * @return array<string>|array<string, mixed>
      */
-    public function getDisallowedActivityProperties(): ?array;
+    public function getDisallowedActivityProperties(): array;
 }

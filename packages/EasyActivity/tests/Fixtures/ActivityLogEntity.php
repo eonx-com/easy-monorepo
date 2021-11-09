@@ -11,7 +11,7 @@ final class ActivityLogEntity implements ActivitySubjectInterface
     /**
      * @var array<string>|array<string, mixed>
      */
-    private $allowedPropeties;
+    private $allowedProperties;
 
     /**
      * @var string
@@ -24,13 +24,13 @@ final class ActivityLogEntity implements ActivitySubjectInterface
     private $subjectType;
 
     /**
-     * @param array<string>|array<string, mixed> $allowedPropeties
+     * @param array<string>|array<string, mixed> $allowedProperties
      */
-    public function __construct(string $id, string $subjectType, array $allowedPropeties)
+    public function __construct(string $id, string $subjectType, array $allowedProperties)
     {
         $this->id = $id;
         $this->subjectType = $subjectType;
-        $this->allowedPropeties = $allowedPropeties;
+        $this->allowedProperties = $allowedProperties;
     }
 
     public function getActivitySubjectId(): string
@@ -45,11 +45,11 @@ final class ActivityLogEntity implements ActivitySubjectInterface
 
     public function getAllowedActivityProperties(): array
     {
-        return $this->allowedPropeties;
+        return $this->allowedProperties;
     }
 
-    public function getDisallowedActivityProperties(): ?array
+    public function getDisallowedActivityProperties(): array
     {
-        return null;
+        return [];
     }
 }
