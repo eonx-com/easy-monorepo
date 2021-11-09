@@ -22,38 +22,45 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     public function providerProperties(): iterable
     {
         yield 'only allowed properties' => [
-            'globalDisallowProperties' => null,
+            'globalDisallowProperties' => [],
             'entityAllowProperties' => ['title', 'content'],
-            'entityDisallowProperties' => null,
+            'entityDisallowProperties' => [],
             'expectedDataProperties' => ['title', 'content'],
         ];
 
         yield 'allowed and disallowed properties intersection' => [
-            'globalDisallowProperties' => null,
+            'globalDisallowProperties' => [],
             'entityAllowProperties' => ['title', 'content'],
             'entityDisallowProperties' => ['content'],
             'expectedDataProperties' => ['title'],
         ];
 
         yield 'only disallowed properties' => [
-            'globalDisallowProperties' => null,
-            'entityAllowProperties' => null,
+            'globalDisallowProperties' => [],
+            'entityAllowProperties' => [],
             'entityDisallowProperties' => ['createdAt'],
             'expectedDataProperties' => ['title', 'author', 'content'],
         ];
 
         yield 'all properties are disallowed' => [
-            'globalDisallowProperties' => null,
-            'entityAllowProperties' => null,
+            'globalDisallowProperties' => [],
+            'entityAllowProperties' => [],
             'entityDisallowProperties' => ['title', 'createdAt', 'author', 'content'],
             'expectedDataProperties' => null,
         ];
 
         yield 'disallowed properties and defined on global and entity levels' => [
             'globalDisallowProperties' => ['createdAt'],
-            'entityAllowProperties' => null,
+            'entityAllowProperties' => [],
             'entityDisallowProperties' => ['title', 'author'],
             'expectedDataProperties' => ['content'],
+        ];
+
+        yield 'empty allowed properties' => [
+            'globalDisallowProperties' => [],
+            'entityAllowProperties' => [],
+            'entityDisallowProperties' => [],
+            'expectedDataProperties' => ['title', 'createdAt', 'author', 'content'],
         ];
     }
 
@@ -207,16 +214,16 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
     /**
      * @param string[] $globalDisallowedProperties
-     * @param string[]|null $allowedProperties
-     * @param string[]|null $disallowedProperties
+     * @param string[] $allowedProperties
+     * @param string[] $disallowedProperties
      * @param string[]|null $expectedDataProperties
      *
      * @dataProvider providerProperties
      */
     public function testPropertyFilters(
         array $globalDisallowedProperties,
-        ?array $allowedProperties = null,
-        ?array $disallowedProperties = null,
+        array $allowedProperties,
+        array $disallowedProperties,
         ?array $expectedDataProperties = null
     ): void {
         $factory = new ActivityLogFactoryStub([
