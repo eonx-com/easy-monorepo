@@ -6,6 +6,7 @@ namespace EonX\EasyActivity\Bridge\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -42,7 +43,37 @@ final class Configuration implements ConfigurationInterface
                             ->arrayNode('allowed_properties')
                                 ->defaultValue([])
                                 ->info('Property names allowed to be stored in store.')
-                                ->prototype('scalar')->end()
+                                ->prototype('variable')
+                                    ->validate()
+                                        ->ifArray()
+                                        ->then(static function (array $properties) {
+                                            foreach ($properties as $value) {
+                                                if (\is_array($value) === false) {
+                                                    throw new InvalidTypeException('Nested allowed properties should be an array');
+                                                }
+                                            }
+                                        })
+                                    ->end()
+                                ->end()
+                            ->end()
+                                ->arrayNode('nested_object_allowed_properties')
+                                    ->defaultValue([])
+                                    ->info('Property names allowed to be stored in store for nested objects.')
+                                    ->prototype('variable')
+                                    ->validate()
+                                        ->always()
+                                        ->then(static function ($property) {
+                                            if (\is_array($property) === false) {
+                                                throw new InvalidTypeException('Property should be an array');
+                                            }
+                                            foreach ($property as $value) {
+                                                if (\is_array($value) === false) {
+                                                    throw new InvalidTypeException('Value should be a list of allowed properties');
+                                                }
+                                            }
+                                        })
+                                    ->end()
+                                ->end()
                             ->end()
                         ->end()
                     ->end()

@@ -24,24 +24,32 @@ final class ActivitySubject implements ActivitySubjectInterface
     private $id;
 
     /**
+     * @var array<string>
+     */
+    private $nestedObjectAllowedProperties;
+
+    /**
      * @var string
      */
     private $type;
 
     /**
      * @param array<string|array<string, mixed>> $allowedProperties
-     * @param array<string|array<string, mixed>> $disallowedProperties
+     * @param array<string> $disallowedProperties
+     * @param array<string, array<string>> $nestedObjectAllowedProperties
      */
     public function __construct(
         string $id,
         string $type,
         array $allowedProperties,
-        array $disallowedProperties
+        array $disallowedProperties,
+        array $nestedObjectAllowedProperties
     ) {
         $this->id = $id;
         $this->type = $type;
         $this->allowedProperties = $allowedProperties;
         $this->disallowedProperties = $disallowedProperties;
+        $this->nestedObjectAllowedProperties = $nestedObjectAllowedProperties;
     }
 
     public function getActivitySubjectId(): string
@@ -68,5 +76,13 @@ final class ActivitySubject implements ActivitySubjectInterface
     public function getDisallowedActivityProperties(): array
     {
         return $this->disallowedProperties;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getNestedObjectAllowedProperties(): array
+    {
+        return $this->nestedObjectAllowedProperties;
     }
 }

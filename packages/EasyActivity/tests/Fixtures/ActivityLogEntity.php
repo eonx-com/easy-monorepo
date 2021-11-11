@@ -52,4 +52,9 @@ final class ActivityLogEntity implements ActivitySubjectInterface
     {
         return [];
     }
+
+    public function getNestedObjectAllowedProperties(): array
+    {
+        return [];
+    }
 }

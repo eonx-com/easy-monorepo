@@ -1,0 +1,6 @@
+easy_activity:
+    subjects:
+        EonX\EasyActivity\Tests\Fixtures\Article:
+            allowed_properties:
+                - comments
+                - author: 1

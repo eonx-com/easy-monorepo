@@ -13,6 +13,7 @@ use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriberInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
@@ -24,7 +25,20 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
      */
     public function providerInvalidEasyConfigs(): iterable
     {
-        yield 'invalid subject setting' => ['easy_activity_invalid_subject_setting.yaml'];
+        yield 'invalid allowed_properties setting' => [
+            'configName' => 'easy_activity_invalid_allowed_properties_setting.yaml',
+            'expectedExceptionClass' => InvalidTypeException::class
+        ];
+
+        yield 'invalid nested_object_allowed_properties setting' => [
+            'configName' => 'easy_activity_invalid_nested_object_allowed_properties_setting.yaml',
+            'expectedExceptionClass' => InvalidTypeException::class
+        ];
+
+        yield 'invalid subject setting' => [
+            'configName' => 'easy_activity_invalid_subject_setting.yaml',
+            'expectedExceptionClass' => InvalidConfigurationException::class
+        ];
     }
 
     /**
@@ -40,7 +54,7 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 
         yield 'empty config' => ['easy_activity_valid_empty.yaml'];
 
-        yield 'without subjects config' => ['easy_activity_valid_with_allowed_properties.yaml'];
+        yield 'maximal config' => ['easy_activity_valid_maximal.yaml'];
     }
 
     public function testEasyDoctrineEntitiesOverride(): void
@@ -59,13 +73,13 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
     /**
      * @dataProvider providerInvalidEasyConfigs
      */
-    public function testInvalidEasyActivityConfig(string $configName): void
+    public function testInvalidEasyActivityConfig(string $configName, string $expectedExceptionClass): void
     {
         $this->safeCall(function () use ($configName) {
             $this->getKernel([__DIR__ . '/Fixtures/' . $configName])->getContainer();
         });
 
-        $this->assertThrownException(InvalidConfigurationException::class, 0);
+        $this->assertThrownException($expectedExceptionClass, 0);
     }
 
     /**

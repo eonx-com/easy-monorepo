@@ -39,6 +39,8 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
     {
         $allowedProperties = $subject->getAllowedActivityProperties();
         $disallowedProperties = $subject->getDisallowedActivityProperties();
+        $nestedObjectAllowedProperties = $subject->getNestedObjectAllowedProperties();
+
         if ($this->disallowedProperties !== []) {
             $disallowedProperties = \array_filter(
                 \array_merge($this->disallowedProperties, $disallowedProperties ?? [])
@@ -62,7 +64,10 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
             }
 
             if (\is_object($value)) {
-                $context[AbstractNormalizer::ATTRIBUTES][$key] = $allowedProperties[$key] ?? ['id'];
+                $objectClass = \get_class($value);
+
+                $context[AbstractNormalizer::ATTRIBUTES][$key] = $nestedObjectAllowedProperties[$objectClass]
+                    ?? $allowedProperties[$key] ?? ['id'];
             }
         }
 

@@ -22,7 +22,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
      *
      * @see testPropertyFilters
      */
-    public function providerProperties(): iterable
+    public function provideProperties(): iterable
     {
         yield 'only allowed properties' => [
             'globalDisallowedProperties' => null,
@@ -306,7 +306,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
      * @param string[] $disallowedProperties
      * @param string[] $expectedDataProperties
      *
-     * @dataProvider providerProperties
+     * @dataProvider provideProperties
      */
     public function testPropertyFilters(
         ?array $globalDisallowedProperties = null,
