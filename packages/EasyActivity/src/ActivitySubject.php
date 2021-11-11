@@ -9,12 +9,12 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 final class ActivitySubject implements ActivitySubjectInterface
 {
     /**
-     * @var array<string|array<string, mixed>>
+     * @var list<string>|array<string, list<string>>
      */
     private $allowedProperties;
 
     /**
-     * @var array<string|array<string, mixed>>
+     * @var list<string>
      */
     private $disallowedProperties;
 
@@ -24,7 +24,7 @@ final class ActivitySubject implements ActivitySubjectInterface
     private $id;
 
     /**
-     * @var array<string>
+     * @var array<string, list<string>>
      */
     private $nestedObjectAllowedProperties;
 
@@ -34,9 +34,9 @@ final class ActivitySubject implements ActivitySubjectInterface
     private $type;
 
     /**
-     * @param array<string|array<string, mixed>> $allowedProperties
-     * @param array<string> $disallowedProperties
-     * @param array<string, array<string>> $nestedObjectAllowedProperties
+     * @param list<string>|array<string, list<string>> $allowedProperties
+     * @param list<string> $disallowedProperties
+     * @param array<string, list<string>> $nestedObjectAllowedProperties
      */
     public function __construct(
         string $id,

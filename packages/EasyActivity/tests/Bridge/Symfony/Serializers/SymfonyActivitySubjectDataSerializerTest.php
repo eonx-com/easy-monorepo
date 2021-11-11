@@ -16,6 +16,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTestCase
 {
+    /**
+     * @return iterable<mixed>
+     *
+     * @see testSerializeSucceeds
+     */
     public function provideDataForSerializeSucceeds(): iterable
     {
         $entityId = 1;
@@ -30,11 +35,11 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'data' => [
                 'id' => $entityId,
                 'name' => $authorName,
-                'position' => $authorPosition
+                'position' => $authorPosition,
             ],
             'subject' => new ActivitySubject((string)$entityId, Author::class, [], [], []),
             'disallowedProperties' => null,
-            'expectedResult' => '{"id":1,"name":"John Doe","position":1}'
+            'expectedResult' => '{"id":1,"name":"John Doe","position":1}',
         ];
 
         $disallowedProperties = [
@@ -44,25 +49,25 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'data' => [
                 'id' => $entityId,
                 'name' => $authorName,
-                'position' => $authorPosition
+                'position' => $authorPosition,
             ],
             'subject' => new ActivitySubject((string)$entityId, Author::class, [], $disallowedProperties, []),
             'disallowedProperties' => null,
-            'expectedResult' => '{"name":"John Doe","position":1}'
+            'expectedResult' => '{"name":"John Doe","position":1}',
         ];
 
         $disallowedProperties = [
-            'id', 'name', 'position'
+            'id', 'name', 'position',
         ];
         yield 'Config with all properties are disallowed' => [
             'data' => [
                 'id' => $entityId,
                 'name' => $authorName,
-                'position' => $authorPosition
+                'position' => $authorPosition,
             ],
             'subject' => new ActivitySubject((string)$entityId, Author::class, [], $disallowedProperties, []),
             'disallowedProperties' => null,
-            'expectedResult' => null
+            'expectedResult' => null,
         ];
 
         $commonDisallowedProperties = [
@@ -72,11 +77,11 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'data' => [
                 'id' => $entityId,
                 'name' => $authorName,
-                'position' => $authorPosition
+                'position' => $authorPosition,
             ],
             'subject' => new ActivitySubject((string)$entityId, Author::class, [], [], []),
             'disallowedProperties' => $commonDisallowedProperties,
-            'expectedResult' => '{"name":"John Doe","position":1}'
+            'expectedResult' => '{"name":"John Doe","position":1}',
         ];
 
         $moment = new \DateTimeImmutable();
@@ -93,26 +98,26 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'expectedResult' => sprintf(
                 '{"author":{"id":1},"comments":[],"content":"text","createdAt":"%s","id":1}',
                 $moment->format(DateTimeInterface::ATOM)
-            )
+            ),
         ];
 
         $allowedProperties = [
-            'id', 'name'
+            'id', 'name',
         ];
         yield 'Config with flat allowed_properties' => [
             'data' => [
                 'id' => $entityId,
                 'name' => $authorName,
-                'position' => $authorPosition
+                'position' => $authorPosition,
             ],
             'subject' => new ActivitySubject((string)$entityId, Author::class, $allowedProperties, [], []),
             'disallowedProperties' => null,
-            'expectedResult' => '{"id":1,"name":"John Doe"}'
+            'expectedResult' => '{"id":1,"name":"John Doe"}',
         ];
 
         $allowedProperties = [
             'author' => ['id', 'name'],
-            'content'
+            'content',
         ];
         yield 'Config with nested allowed_properties' => [
             'data' => [
@@ -124,15 +129,15 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             ],
             'subject' => new ActivitySubject((string)$entityId, Article::class, $allowedProperties, [], []),
             'disallowedProperties' => null,
-            'expectedResult' => '{"author":{"id":1,"name":"John Doe"},"content":"text"}'
+            'expectedResult' => '{"author":{"id":1,"name":"John Doe"},"content":"text"}',
         ];
 
         $allowedProperties = [
             'author' => ['id', 'name'],
-            'content'
+            'content',
         ];
         $nestedObjectAllowedProperties = [
-            Author::class => ['name']
+            Author::class => ['name'],
         ];
         yield 'Config with nested allowed_properties and nested_object_allowed_properties' => [
             'data' => [
@@ -150,11 +155,14 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 $nestedObjectAllowedProperties
             ),
             'disallowedProperties' => null,
-            'expectedResult' => '{"author":{"name":"John Doe"},"content":"text"}'
+            'expectedResult' => '{"author":{"name":"John Doe"},"content":"text"}',
         ];
     }
 
     /**
+     * @param array<mixed> $data
+     * @param array<mixed>|null $disallowedProperties
+     *
      * @dataProvider provideDataForSerializeSucceeds
      */
     public function testSerializeSucceeds(
@@ -173,7 +181,8 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
 
     private function arrangeSymfonySerializer(): SerializerInterface
     {
-        $container = $this->getKernel()->getContainer();
+        $container = $this->getKernel()
+            ->getContainer();
         /** @var SerializerInterface $symfonySerializer */
         $symfonySerializer = $container->get(SerializerInterface::class);
 

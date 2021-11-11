@@ -27,17 +27,17 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
     {
         yield 'invalid allowed_properties setting' => [
             'configName' => 'easy_activity_invalid_allowed_properties_setting.yaml',
-            'expectedExceptionClass' => InvalidTypeException::class
+            'expectedExceptionClass' => InvalidTypeException::class,
         ];
 
         yield 'invalid nested_object_allowed_properties setting' => [
             'configName' => 'easy_activity_invalid_nested_object_allowed_properties_setting.yaml',
-            'expectedExceptionClass' => InvalidTypeException::class
+            'expectedExceptionClass' => InvalidTypeException::class,
         ];
 
         yield 'invalid subject setting' => [
             'configName' => 'easy_activity_invalid_subject_setting.yaml',
-            'expectedExceptionClass' => InvalidConfigurationException::class
+            'expectedExceptionClass' => InvalidConfigurationException::class,
         ];
     }
 

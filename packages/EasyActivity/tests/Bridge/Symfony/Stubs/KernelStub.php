@@ -36,6 +36,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface as SymfonyNormal
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 final class KernelStub extends Kernel implements CompilerPassInterface

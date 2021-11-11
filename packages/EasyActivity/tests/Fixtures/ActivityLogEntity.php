@@ -9,7 +9,7 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 final class ActivityLogEntity implements ActivitySubjectInterface
 {
     /**
-     * @var array<string>|array<string, mixed>
+     * @var list<string>|array<string, list<string>>
      */
     private $allowedProperties;
 
@@ -43,16 +43,25 @@ final class ActivityLogEntity implements ActivitySubjectInterface
         return $this->subjectType;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getAllowedActivityProperties(): array
     {
         return $this->allowedProperties;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getDisallowedActivityProperties(): array
     {
         return [];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getNestedObjectAllowedProperties(): array
     {
         return [];

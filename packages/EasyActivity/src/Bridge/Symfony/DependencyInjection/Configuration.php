@@ -49,7 +49,8 @@ final class Configuration implements ConfigurationInterface
                                         ->then(static function (array $properties) {
                                             foreach ($properties as $value) {
                                                 if (\is_array($value) === false) {
-                                                    throw new InvalidTypeException('Nested allowed properties should be an array');
+                                                    $errorMessage = 'Nested allowed properties should be an array';
+                                                    throw new InvalidTypeException($errorMessage);
                                                 }
                                             }
                                         })
@@ -68,7 +69,8 @@ final class Configuration implements ConfigurationInterface
                                             }
                                             foreach ($property as $value) {
                                                 if (\is_array($value) === false) {
-                                                    throw new InvalidTypeException('Value should be a list of allowed properties');
+                                                    $errorMessage = 'Value should be a list of allowed properties';
+                                                    throw new InvalidTypeException($errorMessage);
                                                 }
                                             }
                                         })
