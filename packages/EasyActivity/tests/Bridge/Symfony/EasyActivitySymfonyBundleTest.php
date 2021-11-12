@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Bridge\Symfony;
 
+use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Resolvers\DefaultActorResolver;
 use EonX\EasyActivity\Tests\Fixtures\Article;
@@ -48,13 +49,49 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
      */
     public function providerValidEasyConfigs(): iterable
     {
-        yield 'default config' => ['easy_activity_valid_default.yaml'];
+        yield 'default config' => [
+            'configName' => 'easy_activity_valid_default.yaml',
+            'subjects' => [
+                Article::class => [
+                    'type' => 'article',
+                    'disallowed_properties' => ['updatedAt', 'createdAt'],
+                    'allowed_properties' => [],
+                    'nested_object_allowed_properties' => [],
+                ],
+            ],
+        ];
 
-        yield 'minimal config' => ['easy_activity_valid_minimal.yaml'];
+        yield 'minimal config' => [
+            'configName' => 'easy_activity_valid_minimal.yaml',
+            'subjects' => [
+                Article::class => [
+                    'disallowed_properties' => [],
+                    'allowed_properties' => [],
+                    'nested_object_allowed_properties' => [],
+                ],
+            ],
+        ];
 
-        yield 'empty config' => ['easy_activity_valid_empty.yaml'];
+        yield 'empty config' => [
+            'configName' => 'easy_activity_valid_empty.yaml',
+            'subjects' => [],
+        ];
 
-        yield 'maximal config' => ['easy_activity_valid_maximal.yaml'];
+        yield 'maximal config' => [
+            'configName' => 'easy_activity_valid_maximal.yaml',
+            'subjects' => [
+                Article::class => [
+                    'allowed_properties' => [
+                        'comments',
+                        'author' => ['name', 'position'],
+                    ],
+                    'disallowed_properties' => ['content'],
+                    'nested_object_allowed_properties' => [
+                        Author::class => ['position'],
+                    ],
+                ],
+            ],
+        ];
     }
 
     public function testEasyDoctrineEntitiesOverride(): void
@@ -83,17 +120,22 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
+     * @param array<mixed> $subjects
+     *
      * @dataProvider providerValidEasyConfigs
      */
-    public function testValidEasyActivityConfig(string $configName): void
+    public function testValidEasyActivityConfig(string $configName, array $subjects): void
     {
         $container = $this->getKernel([__DIR__ . '/Fixtures/' . $configName])->getContainer();
+        /** @var ActivitySubjectResolverInterface $subjectResolver */
+        $subjectResolver = $container->get(ActivitySubjectResolverInterface::class);
 
         self::assertInstanceOf(
             DefaultActorResolver::class,
             $container->get(ActorResolverInterface::class)
         );
         self::assertTrue($container->has(DeferredEntityEventDispatcherInterface::class));
+        self::assertEquals($subjects, $this->getPrivatePropertyValue($subjectResolver, 'subjects'));
     }
 
     protected function tearDown(): void

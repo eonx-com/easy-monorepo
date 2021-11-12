@@ -2,4 +2,4 @@ easy_activity:
     subjects:
         EonX\EasyActivity\Tests\Fixtures\Article:
             nested_object_allowed_properties:
-                - EonX\EasyActivity\Tests\Fixtures\Author: foo
+                EonX\EasyActivity\Tests\Fixtures\Author: foo

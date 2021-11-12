@@ -43,36 +43,48 @@ final class Configuration implements ConfigurationInterface
                             ->arrayNode('allowed_properties')
                                 ->defaultValue([])
                                 ->info('Property names allowed to be stored in store.')
-                                ->prototype('variable')
-                                    ->validate()
-                                        ->ifArray()
-                                        ->then(static function (array $properties) {
-                                            foreach ($properties as $value) {
-                                                if (\is_array($value) === false) {
-                                                    $errorMessage = 'Nested allowed properties should be an array';
-                                                    throw new InvalidTypeException($errorMessage);
-                                                }
+                                ->beforeNormalization()
+                                    ->always(static function (array $properties) {
+                                        $result = [];
+                                        foreach ($properties as $key => $property) {
+                                            if (\is_array($property) === true) {
+                                                $key = \array_key_first($property);
+                                                $property = \reset($property);
                                             }
-                                        })
-                                    ->end()
+
+                                            $result[$key] = $property;
+                                        }
+
+                                        return $result;
+                                    })
                                 ->end()
+                                ->validate()
+                                    ->always(static function (array $properties) {
+                                        foreach ($properties as $key => $property) {
+                                            if (\is_string($key) === true && \is_array($property) === false) {
+                                                $errorMessage = 'Value of named property should be an array type.';
+                                                throw new InvalidTypeException($errorMessage);
+                                            }
+                                        }
+
+                                        return $properties;
+                                    })
+                                ->end()
+                                ->prototype('variable')->end()
                             ->end()
-                                ->arrayNode('nested_object_allowed_properties')
-                                    ->defaultValue([])
-                                    ->info('Property names allowed to be stored in store for nested objects.')
-                                    ->prototype('variable')
+                            ->arrayNode('nested_object_allowed_properties')
+                                ->defaultValue([])
+                                ->info('Property names allowed to be stored in store for nested objects.')
+                                ->prototype('variable')
                                     ->validate()
                                         ->always()
                                         ->then(static function ($property) {
                                             if (\is_array($property) === false) {
-                                                throw new InvalidTypeException('Property should be an array');
+                                                $errorMessage = 'Property should be an array type';
+                                                throw new InvalidTypeException($errorMessage);
                                             }
-                                            foreach ($property as $value) {
-                                                if (\is_array($value) === false) {
-                                                    $errorMessage = 'Value should be a list of allowed properties';
-                                                    throw new InvalidTypeException($errorMessage);
-                                                }
-                                            }
+
+                                            return $property;
                                         })
                                     ->end()
                                 ->end()
@@ -80,7 +92,8 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ->end();
 
         return $treeBuilder;
     }
