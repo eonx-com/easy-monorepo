@@ -55,7 +55,6 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$disallowedProperties', '%' . BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES . '%')
         ->arg('$serializer', service(BridgeConstantsInterface::SERVICE_ALIAS_SERIALIZER));
 
-
     $services
         ->set(ActivityLogEntryFactoryInterface::class, ActivityLogEntryFactory::class);
 
