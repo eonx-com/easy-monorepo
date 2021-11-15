@@ -15,6 +15,7 @@ use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
 use EonX\EasyUtils\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Throwable;
 
 final class ErrorHandler implements ErrorHandlerInterface
@@ -100,6 +101,15 @@ final class ErrorHandler implements ErrorHandlerInterface
 
     public function report(Throwable $throwable): void
     {
+        // Symfony Messenger HandlerFailedException
+        if (\class_exists(HandlerFailedException::class) and $throwable instanceof HandlerFailedException) {
+            foreach ($throwable->getNestedExceptions() as $nestedThrowable) {
+                $this->report($nestedThrowable);
+            }
+
+            return;
+        }
+
         foreach ($this->ignoredExceptionsForReport as $class) {
             if (\is_a($throwable, $class)) {
                 return;
