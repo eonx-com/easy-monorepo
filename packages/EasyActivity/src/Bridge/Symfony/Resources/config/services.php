@@ -48,12 +48,12 @@ return static function (ContainerConfigurator $container): void {
         ->set(ActivityLoggerInterface::class, AsyncActivityLogger::class);
 
     $services
-        ->set(BridgeConstantsInterface::SERVICE_ALIAS_SERIALIZER, SerializerInterface::class);
+        ->set(BridgeConstantsInterface::SERVICE_SERIALIZER, SerializerInterface::class);
 
     $services
         ->set(ActivitySubjectDataSerializerInterface::class, SymfonyActivitySubjectDataSerializer::class)
         ->arg('$disallowedProperties', '%' . BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES . '%')
-        ->arg('$serializer', service(BridgeConstantsInterface::SERVICE_ALIAS_SERIALIZER));
+        ->arg('$serializer', service(BridgeConstantsInterface::SERVICE_SERIALIZER));
 
     $services
         ->set(ActivityLogEntryFactoryInterface::class, ActivityLogEntryFactory::class);

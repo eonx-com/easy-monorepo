@@ -16,12 +16,12 @@ interface ActivitySubjectInterface
     public function getAllowedActivityProperties(): ?array;
 
     /**
-     * @return array<string, list<string>>
-     */
-    public function getNestedObjectAllowedActivityProperties(): array;
-
-    /**
      * @return list<string>
      */
     public function getDisallowedActivityProperties(): array;
+
+    /**
+     * @return array<string, list<string>>
+     */
+    public function getNestedObjectAllowedActivityProperties(): array;
 }

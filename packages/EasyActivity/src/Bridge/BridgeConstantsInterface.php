@@ -29,5 +29,5 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const SERVICE_ALIAS_SERIALIZER = 'easy_activity.serializer';
+    public const SERVICE_SERIALIZER = 'easy_activity.serializer';
 }
