@@ -38,8 +38,13 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
     public function serialize(array $data, ActivitySubjectInterface $subject): ?string
     {
         $allowedProperties = $subject->getAllowedActivityProperties();
+
+        if ($allowedProperties === null) {
+            return null;
+        }
+
         $disallowedProperties = $subject->getDisallowedActivityProperties();
-        $nestedObjectAllowedProperties = $subject->getNestedObjectAllowedProperties();
+        $nestedObjectAllowedProperties = $subject->getNestedObjectAllowedActivityProperties();
 
         if ($this->disallowedProperties !== []) {
             $disallowedProperties = \array_filter(
@@ -50,7 +55,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
         $context = [];
 
         foreach ($data as $key => $value) {
-            if ($allowedProperties !== []
+            if (empty($allowedProperties) === false
                 && \in_array($key, $allowedProperties, true) === false
                 && isset($allowedProperties[$key]) === false
             ) {

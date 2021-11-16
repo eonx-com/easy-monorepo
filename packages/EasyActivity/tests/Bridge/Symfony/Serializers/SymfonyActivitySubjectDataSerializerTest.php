@@ -101,6 +101,17 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             ),
         ];
 
+        yield 'Config with null allowed_properties' => [
+            'data' => [
+                'id' => $entityId,
+                'name' => $authorName,
+                'position' => $authorPosition,
+            ],
+            'subject' => new ActivitySubject((string)$entityId, Author::class, null, [], []),
+            'disallowedProperties' => null,
+            'expectedResult' => null,
+        ];
+
         $allowedProperties = [
             'id', 'name',
         ];

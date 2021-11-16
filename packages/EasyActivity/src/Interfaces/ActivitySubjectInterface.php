@@ -11,14 +11,14 @@ interface ActivitySubjectInterface
     public function getActivitySubjectType(): string;
 
     /**
-     * @return list<string>|array<string, list<string>>
+     * @return list<string>|array<string, list<string>>|null
      */
-    public function getAllowedActivityProperties(): array;
+    public function getAllowedActivityProperties(): ?array;
 
     /**
      * @return array<string, list<string>>
      */
-    public function getNestedObjectAllowedProperties(): array;
+    public function getNestedObjectAllowedActivityProperties(): array;
 
     /**
      * @return list<string>

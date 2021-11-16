@@ -41,10 +41,10 @@ final class Configuration implements ConfigurationInterface
                                 ->prototype('scalar')->end()
                             ->end()
                             ->arrayNode('allowed_properties')
-                                ->defaultValue([])
                                 ->info('Property names allowed to be stored in store.')
                                 ->beforeNormalization()
-                                    ->always(static function (array $properties) {
+                                    ->ifArray()
+                                    ->then(static function (array $properties) {
                                         $result = [];
                                         foreach ($properties as $key => $property) {
                                             if (\is_array($property) === true) {
@@ -59,7 +59,8 @@ final class Configuration implements ConfigurationInterface
                                     })
                                 ->end()
                                 ->validate()
-                                    ->always(static function (array $properties) {
+                                    ->ifArray()
+                                    ->then(static function (array $properties) {
                                         foreach ($properties as $key => $property) {
                                             if (\is_string($key) === true && \is_array($property) === false) {
                                                 $errorMessage = 'Value of named property should be an array type.';

@@ -9,7 +9,7 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 final class ActivitySubject implements ActivitySubjectInterface
 {
     /**
-     * @var list<string>|array<string, list<string>>
+     * @var list<string>|array<string, list<string>>|null
      */
     private $allowedProperties;
 
@@ -41,7 +41,7 @@ final class ActivitySubject implements ActivitySubjectInterface
     public function __construct(
         string $id,
         string $type,
-        array $allowedProperties,
+        ?array $allowedProperties,
         array $disallowedProperties,
         array $nestedObjectAllowedProperties
     ) {
@@ -65,7 +65,7 @@ final class ActivitySubject implements ActivitySubjectInterface
     /**
      * @inheritdoc
      */
-    public function getAllowedActivityProperties(): array
+    public function getAllowedActivityProperties(): ?array
     {
         return $this->allowedProperties;
     }
@@ -81,7 +81,7 @@ final class ActivitySubject implements ActivitySubjectInterface
     /**
      * @inheritDoc
      */
-    public function getNestedObjectAllowedProperties(): array
+    public function getNestedObjectAllowedActivityProperties(): array
     {
         return $this->nestedObjectAllowedProperties;
     }
