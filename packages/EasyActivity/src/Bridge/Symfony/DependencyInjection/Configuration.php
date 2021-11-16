@@ -42,6 +42,7 @@ final class Configuration implements ConfigurationInterface
                             ->end()
                             ->arrayNode('allowed_properties')
                                 ->info('Property names allowed to be stored in store.')
+                                ->defaultValue([])
                                 ->beforeNormalization()
                                     ->ifArray()
                                     ->then(static function (array $properties) {

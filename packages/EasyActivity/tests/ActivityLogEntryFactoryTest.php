@@ -62,6 +62,13 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             'entityDisallowProperties' => [],
             'expectedDataProperties' => ['title', 'createdAt', 'author', 'content'],
         ];
+
+        yield 'allowed properties are null' => [
+            'globalDisallowProperties' => [],
+            'entityAllowProperties' => null,
+            'entityDisallowProperties' => [],
+            'expectedDataProperties' => null,
+        ];
     }
 
     public function testCreateReturnsNullWhenNoSubjectConfigured(): void
@@ -214,7 +221,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
     /**
      * @param string[] $globalDisallowedProperties
-     * @param string[] $allowedProperties
+     * @param string[]|null $allowedProperties
      * @param string[] $disallowedProperties
      * @param string[]|null $expectedDataProperties
      *
@@ -222,7 +229,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
      */
     public function testPropertyFilters(
         array $globalDisallowedProperties,
-        array $allowedProperties,
+        ?array $allowedProperties,
         array $disallowedProperties,
         ?array $expectedDataProperties = null
     ): void {
