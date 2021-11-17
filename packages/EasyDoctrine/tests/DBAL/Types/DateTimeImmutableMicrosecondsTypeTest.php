@@ -39,9 +39,9 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      *
-     * @see testConvertToPhpValueSucceeds
+     * @see testConvertToPHPValueSucceeds
      */
-    public function provideConvertToPhpValues(): iterable
+    public function provideConvertToPHPValues(): iterable
     {
         $datetime = new DateTimeImmutable();
         $milliseconds = $datetime->format('u');
@@ -144,9 +144,9 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
     /**
      * @param mixed $value
      *
-     * @dataProvider provideConvertToPhpValues
+     * @dataProvider provideConvertToPHPValues
      */
-    public function testConvertToPhpValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
+    public function testConvertToPHPValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeImmutableMicrosecondsType $type */
         $type = Type::getType(DateTimeImmutableMicrosecondsType::TYPE_NAME);
@@ -158,7 +158,7 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
         self::assertEquals($expectedValue, $phpValue);
     }
 
-    public function testConvertToPhpValueThrowsConversionException(): void
+    public function testConvertToPHPValueThrowsConversionException(): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeImmutableMicrosecondsType $type */
         $type = Type::getType(DateTimeImmutableMicrosecondsType::TYPE_NAME);

@@ -61,7 +61,7 @@ final class DateTimeMicrosecondsType extends DateTimeType
      *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToPhpValue($value, AbstractPlatform $platform): ?DateTimeInterface
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?DateTimeInterface
     {
         if ($value === null || $value instanceof DateTimeInterface) {
             return $value;
