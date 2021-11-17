@@ -55,7 +55,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
         $context = [];
 
         foreach ($data as $key => $value) {
-            if (empty($allowedProperties) === false
+            if (\count($allowedProperties) > 0
                 && \in_array($key, $allowedProperties, true) === false
                 && isset($allowedProperties[$key]) === false
             ) {
