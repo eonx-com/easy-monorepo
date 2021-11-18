@@ -37,9 +37,9 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     /**
      * @return mixed[]
      *
-     * @see testConvertToPhpValueSucceeds
+     * @see testConvertToPHPValueSucceeds
      */
-    public function provideConvertToPhpValues(): array
+    public function provideConvertToPHPValues(): array
     {
         $datetime = new DateTime();
         $milliseconds = $datetime->format('u');
@@ -143,16 +143,16 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Types\ConversionException
      *
-     * @dataProvider provideConvertToPhpValues
+     * @dataProvider provideConvertToPHPValues
      */
-    public function testConvertToPhpValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
+    public function testConvertToPHPValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeMicrosecondsType $type */
         $type = Type::getType(DateTimeMicrosecondsType::TYPE_NAME);
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
 
-        $phpValue = $type->convertToPhpValue($value, $platform);
+        $phpValue = $type->convertToPHPValue($value, $platform);
 
         self::assertEquals($expectedValue, $phpValue);
     }
@@ -161,7 +161,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function testConvertToPhpValueThrowsConversionException(): void
+    public function testConvertToPHPValueThrowsConversionException(): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeMicrosecondsType $type */
         $type = Type::getType(DateTimeMicrosecondsType::TYPE_NAME);
@@ -172,7 +172,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
         $this->expectExceptionMessage('Could not convert database value "ineligible-value" ' .
             'to Doctrine Type datetime. Expected format: Y-m-d H:i:s.u');
 
-        $type->convertToPhpValue($value, $platform);
+        $type->convertToPHPValue($value, $platform);
     }
 
     /**
