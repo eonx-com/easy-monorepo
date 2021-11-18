@@ -106,7 +106,7 @@ final class EntityManagerStub extends EntityManager
 
         $activityLogEntryFactory = new ActivityLogFactoryStub(
             $easyActivityConfig['subjects'] ?? null,
-            $easyActivityConfig['disallowed_properties'] ?? null,
+            $easyActivityConfig['disallowed_properties'] ?? [],
             $actorResolver,
             $subjectResolver
         );

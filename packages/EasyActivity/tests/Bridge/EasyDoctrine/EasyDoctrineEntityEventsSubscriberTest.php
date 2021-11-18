@@ -22,7 +22,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
      *
      * @see testPropertyFilters
      */
-    public function providerProperties(): iterable
+    public function provideProperties(): iterable
     {
         yield 'only allowed properties' => [
             'globalDisallowedProperties' => null,
@@ -40,12 +40,19 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
 
         yield 'only disallowed properties' => [
             'globalDisallowedProperties' => null,
-            'allowedProperties' => null,
+            'allowedProperties' => [],
             'disallowedProperties' => ['createdAt'],
             'expectedDataProperties' => ['title', 'author', 'content'],
         ];
 
         yield 'all properties are disallowed' => [
+            'globalDisallowedProperties' => null,
+            'allowedProperties' => [],
+            'disallowedProperties' => ['title', 'createdAt', 'author', 'content'],
+            'expectedDataProperties' => null,
+        ];
+
+        yield 'allowed properties is explicitly set as null' => [
             'globalDisallowedProperties' => null,
             'allowedProperties' => null,
             'disallowedProperties' => ['title', 'createdAt', 'author', 'content'],
@@ -54,7 +61,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
 
         yield 'disallowed properties and defined on global and entity levels' => [
             'globalDisallowedProperties' => ['createdAt'],
-            'allowedProperties' => null,
+            'allowedProperties' => [],
             'disallowedProperties' => ['title', 'author'],
             'expectedDataProperties' => ['content'],
         ];
@@ -306,7 +313,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
      * @param string[] $disallowedProperties
      * @param string[] $expectedDataProperties
      *
-     * @dataProvider providerProperties
+     * @dataProvider provideProperties
      */
     public function testPropertyFilters(
         ?array $globalDisallowedProperties = null,

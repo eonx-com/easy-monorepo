@@ -30,8 +30,12 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as SymfonyNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
@@ -58,7 +62,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(ManagerRegistry::class, new Definition(ManagerRegistry::class));
         $container->setDefinition(EntityManagerInterface::class, new Definition(EntityManager::class));
         $container->setDefinition('doctrine.orm.default_entity_manager', new Definition(EntityManager::class));
-        $container->setDefinition(SymfonyNormalizerInterface::class, new Definition(ObjectNormalizer::class));
         $container->setDefinition(
             ActivitySubjectDataSerializerInterface::class,
             new Definition(SymfonyActivitySubjectDataSerializer::class)
@@ -75,6 +78,17 @@ final class KernelStub extends Kernel implements CompilerPassInterface
             new Definition(
                 EntityEventSubscriber::class,
                 [$deferredEntityDefinition, '%' . BridgeConstantsInterface::PARAM_DEFERRED_DISPATCHER_ENTITIES . '%']
+            )
+        );
+        $objectNormalizerDefinition = new Definition(ObjectNormalizer::class);
+        $dateTimeNormalizerDefinition = new Definition(DateTimeNormalizer::class);
+        $jsonEncoderDefinition = new Definition(JsonEncoder::class);
+        $container->setDefinition(SymfonyNormalizerInterface::class, $objectNormalizerDefinition);
+        $container->setDefinition(
+            SerializerInterface::class,
+            new Definition(
+                Serializer::class,
+                [[$dateTimeNormalizerDefinition, $objectNormalizerDefinition], [$jsonEncoderDefinition]]
             )
         );
 

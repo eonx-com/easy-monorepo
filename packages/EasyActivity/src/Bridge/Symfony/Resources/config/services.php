@@ -22,6 +22,7 @@ use EonX\EasyActivity\Interfaces\StoreInterface;
 use EonX\EasyActivity\Logger\AsyncActivityLogger;
 use EonX\EasyActivity\Resolvers\DefaultActivitySubjectResolver;
 use EonX\EasyActivity\Resolvers\DefaultActorResolver;
+use Symfony\Component\Serializer\SerializerInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -47,8 +48,12 @@ return static function (ContainerConfigurator $container): void {
         ->set(ActivityLoggerInterface::class, AsyncActivityLogger::class);
 
     $services
+        ->set(BridgeConstantsInterface::SERVICE_SERIALIZER, SerializerInterface::class);
+
+    $services
         ->set(ActivitySubjectDataSerializerInterface::class, SymfonyActivitySubjectDataSerializer::class)
-        ->arg('$disallowedProperties', '%' . BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES . '%');
+        ->arg('$disallowedProperties', '%' . BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES . '%')
+        ->arg('$serializer', service(BridgeConstantsInterface::SERVICE_SERIALIZER));
 
     $services
         ->set(ActivityLogEntryFactoryInterface::class, ActivityLogEntryFactory::class);

@@ -27,7 +27,7 @@ final class NotSupportedMessage
 
     public static function create(QueueEnvelopeInterface $envelope, ?Throwable $throwable = null): self
     {
-        return new static($envelope, $throwable);
+        return new self($envelope, $throwable);
     }
 
     public function getEnvelope(): QueueEnvelopeInterface

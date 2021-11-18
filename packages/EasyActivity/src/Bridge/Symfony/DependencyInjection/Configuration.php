@@ -6,6 +6,7 @@ namespace EonX\EasyActivity\Bridge\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -40,14 +41,61 @@ final class Configuration implements ConfigurationInterface
                                 ->prototype('scalar')->end()
                             ->end()
                             ->arrayNode('allowed_properties')
-                                ->defaultValue([])
                                 ->info('Property names allowed to be stored in store.')
-                                ->prototype('scalar')->end()
+                                ->defaultValue([])
+                                ->beforeNormalization()
+                                    ->ifArray()
+                                    ->then(static function (array $properties) {
+                                        $result = [];
+                                        foreach ($properties as $key => $property) {
+                                            if (\is_array($property) === true) {
+                                                $key = \array_key_first($property);
+                                                $property = \reset($property);
+                                            }
+
+                                            $result[$key] = $property;
+                                        }
+
+                                        return $result;
+                                    })
+                                ->end()
+                                ->validate()
+                                    ->ifArray()
+                                    ->then(static function (array $properties) {
+                                        foreach ($properties as $key => $property) {
+                                            if (\is_string($key) === true && \is_array($property) === false) {
+                                                $errorMessage = 'Value of named property should be an array type.';
+                                                throw new InvalidTypeException($errorMessage);
+                                            }
+                                        }
+
+                                        return $properties;
+                                    })
+                                ->end()
+                                ->prototype('variable')->end()
+                            ->end()
+                            ->arrayNode('nested_object_allowed_properties')
+                                ->defaultValue([])
+                                ->info('Property names allowed to be stored in store for nested objects.')
+                                ->prototype('variable')
+                                    ->validate()
+                                        ->always()
+                                        ->then(static function ($property) {
+                                            if (\is_array($property) === false) {
+                                                $errorMessage = 'Property should be an array type';
+                                                throw new InvalidTypeException($errorMessage);
+                                            }
+
+                                            return $property;
+                                        })
+                                    ->end()
+                                ->end()
                             ->end()
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ->end();
 
         return $treeBuilder;
     }

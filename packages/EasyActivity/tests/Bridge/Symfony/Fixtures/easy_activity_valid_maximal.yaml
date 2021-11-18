@@ -1,0 +1,13 @@
+easy_activity:
+    disallowed_properties:
+        - createdAt
+
+    subjects:
+        EonX\EasyActivity\Tests\Fixtures\Article:
+            allowed_properties:
+                - comments
+                - author: ['name', 'position']
+            disallowed_properties:
+                - content
+            nested_object_allowed_properties:
+                EonX\EasyActivity\Tests\Fixtures\Author: ['position']

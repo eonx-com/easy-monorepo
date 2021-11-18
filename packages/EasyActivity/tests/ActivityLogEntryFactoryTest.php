@@ -22,54 +22,68 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     public function providerProperties(): iterable
     {
         yield 'only allowed properties' => [
-            'globalDisallowProperties' => null,
+            'globalDisallowProperties' => [],
             'entityAllowProperties' => ['title', 'content'],
-            'entityDisallowProperties' => null,
+            'entityDisallowProperties' => [],
             'expectedDataProperties' => ['title', 'content'],
         ];
 
         yield 'allowed and disallowed properties intersection' => [
-            'globalDisallowProperties' => null,
+            'globalDisallowProperties' => [],
             'entityAllowProperties' => ['title', 'content'],
             'entityDisallowProperties' => ['content'],
             'expectedDataProperties' => ['title'],
         ];
 
         yield 'only disallowed properties' => [
-            'globalDisallowProperties' => null,
-            'entityAllowProperties' => null,
+            'globalDisallowProperties' => [],
+            'entityAllowProperties' => [],
             'entityDisallowProperties' => ['createdAt'],
             'expectedDataProperties' => ['title', 'author', 'content'],
         ];
 
         yield 'all properties are disallowed' => [
-            'globalDisallowProperties' => null,
-            'entityAllowProperties' => null,
+            'globalDisallowProperties' => [],
+            'entityAllowProperties' => [],
             'entityDisallowProperties' => ['title', 'createdAt', 'author', 'content'],
             'expectedDataProperties' => null,
         ];
 
         yield 'disallowed properties and defined on global and entity levels' => [
             'globalDisallowProperties' => ['createdAt'],
-            'entityAllowProperties' => null,
+            'entityAllowProperties' => [],
             'entityDisallowProperties' => ['title', 'author'],
             'expectedDataProperties' => ['content'],
+        ];
+
+        yield 'empty allowed properties' => [
+            'globalDisallowProperties' => [],
+            'entityAllowProperties' => [],
+            'entityDisallowProperties' => [],
+            'expectedDataProperties' => ['title', 'createdAt', 'author', 'content'],
+        ];
+
+        yield 'allowed properties are null' => [
+            'globalDisallowProperties' => [],
+            'entityAllowProperties' => null,
+            'entityDisallowProperties' => [],
+            'expectedDataProperties' => null,
         ];
     }
 
     public function testCreateReturnsNullWhenNoSubjectConfigured(): void
     {
-        $factory = new ActivityLogFactoryStub([]);
+        $factory = new ActivityLogFactoryStub([], []);
 
         $result = $factory->create(ActivityLogEntry::ACTION_UPDATE, new Article(), ['key' => 'value']);
 
         self::assertNull($result);
     }
 
-    public function testCreateSuccedes(): void
+    public function testCreateSucceeds(): void
     {
         Carbon::setTestNow('2021-10-10 00:00:00');
-        $factory = new ActivityLogFactoryStub([Article::class => []]);
+        $factory = new ActivityLogFactoryStub([Article::class => []], []);
 
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
@@ -97,9 +111,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
     public function testCreateSucceedsWithCollections(): void
     {
-        $factory = new ActivityLogFactoryStub([
-            Article::class => [],
-        ]);
+        $factory = new ActivityLogFactoryStub([Article::class => []], []);
         $comment1 = (new Comment())
             ->setId(1)
             ->setMessage('Test 1');
@@ -134,9 +146,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
     public function testCreateSucceedsWithRelatedObjects(): void
     {
-        $factory = new ActivityLogFactoryStub([
-            Article::class => [],
-        ]);
+        $factory = new ActivityLogFactoryStub([Article::class => []], []);
         $author = new Author();
         $author->setId(2);
         $author->setName('John');
@@ -167,14 +177,17 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
     public function testCreateSucceedsWithRelatedObjects2(): void
     {
-        $factory = new ActivityLogFactoryStub([
-            Article::class => [
-                'allowed_properties' => [
-                    'title',
-                    'author' => ['name', 'position'],
+        $factory = new ActivityLogFactoryStub(
+            [
+                Article::class => [
+                    'allowed_properties' => [
+                        'title',
+                        'author' => ['name', 'position'],
+                    ],
                 ],
             ],
-        ]);
+            []
+        );
         $author = new Author();
         $author->setId(2);
         $author->setName('John');
@@ -207,17 +220,17 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @param string[]|null $globalDisallowedProperties
+     * @param string[] $globalDisallowedProperties
      * @param string[]|null $allowedProperties
-     * @param string[]|null $disallowedProperties
+     * @param string[] $disallowedProperties
      * @param string[]|null $expectedDataProperties
      *
      * @dataProvider providerProperties
      */
     public function testPropertyFilters(
-        ?array $globalDisallowedProperties = null,
-        ?array $allowedProperties = null,
-        ?array $disallowedProperties = null,
+        array $globalDisallowedProperties,
+        ?array $allowedProperties,
+        array $disallowedProperties,
         ?array $expectedDataProperties = null
     ): void {
         $factory = new ActivityLogFactoryStub([

@@ -25,4 +25,9 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_TABLE_NAME = 'easy_activity.table_name';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_SERIALIZER = 'easy_activity.serializer';
 }

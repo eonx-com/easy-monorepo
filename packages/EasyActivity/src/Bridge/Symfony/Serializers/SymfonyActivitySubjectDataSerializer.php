@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterfa
 final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataSerializerInterface
 {
     /**
-     * @var string[]|null
+     * @var string[]
      */
     private $disallowedProperties;
 
@@ -22,11 +22,11 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
     private $serializer;
 
     /**
-     * @param string[]|null $disallowedProperties
+     * @param string[] $disallowedProperties
      */
     public function __construct(
         SymfonySerializerInterface $serializer,
-        ?array $disallowedProperties = null
+        array $disallowedProperties
     ) {
         $this->serializer = $serializer;
         $this->disallowedProperties = $disallowedProperties;
@@ -38,8 +38,15 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
     public function serialize(array $data, ActivitySubjectInterface $subject): ?string
     {
         $allowedProperties = $subject->getAllowedActivityProperties();
+
+        if ($allowedProperties === null) {
+            return null;
+        }
+
         $disallowedProperties = $subject->getDisallowedActivityProperties();
-        if ($this->disallowedProperties !== null) {
+        $nestedObjectAllowedProperties = $subject->getNestedObjectAllowedActivityProperties();
+
+        if ($this->disallowedProperties !== []) {
             $disallowedProperties = \array_filter(
                 \array_merge($this->disallowedProperties, $disallowedProperties ?? [])
             );
@@ -48,7 +55,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
         $context = [];
 
         foreach ($data as $key => $value) {
-            if ($allowedProperties !== null
+            if (\count($allowedProperties) > 0
                 && \in_array($key, $allowedProperties, true) === false
                 && isset($allowedProperties[$key]) === false
             ) {
@@ -62,7 +69,10 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
             }
 
             if (\is_object($value)) {
-                $context[AbstractNormalizer::ATTRIBUTES][$key] = $allowedProperties[$key] ?? ['id'];
+                $objectClass = \get_class($value);
+
+                $context[AbstractNormalizer::ATTRIBUTES][$key] = $nestedObjectAllowedProperties[$objectClass]
+                    ?? $allowedProperties[$key] ?? ['id'];
             }
         }
 
