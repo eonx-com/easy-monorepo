@@ -101,4 +101,9 @@ final class DateTimeImmutableMicrosecondsType extends DateTimeImmutableType
 
         return self::FORMAT_DB_DATETIME;
     }
+
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return false;
+    }
 }
