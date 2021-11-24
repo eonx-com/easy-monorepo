@@ -35,7 +35,7 @@
         "laminas/laminas-uri": "^2.8",
         "doctrine/migrations": "^3.2",
         "paragonie/halite": "^4.8",
-        "knplabs/doctrine-behaviors": "^2.2"
+        "knplabs/doctrine-behaviors": "^2.0"
     },
     "require-dev": {
         "api-platform/core": "^2.5",
