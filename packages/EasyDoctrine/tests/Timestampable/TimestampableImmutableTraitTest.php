@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Tests\Doctrine\Timestampable;
+namespace EonX\EasyDoctrine\Tests\Timestampable;
 
 use Carbon\CarbonImmutable;
 use DateTime;
 use DateTimeImmutable;
-use EonX\EasyCore\Doctrine\Timestampable\TimestampableImmutableTrait;
-use EonX\EasyCore\Tests\AbstractTestCase;
+use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use EonX\EasyDoctrine\Timestampable\TimestampableImmutableTrait;
 
 /**
- * @covers \EonX\EasyCore\Doctrine\Timestampable\TimestampableImmutableTrait
+ * @covers \EonX\EasyDoctrine\Timestampable\TimestampableImmutableTrait
  */
 final class TimestampableImmutableTraitTest extends AbstractTestCase
 {

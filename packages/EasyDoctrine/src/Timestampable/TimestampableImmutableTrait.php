@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Doctrine\Timestampable;
+namespace EonX\EasyDoctrine\Timestampable;
 
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
