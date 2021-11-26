@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Tests\Timestampable;
 
 use Carbon\CarbonImmutable;
-use DateTime;
-use DateTimeImmutable;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Timestampable\TimestampableImmutableTrait;
 
@@ -17,89 +15,33 @@ final class TimestampableImmutableTraitTest extends AbstractTestCase
 {
     public function testGetCreatedAtSucceeds(): void
     {
+        $now = CarbonImmutable::now();
+        CarbonImmutable::setTestNow($now);
         $object = new class() {
             use TimestampableImmutableTrait;
         };
-        $createdAt = new DateTime();
-        $object->setCreatedAt($createdAt);
+        $object->updateTimestamps();
 
         $result = $object->getCreatedAt();
 
-        self::assertSame($createdAt, $result);
+        self::assertEquals($now, $result);
     }
 
     public function testGetUpdatedAtSucceeds(): void
     {
+        $now = CarbonImmutable::now();
+        CarbonImmutable::setTestNow($now);
         $object = new class() {
             use TimestampableImmutableTrait;
         };
-        $updatedAt = new DateTime();
-        $object->setUpdatedAt($updatedAt);
+        $object->updateTimestamps();
 
         $result = $object->getUpdatedAt();
 
-        self::assertSame($updatedAt, $result);
+        self::assertEquals($now, $result);
     }
 
-    public function testSetCreatedAtSucceeds(): void
-    {
-        $object = new class() {
-            use TimestampableImmutableTrait;
-        };
-        $createdAt = new DateTime();
-
-        $object->setCreatedAt($createdAt);
-
-        self::assertSame($createdAt, $object->getCreatedAt());
-    }
-
-    public function testSetUpdatedAtSucceeds(): void
-    {
-        $object = new class() {
-            use TimestampableImmutableTrait;
-        };
-        $updatedAt = new DateTime();
-
-        $object->setUpdatedAt($updatedAt);
-
-        self::assertSame($updatedAt, $object->getUpdatedAt());
-    }
-
-    public function testUpdateTimestampsSucceedsWhenCreatedAtIsImmutable(): void
-    {
-        CarbonImmutable::setTestNow('2021-11-24');
-        $object = new class() {
-            use TimestampableImmutableTrait;
-        };
-        $createdAt = new DateTimeImmutable('2021-11-23');
-        $object->setCreatedAt($createdAt);
-
-        $object->updateTimestamps();
-
-        self::assertInstanceOf(DateTimeImmutable::class, $object->getCreatedAt());
-        self::assertInstanceOf(DateTimeImmutable::class, $object->getUpdatedAt());
-        self::assertEquals($createdAt, $object->getCreatedAt());
-        self::assertEquals(CarbonImmutable::getTestNow(), $object->getUpdatedAt());
-    }
-
-    public function testUpdateTimestampsSucceedsWhenCreatedAtIsMutable(): void
-    {
-        CarbonImmutable::setTestNow('2021-11-24');
-        $object = new class() {
-            use TimestampableImmutableTrait;
-        };
-        $createdAt = new DateTime('2021-11-23');
-        $object->setCreatedAt($createdAt);
-
-        $object->updateTimestamps();
-
-        self::assertInstanceOf(DateTimeImmutable::class, $object->getCreatedAt());
-        self::assertInstanceOf(DateTimeImmutable::class, $object->getUpdatedAt());
-        self::assertEquals($createdAt, $object->getCreatedAt());
-        self::assertEquals(CarbonImmutable::getTestNow(), $object->getUpdatedAt());
-    }
-
-    public function testUpdateTimestampsSucceedsWhenCreatedAtIsNotSet(): void
+    public function testUpdateTimestampsSucceeds(): void
     {
         CarbonImmutable::setTestNow('2021-11-24');
         $object = new class() {
@@ -108,9 +50,14 @@ final class TimestampableImmutableTraitTest extends AbstractTestCase
 
         $object->updateTimestamps();
 
-        self::assertInstanceOf(DateTimeImmutable::class, $object->getCreatedAt());
-        self::assertInstanceOf(DateTimeImmutable::class, $object->getUpdatedAt());
         self::assertEquals(CarbonImmutable::getTestNow(), $object->getCreatedAt());
         self::assertEquals(CarbonImmutable::getTestNow(), $object->getUpdatedAt());
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        CarbonImmutable::setTestNow();
     }
 }

@@ -6,38 +6,27 @@ namespace EonX\EasyDoctrine\Timestampable;
 
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
-use DateTimeInterface;
 
 trait TimestampableImmutableTrait
 {
     /**
-     * @var \DateTimeInterface
+     * @var \DateTimeImmutable
      */
     protected $createdAt;
 
     /**
-     * @var \DateTimeInterface
+     * @var \DateTimeImmutable
      */
     protected $updatedAt;
 
-    public function getCreatedAt(): DateTimeInterface
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): DateTimeInterface
+    public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;
-    }
-
-    public function setCreatedAt(DateTimeInterface $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    public function setUpdatedAt(DateTimeInterface $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
     }
 
     public function updateTimestamps(): void
@@ -46,10 +35,6 @@ trait TimestampableImmutableTrait
 
         if (isset($this->createdAt) === false) {
             $this->createdAt = $dateTime;
-        }
-
-        if ($this->createdAt instanceof DateTimeImmutable === false) {
-            $this->createdAt = CarbonImmutable::createFromMutable($this->createdAt);
         }
 
         $this->updatedAt = $dateTime;
