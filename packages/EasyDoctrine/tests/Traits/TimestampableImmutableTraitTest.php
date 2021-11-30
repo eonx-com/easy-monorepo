@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Tests\Timestampable;
+namespace EonX\EasyDoctrine\Tests\Traits;
 
 use Carbon\CarbonImmutable;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
-use EonX\EasyDoctrine\Timestampable\TimestampableImmutableTrait;
+use EonX\EasyDoctrine\Traits\TimestampableImmutableTrait;
 
 /**
- * @covers \EonX\EasyDoctrine\Timestampable\TimestampableImmutableTrait
+ * @covers \EonX\EasyDoctrine\Traits\TimestampableImmutableTrait
  */
 final class TimestampableImmutableTraitTest extends AbstractTestCase
 {

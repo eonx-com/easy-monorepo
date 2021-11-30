@@ -8,7 +8,7 @@ use DateTimeInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
-use EonX\EasyDoctrine\Timestampable\TimestampableInterface;
+use EonX\EasyDoctrine\Interfaces\TimestampableInterface;
 
 final class TimestampableEventSubscriber implements EventSubscriber
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Timestampable;
+namespace EonX\EasyDoctrine\Interfaces;
 
 use DateTimeImmutable;
 

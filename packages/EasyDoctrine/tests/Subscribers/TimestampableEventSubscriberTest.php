@@ -7,12 +7,12 @@ namespace EonX\EasyDoctrine\Tests\Subscribers;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use EonX\EasyDoctrine\Interfaces\TimestampableInterface;
 use EonX\EasyDoctrine\Subscribers\TimestampableEventSubscriber;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
-use EonX\EasyDoctrine\Timestampable\TimestampableImmutableTrait;
-use EonX\EasyDoctrine\Timestampable\TimestampableInterface;
+use EonX\EasyDoctrine\Traits\TimestampableImmutableTrait;
 use ReflectionClass;
 use stdClass;
 
