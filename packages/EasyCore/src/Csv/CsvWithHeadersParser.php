@@ -140,8 +140,8 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
     {
         // Sanitize given headers first
         $headers = \array_map(static function (string $header): string {
-            $header = \iconv('UTF-8', 'ISO-8859-1//IGNORE', $header);
-            $header = \iconv('ISO-8859-1', 'UTF-8', $header);
+            $header = (string)\iconv('UTF-8', 'ISO-8859-1//IGNORE', $header);
+            $header = (string)\iconv('ISO-8859-1', 'UTF-8', $header);
             $header = \trim($header);
 
             return $header;
