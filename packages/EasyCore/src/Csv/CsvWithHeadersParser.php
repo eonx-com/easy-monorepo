@@ -138,6 +138,15 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
      */
     private function resolveHeaders(array $headers): array
     {
+        // Sanitize given headers first
+        $headers = \array_map(static function (string $header): string {
+            $header = \iconv("UTF-8","ISO-8859-1//IGNORE",$header);
+            $header = \iconv("ISO-8859-1","UTF-8",$header);
+            $header = \trim($header);
+
+            return $header;
+        }, $headers);
+
         if ($this->hasRequiredHeaders) {
             $missingHeaders = \array_diff($this->config->getRequiredHeaders() ?? [], $headers);
 
@@ -150,9 +159,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
             }
         }
 
-        return \array_map(static function (string $header): string {
-            return \trim($header);
-        }, $headers);
+        return $headers;
     }
 
     /**
