@@ -58,6 +58,19 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
                 ],
             ],
         ];
+
+        yield 'Sanitize headers' => [
+            __DIR__ . '/fixtures/hidden_characters.csv',
+            CsvParserConfig::create(['account']),
+            [
+                [
+                    'account' => 'L023704',
+                    'eventSlug' => 'global-event-earn',
+                    'notes' => 'August opening balance',
+                    'value' => '3,598,212',
+                ],
+            ],
+        ];
     }
 
     /**
