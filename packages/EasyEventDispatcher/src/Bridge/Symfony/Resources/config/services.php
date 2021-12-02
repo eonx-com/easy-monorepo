@@ -12,5 +12,5 @@ return static function (ContainerConfigurator $container): void {
     $container
         ->services()
         ->set(EventDispatcherInterface::class, EventDispatcher::class)
-        ->args([ref(SymfonyEventDispatcherInterface::class)]);
+        ->args([service(SymfonyEventDispatcherInterface::class)]);
 };

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
@@ -24,11 +26,7 @@ use EonX\EasySecurity\SecurityContextFactory;
 use EonX\EasySecurity\SecurityContextResolver;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -39,7 +37,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // ApiTokenDecoder
     $services
         ->set(BridgeConstantsInterface::SERVICE_API_TOKEN_DECODER, ApiTokenDecoderInterface::class)
-        ->factory([ref(ApiTokenDecoderFactoryInterface::class), 'build'])
+        ->factory([service(ApiTokenDecoderFactoryInterface::class), 'build'])
         ->args(['%' . BridgeConstantsInterface::PARAM_TOKEN_DECODER . '%']);
 
     // Authorization
@@ -52,12 +50,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(AuthorizationMatrixFactoryInterface::class, CachedAuthorizationMatrixFactory::class)
-        ->arg('$cache', ref(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE))
-        ->arg('$decorated', ref('easy_security.core_authorization_matrix_factory'));
+        ->arg('$cache', service(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE))
+        ->arg('$decorated', service('easy_security.core_authorization_matrix_factory'));
 
     $services
         ->set(AuthorizationMatrixInterface::class)
-        ->factory([ref(AuthorizationMatrixFactoryInterface::class), 'create']);
+        ->factory([service(AuthorizationMatrixFactoryInterface::class), 'create']);
 
     // DataCollector
     $services
@@ -98,12 +96,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     if (\interface_exists(LoggerFactoryInterface::class)) {
         $services
             ->set(BridgeConstantsInterface::SERVICE_LOGGER, LoggerInterface::class)
-            ->factory([ref(LoggerFactoryInterface::class), 'create'])
+            ->factory([service(LoggerFactoryInterface::class), 'create'])
             ->args([BridgeConstantsInterface::LOG_CHANNEL]);
 
         $securityContextResolver
-            ->arg('$logger', ref(BridgeConstantsInterface::SERVICE_LOGGER));
+            ->arg('$logger', service(BridgeConstantsInterface::SERVICE_LOGGER));
         $responseFactory
-            ->arg('$logger', ref(BridgeConstantsInterface::SERVICE_LOGGER));
+            ->arg('$logger', service(BridgeConstantsInterface::SERVICE_LOGGER));
     }
 };

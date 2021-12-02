@@ -2,19 +2,17 @@
 
 declare(strict_types=1);
 
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector\RequestDataCollector;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector\RequestDataCollector;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     $services->set(RequestDataCollector::class)
         ->decorate('api_platform.data_collector.request')
-        ->args(
-            [ref('EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector\RequestDataCollector.inner'), ref(
-                'api_platform.data_persister'
-            )]
-        );
+        ->args([
+            service('EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector\RequestDataCollector.inner'),
+            service('api_platform.data_persister')
+        ]);
 };
