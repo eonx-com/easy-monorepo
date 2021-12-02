@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyAsync\Bridge\BridgeConstantsInterface;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\Interfaces\MessageBodyDecoderInterface;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\JsonMessageBodyDecoder;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\ShouldKillWorkerSubscriber;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();

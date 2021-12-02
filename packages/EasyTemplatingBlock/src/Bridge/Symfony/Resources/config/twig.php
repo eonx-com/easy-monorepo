@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyTemplatingBlock\Bridge\BridgeConstantsInterface;
 use EonX\EasyTemplatingBlock\Bridge\Symfony\Twig\TwigBlockExtension;
 use EonX\EasyTemplatingBlock\Bridge\Symfony\Twig\TwigBlockRenderer;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyPagination\Bridge\BridgeConstantsInterface;
 use EonX\EasyPagination\Interfaces\PaginationConfigInterface;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Interfaces\PaginationProviderInterface;
 use EonX\EasyPagination\PaginationConfig;
 use EonX\EasyPagination\PaginationProvider;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -29,5 +28,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(PaginationInterface::class)
-        ->factory([ref(PaginationProviderInterface::class), 'getPagination']);
+        ->factory([service(PaginationProviderInterface::class), 'getPagination']);
 };

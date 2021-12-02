@@ -50,7 +50,7 @@ return static function (ContainerConfigurator $container): void {
         ->set(HttpClientFactoryInterface::class, HttpClientFactory::class)
         // Client
         ->set(BridgeConstantsInterface::HTTP_CLIENT, HttpClientInterface::class)
-        ->factory([ref(HttpClientFactoryInterface::class), 'create']);
+        ->factory([service(HttpClientFactoryInterface::class), 'create']);
 
     // Retry Strategy (Default)
     $services->set(WebhookRetryStrategyInterface::class, MultiplierWebhookRetryStrategy::class);
@@ -63,7 +63,7 @@ return static function (ContainerConfigurator $container): void {
     // Webhook Client
     $services
         ->set(WebhookClientInterface::class, WebhookClient::class)
-        ->arg('$stack', ref(BridgeConstantsInterface::STACK));
+        ->arg('$stack', service(BridgeConstantsInterface::STACK));
 
     // Stores (Default)
     $services->set(StoreInterface::class, NullStore::class);

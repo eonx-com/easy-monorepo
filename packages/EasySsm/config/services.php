@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use Aws\Ssm\SsmClient;
 use EonX\EasySsm\Factories\ArrFactory;
 use EonX\EasySsm\Factories\FilesystemFactory;
@@ -13,11 +15,8 @@ use EonX\EasySsm\Services\Dotenv\SsmDotenv;
 use EonX\EasySsm\Services\Dotenv\SsmDotenvInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symplify\PackageBuilder\Parameter\ParameterProvider;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -36,16 +35,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ]);
 
     $services->set(Arr::class)
-        ->factory([ref(ArrFactory::class), 'create']);
+        ->factory([service(ArrFactory::class), 'create']);
 
     $services->set(Filesystem::class)
-        ->factory([ref(FilesystemFactory::class), 'create']);
+        ->factory([service(FilesystemFactory::class), 'create']);
 
     $services->set(Parameters::class)
-        ->factory([ref(ParametersHelperFactory::class), 'create']);
+        ->factory([service(ParametersHelperFactory::class), 'create']);
 
     $services->set(SsmClient::class)
-        ->factory([ref(SsmClientFactory::class), 'create']);
+        ->factory([service(SsmClientFactory::class), 'create']);
 
     $services->set(SsmDotenvInterface::class, SsmDotenv::class)
         ->public();
