@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\External\AwsCognito;
 
 use EonX\EasyApiToken\External\AwsCognito\Interfaces\JwkFetcherInterface;
+use EonX\EasyApiToken\External\AwsCognito\Interfaces\UserPoolConfigInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -17,11 +18,6 @@ final class JwkFetcher implements JwkFetcherInterface
      * @var int
      */
     private const CACHE_EXPIRY = 3600;
-
-    /**
-     * @var string
-     */
-    private const JWKS_URL_PATTERN = 'https://cognito-idp.%s.amazonaws.com/%s/.well-known/jwks.json';
 
     /**
      * @var \Symfony\Contracts\Cache\CacheInterface
@@ -38,19 +34,11 @@ final class JwkFetcher implements JwkFetcherInterface
      */
     private $httpClient;
 
-    /**
-     * @var string
-     */
-    private $jwksUrl;
-
     public function __construct(
-        string $region,
-        string $userPoolId,
         ?CacheInterface $cache = null,
         ?int $cacheExpiry = null,
         ?HttpClientInterface $httpClient = null
     ) {
-        $this->jwksUrl = \sprintf(self::JWKS_URL_PATTERN, $region, $userPoolId);
         $this->cache = $cache ?? new ArrayAdapter();
         $this->cacheExpiry = $cacheExpiry ?? self::CACHE_EXPIRY;
         $this->httpClient = $httpClient ?? HttpClient::create();
@@ -61,13 +49,16 @@ final class JwkFetcher implements JwkFetcherInterface
      *
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getJwks(): array
+    public function getJwks(UserPoolConfigInterface $userPoolConfig): array
     {
-        return $this->cache->get(\md5($this->jwksUrl), function (ItemInterface $item): array {
-            $item->expiresAfter($this->cacheExpiry);
+        return $this->cache->get(
+            \md5($userPoolConfig->getJwksUrl()),
+            function (ItemInterface $item) use ($userPoolConfig): array {
+                $item->expiresAfter($this->cacheExpiry);
 
-            return $this->fetchKeysFromAws();
-        });
+                return $this->fetchKeysFromAws($userPoolConfig);
+            }
+        );
     }
 
     /**
@@ -79,10 +70,10 @@ final class JwkFetcher implements JwkFetcherInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    private function fetchKeysFromAws(): array
+    private function fetchKeysFromAws(UserPoolConfigInterface $userPoolConfig): array
     {
         $response = $this->httpClient
-            ->request('GET', $this->jwksUrl)
+            ->request('GET', $userPoolConfig->getJwksUrl())
             ->toArray();
 
         $jwks = [];

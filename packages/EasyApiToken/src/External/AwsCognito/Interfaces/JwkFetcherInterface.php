@@ -9,5 +9,5 @@ interface JwkFetcherInterface
     /**
      * @return mixed[]
      */
-    public function getJwks(): array;
+    public function getJwks(UserPoolConfigInterface $userPoolConfig): array;
 }
