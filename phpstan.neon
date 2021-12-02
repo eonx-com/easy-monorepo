@@ -62,6 +62,9 @@ parameters:
         - message: '#Instanceof between \*NEVER\* and OpenSSLAsymmetricKey will always evaluate to false#'
           path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
 
+        - message: '#PHPDoc tag @throws with type Psr\\Cache\\InvalidArgumentException is not subtype of Throwable#'
+          path: packages/EasyApiToken/src/External/AwsCognito/JwkFetcher.php
+
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Generators\\DateTimeGenerator::fromString\(\) should return DateTime but returns DateTime\|false.#'
           path: packages/EasyAsync/src/Generators
