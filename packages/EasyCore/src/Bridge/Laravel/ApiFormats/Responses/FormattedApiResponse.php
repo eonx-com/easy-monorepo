@@ -30,6 +30,9 @@ class FormattedApiResponse extends Response implements FormattedApiResponseInter
      */
     public function getHeaders(): array
     {
-        return $this->headers->all();
+        /** @var string[] $headers */
+        $headers = $this->headers->all();
+
+        return $headers;
     }
 }

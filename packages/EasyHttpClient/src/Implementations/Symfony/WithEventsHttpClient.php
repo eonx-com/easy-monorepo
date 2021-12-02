@@ -149,6 +149,7 @@ final class WithEventsHttpClient implements HttpClientInterface
      */
     public function stream($responses, float $timeout = null): ResponseStreamInterface
     {
+        /** @var iterable $responses */
         return $this->decorated->stream($responses, $timeout);
     }
 

@@ -17,9 +17,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             null,
             service('api_platform.iri_converter'),
             service('api_platform.property_accessor'),
-            service('logger')->ignoreOnInvalid(),
-            '$identifiersExtractor' => service('api_platform.identifiers_extractor.cached')->ignoreOnInvalid(),
-            '$nameConverter' => service('api_platform.name_converter')->ignoreOnInvalid(),
+            service('logger')
+                ->ignoreOnInvalid(),
+            '$identifiersExtractor' => service('api_platform.identifiers_extractor.cached')
+                ->ignoreOnInvalid(),
+            '$nameConverter' => service('api_platform.name_converter')
+                ->ignoreOnInvalid(),
         ])
         ->abstract(true);
 
