@@ -13,6 +13,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->decorate('api_platform.data_collector.request')
         ->args([
             service('EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector\RequestDataCollector.inner'),
-            service('api_platform.data_persister')
+            service('api_platform.data_persister'),
         ]);
 };
