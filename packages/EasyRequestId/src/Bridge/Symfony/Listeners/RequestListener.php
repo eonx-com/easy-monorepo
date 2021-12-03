@@ -24,7 +24,9 @@ final class RequestListener
 
     public function __invoke(RequestEvent $event): void
     {
-        if ($event->isMasterRequest()) {
+        $isMainRequestMethod = \method_exists($event, 'isMainRequest') ? 'isMainRequest' : 'isMasterRequest';
+
+        if ($event->$isMainRequestMethod()) {
             $this->setResolver($event->getRequest(), $this->requestIdService);
         }
     }

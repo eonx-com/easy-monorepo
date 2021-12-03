@@ -18,6 +18,11 @@ use Symfony\Component\Console\Input\InputOption;
 
 final class ApiResourceAndSimpleDataPersisterMaker extends AbstractMaker
 {
+    public static function getCommandDescription(): string
+    {
+        return 'Create ApiResource + its SimpleDataPersister';
+    }
+
     public static function getCommandName(): string
     {
         return 'make:simple_api_resource';
@@ -26,7 +31,7 @@ final class ApiResourceAndSimpleDataPersisterMaker extends AbstractMaker
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
-            ->setDescription('Create ApiResource + its SimpleDataPersister')
+            ->setDescription(self::getCommandDescription())
             ->addArgument(
                 'name',
                 InputArgument::REQUIRED,
