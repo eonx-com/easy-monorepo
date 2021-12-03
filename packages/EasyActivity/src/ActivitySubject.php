@@ -34,16 +34,16 @@ final class ActivitySubject implements ActivitySubjectInterface
     private $type;
 
     /**
-     * @param list<string>|array<string, list<string>> $allowedProperties
      * @param list<string> $disallowedProperties
      * @param array<string, list<string>> $nestedObjectAllowedProperties
+     * @param list<string>|array<string, list<string>>|null $allowedProperties
      */
     public function __construct(
         string $id,
         string $type,
-        ?array $allowedProperties,
         array $disallowedProperties,
-        array $nestedObjectAllowedProperties
+        array $nestedObjectAllowedProperties,
+        ?array $allowedProperties = null
     ) {
         $this->id = $id;
         $this->type = $type;
