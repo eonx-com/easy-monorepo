@@ -8,6 +8,7 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
+use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
 
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
 {
