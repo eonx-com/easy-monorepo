@@ -65,6 +65,15 @@ parameters:
         - message: '#PHPDoc tag @throws with type Psr\\Cache\\InvalidArgumentException is not subtype of Throwable#'
           path: packages/EasyApiToken/src/External/AwsCognito/JwkFetcher.php
 
+        - message: '#PHPDoc tag @throws with type EonX\\EasyApiToken\\Exceptions\\InvalidJwtException\|Psr\\Cache\\InvalidArgumentException is not subtype of Throwable#'
+          path: packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
+
+        - message: '#Access to an undefined property object\:\:\$aud#'
+          path: packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
+
+        - message: '#Unreachable statement \- code above always terminates#'
+          path: packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
+
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Generators\\DateTimeGenerator::fromString\(\) should return DateTime but returns DateTime\|false.#'
           path: packages/EasyAsync/src/Generators
