@@ -49,9 +49,9 @@ final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInt
         return new ActivitySubject(
             (string)$object->getId(),
             $subjectConfig['type'] ?? $subjectClass,
-            $allowedProperties,
             $subjectConfig['disallowed_properties'] ?? [],
-            $subjectConfig['nested_object_allowed_properties'] ?? []
+            $subjectConfig['nested_object_allowed_properties'] ?? [],
+            $allowedProperties
         );
     }
 }
