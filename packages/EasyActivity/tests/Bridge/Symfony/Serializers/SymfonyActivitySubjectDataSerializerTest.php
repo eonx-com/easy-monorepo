@@ -51,7 +51,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 'name' => $authorName,
                 'position' => $authorPosition,
             ],
-            'subject' => new ActivitySubject((string)$entityId, Author::class, [], $disallowedProperties, []),
+            'subject' => new ActivitySubject((string)$entityId, Author::class, $disallowedProperties, [], []),
             'disallowedProperties' => null,
             'expectedResult' => '{"name":"John Doe","position":1}',
         ];
@@ -65,7 +65,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 'name' => $authorName,
                 'position' => $authorPosition,
             ],
-            'subject' => new ActivitySubject((string)$entityId, Author::class, [], $disallowedProperties, []),
+            'subject' => new ActivitySubject((string)$entityId, Author::class, $disallowedProperties, [], []),
             'disallowedProperties' => null,
             'expectedResult' => null,
         ];
@@ -107,7 +107,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 'name' => $authorName,
                 'position' => $authorPosition,
             ],
-            'subject' => new ActivitySubject((string)$entityId, Author::class, null, [], []),
+            'subject' => new ActivitySubject((string)$entityId, Author::class, [], [], null),
             'disallowedProperties' => null,
             'expectedResult' => null,
         ];
@@ -121,7 +121,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 'name' => $authorName,
                 'position' => $authorPosition,
             ],
-            'subject' => new ActivitySubject((string)$entityId, Author::class, $allowedProperties, [], []),
+            'subject' => new ActivitySubject((string)$entityId, Author::class, [], [], $allowedProperties),
             'disallowedProperties' => null,
             'expectedResult' => '{"id":1,"name":"John Doe"}',
         ];
@@ -138,7 +138,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 'createdAt' => new \DateTimeImmutable(),
                 'id' => $entityId,
             ],
-            'subject' => new ActivitySubject((string)$entityId, Article::class, $allowedProperties, [], []),
+            'subject' => new ActivitySubject((string)$entityId, Article::class, [], [], $allowedProperties),
             'disallowedProperties' => null,
             'expectedResult' => '{"author":{"id":1,"name":"John Doe"},"content":"text"}',
         ];
@@ -161,9 +161,9 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'subject' => new ActivitySubject(
                 (string)$entityId,
                 Article::class,
-                $allowedProperties,
                 [],
-                $nestedObjectAllowedProperties
+                $nestedObjectAllowedProperties,
+                $allowedProperties
             ),
             'disallowedProperties' => null,
             'expectedResult' => '{"author":{"name":"John Doe"},"content":"text"}',

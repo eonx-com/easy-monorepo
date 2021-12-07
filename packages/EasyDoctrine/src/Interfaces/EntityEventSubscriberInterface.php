@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Subscribers;
+namespace EonX\EasyDoctrine\Interfaces;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
