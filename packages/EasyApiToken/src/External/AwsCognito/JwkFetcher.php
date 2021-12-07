@@ -61,6 +61,15 @@ final class JwkFetcher implements JwkFetcherInterface
         );
     }
 
+    protected function convertCertToPem(string $cert): string
+    {
+        $pem = '-----BEGIN CERTIFICATE-----' . \PHP_EOL;
+        $pem .= \chunk_split($cert, 64, \PHP_EOL);
+        $pem .= '-----END CERTIFICATE-----' . \PHP_EOL;
+
+        return $pem;
+    }
+
     /**
      * @return mixed[]
      *
@@ -79,7 +88,7 @@ final class JwkFetcher implements JwkFetcherInterface
         $jwks = [];
 
         foreach ($response['keys'] as $key) {
-            $jwks[$key['kid']] = $key['n'];
+            $jwks[$key['kid']] = $this->convertCertToPem($key['n']);
         }
 
         return $jwks;
