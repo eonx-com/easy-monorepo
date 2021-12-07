@@ -61,7 +61,7 @@ final class JwkFetcher implements JwkFetcherInterface
         );
     }
 
-    protected function convertCertToPem(string $cert): string
+    private function convertCertToPem(string $cert): string
     {
         $pem = '-----BEGIN CERTIFICATE-----' . \PHP_EOL;
         $pem .= \chunk_split($cert, 64, \PHP_EOL);
