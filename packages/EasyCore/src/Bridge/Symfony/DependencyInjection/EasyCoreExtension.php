@@ -47,6 +47,7 @@ final class EasyCoreExtension extends Extension
         $this->autoconfigTag(SimpleDataPersisterInterface::class, TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG);
 
         $this->loadIfBundlesExist('easy_async_listeners.php', EasyAsyncSymfonyBundle::class);
+        $this->loadIfBundlesExist('api_platform/filters.php', ApiPlatformBundle::class);
         $this->loadIfBundlesExist('api_platform/iri_converter.php', ApiPlatformBundle::class);
         $this->loadIfBundlesExist('api_platform/maker_commands.php', [ApiPlatformBundle::class, MakerBundle::class]);
 

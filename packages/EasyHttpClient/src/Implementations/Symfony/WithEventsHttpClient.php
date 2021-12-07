@@ -145,7 +145,7 @@ final class WithEventsHttpClient implements HttpClientInterface
     }
 
     /**
-     * @param \Symfony\Contracts\HttpClient\ResponseInterface|iterable<\Symfony\Contracts\HttpClient\ResponseInterface> $responses
+     * @param \Symfony\Contracts\HttpClient\ResponseInterface|iterable<(int|string),\Symfony\Contracts\HttpClient\ResponseInterface> $responses
      */
     public function stream($responses, float $timeout = null): ResponseStreamInterface
     {
