@@ -262,6 +262,4 @@ parameters:
         # ---- EasyTest ----
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
-          paths:
-            - packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
-            - packages/EasyWebhook/src/AbstractWebhook.php
+          path: packages/EasyWebhook/src/AbstractWebhook.php
