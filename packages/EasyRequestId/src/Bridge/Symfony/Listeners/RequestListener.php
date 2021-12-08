@@ -26,7 +26,7 @@ final class RequestListener
     {
         $isMainRequestMethod = \method_exists($event, 'isMainRequest') ? 'isMainRequest' : 'isMasterRequest';
 
-        if ($event->$isMainRequestMethod()) {
+        if ($event->{$isMainRequestMethod}()) {
             $this->setResolver($event->getRequest(), $this->requestIdService);
         }
     }
