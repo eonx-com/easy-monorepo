@@ -6,6 +6,9 @@ namespace EonX\EasyApiToken\External\AwsCognito;
 
 use EonX\EasyApiToken\External\AwsCognito\Interfaces\JwkFetcherInterface;
 use EonX\EasyApiToken\External\AwsCognito\Interfaces\UserPoolConfigInterface;
+use Firebase\JWT\JWT;
+use phpseclib3\Crypt\PublicKeyLoader;
+use phpseclib3\Math\BigInteger;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -61,13 +64,15 @@ final class JwkFetcher implements JwkFetcherInterface
         );
     }
 
-    private function convertCertToPem(string $cert): string
+    /**
+     * @param mixed[] $jwk
+     */
+    private function convertJwkToPem(array $jwk): string
     {
-        $pem = '-----BEGIN CERTIFICATE-----' . \PHP_EOL;
-        $pem .= \chunk_split($cert, 64, \PHP_EOL);
-        $pem .= '-----END CERTIFICATE-----' . \PHP_EOL;
-
-        return $pem;
+        return (string)PublicKeyLoader::load([
+            'e' => new BigInteger((string)\base64_decode($jwk['e'], true), 256),
+            'n' => new BigInteger(JWT::urlsafeB64Decode($jwk['n']), 256),
+        ]);
     }
 
     /**
@@ -85,12 +90,12 @@ final class JwkFetcher implements JwkFetcherInterface
             ->request('GET', $userPoolConfig->getJwksUrl())
             ->toArray();
 
-        $jwks = [];
+        $keys = [];
 
-        foreach ($response['keys'] as $key) {
-            $jwks[$key['kid']] = $this->convertCertToPem($key['n']);
+        foreach ($response['keys'] as $jwk) {
+            $keys[$jwk['kid']] = $this->convertJwkToPem($jwk);
         }
 
-        return $jwks;
+        return $keys;
     }
 }
