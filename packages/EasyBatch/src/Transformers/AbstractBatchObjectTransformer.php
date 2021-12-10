@@ -86,6 +86,11 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
 
     protected function serialize(object $message): string
     {
+        if ($message instanceof HandlerFailedException){
+            $envelope = $message->getEnvelope()->withoutAll('Symfony\Component\Messenger\Stamp\AckStamp');
+            $message = new HandlerFailedException($envelope, $message->getNestedExceptions());
+        }
+
         $body = \addslashes(\serialize($message));
 
         if (\preg_match('//u', $body) === false) {
