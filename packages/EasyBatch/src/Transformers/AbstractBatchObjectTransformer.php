@@ -7,6 +7,7 @@ namespace EonX\EasyBatch\Transformers;
 use Carbon\Carbon;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
 {
@@ -87,7 +88,8 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
     protected function serialize(object $message): string
     {
         if ($message instanceof HandlerFailedException){
-            $envelope = $message->getEnvelope()->withoutAll('Symfony\Component\Messenger\Stamp\AckStamp');
+            $envelope = $message->getEnvelope()
+                ->withoutAll('Symfony\Component\Messenger\Stamp\AckStamp');
             $message = new HandlerFailedException($envelope, $message->getNestedExceptions());
         }
 
