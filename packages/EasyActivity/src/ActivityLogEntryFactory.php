@@ -76,7 +76,7 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
      */
     private function getClearedChangeSet(array $changeSet): array
     {
-        return \array_filter($changeSet, static function ($changeSetItem) {
+        return \array_filter($changeSet, static function (array $changeSetItem) {
             if ($changeSetItem[0] instanceof DateTimeInterface && $changeSetItem[1] instanceof DateTimeInterface) {
                 $format = 'Y-m-d H:i:s.uP';
 
