@@ -8,10 +8,14 @@ use Carbon\Carbon;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
 use EonX\EasyBatch\Interfaces\SerializerInterface;
-use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
 {
+    /**
+     * @var \EonX\EasyBatch\Interfaces\SerializerInterface
+     */
+    protected $serializer;
+
     /**
      * @var string
      */
@@ -21,11 +25,6 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
      * @var string
      */
     private $datetimeFormat;
-
-    /**
-     * @var \EonX\EasyBatch\Interfaces\SerializerInterface
-     */
-    protected $serializer;
 
     public function __construct(SerializerInterface $serializer, string $class, ?string $datetimeFormat = null)
     {

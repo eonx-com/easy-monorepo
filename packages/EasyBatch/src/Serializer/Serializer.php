@@ -7,7 +7,6 @@ use EonX\EasyBatch\Interfaces\SerializerInterface;
 
 class Serializer implements SerializerInterface
 {
-
     public function serialize(object $message): string
     {
         $body = \addslashes(\serialize($message));
