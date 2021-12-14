@@ -29,11 +29,6 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_BATCH_TABLE = 'easy_batch.batch.table';
-
-    /**
-     * @var string
-     */
     public const PARAM_BATCH_ITEM_CLASS = 'easy_batch.batch_item.class';
 
     /**
@@ -45,6 +40,11 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_BATCH_ITEM_TABLE = 'easy_batch.batch_item.table';
+
+    /**
+     * @var string
+     */
+    public const PARAM_BATCH_TABLE = 'easy_batch.batch.table';
 
     /**
      * @var string
@@ -64,10 +64,15 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const SERVICE_BATCH_TRANSFORMER = 'easy_batch.batch.transformer';
+    public const SERVICE_BATCH_ITEM_TRANSFORMER = 'easy_batch.batch_item.transformer';
 
     /**
      * @var string
      */
-    public const SERVICE_BATCH_ITEM_TRANSFORMER = 'easy_batch.batch_item.transformer';
+    public const SERVICE_BATCH_SERIALIZER = 'easy_batch.batch.serializer';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_BATCH_TRANSFORMER = 'easy_batch.batch.transformer';
 }

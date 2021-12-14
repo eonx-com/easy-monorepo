@@ -7,6 +7,7 @@ namespace EonX\EasyBatch\Tests\Repositories;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Repositories\BatchItemRepository;
+use EonX\EasyBatch\Serializer\Serializer;
 use EonX\EasyBatch\Tests\AbstractRepositoriesTestCase;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyPagination\Data\StartSizeData;
@@ -73,7 +74,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
         $repo = new BatchItemRepository(
             $factory,
             $this->getIdStrategy(),
-            new BatchItemTransformer(),
+            new BatchItemTransformer(new Serializer()),
             $this->getDoctrineDbalConnection(),
             BatchItemRepository::DEFAULT_TABLE
         );

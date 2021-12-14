@@ -7,6 +7,7 @@ namespace EonX\EasyBatch\Transformers;
 use Carbon\Carbon;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
+use EonX\EasyBatch\Interfaces\SerializerInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
@@ -21,8 +22,14 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
      */
     private $datetimeFormat;
 
-    public function __construct(string $class, ?string $datetimeFormat = null)
+    /**
+     * @var \EonX\EasyBatch\Interfaces\SerializerInterface
+     */
+    protected $serializer;
+
+    public function __construct(SerializerInterface $serializer, string $class, ?string $datetimeFormat = null)
     {
+        $this->serializer = $serializer;
         $this->class = $class;
         $this->datetimeFormat = $datetimeFormat ?? BatchObjectInterface::DATETIME_FORMAT;
     }
@@ -58,7 +65,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
 
         if (isset($data['throwable'])) {
             /** @var \Throwable $throwable */
-            $throwable = $this->unserialize((string)$data['throwable']);
+            $throwable = $this->serializer->unserialize((string)$data['throwable']);
             $object->setThrowable($throwable);
         }
 
@@ -85,33 +92,6 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         return $batchObject->toArray();
     }
 
-    protected function serialize(object $message): string
-    {
-        if ($message instanceof HandlerFailedException) {
-            $envelope = $message->getEnvelope()
-                ->withoutAll('Symfony\Component\Messenger\Stamp\AckStamp');
-            $message = new HandlerFailedException($envelope, $message->getNestedExceptions());
-        }
-
-        $body = \addslashes(\serialize($message));
-
-        if (\preg_match('//u', $body) === false) {
-            $body = \base64_encode($body);
-        }
-
-        return $body;
-    }
-
-    protected function unserialize(string $message): object
-    {
-        if (\strpos($message, '}', -1) === false) {
-            /** @var string $message */
-            $message = \base64_decode($message, true);
-        }
-
-        return \unserialize(\stripslashes($message));
-    }
-
     /**
      * @param mixed[] $data
      *
@@ -129,7 +109,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
             }
 
             if ($value instanceof \Throwable) {
-                $data[$name] = $this->serialize($value);
+                $data[$name] = $this->serializer->serialize($value);
             }
         }
 
