@@ -25,6 +25,7 @@ use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyBatch\Transformers\BatchTransformer;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
