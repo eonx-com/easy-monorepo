@@ -109,6 +109,21 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertEqualsCanonicalizing(Carbon::getTestNow(), $result->getUpdatedAt());
     }
 
+    public function testCreateSucceedsEqualsDates(): void
+    {
+        Carbon::setTestNow('2021-10-10 00:00:00');
+        $factory = new ActivityLogFactoryStub([Article::class => []], []);
+
+        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
+        $result = $factory->create(
+            ActivityLogEntry::ACTION_UPDATE,
+            (new Article())->setCreatedAt(Carbon::now()),
+            ['createdAt' => [Carbon::now(), Carbon::now()]]
+        );
+
+        self::assertNull($result);
+    }
+
     public function testCreateSucceedsWithCollections(): void
     {
         $factory = new ActivityLogFactoryStub([Article::class => []], []);
@@ -253,7 +268,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
                 'author' => [$author, $author],
                 'createdAt' => [
                     new DateTime('2021-10-10 00:00:00'),
-                    new DateTime('2021-10-10 00:00:00'),
+                    new DateTime('2021-10-11 00:00:00'),
                 ],
             ]
         );
@@ -269,5 +284,12 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             $expectedDataProperties,
             \array_keys(\json_decode($result->getSubjectData() ?? '', true))
         );
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        Carbon::setTestNow();
     }
 }
