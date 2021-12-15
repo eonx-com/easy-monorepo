@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\ORM\Query\AST\Functions;
@@ -25,11 +26,14 @@ final class CastTest extends AbstractTestCase
         $typeValue = 'some-value';
         $type = new Literal(Literal::STRING, $typeValue);
         $sqlWalker = $this->prophesize(SqlWalker::class);
-        $sqlWalker->walkPathExpression(null)->willReturn($path);
+        $sqlWalker->walkPathExpression(null)
+            ->willReturn($path);
         $cast = new Cast('no-matter');
         $this->setPrivatePropertyValue($cast, 'type', $type);
 
-        $result = $cast->getSql($sqlWalker->reveal());
+        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
+        $sqlWalkerReveal = $sqlWalker->reveal();
+        $result = $cast->getSql($sqlWalkerReveal);
 
         self::assertSame(\sprintf('CAST(%s AS %s)', $path, $typeValue), $result);
     }
@@ -46,11 +50,14 @@ final class CastTest extends AbstractTestCase
         $parser->match(Lexer::T_OPEN_PARENTHESIS)->shouldBeCalled();
         $parser->PathExpression(PathExpression::TYPE_STATE_FIELD)->willReturn($pathExpression);
         $parser->match(Lexer::T_COMMA)->shouldBeCalled();
-        $parser->StringPrimary()->willReturn($type);
+        $parser->StringPrimary()
+            ->willReturn($type);
         $parser->match(Lexer::T_CLOSE_PARENTHESIS)->shouldBeCalled();
         $cast = new Cast('no-matter');
 
-        $cast->parse($parser->reveal());
+        /** @var \Doctrine\ORM\Query\Parser $parserReveal */
+        $parserReveal = $parser->reveal();
+        $cast->parse($parserReveal);
 
         self::assertSame($type, $this->getPrivatePropertyValue($cast, 'type'));
         self::assertSame($pathExpression, $this->getPrivatePropertyValue($cast, 'expression'));

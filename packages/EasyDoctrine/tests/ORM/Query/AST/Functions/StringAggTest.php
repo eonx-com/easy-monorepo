@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\ORM\Query\AST\Functions;
@@ -32,11 +33,15 @@ final class StringAggTest extends AbstractTestCase
             ''
         );
         $sqlWalker = $this->prophesize(SqlWalker::class);
-        $sqlWalker->walkPathExpression(null)->willReturn($expressionValue);
-        $sqlWalker->walkStringPrimary(null)->willReturn($delimiterValue);
+        $sqlWalker->walkPathExpression(null)
+            ->willReturn($expressionValue);
+        $sqlWalker->walkStringPrimary(null)
+            ->willReturn($delimiterValue);
         $stringAgg = new StringAgg('no-matter');
 
-        $result = $stringAgg->getSql($sqlWalker->reveal());
+        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
+        $sqlWalkerReveal = $sqlWalker->reveal();
+        $result = $stringAgg->getSql($sqlWalkerReveal);
 
         self::assertSame($expectedSql, $result);
     }
@@ -56,12 +61,16 @@ final class StringAggTest extends AbstractTestCase
             ''
         );
         $sqlWalker = $this->prophesize(SqlWalker::class);
-        $sqlWalker->walkPathExpression(null)->willReturn($expressionValue);
-        $sqlWalker->walkStringPrimary(null)->willReturn($delimiterValue);
+        $sqlWalker->walkPathExpression(null)
+            ->willReturn($expressionValue);
+        $sqlWalker->walkStringPrimary(null)
+            ->willReturn($delimiterValue);
         $stringAgg = new StringAgg('no-matter');
         $this->setPrivatePropertyValue($stringAgg, 'isDistinct', true);
 
-        $result = $stringAgg->getSql($sqlWalker->reveal());
+        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
+        $sqlWalkerReveal = $sqlWalker->reveal();
+        $result = $stringAgg->getSql($sqlWalkerReveal);
 
         self::assertSame($expectedSql, $result);
     }
@@ -83,13 +92,18 @@ final class StringAggTest extends AbstractTestCase
             $orderByValue
         );
         $sqlWalker = $this->prophesize(SqlWalker::class);
-        $sqlWalker->walkPathExpression(null)->willReturn($expressionValue);
-        $sqlWalker->walkStringPrimary(null)->willReturn($delimiterValue);
-        $sqlWalker->walkOrderByClause($orderBy)->willReturn($orderByValue);
+        $sqlWalker->walkPathExpression(null)
+            ->willReturn($expressionValue);
+        $sqlWalker->walkStringPrimary(null)
+            ->willReturn($delimiterValue);
+        $sqlWalker->walkOrderByClause($orderBy)
+            ->willReturn($orderByValue);
         $stringAgg = new StringAgg('no-matter');
         $this->setPrivatePropertyValue($stringAgg, 'orderBy', $orderBy);
 
-        $result = $stringAgg->getSql($sqlWalker->reveal());
+        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
+        $sqlWalkerReveal = $sqlWalker->reveal();
+        $result = $stringAgg->getSql($sqlWalkerReveal);
 
         self::assertSame($expectedSql, $result);
     }
@@ -114,7 +128,9 @@ final class StringAggTest extends AbstractTestCase
         $parser->match(Lexer::T_CLOSE_PARENTHESIS)->shouldBeCalled();
         $stringAgg = new StringAgg('no-matter');
 
-        $stringAgg->parse($parser->reveal());
+        /** @var \Doctrine\ORM\Query\Parser $parserReveal */
+        $parserReveal = $parser->reveal();
+        $stringAgg->parse($parserReveal);
 
         self::assertSame($delimiter, $this->getPrivatePropertyValue($stringAgg, 'delimiter'));
         self::assertFalse($this->getPrivatePropertyValue($stringAgg, 'isDistinct'));
@@ -134,15 +150,19 @@ final class StringAggTest extends AbstractTestCase
         $parser = $this->prophesize(Parser::class);
         $parser->match(Lexer::T_IDENTIFIER)->shouldBeCalled();
         $parser->match(Lexer::T_OPEN_PARENTHESIS)->shouldBeCalled();
-        $parser->getLexer()->willReturn($lexer->reveal());
+        $parser->getLexer()
+            ->willReturn($lexer->reveal());
         $parser->match(Lexer::T_DISTINCT)->shouldBeCalled();
         $parser->PathExpression(PathExpression::TYPE_STATE_FIELD)->willReturn($pathExpression);
         $parser->match(Lexer::T_COMMA)->shouldBeCalled();
-        $parser->StringPrimary()->willReturn($delimiter);
+        $parser->StringPrimary()
+            ->willReturn($delimiter);
         $parser->match(Lexer::T_CLOSE_PARENTHESIS)->shouldBeCalled();
         $stringAgg = new StringAgg('no-matter');
 
-        $stringAgg->parse($parser->reveal());
+        /** @var \Doctrine\ORM\Query\Parser $parserReveal */
+        $parserReveal = $parser->reveal();
+        $stringAgg->parse($parserReveal);
 
         self::assertTrue($this->getPrivatePropertyValue($stringAgg, 'isDistinct'));
     }
@@ -161,15 +181,20 @@ final class StringAggTest extends AbstractTestCase
         $parser = $this->prophesize(Parser::class);
         $parser->match(Lexer::T_IDENTIFIER)->shouldBeCalled();
         $parser->match(Lexer::T_OPEN_PARENTHESIS)->shouldBeCalled();
-        $parser->getLexer()->willReturn($lexer->reveal());
+        $parser->getLexer()
+            ->willReturn($lexer->reveal());
         $parser->PathExpression(PathExpression::TYPE_STATE_FIELD)->willReturn($pathExpression);
         $parser->match(Lexer::T_COMMA)->shouldBeCalled();
-        $parser->StringPrimary()->willReturn($delimiter);
-        $parser->OrderByClause()->willReturn($orderBy);
+        $parser->StringPrimary()
+            ->willReturn($delimiter);
+        $parser->OrderByClause()
+            ->willReturn($orderBy);
         $parser->match(Lexer::T_CLOSE_PARENTHESIS)->shouldBeCalled();
         $stringAgg = new StringAgg('no-matter');
 
-        $stringAgg->parse($parser->reveal());
+        /** @var \Doctrine\ORM\Query\Parser $parserReveal */
+        $parserReveal = $parser->reveal();
+        $stringAgg->parse($parserReveal);
 
         self::assertSame($orderBy, $this->getPrivatePropertyValue($stringAgg, 'orderBy'));
     }

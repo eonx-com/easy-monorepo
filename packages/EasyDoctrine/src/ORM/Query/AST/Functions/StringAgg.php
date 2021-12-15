@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\ORM\Query\AST\Functions;
@@ -12,12 +13,12 @@ use Doctrine\ORM\Query\SqlWalker;
 final class StringAgg extends FunctionNode
 {
     /**
-     * @var \Doctrine\ORM\Query\AST\Literal|null
+     * @var \Doctrine\ORM\Query\AST\Literal
      */
     private $delimiter;
 
     /**
-     * @var \Doctrine\ORM\Query\AST\PathExpression|null
+     * @var \Doctrine\ORM\Query\AST\PathExpression
      */
     private $expression;
 
@@ -27,7 +28,7 @@ final class StringAgg extends FunctionNode
     private $isDistinct = false;
 
     /**
-     * @var \Doctrine\ORM\Query\AST\OrderByClause|null
+     * @var \Doctrine\ORM\Query\AST\OrderByClause
      */
     private $orderBy;
 
