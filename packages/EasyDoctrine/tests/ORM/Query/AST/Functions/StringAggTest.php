@@ -121,10 +121,12 @@ final class StringAggTest extends AbstractTestCase
         $parser = $this->prophesize(Parser::class);
         $parser->match(Lexer::T_IDENTIFIER)->shouldBeCalled();
         $parser->match(Lexer::T_OPEN_PARENTHESIS)->shouldBeCalled();
-        $parser->getLexer()->willReturn($lexer->reveal());
+        $parser->getLexer()
+            ->willReturn($lexer->reveal());
         $parser->PathExpression(PathExpression::TYPE_STATE_FIELD)->willReturn($pathExpression);
         $parser->match(Lexer::T_COMMA)->shouldBeCalled();
-        $parser->StringPrimary()->willReturn($delimiter);
+        $parser->StringPrimary()
+            ->willReturn($delimiter);
         $parser->match(Lexer::T_CLOSE_PARENTHESIS)->shouldBeCalled();
         $stringAgg = new StringAgg('no-matter');
 
