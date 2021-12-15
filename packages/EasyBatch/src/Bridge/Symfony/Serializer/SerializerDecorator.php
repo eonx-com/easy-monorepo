@@ -22,7 +22,7 @@ class SerializerDecorator implements SerializerInterface
     public function serialize(object $message): string
     {
         if ($message instanceof HandlerFailedException) {
-            // @todo Use AckStamp::class when drop support Symfony lower that 5.4
+            // @todo Use AckStamp::class when drop support Symfony lower than 5.4
             $envelope = $message->getEnvelope()
                 ->withoutAll('Symfony\Component\Messenger\Stamp\AckStamp');
             $message = new HandlerFailedException($envelope, $message->getNestedExceptions());

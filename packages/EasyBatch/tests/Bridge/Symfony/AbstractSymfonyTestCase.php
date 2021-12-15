@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 abstract class AbstractSymfonyTestCase extends AbstractTestCase
 {
     /**
-     * @var \Symfony\Component\HttpKernel\KernelInterface
+     * @var \Symfony\Component\HttpKernel\KernelInterface|null
      */
     private $kernel;
 
