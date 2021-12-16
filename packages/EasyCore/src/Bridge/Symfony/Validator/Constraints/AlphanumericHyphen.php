@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\Validator\Constraints;
 
-use Symfony\Component\Validator\Constraint;
 use Attribute;
+use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
