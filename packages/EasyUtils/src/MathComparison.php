@@ -18,7 +18,8 @@ final class MathComparison implements MathComparisonInterface
      */
     private $scale;
 
-    public function __construct(int $scale) {
+    public function __construct(int $scale)
+    {
         $this->scale = $scale;
     }
 
