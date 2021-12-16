@@ -69,7 +69,7 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const SERVICE_BATCH_SERIALIZER = 'easy_batch.batch.serializer';
+    public const SERVICE_BATCH_MESSAGE_SERIALIZER = 'easy_batch.batch.message_serializer';
 
     /**
      * @var string

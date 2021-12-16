@@ -84,20 +84,20 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$transformer', ref(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
 
     //Serializer
-    $services->set(BridgeConstantsInterface::SERVICE_BATCH_SERIALIZER, MessageSerializer::class);
+    $services->set(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER, MessageSerializer::class);
 
     $services->set(MessageSerializerDecorator::class)
-        ->decorate(BridgeConstantsInterface::SERVICE_BATCH_SERIALIZER)
+        ->decorate(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER)
         ->args([ref('.inner')]);
 
     // Transformers
     $services
         ->set(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER, BatchTransformer::class)
-        ->arg('$serializer', ref(BridgeConstantsInterface::SERVICE_BATCH_SERIALIZER))
+        ->arg('$messageSerializer', ref(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
         ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_CLASS . '%');
 
     $services
         ->set(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER, BatchItemTransformer::class)
-        ->arg('$serializer', ref(BridgeConstantsInterface::SERVICE_BATCH_SERIALIZER))
+        ->arg('$messageSerializer', ref(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
         ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_CLASS . '%');
 };

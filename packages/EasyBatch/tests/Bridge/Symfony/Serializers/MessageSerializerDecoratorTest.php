@@ -10,13 +10,13 @@ use EonX\EasyBatch\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 
 final class MessageSerializerDecoratorTest extends AbstractSymfonyTestCase
 {
-    public function testSerializeSucceeds(): void
+    public function testMessageSerializerDecoratedSucceeds(): void
     {
-        /** @var \EonX\EasyBatch\Interfaces\MessageSerializerInterface $serializer */
-        $serializer = $this->getKernel()
+        /** @var \EonX\EasyBatch\Interfaces\MessageSerializerInterface $messageSerializer */
+        $messageSerializer = $this->getKernel()
             ->getContainer()
-            ->get(BridgeConstantsInterface::SERVICE_BATCH_SERIALIZER);
+            ->get(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER);
 
-        self::assertSame(MessageSerializerDecorator::class, get_class($serializer));
+        self::assertSame(MessageSerializerDecorator::class, \get_class($messageSerializer));
     }
 }
