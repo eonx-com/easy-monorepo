@@ -15,6 +15,11 @@ final class Math implements MathInterface
     private $decimalSeparator;
 
     /**
+     * @var string
+     */
+    private $leftOperand;
+
+    /**
      * @var int
      */
     private $roundMode;
@@ -60,9 +65,21 @@ final class Math implements MathInterface
         return $this->round(\bcadd($augend, $addend, $this->scale), $precision, $mode);
     }
 
+    /**
+     * @deprecated will become private after next major update, use compareThat() methods instead
+     */
     public function comp(string $leftOperand, string $rightOperand): int
     {
         return \bccomp($leftOperand, $rightOperand, $this->scale);
+    }
+
+    public function compareThat(string $leftOperand): self
+    {
+        $self = new self();
+
+        $self->leftOperand = $leftOperand;
+
+        return $self;
     }
 
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $mode = null): string
@@ -74,6 +91,31 @@ final class Math implements MathInterface
         }
 
         return $this->round($value, $precision, $mode);
+    }
+
+    public function equalTo(string $rightOperand): bool
+    {
+        return $this->comp($this->leftOperand, $rightOperand) === 0;
+    }
+
+    public function greaterOrEqualTo(string $rightOperand): bool
+    {
+        return $this->comp($this->leftOperand, $rightOperand) !== -1;
+    }
+
+    public function greaterThan(string $rightOperand): bool
+    {
+        return $this->comp($this->leftOperand, $rightOperand) === 1;
+    }
+
+    public function lessOrEqualTo(string $rightOperand): bool
+    {
+        return $this->comp($this->leftOperand, $rightOperand) !== 1;
+    }
+
+    public function lessThan(string $rightOperand): bool
+    {
+        return $this->comp($this->leftOperand, $rightOperand) === -1;
     }
 
     public function multiply(
