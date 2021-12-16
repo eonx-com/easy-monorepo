@@ -41,11 +41,11 @@ final class JsonbType extends Type
     /**
      * @param mixed $value
      *
-     * @return mixed[]|null
+     * @return mixed
      *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?array
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value === '') {
             return null;
