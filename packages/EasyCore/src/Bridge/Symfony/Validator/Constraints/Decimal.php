@@ -6,11 +6,13 @@ namespace EonX\EasyCore\Bridge\Symfony\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use Attribute;
 
 /**
  * @Annotation
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
+#[Attribute(Attribute::TARGET_PROPERTY|Attribute::TARGET_METHOD)]
 final class Decimal extends Constraint
 {
     /**
