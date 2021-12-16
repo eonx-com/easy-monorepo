@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Transformers;
 
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
-use EonX\EasyBatch\Interfaces\SerializerInterface;
+use EonX\EasyBatch\Interfaces\MessageSerializerInterface;
 use EonX\EasyBatch\Objects\Batch;
 
 final class BatchTransformer extends AbstractBatchObjectTransformer
 {
-    public function __construct(SerializerInterface $serializer, ?string $class = null, ?string $datetimeFormat = null)
-    {
-        parent::__construct($serializer, $class ?? Batch::class, $datetimeFormat);
+    public function __construct(
+        MessageSerializerInterface $messageSerializer,
+        ?string $class = null,
+        ?string $datetimeFormat = null
+    ) {
+        parent::__construct($messageSerializer, $class ?? Batch::class, $datetimeFormat);
     }
 
     /**

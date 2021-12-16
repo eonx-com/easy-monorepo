@@ -7,14 +7,14 @@ namespace EonX\EasyBatch\Transformers;
 use Carbon\Carbon;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
-use EonX\EasyBatch\Interfaces\SerializerInterface;
+use EonX\EasyBatch\Interfaces\MessageSerializerInterface;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
 {
     /**
-     * @var \EonX\EasyBatch\Interfaces\SerializerInterface
+     * @var \EonX\EasyBatch\Interfaces\MessageSerializerInterface
      */
-    protected $serializer;
+    protected $messageSerializer;
 
     /**
      * @var string
@@ -26,9 +26,12 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
      */
     private $datetimeFormat;
 
-    public function __construct(SerializerInterface $serializer, string $class, ?string $datetimeFormat = null)
-    {
-        $this->serializer = $serializer;
+    public function __construct(
+        MessageSerializerInterface $messageSerializer,
+        string $class,
+        ?string $datetimeFormat = null
+    ) {
+        $this->messageSerializer = $messageSerializer;
         $this->class = $class;
         $this->datetimeFormat = $datetimeFormat ?? BatchObjectInterface::DATETIME_FORMAT;
     }
@@ -64,7 +67,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
 
         if (isset($data['throwable'])) {
             /** @var \Throwable $throwable */
-            $throwable = $this->serializer->unserialize((string)$data['throwable']);
+            $throwable = $this->messageSerializer->unserialize((string)$data['throwable']);
             $object->setThrowable($throwable);
         }
 
@@ -108,7 +111,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
             }
 
             if ($value instanceof \Throwable) {
-                $data[$name] = $this->serializer->serialize($value);
+                $data[$name] = $this->messageSerializer->serialize($value);
             }
         }
 

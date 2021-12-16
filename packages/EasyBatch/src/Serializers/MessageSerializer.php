@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBatch\Serializer;
+namespace EonX\EasyBatch\Serializers;
 
-use EonX\EasyBatch\Interfaces\SerializerInterface;
+use EonX\EasyBatch\Interfaces\MessageSerializerInterface;
 
-class Serializer implements SerializerInterface
+final class MessageSerializer implements MessageSerializerInterface
 {
     public function serialize(object $message): string
     {

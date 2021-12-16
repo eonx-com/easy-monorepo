@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBatch\Bridge\Symfony\Serializer;
+namespace EonX\EasyBatch\Bridge\Symfony\Serializers;
 
-use EonX\EasyBatch\Interfaces\SerializerInterface;
+use EonX\EasyBatch\Interfaces\MessageSerializerInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
-class SerializerDecorator implements SerializerInterface
+final class MessageSerializerDecorator implements MessageSerializerInterface
 {
     /**
-     * @var \EonX\EasyBatch\Interfaces\SerializerInterface
+     * @var \EonX\EasyBatch\Interfaces\MessageSerializerInterface
      */
     private $decorated;
 
-    public function __construct(SerializerInterface $decorated)
+    public function __construct(MessageSerializerInterface $decorated)
     {
         $this->decorated = $decorated;
     }

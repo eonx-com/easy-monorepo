@@ -6,14 +6,17 @@ namespace EonX\EasyBatch\Transformers;
 
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
-use EonX\EasyBatch\Interfaces\SerializerInterface;
+use EonX\EasyBatch\Interfaces\MessageSerializerInterface;
 use EonX\EasyBatch\Objects\BatchItem;
 
 final class BatchItemTransformer extends AbstractBatchObjectTransformer
 {
-    public function __construct(SerializerInterface $serializer, ?string $class = null, ?string $datetimeFormat = null)
-    {
-        parent::__construct($serializer, $class ?? BatchItem::class, $datetimeFormat);
+    public function __construct(
+        MessageSerializerInterface $messageSerializer,
+        ?string $class = null,
+        ?string $datetimeFormat = null
+    ) {
+        parent::__construct($messageSerializer, $class ?? BatchItem::class, $datetimeFormat);
     }
 
     /**
@@ -24,7 +27,7 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
         $array = parent::doTransformToArray($batchObject);
 
         if (isset($array['message'])) {
-            $array['message'] = $this->serializer->serialize($array['message']);
+            $array['message'] = $this->messageSerializer->serialize($array['message']);
         }
 
         return $array;
@@ -46,7 +49,7 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
         }
 
         if (isset($data['message'])) {
-            $batchObject->setMessage($this->serializer->unserialize((string)$data['message']));
+            $batchObject->setMessage($this->messageSerializer->unserialize((string)$data['message']));
         }
 
         if (isset($data['depends_on_name'])) {

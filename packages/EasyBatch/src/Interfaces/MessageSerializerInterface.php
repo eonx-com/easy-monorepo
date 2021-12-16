@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Interfaces;
 
-interface SerializerInterface
+interface MessageSerializerInterface
 {
     public function serialize(object $message): string;
 
