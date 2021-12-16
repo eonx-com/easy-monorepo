@@ -37,7 +37,8 @@ abstract class AbstractTestCase extends TestCase
 
     protected function getBatchFactory(): BatchFactoryInterface
     {
-        return $this->batchFactory = $this->batchFactory ?? new BatchFactory(new BatchTransformer(new MessageSerializer()));
+        return $this->batchFactory = $this->batchFactory ??
+            new BatchFactory(new BatchTransformer(new MessageSerializer()));
     }
 
     protected function getBatchItemFactory(): BatchItemFactoryInterface
