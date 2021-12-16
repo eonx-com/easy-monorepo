@@ -135,7 +135,7 @@ final class JsonbTypeTest extends AbstractTestCase
         $value = \urldecode('some incorrectly encoded utf string %C4');
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
-            "Could not convert PHP type 'string' to 'json', as an " .
+            "Could not convert PHP type 'string' to 'JSONB', as an " .
             "'Malformed UTF-8 characters, possibly incorrectly encoded' error was triggered by the serialization"
         );
 
