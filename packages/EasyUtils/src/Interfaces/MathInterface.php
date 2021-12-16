@@ -37,19 +37,9 @@ interface MathInterface
 
     public function comp(string $leftOperand, string $rightOperand): int;
 
-    public function compareThat(string $leftOperand): self;
+    public function compareThat(string $leftOperand): MathComparisonInterface;
 
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $mode = null): string;
-
-    public function equalTo(string $rightOperand): bool;
-
-    public function greaterOrEqualTo(string $rightOperand): bool;
-
-    public function greaterThan(string $rightOperand): bool;
-
-    public function lessOrEqualTo(string $rightOperand): bool;
-
-    public function lessThan(string $rightOperand): bool;
 
     public function multiply(
         string $multiplicand,

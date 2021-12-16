@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyUtils;
 
 use EonX\EasyUtils\Exceptions\InvalidDivisionByZeroException;
+use EonX\EasyUtils\Interfaces\MathComparisonInterface;
 use EonX\EasyUtils\Interfaces\MathInterface;
 
 final class Math implements MathInterface
@@ -13,11 +14,6 @@ final class Math implements MathInterface
      * @var string
      */
     private $decimalSeparator;
-
-    /**
-     * @var string
-     */
-    private $leftOperand;
 
     /**
      * @var int
@@ -55,7 +51,7 @@ final class Math implements MathInterface
 
     public function abs(string $value, ?int $precision = null, ?int $mode = null): string
     {
-        return $this->comp($value, '0') === -1
+        return $this->compareThat($value)->lessThan('0')
             ? $this->multiply($value, '-1', $precision, $mode)
             : $this->round($value, $precision, $mode);
     }
@@ -66,20 +62,16 @@ final class Math implements MathInterface
     }
 
     /**
-     * @deprecated will become private after next major update, use compareThat() methods instead
+     * @deprecated musst be deleted on next major update, use compareThat() method instead
      */
     public function comp(string $leftOperand, string $rightOperand): int
     {
         return \bccomp($leftOperand, $rightOperand, $this->scale);
     }
 
-    public function compareThat(string $leftOperand): MathInterface
+    public function compareThat(string $leftOperand): MathComparisonInterface
     {
-        $self = new self();
-
-        $self->leftOperand = $leftOperand;
-
-        return $self;
+        return (new MathComparison())->setLeftOperand($leftOperand);
     }
 
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $mode = null): string
@@ -91,31 +83,6 @@ final class Math implements MathInterface
         }
 
         return $this->round($value, $precision, $mode);
-    }
-
-    public function equalTo(string $rightOperand): bool
-    {
-        return $this->comp($this->leftOperand, $rightOperand) === 0;
-    }
-
-    public function greaterOrEqualTo(string $rightOperand): bool
-    {
-        return $this->comp($this->leftOperand, $rightOperand) !== -1;
-    }
-
-    public function greaterThan(string $rightOperand): bool
-    {
-        return $this->comp($this->leftOperand, $rightOperand) === 1;
-    }
-
-    public function lessOrEqualTo(string $rightOperand): bool
-    {
-        return $this->comp($this->leftOperand, $rightOperand) !== 1;
-    }
-
-    public function lessThan(string $rightOperand): bool
-    {
-        return $this->comp($this->leftOperand, $rightOperand) === -1;
     }
 
     public function multiply(
