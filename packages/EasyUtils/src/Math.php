@@ -73,7 +73,7 @@ final class Math implements MathInterface
         return \bccomp($leftOperand, $rightOperand, $this->scale);
     }
 
-    public function compareThat(string $leftOperand): self
+    public function compareThat(string $leftOperand): MathInterface
     {
         $self = new self();
 
