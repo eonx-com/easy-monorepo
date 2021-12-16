@@ -121,7 +121,12 @@ abstract class AbstractMathTestCase extends AbstractTestCase
             'compareMethod' => 'lessThan',
             'result' => true,
         ];
-        yield ['leftOperand' => '91', 'rightOperand' => '091', 'compareMethod' => 'equalTo', 'result' => true];
+        yield [
+            'leftOperand' => '91',
+            'rightOperand' => '091',
+            'compareMethod' => 'equalTo',
+            'result' => true,
+        ];
     }
 
     /**
@@ -212,7 +217,9 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     ): void {
         $math = $this->getMath();
 
-        $actual = $math->compareThat($leftOperand)->$compareMethod($rightOperand);
+        $actual = $math
+            ->compareThat($leftOperand)
+            ->{$compareMethod}($rightOperand);
 
         self::assertSame($result, $actual);
     }
