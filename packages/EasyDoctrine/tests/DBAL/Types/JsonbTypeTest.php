@@ -25,6 +25,22 @@ final class JsonbTypeTest extends AbstractTestCase
         return \array_merge(
             $this->provideConvertToPhpValues(),
             [
+                'multidimensional array phpValue' => [
+                    'phpValue' => [
+                        'key3' => '15',
+                        'key1' => 'value1',
+                        'key4' => 15,
+                        'key2' => false,
+                        'key6' => [
+                            'sub-key-2' => 'bar',
+                            'sub-key-3' => 42,
+                            'sub-key-1' => 'foo',
+                        ],
+                        'key5' => [112, 242, 309, 310],
+                    ],
+                    'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,' .
+                        '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
+                ],
                 'object phpValue' => [
                     'phpValue' => (object)[
                         'property' => 'value',
