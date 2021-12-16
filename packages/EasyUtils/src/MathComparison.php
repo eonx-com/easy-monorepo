@@ -13,6 +13,15 @@ final class MathComparison implements MathComparisonInterface
      */
     private $leftOperand;
 
+    /**
+     * @var int
+     */
+    private $scale;
+
+    public function __construct(int $scale) {
+        $this->scale = $scale;
+    }
+
     public function equalTo(string $rightOperand): bool
     {
         return $this->comp($this->leftOperand, $rightOperand) === 0;

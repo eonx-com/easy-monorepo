@@ -51,7 +51,9 @@ final class Math implements MathInterface
 
     public function abs(string $value, ?int $precision = null, ?int $mode = null): string
     {
-        return $this->compareThat($value)->lessThan('0')
+        return $this
+            ->compareThat($value)
+            ->lessThan('0')
             ? $this->multiply($value, '-1', $precision, $mode)
             : $this->round($value, $precision, $mode);
     }
@@ -71,7 +73,7 @@ final class Math implements MathInterface
 
     public function compareThat(string $leftOperand): MathComparisonInterface
     {
-        return (new MathComparison())->setLeftOperand($leftOperand);
+        return (new MathComparison($this->scale))->setLeftOperand($leftOperand);
     }
 
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $mode = null): string
