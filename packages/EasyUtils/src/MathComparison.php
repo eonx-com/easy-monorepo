@@ -18,8 +18,9 @@ final class MathComparison implements MathComparisonInterface
      */
     private $scale;
 
-    public function __construct(int $scale)
+    public function __construct(string $leftOperand, int $scale)
     {
+        $this->leftOperand = $leftOperand;
         $this->scale = $scale;
     }
 
@@ -46,13 +47,6 @@ final class MathComparison implements MathComparisonInterface
     public function lessThan(string $rightOperand): bool
     {
         return $this->comp($this->leftOperand, $rightOperand) === -1;
-    }
-
-    public function setLeftOperand(string $leftOperand): MathComparisonInterface
-    {
-        $this->leftOperand = $leftOperand;
-
-        return $this;
     }
 
     private function comp(string $leftOperand, string $rightOperand): int

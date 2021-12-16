@@ -15,6 +15,4 @@ interface MathComparisonInterface
     public function lessOrEqualTo(string $rightOperand): bool;
 
     public function lessThan(string $rightOperand): bool;
-
-    public function setLeftOperand(string $leftOperand): self;
 }

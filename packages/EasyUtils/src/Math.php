@@ -73,7 +73,7 @@ final class Math implements MathInterface
 
     public function compareThat(string $leftOperand): MathComparisonInterface
     {
-        return (new MathComparison($this->scale))->setLeftOperand($leftOperand);
+        return (new MathComparison($leftOperand, $this->scale));
     }
 
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $mode = null): string
