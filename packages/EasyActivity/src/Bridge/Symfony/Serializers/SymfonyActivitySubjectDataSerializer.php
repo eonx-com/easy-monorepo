@@ -80,8 +80,10 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
             return null;
         }
 
-        if(!isset($context['circular_reference_handler'])){
-            $context['circular_reference_handler'] = function($object){return \get_class($object);};
+        if(isset($context['circular_reference_handler']) === false){
+            $context['circular_reference_handler'] = function ($object) {
+                return \get_class($object);
+            };
         }
 
         return $this->serializer->serialize((object)$data, 'json', $context);
