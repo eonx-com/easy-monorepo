@@ -35,13 +35,16 @@ final class Decimal extends Constraint
      */
     public $minPrecision;
 
-    public function __construct($options = null)
+    public function __construct($options = null, int $minPrecision = null, int $maxPrecision = null)
     {
-        if ((int)$options['minPrecision'] < 1) {
+        $minPrecision = (int)($minPrecision ?? $options['minPrecision'] ?? null);
+        $maxPrecision = (int)($maxPrecision ?? $options['maxPrecision'] ?? null);
+
+        if ($minPrecision < 1) {
             throw new ConstraintDefinitionException('The "minPrecision" option must be an integer greater than zero.');
         }
 
-        if ((int)$options['maxPrecision'] < (int)$options['minPrecision']) {
+        if ($maxPrecision < $minPrecision) {
             throw new ConstraintDefinitionException(
                 'The "maxPrecision" option must be an integer greater than "minPrecision".'
             );
