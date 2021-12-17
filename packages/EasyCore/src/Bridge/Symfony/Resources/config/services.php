@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyCore\Bridge\Symfony\Env\ForBuildEnvVarProcessor;
 use EonX\EasyCore\Bridge\Symfony\Messenger\StopWorkerOnEmClosedEventListener;
 use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyCore\Doctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyAsync\Batch\BatchCanceller;
 use EonX\EasyAsync\Batch\BatchFactory;
 use EonX\EasyAsync\Batch\BatchItemFactory;
@@ -22,9 +24,6 @@ use EonX\EasyAsync\Interfaces\Batch\BatchItemProcessorInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchItemStoreInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchStoreInterface;
 use EonX\EasyAsync\Interfaces\Batch\BatchUpdaterInterface;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -56,18 +55,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Stores (Default doctrine dbal)
     $services
         ->set(BatchStoreInterface::class, DoctrineDbalBatchStore::class)
-        ->arg('$conn', ref('doctrine.dbal.default_connection'))
+        ->arg('$conn', service('doctrine.dbal.default_connection'))
         ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCHES_TABLE . '%');
 
     $services
         ->set(BatchItemStoreInterface::class, DoctrineDbalBatchItemStore::class)
-        ->arg('$conn', ref('doctrine.dbal.default_connection'))
+        ->arg('$conn', service('doctrine.dbal.default_connection'))
         ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEMS_TABLE . '%');
 
     // Doctrine Statements Provider (Helper)
     $services
         ->set(DbalStatementsProvider::class)
-        ->arg('$conn', ref('doctrine.dbal.default_connection'))
+        ->arg('$conn', service('doctrine.dbal.default_connection'))
         ->arg('$batchesTable', '%' . BridgeConstantsInterface::PARAM_BATCHES_TABLE . '%')
         ->arg('$batchItemsTable', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEMS_TABLE . '%')
         ->public();

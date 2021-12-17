@@ -19,7 +19,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(SignatureHeaderMiddleware::class)
-        ->arg('$signer', ref(BridgeConstantsInterface::SIGNER))
+        ->arg('$signer', service(BridgeConstantsInterface::SIGNER))
         ->arg('$secret', '%' . BridgeConstantsInterface::PARAM_SECRET . '%')
         ->arg('$signatureHeader', '%' . BridgeConstantsInterface::PARAM_SIGNATURE_HEADER . '%')
         ->arg('$priority', 100);

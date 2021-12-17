@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginationListener;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\SerializerContextBuilder;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -20,5 +19,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(SerializerContextBuilder::class)
         ->autoconfigure(false)
         ->decorate('api_platform.serializer.context_builder')
-        ->args([ref('EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\SerializerContextBuilder.inner')]);
+        ->args([service('EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\SerializerContextBuilder.inner')]);
 };
