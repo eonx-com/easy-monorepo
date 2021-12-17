@@ -51,9 +51,7 @@ final class Math implements MathInterface
 
     public function abs(string $value, ?int $precision = null, ?int $mode = null): string
     {
-        return $this
-            ->compareThat($value)
-            ->lessThan('0')
+        return $this->comp($value, '0') === -1
             ? $this->multiply($value, '-1', $precision, $mode)
             : $this->round($value, $precision, $mode);
     }
@@ -63,9 +61,6 @@ final class Math implements MathInterface
         return $this->round(\bcadd($augend, $addend, $this->scale), $precision, $mode);
     }
 
-    /**
-     * @deprecated must be deleted on next major update, use compareThat() method instead
-     */
     public function comp(string $leftOperand, string $rightOperand): int
     {
         return \bccomp($leftOperand, $rightOperand, $this->scale);

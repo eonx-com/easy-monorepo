@@ -35,9 +35,6 @@ interface MathInterface
 
     public function add(string $augend, string $addend, ?int $precision = null, ?int $mode = null): string;
 
-    /**
-     * @deprecated must be deleted on next major update, use compareThat() method instead
-     */
     public function comp(string $leftOperand, string $rightOperand): int;
 
     public function compareThat(string $leftOperand): MathComparisonInterface;
