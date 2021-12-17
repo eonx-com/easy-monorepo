@@ -45,9 +45,9 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     /**
      * @return iterable<mixed>
      *
-     * @see testCompareSucceeds
+     * @see testCompareThatSucceeds
      */
-    public function provideCompareData(): iterable
+    public function provideCompareThatData(): iterable
     {
         yield [
             'leftOperand' => '10000000',
@@ -82,8 +82,20 @@ abstract class AbstractMathTestCase extends AbstractTestCase
         yield [
             'leftOperand' => '10000001',
             'rightOperand' => '10000000',
+            'compareMethod' => 'equalTo',
+            'result' => false,
+        ];
+        yield [
+            'leftOperand' => '10000001',
+            'rightOperand' => '10000000',
             'compareMethod' => 'greaterThan',
             'result' => true,
+        ];
+        yield [
+            'leftOperand' => '10000000',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'greaterThan',
+            'result' => false,
         ];
         yield [
             'leftOperand' => '10000000',
@@ -111,6 +123,12 @@ abstract class AbstractMathTestCase extends AbstractTestCase
         ];
         yield [
             'leftOperand' => '10000001',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'lessThan',
+            'result' => false,
+        ];
+        yield [
+            'leftOperand' => '10000000',
             'rightOperand' => '10000000',
             'compareMethod' => 'lessThan',
             'result' => false,
@@ -207,9 +225,9 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     }
 
     /**
-     * @dataProvider provideCompareData
+     * @dataProvider provideCompareThatData
      */
-    public function testCompareSucceeds(
+    public function testCompareThatSucceeds(
         string $leftOperand,
         string $rightOperand,
         string $compareMethod,

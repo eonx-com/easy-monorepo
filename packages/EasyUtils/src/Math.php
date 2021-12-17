@@ -64,7 +64,7 @@ final class Math implements MathInterface
     }
 
     /**
-     * @deprecated musst be deleted on next major update, use compareThat() method instead
+     * @deprecated must be deleted on next major update, use compareThat() method instead
      */
     public function comp(string $leftOperand, string $rightOperand): int
     {
