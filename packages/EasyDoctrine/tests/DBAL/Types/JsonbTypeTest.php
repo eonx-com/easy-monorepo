@@ -25,6 +25,22 @@ final class JsonbTypeTest extends AbstractTestCase
         return \array_merge(
             $this->provideConvertToPhpValues(),
             [
+                'multidimensional array phpValue' => [
+                    'phpValue' => [
+                        'key3' => '15',
+                        'key1' => 'value1',
+                        'key4' => 15,
+                        'key2' => false,
+                        'key6' => [
+                            'sub-key-2' => 'bar',
+                            'sub-key-3' => 42,
+                            'sub-key-1' => 'foo',
+                        ],
+                        'key5' => [112, 242, 309, 310],
+                    ],
+                    'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,' .
+                        '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
+                ],
                 'object phpValue' => [
                     'phpValue' => (object)[
                         'property' => 'value',
@@ -74,8 +90,14 @@ final class JsonbTypeTest extends AbstractTestCase
                     'key3' => '15',
                     'key4' => 15,
                     'key5' => [112, 242, 309, 310],
+                    'key6' => [
+                        'sub-key-1' => 'foo',
+                        'sub-key-2' => 'bar',
+                        'sub-key-3' => 42,
+                    ],
                 ],
-                'postgresValue' => '{"key1":"value1","key2":false,"key3":"15","key4":15,"key5":[112,242,309,310]}',
+                'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,' .
+                    '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
             ],
         ];
     }
@@ -91,7 +113,7 @@ final class JsonbTypeTest extends AbstractTestCase
     public function testConvertToDatabaseValueSucceeds($phpValue, ?string $postgresValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
-        $type = Type::getType(JsonbType::TYPE_NAME);
+        $type = Type::getType(JsonbType::JSONB);
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
 
@@ -107,13 +129,13 @@ final class JsonbTypeTest extends AbstractTestCase
     public function testConvertToDatabaseValueThrowsConversionException(): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
-        $type = Type::getType(JsonbType::TYPE_NAME);
+        $type = Type::getType(JsonbType::JSONB);
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
         $value = \urldecode('some incorrectly encoded utf string %C4');
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
-            "Could not convert PHP type 'string' to 'json', as an " .
+            "Could not convert PHP type 'string' to 'JSONB', as an " .
             "'Malformed UTF-8 characters, possibly incorrectly encoded' error was triggered by the serialization"
         );
 
@@ -131,7 +153,7 @@ final class JsonbTypeTest extends AbstractTestCase
     public function testConvertToPhpValueSucceeds($phpValue, ?string $postgresValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
-        $type = Type::getType(JsonbType::TYPE_NAME);
+        $type = Type::getType(JsonbType::JSONB);
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
 
@@ -147,7 +169,7 @@ final class JsonbTypeTest extends AbstractTestCase
     public function testConvertToPhpValueThrowsConversionException(): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
-        $type = Type::getType(JsonbType::TYPE_NAME);
+        $type = Type::getType(JsonbType::JSONB);
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
         $value = 'ineligible-value';
@@ -163,11 +185,11 @@ final class JsonbTypeTest extends AbstractTestCase
     public function testGetNameSucceeds(): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
-        $type = Type::getType(JsonbType::TYPE_NAME);
+        $type = Type::getType(JsonbType::JSONB);
 
         $name = $type->getName();
 
-        self::assertSame(JsonbType::TYPE_NAME, $name);
+        self::assertSame(JsonbType::JSONB, $name);
     }
 
     /**
@@ -176,15 +198,15 @@ final class JsonbTypeTest extends AbstractTestCase
     public function testGetSQLDeclaration(): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
-        $type = Type::getType(JsonbType::TYPE_NAME);
+        $type = Type::getType(JsonbType::JSONB);
         $platform = $this->prophesize(AbstractPlatform::class);
-        $platform->getDoctrineTypeMapping($type::TYPE_NAME)->willReturn($type::TYPE_NAME);
+        $platform->getDoctrineTypeMapping($type::JSONB)->willReturn($type::JSONB);
 
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platformReveal */
         $platformReveal = $platform->reveal();
         $result = $type->getSQLDeclaration([], $platformReveal);
 
-        self::assertSame($type::TYPE_NAME, $result);
+        self::assertSame($type::JSONB, $result);
     }
 
     /**
@@ -194,8 +216,8 @@ final class JsonbTypeTest extends AbstractTestCase
     {
         parent::setUp();
 
-        if (Type::hasType(JsonbType::TYPE_NAME) === false) {
-            Type::addType(JsonbType::TYPE_NAME, JsonbType::class);
+        if (Type::hasType(JsonbType::JSONB) === false) {
+            Type::addType(JsonbType::JSONB, JsonbType::class);
         }
     }
 }
