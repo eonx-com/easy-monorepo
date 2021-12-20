@@ -87,16 +87,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(MessageSerializerDecorator::class)
         ->decorate(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER)
-        ->args([ref('.inner')]);
+        ->args([service('.inner')]);
 
     // Transformers
     $services
         ->set(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER, BatchTransformer::class)
-        ->arg('$messageSerializer', ref(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
+        ->arg('$messageSerializer', service(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
         ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_CLASS . '%');
 
     $services
         ->set(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER, BatchItemTransformer::class)
-        ->arg('$messageSerializer', ref(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
+        ->arg('$messageSerializer', service(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
         ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_CLASS . '%');
 };
