@@ -31,7 +31,6 @@ final class ApiResourceAndSimpleDataPersisterMaker extends AbstractMaker
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
-            ->setDescription(self::getCommandDescription())
             ->addArgument(
                 'name',
                 InputArgument::REQUIRED,
