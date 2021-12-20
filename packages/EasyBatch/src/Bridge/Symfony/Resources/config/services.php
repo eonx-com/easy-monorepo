@@ -7,6 +7,7 @@ use EonX\EasyBatch\Bridge\BridgeConstantsInterface;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\AsyncDispatcher;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\DispatchBatchMiddleware;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\ProcessBatchItemMiddleware;
+use EonX\EasyBatch\Bridge\Symfony\Serializers\MessageSerializerDecorator;
 use EonX\EasyBatch\Factories\BatchFactory;
 use EonX\EasyBatch\Factories\BatchItemFactory;
 use EonX\EasyBatch\IdStrategies\UuidV4Strategy;
@@ -19,6 +20,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Repositories\BatchItemRepository;
 use EonX\EasyBatch\Repositories\BatchRepository;
+use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyBatch\Transformers\BatchTransformer;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
@@ -81,12 +83,21 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_TABLE . '%')
         ->arg('$transformer', ref(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
 
+    //Serializer
+    $services->set(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER, MessageSerializer::class);
+
+    $services->set(MessageSerializerDecorator::class)
+        ->decorate(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER)
+        ->args([ref('.inner')]);
+
     // Transformers
     $services
         ->set(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER, BatchTransformer::class)
+        ->arg('$messageSerializer', ref(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
         ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_CLASS . '%');
 
     $services
         ->set(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER, BatchItemTransformer::class)
+        ->arg('$messageSerializer', ref(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
         ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_CLASS . '%');
 };

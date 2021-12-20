@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2 || ^8.0",
+        "ext-json": "*",
         "eonx-com/easy-event-dispatcher": "^3.5",
         "nesbot/carbon": "^1.39 || ^2.22"
     },
