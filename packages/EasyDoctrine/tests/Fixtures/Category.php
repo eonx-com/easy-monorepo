@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Fixtures;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,6 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTimeInterface|null
+     */
+    private $activeTill;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -27,6 +35,11 @@ class Category
      */
     private $name;
 
+    public function getActiveTill(): ?DateTimeInterface
+    {
+        return $this->activeTill;
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -35,6 +48,13 @@ class Category
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setActiveTill(?DateTimeInterface $activeTill = null): self
+    {
+        $this->activeTill = $activeTill;
+
+        return $this;
     }
 
     public function setId(int $id): void

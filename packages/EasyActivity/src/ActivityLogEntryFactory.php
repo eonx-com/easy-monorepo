@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyActivity;
 
 use Carbon\Carbon;
-use DateTimeInterface;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
@@ -48,7 +47,6 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
             return null;
         }
 
-        $changeSet = $this->getClearedChangeSet($changeSet);
         $subjectData = $this->subjectDataResolver->resolve($action, $subject, $changeSet);
         if ($subjectData === null) {
             return null;
@@ -67,23 +65,5 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
             ->setUpdatedAt($now);
 
         return $logEntry;
-    }
-
-    /**
-     * @param mixed[] $changeSet
-     *
-     * @return mixed[]
-     */
-    private function getClearedChangeSet(array $changeSet): array
-    {
-        return \array_filter($changeSet, static function (array $changeSetItem) {
-            if ($changeSetItem[0] instanceof DateTimeInterface && $changeSetItem[1] instanceof DateTimeInterface) {
-                $format = 'Y-m-d H:i:s.uP';
-
-                return $changeSetItem[0]->format($format) !== $changeSetItem[1]->format($format);
-            }
-
-            return true;
-        });
     }
 }
