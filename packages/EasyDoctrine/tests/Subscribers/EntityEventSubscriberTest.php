@@ -62,7 +62,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         );
     }
 
-    public function testEventIsNotDispatchedForEqualsDates(): void
+    public function testEventIsNotDispatchedForEqualDates(): void
     {
         $eventDispatcher = new EventDispatcherStub();
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
