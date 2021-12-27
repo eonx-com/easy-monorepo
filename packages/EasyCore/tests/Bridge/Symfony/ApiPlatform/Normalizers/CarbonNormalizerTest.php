@@ -58,6 +58,14 @@ final class CarbonNormalizerTest extends AbstractSymfonyTestCase
             'carbon' => CarbonImmutable::now(),
             'context' => [self::FORMAT_KEY => CarbonInterface::RFC3339_EXTENDED],
         ];
+
+        yield 'with format and timezone from constructor' => [
+            'expectedResult' => '2021-12-16T17:00:00.000+07:00',
+            'carbon' => CarbonImmutable::now(),
+            'context' => null,
+            'format' => CarbonInterface::RFC3339_EXTENDED,
+            'timezone' => 'Asia/Krasnoyarsk',
+        ];
     }
 
     public function testHasCacheableSupportsMethodSucceeds(): void
@@ -74,9 +82,14 @@ final class CarbonNormalizerTest extends AbstractSymfonyTestCase
      *
      * @dataProvider provideDataForNormalize
      */
-    public function testNormalizeSucceeds(string $expectedResult, CarbonInterface $carbon, array $context = null): void
-    {
-        $normalizer = new CarbonNormalizer();
+    public function testNormalizeSucceeds(
+        string $expectedResult,
+        CarbonInterface $carbon,
+        ?array $context = null,
+        ?string $format = null,
+        ?string $timezone = null
+    ): void {
+        $normalizer = new CarbonNormalizer($format, $timezone);
 
         $result = $normalizer->normalize($carbon, null, $context);
 

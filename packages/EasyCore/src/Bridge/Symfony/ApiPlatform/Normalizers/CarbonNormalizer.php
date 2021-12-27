@@ -16,6 +16,16 @@ final class CarbonNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * @var string
      */
+    private const DEFAULT_FORMAT = CarbonImmutable::RFC3339;
+
+    /**
+     * @var string
+     */
+    private const DEFAULT_TIMEZONE = 'UTC';
+
+    /**
+     * @var string
+     */
     private const FORMAT_KEY = 'datetime_format';
 
     /**
@@ -24,12 +34,20 @@ final class CarbonNormalizer implements NormalizerInterface, CacheableSupportsMe
     private const TIMEZONE_KEY = 'datetime_timezone';
 
     /**
-     * @var mixed[]
+     * @var string
      */
-    private $defaultContext = [
-        self::FORMAT_KEY => CarbonImmutable::RFC3339,
-        self::TIMEZONE_KEY => null,
-    ];
+    private $defaultFormat;
+
+    /**
+     * @var string
+     */
+    private $defaultTimezone;
+
+    public function __construct(?string $format = null, ?string $timezone = null)
+    {
+        $this->defaultFormat = $format ?? self::DEFAULT_FORMAT;
+        $this->defaultTimezone = $timezone ?? self::DEFAULT_TIMEZONE;
+    }
 
     public function hasCacheableSupportsMethod(): bool
     {
@@ -46,7 +64,7 @@ final class CarbonNormalizer implements NormalizerInterface, CacheableSupportsMe
             throw new InvalidArgumentException('The object must implement the "\Carbon\CarbonInterface".');
         }
 
-        $dateTimeFormat = $context[self::FORMAT_KEY] ?? $this->defaultContext[self::FORMAT_KEY];
+        $dateTimeFormat = $context[self::FORMAT_KEY] ?? $this->defaultFormat;
         $timezone = $this->getTimezone($context);
 
         if ($timezone !== null) {
@@ -67,7 +85,7 @@ final class CarbonNormalizer implements NormalizerInterface, CacheableSupportsMe
      */
     private function getTimezone(?array $context = null): ?CarbonTimeZone
     {
-        $dateTimeZone = $context[self::TIMEZONE_KEY] ?? $this->defaultContext[self::TIMEZONE_KEY];
+        $dateTimeZone = $context[self::TIMEZONE_KEY] ?? $this->defaultTimezone;
 
         if ($dateTimeZone === null) {
             return null;
