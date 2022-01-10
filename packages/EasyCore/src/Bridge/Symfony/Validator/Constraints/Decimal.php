@@ -35,8 +35,13 @@ final class Decimal extends Constraint
      */
     public $minPrecision;
 
-    public function __construct($options = null, int $minPrecision = null, int $maxPrecision = null)
-    {
+    public function __construct(
+        $options = null,
+        int $minPrecision = null,
+        int $maxPrecision = null,
+        array $groups = null,
+        $payload = null
+    ) {
         $minPrecision = (int)($minPrecision ?? $options['minPrecision'] ?? null);
         $maxPrecision = (int)($maxPrecision ?? $options['maxPrecision'] ?? null);
 
@@ -50,7 +55,7 @@ final class Decimal extends Constraint
             );
         }
 
-        parent::__construct($options);
+        parent::__construct($options, $groups, $payload);
     }
 
     public function getRequiredOptions()
