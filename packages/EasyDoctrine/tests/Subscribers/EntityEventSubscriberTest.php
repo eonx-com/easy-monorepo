@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Subscribers;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
 use EonX\EasyDoctrine\Events\EntityDeletedEvent;
@@ -20,6 +22,75 @@ use EonX\EasyDoctrine\Tests\Stubs\EventDispatcherStub;
  */
 final class EntityEventSubscriberTest extends AbstractTestCase
 {
+    public function testEventIsDispatchedIfTimezoneWasChanged(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Category::class],
+            [Category::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'category',
+                [
+                    'id' => 1,
+                    'name' => 'Computer',
+                    'activeTill' => '2022-12-20 16:23:52',
+                ]
+            );
+        /** @var Category $category */
+        $category = $entityManager->getRepository(Category::class)->find(1);
+        /** @var \DateTime $activeTill */
+        $activeTill = $category->getActiveTill();
+        $newActiveTill = (clone $activeTill)->setTimezone(new DateTimeZone('Asia/Krasnoyarsk'));
+        $category->setActiveTill($newActiveTill);
+
+        $entityManager->persist($category);
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $category,
+                [
+                    'activeTill' => [$activeTill, $newActiveTill],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
+    public function testEventIsNotDispatchedForEqualDates(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Category::class],
+            [Category::class]
+        );
+        $activeTill = '2022-12-20 16:23:52';
+        $entityManager->getConnection()
+            ->insert(
+                'category',
+                [
+                    'id' => 1,
+                    'name' => 'Computer',
+                    'activeTill' => $activeTill,
+                ]
+            );
+        /** @var Category $category */
+        $category = $entityManager->getRepository(Category::class)->find(1);
+        $category->setActiveTill(new DateTimeImmutable($activeTill));
+
+        $entityManager->persist($category);
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(0, $events);
+    }
+
     public function testEventsAreDispatchedAfterEnablingDispatcher(): void
     {
         $eventDispatcher = new EventDispatcherStub();
@@ -109,6 +180,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             new EntityCreatedEvent(
                 $category,
                 [
+                    'activeTill' => [null, null],
                     'name' => [null, 'Computer'],
                 ]
             ),

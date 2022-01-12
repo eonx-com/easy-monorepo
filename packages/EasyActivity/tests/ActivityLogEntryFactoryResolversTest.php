@@ -42,7 +42,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
             $author,
-            ['change' => 1]
+            ['change' => [null, 1]]
         );
 
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
