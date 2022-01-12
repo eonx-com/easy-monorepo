@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyUtils;
 
 use EonX\EasyUtils\Exceptions\InvalidDivisionByZeroException;
+use EonX\EasyUtils\Interfaces\MathComparisonInterface;
 use EonX\EasyUtils\Interfaces\MathInterface;
 
 final class Math implements MathInterface
@@ -63,6 +64,11 @@ final class Math implements MathInterface
     public function comp(string $leftOperand, string $rightOperand): int
     {
         return \bccomp($leftOperand, $rightOperand, $this->scale);
+    }
+
+    public function compareThat(string $leftOperand): MathComparisonInterface
+    {
+        return new MathComparison($leftOperand, $this->scale);
     }
 
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $mode = null): string

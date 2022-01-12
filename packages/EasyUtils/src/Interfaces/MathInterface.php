@@ -37,6 +37,8 @@ interface MathInterface
 
     public function comp(string $leftOperand, string $rightOperand): int;
 
+    public function compareThat(string $leftOperand): MathComparisonInterface;
+
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $mode = null): string;
 
     public function multiply(
