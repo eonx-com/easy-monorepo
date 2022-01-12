@@ -9,6 +9,9 @@ use EonX\EasyCore\Search\SearchServiceInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
+/**
+ * @deprecated We do not use Elasticsearch anymore
+ */
 abstract class AbstractDoctrineMigration extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
