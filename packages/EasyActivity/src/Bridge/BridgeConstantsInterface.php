@@ -9,6 +9,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_CIRCULAR_REFERENCE_HANDLER = 'easy_activity.circular_reference_handler';
+
+    /**
+     * @var string
+     */
     public const PARAM_DISALLOWED_PROPERTIES = 'easy_activity.disallowed_properties';
 
     /**

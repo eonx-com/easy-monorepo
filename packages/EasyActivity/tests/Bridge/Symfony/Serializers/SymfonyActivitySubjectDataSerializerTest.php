@@ -12,6 +12,8 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 use EonX\EasyActivity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
+use EonX\EasyActivity\Tests\Fixtures\Comment;
+use EonX\EasyActivity\Tests\Stubs\CircularReferenceHandlerStub;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTestCase
@@ -30,6 +32,9 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         $author->setId($entityId);
         $author->setName($authorName);
         $author->setPosition($authorPosition);
+        $comment = new Comment();
+        $article = new Article();
+        $article->addComment($comment);
 
         yield 'Default config' => [
             'data' => [
@@ -95,7 +100,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             ],
             'subject' => new ActivitySubject((string)$entityId, Article::class, [], [], []),
             'disallowedProperties' => null,
-            'expectedResult' => sprintf(
+            'expectedResult' => \sprintf(
                 '{"author":{"id":1},"comments":[],"content":"text","createdAt":"%s","id":1}',
                 $moment->format(DateTimeInterface::ATOM)
             ),
@@ -168,6 +173,22 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'disallowedProperties' => null,
             'expectedResult' => '{"author":{"name":"John Doe"},"content":"text"}',
         ];
+
+        $allowedProperties = [
+            'comments' => ['article'],
+        ];
+        yield 'With circular reference' => [
+            'data' => [
+                'comments' => [$comment],
+            ],
+            'subject' => new ActivitySubject((string)$entityId, Article::class, [], [], $allowedProperties),
+            'disallowedProperties' => null,
+            'expectedResult' => \sprintf(
+                '{"comments":[{"article":{"author":null,"comments":["circular-reference-uuid"],' .
+                '"createdAt":"%s","id":null}}]}',
+                $moment->format(DateTimeInterface::ATOM)
+            ),
+        ];
     }
 
     /**
@@ -183,7 +204,11 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ?string $expectedResult
     ): void {
         $symfonySerializer = $this->arrangeSymfonySerializer();
-        $serializer = new SymfonyActivitySubjectDataSerializer($symfonySerializer, $disallowedProperties ?? []);
+        $serializer = new SymfonyActivitySubjectDataSerializer(
+            $symfonySerializer,
+            new CircularReferenceHandlerStub(),
+            $disallowedProperties ?? []
+        );
 
         $result = $serializer->serialize($data, $subject);
 

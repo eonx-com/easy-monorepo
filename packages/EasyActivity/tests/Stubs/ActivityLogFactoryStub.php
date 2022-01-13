@@ -46,7 +46,11 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
                 [new JsonEncoder()]
             );
             $subjectDataResolver = new DoctrineActivitySubjectDataResolver(
-                new SymfonyActivitySubjectDataSerializer($serializer, $globalDisallowedProperties)
+                new SymfonyActivitySubjectDataSerializer(
+                    $serializer,
+                    new CircularReferenceHandlerStub(),
+                    $globalDisallowedProperties
+                )
             );
         }
         $this->factory = new ActivityLogEntryFactory(
