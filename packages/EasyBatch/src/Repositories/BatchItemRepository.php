@@ -8,6 +8,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use EonX\EasyBatch\Exceptions\BatchItemNotFoundException;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
+use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
@@ -28,6 +29,11 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             $queryBuilder
                 ->where('batch_id = :batchId')
                 ->setParameter('batchId', $batchId);
+
+            // Dispatch only pending items
+            $queryBuilder
+                ->andWhere('status = :pendingStatus')
+                ->setParameter('pendingStatus', BatchObjectInterface::STATUS_PENDING);
 
             // Make sure to get only batchItems with no dependency
             if ($dependsOnName === null) {
