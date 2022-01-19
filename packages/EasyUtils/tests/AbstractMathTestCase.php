@@ -43,28 +43,107 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
-     * @see testCompSucceeds
+     * @see testCompareThatSucceeds
      */
-    public function provideCompData(): array
+    public function provideCompareThatData(): iterable
     {
-        return [
-            [
-                'leftOperand' => '10000000',
-                'rightOperand' => '10000001',
-                'result' => -1,
-            ],
-            [
-                'leftOperand' => '10000000',
-                'rightOperand' => '10000000',
-                'result' => 0,
-            ],
-            [
-                'leftOperand' => '10000001',
-                'rightOperand' => '10000000',
-                'result' => 1,
-            ],
+        yield [
+            'leftOperand' => '10000000',
+            'rightOperand' => '10000001',
+            'compareMethod' => 'greaterOrEqualTo',
+            'result' => false,
+        ];
+        yield [
+            'leftOperand' => '10000000',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'greaterOrEqualTo',
+            'result' => true,
+        ];
+        yield [
+            'leftOperand' => '10000001',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'greaterOrEqualTo',
+            'result' => true,
+        ];
+        yield [
+            'leftOperand' => '10000000',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'equalTo',
+            'result' => true,
+        ];
+        yield [
+            'leftOperand' => '10000000',
+            'rightOperand' => '10000001',
+            'compareMethod' => 'equalTo',
+            'result' => false,
+        ];
+        yield [
+            'leftOperand' => '10000001',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'equalTo',
+            'result' => false,
+        ];
+        yield [
+            'leftOperand' => '10000001',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'greaterThan',
+            'result' => true,
+        ];
+        yield [
+            'leftOperand' => '10000000',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'greaterThan',
+            'result' => false,
+        ];
+        yield [
+            'leftOperand' => '10000000',
+            'rightOperand' => '10000001',
+            'compareMethod' => 'greaterThan',
+            'result' => false,
+        ];
+        yield [
+            'leftOperand' => '10000000',
+            'rightOperand' => '10000001',
+            'compareMethod' => 'lessOrEqualTo',
+            'result' => true,
+        ];
+        yield [
+            'leftOperand' => '10000000',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'lessOrEqualTo',
+            'result' => true,
+        ];
+        yield [
+            'leftOperand' => '10000001',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'lessOrEqualTo',
+            'result' => false,
+        ];
+        yield [
+            'leftOperand' => '10000001',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'lessThan',
+            'result' => false,
+        ];
+        yield [
+            'leftOperand' => '10000000',
+            'rightOperand' => '10000000',
+            'compareMethod' => 'lessThan',
+            'result' => false,
+        ];
+        yield [
+            'leftOperand' => '10000000',
+            'rightOperand' => '10000001',
+            'compareMethod' => 'lessThan',
+            'result' => true,
+        ];
+        yield [
+            'leftOperand' => '91',
+            'rightOperand' => '091',
+            'compareMethod' => 'equalTo',
+            'result' => true,
         ];
     }
 
@@ -146,12 +225,19 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     }
 
     /**
-     * @dataProvider provideCompData
+     * @dataProvider provideCompareThatData
      */
-    public function testCompSucceeds(string $leftOperand, string $rightOperand, int $result): void
-    {
+    public function testCompareThatSucceeds(
+        string $leftOperand,
+        string $rightOperand,
+        string $compareMethod,
+        bool $result
+    ): void {
         $math = $this->getMath();
-        $actual = $math->comp($leftOperand, $rightOperand);
+
+        $actual = $math
+            ->compareThat($leftOperand)
+            ->{$compareMethod}($rightOperand);
 
         self::assertSame($result, $actual);
     }

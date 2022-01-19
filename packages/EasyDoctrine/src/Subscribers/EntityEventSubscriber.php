@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Subscribers;
 
+use DateTimeInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
@@ -12,6 +13,11 @@ use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
 
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
 {
+    /**
+     * @var string
+     */
+    private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
+
     /**
      * @var string[]
      */
@@ -60,7 +66,10 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         foreach ($scheduledEntityUpdates as $object) {
             /** @var array<string, array{mixed, mixed}> $changeSet */
             $changeSet = $unitOfWork->getEntityChangeSet($object);
-            $this->eventDispatcher->deferUpdate($transactionNestingLevel, $object, $changeSet);
+            $changeSet = $this->getClearedChangeSet($changeSet);
+            if (\count($changeSet) > 0) {
+                $this->eventDispatcher->deferUpdate($transactionNestingLevel, $object, $changeSet);
+            }
         }
 
         foreach ($scheduledEntityDeletions as $object) {
@@ -98,6 +107,24 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
             }
 
             return false;
+        });
+    }
+
+    /**
+     * @param mixed[] $changeSet
+     *
+     * @return mixed[]
+     */
+    private function getClearedChangeSet(array $changeSet): array
+    {
+        return \array_filter($changeSet, static function (array $changeSetItem) {
+            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
+                ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
+                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
+                    $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
+            }
+
+            return true;
         });
     }
 }

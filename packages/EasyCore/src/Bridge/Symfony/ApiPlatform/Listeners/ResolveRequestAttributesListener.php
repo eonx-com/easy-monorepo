@@ -28,7 +28,8 @@ final class ResolveRequestAttributesListener implements EventListenerInterface
     public function __construct(RequestStack $requestStack, ?ArgumentResolverInterface $argumentResolver = null)
     {
         $this->argumentResolver = $argumentResolver ?? new ArgumentResolver();
-        $this->request = $requestStack->getMasterRequest();
+        $getMainRequestMethod = \method_exists($requestStack, 'getMainRequest') ? 'getMainRequest' : 'getMasterRequest';
+        $this->request = $requestStack->{$getMainRequestMethod}();
     }
 
     public function __invoke(DataPersisterResolvedEvent $event): void
