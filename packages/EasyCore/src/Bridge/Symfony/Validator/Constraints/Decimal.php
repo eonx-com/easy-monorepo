@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  * @Annotation
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY|\Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD)]
 final class Decimal extends Constraint
 {
     /**
