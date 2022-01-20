@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\DBAL\Types;
@@ -47,8 +48,10 @@ final class CarbonImmutableDateTypeTest extends AbstractTestCase
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateType $type */
         $type = Type::getType((new CarbonImmutableDateType())->getName());
+        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->prophesize(AbstractPlatform::class);
-        $platform->getDateFormatString()->willReturn('Y-m-d');
+        $platform->getDateFormatString()
+            ->willReturn('Y-m-d');
 
         $phpValue = $type->convertToPHPValue($value, $platform->reveal());
 

@@ -136,8 +136,8 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
         $value = 'some-ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' " .
-            "of type 'string' to type 'datetime'. " .
-            'Expected one of the following types: null, DateTimeImmutable');
+            "of type 'string' to type 'datetime_immutable'. " .
+            'Expected one of the following types: null, DateTimeInterface');
 
         $type->convertToDatabaseValue($value, $platform);
     }
@@ -168,7 +168,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
         $value = 'ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert database value "ineligible-value" ' .
-            'to Doctrine Type datetime. Expected format: Y-m-d H:i:s.u');
+            'to Doctrine Type datetime_immutable. Expected format: Y-m-d H:i:s.u');
 
         $type->convertToPHPValue($value, $platform);
     }
