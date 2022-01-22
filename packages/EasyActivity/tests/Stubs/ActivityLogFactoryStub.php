@@ -7,6 +7,7 @@ namespace EonX\EasyActivity\Tests\Stubs;
 use EonX\EasyActivity\ActivityLogEntry;
 use EonX\EasyActivity\ActivityLogEntryFactory;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineActivitySubjectDataResolver;
+use EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandler;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonyActivitySubjectDataSerializer;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface;
@@ -48,7 +49,7 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
             $subjectDataResolver = new DoctrineActivitySubjectDataResolver(
                 new SymfonyActivitySubjectDataSerializer(
                     $serializer,
-                    new CircularReferenceHandlerStub(),
+                    new CircularReferenceHandler(EntityManagerStub::createFromEventManager()),
                     $globalDisallowedProperties
                 )
             );

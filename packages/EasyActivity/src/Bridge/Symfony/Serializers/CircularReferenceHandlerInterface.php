@@ -8,8 +8,6 @@ interface CircularReferenceHandlerInterface
 {
     /**
      * @param mixed[] $context
-     *
-     * @return mixed
      */
-    public function __invoke(object $object, string $format, array $context);
+    public function __invoke(object $object, string $format, array $context): string;
 }
