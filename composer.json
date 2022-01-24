@@ -42,7 +42,7 @@
         "api-platform/core": "^2.5",
         "auth0/auth0-php": "^5.4 || ^7.6",
         "bugsnag/bugsnag-laravel": "^2.17",
-        "doctrine/dbal": "^2.6",
+        "doctrine/dbal": "^2.11",
         "firebase/php-jwt": "^5.0",
         "laravel-doctrine/orm": "^1.4",
         "laravel/lumen-framework": "^5.5 || ^8.1",
