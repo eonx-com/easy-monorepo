@@ -29,6 +29,11 @@
             "EonX\\EasyActivity\\Tests\\": "tests"
         }
     },
+    "suggest": {
+        "symfony/serializer": "To serialize subject's data",
+        "symfony/messenger": "To save log entities asynchronously",
+        "eonx-com/easy-doctrine": "To create Log entries from to doctrine events"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "3.5-dev"

@@ -1,7 +1,8 @@
 easy_activity:
+    table_name: activity_logs
+
     disallowed_properties:
         - updatedAt
-        - createdAt
 
     subjects:
 #        App\Entity\SomeEntity:
@@ -10,4 +11,7 @@ easy_activity:
 #                - description
 #            disallowed_properties:
 #                - author
-#            type: SomeEntity
+#            nested_object_allowed_properties:
+#                App\Entity\SomeAnotherEntity:
+#                    - processingDate
+#
