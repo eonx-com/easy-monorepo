@@ -44,19 +44,25 @@ final class CarbonNormalizerTest extends AbstractSymfonyTestCase
         yield 'with CarbonTimeZone timezone in context' => [
             'expectedResult' => '2021-12-16T17:00:00+07:00',
             'carbon' => CarbonImmutable::now(),
-            'context' => [self::TIMEZONE_KEY => CarbonTimeZone::create('Asia/Krasnoyarsk')],
+            'context' => [
+                self::TIMEZONE_KEY => CarbonTimeZone::create('Asia/Krasnoyarsk'),
+            ],
         ];
 
         yield 'with string timezone in context' => [
             'expectedResult' => '2021-12-16T17:00:00+07:00',
             'carbon' => CarbonImmutable::now(),
-            'context' => [self::TIMEZONE_KEY => 'Asia/Krasnoyarsk'],
+            'context' => [
+                self::TIMEZONE_KEY => 'Asia/Krasnoyarsk',
+            ],
         ];
 
         yield 'with format in context' => [
             'expectedResult' => '2021-12-16T10:00:00.000+00:00',
             'carbon' => CarbonImmutable::now(),
-            'context' => [self::FORMAT_KEY => CarbonInterface::RFC3339_EXTENDED],
+            'context' => [
+                self::FORMAT_KEY => CarbonInterface::RFC3339_EXTENDED,
+            ],
         ];
 
         yield 'with format and timezone from constructor' => [
