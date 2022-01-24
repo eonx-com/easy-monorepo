@@ -64,7 +64,7 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
      */
     protected function doGetTotalItems($queryBuilder, string $countAlias): int
     {
-        // @TODO remove this method_exists check when dbal will be updated to version with fetchAssociative method (>=2.11)
+        // @TODO remove this method_exists check when doctrine/dbal is updated to a version containing the fetchAssociative method (>=2.11)
         if (\method_exists($this->conn, 'fetchAssociative')) {
             $result = (array)$this->conn->fetchAssociative(
                 $queryBuilder->getSQL(),
