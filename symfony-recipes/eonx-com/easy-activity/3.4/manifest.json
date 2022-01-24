@@ -1,6 +1,5 @@
 {
     "bundles": {
-        "EonX\\EasyDoctrine\\Bridge\\Symfony\\EasyDoctrineSymfonyBundle": ["all"],
         "EonX\\EasyActivity\\Bridge\\Symfony\\EasyActivitySymfonyBundle": ["all"]
     },
     "copy-from-recipe": {
