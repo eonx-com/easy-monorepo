@@ -6,6 +6,7 @@ namespace EonX\EasyPagination\Paginators;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Version;
 use EonX\EasyPagination\Exceptions\InvalidPrimaryKeyIndexException;
 use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
 use EonX\EasyPagination\Traits\DoctrinePaginatorTrait;
@@ -64,11 +65,16 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
      */
     protected function doGetTotalItems($queryBuilder, string $countAlias): int
     {
-        $result = (array)$this->conn->fetchAssociative(
-            $queryBuilder->getSQL(),
-            $queryBuilder->getParameters(),
-            $queryBuilder->getParameterTypes()
-        );
+        // @TODO remove method_exists check after update DBAL version to >=2.11
+        if (\method_exists($this->conn, 'fetchAssociative')) {
+            $result = (array)$this->conn->fetchAssociative(
+                $queryBuilder->getSQL(),
+                $queryBuilder->getParameters(),
+                $queryBuilder->getParameterTypes()
+            );
+        } else {
+            $result = (array)$this->conn->fetchAssoc($queryBuilder->getSQL(), $queryBuilder->getParameters());
+        }
 
         return (int)($result[$countAlias] ?? 0);
     }
