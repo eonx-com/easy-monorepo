@@ -11,6 +11,7 @@
         "nesbot/carbon": "^1.39 || ^2.22"
     },
     "require-dev": {
+        "doctrine/annotations": "^1.13",
         "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
         "eonx-com/easy-error-handler": "^3.5",
