@@ -66,7 +66,7 @@ final class DoctrineDbalLengthAwarePaginator extends AbstractTransformableLength
     {
         // @TODO remove this method_exists check when doctrine/dbal is updated to a version containing the fetchAssociative method (>=2.11)
         $methodName = \method_exists($this->conn, 'fetchAssociative') ? 'fetchAssociative' : 'fetchAssoc';
-        $result = (array) $this->conn->$methodName(
+        $result = (array) $this->conn->{$methodName}(
             $queryBuilder->getSQL(),
             $queryBuilder->getParameters(),
             $queryBuilder->getParameterTypes()
