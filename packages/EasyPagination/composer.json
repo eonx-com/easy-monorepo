@@ -9,6 +9,7 @@
         "laminas/laminas-uri": "^2.8"
     },
     "require-dev": {
+        "doctrine/annotations": "^1.13",
         "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
         "eonx-com/easy-psr7-factory": "^3.5",

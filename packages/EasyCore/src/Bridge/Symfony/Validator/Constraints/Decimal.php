@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  * @Annotation
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD)]
 final class Decimal extends Constraint
 {
     /**
@@ -34,19 +35,27 @@ final class Decimal extends Constraint
      */
     public $minPrecision;
 
-    public function __construct($options = null)
-    {
-        if ((int)$options['minPrecision'] < 1) {
+    public function __construct(
+        $options = null,
+        int $minPrecision = null,
+        int $maxPrecision = null,
+        array $groups = null,
+        $payload = null
+    ) {
+        $minPrecision = (int)($minPrecision ?? $options['minPrecision'] ?? null);
+        $maxPrecision = (int)($maxPrecision ?? $options['maxPrecision'] ?? null);
+
+        if ($minPrecision < 1) {
             throw new ConstraintDefinitionException('The "minPrecision" option must be an integer greater than zero.');
         }
 
-        if ((int)$options['maxPrecision'] < (int)$options['minPrecision']) {
+        if ($maxPrecision < $minPrecision) {
             throw new ConstraintDefinitionException(
                 'The "maxPrecision" option must be an integer greater than "minPrecision".'
             );
         }
 
-        parent::__construct($options);
+        parent::__construct($options, $groups, $payload);
     }
 
     public function getRequiredOptions()
