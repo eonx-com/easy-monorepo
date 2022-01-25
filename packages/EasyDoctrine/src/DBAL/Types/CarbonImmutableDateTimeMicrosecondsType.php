@@ -8,7 +8,6 @@ use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
 
@@ -85,7 +84,9 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
      */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
-        if ($platform instanceof PostgreSQL94Platform) {
+        $platformClassNameDbal2 = '\Doctrine\DBAL\Platforms\PostgreSQL94Platform';
+        $platformClassNameDbal3 = '\Doctrine\DBAL\Platforms\PostgreSQLPlatform';
+        if ($platform instanceof $platformClassNameDbal3 || $platform instanceof $platformClassNameDbal2) {
             return self::FORMAT_DB_TIMESTAMP_WO_TIMEZONE;
         }
 
