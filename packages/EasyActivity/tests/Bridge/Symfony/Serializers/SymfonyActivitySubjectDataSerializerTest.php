@@ -172,7 +172,9 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'expectedResult' => '{"author":{"name":"John Doe"},"content":"text"}',
         ];
 
-        $comment = (new Comment())->setId(1)->setMessage('some-message');
+        $comment = (new Comment())
+            ->setId(1)
+            ->setMessage('some-message');
         $article = new Article();
         $article->addComment($comment);
         $allowedProperties = [
