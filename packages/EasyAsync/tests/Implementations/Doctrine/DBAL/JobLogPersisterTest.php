@@ -170,6 +170,13 @@ final class JobLogPersisterTest extends AbstractTestCase
                 ->once()
                 ->withNoArgs()
                 ->andReturn([]);
+
+            $mock
+                ->shouldReceive('getParameterTypes')
+                ->atLeast()
+                ->once()
+                ->withNoArgs()
+                ->andReturn([]);
         });
 
         /** @var \Doctrine\DBAL\Connection $conn */
@@ -182,10 +189,10 @@ final class JobLogPersisterTest extends AbstractTestCase
                 ->andReturn($queryBuilder);
 
             $mock
-                ->shouldReceive('fetchAssoc')
+                ->shouldReceive('fetchAssociative')
                 ->atLeast()
                 ->once()
-                ->with('sql query', [])
+                ->with('sql query', [], [])
                 ->andReturn([
                     '_count_1' => 1,
                 ]);
