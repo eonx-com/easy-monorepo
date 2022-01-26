@@ -9,15 +9,15 @@
         "eonx-com/easy-utils": "^3.5",
         "nesbot/carbon": "^1.39 || ^2.22",
         "nette/utils": "^3.1",
-        "symfony/filesystem": "^4.4 || ^5.1.5",
-        "symfony/var-dumper": "^4.4 || ^5.1.5"
+        "symfony/filesystem": "^4.4 || ^5.1.5 || 6.0.*",
+        "symfony/var-dumper": "^4.4 || ^5.1.5 || 6.0.*"
     },
     "require-dev": {
         "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "laravel/lumen-framework": "^5.5 || ^8.1",
-        "symfony/symfony": "^4.4 || ^5.1.5"
+        "symfony/symfony": "^4.4 || ^5.1.5 || 6.0.*"
     },
     "autoload": {
         "psr-4": {
