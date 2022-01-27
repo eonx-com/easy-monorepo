@@ -18,6 +18,7 @@ use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
+use EonX\EasyBatch\Interfaces\MessageSerializerInterface;
 use EonX\EasyBatch\Repositories\BatchItemRepository;
 use EonX\EasyBatch\Repositories\BatchRepository;
 use EonX\EasyBatch\Serializers\MessageSerializer;
@@ -25,7 +26,6 @@ use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyBatch\Transformers\BatchTransformer;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -84,7 +84,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$transformer', ref(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
 
     //Serializer
-    $services->set(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER, MessageSerializer::class);
+    $services->set(MessageSerializerInterface::class, MessageSerializer::class);
+
+    $services->alias(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER, MessageSerializerInterface::class);
 
     $services->set(MessageSerializerDecorator::class)
         ->decorate(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER)
