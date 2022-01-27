@@ -28,6 +28,10 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         foreach ($container->getDefinitions() as $definition) {
             $definition->setPublic(true);
         }
+
+        foreach ($container->getAliases() as $alias) {
+            $alias->setPublic(true);
+        }
     }
 
     /**
