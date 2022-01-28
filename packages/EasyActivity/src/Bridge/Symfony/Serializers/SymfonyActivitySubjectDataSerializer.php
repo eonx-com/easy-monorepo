@@ -71,8 +71,10 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
             if (\is_object($value)) {
                 $objectClass = \get_class($value);
 
-                $context[AbstractNormalizer::ATTRIBUTES][$key] = $nestedObjectAllowedProperties[$objectClass]
-                    ?? $allowedProperties[$key] ?? ['id'];
+                if (\is_subclass_of($objectClass, \DateTimeInterface::class) === false) {
+                    $context[AbstractNormalizer::ATTRIBUTES][$key] = $nestedObjectAllowedProperties[$objectClass]
+                        ?? $allowedProperties[$key] ?? ['id'];
+                }
             }
         }
 
