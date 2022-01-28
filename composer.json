@@ -36,7 +36,8 @@
         "psr/event-dispatcher": "^1.0",
         "laminas/laminas-uri": "^2.8",
         "doctrine/migrations": "^3.2",
-        "paragonie/halite": "^4.8"
+        "paragonie/halite": "^4.8",
+        "myclabs/deep-copy": "^1.10"
     },
     "require-dev": {
         "api-platform/core": "^2.5",

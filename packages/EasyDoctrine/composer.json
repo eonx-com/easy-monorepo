@@ -1,14 +1,17 @@
 {
     "name": "eonx-com/easy-doctrine",
     "description": "Provides functionalities to enhance Doctrine integration in your project",
-    "keywords": ["doctrine"],
+    "keywords": [
+        "doctrine"
+    ],
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
         "php": "^7.2 || ^8.0",
         "ext-json": "*",
         "eonx-com/easy-event-dispatcher": "^3.5",
-        "nesbot/carbon": "^1.39 || ^2.22"
+        "nesbot/carbon": "^1.39 || ^2.22",
+        "myclabs/deep-copy": "^1.10"
     },
     "require-dev": {
         "doctrine/annotations": "^1.13",
