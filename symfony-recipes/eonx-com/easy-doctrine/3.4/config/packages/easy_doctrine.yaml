@@ -1,0 +1,21 @@
+easy_doctrine:
+    deferred_dispatcher_entities: []
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: false
+
+    EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator:
+        arguments:
+            $wrapped: '@.inner'
+        decorates: doctrine.orm.default_entity_manager
+
+    EonX\EasyDoctrine\Subscribers\EntityEventSubscriber:
+        arguments:
+            $entities: '%easy_doctrine.deferred_dispatcher_entities%'
+        tags:
+            -
+                name: doctrine.event_subscriber
+                connection: default
+
