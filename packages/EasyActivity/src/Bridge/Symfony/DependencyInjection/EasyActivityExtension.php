@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Bridge\Symfony\DependencyInjection;
 
 use EonX\EasyActivity\Bridge\BridgeConstantsInterface;
-use EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandlerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -19,7 +17,6 @@ final class EasyActivityExtension extends Extension implements PrependExtensionI
      * @var array<string, string>
      */
     private const EASY_ACTIVITY_CONFIG = [
-        'circular_reference_handler' => BridgeConstantsInterface::PARAM_CIRCULAR_REFERENCE_HANDLER,
         'disallowed_properties' => BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES,
         'easy_doctrine_subscriber_enabled' => BridgeConstantsInterface::PARAM_EASY_DOCTRINE_SUBSCRIBER_ENABLED,
         'subjects' => BridgeConstantsInterface::PARAM_SUBJECTS,
@@ -45,13 +42,6 @@ final class EasyActivityExtension extends Extension implements PrependExtensionI
         if ($this->easyDoctrineBundleIsRegistered($container)) {
             $loader->load('easy-doctrine-bridge-services.php');
         }
-
-        $circularReferenceHandler = $config['circular_reference_handler'];
-        $circularHandlerDefinition = (new Definition($circularReferenceHandler))
-            ->setAutowired(true)
-            ->setAutoconfigured(true);
-
-        $container->setDefinition(CircularReferenceHandlerInterface::class, $circularHandlerDefinition);
     }
 
     public function prepend(ContainerBuilder $container): void

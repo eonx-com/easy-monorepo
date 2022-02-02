@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Bridge\Symfony\DependencyInjection;
 
-use EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandler;
-use EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandlerInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
@@ -18,23 +16,6 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->scalarNode('circular_reference_handler')
-                    ->info('Handler for circular references.')
-                    ->defaultValue(CircularReferenceHandler::class)
-                    ->validate()
-                        ->always()
-                        ->then(static function ($property) {
-                            if (\is_subclass_of($property, CircularReferenceHandlerInterface::class) === false) {
-                                throw new InvalidTypeException(
-                                    'Circular reference handler should implement ' .
-                                    CircularReferenceHandlerInterface::class
-                                );
-                            }
-
-                            return $property;
-                        })
-                    ->end()
-                ->end()
                 ->booleanNode('easy_doctrine_subscriber_enabled')
                     ->defaultValue(true)
                     ->info('Whether easy-doctrine subscriber should handle events.')
