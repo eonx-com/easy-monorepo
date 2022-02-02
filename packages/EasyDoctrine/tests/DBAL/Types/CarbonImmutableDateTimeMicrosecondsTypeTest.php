@@ -87,14 +87,18 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
             CarbonImmutableDateTimeMicrosecondsType::FORMAT_DB_DATETIME,
         ];
 
+        $platformClassNameDbal2 = '\Doctrine\DBAL\Platforms\PostgreSQL94Platform';
+        $platformClassNameDbal3 = '\Doctrine\DBAL\Platforms\PostgreSQLPlatform';
+        $platformClassName = class_exists($platformClassNameDbal2) ? $platformClassNameDbal2 : $platformClassNameDbal3;
+
         yield 'postgresql' => [
-            PostgreSQL94Platform::class,
+            $platformClassName,
             [],
             CarbonImmutableDateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
         ];
 
         yield 'postgresql, with version = true' => [
-            PostgreSQL94Platform::class,
+            $platformClassName,
             [
                 'version' => true,
             ],
@@ -102,7 +106,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
         ];
 
         yield 'postgresql, with version = false' => [
-            PostgreSQL94Platform::class,
+            $platformClassName,
             [
                 'version' => false,
             ],
