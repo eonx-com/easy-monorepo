@@ -190,7 +190,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 '{"comments":[{"article":{"author":null,"comments":' .
                 '["EonX\\\EasyActivity\\\Tests\\\Fixtures\\\Comment#1 (circular reference)"],' .
                 '"createdAt":"%s","id":null},"id":1,"message":"some-message"}]}',
-                $moment->format(DateTimeInterface::ATOM)
+                $article->getCreatedAt()->format(DateTimeInterface::ATOM)
             ),
         ];
     }
