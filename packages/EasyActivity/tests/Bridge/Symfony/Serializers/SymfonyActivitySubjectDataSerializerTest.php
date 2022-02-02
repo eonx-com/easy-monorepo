@@ -180,6 +180,8 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         $allowedProperties = [
             'comments' => ['article'],
         ];
+        $expectedCreatedAt = $article->getCreatedAt()
+            ->format(DateTimeInterface::ATOM);
         yield 'With circular reference' => [
             'data' => [
                 'comments' => [$comment],
@@ -190,7 +192,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 '{"comments":[{"article":{"author":null,"comments":' .
                 '["EonX\\\EasyActivity\\\Tests\\\Fixtures\\\Comment#1 (circular reference)"],' .
                 '"createdAt":"%s","id":null},"id":1,"message":"some-message"}]}',
-                $article->getCreatedAt()->format(DateTimeInterface::ATOM)
+                $expectedCreatedAt
             ),
         ];
     }
