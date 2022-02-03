@@ -54,7 +54,8 @@ final class CloverCoverageResolver implements CoverageResolverInterface
 
         $totalElements = (int)$xml->xpath('//project/metrics/@elements')[0];
         $totalCoveredElements = (int)$xml->xpath('//project/metrics/@coveredelements')[0];
-        $coverage = ($totalCoveredElements / $totalElements) * 100;
+
+        $coverage = $totalElements === 0 ? 100 : ($totalCoveredElements / $totalElements) * 100;
 
         return new CoverageReportDto($coverage, $violations);
     }
