@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Command;
@@ -75,11 +76,14 @@ final class AnalyzeErrorCodesCommand extends Command
 
         $table = new Table($output);
         $table
-            ->setHeaders(['categoryName' => 'Error code group', 'nextErrorCodeToUse' => 'Next error code to use'])
+            ->setHeaders([
+                'categoryName' => 'Error code group',
+                'nextErrorCodeToUse' => 'Next error code to use',
+            ])
             ->setRows($nextErrorCodeForCategory);
         $table->render();
 
-        $output->writeln("\n<info>The error code for the new group is $nextCategoryToUse.</info>\n");
+        $output->writeln(\sprintf('\n<info>The error code for the new group is %s.</info>\n', $nextCategoryToUse));
 
         return self::SUCCESS;
     }
