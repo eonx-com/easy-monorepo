@@ -5,7 +5,7 @@ weight: 1003
 
 # ActivityLogEntry class
 
-The **ActivityLogEntry** class defines an activity log data.
+The `\EonX\EasyActivity\ActivityLogEntry` class defines an activity log data.
 
 ## Properties
 
@@ -25,5 +25,5 @@ A `ActivityLogEntry` object has the following properties:
 
 ### ActivityLogEntry creation
 
-The package provides `ActivityLogEntryFactoryInterface` (along with its `ActivityLogEntryFactory` implementation) 
+The package provides `\EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface` (along with its `\EonX\EasyActivity\ActivityLogEntryFactory` implementation) 
 that takes care of a log entry creation.

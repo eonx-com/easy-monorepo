@@ -25,14 +25,15 @@ easy_activity:
 #            nested_object_allowed_properties:
 #                App\Entity\SomeAnotherEntity:
 #                    - processingDate
+#            type: SomeEntity
 #
 ```
 
 #### Settings for entities
 * `disallowed_properties` — an optional global array of "Subject" property names to be excluded from log entries (this list will be applied to all "Subjects").
 * `subjects` — a list of "Subject" classes to be logged. Each item can contain the following params:
-  * `allowed_properties` — an optional array of "Subject" property names to be "whitelisted" for log entries.
-  * `disallowed_properties` — an optional array of "Subject" property names to be excluded from log entries.
+  * `allowed_properties` — an optional array of "Subject" property names to be "whitelisted" for log entries. By default, all "Subject" property names are "whitelisted".
+  * `disallowed_properties` — an optional array of "Subject" property names to be excluded from log entries. By default, this array is empty.
   * `nested_object_allowed_properties` — an optional property names to be "whitelisted" for log related entries.
   * `type` — an optional "Subject" type mapping. If no type is provided, a FQCN will be used by default.
 
