@@ -52,7 +52,7 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(ActivitySubjectDataSerializerInterface::class, SymfonyActivitySubjectDataSerializer::class)
         ->arg('$disallowedProperties', '%' . BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES . '%')
-        ->arg('$serializer', service(BridgeConstantsInterface::SERVICE_SERIALIZER));
+        ->arg('$serializer', ref(BridgeConstantsInterface::SERVICE_SERIALIZER));
 
     $services
         ->set(ActivityLogEntryFactoryInterface::class, ActivityLogEntryFactory::class);

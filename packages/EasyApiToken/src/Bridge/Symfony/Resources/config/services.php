@@ -21,5 +21,5 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(ApiTokenDecoderInterface::class)
-        ->factory([service(ApiTokenDecoderFactoryInterface::class), 'buildDefault']);
+        ->factory([ref(ApiTokenDecoderFactoryInterface::class), 'buildDefault']);
 };
