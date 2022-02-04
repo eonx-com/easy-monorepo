@@ -74,6 +74,10 @@ final class AnalyzeErrorCodesCommand extends Command
             ];
         }
 
+        \usort($nextErrorCodeForCategory, static function (array $errorCategory1, array $errorCategory2) {
+            return $errorCategory1['categoryName'] <=> $errorCategory2['categoryName'];
+        });
+
         $table = new Table($output);
         $table
             ->setHeaders([
