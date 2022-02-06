@@ -11,6 +11,7 @@ use EonX\EasyBatch\Events\BatchItemCancelledEvent;
 use EonX\EasyBatch\Events\BatchItemCompletedEvent;
 use EonX\EasyBatch\Exceptions\BatchCancelledException;
 use EonX\EasyBatch\Exceptions\BatchItemCancelledException;
+use EonX\EasyBatch\Exceptions\BatchItemCompletedException;
 use EonX\EasyBatch\Exceptions\BatchItemInvalidException;
 use EonX\EasyBatch\Exceptions\BatchObjectNotSupportedException;
 use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
@@ -239,8 +240,17 @@ final class BatchManager implements BatchManagerInterface
      */
     public function processItem(BatchInterface $batch, BatchItemInterface $batchItem, callable $func)
     {
+        // @deprecated since 3.4, will be removed in 4.0.
         if ($batchItem->isCancelled()) {
             throw new BatchItemCancelledException(\sprintf('BatchItem "%s" is cancelled', $batchItem->getId()));
+        }
+
+        if ($batchItem->isCompleted()) {
+            throw new BatchItemCompletedException(\sprintf(
+                'BatchItem "%s" is already completed with status "%s"',
+                $batchItem->getId(),
+                $batchItem->getStatus()
+            ));
         }
 
         if ($batch->isCancelled()) {
