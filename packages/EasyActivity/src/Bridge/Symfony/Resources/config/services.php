@@ -10,6 +10,7 @@ use EonX\EasyActivity\Bridge\Doctrine\DoctrineActivitySubjectDataResolver;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStore;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
+use EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandler;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonyActivitySubjectDataSerializer;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\ActivityLoggerInterface;
@@ -49,10 +50,13 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->alias(BridgeConstantsInterface::SERVICE_SERIALIZER, 'serializer');
 
+    $services->set(BridgeConstantsInterface::SERVICE_CIRCULAR_REFERENCE_HANDLER, CircularReferenceHandler::class);
+
     $services
         ->set(ActivitySubjectDataSerializerInterface::class, SymfonyActivitySubjectDataSerializer::class)
-        ->arg('$disallowedProperties', '%' . BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES . '%')
-        ->arg('$serializer', service(BridgeConstantsInterface::SERVICE_SERIALIZER));
+        ->arg('$serializer', ref(BridgeConstantsInterface::SERVICE_SERIALIZER))
+        ->arg('$circularReferenceHandler', ref(BridgeConstantsInterface::SERVICE_CIRCULAR_REFERENCE_HANDLER))
+        ->arg('$disallowedProperties', '%' . BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES . '%');
 
     $services
         ->set(ActivityLogEntryFactoryInterface::class, ActivityLogEntryFactory::class);

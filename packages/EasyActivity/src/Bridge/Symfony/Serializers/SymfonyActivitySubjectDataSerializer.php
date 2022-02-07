@@ -12,6 +12,11 @@ use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterfa
 final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataSerializerInterface
 {
     /**
+     * @var \EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandlerInterface
+     */
+    private $circularReferenceHandler;
+
+    /**
      * @var string[]
      */
     private $disallowedProperties;
@@ -26,9 +31,11 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
      */
     public function __construct(
         SymfonySerializerInterface $serializer,
+        CircularReferenceHandlerInterface $circularReferenceHandler,
         array $disallowedProperties
     ) {
         $this->serializer = $serializer;
+        $this->circularReferenceHandler = $circularReferenceHandler;
         $this->disallowedProperties = $disallowedProperties;
     }
 
@@ -75,6 +82,8 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
                     ?? $allowedProperties[$key] ?? ['id'];
             }
         }
+
+        $context[AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER] = $this->circularReferenceHandler;
 
         if (\count($data) === 0) {
             return null;
