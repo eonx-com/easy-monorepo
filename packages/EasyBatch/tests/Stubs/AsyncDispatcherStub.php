@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Tests\Stubs;
 
 use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
+use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 
 final class AsyncDispatcherStub implements AsyncDispatcherInterface
@@ -16,7 +17,14 @@ final class AsyncDispatcherStub implements AsyncDispatcherInterface
 
     public function dispatch(BatchObjectInterface $batchObject): void
     {
-        $this->dispatched[] = $batchObject;
+        if ($batchObject instanceof BatchItemInterface) {
+            $this->dispatchItem($batchObject);
+        }
+    }
+
+    public function dispatchItem(BatchItemInterface $batchItem): void
+    {
+        $this->dispatched[] = $batchItem;
     }
 
     /**
