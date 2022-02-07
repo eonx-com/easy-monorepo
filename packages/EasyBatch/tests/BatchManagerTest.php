@@ -20,6 +20,9 @@ use EonX\EasyBatch\Transformers\BatchTransformer;
 
 final class BatchManagerTest extends AbstractRepositoriesTestCase
 {
+    /**
+     * @var int
+     */
     private static $iterateFuncCalls = 0;
 
     /**
@@ -84,7 +87,7 @@ final class BatchManagerTest extends AbstractRepositoriesTestCase
             static function (): void {
                 self::assertIterateFuncCalls(2);
             },
-            static function (BatchItemInterface $batchItem, BatchItemRepositoryInterface $batchItemRepo) : void {
+            static function (BatchItemInterface $batchItem, BatchItemRepositoryInterface $batchItemRepo): void {
                 $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
                 $batchItemRepo->save($batchItem);
 
@@ -114,13 +117,13 @@ final class BatchManagerTest extends AbstractRepositoriesTestCase
                     'batchItem3',
                 ], self::$iteratedItems);
             },
-            static function (BatchItemInterface $batchItem, BatchItemRepositoryInterface $batchItemRepo) : void {
+            static function (BatchItemInterface $batchItem, BatchItemRepositoryInterface $batchItemRepo): void {
                 if ($batchItem->getName() === 'batchItem1') {
                     $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
                     $batchItemRepo->save($batchItem);
                 }
 
-                self::$iteratedItems[] = $batchItem->getName();
+                self::$iteratedItems[] = (string)$batchItem->getName();
                 self::$iterateFuncCalls++;
             },
         ];
