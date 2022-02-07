@@ -173,7 +173,10 @@ final class BatchManager implements BatchManagerInterface
             }
         }
 
-        $this->iterateThroughItems($batch->getId(), null, function (BatchItemInterface $batchItem): void {
+        /** @var int|string $batchId */
+        $batchId = $batch->getId();
+
+        $this->iterateThroughItems($batchId, null, function (BatchItemInterface $batchItem): void {
             if ($batchItem->getType() === BatchItemInterface::TYPE_MESSAGE) {
                 $this->asyncDispatcher->dispatchItem($batchItem);
 
@@ -181,7 +184,9 @@ final class BatchManager implements BatchManagerInterface
             }
 
             if ($batchItem->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
-                $this->dispatch($this->batchRepository->findNestedOrFail($batchItem->getId()));
+                /** @var int|string $batchItemId */
+                $batchItemId = $batchItem->getId();
+                $this->dispatch($this->batchRepository->findNestedOrFail($batchItemId()));
             }
         });
 
