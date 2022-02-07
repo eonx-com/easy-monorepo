@@ -173,7 +173,17 @@ final class BatchManager implements BatchManagerInterface
             }
         }
 
-        $this->asyncDispatcher->dispatch($batch);
+        $this->iterateThroughItems($batch->getId(), null, function (BatchItemInterface $batchItem): void {
+            if ($batchItem->getType() === BatchItemInterface::TYPE_MESSAGE) {
+                $this->asyncDispatcher->dispatchItem($batchItem);
+
+                return;
+            }
+
+            if ($batchItem->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
+                $this->dispatch($this->batchRepository->findNestedOrFail($batchItem->getId()));
+            }
+        });
 
         return $batch;
     }
