@@ -76,7 +76,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
             $this->getIdStrategy(),
             new BatchItemTransformer(new MessageSerializer()),
             $this->getDoctrineDbalConnection(),
-            BatchItemRepository::DEFAULT_TABLE
+            BatchItemRepositoryInterface::DEFAULT_TABLE
         );
 
         \call_user_func($setup, $factory, $repo);
