@@ -14,7 +14,7 @@
         "laravel-doctrine/orm": "^1.4",
         "bugsnag/bugsnag": "^3.19",
         "bugsnag/bugsnag-laravel": "^2.17",
-        "symfony/symfony": "^4.4 || ^5.1.5 || 6.0.*"
+        "symfony/symfony": "^5.1.5 || 6.0.*"
     },
     "autoload": {
         "psr-4": {
