@@ -14,7 +14,12 @@ final class JsonbType extends Type
     /**
      * @var string
      */
-    public const JSONB = 'JSONB';
+    public const FORMAT_DB_JSONB = 'JSONB';
+
+    /**
+     * @var string
+     */
+    public const JSONB = 'jsonb';
 
     /**
      * @param mixed $value
@@ -76,7 +81,7 @@ final class JsonbType extends Type
      */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getDoctrineTypeMapping(self::JSONB);
+        return self::FORMAT_DB_JSONB;
     }
 
     /**
