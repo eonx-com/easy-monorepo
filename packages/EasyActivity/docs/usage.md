@@ -59,7 +59,7 @@ Symfony bundle/extension classes, it brings the following functionality:
 
 - The default implementation for `EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface`:
   `EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonyActivitySubjectDataSerializer`, which is a simple wrapper for
-  `\Symfony\Component\Serializer\SerializerInterface` used to serialize activity log entry data. Please note that all
+  `Symfony\Component\Serializer\SerializerInterface` used to serialize activity log entry data. Please note that all
   the nested objects are serialized as an array containing only the `id` key by default. You can change the default
   behaviour with the `nested_object_allowed_properties` configuration option (see [Configuration][4]).
 - The Symfony Messenger classes that are used for asynchronous activity log entry storing.

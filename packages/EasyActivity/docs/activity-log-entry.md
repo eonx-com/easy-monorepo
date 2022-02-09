@@ -16,7 +16,7 @@ An ActivityLogEntry object has the following properties:
   - `ActivityLogEntry::ACTION_DELETE` (i.e. `delete`): Delete subject
   - `ActivityLogEntry::ACTION_UPDATE` (i.e. `update`): Update subject
 - `actorId`: An optional identifier for an actor in the application.
-- `actorName`: An optional nam for an actor in the application.
+- `actorName`: An optional name for an actor in the application.
 - `actorType`: A mandatory actor type. The actor type could be a `user`, `provider`, `customer`, `jwt:provider`,
   `api_key:customer`, or something similar in an application. The default value is
   `ActivityLogEntry::DEFAULT_ACTOR_TYPE` (i.e. `system`).
