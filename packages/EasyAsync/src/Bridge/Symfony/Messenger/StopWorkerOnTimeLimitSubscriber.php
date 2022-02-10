@@ -31,8 +31,11 @@ class StopWorkerOnTimeLimitSubscriber implements EventSubscriberInterface
     /**
      * @throws \EonX\EasyAsync\Exceptions\InvalidArgumentException
      */
-    public function __construct(int $minTimeLimitInSeconds, ?int $maxTimeLimitInSeconds = null, ?LoggerInterface $logger = null)
-    {
+    public function __construct(
+        int $minTimeLimitInSeconds,
+        ?int $maxTimeLimitInSeconds = null,
+        ?LoggerInterface $logger = null
+    ) {
         try {
             $this->timeLimitInSeconds = \random_int(
                 $minTimeLimitInSeconds,
