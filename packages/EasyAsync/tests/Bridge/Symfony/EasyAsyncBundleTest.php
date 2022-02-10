@@ -30,7 +30,7 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
             },
             [
                 __DIR__ . '/Fixtures/config/messages_limit_only.yaml',
-            ]
+            ],
         ];
 
         yield 'time only' => [
@@ -40,7 +40,7 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
             },
             [
                 __DIR__ . '/Fixtures/config/time_limit_only.yaml',
-            ]
+            ],
         ];
 
         yield 'both limits' => [
@@ -50,7 +50,7 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
             },
             [
                 __DIR__ . '/Fixtures/config/both_limits.yaml',
-            ]
+            ],
         ];
     }
 
