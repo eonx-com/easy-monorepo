@@ -39,17 +39,21 @@ use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
-    $parameters->set(Option::PATHS, [
-        __DIR__ . '/packages',
-        __DIR__ . '/changelog-linker.php',
-        __DIR__ . '/monorepo-builder.php',
-        __DIR__ . '/ecs.php',
-    ]);
-
-    $containerConfigurator->import(SetList::COMMON);
-    $containerConfigurator->import(SetList::CLEAN_CODE);
-    $containerConfigurator->import(SetList::PSR_12);
     $containerConfigurator->import(SetList::ARRAY);
+    $containerConfigurator->import(SetList::CLEAN_CODE);
+    $containerConfigurator->import(SetList::COMMON);
+    $containerConfigurator->import(SetList::PSR_12);
+
+    $parameters->set(Option::PARALLEL, true);
+    $parameters->set(Option::PARALLEL_JOB_SIZE, 1);
+    $parameters->set(Option::PARALLEL_MAX_NUMBER_OF_PROCESSES, 2);
+
+    $parameters->set(Option::PATHS, [
+        __DIR__ . '/changelog-linker.php',
+        __DIR__ . '/ecs.php',
+        __DIR__ . '/monorepo-builder.php',
+        __DIR__ . '/packages',
+    ]);
 
     $parameters->set(Option::SKIP, [
         'packages/*/var/*php',

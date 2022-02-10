@@ -9,6 +9,9 @@ services:
       tags: [phpstan.rules.rule]
 
 parameters:
+    parallel:
+            maximumNumberOfProcesses: 2
+
     paths:
         - packages
 
@@ -18,7 +21,7 @@ parameters:
         - %currentWorkingDirectory%/tests/bootstrap.php
         - %currentWorkingDirectory%/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Loader/Configurator/ContainerConfigurator.php
 
-    excludes_analyse:
+    excludePaths:
         - packages/*/var/*
         - packages/*/vendor/*
         - packages/EasyApiToken/src/Interfaces/*
@@ -136,6 +139,9 @@ parameters:
         # ---- EasyDoctrine ----
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDoctrine/src/ORM/Decorators/EntityManagerDecorator.php
+
+        - message: '#Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and string will always evaluate to false#'
+          path: packages/EasyDoctrine/src/DBAL/Types/CarbonImmutableDateTimeMicrosecondsType.php
 
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'

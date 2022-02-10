@@ -10,7 +10,7 @@ jobs:
 
             -   uses: eonx-com/actions-setup-php@v2
                 with:
-                    php-version: 7.4
+                    php-version: 8.1
                     coverage: none
 
             -   uses: eonx-com/actions-composer-install@v1
@@ -27,7 +27,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ '7.3', '7.4', '8.0' ]
+                php: [ '8.1' ]
                 package: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
         name: ${{ matrix.package.dir }} (${{ matrix.php }})

@@ -4,15 +4,15 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^7.2 || ^8.0",
+        "php": "^8.1",
         "nesbot/carbon": "^1.39 || ^2.22",
         "dragonmantank/cron-expression": "^2.3 || ^3.0",
-        "symfony/console": "^4.4 || ^5.1.5",
-        "eonx-com/easy-lock": "^3.5"
+        "symfony/console": "^5.4 || ^6.0",
+        "eonx-com/easy-lock": "^4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.4 || ^9.5",
-        "symfony/symfony": "^4.4 || ^5.1.5"
+        "phpunit/phpunit": "^9.5",
+        "symfony/symfony": "^5.4 || ^6.0"
     },
     "autoload": {
         "psr-4": {
@@ -29,7 +29,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "3.5-dev"
+            "dev-master": "4.0-dev"
         }
     }
 }
