@@ -1,0 +1,5 @@
+easy_async:
+    messenger_worker:
+        stop_on_time_limit:
+            enabled: true
+            min_time: 100
