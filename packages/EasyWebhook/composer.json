@@ -5,11 +5,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-event-dispatcher": "4.x-dev",
-        "eonx-com/easy-lock": "4.x-dev",
-        "eonx-com/easy-random": "4.x-dev",
-        "eonx-com/easy-pagination": "4.x-dev",
-        "eonx-com/easy-utils": "4.x-dev",
+        "eonx-com/easy-event-dispatcher": "^4.0",
+        "eonx-com/easy-lock": "^4.0",
+        "eonx-com/easy-random": "^4.0",
+        "eonx-com/easy-pagination": "^4.0",
+        "eonx-com/easy-utils": "^4.0",
         "nesbot/carbon": "^1.39 || ^2.22",
         "nette/utils": "^3.1",
         "symfony/http-client": "^5.4 || ^6.0"
