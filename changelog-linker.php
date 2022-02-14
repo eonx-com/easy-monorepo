@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use Symplify\ChangelogLinker\ValueObject\Option;
 
 return static function (ContainerConfigurator $containerConfigurator): void {

@@ -54,8 +54,8 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(ActivitySubjectDataSerializerInterface::class, SymfonyActivitySubjectDataSerializer::class)
-        ->arg('$serializer', ref(BridgeConstantsInterface::SERVICE_SERIALIZER))
-        ->arg('$circularReferenceHandler', ref(BridgeConstantsInterface::SERVICE_CIRCULAR_REFERENCE_HANDLER))
+        ->arg('$serializer', service(BridgeConstantsInterface::SERVICE_SERIALIZER))
+        ->arg('$circularReferenceHandler', service(BridgeConstantsInterface::SERVICE_CIRCULAR_REFERENCE_HANDLER))
         ->arg('$disallowedProperties', '%' . BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES . '%');
 
     $services
