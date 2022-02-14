@@ -70,7 +70,7 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
                 $this->addItemToTable($manager, 'my-title');
                 $this->addItemToTable($manager, 'my-title-1');
 
-                $paginator->setCriteria(static function (QueryBuilder $queryBuilder): void {
+                $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
                         ->where('i.title = :title')
                         ->setParameter('title', 'my-title-1');

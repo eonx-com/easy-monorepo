@@ -13,12 +13,4 @@ final class SecurityContextFactory implements SecurityContextFactoryInterface
     {
         return new SecurityContext();
     }
-
-    public function reset(): void
-    {
-        @\trigger_error(
-            'reset() is deprecated since 3.3 and will be removed in 4.0. Factory isn\'t resettable anymore',
-            \E_USER_DEPRECATED
-        );
-    }
 }

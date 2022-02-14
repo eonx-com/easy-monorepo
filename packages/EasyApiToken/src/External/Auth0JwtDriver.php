@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External;
 
-use Auth0\SDK\Helpers\Cache\CacheHandler;
 use Auth0\SDK\Helpers\Tokens\SignatureVerifier;
-use Auth0\SDK\JWTVerifier;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
 use EonX\EasyApiToken\External\Auth0\TokenGenerator;
 use EonX\EasyApiToken\External\Auth0V7\TokenVerifier;
@@ -31,13 +29,6 @@ final class Auth0JwtDriver implements JwtDriverInterface
     private $authorizedIss;
 
     /**
-     * Replace with PSR cache on upgrade to PHP-Auth0 7.
-     *
-     * @var null|\Auth0\SDK\Helpers\Cache\CacheHandler
-     */
-    private $cache;
-
-    /**
      * @var string
      */
     private $issuerForEncode;
@@ -48,7 +39,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
     private $jwks;
 
     /**
-     * @var null|string|resource
+     * @var null|string
      */
     private $privateKey;
 
@@ -62,55 +53,47 @@ final class Auth0JwtDriver implements JwtDriverInterface
      *
      * @param string[] $validAudiences
      * @param string[] $authorizedIss
-     * @param null|string|resource $privateKey
      * @param null|string[] $allowedAlgos
-     * @param \Auth0\SDK\Helpers\Cache\CacheHandler|null $cache Optional Cache handler.
      */
     public function __construct(
         array $validAudiences,
         array $authorizedIss,
-        $privateKey = null,
+        ?string $privateKey = null,
         ?string $audienceForEncode = null,
-        ?array $allowedAlgos = null,
-        ?CacheHandler $cache = null
+        ?array $allowedAlgos = null
     ) {
         $this->validAudiences = $validAudiences;
         $this->authorizedIss = $authorizedIss;
         $this->privateKey = $privateKey;
         $this->audienceForEncode = $audienceForEncode ?? (string)\reset($validAudiences);
         $this->allowedAlgos = $allowedAlgos ?? AlgorithmsInterface::ALL;
-        $this->cache = $cache;
         $this->issuerForEncode = (string)\reset($authorizedIss);
     }
 
     /**
-     * @return mixed
+     * @return mixed[]
      *
      * @throws \Auth0\SDK\Exception\InvalidTokenException
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
      */
-    public function decode(string $token)
+    public function decode(string $token): array
     {
-        // Auth0 v5
-        if (\class_exists(JWTVerifier::class)) {
-            return $this->auth0V5Decode($token);
-        }
-
         // Auth0 v7
         if (\class_exists(SignatureVerifier::class)) {
             return $this->auth0V7Decode($token);
         }
 
-        throw new InvalidConfigurationException('No supported version of auth0-php installed. Supports only v5 and v7');
+        throw new InvalidConfigurationException('No supported version of auth0-php installed. Supports only v7.');
     }
 
-    /**
-     * @param mixed[] $input
-     */
-    public function encode($input): string
+    public function encode(array|object $input): string
     {
+        if (\is_object($input)) {
+            $input = (array)$input;
+        }
+
         /** @var string $privateKey */
         $privateKey = $this->privateKey;
 
@@ -121,7 +104,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
             $input['roles'] ?? [],
             $input['sub'] ?? null,
             $input['lifetime'] ?? null,
-            \class_exists(JWTVerifier::class)
+            false
         );
     }
 
@@ -136,22 +119,6 @@ final class Auth0JwtDriver implements JwtDriverInterface
     }
 
     /**
-     * @return mixed
-     */
-    private function auth0V5Decode(string $token)
-    {
-        $verifier = new JWTVerifier([
-            'authorized_iss' => $this->authorizedIss,
-            'cache' => $this->cache,
-            'client_secret' => $this->privateKey,
-            'supported_algs' => $this->allowedAlgos,
-            'valid_audiences' => $this->validAudiences,
-        ]);
-
-        return $verifier->verifyAndDecode($token);
-    }
-
-    /**
      * @return mixed[]
      *
      * @throws \Auth0\SDK\Exception\InvalidTokenException
@@ -161,13 +128,6 @@ final class Auth0JwtDriver implements JwtDriverInterface
      */
     private function auth0V7Decode(string $token): array
     {
-        if (\is_string($this->privateKey) === false) {
-            throw new InvalidConfigurationException(\sprintf(
-                'Auth0 v7 accepts privateKey as string only, %s given',
-                \gettype($this->privateKey)
-            ));
-        }
-
         $verifier = new TokenVerifier(
             $this->authorizedIss,
             $this->validAudiences,

@@ -31,7 +31,7 @@ final class BatchManagerTest extends AbstractRepositoriesTestCase
     private static $iteratedItems = [];
 
     /**
-     * @var \EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface
+     * @var null|\EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface
      */
     private $batchItemRepo;
 
@@ -162,7 +162,7 @@ final class BatchManagerTest extends AbstractRepositoriesTestCase
 
         \call_user_func($setup, $batchItemFactory, $batchItemRepo);
 
-        $batchManager->iterateThroughItems($batchId ?? 'batch-id', null, $iterateFunc);
+        $batchManager->iterateThroughItems($batchId ?? 'batch-id', $iterateFunc);
 
         \call_user_func($assert);
     }

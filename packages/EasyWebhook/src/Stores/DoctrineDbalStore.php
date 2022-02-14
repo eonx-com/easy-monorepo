@@ -7,9 +7,9 @@ namespace EonX\EasyWebhook\Stores;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
-use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorNewInterface;
+use EonX\EasyPagination\Interfaces\PaginationInterface;
+use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginatorNew;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyWebhook\Exceptions\InvalidDateTimeException;
 use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
@@ -41,10 +41,10 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
     }
 
     public function findDueWebhooks(
-        StartSizeDataInterface $startSize,
+        PaginationInterface $pagination,
         ?\DateTimeInterface $sendAfter = null,
         ?string $timezone = null
-    ): LengthAwarePaginatorInterface {
+    ): LengthAwarePaginatorNewInterface {
         $sendAfter = $sendAfter !== null
             ? Carbon::createFromFormat(self::DATETIME_FORMAT, $sendAfter->format(self::DATETIME_FORMAT), $timezone)
             : Carbon::now($timezone);
@@ -57,10 +57,10 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
             ));
         }
 
-        $paginator = new DoctrineDbalLengthAwarePaginator($this->conn, $this->table, $startSize);
+        $paginator = new DoctrineDbalLengthAwarePaginatorNew($pagination, $this->conn, $this->table);
 
         $paginator
-            ->setCriteria(static function (QueryBuilder $queryBuilder) use ($sendAfter): void {
+            ->setFilterCriteria(static function (QueryBuilder $queryBuilder) use ($sendAfter): void {
                 $queryBuilder
                     ->where('status = :status AND send_after < :sendAfter')
                     ->setParameters([

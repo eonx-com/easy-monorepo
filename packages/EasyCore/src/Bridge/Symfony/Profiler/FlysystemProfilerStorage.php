@@ -193,7 +193,7 @@ final class FlysystemProfilerStorage implements ProfilerStorageInterface
         $profile->setStatusCode($data['status_code']);
         $profile->setCollectors($data['data']);
 
-        if ($parent === null && $data['parent'] ?? false) {
+        if ($parent === null && isset($data['parent'])) {
             $parent = $this->read($data['parent']);
         }
 

@@ -19,6 +19,7 @@ use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\HiddenString;
 use ParagonIE\Halite\Symmetric\Crypto as SymmetricCrypto;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
+use Throwable;
 
 final class Encryptor implements EncryptorInterface
 {
@@ -164,13 +165,17 @@ final class Encryptor implements EncryptorInterface
     }
 
     /**
-     * @return mixed
+     * @phpstan-param class-string<T> $throwableClass
+     *
+     * @phpstan-template T of \Throwable
+     *
+     * @throws T
      */
-    private function execSafely(string $throwableClass, callable $func)
+    private function execSafely(string $throwableClass, callable $func): mixed
     {
         try {
             return $func();
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             if ($throwable instanceof EasyEncryptionExceptionInterface) {
                 throw $throwable;
             }

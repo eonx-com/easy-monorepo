@@ -6,7 +6,6 @@ namespace EonX\EasyAsync\Tests\Bridge\Symfony;
 
 use EonX\EasyAsync\Bridge\Symfony\Messenger\StopWorkerOnMessagesLimitSubscriber;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\StopWorkerOnTimeLimitSubscriber;
-use EonX\EasyAsync\Interfaces\Batch\BatchFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
@@ -52,14 +51,6 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
                 __DIR__ . '/Fixtures/config/both_limits.yaml',
             ],
         ];
-    }
-
-    public function testSanity(): void
-    {
-        $container = $this->getKernel()
-            ->getContainer();
-
-        self::assertInstanceOf(BatchFactoryInterface::class, $container->get(BatchFactoryInterface::class));
     }
 
     /**

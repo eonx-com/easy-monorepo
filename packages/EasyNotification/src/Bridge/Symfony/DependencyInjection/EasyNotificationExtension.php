@@ -37,7 +37,7 @@ final class EasyNotificationExtension extends Extension
             ->registerForAutoconfiguration(QueueMessageConfiguratorInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_QUEUE_MESSAGE_CONFIGURATOR);
 
-        foreach (static::$configToParam as $configName => $param) {
+        foreach (self::$configToParam as $configName => $param) {
             $container->setParameter($param, $config[$configName]);
         }
     }

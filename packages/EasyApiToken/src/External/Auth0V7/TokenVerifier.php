@@ -116,8 +116,8 @@ final class TokenVerifier
             ));
         }
 
-        $now = $options['time'] ?? \time();
-        $leeway = $options['leeway'] ?? 60;
+        $now = \time();
+        $leeway = 60;
 
         $tokenExp = $verifiedToken->getClaim('exp', false);
         if (\is_int($tokenExp) === false) {

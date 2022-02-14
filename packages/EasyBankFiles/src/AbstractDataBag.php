@@ -25,7 +25,7 @@ abstract class AbstractDataBag
      */
     public function __construct(?array $data = null)
     {
-        $this->attributes = $this->initAttributes() ?? [];
+        $this->attributes = $this->initAttributes();
 
         foreach ($data ?? [] as $key => $value) {
             if (\in_array($key, $this->attributes, true)) {

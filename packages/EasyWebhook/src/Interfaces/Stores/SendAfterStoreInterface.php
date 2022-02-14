@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Interfaces\Stores;
 
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorNewInterface;
+use EonX\EasyPagination\Interfaces\PaginationInterface;
 
 interface SendAfterStoreInterface extends StoreInterface
 {
     public function findDueWebhooks(
-        StartSizeDataInterface $startSize,
+        PaginationInterface $pagination,
         ?\DateTimeInterface $sendAfter = null,
         ?string $timezone = null
-    ): LengthAwarePaginatorInterface;
+    ): LengthAwarePaginatorNewInterface;
 }

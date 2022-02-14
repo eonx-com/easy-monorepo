@@ -10,7 +10,6 @@ use EonX\EasyBatch\Events\BatchCompletedEvent;
 use EonX\EasyBatch\Events\BatchItemCancelledEvent;
 use EonX\EasyBatch\Events\BatchItemCompletedEvent;
 use EonX\EasyBatch\Exceptions\BatchCancelledException;
-use EonX\EasyBatch\Exceptions\BatchItemCancelledException;
 use EonX\EasyBatch\Exceptions\BatchItemCompletedException;
 use EonX\EasyBatch\Exceptions\BatchItemInvalidException;
 use EonX\EasyBatch\Exceptions\BatchObjectNotSupportedException;
@@ -24,7 +23,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Objects\MessageDecorator;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
-use EonX\EasyPagination\Data\StartSizeData;
+use EonX\EasyPagination\Pagination;
 
 final class BatchManager implements BatchManagerInterface
 {
@@ -176,7 +175,7 @@ final class BatchManager implements BatchManagerInterface
         /** @var int|string $batchId */
         $batchId = $batch->getId();
 
-        $this->iterateThroughItems($batchId, null, function (BatchItemInterface $batchItem): void {
+        $this->iterateThroughItems($batchId, function (BatchItemInterface $batchItem): void {
             if ($batchItem->getType() === BatchItemInterface::TYPE_MESSAGE) {
                 $this->asyncDispatcher->dispatchItem($batchItem);
 
@@ -199,7 +198,7 @@ final class BatchManager implements BatchManagerInterface
      */
     public function dispatchItem(BatchItemInterface $batchItem): BatchItemInterface
     {
-        $this->asyncDispatcher->dispatch($batchItem);
+        $this->asyncDispatcher->dispatchItem($batchItem);
 
         return $batchItem;
     }
@@ -224,17 +223,14 @@ final class BatchManager implements BatchManagerInterface
         return $this->updateItem($batchItem);
     }
 
-    /**
-     * @param int|string $batchId
-     */
-    public function iterateThroughItems($batchId, ?string $dependsOnName = null, callable $func): void
+    public function iterateThroughItems(int|string $batchId, callable $func, ?string $dependsOnName = null): void
     {
         $page = 1;
         $pagesCache = [];
 
         do {
             $paginator = $this->batchItemRepository->findForDispatch(
-                new StartSizeData($page, $this->batchItemsPerPage),
+                new Pagination($page, $this->batchItemsPerPage),
                 $batchId,
                 $dependsOnName
             );
@@ -272,16 +268,10 @@ final class BatchManager implements BatchManagerInterface
      * @return mixed
      *
      * @throws \EonX\EasyBatch\Exceptions\BatchCancelledException
-     * @throws \EonX\EasyBatch\Exceptions\BatchItemCancelledException
      * @throws \Throwable
      */
     public function processItem(BatchInterface $batch, BatchItemInterface $batchItem, callable $func)
     {
-        // @deprecated since 3.4, will be removed in 4.0.
-        if ($batchItem->isCancelled()) {
-            throw new BatchItemCancelledException(\sprintf('BatchItem "%s" is cancelled', $batchItem->getId()));
-        }
-
         if ($batchItem->isCompleted()) {
             throw new BatchItemCompletedException(\sprintf(
                 'BatchItem "%s" is already completed with status "%s"',

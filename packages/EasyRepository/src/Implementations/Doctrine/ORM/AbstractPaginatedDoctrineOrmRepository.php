@@ -6,50 +6,50 @@ namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
-use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorNewInterface;
+use EonX\EasyPagination\Interfaces\PaginationInterface;
+use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginatorNew;
 use EonX\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface as RepoInterface;
 
 abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOrmRepository implements RepoInterface
 {
     /**
-     * @var \EonX\EasyPagination\Interfaces\StartSizeDataInterface
+     * @var \EonX\EasyPagination\Interfaces\PaginationInterface
      */
-    private $startSizeData;
+    private $pagination;
 
-    public function __construct(ManagerRegistry $registry, StartSizeDataInterface $startSizeData)
+    public function __construct(ManagerRegistry $registry, PaginationInterface $pagination)
     {
-        $this->startSizeData = $startSizeData;
+        $this->pagination = $pagination;
 
         parent::__construct($registry);
     }
 
-    public function paginate(?StartSizeDataInterface $startSizeData = null): LengthAwarePaginatorInterface
+    public function paginate(?PaginationInterface $pagination = null): LengthAwarePaginatorNewInterface
     {
-        return $this->createLengthAwarePaginator(null, null, $startSizeData);
+        return $this->createLengthAwarePaginator(null, null, $pagination);
     }
 
-    protected function addPaginationToQuery(Query $query, ?StartSizeDataInterface $startSizeData = null): void
+    protected function addPaginationToQuery(Query $query, ?PaginationInterface $pagination = null): void
     {
-        $startSizeData = $startSizeData ?? $this->startSizeData;
+        $pagination = $pagination ?? $this->pagination;
 
-        $start = $startSizeData->getStart();
-        $size = $startSizeData->getSize();
+        $page = $pagination->getPage();
+        $perPage = $pagination->getPerPage();
 
         $query
-            ->setFirstResult(($start - 1) * $size)
-            ->setMaxResults($size);
+            ->setFirstResult(($page - 1) * $perPage)
+            ->setMaxResults($perPage);
     }
 
     protected function createLengthAwarePaginator(
         ?string $from = null,
         ?string $fromAlias = null,
-        ?StartSizeDataInterface $startSizeData = null
-    ): DoctrineOrmLengthAwarePaginator {
-        return new DoctrineOrmLengthAwarePaginator(
+        ?PaginationInterface $pagination = null
+    ): DoctrineOrmLengthAwarePaginatorNew {
+        return new DoctrineOrmLengthAwarePaginatorNew(
+            $pagination ?? $this->pagination,
             $this->manager,
-            $startSizeData ?? $this->startSizeData,
             $from ?? $this->getEntityClass(),
             $fromAlias ?? $this->getEntityAlias()
         );

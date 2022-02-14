@@ -10,10 +10,9 @@ use Doctrine\DBAL\Driver\Mysqli\Driver;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Mapping\Driver\StaticPHPDriver;
 
-final class EntityManagerForSanityStub extends EntityManagerDecorator implements EntityManagerInterface
+final class EntityManagerForSanityStub extends EntityManagerDecorator
 {
     /**
      * @var bool

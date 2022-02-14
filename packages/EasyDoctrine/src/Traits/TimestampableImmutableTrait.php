@@ -33,7 +33,7 @@ trait TimestampableImmutableTrait
     {
         $dateTime = CarbonImmutable::now();
 
-        if (isset($this->createdAt) === false) {
+        if ($this->createdAt === null) {
             $this->createdAt = $dateTime;
         }
 

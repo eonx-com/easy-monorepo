@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Interfaces;
 
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorNewInterface;
+use EonX\EasyPagination\Interfaces\PaginationInterface;
 
 interface BatchItemRepositoryInterface
 {
@@ -18,10 +18,10 @@ interface BatchItemRepositoryInterface
      * @param int|string $batchId
      */
     public function findForDispatch(
-        StartSizeDataInterface $startSizeData,
+        PaginationInterface $startSizeData,
         $batchId,
         ?string $dependsOnName = null
-    ): LengthAwarePaginatorInterface;
+    ): LengthAwarePaginatorNewInterface;
 
     /**
      * @param int|string $batchItemId

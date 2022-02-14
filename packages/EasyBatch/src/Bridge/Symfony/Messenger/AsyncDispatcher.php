@@ -9,7 +9,6 @@ use EonX\EasyBatch\Exceptions\BatchItemInvalidException;
 use EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
-use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class AsyncDispatcher implements AsyncDispatcherInterface
@@ -22,17 +21,6 @@ final class AsyncDispatcher implements AsyncDispatcherInterface
     public function __construct(MessageBusInterface $bus)
     {
         $this->bus = $bus;
-    }
-
-    /**
-     * @throws \EonX\EasyBatch\Exceptions\BatchItemInvalidException
-     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
-     */
-    public function dispatch(BatchObjectInterface $batchObject): void
-    {
-        if ($batchObject instanceof BatchItemInterface) {
-            $this->dispatchItem($batchObject);
-        }
     }
 
     /**

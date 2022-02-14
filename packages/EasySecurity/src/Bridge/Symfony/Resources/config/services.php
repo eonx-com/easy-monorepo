@@ -14,10 +14,8 @@ use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFac
 use EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener;
 use EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator;
 use EonX\EasySecurity\Bridge\Symfony\Security\SecurityContextAuthenticator;
-use EonX\EasySecurity\DeferredSecurityContextProvider;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
-use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\SecurityContextFactory;
@@ -67,9 +65,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'template' => '@EasySecuritySymfony/Collector/security_context_collector.html.twig',
             'id' => SecurityContextDataCollector::NAME,
         ]);
-
-    // Deferred Security Provider
-    $services->set(DeferredSecurityContextProviderInterface::class, DeferredSecurityContextProvider::class);
 
     // Request
     $services

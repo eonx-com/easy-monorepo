@@ -71,7 +71,7 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
                 (new Item(['title' => 'my-title']))->save();
                 (new Item(['title' => 'my-title-1']))->save();
 
-                $paginator->setCriteria(static function (Builder $queryBuilder): void {
+                $paginator->setFilterCriteria(static function (Builder $queryBuilder): void {
                     $queryBuilder->where('title', 'my-title-1');
                 });
             },

@@ -34,7 +34,7 @@ class SecurityContext implements SecurityContextInterface
     private $overridePermissions;
 
     /**
-     * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
+     * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
     private $permissions;
 
@@ -44,7 +44,7 @@ class SecurityContext implements SecurityContextInterface
     private $provider;
 
     /**
-     * @var \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
+     * @var null|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
     private $roles;
 

@@ -309,11 +309,11 @@ trait TransactionDetailCodes
      */
     public function getTransactionCodeDetails(string $code): ?Details
     {
-        if (isset(static::$transactionCodes[(int)$code]) === false) {
+        if (isset(self::$transactionCodes[(int)$code]) === false) {
             return null;
         }
 
-        $details = static::$transactionCodes[(int)$code];
+        $details = self::$transactionCodes[(int)$code];
 
         return new Details([
             'description' => $details['description'],

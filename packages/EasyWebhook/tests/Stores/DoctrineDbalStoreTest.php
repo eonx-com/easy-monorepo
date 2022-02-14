@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Stores;
 
 use Carbon\Carbon;
-use EonX\EasyPagination\Data\StartSizeData;
+use EonX\EasyPagination\Pagination;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Stores\DoctrineDbalStore;
 use EonX\EasyWebhook\Tests\AbstractStoreTestCase;
@@ -53,7 +53,7 @@ final class DoctrineDbalStoreTest extends AbstractStoreTestCase
             $store->store($webhook);
         }
 
-        $dueWebhooks = $store->findDueWebhooks(new StartSizeData(1, 15));
+        $dueWebhooks = $store->findDueWebhooks(new Pagination(1, 15));
 
         self::assertCount($expectedDue, $dueWebhooks->getItems());
     }

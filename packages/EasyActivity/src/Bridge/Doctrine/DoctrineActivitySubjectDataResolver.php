@@ -46,7 +46,7 @@ final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataRe
     /**
      * @param array<string, mixed> $changeSet
      *
-     * @return array[]|null[]
+     * @return mixed[]
      */
     private function resolveChangeData(string $action, array $changeSet): array
     {

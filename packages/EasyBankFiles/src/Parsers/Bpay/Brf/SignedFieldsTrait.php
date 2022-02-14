@@ -39,11 +39,11 @@ trait SignedFieldsTrait
      */
     public function getSignedFieldValue(string $code): ?array
     {
-        if (isset(static::$signedFields[$code]) === false) {
+        if (isset(self::$signedFields[$code]) === false) {
             return null;
         }
 
-        $signedField = static::$signedFields[$code];
+        $signedField = self::$signedFields[$code];
 
         return [
             'value' => $signedField[0],

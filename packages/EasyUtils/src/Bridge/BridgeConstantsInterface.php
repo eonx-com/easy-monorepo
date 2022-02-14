@@ -7,7 +7,7 @@ namespace EonX\EasyUtils\Bridge;
 interface BridgeConstantsInterface
 {
     /**
-     * @var string
+     * @var string[]
      */
     public const MATH_PARAMS = [
         self::PARAM_MATH_FORMAT_DECIMAL_SEPARATOR,

@@ -56,7 +56,7 @@ abstract class AbstractInvalidDataMaker
     private $asString = false;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $message;
 
@@ -82,13 +82,7 @@ abstract class AbstractInvalidDataMaker
         self::$translations[] = $translations;
     }
 
-    /**
-     * @return static
-     */
-    final public static function make(string $property): self
-    {
-        return new static($property);
-    }
+    abstract public static function make(string $property): self;
 
     /**
      * @param mixed $value

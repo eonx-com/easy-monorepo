@@ -6,6 +6,7 @@ namespace EonX\EasyApiToken\Tests;
 
 use EonX\EasyApiToken\External\FirebaseJwtDriver;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
+use OpenSSLAsymmetricKey;
 
 abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
 {
@@ -35,14 +36,12 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
     ];
 
     /**
-     * @param null|string|resource $publicKey
-     * @param null|string|resource $privateKey
      * @param null|string[] $allowedAlgos
      */
     protected function createFirebaseJwtDriver(
         ?string $algo = null,
-        $publicKey = null,
-        $privateKey = null,
+        OpenSSLAsymmetricKey|string|null $publicKey = null,
+        OpenSSLAsymmetricKey|string|null $privateKey = null,
         ?array $allowedAlgos = null,
         ?int $leeway = null
     ): JwtDriverInterface {
@@ -61,9 +60,8 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
 
         if ($algo !== null && $this->isAlgoRs($algo)) {
             $key = $this->getOpenSslPrivateKey();
+            $key = $key === false ? null : $key;
         }
-
-        /** @var resource|string|null $key */
 
         return $this->createFirebaseJwtDriver($algo, null, $key)
             ->encode(static::$tokenPayload);

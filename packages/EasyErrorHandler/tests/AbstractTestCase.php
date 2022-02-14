@@ -125,7 +125,7 @@ class AbstractTestCase extends TestCase
             new Request(),
             (new BaseExceptionStub())->setSubCode(123456),
             static function (Response $response): void {
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertArrayHasKey('sub_code', $content);
                 self::assertSame(123456, $content['sub_code']);
             },
@@ -145,15 +145,11 @@ class AbstractTestCase extends TestCase
 
         yield 'Response with validation errors' => [
             new Request(),
-            (new ValidationExceptionStub())->setErrors([
-                'foo' => 'bar',
-            ]),
+            (new ValidationExceptionStub())->setErrors(['foo' => 'bar']),
             static function (Response $response): void {
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertArrayHasKey('violations', $content);
-                self::assertSame([
-                    'foo' => 'bar',
-                ], $content['violations']);
+                self::assertSame(['foo' => 'bar'], $content['violations']);
             },
         ];
 
@@ -161,7 +157,7 @@ class AbstractTestCase extends TestCase
             new Request(),
             new \Exception(),
             static function (Response $response): void {
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertSame(['code', 'message', 'time'], \array_keys($content));
             },
         ];
@@ -170,7 +166,7 @@ class AbstractTestCase extends TestCase
             new Request(),
             (new BaseExceptionStub())->setSubCode(123),
             static function (Response $response): void {
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertArrayHasKey('sub_code', $content);
                 self::assertSame(123, $content['sub_code']);
             },
@@ -178,15 +174,11 @@ class AbstractTestCase extends TestCase
 
         yield 'Short response with violations' => [
             new Request(),
-            (new ValidationExceptionStub())->setErrors([
-                'foo' => ['bar'],
-            ]),
+            (new ValidationExceptionStub())->setErrors(['foo' => ['bar']]),
             static function (Response $response): void {
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertArrayHasKey('violations', $content);
-                self::assertSame([
-                    'foo' => ['bar'],
-                ], $content['violations']);
+                self::assertSame(['foo' => ['bar']], $content['violations']);
             },
         ];
 
@@ -194,7 +186,7 @@ class AbstractTestCase extends TestCase
             new Request(),
             new NotFoundHttpException('my-message'),
             static function (Response $response): void {
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertSame(404, $response->getStatusCode());
                 self::assertSame('my-message', $content['message']);
             },
@@ -203,13 +195,8 @@ class AbstractTestCase extends TestCase
 
     /**
      * Returns object's private property value.
-     *
-     * @param object $object
-     * @param string $property
-     *
-     * @return mixed
      */
-    protected function getPrivatePropertyValue($object, string $property)
+    protected function getPrivatePropertyValue(object $object, string $property): mixed
     {
         return (function ($property) {
             return $this->{$property};
@@ -217,17 +204,17 @@ class AbstractTestCase extends TestCase
     }
 
     /**
-     * @param string|object $className
+     * @param class-string|object $className
      *
      * @throws \ReflectionException
      */
-    protected function getPropertyAsPublic($className, string $propertyName): ReflectionProperty
+    protected function getPropertyAsPublic(string|object $className, string $propertyName): ReflectionProperty
     {
         $class = new ReflectionClass($className);
-        $method = $class->getProperty($propertyName);
-        $method->setAccessible(true);
+        $property = $class->getProperty($propertyName);
+        $property->setAccessible(true);
 
-        return $method;
+        return $property;
     }
 
     protected function tearDown(): void

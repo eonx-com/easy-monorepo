@@ -8,8 +8,8 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use EonX\EasyPagination\Data\StartSizeData;
-use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
+use EonX\EasyPagination\Pagination;
+use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginatorNew;
 use EonX\EasyRepository\Tests\AbstractTestCase;
 use Mockery\LegacyMockInterface;
 
@@ -31,10 +31,10 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
                 ->andReturn($this->mockQueryBuilderAndQuery());
         });
 
-        $repository = new PaginatedDoctrineOrmRepositoryStub($registry, new StartSizeData(1, 10));
+        $repository = new PaginatedDoctrineOrmRepositoryStub($registry, new Pagination(1, 10));
         $paginator = $repository->paginate();
 
-        self::assertInstanceOf(DoctrineOrmLengthAwarePaginator::class, $paginator);
+        self::assertInstanceOf(DoctrineOrmLengthAwarePaginatorNew::class, $paginator);
     }
 
     private function mockQueryBuilderAndQuery(): LegacyMockInterface
@@ -52,7 +52,8 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
                 }
             );
 
-            $queryBuilder->shouldReceive('getQuery')
+            $queryBuilder
+                ->shouldReceive('getQuery')
                 ->once()
                 ->withNoArgs()
                 ->andReturn(new Query($entityManager));

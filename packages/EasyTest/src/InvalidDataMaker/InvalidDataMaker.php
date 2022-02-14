@@ -39,6 +39,11 @@ use Symfony\Component\Validator\Constraints\Uuid;
  */
 class InvalidDataMaker extends AbstractInvalidDataMaker
 {
+    public static function make(string $property): self
+    {
+        return new self($property);
+    }
+
     /**
      * @return iterable<mixed>
      */

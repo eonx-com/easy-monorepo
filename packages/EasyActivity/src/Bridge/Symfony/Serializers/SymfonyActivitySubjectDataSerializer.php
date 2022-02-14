@@ -55,7 +55,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
 
         if ($this->disallowedProperties !== []) {
             $disallowedProperties = \array_filter(
-                \array_merge($this->disallowedProperties, $disallowedProperties ?? [])
+                \array_merge($this->disallowedProperties, $disallowedProperties)
             );
         }
 

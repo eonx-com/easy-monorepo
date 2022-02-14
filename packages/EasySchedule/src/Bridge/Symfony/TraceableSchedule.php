@@ -22,7 +22,7 @@ final class TraceableSchedule implements TraceableScheduleInterface
     private $decorated;
 
     /**
-     * @var \EonX\EasySchedule\Interfaces\EventInterface[]
+     * @var array<string, \EonX\EasySchedule\Interfaces\EventInterface[]>
      */
     private $events = [];
 
@@ -81,7 +81,7 @@ final class TraceableSchedule implements TraceableScheduleInterface
     }
 
     /**
-     * @return \EonX\EasySchedule\Interfaces\EventInterface[]
+     * @return array<string, \EonX\EasySchedule\Interfaces\EventInterface[]>
      */
     public function getEvents(): array
     {
