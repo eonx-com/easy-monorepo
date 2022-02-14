@@ -11,7 +11,7 @@
         "phpunit/phpunit": "^8.4 || ^9.5",
         "firebase/php-jwt": "^5.0",
         "eonx-com/easy-utils": "^3.5",
-        "auth0/auth0-php": "^5.4 || ^7.6",
+        "auth0/auth0-php": "^5.4 || ^7.6 || ^8.0",
         "psr/container": "^1.0",
         "laravel/lumen-framework": "^5.5 || ^8.1",
         "symfony/dependency-injection": "^4.4 || ^5.1.5",
