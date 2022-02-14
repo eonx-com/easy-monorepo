@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External;
 
+use Auth0\SDK\Configuration\SdkConfiguration as Auth0V8SdkConfiguration;
 use Auth0\SDK\Helpers\Cache\CacheHandler;
 use Auth0\SDK\Helpers\Tokens\SignatureVerifier;
 use Auth0\SDK\JWTVerifier;
-use Auth0\SDK\Configuration\SdkConfiguration as Auth0V8SdkConfiguration;
 use Auth0\SDK\Token as Auth0V8Token;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
 use EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
