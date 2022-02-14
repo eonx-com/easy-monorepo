@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\External;
 
 use Auth0\SDK\Helpers\Tokens\SignatureVerifier;
+use Auth0\SDK\JWTVerifier;
+use Auth0\SDK\Configuration\SdkConfiguration as Auth0V8SdkConfiguration;
+use Auth0\SDK\Token as Auth0V8Token;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
+use EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException;
 use EonX\EasyApiToken\External\Auth0\TokenGenerator;
 use EonX\EasyApiToken\External\Auth0V7\TokenVerifier;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use EonX\EasyApiToken\Interfaces\AlgorithmsInterface;
+use Psr\Cache\CacheItemPoolInterface;
 
 final class Auth0JwtDriver implements JwtDriverInterface
 {
@@ -29,6 +34,18 @@ final class Auth0JwtDriver implements JwtDriverInterface
     private $authorizedIss;
 
     /**
+     * Replace with PSR cache on upgrade to PHP-Auth0 7.
+     *
+     * @var null|\Auth0\SDK\Helpers\Cache\CacheHandler
+     */
+    private $cache;
+
+    /**
+     * @var string
+     */
+    private $domain;
+
+    /**
      * @var string
      */
     private $issuerForEncode;
@@ -42,6 +59,16 @@ final class Auth0JwtDriver implements JwtDriverInterface
      * @var null|string
      */
     private $privateKey;
+
+    /**
+     * @var \Psr\Cache\CacheItemPoolInterface
+     */
+    private $v8TokenCache;
+
+    /**
+     * @var int
+     */
+    private $v8TokenCacheTtl;
 
     /**
      * @var string[]
@@ -85,6 +112,11 @@ final class Auth0JwtDriver implements JwtDriverInterface
             return $this->auth0V7Decode($token);
         }
 
+        // Auth0 v8
+        if (\class_exists(Auth0V8Token::class)) {
+            return $this->auth0V8Decode($token);
+        }
+
         throw new InvalidConfigurationException('No supported version of auth0-php installed. Supports only v7.');
     }
 
@@ -108,12 +140,33 @@ final class Auth0JwtDriver implements JwtDriverInterface
         );
     }
 
+    public function setDomain(string $domain): self
+    {
+        $this->domain = $domain;
+
+        return $this;
+    }
+
     /**
      * @param null|string[]|\Auth0\SDK\Helpers\JWKFetcher $jwks
      */
     public function setJwks($jwks): self
     {
         $this->jwks = $jwks;
+
+        return $this;
+    }
+
+    public function setV8TokenCache(CacheItemPoolInterface $v8TokenCache): self
+    {
+        $this->v8TokenCache = $v8TokenCache;
+
+        return $this;
+    }
+
+    public function setV8TokenCacheTtl(int $v8TokenCacheTtl): self
+    {
+        $this->v8TokenCacheTtl = $v8TokenCacheTtl;
 
         return $this;
     }
@@ -137,5 +190,55 @@ final class Auth0JwtDriver implements JwtDriverInterface
         );
 
         return $verifier->verifyAndDecode($token);
+    }
+
+    /**
+     * @return mixed[]
+     *
+     * @throws \Auth0\SDK\Exception\InvalidTokenException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
+     */
+    private function auth0V8Decode(string $token): array
+    {
+        if ($this->privateKey !== null && \is_string($this->privateKey) === false) {
+            throw new InvalidConfigurationException(\sprintf(
+                'Auth0 v8 accepts privateKey as null or string only, %s given',
+                \gettype($this->privateKey)
+            ));
+        }
+
+        if (\is_string($this->domain) === false || $this->domain === '') {
+            throw new InvalidConfigurationException('Auth0 v8 requires domain to fetch JWKs');
+        }
+
+        $config = (new Auth0V8SdkConfiguration())->setDomain($this->domain);
+        $verifier = new Auth0V8Token($config, $token, Auth0V8Token::TYPE_TOKEN);
+        $exceptions = [];
+
+        foreach ($this->allowedAlgos as $allowedAlgo) {
+            try {
+                $verifier = $verifier->verify(
+                    $allowedAlgo,
+                    null,
+                    $this->privateKey,
+                    $this->v8TokenCacheTtl,
+                    $this->v8TokenCache
+                );
+
+                foreach ($this->authorizedIss as $issuer) {
+                    return $verifier
+                        ->validate($issuer, $this->validAudiences)
+                        ->toArray();
+                }
+            } catch (\Throwable $throwable) {
+                $exceptions[] = $throwable->getMessage();
+            }
+        }
+
+        throw new InvalidEasyApiTokenFromRequestException(\sprintf(
+            'Could not verify signature. ["%s"]',
+            \implode('", "', $exceptions)
+        ));
     }
 }
