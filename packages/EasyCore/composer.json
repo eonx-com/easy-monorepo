@@ -16,7 +16,7 @@
         "league/flysystem": "^1.1",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
-        "api-platform/core": "^2.5",
+        "api-platform/core": "^2.6",
         "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
         "mockery/mockery": "^1.4",
