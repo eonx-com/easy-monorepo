@@ -13,6 +13,7 @@ use EonX\EasyNotification\Interfaces\QueueTransportFactoryInterface;
 use EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface;
 use EonX\EasyNotification\NotificationClient;
 use EonX\EasyNotification\Queue\Configurators\ProviderHeaderConfigurator;
+use EonX\EasyNotification\Queue\Configurators\PushBodyConfigurator;
 use EonX\EasyNotification\Queue\Configurators\QueueUrlConfigurator;
 use EonX\EasyNotification\Queue\Configurators\RealTimeBodyConfigurator;
 use EonX\EasyNotification\Queue\Configurators\SignatureConfigurator;
@@ -30,6 +31,7 @@ final class EasyNotificationServiceProvider extends ServiceProvider
      * @var string[]
      */
     protected static $configurators = [
+        PushBodyConfigurator::class,
         RealTimeBodyConfigurator::class,
         SlackBodyConfigurator::class,
         ProviderHeaderConfigurator::class,
