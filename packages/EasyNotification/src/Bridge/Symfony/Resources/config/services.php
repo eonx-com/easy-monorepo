@@ -43,7 +43,7 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(CacheConfigFinder::class)
         ->decorate(ConfigFinderInterface::class)
-        ->arg('$cache', ref(BridgeConstantsInterface::SERVICE_CONFIG_CACHE))
+        ->arg('$cache', service(BridgeConstantsInterface::SERVICE_CONFIG_CACHE))
         ->arg('$expiresAfter', '%' . BridgeConstantsInterface::PARAM_CONFIG_CACHE_EXPIRES_AFTER . '%');
 
     // Client

@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
 use EonX\EasyBugsnag\Bridge\Symfony\Session\SessionTrackingConfigurator;
 use EonX\EasyBugsnag\Bridge\Symfony\Session\SessionTrackingListener;
 use EonX\EasyBugsnag\Session\SessionTracker;
 use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -31,7 +30,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(SessionTrackingConfigurator::class)
-        ->arg('$cache', ref(BridgeConstantsInterface::SERVICE_SESSION_TRACKING_CACHE))
+        ->arg('$cache', service(BridgeConstantsInterface::SERVICE_SESSION_TRACKING_CACHE))
         ->arg('$expiresAfter', '%' . BridgeConstantsInterface::PARAM_SESSION_TRACKING_CACHE_EXPIRES_AFTER . '%');
 
     $services

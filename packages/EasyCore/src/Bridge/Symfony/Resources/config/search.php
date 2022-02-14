@@ -22,6 +22,6 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(SearchServiceInterface::class, ElasticsearchSearchService::class)
-        ->factory([ref(SearchServiceFactoryInterface::class), 'create'])
+        ->factory([service(SearchServiceFactoryInterface::class), 'create'])
         ->public();
 };

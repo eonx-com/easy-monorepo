@@ -78,6 +78,6 @@ return static function (ContainerConfigurator $container): void {
     // Make sure SendWebhookMiddleware is always last
     $services
         ->set(SendWebhookMiddleware::class)
-        ->arg('$httpClient', ref(BridgeConstantsInterface::HTTP_CLIENT))
+        ->arg('$httpClient', service(BridgeConstantsInterface::HTTP_CLIENT))
         ->arg('$priority', MiddlewareInterface::PRIORITY_CORE_AFTER + 4);
 };
