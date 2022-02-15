@@ -13,7 +13,8 @@ use ParagonIE\Halite\Asymmetric\EncryptionSecretKey;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\KeyFactory;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
-use ParagonIE\HiddenString\HiddenString;
+use ParagonIE\Halite\HiddenString as OldHiddenString;
+use ParagonIE\HiddenString\HiddenString as NewHiddenString;
 
 final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
 {
@@ -79,15 +80,15 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
     {
         if (isset($key[self::OPTION_KEY], $key[self::OPTION_SALT])) {
             return KeyFactory::deriveEncryptionKey(
-                new HiddenString((string)$key[self::OPTION_KEY]),
+                $this->getHiddenString((string)$key[self::OPTION_KEY]),
                 (string)$key[self::OPTION_SALT]
             );
         }
 
         if (isset($key[self::OPTION_SECRET_KEY], $key[self::OPTION_PUBLIC_KEY])) {
             return new EncryptionKeyPair(
-                new EncryptionSecretKey(new HiddenString($key[self::OPTION_SECRET_KEY])),
-                new EncryptionPublicKey(new HiddenString($key[self::OPTION_PUBLIC_KEY]))
+                new EncryptionSecretKey($this->getHiddenString($key[self::OPTION_SECRET_KEY])),
+                new EncryptionPublicKey($this->getHiddenString($key[self::OPTION_PUBLIC_KEY]))
             );
         }
 
@@ -103,11 +104,11 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
     private function doCreateFromString(string $key)
     {
         if (KeyLength::isEncryptionKeyLength($key)) {
-            return new EncryptionKey(new HiddenString($key));
+            return new EncryptionKey($this->getHiddenString($key));
         }
 
         if (KeyLength::isSecretKeyLength($key)) {
-            return new EncryptionKeyPair(new EncryptionSecretKey(new HiddenString($key)));
+            return new EncryptionKeyPair(new EncryptionSecretKey($this->getHiddenString($key)));
         }
 
         if (KeyLength::isPublicKeyLength($key)) {
@@ -115,5 +116,10 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
         }
 
         throw new InvalidEncryptionKeyException('Could not identify key type from given string');
+    }
+
+    private function getHiddenString(string $value)
+    {
+        return \class_exists(NewHiddenString::class) ? new NewHiddenString($value) : new OldHiddenString($value);
     }
 }
