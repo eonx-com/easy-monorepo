@@ -17,9 +17,9 @@ use ParagonIE\ConstantTime\Encoding;
 use ParagonIE\Halite\Asymmetric\Crypto as AsymmetricCrypto;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\HiddenString as OldHiddenString;
-use ParagonIE\HiddenString\HiddenString as NewHiddenString;
 use ParagonIE\Halite\Symmetric\Crypto as SymmetricCrypto;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
+use ParagonIE\HiddenString\HiddenString as NewHiddenString;
 use Throwable;
 
 final class Encryptor implements EncryptorInterface

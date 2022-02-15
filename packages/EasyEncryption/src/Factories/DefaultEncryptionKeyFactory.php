@@ -11,9 +11,9 @@ use EonX\EasyEncryption\Utils\KeyLength;
 use ParagonIE\Halite\Asymmetric\EncryptionPublicKey;
 use ParagonIE\Halite\Asymmetric\EncryptionSecretKey;
 use ParagonIE\Halite\EncryptionKeyPair;
+use ParagonIE\Halite\HiddenString as OldHiddenString;
 use ParagonIE\Halite\KeyFactory;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
-use ParagonIE\Halite\HiddenString as OldHiddenString;
 use ParagonIE\HiddenString\HiddenString as NewHiddenString;
 
 final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
@@ -118,6 +118,9 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
         throw new InvalidEncryptionKeyException('Could not identify key type from given string');
     }
 
+    /**
+     * @return \ParagonIE\Halite\HiddenString|\ParagonIE\HiddenString\HiddenString
+     */
     private function getHiddenString(string $value)
     {
         return \class_exists(NewHiddenString::class) ? new NewHiddenString($value) : new OldHiddenString($value);
