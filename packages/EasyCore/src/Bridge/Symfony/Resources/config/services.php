@@ -14,10 +14,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    // Messenger
-    $services
-        ->set(DoctrineManagersSanityCheckMiddleware::class)
-        ->tag('kernel.event_listener');
-
     $services->set(ForBuildEnvVarProcessor::class);
 };
