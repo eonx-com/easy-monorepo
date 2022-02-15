@@ -227,6 +227,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
     /**
      * @return mixed[]
      *
+     * @throws \Auth0\SDK\Exception\ConfigurationException
      * @throws \Auth0\SDK\Exception\InvalidTokenException
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException
@@ -244,7 +245,8 @@ final class Auth0JwtDriver implements JwtDriverInterface
             throw new InvalidConfigurationException('Auth0 v8 requires domain to fetch JWKs');
         }
 
-        $config = (new Auth0V8SdkConfiguration())->setDomain($this->domain);
+        // Had to fake clientId to work as it is automatically added to audience
+        $config = new Auth0V8SdkConfiguration(['domain' => $this->domain, 'clientId' => 'client_id']);
         $verifier = new Auth0V8Token($config, $token, Auth0V8Token::TYPE_TOKEN);
         $exceptions = [];
 
