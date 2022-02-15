@@ -9,9 +9,9 @@ use EonX\EasyBatch\Exceptions\BatchItemNotFoundException;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorNewInterface;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
-use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginatorNew;
+use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
 
 final class BatchItemRepository extends AbstractBatchObjectRepository implements BatchItemRepositoryInterface
 {
@@ -22,8 +22,8 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         PaginationInterface $pagination,
         $batchId,
         ?string $dependsOnName = null
-    ): LengthAwarePaginatorNewInterface {
-        $paginator = new DoctrineDbalLengthAwarePaginatorNew($pagination, $this->conn, $this->table);
+    ): LengthAwarePaginatorInterface {
+        $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->conn, $this->table);
 
         $paginator->setFilterCriteria(
             static function (QueryBuilder $queryBuilder) use ($batchId, $dependsOnName): void {

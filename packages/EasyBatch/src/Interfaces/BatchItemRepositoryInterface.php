@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Interfaces;
 
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorNewInterface;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 
 interface BatchItemRepositoryInterface
@@ -21,7 +21,7 @@ interface BatchItemRepositoryInterface
         PaginationInterface $startSizeData,
         $batchId,
         ?string $dependsOnName = null
-    ): LengthAwarePaginatorNewInterface;
+    ): LengthAwarePaginatorInterface;
 
     /**
      * @param int|string $batchItemId

@@ -6,9 +6,9 @@ namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorNewInterface;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
-use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginatorNew;
+use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface as RepoInterface;
 
 abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOrmRepository implements RepoInterface
@@ -25,7 +25,7 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
         parent::__construct($registry);
     }
 
-    public function paginate(?PaginationInterface $pagination = null): LengthAwarePaginatorNewInterface
+    public function paginate(?PaginationInterface $pagination = null): LengthAwarePaginatorInterface
     {
         return $this->createLengthAwarePaginator(null, null, $pagination);
     }
@@ -46,8 +46,8 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
         ?string $from = null,
         ?string $fromAlias = null,
         ?PaginationInterface $pagination = null
-    ): DoctrineOrmLengthAwarePaginatorNew {
-        return new DoctrineOrmLengthAwarePaginatorNew(
+    ): DoctrineOrmLengthAwarePaginator {
+        return new DoctrineOrmLengthAwarePaginator(
             $pagination ?? $this->pagination,
             $this->manager,
             $from ?? $this->getEntityClass(),

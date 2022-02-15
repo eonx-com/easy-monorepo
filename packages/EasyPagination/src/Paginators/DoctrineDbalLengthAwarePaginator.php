@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Traits\DoctrineDbalPaginatorTrait;
 
-final class DoctrineDbalLengthAwarePaginatorNew extends AbstractLengthAwarePaginatorNew
+final class DoctrineDbalLengthAwarePaginator extends AbstractLengthAwarePaginator
 {
     use DoctrineDbalPaginatorTrait;
 

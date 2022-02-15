@@ -10,7 +10,7 @@
         "symplify/package-builder": "^8.3.41",
         "symplify/autowire-array-parameter": "^8.3.41",
         "aws/aws-sdk-php": "^3.134",
-        "nesbot/carbon": "^1.39 || ^2.22"
+        "nesbot/carbon": "^2.22"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

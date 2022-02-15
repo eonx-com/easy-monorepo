@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Interfaces;
 
-interface LengthAwarePaginatorNewInterface extends PaginatorInterface
+interface LengthAwarePaginatorInterface extends PaginatorInterface
 {
     public function getFirstPageUrl(): ?string;
 

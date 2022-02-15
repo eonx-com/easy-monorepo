@@ -9,7 +9,7 @@
         "eonx-com/easy-lock": "^4.0",
         "eonx-com/easy-pagination": "^4.0",
         "eonx-com/easy-random": "^4.0",
-        "nesbot/carbon": "^1.39 || ^2.22"
+        "nesbot/carbon": "^2.22"
     },
     "require-dev": {
         "ramsey/uuid": "^3.9 || ^4.0",

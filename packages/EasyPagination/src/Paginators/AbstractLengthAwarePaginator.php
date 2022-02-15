@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Paginators;
 
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorNewInterface;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 
-abstract class AbstractLengthAwarePaginatorNew extends AbstractPaginator implements LengthAwarePaginatorNewInterface
+abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements LengthAwarePaginatorInterface
 {
     /**
      * @var int

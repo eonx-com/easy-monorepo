@@ -10,7 +10,7 @@ use EonX\EasyBatch\Repositories\BatchItemRepository;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Tests\AbstractRepositoriesTestCase;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorNewInterface;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Pagination;
 
 final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
@@ -34,7 +34,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
                 $repo->save($batchItem2);
                 $repo->save($batchItem3);
             },
-            static function (LengthAwarePaginatorNewInterface $paginator): void {
+            static function (LengthAwarePaginatorInterface $paginator): void {
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals('right-one', $paginator->getItems()[0]->getName());
             },
@@ -54,7 +54,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
                 $repo->save($batchItem2);
                 $repo->save($batchItem3);
             },
-            static function (LengthAwarePaginatorNewInterface $paginator): void {
+            static function (LengthAwarePaginatorInterface $paginator): void {
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals('right-one', $paginator->getItems()[0]->getName());
             },

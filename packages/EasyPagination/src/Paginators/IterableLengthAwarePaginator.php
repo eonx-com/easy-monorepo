@@ -7,7 +7,7 @@ namespace EonX\EasyPagination\Paginators;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyUtils\CollectorHelper;
 
-final class IterableLengthAwarePaginator extends AbstractLengthAwarePaginatorNew
+final class IterableLengthAwarePaginator extends AbstractLengthAwarePaginator
 {
     /**
      * @var iterable<mixed>

@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Traits\DoctrineOrmPaginatorTrait;
 
-final class DoctrineOrmLengthAwarePaginatorNew extends AbstractLengthAwarePaginatorNew
+final class DoctrineOrmLengthAwarePaginator extends AbstractLengthAwarePaginator
 {
     use DoctrineOrmPaginatorTrait;
 

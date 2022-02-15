@@ -21,7 +21,7 @@
         "illuminate/support": "^5.8 || ^6.0 || ^8.0",
         "laminas/laminas-uri": "^2.8",
         "monolog/monolog": "^1.22 || ^2.0",
-        "nesbot/carbon": "^1.39 || ^2.22",
+        "nesbot/carbon": "^2.22",
         "nette/utils": "^3.1",
         "nyholm/psr7": "^1.1",
         "paragonie/halite": "^4.8",

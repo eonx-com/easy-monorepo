@@ -8,7 +8,7 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Traits\EloquentPaginatorTrait;
 use Illuminate\Database\Eloquent\Model;
 
-final class EloquentLengthAwarePaginatorNew extends AbstractLengthAwarePaginatorNew
+final class EloquentLengthAwarePaginator extends AbstractLengthAwarePaginator
 {
     use EloquentPaginatorTrait;
 
