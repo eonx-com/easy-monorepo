@@ -74,6 +74,48 @@ parameters:
         - message: '#Unreachable statement \- code above always terminates#'
           path: packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
 
+        - message: '#Property EonX\\EasyApiToken\\External\\Auth0JwtDriver\:\:\$jwks has unknown class Auth0\\SDK\\Helpers\\JWKFetcher as its type#'
+          path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
+
+        - message: '#Parameter \$jwks of method EonX\\EasyApiToken\\External\\Auth0JwtDriver\:\:setJwks\(\) has invalid typehint type Auth0\\SDK\\Helpers\\JWKFetcher#'
+          path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
+
+        - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
+          path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
+
+        - message: '#Property EonX\\EasyApiToken\\External\\Auth0V7\\TokenVerifier\:\:\$jwks has unknown class Auth0\\SDK\\Helpers\\JWKFetcher as its type#'
+          path: packages/EasyApiToken/src/External/Auth0V7/TokenVerifier.php
+
+        - message: '#Parameter \$jwks of method EonX\\EasyApiToken\\External\\Auth0V7\\TokenVerifier\:\:__construct\(\) has invalid typehint type Auth0\\SDK\\Helpers\\JWKFetcher#'
+          path: packages/EasyApiToken/src/External/Auth0V7/TokenVerifier.php
+
+        - message: '#Call to method getClaim\(\) on an unknown class Lcobucci\\JWT\\Token#'
+          path: packages/EasyApiToken/src/External/Auth0V7/TokenVerifier.php
+
+        - message: '#Call to method getClaims\(\) on an unknown class Lcobucci\\JWT\\Token#'
+          path: packages/EasyApiToken/src/External/Auth0V7/TokenVerifier.php
+
+        - message: '#Return typehint of method EonX\\EasyApiToken\\External\\Auth0V7\\TokenVerifier\:\:resolveSignatureVerifier\(\) has invalid type Auth0\\SDK\\Helpers\\Tokens\\SignatureVerifier#'
+          path: packages/EasyApiToken/src/External/Auth0V7/TokenVerifier.php
+
+        - message: '#Instantiated class Auth0\\SDK\\Helpers\\Tokens\\SymmetricVerifier not found#'
+          path: packages/EasyApiToken/src/External/Auth0V7/TokenVerifier.php
+
+        - message: '#Method EonX\\EasyApiToken\\External\\Auth0V7\\TokenVerifier\:\:resolveSignatureVerifier\(\) should return Auth0\\SDK\\Helpers\\Tokens\\SignatureVerifier but returns Auth0\\SDK\\Helpers\\Tokens\\SymmetricVerifier#'
+          path: packages/EasyApiToken/src/External/Auth0V7/TokenVerifier.php
+
+        - message: '#Instantiated class Auth0\\SDK\\Helpers\\Tokens\\AsymmetricVerifier not found#'
+          path: packages/EasyApiToken/src/External/Auth0V7/TokenVerifier.php
+
+        - message: '#Method EonX\\EasyApiToken\\External\\Auth0V7\\TokenVerifier\:\:resolveSignatureVerifier\(\) should return Auth0\\SDK\\Helpers\\Tokens\\SignatureVerifier but returns Auth0\\SDK\\Helpers\\Tokens\\AsymmetricVerifier#'
+          path: packages/EasyApiToken/src/External/Auth0V7/TokenVerifier.php
+
+        - message: '#Return typehint of method EonX\\EasyApiToken\\External\\Auth0V7\\TokenVerifier\:\:verifySignatureAndDecode\(\) has invalid type Lcobucci\\JWT\\Token#'
+          path: packages/EasyApiToken/src/External/Auth0V7/TokenVerifier.php
+
+        - message: '#Call to method verifyAndDecode\(\) on an unknown class Auth0\\SDK\\Helpers\\Tokens\\SignatureVerifier#'
+          path: packages/EasyApiToken/src/External/Auth0V7/TokenVerifier.php
+
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Generators\\DateTimeGenerator::fromString\(\) should return DateTime but returns DateTime\|false.#'
           path: packages/EasyAsync/src/Generators
