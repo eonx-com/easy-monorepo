@@ -1,7 +1,12 @@
 {
     "name": "eonx-com/easy-monorepo",
+    "type": "library",
     "description": "Reusable packages to make PHP projects easier to create/maintain",
     "license": "MIT",
+    "bin": [
+        "packages/EasySsm/bin/easy-ssm",
+        "packages/EasyTest/bin/easy-test"
+    ],
     "require": {
         "php": "^8.1",
         "ext-bcmath": "*",
