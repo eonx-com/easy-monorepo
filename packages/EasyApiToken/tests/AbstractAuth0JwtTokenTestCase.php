@@ -48,12 +48,11 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
         $auth0Driver = new Auth0JwtDriver(
             $validAudiences ?? static::$validAudiences,
             $authorizedIss ?? static::$authorizedIss,
+            'localhost',
             $key ?? static::$key,
             $audienceForEncode,
             $allowedAlgos
         );
-
-        $auth0Driver->setDomain('localhost');
 
         return $auth0Driver;
     }

@@ -43,7 +43,7 @@
     },
     "require-dev": {
         "api-platform/core": "^2.6",
-        "auth0/auth0-php": "^7.6",
+        "auth0/auth0-php": "^8.0",
         "bugsnag/bugsnag-laravel": "^2.17",
         "dg/bypass-finals": "^1.2",
         "doctrine/annotations": "^1.13",
