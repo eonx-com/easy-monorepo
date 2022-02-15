@@ -246,7 +246,10 @@ final class Auth0JwtDriver implements JwtDriverInterface
         }
 
         // Had to fake clientId to work as it is automatically added to audience
-        $config = new Auth0V8SdkConfiguration(['domain' => $this->domain, 'clientId' => 'client_id']);
+        $config = new Auth0V8SdkConfiguration([
+            'domain' => $this->domain,
+            'clientId' => 'client_id'
+        ]);
         $verifier = new Auth0V8Token($config, $token, Auth0V8Token::TYPE_TOKEN);
         $exceptions = [];
 
