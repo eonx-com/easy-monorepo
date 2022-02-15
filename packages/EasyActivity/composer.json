@@ -6,14 +6,14 @@
     "require": {
         "ext-json": "*",
         "php": "^7.2 || ^8.0",
-        "eonx-com/easy-random": "^3.4.24",
+        "eonx-com/easy-random": "^3.5",
         "nesbot/carbon": "^1.39 || ^2.22"
     },
     "require-dev": {
         "doctrine/annotations": "^1.13",
         "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
-        "eonx-com/easy-doctrine": "^3.4.24",
+        "eonx-com/easy-doctrine": "^3.5",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "ramsey/uuid": "^3.9 || ^4.0",
         "symfony/symfony": "^4.4 || ^5.1.5",
@@ -36,7 +36,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.4-dev"
+            "dev-master": "3.5-dev"
         }
     }
 }
