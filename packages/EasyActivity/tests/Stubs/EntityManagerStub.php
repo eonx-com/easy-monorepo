@@ -26,6 +26,7 @@ use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
+use EonX\EasyDoctrine\Utils\ObjectCopier;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyRandom\RandomGenerator;
@@ -175,7 +176,7 @@ final class EntityManagerStub extends EntityManager
         array $subscribedEntities = [],
         array $fixtures = []
     ) {
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, new ObjectCopier());
 
         return self::createFromDeferredEntityEventDispatcher(
             $dispatcher,
