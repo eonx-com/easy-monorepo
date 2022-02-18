@@ -30,6 +30,7 @@ final class Configuration implements ConfigurationInterface
                     ->info('Property names disallowed to be stored in store.')
                 ->end()
                 ->arrayNode('subjects')
+                    ->useAttributeAsKey('entity')
                     ->arrayPrototype()
                         ->children()
                             ->scalarNode('type')
