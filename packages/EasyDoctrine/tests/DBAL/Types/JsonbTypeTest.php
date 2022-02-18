@@ -135,7 +135,7 @@ final class JsonbTypeTest extends AbstractTestCase
         $value = \urldecode('some incorrectly encoded utf string %C4');
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
-            "Could not convert PHP type 'string' to 'JSONB', as an " .
+            "Could not convert PHP type 'string' to 'jsonb', as an " .
             "'Malformed UTF-8 characters, possibly incorrectly encoded' error was triggered by the serialization"
         );
 
@@ -174,7 +174,7 @@ final class JsonbTypeTest extends AbstractTestCase
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
         $value = 'ineligible-value';
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage('Could not convert database value "ineligible-value" to Doctrine Type JSONB');
+        $this->expectExceptionMessage('Could not convert database value "ineligible-value" to Doctrine Type jsonb');
 
         $type->convertToPHPValue($value, $platform);
     }
@@ -206,7 +206,7 @@ final class JsonbTypeTest extends AbstractTestCase
         $platformReveal = $platform->reveal();
         $result = $type->getSQLDeclaration([], $platformReveal);
 
-        self::assertSame($type::JSONB, $result);
+        self::assertSame($type::FORMAT_DB_JSONB, $result);
     }
 
     /**

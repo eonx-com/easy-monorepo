@@ -7,11 +7,14 @@ namespace EonX\EasyActivity\Tests\Bridge\Symfony\Serializers;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use EonX\EasyActivity\ActivitySubject;
+use EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandler;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonyActivitySubjectDataSerializer;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 use EonX\EasyActivity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
+use EonX\EasyActivity\Tests\Fixtures\Comment;
+use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTestCase
@@ -95,7 +98,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             ],
             'subject' => new ActivitySubject((string)$entityId, Article::class, [], [], []),
             'disallowedProperties' => null,
-            'expectedResult' => sprintf(
+            'expectedResult' => \sprintf(
                 '{"author":{"id":1},"comments":[],"content":"text","createdAt":"%s","id":1}',
                 $moment->format(DateTimeInterface::ATOM)
             ),
@@ -168,6 +171,30 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'disallowedProperties' => null,
             'expectedResult' => '{"author":{"name":"John Doe"},"content":"text"}',
         ];
+
+        $comment = (new Comment())
+            ->setId(1)
+            ->setMessage('some-message');
+        $article = new Article();
+        $article->addComment($comment);
+        $allowedProperties = [
+            'comments' => ['article'],
+        ];
+        $expectedCreatedAt = $article->getCreatedAt()
+            ->format(DateTimeInterface::ATOM);
+        yield 'With circular reference' => [
+            'data' => [
+                'comments' => [$comment],
+            ],
+            'subject' => new ActivitySubject((string)$entityId, Article::class, [], [], $allowedProperties),
+            'disallowedProperties' => null,
+            'expectedResult' => \sprintf(
+                '{"comments":[{"article":{"author":null,"comments":' .
+                '["EonX\\\EasyActivity\\\Tests\\\Fixtures\\\Comment#1 (circular reference)"],' .
+                '"createdAt":"%s","id":null},"id":1,"message":"some-message"}]}',
+                $expectedCreatedAt
+            ),
+        ];
     }
 
     /**
@@ -183,7 +210,11 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ?string $expectedResult
     ): void {
         $symfonySerializer = $this->arrangeSymfonySerializer();
-        $serializer = new SymfonyActivitySubjectDataSerializer($symfonySerializer, $disallowedProperties ?? []);
+        $serializer = new SymfonyActivitySubjectDataSerializer(
+            $symfonySerializer,
+            new CircularReferenceHandler(EntityManagerStub::createFromEventManager()),
+            $disallowedProperties ?? []
+        );
 
         $result = $serializer->serialize($data, $subject);
 

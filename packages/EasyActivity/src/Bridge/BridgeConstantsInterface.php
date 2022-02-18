@@ -29,5 +29,10 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const SERVICE_CIRCULAR_REFERENCE_HANDLER = 'easy_activity.circular_reference_handler';
+
+    /**
+     * @var string
+     */
     public const SERVICE_SERIALIZER = 'easy_activity.serializer';
 }

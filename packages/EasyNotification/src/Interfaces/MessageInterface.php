@@ -14,6 +14,11 @@ interface MessageInterface
     /**
      * @var string
      */
+    public const TYPE_PUSH = 'push';
+
+    /**
+     * @var string
+     */
     public const TYPE_REAL_TIME = 'real_time';
 
     /**

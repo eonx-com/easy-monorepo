@@ -11,5 +11,8 @@ coverage_output.txt
 # local secret stuff
 /secret
 
+# MacOS
+.DS_Store
+
 # Symfony
 /var
