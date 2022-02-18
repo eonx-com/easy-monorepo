@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Dispatchers;
 
-use DeepCopy\DeepCopy;
-use DeepCopy\Filter\Doctrine\DoctrineCollectionFilter;
-use DeepCopy\Matcher\PropertyTypeMatcher;
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
 use EonX\EasyDoctrine\Events\EntityDeletedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
+use EonX\EasyDoctrine\Interfaces\ObjectCopierInterface;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use LogicException;
 
@@ -45,10 +43,16 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
      */
     private $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    /**
+     * @var \EonX\EasyDoctrine\Interfaces\ObjectCopierInterface
+     */
+    private $objectCopier;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher, ObjectCopierInterface $objectCopier)
     {
         $this->enabled = true;
         $this->eventDispatcher = $eventDispatcher;
+        $this->objectCopier = $objectCopier;
     }
 
     public function clear(?int $transactionNestingLevel = null): void
@@ -98,14 +102,8 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         }
 
         $oid = \spl_object_hash($object);
-        // DeepCopy is used to preserve the identifier that is removed after deleting entity
-        $copier = new DeepCopy();
-        $copier->addFilter(
-            new DoctrineCollectionFilter(),
-            new PropertyTypeMatcher('Doctrine\Common\Collections\Collection')
-        );
 
-        $this->entityDeletions[$oid] = $copier->copy($object);
+        $this->entityDeletions[$oid] = $this->objectCopier->copy($object);
         $this->entityChangeSets[$transactionNestingLevel][$oid] = $entityChangeSet;
     }
 

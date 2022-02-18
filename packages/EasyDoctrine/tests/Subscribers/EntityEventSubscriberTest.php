@@ -15,6 +15,7 @@ use EonX\EasyDoctrine\Tests\Fixtures\Category;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
 use EonX\EasyDoctrine\Tests\Stubs\EventDispatcherStub;
+use EonX\EasyDoctrine\Utils\ObjectCopier;
 
 /**
  * @covers \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber
@@ -94,7 +95,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
     public function testEventsAreDispatchedAfterEnablingDispatcher(): void
     {
         $eventDispatcher = new EventDispatcherStub();
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, new ObjectCopier());
         $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
             $dispatcher,
             [Product::class],
@@ -295,7 +296,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
     public function testEventsAreNotDispatchedWhenDispatcherIsDisabled(): void
     {
         $eventDispatcher = new EventDispatcherStub();
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, new ObjectCopier());
         $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
             $dispatcher,
             [Product::class],
