@@ -187,6 +187,9 @@ parameters:
           path: packages/EasySsm/src/Services/Dotenv/Loaders/DotenvLoader.php
 
         # ---- EasyTest ----
+        - message: '#Unsafe usage of new static\(\)#'
+          path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
+
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: packages/EasyWebhook/src/AbstractWebhook.php

@@ -82,7 +82,10 @@ abstract class AbstractInvalidDataMaker
         self::$translations[] = $translations;
     }
 
-    abstract public static function make(string $property): self;
+    public static function make(string $property): static
+    {
+        return new static($property);
+    }
 
     /**
      * @param mixed $value
