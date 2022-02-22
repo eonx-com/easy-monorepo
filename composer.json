@@ -54,6 +54,7 @@
         "doctrine/annotations": "^1.13",
         "doctrine/dbal": "^2.6",
         "firebase/php-jwt": "^5.0",
+        "guzzlehttp/psr7": "^2.1",
         "illuminate/database": "^5.8 || ^6.0 || ^8.0",
         "laravel-doctrine/orm": "^1.4",
         "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
