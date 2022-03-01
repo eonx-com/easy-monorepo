@@ -134,6 +134,9 @@ final class WithEventsHttpClient implements HttpClientInterface
         return $this->decorated->stream($responses, $timeout);
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function withOptions(array $options): self
     {
         $clone = clone $this;
