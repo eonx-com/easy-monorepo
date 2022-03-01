@@ -135,6 +135,17 @@ final class WithEventsHttpClient implements HttpClientInterface
     }
 
     /**
+     * @param array<string, mixed> $options
+     */
+    public function withOptions(array $options): self
+    {
+        $clone = clone $this;
+        $clone->decorated = $this->decorated->withOptions($options);
+
+        return $clone;
+    }
+
+    /**
      * @param string[] $modifiersWhitelist
      * @param \EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface[] $modifiers
      */
