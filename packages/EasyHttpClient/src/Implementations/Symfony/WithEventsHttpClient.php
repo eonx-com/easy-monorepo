@@ -134,6 +134,14 @@ final class WithEventsHttpClient implements HttpClientInterface
         return $this->decorated->stream($responses, $timeout);
     }
 
+    public function withOptions(array $options): self
+    {
+        $clone = clone $this;
+        $clone->decorated = $this->decorated->withOptions($options);
+
+        return $clone;
+    }
+
     /**
      * @param string[] $modifiersWhitelist
      * @param \EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface[] $modifiers
