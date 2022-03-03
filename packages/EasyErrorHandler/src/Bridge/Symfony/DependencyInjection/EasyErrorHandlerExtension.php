@@ -8,6 +8,7 @@ use Bugsnag\Client;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
+use EonX\EasyErrorHandler\Interfaces\VerboseStrategyDriverInterface;
 use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -66,6 +67,10 @@ final class EasyErrorHandlerExtension extends Extension
         $container
             ->registerForAutoconfiguration(ErrorResponseBuilderProviderInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER);
+
+        $container
+            ->registerForAutoconfiguration(VerboseStrategyDriverInterface::class)
+            ->addTag(BridgeConstantsInterface::TAG_VERBOSE_STRATEGY_DRIVER);
 
         $loader->load('services.php');
 

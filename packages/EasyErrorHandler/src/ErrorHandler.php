@@ -11,6 +11,7 @@ use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
+use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
 use EonX\EasyUtils\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,27 +24,21 @@ final class ErrorHandler implements ErrorHandlerInterface
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface[]
      */
-    private $builders;
+    private array $builders;
 
     /**
      * @var string[]
      */
-    private $ignoredExceptionsForReport;
-
-    /**
-     * @var bool
-     */
-    private $isVerbose;
+    private array $ignoredExceptionsForReport;
 
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
      */
-    private $reporters;
+    private array $reporters;
 
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface
-     */
-    private $responseFactory;
+    private ErrorResponseFactoryInterface $responseFactory;
+
+    private VerboseStrategyInterface $verboseStrategy;
 
     /**
      * @param iterable<mixed> $builderProviders
@@ -54,13 +49,13 @@ final class ErrorHandler implements ErrorHandlerInterface
         ErrorResponseFactoryInterface $errorResponseFactory,
         iterable $builderProviders,
         iterable $reporterProviders,
-        ?bool $isVerbose = null,
+        VerboseStrategyInterface $verboseStrategy,
         ?array $ignoredExceptionsForReport = null
     ) {
         $this->responseFactory = $errorResponseFactory;
+        $this->verboseStrategy = $verboseStrategy;
         $this->setBuilders($builderProviders);
         $this->setReporters($reporterProviders);
-        $this->isVerbose = $isVerbose ?? false;
         $this->ignoredExceptionsForReport = $ignoredExceptionsForReport ?? [];
     }
 
@@ -82,11 +77,13 @@ final class ErrorHandler implements ErrorHandlerInterface
 
     public function isVerbose(): bool
     {
-        return $this->isVerbose;
+        return $this->verboseStrategy->isVerbose();
     }
 
     public function render(Request $request, Throwable $throwable): Response
     {
+        $this->verboseStrategy->setThrowable($throwable, $request);
+
         foreach ($this->builders as $builder) {
             $data = $builder->buildData($throwable, $data ?? []);
             $headers = $builder->buildHeaders($throwable, $headers ?? null);
@@ -115,6 +112,8 @@ final class ErrorHandler implements ErrorHandlerInterface
                 return;
             }
         }
+
+        $this->verboseStrategy->setThrowable($throwable);
 
         foreach ($this->reporters as $reporter) {
             // Stop reporting if reporter returns false
@@ -183,12 +182,7 @@ final class ErrorHandler implements ErrorHandlerInterface
         $this->reporters = CollectorHelper::orderLowerPriorityFirstAsArray($reporters);
     }
 
-    /**
-     * @param mixed $items
-     *
-     * @return mixed
-     */
-    private function sortRecursive($items)
+    private function sortRecursive(mixed $items): mixed
     {
         if (\is_array($items) === false) {
             return $items;
