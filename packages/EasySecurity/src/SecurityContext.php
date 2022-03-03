@@ -77,7 +77,11 @@ class SecurityContext implements SecurityContextInterface
     {
         $this->cachePermissions = null;
 
-        foreach (AuthorizationMatrixFormatter::formatRoles((array)$roles) as $role) {
+        $roleIdentifiers = AuthorizationMatrixFormatter::formatRolesToIdentifiers(
+            AuthorizationMatrixFormatter::formatRoles((array)$roles)
+        );
+
+        foreach ($this->authorizationMatrix->getRolesByIdentifiers($roleIdentifiers) as $role) {
             $this->roles[$role->getIdentifier()] = $role;
         }
     }
@@ -206,9 +210,7 @@ class SecurityContext implements SecurityContextInterface
         $this->cachePermissions = null;
         $this->roles = [];
 
-        foreach (AuthorizationMatrixFormatter::formatRoles((array)$roles) as $role) {
-            $this->roles[$role->getIdentifier()] = $role;
-        }
+        $this->addRoles($roles);
     }
 
     public function setToken(?ApiTokenInterface $token = null): void
