@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Security;
 
+use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationExceptionInterface;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,6 +45,9 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
                 ->resolveContext()
                 ->getUserOrFail();
         } catch (\Throwable $throwable) {
+            if ($throwable instanceof AuthenticationExceptionInterface) {
+                throw $throwable;
+            }
             throw new AuthenticationException($throwable->getMessage());
         }
 
