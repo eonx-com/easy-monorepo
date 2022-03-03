@@ -44,4 +44,21 @@ final class AuthorizationMatrixFormatter
 
         return \array_map($map, \array_filter($roles, $filter));
     }
+
+    /**
+     * @param \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
+     *
+     * @return string[]
+     */
+    public static function formatRolesToIdentifiers(array $roles): array
+    {
+        $filter = static function ($role): bool {
+            return $role instanceof RoleInterface;
+        };
+        $map = static function (RoleInterface $role): string {
+            return $role->getIdentifier();
+        };
+
+        return \array_map($map, \array_filter($roles, $filter));
+    }
 }
