@@ -58,7 +58,13 @@ final class ErrorHandlerTest extends AbstractTestCase
         $reporter = new ErrorReporterStub();
         $reporterProviders = [new FromIterableReporterProvider([$reporter])];
         $verboseStrategy = new ChainVerboseStrategy([], false);
-        $errorHandler = new ErrorHandler(new ErrorResponseFactory(), [], $reporterProviders, $verboseStrategy, $ignoredExceptions);
+        $errorHandler = new ErrorHandler(
+            new ErrorResponseFactory(),
+            [],
+            $reporterProviders,
+            $verboseStrategy,
+            $ignoredExceptions
+        );
 
         $errorHandler->report($throwable);
 
