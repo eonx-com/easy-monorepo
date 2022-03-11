@@ -7,6 +7,7 @@ namespace EonX\EasyWebhook\Stores;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyUtils\ErrorDetailsHelper;
 use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
@@ -90,13 +91,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
         }
 
         if ($throwable !== null) {
-            $data['throwable'] = [
-                'code' => $throwable->getCode(),
-                'file' => $throwable->getFile(),
-                'line' => $throwable->getLine(),
-                'message' => $throwable->getMessage(),
-                'trace' => $throwable->getTraceAsString(),
-            ];
+            $data['throwable'] = ErrorDetailsHelper::resolveSimpleDetails($throwable);
         }
 
         return $data;
