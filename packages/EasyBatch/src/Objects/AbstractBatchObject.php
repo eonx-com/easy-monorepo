@@ -54,6 +54,11 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     private $throwable;
 
     /**
+     * @var mixed[]
+     */
+    private $throwableDetails;
+
+    /**
      * @var string
      */
     private $type;
@@ -112,6 +117,14 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     public function getThrowable(): ?\Throwable
     {
         return $this->throwable;
+    }
+
+    /**
+     * @return null|mixed[]
+     */
+    public function getThrowableDetails(): ?array
+    {
+        return $this->throwableDetails;
     }
 
     public function getType(): ?string
@@ -213,6 +226,16 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     public function setThrowable(\Throwable $throwable): BatchObjectInterface
     {
         $this->throwable = $throwable;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed[] $throwableDetails
+     */
+    public function setThrowableDetails(array $throwableDetails): BatchObjectInterface
+    {
+        $this->throwableDetails = $throwableDetails;
 
         return $this;
     }
