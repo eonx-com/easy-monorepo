@@ -27,7 +27,7 @@ final class DecimalValidator extends ConstraintValidator
         }
 
         $value = \is_float($value)
-            ? \rtrim(\number_format($value, $constraint->maxPrecision + 1, '.', ''), '.0')
+            ? \rtrim(\number_format($value, $constraint->maxPrecision + 1, '.', ''), '0')
             : (string) $value;
 
         $pattern = \sprintf('/^\d+(\.\d{%d,%d})?$/', $constraint->minPrecision, $constraint->maxPrecision);
