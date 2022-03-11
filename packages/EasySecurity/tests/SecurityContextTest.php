@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Tests;
 
 use EonX\EasyApiToken\Tokens\ApiKey;
+use EonX\EasySecurity\Authorization\AuthorizationMatrix;
 use EonX\EasySecurity\Authorization\Permission;
 use EonX\EasySecurity\Authorization\Role;
 use EonX\EasySecurity\Exceptions\NoProviderInContextException;
@@ -123,7 +124,10 @@ final class SecurityContextTest extends AbstractTestCase
         $provider = new ProviderInterfaceStub('uniqueId');
         $user = new UserInterfaceStub('uniqueId');
 
+        $authorizationMatrix = new AuthorizationMatrix($roles, []);
+
         $context = new SecurityContext();
+        $context->setAuthorizationMatrix($authorizationMatrix);
         $context->setToken($token);
         $context->setProvider($provider);
         $context->setRoles($roles);
@@ -155,7 +159,10 @@ final class SecurityContextTest extends AbstractTestCase
         bool $hasRole,
         bool $hasPermission
     ): void {
+        $authorizationMatrix = new AuthorizationMatrix($roles, []);
+
         $context = new SecurityContext();
+        $context->setAuthorizationMatrix($authorizationMatrix);
         $context->setRoles($roles);
 
         self::assertEquals($hasRole, $context->hasRole($role));

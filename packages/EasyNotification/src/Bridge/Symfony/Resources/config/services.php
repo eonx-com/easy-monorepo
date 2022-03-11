@@ -13,6 +13,7 @@ use EonX\EasyNotification\Interfaces\QueueTransportFactoryInterface;
 use EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface;
 use EonX\EasyNotification\NotificationClient;
 use EonX\EasyNotification\Queue\Configurators\ProviderHeaderConfigurator;
+use EonX\EasyNotification\Queue\Configurators\PushBodyConfigurator;
 use EonX\EasyNotification\Queue\Configurators\QueueUrlConfigurator;
 use EonX\EasyNotification\Queue\Configurators\RealTimeBodyConfigurator;
 use EonX\EasyNotification\Queue\Configurators\SignatureConfigurator;
@@ -43,7 +44,7 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(CacheConfigFinder::class)
         ->decorate(ConfigFinderInterface::class)
-        ->arg('$cache', ref(BridgeConstantsInterface::SERVICE_CONFIG_CACHE))
+        ->arg('$cache', service(BridgeConstantsInterface::SERVICE_CONFIG_CACHE))
         ->arg('$expiresAfter', '%' . BridgeConstantsInterface::PARAM_CONFIG_CACHE_EXPIRES_AFTER . '%');
 
     // Client
@@ -52,6 +53,7 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_QUEUE_MESSAGE_CONFIGURATOR));
 
     // Configurators
+    $services->set(PushBodyConfigurator::class);
     $services->set(RealTimeBodyConfigurator::class);
     $services->set(SlackBodyConfigurator::class);
     $services->set(ProviderHeaderConfigurator::class);

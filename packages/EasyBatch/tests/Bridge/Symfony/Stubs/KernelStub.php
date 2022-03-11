@@ -7,6 +7,7 @@ namespace EonX\EasyBatch\Tests\Bridge\Symfony\Stubs;
 use Doctrine\DBAL\Connection;
 use EonX\EasyBatch\Bridge\Symfony\EasyBatchSymfonyBundle;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -21,12 +22,17 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         $container->setDefinition(EventDispatcherInterface::class, new Definition(\stdClass::class));
+        $container->setDefinition(LockServiceInterface::class, new Definition(\stdClass::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(\stdClass::class));
         $container->setDefinition(RandomGeneratorInterface::class, new Definition(\stdClass::class));
         $container->setDefinition(Connection::class, new Definition(\stdClass::class));
 
         foreach ($container->getDefinitions() as $definition) {
             $definition->setPublic(true);
+        }
+
+        foreach ($container->getAliases() as $alias) {
+            $alias->setPublic(true);
         }
     }
 

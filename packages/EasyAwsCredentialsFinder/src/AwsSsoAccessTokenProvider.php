@@ -88,13 +88,13 @@ final class AwsSsoAccessTokenProvider implements AwsSsoAccessTokenProviderInterf
         $missing = [];
         $notEqual = [];
 
-        foreach (static::$requiredCachedContents as $key) {
+        foreach (self::$requiredCachedContents as $key) {
             if (isset($cachedAccessToken[$key]) === false) {
                 $missing[] = $key;
             }
         }
 
-        foreach (static::$mustBeEqual as $cache => $config) {
+        foreach (self::$mustBeEqual as $cache => $config) {
             if ($cachedAccessToken[$cache] !== $ssoConfigs[$config]) {
                 $notEqual[] = $cache;
             }

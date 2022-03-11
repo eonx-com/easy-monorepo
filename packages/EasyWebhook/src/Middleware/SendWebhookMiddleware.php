@@ -35,7 +35,6 @@ final class SendWebhookMiddleware extends AbstractMiddleware
             throw new InvalidWebhookUrlException('Webhook URL required');
         }
 
-        $response = null;
         $throwable = null;
 
         try {
@@ -43,6 +42,9 @@ final class SendWebhookMiddleware extends AbstractMiddleware
             // Trigger exception on bad response
             $response->getContent();
         } catch (\Throwable $throwable) {
+            // Set response to null here to make sure not to carry over the faulty response
+            $response = null;
+
             if ($throwable instanceof HttpExceptionInterface) {
                 $response = $throwable->getResponse();
             }

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyRequestId\Bridge\BridgeConstantsInterface;
 use EonX\EasyRequestId\Bridge\Symfony\Listeners\RequestListener;
 use EonX\EasyRequestId\Bridge\Symfony\Messenger\SendMessageToTransportsListener;
@@ -11,7 +13,6 @@ use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\UuidV4FallbackResolver;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Twig\Extension\AbstractExtension;
 
 return static function (ContainerConfigurator $containerConfigurator): void {

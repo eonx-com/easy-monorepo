@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
 use EonX\EasyDecision\Expressions\ExpressionLanguage;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 use EonX\EasyDecision\Helpers\ValueExpressionFunctionProvider;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -19,7 +18,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(ExpressionLanguageInterface::class, ExpressionLanguage::class)
-        ->factory([ref(ExpressionLanguageFactoryInterface::class), 'create']);
+        ->factory([service(ExpressionLanguageFactoryInterface::class), 'create']);
 
     $services
         ->set(SetExpressionLanguageConfigurator::class)

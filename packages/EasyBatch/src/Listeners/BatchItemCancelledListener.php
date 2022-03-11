@@ -36,6 +36,6 @@ final class BatchItemCancelledListener
             $this->batchManager->cancel($batchItem);
         };
 
-        $this->batchManager->iterateThroughItems($batchId, $dependsOnName, $func);
+        $this->batchManager->iterateThroughItems($batchId, $func, $dependsOnName);
     }
 }

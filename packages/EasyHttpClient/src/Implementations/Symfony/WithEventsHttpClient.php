@@ -83,13 +83,11 @@ final class WithEventsHttpClient implements HttpClientInterface
             $this->modifiersWhitelist,
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST] ?? []
         );
-        $subscribers = $options[HttpOptionsInterface::REQUEST_DATA_SUBSCRIBERS] ?? [];
         unset(
             $options[HttpOptionsInterface::REQUEST_DATA_EXTRA],
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS],
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_ENABLED],
-            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST],
-            $options[HttpOptionsInterface::REQUEST_DATA_SUBSCRIBERS]
+            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST]
         );
 
         $requestData = new RequestData($method, $options, Carbon::now('UTC'), $url);
@@ -111,22 +109,6 @@ final class WithEventsHttpClient implements HttpClientInterface
                 Carbon::now('UTC'),
                 $response->getStatusCode()
             );
-
-            if (\count($subscribers) > 0) {
-                @\trigger_error(\sprintf(
-                    'Using option "%s" is deprecated since 3.4 and will be removed in 4.0.
-                        Use option "%s" and listen to %s event instead.',
-                    HttpOptionsInterface::REQUEST_DATA_SUBSCRIBERS,
-                    HttpOptionsInterface::REQUEST_DATA_EXTRA,
-                    HttpRequestSentEvent::class
-                ), \E_USER_DEPRECATED);
-
-                foreach ($subscribers as $subscriber) {
-                    if (\is_callable($subscriber)) {
-                        $subscriber($requestData, $responseData);
-                    }
-                }
-            }
 
             return $response;
         } catch (\Throwable $throwable) {
@@ -150,6 +132,17 @@ final class WithEventsHttpClient implements HttpClientInterface
     public function stream($responses, float $timeout = null): ResponseStreamInterface
     {
         return $this->decorated->stream($responses, $timeout);
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function withOptions(array $options): self
+    {
+        $clone = clone $this;
+        $clone->decorated = $this->decorated->withOptions($options);
+
+        return $clone;
     }
 
     /**

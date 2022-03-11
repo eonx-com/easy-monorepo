@@ -158,11 +158,15 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private function getHandlers(string $channel): array
     {
-        $map = static function (HandlerConfigInterface $config): HandlerInterface {
-            return $config->handler();
-        };
+        /** @var \EonX\EasyLogging\Interfaces\Config\HandlerConfigInterface[] $configs */
+        $configs = $this->filterAndSortConfigs($this->handlerConfigs, $channel);
 
-        $handlers = \array_map($map, $this->filterAndSortConfigs($this->handlerConfigs, $channel));
+        $handlers = \array_map(
+            static function (HandlerConfigInterface $config): HandlerInterface {
+                return $config->handler();
+            },
+            $configs
+        );
 
         return \count($handlers) > 0 ? $handlers : [new NullHandler()];
     }
@@ -180,11 +184,15 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private function getProcessors(string $channel): array
     {
-        $map = static function (ProcessorConfigInterface $config): ProcessorInterface {
-            return $config->processor();
-        };
+        /** @var \EonX\EasyLogging\Interfaces\Config\ProcessorConfigInterface[] $configs */
+        $configs = $this->filterAndSortConfigs($this->processorConfigs, $channel);
 
-        return \array_map($map, $this->filterAndSortConfigs($this->processorConfigs, $channel));
+        return \array_map(
+            static function (ProcessorConfigInterface $config): ProcessorInterface {
+                return $config->processor();
+            },
+            $configs
+        );
     }
 
     /**

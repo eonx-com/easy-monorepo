@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyTemplatingBlock\Bridge\BridgeConstantsInterface;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingEventRendererInterface;
 use EonX\EasyTemplatingBlock\Renderers\TextBlockRenderer;
 use EonX\EasyTemplatingBlock\TemplatingEventRenderer;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

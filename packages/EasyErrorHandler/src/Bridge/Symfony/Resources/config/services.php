@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\Symfony\DataCollector\ErrorHandlerDataCollector;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ConsoleErrorEventListener;
@@ -16,10 +18,9 @@ use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
+use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
+use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -40,7 +41,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(ErrorHandlerInterface::class, ErrorHandler::class)
         ->arg('$builderProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER))
         ->arg('$reporterProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER))
-        ->arg('$isVerbose', '%' . BridgeConstantsInterface::PARAM_IS_VERBOSE . '%')
         ->arg('$ignoredExceptionsForReport', '%' . BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS . '%');
 
     $services->set(ErrorHandlerDataCollector::class)
@@ -71,4 +71,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(TranslatorInterface::class, Translator::class)
         ->arg('$domain', '%' . BridgeConstantsInterface::PARAM_TRANSLATION_DOMAIN . '%');
+
+    // Verbose
+    $services
+        ->set(VerboseStrategyInterface::class, ChainVerboseStrategy::class)
+        ->arg('$drivers', tagged_iterator(BridgeConstantsInterface::TAG_VERBOSE_STRATEGY_DRIVER))
+        ->arg('$defaultIsVerbose', '%' . BridgeConstantsInterface::PARAM_IS_VERBOSE . '%');
 };

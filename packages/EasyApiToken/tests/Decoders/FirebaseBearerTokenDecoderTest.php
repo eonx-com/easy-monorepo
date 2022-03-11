@@ -12,11 +12,12 @@ final class FirebaseBearerTokenDecoderTest extends AbstractFirebaseJwtTokenTestC
 {
     public function testJwtTokenDecodeSuccessfully(): void
     {
-        foreach (static::$algos as $algo) {
-            $key = static::$key;
+        foreach (self::$algos as $algo) {
+            $key = self::$key;
 
             if ($this->isAlgoRs($algo)) {
                 $key = $this->getOpenSslPublicKey();
+                $key = $key === false ? null : $key;
             }
 
             $jwtDriver = $this->createFirebaseJwtDriver(null, $key, null, [$algo]);
@@ -30,7 +31,7 @@ final class FirebaseBearerTokenDecoderTest extends AbstractFirebaseJwtTokenTestC
 
             self::assertInstanceOf(Jwt::class, $token);
 
-            foreach (static::$tokenPayload as $key => $value) {
+            foreach (self::$tokenPayload as $key => $value) {
                 self::assertArrayHasKey($key, $payload);
                 self::assertEquals($value, $payload[$key]);
             }

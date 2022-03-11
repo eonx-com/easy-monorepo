@@ -12,7 +12,7 @@ jobs:
             -
                 uses: eonx-com/actions-setup-php@v2
                 with:
-                    php-version: 7.3
+                    php-version: 8.1
                     coverage: none
             -
                 uses: eonx-com/actions-composer-install@v1
@@ -29,7 +29,7 @@ jobs:
             matrix:
                 mapping: '${{ fromJson(needs.provide_packages_json.outputs.matrix) }}'
                 tag:
-                    - 3.4.20
+                    - 4.0.2
         name: 'Split ${{ matrix.mapping.dir }}'
         env:
             DIR: 'packages/${{ matrix.mapping.dir }}'

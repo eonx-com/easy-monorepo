@@ -35,7 +35,7 @@ final class ArrayStoreStub extends AbstractStore implements StoreInterface
 
     public function find(string $id): ?WebhookInterface
     {
-        return null;
+        return $this->webhooks[$id] ?? null;
     }
 
     public function generateWebhookId(): string

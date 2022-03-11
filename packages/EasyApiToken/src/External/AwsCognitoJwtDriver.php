@@ -59,6 +59,7 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
             JWT::$leeway = $this->leeway;
         }
 
+        /** @var \stdClass $decodedToken */
         $decodedToken = JWT::decode($token, $this->jwkFetcher->getJwks($this->userPoolConfig), $this->allowedAlgos);
 
         // Validate audience
@@ -85,11 +86,9 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
     }
 
     /**
-     * @param mixed $input
-     *
      * @throws \EonX\EasyApiToken\Exceptions\MethodNotSupportedException
      */
-    public function encode($input): string
+    public function encode(array|object $input): string
     {
         throw new MethodNotSupportedException(\sprintf('%s not supported', __FUNCTION__));
     }

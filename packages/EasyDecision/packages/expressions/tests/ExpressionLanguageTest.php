@@ -65,12 +65,12 @@ final class ExpressionLanguageTest extends AbstractTestCase
         $this->expectException(InvalidExpressionException::class);
 
         $this->getExpressionLanguage()
-            ->validate(static::$expression, ['invalid']);
+            ->validate(self::$expression, ['invalid']);
     }
 
     public function testValidateValidExpression(): void
     {
-        self::assertTrue($this->getExpressionLanguage()->validate(static::$expression, ['input']));
+        self::assertTrue($this->getExpressionLanguage()->validate(self::$expression, ['input']));
     }
 
     private function getExpressionLanguage(): ExpressionLanguageInterface

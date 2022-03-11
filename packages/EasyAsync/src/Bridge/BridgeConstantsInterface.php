@@ -24,12 +24,27 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_BATCH_ITEMS_TABLE = 'easy_async.batch_items_table';
+    public const PARAM_BATCH_MESSENGER_BUSES = 'easy_async.messenger_buses';
 
     /**
      * @var string
      */
-    public const PARAM_BATCH_MESSENGER_BUSES = 'easy_async.messenger_buses';
+    public const PARAM_MESSENGER_WORKER_STOP_MIN_MESSAGES = 'easy_async.messenger_worker_stop_min_messages';
+
+    /**
+     * @var string
+     */
+    public const PARAM_MESSENGER_WORKER_STOP_MAX_MESSAGES = 'easy_async.messenger_worker_stop_max_messages';
+
+    /**
+     * @var string
+     */
+    public const PARAM_MESSENGER_WORKER_STOP_MIN_TIME = 'easy_async.messenger_worker_stop_min_time';
+
+    /**
+     * @var string
+     */
+    public const PARAM_MESSENGER_WORKER_STOP_MAX_TIME = 'easy_async.messenger_worker_stop_max_time';
 
     /**
      * @var string

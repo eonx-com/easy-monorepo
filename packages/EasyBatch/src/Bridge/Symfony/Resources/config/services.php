@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyBatch\BatchManager;
 use EonX\EasyBatch\Bridge\BridgeConstantsInterface;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\AsyncDispatcher;
@@ -18,15 +20,13 @@ use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
+use EonX\EasyBatch\Interfaces\MessageSerializerInterface;
 use EonX\EasyBatch\Repositories\BatchItemRepository;
 use EonX\EasyBatch\Repositories\BatchRepository;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyBatch\Transformers\BatchTransformer;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -34,7 +34,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure()
         ->bind('$datetimeFormat', '%' . BridgeConstantsInterface::PARAM_DATE_TIME_FORMAT . '%')
-        ->bind('$eventDispatcher', ref(EventDispatcherInterface::class));
+        ->bind('$eventDispatcher', service(EventDispatcherInterface::class));
 
     // AsyncDispatcher
     $services->set(AsyncDispatcherInterface::class, AsyncDispatcher::class);
@@ -42,11 +42,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Factories
     $services
         ->set(BatchFactoryInterface::class, BatchFactory::class)
-        ->arg('$transformer', ref(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER));
+        ->arg('$transformer', service(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER));
 
     $services
         ->set(BatchItemFactoryInterface::class, BatchItemFactory::class)
-        ->arg('$transformer', ref(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
+        ->arg('$transformer', service(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
 
     // IdStrategies
     $services
@@ -71,33 +71,35 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Repositories
     $services
         ->set(BatchRepositoryInterface::class, BatchRepository::class)
-        ->arg('$factory', ref(BatchFactoryInterface::class))
-        ->arg('$idStrategy', ref(BridgeConstantsInterface::SERVICE_BATCH_ID_STRATEGY))
+        ->arg('$factory', service(BatchFactoryInterface::class))
+        ->arg('$idStrategy', service(BridgeConstantsInterface::SERVICE_BATCH_ID_STRATEGY))
         ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_TABLE . '%')
-        ->arg('$transformer', ref(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER));
+        ->arg('$transformer', service(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER));
 
     $services
         ->set(BatchItemRepositoryInterface::class, BatchItemRepository::class)
-        ->arg('$factory', ref(BatchItemFactoryInterface::class))
-        ->arg('$idStrategy', ref(BridgeConstantsInterface::SERVICE_BATCH_ITEM_ID_STRATEGY))
+        ->arg('$factory', service(BatchItemFactoryInterface::class))
+        ->arg('$idStrategy', service(BridgeConstantsInterface::SERVICE_BATCH_ITEM_ID_STRATEGY))
         ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_TABLE . '%')
-        ->arg('$transformer', ref(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
+        ->arg('$transformer', service(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
 
     //Serializer
-    $services->set(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER, MessageSerializer::class);
+    $services->set(MessageSerializerInterface::class, MessageSerializer::class);
+
+    $services->alias(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER, MessageSerializerInterface::class);
 
     $services->set(MessageSerializerDecorator::class)
         ->decorate(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER)
-        ->args([ref('.inner')]);
+        ->args([service('.inner')]);
 
     // Transformers
     $services
         ->set(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER, BatchTransformer::class)
-        ->arg('$messageSerializer', ref(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
+        ->arg('$messageSerializer', service(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
         ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_CLASS . '%');
 
     $services
         ->set(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER, BatchItemTransformer::class)
-        ->arg('$messageSerializer', ref(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
+        ->arg('$messageSerializer', service(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
         ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_CLASS . '%');
 };

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\AssignmentInConditionSniff;
@@ -27,7 +29,6 @@ use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayOpenerAndCloserNewlineFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
 use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
@@ -39,17 +40,21 @@ use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
-    $parameters->set(Option::PATHS, [
-        __DIR__ . '/packages',
-        __DIR__ . '/changelog-linker.php',
-        __DIR__ . '/monorepo-builder.php',
-        __DIR__ . '/ecs.php',
-    ]);
-
-    $containerConfigurator->import(SetList::COMMON);
-    $containerConfigurator->import(SetList::CLEAN_CODE);
-    $containerConfigurator->import(SetList::PSR_12);
     $containerConfigurator->import(SetList::ARRAY);
+    $containerConfigurator->import(SetList::CLEAN_CODE);
+    $containerConfigurator->import(SetList::COMMON);
+    $containerConfigurator->import(SetList::PSR_12);
+
+    $parameters->set(Option::PARALLEL, true);
+    $parameters->set(Option::PARALLEL_JOB_SIZE, 1);
+    $parameters->set(Option::PARALLEL_MAX_NUMBER_OF_PROCESSES, 2);
+
+    $parameters->set(Option::PATHS, [
+        __DIR__ . '/changelog-linker.php',
+        __DIR__ . '/ecs.php',
+        __DIR__ . '/monorepo-builder.php',
+        __DIR__ . '/packages',
+    ]);
 
     $parameters->set(Option::SKIP, [
         'packages/*/var/*php',
@@ -87,8 +92,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyLogging/src/Logger.php',
             __DIR__ . '/packages/EasyApiToken/src/External/Auth0JwtDriver.php',
             __DIR__ . '/packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
-            __DIR__ . '/packages/EasyAsync/src/Helpers/PropertyHelper.php',
-            __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php',
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/PermissionVoter.php',
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/RoleVoter.php',
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',
@@ -108,8 +111,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyCore/src/Bridge/Symfony/Serializer/TrimStringsDenormalizer.php',
             __DIR__ . '/packages/EasyLogging/src/Logger.php',
             __DIR__ . '/packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
-            __DIR__ . '/packages/EasyAsync/src/Helpers/PropertyHelper.php',
-            __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/ContextAuthenticator.php',
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/PermissionVoter.php',
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/RoleVoter.php',
             __DIR__ . '/packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',

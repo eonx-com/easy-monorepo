@@ -23,8 +23,10 @@ use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
+use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
+use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
@@ -72,13 +74,23 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         $this->app->singleton(ErrorResponseFactoryInterface::class, ErrorResponseFactory::class);
 
         $this->app->singleton(
+            VerboseStrategyInterface::class,
+            static function (Container $app): VerboseStrategyInterface {
+                return new ChainVerboseStrategy(
+                    $app->tagged(BridgeConstantsInterface::TAG_VERBOSE_STRATEGY_DRIVER),
+                    (bool)\config('easy-error-handler.use_extended_response', false)
+                );
+            }
+        );
+
+        $this->app->singleton(
             ErrorHandlerInterface::class,
             static function (Container $app): ErrorHandlerInterface {
                 return new ErrorHandler(
                     $app->make(ErrorResponseFactoryInterface::class),
                     $app->tagged(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER),
                     $app->tagged(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER),
-                    (bool)\config('easy-error-handler.use_extended_response', false),
+                    $app->make(VerboseStrategyInterface::class),
                     \config('easy-error-handler.ignored_exceptions')
                 );
             }

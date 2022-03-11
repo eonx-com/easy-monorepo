@@ -11,22 +11,22 @@ use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
 use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
 use EonX\EasySecurity\Interfaces\Authorization\PermissionInterface;
 use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
-use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
 
 final class SecurityContextClientConfigurator extends AbstractClientConfigurator
 {
     /**
-     * @var \EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface
+     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
      */
-    private $securityContextProvider;
+    private $securityContextResolver;
 
     public function __construct(
-        DeferredSecurityContextProviderInterface $securityContextProvider,
+        SecurityContextResolverInterface $securityContextResolver,
         ?int $priority = null
     ) {
-        $this->securityContextProvider = $securityContextProvider;
+        $this->securityContextResolver = $securityContextResolver;
 
         parent::__construct($priority);
     }
@@ -37,7 +37,7 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
             ->getPipeline()
             ->pipe(new CallbackBridge(function (Report $report): void {
                 $security = [];
-                $securityContext = $this->securityContextProvider->getSecurityContext();
+                $securityContext = $this->securityContextResolver->resolveContext();
 
                 $token = $securityContext->getToken();
                 if ($token !== null) {

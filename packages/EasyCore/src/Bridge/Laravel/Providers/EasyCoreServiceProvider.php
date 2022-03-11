@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Laravel\Providers;
 
-use EonX\EasyCore\Bridge\Laravel\Listeners\DoctrineClearEmBeforeJobListener;
-use EonX\EasyCore\Bridge\Laravel\Listeners\DoctrineRestartQueueOnEmCloseListener;
-use EonX\EasyCore\Bridge\Laravel\Listeners\QueueWorkerStoppingListener;
+use EonX\EasyAsync\Bridge\Laravel\Queue\DoctrineManagersClearListener;
+use EonX\EasyAsync\Bridge\Laravel\Queue\DoctrineManagersSanityCheckListener;
+use EonX\EasyAsync\Bridge\Laravel\Queue\QueueWorkerStoppingListener;
 use EonX\EasyCore\Bridge\Laravel\Middleware\TrimStrings;
 use EonX\EasyCore\Helpers\RecursiveStringsTrimmer;
 use EonX\EasyCore\Helpers\StringsTrimmerInterface;
@@ -46,7 +46,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
         }
 
         $this->app->get('events')
-            ->listen(JobProcessing::class, DoctrineClearEmBeforeJobListener::class);
+            ->listen(JobProcessing::class, DoctrineManagersClearListener::class);
     }
 
     private function logQueueWorkerStopping(): void
@@ -66,7 +66,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
         }
 
         $this->app->get('events')
-            ->listen(JobExceptionOccurred::class, DoctrineRestartQueueOnEmCloseListener::class);
+            ->listen(JobExceptionOccurred::class, DoctrineManagersSanityCheckListener::class);
     }
 
     private function search(): void

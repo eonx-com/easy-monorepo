@@ -28,26 +28,11 @@ final class SeverityClientConfigurator extends AbstractClientConfigurator
      */
     private $errorLogLevelResolver;
 
-    /**
-     * @var null|int
-     */
-    private $threshold;
-
     public function __construct(
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
-        ?int $threshold = null,
         ?int $priority = null
     ) {
         $this->errorLogLevelResolver = $errorLogLevelResolver;
-
-        if ($threshold !== null) {
-            @\trigger_error(
-                'Passing $threshold is deprecated since 3.0 and will be removed in 4.0.',
-                \E_USER_DEPRECATED
-            );
-
-            $this->threshold = $threshold;
-        }
 
         parent::__construct($priority);
     }
@@ -75,11 +60,6 @@ final class SeverityClientConfigurator extends AbstractClientConfigurator
         }
 
         $logLevel = $this->errorLogLevelResolver->getLogLevel($throwable);
-
-        if ($this->threshold !== null && $logLevel > $this->threshold) {
-            // If log level greater than threshold, severity to error
-            return SeverityAwareExceptionInterface::SEVERITY_ERROR;
-        }
 
         return self::MAPPING[$logLevel] ?? null;
     }

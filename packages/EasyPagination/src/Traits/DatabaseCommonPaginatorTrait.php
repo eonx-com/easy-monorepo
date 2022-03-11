@@ -50,19 +50,6 @@ trait DatabaseCommonPaginatorTrait
         return $this;
     }
 
-    /**
-     * @deprecated since 3.2, will be removed in 4.0. Use setFilterCriteria() instead.
-     */
-    public function setCriteria(?callable $criteria = null): self
-    {
-        @\trigger_error(
-            'setCriteria() is deprecated since 3.2 and will be removed in 4.0. Use setFilterCriteria() instead.',
-            \E_USER_DEPRECATED
-        );
-
-        return $this->setFilterCriteria($criteria);
-    }
-
     public function setFilterCriteria(?callable $filterCriteria = null): self
     {
         $this->filterCriteria = $filterCriteria;

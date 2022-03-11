@@ -9,7 +9,7 @@ use EonX\EasySchedule\Interfaces\ScheduleInterface;
 interface TraceableScheduleInterface extends ScheduleInterface
 {
     /**
-     * @return \EonX\EasySchedule\Interfaces\EventInterface[]
+     * @return array<string, \EonX\EasySchedule\Interfaces\EventInterface[]>
      */
     public function getEvents(): array;
 

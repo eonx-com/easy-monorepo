@@ -10,7 +10,7 @@ use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
+use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
 
 final class BatchItemRepository extends AbstractBatchObjectRepository implements BatchItemRepositoryInterface
@@ -19,34 +19,36 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
      * @param int|string $batchId
      */
     public function findForDispatch(
-        StartSizeDataInterface $startSizeData,
+        PaginationInterface $pagination,
         $batchId,
         ?string $dependsOnName = null
     ): LengthAwarePaginatorInterface {
-        $paginator = new DoctrineDbalLengthAwarePaginator($this->conn, $this->table, $startSizeData);
+        $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->conn, $this->table);
 
-        $paginator->setCriteria(static function (QueryBuilder $queryBuilder) use ($batchId, $dependsOnName): void {
-            $queryBuilder
-                ->where('batch_id = :batchId')
-                ->setParameter('batchId', $batchId);
-
-            // Dispatch only pending items
-            $queryBuilder
-                ->andWhere('status = :pendingStatus')
-                ->setParameter('pendingStatus', BatchObjectInterface::STATUS_PENDING);
-
-            // Make sure to get only batchItems with no dependency
-            if ($dependsOnName === null) {
-                $queryBuilder->andWhere('depends_on_name is null');
-            }
-
-            // Make sure to get only batchItems for given dependency
-            if ($dependsOnName !== null) {
+        $paginator->setFilterCriteria(
+            static function (QueryBuilder $queryBuilder) use ($batchId, $dependsOnName): void {
                 $queryBuilder
-                    ->andWhere('depends_on_name = :dependsOnName')
-                    ->setParameter('dependsOnName', $dependsOnName);
+                    ->where('batch_id = :batchId')
+                    ->setParameter('batchId', $batchId);
+
+                // Dispatch only pending items
+                $queryBuilder
+                    ->andWhere('status = :pendingStatus')
+                    ->setParameter('pendingStatus', BatchObjectInterface::STATUS_PENDING);
+
+                // Make sure to get only batchItems with no dependency
+                if ($dependsOnName === null) {
+                    $queryBuilder->andWhere('depends_on_name is null');
+                }
+
+                // Make sure to get only batchItems for given dependency
+                if ($dependsOnName !== null) {
+                    $queryBuilder
+                        ->andWhere('depends_on_name = :dependsOnName')
+                        ->setParameter('dependsOnName', $dependsOnName);
+                }
             }
-        });
+        );
 
         $paginator->setGetItemsCriteria(static function (QueryBuilder $queryBuilder): void {
             $queryBuilder->orderBy('created_at');

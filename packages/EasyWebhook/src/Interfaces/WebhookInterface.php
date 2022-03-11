@@ -32,7 +32,7 @@ interface WebhookInterface
     public const HEADER_SIGNATURE = 'X-Webhook-Signature';
 
     /**
-     * @var string
+     * @var string[]
      */
     public const OPTIONS = [
         self::OPTION_BODY,

@@ -52,9 +52,11 @@ final class DecisionFactory implements DecisionFactoryInterface
 
     public function createByName(string $name): DecisionInterface
     {
-        $decision = $this->mappingProvider->getDecisionType($name);
+        $decisionClass = $this->mappingProvider->getDecisionType($name);
+        /** @var \EonX\EasyDecision\Interfaces\DecisionInterface $decision */
+        $decision = new $decisionClass($name);
 
-        return $this->configureDecision(new $decision($name));
+        return $this->configureDecision($decision);
     }
 
     public function createConsensusDecision(?string $name = null): DecisionInterface

@@ -25,7 +25,7 @@ final class AwsConfigurationProvider extends AbstractConfigurationProvider imple
     {
         $args = [];
 
-        foreach (static::$ssoConfigs as $snake => $studly) {
+        foreach (self::$ssoConfigs as $snake => $studly) {
             $args[$studly] = $ssoConfigs[$snake] ?? '';
         }
 
@@ -88,7 +88,7 @@ final class AwsConfigurationProvider extends AbstractConfigurationProvider imple
             return null;
         }
 
-        foreach (\array_keys(static::$ssoConfigs) as $ssoConfig) {
+        foreach (\array_keys(self::$ssoConfigs) as $ssoConfig) {
             if (isset($config[$ssoConfig]) === false) {
                 return null;
             }

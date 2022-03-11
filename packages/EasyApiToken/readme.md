@@ -14,7 +14,7 @@ This package will decode the incoming HTTP Request to extract the "ApiToken" as 
 then use. It comes with built-in decoders for:
 - Basic Auth
 - API keys
-- JWTs (Auth0, Firebase)
+- JWTs (Amazon Cognito, Auth0, Firebase)
 
 So you can start supporting each of those strategies with no effort. It also provides a "chain" decoder allowing you
 to support multiple ApiToken strategies for the same API endpoint.
