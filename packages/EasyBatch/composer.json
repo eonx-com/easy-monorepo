@@ -9,6 +9,7 @@
         "eonx-com/easy-lock": "^4.1",
         "eonx-com/easy-pagination": "^4.1",
         "eonx-com/easy-random": "^4.1",
+        "eonx-com/easy-utils": "^4.1",
         "nesbot/carbon": "^2.22"
     },
     "require-dev": {
