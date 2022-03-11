@@ -9,6 +9,7 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\StatusCodeAwareExceptionInterfac
 use EonX\EasyErrorHandler\Interfaces\Exceptions\SubCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface;
+use EonX\EasyUtils\ErrorDetailsHelper;
 use Psr\Log\LoggerInterface;
 
 final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
@@ -49,23 +50,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
      */
     public function resolveSimpleDetails(\Throwable $throwable, ?bool $withTrace = null): array
     {
-        $details = [
-            'code' => $throwable->getCode(),
-            'class' => \get_class($throwable),
-            'file' => $throwable->getFile(),
-            'line' => $throwable->getLine(),
-            'message' => $throwable->getMessage(),
-        ];
-
-        if ($withTrace ?? true) {
-            $details['trace'] = \array_map(static function (array $trace): array {
-                unset($trace['args']);
-
-                return $trace;
-            }, $throwable->getTrace());
-        }
-
-        return $details;
+        return ErrorDetailsHelper::resolveSimpleDetails($throwable, $withTrace);
     }
 
     private function canResolvePrevious(\Throwable $previous, int $maxDepth, int $depth): bool
