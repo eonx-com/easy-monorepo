@@ -3,6 +3,7 @@ on:
     push:
         branches:
             - master
+            - 3.x
 jobs:
     provide_packages_json:
         runs-on: ubuntu-latest
