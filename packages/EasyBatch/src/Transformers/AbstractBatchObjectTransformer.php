@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
 use EonX\EasyBatch\Interfaces\MessageSerializerInterface;
+use EonX\EasyUtils\ErrorDetailsHelper;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
 {
@@ -66,9 +67,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         }
 
         if (isset($data['throwable'])) {
-            /** @var \Throwable $throwable */
-            $throwable = $this->messageSerializer->unserialize((string)$data['throwable']);
-            $object->setThrowable($throwable);
+            $object->setThrowableDetails(\json_decode((string)$data['throwable'], true) ?? []);
         }
 
         if (isset($data['type'])) {
@@ -111,7 +110,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
             }
 
             if ($value instanceof \Throwable) {
-                $data[$name] = $this->messageSerializer->serialize($value);
+                $data[$name] = \json_encode(ErrorDetailsHelper::resolveSimpleDetails($value));
             }
         }
 
