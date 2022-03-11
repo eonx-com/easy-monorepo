@@ -6,11 +6,11 @@
     "require": {
         "php": "^7.2 || ^8.0",
         "ext-json": "*",
-        "eonx-com/easy-event-dispatcher": "^3.5",
-        "eonx-com/easy-lock": "^3.5",
-        "eonx-com/easy-pagination": "^3.5",
-        "eonx-com/easy-random": "^3.5",
-        "eonx-com/easy-utils": "^3.5",
+        "eonx-com/easy-event-dispatcher": "^3.4.27",
+        "eonx-com/easy-lock": "^3.4.27",
+        "eonx-com/easy-pagination": "^3.4.27",
+        "eonx-com/easy-random": "^3.4.27",
+        "eonx-com/easy-utils": "^3.4.27",
         "nesbot/carbon": "^1.39 || ^2.22"
     },
     "require-dev": {
