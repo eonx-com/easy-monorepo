@@ -6,8 +6,6 @@ namespace EonX\EasyActivity\Bridge\Symfony\Serializers;
 
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterface;
 
@@ -24,11 +22,6 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
     private $disallowedProperties;
 
     /**
-     * @var \Symfony\Component\PropertyAccess\PropertyAccessorInterface
-     */
-    private $propertyAccessor;
-
-    /**
      * @var \Symfony\Component\Serializer\SerializerInterface
      */
     private $serializer;
@@ -39,13 +32,11 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
     public function __construct(
         SymfonySerializerInterface $serializer,
         CircularReferenceHandlerInterface $circularReferenceHandler,
-        array $disallowedProperties,
-        PropertyAccessorInterface $propertyAccessor = null
+        array $disallowedProperties
     ) {
         $this->serializer = $serializer;
         $this->circularReferenceHandler = $circularReferenceHandler;
         $this->disallowedProperties = $disallowedProperties;
-        $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -87,7 +78,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
             if (\is_object($value)) {
                 $objectClass = \get_class($value);
 
-                if ($this->propertyAccessor->isReadable($value, 'id')) {
+                if (\is_subclass_of($objectClass, \DateTimeInterface::class) === false) {
                     $context[AbstractNormalizer::ATTRIBUTES][$key] = $nestedObjectAllowedProperties[$objectClass]
                         ?? $allowedProperties[$key] ?? ['id'];
                 }
