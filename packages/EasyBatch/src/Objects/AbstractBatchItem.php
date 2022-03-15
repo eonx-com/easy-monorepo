@@ -9,6 +9,11 @@ use EonX\EasyBatch\Interfaces\BatchItemInterface;
 abstract class AbstractBatchItem extends AbstractBatchObject implements BatchItemInterface
 {
     /**
+     * @var bool
+     */
+    private $approvalRequired = false;
+
+    /**
      * @var int
      */
     private $attempts = 0;
@@ -24,6 +29,16 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
     private $dependsOnName;
 
     /**
+     * @var bool
+     */
+    private $encrypted = false;
+
+    /**
+     * @var string
+     */
+    private $encryptionKeyName;
+
+    /**
      * @var int
      */
     private $maxAttempts = 1;
@@ -32,11 +47,6 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
      * @var object
      */
     private $message;
-
-    /**
-     * @var bool
-     */
-    private $approvalRequired = false;
 
     public function __construct()
     {
@@ -63,6 +73,11 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
         return $this->dependsOnName;
     }
 
+    public function getEncryptionKeyName(): ?string
+    {
+        return $this->encryptionKeyName;
+    }
+
     public function getMaxAttempts(): int
     {
         return $this->maxAttempts;
@@ -76,6 +91,11 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
     public function isApprovalRequired(): bool
     {
         return $this->approvalRequired;
+    }
+
+    public function isEncrypted(): bool
+    {
+        return $this->encrypted;
     }
 
     public function isRetried(): bool
@@ -111,6 +131,20 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
         return $this;
     }
 
+    public function setEncrypted(?bool $encrypted = null): BatchItemInterface
+    {
+        $this->encrypted = $encrypted ?? true;
+
+        return $this;
+    }
+
+    public function setEncryptionKeyName(string $encryptionKeyName): BatchItemInterface
+    {
+        $this->encryptionKeyName = $encryptionKeyName;
+
+        return $this;
+    }
+
     public function setMaxAttempts(int $maxAttempts): BatchItemInterface
     {
         $this->maxAttempts = $maxAttempts;
@@ -134,6 +168,7 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
             'attempts' => $this->getAttempts(),
             'batch_id' => $this->getBatchId(),
             'depends_on_name' => $this->getDependsOnName(),
+            'encrypted' => $this->isEncrypted(),
             'max_attempts' => $this->getMaxAttempts(),
             'message' => $this->getMessage(),
             'requires_approval' => $this->isApprovalRequired() ? 1 : 0,

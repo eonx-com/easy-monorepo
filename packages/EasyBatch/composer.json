@@ -13,6 +13,7 @@
         "nesbot/carbon": "^2.22"
     },
     "require-dev": {
+        "eonx-com/easy-encryption": "^4.1",
         "ramsey/uuid": "^3.9 || ^4.0",
         "doctrine/orm": "^2.6",
         "phpunit/phpunit": "^9.5",
