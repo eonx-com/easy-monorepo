@@ -357,10 +357,15 @@ final class BatchManager implements BatchManagerInterface
 
         $batchItem
             ->setApprovalRequired($item->isApprovalRequired())
+            ->setEncrypted($item->isEncrypted())
             ->setMaxAttempts($item->getMaxAttempts());
 
         if ($item->getDependsOn() !== null) {
             $batchItem->setDependsOnName($item->getDependsOn());
+        }
+
+        if ($item->getEncryptionKeyName() !== null) {
+            $batchItem->setEncryptionKeyName($item->getEncryptionKeyName());
         }
 
         if ($item->getMetadata() !== null) {
