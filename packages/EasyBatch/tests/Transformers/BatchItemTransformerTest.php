@@ -16,23 +16,38 @@ use EonX\EasyEncryption\Resolvers\SimpleEncryptionKeyResolver;
 
 final class BatchItemTransformerTest extends AbstractTestCase
 {
-    public function testEncryptedBatchItem(): void
+    /**
+     * @return iterable<mixed>
+     */
+    public function providerTestEncryptedBatchItem(): iterable
+    {
+        yield 'Encrypted' => [true];
+        yield 'Not Encrypted' => [false];
+    }
+
+    /**
+     * @dataProvider providerTestEncryptedBatchItem
+     */
+    public function testEncryptedBatchItem(bool $encrypted): void
     {
         $message = new \stdClass();
         $message->key = 'value';
 
         $batchItem = $this->getBatchItemFactory()->create('batchId', $message);
-        $batchItem->setEncrypted(true);
+        $batchItem->setEncrypted($encrypted);
 
         $transformer = new BatchItemTransformer(new MessageSerializer());
-        $transformer->setEncryptor($this->getEncryptor());
+        if ($encrypted) {
+            $transformer->setEncryptor($this->getEncryptor());
+        }
 
         $array = $transformer->transformToArray($batchItem);
         /** @var \EonX\EasyBatch\Interfaces\BatchItemInterface $newBatchItem */
         $newBatchItem = $transformer->transformToObject($array);
+        $expectedEncryptionKeyName = $encrypted ? EncryptorInterface::DEFAULT_KEY_NAME : null;
 
-        self::assertTrue($array['encrypted']);
-        self::assertEquals(EncryptorInterface::DEFAULT_KEY_NAME, $newBatchItem->getEncryptionKeyName());
+        self::assertEquals($encrypted, $array['encrypted']);
+        self::assertEquals($expectedEncryptionKeyName, $newBatchItem->getEncryptionKeyName());
         self::assertInstanceOf(\stdClass::class, $newBatchItem->getMessage());
     }
 
