@@ -10,12 +10,9 @@ use EonX\EasyBatch\Objects\Batch;
 
 final class BatchTransformer extends AbstractBatchObjectTransformer
 {
-    public function __construct(
-        MessageSerializerInterface $messageSerializer,
-        ?string $class = null,
-        ?string $datetimeFormat = null
-    ) {
-        parent::__construct($messageSerializer, $class ?? Batch::class, $datetimeFormat);
+    public function __construct(?string $class = null, ?string $datetimeFormat = null)
+    {
+        parent::__construct($class ?? Batch::class, $datetimeFormat);
     }
 
     /**
