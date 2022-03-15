@@ -96,9 +96,6 @@ parameters:
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDoctrine/src/ORM/Decorators/EntityManagerDecorator.php
 
-        - message: '#Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and string will always evaluate to false#'
-          path: packages/EasyDoctrine/src/DBAL/Types/CarbonImmutableDateTimeMicrosecondsType.php
-
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
           path: packages/EasyEncryption/src/Encryptor.php
