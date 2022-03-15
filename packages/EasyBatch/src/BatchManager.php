@@ -348,8 +348,11 @@ final class BatchManager implements BatchManagerInterface
         }
     }
 
-    private function persistBatchItem(int|string $batchId, MessageDecorator $item, ?object $message = null): BatchItemInterface
-    {
+    private function persistBatchItem(
+        int|string $batchId,
+        MessageDecorator $item,
+        ?object $message = null
+    ): BatchItemInterface {
         $batchItem = $this->batchItemFactory->create($batchId, $message, $item->getClass());
 
         $batchItem
