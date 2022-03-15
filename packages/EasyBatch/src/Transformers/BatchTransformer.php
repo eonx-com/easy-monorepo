@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Transformers;
 
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
-use EonX\EasyBatch\Interfaces\MessageSerializerInterface;
 use EonX\EasyBatch\Objects\Batch;
 
 final class BatchTransformer extends AbstractBatchObjectTransformer

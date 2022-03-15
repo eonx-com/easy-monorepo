@@ -43,7 +43,8 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
             $message = $this->messageSerializer->serialize($array['message']);
 
             if ($batchObject->isEncrypted()) {
-                $message = $this->getEncryptor()->encrypt($message, $batchObject->getEncryptionKeyName());
+                $message = $this->getEncryptor()
+                    ->encrypt($message, $batchObject->getEncryptionKeyName());
             }
 
             $array['message'] = $message;
@@ -74,7 +75,8 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
             $message = (string)$data['message'];
 
             if (((bool)($data['encrypted'] ?? false)) === true) {
-                $decrypted = $this->getEncryptor()->decrypt($message);
+                $decrypted = $this->getEncryptor()
+                    ->decrypt($message);
                 $message = $decrypted->getRawDecryptedString();
 
                 $batchObject->setEncryptionKeyName($decrypted->getKeyName());

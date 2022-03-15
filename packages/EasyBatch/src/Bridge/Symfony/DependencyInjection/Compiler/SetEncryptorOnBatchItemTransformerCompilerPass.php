@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\DependencyInjection\Compiler;
@@ -30,7 +31,8 @@ final class SetEncryptorOnBatchItemTransformerCompilerPass implements CompilerPa
         $batchItemTransformReflection = $container->getReflectionClass($batchItemTransformerDef->getClass());
 
         // Handles custom batchItem transfer implementation without encryptor setter
-        if ($batchItemTransformReflection->hasMethod(self::ENCRYPTOR_SETTER) === false
+        if ($batchItemTransformReflection === null
+            || $batchItemTransformReflection->hasMethod(self::ENCRYPTOR_SETTER) === false
             || $batchItemTransformReflection->getMethod(self::ENCRYPTOR_SETTER)->isPublic() === false) {
             return;
         }
