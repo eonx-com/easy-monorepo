@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Transformers;
 
-use EonX\EasyBatch\Objects\BatchItem;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Tests\AbstractTestCase;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
@@ -51,7 +50,6 @@ final class BatchItemTransformerTest extends AbstractTestCase
         self::assertEquals($expectedEncryptionKeyName, $newBatchItem->getEncryptionKeyName());
         self::assertInstanceOf(\stdClass::class, $newBatchItem->getMessage());
     }
-
 
     private function getEncryptor(): EncryptorInterface
     {
