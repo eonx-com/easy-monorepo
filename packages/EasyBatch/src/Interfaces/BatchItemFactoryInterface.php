@@ -6,8 +6,5 @@ namespace EonX\EasyBatch\Interfaces;
 
 interface BatchItemFactoryInterface extends BatchObjectFactoryInterface
 {
-    /**
-     * @param int|string $batchId
-     */
-    public function create($batchId, ?object $message = null, ?string $class = null): BatchItemInterface;
+    public function create(int|string $batchId, ?object $message = null, ?string $class = null): BatchItemInterface;
 }
