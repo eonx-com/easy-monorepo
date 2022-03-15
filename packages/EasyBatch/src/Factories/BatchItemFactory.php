@@ -11,10 +11,7 @@ use EonX\EasyBatch\Interfaces\BatchItemInterface;
 
 final class BatchItemFactory extends AbstractBatchObjectFactory implements BatchItemFactoryInterface
 {
-    /**
-     * @param int|string $batchId
-     */
-    public function create($batchId, ?object $message = null, ?string $class = null): BatchItemInterface
+    public function create(int|string $batchId, ?object $message = null, ?string $class = null): BatchItemInterface
     {
         /** @var \EonX\EasyBatch\Interfaces\BatchItemInterface $batchItem */
         $batchItem = $this->transformer->instantiateForClass($class);

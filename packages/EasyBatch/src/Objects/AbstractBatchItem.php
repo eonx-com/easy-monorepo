@@ -24,6 +24,11 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
     private $dependsOnName;
 
     /**
+     * @var int
+     */
+    private $maxAttempts = 1;
+
+    /**
      * @var object
      */
     private $message;
@@ -38,15 +43,17 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
         $this->setType(BatchItemInterface::TYPE_MESSAGE);
     }
 
+    public function canBeRetried(): bool
+    {
+        return $this->getAttempts() < $this->getMaxAttempts();
+    }
+
     public function getAttempts(): int
     {
         return $this->attempts;
     }
 
-    /**
-     * @return int|string
-     */
-    public function getBatchId()
+    public function getBatchId(): int|string
     {
         return $this->batchId;
     }
@@ -54,6 +61,11 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
     public function getDependsOnName(): ?string
     {
         return $this->dependsOnName;
+    }
+
+    public function getMaxAttempts(): int
+    {
+        return $this->maxAttempts;
     }
 
     public function getMessage(): ?object
@@ -85,10 +97,7 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
         return $this;
     }
 
-    /**
-     * @param int|string $batchId
-     */
-    public function setBatchId($batchId): BatchItemInterface
+    public function setBatchId(int|string $batchId): BatchItemInterface
     {
         $this->batchId = $batchId;
 
@@ -98,6 +107,13 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
     public function setDependsOnName(string $name): BatchItemInterface
     {
         $this->dependsOnName = $name;
+
+        return $this;
+    }
+
+    public function setMaxAttempts(int $maxAttempts): BatchItemInterface
+    {
+        $this->maxAttempts = $maxAttempts;
 
         return $this;
     }
@@ -118,6 +134,7 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
             'attempts' => $this->getAttempts(),
             'batch_id' => $this->getBatchId(),
             'depends_on_name' => $this->getDependsOnName(),
+            'max_attempts' => $this->getMaxAttempts(),
             'message' => $this->getMessage(),
             'requires_approval' => $this->isApprovalRequired() ? 1 : 0,
         ]);

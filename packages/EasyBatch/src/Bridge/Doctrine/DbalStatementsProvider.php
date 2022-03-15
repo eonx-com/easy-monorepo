@@ -89,6 +89,7 @@ final class DbalStatementsProvider
         $batchItemsTable = $schema->createTable($this->batchItemsTable);
         $batchItemsTable->addColumn('batch_id', 'guid');
         $batchItemsTable->addColumn('attempts', 'integer');
+        $batchItemsTable->addColumn('max_attempts', 'integer');
         $batchItemsTable->addColumn('requires_approval', 'integer');
         $batchItemsTable->addColumn('message', 'text', [
             'notNull' => false,

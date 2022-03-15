@@ -34,8 +34,5 @@ interface BatchManagerInterface
 
     public function iterateThroughItems(int|string $batchId, callable $func, ?string $dependsOnName = null): void;
 
-    /**
-     * @return mixed
-     */
-    public function processItem(BatchInterface $batch, BatchItemInterface $batchItem, callable $func);
+    public function processItem(BatchInterface $batch, BatchItemInterface $batchItem, callable $func): mixed;
 }

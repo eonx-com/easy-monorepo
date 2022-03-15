@@ -10,6 +10,7 @@ use EonX\EasyBatch\Events\BatchCompletedEvent;
 use EonX\EasyBatch\Events\BatchItemCancelledEvent;
 use EonX\EasyBatch\Events\BatchItemCompletedEvent;
 use EonX\EasyBatch\Exceptions\BatchCancelledException;
+use EonX\EasyBatch\Exceptions\BatchItemCannotBeRetriedException;
 use EonX\EasyBatch\Exceptions\BatchItemCompletedException;
 use EonX\EasyBatch\Exceptions\BatchItemInvalidException;
 use EonX\EasyBatch\Exceptions\BatchObjectNotSupportedException;
@@ -265,12 +266,10 @@ final class BatchManager implements BatchManagerInterface
     }
 
     /**
-     * @return mixed
-     *
      * @throws \EonX\EasyBatch\Exceptions\BatchCancelledException
      * @throws \Throwable
      */
-    public function processItem(BatchInterface $batch, BatchItemInterface $batchItem, callable $func)
+    public function processItem(BatchInterface $batch, BatchItemInterface $batchItem, callable $func): mixed
     {
         if ($batchItem->isCompleted()) {
             throw new BatchItemCompletedException(\sprintf(
@@ -280,9 +279,17 @@ final class BatchManager implements BatchManagerInterface
             ));
         }
 
+        if ($batchItem->canBeRetried() === false) {
+            throw new BatchItemCannotBeRetriedException(\sprintf(
+                'BatchItem "%s" cannot be retried because current attempt %d is not lower than max attempts %d',
+                $batchItem->getId(),
+                $batchItem->getAttempts(),
+                $batchItem->getMaxAttempts()
+            ));
+        }
+
         if ($batch->isCancelled()) {
             $throwable = new BatchCancelledException(\sprintf('Batch for id "%s" is cancelled', $batch->getId()));
-
             $batchItem->setThrowable($throwable);
 
             $this->cancel($batchItem);
@@ -304,7 +311,11 @@ final class BatchManager implements BatchManagerInterface
 
             return $result;
         } catch (\Throwable $throwable) {
-            $batchItem->setStatus(BatchObjectInterface::STATUS_FAILED);
+            $batchItem->setStatus(
+                $batchItem->canBeRetried()
+                    ? BatchItemInterface::STATUS_FAILED_PENDING_RETRY
+                    : BatchObjectInterface::STATUS_FAILED
+            );
             $batchItem->setThrowable($throwable);
 
             throw $throwable;
@@ -337,14 +348,13 @@ final class BatchManager implements BatchManagerInterface
         }
     }
 
-    /**
-     * @param int|string $batchId
-     */
-    private function persistBatchItem($batchId, MessageDecorator $item, ?object $message = null): BatchItemInterface
+    private function persistBatchItem(int|string $batchId, MessageDecorator $item, ?object $message = null): BatchItemInterface
     {
         $batchItem = $this->batchItemFactory->create($batchId, $message, $item->getClass());
 
-        $batchItem->setApprovalRequired($item->isApprovalRequired());
+        $batchItem
+            ->setApprovalRequired($item->isApprovalRequired())
+            ->setMaxAttempts($item->getMaxAttempts());
 
         if ($item->getDependsOn() !== null) {
             $batchItem->setDependsOnName($item->getDependsOn());
@@ -409,14 +419,8 @@ final class BatchManager implements BatchManagerInterface
     private function updateBatchForItem(BatchInterface $batch, BatchItemInterface $batchItem): void
     {
         $update = function (BatchInterface $freshBatch) use ($batchItem): BatchInterface {
-            // Update processed only on first attempt and/or if not pending approval
-            if ($batchItem->isRetried() === false && $batchItem->isCompleted()) {
+            if ($batchItem->isCompleted()) {
                 $freshBatch->setProcessed($freshBatch->countProcessed() + 1);
-            }
-
-            // Forget about previous fail, and see what happens this time
-            if ($batchItem->isRetried()) {
-                $freshBatch->setFailed($freshBatch->countFailed() - 1);
             }
 
             if ($batchItem->isCancelled()) {

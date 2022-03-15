@@ -17,6 +17,11 @@ final class MessageDecorator
     private $dependsOn;
 
     /**
+     * @var int
+     */
+    private $maxAttempts = 1;
+
+    /**
      * @var object
      */
     private $message;
@@ -54,6 +59,11 @@ final class MessageDecorator
     public function getDependsOn(): ?string
     {
         return $this->dependsOn;
+    }
+
+    public function getMaxAttempts(): int
+    {
+        return $this->maxAttempts;
     }
 
     public function getMessage(): object
@@ -96,6 +106,13 @@ final class MessageDecorator
     public function setDependsOn(string $dependsOn): self
     {
         $this->dependsOn = $dependsOn;
+
+        return $this;
+    }
+
+    public function setMaxAttempts(int $maxAttempts): self
+    {
+        $this->maxAttempts = $maxAttempts;
 
         return $this;
     }
