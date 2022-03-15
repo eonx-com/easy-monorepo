@@ -43,7 +43,7 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
             ->setApprovalRequired((bool)($data['requires_approval'] ?? 0))
             ->setAttempts((int)($data['attempts'] ?? 0))
             ->setBatchId((string)$data['batch_id'])
-            ->setMaxAttempts((int)($data['max_attempts'] ?? 0));
+            ->setMaxAttempts((int)($data['max_attempts'] ?? 1));
 
         if (isset($data['type']) === false) {
             $batchObject->setType(BatchItemInterface::TYPE_MESSAGE);
