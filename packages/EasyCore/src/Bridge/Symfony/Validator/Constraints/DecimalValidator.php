@@ -26,13 +26,10 @@ final class DecimalValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'scalar');
         }
 
-        $value = \is_float($value)
-            ? \rtrim(\number_format($value, $constraint->maxPrecision + 1, '.', ''), '0')
-            : (string) $value;
+        $value = (float) (string) $value;
+        $preparedValue = $value * 10**$constraint->maxPrecision;
 
-        $pattern = \sprintf('/^\d+(\.\d{%d,%d})?$/', $constraint->minPrecision, $constraint->maxPrecision);
-
-        if (\preg_match($pattern, $value) === 0) {
+        if(($preparedValue - \floor($preparedValue)) > 0){
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ minPrecision }}', $this->formatValue($constraint->minPrecision))
                 ->setParameter('{{ maxPrecision }}', $this->formatValue($constraint->maxPrecision))
