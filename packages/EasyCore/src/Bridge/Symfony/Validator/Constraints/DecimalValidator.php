@@ -27,9 +27,9 @@ final class DecimalValidator extends ConstraintValidator
         }
 
         $value = (float) (string) $value;
-        $preparedValue = $value * 10**$constraint->maxPrecision;
+        $preparedValue = $value * 10 ** $constraint->maxPrecision;
 
-        if(($preparedValue - \floor($preparedValue)) > 0){
+        if (($preparedValue - \floor($preparedValue)) > 0) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ minPrecision }}', $this->formatValue($constraint->minPrecision))
                 ->setParameter('{{ maxPrecision }}', $this->formatValue($constraint->maxPrecision))
