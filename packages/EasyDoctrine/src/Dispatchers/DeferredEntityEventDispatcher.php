@@ -13,6 +13,11 @@ use LogicException;
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
 {
     /**
+     * @var array<string>
+     */
+    private $disableList = [];
+
+    /**
      * @var bool
      */
     private $enabled;
@@ -46,6 +51,13 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     {
         $this->enabled = true;
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    public function addToDisableList(array $objectClasses): void
+    {
+        foreach ($objectClasses as $objectClass) {
+            $this->disableList[$objectClass] = $objectClass;
+        }
     }
 
     public function clear(?int $transactionNestingLevel = null): void
@@ -90,7 +102,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
      */
     public function deferDelete(int $transactionNestingLevel, object $object, array $entityChangeSet): void
     {
-        if ($this->enabled === false) {
+        if ($this->isEnabled($object) === false) {
             return;
         }
 
@@ -105,7 +117,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
      */
     public function deferInsert(int $transactionNestingLevel, object $object, array $entityChangeSet): void
     {
-        if ($this->enabled === false) {
+        if ($this->isEnabled($object) === false) {
             return;
         }
 
@@ -119,7 +131,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
      */
     public function deferUpdate(int $transactionNestingLevel, object $object, array $entityChangeSet): void
     {
-        if ($this->enabled === false) {
+        if ($this->isEnabled($object) === false) {
             return;
         }
 
@@ -135,7 +147,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
     public function dispatch(): void
     {
-        if ($this->enabled === false) {
+        if ($this->isEnabled() === false) {
             return;
         }
 
@@ -165,6 +177,15 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         $this->enabled = true;
     }
 
+    public function removeFromDisableList(array $objectClasses): void
+    {
+        foreach ($objectClasses as $objectClass) {
+            if (isset($this->disableList[$objectClass])) {
+                unset($this->disableList[$objectClass]);
+            }
+        }
+    }
+
     /**
      * @param string $oid
      * @param array<string, array{mixed, mixed}> $entityChangeSet
@@ -188,6 +209,15 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         // @codeCoverageIgnoreStart
         throw new LogicException('Entity for event not found.');
         // @codeCoverageIgnoreEnd
+    }
+
+    private function isEnabled(?object $object = null): bool
+    {
+        if ($object === null) {
+            return $this->enabled;
+        }
+
+        return $this->enabled === true && isset($this->disableList[\get_class($object)]) === false;
     }
 
     /**
