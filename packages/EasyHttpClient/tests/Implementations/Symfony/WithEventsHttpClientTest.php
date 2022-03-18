@@ -30,6 +30,7 @@ final class WithEventsHttpClientTest extends AbstractTestCase
         $withEventsHttpClient = new WithEventsHttpClient($eventDispatcher, $httpClient);
 
         $response = $withEventsHttpClient->request('POST', 'https://eonx.com');
+        $response->getContent(false);
 
         self::assertInstanceOf(ResponseInterface::class, $response);
         self::assertCount(1, $eventDispatcher->getDispatchedEvents());
