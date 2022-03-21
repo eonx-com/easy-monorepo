@@ -114,29 +114,6 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         self::assertCount(1, $events);
     }
 
-    public function testEventsAreDispatchedAfterRemovingFromDisableList(): void
-    {
-        $eventDispatcher = new EventDispatcherStub();
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
-        $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
-            $dispatcher,
-            [Product::class],
-            [Product::class]
-        );
-
-        $dispatcher->addToDisableList([Product::class]);
-        $dispatcher->removeFromDisableList([Product::class]);
-        $product = new Product();
-        $product->setName('Description 1');
-        $product->setPrice('1000');
-        $entityManager->persist($product);
-
-        $entityManager->flush();
-
-        $events = $eventDispatcher->getDispatchedEvents();
-        self::assertCount(1, $events);
-    }
-
     public function testEventsAreDispatchedWhenExceptionIsThrownAndCatched(): void
     {
         $eventDispatcher = new EventDispatcherStub();
@@ -348,7 +325,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             [Category::class, Product::class]
         );
 
-        $dispatcher->addToDisableList([Product::class]);
+        $dispatcher->disable([Product::class]);
         $product = new Product();
         $product->setName('Description 1');
         $product->setPrice('1000');
@@ -369,14 +346,59 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'activeTill' => [null, null],
                     'name' => [null, 'category name'],
-                ],
+                ]
             ),
             $events[0]
         );
         self::assertEqualsCanonicalizing(
             new EntityUpdatedEvent(
                 $category,
-                ['name' => ['category name', 'updated category name']],
+                ['name' => ['category name', 'updated category name']]
+            ),
+            $events[1]
+        );
+    }
+
+    public function testEventsAreNotDispatchedWhenDispatcherIsEnabledForObject(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+        $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
+            $dispatcher,
+            [Category::class, Product::class],
+            [Category::class, Product::class]
+        );
+
+        $dispatcher->disable();
+        $dispatcher->enable([Category::class]);
+        $product = new Product();
+        $product->setName('Description 1');
+        $product->setPrice('1000');
+        $category = new Category();
+        $category->setName('category name');
+        $entityManager->persist($product);
+        $entityManager->persist($category);
+        $entityManager->flush();
+        $product->setPrice('2000');
+        $category->setName('updated category name');
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(2, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityCreatedEvent(
+                $category,
+                [
+                    'activeTill' => [null, null],
+                    'name' => [null, 'category name'],
+                ]
+            ),
+            $events[0]
+        );
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $category,
+                ['name' => ['category name', 'updated category name']]
             ),
             $events[1]
         );

@@ -6,11 +6,6 @@ namespace EonX\EasyDoctrine\Dispatchers;
 
 interface DeferredEntityEventDispatcherInterface
 {
-    /**
-     * @param string[] $objectClasses
-     */
-    public function addToDisableList(array $objectClasses): void;
-
     public function clear(?int $transactionNestingLevel = null): void;
 
     /**
@@ -34,14 +29,15 @@ interface DeferredEntityEventDispatcherInterface
      */
     public function deferUpdate(int $transactionNestingLevel, object $object, array $entityChangeSet): void;
 
-    public function disable(): void;
+    /**
+     * @param string[]|null $objectClasses
+     */
+    public function disable(?array $objectClasses = null): void;
 
     public function dispatch(): void;
 
-    public function enable(): void;
-
     /**
-     * @param string[] $objectClasses
+     * @param string[]|null $objectClasses
      */
-    public function removeFromDisableList(array $objectClasses): void;
+    public function enable(?array $objectClasses = null): void;
 }
