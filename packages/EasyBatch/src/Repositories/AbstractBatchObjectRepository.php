@@ -41,7 +41,7 @@ abstract class AbstractBatchObjectRepository
         $batchObject->setUpdatedAt($now);
 
         $data = $this->transformer->transformToArray($batchObject);
-        foreach(\array_diff(\array_keys($data), $this->resolveTableColumns()) as $toRemove) {
+        foreach (\array_diff(\array_keys($data), $this->resolveTableColumns()) as $toRemove) {
             unset($data[$toRemove]);
         }
 
