@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge\Symfony\Command;
+namespace EonX\EasyErrorHandler\Bridge\Symfony\Commands;
 
-use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ErrorCodesProviderInterface;
+use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ErrorCodes\ErrorCodesProviderInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,7 +28,7 @@ final class AnalyzeErrorCodesCommand extends Command
     private $categorySize;
 
     /**
-     * @var \EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ErrorCodesProviderInterface
+     * @var \EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ErrorCodes\ErrorCodesProviderInterface
      */
     private $errorCodesProvider;
 
