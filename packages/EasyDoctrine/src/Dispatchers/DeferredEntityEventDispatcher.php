@@ -15,7 +15,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     /**
      * @var array<string, bool>
      */
-    private $enableList = [];
+    private $disabledEntityClasses = [];
 
     /**
      * @var bool
@@ -133,20 +133,24 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         $this->entityChangeSets[$transactionNestingLevel][$oid] = $entityChangeSet;
     }
 
-    public function disable(?array $objectClasses = null): void
+    public function disable(?array $entityClasses = null): void
     {
-        if ($objectClasses === null) {
+        if ($entityClasses === null) {
             $this->enabled = false;
-            $this->enableList = [];
+            $this->disabledEntityClasses = [];
         }
 
-        if ($objectClasses !== null) {
-            $this->disableFor($objectClasses);
+        if ($entityClasses !== null) {
+            $this->disableFor($entityClasses);
         }
     }
 
     public function dispatch(): void
     {
+        if ($this->isEnabled() === false) {
+            return;
+        }
+
         try {
             $mergedEntityChangeSets = [];
             foreach ($this->entityChangeSets as $levelChangeSets) {
@@ -168,16 +172,10 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         }
     }
 
-    public function enable(?array $objectClasses = null): void
+    public function enable(): void
     {
-        if ($objectClasses === null) {
-            $this->enableList = [];
-            $this->enabled = true;
-        }
-
-        if ($objectClasses !== null) {
-            $this->enableFor($objectClasses);
-        }
+        $this->enabled = true;
+        $this->disabledEntityClasses = [];
     }
 
     /**
@@ -206,22 +204,12 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     }
 
     /**
-     * @param string[] $objectClasses
+     * @param string[] $entityClasses
      */
-    private function disableFor(array $objectClasses): void
+    private function disableFor(array $entityClasses): void
     {
-        foreach ($objectClasses as $objectClass) {
-            $this->enableList[$objectClass] = false;
-        }
-    }
-
-    /**
-     * @param string[] $objectClasses
-     */
-    private function enableFor(array $objectClasses): void
-    {
-        foreach ($objectClasses as $objectClass) {
-            $this->enableList[$objectClass] = true;
+        foreach ($entityClasses as $entityClass) {
+            $this->disabledEntityClasses[$entityClass] = true;
         }
     }
 
@@ -231,9 +219,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             return $this->enabled;
         }
 
-        $objectClass = \get_class($object);
-
-        return $this->enableList[$objectClass] ?? $this->enabled;
+        return $this->enabled === true && isset($this->disabledEntityClasses[\get_class($object)]) === false;
     }
 
     /**

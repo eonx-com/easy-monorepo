@@ -30,14 +30,11 @@ interface DeferredEntityEventDispatcherInterface
     public function deferUpdate(int $transactionNestingLevel, object $object, array $entityChangeSet): void;
 
     /**
-     * @param string[]|null $objectClasses
+     * @param string[]|null $entityClasses
      */
-    public function disable(?array $objectClasses = null): void;
+    public function disable(?array $entityClasses = null): void;
 
     public function dispatch(): void;
 
-    /**
-     * @param string[]|null $objectClasses
-     */
-    public function enable(?array $objectClasses = null): void;
+    public function enable(): void;
 }

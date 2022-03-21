@@ -112,6 +112,8 @@ final class SomeService
     public function someMethod(): void
     {
         $this->deferredEntityEventDispatcher->disable();
+        // Disabling only for passed entity classes:
+        // $this->deferredEntityEventDispatcher->disable([Product::class, Category::Class]);
 
         try {
 
