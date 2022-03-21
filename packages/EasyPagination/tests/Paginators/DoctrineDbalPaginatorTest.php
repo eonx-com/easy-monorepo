@@ -89,7 +89,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 $this->addItemToTable($conn, 'my-title');
                 $this->addItemToTable($conn, 'my-title-1');
 
-                $paginator->setCriteria(static function (QueryBuilder $queryBuilder): void {
+                $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
                         ->where('title = :title')
                         ->setParameter('title', 'my-title-1');
@@ -109,7 +109,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 $this->addItemToTable($conn, 'my-title');
                 $this->addItemToTable($conn, 'my-title-1');
 
-                $paginator->setCriteria(static function (QueryBuilder $queryBuilder): void {
+                $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
                         ->where('i.title = :title')
                         ->setParameter('title', 'my-title-1');
@@ -129,7 +129,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 $this->addItemToTable($conn, 'my-title');
             },
             static function (DoctrineDbalPaginator $paginator): void {
-                $item = $paginator->getItems()[0] ?? null;
+                $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertIsArray($item);
@@ -147,7 +147,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 $this->addItemToTable($conn, 'my-title');
             },
             static function (DoctrineDbalPaginator $paginator): void {
-                $item = $paginator->getItems()[0] ?? null;
+                $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertIsArray($item);
@@ -167,7 +167,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 $paginator->setSelect('*');
             },
             static function (DoctrineDbalPaginator $paginator): void {
-                $item = $paginator->getItems()[0] ?? null;
+                $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertIsArray($item);
@@ -187,7 +187,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 $paginator->setSelect('*');
             },
             static function (DoctrineDbalPaginator $paginator): void {
-                $item = $paginator->getItems()[0] ?? null;
+                $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertIsArray($item);
@@ -207,7 +207,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 $paginator->setSelect('title');
             },
             static function (DoctrineDbalPaginator $paginator): void {
-                $item = $paginator->getItems()[0] ?? null;
+                $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertIsArray($item);
@@ -227,7 +227,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 $paginator->setSelect('title');
             },
             static function (DoctrineDbalPaginator $paginator): void {
-                $item = $paginator->getItems()[0] ?? null;
+                $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertIsArray($item);
@@ -285,7 +285,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 });
             },
             static function (DoctrineDbalPaginator $paginator): void {
-                $item = $paginator->getItems()[0] ?? null;
+                $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertIsArray($item);

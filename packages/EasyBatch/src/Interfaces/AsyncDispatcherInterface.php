@@ -10,5 +10,5 @@ interface AsyncDispatcherInterface
      * @throws \EonX\EasyBatch\Exceptions\BatchItemInvalidException
      * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
      */
-    public function dispatch(BatchObjectInterface $batchObject): void;
+    public function dispatchItem(BatchItemInterface $batchItem): void;
 }

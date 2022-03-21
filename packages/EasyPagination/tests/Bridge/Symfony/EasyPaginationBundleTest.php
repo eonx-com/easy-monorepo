@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Bridge\Symfony;
 
+use EonX\EasyPagination\Interfaces\PaginationConfigInterface;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Interfaces\PaginationProviderInterface;
-use EonX\EasyPagination\Interfaces\StartSizeDataFactoryInterface;
-use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
-use EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface;
 use EonX\EasyPagination\Resolvers\DefaultPaginationResolver;
-use EonX\EasyPagination\Resolvers\StartSizeAsArrayInQueryResolver;
-use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
+use EonX\EasyPagination\Resolvers\FromHttpFoundationRequestResolver;
 use EonX\EasyPagination\Tests\AbstractTestCase;
 use EonX\EasyPagination\Tests\Bridge\Symfony\Stubs\KernelStub;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Request;
 
 final class EasyPaginationBundleTest extends AbstractTestCase
@@ -22,34 +18,19 @@ final class EasyPaginationBundleTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      *
-     * @see testResolverInstance
+     * @see testPaginationResolver
      */
-    public function providerTestResolverInstance(): iterable
+    public function providerTestPaginationResolver(): iterable
     {
-        yield 'array_in_query' => [
-            __DIR__ . '/fixtures/array_in_query.yaml',
-            StartSizeAsArrayInQueryResolver::class,
-        ];
-
-        yield 'in_query' => [__DIR__ . '/fixtures/in_query.yaml', StartSizeInQueryResolver::class];
-    }
-
-    /**
-     * @return iterable<mixed>
-     *
-     * @see testStartSizeDataResolver
-     */
-    public function providerTestStartSizeDataResolver(): iterable
-    {
-        yield 'InQuery_Page_PerPage_Defaults' => [
-            __DIR__ . '/fixtures/data/in_query_page_perPage_1_15.yaml',
+        yield 'Page_PerPage_Defaults' => [
+            __DIR__ . '/fixtures/data/page_perPage_1_15.yaml',
             $this->createRequest(),
             1,
             15,
         ];
 
-        yield 'InQuery_Page_PerPage_2_30' => [
-            __DIR__ . '/fixtures/data/in_query_page_perPage_1_15.yaml',
+        yield 'Page_PerPage_2_30' => [
+            __DIR__ . '/fixtures/data/page_perPage_1_15.yaml',
             $this->createRequest([
                 'page' => 2,
                 'perPage' => 30,
@@ -57,28 +38,6 @@ final class EasyPaginationBundleTest extends AbstractTestCase
             2,
             30,
         ];
-    }
-
-    public function testInvalidResolverInConfig(): void
-    {
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage(
-            'Invalid configuration for path "easy_pagination.resolver": Invalid resolver "invalid"'
-        );
-
-        $kernel = new KernelStub(__DIR__ . '/fixtures/invalid.yaml');
-        $kernel->boot();
-    }
-
-    /**
-     * @dataProvider providerTestResolverInstance
-     */
-    public function testResolverInstance(string $config, string $instance): void
-    {
-        $kernel = new KernelStub($config);
-        $kernel->boot();
-
-        self::assertInstanceOf($instance, $kernel->getContainer()->get(StartSizeDataResolverInterface::class));
     }
 
     public function testSanity(): void
@@ -94,38 +53,33 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         self::assertInstanceOf(PaginationInterface::class, $container->get(PaginationInterface::class));
     }
 
-    public function testStartSizeDataFactory(): void
-    {
-        $kernel = new KernelStub(__DIR__ . '/fixtures/data/in_query_page_perPage_1_15.yaml');
-        KernelStub::setRequest($this->createRequest());
-        $kernel->boot();
-
-        $factory = $kernel->getContainer()
-            ->get(StartSizeDataFactoryInterface::class);
-        $startSizeData = $factory->create();
-
-        self::assertInstanceOf(StartSizeDataInterface::class, $startSizeData);
-        self::assertEquals(1, $startSizeData->getStart());
-        self::assertEquals(15, $startSizeData->getSize());
-        self::assertEquals('page', $startSizeData->getStartAttribute());
-        self::assertEquals('perPage', $startSizeData->getSizeAttribute());
-        self::assertEquals('http://eonx.com/', $startSizeData->getUrl());
-    }
-
     /**
-     * @dataProvider providerTestStartSizeDataResolver
+     * @dataProvider providerTestPaginationResolver
      */
-    public function testStartSizeDataResolver(string $config, Request $request, int $start, int $size): void
+    public function testPaginationResolver(string $config, Request $request, int $page, int $perPage): void
     {
         $kernel = new KernelStub($config);
         KernelStub::setRequest($request);
         $kernel->boot();
+        $container = $kernel->getContainer();
+        /** @var \EonX\EasyPagination\Interfaces\PaginationProviderInterface $paginationProvider */
+        $paginationProvider = $container->get(PaginationProviderInterface::class);
+        $paginationProvider->setResolver(new FromHttpFoundationRequestResolver(
+            $container->get(PaginationConfigInterface::class),
+            $request
+        ));
 
-        $startSizeData = $kernel->getContainer()
-            ->get(StartSizeDataInterface::class);
+        /** @var \EonX\EasyPagination\Interfaces\PaginationInterface $pagination */
+        $pagination = $container->get(PaginationInterface::class);
 
-        self::assertEquals($start, $startSizeData->getStart());
-        self::assertEquals($size, $startSizeData->getSize());
+        self::assertSame($page, $pagination->getPage());
+        self::assertSame($perPage, $pagination->getPerPage());
+        self::assertSame('page', $pagination->getPageAttribute());
+        self::assertSame('perPage', $pagination->getPerPageAttribute());
+        self::assertSame(
+            "http://eonx.com/?page={$page}&perPage={$perPage}",
+            $pagination->getUrl($pagination->getPage())
+        );
     }
 
     /**

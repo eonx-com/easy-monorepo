@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
 use EonX\EasyBugsnag\Configurators\AppNameConfigurator;
 use EonX\EasyBugsnag\Interfaces\AppNameResolverInterface;
 use EonX\EasyBugsnag\Resolvers\DefaultAppNameResolver;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

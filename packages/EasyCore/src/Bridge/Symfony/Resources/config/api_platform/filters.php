@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Filter\VirtualSearchFilter;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
+use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Filter\VirtualSearchFilter;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -14,15 +13,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure(false)
         ->autowire(false)
         ->args([
-            ref('doctrine'),
+            service('doctrine'),
             null,
-            ref('api_platform.iri_converter'),
-            ref('api_platform.property_accessor'),
-            ref('logger')
+            service('api_platform.iri_converter'),
+            service('api_platform.property_accessor'),
+            service('logger')
                 ->ignoreOnInvalid(),
-            '$identifiersExtractor' => ref('api_platform.identifiers_extractor.cached')
+            '$identifiersExtractor' => service('api_platform.identifiers_extractor.cached')
                 ->ignoreOnInvalid(),
-            '$nameConverter' => ref('api_platform.name_converter')
+            '$nameConverter' => service('api_platform.name_converter')
                 ->ignoreOnInvalid(),
         ])
         ->abstract(true);

@@ -9,16 +9,19 @@ services:
       tags: [phpstan.rules.rule]
 
 parameters:
+    parallel:
+            maximumNumberOfProcesses: 2
+
     paths:
         - packages
 
-    level: max
+    level: 8
 
     bootstrapFiles:
         - %currentWorkingDirectory%/tests/bootstrap.php
         - %currentWorkingDirectory%/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Loader/Configurator/ContainerConfigurator.php
 
-    excludes_analyse:
+    excludePaths:
         - packages/*/var/*
         - packages/*/vendor/*
         - packages/EasyApiToken/src/Interfaces/*
@@ -35,57 +38,9 @@ parameters:
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
 
         # ---- EasyApiToken ----
-        - message: '#Parameter \#[0-9] \$(.*?) of method EonX\\EasyApiToken\\Tests\\AbstractFirebaseJwtTokenTestCase::createFirebaseJwtDriver\(\) expects resource\|string\|null, resource\|string\|false given#'
-          path: packages/EasyApiToken/tests
-
-        - message: '#Result of && is always false#'
-          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
-
-        - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
-          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
-
-        - message: '#Parameter \#2 \$publicKey of class EonX\\EasyApiToken\\External\\FirebaseJwtDriver constructor expects resource\|string, array given#'
-          path: packages/EasyApiToken/tests/External/FirebaseJwtDriverTest.php
-
-        - message: '#Property EonX\\EasyApiToken\\External\\Auth0JwtDriver\:\:\$cache has unknown class Auth0\\SDK\\Helpers\\Cache\\CacheHandler as its type#'
-          path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
-
-        - message: '#Parameter \$cache of method EonX\\EasyApiToken\\External\\Auth0JwtDriver\:\:__construct\(\) has invalid typehint type Auth0\\SDK\\Helpers\\Cache\\CacheHandler#'
-          path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
-
-        - message: '#Instantiated class Auth0\\SDK\\JWTVerifier not found#'
-          path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
-
-        - message: '#Call to method verifyAndDecode\(\) on an unknown class Auth0\\SDK\\JWTVerifier#'
-          path: packages/EasyApiToken/src/External/Auth0JwtDriver.php
-
-        - message: '#Instanceof between \*NEVER\* and OpenSSLAsymmetricKey will always evaluate to false#'
-          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
-
-        - message: '#PHPDoc tag @throws with type Psr\\Cache\\InvalidArgumentException is not subtype of Throwable#'
-          path: packages/EasyApiToken/src/External/AwsCognito/JwkFetcher.php
-
-        - message: '#PHPDoc tag @throws with type EonX\\EasyApiToken\\Exceptions\\InvalidJwtException\|Psr\\Cache\\InvalidArgumentException is not subtype of Throwable#'
-          path: packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
-
-        - message: '#Access to an undefined property object\:\:\$aud#'
-          path: packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
-
-        - message: '#Unreachable statement \- code above always terminates#'
-          path: packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
-
         # ---- EasyAsync ----
-        - message: '#Method EonX\\EasyAsync\\Generators\\DateTimeGenerator::fromString\(\) should return DateTime but returns DateTime\|false.#'
-          path: packages/EasyAsync/src/Generators
-
         - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'
           path: packages/EasyAsync/tests
-
-        - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
-          path: packages/EasyAsync/tests/Persisters
-
-        - message: '#Parameter \#1 \$(finished|started)At of method EonX\\EasyAsync\\Interfaces\\EasyAsyncDataInterface\:\:set(Finished|Started)At\(\) expects DateTime, DateTime\|null given#'
-          path: packages/EasyAsync/src/Implementations/Doctrine/DBAL/JobLogPersister.php
 
         - message: '#Method EonX\\EasyAsync\\Tests\\Stubs\\EventDispatcherStub\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
           path: packages/EasyAsync/tests/Stubs/EventDispatcherStub.php
@@ -94,8 +49,15 @@ parameters:
         - message: '#Call to an undefined method object\:\:getTransactionCodeDetails\(\)#'
           path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
 
+        - message: '#Method EonX\\EasyBankFiles\\Tests\\Parsers\\Nai\\ParserTest\:\:getTransactionsForAccounts\(\) is unused#'
+          path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
+
         - message: '#Unreachable statement \- code above always terminates#'
           path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
+
+        # ---- EasyBatch ----
+        - message: '#Ternary operator condition is always true#'
+          path: packages/EasyBatch/src/BatchManager.php
 
         # ---- EasyBugsnag ----
         - message: '#Return type \(void\) of method EonX\\EasyBugsnag\\Tests\\Bridge\\Symfony\\Stubs\\ConnectionStub\:\:(query|prepare)\(\) should be compatible with return type \(Doctrine\\DBAL\\Driver\\Statement\) of method Doctrine\\DBAL\\Driver\\Connection\:\:(query|prepare)\(\)#'
@@ -126,9 +88,6 @@ parameters:
         - message: '#Call to an undefined method ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\:\:(getSimpleDataPersisters|getDataPersisters)\(\)#'
           path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/TraceableChainSimpleDataPersister.php
 
-        - message: '#Strict comparison using === between true and false will always evaluate to false.#'
-          path: packages/EasyCore/src/Doctrine/ORM/Decorators/EntityManagerDecorator.php
-
         - message: '#Property Symfony\\Component\\HttpFoundation\\Request\:\:\$request \(Symfony\\Component\\HttpFoundation\\InputBag\) does not accept Symfony\\Component\\HttpFoundation\\ParameterBag#'
           path: packages/EasyCore/src/Bridge/Laravel/ApiFormats/Middleware/ReplaceApiFormatsMiddleware.php
 
@@ -142,9 +101,6 @@ parameters:
           path: packages/EasyEncryption/src/Encryptor.php
 
         # ---- EasyErrorHandler ----
-        - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class\-string<object\>\|object, object\|string given#'
-          path: packages/EasyErrorHandler/tests
-
         # ---- EasyHttpClient ----
         - message: '#Method EonX\\EasyHttpClient\\Bridge\\EasyBugsnag\\HttpRequestSentBreadcrumbListener\:\:getCarbon\(\) should return Carbon\\Carbon but returns Carbon\\Carbon\|false#'
           path: packages/EasyHttpClient/src/Bridge/EasyBugsnag/HttpRequestSentBreadcrumbListener.php
@@ -158,34 +114,12 @@ parameters:
           path: packages/EasyLogging/src/Config/StreamHandlerConfigProvider.php
 
         # ---- EasyPagination ----
-        - message: '#Call to an undefined method Illuminate\\Support\\ServiceProvider::boot\(\).#'
-          path: packages/EasyPagination/tests/Bridge/Laravel
-
-        - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
-          path: packages/EasyPagination/tests
-
-        - message: '#Method EonX\\EasyPagination\\Tests\\AbstractWithMockTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
-          path: packages/EasyPagination/tests/AbstractWithMockTestCase.php
-
-        - message: '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalLengthAwarePaginator\:\:doGetTotalItems\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
-          path: packages/EasyPagination/src/Traits/DoctrinePaginatorTrait.php
-
-        - message: '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalLengthAwarePaginator\:\:doGetResult\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
-          path: packages/EasyPagination/src/Traits/DoctrinePaginatorTrait.php
-
-        - message: '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineOrmLengthAwarePaginator\:\:doGetTotalItems\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
-          path: packages/EasyPagination/src/Traits/DoctrinePaginatorTrait.php
-
-        - message: '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineOrmLengthAwarePaginator\:\:doGetResult\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
-          path: packages/EasyPagination/src/Traits/DoctrinePaginatorTrait.php
-
-        - '#Method EonX\\EasyPagination\\Paginators\\Doctrine(Dbal|Orm)LengthAwarePaginator::createQueryBuilder\(\) never returns Doctrine\\(ORM|DBAL\\Query)\\QueryBuilder so it can be removed from the return typehint.#'
         - '#Parameter \#2 \$alias of method Doctrine\\ORM\\QueryBuilder\:\:from\(\) expects string, string\|null given#'
         - '#Access to an undefined property EonX\\EasyPagination\\Tests\\Stubs\\Model\\Item\:\:\$title#'
         - '#Access to an undefined property EonX\\EasyPagination\\Tests\\Stubs\\Model\\Item\:\:\$id#'
-        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineOrmLengthAwarePaginatorNew\:\:fetchResults\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
+        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineOrmLengthAwarePaginator\:\:fetchResults\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineOrmPaginator\:\:fetchResults\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
-        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalLengthAwarePaginatorNew\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
+        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalLengthAwarePaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalPaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
 
         # ---- EasyPipeline ----
@@ -236,12 +170,6 @@ parameters:
         - message: '#Cannot cast Symfony\\Component\\Console\\Input\\InputInterface to string#'
           path: packages/EasySchedule/src/Event.php
 
-        - message: '#Array \(array<EonX\\EasySchedule\\Interfaces\\EventInterface\>\) does not accept array#'
-          path: packages/EasySchedule/src/Bridge/Symfony/TraceableSchedule.php
-
-        - message: '#Cannot access an offset on array\|EonX\\EasySchedule\\Interfaces\\EventInterface#'
-          path: packages/EasySchedule/src/Bridge/Symfony/TraceableSchedule.php
-
         # ---- EasySecurity ----
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
           path: packages/EasySecurity/tests/Authorization/RoleTest.php
@@ -260,6 +188,9 @@ parameters:
           path: packages/EasySsm/src/Services/Dotenv/Loaders/DotenvLoader.php
 
         # ---- EasyTest ----
+        - message: '#Unsafe usage of new static\(\)#'
+          path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
+
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: packages/EasyWebhook/src/AbstractWebhook.php

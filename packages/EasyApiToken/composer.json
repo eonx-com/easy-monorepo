@@ -4,21 +4,23 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^7.2 || ^8.0",
+        "php": "^8.1",
+        "ext-openssl": "*",
         "nette/utils": "^3.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.4 || ^9.5",
+        "phpunit/phpunit": "^9.5",
         "firebase/php-jwt": "^5.0",
-        "eonx-com/easy-utils": "^3.5",
-        "auth0/auth0-php": "^5.4 || ^7.6",
+        "guzzlehttp/psr7": "^2.1",
+        "eonx-com/easy-utils": "^4.1",
+        "auth0/auth0-php": "^8.0",
         "psr/container": "^1.0",
-        "laravel/lumen-framework": "^5.5 || ^8.1",
-        "symfony/dependency-injection": "^4.4 || ^5.1.5",
-        "symfony/cache": "^4.4 || ^5.1.5",
-        "symfony/config": "^4.4 || ^5.1.5",
-        "symfony/http-client": "^4.4 || ^5.1.5",
-        "symfony/yaml": "^4.4 || ^5.1.5",
+        "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
+        "symfony/dependency-injection": "^5.4 || ^6.0",
+        "symfony/cache": "^5.4 || ^6.0",
+        "symfony/config": "^5.4 || ^6.0",
+        "symfony/http-client": "^5.4 || ^6.0",
+        "symfony/yaml": "^5.4 || ^6.0",
         "phpseclib/phpseclib": "^3.0"
     },
     "autoload": {
@@ -34,11 +36,12 @@
     },
     "suggest": {
         "auth0/auth0-php": "To use the Auth0 JWT driver to decode/encode tokens",
-        "firebase/php-jwt": "To use the Firebase JWT driver to decode/encode tokens"
+        "firebase/php-jwt": "To use the Amazon Cognito or the Firebase JWT driver to decode/encode tokens",
+        "phpseclib/phpseclib": "To use the Amazon Cognito JWT driver to decode/encode tokens"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.5-dev"
+            "dev-master": "4.1-dev"
         }
     },
     "repositories": [

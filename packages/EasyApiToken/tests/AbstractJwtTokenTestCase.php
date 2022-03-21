@@ -9,7 +9,7 @@ use Nette\Utils\Strings;
 abstract class AbstractJwtTokenTestCase extends AbstractTestCase
 {
     /**
-     * @return false|resource
+     * @return \OpenSSLAsymmetricKey|false
      */
     protected function getOpenSslPrivateKey()
     {
@@ -17,7 +17,7 @@ abstract class AbstractJwtTokenTestCase extends AbstractTestCase
     }
 
     /**
-     * @return false|resource
+     * @return \OpenSSLAsymmetricKey|false
      */
     protected function getOpenSslPublicKey()
     {

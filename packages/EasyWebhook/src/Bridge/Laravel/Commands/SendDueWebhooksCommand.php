@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Bridge\Laravel\Commands;
 
 use Carbon\Carbon;
-use EonX\EasyPagination\Data\StartSizeData;
+use EonX\EasyPagination\Pagination;
 use EonX\EasyWebhook\Exceptions\InvalidDateTimeException;
 use EonX\EasyWebhook\Interfaces\Stores\SendAfterStoreInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
@@ -58,7 +58,7 @@ final class SendDueWebhooksCommand extends Command
         }
 
         do {
-            $dueWebhooks = $store->findDueWebhooks(new StartSizeData($page, $perPage), $sendAfter, $timezone);
+            $dueWebhooks = $store->findDueWebhooks(new Pagination($page, $perPage), $sendAfter, $timezone);
 
             foreach ($dueWebhooks->getItems() as $webhook) {
                 $client->sendWebhook($webhook);

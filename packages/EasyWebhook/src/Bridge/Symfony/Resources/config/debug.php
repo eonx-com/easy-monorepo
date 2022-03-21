@@ -20,7 +20,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(WebhookDataCollector::class)
-        ->arg('$webhookClient', ref(TraceableWebhookClient::class))
+        ->arg('$webhookClient', service(TraceableWebhookClient::class))
         ->tag('data_collector', [
             'template' => '@EasyWebhookSymfony/Collector/webhook_collector.html.twig',
             'id' => WebhookDataCollector::NAME,

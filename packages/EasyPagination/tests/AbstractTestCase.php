@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests;
 
-use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
+use EonX\EasyPagination\PaginationConfig;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,16 +16,16 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class AbstractTestCase extends TestCase
 {
     protected function createConfig(
-        ?string $numberAttr = null,
-        ?int $numberDefault = null,
-        ?string $sizeAttr = null,
-        ?int $sizeDefault = null
-    ): StartSizeConfig {
-        return new StartSizeConfig(
-            $numberAttr ?? 'number',
-            $numberDefault ?? 1,
-            $sizeAttr ?? 'size',
-            $sizeDefault ?? 15
+        ?string $pageAttr = null,
+        ?int $pageDefault = null,
+        ?string $perPageAttr = null,
+        ?int $perPageDefault = null
+    ): PaginationConfig {
+        return new PaginationConfig(
+            $pageAttr ?? 'page',
+            $pageDefault ?? 1,
+            $perPageAttr ?? 'perPage',
+            $perPageDefault ?? 15
         );
     }
 

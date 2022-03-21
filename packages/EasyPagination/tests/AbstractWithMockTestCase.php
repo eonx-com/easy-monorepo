@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests;
 
-use Mockery\MockInterface;
+use Mockery\LegacyMockInterface;
 
 abstract class AbstractWithMockTestCase extends AbstractTestCase
 {
     /**
      * @param mixed $target
      */
-    protected function mock($target, ?callable $expectations = null): MockInterface
+    protected function mock($target, ?callable $expectations = null): LegacyMockInterface
     {
         $mock = \Mockery::mock($target);
 
@@ -20,16 +20,5 @@ abstract class AbstractWithMockTestCase extends AbstractTestCase
         }
 
         return $mock;
-    }
-
-    protected function tearDown(): void
-    {
-//        \dump(\Mockery::getContainer()->getMocks());
-
-//        $this->addToAssertionCount(\Mockery::getContainer()->mockery_getExpectationCount());
-//
-//        \Mockery::close();
-
-        parent::tearDown();
     }
 }

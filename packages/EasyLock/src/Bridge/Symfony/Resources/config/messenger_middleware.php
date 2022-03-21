@@ -12,5 +12,5 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(ProcessWithLockMiddleware::class)
-        ->call('setLockService', [ref(LockServiceInterface::class)]);
+        ->call('setLockService', [service(LockServiceInterface::class)]);
 };

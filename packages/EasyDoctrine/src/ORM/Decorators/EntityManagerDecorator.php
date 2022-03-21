@@ -37,12 +37,6 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function clear($objectName = null): void
-    {
-        parent::clear($objectName);
-        $this->deferredEntityEventDispatcher->clear();
-    }
-
     public function commit(): void
     {
         parent::commit();

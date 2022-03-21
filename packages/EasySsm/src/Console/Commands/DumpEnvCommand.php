@@ -108,7 +108,7 @@ EOF;
         $env = $_ENV;
         $env += $_SERVER;
 
-        foreach (\array_merge(static::$excludes, $excludes) as $exclude) {
+        foreach (\array_merge(self::$excludes, $excludes) as $exclude) {
             unset($env[$exclude]);
         }
 

@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyUtils\Bridge\BridgeConstantsInterface;
 use EonX\EasyUtils\Interfaces\MathInterface;
 use EonX\EasyUtils\Math;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();

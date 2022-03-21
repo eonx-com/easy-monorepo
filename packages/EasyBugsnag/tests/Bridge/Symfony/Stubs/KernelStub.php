@@ -39,8 +39,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     {
         $requestStack = new RequestStack();
 
-        if (static::$request !== null) {
-            $requestStack->push(static::$request);
+        if (self::$request !== null) {
+            $requestStack->push(self::$request);
         }
 
         return $requestStack;
@@ -48,13 +48,13 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public static function setRequest(Request $request): void
     {
-        static::$request = $request;
+        self::$request = $request;
     }
 
     public function process(ContainerBuilder $container): void
     {
         $requestStackDef = new Definition(RequestStack::class);
-        $requestStackDef->setFactory([static::class, 'createRequestStack']);
+        $requestStackDef->setFactory([self::class, 'createRequestStack']);
 
         $container->setDefinition(RequestStack::class, $requestStackDef);
 

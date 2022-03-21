@@ -1,0 +1,5 @@
+easy_async:
+    messenger_worker:
+        stop_on_messages_limit:
+            enabled: true
+            min_messages: 100

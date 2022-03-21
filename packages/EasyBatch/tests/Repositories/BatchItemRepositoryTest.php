@@ -10,8 +10,8 @@ use EonX\EasyBatch\Repositories\BatchItemRepository;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Tests\AbstractRepositoriesTestCase;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
-use EonX\EasyPagination\Data\StartSizeData;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use EonX\EasyPagination\Pagination;
 
 final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
 {
@@ -76,12 +76,12 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
             $this->getIdStrategy(),
             new BatchItemTransformer(new MessageSerializer()),
             $this->getDoctrineDbalConnection(),
-            BatchItemRepository::DEFAULT_TABLE
+            BatchItemRepositoryInterface::DEFAULT_TABLE
         );
 
         \call_user_func($setup, $factory, $repo);
 
-        $paginator = $repo->findForDispatch(new StartSizeData(1, 15), 'batch-id', $dependsOnName);
+        $paginator = $repo->findForDispatch(new Pagination(1, 15), 'batch-id', $dependsOnName);
 
         \call_user_func($test, $paginator);
     }

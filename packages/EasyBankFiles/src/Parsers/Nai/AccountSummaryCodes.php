@@ -34,6 +34,6 @@ trait AccountSummaryCodes
      */
     public function getCodeSummary(string $code): ?string
     {
-        return static::$codeSummary[$code] ?? null;
+        return self::$codeSummary[$code] ?? null;
     }
 }

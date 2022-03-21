@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyMonorepo\Console\MonorepoApplication;
 use EonX\EasyMonorepo\MonorepoKernel;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

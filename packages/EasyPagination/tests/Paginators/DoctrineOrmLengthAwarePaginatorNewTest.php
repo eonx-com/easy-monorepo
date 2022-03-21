@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
-use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginatorNew;
+use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyPagination\Tests\AbstractDoctrineOrmTestCase;
 use EonX\EasyPagination\Tests\Stubs\Entity\Item;
 use EonX\EasyPagination\Tests\Stubs\Entity\ParentEntity;
@@ -28,7 +28,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
             function (EntityManagerInterface $manager): void {
                 $this->createItemsTable($manager);
             },
-            static function (DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
                 self::assertEquals(0, $paginator->getTotalItems());
             },
@@ -42,7 +42,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
             function (EntityManagerInterface $manager): void {
                 $this->createItemsTable($manager);
             },
-            static function (DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
                 self::assertEquals(0, $paginator->getTotalItems());
             },
@@ -57,7 +57,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
                 $this->createItemsTable($manager);
                 $this->addItemToTable($manager, 'my-title');
             },
-            static function (DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
             },
@@ -68,18 +68,18 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
             Item::class,
             'i',
             null,
-            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginator $paginator): void {
                 $this->createItemsTable($manager);
                 $this->addItemToTable($manager, 'my-title');
                 $this->addItemToTable($manager, 'my-title-1');
 
-                $paginator->setCriteria(static function (QueryBuilder $queryBuilder): void {
+                $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
                         ->where('i.title = :title')
                         ->setParameter('title', 'my-title-1');
                 });
             },
-            static function (DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
             },
@@ -94,7 +94,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
                 $this->createItemsTable($manager);
                 $this->addItemToTable($manager, 'my-title');
             },
-            static function (DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
@@ -110,13 +110,13 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
             Item::class,
             'i',
             null,
-            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginator $paginator): void {
                 $this->createItemsTable($manager);
                 $this->addItemToTable($manager, 'my-title');
 
                 $paginator->setSelect('*');
             },
-            static function (DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
@@ -132,13 +132,13 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
             Item::class,
             'i',
             null,
-            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginator $paginator): void {
                 $this->createItemsTable($manager);
                 $this->addItemToTable($manager, 'my-title');
 
                 $paginator->setSelect('i.title');
             },
-            static function (DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
@@ -154,7 +154,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
             Item::class,
             'i',
             null,
-            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginator $paginator): void {
                 $this->createItemsTable($manager);
                 $this->addItemToTable($manager, 'my-title');
 
@@ -165,7 +165,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
                     ];
                 });
             },
-            static function (DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
@@ -181,7 +181,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
             ParentEntity::class,
             'p',
             null,
-            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginator $paginator): void {
                 $this->createItemsTable($manager);
                 $this->createParentsTable($manager);
                 $item = $this->addItemToTable($manager, 'my-title');
@@ -197,7 +197,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
                     $queryBuilder->addSelect('i');
                 });
             },
-            static function (DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
@@ -221,7 +221,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
                 $this->addItemToTable($manager, 'my-title');
                 $this->addItemToTable($manager, 'my-title-1');
             },
-            static function (DoctrineOrmLengthAwarePaginatorNew $paginator): void {
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(2, $paginator->getTotalItems());
             },
@@ -242,7 +242,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
         callable $assert
     ): void {
         $entityManager = $this->getEntityManager();
-        $paginator = new DoctrineOrmLengthAwarePaginatorNew($pagination, $entityManager, $from, $fromAlias, $indexBy);
+        $paginator = new DoctrineOrmLengthAwarePaginator($pagination, $entityManager, $from, $fromAlias, $indexBy);
 
         $setup($entityManager, $paginator);
         $assert($paginator);

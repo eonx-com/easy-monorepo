@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
-use EonX\EasyAsync\Bridge\Symfony\EasyAsyncSymfonyBundle;
 use EonX\EasyCore\Bridge\BridgeConstantsInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
@@ -46,7 +45,6 @@ final class EasyCoreExtension extends Extension
         $this->autoconfigTag(EventListenerInterface::class, TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
         $this->autoconfigTag(SimpleDataPersisterInterface::class, TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG);
 
-        $this->loadIfBundlesExist('easy_async_listeners.php', EasyAsyncSymfonyBundle::class);
         $this->loadIfBundlesExist('api_platform/filters.php', ApiPlatformBundle::class);
         $this->loadIfBundlesExist('api_platform/iri_converter.php', ApiPlatformBundle::class);
         $this->loadIfBundlesExist('api_platform/maker_commands.php', [ApiPlatformBundle::class, MakerBundle::class]);

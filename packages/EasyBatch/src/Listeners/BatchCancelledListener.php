@@ -26,7 +26,7 @@ final class BatchCancelledListener
         $batchId = $event->getBatch()
             ->getId();
 
-        $this->batchManager->iterateThroughItems($batchId, null, function (BatchItemInterface $batchItem): void {
+        $this->batchManager->iterateThroughItems($batchId, function (BatchItemInterface $batchItem): void {
             $this->batchManager->cancel($batchItem);
         });
     }

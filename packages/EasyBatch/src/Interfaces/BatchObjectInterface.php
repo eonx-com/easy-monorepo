@@ -76,6 +76,11 @@ interface BatchObjectInterface
 
     public function getThrowable(): ?\Throwable;
 
+    /**
+     * @return null|mixed[]
+     */
+    public function getThrowableDetails(): ?array;
+
     public function getType(): ?string;
 
     public function getUpdatedAt(): ?\DateTimeInterface;
@@ -111,6 +116,11 @@ interface BatchObjectInterface
     public function setStatus(string $status): self;
 
     public function setThrowable(\Throwable $throwable): self;
+
+    /**
+     * @param mixed[] $throwableDetails
+     */
+    public function setThrowableDetails(array $throwableDetails): self;
 
     public function setType(string $type): self;
 

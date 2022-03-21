@@ -10,7 +10,8 @@ use EonX\EasyBatch\Events\BatchCompletedEvent;
 use EonX\EasyBatch\Events\BatchItemCancelledEvent;
 use EonX\EasyBatch\Events\BatchItemCompletedEvent;
 use EonX\EasyBatch\Exceptions\BatchCancelledException;
-use EonX\EasyBatch\Exceptions\BatchItemCancelledException;
+use EonX\EasyBatch\Exceptions\BatchItemCannotBeRetriedException;
+use EonX\EasyBatch\Exceptions\BatchItemCompletedException;
 use EonX\EasyBatch\Exceptions\BatchItemInvalidException;
 use EonX\EasyBatch\Exceptions\BatchObjectNotSupportedException;
 use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
@@ -23,7 +24,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Objects\MessageDecorator;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
-use EonX\EasyPagination\Data\StartSizeData;
+use EonX\EasyPagination\Pagination;
 
 final class BatchManager implements BatchManagerInterface
 {
@@ -172,7 +173,22 @@ final class BatchManager implements BatchManagerInterface
             }
         }
 
-        $this->asyncDispatcher->dispatch($batch);
+        /** @var int|string $batchId */
+        $batchId = $batch->getId();
+
+        $this->iterateThroughItems($batchId, function (BatchItemInterface $batchItem): void {
+            if ($batchItem->getType() === BatchItemInterface::TYPE_MESSAGE) {
+                $this->asyncDispatcher->dispatchItem($batchItem);
+
+                return;
+            }
+
+            if ($batchItem->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
+                /** @var int|string $batchItemId */
+                $batchItemId = $batchItem->getId();
+                $this->dispatch($this->batchRepository->findNestedOrFail($batchItemId));
+            }
+        });
 
         return $batch;
     }
@@ -183,7 +199,7 @@ final class BatchManager implements BatchManagerInterface
      */
     public function dispatchItem(BatchItemInterface $batchItem): BatchItemInterface
     {
-        $this->asyncDispatcher->dispatch($batchItem);
+        $this->asyncDispatcher->dispatchItem($batchItem);
 
         return $batchItem;
     }
@@ -208,44 +224,72 @@ final class BatchManager implements BatchManagerInterface
         return $this->updateItem($batchItem);
     }
 
-    /**
-     * @param int|string $batchId
-     */
-    public function iterateThroughItems($batchId, ?string $dependsOnName = null, callable $func): void
+    public function iterateThroughItems(int|string $batchId, callable $func, ?string $dependsOnName = null): void
     {
         $page = 1;
+        $pagesCache = [];
 
         do {
             $paginator = $this->batchItemRepository->findForDispatch(
-                new StartSizeData($page, $this->batchItemsPerPage),
+                new Pagination($page, $this->batchItemsPerPage),
                 $batchId,
                 $dependsOnName
             );
 
-            foreach ($paginator->getItems() as $item) {
-                \call_user_func($func, $item);
+            /** @var \EonX\EasyBatch\Interfaces\BatchItemInterface[] $items */
+            $items = $paginator->getItems();
+
+            // Check hasNextPage before iterating through items in case the logic modifies the pagination,
+            // It would impact the total number of pages as well.
+            $hasNextPage = $paginator->hasNextPage();
+
+            // Implement hash and cache mechanism to prevent infinite loop due to resetPagination logic.
+            // resetPagination should apply only when pagination actually changed
+            $pageHash = $this->generateItemPageHash($page, $items);
+            $pageAlreadyProcessed = isset($pagesCache[$pageHash]);
+            $pagesCache[$pageHash] = true;
+
+            if ($pageAlreadyProcessed === false) {
+                foreach ($items as $item) {
+                    \call_user_func($func, $item, $this->batchItemRepository);
+                }
             }
 
-            $page++;
-        } while ($paginator->hasNextPage());
+            // Since pagination is based on status, it gets modified as items are processed
+            // which results in missing items to dispatch. The solution is to reset the pagination until all items
+            // have been dispatched as expected.
+            // Reset pagination only when not on first page, and last page was reached.
+            // Because no more items to dispatch means 0 items in first page.
+            $resetPagination = $page > 1 && $hasNextPage === false;
+            $page = $resetPagination ? 1 : $page + 1;
+        } while (($hasNextPage || $resetPagination) && $pageAlreadyProcessed === false);
     }
 
     /**
-     * @return mixed
-     *
      * @throws \EonX\EasyBatch\Exceptions\BatchCancelledException
-     * @throws \EonX\EasyBatch\Exceptions\BatchItemCancelledException
      * @throws \Throwable
      */
-    public function processItem(BatchInterface $batch, BatchItemInterface $batchItem, callable $func)
+    public function processItem(BatchInterface $batch, BatchItemInterface $batchItem, callable $func): mixed
     {
-        if ($batchItem->isCancelled()) {
-            throw new BatchItemCancelledException(\sprintf('BatchItem "%s" is cancelled', $batchItem->getId()));
+        if ($batchItem->isCompleted()) {
+            throw new BatchItemCompletedException(\sprintf(
+                'BatchItem "%s" is already completed with status "%s"',
+                $batchItem->getId(),
+                $batchItem->getStatus()
+            ));
+        }
+
+        if ($batchItem->canBeRetried() === false) {
+            throw new BatchItemCannotBeRetriedException(\sprintf(
+                'BatchItem "%s" cannot be retried because current attempt %d is not lower than max attempts %d',
+                $batchItem->getId(),
+                $batchItem->getAttempts(),
+                $batchItem->getMaxAttempts()
+            ));
         }
 
         if ($batch->isCancelled()) {
             $throwable = new BatchCancelledException(\sprintf('Batch for id "%s" is cancelled', $batch->getId()));
-
             $batchItem->setThrowable($throwable);
 
             $this->cancel($batchItem);
@@ -267,7 +311,11 @@ final class BatchManager implements BatchManagerInterface
 
             return $result;
         } catch (\Throwable $throwable) {
-            $batchItem->setStatus(BatchObjectInterface::STATUS_FAILED);
+            $batchItem->setStatus(
+                $batchItem->canBeRetried()
+                    ? BatchItemInterface::STATUS_FAILED_PENDING_RETRY
+                    : BatchObjectInterface::STATUS_FAILED
+            );
             $batchItem->setThrowable($throwable);
 
             throw $throwable;
@@ -300,17 +348,24 @@ final class BatchManager implements BatchManagerInterface
         }
     }
 
-    /**
-     * @param int|string $batchId
-     */
-    private function persistBatchItem($batchId, MessageDecorator $item, ?object $message = null): BatchItemInterface
-    {
+    private function persistBatchItem(
+        int|string $batchId,
+        MessageDecorator $item,
+        ?object $message = null
+    ): BatchItemInterface {
         $batchItem = $this->batchItemFactory->create($batchId, $message, $item->getClass());
 
-        $batchItem->setApprovalRequired($item->isApprovalRequired());
+        $batchItem
+            ->setApprovalRequired($item->isApprovalRequired())
+            ->setEncrypted($item->isEncrypted())
+            ->setMaxAttempts($item->getMaxAttempts());
 
         if ($item->getDependsOn() !== null) {
             $batchItem->setDependsOnName($item->getDependsOn());
+        }
+
+        if ($item->getEncryptionKeyName() !== null) {
+            $batchItem->setEncryptionKeyName($item->getEncryptionKeyName());
         }
 
         if ($item->getMetadata() !== null) {
@@ -372,14 +427,8 @@ final class BatchManager implements BatchManagerInterface
     private function updateBatchForItem(BatchInterface $batch, BatchItemInterface $batchItem): void
     {
         $update = function (BatchInterface $freshBatch) use ($batchItem): BatchInterface {
-            // Update processed only on first attempt and/or if not pending approval
-            if ($batchItem->isRetried() === false && $batchItem->isCompleted()) {
+            if ($batchItem->isCompleted()) {
                 $freshBatch->setProcessed($freshBatch->countProcessed() + 1);
-            }
-
-            // Forget about previous fail, and see what happens this time
-            if ($batchItem->isRetried()) {
-                $freshBatch->setFailed($freshBatch->countFailed() - 1);
             }
 
             if ($batchItem->isCancelled()) {
@@ -440,5 +489,19 @@ final class BatchManager implements BatchManagerInterface
         $this->dispatchBatchItemEvents($batchItem);
 
         return $batchItem;
+    }
+
+    /**
+     * @param \EonX\EasyBatch\Interfaces\BatchItemInterface[] $batchItems
+     */
+    private function generateItemPageHash(int $page, array $batchItems): string
+    {
+        $hash = (string)$page;
+
+        foreach ($batchItems as $batchItem) {
+            $hash .= (string)$batchItem->getId();
+        }
+
+        return \md5($hash);
     }
 }

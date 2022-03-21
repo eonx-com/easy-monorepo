@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External;
 
-use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use Firebase\JWT\JWT;
+use OpenSSLAsymmetricKey;
 
 final class FirebaseJwtDriver implements JwtDriverInterface
 {
@@ -26,34 +26,25 @@ final class FirebaseJwtDriver implements JwtDriverInterface
     private $leeway;
 
     /**
-     * @var string|resource
+     * @var OpenSSLAsymmetricKey|string
      */
     private $privateKey;
 
     /**
-     * @var string|resource
+     * @var OpenSSLAsymmetricKey|string
      */
     private $publicKey;
 
     /**
-     * @param string|resource $publicKey
-     * @param string|resource $privateKey
      * @param null|mixed[] $allowedAlgos
-     *
-     * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      */
-    public function __construct(string $algo, $publicKey, $privateKey, ?array $allowedAlgos = null, ?int $leeway = null)
-    {
-        if (\is_string($publicKey) === false
-            && \is_resource($publicKey) === false
-            // Support for PHP8
-            && (\class_exists(\OpenSSLAsymmetricKey::class) && $publicKey instanceof \OpenSSLAsymmetricKey) === false) {
-            throw new InvalidArgumentException(\sprintf(
-                '$publicKey must be either a string or a resource or a \OpenSSLAsymmetricKey since PHP8, %s given',
-                \gettype($publicKey)
-            ));
-        }
-
+    public function __construct(
+        string $algo,
+        OpenSSLAsymmetricKey|string $publicKey,
+        OpenSSLAsymmetricKey|string $privateKey,
+        ?array $allowedAlgos = null,
+        ?int $leeway = null
+    ) {
         $this->algo = $algo;
         $this->publicKey = $publicKey;
         $this->privateKey = $privateKey;
@@ -61,7 +52,7 @@ final class FirebaseJwtDriver implements JwtDriverInterface
         $this->leeway = $leeway;
     }
 
-    public function decode(string $token)
+    public function decode(string $token): object
     {
         /**
          * You can add a leeway to account for when there is a clock skew times between
@@ -80,10 +71,7 @@ final class FirebaseJwtDriver implements JwtDriverInterface
         return JWT::decode($token, $publicKey, $this->allowedAlgos);
     }
 
-    /**
-     * @param mixed $input
-     */
-    public function encode($input): string
+    public function encode(array|object $input): string
     {
         /** @var string $privateKey */
         $privateKey = $this->privateKey;

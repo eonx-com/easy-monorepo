@@ -13,6 +13,8 @@ use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchAwareInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchItemAwareInterface;
 use EonX\EasyBatch\Interfaces\EasyBatchExceptionInterface;
+use EonX\EasyLock\Interfaces\LockServiceInterface;
+use EonX\EasyLock\LockData;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
@@ -37,14 +39,21 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
      */
     private $batchRepository;
 
+    /**
+     * @var \EonX\EasyLock\Interfaces\LockServiceInterface
+     */
+    private $lockService;
+
     public function __construct(
         BatchRepositoryInterface $batchRepository,
         BatchItemRepositoryInterface $batchItemRepository,
-        BatchManagerInterface $batchManager
+        BatchManagerInterface $batchManager,
+        LockServiceInterface $lockService
     ) {
         $this->batchRepository = $batchRepository;
         $this->batchItemRepository = $batchItemRepository;
         $this->batchManager = $batchManager;
+        $this->lockService = $lockService;
     }
 
     /**
@@ -63,19 +72,33 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         }
 
         try {
-            $batchItem = $this->findBatchItem($batchItemStamp->getBatchItemId());
-            $batch = $this->findBatch($batchItem->getBatchId());
             $message = $envelope->getMessage();
 
-            if ($message instanceof CurrentBatchAwareInterface) {
-                $message->setCurrentBatch($batch);
-            }
+            // Since items can be dispatched multiple times to guarantee all items are dispatched
+            // We must protect the processing logic with a lock to make sure the same item isn't processed
+            // by multiple workers concurrently.
+            $lockData = LockData::create(\sprintf('easy_batch_item_%s', (string)$batchItemStamp->getBatchItemId()));
 
-            if ($message instanceof CurrentBatchItemAwareInterface) {
-                $message->setCurrentBatchItem($batchItem);
-            }
+            $result = $this->lockService->processWithLock(
+                $lockData,
+                function () use ($batchItemStamp, $message, $func) {
+                    $batchItem = $this->findBatchItem($batchItemStamp->getBatchItemId());
+                    $batch = $this->findBatch($batchItem->getBatchId());
 
-            return $this->batchManager->processItem($batch, $batchItem, $func);
+                    if ($message instanceof CurrentBatchAwareInterface) {
+                        $message->setCurrentBatch($batch);
+                    }
+
+                    if ($message instanceof CurrentBatchItemAwareInterface) {
+                        $message->setCurrentBatchItem($batchItem);
+                    }
+
+                    return $this->batchManager->processItem($batch, $batchItem, $func);
+                }
+            );
+
+            // If lock not acquired, return envelope
+            return $result === null ? $envelope : $result;
         } catch (\Throwable $throwable) {
             // Do not retry if exception from package
             if ($throwable instanceof EasyBatchExceptionInterface) {
@@ -92,21 +115,17 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
     }
 
     /**
-     * @param int|string $batchId
-     *
      * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
      */
-    private function findBatch($batchId): BatchInterface
+    private function findBatch(int|string $batchId): BatchInterface
     {
         return $this->batchRepository->findOrFail($batchId);
     }
 
     /**
-     * @param int|string $batchItemId
-     *
      * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
      */
-    private function findBatchItem($batchItemId): BatchItemInterface
+    private function findBatchItem(int|string $batchItemId): BatchItemInterface
     {
         return $this->batchItemRepository->findOrFail($batchItemId);
     }

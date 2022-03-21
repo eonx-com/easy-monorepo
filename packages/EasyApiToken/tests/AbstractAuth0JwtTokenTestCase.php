@@ -35,23 +35,26 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
     /**
      * @param null|string[] $validAudiences
      * @param null|string[] $authorizedIss
-     * @param null|string|resource $key
+     * @param null|string $key
      * @param null|string[] $allowedAlgos
      */
     protected function createAuth0JwtDriver(
         ?array $validAudiences = null,
         ?array $authorizedIss = null,
-        $key = null,
+        ?string $key = null,
         ?string $audienceForEncode = null,
         ?array $allowedAlgos = null
     ): JwtDriverInterface {
-        return new Auth0JwtDriver(
+        $auth0Driver = new Auth0JwtDriver(
             $validAudiences ?? static::$validAudiences,
             $authorizedIss ?? static::$authorizedIss,
+            'localhost',
             $key ?? static::$key,
             $audienceForEncode,
             $allowedAlgos
         );
+
+        return $auth0Driver;
     }
 
     protected function createToken(): string

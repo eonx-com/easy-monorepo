@@ -15,10 +15,8 @@ use EonX\EasySecurity\Bridge\EasyBugsnag\SecurityContextClientConfigurator;
 use EonX\EasySecurity\Bridge\Laravel\Listeners\FromRequestSecurityContextConfiguratorListener;
 use EonX\EasySecurity\Bridge\Laravel\Middleware\FromRequestSecurityContextConfiguratorMiddleware;
 use EonX\EasySecurity\Configurators\ApiTokenConfigurator;
-use EonX\EasySecurity\DeferredSecurityContextProvider;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
-use EonX\EasySecurity\Interfaces\DeferredSecurityContextProviderInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
@@ -60,7 +58,6 @@ final class EasySecurityServiceProvider extends ServiceProvider
         $this->registerLogger();
         $this->registerRequestConfigurators();
         $this->registerSecurityContext($contextServiceId);
-        $this->registerDeferredSecurityContextProvider();
     }
 
     private function registerApiTokenDecoder(): void
@@ -119,16 +116,6 @@ final class EasySecurityServiceProvider extends ServiceProvider
         );
     }
 
-    private function registerDeferredSecurityContextProvider(): void
-    {
-        $this->app->singleton(
-            DeferredSecurityContextProviderInterface::class,
-            static function (Container $app): DeferredSecurityContextProviderInterface {
-                return new DeferredSecurityContextProvider($app->make(SecurityContextResolverInterface::class));
-            }
-        );
-    }
-
     private function registerEasyBugsnag(): void
     {
         if (\config('easy-security.easy_bugsnag', false) === false
@@ -140,7 +127,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
             SecurityContextClientConfigurator::class,
             static function (Container $app): SecurityContextClientConfigurator {
                 return new SecurityContextClientConfigurator(
-                    $app->make(DeferredSecurityContextProviderInterface::class)
+                    $app->make(SecurityContextResolverInterface::class)
                 );
             }
         );

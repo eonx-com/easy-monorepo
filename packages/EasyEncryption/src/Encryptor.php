@@ -16,9 +16,11 @@ use EonX\EasyEncryption\ValueObjects\DecryptedString;
 use ParagonIE\ConstantTime\Encoding;
 use ParagonIE\Halite\Asymmetric\Crypto as AsymmetricCrypto;
 use ParagonIE\Halite\EncryptionKeyPair;
-use ParagonIE\Halite\HiddenString;
+use ParagonIE\Halite\HiddenString as OldHiddenString;
 use ParagonIE\Halite\Symmetric\Crypto as SymmetricCrypto;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
+use ParagonIE\HiddenString\HiddenString as NewHiddenString;
+use Throwable;
 
 final class Encryptor implements EncryptorInterface
 {
@@ -145,7 +147,7 @@ final class Encryptor implements EncryptorInterface
      */
     private function doEncrypt(string $text, object $key): string
     {
-        $text = new HiddenString($text);
+        $text = \class_exists(NewHiddenString::class) ? new NewHiddenString($text) : new OldHiddenString($text);
 
         if ($key instanceof EncryptionKeyPair) {
             return AsymmetricCrypto::encrypt($text, $key->getSecretKey(), $key->getPublicKey());
@@ -164,13 +166,17 @@ final class Encryptor implements EncryptorInterface
     }
 
     /**
-     * @return mixed
+     * @phpstan-param class-string<T> $throwableClass
+     *
+     * @phpstan-template T of \Throwable
+     *
+     * @throws T
      */
-    private function execSafely(string $throwableClass, callable $func)
+    private function execSafely(string $throwableClass, callable $func): mixed
     {
         try {
             return $func();
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             if ($throwable instanceof EasyEncryptionExceptionInterface) {
                 throw $throwable;
             }

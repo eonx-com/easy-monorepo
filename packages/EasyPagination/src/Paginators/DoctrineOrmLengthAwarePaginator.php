@@ -5,77 +5,33 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginators;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
-use EonX\EasyPagination\Exceptions\InvalidPrimaryKeyIndexException;
-use EonX\EasyPagination\Interfaces\StartSizeDataInterface;
-use EonX\EasyPagination\Traits\DoctrinePaginatorTrait;
+use EonX\EasyPagination\Interfaces\PaginationInterface;
+use EonX\EasyPagination\Traits\DoctrineOrmPaginatorTrait;
 
-/**
- * @deprecated since 3.2, will be removed in 4.0. Will be replace by new implementation using Pagination.
- */
-final class DoctrineOrmLengthAwarePaginator extends AbstractTransformableLengthAwarePaginator
+final class DoctrineOrmLengthAwarePaginator extends AbstractLengthAwarePaginator
 {
-    use DoctrinePaginatorTrait;
-
-    /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    private $manager;
-
-    /**
-     * @var string
-     */
-    private $primaryKeyIndex;
+    use DoctrineOrmPaginatorTrait;
 
     public function __construct(
+        PaginationInterface $pagination,
         EntityManagerInterface $manager,
-        StartSizeDataInterface $startSizeData,
         string $from,
-        string $fromAlias
+        string $fromAlias,
+        ?string $indexBy = null
     ) {
+        $this->manager = $manager;
         $this->from = $from;
         $this->fromAlias = $fromAlias;
-        $this->manager = $manager;
+        $this->indexBy = $indexBy;
 
-        parent::__construct($startSizeData);
-    }
-
-    protected function doCreateQueryBuilder(): QueryBuilder
-    {
-        return $this->manager->createQueryBuilder();
+        parent::__construct($pagination);
     }
 
     /**
-     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
-     *
-     * @return mixed[]
+     * @throws \Doctrine\DBAL\Exception
      */
-    protected function doGetResult($queryBuilder): array
+    public function getTotalItems(): int
     {
-        return $queryBuilder->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
-     */
-    protected function doGetTotalItems($queryBuilder, string $countAlias): int
-    {
-        return (int)($queryBuilder->getQuery()->getResult()[0][$countAlias] ?? 0);
-    }
-
-    protected function getPrimaryKeyIndex(): string
-    {
-        if ($this->primaryKeyIndex !== null) {
-            return $this->primaryKeyIndex;
-        }
-
-        try {
-            return $this->primaryKeyIndex = $this->manager
-                ->getClassMetadata($this->from)
-                ->getSingleIdentifierColumnName();
-        } catch (\Throwable $throwable) {
-            throw new InvalidPrimaryKeyIndexException($throwable->getMessage());
-        }
+        return $this->doGetTotalItems();
     }
 }

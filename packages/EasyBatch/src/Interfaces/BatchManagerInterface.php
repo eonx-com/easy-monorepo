@@ -32,13 +32,7 @@ interface BatchManagerInterface
 
     public function failItem(BatchItemInterface $batchItem): BatchItemInterface;
 
-    /**
-     * @param int|string $batchId
-     */
-    public function iterateThroughItems($batchId, ?string $dependsOnName = null, callable $func): void;
+    public function iterateThroughItems(int|string $batchId, callable $func, ?string $dependsOnName = null): void;
 
-    /**
-     * @return mixed
-     */
-    public function processItem(BatchInterface $batch, BatchItemInterface $batchItem, callable $func);
+    public function processItem(BatchInterface $batch, BatchItemInterface $batchItem, callable $func): mixed;
 }

@@ -4,23 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Interfaces;
 
-/**
- * @deprecated since 3.2, will be removed in 4.0. Will be replaced by new implementation.
- */
-interface LengthAwarePaginatorInterface
+interface LengthAwarePaginatorInterface extends PaginatorInterface
 {
-    public function getCurrentPage(): int;
+    public function getFirstPageUrl(): ?string;
 
-    /**
-     * @return mixed[]
-     */
-    public function getItems(): array;
-
-    public function getItemsPerPage(): int;
-
-    public function getNextPageUrl(): ?string;
-
-    public function getPreviousPageUrl(): ?string;
+    public function getLastPageUrl(): ?string;
 
     public function getTotalItems(): int;
 

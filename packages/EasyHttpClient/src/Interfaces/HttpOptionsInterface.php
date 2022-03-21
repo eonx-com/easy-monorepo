@@ -25,9 +25,4 @@ interface HttpOptionsInterface
      * @var string
      */
     public const REQUEST_DATA_MODIFIERS_WHITELIST = 'easy_http_client.allowed_request_data_whitelist';
-
-    /**
-     * @var string
-     */
-    public const REQUEST_DATA_SUBSCRIBERS = 'easy_http_client.request_data_subscribers';
 }

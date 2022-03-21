@@ -6,7 +6,7 @@ namespace EonX\EasyPagination\Tests\Paginators;
 
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
-use EonX\EasyPagination\Paginators\EloquentLengthAwarePaginatorNew;
+use EonX\EasyPagination\Paginators\EloquentLengthAwarePaginator;
 use EonX\EasyPagination\Tests\AbstractEloquentTestCase;
 use EonX\EasyPagination\Tests\Stubs\Model\Item;
 use EonX\EasyPagination\Tests\Stubs\Model\ParentModel;
@@ -27,7 +27,7 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
             function (Model $model): void {
                 $this->createItemsTable($model);
             },
-            static function (EloquentLengthAwarePaginatorNew $paginator): void {
+            static function (EloquentLengthAwarePaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
                 self::assertEquals(0, $paginator->getTotalItems());
                 self::assertEquals(1, $paginator->getTotalPages());
@@ -40,7 +40,7 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
             function (Model $model): void {
                 $this->createItemsTable($model);
             },
-            static function (EloquentLengthAwarePaginatorNew $paginator): void {
+            static function (EloquentLengthAwarePaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
                 self::assertEquals(0, $paginator->getTotalItems());
                 self::assertEquals(1, $paginator->getTotalPages());
@@ -55,7 +55,7 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
 
                 (new Item(['title' => 'my-title']))->save();
             },
-            static function (EloquentLengthAwarePaginatorNew $paginator): void {
+            static function (EloquentLengthAwarePaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
                 self::assertEquals(1, $paginator->getTotalPages());
@@ -65,17 +65,17 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
         yield '2 items filter 1' => [
             Pagination::create(1, 15),
             new Item(),
-            function (Model $model, EloquentLengthAwarePaginatorNew $paginator): void {
+            function (Model $model, EloquentLengthAwarePaginator $paginator): void {
                 $this->createItemsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
                 (new Item(['title' => 'my-title-1']))->save();
 
-                $paginator->setCriteria(static function (Builder $queryBuilder): void {
+                $paginator->setFilterCriteria(static function (Builder $queryBuilder): void {
                     $queryBuilder->where('title', 'my-title-1');
                 });
             },
-            static function (EloquentLengthAwarePaginatorNew $paginator): void {
+            static function (EloquentLengthAwarePaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
                 self::assertEquals(1, $paginator->getTotalPages());
@@ -90,7 +90,7 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
 
                 (new Item(['title' => 'my-title']))->save();
             },
-            static function (EloquentLengthAwarePaginatorNew $paginator): void {
+            static function (EloquentLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertEquals(1, $paginator->getTotalItems());
@@ -105,14 +105,14 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
         yield '1 item select everything explicitly' => [
             Pagination::create(1, 15),
             new Item(),
-            function (Model $model, EloquentLengthAwarePaginatorNew $paginator): void {
+            function (Model $model, EloquentLengthAwarePaginator $paginator): void {
                 $this->createItemsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
 
                 $paginator->setSelect('*');
             },
-            static function (EloquentLengthAwarePaginatorNew $paginator): void {
+            static function (EloquentLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertEquals(1, $paginator->getTotalItems());
@@ -127,14 +127,14 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
         yield '1 item select only title' => [
             Pagination::create(1, 15),
             new Item(),
-            function (Model $model, EloquentLengthAwarePaginatorNew $paginator): void {
+            function (Model $model, EloquentLengthAwarePaginator $paginator): void {
                 $this->createItemsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
 
                 $paginator->setSelect('title');
             },
-            static function (EloquentLengthAwarePaginatorNew $paginator): void {
+            static function (EloquentLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertEquals(1, $paginator->getTotalItems());
@@ -149,7 +149,7 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
         yield '1 item transform entity to array' => [
             Pagination::create(1, 15),
             new Item(),
-            function (Model $model, EloquentLengthAwarePaginatorNew $paginator): void {
+            function (Model $model, EloquentLengthAwarePaginator $paginator): void {
                 $this->createItemsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
@@ -161,7 +161,7 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
                     ];
                 });
             },
-            static function (EloquentLengthAwarePaginatorNew $paginator): void {
+            static function (EloquentLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertEquals(1, $paginator->getTotalItems());
@@ -176,7 +176,7 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
         yield 'Paginate parents of item by title' => [
             Pagination::create(1, 15),
             new ParentModel(),
-            function (Model $model, EloquentLengthAwarePaginatorNew $paginator): void {
+            function (Model $model, EloquentLengthAwarePaginator $paginator): void {
                 $this->createItemsTable($model);
                 $this->createParentsTable($model);
 
@@ -194,7 +194,7 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
                     $queryBuilder->with('item');
                 });
             },
-            static function (EloquentLengthAwarePaginatorNew $paginator): void {
+            static function (EloquentLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertEquals(1, $paginator->getTotalItems());
@@ -227,7 +227,7 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
 
         Model::setConnectionResolver($connectionResolver);
 
-        $paginator = new EloquentLengthAwarePaginatorNew($pagination, $model);
+        $paginator = new EloquentLengthAwarePaginator($pagination, $model);
 
         $setup($model, $paginator);
         $assert($paginator);

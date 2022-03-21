@@ -1,0 +1,6 @@
+easy_pagination:
+    pagination:
+        page_attribute: page
+        page_default: 1
+        per_page_attribute: perPage
+        per_page_default: 15

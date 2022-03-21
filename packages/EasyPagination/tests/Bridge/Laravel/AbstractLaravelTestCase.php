@@ -16,6 +16,10 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
      */
     private $app;
 
+    /**
+     * @param class-string $concrete
+     * @param class-string $abstract
+     */
     protected function assertInstanceInApp(string $concrete, string $abstract): void
     {
         self::assertInstanceOf($concrete, $this->getApplication()->get($abstract));

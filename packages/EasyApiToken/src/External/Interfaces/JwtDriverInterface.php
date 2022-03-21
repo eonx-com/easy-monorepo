@@ -7,12 +7,12 @@ namespace EonX\EasyApiToken\External\Interfaces;
 interface JwtDriverInterface
 {
     /**
-     * @return mixed
+     * @return mixed[]|object
      */
-    public function decode(string $token);
+    public function decode(string $token): mixed;
 
     /**
-     * @param mixed $input
+     * @param mixed[]|object $input
      */
-    public function encode($input): string;
+    public function encode(array|object $input): string;
 }
