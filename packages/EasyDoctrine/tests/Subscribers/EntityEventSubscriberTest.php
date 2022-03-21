@@ -104,6 +104,8 @@ final class EntityEventSubscriberTest extends AbstractTestCase
     }
 
     /**
+     * @param mixed[] $entityClasses
+     *
      * @dataProvider provideEntityClassesForDisabling
      */
     public function testEventsAreDispatchedAfterEnablingDispatcher(array $entityClasses): void
