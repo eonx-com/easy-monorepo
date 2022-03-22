@@ -137,7 +137,6 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     {
         if ($entityClasses === null) {
             $this->enabled = false;
-            $this->disabledEntityClasses = [];
         }
 
         if ($entityClasses !== null) {
@@ -219,7 +218,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             return $this->enabled;
         }
 
-        return $this->enabled === true && isset($this->disabledEntityClasses[\get_class($object)]) === false;
+        return $this->enabled === true && isset($this->disabledEntityClasses[$object::class]) === false;
     }
 
     /**
