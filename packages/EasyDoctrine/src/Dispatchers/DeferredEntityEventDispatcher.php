@@ -13,7 +13,7 @@ use LogicException;
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
 {
     /**
-     * @var array<string, bool>
+     * @var string[]
      */
     private $disabledEntityClasses = [];
 
@@ -208,7 +208,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     private function disableFor(array $entityClasses): void
     {
         foreach ($entityClasses as $entityClass) {
-            $this->disabledEntityClasses[$entityClass] = true;
+            $this->disabledEntityClasses[] = $entityClass;
         }
     }
 
@@ -218,7 +218,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             return $this->enabled;
         }
 
-        return $this->enabled === true && isset($this->disabledEntityClasses[$object::class]) === false;
+        return $this->enabled === true && \in_array($object::class, $this->disabledEntityClasses, true) === false;
     }
 
     /**
