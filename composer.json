@@ -43,8 +43,8 @@
         "symfony/uid": "^5.4 || ^6.0",
         "symfony/validator": "^5.4 || ^6.0",
         "symfony/var-dumper": "^5.4 || ^6.0",
-        "symplify/autowire-array-parameter": "^10.1",
-        "symplify/package-builder": "^10.1"
+        "symplify/autowire-array-parameter": "10.1.2",
+        "symplify/package-builder": "10.1.2"
     },
     "require-dev": {
         "api-platform/core": "^2.6",
@@ -73,8 +73,8 @@
         "symfony/monolog-bundle": "^3.5",
         "symfony/symfony": "^5.4 || ^6.0",
         "symfony/yaml": "^5.4 || ^6.0",
-        "symplify/monorepo-builder": "^10.1",
-        "symplify/phpstan-extensions": "^10.1",
+        "symplify/monorepo-builder": "10.1.2",
+        "symplify/phpstan-extensions": "10.1.2",
         "tracy/tracy": "^2.7",
         "vlucas/phpdotenv": "^3.3 || ^5.2"
     },

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Release;
 
-use MonorepoBuilder20220221\Symplify\SmartFileSystem\SmartFileSystem;
+use MonorepoBuilder20220306\Symplify\SmartFileSystem\SmartFileSystem;
 use PharIo\Version\Version;
 use Symfony\Component\Yaml\Yaml;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
