@@ -69,5 +69,10 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const TAG_VERBOSE_STRATEGY_DRIVER = 'easy_error_handler.verbose_strategy_driver';
+
+    /**
+     * @var string
+     */
     public const TRANSLATION_NAMESPACE = 'easy-error-handler';
 }

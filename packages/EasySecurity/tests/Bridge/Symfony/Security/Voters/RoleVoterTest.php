@@ -37,11 +37,13 @@ final class RoleVoterTest extends AbstractTestCase
             VoterInterface::ACCESS_DENIED,
         ];
 
+        $authorizationMatrix = new AuthorizationMatrix(['role'], []);
         $securityContext = new SecurityContext();
+        $securityContext->setAuthorizationMatrix($authorizationMatrix);
         $securityContext->addRoles(['role']);
 
         yield 'Granted because role in matrix and on context' => [
-            new AuthorizationMatrix(['role'], []),
+            $authorizationMatrix,
             $securityContext,
             'role',
             VoterInterface::ACCESS_GRANTED,

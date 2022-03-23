@@ -8,6 +8,7 @@ use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\Reporters\FromIterableReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Tests\Stubs\ErrorReporterStub;
+use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
@@ -56,7 +57,14 @@ final class ErrorHandlerTest extends AbstractTestCase
     {
         $reporter = new ErrorReporterStub();
         $reporterProviders = [new FromIterableReporterProvider([$reporter])];
-        $errorHandler = new ErrorHandler(new ErrorResponseFactory(), [], $reporterProviders, false, $ignoredExceptions);
+        $verboseStrategy = new ChainVerboseStrategy([], false);
+        $errorHandler = new ErrorHandler(
+            new ErrorResponseFactory(),
+            [],
+            $reporterProviders,
+            $verboseStrategy,
+            $ignoredExceptions
+        );
 
         $errorHandler->report($throwable);
 

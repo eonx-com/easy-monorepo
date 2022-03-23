@@ -82,10 +82,8 @@ final class ExtendedExceptionBuilder extends AbstractErrorResponseBuilder implem
 
     private function getMessage(Throwable $throwable): string
     {
-        if (($throwable instanceof TranslatableExceptionInterface) === false) {
-            return $throwable->getMessage();
-        }
-
-        return $this->translator->trans($throwable->getMessage(), $throwable->getMessageParams());
+        return $throwable instanceof TranslatableExceptionInterface
+            ? $this->translator->trans($throwable->getMessage(), $throwable->getMessageParams())
+            : $throwable->getMessage();
     }
 }

@@ -145,13 +145,19 @@ abstract class BaseGenerator implements GeneratorInterface
      * @param string $attribute The attribute the value relates to
      * @param mixed $value The value from the attribute
      */
-    private function processRule(array &$errors, string $rule, string $attribute, $value): void
+    private function processRule(array &$errors, string $rule, string $attribute, mixed $value): void
     {
-        if ($value === null || (\is_string($value) && $value === '') || (\is_array($value) && \count($value) === 0)) {
+        // Not sure why we allow arrays here...
+        if ($value === null || $value === '' || (\is_array($value) && \count($value) === 0)) {
             $errors[] = \array_merge(\compact('attribute', 'value'), [
                 'rule' => 'required',
             ]);
 
+            return;
+        }
+
+        // Not sure why we would have anything else than a string value here...
+        if (\is_string($value) === false) {
             return;
         }
 
