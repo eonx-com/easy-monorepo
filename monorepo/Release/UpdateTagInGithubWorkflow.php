@@ -11,19 +11,11 @@ use Symplify\SmartFileSystem\SmartFileSystem;
 
 final class UpdateTagInGithubWorkflow implements ReleaseWorkerInterface
 {
-    /**
-     * @var string
-     */
     private const WORKFLOW_FILENAME = __DIR__ . '/../../.github/workflows/split_packages.yml';
 
-    /**
-     * @var \Symplify\SmartFileSystem\SmartFileSystem
-     */
-    private $smartFileSystem;
-
-    public function __construct(SmartFileSystem $smartFileSystem)
+    public function __construct(private SmartFileSystem $smartFileSystem)
     {
-        $this->smartFileSystem = $smartFileSystem;
+        // The body is not required
     }
 
     public function getDescription(Version $version): string

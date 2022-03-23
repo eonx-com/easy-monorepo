@@ -1,5 +1,3 @@
-<!-- changelog-linker -->
-
 ## [4.0.0] - 2022-02-22
 
 - [#825] Replaced the `ref` function with `service` in Symfony configs for each package, Thanks to [@itorgov]

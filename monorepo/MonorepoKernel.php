@@ -8,15 +8,12 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class MonorepoKernel extends Kernel
 {
-    /**
-     * @var string
-     */
     public const NAMESPACE = 'EonX\\EasyMonorepo\\';
 
     /**
      * @return \Symfony\Component\HttpKernel\Bundle\BundleInterface[]
      */
-    public function registerBundles()
+    public function registerBundles(): array
     {
         return [];
     }

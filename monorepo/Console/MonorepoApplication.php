@@ -9,9 +9,6 @@ use Symfony\Component\Console\Command\Command;
 
 final class MonorepoApplication extends Application
 {
-    /**
-     * @var string
-     */
     public const TAG_COMMAND = 'console.command';
 
     /**
