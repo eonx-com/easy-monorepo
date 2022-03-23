@@ -8,9 +8,7 @@
         "aws/aws-sdk-php": "^3.134",
         "eonx-com/easy-aws-credentials-finder": "^4.1",
         "eonx-com/easy-random": "^4.1",
-        "nette/utils": "^3.1",
-        "symplify/package-builder": "^10.1",
-        "symplify/autowire-array-parameter": "^10.1"
+        "nette/utils": "^3.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

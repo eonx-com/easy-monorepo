@@ -16,7 +16,6 @@ use EonX\EasySsm\Services\Dotenv\SsmDotenvInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symplify\PackageBuilder\Parameter\ParameterProvider;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -50,6 +49,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->public();
 
     $services->set(OutputInterface::class, ConsoleOutput::class);
-
-    $services->set(ParameterProvider::class);
 };
