@@ -43,6 +43,7 @@
         "symfony/uid": "^5.4 || ^6.0",
         "symfony/validator": "^5.4 || ^6.0",
         "symfony/var-dumper": "^5.4 || ^6.0",
+        "symfony/yaml": "^5.4 || ^6.0",
         "symplify/autowire-array-parameter": "^10.1",
         "symplify/package-builder": "^10.1"
     },
@@ -72,7 +73,6 @@
         "symfony/maker-bundle": "^1.15",
         "symfony/monolog-bundle": "^3.5",
         "symfony/symfony": "^5.4 || ^6.0",
-        "symfony/yaml": "^5.4 || ^6.0",
         "symplify/monorepo-builder": "^10.1",
         "symplify/phpstan-extensions": "^10.1",
         "tracy/tracy": "^2.7",
