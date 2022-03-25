@@ -4,26 +4,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Release;
 
+use MonorepoBuilder20220316\Symplify\SmartFileSystem\SmartFileSystem;
 use PharIo\Version\Version;
 use Symfony\Component\Yaml\Yaml;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
-use Symplify\SmartFileSystem\SmartFileSystem;
 
 final class UpdateTagInGithubWorkflow implements ReleaseWorkerInterface
 {
-    /**
-     * @var string
-     */
     private const WORKFLOW_FILENAME = __DIR__ . '/../../.github/workflows/split_packages.yml';
 
-    /**
-     * @var \Symplify\SmartFileSystem\SmartFileSystem
-     */
-    private $smartFileSystem;
-
-    public function __construct(SmartFileSystem $smartFileSystem)
+    public function __construct(private SmartFileSystem $smartFileSystem)
     {
-        $this->smartFileSystem = $smartFileSystem;
+        // The body is not required
     }
 
     public function getDescription(Version $version): string

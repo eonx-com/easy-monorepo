@@ -16,15 +16,8 @@ final class LocalizePackageRepositoriesCommand extends Command
 {
     protected static $defaultName = 'localize-monorepo-packages';
 
-    /**
-     * @var \EonX\EasyMonorepo\Git\GitManager
-     */
-    private $gitManager;
-
-    public function __construct(GitManager $gitManager)
+    public function __construct(private GitManager $gitManager)
     {
-        $this->gitManager = $gitManager;
-
         parent::__construct();
     }
 

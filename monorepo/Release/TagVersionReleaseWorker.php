@@ -4,28 +4,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Release;
 
+use EonX\EasyMonorepo\Git\GitManager;
 use PharIo\Version\Version;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;
-use Symplify\MonorepoBuilder\Split\Git\GitManager;
 use Throwable;
 
 final class TagVersionReleaseWorker implements ReleaseWorkerInterface
 {
-    /**
-     * @var \Symplify\MonorepoBuilder\Split\Git\GitManager
-     */
-    private $gitManager;
-
-    /**
-     * @var ProcessRunner
-     */
-    private $processRunner;
-
-    public function __construct(GitManager $gitManager, ProcessRunner $processRunner)
+    public function __construct(private GitManager $gitManager, private ProcessRunner $processRunner)
     {
-        $this->gitManager = $gitManager;
-        $this->processRunner = $processRunner;
+        // The body is not required
     }
 
     public function getDescription(Version $version): string

@@ -50,7 +50,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set(Option::PARALLEL_MAX_NUMBER_OF_PROCESSES, 2);
 
     $parameters->set(Option::PATHS, [
-        __DIR__ . '/changelog-linker.php',
         __DIR__ . '/ecs.php',
         __DIR__ . '/monorepo-builder.php',
         __DIR__ . '/packages',
