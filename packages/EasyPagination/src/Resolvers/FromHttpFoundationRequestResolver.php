@@ -11,8 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class FromHttpFoundationRequestResolver
 {
-    public function __construct(private PaginationConfigInterface $config, private Request $request)
-    {
+    public function __construct(
+        private PaginationConfigInterface $config,
+        private Request $request
+    ) {
         // No body needed.
     }
 
