@@ -10,19 +10,14 @@ use EonX\EasyPagination\Interfaces\PaginatorInterface;
 abstract class AbstractPaginator implements PaginatorInterface
 {
     /**
-     * @var mixed[]
+     * @var null|mixed[]
      */
-    private $items;
-
-    /**
-     * @var \EonX\EasyPagination\Interfaces\PaginationInterface
-     */
-    private $pagination;
+    private ?array $items = null;
 
     /**
      * @var null|mixed[]
      */
-    private $transformedItems;
+    private ?array $transformedItems = null;
 
     /**
      * @var null|callable
@@ -32,11 +27,11 @@ abstract class AbstractPaginator implements PaginatorInterface
     /**
      * @var string[]
      */
-    private $urls = [];
+    private array $urls = [];
 
-    public function __construct(PaginationInterface $pagination)
+    public function __construct(protected PaginationInterface $pagination)
     {
-        $this->pagination = $pagination;
+        // No body needed.
     }
 
     public function getCurrentPage(): int
@@ -44,6 +39,9 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this->pagination->getPage();
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getItems(): array
     {
         if ($this->transformedItems !== null) {
@@ -64,7 +62,7 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this->pagination->getPerPage();
     }
 
-    public function getNextPageUrl(): ?string
+    public function getNextPageUrl(): string
     {
         return $this->getPageUrl($this->getCurrentPage() + 1);
     }
@@ -74,9 +72,17 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this->urls[$page] = $this->urls[$page] ?? $this->pagination->getUrl($page);
     }
 
-    public function getPreviousPageUrl(): ?string
+    public function getPreviousPageUrl(): string
     {
         return $this->getPageUrl($this->getCurrentPage() - 1);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 
     public function setTransformer(?callable $transformer = null): PaginatorInterface
@@ -91,4 +97,20 @@ abstract class AbstractPaginator implements PaginatorInterface
      * @return mixed[]
      */
     abstract protected function doGetItems(): array;
+
+    /**
+     * @return mixed[]
+     */
+    public function toArray(): array
+    {
+        return [
+            'items' => $this->getItems(),
+            'pagination' => [
+                $this->pagination->getPageAttribute() => $this->getCurrentPage(),
+                $this->pagination->getPerPageAttribute() => $this->getItemsPerPage(),
+                'nextPageUrl' => $this->getNextPageUrl(),
+                'previousPageUrl' => $this->getPreviousPageUrl(),
+            ],
+        ];
+    }
 }

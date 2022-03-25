@@ -30,9 +30,23 @@ final class DoctrineDbalLengthAwarePaginatorNewTest extends AbstractDoctrineDbal
                 self::assertEquals(0, $paginator->getTotalItems());
                 self::assertEquals('/?page=1&perPage=15', $paginator->getFirstPageUrl());
                 self::assertEquals('/?page=1&perPage=15', $paginator->getLastPageUrl());
-                self::assertNull($paginator->getNextPageUrl());
+                self::assertEquals('/?page=2&perPage=15', $paginator->getNextPageUrl());
                 self::assertEquals('/?page=1&perPage=15', $paginator->getLastPageUrl());
                 self::assertEquals('/?page=10&perPage=15', $paginator->getPageUrl(10));
+                self::assertEquals([
+                    'items' => [],
+                    'pagination' => [
+                        'page' => 1,
+                        'perPage' => 15,
+                        'nextPageUrl' => '/?page=2&perPage=15',
+                        'previousPageUrl' => '/?page=1&perPage=15',
+                        'firstPageUrl' => '/?page=1&perPage=15',
+                        'lastPageUrl' => '/?page=1&perPage=15',
+                        'totalPages' => 1,
+                        'hasNextPage' => false,
+                        'hasPreviousPage' => false,
+                    ],
+                ], $paginator->toArray());
             },
         ];
 

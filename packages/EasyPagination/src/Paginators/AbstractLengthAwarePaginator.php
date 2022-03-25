@@ -8,29 +8,16 @@ use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 
 abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements LengthAwarePaginatorInterface
 {
-    /**
-     * @var int
-     */
-    private $totalPages;
+    private ?int $totalPages = null;
 
-    public function getFirstPageUrl(): ?string
+    public function getFirstPageUrl(): string
     {
         return $this->getPageUrl(1);
     }
 
-    public function getLastPageUrl(): ?string
+    public function getLastPageUrl(): string
     {
         return $this->getPageUrl($this->getTotalPages());
-    }
-
-    public function getNextPageUrl(): ?string
-    {
-        return $this->hasNextPage() ? parent::getNextPageUrl() : null;
-    }
-
-    public function getPreviousPageUrl(): ?string
-    {
-        return $this->hasPreviousPage() ? parent::getPreviousPageUrl() : null;
     }
 
     public function getTotalPages(): int
@@ -50,5 +37,21 @@ abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements
     public function hasPreviousPage(): bool
     {
         return $this->getCurrentPage() > 1;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function toArray(): array
+    {
+        return \array_merge_recursive(parent::toArray(), [
+            'pagination' => [
+                'firstPageUrl' => $this->getFirstPageUrl(),
+                'lastPageUrl' => $this->getLastPageUrl(),
+                'totalPages' => $this->getTotalPages(),
+                'hasNextPage' => $this->hasNextPage(),
+                'hasPreviousPage' => $this->hasPreviousPage(),
+            ],
+        ]);
     }
 }

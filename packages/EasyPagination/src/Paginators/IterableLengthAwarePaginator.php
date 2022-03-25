@@ -10,23 +10,10 @@ use EonX\EasyUtils\CollectorHelper;
 final class IterableLengthAwarePaginator extends AbstractLengthAwarePaginator
 {
     /**
-     * @var iterable<mixed>
-     */
-    private $iterable;
-
-    /**
-     * @var int
-     */
-    private $total;
-
-    /**
      * @param iterable<mixed> $iterable
      */
-    public function __construct(PaginationInterface $pagination, iterable $iterable, int $total)
+    public function __construct(PaginationInterface $pagination, private iterable $iterable, private int $total)
     {
-        $this->iterable = $iterable;
-        $this->total = $total;
-
         parent::__construct($pagination);
     }
 
