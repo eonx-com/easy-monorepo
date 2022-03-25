@@ -10,17 +10,12 @@ use EonX\EasyUtils\CollectorHelper;
 final class IterablePaginator extends AbstractPaginator
 {
     /**
-     * @var iterable<mixed>
-     */
-    private $iterable;
-
-    /**
      * @param iterable<mixed> $iterable
      */
-    public function __construct(PaginationInterface $pagination, iterable $iterable)
-    {
-        $this->iterable = $iterable;
-
+    public function __construct(
+        PaginationInterface $pagination,
+        private iterable $iterable
+    ) {
         parent::__construct($pagination);
     }
 
