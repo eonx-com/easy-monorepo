@@ -10,14 +10,9 @@ use EonX\EasyPagination\Pagination;
 
 final class DefaultPaginationResolver
 {
-    /**
-     * @var \EonX\EasyPagination\Interfaces\PaginationConfigInterface
-     */
-    private $config;
-
-    public function __construct(PaginationConfigInterface $config)
+    public function __construct(private PaginationConfigInterface $config)
     {
-        $this->config = $config;
+        // No body needed.
     }
 
     public function __invoke(): PaginationInterface
