@@ -13,6 +13,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
+use EonX\EasyDoctrine\Utils\ObjectCopierFactory;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
@@ -96,7 +97,7 @@ final class EntityManagerStub extends EntityManager
         array $subscribedEntities = [],
         array $fixtures = []
     ) {
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, (new ObjectCopierFactory())->create());
 
         return self::createFromDeferredEntityEventDispatcher(
             $dispatcher,
