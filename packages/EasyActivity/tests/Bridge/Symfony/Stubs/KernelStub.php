@@ -68,11 +68,10 @@ final class KernelStub extends Kernel implements CompilerPassInterface
             ActivitySubjectDataSerializerInterface::class,
             new Definition(SymfonyActivitySubjectDataSerializer::class)
         );
-        $objectCopierDefinition = new Definition(ObjectCopier::class);
-        $objectCopierDefinition->setFactory([(new Definition(ObjectCopierFactory::class)), 'create']);
         $deferredEntityDefinition = new Definition(DeferredEntityEventDispatcher::class, [
             new Definition(EventDispatcher::class, [new Definition(SymfonyEventDispatcher::class)]),
-            $objectCopierDefinition,
+            (new Definition(ObjectCopier::class))
+                ->setFactory([(new Definition(ObjectCopierFactory::class)), 'create']),
         ]);
         $container->setDefinition(DeferredEntityEventDispatcherInterface::class, $deferredEntityDefinition);
         $container->setDefinition(RandomGeneratorInterface::class, new Definition(RandomGenerator::class));
