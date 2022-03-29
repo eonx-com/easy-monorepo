@@ -10,8 +10,10 @@ final class DeferredEntityUpdatedEvent implements EntityActionEventInterface
      * @param object $entity
      * @param array<string, mixed> $changeSet
      */
-    public function __construct(private object $entity, private array $changeSet)
-    {
+    public function __construct(
+        private object $entity,
+        private array $changeSet
+    ) {
     }
 
     /**
