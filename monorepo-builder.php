@@ -20,9 +20,6 @@ use Symplify\MonorepoBuilder\ValueObject\Option;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
-
-    $parameters->set('env(GITHUB_TOKEN)', null);
-    $parameters->set(Option::GITHUB_TOKEN, '%env(GITHUB_TOKEN)%');
     $parameters->set(Option::PACKAGE_DIRECTORIES, [__DIR__ . '/packages']);
     $parameters->set(Option::PACKAGE_DIRECTORIES_EXCLUDES, []);
 
