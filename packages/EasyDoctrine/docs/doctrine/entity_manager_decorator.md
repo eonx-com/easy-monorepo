@@ -1,4 +1,8 @@
----eonx_docs--- title: EntityManager Decorator weight: 3001 is_section: true ---eonx_docs---
+---eonx_docs---
+title: EntityManager Decorator
+weight: 3001
+is_section: true
+---eonx_docs---
 
 ## EntityManagerDecorator
 
@@ -7,14 +11,11 @@ Two main features of EntityManagerDecorator are Transactional and Deferred entit
 ### Transactional
 
 `$entityManager->transactional(callable $callback)` provide:
-
 - flush and commit or rollback if something goes wrong
 - close EntityManager if `Doctrine\ORM\ORMException` or `Doctrine\DBAL\Exception` is thrown
 
 #### Configuration
-
 Register the decorator
-
 ```yaml
 services:
     EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator:
