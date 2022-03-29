@@ -4,27 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Events;
 
-
 final class DeferredEntityDeletedEvent implements EntityActionEventInterface
 {
-    /**
-     * @var array<string, mixed>
-     */
-    private $changeSet;
-
-    /**
-     * @var object
-     */
-    private $entity;
-
     /**
      * @param object $entity
      * @param array<string, mixed> $changeSet
      */
-    public function __construct(object $entity, array $changeSet)
+    public function __construct(private object $entity, private array $changeSet)
     {
-        $this->entity = $entity;
-        $this->changeSet = $changeSet;
     }
 
     /**
