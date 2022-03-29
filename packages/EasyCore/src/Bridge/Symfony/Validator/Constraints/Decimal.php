@@ -32,9 +32,6 @@ final class Decimal extends Constraint
         array $groups = null,
         $payload = null
     ) {
-        $minPrecision = (int)($minPrecision ?? $options['minPrecision'] ?? null);
-        $maxPrecision = (int)($maxPrecision ?? $options['maxPrecision'] ?? null);
-
         if ($minPrecision < 1) {
             throw new ConstraintDefinitionException('The "minPrecision" option must be an integer greater than zero.');
         }
