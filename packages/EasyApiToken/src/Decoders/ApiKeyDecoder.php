@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Decoders;
 
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\HashedApiKeyInterface;
 use EonX\EasyApiToken\Tokens\ApiKey;
+use EonX\EasyApiToken\Tokens\HashedApiKey;
 use Symfony\Component\HttpFoundation\Request;
 
 final class ApiKeyDecoder extends AbstractApiTokenDecoder
 {
-    public function decode(Request $request): ?ApiTokenInterface
+    public function decode(Request $request): null|ApiTokenInterface|HashedApiKeyInterface
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Basic', $request);
 
@@ -26,6 +28,28 @@ final class ApiKeyDecoder extends AbstractApiTokenDecoder
             return null;
         }
 
-        return new ApiKey(\trim($authorization[0]));
+        $originalToken = \trim($authorization[0]);
+
+        return $this->decodeHashedApiKey($originalToken) ?? new ApiKey($originalToken);
+    }
+
+    private function decodeHashedApiKey(string $originalToken): ?HashedApiKeyInterface
+    {
+        $jsonDecoded = \json_decode(\base64_decode($originalToken) ?: '{}', true) ?? [];
+        $isStructureValid = isset(
+            $jsonDecoded[HashedApiKeyInterface::KEY_ID],
+            $jsonDecoded[HashedApiKeyInterface::KEY_SECRET]
+        );
+
+        if ($isStructureValid === false) {
+            return null;
+        }
+
+        return new HashedApiKey(
+            $jsonDecoded[HashedApiKeyInterface::KEY_ID],
+            $jsonDecoded[HashedApiKeyInterface::KEY_SECRET],
+            $originalToken,
+            $jsonDecoded[HashedApiKeyInterface::KEY_VERSION] ?? null
+        );
     }
 }

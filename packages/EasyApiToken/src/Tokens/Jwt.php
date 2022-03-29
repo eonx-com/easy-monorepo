@@ -12,30 +12,16 @@ use stdClass;
 final class Jwt implements JwtInterface
 {
     /**
-     * @var string
-     */
-    private $original;
-
-    /**
-     * @var mixed[]
-     */
-    private $payload;
-
-    /**
      * @param mixed[] $payload
      */
-    public function __construct(array $payload, string $original)
+    public function __construct(private array $payload, private string $original)
     {
-        $this->payload = $payload;
-        $this->original = $original;
     }
 
     /**
-     * @return mixed
-     *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException If claim not found on token
      */
-    public function getClaim(string $claim)
+    public function getClaim(string $claim): mixed
     {
         if ($this->hasClaim($claim)) {
             return $this->payload[$claim];
@@ -47,12 +33,10 @@ final class Jwt implements JwtInterface
     /**
      * Will convert stdClass to array.
      *
-     * @return mixed
-     *
      * @throws \EonX\EasyApiToken\Exceptions\InvalidArgumentException
      * @throws \Nette\Utils\JsonException
      */
-    public function getClaimForceArray(string $claim)
+    public function getClaimForceArray(string $claim): mixed
     {
         $claim = $this->getClaim($claim);
 

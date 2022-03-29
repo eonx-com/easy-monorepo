@@ -6,6 +6,7 @@ namespace EonX\EasyApiToken\Tests\Decoders;
 
 use EonX\EasyApiToken\Decoders\ApiKeyDecoder;
 use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\HashedApiKeyInterface;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
 
 final class ApiKeyDecoderTest extends AbstractTestCase
@@ -52,5 +53,37 @@ final class ApiKeyDecoderTest extends AbstractTestCase
             self::assertInstanceOf(ApiKeyInterface::class, $token);
             self::assertEquals($expected[0], $token->getPayload()['api_key']);
         }
+    }
+
+    public function testHashedApiKeyWithInvalidStructureReturnApiKey(): void
+    {
+        $tokenMissingId = \base64_encode(\json_encode([
+            'no-id' => 'my-id',
+            'secret' => 'my-secret',
+        ]));
+
+        $token = (new ApiKeyDecoder())->decode($this->createRequest([
+            'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($tokenMissingId . ':')),
+        ]));
+
+        self::assertInstanceOf(ApiKeyInterface::class, $token);
+        self::assertEquals($tokenMissingId, $token->getPayload()['api_key']);
+    }
+
+    public function testHashedApiKeyWithValidStructureReturnHashedApiKey(): void
+    {
+        $expected = [
+            'id' => 'my-id',
+            'secret' => 'my-secret',
+            'version' => 'v1',
+        ];
+        $hashedApiKey = \base64_encode(\json_encode($expected));
+
+        $token = (new ApiKeyDecoder())->decode($this->createRequest([
+            'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($hashedApiKey . ':')),
+        ]));
+
+        self::assertInstanceOf(HashedApiKeyInterface::class, $token);
+        self::assertEquals($expected, $token->getPayload());
     }
 }
