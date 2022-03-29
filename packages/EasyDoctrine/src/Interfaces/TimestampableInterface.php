@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Interfaces;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 
 interface TimestampableInterface
 {
-    public function getCreatedAt(): DateTimeImmutable;
+    public function getCreatedAt(): CarbonImmutable;
 
-    public function getUpdatedAt(): DateTimeImmutable;
+    public function getUpdatedAt(): CarbonImmutable;
 
     public function updateTimestamps(): void;
 }

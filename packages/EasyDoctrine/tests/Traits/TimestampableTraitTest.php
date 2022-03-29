@@ -6,19 +6,19 @@ namespace EonX\EasyDoctrine\Tests\Traits;
 
 use Carbon\CarbonImmutable;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
-use EonX\EasyDoctrine\Traits\TimestampableImmutableTrait;
+use EonX\EasyDoctrine\Traits\TimestampableTrait;
 
 /**
- * @covers \EonX\EasyDoctrine\Traits\TimestampableImmutableTrait
+ * @covers \EonX\EasyDoctrine\Traits\TimestampableTrait
  */
-final class TimestampableImmutableTraitTest extends AbstractTestCase
+final class TimestampableTraitTest extends AbstractTestCase
 {
     public function testGetCreatedAtSucceeds(): void
     {
         $now = CarbonImmutable::now();
         CarbonImmutable::setTestNow($now);
         $object = new class() {
-            use TimestampableImmutableTrait;
+            use TimestampableTrait;
         };
         $object->updateTimestamps();
 
@@ -32,7 +32,7 @@ final class TimestampableImmutableTraitTest extends AbstractTestCase
         $now = CarbonImmutable::now();
         CarbonImmutable::setTestNow($now);
         $object = new class() {
-            use TimestampableImmutableTrait;
+            use TimestampableTrait;
         };
         $object->updateTimestamps();
 
@@ -45,7 +45,7 @@ final class TimestampableImmutableTraitTest extends AbstractTestCase
     {
         CarbonImmutable::setTestNow('2021-11-24');
         $object = new class() {
-            use TimestampableImmutableTrait;
+            use TimestampableTrait;
         };
 
         $object->updateTimestamps();

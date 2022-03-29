@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Subscribers;
 
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -12,7 +13,7 @@ use EonX\EasyDoctrine\Subscribers\TimestampableEventSubscriber;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
-use EonX\EasyDoctrine\Traits\TimestampableImmutableTrait;
+use EonX\EasyDoctrine\Traits\TimestampableTrait;
 use ReflectionClass;
 use stdClass;
 
@@ -56,7 +57,7 @@ final class TimestampableEventSubscriberTest extends AbstractTestCase
     public function testLoadClassMetadataDoesNothingWhenEntityIsMappedSuperClass(): void
     {
         $entity = new class() implements TimestampableInterface {
-            use TimestampableImmutableTrait;
+            use TimestampableTrait;
         };
         $classMetadata = new ClassMetadata(Product::class);
         $classMetadata->reflClass = new ReflectionClass($entity);
@@ -101,7 +102,7 @@ final class TimestampableEventSubscriberTest extends AbstractTestCase
     public function testLoadClassMetadataSucceeds(): void
     {
         $entity = new class() implements TimestampableInterface {
-            use TimestampableImmutableTrait;
+            use TimestampableTrait;
         };
         $classMetadata = new ClassMetadata(Product::class);
         $classMetadata->reflClass = new ReflectionClass($entity);
@@ -115,7 +116,7 @@ final class TimestampableEventSubscriberTest extends AbstractTestCase
 
         self::assertCount(1, $classMetadata->getLifecycleCallbacks(Events::prePersist));
         self::assertCount(1, $classMetadata->getLifecycleCallbacks(Events::preUpdate));
-        self::assertSame('DateTimeInterface', $classMetadata->getFieldMapping('createdAt')['type']);
-        self::assertSame('DateTimeInterface', $classMetadata->getFieldMapping('updatedAt')['type']);
+        self::assertSame(CarbonImmutable::class, $classMetadata->getFieldMapping('createdAt')['type']);
+        self::assertSame(CarbonImmutable::class, $classMetadata->getFieldMapping('updatedAt')['type']);
     }
 }
