@@ -397,7 +397,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
          * yield from $this->create("{$this->property} is an integer", $value);
          */
         $message = $this->translateMessage(
-            (new Decimal(\compact('minPrecision', 'maxPrecision')))->message,
+            (new Decimal($minPrecision, $maxPrecision))->message,
             [
                 '{{ minPrecision }}' => $minPrecision,
                 '{{ maxPrecision }}' => $maxPrecision,

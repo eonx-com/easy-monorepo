@@ -19,26 +19,16 @@ final class Decimal extends Constraint
      */
     public const INVALID_DECIMAL_ERROR = 'INVALID_DECIMAL_ERROR';
 
-    /**
-     * @var int
-     */
-    public $maxPrecision;
-
-    /**
-     * @var string
-     */
-    public $message = 'This value is not a valid decimal or integer number' .
+    public string $message = 'This value is not a valid decimal or integer number' .
     ', has less than {{ minPrecision }} or more than {{ maxPrecision }} digits in precision.';
 
     /**
-     * @var int
+     * @inheritDoc
      */
-    public $minPrecision;
-
     public function __construct(
+        public int $minPrecision,
+        public int $maxPrecision,
         $options = null,
-        int $minPrecision = null,
-        int $maxPrecision = null,
         array $groups = null,
         $payload = null
     ) {
@@ -56,10 +46,5 @@ final class Decimal extends Constraint
         }
 
         parent::__construct($options, $groups, $payload);
-    }
-
-    public function getRequiredOptions()
-    {
-        return ['minPrecision', 'maxPrecision'];
     }
 }
