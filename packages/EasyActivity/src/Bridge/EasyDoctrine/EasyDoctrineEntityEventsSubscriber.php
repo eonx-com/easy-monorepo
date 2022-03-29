@@ -6,9 +6,9 @@ namespace EonX\EasyActivity\Bridge\EasyDoctrine;
 
 use EonX\EasyActivity\ActivityLogEntry;
 use EonX\EasyActivity\Interfaces\ActivityLoggerInterface;
-use EonX\EasyDoctrine\Events\EntityCreatedEvent;
-use EonX\EasyDoctrine\Events\EntityDeletedEvent;
-use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
+use EonX\EasyDoctrine\Events\DeferredEntityCreatedEvent;
+use EonX\EasyDoctrine\Events\DeferredEntityDeletedEvent;
+use EonX\EasyDoctrine\Events\DeferredEntityUpdatedEvent;
 
 final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEventsSubscriberInterface
 {
@@ -31,9 +31,9 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
     public static function getSubscribedEvents(): array
     {
         return [
-            EntityCreatedEvent::class => ['onCreate'],
-            EntityDeletedEvent::class => ['onDelete'],
-            EntityUpdatedEvent::class => ['onUpdate'],
+            DeferredEntityCreatedEvent::class => ['onCreate'],
+            DeferredEntityDeletedEvent::class => ['onDelete'],
+            DeferredEntityUpdatedEvent::class => ['onUpdate'],
         ];
     }
 
@@ -47,17 +47,17 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
         $this->enabled = true;
     }
 
-    public function onCreate(EntityCreatedEvent $event): void
+    public function onCreate(DeferredEntityCreatedEvent $event): void
     {
         $this->dispatchLogEntry(ActivityLogEntry::ACTION_CREATE, $event->getEntity(), $event->getChangeSet());
     }
 
-    public function onDelete(EntityDeletedEvent $event): void
+    public function onDelete(DeferredEntityDeletedEvent $event): void
     {
         $this->dispatchLogEntry(ActivityLogEntry::ACTION_DELETE, $event->getEntity(), $event->getChangeSet());
     }
 
-    public function onUpdate(EntityUpdatedEvent $event): void
+    public function onUpdate(DeferredEntityUpdatedEvent $event): void
     {
         $this->dispatchLogEntry(ActivityLogEntry::ACTION_UPDATE, $event->getEntity(), $event->getChangeSet());
     }

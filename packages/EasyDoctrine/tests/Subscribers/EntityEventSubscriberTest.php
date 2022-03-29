@@ -7,9 +7,9 @@ namespace EonX\EasyDoctrine\Tests\Subscribers;
 use DateTimeImmutable;
 use DateTimeZone;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
-use EonX\EasyDoctrine\Events\EntityCreatedEvent;
-use EonX\EasyDoctrine\Events\EntityDeletedEvent;
-use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
+use EonX\EasyDoctrine\Events\DeferredEntityCreatedEvent;
+use EonX\EasyDoctrine\Events\DeferredEntityDeletedEvent;
+use EonX\EasyDoctrine\Events\DeferredEntityUpdatedEvent;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Category;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
@@ -52,7 +52,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $events = $eventDispatcher->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
+            new DeferredEntityUpdatedEvent(
                 $category,
                 [
                     'activeTill' => [$activeTill, $newActiveTill],
@@ -144,7 +144,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $events = $eventDispatcher->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
+            new DeferredEntityCreatedEvent(
                 $product,
                 [
                     'category' => [null, null],
@@ -177,7 +177,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $events = $eventDispatcher->getDispatchedEvents();
         self::assertCount(2, $events);
         self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
+            new DeferredEntityCreatedEvent(
                 $category,
                 [
                     'activeTill' => [null, null],
@@ -187,7 +187,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             $events[0]
         );
         self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
+            new DeferredEntityCreatedEvent(
                 $product,
                 [
                     'name' => [null, 'Keyboard'],
@@ -238,7 +238,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $events = $eventDispatcher->getDispatchedEvents();
         self::assertCount(2, $events);
         self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
+            new DeferredEntityUpdatedEvent(
                 $category,
                 [
                     'name' => ['Computer', 'Computer Peripherals'],
@@ -247,7 +247,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             $events[0]
         );
         self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
+            new DeferredEntityUpdatedEvent(
                 $product,
                 [
                     'price' => ['1000', '2000'],
@@ -280,7 +280,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $events = $eventDispatcher->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
+            new DeferredEntityCreatedEvent(
                 $product,
                 [
                     'name' => [null, 'Keyboard'],
@@ -454,9 +454,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 
         $events = $eventDispatcher->getDispatchedEvents();
         self::assertCount(1, $events);
-        /** @var \EonX\EasyDoctrine\Events\EntityDeletedEvent $actualEvent */
+        /** @var \EonX\EasyDoctrine\Events\DeferredEntityDeletedEvent $actualEvent */
         $actualEvent = $events[0];
-        self::assertInstanceOf(EntityDeletedEvent::class, $actualEvent);
+        self::assertInstanceOf(DeferredEntityDeletedEvent::class, $actualEvent);
         self::assertSame($actualEvent->getChangeSet(), [
             'id' => [1, null],
             'name' => ['Keyboard', null],
@@ -512,7 +512,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $events = $eventDispatcher->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
+            new DeferredEntityUpdatedEvent(
                 $product,
                 [
                     'price' => ['1000', '3000'],
@@ -548,7 +548,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $events = $eventDispatcher->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
+            new DeferredEntityCreatedEvent(
                 $product,
                 [
                     'description' => [null, 'Description 1'],

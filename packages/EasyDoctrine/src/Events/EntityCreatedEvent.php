@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Events;
 
+/**
+ * @deprecated Use \EonX\EasyDoctrine\Events\DeferredEntityCreatedEvent
+ */
 final class EntityCreatedEvent implements EntityActionEventInterface
 {
     /**

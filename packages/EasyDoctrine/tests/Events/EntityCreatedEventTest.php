@@ -10,6 +10,8 @@ use stdClass;
 
 /**
  * @covers \EonX\EasyDoctrine\Events\EntityCreatedEvent
+ *
+ * @deprecated
  */
 final class EntityCreatedEventTest extends AbstractTestCase
 {

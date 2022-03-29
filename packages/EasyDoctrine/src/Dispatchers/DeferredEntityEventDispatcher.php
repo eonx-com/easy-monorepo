@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Dispatchers;
 
-use EonX\EasyDoctrine\Events\EntityCreatedEvent;
-use EonX\EasyDoctrine\Events\EntityDeletedEvent;
-use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
+use EonX\EasyDoctrine\Events\DeferredEntityCreatedEvent;
+use EonX\EasyDoctrine\Events\DeferredEntityDeletedEvent;
+use EonX\EasyDoctrine\Events\DeferredEntityUpdatedEvent;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use LogicException;
 
@@ -174,15 +174,15 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     private function createEntityEvent(string $oid, array $entityChangeSet)
     {
         if (isset($this->entityInsertions[$oid]) !== false) {
-            return new EntityCreatedEvent($this->entityInsertions[$oid], $entityChangeSet);
+            return new DeferredEntityCreatedEvent($this->entityInsertions[$oid], $entityChangeSet);
         }
 
         if (isset($this->entityUpdates[$oid]) !== false) {
-            return new EntityUpdatedEvent($this->entityUpdates[$oid], $entityChangeSet);
+            return new DeferredEntityUpdatedEvent($this->entityUpdates[$oid], $entityChangeSet);
         }
 
         if (isset($this->entityDeletions[$oid]) !== false) {
-            return new EntityDeletedEvent($this->entityDeletions[$oid], $entityChangeSet);
+            return new DeferredEntityDeletedEvent($this->entityDeletions[$oid], $entityChangeSet);
         }
 
         // @codeCoverageIgnoreStart

@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Events;
 
-/**
- * @deprecated Use \EonX\EasyDoctrine\Events\DeferredEntityUpdatedEvent
- */
-final class EntityUpdatedEvent implements EntityActionEventInterface
+
+final class DeferredEntityDeletedEvent implements EntityActionEventInterface
 {
     /**
      * @var array<string, mixed>

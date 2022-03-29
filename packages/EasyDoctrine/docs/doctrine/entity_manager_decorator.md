@@ -1,8 +1,4 @@
----eonx_docs---
-title: EntityManager Decorator
-weight: 3001
-is_section: true
----eonx_docs---
+---eonx_docs--- title: EntityManager Decorator weight: 3001 is_section: true ---eonx_docs---
 
 ## EntityManagerDecorator
 
@@ -11,11 +7,14 @@ Two main features of EntityManagerDecorator are Transactional and Deferred entit
 ### Transactional
 
 `$entityManager->transactional(callable $callback)` provide:
+
 - flush and commit or rollback if something goes wrong
 - close EntityManager if `Doctrine\ORM\ORMException` or `Doctrine\DBAL\Exception` is thrown
 
 #### Configuration
+
 Register the decorator
+
 ```yaml
 services:
     EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator:
@@ -45,15 +44,16 @@ easy_doctrine:
 services:
     EonX\EasyDoctrine\Subscribers\EntityEventSubscriber:
         arguments:
-            $entities: '%easy_doctrine.entities%'
+            $entities: '%easy_doctrine.deferred_dispatcher_entities%'
         tags:
-            -   name: doctrine.event_subscriber
+            -
+                name: doctrine.event_subscriber
                 connection: default
 ```
 
 #### Events
 
-`DeferredEntityEventDispatcher` dispatch `EntityCreatedEvent` and `EntityUpdatedEvent` events.
+`DeferredEntityEventDispatcher` dispatch `DeferredEntityCreatedEvent` and `DeferredEntityUpdatedEvent` events.
 
 Register a listener:
 
@@ -63,13 +63,13 @@ services:
         tags:
             -
                 name: kernel.event_listener
-                event: EonX\EasyDoctrine\Events\EntityCreatedEvent
+                event: EonX\EasyDoctrine\Events\DeferredEntityCreatedEvent
 
     App\Listener\SomeEntityUpdatedListener:
         tags:
             -
                 name: kernel.event_listener
-                event: EonX\EasyDoctrine\Events\EntityUpdatedEvent
+                event: EonX\EasyDoctrine\Events\DeferredEntityUpdatedEvent
 ```
 
 Listener example:
@@ -84,7 +84,7 @@ use App\Entity\SomeEntity;
 
 final class SomeEntityCreatedListener
 {
-    public function __invoke(EntityCreatedEvent $event): void
+    public function __invoke(DeferredEntityCreatedEvent $event): void
     {
         $entity = $event->getEntity();
 

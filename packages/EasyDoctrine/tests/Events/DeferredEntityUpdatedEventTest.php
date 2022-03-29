@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Events;
 
-use EonX\EasyDoctrine\Events\EntityDeletedEvent;
+use EonX\EasyDoctrine\Events\DeferredEntityUpdatedEvent;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use stdClass;
 
 /**
- * @covers \EonX\EasyDoctrine\Events\EntityDeletedEvent
- *
- * @deprecated
+ * @covers \EonX\EasyDoctrine\Events\DeferredEntityUpdatedEvent
  */
-final class EntityDeletedEventTest extends AbstractTestCase
+final class DeferredEntityUpdatedEventTest extends AbstractTestCase
 {
     public function testGetChangeSetSucceeds(): void
     {
         /** @var object $expectedEntity */
         $expectedEntity = $this->prophesize(stdClass::class)->reveal();
-        $event = new EntityDeletedEvent($expectedEntity, ['changedField' => '1']);
+        $event = new DeferredEntityUpdatedEvent($expectedEntity, ['changedField' => '1']);
 
         $changeSet = $event->getChangeSet();
 
@@ -30,7 +28,7 @@ final class EntityDeletedEventTest extends AbstractTestCase
     {
         /** @var object $expectedEntity */
         $expectedEntity = $this->prophesize(stdClass::class)->reveal();
-        $event = new EntityDeletedEvent($expectedEntity, ['changedField' => '1']);
+        $event = new DeferredEntityUpdatedEvent($expectedEntity, ['changedField' => '1']);
 
         $actualEntity = $event->getEntity();
 
