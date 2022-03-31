@@ -29,13 +29,11 @@ final class EasyTestKernel extends Kernel
         return [];
     }
 
+    /**
+     * @throws \Exception
+     */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__ . '/../../config/services.yaml');
-    }
-
-    protected function build(ContainerBuilder $container): void
-    {
-        $container->addCompilerPass(new AutowireArrayParameterCompilerPass());
     }
 }
