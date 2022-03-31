@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyTest\HttpKernel;
 
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
-use Symplify\AutowireArrayParameter\DependencyInjection\CompilerPass\AutowireArrayParameterCompilerPass;
 
 final class EasyTestKernel extends Kernel
 {
