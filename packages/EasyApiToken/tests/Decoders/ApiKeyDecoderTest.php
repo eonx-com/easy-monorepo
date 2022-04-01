@@ -49,8 +49,8 @@ final class ApiKeyDecoderTest extends AbstractTestCase
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface $token */
             $token = $this->getDecoder()
                 ->decode($this->createRequest([
-                'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test)),
-            ]));
+                    'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test)),
+                ]));
 
             self::assertInstanceOf(ApiKeyInterface::class, $token);
             self::assertEquals($expected[0], $token->getPayload()['api_key']);
@@ -66,8 +66,8 @@ final class ApiKeyDecoderTest extends AbstractTestCase
 
         $token = $this->getDecoder()
             ->decode($this->createRequest([
-            'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($tokenMissingId . ':')),
-        ]));
+                'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($tokenMissingId . ':')),
+            ]));
 
         self::assertInstanceOf(ApiKeyInterface::class, $token);
         if ($token instanceof ApiKeyInterface) {
@@ -86,8 +86,8 @@ final class ApiKeyDecoderTest extends AbstractTestCase
 
         $token = $this->getDecoder()
             ->decode($this->createRequest([
-            'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($hashedApiKey . ':')),
-        ]));
+                'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($hashedApiKey . ':')),
+            ]));
 
         self::assertInstanceOf(HashedApiKeyInterface::class, $token);
         if ($token instanceof HashedApiKeyInterface) {
