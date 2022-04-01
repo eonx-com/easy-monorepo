@@ -8,17 +8,18 @@ use EonX\EasyApiToken\Decoders\ApiKeyDecoder;
 use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\HashedApiKeyInterface;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
+use EonX\EasyApiToken\Tokens\HashedApiKeyDriver;
 
 final class ApiKeyDecoderTest extends AbstractTestCase
 {
     public function testApiKeyNullIfAuthorizationHeaderNotSet(): void
     {
-        self::assertNull((new ApiKeyDecoder())->decode($this->createRequest()));
+        self::assertNull($this->getDecoder()->decode($this->createRequest()));
     }
 
     public function testApiKeyNullIfDoesntStartWithBasic(): void
     {
-        self::assertNull((new ApiKeyDecoder())->decode($this->createRequest([
+        self::assertNull($this->getDecoder()->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => 'SomethingElse',
         ])));
     }
@@ -28,7 +29,7 @@ final class ApiKeyDecoderTest extends AbstractTestCase
         $tests = ['', ':', ':password', 'api-key:password'];
 
         foreach ($tests as $test) {
-            self::assertNull((new ApiKeyDecoder())->decode($this->createRequest([
+            self::assertNull($this->getDecoder()->decode($this->createRequest([
                 'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode($test),
             ])));
         }
@@ -46,7 +47,7 @@ final class ApiKeyDecoderTest extends AbstractTestCase
 
         foreach ($tests as $test => $expected) {
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface $token */
-            $token = (new ApiKeyDecoder())->decode($this->createRequest([
+            $token = $this->getDecoder()->decode($this->createRequest([
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test)),
             ]));
 
@@ -62,7 +63,7 @@ final class ApiKeyDecoderTest extends AbstractTestCase
             'secret' => 'my-secret',
         ]));
 
-        $token = (new ApiKeyDecoder())->decode($this->createRequest([
+        $token = $this->getDecoder()->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($tokenMissingId . ':')),
         ]));
 
@@ -79,11 +80,16 @@ final class ApiKeyDecoderTest extends AbstractTestCase
         ];
         $hashedApiKey = \base64_encode(\json_encode($expected));
 
-        $token = (new ApiKeyDecoder())->decode($this->createRequest([
+        $token = $this->getDecoder()->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($hashedApiKey . ':')),
         ]));
 
         self::assertInstanceOf(HashedApiKeyInterface::class, $token);
         self::assertEquals($expected, $token->getPayload());
+    }
+
+    private function getDecoder(): ApiKeyDecoder
+    {
+        return (new ApiKeyDecoder())->setHashedApiKeyDriver(new HashedApiKeyDriver());
     }
 }
