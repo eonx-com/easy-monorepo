@@ -65,6 +65,7 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
             ->setApprovalRequired((bool)($data['requires_approval'] ?? 0))
             ->setAttempts((int)($data['attempts'] ?? 0))
             ->setBatchId((string)$data['batch_id'])
+            ->setEncrypted((bool)($data['encrypted'] ?? 0))
             ->setMaxAttempts((int)($data['max_attempts'] ?? 1));
 
         if (isset($data['type']) === false) {
