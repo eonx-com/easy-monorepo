@@ -26,7 +26,7 @@ final class EasyApiTokenServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-api-token.php', 'easy-api-token');
 
-        $this->app->singleton(HashedApiKeyDriverInterface::class, static fn() => new HashedApiKeyDriver());
+        $this->app->singleton(HashedApiKeyDriverInterface::class, static fn () => new HashedApiKeyDriver());
 
         $this->app->singleton(
             ApiTokenDecoderInterface::class,

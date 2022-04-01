@@ -25,8 +25,10 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
     /**
      * @param iterable<mixed> $decoderProviders
      */
-    public function __construct(iterable $decoderProviders, private HashedApiKeyDriverInterface $hashedApiKeyDriver)
-    {
+    public function __construct(
+        iterable $decoderProviders,
+        private HashedApiKeyDriverInterface $hashedApiKeyDriver
+    ) {
         $this->setDecoders($decoderProviders);
     }
 

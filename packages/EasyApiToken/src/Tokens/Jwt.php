@@ -14,8 +14,10 @@ final class Jwt implements JwtInterface
     /**
      * @param mixed[] $payload
      */
-    public function __construct(private array $payload, private string $original)
-    {
+    public function __construct(
+        private array $payload,
+        private string $original
+    ) {
     }
 
     /**

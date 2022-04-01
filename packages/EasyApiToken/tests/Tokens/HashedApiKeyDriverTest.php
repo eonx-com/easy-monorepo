@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests\Tokens;
@@ -36,10 +37,13 @@ final class HashedApiKeyDriverTest extends AbstractTestCase
             'version' => $version ?? HashedApiKeyInterface::DEFAULT_VERSION,
         ];
 
-        self::assertEquals($expectedPayload['id'], $hashedApiKey->getId());
-        self::assertEquals($expectedPayload['secret'], $hashedApiKey->getSecret());
-        self::assertEquals($expectedPayload['version'], $hashedApiKey->getVersion());
-        self::assertEquals($token, $hashedApiKey->getOriginalToken());
-        self::assertEquals($expectedPayload, $hashedApiKey->getPayload());
+        self::assertInstanceOf(HashedApiKeyInterface::class, $hashedApiKey);
+        if ($hashedApiKey instanceof HashedApiKeyInterface) {
+            self::assertEquals($expectedPayload['id'], $hashedApiKey->getId());
+            self::assertEquals($expectedPayload['secret'], $hashedApiKey->getSecret());
+            self::assertEquals($expectedPayload['version'], $hashedApiKey->getVersion());
+            self::assertEquals($token, $hashedApiKey->getOriginalToken());
+            self::assertEquals($expectedPayload, $hashedApiKey->getPayload());
+        }
     }
 }

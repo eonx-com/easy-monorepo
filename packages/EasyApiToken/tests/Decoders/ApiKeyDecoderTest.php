@@ -47,7 +47,8 @@ final class ApiKeyDecoderTest extends AbstractTestCase
 
         foreach ($tests as $test => $expected) {
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface $token */
-            $token = $this->getDecoder()->decode($this->createRequest([
+            $token = $this->getDecoder()
+                ->decode($this->createRequest([
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test)),
             ]));
 
@@ -61,14 +62,17 @@ final class ApiKeyDecoderTest extends AbstractTestCase
         $tokenMissingId = \base64_encode(\json_encode([
             'no-id' => 'my-id',
             'secret' => 'my-secret',
-        ]));
+        ]) ?: '');
 
-        $token = $this->getDecoder()->decode($this->createRequest([
+        $token = $this->getDecoder()
+            ->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($tokenMissingId . ':')),
         ]));
 
         self::assertInstanceOf(ApiKeyInterface::class, $token);
-        self::assertEquals($tokenMissingId, $token->getPayload()['api_key']);
+        if ($token instanceof ApiKeyInterface) {
+            self::assertEquals($tokenMissingId, $token->getPayload()['api_key']);
+        }
     }
 
     public function testHashedApiKeyWithValidStructureReturnHashedApiKey(): void
@@ -78,14 +82,17 @@ final class ApiKeyDecoderTest extends AbstractTestCase
             'secret' => 'my-secret',
             'version' => 'v1',
         ];
-        $hashedApiKey = \base64_encode(\json_encode($expected));
+        $hashedApiKey = \base64_encode(\json_encode($expected) ?: '');
 
-        $token = $this->getDecoder()->decode($this->createRequest([
+        $token = $this->getDecoder()
+            ->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($hashedApiKey . ':')),
         ]));
 
         self::assertInstanceOf(HashedApiKeyInterface::class, $token);
-        self::assertEquals($expected, $token->getPayload());
+        if ($token instanceof HashedApiKeyInterface) {
+            self::assertEquals($expected, $token->getPayload());
+        }
     }
 
     private function getDecoder(): ApiKeyDecoder

@@ -32,10 +32,12 @@ final class HashedApiKeyDriver implements HashedApiKeyDriverInterface
 
     public function encode(int|string $id, string $secret, ?string $version = null): string
     {
-        return UrlHelper::urlSafeBase64Encode(\json_encode([
+        $payload = [
             'id' => $id,
             'secret' => $secret,
             'version' => $version ?? HashedApiKeyInterface::DEFAULT_VERSION,
-        ]));
+        ];
+
+        return UrlHelper::urlSafeBase64Encode(\json_encode($payload) ?: '');
     }
 }

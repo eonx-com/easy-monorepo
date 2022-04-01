@@ -11,8 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class PermissionFromHashedApiKeyConfiguratorStub extends AbstractFromHashedApiKeyConfigurator
 {
-    public function __construct(private string $permission, ?int $priority = null)
-    {
+    public function __construct(
+        private string $permission,
+        ?int $priority = null
+    ) {
         parent::__construct($priority);
     }
 

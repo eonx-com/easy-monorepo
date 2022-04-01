@@ -14,7 +14,7 @@ final class UrlHelper
             $input .= \str_repeat('=', $padLen);
         }
 
-        return \base64_decode(\strtr($input, '-_', '+/')) ?: '';
+        return \base64_decode(\strtr($input, '-_', '+/'), true) ?: '';
     }
 
     public static function urlSafeBase64Encode(string $input): string

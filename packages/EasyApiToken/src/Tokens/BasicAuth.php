@@ -8,8 +8,11 @@ use EonX\EasyApiToken\Interfaces\Tokens\BasicAuthInterface;
 
 final class BasicAuth implements BasicAuthInterface
 {
-    public function __construct(private string $username, private string $password, private string $original)
-    {
+    public function __construct(
+        private string $username,
+        private string $password,
+        private string $original
+    ) {
     }
 
     public function getOriginalToken(): string
