@@ -63,7 +63,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
     public function testValidateFailsWithInvalidValue($value, int $minPrecision, int $maxPrecision): void
     {
         $validator = new DecimalValidator();
-        $constraint = new Decimal($minPrecision, $maxPrecision);
+        $constraint = new Decimal(\compact('minPrecision', 'maxPrecision'));
         $violationBuilder = $this->mockConstraintViolationBuilder(
             Decimal::INVALID_DECIMAL_ERROR,
             $minPrecision,
@@ -80,13 +80,16 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
     public function testValidateSucceedsWithObjectToString(): void
     {
         $class = new class() {
-            public function __toString(): string
+            public function __toString()
             {
                 return '0.123';
             }
         };
         $validator = new DecimalValidator();
-        $constraint = new Decimal(1, 3);
+        $constraint = new Decimal([
+            'minPrecision' => 1,
+            'maxPrecision' => 3,
+        ]);
         $context = $this->mockExecutionContextWithoutCalls();
         $validator->initialize($context);
 
@@ -103,7 +106,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
     public function testValidateSucceedsWithValidValue($value, int $minPrecision, int $maxPrecision): void
     {
         $validator = new DecimalValidator();
-        $constraint = new Decimal($minPrecision, $maxPrecision);
+        $constraint = new Decimal(\compact('minPrecision', 'maxPrecision'));
         $context = $this->mockExecutionContextWithoutCalls();
         $validator->initialize($context);
 
@@ -117,7 +120,10 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         $this->expectException(ConstraintDefinitionException::class);
         $this->expectExceptionMessage('The "maxPrecision" option must be an integer greater than "minPrecision".');
 
-        new Decimal(2, 1);
+        new Decimal([
+            'minPrecision' => 2,
+            'maxPrecision' => 1,
+        ]);
     }
 
     public function testValidateThrowsConstraintDefinitionExceptionExceptionWhenMinPrecisionLessThanOne(): void
@@ -125,7 +131,10 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         $this->expectException(ConstraintDefinitionException::class);
         $this->expectExceptionMessage('The "minPrecision" option must be an integer greater than zero.');
 
-        new Decimal(0, 2);
+        new Decimal([
+            'minPrecision' => 0,
+            'maxPrecision' => 2,
+        ]);
     }
 
     public function testValidateThrowsUnexpectedTypeException(): void
@@ -146,7 +155,10 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
     {
         $value = new stdClass();
         $validator = new DecimalValidator();
-        $constraint = new Decimal(1, 2);
+        $constraint = new Decimal([
+            'minPrecision' => 1,
+            'maxPrecision' => 2,
+        ]);
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Expected argument of type "scalar", "stdClass" given');
 
