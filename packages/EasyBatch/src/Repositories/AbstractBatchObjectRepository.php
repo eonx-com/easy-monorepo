@@ -6,6 +6,7 @@ namespace EonX\EasyBatch\Repositories;
 
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use EonX\EasyBatch\Interfaces\BatchObjectFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
@@ -29,6 +30,18 @@ abstract class AbstractBatchObjectRepository
     }
 
     /**
+     * @param int|string $id
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
+    protected function doFind($id): ?BatchObjectInterface
+    {
+        $data = $this->fetchData($id);
+
+        return $data !== null ? $this->factory->createFromArray($data) : null;
+    }
+
+    /**
      * @throws \Doctrine\DBAL\Exception
      */
     protected function doSave(BatchObjectInterface $batchObject): void
@@ -48,18 +61,6 @@ abstract class AbstractBatchObjectRepository
         $this->has($batchObjectId) === false
             ? $this->conn->insert($this->table, $data)
             : $this->conn->update($this->table, $data, ['id' => $batchObjectId]);
-    }
-
-    /**
-     * @param int|string $id
-     *
-     * @throws \Doctrine\DBAL\Exception
-     */
-    protected function doFind($id): ?BatchObjectInterface
-    {
-        $data = $this->fetchData($id);
-
-        return $data !== null ? $this->factory->createFromArray($data) : null;
     }
 
     /**
@@ -103,6 +104,19 @@ abstract class AbstractBatchObjectRepository
 
         $columns = $this->conn->fetchAllAssociative($sql);
 
-        return $this->tableColumns = \array_column($columns, 'name');
+        $nameColumnKey = 'name';
+
+        if (\is_a($this->conn->getDatabasePlatform(), PostgreSQLPlatform::class)) {
+            $nameColumnKey = 'field';
+        }
+
+        if (
+            \is_a($this->conn->getDatabasePlatform(), '\Doctrine\DBAL\Platforms\MySqlPlatform')
+            || \is_a($this->conn->getDatabasePlatform(), '\Doctrine\DBAL\Platforms\AbstractMySQLPlatform')
+        ) {
+            $nameColumnKey = 'Field';
+        }
+
+        return $this->tableColumns = \array_column($columns, $nameColumnKey);
     }
 }
