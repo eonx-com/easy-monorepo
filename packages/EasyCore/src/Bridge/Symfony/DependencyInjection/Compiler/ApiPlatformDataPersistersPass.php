@@ -19,7 +19,17 @@ final class ApiPlatformDataPersistersPass implements CompilerPassInterface
     /**
      * @var string
      */
+    private const CHAIN_SIMPLE_PERSISTER_ID = 'easy_core.chain_simple_data_persister';
+
+    /**
+     * @var string
+     */
     private const ORIGINAL_DEBUG_PERSISTER_ID = 'debug.api_platform.data_persister';
+
+    /**
+     * @var string
+     */
+    private const ORIGINAL_DOCTRINE_ORM_PERSISTER_ID = 'api_platform.doctrine.orm.data_persister';
 
     /**
      * @var string
@@ -32,22 +42,38 @@ final class ApiPlatformDataPersistersPass implements CompilerPassInterface
     private const ORIGINAL_PERSISTER_TAG = 'api_platform.data_persister';
 
     /**
-     * @var string
-     */
-    private const ORIGINAL_DOCTRINE_ORM_PERSISTER_ID = 'api_platform.doctrine.orm.data_persister';
-
-    /**
-     * @var string
-     */
-    private const CHAIN_SIMPLE_PERSISTER_ID = 'easy_core.chain_simple_data_persister';
-
-    /**
      * @throws \ReflectionException
      */
     public function process(ContainerBuilder $container): void
     {
         $this->setDoctrineOrmDataPersisterDefinition($container);
         $this->setSimpleDataPersistersOnChainPersister($container, (bool)$container->getParameter('kernel.debug'));
+    }
+
+    /**
+     * @return array<string, \Symfony\Component\DependencyInjection\Definition>
+     *
+     * @throws \ReflectionException
+     */
+    private function getSimplePersisters(ContainerBuilder $container): array
+    {
+        $persisterIds = \array_keys($container->findTaggedServiceIds(TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG));
+        $persisters = [];
+
+        foreach ($persisterIds as $persisterId) {
+            $def = $container->getDefinition($persisterId);
+            $ref = $container->getReflectionClass($def->getClass());
+
+            if ($ref === null) {
+                continue;
+            }
+
+            /** @var \EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface $instance */
+            $instance = $ref->newInstanceWithoutConstructor();
+            $persisters[$instance->getApiResourceClass()] = $def;
+        }
+
+        return $persisters;
     }
 
     private function setDoctrineOrmDataPersisterDefinition(ContainerBuilder $container): void
@@ -92,35 +118,5 @@ final class ApiPlatformDataPersistersPass implements CompilerPassInterface
 
         $container->setDefinition(self::ORIGINAL_PERSISTER_ID, $traceablePersisterDef);
         $container->setDefinition(self::ORIGINAL_DEBUG_PERSISTER_ID, $traceablePersisterDef);
-    }
-
-    /**
-     * @return string[]
-     *
-     * @throws \ReflectionException
-     */
-    private function getSimplePersisters(ContainerBuilder $container): array
-    {
-        $persisterIds = \array_keys($container->findTaggedServiceIds(TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG));
-        $persisters = [];
-
-        foreach ($persisterIds as $persisterId) {
-            $def = $container->getDefinition($persisterId);
-            $ref = $container->getReflectionClass($def->getClass());
-
-            if ($ref === null) {
-                continue;
-            }
-
-            // Simple persisters must be public for the chain persister to get them from the container
-            $def->setPublic(true);
-
-            /** @var \EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface $instance */
-            $instance = $ref->newInstanceWithoutConstructor();
-
-            $persisters[$instance->getApiResourceClass()] = $persisterId;
-        }
-
-        return $persisters;
     }
 }

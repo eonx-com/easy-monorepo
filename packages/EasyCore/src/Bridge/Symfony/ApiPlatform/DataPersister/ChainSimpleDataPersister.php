@@ -7,7 +7,6 @@ namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Event\DataPersisterResolvedEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterface
@@ -16,11 +15,6 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
      * @var \ApiPlatform\Core\DataPersister\DataPersisterInterface
      */
     private $cached;
-
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    private $container;
 
     /**
      * @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
@@ -42,12 +36,10 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
      * @param iterable<\ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface> $persisters
      */
     public function __construct(
-        ContainerInterface $container,
         EventDispatcherInterface $dispatcher,
         array $simplePersisters,
         iterable $persisters
     ) {
-        $this->container = $container;
         $this->dispatcher = $dispatcher;
         $this->simplePersisters = $simplePersisters;
         $this->persisters = $persisters;
@@ -163,11 +155,10 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
      */
     private function getSimpleDataPersister($data): ?ContextAwareDataPersisterInterface
     {
-        $class = \get_class($data);
-        if (\is_object($data) === false || isset($this->simplePersisters[$class]) === false) {
+        if (\is_object($data) === false) {
             return null;
         }
 
-        return $this->container->get($this->simplePersisters[$class]);
+        return $this->simplePersisters[$data::class] ?? null;
     }
 }
