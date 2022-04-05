@@ -87,6 +87,7 @@ final class Math implements MathInterface
     public function round(string $value, ?int $precision = null, ?int $mode = null): string
     {
         $precision = $precision ?? $this->roundPrecision;
+        /** @phpstan-var 1|2|3|4 $mode */
         $mode = $mode ?? $this->roundMode;
 
         $rounded = \round((float)$value, $precision, $mode);

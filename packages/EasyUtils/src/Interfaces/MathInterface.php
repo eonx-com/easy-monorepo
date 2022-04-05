@@ -87,8 +87,6 @@ interface MathInterface
      * PHP_ROUND_HALF_EVEN, or
      * PHP_ROUND_HALF_ODD.
      * </p>
-     *
-     * @phpstan-param 1|2|3|4 $mode
      */
     public function round(string $value, ?int $precision = null, ?int $mode = null): string;
 
