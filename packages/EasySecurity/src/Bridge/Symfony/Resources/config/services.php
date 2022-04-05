@@ -14,7 +14,6 @@ use EonX\EasySecurity\Bridge\Symfony\DataCollector\SecurityContextDataCollector;
 use EonX\EasySecurity\Bridge\Symfony\Factories\AuthenticationFailureResponseFactory;
 use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface;
 use EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener;
-use EonX\EasySecurity\Bridge\Symfony\Security\ContextAuthenticator;
 use EonX\EasySecurity\Bridge\Symfony\Security\SecurityContextAuthenticator;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
@@ -24,7 +23,6 @@ use EonX\EasySecurity\SecurityContextFactory;
 use EonX\EasySecurity\SecurityContextResolver;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -79,13 +77,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Symfony Security
     $responseFactory = $services
         ->set(AuthenticationFailureResponseFactoryInterface::class, AuthenticationFailureResponseFactory::class);
-
-    $services->set(ContextAuthenticator::class);
-
-    // New Symfony Security
-    if (\interface_exists(PassportInterface::class)) {
-        $services->set(SecurityContextAuthenticator::class);
-    }
+    $services->set(SecurityContextAuthenticator::class);
 
     // Logger
     if (\interface_exists(LoggerFactoryInterface::class)) {
