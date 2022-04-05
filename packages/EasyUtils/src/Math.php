@@ -84,9 +84,6 @@ final class Math implements MathInterface
         return $this->round(\bcmul($multiplicand, $multiplier, $this->scale), $precision, $mode);
     }
 
-    /**
-     * @phpstan-param self::ROUND_* $mode
-     */
     public function round(string $value, ?int $precision = null, ?int $mode = null): string
     {
         $precision = $precision ?? $this->roundPrecision;
