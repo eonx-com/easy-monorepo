@@ -51,7 +51,7 @@ final class ApiPlatformDataPersistersPass implements CompilerPassInterface
     }
 
     /**
-     * @return array<string, \Symfony\Component\DependencyInjection\Definition>
+     * @return array<string, string>
      *
      * @throws \ReflectionException
      */
@@ -68,9 +68,12 @@ final class ApiPlatformDataPersistersPass implements CompilerPassInterface
                 continue;
             }
 
+            // Simple persisters must be public for the chain persister to get them from the container
+            $def->setPublic(true);
+
             /** @var \EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface $instance */
             $instance = $ref->newInstanceWithoutConstructor();
-            $persisters[$instance->getApiResourceClass()] = $def;
+            $persisters[$instance->getApiResourceClass()] = $persisterId;
         }
 
         return $persisters;
@@ -100,6 +103,7 @@ final class ApiPlatformDataPersistersPass implements CompilerPassInterface
         $chainSimplePersisterDef = (new Definition(ChainSimpleDataPersister::class))
             ->setAutoconfigured(true)
             ->setAutowired(true)
+            ->setArgument('$container', new Reference('service_container'))
             ->setArgument('$simplePersisters', $this->getSimplePersisters($container))
             ->setArgument('$persisters', new TaggedIteratorArgument(self::ORIGINAL_PERSISTER_TAG));
 
