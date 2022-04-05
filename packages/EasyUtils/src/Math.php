@@ -10,31 +10,24 @@ use EonX\EasyUtils\Interfaces\MathInterface;
 
 final class Math implements MathInterface
 {
-    /**
-     * @var string
-     */
-    private $decimalSeparator;
+    private string $decimalSeparator;
+
+    private int $roundMode;
+
+    private int $roundPrecision;
+
+    private int $scale;
+
+    private string $thousandsSeparator;
 
     /**
-     * @var int
+     * @param int|null $roundMode [optional] <p>
+     * One of PHP_ROUND_HALF_UP,
+     * PHP_ROUND_HALF_DOWN,
+     * PHP_ROUND_HALF_EVEN, or
+     * PHP_ROUND_HALF_ODD.
+     * </p>
      */
-    private $roundMode;
-
-    /**
-     * @var int
-     */
-    private $roundPrecision;
-
-    /**
-     * @var int
-     */
-    private $scale;
-
-    /**
-     * @var string
-     */
-    private $thousandsSeparator;
-
     public function __construct(
         ?int $roundPrecision = null,
         ?int $roundMode = null,
@@ -91,6 +84,9 @@ final class Math implements MathInterface
         return $this->round(\bcmul($multiplicand, $multiplier, $this->scale), $precision, $mode);
     }
 
+    /**
+     * @phpstan-param self::ROUND_* $mode
+     */
     public function round(string $value, ?int $precision = null, ?int $mode = null): string
     {
         $precision = $precision ?? $this->roundPrecision;
