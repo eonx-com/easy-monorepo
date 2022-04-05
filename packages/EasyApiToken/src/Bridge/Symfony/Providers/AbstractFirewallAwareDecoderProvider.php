@@ -19,6 +19,9 @@ abstract class AbstractFirewallAwareDecoderProvider implements ApiTokenDecoderPr
 
     private ?RequestStack $requestStack = null;
 
+    /**
+     * @return iterable<\EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface>
+     */
     public function getDecoders(): iterable
     {
         return $this->doGetDecoders($this->resolveFirewall());
@@ -41,6 +44,9 @@ abstract class AbstractFirewallAwareDecoderProvider implements ApiTokenDecoderPr
         $this->requestStack = $requestStack;
     }
 
+    /**
+     * @return iterable<\EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface>
+     */
     abstract protected function doGetDecoders(?string $firewall = null): iterable;
 
     abstract protected function doGetDefaultDecoder(?string $firewall = null): ?string;
