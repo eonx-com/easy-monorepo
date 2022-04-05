@@ -9,14 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractApiTokenDecoder implements ApiTokenDecoderInterface
 {
-    /**
-     * @var null|string
-     */
-    private $name;
-
-    public function __construct(?string $name = null)
+    public function __construct(private ?string $name = null)
     {
-        $this->name = $name;
+        // No body needed.
     }
 
     public function getName(): string
@@ -28,7 +23,7 @@ abstract class AbstractApiTokenDecoder implements ApiTokenDecoderInterface
     {
         $header = (string)$request->headers->get($header, '');
 
-        if (str_starts_with($header, $prefix) === false) {
+        if (\str_starts_with($header, $prefix) === false) {
             return null;
         }
 

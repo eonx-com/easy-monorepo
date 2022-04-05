@@ -15,7 +15,10 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
-    public function __construct()
+    /**
+     * @param null|string[] $configs
+     */
+    public function __construct(private ?array $configs = null)
     {
         parent::__construct('test', true);
     }
@@ -46,8 +49,13 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         yield new EasyApiTokenSymfonyBundle();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        // No body needed.
+        foreach ($this->configs ?? [] as $config) {
+            $loader->load($config);
+        }
     }
 }
