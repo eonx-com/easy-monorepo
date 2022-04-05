@@ -6,6 +6,7 @@ namespace EonX\EasyDoctrine\Tests\Subscribers;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
 use EonX\EasyDoctrine\Events\EntityDeletedEvent;
@@ -15,7 +16,6 @@ use EonX\EasyDoctrine\Tests\Fixtures\Category;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
 use EonX\EasyDoctrine\Tests\Stubs\EventDispatcherStub;
-use EonX\EasyDoctrine\Utils\ObjectCopierFactory;
 
 /**
  * @covers \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber
