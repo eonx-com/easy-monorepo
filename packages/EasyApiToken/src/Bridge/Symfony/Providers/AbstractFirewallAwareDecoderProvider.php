@@ -7,6 +7,7 @@ namespace EonX\EasyApiToken\Bridge\Symfony\Providers;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderProviderInterface;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Http\FirewallMapInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractFirewallAwareDecoderProvider implements ApiTokenDecoderProviderInterface
@@ -33,9 +34,11 @@ abstract class AbstractFirewallAwareDecoderProvider implements ApiTokenDecoderPr
     }
 
     #[Required]
-    public function setFirewallMap(FirewallMap $firewallMap): void
+    public function setFirewallMap(FirewallMapInterface $firewallMap): void
     {
-        $this->firewallMap = $firewallMap;
+        if ($firewallMap instanceof FirewallMap) {
+            $this->firewallMap = $firewallMap;
+        }
     }
 
     #[Required]
@@ -51,13 +54,6 @@ abstract class AbstractFirewallAwareDecoderProvider implements ApiTokenDecoderPr
 
     abstract protected function doGetDefaultDecoder(?string $firewall = null): ?string;
 
-    private function resolveFirewall(): ?string
-    {
-        $this->initFirewall();
-
-        return $this->firewall !== self::NO_FIREWALL ? $this->firewall : null;
-    }
-
     private function initFirewall(): void
     {
         if ($this->firewall !== null) {
@@ -68,5 +64,12 @@ abstract class AbstractFirewallAwareDecoderProvider implements ApiTokenDecoderPr
         $firewallConfig = $request ? $this->firewallMap?->getFirewallConfig($request) : null;
 
         $this->firewall = $firewallConfig?->getName() ?? self::NO_FIREWALL;
+    }
+
+    private function resolveFirewall(): ?string
+    {
+        $this->initFirewall();
+
+        return $this->firewall !== self::NO_FIREWALL ? $this->firewall : null;
     }
 }
