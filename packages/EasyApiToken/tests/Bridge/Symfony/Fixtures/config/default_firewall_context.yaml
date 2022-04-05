@@ -1,0 +1,14 @@
+services:
+    firewall_config:
+        class: Symfony\Bundle\SecurityBundle\Security\FirewallConfig
+        arguments:
+            $name: 'my-firewall'
+            $userChecker: 'my-user-checker'
+
+    firewall_context:
+        class: Symfony\Bundle\SecurityBundle\Security\FirewallContext
+        arguments:
+            $listeners: []
+            $exceptionListener: null
+            $logoutListener: null
+            $config: '@firewall_config'

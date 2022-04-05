@@ -8,16 +8,16 @@ use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
-use EonX\EasyApiToken\Tests\AbstractTestCase;
-use EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs\KernelStub;
 
-final class EasyApiTokenBundleTest extends AbstractTestCase
+final class EasyApiTokenBundleTest extends AbstractSymfonyTestCase
 {
+    /**
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidDefaultDecoderException
+     */
     public function testDecoderFactoryIsRegisteredAsService(): void
     {
-        $kernel = new KernelStub();
-        $kernel->boot();
-
+        $kernel = $this->getKernel();
         $container = $kernel->getContainer();
         $decoderFactory = $container->get(ApiTokenDecoderFactoryInterface::class);
 
