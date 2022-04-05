@@ -1,6 +1,6 @@
 name: Split Tests
 
-on: [ push, pull_request ]
+on: [ push ]
 
 jobs:
     provide_packages_json:
