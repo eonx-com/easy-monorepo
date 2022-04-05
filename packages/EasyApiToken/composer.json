@@ -20,6 +20,7 @@
         "symfony/cache": "^5.4 || ^6.0",
         "symfony/config": "^5.4 || ^6.0",
         "symfony/http-client": "^5.4 || ^6.0",
+        "symfony/security-bundle": "^5.4 || ^6.0",
         "symfony/yaml": "^5.4 || ^6.0",
         "phpseclib/phpseclib": "^3.0"
     },
