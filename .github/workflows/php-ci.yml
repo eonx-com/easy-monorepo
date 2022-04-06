@@ -1,6 +1,6 @@
 name: PHP-CI
 
-on: [ push ]
+on: [ push, pull_request ]
 
 jobs:
     # 2nd run with cache + parallel
