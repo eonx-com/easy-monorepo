@@ -496,11 +496,14 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $category = $product->getCategory();
         self::assertSame(1, $category->getId());
         self::assertSame('Computer', $category->getName());
-        $tags = $product->getTags();
-        self::assertSame(1, $tags[0]->getId());
-        self::assertSame('Tag 1', $tags[0]->getName());
-        self::assertSame(2, $tags[1]->getId());
-        self::assertSame('Tag 2', $tags[1]->getName());
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag1 */
+        $tag1 = $product->getTags()[0];
+        self::assertSame(1, $tag1->getId());
+        self::assertSame('Tag 1', $tag1->getName());
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag2 */
+        $tag2 = $product->getTags()[1];
+        self::assertSame(2, $tag2->getId());
+        self::assertSame('Tag 2', $tag2->getName());
     }
 
     public function testOneEventIsDispatchedForMultipleUpdatedEntity(): void
