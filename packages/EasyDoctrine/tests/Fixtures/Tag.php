@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Fixtures;
 
-use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-class Category
+class Tag
 {
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $activeTill;
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'tags')]
+    #[ORM\JoinColumn(nullable: false)]
+    protected Product $product;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,11 +21,6 @@ class Category
 
     #[ORM\Column(type: Types::STRING, length: 128)]
     private string $name;
-
-    public function getActiveTill(): ?DateTimeInterface
-    {
-        return $this->activeTill;
-    }
 
     public function getId(): int
     {
@@ -37,11 +32,9 @@ class Category
         return $this->name;
     }
 
-    public function setActiveTill(?DateTimeInterface $activeTill = null): self
+    public function getProduct(): Product
     {
-        $this->activeTill = $activeTill;
-
-        return $this;
+        return $this->product;
     }
 
     public function setId(int $id): void
@@ -52,6 +45,13 @@ class Category
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function setProduct(Product $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }

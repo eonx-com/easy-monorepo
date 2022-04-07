@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Stubs;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
@@ -66,7 +65,7 @@ final class EntityManagerStub extends EntityManager
         $config->setProxyDir(__DIR__ . '/../var');
         $config->setProxyNamespace('Proxy');
 
-        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+        $config->setMetadataDriverImpl(new AttributeDriver([]));
 
         $entityManager = parent::create($conn, $config, $eventManager);
         $schema = \array_map(function ($class) use ($entityManager) {
@@ -97,7 +96,7 @@ final class EntityManagerStub extends EntityManager
         array $subscribedEntities = [],
         array $fixtures = []
     ) {
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, (new ObjectCopierFactory())->create());
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
 
         return self::createFromDeferredEntityEventDispatcher(
             $dispatcher,

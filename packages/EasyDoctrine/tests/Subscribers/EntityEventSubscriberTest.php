@@ -14,6 +14,7 @@ use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Category;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
+use EonX\EasyDoctrine\Tests\Fixtures\Tag;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
 use EonX\EasyDoctrine\Tests\Stubs\EventDispatcherStub;
 
@@ -95,7 +96,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
     public function testEventsAreDispatchedAfterEnablingDispatcher(): void
     {
         $eventDispatcher = new EventDispatcherStub();
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, (new ObjectCopierFactory())->create());
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
         $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
             $dispatcher,
             [Product::class],
@@ -296,7 +297,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
     public function testEventsAreNotDispatchedWhenDispatcherIsDisabled(): void
     {
         $eventDispatcher = new EventDispatcherStub();
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, (new ObjectCopierFactory())->create());
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
         $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
             $dispatcher,
             [Product::class],
@@ -426,7 +427,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Product::class],
-            [Product::class, Category::class]
+            [Product::class, Category::class, Tag::class]
         );
         $entityManager->getConnection()
             ->insert(
@@ -444,6 +445,24 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'name' => 'Keyboard',
                     'price' => '1000',
                     'category_id' => 1,
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 1,
+                    'name' => 'Tag 1',
+                    'product_id' => 1,
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 2,
+                    'name' => 'Tag 2',
+                    'product_id' => 1,
                 ]
             );
 
@@ -464,6 +483,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             'price' => ['1000', null],
             'category_id' => [1, null],
             'category' => [$product->getCategory(), null],
+            'tags' => [$product->getTags(), null]
         ]);
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $actualEvent->getEntity();
@@ -476,6 +496,11 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $category = $product->getCategory();
         self::assertSame(1, $category->getId());
         self::assertSame('Computer', $category->getName());
+        $tags = $product->getTags();
+        self::assertSame(1, $tags[0]->getId());
+        self::assertSame('Tag 1', $tags[0]->getName());
+        self::assertSame(2, $tags[1]->getId());
+        self::assertSame('Tag 2', $tags[1]->getName());
     }
 
     public function testOneEventIsDispatchedForMultipleUpdatedEntity(): void

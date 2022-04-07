@@ -176,7 +176,7 @@ final class EntityManagerStub extends EntityManager
         array $subscribedEntities = [],
         array $fixtures = []
     ) {
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, (new ObjectCopierFactory())->create());
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
 
         return self::createFromDeferredEntityEventDispatcher(
             $dispatcher,
