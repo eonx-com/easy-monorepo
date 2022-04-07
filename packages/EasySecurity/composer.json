@@ -13,6 +13,8 @@
         "eonx-com/easy-bugsnag": "^4.1",
         "eonx-com/easy-logging": "^4.1",
         "phpunit/phpunit": "^9.5",
+        "phpspec/prophecy": "^1.0",
+        "phpspec/prophecy-phpunit": "^2.0",
         "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
         "symfony/symfony": "^5.4 || ^6.0"
     },

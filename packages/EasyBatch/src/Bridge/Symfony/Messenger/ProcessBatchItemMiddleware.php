@@ -72,27 +72,30 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         }
 
         try {
-            $batchItem = $this->findBatchItem($batchItemStamp->getBatchItemId());
             $message = $envelope->getMessage();
 
             // Since items can be dispatched multiple times to guarantee all items are dispatched
             // We must protect the processing logic with a lock to make sure the same item isn't processed
             // by multiple workers concurrently.
-            $lockData = LockData::create(\sprintf('easy_batch_item_%s', (string)$batchItem->getId()));
+            $lockData = LockData::create(\sprintf('easy_batch_item_%s', (string)$batchItemStamp->getBatchItemId()));
 
-            $result = $this->lockService->processWithLock($lockData, function () use ($batchItem, $message, $func) {
-                $batch = $this->findBatch($batchItem->getBatchId());
+            $result = $this->lockService->processWithLock(
+                $lockData,
+                function () use ($batchItemStamp, $message, $func) {
+                    $batchItem = $this->findBatchItem($batchItemStamp->getBatchItemId());
+                    $batch = $this->findBatch($batchItem->getBatchId());
 
-                if ($message instanceof CurrentBatchAwareInterface) {
-                    $message->setCurrentBatch($batch);
+                    if ($message instanceof CurrentBatchAwareInterface) {
+                        $message->setCurrentBatch($batch);
+                    }
+
+                    if ($message instanceof CurrentBatchItemAwareInterface) {
+                        $message->setCurrentBatchItem($batchItem);
+                    }
+
+                    return $this->batchManager->processItem($batch, $batchItem, $func);
                 }
-
-                if ($message instanceof CurrentBatchItemAwareInterface) {
-                    $message->setCurrentBatchItem($batchItem);
-                }
-
-                return $this->batchManager->processItem($batch, $batchItem, $func);
-            });
+            );
 
             // If lock not acquired, return envelope
             return $result === null ? $envelope : $result;
@@ -112,21 +115,17 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
     }
 
     /**
-     * @param int|string $batchId
-     *
      * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
      */
-    private function findBatch($batchId): BatchInterface
+    private function findBatch(int|string $batchId): BatchInterface
     {
         return $this->batchRepository->findOrFail($batchId);
     }
 
     /**
-     * @param int|string $batchItemId
-     *
      * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
      */
-    private function findBatchItem($batchItemId): BatchItemInterface
+    private function findBatchItem(int|string $batchItemId): BatchItemInterface
     {
         return $this->batchItemRepository->findOrFail($batchItemId);
     }

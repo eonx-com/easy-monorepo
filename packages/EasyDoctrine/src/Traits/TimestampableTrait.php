@@ -5,26 +5,19 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Traits;
 
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
 
-trait TimestampableImmutableTrait
+trait TimestampableTrait
 {
-    /**
-     * @var \DateTimeImmutable
-     */
-    protected $createdAt;
+    protected CarbonImmutable $createdAt;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    protected $updatedAt;
+    protected CarbonImmutable $updatedAt;
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): CarbonImmutable
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): CarbonImmutable
     {
         return $this->updatedAt;
     }
@@ -33,7 +26,7 @@ trait TimestampableImmutableTrait
     {
         $dateTime = CarbonImmutable::now();
 
-        if ($this->createdAt === null) {
+        if (isset($this->createdAt) === false) {
             $this->createdAt = $dateTime;
         }
 

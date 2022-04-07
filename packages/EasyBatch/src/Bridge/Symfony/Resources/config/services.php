@@ -95,7 +95,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Transformers
     $services
         ->set(BridgeConstantsInterface::SERVICE_BATCH_TRANSFORMER, BatchTransformer::class)
-        ->arg('$messageSerializer', service(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER))
         ->arg('$class', '%' . BridgeConstantsInterface::PARAM_BATCH_CLASS . '%');
 
     $services

@@ -4,35 +4,47 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Factories;
 
+use EonX\EasyApiToken\Decoders\ApiKeyDecoder;
 use EonX\EasyApiToken\Exceptions\InvalidConfigurationException;
 use EonX\EasyApiToken\Exceptions\InvalidDefaultDecoderException;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderProviderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\HashedApiKeyDriverInterface;
 use EonX\EasyUtils\CollectorHelper;
 
 final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
 {
     /**
-     * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface[]
+     * @var null|\EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface[]
      */
-    private $decoders;
+    private ?array $decoders = null;
 
     /**
-     * @var string
+     * @var iterable<mixed>
      */
-    private $defaultDecoder;
+    private iterable $decoderProviders;
+
+    private ?string $defaultDecoder = null;
 
     /**
      * @param iterable<mixed> $decoderProviders
      */
-    public function __construct(iterable $decoderProviders)
-    {
-        $this->setDecoders($decoderProviders);
+    public function __construct(
+        iterable $decoderProviders,
+        private HashedApiKeyDriverInterface $hashedApiKeyDriver
+    ) {
+        $this->decoderProviders = $decoderProviders;
     }
 
+    /**
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidDefaultDecoderException
+     */
     public function build(?string $decoder = null): ApiTokenDecoderInterface
     {
+        $this->initDecoders();
+
         if ($decoder === null) {
             return $this->buildDefault();
         }
@@ -44,8 +56,14 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
         throw new InvalidConfigurationException(\sprintf('No decoder configured for key: "%s".', $decoder));
     }
 
+    /**
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
+     * @throws \EonX\EasyApiToken\Exceptions\InvalidDefaultDecoderException
+     */
     public function buildDefault(): ApiTokenDecoderInterface
     {
+        $this->initDecoders();
+
         if ($this->defaultDecoder !== null) {
             return $this->build($this->defaultDecoder);
         }
@@ -63,6 +81,13 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
         return CollectorHelper::orderLowerPriorityFirstAsArray(CollectorHelper::filterByClass($collection, $class));
     }
 
+    private function initDecoders(): void
+    {
+        if ($this->decoders === null) {
+            $this->setDecoders($this->decoderProviders);
+        }
+    }
+
     /**
      * @param iterable<mixed> $providers
      */
@@ -72,6 +97,10 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
 
         foreach ($this->filter($providers, ApiTokenDecoderProviderInterface::class) as $provider) {
             foreach ($this->filter($provider->getDecoders(), ApiTokenDecoderInterface::class) as $decoder) {
+                if ($decoder instanceof ApiKeyDecoder) {
+                    $decoder->setHashedApiKeyDriver($this->hashedApiKeyDriver);
+                }
+
                 $decoders[$decoder->getName()] = $decoder;
             }
 

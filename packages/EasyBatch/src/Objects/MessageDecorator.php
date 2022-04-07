@@ -17,6 +17,21 @@ final class MessageDecorator
     private $dependsOn;
 
     /**
+     * @var bool
+     */
+    private $encrypted = false;
+
+    /**
+     * @var string
+     */
+    private $encryptionKeyName;
+
+    /**
+     * @var int
+     */
+    private $maxAttempts = 1;
+
+    /**
      * @var object
      */
     private $message;
@@ -56,6 +71,16 @@ final class MessageDecorator
         return $this->dependsOn;
     }
 
+    public function getEncryptionKeyName(): ?string
+    {
+        return $this->encryptionKeyName;
+    }
+
+    public function getMaxAttempts(): int
+    {
+        return $this->maxAttempts;
+    }
+
     public function getMessage(): object
     {
         return $this->message;
@@ -79,6 +104,11 @@ final class MessageDecorator
         return $this->requiresApproval;
     }
 
+    public function isEncrypted(): bool
+    {
+        return $this->encrypted;
+    }
+
     public function setApprovalRequired(bool $isApprovalRequired): self
     {
         $this->requiresApproval = $isApprovalRequired;
@@ -96,6 +126,27 @@ final class MessageDecorator
     public function setDependsOn(string $dependsOn): self
     {
         $this->dependsOn = $dependsOn;
+
+        return $this;
+    }
+
+    public function setEncrypted(?bool $encrypted = null): self
+    {
+        $this->encrypted = $encrypted ?? true;
+
+        return $this;
+    }
+
+    public function setEncryptionKeyName(string $encryptionKeyName): self
+    {
+        $this->encryptionKeyName = $encryptionKeyName;
+
+        return $this;
+    }
+
+    public function setMaxAttempts(int $maxAttempts): self
+    {
+        $this->maxAttempts = $maxAttempts;
 
         return $this;
     }

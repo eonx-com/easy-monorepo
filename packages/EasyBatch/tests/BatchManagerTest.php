@@ -144,7 +144,7 @@ final class BatchManagerTest extends AbstractRepositoriesTestCase
         $batchRepo = new BatchRepository(
             $this->getBatchFactory(),
             $this->getIdStrategy(),
-            new BatchTransformer(new MessageSerializer()),
+            new BatchTransformer(),
             $this->getDoctrineDbalConnection(),
             BatchRepositoryInterface::DEFAULT_TABLE
         );

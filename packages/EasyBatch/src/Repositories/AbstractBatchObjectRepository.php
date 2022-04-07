@@ -6,6 +6,7 @@ namespace EonX\EasyBatch\Repositories;
 
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use EonX\EasyBatch\Interfaces\BatchObjectFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
@@ -14,42 +15,30 @@ use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
 abstract class AbstractBatchObjectRepository
 {
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var null|string[]
      */
-    protected $conn;
-
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchObjectFactoryInterface
-     */
-    protected $factory;
-
-    /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface
-     */
-    private $transformer;
-
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface
-     */
-    private $idStrategy;
+    private ?array $tableColumns = null;
 
     public function __construct(
-        BatchObjectFactoryInterface $factory,
-        BatchObjectIdStrategyInterface $idStrategy,
-        BatchObjectTransformerInterface $transformer,
-        Connection $conn,
-        string $table
+        protected BatchObjectFactoryInterface $factory,
+        protected BatchObjectIdStrategyInterface $idStrategy,
+        protected BatchObjectTransformerInterface $transformer,
+        protected Connection $conn,
+        protected string $table
     ) {
-        $this->factory = $factory;
-        $this->idStrategy = $idStrategy;
-        $this->transformer = $transformer;
-        $this->conn = $conn;
-        $this->table = $table;
+        // No body needed.
+    }
+
+    /**
+     * @param int|string $id
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
+    protected function doFind($id): ?BatchObjectInterface
+    {
+        $data = $this->fetchData($id);
+
+        return $data !== null ? $this->factory->createFromArray($data) : null;
     }
 
     /**
@@ -65,22 +54,13 @@ abstract class AbstractBatchObjectRepository
         $batchObject->setUpdatedAt($now);
 
         $data = $this->transformer->transformToArray($batchObject);
+        foreach (\array_diff(\array_keys($data), $this->resolveTableColumns()) as $toRemove) {
+            unset($data[$toRemove]);
+        }
 
         $this->has($batchObjectId) === false
             ? $this->conn->insert($this->table, $data)
             : $this->conn->update($this->table, $data, ['id' => $batchObjectId]);
-    }
-
-    /**
-     * @param int|string $id
-     *
-     * @throws \Doctrine\DBAL\Exception
-     */
-    protected function doFind($id): ?BatchObjectInterface
-    {
-        $data = $this->fetchData($id);
-
-        return $data !== null ? $this->factory->createFromArray($data) : null;
     }
 
     /**
@@ -106,5 +86,37 @@ abstract class AbstractBatchObjectRepository
         $result = $this->conn->fetchAssociative($sql, ['id' => $id]);
 
         return \is_array($result) ? $result : null;
+    }
+
+    /**
+     * @return string[]
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function resolveTableColumns(): array
+    {
+        if ($this->tableColumns !== null) {
+            return $this->tableColumns;
+        }
+
+        $sql = $this->conn->getDatabasePlatform()
+            ->getListTableColumnsSQL($this->table);
+
+        $columns = $this->conn->fetchAllAssociative($sql);
+
+        $nameColumnKey = 'name';
+
+        if (\is_a($this->conn->getDatabasePlatform(), PostgreSQLPlatform::class)) {
+            $nameColumnKey = 'field';
+        }
+
+        if (
+            \is_a($this->conn->getDatabasePlatform(), '\Doctrine\DBAL\Platforms\MySqlPlatform')
+            || \is_a($this->conn->getDatabasePlatform(), '\Doctrine\DBAL\Platforms\AbstractMySQLPlatform')
+        ) {
+            $nameColumnKey = 'Field';
+        }
+
+        return $this->tableColumns = \array_column($columns, $nameColumnKey);
     }
 }

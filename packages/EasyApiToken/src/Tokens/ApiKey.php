@@ -8,14 +8,8 @@ use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface;
 
 final class ApiKey implements ApiKeyInterface
 {
-    /**
-     * @var string
-     */
-    private $apiKey;
-
-    public function __construct(string $apiKey)
+    public function __construct(private string $apiKey)
     {
-        $this->apiKey = $apiKey;
     }
 
     public function getApiKey(): string

@@ -158,16 +158,12 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
         return $this->cached = $dataPersister;
     }
 
-    /**
-     * @param mixed $data
-     */
-    private function getSimpleDataPersister($data): ?ContextAwareDataPersisterInterface
+    private function getSimpleDataPersister(mixed $data): ?ContextAwareDataPersisterInterface
     {
-        $class = \get_class($data);
-        if (\is_object($data) === false || isset($this->simplePersisters[$class]) === false) {
+        if (\is_object($data) === false || isset($this->simplePersisters[$data::class]) === false) {
             return null;
         }
 
-        return $this->container->get($this->simplePersisters[$class]);
+        return $this->container->get($this->simplePersisters[$data::class]);
     }
 }

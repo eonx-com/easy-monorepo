@@ -13,17 +13,17 @@ use EonX\EasyHttpClient\Interfaces\HttpOptionsInterface;
 use EonX\EasyHttpClient\Interfaces\RequestDataInterface;
 use EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface;
 use EonX\EasyUtils\CollectorHelper;
+use Symfony\Component\HttpClient\AsyncDecoratorTrait;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Response\AsyncContext;
+use Symfony\Component\HttpClient\Response\AsyncResponse;
+use Symfony\Contracts\HttpClient\ChunkInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
-use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
 final class WithEventsHttpClient implements HttpClientInterface
 {
-    /**
-     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
-     */
-    private $decorated;
+    use AsyncDecoratorTrait;
 
     /**
      * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
@@ -57,7 +57,7 @@ final class WithEventsHttpClient implements HttpClientInterface
         ?array $modifiersWhitelist = null
     ) {
         $this->eventDispatcher = $eventDispatcher;
-        $this->decorated = $decorated ?? HttpClient::create();
+        $this->client = $decorated ?? HttpClient::create();
         $this->modifiers = CollectorHelper::filterByClassAsArray($modifiers ?? [], RequestDataModifierInterface::class);
         $this->modifiersEnabled = $modifiersEnabled;
         $this->modifiersWhitelist = $modifiersWhitelist ?? [];
@@ -96,53 +96,59 @@ final class WithEventsHttpClient implements HttpClientInterface
             $requestData = $this->modifyRequestData($requestData, $modifiersWhitelist, $modifiers);
         }
 
-        $responseData = null;
-        $throwable = null;
-        $throwableThrownAt = null;
-
         try {
-            $response = $this->decorated->request($method, $url, $options);
-
-            $responseData = new ResponseData(
-                $response->getContent(false),
-                $response->getHeaders(false),
-                Carbon::now('UTC'),
-                $response->getStatusCode()
+            return new AsyncResponse(
+                $this->client,
+                $requestData->getMethod(),
+                $requestData->getUrl(),
+                $requestData->getOptions(),
+                $this->getPassThruClosure($requestData, $extra)
             );
-
-            return $response;
         } catch (\Throwable $throwable) {
-            $throwableThrownAt = Carbon::now('UTC');
-
-            throw $throwable;
-        } finally {
             $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
                 $requestData,
-                $responseData,
+                null,
                 $throwable,
-                $throwableThrownAt,
+                Carbon::now('UTC'),
                 $extra
             ));
+
+            throw $throwable;
         }
     }
 
     /**
-     * @param \Symfony\Contracts\HttpClient\ResponseInterface|iterable<(int|string),\Symfony\Contracts\HttpClient\ResponseInterface> $responses
+     * @param null|mixed[] $extra
      */
-    public function stream($responses, float $timeout = null): ResponseStreamInterface
+    private function getPassThruClosure(RequestDataInterface $requestData, ?array $extra = null): \Closure
     {
-        return $this->decorated->stream($responses, $timeout);
-    }
+        return function (ChunkInterface $chunk, AsyncContext $asyncContext) use ($requestData, $extra): iterable {
+            if ($chunk->getContent() !== '') {
+                $asyncContext->setInfo(
+                    'temp_content',
+                    ($asyncContext->getInfo('temp_content') ?? '') . $chunk->getContent()
+                );
+            }
 
-    /**
-     * @param array<string, mixed> $options
-     */
-    public function withOptions(array $options): self
-    {
-        $clone = clone $this;
-        $clone->decorated = $this->decorated->withOptions($options);
+            if ($chunk->isLast()) {
+                $responseData = new ResponseData(
+                    (string)($asyncContext->getInfo('temp_content') ?? ''),
+                    $asyncContext->getHeaders(),
+                    Carbon::now('UTC'),
+                    $asyncContext->getStatusCode()
+                );
 
-        return $clone;
+                $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
+                    $requestData,
+                    $responseData,
+                    null,
+                    null,
+                    $extra
+                ));
+            }
+
+            yield $chunk;
+        };
     }
 
     /**

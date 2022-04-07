@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Subscribers;
 
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
@@ -48,8 +48,8 @@ final class TimestampableEventSubscriber implements EventSubscriber
             if ($classMetadata->hasField($field) === false) {
                 $classMetadata->mapField([
                     'fieldName' => $field,
-                    'nullable' => true,
-                    'type' => DateTimeInterface::class,
+                    'nullable' => false,
+                    'type' => CarbonImmutable::class,
                 ]);
             }
         }

@@ -6,9 +6,9 @@ namespace EonX\EasyPagination\Interfaces;
 
 interface LengthAwarePaginatorInterface extends PaginatorInterface
 {
-    public function getFirstPageUrl(): ?string;
+    public function getFirstPageUrl(): string;
 
-    public function getLastPageUrl(): ?string;
+    public function getLastPageUrl(): string;
 
     public function getTotalItems(): int;
 

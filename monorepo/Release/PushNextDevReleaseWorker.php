@@ -11,20 +11,9 @@ use Symplify\MonorepoBuilder\Utils\VersionUtils;
 
 final class PushNextDevReleaseWorker implements ReleaseWorkerInterface
 {
-    /**
-     * @var ProcessRunner
-     */
-    private $processRunner;
-
-    /**
-     * @var VersionUtils
-     */
-    private $versionUtils;
-
-    public function __construct(ProcessRunner $processRunner, VersionUtils $versionUtils)
+    public function __construct(private ProcessRunner $processRunner, private VersionUtils $versionUtils)
     {
-        $this->processRunner = $processRunner;
-        $this->versionUtils = $versionUtils;
+        // The body is not required
     }
 
     public function getDescription(Version $version): string
