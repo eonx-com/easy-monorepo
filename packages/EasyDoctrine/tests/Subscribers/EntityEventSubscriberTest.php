@@ -483,7 +483,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             'price' => ['1000', null],
             'category_id' => [1, null],
             'category' => [$product->getCategory(), null],
-            'tags' => [$product->getTags(), null]
+            'tags' => [$product->getTags(), null],
         ]);
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $actualEvent->getEntity();
