@@ -36,7 +36,6 @@ final class DecimalValidator extends ConstraintValidator
         $maxPrecisionBound = \round($value * 10 ** $constraint->maxPrecision, 1);
         $moreThanMaxPrecision = ($maxPrecisionBound - (int) $maxPrecisionBound) > 0;
 
-
         if ((\is_scalar($originalValue) && \is_numeric($originalValue) === false) ||
             $lowerThanMinPrecision ||
             $moreThanMaxPrecision) {
