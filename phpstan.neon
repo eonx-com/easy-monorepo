@@ -191,6 +191,13 @@ parameters:
         - message: '#Unsafe usage of new static\(\)#'
           path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
 
+        # ---- EasyUtils ----
+        - message: '#Comparison operation ">" between 0 and 0 is always false#'
+          path: packages/EasyUtils/src/EnvVarSubstitutionHelper.php
+
+        - message: '#Result of && is always false#'
+          path: packages/EasyUtils/src/EnvVarSubstitutionHelper.php
+
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: packages/EasyWebhook/src/AbstractWebhook.php
