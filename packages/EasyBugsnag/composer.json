@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.1",
         "bugsnag/bugsnag": "^3.19",
-        "eonx-com/easy-utils": "^4.1",
+        "eonx-com/easy-utils": "^4.0.9",
         "nesbot/carbon": "^2.22",
         "nette/utils": "^3.1",
         "symfony/filesystem": "^5.4 || ^6.0",
