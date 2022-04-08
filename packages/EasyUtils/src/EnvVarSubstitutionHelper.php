@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyUtils;
@@ -63,7 +64,7 @@ final class EnvVarSubstitutionHelper
             return $value;
         }
 
-        return \preg_replace_callback(self::VAR_REGEX, function ($matches) {
+        return (string)\preg_replace_callback(self::VAR_REGEX, function ($matches) {
             // odd number of backslashes means the $ character is escaped
             if (\strlen($matches['backslashes']) % 2 === 1) {
                 return \substr($matches[0], 1);
