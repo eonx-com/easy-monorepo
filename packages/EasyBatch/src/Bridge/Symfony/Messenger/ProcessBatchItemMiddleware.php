@@ -102,7 +102,11 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         } catch (\Throwable $throwable) {
             // Do not retry if exception from package
             if ($throwable instanceof EasyBatchExceptionInterface) {
-                throw new UnrecoverableMessageHandlingException($throwable->getMessage());
+                throw new UnrecoverableMessageHandlingException(
+                    $throwable->getMessage(),
+                    $throwable->getCode(),
+                    $throwable
+                );
             }
 
             if (($throwable instanceof HandlerFailedException)
