@@ -13,31 +13,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class AnalyzeErrorCodesCommand extends Command
 {
     /**
-     * @var int
-     */
-    private const DEFAULT_CATEGORY_SIZE = 100;
-
-    /**
      * @var string
      */
-    protected static $defaultName = 'error-codes:analyze';
+    protected static $defaultName = 'easy-error-handler:error-codes:analyze';
 
-    /**
-     * @var int
-     */
-    private $categorySize;
-
-    /**
-     * @var \EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ErrorCodes\ErrorCodesProviderInterface
-     */
-    private $errorCodesProvider;
-
-    public function __construct(ErrorCodesProviderInterface $errorCodesProvider, ?int $categorySize = null)
-    {
+    public function __construct(
+        private ErrorCodesProviderInterface $errorCodesProvider,
+        private int $categorySize = 100
+    ) {
         parent::__construct();
-
-        $this->errorCodesProvider = $errorCodesProvider;
-        $this->categorySize = $categorySize ?? self::DEFAULT_CATEGORY_SIZE;
     }
 
     /**
