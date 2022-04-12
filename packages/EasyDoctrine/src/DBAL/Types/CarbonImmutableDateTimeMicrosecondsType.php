@@ -86,7 +86,7 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
     {
         $platformClassNameDbal2 = '\Doctrine\DBAL\Platforms\PostgreSQL94Platform';
         $platformClassNameDbal3 = '\Doctrine\DBAL\Platforms\PostgreSQLPlatform';
-        if ($platform instanceof $platformClassNameDbal3 || $platform instanceof $platformClassNameDbal2) {
+        if (\is_a($platform, $platformClassNameDbal3) || \is_a($platform, $platformClassNameDbal2)) {
             return self::FORMAT_DB_TIMESTAMP_WO_TIMEZONE;
         }
 

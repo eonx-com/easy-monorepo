@@ -45,7 +45,8 @@
         "symfony/var-dumper": "^5.4 || ^6.0",
         "symfony/yaml": "^5.4 || ^6.0",
         "symplify/autowire-array-parameter": "^10.1",
-        "symplify/package-builder": "^10.1"
+        "symplify/package-builder": "^10.1",
+        "myclabs/deep-copy": "^1.11"
     },
     "require-dev": {
         "api-platform/core": "^2.6",

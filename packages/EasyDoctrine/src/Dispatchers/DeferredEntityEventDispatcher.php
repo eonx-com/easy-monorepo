@@ -4,48 +4,43 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Dispatchers;
 
+use EonX\EasyDoctrine\Events\EntityActionEventInterface;
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
 use EonX\EasyDoctrine\Events\EntityDeletedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
+use EonX\EasyDoctrine\Interfaces\ObjectCopierInterface;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use LogicException;
 
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
 {
-    /**
-     * @var bool
-     */
-    private $enabled;
+    private bool $enabled;
 
     /**
      * @var array<int, array<string, array<string, array{mixed, mixed}>>>
      */
-    private $entityChangeSets = [];
+    private array $entityChangeSets = [];
 
     /**
      * @var array<string, object>
      */
-    private $entityDeletions = [];
+    private array $entityDeletions = [];
 
     /**
      * @var array<string, object>
      */
-    private $entityInsertions = [];
+    private array $entityInsertions = [];
 
     /**
      * @var array<string, object>
      */
-    private $entityUpdates = [];
+    private array $entityUpdates = [];
 
-    /**
-     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+        private ObjectCopierInterface $objectCopier
+    ) {
         $this->enabled = true;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function clear(?int $transactionNestingLevel = null): void
@@ -96,7 +91,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
         $oid = \spl_object_hash($object);
         // `clone` is used to preserve the identifier that is removed after deleting entity
-        $this->entityDeletions[$oid] = clone $object;
+        $this->entityDeletions[$oid] = $this->objectCopier->copy($object);
         $this->entityChangeSets[$transactionNestingLevel][$oid] = $entityChangeSet;
     }
 
@@ -166,12 +161,9 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     }
 
     /**
-     * @param string $oid
      * @param array<string, array{mixed, mixed}> $entityChangeSet
-     *
-     * @return \EonX\EasyDoctrine\Events\EntityActionEventInterface
      */
-    private function createEntityEvent(string $oid, array $entityChangeSet)
+    private function createEntityEvent(string $oid, array $entityChangeSet): EntityActionEventInterface
     {
         if (isset($this->entityInsertions[$oid]) !== false) {
             return new EntityCreatedEvent($this->entityInsertions[$oid], $entityChangeSet);

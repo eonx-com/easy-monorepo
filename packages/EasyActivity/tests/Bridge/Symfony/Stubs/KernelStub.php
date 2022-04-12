@@ -12,11 +12,13 @@ use EonX\EasyActivity\Bridge\Symfony\EasyActivitySymfonyBundle;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonyActivitySubjectDataSerializer;
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface;
 use EonX\EasyDoctrine\Bridge\BridgeConstantsInterface;
+use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Bridge\Symfony\EasyDoctrineSymfonyBundle;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
+use EonX\EasyDoctrine\Utils\ObjectCopier;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\RandomGenerator;
@@ -68,6 +70,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         );
         $deferredEntityDefinition = new Definition(DeferredEntityEventDispatcher::class, [
             new Definition(EventDispatcher::class, [new Definition(SymfonyEventDispatcher::class)]),
+            (new Definition(ObjectCopier::class))
+                ->setFactory([ObjectCopierFactory::class, 'create']),
         ]);
         $container->setDefinition(DeferredEntityEventDispatcherInterface::class, $deferredEntityDefinition);
         $container->setDefinition(RandomGeneratorInterface::class, new Definition(RandomGenerator::class));

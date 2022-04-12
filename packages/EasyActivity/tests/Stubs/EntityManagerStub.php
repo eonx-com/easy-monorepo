@@ -23,6 +23,7 @@ use EonX\EasyActivity\Logger\AsyncActivityLogger;
 use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
+use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
@@ -175,7 +176,7 @@ final class EntityManagerStub extends EntityManager
         array $subscribedEntities = [],
         array $fixtures = []
     ) {
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
 
         return self::createFromDeferredEntityEventDispatcher(
             $dispatcher,
