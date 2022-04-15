@@ -5,7 +5,7 @@ namespace EonX\EasyMonorepo\Release;
 
 use EonX\EasyMonorepo\Git\GitManager;
 use GuzzleHttp\ClientInterface;
-use MonorepoBuilder20220316\Symplify\SmartFileSystem\SmartFileSystem;
+use MonorepoBuilder20220414\Symplify\SmartFileSystem\SmartFileSystem;
 use PharIo\Version\Version;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 
