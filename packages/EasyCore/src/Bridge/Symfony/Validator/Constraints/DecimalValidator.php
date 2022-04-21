@@ -29,7 +29,7 @@ final class DecimalValidator extends ConstraintValidator
         $value = \rtrim(\sprintf('%f', (string)$value), '0');
         $value = \rtrim($value, '.');
 
-        $pattern = \sprintf('/^\d+(\.\d{%d,%d})?$/', $constraint->minPrecision, $constraint->maxPrecision);
+        $pattern = \sprintf('/^\-?\d+(\.\d{%d,%d})?$/', $constraint->minPrecision, $constraint->maxPrecision);
 
         if (\preg_match($pattern, $value) === 0) {
             $this->context->buildViolation($constraint->message)
