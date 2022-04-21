@@ -12,6 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class AnalyzeErrorCodesCommand extends Command
 {
+    private const DEFAULT_CATEGORY_SIZE = 100;
+
     /**
      * @var string
      */
@@ -19,7 +21,7 @@ final class AnalyzeErrorCodesCommand extends Command
 
     public function __construct(
         private ErrorCodesProviderInterface $errorCodesProvider,
-        private int $categorySize = 100
+        private int $categorySize = self::DEFAULT_CATEGORY_SIZE
     ) {
         parent::__construct();
     }
