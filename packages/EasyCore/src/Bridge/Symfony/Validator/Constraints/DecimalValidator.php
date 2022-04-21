@@ -26,7 +26,8 @@ final class DecimalValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'scalar');
         }
 
-        $value = (string) $value;
+        $value = \rtrim(\sprintf('%f', (string)$value), '0');
+        $value = \rtrim($value, '.');
 
         $pattern = \sprintf('/^\d+(\.\d{%d,%d})?$/', $constraint->minPrecision, $constraint->maxPrecision);
 
