@@ -28,7 +28,7 @@ final class ReplaceChannelsDefinitionPass implements CompilerPassInterface
     {
         $container->addAliases([
             'logger' => 'easy_logging.logger',
-            LoggerInterface::class => 'logger'
+            LoggerInterface::class => 'logger',
         ]);
 
         $defaultChannel = $container->getParameter(BridgeConstantsInterface::PARAM_DEFAULT_CHANNEL);
