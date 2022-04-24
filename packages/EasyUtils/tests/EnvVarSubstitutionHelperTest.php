@@ -14,8 +14,8 @@ final class EnvVarSubstitutionHelperTest extends AbstractTestCase
     public function providerTestResolveVariables(): iterable
     {
         yield 'With $ in value' => [
-            ['password' => 'qLiByxNIXT5Gg11zt$2PjHb952nnVEZK'],
-            ['password' => 'qLiByxNIXT5Gg11zt$2PjHb952nnVEZK'],
+            ['password' => 'qLiByxT5Gg11zt$2PjHb952nnVEZK'],
+            ['password' => 'qLiByxT5Gg11zt$2PjHb952nnVEZK'],
         ];
     }
 
@@ -27,8 +27,6 @@ final class EnvVarSubstitutionHelperTest extends AbstractTestCase
      */
     public function testResolveVariables(array $input, array $expected): void
     {
-        \dump(EnvVarSubstitutionHelper::resolveVariables($input));
-
         self::assertEquals($expected, EnvVarSubstitutionHelper::resolveVariables($input));
     }
 }

@@ -13,8 +13,10 @@ final class IpAddressVerboseStrategyDriver extends AbstractVerboseStrategyDriver
     /**
      * @param string[] $ipAddresses
      */
-    public function __construct(private array $ipAddresses, ?int $priority = null)
-    {
+    public function __construct(
+        private array $ipAddresses,
+        ?int $priority = null
+    ) {
         parent::__construct($priority);
     }
 
