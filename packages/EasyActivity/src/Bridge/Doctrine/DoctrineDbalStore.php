@@ -6,8 +6,8 @@ namespace EonX\EasyActivity\Bridge\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use EonX\EasyActivity\ActivityLogEntry;
+use EonX\EasyActivity\Interfaces\IdFactoryInterface;
 use EonX\EasyActivity\Interfaces\StoreInterface;
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 
 final class DoctrineDbalStore implements StoreInterface
 {
@@ -17,9 +17,9 @@ final class DoctrineDbalStore implements StoreInterface
     private $connection;
 
     /**
-     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
+     * @var \EonX\EasyActivity\Interfaces\IdFactoryInterface
      */
-    private $random;
+    private $idFactory;
 
     /**
      * @var string
@@ -27,19 +27,19 @@ final class DoctrineDbalStore implements StoreInterface
     private $table;
 
     public function __construct(
-        RandomGeneratorInterface $random,
+        IdFactoryInterface $idFactory,
         Connection $connection,
         string $table
     ) {
         $this->connection = $connection;
-        $this->random = $random;
+        $this->idFactory = $idFactory;
         $this->table = $table;
     }
 
     public function store(ActivityLogEntry $logEntry): ActivityLogEntry
     {
         $data = [
-            'id' => $this->random->uuidV4(),
+            'id' => $this->idFactory->create(),
             'created_at' => $logEntry->getCreatedAt(),
             'updated_at' => $logEntry->getUpdatedAt(),
             'actor_type' => $logEntry->getActorType(),

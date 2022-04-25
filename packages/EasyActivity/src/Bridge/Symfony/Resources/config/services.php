@@ -12,6 +12,7 @@ use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandler;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonyActivitySubjectDataSerializer;
+use EonX\EasyActivity\Bridge\Symfony\Uid\UuidFactory;
 use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Interfaces\ActivityLoggerInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface;
@@ -19,6 +20,7 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Interfaces\AsyncDispatcherInterface;
+use EonX\EasyActivity\Interfaces\IdFactoryInterface;
 use EonX\EasyActivity\Interfaces\StoreInterface;
 use EonX\EasyActivity\Logger\AsyncActivityLogger;
 use EonX\EasyActivity\Resolvers\DefaultActivitySubjectResolver;
@@ -33,6 +35,9 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(StoreInterface::class, DoctrineDbalStore::class)
         ->arg('$table', '%' . BridgeConstantsInterface::PARAM_TABLE_NAME . '%');
+
+    $services
+        ->set(IdFactoryInterface::class, UuidFactory::class);
 
     $services
         ->set(ActorResolverInterface::class, DefaultActorResolver::class);
