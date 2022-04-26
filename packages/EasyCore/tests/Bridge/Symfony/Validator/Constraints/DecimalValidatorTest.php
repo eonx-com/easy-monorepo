@@ -37,6 +37,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
             'Invalid value #6' => [0.0000011, 5, 6],
             'Invalid value #7' => [1.0001, 5, 6],
             'Invalid value #8' => [0.00001009, 1, 6],
+            'Invalid value #9' => [0.0000000002, 6, 8],
         ];
     }
 
@@ -61,6 +62,8 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
             'Valid value #11' => [-0.000001, 6, 8],
             'Valid value #12' => [0.00001, 5, 8],
             'Valid value #13' => [0.000002, 6, 8],
+            'Valid value #14' => [0.0000000002, 6, 10],
+            'Valid value #15' => ['0.0000000002', 6, 10],
             'Empty string' => ['', 1, 3],
             'Null value' => [null, 1, 3],
         ];
