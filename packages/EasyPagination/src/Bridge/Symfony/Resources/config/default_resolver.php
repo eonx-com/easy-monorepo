@@ -14,5 +14,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(PaginationFromRequestListener::class)
-        ->tag('kernel.event_listener');
+        ->tag('kernel.event_listener', ['event' => 'kernel.request', 'priority' => 10000]);
 };
