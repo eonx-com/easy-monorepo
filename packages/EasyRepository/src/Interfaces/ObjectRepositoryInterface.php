@@ -14,17 +14,12 @@ interface ObjectRepositoryInterface
     /**
      * @param object|object[] $object
      */
-    public function delete($object): void;
+    public function delete(array|object $object): void;
+
+    public function find(int|string $identifier): ?object;
 
     /**
-     * @param int|string $identifier
-     *
-     * @return null|object
+     * @param object|object[] $object
      */
-    public function find($identifier);
-
-    /**
-     * @param object|object[] $object The object or list of objects to save
-     */
-    public function save($object): void;
+    public function save(array|object $object): void;
 }
