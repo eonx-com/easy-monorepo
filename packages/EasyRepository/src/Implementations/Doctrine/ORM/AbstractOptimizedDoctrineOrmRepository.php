@@ -16,9 +16,9 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyRepository\Exceptions\EasyPaginationNotInstalledException;
 use EonX\EasyRepository\Interfaces\DatabaseRepositoryInterface;
-use EonX\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface;
+use EonX\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface as PaginatedObjRepoInterface;
 
-abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseRepositoryInterface, PaginatedObjectRepositoryInterface
+abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseRepositoryInterface, PaginatedObjRepoInterface
 {
     private ?EntityManagerInterface $manager = null;
 
@@ -30,12 +30,49 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
     {
     }
 
+    /**
+     * @return object[]
+     */
+    public function all(): array
+    {
+        return $this->getRepository()
+            ->findAll();
+    }
+
+    public function beginTransaction(): void
+    {
+        $this->getManager()
+            ->beginTransaction();
+    }
+
+    public function commit(): void
+    {
+        $this->getManager()
+            ->commit();
+    }
+
+    /**
+     * @param object|object[] $object
+     */
+    public function delete(object|array $object): void
+    {
+        $this->callManagerMethodForObjects('delete', $object);
+    }
+
+    public function find(int|string $identifier): ?object
+    {
+        return $this->getRepository()->find($identifier);
+    }
+
     public function flush(): void
     {
         $this->getManager()
             ->flush();
     }
 
+    /**
+     * @phpstan-return class-string
+     */
     abstract protected function getEntityClass(): string;
 
     /**
@@ -53,7 +90,8 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
             return $return ?? true;
         } catch (\Throwable $exception) {
             if ($exception instanceof ORMException || $exception instanceof Exception) {
-                $this->getManager()->close();
+                $this->getManager()
+                    ->close();
             }
 
             $this->rollback();
@@ -62,43 +100,10 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
         }
     }
 
-    public function beginTransaction(): void
-    {
-        $this->getManager()
-            ->beginTransaction();
-    }
-
-    public function commit(): void
-    {
-        $this->getManager()
-            ->commit();
-    }
-
     public function rollback(): void
     {
         $this->getManager()
             ->rollback();
-    }
-
-    /**
-     * @return object[]
-     */
-    public function all(): array
-    {
-        return $this->getRepository()->findAll();
-    }
-
-    /**
-     * @param object|object[] $object
-     */
-    public function delete(object|array $object): void
-    {
-        $this->callManagerMethodForObjects('delete', $object);
-    }
-
-    public function find(int|string $identifier): ?object
-    {
-        return $this->getRepository()->find($identifier);
     }
 
     /**
@@ -125,7 +130,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
         ?PaginationInterface $pagination = null
     ): DoctrineOrmLengthAwarePaginator {
         return new DoctrineOrmLengthAwarePaginator(
-            $pagination ?? $this->pagination,
+            $pagination ?? $this->getPagination(),
             $this->getManager(),
             $from ?? $this->getEntityClass(),
             $fromAlias ?? $this->getEntityAlias()
@@ -134,7 +139,8 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
 
     protected function createQueryBuilder(?string $alias = null, ?string $indexBy = null): QueryBuilder
     {
-        return $this->getRepository()->createQueryBuilder($alias ?? $this->getEntityAlias(), $indexBy);
+        return $this->getRepository()
+            ->createQueryBuilder($alias ?? $this->getEntityAlias(), $indexBy);
     }
 
     protected function getEntityAlias(): string
@@ -146,7 +152,8 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
 
     protected function getClassMetadata(): ClassMetadata
     {
-        return $this->getManager()->getClassMetadata($this->getRepository()->getClassName());
+        return $this->getManager()
+            ->getClassMetadata($this->getRepository()->getClassName());
     }
 
     protected function getManager(): EntityManagerInterface
@@ -167,7 +174,8 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
 
     protected function getRepository(): EntityRepository
     {
-        return $this->repository ??= $this->getManager()->getRepository($this->getEntityClass());
+        return $this->repository ??= $this->getManager()
+            ->getRepository($this->getEntityClass());
     }
 
     /**

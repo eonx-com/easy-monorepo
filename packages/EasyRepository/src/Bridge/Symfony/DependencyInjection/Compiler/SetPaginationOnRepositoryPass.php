@@ -36,7 +36,7 @@ final class SetPaginationOnRepositoryPass implements CompilerPassInterface
             $repoDef = $container->getDefinition($id);
             $reflection = $container->getReflectionClass($repoDef->getClass());
 
-            if ($reflection->hasMethod(self::PAGINATION_SETTER) === false) {
+            if ($reflection === null || $reflection->hasMethod(self::PAGINATION_SETTER) === false) {
                 continue;
             }
 
