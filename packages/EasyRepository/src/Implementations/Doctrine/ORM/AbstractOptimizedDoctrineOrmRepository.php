@@ -61,7 +61,8 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
 
     public function find(int|string $identifier): ?object
     {
-        return $this->getRepository()->find($identifier);
+        return $this->getRepository()
+            ->find($identifier);
     }
 
     public function flush(): void
@@ -188,7 +189,8 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
         }
 
         foreach ($objects as $object) {
-            $this->getManager()->{$method}($object);
+            $this->getManager()
+                ->{$method}($object);
         }
     }
 }

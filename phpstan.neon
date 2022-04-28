@@ -174,9 +174,6 @@ parameters:
         - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getRepository\(\) return type with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
 
-        - message: '#Unable to resolve the template type T in call to method Doctrine\\ORM\\EntityManagerInterface\:\:getRepository\(\)#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
-
         # ---- EasyRequestId ----
         # ---- EasySchedule ----
         - message: '#Parameter \#1 \$app of method EonX\\EasySchedule\\Interfaces\\ScheduleInterface\:\:setApplication\(\) expects Symfony\\Component\\Console\\Application, Symfony\\Component\\Console\\Application\|null given#'
