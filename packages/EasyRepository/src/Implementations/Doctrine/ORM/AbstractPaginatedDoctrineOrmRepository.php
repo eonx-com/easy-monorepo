@@ -13,10 +13,7 @@ use EonX\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface as RepoInt
 
 abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOrmRepository implements RepoInterface
 {
-    /**
-     * @var \EonX\EasyPagination\Interfaces\PaginationInterface
-     */
-    private $pagination;
+    private PaginationInterface $pagination;
 
     public function __construct(ManagerRegistry $registry, PaginationInterface $pagination)
     {

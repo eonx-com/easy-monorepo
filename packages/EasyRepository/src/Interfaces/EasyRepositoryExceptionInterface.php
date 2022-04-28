@@ -6,5 +6,5 @@ namespace EonX\EasyRepository\Interfaces;
 
 interface EasyRepositoryExceptionInterface
 {
-    // Marker for all exceptions of this package.
+    // Marker for all exceptions to this package.
 }
