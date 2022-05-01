@@ -113,7 +113,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
      */
     public function save(object|array $object): void
     {
-        $this->callManagerMethodForObjects('save', $object);
+        $this->callManagerMethodForObjects('persist', $object);
     }
 
     public function setPagination(PaginationInterface $pagination): void
