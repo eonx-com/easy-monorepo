@@ -14,39 +14,28 @@ use Firebase\JWT\JWT;
 
 final class AwsCognitoJwtDriver implements JwtDriverInterface
 {
+    private const TOKEN_TYPE_ACCESS = 'access';
+
+    private const TOKEN_TYPE_ID = 'id';
+
     /**
      * @var string[]
      */
-    private $allowedAlgos;
+    private array $allowedAlgos;
 
-    /**
-     * @var \EonX\EasyApiToken\External\AwsCognito\Interfaces\JwkFetcherInterface
-     */
-    private $jwkFetcher;
-
-    /**
-     * @var null|int
-     */
-    private $leeway;
-
-    /**
-     * @var \EonX\EasyApiToken\External\AwsCognito\Interfaces\UserPoolConfigInterface
-     */
-    private $userPoolConfig;
+    private JwkFetcherInterface $jwkFetcher;
 
     /**
      * @param null|string[] $allowedAlgos
      */
     public function __construct(
-        UserPoolConfigInterface $userPoolConfig,
+        private UserPoolConfigInterface $userPoolConfig,
         ?JwkFetcherInterface $jwkFetcher = null,
         ?array $allowedAlgos = null,
-        ?int $leeway = null
+        private ?int $leeway = null
     ) {
-        $this->userPoolConfig = $userPoolConfig;
         $this->jwkFetcher = $jwkFetcher ?? new JwkFetcher();
         $this->allowedAlgos = $allowedAlgos ?? [];
-        $this->leeway = $leeway;
     }
 
     /**
@@ -61,9 +50,14 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
 
         /** @var \stdClass $decodedToken */
         $decodedToken = JWT::decode($token, $this->jwkFetcher->getJwks($this->userPoolConfig), $this->allowedAlgos);
+        $tokenType = $decodedToken->token_use ?? null;
 
         // Validate audience
-        $audience = $decodedToken->aud ?? null;
+        $audience = match ($tokenType) {
+            self::TOKEN_TYPE_ACCESS => $decodedToken->client_id ?? null,
+            self::TOKEN_TYPE_ID => $decodedToken->aud ?? null,
+            default => null
+        };
         if ($audience !== $this->userPoolConfig->getAppClientId()) {
             throw new InvalidJwtException(\sprintf(
                 'Invalid audience "%s", expected "%s"',

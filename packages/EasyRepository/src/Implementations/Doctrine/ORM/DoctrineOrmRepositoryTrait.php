@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
 use Closure;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Throwable;
 
@@ -49,12 +49,7 @@ trait DoctrineOrmRepositoryTrait
         $this->callManagerMethodForObjects('remove', $object);
     }
 
-    /**
-     * @param int|string $identifier
-     *
-     * @return null|object
-     */
-    public function find($identifier)
+    public function find(int|string $identifier): ?object
     {
         return $this->repository->find($identifier);
     }
@@ -78,11 +73,9 @@ trait DoctrineOrmRepositoryTrait
     }
 
     /**
-     * @return mixed
-     *
      * @throws \Throwable
      */
-    public function transactional(Closure $func)
+    public function transactional(Closure $func): mixed
     {
         $this->beginTransaction();
 
@@ -93,7 +86,7 @@ trait DoctrineOrmRepositoryTrait
 
             return $return ?? true;
         } catch (Throwable $exception) {
-            if ($exception instanceof ORMException || $exception instanceof DBALException) {
+            if ($exception instanceof ORMException || $exception instanceof Exception) {
                 $this->manager->close();
             }
 
@@ -123,7 +116,7 @@ trait DoctrineOrmRepositoryTrait
     /**
      * @param object|object[] $objects
      */
-    private function callManagerMethodForObjects(string $method, $objects): void
+    private function callManagerMethodForObjects(string $method, array|object $objects): void
     {
         if (\is_array($objects) === false) {
             $objects = [$objects];

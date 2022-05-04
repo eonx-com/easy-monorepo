@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Release;
 
-use MonorepoBuilder20220316\Symplify\SmartFileSystem\Finder\FinderSanitizer;
 use PharIo\Version\Version;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
+use Symplify\SmartFileSystem\Finder\FinderSanitizer;
 
 final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
 {

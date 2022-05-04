@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Release;
 
-use MonorepoBuilder20220316\Symplify\SmartFileSystem\SmartFileSystem;
 use PharIo\Version\Version;
 use Symfony\Component\Yaml\Yaml;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
+use Symplify\SmartFileSystem\SmartFileSystem;
 
 final class UpdateTagInGithubWorkflow implements ReleaseWorkerInterface
 {

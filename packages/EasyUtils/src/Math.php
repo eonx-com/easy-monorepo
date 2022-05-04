@@ -66,10 +66,10 @@ final class Math implements MathInterface
 
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $mode = null): string
     {
-        $value = \bcdiv($dividend, $divisor, $this->scale);
-
-        if ($value === null) {
-            throw new InvalidDivisionByZeroException('Division by 0 is invalid');
+        try {
+            $value = \bcdiv($dividend, $divisor, $this->scale);
+        } catch (\DivisionByZeroError $exception) {
+            throw new InvalidDivisionByZeroException('Division by 0 is invalid', 0, $exception);
         }
 
         return $this->round($value, $precision, $mode);
