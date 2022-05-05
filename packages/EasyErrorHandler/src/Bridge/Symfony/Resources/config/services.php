@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
+use EonX\EasyErrorHandler\Bridge\Symfony\Commands\AnalyzeErrorCodesCommand;
 use EonX\EasyErrorHandler\Bridge\Symfony\DataCollector\ErrorHandlerDataCollector;
+use EonX\EasyErrorHandler\Bridge\Symfony\ErrorCodesProvider;
+use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ErrorCodes\ErrorCodesProviderInterface;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ConsoleErrorEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ExceptionEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Messenger\ReportErrorEventListener;
@@ -77,4 +80,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(VerboseStrategyInterface::class, ChainVerboseStrategy::class)
         ->arg('$drivers', tagged_iterator(BridgeConstantsInterface::TAG_VERBOSE_STRATEGY_DRIVER))
         ->arg('$defaultIsVerbose', '%' . BridgeConstantsInterface::PARAM_IS_VERBOSE . '%');
+
+    // Error codes provider
+    $services->set(ErrorCodesProviderInterface::class, ErrorCodesProvider::class);
+
+    // Console command
+    $services
+        ->set(AnalyzeErrorCodesCommand::class)
+        ->tag('console.command');
 };
