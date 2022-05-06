@@ -8,5 +8,8 @@ use EonX\EasyUtils\Interfaces\HasPriorityInterface;
 
 interface StringSanitizerInterface extends HasPriorityInterface
 {
+    /**
+     * @param string[] $keysToMask
+     */
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string;
 }

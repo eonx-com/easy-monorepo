@@ -12,7 +12,7 @@ trait SymfonyTestCaseTrait
     private ?KernelInterface $kernel = null;
 
     /**
-     * @param null|string[] $configs
+     * @param null|mixed[] $configs
      */
     protected function getKernel(?array $configs = null): KernelInterface
     {
