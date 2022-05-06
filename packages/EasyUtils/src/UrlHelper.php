@@ -4,22 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils;
 
-final class UrlHelper
+use EonX\EasyUtils\Helpers\UrlHelper as BaseUrlHelper;
+
+/**
+ * @deprecated since 4.0, will be removed in 5.0. EonX\EasyUtils\Helpers\UrlHelper instead.
+ */
+final class UrlHelper extends BaseUrlHelper
 {
-    public static function urlSafeBase64Decode(string $input): string
-    {
-        $remainder = \strlen($input) % 4;
-
-        if ($remainder) {
-            $padLen = 4 - $remainder;
-            $input .= \str_repeat('=', $padLen);
-        }
-
-        return \base64_decode(\strtr($input, '-_', '+/'), true) ?: '';
-    }
-
-    public static function urlSafeBase64Encode(string $input): string
-    {
-        return \str_replace('=', '', \strtr(\base64_encode($input), '+/', '-_'));
-    }
 }
