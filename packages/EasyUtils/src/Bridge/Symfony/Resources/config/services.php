@@ -6,7 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyUtils\Bridge\BridgeConstantsInterface;
 use EonX\EasyUtils\Interfaces\MathInterface;
-use EonX\EasyUtils\Math;
+use EonX\EasyUtils\Math\Math;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();

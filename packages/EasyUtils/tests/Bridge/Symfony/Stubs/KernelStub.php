@@ -15,7 +15,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     /**
      * @var string[]
      */
-    private $configs;
+    private array $configs;
 
     /**
      * @param null|mixed[] $configs
@@ -29,6 +29,12 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        foreach ($this->configs as $key => $config) {
+            if (\is_string($key)) {
+                $container->setParameter($key, $config);
+            }
+        }
+
         foreach ($container->getAliases() as $alias) {
             $alias->setPublic(true);
         }
@@ -46,10 +52,15 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         yield new EasyUtilsSymfonyBundle();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        foreach ($this->configs as $config) {
-            $loader->load($config);
+        foreach ($this->configs as $key => $config) {
+            if (\is_string($key) === false) {
+                $loader->load($config);
+            }
         }
     }
 }

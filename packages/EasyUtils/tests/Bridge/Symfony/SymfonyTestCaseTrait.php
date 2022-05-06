@@ -9,10 +9,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 trait SymfonyTestCaseTrait
 {
-    /**
-     * @var \Symfony\Component\HttpKernel\KernelInterface
-     */
-    private $kernel;
+    private ?KernelInterface $kernel = null;
 
     /**
      * @param null|string[] $configs
