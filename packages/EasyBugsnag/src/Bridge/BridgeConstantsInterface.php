@@ -59,6 +59,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_SENSITIVE_DATA_ENABLED = 'easy_bugsnag.sensitive_data_enabled';
+
+    /**
+     * @var string
+     */
     public const PARAM_SESSION_TRACKING_CACHE_DIRECTORY = 'easy_bugsnag.session_tracking_cache_directory';
 
     /**

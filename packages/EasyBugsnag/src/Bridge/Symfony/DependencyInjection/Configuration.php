@@ -82,6 +82,13 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                // Sensitive Data
+                ->arrayNode('sensitive_data')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
+                    ->end()
+                ->end()
                 // Session Tracking
                 ->arrayNode('session_tracking')
                     ->addDefaultsIfNotSet()
