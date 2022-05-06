@@ -51,7 +51,7 @@ class Math implements MathInterface
 
     public function compareThat(string $leftOperand): MathComparisonInterface
     {
-        return new MathComparison($leftOperand, $this->scale);
+        return new MathComparison($leftOperand, (int)$this->scale);
     }
 
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $mode = null): string
@@ -76,7 +76,7 @@ class Math implements MathInterface
 
     public function round(string $value, ?int $precision = null, ?int $mode = null): string
     {
-        $precision = $precision ?? $this->roundPrecision;
+        $precision = (int)($precision ?? $this->roundPrecision);
         /** @phpstan-var 1|2|3|4 $mode */
         $mode = $mode ?? $this->roundMode;
 
