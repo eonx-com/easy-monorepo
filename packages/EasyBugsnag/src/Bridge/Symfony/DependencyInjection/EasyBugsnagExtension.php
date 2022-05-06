@@ -97,6 +97,11 @@ final class EasyBugsnagExtension extends Extension
             $loader->load('aws_ecs_fargate.php');
         }
 
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_SENSITIVE_DATA_ENABLED,
+            $config['sensitive_data']['enabled'] ?? false
+        );
+
         if ($config['session_tracking']['enabled'] ?? false) {
             foreach (self::SESSION_TRACKING_CONFIG as $name => $param) {
                 $container->setParameter($param, $config['session_tracking'][$name]);

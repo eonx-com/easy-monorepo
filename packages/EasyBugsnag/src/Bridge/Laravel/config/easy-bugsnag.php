@@ -62,6 +62,13 @@ return [
      */
     'doctrine_orm' => true,
 
+    'sensitive_data' => [
+        /**
+         * Enable sensitive data sanitization.
+         */
+        'enabled' => false,
+    ],
+
     'session_tracking' => [
         /**
          * Enable session tracking.
