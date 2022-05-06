@@ -27,8 +27,8 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
 
     /**
      * @param string[]|null $keysToMask
-     * @param iterable<\EonX\EasyUtils\SensitiveData\ObjectTransformerInterface>|null $objectTransformers
-     * @param iterable<\EonX\EasyUtils\SensitiveData\StringSanitizerInterface>|null $stringSanitizers
+     * @param iterable<mixed>|null $objectTransformers
+     * @param iterable<mixed>|null $stringSanitizers
      */
     public function __construct(
         ?array $keysToMask = null,
