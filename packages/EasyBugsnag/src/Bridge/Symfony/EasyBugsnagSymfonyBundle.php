@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Bridge\Symfony;
 
 use EonX\EasyBugsnag\Bridge\Symfony\DependencyInjection\Compiler\DoctrineOrmSqlLoggerConfiguratorPass;
-use EonX\EasyBugsnag\Bridge\Symfony\DependencyInjection\Compiler\SensitiveDataCompilerPass;
+use EonX\EasyBugsnag\Bridge\Symfony\DependencyInjection\Compiler\SensitiveDataSanitizerCompilerPass;
 use EonX\EasyBugsnag\Bridge\Symfony\DependencyInjection\EasyBugsnagExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
@@ -17,7 +17,7 @@ final class EasyBugsnagSymfonyBundle extends Bundle
     {
         $container
             ->addCompilerPass(new DoctrineOrmSqlLoggerConfiguratorPass())
-            ->addCompilerPass(new SensitiveDataCompilerPass());
+            ->addCompilerPass(new SensitiveDataSanitizerCompilerPass());
     }
 
     public function getContainerExtension(): ExtensionInterface
