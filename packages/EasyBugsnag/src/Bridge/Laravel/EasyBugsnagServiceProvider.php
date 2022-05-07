@@ -178,7 +178,10 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
                     return new SensitiveDataSanitizerConfigurator($app->make($sanitizerId));
                 }
             );
-            $this->app->tag(SensitiveDataSanitizerConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
+            $this->app->tag(
+                SensitiveDataSanitizerConfigurator::class,
+                [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]
+            );
         }
     }
 
