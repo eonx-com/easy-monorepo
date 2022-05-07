@@ -83,7 +83,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 // Sensitive Data
-                ->arrayNode('sensitive_data')
+                ->arrayNode('sensitive_data_sanitizer')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('enabled')->defaultFalse()->end()

@@ -7,7 +7,7 @@ namespace EonX\EasyBugsnag\Bridge\Laravel;
 use Bugsnag\Client;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
 use EonX\EasyBugsnag\Bridge\EasyUtils\Exceptions\EasyUtilsNotInstalledException;
-use EonX\EasyBugsnag\Bridge\EasyUtils\SensitiveDataConfigurator;
+use EonX\EasyBugsnag\Bridge\EasyUtils\SensitiveDataSanitizerConfigurator;
 use EonX\EasyBugsnag\Bridge\Laravel\Doctrine\SqlOrmLogger;
 use EonX\EasyBugsnag\Bridge\Laravel\Request\LaravelRequestResolver;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingConfigurator;
@@ -60,7 +60,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         $this->registerConfigurators();
         $this->registerDoctrineOrm();
         $this->registerRequestResolver();
-        $this->registerSensitiveData();
+        $this->registerSensitiveDataSanitizer();
         $this->registerSessionTracking();
         $this->registerShutdownStrategy();
     }
@@ -160,12 +160,12 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         $this->app->singleton(BridgeConstantsInterface::SERVICE_REQUEST_RESOLVER, LaravelRequestResolver::class);
     }
 
-    private function registerSensitiveData(): void
+    private function registerSensitiveDataSanitizer(): void
     {
-        if (\config('easy-bugsnag.sensitive_data.enabled', false)) {
+        if (\config('easy-bugsnag.sensitive_data_sanitizer.enabled', false)) {
             $this->app->singleton(
-                SensitiveDataConfigurator::class,
-                static function (Container $app): SensitiveDataConfigurator {
+                SensitiveDataSanitizerConfigurator::class,
+                static function (Container $app): SensitiveDataSanitizerConfigurator {
                     $sanitizerId = SensitiveDataSanitizerInterface::class;
 
                     if (\interface_exists($sanitizerId) === false || $app->has($sanitizerId) === false) {
@@ -175,10 +175,10 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
                         );
                     }
 
-                    return new SensitiveDataConfigurator($app->make($sanitizerId));
+                    return new SensitiveDataSanitizerConfigurator($app->make($sanitizerId));
                 }
             );
-            $this->app->tag(SensitiveDataConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
+            $this->app->tag(SensitiveDataSanitizerConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
         }
     }
 

@@ -6,7 +6,7 @@ namespace EonX\EasyBugsnag\Bridge\Symfony\DependencyInjection\Compiler;
 
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
 use EonX\EasyBugsnag\Bridge\EasyUtils\Exceptions\EasyUtilsNotInstalledException;
-use EonX\EasyBugsnag\Bridge\EasyUtils\SensitiveDataConfigurator;
+use EonX\EasyBugsnag\Bridge\EasyUtils\SensitiveDataSanitizerConfigurator;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,17 +33,17 @@ final class SensitiveDataCompilerPass implements CompilerPassInterface
             );
         }
 
-        $def = new Definition(SensitiveDataConfigurator::class, [
+        $def = new Definition(SensitiveDataSanitizerConfigurator::class, [
             '$sensitiveDataSanitizer' => new Reference(SensitiveDataSanitizerInterface::class),
         ]);
         $def->setAutoconfigured(true);
 
-        $container->setDefinition(SensitiveDataConfigurator::class, $def);
+        $container->setDefinition(SensitiveDataSanitizerConfigurator::class, $def);
     }
 
     private function isEnabled(ContainerBuilder $container): bool
     {
-        return $container->hasParameter(BridgeConstantsInterface::PARAM_SENSITIVE_DATA_ENABLED)
-            && $container->getParameter(BridgeConstantsInterface::PARAM_SENSITIVE_DATA_ENABLED);
+        return $container->hasParameter(BridgeConstantsInterface::PARAM_SENSITIVE_DATA_SANITIZER_ENABLED)
+            && $container->getParameter(BridgeConstantsInterface::PARAM_SENSITIVE_DATA_SANITIZER_ENABLED);
     }
 }

@@ -9,7 +9,7 @@ use Bugsnag\Report;
 use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 
-final class SensitiveDataConfigurator extends AbstractClientConfigurator
+final class SensitiveDataSanitizerConfigurator extends AbstractClientConfigurator
 {
     public function __construct(private readonly SensitiveDataSanitizerInterface $sensitiveDataSanitizer)
     {

@@ -59,7 +59,7 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_SENSITIVE_DATA_ENABLED = 'easy_bugsnag.sensitive_data_enabled';
+    public const PARAM_SENSITIVE_DATA_SANITIZER_ENABLED = 'easy_bugsnag.sensitive_data_sanitizer_enabled';
 
     /**
      * @var string
