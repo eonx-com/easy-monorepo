@@ -62,7 +62,7 @@ return [
      */
     'doctrine_orm' => true,
 
-    'sensitive_data' => [
+    'sensitive_data_sanitizer' => [
         /**
          * Enable sensitive data sanitization.
          */

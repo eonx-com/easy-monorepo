@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyBugsnag\Bridge\EasyUtils\SensitiveDataConfigurator;
+use EonX\EasyBugsnag\Bridge\EasyUtils\SensitiveDataSanitizerConfigurator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -12,5 +12,5 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure()
         ->autowire();
 
-    $services->set(SensitiveDataConfigurator::class);
+    $services->set(SensitiveDataSanitizerConfigurator::class);
 };
