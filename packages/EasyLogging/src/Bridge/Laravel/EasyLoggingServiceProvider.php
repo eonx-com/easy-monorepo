@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyLogging\Bridge\Laravel;
 
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
+use EonX\EasyLogging\Bridge\EasyUtils\Exceptions\EasyUtilsNotInstalledException;
+use EonX\EasyLogging\Bridge\EasyUtils\SensitiveDataSanitizerProcessor;
 use EonX\EasyLogging\Config\StreamHandlerConfigProvider;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use EonX\EasyLogging\LoggerFactory;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -71,5 +74,24 @@ final class EasyLoggingServiceProvider extends ServiceProvider
 
         // Override default logger alias
         $this->app->alias(LoggerInterface::class, 'logger');
+
+        // Sensitive data sanitizer
+        if (\config('easy-logging.sensitive_data_sanitizer.enabled', false)) {
+            $this->app->singleton(
+                SensitiveDataSanitizerProcessor::class,
+                static function (Container $app): SensitiveDataSanitizerProcessor {
+                    $sanitizerId = SensitiveDataSanitizerInterface::class;
+
+                    if (\interface_exists($sanitizerId) === false || $app->has($sanitizerId) === false) {
+                        throw new EasyUtilsNotInstalledException(
+                            'To use sensitive data sanitization, the package eonx-com/easy-utils must be installed,
+                            and its service provider must be registered'
+                        );
+                    }
+
+                    return new SensitiveDataSanitizerProcessor($app->make($sanitizerId));
+                }
+            );
+        }
     }
 }

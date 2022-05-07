@@ -15,6 +15,13 @@ return [
      */
     'override_default_logger' => true,
 
+    'sensitive_data_sanitizer' => [
+        /**
+         * Enable/Disable sensitive data sanitization.
+         */
+        'enabled' => false,
+    ],
+
     /**
      * Enable/Disable the default stream handler.
      */

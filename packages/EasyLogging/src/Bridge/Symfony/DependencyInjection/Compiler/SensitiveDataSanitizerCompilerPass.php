@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBugsnag\Bridge\Symfony\DependencyInjection\Compiler;
+namespace EonX\EasyLogging\Bridge\Symfony\DependencyInjection\Compiler;
 
-use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
-use EonX\EasyBugsnag\Bridge\EasyUtils\Exceptions\EasyUtilsNotInstalledException;
-use EonX\EasyBugsnag\Bridge\EasyUtils\SensitiveDataSanitizerConfigurator;
+use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
+use EonX\EasyLogging\Bridge\EasyUtils\Exceptions\EasyUtilsNotInstalledException;
+use EonX\EasyLogging\Bridge\EasyUtils\SensitiveDataSanitizerProcessor;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class SensitiveDataCompilerPass implements CompilerPassInterface
+final class SensitiveDataSanitizerCompilerPass implements CompilerPassInterface
 {
     /**
      * @var string
@@ -33,12 +33,12 @@ final class SensitiveDataCompilerPass implements CompilerPassInterface
             );
         }
 
-        $def = new Definition(SensitiveDataSanitizerConfigurator::class, [
+        $def = new Definition(SensitiveDataSanitizerProcessor::class, [
             '$sensitiveDataSanitizer' => new Reference(SensitiveDataSanitizerInterface::class),
         ]);
         $def->setAutoconfigured(true);
 
-        $container->setDefinition(SensitiveDataSanitizerConfigurator::class, $def);
+        $container->setDefinition(SensitiveDataSanitizerProcessor::class, $def);
     }
 
     private function isEnabled(ContainerBuilder $container): bool
