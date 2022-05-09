@@ -177,4 +177,9 @@ trait DatabaseCommonPaginatorTrait
     {
         return $criteria !== null ? [[$criteria, $name]] : [];
     }
+
+    private function getPrimaryKeyIndexWithDefault(): string
+    {
+        return $this->primaryKeyIndex ?? 'id';
+    }
 }

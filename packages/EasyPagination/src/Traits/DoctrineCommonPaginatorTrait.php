@@ -96,7 +96,7 @@ trait DoctrineCommonPaginatorTrait
         $this->applyPagination($fetchPrimaryKeysQueryBuilder);
 
         // Override select to fetch only primary key
-        $primaryKeyIndex = $this->primaryKeyIndex;
+        $primaryKeyIndex = $this->getPrimaryKeyIndexWithDefault();
         $select = \sprintf('%s.%s', $this->fromAlias ?? $this->from, $primaryKeyIndex);
         $fetchPrimaryKeysQueryBuilder->select($select);
 
