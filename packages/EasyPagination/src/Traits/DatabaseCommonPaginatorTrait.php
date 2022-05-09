@@ -12,17 +12,17 @@ use Illuminate\Database\Query\Builder as IlluminateQueryBuilder;
 trait DatabaseCommonPaginatorTrait
 {
     /**
-     * @var array<callable, ?string>
+     * @var mixed[]
      */
     private array $commonCriteria = [];
 
     /**
-     * @var array<callable, ?string>
+     * @var mixed[]
      */
     private array $filterCriteria = [];
 
     /**
-     * @var array<callable, ?string>
+     * @var mixed[]
      */
     private array $getItemsCriteria = [];
 
@@ -135,9 +135,9 @@ trait DatabaseCommonPaginatorTrait
     }
 
     /**
-     * @param array<callable, ?string> $originalCriteria
+     * @param mixed[] $originalCriteria
      *
-     * @return array<callable, ?string>
+     * @return mixed[]
      */
     private function doAddCriteria(array $originalCriteria, callable $criteria, ?string $name = null): array
     {
@@ -147,7 +147,7 @@ trait DatabaseCommonPaginatorTrait
     }
 
     /**
-     * @param array<?callable, ?string> $criteria
+     * @param mixed[] $criteria
      */
     private function doApplyCriteria(
         array $criteria,
@@ -159,9 +159,9 @@ trait DatabaseCommonPaginatorTrait
     }
 
     /**
-     * @param array<?callable, ?string> $criteria
+     * @param mixed[] $criteria
      *
-     * @return array<?callable, ?string>
+     * @return mixed[]
      */
     private function doRemoveCriteriaByName(array $criteria, string $name): array
     {
@@ -171,7 +171,7 @@ trait DatabaseCommonPaginatorTrait
     }
 
     /**
-     * @return array<?callable, ?string>
+     * @return mixed[]|null
      */
     private function doSetCriteria(?callable $criteria = null, ?string $name = null): ?array
     {
