@@ -4,24 +4,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
 
+use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
+use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
+
 trait DoctrineCommonPaginatorTrait
 {
     use DatabaseCommonPaginatorTrait;
 
-    /**
-     * @var string
-     */
-    private $from;
+    private string $from;
 
-    /**
-     * @var null|string
-     */
-    private $fromAlias;
+    private ?string $fromAlias = null;
 
-    /**
-     * @var int
-     */
-    private $totalItems;
+    private ?int $totalItems = null;
 
     /**
      * @return mixed[]
@@ -33,10 +27,7 @@ trait DoctrineCommonPaginatorTrait
         return $this->fetchItems();
     }
 
-    /**
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
-     */
-    private function applyPagination($queryBuilder): void
+    private function applyPagination(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): void
     {
         $queryBuilder
             ->setFirstResult(($this->getCurrentPage() - 1) * $this->getItemsPerPage())
@@ -84,19 +75,17 @@ trait DoctrineCommonPaginatorTrait
         $this->applyCommonCriteria($queryBuilder);
         $this->applyGetItemsCriteria($queryBuilder);
 
-        return $this->hasJoinsInQuery === false
+        return $this->hasJoinInQuery($queryBuilder) === false
             ? $this->fetchItemsUsingQuery($queryBuilder)
             : $this->fetchItemsUsingPrimaryKeys($queryBuilder);
     }
 
     /**
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
-     *
      * @return mixed[]
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    private function fetchItemsUsingPrimaryKeys($queryBuilder): array
+    private function fetchItemsUsingPrimaryKeys(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): array
     {
         $fetchPrimaryKeysQueryBuilder = $this->createQueryBuilder();
 
@@ -130,17 +119,22 @@ trait DoctrineCommonPaginatorTrait
     }
 
     /**
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\DBAL\Query\QueryBuilder $queryBuilder
-     *
      * @return mixed[]
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    private function fetchItemsUsingQuery($queryBuilder): array
+    private function fetchItemsUsingQuery(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): array
     {
         $this->applyFilterCriteria($queryBuilder);
         $this->applyPagination($queryBuilder);
 
         return $this->fetchResults($queryBuilder);
+    }
+
+    private function hasJoinInQuery(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): bool
+    {
+        return ($queryBuilder instanceof OrmQueryBuilder && \count($queryBuilder->getDQLPart('join')) > 0)
+            || ($queryBuilder instanceof DbalQueryBuilder && \count($queryBuilder->getQueryPart('join')) > 0)
+            || $this->hasJoinsInQuery;
     }
 }
