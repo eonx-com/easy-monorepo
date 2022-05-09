@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
 
-use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
+use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as IlluminateQueryBuilder;
 
 trait DatabaseCommonPaginatorTrait
 {
     /**
-     * @var callable[]
+     * @var array<callable, ?string>
      */
     private array $commonCriteria = [];
 
     /**
-     * @var callable[]
+     * @var array<callable, ?string>
      */
     private array $filterCriteria = [];
 
     /**
-     * @var callable[]
+     * @var array<callable, ?string>
      */
     private array $getItemsCriteria = [];
 

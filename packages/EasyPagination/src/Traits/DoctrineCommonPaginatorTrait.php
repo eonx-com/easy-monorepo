@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
 
-use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
+use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 
 trait DoctrineCommonPaginatorTrait
 {
