@@ -171,10 +171,10 @@ trait DatabaseCommonPaginatorTrait
     }
 
     /**
-     * @return mixed[]|null
+     * @return mixed[]
      */
-    private function doSetCriteria(?callable $criteria = null, ?string $name = null): ?array
+    private function doSetCriteria(?callable $criteria = null, ?string $name = null): array
     {
-        return $criteria !== null ? [[$criteria, $name]] : null;
+        return $criteria !== null ? [[$criteria, $name]] : [];
     }
 }
