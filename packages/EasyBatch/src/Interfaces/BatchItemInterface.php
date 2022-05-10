@@ -40,13 +40,9 @@ interface BatchItemInterface extends BatchObjectInterface
 
     public function getMessage(): ?object;
 
-    public function isApprovalRequired(): bool;
-
     public function isEncrypted(): bool;
 
     public function isRetried(): bool;
-
-    public function setApprovalRequired(?bool $approvalRequired = null): self;
 
     public function setAttempts(int $attempts): self;
 

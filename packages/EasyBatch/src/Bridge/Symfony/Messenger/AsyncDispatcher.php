@@ -6,21 +6,14 @@ namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
 
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemStamp;
 use EonX\EasyBatch\Exceptions\BatchItemInvalidException;
-use EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class AsyncDispatcher implements AsyncDispatcherInterface
 {
-    /**
-     * @var \Symfony\Component\Messenger\MessageBusInterface
-     */
-    private $bus;
-
-    public function __construct(MessageBusInterface $bus)
+    public function __construct(private readonly MessageBusInterface $bus)
     {
-        $this->bus = $bus;
     }
 
     /**
@@ -29,11 +22,7 @@ final class AsyncDispatcher implements AsyncDispatcherInterface
      */
     public function dispatchItem(BatchItemInterface $batchItem): void
     {
-        $batchItemId = $batchItem->getId();
-
-        if ($batchItemId === null) {
-            throw new BatchObjectIdRequiredException('BatchItem does not have an ID');
-        }
+        $batchItemId = $batchItem->getIdOrFail();
 
         if ($batchItem->getType() === BatchItemInterface::TYPE_MESSAGE) {
             $message = $batchItem->getMessage();

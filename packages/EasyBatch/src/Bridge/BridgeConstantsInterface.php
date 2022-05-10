@@ -4,23 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge;
 
-use EonX\EasyBatch\Listeners\BatchCancelledListener;
-use EonX\EasyBatch\Listeners\BatchCompletedListener;
-use EonX\EasyBatch\Listeners\BatchItemCancelledListener;
-use EonX\EasyBatch\Listeners\BatchItemCompletedListener;
-
 interface BridgeConstantsInterface
 {
-    /**
-     * @var string[]
-     */
-    public const LISTENERS = [
-        BatchCancelledListener::class,
-        BatchCompletedListener::class,
-        BatchItemCancelledListener::class,
-        BatchItemCompletedListener::class,
-    ];
-
     /**
      * @var string
      */

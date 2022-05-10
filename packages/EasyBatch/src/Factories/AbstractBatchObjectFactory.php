@@ -11,22 +11,10 @@ use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 abstract class AbstractBatchObjectFactory
 {
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface
-     */
-    protected $transformer;
-
-    /**
-     * @var null|\EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
-     */
-    private $dispatcher;
-
     public function __construct(
-        BatchObjectTransformerInterface $transformer,
-        ?EventDispatcherInterface $dispatcher = null
+        protected readonly BatchObjectTransformerInterface $transformer,
+        private readonly ?EventDispatcherInterface $dispatcher = null
     ) {
-        $this->transformer = $transformer;
-        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -46,9 +34,7 @@ abstract class AbstractBatchObjectFactory
 
     protected function modifyBatchObject(AbstractBatchObjectEvent $event): BatchObjectInterface
     {
-        if ($this->dispatcher) {
-            $this->dispatcher->dispatch($event);
-        }
+        $this->dispatcher?->dispatch($event);
 
         return $event->getBatchObject();
     }

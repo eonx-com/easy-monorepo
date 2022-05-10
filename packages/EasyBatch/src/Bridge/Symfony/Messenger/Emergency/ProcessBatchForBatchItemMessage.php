@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps;
+namespace EonX\EasyBatch\Bridge\Symfony\Messenger\Emergency;
 
-use Symfony\Component\Messenger\Stamp\StampInterface;
-
-final class BatchItemStamp implements StampInterface
+final class ProcessBatchForBatchItemMessage
 {
     public function __construct(private readonly int|string $batchItemId)
     {

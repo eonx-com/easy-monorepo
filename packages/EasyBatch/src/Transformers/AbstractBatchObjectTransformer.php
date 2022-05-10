@@ -7,23 +7,16 @@ namespace EonX\EasyBatch\Transformers;
 use Carbon\Carbon;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
-use EonX\EasyUtils\ErrorDetailsHelper;
+use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
 {
-    /**
-     * @var string
-     */
-    private $class;
+    private string $datetimeFormat;
 
-    /**
-     * @var string
-     */
-    private $datetimeFormat;
-
-    public function __construct(string $class, ?string $datetimeFormat = null)
-    {
-        $this->class = $class;
+    public function __construct(
+        private readonly string $class,
+        ?string $datetimeFormat = null
+    ) {
         $this->datetimeFormat = $datetimeFormat ?? BatchObjectInterface::DATETIME_FORMAT;
     }
 
@@ -48,6 +41,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
     {
         $object = $this->instantiateForClass($data['class'] ?? null);
         $object
+            ->setApprovalRequired((bool)($data['requires_approval'] ?? 0))
             ->setName($data['name'] ?? null)
             ->setId($data['id'])
             ->setStatus((string)($data['status'] ?? BatchObjectInterface::STATUS_PENDING));
