@@ -86,7 +86,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
                         $batchItemRepo->save($batchItem);
                     }
                 };
-            }
+            },
         ];
 
         yield '2 pages, status changed during iteration, reset pagination, 1 item processed twice' => [
@@ -124,7 +124,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
                         }
                     }
                 };
-            }
+            },
         ];
     }
 
