@@ -53,6 +53,9 @@ parameters:
           path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
 
         # ---- EasyBatch ----
+        - message: '#Parameter \#2 \$y of method Doctrine\\DBAL\\Query\\Expression\\ExpressionBuilder\:\:in\(\) expects array<string>\|string, array<int\|string> given#'
+          path: packages/EasyBatch/src/Repositories/BatchItemRepository.php
+
         # ---- EasyBugsnag ----
         - message: '#Return type \(void\) of method EonX\\EasyBugsnag\\Tests\\Bridge\\Symfony\\Stubs\\ConnectionStub\:\:(query|prepare)\(\) should be compatible with return type \(Doctrine\\DBAL\\Driver\\Statement\) of method Doctrine\\DBAL\\Driver\\Connection\:\:(query|prepare)\(\)#'
           path: packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/ConnectionStub.php

@@ -10,10 +10,7 @@ use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Iterator\BatchItemIterator;
 use EonX\EasyBatch\Iterator\IteratorConfig;
-use EonX\EasyBatch\Repositories\BatchItemRepository;
-use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
-use EonX\EasyBatch\Transformers\BatchItemTransformer;
 
 final class BatchItemIteratorTest extends AbstractSymfonyTestCase
 {
@@ -23,8 +20,6 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
      * @var string[]
      */
     private static array $iteratedItems = [];
-
-    private ?BatchItemRepositoryInterface $batchItemRepo = null;
 
     /**
      * @return iterable<mixed>

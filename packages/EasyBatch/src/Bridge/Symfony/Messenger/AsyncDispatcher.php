@@ -6,7 +6,6 @@ namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
 
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemStamp;
 use EonX\EasyBatch\Exceptions\BatchItemInvalidException;
-use EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use Symfony\Component\Messenger\MessageBusInterface;

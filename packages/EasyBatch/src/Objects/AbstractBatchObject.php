@@ -70,7 +70,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
             return $this->getId();
         }
 
-        throw new BatchObjectIdRequiredException(\sprintf('ID not set on batchObject "%s"', \get_class($this)));
+        throw new BatchObjectIdRequiredException(\sprintf('ID not set on batchObject "%s"', static::class));
     }
 
     /**
