@@ -8,40 +8,22 @@ use EonX\EasyBatch\Interfaces\BatchInterface;
 
 abstract class AbstractBatch extends AbstractBatchObject implements BatchInterface
 {
-    /**
-     * @var int
-     */
-    private $cancelled = 0;
+    private int $cancelled = 0;
 
-    /**
-     * @var int
-     */
-    private $failed = 0;
+    private int $failed = 0;
 
     /**
      * @var null|callable
      */
     private $itemsProvider;
 
-    /**
-     * @var int|string
-     */
-    private $parentBatchItemId;
+    private int|string|null $parentBatchItemId = null;
 
-    /**
-     * @var int
-     */
-    private $processed = 0;
+    private int $processed = 0;
 
-    /**
-     * @var int
-     */
-    private $succeeded = 0;
+    private int $succeeded = 0;
 
-    /**
-     * @var int
-     */
-    private $total = 0;
+    private int $total = 0;
 
     public function countCancelled(): int
     {
@@ -76,10 +58,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
         return $this->itemsProvider !== null ? \call_user_func($this->itemsProvider) : [];
     }
 
-    /**
-     * @return null|int|string
-     */
-    public function getParentBatchItemId()
+    public function getParentBatchItemId(): int|string|null
     {
         return $this->parentBatchItemId;
     }
@@ -117,10 +96,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
         return $this;
     }
 
-    /**
-     * @param int|string $batchItemId
-     */
-    public function setParentBatchItemId($batchItemId): BatchInterface
+    public function setParentBatchItemId(int|string $batchItemId): BatchInterface
     {
         $this->parentBatchItemId = $batchItemId;
 

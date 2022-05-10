@@ -34,6 +34,7 @@ final class BatchItemTransformerTest extends AbstractTestCase
 
         $batchItem = $this->getBatchItemFactory()
             ->create('batchId', $message);
+        $batchItem->setId('my-id');
         $batchItem->setEncrypted($encrypted);
 
         $transformer = new BatchItemTransformer(new MessageSerializer());

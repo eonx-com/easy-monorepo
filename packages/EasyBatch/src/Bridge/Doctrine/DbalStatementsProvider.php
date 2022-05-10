@@ -14,21 +14,6 @@ use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 final class DbalStatementsProvider
 {
     /**
-     * @var string
-     */
-    private $batchItemsTable;
-
-    /**
-     * @var string
-     */
-    private $batchesTable;
-
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    private $conn;
-
-    /**
      * @var callable
      */
     private $extendBatchItemsTable;
@@ -41,12 +26,11 @@ final class DbalStatementsProvider
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    public function __construct(Connection $conn, ?string $batchesTable = null, ?string $batchItemsTable = null)
-    {
-        $this->conn = $conn;
-        $this->batchesTable = $batchesTable ?? BatchRepositoryInterface::DEFAULT_TABLE;
-        $this->batchItemsTable = $batchItemsTable ?? BatchItemRepositoryInterface::DEFAULT_TABLE;
-
+    public function __construct(
+        private readonly Connection $conn,
+        private readonly string $batchesTable = BatchRepositoryInterface::DEFAULT_TABLE,
+        private readonly string $batchItemsTable = BatchItemRepositoryInterface::DEFAULT_TABLE
+    ) {
         // Register types
         if (Type::hasType(DateTimeWithMicroSeconds::NAME) === false) {
             Type::addType(DateTimeWithMicroSeconds::NAME, DateTimeWithMicroSeconds::class);
@@ -90,7 +74,6 @@ final class DbalStatementsProvider
         $batchItemsTable->addColumn('batch_id', 'guid');
         $batchItemsTable->addColumn('attempts', 'integer');
         $batchItemsTable->addColumn('max_attempts', 'integer');
-        $batchItemsTable->addColumn('requires_approval', 'integer');
         $batchItemsTable->addColumn('encrypted', 'integer');
         $batchItemsTable->addColumn('message', 'text', [
             'notNull' => false,
@@ -119,8 +102,6 @@ final class DbalStatementsProvider
 
     /**
      * @return string[]
-     *
-     * @throws \Doctrine\DBAL\Exception
      */
     public function rollbackStatements(): array
     {
@@ -151,6 +132,8 @@ final class DbalStatementsProvider
         $table->addColumn('status', 'string', [
             'length' => 50,
         ]);
+
+        $table->addColumn('requires_approval', 'integer');
 
         $table->addColumn('throwable', 'text', [
             'notNull' => false,

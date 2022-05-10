@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Bridge\Symfony;
 
+use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
+
 final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
 {
-    /**
-     * Make sure we can boot the kernel correctly.
-     */
     public function testSanity(): void
     {
-        $this->getKernel()
+        $container = $this->getKernel()
             ->getContainer();
 
-        self::assertTrue(true);
+        self::assertInstanceOf(BatchObjectManagerInterface::class, $container->get(BatchObjectManagerInterface::class));
     }
 }

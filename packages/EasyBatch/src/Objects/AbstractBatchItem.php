@@ -5,52 +5,29 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Objects;
 
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
+use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 
 abstract class AbstractBatchItem extends AbstractBatchObject implements BatchItemInterface
 {
-    /**
-     * @var bool
-     */
-    private $approvalRequired = false;
+    private int $attempts = 0;
 
-    /**
-     * @var int
-     */
-    private $attempts = 0;
+    private int|string $batchId;
 
-    /**
-     * @var int|string
-     */
-    private $batchId;
+    private ?string $dependsOnName = null;
 
-    /**
-     * @var string
-     */
-    private $dependsOnName;
+    private bool $encrypted = false;
 
-    /**
-     * @var bool
-     */
-    private $encrypted = false;
+    private ?string $encryptionKeyName = null;
 
-    /**
-     * @var string
-     */
-    private $encryptionKeyName;
+    private int $maxAttempts = 1;
 
-    /**
-     * @var int
-     */
-    private $maxAttempts = 1;
-
-    /**
-     * @var object
-     */
-    private $message;
+    private ?object $message = null;
 
     public function __construct()
     {
-        $this->setType(BatchItemInterface::TYPE_MESSAGE);
+        $this
+            ->setStatus(BatchObjectInterface::STATUS_CREATED)
+            ->setType(BatchItemInterface::TYPE_MESSAGE);
     }
 
     public function canBeRetried(): bool
@@ -88,26 +65,19 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
         return $this->message;
     }
 
-    public function isApprovalRequired(): bool
-    {
-        return $this->approvalRequired;
-    }
-
     public function isEncrypted(): bool
     {
         return $this->encrypted;
     }
 
+    public function isPendingApproval(): bool
+    {
+        return parent::isPendingApproval() || $this->getStatus() === self::STATUS_BATCH_PENDING_APPROVAL;
+    }
+
     public function isRetried(): bool
     {
         return $this->getAttempts() > 1;
-    }
-
-    public function setApprovalRequired(?bool $approvalRequired = null): BatchItemInterface
-    {
-        $this->approvalRequired = $approvalRequired ?? true;
-
-        return $this;
     }
 
     public function setAttempts(int $attempts): BatchItemInterface
@@ -171,7 +141,6 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
             'encrypted' => $this->isEncrypted() ? 1 : 0,
             'max_attempts' => $this->getMaxAttempts(),
             'message' => $this->getMessage(),
-            'requires_approval' => $this->isApprovalRequired() ? 1 : 0,
         ]);
     }
 }

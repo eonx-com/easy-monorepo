@@ -13,14 +13,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class AsyncDispatcher implements AsyncDispatcherInterface
 {
-    /**
-     * @var \Symfony\Component\Messenger\MessageBusInterface
-     */
-    private $bus;
-
-    public function __construct(MessageBusInterface $bus)
+    public function __construct(private readonly MessageBusInterface $bus)
     {
-        $this->bus = $bus;
     }
 
     /**

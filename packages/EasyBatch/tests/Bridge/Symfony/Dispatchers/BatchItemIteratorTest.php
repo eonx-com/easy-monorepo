@@ -2,43 +2,32 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBatch\Tests;
+namespace EonX\EasyBatch\Tests\Bridge\Symfony\Dispatchers;
 
-use EonX\EasyBatch\BatchManager;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
-use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
+use EonX\EasyBatch\Iterator\BatchItemIterator;
+use EonX\EasyBatch\Iterator\IteratorConfig;
 use EonX\EasyBatch\Repositories\BatchItemRepository;
-use EonX\EasyBatch\Repositories\BatchRepository;
 use EonX\EasyBatch\Serializers\MessageSerializer;
-use EonX\EasyBatch\Tests\Stubs\AsyncDispatcherStub;
-use EonX\EasyBatch\Tests\Stubs\EventDispatcherStub;
+use EonX\EasyBatch\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
-use EonX\EasyBatch\Transformers\BatchTransformer;
 
-final class BatchManagerTest extends AbstractRepositoriesTestCase
+final class BatchItemIteratorTest extends AbstractSymfonyTestCase
 {
-    /**
-     * @var int
-     */
-    private static $iterateFuncCalls = 0;
+    private static int $iterateFuncCalls = 0;
 
     /**
      * @var string[]
      */
-    private static $iteratedItems = [];
+    private static array $iteratedItems = [];
 
-    /**
-     * @var null|\EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface
-     */
-    private $batchItemRepo;
+    private ?BatchItemRepositoryInterface $batchItemRepo = null;
 
     /**
      * @return iterable<mixed>
-     *
-     * @throws \Doctrine\DBAL\Exception
      */
     public function providerTestIterateThroughItems(): iterable
     {
@@ -87,12 +76,17 @@ final class BatchManagerTest extends AbstractRepositoriesTestCase
             static function (): void {
                 self::assertIterateFuncCalls(2);
             },
-            static function (BatchItemInterface $batchItem, BatchItemRepositoryInterface $batchItemRepo): void {
-                $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
-                $batchItemRepo->save($batchItem);
-
+            static function (): void {
                 self::$iterateFuncCalls++;
             },
+            static function (BatchItemRepositoryInterface $batchItemRepo): \Closure {
+                return static function (array $batchItems) use ($batchItemRepo): void {
+                    foreach ($batchItems as $batchItem) {
+                        $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
+                        $batchItemRepo->save($batchItem);
+                    }
+                };
+            }
         ];
 
         yield '2 pages, status changed during iteration, reset pagination, 1 item processed twice' => [
@@ -117,15 +111,20 @@ final class BatchManagerTest extends AbstractRepositoriesTestCase
                     'batchItem3',
                 ], self::$iteratedItems);
             },
-            static function (BatchItemInterface $batchItem, BatchItemRepositoryInterface $batchItemRepo): void {
-                if ($batchItem->getName() === 'batchItem1') {
-                    $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
-                    $batchItemRepo->save($batchItem);
-                }
-
+            static function (BatchItemInterface $batchItem): void {
                 self::$iteratedItems[] = (string)$batchItem->getName();
                 self::$iterateFuncCalls++;
             },
+            static function (BatchItemRepositoryInterface $batchItemRepo): \Closure {
+                return static function (array $batchItems) use ($batchItemRepo): void {
+                    foreach ($batchItems as $batchItem) {
+                        if ($batchItem->getName() === 'batchItem1') {
+                            $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
+                            $batchItemRepo->save($batchItem);
+                        }
+                    }
+                };
+            }
         ];
     }
 
@@ -138,31 +137,27 @@ final class BatchManagerTest extends AbstractRepositoriesTestCase
         callable $setup,
         callable $assert,
         callable $iterateFunc,
+        ?callable $getCurrentPageCallback = null,
         ?string $batchId = null,
         ?int $batchItemPerPage = null
     ): void {
-        $batchRepo = new BatchRepository(
-            $this->getBatchFactory(),
-            $this->getIdStrategy(),
-            new BatchTransformer(),
-            $this->getDoctrineDbalConnection(),
-            BatchRepositoryInterface::DEFAULT_TABLE
-        );
-        $batchItemFactory = $this->getBatchItemFactory();
-        $batchItemRepo = $this->getBatchItemRepository();
+        $container = $this->getKernel()
+            ->getContainer();
 
-        $batchManager = new BatchManager(
-            new AsyncDispatcherStub(),
-            $batchRepo,
-            $batchItemFactory,
-            $batchItemRepo,
-            new EventDispatcherStub(),
-            $batchItemPerPage ?? 2
-        );
+        $batchItemFactory = $container->get(BatchItemFactoryInterface::class);
+        $batchItemRepo = $container->get(BatchItemRepositoryInterface::class);
 
         \call_user_func($setup, $batchItemFactory, $batchItemRepo);
 
-        $batchManager->iterateThroughItems($batchId ?? 'batch-id', $iterateFunc);
+        $iteratorConfig = (IteratorConfig::create($batchId ?? 'batch-id', $iterateFunc))
+            ->setBatchItemsPerPage($batchItemPerPage ?? 2)
+            ->forDispatch();
+
+        if ($getCurrentPageCallback) {
+            $iteratorConfig->setCurrentPageCallback($getCurrentPageCallback($batchItemRepo));
+        }
+
+        $container->get(BatchItemIterator::class)->iterateThroughItems($iteratorConfig);
 
         \call_user_func($assert);
     }
