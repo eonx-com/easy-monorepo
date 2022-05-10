@@ -24,6 +24,8 @@ final class BatchItemPersister
     ): BatchItemInterface {
         $batchItem = $this->batchItemFactory->create($batchId, $message, $item->getClass());
 
+        $batchItem->setApprovalRequired($item->isApprovalRequired());
+
         $batchItem
             ->setEncrypted($item->isEncrypted())
             ->setMaxAttempts($item->getMaxAttempts());

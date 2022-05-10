@@ -58,6 +58,7 @@ final class BatchItemExceptionHandler
     }
 
     /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
@@ -69,13 +70,13 @@ final class BatchItemExceptionHandler
 
         if ($exception instanceof BatchItemSavedButBatchNotProcessedException) {
             $batchItem = $exception->getBatchItem();
-            $message = new ProcessBatchForBatchItemMessage($batchItem->getId());
+            $message = new ProcessBatchForBatchItemMessage($batchItem->getIdOrFail());
         }
 
         if ($exception instanceof BatchItemProcessedButNotSavedException) {
             $batchItem = $exception->getBatchItem();
             $message = new UpdateBatchItemMessage(
-                $batchItem->getId(),
+                $batchItem->getIdOrFail(),
                 $this->batchItemTransformer->transformToArray($batchItem)
             );
         }

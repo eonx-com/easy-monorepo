@@ -37,7 +37,10 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
 
     private function createDateTimeFromFormat(string $dateTime): \DateTimeInterface
     {
-        return Carbon::createFromFormat(BatchObjectInterface::DATETIME_FORMAT, $dateTime, 'UTC');
+        /** @var \DateTimeInterface $newDateTime */
+        $newDateTime = Carbon::createFromFormat(BatchObjectInterface::DATETIME_FORMAT, $dateTime, 'UTC');
+
+        return $newDateTime;
     }
 
     /**

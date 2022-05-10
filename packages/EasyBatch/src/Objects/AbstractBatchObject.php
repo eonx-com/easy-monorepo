@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Objects;
 
+use EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 
 abstract class AbstractBatchObject implements BatchObjectInterface
@@ -58,6 +59,18 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     public function getId(): int|string|null
     {
         return $this->id;
+    }
+
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     */
+    public function getIdOrFail(): int|string
+    {
+        if ($this->getId() !== null) {
+            return $this->getId();
+        }
+
+        throw new BatchObjectIdRequiredException(\sprintf('ID not set on batchObject "%s"', \get_class($this)));
     }
 
     /**

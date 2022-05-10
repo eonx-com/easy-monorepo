@@ -84,7 +84,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         };
     }
 
-    private function processBatchItemWithLock(int|string $batchItemId, callable $func): mixed
+    private function processBatchItemWithLock(int|string $batchItemId, \Closure $func): mixed
     {
         $lockData = LockData::create(\sprintf('easy_batch_item_%s', $batchItemId), null, true);
 

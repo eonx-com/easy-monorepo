@@ -16,6 +16,9 @@ final class BatchPersister
     ) {
     }
 
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     */
     public function persistBatch(BatchInterface $batch): BatchInterface
     {
         $batch = $this->batchRepository->save($batch);
@@ -29,11 +32,11 @@ final class BatchPersister
 
             $item = MessageDecorator::wrap($item);
             $message = $item->getMessage();
-            $message->setApprovalRequired($item->isApprovalRequired());
 
             if ($message instanceof BatchInterface) {
                 $batchItem = $this->batchItemPersister->persistBatchItem($batchId, $item);
-                $message->setParentBatchItemId($batchItem->getId());
+                $message->setApprovalRequired($item->isApprovalRequired());
+                $message->setParentBatchItemId($batchItem->getIdOrFail());
 
                 $this->persistBatch($message);
 

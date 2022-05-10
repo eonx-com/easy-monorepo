@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBatch\Tests\Bridge\Symfony\Dispatchers;
+namespace EonX\EasyBatch\Tests\Bridge\Symfony\Iterator;
 
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
@@ -166,19 +166,5 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
     {
         self::assertEquals($calls, self::$iterateFuncCalls);
         self::$iterateFuncCalls = 0;
-    }
-
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
-    private function getBatchItemRepository(): BatchItemRepositoryInterface
-    {
-        return $this->batchItemRepo = $this->batchItemRepo ?? new BatchItemRepository(
-            $this->getBatchItemFactory(),
-            $this->getIdStrategy(),
-            new BatchItemTransformer(new MessageSerializer()),
-            $this->getDoctrineDbalConnection(),
-            BatchItemRepositoryInterface::DEFAULT_TABLE
-        );
     }
 }

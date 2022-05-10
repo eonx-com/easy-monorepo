@@ -35,7 +35,11 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         /** @var null|\EonX\EasyBatch\Interfaces\BatchInterface $batch */
         $batch = $this->doFind($id);
 
-        return $this->cache[$id] = $batch;
+        if ($batch !== null) {
+            $this->cache[$id] = $batch;
+        }
+
+        return $batch;
     }
 
     /**

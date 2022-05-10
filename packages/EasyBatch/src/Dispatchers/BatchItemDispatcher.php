@@ -30,9 +30,12 @@ final class BatchItemDispatcher
         $this->doDispatch($batchObjectManager, $batchItem->getBatchId(), $batchItem->getName());
     }
 
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     */
     public function dispatchItemsForBatch(BatchObjectManagerInterface $batchObjectManager, BatchInterface $batch): void
     {
-        $this->doDispatch($batchObjectManager, $batch->getId());
+        $this->doDispatch($batchObjectManager, $batch->getIdOrFail());
     }
 
     private function doDispatch(
@@ -53,7 +56,7 @@ final class BatchItemDispatcher
             }
 
             if ($batchItem->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
-                $batchObjectManager->dispatchBatch($this->batchRepository->findNestedOrFail($batchItem->getId()));
+                $batchObjectManager->dispatchBatch($this->batchRepository->findNestedOrFail($batchItem->getIdOrFail()));
             }
         };
 

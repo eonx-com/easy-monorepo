@@ -66,6 +66,11 @@ interface BatchObjectInterface
     public function getId(): int|string|null;
 
     /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     */
+    public function getIdOrFail(): int|string;
+
+    /**
      * @return null|mixed[]
      */
     public function getMetadata(): ?array;

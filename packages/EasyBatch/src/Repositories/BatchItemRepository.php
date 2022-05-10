@@ -120,6 +120,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
      * @param \EonX\EasyBatch\Interfaces\BatchItemInterface[] $batchItems
      *
      * @throws \Doctrine\DBAL\Exception
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
      */
     public function updateStatusToPending(array $batchItems): void
     {
@@ -130,7 +131,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         }
 
         $batchItemIds = \array_map(static function (BatchItemInterface $batchItem): int|string {
-            return $batchItem->getId();
+            return $batchItem->getIdOrFail();
         }, $batchItems);
 
         $queryBuilder = $this->conn->createQueryBuilder();

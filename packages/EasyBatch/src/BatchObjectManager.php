@@ -91,7 +91,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
 
             // Approve nested batch
             if ($batchObject->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
-                $this->approve($this->batchRepository->findNestedOrFail($batchObject->getId()));
+                $this->approve($this->batchRepository->findNestedOrFail($batchObject->getIdOrFail()));
             }
 
             // Update batch for batchItem
@@ -141,7 +141,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
 
             // Cancel remaining batchItems
             $this->batchItemIterator->iterateThroughItems(
-                IteratorConfig::create($batchObject->getId(), $this->getCancelBatchItemClosure())
+                IteratorConfig::create($batchObject->getIdOrFail(), $this->getCancelBatchItemClosure())
             );
 
             // If nested batch, cancel parent batchItem
@@ -169,7 +169,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
 
             // Cancel nested batch
             if ($batchObject->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
-                $this->cancel($this->batchRepository->findNestedOrFail($batchObject->getId()));
+                $this->cancel($this->batchRepository->findNestedOrFail($batchObject->getIdOrFail()));
             }
 
             // Update batch for batchItem

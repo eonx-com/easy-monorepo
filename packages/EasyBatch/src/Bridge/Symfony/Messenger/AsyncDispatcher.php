@@ -23,11 +23,7 @@ final class AsyncDispatcher implements AsyncDispatcherInterface
      */
     public function dispatchItem(BatchItemInterface $batchItem): void
     {
-        $batchItemId = $batchItem->getId();
-
-        if ($batchItemId === null) {
-            throw new BatchObjectIdRequiredException('BatchItem does not have an ID');
-        }
+        $batchItemId = $batchItem->getIdOrFail();
 
         if ($batchItem->getType() === BatchItemInterface::TYPE_MESSAGE) {
             $message = $batchItem->getMessage();
