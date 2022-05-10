@@ -6,13 +6,14 @@ namespace EonX\EasyBatch\Tests\Bridge\Symfony\Stubs;
 
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\StampInterface;
 
 final class MessageBusStub implements MessageBusInterface
 {
-
-    public function dispatch(object $message, array $stamps = []): Envelope
+    /**
+     * @param \Symfony\Component\Messenger\Stamp\StampInterface[]|null $stamps
+     */
+    public function dispatch(object $message, ?array $stamps = null): Envelope
     {
-        // TODO: Implement dispatch() method.
+        return Envelope::wrap($message);
     }
 }

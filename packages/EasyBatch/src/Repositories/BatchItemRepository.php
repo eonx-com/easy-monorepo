@@ -137,8 +137,10 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
 
         // Simplify criteria if only 1 batchItem to update
         $whereId = $count === 1
-            ? $queryBuilder->expr()->eq('b.id', $batchItemIds[0])
-            : $queryBuilder->expr()->in('b.id', $batchItemIds);
+            ? $queryBuilder->expr()
+                ->eq('b.id', $batchItemIds[0])
+            : $queryBuilder->expr()
+                ->in('b.id', $batchItemIds);
 
         $queryBuilder
             ->update($this->table, 'b')

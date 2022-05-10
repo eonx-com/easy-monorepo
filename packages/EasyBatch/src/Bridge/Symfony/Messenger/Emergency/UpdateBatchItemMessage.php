@@ -24,8 +24,10 @@ final class UpdateBatchItemMessage
     /**
      * @param mixed[] $data
      */
-    public function __construct(private readonly int|string $batchItemId, array $data)
-    {
+    public function __construct(
+        private readonly int|string $batchItemId,
+        array $data
+    ) {
         foreach ($data as $name => $value) {
             if (\in_array($name, self::ONLY, true)) {
                 $this->data[$name] = $value;

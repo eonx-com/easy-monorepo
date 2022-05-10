@@ -11,8 +11,10 @@ final class BatchItemCreatedFromArrayEvent extends AbstractBatchItemEvent
     /**
      * @param mixed[] $array
      */
-    public function __construct(BatchItemInterface $batchItem, private readonly array $array)
-    {
+    public function __construct(
+        BatchItemInterface $batchItem,
+        private readonly array $array
+    ) {
         parent::__construct($batchItem);
     }
 
