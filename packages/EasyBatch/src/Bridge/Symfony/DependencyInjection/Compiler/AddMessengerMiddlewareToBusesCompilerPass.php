@@ -40,7 +40,9 @@ final class AddMessengerMiddlewareToBusesCompilerPass implements CompilerPassInt
                 return new Reference($class);
             }, self::EASY_BATCH_MIDDLEWARE_LIST));
 
-            // Replace
+            /** @var \Symfony\Component\DependencyInjection\Reference[] $existingMiddlewareList */
+
+            // Replace middleware list in bus argument
             $middleware->setValues($existingMiddlewareList);
         }
     }
