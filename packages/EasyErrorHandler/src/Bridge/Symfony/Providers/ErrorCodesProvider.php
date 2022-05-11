@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge\Symfony;
+namespace EonX\EasyErrorHandler\Bridge\Symfony\Providers;
 
 use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ErrorCodes\ErrorCodesProviderInterface;
 use EonX\EasyErrorHandler\Exceptions\ErrorCodesProviderException;
