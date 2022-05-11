@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Iterator;
 
+use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Types\Types;
+use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
+use EonX\EasyBatch\Interfaces\BatchObjectInterface;
+use EonX\EasyPagination\Interfaces\ExtendablePaginatorInterface;
+use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Pagination;
 
 final class BatchItemIterator
 {
-    private const PAGINATE_METHOD = 'paginateItems';
-
-    private const PAGINATE_FOR_DISPATCH_METHOD = 'paginateItemsForDispatch';
-
     public function __construct(
         private readonly BatchItemRepositoryInterface $batchItemRepository,
         private readonly int $batchItemsPerPage
@@ -24,19 +26,19 @@ final class BatchItemIterator
         $page = 1;
         $pagesCache = [];
 
-        do {
-            // This method isn't used only to dispatch batch items
-            // But also to perform actions on batch or batch items completion
-            // Since findForDispatch was updated to filter on pending status
-            // This breaks some part of the package, it needs to be refactored
-            // To support multiple paginator queries
+        $this->processConfig($config);
 
-            $paginateMethod = $config->isForDispatch() ? self::PAGINATE_FOR_DISPATCH_METHOD : self::PAGINATE_METHOD;
-            $paginator = $this->batchItemRepository->{$paginateMethod}(
+        do {
+            $paginator = $this->batchItemRepository->paginateItems(
                 new Pagination($page, $config->getBatchItemsPerPage() ?? $this->batchItemsPerPage),
                 $config->getBatchId(),
                 $config->getDependsOnName()
             );
+
+            if ($config->getExtendPaginator() !== null) {
+                $newPaginator = \call_user_func($config->getExtendPaginator(), $paginator);
+                $paginator = $newPaginator instanceof LengthAwarePaginatorInterface ? $newPaginator : $paginator;
+            }
 
             /** @var \EonX\EasyBatch\Interfaces\BatchItemInterface[] $items */
             $items = $paginator->getItems();
@@ -84,5 +86,38 @@ final class BatchItemIterator
         }
 
         return \md5($hash);
+    }
+
+    private function processConfig(IteratorConfig $config): void
+    {
+        $quote = static function (QueryBuilder $queryBuilder, array $statuses): array {
+            return \array_map(static function (string $status) use ($queryBuilder): string {
+                return $queryBuilder->getConnection()->quote($status);
+            }, $statuses);
+        };
+
+        if ($config->isForCancel()) {
+            $config->setExtendPaginator(static function (ExtendablePaginatorInterface $paginator) use ($quote): void {
+                $paginator->addFilterCriteria(static function (QueryBuilder $queryBuilder) use ($quote): void {
+                    $queryBuilder
+                        ->andWhere($queryBuilder->expr()->notIn(
+                            'status',
+                            $quote($queryBuilder, BatchObjectInterface::STATUSES_FOR_COMPLETED)
+                        ));
+                });
+            });
+        }
+
+        if ($config->isForDispatch()) {
+            $config->setExtendPaginator(static function (ExtendablePaginatorInterface $paginator) use ($quote): void {
+                $paginator->addFilterCriteria(static function (QueryBuilder $queryBuilder) use ($quote): void {
+                    $queryBuilder
+                        ->andWhere($queryBuilder->expr()->in(
+                            'status',
+                            $quote($queryBuilder, BatchItemInterface::STATUSES_FOR_DISPATCH)
+                        ));
+                });
+            });
+        }
     }
 }

@@ -133,7 +133,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     {
         return \in_array(
             $this->getStatus(),
-            [self::STATUS_FAILED, self::STATUS_SUCCEEDED, self::STATUS_CANCELLED],
+            BatchObjectInterface::STATUSES_FOR_COMPLETED,
             true
         );
     }

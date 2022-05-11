@@ -19,6 +19,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
     /**
      * @throws \Doctrine\DBAL\Exception
      * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
      */
     public function findForProcess(int|string $batchItemId): BatchItemInterface
     {
@@ -58,7 +59,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             static function (QueryBuilder $queryBuilder) use ($batchId, $dependsOnName): void {
                 $queryBuilder
                     ->where('batch_id = :batchId')
-                    ->setParameter('batchId', $batchId);
+                    ->setParameter('batchId', $batchId, \is_string($batchId) ? Types::STRING : Types::INTEGER);
 
                 // Make sure to get only batchItems with no dependency
                 if ($dependsOnName === null) {
@@ -69,7 +70,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
                 if ($dependsOnName !== null) {
                     $queryBuilder
                         ->andWhere('depends_on_name = :dependsOnName')
-                        ->setParameter('dependsOnName', $dependsOnName);
+                        ->setParameter('dependsOnName', $dependsOnName, Types::STRING);
                 }
             }
         );
@@ -83,24 +84,6 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             $batchItem = $this->factory->createFromArray($item);
 
             return $batchItem;
-        });
-
-        return $paginator;
-    }
-
-    public function paginateItemsForDispatch(
-        PaginationInterface $pagination,
-        int|string $batchId,
-        ?string $dependsOnName = null
-    ): LengthAwarePaginatorInterface {
-        /** @var \EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator $paginator */
-        $paginator = $this->paginateItems($pagination, $batchId, $dependsOnName);
-
-        $paginator->addFilterCriteria(static function (QueryBuilder $queryBuilder): void {
-            // Dispatch only pending items
-            $queryBuilder
-                ->andWhere('status = :createdStatus')
-                ->setParameter('createdStatus', BatchObjectInterface::STATUS_CREATED);
         });
 
         return $paginator;
@@ -138,15 +121,25 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         $queryBuilder
             ->update($this->table)
             ->set('status', ':statusPending')
-            ->where($queryBuilder->expr()->{$count === 1 ? 'eq' : 'in'}('id', ':batchItemIds'))
-            ->andWhere('status = :statusCreated')
-            ->setParameter(
-                'batchItemIds',
-                $count === 1 ? $batchItemIds[0] : $batchItemIds,
-                $count === 1 ? Types::STRING : Types::ARRAY
-            )
+            ->where('status = :statusCreated')
             ->setParameter('statusPending', BatchObjectInterface::STATUS_PENDING, Types::STRING)
             ->setParameter('statusCreated', BatchObjectInterface::STATUS_CREATED, Types::STRING);
+
+        // Handle 1 batchItem
+        if ($count === 1) {
+            $queryBuilder
+                ->andWhere('id = :batchItemId')
+                ->setParameter('batchItemId', $batchItemIds[0], Types::STRING);
+        }
+
+        // Handle more than 1 batchItem
+        if ($count > 1) {
+            $batchItemIds = \array_map(function (string $batchItemId): string {
+                return $this->conn->quote($batchItemId);
+            }, $batchItemIds);
+
+            $queryBuilder->andWhere($queryBuilder->expr()->in('id', $batchItemIds));
+        }
 
         $this->conn->executeStatement(
             $queryBuilder->getSQL(),

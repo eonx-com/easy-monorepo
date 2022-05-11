@@ -13,6 +13,13 @@ final class IteratorConfig
      */
     private $currentPageCallback;
 
+    /**
+     * @var callable|null
+     */
+    private $extendPaginator;
+
+    private bool $forCancel = false;
+
     private bool $forDispatch = false;
 
     /**
@@ -33,9 +40,24 @@ final class IteratorConfig
         return new self($batchId, $func, $dependsOnName);
     }
 
+    public function forCancel(?bool $forCancel = null): self
+    {
+        $this->forCancel = $forCancel ?? true;
+
+        if ($this->forCancel) {
+            $this->forDispatch = false;
+        }
+
+        return $this;
+    }
+
     public function forDispatch(?bool $forDispatch = null): self
     {
         $this->forDispatch = $forDispatch ?? true;
+
+        if ($this->forDispatch) {
+            $this->forCancel = false;
+        }
 
         return $this;
     }
@@ -60,9 +82,19 @@ final class IteratorConfig
         return $this->dependsOnName;
     }
 
+    public function getExtendPaginator(): ?callable
+    {
+        return $this->extendPaginator;
+    }
+
     public function getFunc(): callable
     {
         return $this->func;
+    }
+
+    public function isForCancel(): bool
+    {
+        return $this->forCancel;
     }
 
     public function isForDispatch(): bool
@@ -80,6 +112,13 @@ final class IteratorConfig
     public function setCurrentPageCallback(callable $currentPageCallback): self
     {
         $this->currentPageCallback = $currentPageCallback;
+
+        return $this;
+    }
+
+    public function setExtendPaginator(callable $extendPaginator): self
+    {
+        $this->extendPaginator = $extendPaginator;
 
         return $this;
     }

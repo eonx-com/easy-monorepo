@@ -26,7 +26,11 @@ trait DoctrineDbalPaginatorTrait
      */
     private function fetchResults(QueryBuilder $queryBuilder): array
     {
-        return $this->conn->fetchAllAssociative($queryBuilder->getSQL(), $queryBuilder->getParameters());
+        return $this->conn->fetchAllAssociative(
+            $queryBuilder->getSQL(),
+            $queryBuilder->getParameters(),
+            $queryBuilder->getParameterTypes()
+        );
     }
 
     private function resolveSelect(): mixed

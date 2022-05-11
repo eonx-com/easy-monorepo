@@ -23,6 +23,15 @@ interface BatchObjectInterface
     ];
 
     /**
+     * @var string[]
+     */
+    public const STATUSES_FOR_COMPLETED = [
+        self::STATUS_CANCELLED,
+        self::STATUS_FAILED,
+        self::STATUS_SUCCEEDED,
+    ];
+
+    /**
      * @var string
      */
     public const STATUS_CANCELLED = 'cancelled';

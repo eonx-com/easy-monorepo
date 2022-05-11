@@ -87,7 +87,7 @@ final class DbalStatementsProvider
         $this->addSharedColumns($batchItemsTable);
 
         // Index for pagination over items
-        $batchItemsTable->addIndex(['batch_id', 'depends_on_name', 'created_at'], 'srch_depends_on');
+        $batchItemsTable->addIndex(['batch_id', 'depends_on_name', 'status', 'created_at'], 'srch_depends_on');
 
         if ($this->extendBatchesTable !== null) {
             \call_user_func($this->extendBatchesTable, $batchesTable);
