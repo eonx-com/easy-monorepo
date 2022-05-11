@@ -79,7 +79,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Messenger
     $services
         ->set(BatchItemExceptionHandler::class)
-        ->arg('$batchItemTransformer', service(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
+        ->arg('$batchItemTransformer', service(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER))
+        ->arg('$container', service('service_container'));
 
     $services
         ->set(DispatchBatchMiddleware::class)

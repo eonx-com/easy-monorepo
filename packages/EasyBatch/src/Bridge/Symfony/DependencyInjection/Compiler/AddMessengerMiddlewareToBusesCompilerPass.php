@@ -35,10 +35,13 @@ final class AddMessengerMiddlewareToBusesCompilerPass implements CompilerPassInt
                 return \in_array((string)$ref, self::EASY_BATCH_MIDDLEWARE_LIST, true) === false;
             });
 
-            // Add reference to easy batch middleware at the start of existing list
-            \array_unshift($existingMiddlewareList, \array_map(static function (string $class): Reference {
+            // Convert easy batch middleware classes to reference
+            $easyBatchMiddlewareList = \array_map(static function (string $class): Reference {
                 return new Reference($class);
-            }, self::EASY_BATCH_MIDDLEWARE_LIST));
+            }, self::EASY_BATCH_MIDDLEWARE_LIST);
+
+            // Add reference to easy batch middleware at the start of existing list
+            \array_unshift($existingMiddlewareList, ...$easyBatchMiddlewareList);
 
             /** @var \Symfony\Component\DependencyInjection\Reference[] $existingMiddlewareList */
 
