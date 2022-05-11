@@ -10,6 +10,7 @@ use EonX\EasyBatch\Exceptions\BatchItemProcessedButNotSavedException;
 use EonX\EasyBatch\Exceptions\BatchItemSavedButBatchNotProcessedException;
 use EonX\EasyBatch\Interfaces\EasyBatchEmergencyExceptionInterface;
 use EonX\EasyBatch\Interfaces\EasyBatchExceptionInterface;
+use EonX\EasyBatch\Interfaces\EasyBatchPreventProcessExceptionInterface;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Messenger\Envelope;
@@ -34,6 +35,11 @@ final class BatchItemExceptionHandler
      */
     public function handleException(\Throwable $throwable, Envelope $envelope): Envelope
     {
+        // Prevent process exceptions are simply not to proceed, return envelope
+        if ($throwable instanceof EasyBatchPreventProcessExceptionInterface) {
+            return $envelope;
+        }
+
         // Emergency exceptions has special behaviour
         if ($throwable instanceof EasyBatchEmergencyExceptionInterface) {
             return $this->doHandleEmergencyException($throwable, $envelope);
