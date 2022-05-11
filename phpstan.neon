@@ -7,7 +7,9 @@ services:
 
 parameters:
     parallel:
-            maximumNumberOfProcesses: 2
+        jobSize: 20
+        maximumNumberOfProcesses: 32
+        minimumNumberOfJobsPerProcess: 2
 
     paths:
         - packages
