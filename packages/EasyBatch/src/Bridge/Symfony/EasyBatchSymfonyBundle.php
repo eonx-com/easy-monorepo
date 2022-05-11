@@ -17,7 +17,7 @@ final class EasyBatchSymfonyBundle extends Bundle
     {
         $container
             ->addCompilerPass(new SetEncryptorOnBatchItemTransformerCompilerPass())
-            ->addCompilerPass(new AddMessengerMiddlewareToBusesCompilerPass());
+            ->addCompilerPass(new AddMessengerMiddlewareToBusesCompilerPass(), priority: -10);
     }
 
     public function getContainerExtension(): ExtensionInterface
