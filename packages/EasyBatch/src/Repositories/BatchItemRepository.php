@@ -135,19 +135,16 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         }, $batchItems);
 
         $queryBuilder = $this->conn->createQueryBuilder();
-
-        // Simplify criteria if only 1 batchItem to update
-        $whereId = $count === 1
-            ? $queryBuilder->expr()
-                ->eq('b.id', $batchItemIds[0])
-            : $queryBuilder->expr()
-                ->in('b.id', $batchItemIds);
-
         $queryBuilder
-            ->update($this->table, 'b')
-            ->set('b.status', ':statusPending')
-            ->where($whereId)
-            ->andWhere('b.status = :statusCreated')
+            ->update($this->table)
+            ->set('status', ':statusPending')
+            ->where($queryBuilder->expr()->{$count === 1 ? 'eq' : 'in'}('id', ':batchItemIds'))
+            ->andWhere('status = :statusCreated')
+            ->setParameter(
+                'batchItemIds',
+                $count === 1 ? $batchItemIds[0] : $batchItemIds,
+                $count === 1 ? Types::STRING : Types::ARRAY
+            )
             ->setParameter('statusPending', BatchObjectInterface::STATUS_PENDING, Types::STRING)
             ->setParameter('statusCreated', BatchObjectInterface::STATUS_CREATED, Types::STRING);
 
