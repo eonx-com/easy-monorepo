@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginators;
 
 use EonX\EasyPagination\Interfaces\PaginationInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class IterableLengthAwarePaginator extends AbstractLengthAwarePaginator
 {
@@ -14,8 +14,8 @@ final class IterableLengthAwarePaginator extends AbstractLengthAwarePaginator
      */
     public function __construct(
         PaginationInterface $pagination,
-        private iterable $iterable,
-        private int $total
+        private readonly iterable $iterable,
+        private readonly int $total
     ) {
         parent::__construct($pagination);
     }
