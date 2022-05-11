@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginators;
 
 use Doctrine\DBAL\Connection;
+use EonX\EasyPagination\Interfaces\ExtendablePaginatorInterface as ExtendableInterface;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Traits\DoctrineDbalPaginatorTrait;
 
-final class DoctrineDbalPaginator extends AbstractPaginator
+final class DoctrineDbalPaginator extends AbstractPaginator implements ExtendableInterface
 {
     use DoctrineDbalPaginatorTrait;
 
