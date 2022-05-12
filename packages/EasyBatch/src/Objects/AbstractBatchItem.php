@@ -72,7 +72,16 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
 
     public function isPendingApproval(): bool
     {
-        return parent::isPendingApproval() || $this->getStatus() === self::STATUS_BATCH_PENDING_APPROVAL;
+        if (parent::isPendingApproval()) {
+            return true;
+        }
+
+        $pendingApprovalStatuses = [
+            self::STATUS_BATCH_PENDING_APPROVAL,
+            self::STATUS_PROCESSING_DEPENDENT_OBJECTS,
+        ];
+
+        return \in_array($this->getStatus(), $pendingApprovalStatuses, true);
     }
 
     public function isRetried(): bool

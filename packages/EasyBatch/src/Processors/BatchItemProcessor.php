@@ -81,7 +81,9 @@ final class BatchItemProcessor
             }
 
             try {
-                $this->batchProcessor->processBatchForBatchItem($this->batchObjectManager, $batch, $batchItem);
+                $this->batchProcessor
+                    ->reset()
+                    ->processBatchForBatchItem($this->batchObjectManager, $batch, $batchItem);
             } catch (\Throwable $throwableProcessBatch) {
                 // If batchItem can be retried and message logic failed, simply let it fail so the queue can retry it
                 if ($batchItem->canBeRetried() && $messageFuncSuccess === false) {

@@ -28,6 +28,11 @@ interface BatchItemInterface extends BatchObjectInterface
     /**
      * @var string
      */
+    public const STATUS_PROCESSING_DEPENDENT_OBJECTS = 'processing_dependent_objects';
+
+    /**
+     * @var string
+     */
     public const TYPE_MESSAGE = 'message';
 
     /**
