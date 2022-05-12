@@ -77,7 +77,7 @@ final class BatchItemProcessor
                 }
 
                 // Otherwise, throw special exception to update batchItem in separate process
-                throw new BatchItemProcessedButNotSavedException($batchItem);
+                throw new BatchItemProcessedButNotSavedException($batchItem, $throwableSaveBatchItem);
             }
 
             try {
@@ -89,7 +89,7 @@ final class BatchItemProcessor
                 }
 
                 // Otherwise, throw special exception to process batch for batchItem in separate process
-                throw new BatchItemSavedButBatchNotProcessedException($batchItem);
+                throw new BatchItemSavedButBatchNotProcessedException($batchItem, $throwableProcessBatch);
             }
         }
     }

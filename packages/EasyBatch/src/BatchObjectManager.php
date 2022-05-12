@@ -140,9 +140,9 @@ final class BatchObjectManager implements BatchObjectManagerInterface
             $this->batchRepository->save($batchObject);
 
             // Cancel remaining batchItems
-            $this->batchItemIterator->iterateThroughItems(
-                IteratorConfig::create($batchObject->getIdOrFail(), $this->getCancelBatchItemClosure())
-            );
+            $iteratorConfig = IteratorConfig::create($batchObject->getIdOrFail(), $this->getCancelBatchItemClosure())
+                ->forCancel();
+            $this->batchItemIterator->iterateThroughItems($iteratorConfig);
 
             // If nested batch, cancel parent batchItem
             if ($batchObject->getParentBatchItemId() !== null) {
@@ -162,7 +162,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
                     $batchObject->getBatchId(),
                     $this->getCancelBatchItemClosure(),
                     $batchObject->getName()
-                );
+                )->forCancel();
 
                 $this->batchItemIterator->iterateThroughItems($iteratorConfig);
             }
@@ -189,6 +189,9 @@ final class BatchObjectManager implements BatchObjectManagerInterface
         ));
     }
 
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     */
     public function dispatchBatch(BatchInterface $batch, ?callable $beforeFirstDispatch = null): BatchInterface
     {
         if ($batch->getId() === null) {

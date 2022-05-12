@@ -27,7 +27,8 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
     {
         $this->updateBatchItem(
             $this->batchItemRepository->findOrFail($message->getBatchItemId()),
-            $message->getData()
+            $message->getData(),
+            $message->getErrorDetails()
         );
 
         // Trigger process batch handler directly from here
@@ -45,8 +46,9 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
 
     /**
      * @param mixed[] $data
+     * @param mixed[]|null $errorDetails
      */
-    private function updateBatchItem(BatchItemInterface $batchItem, array $data): void
+    private function updateBatchItem(BatchItemInterface $batchItem, array $data, ?array $errorDetails = null): void
     {
         $batchItem
             ->setAttempts($data['attempts'])
@@ -56,9 +58,16 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
 
         $metadata = $batchItem->getMetadata() ?? [];
         $internal = $metadata['_internal'] ?? [];
-
         $now = Carbon::now('UTC')->format(BatchObjectInterface::DATETIME_FORMAT);
-        $internal['update_emergency_triggered_at'] = $now;
+
+        if (isset($internal['update_batch_item_emergency']) === false) {
+            $internal['update_batch_item_emergency'] = [];
+        }
+
+        $internal['update_batch_item_emergency'][] = [
+            'triggered_at' => $now,
+            'error_details' => $errorDetails,
+        ];
 
         $metadata['_internal'] = $internal;
 

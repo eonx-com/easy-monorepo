@@ -8,9 +8,11 @@ use EonX\EasyBatch\Interfaces\BatchItemInterface;
 
 final class BatchItemProcessedButNotSavedException extends AbstractEasyBatchEmergencyException
 {
-    public function __construct(private readonly BatchItemInterface $batchItem)
-    {
-        parent::__construct();
+    public function __construct(
+        private readonly BatchItemInterface $batchItem,
+        \Throwable $previous
+    ) {
+        parent::__construct(previous: $previous);
     }
 
     public function getBatchItem(): BatchItemInterface
