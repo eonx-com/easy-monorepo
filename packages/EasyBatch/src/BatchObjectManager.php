@@ -82,6 +82,10 @@ final class BatchObjectManager implements BatchObjectManagerInterface
 
         // BatchItem
         if ($batchObject instanceof BatchItemInterface) {
+            if ($batchObject->getAttempts() === 0) {
+                $batchObject->setAttempts(1);
+            }
+
             if ($batchObject->getStatus() !== BatchItemInterface::STATUS_PROCESSING_DEPENDENT_OBJECTS) {
                 $this->batchItemRepository->save($batchObject);
             }
@@ -156,6 +160,10 @@ final class BatchObjectManager implements BatchObjectManagerInterface
 
         // BatchItem
         if ($batchObject instanceof BatchItemInterface) {
+            if ($batchObject->getAttempts() === 0) {
+                $batchObject->setAttempts(1);
+            }
+
             if ($batchObject->getStatus() !== BatchItemInterface::STATUS_PROCESSING_DEPENDENT_OBJECTS) {
                 $this->batchItemRepository->save($batchObject);
             }
