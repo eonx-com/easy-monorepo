@@ -66,8 +66,6 @@ final class BatchItemExceptionHandler
 
     /**
      * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     private function doHandleEmergencyException(
         EasyBatchEmergencyExceptionInterface $exception,

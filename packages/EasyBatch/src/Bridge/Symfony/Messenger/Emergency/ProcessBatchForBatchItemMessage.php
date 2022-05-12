@@ -9,8 +9,10 @@ final class ProcessBatchForBatchItemMessage
     /**
      * @param mixed[]|null $errorDetails
      */
-    public function __construct(private readonly int|string $batchItemId, private readonly ?array $errorDetails = null)
-    {
+    public function __construct(
+        private readonly int|string $batchItemId,
+        private readonly ?array $errorDetails = null
+    ) {
     }
 
     public function getBatchItemId(): int|string

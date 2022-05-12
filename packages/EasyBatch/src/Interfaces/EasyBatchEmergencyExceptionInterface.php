@@ -6,5 +6,5 @@ namespace EonX\EasyBatch\Interfaces;
 
 interface EasyBatchEmergencyExceptionInterface extends EasyBatchExceptionInterface
 {
-    // Marker for all emergency exceptions of this package.
+    public function getPrevious(): ?\Throwable;
 }
