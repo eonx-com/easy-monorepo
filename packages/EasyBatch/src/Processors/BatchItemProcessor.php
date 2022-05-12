@@ -72,7 +72,7 @@ final class BatchItemProcessor
                 $batchItem = $this->batchItemRepository->save($batchItem);
             } catch (\Throwable $throwableSaveBatchItem) {
                 // If batchItem not saved and message logic failed, simply let it fail so the queue can retry it
-                if ($messageFuncSuccess) {
+                if ($messageFuncSuccess === false) {
                     throw $throwableSaveBatchItem;
                 }
 
