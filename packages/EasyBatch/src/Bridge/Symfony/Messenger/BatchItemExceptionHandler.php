@@ -23,6 +23,8 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 
 final class BatchItemExceptionHandler
 {
+    private const MESSENGER_TRANSPORT_PATTERN = 'messenger.transport.%s';
+
     public function __construct(
         private readonly BatchItemTransformer $batchItemTransformer,
         private readonly ContainerInterface $container,
@@ -103,6 +105,6 @@ final class BatchItemExceptionHandler
         $stamp = $envelope->last(ReceivedStamp::class);
         $transportName = $stamp instanceof ReceivedStamp ? $stamp->getTransportName() : $this->emergencyTransportName;
 
-        return $this->container->get($transportName);
+        return $this->container->get(\sprintf(self::MESSENGER_TRANSPORT_PATTERN, $transportName));
     }
 }
