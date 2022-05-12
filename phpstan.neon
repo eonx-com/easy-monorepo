@@ -55,6 +55,9 @@ parameters:
           path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
 
         # ---- EasyBatch ----
+        - message: '#Parameter \#1 \$callback of function array_map expects \(callable\(int\|string\)\: mixed\)\|null, Closure\(string\)\: string given#'
+          path: packages/EasyBatch/src/Repositories/BatchItemRepository.php
+
         # ---- EasyBugsnag ----
         - message: '#Return type \(void\) of method EonX\\EasyBugsnag\\Tests\\Bridge\\Symfony\\Stubs\\ConnectionStub\:\:(query|prepare)\(\) should be compatible with return type \(Doctrine\\DBAL\\Driver\\Statement\) of method Doctrine\\DBAL\\Driver\\Connection\:\:(query|prepare)\(\)#'
           path: packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/ConnectionStub.php

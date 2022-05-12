@@ -34,12 +34,19 @@ final class ProcessBatchForBatchItemHandler implements MessageHandlerInterface
         $batch = $this->batchRepository->findOrFail($batchItem->getBatchId());
 
         // Update batch metadata to reflect emergency flow triggered
-        $updateFreshBatch = static function (BatchInterface $freshBatch): void {
+        $updateFreshBatch = static function (BatchInterface $freshBatch) use ($message): void {
             $metadata = $freshBatch->getMetadata() ?? [];
             $internal = $metadata['_internal'] ?? [];
-
             $now = Carbon::now('UTC')->format(BatchObjectInterface::DATETIME_FORMAT);
-            $internal['process_batch_emergency_triggered_at'] = $now;
+
+            if (isset($internal['process_batch_emergency']) === false) {
+                $internal['process_batch_emergency'] = [];
+            }
+
+            $internal['process_batch_emergency'][] = [
+                'triggered_at' => $now,
+                'error_details' => $message->getErrorDetails(),
+            ];
 
             $metadata['_internal'] = $internal;
 

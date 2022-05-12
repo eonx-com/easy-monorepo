@@ -12,7 +12,8 @@ use EonX\EasyBatch\Interfaces\EasyBatchEmergencyExceptionInterface;
 use EonX\EasyBatch\Interfaces\EasyBatchExceptionInterface;
 use EonX\EasyBatch\Interfaces\EasyBatchPreventProcessExceptionInterface;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
-use Psr\Container\ContainerInterface;
+use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\ExceptionInterface as MessengerExceptionInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
@@ -73,17 +74,21 @@ final class BatchItemExceptionHandler
         Envelope $envelope
     ): Envelope {
         $message = null;
+        $errorDetails = $exception->getPrevious()
+            ? ErrorDetailsHelper::resolveSimpleDetails($exception->getPrevious())
+            : null;
 
         if ($exception instanceof BatchItemSavedButBatchNotProcessedException) {
             $batchItem = $exception->getBatchItem();
-            $message = new ProcessBatchForBatchItemMessage($batchItem->getIdOrFail());
+            $message = new ProcessBatchForBatchItemMessage($batchItem->getIdOrFail(), $errorDetails);
         }
 
         if ($exception instanceof BatchItemProcessedButNotSavedException) {
             $batchItem = $exception->getBatchItem();
             $message = new UpdateBatchItemMessage(
                 $batchItem->getIdOrFail(),
-                $this->batchItemTransformer->transformToArray($batchItem)
+                $this->batchItemTransformer->transformToArray($batchItem),
+                $errorDetails
             );
         }
 
@@ -95,10 +100,6 @@ final class BatchItemExceptionHandler
         return $envelope;
     }
 
-    /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
     private function getEmergencyTransport(Envelope $envelope): TransportInterface
     {
         $stamp = $envelope->last(ReceivedStamp::class);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Iterator;
 
 use Doctrine\DBAL\Query\QueryBuilder;
-use Doctrine\DBAL\Types\Types;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
@@ -92,7 +91,8 @@ final class BatchItemIterator
     {
         $quote = static function (QueryBuilder $queryBuilder, array $statuses): array {
             return \array_map(static function (string $status) use ($queryBuilder): string {
-                return $queryBuilder->getConnection()->quote($status);
+                return $queryBuilder->getConnection()
+                    ->quote($status);
             }, $statuses);
         };
 
