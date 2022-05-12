@@ -19,6 +19,11 @@ use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class BatchProcessor
 {
+    /**
+     * @var bool[]
+     */
+    private array $cache = [];
+
     public function __construct(
         private readonly BatchItemRepositoryInterface $batchItemRepository,
         private readonly BatchRepositoryInterface $batchRepository,
@@ -36,6 +41,12 @@ final class BatchProcessor
         BatchItemInterface $batchItem,
         ?callable $updateFreshBatch = null
     ): BatchInterface {
+        // Prevent same batchItem to be process twice within the same message lifecycle
+        if (isset($this->cache[$batchItem->getIdOrFail()])) {
+            return $batch;
+        }
+        $this->cache[$batchItem->getIdOrFail()] = true;
+
         $updateFunc = static function (BatchInterface $freshBatch) use ($batchItem, $updateFreshBatch): BatchInterface {
             if ($batchItem->isCompleted()) {
                 $freshBatch->setProcessed($freshBatch->countProcessed() + 1);
@@ -100,11 +111,19 @@ final class BatchProcessor
 
         $freshBatch = $this->batchRepository->updateAtomic($batch, $updateFunc);
 
+        $this->handleBatchItemDependentObjects($batchObjectManager, $batchItem);
         $this->handleParentBatchItem($batchObjectManager, $freshBatch);
         $this->dispatchBatchItemEvent($batchItem);
         $this->dispatchBatchEvent($freshBatch);
 
         return $freshBatch;
+    }
+
+    public function reset(): self
+    {
+        $this->cache = [];
+
+        return $this;
     }
 
     private function dispatchBatchEvent(BatchInterface $batch): void
@@ -131,6 +150,25 @@ final class BatchProcessor
 
         if ($batchItem->isCompleted()) {
             $this->eventDispatcher->dispatch(new BatchItemCompletedEvent($batchItem));
+        }
+    }
+
+    private function handleBatchItemDependentObjects(BatchObjectManagerInterface $batchObjectManager, BatchItemInterface $batchItem): void
+    {
+        $currentStatus = $batchItem->getStatus();
+        $toCancelStatuses = [
+            BatchObjectInterface::STATUS_CANCELLED,
+            BatchObjectInterface::STATUS_FAILED,
+        ];
+
+        $batchItem->setStatus(BatchItemInterface::STATUS_PROCESSING_DEPENDENT_OBJECTS);
+
+        if ($currentStatus === BatchObjectInterface::STATUS_SUCCEEDED) {
+            $batchObjectManager->approve($batchItem);
+        }
+
+        if (\in_array($currentStatus, $toCancelStatuses, true)) {
+            $batchObjectManager->cancel($batchItem);
         }
     }
 
