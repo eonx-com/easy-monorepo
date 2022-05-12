@@ -153,8 +153,10 @@ final class BatchProcessor
         }
     }
 
-    private function handleBatchItemDependentObjects(BatchObjectManagerInterface $batchObjectManager, BatchItemInterface $batchItem): void
-    {
+    private function handleBatchItemDependentObjects(
+        BatchObjectManagerInterface $batchObjectManager,
+        BatchItemInterface $batchItem
+    ): void {
         $currentStatus = $batchItem->getStatus();
         $toCancelStatuses = [
             BatchObjectInterface::STATUS_CANCELLED,
