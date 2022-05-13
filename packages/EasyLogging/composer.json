@@ -11,9 +11,6 @@
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
-        "laravel-doctrine/orm": "^1.4",
-        "bugsnag/bugsnag": "^3.19",
-        "bugsnag/bugsnag-laravel": "^2.17",
         "symfony/symfony": "^5.4 || ^6.0"
     },
     "autoload": {
