@@ -16,6 +16,7 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->children()
                 ->scalarNode('connection')->defaultValue('doctrine.dbal.default_connection')->end()
+                ->booleanNode('messenger_middleware_auto_register')->defaultTrue()->end()
             ->end();
 
         return $treeBuilder;
