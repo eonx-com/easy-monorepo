@@ -24,7 +24,7 @@
         "nesbot/carbon": "^2.22",
         "nette/utils": "^3.1",
         "nyholm/psr7": "^1.1",
-        "paragonie/halite": "^4.8",
+        "paragonie/halite": "^4.8 || ^5.0",
         "psr/event-dispatcher": "^1.0",
         "ramsey/uuid": "^3.9 || ^4.0",
         "symfony/cache": "^5.4 || ^6.0",
