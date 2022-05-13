@@ -11,44 +11,24 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
 {
-    /**
-     * @var \Symfony\Component\Filesystem\Filesystem
-     */
-    private $filesystem;
+    private ?\Throwable $throwable = null;
 
-    /**
-     * @var string
-     */
-    private $storageFilename;
-
-    /**
-     * @var \Throwable
-     */
-    private $throwable;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    public function __construct(string $storageFilename, string $url, ?int $priority = null)
-    {
-        $this->filesystem = new Filesystem();
-        $this->storageFilename = $storageFilename;
-        $this->url = $url;
-
+    public function __construct(
+        private readonly string $storageFilename,
+        private readonly ?string $url = null,
+        ?int $priority = null,
+        private readonly Filesystem $filesystem = new Filesystem()
+    ) {
         parent::__construct($priority);
     }
 
     public function configure(Client $bugsnag): void
     {
-        $appVersion = $this->resolveAppVersion();
-
-        $bugsnag->setAppVersion($appVersion);
-
         $bugsnag
             ->getPipeline()
-            ->pipe(new CallbackBridge(function (Report $report): void {
+            ->pipe(new CallbackBridge(function (Report $report) use ($bugsnag): void {
+                $bugsnag->setAppVersion($this->resolveAppVersion());
+
                 $awsData = $this->getAwsFargateTaskData();
 
                 // Something happened...
@@ -81,8 +61,14 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
     private function getAwsFargateTaskData(): ?array
     {
         try {
+            $url = $this->url ?? $this->resolveTaskDataUrl();
+
+            if ($url === null) {
+                return null;
+            }
+
             if ($this->filesystem->exists($this->storageFilename) === false) {
-                $this->filesystem->dumpFile($this->storageFilename, (string)\file_get_contents($this->url));
+                $this->filesystem->dumpFile($this->storageFilename, (string)\file_get_contents($url));
             }
 
             return \json_decode((string)\file_get_contents($this->storageFilename), true);
@@ -111,5 +97,14 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
         }
 
         return $appVersion;
+    }
+
+    private function resolveTaskDataUrl(): ?string
+    {
+        $baseUrl = $_SERVER['ECS_CONTAINER_METADATA_URI_V4']
+            ?? $_ENV['ECS_CONTAINER_METADATA_URI_V4']
+            ?? \getenv('ECS_CONTAINER_METADATA_URI_V4');
+
+        return \is_string($baseUrl) ? \sprintf('%s/task', $baseUrl) : null;
     }
 }
