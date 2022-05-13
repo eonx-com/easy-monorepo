@@ -13,6 +13,9 @@ final class ErrorCodesProvider implements ErrorCodesProviderInterface
 {
     private const ERROR_CODE_NAME_PREFIX = 'ERROR_';
 
+    /**
+     * @param class-string $errorCodesInterface
+     */
     public function __construct(private string $errorCodesInterface)
     {
     }
@@ -30,7 +33,7 @@ final class ErrorCodesProvider implements ErrorCodesProviderInterface
 
         return \array_filter(
             $reflection->getConstants(),
-            static fn($name) => \str_starts_with($name, self::ERROR_CODE_NAME_PREFIX),
+            static fn ($name) => \str_starts_with($name, self::ERROR_CODE_NAME_PREFIX),
             \ARRAY_FILTER_USE_KEY
         );
     }
