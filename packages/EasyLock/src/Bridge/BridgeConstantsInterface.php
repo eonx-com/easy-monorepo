@@ -19,6 +19,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_MESSENGER_MIDDLEWARE_AUTO_REGISTER = 'easy_lock.messenger_middleware_auto_register';
+
+    /**
+     * @var string
+     */
     public const SERVICE_CONNECTION = 'easy_lock.connection';
 
     /**
