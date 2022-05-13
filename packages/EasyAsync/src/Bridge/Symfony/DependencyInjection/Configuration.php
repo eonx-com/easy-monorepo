@@ -15,7 +15,7 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                // Current config
+                ->booleanNode('messenger_middleware_auto_register')->defaultTrue()->end()
                 ->arrayNode('messenger_worker')
                     ->addDefaultsIfNotSet()
                     ->children()
