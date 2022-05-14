@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySecurity;
 
 use EonX\EasySecurity\Configurators\DefaultSecurityContextConfigurator;
-use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
+use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
@@ -15,38 +15,17 @@ use Psr\Log\NullLogger;
 final class SecurityContextResolver implements SecurityContextResolverInterface
 {
     /**
-     * @var \EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface
-     */
-    private $authorizationMatrix;
-
-    /**
      * @var null|callable
      */
     private $configurator;
 
-    /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var null|\EonX\EasySecurity\Interfaces\SecurityContextInterface
-     */
-    private $securityContext;
+    private ?SecurityContextInterface $securityContext = null;
 
     public function __construct(
-        AuthorizationMatrixInterface $authorizationMatrix,
-        SecurityContextFactoryInterface $factory,
-        ?LoggerInterface $logger = null
+        private readonly AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
+        private readonly SecurityContextFactoryInterface $factory,
+        private readonly LoggerInterface $logger = new NullLogger()
     ) {
-        $this->authorizationMatrix = $authorizationMatrix;
-        $this->factory = $factory;
-        $this->logger = $logger ?? new NullLogger();
     }
 
     public function resolveContext(): SecurityContextInterface
@@ -56,7 +35,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
         }
 
         $securityContext = $this->factory->create();
-        $securityContext->setAuthorizationMatrix($this->authorizationMatrix);
+        $securityContext->setAuthorizationMatrix($this->authorizationMatrixFactory->create());
 
         $configurator = $this->configurator;
         if ($configurator === null) {

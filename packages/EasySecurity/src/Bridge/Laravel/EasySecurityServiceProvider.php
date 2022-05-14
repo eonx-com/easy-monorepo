@@ -186,7 +186,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
             SecurityContextResolverInterface::class,
             static function (Container $app): SecurityContextResolverInterface {
                 return new SecurityContextResolver(
-                    $app->make(AuthorizationMatrixInterface::class),
+                    $app->make(AuthorizationMatrixFactoryInterface::class),
                     $app->make(SecurityContextFactoryInterface::class),
                     $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
                 );
