@@ -48,6 +48,12 @@ final class AnalyzeErrorCodesCommand extends Command
             $groupedErrorCodes[$errorCodeCategory][$errorCodeName] = $errorCodeValue;
         }
 
+        if (\count($groupedErrorCodes) === 0) {
+            $output->writeln('<info>No error code found.</info>');
+
+            return self::SUCCESS;
+        }
+
         \ksort($groupedErrorCodes);
         $nextCategoryToUse = \max(\array_keys($groupedErrorCodes)) + $this->categorySize;
 
