@@ -19,8 +19,10 @@ final class FromRequestConfigurator
     /**
      * @param iterable<\EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface> $configurators
      */
-    public function __construct(private readonly Request $request, iterable $configurators)
-    {
+    public function __construct(
+        private readonly Request $request,
+        iterable $configurators
+    ) {
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class)
         );
