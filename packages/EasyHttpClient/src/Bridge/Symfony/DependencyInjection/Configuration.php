@@ -17,6 +17,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->booleanNode('decorate_default_client')->defaultFalse()->end()
                 ->booleanNode('decorate_easy_webhook_client')->defaultFalse()->end()
+                ->booleanNode('decorate_messenger_sqs_client')->defaultFalse()->end()
                 ->booleanNode('easy_bugsnag_enabled')->defaultTrue()->end()
                 ->arrayNode('modifiers')
                     ->addDefaultsIfNotSet()

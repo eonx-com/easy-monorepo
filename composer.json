@@ -77,7 +77,8 @@
         "symplify/monorepo-builder": "^10.1",
         "symplify/phpstan-extensions": "^10.1",
         "tracy/tracy": "^2.7",
-        "vlucas/phpdotenv": "^3.3 || ^5.2"
+        "vlucas/phpdotenv": "^3.3 || ^5.2",
+        "symfony/amazon-sqs-messenger": "^5.4 || ^6.0"
     },
     "autoload": {
         "psr-4": {
