@@ -20,7 +20,11 @@ final class DecorateEasyWebhookClientPass extends AbstractEasyHttpClientCompiler
             return;
         }
 
-        $this->decorateHttpClient($container, EasyWebhookBridgeConstantsInterface::HTTP_CLIENT, self::DECORATION_SERVICE_ID);
+        $this->decorateHttpClient(
+            $container,
+            EasyWebhookBridgeConstantsInterface::HTTP_CLIENT,
+            self::DECORATION_SERVICE_ID
+        );
     }
 
     protected function getEnableParamName(): string
