@@ -31,6 +31,6 @@ final class SensitiveDataSanitizerTest extends AbstractSensitiveDataSanitizerTes
             new CreditCardNumberStringSanitizer(),
         ];
 
-        return new SensitiveDataSanitizer($keysToMask, null, $objectTransformers, $stringSanitizers);
+        return new SensitiveDataSanitizer(null, $keysToMask, null, $objectTransformers, $stringSanitizers);
     }
 }

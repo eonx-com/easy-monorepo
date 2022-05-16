@@ -23,6 +23,7 @@ interface BridgeConstantsInterface
     public const SENSITIVE_DATA_PARAMS = [
         self::PARAM_SENSITIVE_DATA_KEYS_TO_MASK => 'keys_to_mask',
         self::PARAM_SENSITIVE_DATA_MASK_PATTERN => 'mask_pattern',
+        self::PARAM_SENSITIVE_DATA_USE_DEFAULT_KEYS_TO_MASK => 'use_default_keys_to_mask',
     ];
 
     /**
@@ -59,6 +60,11 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_SENSITIVE_DATA_MASK_PATTERN = 'easy_utils.mask_pattern';
+
+    /**
+     * @var string
+     */
+    public const PARAM_SENSITIVE_DATA_USE_DEFAULT_KEYS_TO_MASK = 'easy_utils.use_default_keys_to_mask';
 
     /**
      * @var string

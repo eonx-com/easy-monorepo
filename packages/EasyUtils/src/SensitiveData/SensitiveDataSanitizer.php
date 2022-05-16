@@ -31,12 +31,20 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
      * @param iterable<mixed>|null $stringSanitizers
      */
     public function __construct(
+        ?bool $useDefaultKeysToMask = null,
         ?array $keysToMask = null,
         ?string $maskPattern = null,
         ?iterable $objectTransformers = null,
         ?iterable $stringSanitizers = null
     ) {
-        $this->keysToMask = \array_map(fn (string $key) => \mb_strtolower($key), $keysToMask ?? []);
+        $defaultKeysToMask = ($useDefaultKeysToMask ?? true) ? self::DEFAULT_KEYS_TO_MASK : [];
+        foreach (\array_map(fn (string $key) => \mb_strtolower($key), $keysToMask ?? []) as $keyToMask) {
+            if (\in_array($keysToMask, $defaultKeysToMask, true) === false) {
+                $defaultKeysToMask[] = $keyToMask;
+            }
+        }
+
+        $this->keysToMask = $defaultKeysToMask;
         $this->maskPattern = $maskPattern ?? self::DEFAULT_MASK_PATTERN;
         $this->objectTransformers = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($objectTransformers ?? [], ObjectTransformerInterface::class)
