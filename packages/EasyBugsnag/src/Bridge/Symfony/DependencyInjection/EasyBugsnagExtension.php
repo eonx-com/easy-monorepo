@@ -99,7 +99,7 @@ final class EasyBugsnagExtension extends Extension
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_SENSITIVE_DATA_SANITIZER_ENABLED,
-            $config['sensitive_data_sanitizer']['enabled'] ?? false
+            $config['sensitive_data_sanitizer']['enabled'] ?? true
         );
 
         if ($config['session_tracking']['enabled'] ?? false) {

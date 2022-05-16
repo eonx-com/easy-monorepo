@@ -86,7 +86,7 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('sensitive_data_sanitizer')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('enabled')->defaultFalse()->end()
+                        ->booleanNode('enabled')->defaultTrue()->end()
                     ->end()
                 ->end()
                 // Session Tracking

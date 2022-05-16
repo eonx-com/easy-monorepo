@@ -162,7 +162,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
 
     private function registerSensitiveDataSanitizer(): void
     {
-        if (\config('easy-bugsnag.sensitive_data_sanitizer.enabled', false)) {
+        if (\config('easy-bugsnag.sensitive_data_sanitizer.enabled', true)) {
             $this->app->singleton(
                 SensitiveDataSanitizerConfigurator::class,
                 static function (Container $app): SensitiveDataSanitizerConfigurator {

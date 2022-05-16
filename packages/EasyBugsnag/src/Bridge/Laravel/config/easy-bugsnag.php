@@ -66,7 +66,7 @@ return [
         /**
          * Enable sensitive data sanitization.
          */
-        'enabled' => false,
+        'enabled' => true,
     ],
 
     'session_tracking' => [
