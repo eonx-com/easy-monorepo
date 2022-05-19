@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Stores;
 
+use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Stores\DoctrineDbalStore;
 use EonX\EasyWebhook\Tests\AbstractStoreTestCase;
 use EonX\EasyWebhook\Webhook;
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Support\Arr;
 
 final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTestCase
 {
@@ -28,6 +30,49 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
         self::assertInstanceOf(WebhookInterface::class, $store->find($id));
     }
 
+    public function testStoreWithTimezone(): void
+    {
+        // Time in UTC.
+        Carbon::setTestNow('2022-05-19 01:00:00');
+
+        $conn = $this->getDoctrineDbalConnection();
+        $id = 'my-id';
+        $store = new DoctrineDbalStore(
+            $this->getRandomGenerator(),
+            $conn,
+            $this->getDataCleaner(),
+            'easy_webhooks',
+            'Australia/Melbourne'
+        );
+        $webhook = Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD)
+            ->id($id);
+
+        // Save new result with set id
+        $store->store($webhook);
+        // Update result
+        $store->store($webhook);
+
+        $sql = \sprintf('SELECT * FROM %s WHERE id = :id', 'easy_webhooks');
+
+        $data = $conn->fetchAssociative($sql, [
+            'id' => $id,
+        ]);
+
+        // Should be Australia/Melbourne TZ, +10 Hrs.
+        $expected = [
+            'updated_at' => '2022-05-19 11:00:00',
+            'created_at' => '2022-05-19 11:00:00',
+        ];
+
+        $actual = [
+            'updated_at' => Arr::get($data, 'updated_at'),
+            'created_at' => Arr::get($data, 'created_at'),
+        ];
+
+        self::assertEquals($expected, $actual);
+        self::assertInstanceOf(WebhookInterface::class, $store->find($id));
+    }
+
     protected function getDoctrineDbalConnection(): Connection
     {
         $dbManager = new Manager();
@@ -38,6 +83,6 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
         ]);
 
         return $this->doctrineDbal = $this->doctrineDbal ?? $dbManager->getConnection()
-            ->getDoctrineConnection();
+                ->getDoctrineConnection();
     }
 }

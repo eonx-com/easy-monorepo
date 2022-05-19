@@ -14,18 +14,27 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements ResultStoreInterface
 {
+    /**
+     * @var null|string
+     */
+    private $timestampTimezone;
+
     public function __construct(
         RandomGeneratorInterface $random,
         Connection $conn,
         DataCleanerInterface $dataCleaner,
-        ?string $table = null
+        ?string $table = null,
+        ?string $timestampTimezone = null
     ) {
+        $this->timestampTimezone = $timestampTimezone;
         parent::__construct($random, $conn, $dataCleaner, $table ?? 'easy_webhook_results');
     }
 
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
-        $now = Carbon::now('UTC');
+        $timezone = $this->timestampTimezone ?? 'UTC';
+
+        $now = Carbon::now($timezone);
         $data = $this->getData($result, $now);
 
         // New result with no id
