@@ -69,7 +69,7 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
             'created_at' => Arr::get($data, 'created_at'),
         ];
 
-        self::assertEquals($expected, $actual);
+        self::assertSame($expected, $actual);
         self::assertInstanceOf(WebhookInterface::class, $store->find($id));
     }
 
@@ -82,7 +82,6 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
             'prefix' => '',
         ]);
 
-        return $this->doctrineDbal = $this->doctrineDbal ?? $dbManager->getConnection()
-                ->getDoctrineConnection();
+        return $this->doctrineDbal = $this->doctrineDbal ?? $dbManager->getConnection()->getDoctrineConnection();
     }
 }

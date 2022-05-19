@@ -65,11 +65,11 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
         ];
 
         $actual = [
-            'updated_at' => Arr::get($data, 'updated_at'),
-            'created_at' => Arr::get($data, 'created_at'),
+            'updated_at' => Arr::get($data, 'updated_at', ''),
+            'created_at' => Arr::get($data, 'created_at', ''),
         ];
 
         self::assertNotEmpty($result->getId());
-        self::assertEquals($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 }
