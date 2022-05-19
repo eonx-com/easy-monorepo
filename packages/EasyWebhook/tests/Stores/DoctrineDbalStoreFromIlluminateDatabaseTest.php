@@ -11,6 +11,7 @@ use EonX\EasyWebhook\Stores\DoctrineDbalStore;
 use EonX\EasyWebhook\Tests\AbstractStoreTestCase;
 use EonX\EasyWebhook\Webhook;
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Support\Arr;
 
 final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTestCase
 {
@@ -29,6 +30,9 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
         self::assertInstanceOf(WebhookInterface::class, $store->find($id));
     }
 
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function testStoreWithTimezone(): void
     {
         // Time in UTC.
@@ -66,8 +70,8 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
         ];
         /** @var array<string, string> $actual */
         $actual = [
-            'updated_at' => $data['updated_at'] ?? '',
-            'created_at' => $data['created_at'] ?? '',
+            'updated_at' => (string) Arr::get($data, 'updated_at',''),
+            'created_at' => (string) Arr::get($data, 'created_at',''),
         ];
 
         self::assertSame($expected, $actual);

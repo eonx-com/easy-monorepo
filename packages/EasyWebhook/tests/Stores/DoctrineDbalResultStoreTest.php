@@ -10,6 +10,7 @@ use EonX\EasyWebhook\Stores\DoctrineDbalResultStore;
 use EonX\EasyWebhook\Tests\AbstractStoreTestCase;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
+use Illuminate\Support\Arr;
 
 final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
 {
@@ -29,6 +30,9 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
         self::assertNotEmpty($result->getId());
     }
 
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function testStoreWithTimezone(): void
     {
         // Time in UTC.
@@ -67,11 +71,11 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
 
         /** @var array<string, string> $actual */
         $actual = [
-            'updated_at' => $data['updated_at'] ?? '',
-            'created_at' => $data['created_at'] ?? '',
+            'updated_at' => (string) Arr::get($data, 'updated_at',''),
+            'created_at' => (string) Arr::get($data, 'created_at',''),
         ];
 
-        self::assertNotEmpty($result->getId());
         self::assertSame($expected, $actual);
+        self::assertNotEmpty($result->getId());
     }
 }
