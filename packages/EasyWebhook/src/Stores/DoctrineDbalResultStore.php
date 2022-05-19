@@ -15,7 +15,7 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements ResultStoreInterface
 {
     /**
-     * @var null|string
+     * @var string|null
      */
     private $timestampTimezone;
 
