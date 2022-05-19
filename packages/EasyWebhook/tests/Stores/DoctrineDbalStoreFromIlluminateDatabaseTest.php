@@ -81,6 +81,7 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
             'prefix' => '',
         ]);
 
-        return $this->doctrineDbal = $this->doctrineDbal ?? $dbManager->getConnection()->getDoctrineConnection();
+        return $this->doctrineDbal = $this->doctrineDbal ?? $dbManager->getConnection()
+            ->getDoctrineConnection();
     }
 }
