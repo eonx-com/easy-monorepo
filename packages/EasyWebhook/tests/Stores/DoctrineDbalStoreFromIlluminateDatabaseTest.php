@@ -11,7 +11,6 @@ use EonX\EasyWebhook\Stores\DoctrineDbalStore;
 use EonX\EasyWebhook\Tests\AbstractStoreTestCase;
 use EonX\EasyWebhook\Webhook;
 use Illuminate\Database\Capsule\Manager;
-use Illuminate\Support\Arr;
 
 final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTestCase
 {
@@ -65,8 +64,8 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
         ];
 
         $actual = [
-            'updated_at' => Arr::get($data, 'updated_at'),
-            'created_at' => Arr::get($data, 'created_at'),
+            'updated_at' => $data['updated_at'] ?? '',
+            'created_at' => $data['created_at'] ?? '',
         ];
 
         self::assertSame($expected, $actual);

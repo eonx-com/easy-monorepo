@@ -10,7 +10,6 @@ use EonX\EasyWebhook\Stores\DoctrineDbalResultStore;
 use EonX\EasyWebhook\Tests\AbstractStoreTestCase;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
-use Illuminate\Support\Arr;
 
 final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
 {
@@ -65,8 +64,8 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
         ];
 
         $actual = [
-            'updated_at' => Arr::get($data, 'updated_at', ''),
-            'created_at' => Arr::get($data, 'created_at', ''),
+            'updated_at' => $data['updated_at'] ?? '',
+            'created_at' => $data['created_at'] ?? '',
         ];
 
         self::assertNotEmpty($result->getId());
