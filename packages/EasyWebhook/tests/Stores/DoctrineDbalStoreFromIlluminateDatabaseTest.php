@@ -57,7 +57,6 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
 
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id', 'easy_webhooks');
 
-        /** @var mixed[] $data */
         $data = $conn->fetchAssociative($sql, [
             'id' => $id,
         ]);
@@ -74,8 +73,7 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
             'created_at' => (string) Arr::get($data, 'created_at', ''),
         ];
 
-        self::assertSame($expected, $actual);
-        self::assertInstanceOf(WebhookInterface::class, $store->find($id));
+        self::assertEquals($expected, $actual);
     }
 
     protected function getDoctrineDbalConnection(): Connection

@@ -57,7 +57,6 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
 
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id', 'easy_webhook_results');
 
-        /** @var mixed[] $data */
         $data = $conn->fetchAssociative($sql, [
             'id' => $result->getId(),
         ]);
@@ -75,7 +74,6 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
             'created_at' => (string) Arr::get($data, 'created_at', ''),
         ];
 
-        self::assertSame($expected, $actual);
-        self::assertNotEmpty($result->getId());
+        self::assertEquals($expected, $actual);
     }
 }
