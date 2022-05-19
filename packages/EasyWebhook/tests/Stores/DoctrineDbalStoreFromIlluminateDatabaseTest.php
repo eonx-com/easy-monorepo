@@ -57,6 +57,7 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
 
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id', 'easy_webhooks');
 
+        /** @var mixed[] $data */
         $data = $conn->fetchAssociative($sql, [
             'id' => $id,
         ]);
