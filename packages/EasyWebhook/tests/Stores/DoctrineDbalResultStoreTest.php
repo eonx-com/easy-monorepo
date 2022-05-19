@@ -35,8 +35,8 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
      */
     public function testStoreWithTimezone(): void
     {
-        // Time in UTC.
-        Carbon::setTestNow('2022-05-19 01:00:00');
+        // Time in UTC, this is as 00:00:00.
+        Carbon::setTestNow('2022-05-19');
 
         $webHookId = 'webhook-id';
 
@@ -65,14 +65,14 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
         // Should be Australia/Melbourne TZ, +10 Hrs.
         /** @var array<string, string> $expected */
         $expected = [
-            'updated_at' => '2022-05-19 11:00:00',
-            'created_at' => '2022-05-19 11:00:00',
+            'updated_at' => '2022-05-19 10:00:00',
+            'created_at' => '2022-05-19 10:00:00',
         ];
 
         /** @var array<string, string> $actual */
         $actual = [
-            'updated_at' => (string) Arr::get($data, 'updated_at',''),
-            'created_at' => (string) Arr::get($data, 'created_at',''),
+            'updated_at' => (string) Arr::get($data, 'updated_at', ''),
+            'created_at' => (string) Arr::get($data, 'created_at', ''),
         ];
 
         self::assertSame($expected, $actual);
