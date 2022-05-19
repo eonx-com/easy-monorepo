@@ -53,16 +53,18 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
 
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id', 'easy_webhooks');
 
+        /** @var mixed[] $data */
         $data = $conn->fetchAssociative($sql, [
             'id' => $id,
         ]);
 
         // Should be Australia/Melbourne TZ, +10 Hrs.
+        /** @var array<string, string> $expected */
         $expected = [
             'updated_at' => '2022-05-19 11:00:00',
             'created_at' => '2022-05-19 11:00:00',
         ];
-
+        /** @var array<string, string> $actual */
         $actual = [
             'updated_at' => $data['updated_at'] ?? '',
             'created_at' => $data['created_at'] ?? '',

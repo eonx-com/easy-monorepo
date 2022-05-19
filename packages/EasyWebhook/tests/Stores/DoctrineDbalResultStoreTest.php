@@ -53,6 +53,7 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
 
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id', 'easy_webhook_results');
 
+        /** @var mixed[] $data */
         $data = $conn->fetchAssociative($sql, [
             'id' => $result->getId(),
         ]);
