@@ -84,7 +84,9 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
 
     public function store(WebhookInterface $webhook): WebhookInterface
     {
-        $now = Carbon::now('UTC');
+        $timezone = \config('easy-webhook.timezone', 'UTC');
+
+        $now = Carbon::now($timezone);
         $data = \array_merge($webhook->getExtra() ?? [], $webhook->toArray());
         $data['class'] = \get_class($webhook);
         $data['updated_at'] = $now;

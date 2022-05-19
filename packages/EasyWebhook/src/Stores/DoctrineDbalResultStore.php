@@ -25,7 +25,9 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
 
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
-        $now = Carbon::now('UTC');
+        $timezone = \config('easy-webhook.timezone', 'UTC');
+
+        $now = Carbon::now($timezone);
         $data = $this->getData($result, $now);
 
         // New result with no id
