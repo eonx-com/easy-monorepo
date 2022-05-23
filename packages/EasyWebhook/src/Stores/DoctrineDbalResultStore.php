@@ -17,22 +17,27 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
     /**
      * @var string|null
      */
-    private $timestampTimezone;
+    private $timestamp;
 
     public function __construct(
         RandomGeneratorInterface $random,
         Connection $conn,
         DataCleanerInterface $dataCleaner,
         ?string $table = null,
-        ?string $timestampTimezone = null
+        ?string $timestamp = null
     ) {
-        $this->timestampTimezone = $timestampTimezone;
+        $this->timestamp = $timestamp;
         parent::__construct($random, $conn, $dataCleaner, $table ?? 'easy_webhook_results');
+    }
+
+    public function getTimestamp(): ?string
+    {
+        return $this->timestamp;
     }
 
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
-        $timezone = $this->timestampTimezone ?? 'UTC';
+        $timezone = $this->timestamp ?? 'UTC';
 
         $now = Carbon::now($timezone);
         $data = $this->getData($result, $now);
