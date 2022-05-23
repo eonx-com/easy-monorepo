@@ -28,6 +28,7 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
         $store->store($result);
 
         self::assertNotEmpty($result->getId());
+        self::assertEquals('UTC', $store->getTimestamp());
     }
 
     /**
@@ -67,12 +68,14 @@ final class DoctrineDbalResultStoreTest extends AbstractStoreTestCase
         $expected = [
             'updated_at' => '2022-05-19 10:00:00',
             'created_at' => '2022-05-19 10:00:00',
+            'timezone' => 'Australia/Melbourne',
         ];
 
         /** @var array<string, string> $actual */
         $actual = [
             'updated_at' => (string) Arr::get($data, 'updated_at', ''),
             'created_at' => (string) Arr::get($data, 'created_at', ''),
+            'timezone' => $store->getTimestamp(),
         ];
 
         self::assertEquals($expected, $actual);
