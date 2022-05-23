@@ -98,6 +98,7 @@ final class DoctrineDbalStoreTest extends AbstractStoreTestCase
         $store->store($webhook);
 
         self::assertInstanceOf(WebhookInterface::class, $store->find($id));
+        self::assertEquals('UTC', $store->getTimezone());
     }
 
     private function getStore(): DoctrineDbalStore
