@@ -15,6 +15,11 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements ResultStoreInterface
 {
     /**
+     * @var string
+     */
+    private const DEFAULT_TIMEZONE = 'UTC';
+
+    /**
      * @var string|null
      */
     private $timestamp;
@@ -26,7 +31,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
         ?string $table = null,
         ?string $timestamp = null
     ) {
-        $this->timestamp = $timestamp ?? 'UTC';
+        $this->timestamp = $timestamp ?? self::DEFAULT_TIMEZONE;
         parent::__construct($random, $conn, $dataCleaner, $table ?? 'easy_webhook_results');
     }
 
