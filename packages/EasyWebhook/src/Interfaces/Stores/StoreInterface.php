@@ -21,6 +21,11 @@ interface StoreInterface
     /**
      * @var string
      */
+    public const DEFAULT_TIMEZONE = 'UTC';
+
+    /**
+     * @var string
+     */
     public const DEFAULT_WEBHOOK_ID = 'webhook-id';
 
     /**

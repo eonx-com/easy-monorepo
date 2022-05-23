@@ -10,15 +10,11 @@ use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyUtils\ErrorDetailsHelper;
 use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements ResultStoreInterface
 {
-    /**
-     * @var string
-     */
-    private const DEFAULT_TIMEZONE = 'UTC';
-
     /**
      * @var string|null
      */
@@ -31,7 +27,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
         ?string $table = null,
         ?string $timezone = null
     ) {
-        $this->timezone = $timezone ?? self::DEFAULT_TIMEZONE;
+        $this->timezone = $timezone ?? StoreInterface::DEFAULT_TIMEZONE;
         parent::__construct($random, $conn, $dataCleaner, $table ?? 'easy_webhook_results');
     }
 

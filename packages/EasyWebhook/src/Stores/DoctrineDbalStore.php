@@ -21,11 +21,6 @@ use EonX\EasyWebhook\Webhook;
 final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements StoreInterface, SendAfterStoreInterface
 {
     /**
-     * @var string
-     */
-    private const DEFAULT_TIMEZONE = 'UTC';
-
-    /**
      * @var string|null
      */
     private $timezone;
