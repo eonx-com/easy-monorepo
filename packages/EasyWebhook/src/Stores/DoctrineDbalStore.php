@@ -30,9 +30,9 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
         Connection $conn,
         DataCleanerInterface $dataCleaner,
         ?string $table = null,
-        ?string $timestampTimezone = null
+        ?string $timezoneTimezone = null
     ) {
-        $this->timestampTimezone = $timestampTimezone;
+        $this->timestampTimezone = $timezoneTimezone;
         parent::__construct($random, $conn, $dataCleaner, $table ?? self::DEFAULT_TABLE);
     }
 
