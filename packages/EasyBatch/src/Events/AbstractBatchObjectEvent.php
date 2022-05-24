@@ -8,14 +8,8 @@ use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 
 abstract class AbstractBatchObjectEvent
 {
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchObjectInterface
-     */
-    private $batchObject;
-
-    public function __construct(BatchObjectInterface $batchObject)
+    public function __construct(private BatchObjectInterface $batchObject)
     {
-        $this->batchObject = $batchObject;
     }
 
     public function getBatchObject(): BatchObjectInterface

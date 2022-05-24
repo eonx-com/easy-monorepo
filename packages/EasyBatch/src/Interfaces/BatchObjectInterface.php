@@ -23,9 +23,23 @@ interface BatchObjectInterface
     ];
 
     /**
+     * @var string[]
+     */
+    public const STATUSES_FOR_COMPLETED = [
+        self::STATUS_CANCELLED,
+        self::STATUS_FAILED,
+        self::STATUS_SUCCEEDED,
+    ];
+
+    /**
      * @var string
      */
     public const STATUS_CANCELLED = 'cancelled';
+
+    /**
+     * @var string
+     */
+    public const STATUS_CREATED = 'created';
 
     /**
      * @var string
@@ -58,10 +72,12 @@ interface BatchObjectInterface
 
     public function getFinishedAt(): ?\DateTimeInterface;
 
+    public function getId(): int|string|null;
+
     /**
-     * @return null|int|string
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
      */
-    public function getId();
+    public function getIdOrFail(): int|string;
 
     /**
      * @return null|mixed[]
@@ -85,13 +101,19 @@ interface BatchObjectInterface
 
     public function getUpdatedAt(): ?\DateTimeInterface;
 
+    public function isApprovalRequired(): bool;
+
     public function isCancelled(): bool;
 
     public function isCompleted(): bool;
 
     public function isFailed(): bool;
 
+    public function isPendingApproval(): bool;
+
     public function isSucceeded(): bool;
+
+    public function setApprovalRequired(?bool $approvalRequired = null): self;
 
     public function setCancelledAt(\DateTimeInterface $cancelledAt): self;
 
@@ -99,10 +121,7 @@ interface BatchObjectInterface
 
     public function setFinishedAt(\DateTimeInterface $finishedAt): self;
 
-    /**
-     * @param int|string $id
-     */
-    public function setId($id): self;
+    public function setId(int|string $id): self;
 
     /**
      * @param mixed[] $metadata

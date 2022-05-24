@@ -40,6 +40,11 @@ final class EasyHttpClientExtension extends Extension
         );
 
         $container->setParameter(
+            BridgeConstantsInterface::PARAM_DECORATE_MESSENGER_SQS_CLIENT,
+            $config['decorate_messenger_sqs_client'] ?? false
+        );
+
+        $container->setParameter(
             BridgeConstantsInterface::PARAM_MODIFIERS_ENABLED,
             $config['modifiers']['enabled'] ?? true
         );

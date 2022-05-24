@@ -9,17 +9,12 @@ use EonX\EasyBatch\Interfaces\BatchInterface;
 final class BatchCreatedFromArrayEvent extends AbstractBatchEvent
 {
     /**
-     * @var mixed[]
-     */
-    private $array;
-
-    /**
      * @param mixed[] $array
      */
-    public function __construct(BatchInterface $batch, array $array)
-    {
-        $this->array = $array;
-
+    public function __construct(
+        BatchInterface $batch,
+        private readonly array $array
+    ) {
         parent::__construct($batch);
     }
 

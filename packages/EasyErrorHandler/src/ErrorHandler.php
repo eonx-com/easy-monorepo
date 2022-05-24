@@ -17,6 +17,7 @@ use EonX\EasyUtils\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Throwable;
 
 final class ErrorHandler implements ErrorHandlerInterface
@@ -103,6 +104,15 @@ final class ErrorHandler implements ErrorHandlerInterface
             foreach ($throwable->getNestedExceptions() as $nestedThrowable) {
                 $this->report($nestedThrowable);
             }
+
+            return;
+        }
+
+        // Symfony Messenger UnrecoverableMessageHandlingException
+        if (\class_exists(UnrecoverableMessageHandlingException::class)
+            && $throwable instanceof UnrecoverableMessageHandlingException
+            && $throwable->getPrevious() instanceof Throwable) {
+            $this->report($throwable->getPrevious());
 
             return;
         }

@@ -14,17 +14,7 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_BATCH_DEFAULT_CLASS = 'easy_async.batch_default_class';
-
-    /**
-     * @var string
-     */
-    public const PARAM_BATCHES_TABLE = 'easy_async.batches_table';
-
-    /**
-     * @var string
-     */
-    public const PARAM_BATCH_MESSENGER_BUSES = 'easy_async.messenger_buses';
+    public const PARAM_MESSENGER_MIDDLEWARE_AUTO_REGISTER = 'easy_async.messenger_middleware_auto_register';
 
     /**
      * @var string

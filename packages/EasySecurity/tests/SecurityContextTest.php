@@ -10,6 +10,8 @@ use EonX\EasySecurity\Authorization\Permission;
 use EonX\EasySecurity\Authorization\Role;
 use EonX\EasySecurity\Exceptions\NoProviderInContextException;
 use EonX\EasySecurity\Exceptions\NoUserInContextException;
+use EonX\EasySecurity\Interfaces\Authorization\PermissionInterface;
+use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\UserInterfaceStub;
@@ -167,5 +169,13 @@ final class SecurityContextTest extends AbstractTestCase
 
         self::assertEquals($hasRole, $context->hasRole($role));
         self::assertEquals($hasPermission, $context->hasPermission($permission));
+
+        $hasRole
+            ? self::assertInstanceOf(RoleInterface::class, $context->getRole($role))
+            : self::assertNull($context->getRole($role));
+
+        $hasPermission
+            ? self::assertInstanceOf(PermissionInterface::class, $context->getPermission($permission))
+            : self::assertNull($context->getPermission($permission));
     }
 }

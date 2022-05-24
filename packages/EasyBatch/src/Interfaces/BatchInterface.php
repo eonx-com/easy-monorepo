@@ -21,10 +21,7 @@ interface BatchInterface extends BatchObjectInterface
      */
     public function getItems(): iterable;
 
-    /**
-     * @return null|int|string
-     */
-    public function getParentBatchItemId();
+    public function getParentBatchItemId(): int|string|null;
 
     public function setCancelled(int $cancelled): self;
 
@@ -37,10 +34,7 @@ interface BatchInterface extends BatchObjectInterface
 
     public function setItemsProvider(callable $itemsProvider): self;
 
-    /**
-     * @param int|string $batchItemId
-     */
-    public function setParentBatchItemId($batchItemId): self;
+    public function setParentBatchItemId(int|string $batchItemId): self;
 
     public function setProcessed(int $processed): self;
 

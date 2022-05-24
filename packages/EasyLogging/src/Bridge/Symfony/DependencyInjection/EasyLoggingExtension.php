@@ -56,5 +56,10 @@ final class EasyLoggingExtension extends Extension
             $container->registerForAutoconfiguration($interface)
                 ->addTag($tag);
         }
+
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_SENSITIVE_DATA_SANITIZER_ENABLED,
+            $config['sensitive_data_sanitizer']['enabled'] ?? false
+        );
     }
 }

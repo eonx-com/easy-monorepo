@@ -7,6 +7,15 @@ namespace EonX\EasyBatch\Interfaces;
 interface BatchItemInterface extends BatchObjectInterface
 {
     /**
+     * @var string[]
+     */
+    public const STATUSES_FOR_DISPATCH = [
+        self::STATUS_BATCH_PENDING_APPROVAL,
+        self::STATUS_CREATED,
+        self::STATUS_FAILED_PENDING_RETRY,
+    ];
+
+    /**
      * @var string
      */
     public const STATUS_BATCH_PENDING_APPROVAL = 'batch_pending_approval';
@@ -15,6 +24,11 @@ interface BatchItemInterface extends BatchObjectInterface
      * @var string
      */
     public const STATUS_FAILED_PENDING_RETRY = 'failed_pending_retry';
+
+    /**
+     * @var string
+     */
+    public const STATUS_PROCESSING_DEPENDENT_OBJECTS = 'processing_dependent_objects';
 
     /**
      * @var string
@@ -40,13 +54,9 @@ interface BatchItemInterface extends BatchObjectInterface
 
     public function getMessage(): ?object;
 
-    public function isApprovalRequired(): bool;
-
     public function isEncrypted(): bool;
 
     public function isRetried(): bool;
-
-    public function setApprovalRequired(?bool $approvalRequired = null): self;
 
     public function setAttempts(int $attempts): self;
 

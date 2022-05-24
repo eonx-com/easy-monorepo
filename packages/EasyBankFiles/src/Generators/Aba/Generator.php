@@ -107,7 +107,7 @@ final class Generator extends BaseGenerator
             'fileUserCountOfRecordsType' => $count,
             'fileUserCreditTotalAmount' => $creditTotal,
             'fileUserDebitTotalAmount' => $debitTotal,
-            'fileUserNetTotalAmount' => $creditTotal - $debitTotal,
+            'fileUserNetTotalAmount' => \abs($creditTotal - $debitTotal),
         ]);
     }
 }

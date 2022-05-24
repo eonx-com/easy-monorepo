@@ -30,11 +30,9 @@ abstract class AbstractBatchObjectRepository
     }
 
     /**
-     * @param int|string $id
-     *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function doFind($id): ?BatchObjectInterface
+    protected function doFind(int|string $id): ?BatchObjectInterface
     {
         $data = $this->fetchData($id);
 
@@ -64,23 +62,19 @@ abstract class AbstractBatchObjectRepository
     }
 
     /**
-     * @param int|string $id
-     *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function has($id): bool
+    protected function has(int|string $id): bool
     {
         return \is_array($this->fetchData($id));
     }
 
     /**
-     * @param int|string $id
-     *
      * @return null|mixed[]
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    private function fetchData($id): ?array
+    private function fetchData(int|string $id): ?array
     {
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->table);
         $result = $this->conn->fetchAssociative($sql, ['id' => $id]);

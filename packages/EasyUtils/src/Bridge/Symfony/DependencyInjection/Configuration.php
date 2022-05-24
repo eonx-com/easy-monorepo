@@ -25,6 +25,17 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('format_thousands_separator')->defaultNull()->end()
                     ->end()
                 ->end()
+                ->arrayNode('sensitive_data')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->arrayNode('keys_to_mask')->scalarPrototype()->end()->end()
+                        ->scalarNode('mask_pattern')->defaultNull()->end()
+                        ->booleanNode('use_default_keys_to_mask')->defaultTrue()->end()
+                        ->booleanNode('use_default_object_transformers')->defaultTrue()->end()
+                        ->booleanNode('use_default_string_sanitizers')->defaultTrue()->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

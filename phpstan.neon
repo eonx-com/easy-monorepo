@@ -7,7 +7,9 @@ services:
 
 parameters:
     parallel:
-            maximumNumberOfProcesses: 2
+        jobSize: 20
+        maximumNumberOfProcesses: 32
+        minimumNumberOfJobsPerProcess: 2
 
     paths:
         - packages
@@ -53,8 +55,8 @@ parameters:
           path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
 
         # ---- EasyBatch ----
-        - message: '#Ternary operator condition is always true#'
-          path: packages/EasyBatch/src/BatchManager.php
+        - message: '#Parameter \#1 \$callback of function array_map expects \(callable\(int\|string\)\: mixed\)\|null, Closure\(string\)\: string given#'
+          path: packages/EasyBatch/src/Repositories/BatchItemRepository.php
 
         # ---- EasyBugsnag ----
         - message: '#Return type \(void\) of method EonX\\EasyBugsnag\\Tests\\Bridge\\Symfony\\Stubs\\ConnectionStub\:\:(query|prepare)\(\) should be compatible with return type \(Doctrine\\DBAL\\Driver\\Statement\) of method Doctrine\\DBAL\\Driver\\Connection\:\:(query|prepare)\(\)#'
@@ -156,8 +158,23 @@ parameters:
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
 
+        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
+          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+
         - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
           path: packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
+
+        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
+          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+
+        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getManager\(\) should return Doctrine\\ORM\\EntityManagerInterface but returns Doctrine\\Persistence\\ObjectManager\|null#'
+          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+
+        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:\$manager \(Doctrine\\ORM\\EntityManagerInterface\|null\) does not accept Doctrine\\Persistence\\ObjectManager\|null#'
+          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+
+        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getRepository\(\) return type with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
+          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
 
         # ---- EasyRequestId ----
         # ---- EasySchedule ----
@@ -190,10 +207,10 @@ parameters:
 
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
-          path: packages/EasyUtils/src/EnvVarSubstitutionHelper.php
+          path: packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
 
         - message: '#Result of && is always false#'
-          path: packages/EasyUtils/src/EnvVarSubstitutionHelper.php
+          path: packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
 
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design

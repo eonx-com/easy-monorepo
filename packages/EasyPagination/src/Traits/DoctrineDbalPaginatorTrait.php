@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 
 trait DoctrineDbalPaginatorTrait
 {
     use DoctrineCommonPaginatorTrait;
 
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    private $conn;
+    private Connection $conn;
 
     private function createQueryBuilder(): QueryBuilder
     {
@@ -28,13 +26,14 @@ trait DoctrineDbalPaginatorTrait
      */
     private function fetchResults(QueryBuilder $queryBuilder): array
     {
-        return $this->conn->fetchAllAssociative($queryBuilder->getSQL(), $queryBuilder->getParameters());
+        return $this->conn->fetchAllAssociative(
+            $queryBuilder->getSQL(),
+            $queryBuilder->getParameters(),
+            $queryBuilder->getParameterTypes()
+        );
     }
 
-    /**
-     * @return mixed
-     */
-    private function resolveSelect()
+    private function resolveSelect(): mixed
     {
         if ($this->select !== null) {
             return $this->select;

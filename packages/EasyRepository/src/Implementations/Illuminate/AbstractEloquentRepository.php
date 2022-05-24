@@ -10,10 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
 {
-    /**
-     * @var \Illuminate\Database\Eloquent\Model
-     */
-    protected $model;
+    protected Model $model;
 
     public function __construct()
     {
@@ -45,7 +42,7 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
      *
      * @throws \Exception
      */
-    public function delete($object): void
+    public function delete(array|object $object): void
     {
         if (\is_array($object) === false) {
             $object = [$object];
@@ -57,12 +54,7 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
         }
     }
 
-    /**
-     * @param int|string $identifier
-     *
-     * @return null|object
-     */
-    public function find($identifier)
+    public function find(int|string $identifier): ?object
     {
         return $this->model->find($identifier);
     }
@@ -81,7 +73,7 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
     /**
      * @param object|object[] $object The object or list of objects to save
      */
-    public function save($object): void
+    public function save(array|object $object): void
     {
         if (\is_array($object) === false) {
             $object = [$object];
@@ -94,11 +86,9 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
     }
 
     /**
-     * @return mixed
-     *
      * @throws \Throwable
      */
-    public function transactional(Closure $func)
+    public function transactional(Closure $func): mixed
     {
         $this->beginTransaction();
 

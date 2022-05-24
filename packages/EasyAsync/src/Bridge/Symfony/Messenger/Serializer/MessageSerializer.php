@@ -28,20 +28,10 @@ class MessageSerializer implements SerializerInterface
      */
     private const KEY_HEADERS = 'headers';
 
-    /**
-     * @var \EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\Interfaces\MessageBodyDecoderInterface
-     */
-    private $bodyDecoder;
-
-    /**
-     * @var \EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\Interfaces\MessageObjectFactoryInterface
-     */
-    private $messageFactory;
-
-    public function __construct(MessageBodyDecoderInterface $bodyDecoder, MessageObjectFactoryInterface $messageFactory)
-    {
-        $this->bodyDecoder = $bodyDecoder;
-        $this->messageFactory = $messageFactory;
+    public function __construct(
+        private readonly MessageBodyDecoderInterface $bodyDecoder,
+        private readonly MessageObjectFactoryInterface $messageFactory
+    ) {
     }
 
     /**
@@ -53,10 +43,10 @@ class MessageSerializer implements SerializerInterface
         $body = $this->bodyDecoder->decode($originalBody);
         $headers = $encodedEnvelope[self::KEY_HEADERS] ?? [];
         $queueEnvelope = QueueEnvelope::create($originalBody, $headers, $body);
+        $stamps = [OriginalMessageStamp::create($originalBody, $headers)];
 
         try {
             $message = $this->messageFactory->createMessage($queueEnvelope);
-            $stamps = [OriginalMessageStamp::create($originalBody, $headers)];
 
             if ($queueEnvelope->getHeader(self::HEADER_RETRY) !== null) {
                 $stamps[] = new RedeliveryStamp((int)$queueEnvelope->getHeader(self::HEADER_RETRY));
@@ -64,7 +54,7 @@ class MessageSerializer implements SerializerInterface
 
             return Envelope::wrap($message, $stamps);
         } catch (\Throwable $throwable) {
-            return Envelope::wrap(NotSupportedMessage::create($queueEnvelope, $throwable));
+            return Envelope::wrap(NotSupportedMessage::create($queueEnvelope, $throwable), $stamps);
         }
     }
 
@@ -80,7 +70,7 @@ class MessageSerializer implements SerializerInterface
         }
 
         /**
-         * If envelope gets here it's because it failed and we want to retry it.
+         * If envelope gets here it's because it failed, and we want to retry it.
          * We need to handle the according stamps to avoid retrying the message infinitely.
          */
         $headers = $originalStamp->getHeaders();

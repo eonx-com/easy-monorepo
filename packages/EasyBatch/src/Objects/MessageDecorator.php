@@ -6,54 +6,27 @@ namespace EonX\EasyBatch\Objects;
 
 final class MessageDecorator
 {
-    /**
-     * @var string
-     */
-    private $class;
+    private ?string $class = null;
+
+    private ?string $dependsOn = null;
+
+    private bool $encrypted = false;
+
+    private ?string $encryptionKeyName = null;
+
+    private int $maxAttempts = 1;
 
     /**
-     * @var string
+     * @var mixed[]|null
      */
-    private $dependsOn;
+    private ?array $metadata = null;
 
-    /**
-     * @var bool
-     */
-    private $encrypted = false;
+    private ?string $name = null;
 
-    /**
-     * @var string
-     */
-    private $encryptionKeyName;
+    private bool $requiresApproval = false;
 
-    /**
-     * @var int
-     */
-    private $maxAttempts = 1;
-
-    /**
-     * @var object
-     */
-    private $message;
-
-    /**
-     * @var mixed[]
-     */
-    private $metadata;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var bool
-     */
-    private $requiresApproval = false;
-
-    public function __construct(object $message)
+    public function __construct(private readonly object $message)
     {
-        $this->message = $message;
     }
 
     public static function wrap(object $message): self

@@ -24,6 +24,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_DECORATE_MESSENGER_SQS_CLIENT = 'easy_http_client.decorate_messenger_sqs_client';
+
+    /**
+     * @var string
+     */
     public const PARAM_MODIFIERS_ENABLED = 'easy_http_client.modifiers.enabled';
 
     /**

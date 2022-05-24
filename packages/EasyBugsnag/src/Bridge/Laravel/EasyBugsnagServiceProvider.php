@@ -6,6 +6,8 @@ namespace EonX\EasyBugsnag\Bridge\Laravel;
 
 use Bugsnag\Client;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
+use EonX\EasyBugsnag\Bridge\EasyUtils\Exceptions\EasyUtilsNotInstalledException;
+use EonX\EasyBugsnag\Bridge\EasyUtils\SensitiveDataSanitizerConfigurator;
 use EonX\EasyBugsnag\Bridge\Laravel\Doctrine\SqlOrmLogger;
 use EonX\EasyBugsnag\Bridge\Laravel\Request\LaravelRequestResolver;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingConfigurator;
@@ -22,6 +24,7 @@ use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use EonX\EasyBugsnag\Resolvers\DefaultAppNameResolver;
 use EonX\EasyBugsnag\Session\SessionTracker;
 use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
+use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobProcessing;
@@ -57,6 +60,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         $this->registerConfigurators();
         $this->registerDoctrineOrm();
         $this->registerRequestResolver();
+        $this->registerSensitiveDataSanitizer();
         $this->registerSessionTracking();
         $this->registerShutdownStrategy();
     }
@@ -154,6 +158,31 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     {
         // Request Resolver
         $this->app->singleton(BridgeConstantsInterface::SERVICE_REQUEST_RESOLVER, LaravelRequestResolver::class);
+    }
+
+    private function registerSensitiveDataSanitizer(): void
+    {
+        if (\config('easy-bugsnag.sensitive_data_sanitizer.enabled', true)) {
+            $this->app->singleton(
+                SensitiveDataSanitizerConfigurator::class,
+                static function (Container $app): SensitiveDataSanitizerConfigurator {
+                    $sanitizerId = SensitiveDataSanitizerInterface::class;
+
+                    if (\interface_exists($sanitizerId) === false || $app->has($sanitizerId) === false) {
+                        throw new EasyUtilsNotInstalledException(
+                            'To use sensitive data sanitization, the package eonx-com/easy-utils must be installed,
+                            and its service provider must be registered'
+                        );
+                    }
+
+                    return new SensitiveDataSanitizerConfigurator($app->make($sanitizerId));
+                }
+            );
+            $this->app->tag(
+                SensitiveDataSanitizerConfigurator::class,
+                [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]
+            );
+        }
     }
 
     /**

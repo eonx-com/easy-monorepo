@@ -9,6 +9,8 @@ use EonX\EasySecurity\Authorization\Helpers\AuthorizationMatrixFormatter;
 use EonX\EasySecurity\Exceptions\NoProviderInContextException;
 use EonX\EasySecurity\Exceptions\NoUserInContextException;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
+use EonX\EasySecurity\Interfaces\Authorization\PermissionInterface;
+use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
@@ -18,50 +20,38 @@ use EonX\EasySecurity\Interfaces\UserInterface;
  */
 class SecurityContext implements SecurityContextInterface
 {
-    /**
-     * @var \EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface
-     */
-    private $authorizationMatrix;
+    private AuthorizationMatrixInterface $authorizationMatrix;
 
     /**
      * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
-    private $cachePermissions;
+    private ?array $cachePermissions = null;
 
     /**
      * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
-    private $overridePermissions;
+    private ?array $overridePermissions = null;
 
     /**
      * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
-    private $permissions;
+    private ?array $permissions = null;
 
-    /**
-     * @var null|\EonX\EasySecurity\Interfaces\ProviderInterface
-     */
-    private $provider;
+    private ?ProviderInterface $provider = null;
 
     /**
      * @var null|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
-    private $roles;
+    private ?array $roles = null;
+
+    private ?ApiTokenInterface $token = null;
+
+    private ?UserInterface $user = null;
 
     /**
-     * @var null|\EonX\EasyApiToken\Interfaces\ApiTokenInterface
+     * @param string|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|string[] $permissions
      */
-    private $token;
-
-    /**
-     * @var null|\EonX\EasySecurity\Interfaces\UserInterface
-     */
-    private $user;
-
-    /**
-     * @param mixed $permissions
-     */
-    public function addPermissions($permissions): void
+    public function addPermissions(array|string $permissions): void
     {
         $this->cachePermissions = null;
 
@@ -71,9 +61,9 @@ class SecurityContext implements SecurityContextInterface
     }
 
     /**
-     * @param mixed $roles
+     * @param string|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]|string[] $roles
      */
-    public function addRoles($roles): void
+    public function addRoles(array|string $roles): void
     {
         $this->cachePermissions = null;
 
@@ -89,6 +79,11 @@ class SecurityContext implements SecurityContextInterface
     public function getAuthorizationMatrix(): AuthorizationMatrixInterface
     {
         return $this->authorizationMatrix;
+    }
+
+    public function getPermission(string $identifier): ?PermissionInterface
+    {
+        return $this->getPermissions()[$identifier] ?? null;
     }
 
     /**
@@ -107,7 +102,7 @@ class SecurityContext implements SecurityContextInterface
 
         $cachePermissions = [];
 
-        foreach ($this->roles ?? [] as $role) {
+        foreach ($this->getRoles() as $role) {
             foreach ($role->getPermissions() as $permission) {
                 $cachePermissions[$permission->getIdentifier()] = $permission;
             }
@@ -132,6 +127,11 @@ class SecurityContext implements SecurityContextInterface
         }
 
         throw new NoProviderInContextException('No provider in context');
+    }
+
+    public function getRole(string $identifier): ?RoleInterface
+    {
+        return $this->getRoles()[$identifier] ?? null;
     }
 
     /**
@@ -168,7 +168,7 @@ class SecurityContext implements SecurityContextInterface
 
     public function hasRole(string $role): bool
     {
-        return isset($this->roles[$role]);
+        return isset($this->getRoles()[$role]);
     }
 
     public function setAuthorizationMatrix(AuthorizationMatrixInterface $authorizationMatrix): void
@@ -177,9 +177,9 @@ class SecurityContext implements SecurityContextInterface
     }
 
     /**
-     * @param mixed $permissions
+     * @param string|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|string[]|null $permissions
      */
-    public function setPermissions($permissions): void
+    public function setPermissions(array|string|null $permissions): void
     {
         // Allow to remove the permissions override
         if ($permissions === null) {
@@ -203,9 +203,9 @@ class SecurityContext implements SecurityContextInterface
     }
 
     /**
-     * @param mixed $roles
+     * @param string|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]|string[] $roles
      */
-    public function setRoles($roles): void
+    public function setRoles(array|string $roles): void
     {
         $this->cachePermissions = null;
         $this->roles = [];

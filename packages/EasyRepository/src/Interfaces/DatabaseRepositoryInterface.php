@@ -16,8 +16,5 @@ interface DatabaseRepositoryInterface extends ObjectRepositoryInterface
 
     public function rollback(): void;
 
-    /**
-     * @return mixed
-     */
-    public function transactional(Closure $func);
+    public function transactional(Closure $func): mixed;
 }

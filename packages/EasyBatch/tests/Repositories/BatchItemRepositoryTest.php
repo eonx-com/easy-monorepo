@@ -81,7 +81,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
 
         \call_user_func($setup, $factory, $repo);
 
-        $paginator = $repo->findForDispatch(new Pagination(1, 15), 'batch-id', $dependsOnName);
+        $paginator = $repo->paginateItems(new Pagination(1, 15), 'batch-id', $dependsOnName);
 
         \call_user_func($test, $paginator);
     }

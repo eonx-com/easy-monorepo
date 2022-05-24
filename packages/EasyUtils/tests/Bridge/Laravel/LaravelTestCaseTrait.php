@@ -9,10 +9,7 @@ use Laravel\Lumen\Application;
 
 trait LaravelTestCaseTrait
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     /**
      * @param null|mixed[] $config

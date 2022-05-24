@@ -11,22 +11,16 @@ interface BatchRepositoryInterface
      */
     public const DEFAULT_TABLE = 'easy_batches';
 
-    /**
-     * @param int|string $id
-     */
-    public function find($id): ?BatchInterface;
+    public function find(int|string $id): ?BatchInterface;
 
     /**
-     * @param int|string $id
-     *
      * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
      */
-    public function findOrFail($id): BatchInterface;
+    public function findOrFail(int|string $id): BatchInterface;
 
-    /**
-     * @param int|string $parentBatchItemId
-     */
-    public function findNestedOrFail($parentBatchItemId): BatchInterface;
+    public function findNestedOrFail(int|string $parentBatchItemId): BatchInterface;
+
+    public function reset(): self;
 
     public function save(BatchInterface $batch): BatchInterface;
 

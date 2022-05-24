@@ -15,20 +15,25 @@ interface BatchItemRepositoryInterface
     public const DEFAULT_TABLE = 'easy_batch_items';
 
     /**
-     * @param int|string $batchId
+     * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
      */
-    public function findForDispatch(
-        PaginationInterface $startSizeData,
-        $batchId,
+    public function findForProcess(int|string $batchItemId): BatchItemInterface;
+
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
+     */
+    public function findOrFail(int|string $batchItemId): BatchItemInterface;
+
+    public function paginateItems(
+        PaginationInterface $pagination,
+        int|string $batchId,
         ?string $dependsOnName = null
     ): LengthAwarePaginatorInterface;
 
-    /**
-     * @param int|string $batchItemId
-     *
-     * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
-     */
-    public function findOrFail($batchItemId): BatchItemInterface;
-
     public function save(BatchItemInterface $batchItem): BatchItemInterface;
+
+    /**
+     * @param \EonX\EasyBatch\Interfaces\BatchItemInterface[] $batchItems
+     */
+    public function updateStatusToPending(array $batchItems): void;
 }

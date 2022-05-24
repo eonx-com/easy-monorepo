@@ -10,14 +10,8 @@ use Illuminate\Queue\Events\WorkerStopping;
 
 final class WorkerStoppingListener
 {
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface
-     */
-    private $errorHandler;
-
-    public function __construct(ErrorHandlerInterface $errorHandler)
+    public function __construct(private readonly ErrorHandlerInterface $errorHandler)
     {
-        $this->errorHandler = $errorHandler;
     }
 
     public function handle(WorkerStopping $event): void
