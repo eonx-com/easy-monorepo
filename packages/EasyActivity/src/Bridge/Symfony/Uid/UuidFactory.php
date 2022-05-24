@@ -14,7 +14,7 @@ final class UuidFactory implements IdFactoryInterface
         // The body is not required
     }
 
-    public function create(): int|string
+    public function create(): string
     {
         return (string)$this->uuidFactory->create();
     }
