@@ -16,7 +16,6 @@ use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFac
 use EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener;
 use EonX\EasySecurity\Bridge\Symfony\Security\SecurityContextAuthenticator;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
-use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\SecurityContextFactory;
@@ -48,10 +47,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(AuthorizationMatrixFactoryInterface::class, CachedAuthorizationMatrixFactory::class)
         ->arg('$cache', service(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE))
         ->arg('$decorated', service('easy_security.core_authorization_matrix_factory'));
-
-    $services
-        ->set(AuthorizationMatrixInterface::class)
-        ->factory([service(AuthorizationMatrixFactoryInterface::class), 'create']);
 
     // DataCollector
     $services
