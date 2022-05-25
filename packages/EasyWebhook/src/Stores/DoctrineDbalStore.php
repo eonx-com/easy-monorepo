@@ -20,12 +20,19 @@ use EonX\EasyWebhook\Webhook;
 
 final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements StoreInterface, SendAfterStoreInterface
 {
+    /**
+     * @var string|null
+     */
+    private $timezone;
+
     public function __construct(
         RandomGeneratorInterface $random,
         Connection $conn,
         DataCleanerInterface $dataCleaner,
-        ?string $table = null
+        ?string $table = null,
+        ?string $timezone = null
     ) {
+        $this->timezone = $timezone ?? self::DEFAULT_TIMEZONE;
         parent::__construct($random, $conn, $dataCleaner, $table ?? self::DEFAULT_TABLE);
     }
 
@@ -84,7 +91,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
 
     public function store(WebhookInterface $webhook): WebhookInterface
     {
-        $now = Carbon::now('UTC');
+        $now = Carbon::now($this->timezone);
         $data = \array_merge($webhook->getExtra() ?? [], $webhook->toArray());
         $data['class'] = \get_class($webhook);
         $data['updated_at'] = $now;

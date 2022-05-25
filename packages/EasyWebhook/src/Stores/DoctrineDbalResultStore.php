@@ -10,22 +10,30 @@ use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyUtils\ErrorDetailsHelper;
 use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
+use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements ResultStoreInterface
 {
+    /**
+     * @var string|null
+     */
+    private $timezone;
+
     public function __construct(
         RandomGeneratorInterface $random,
         Connection $conn,
         DataCleanerInterface $dataCleaner,
-        ?string $table = null
+        ?string $table = null,
+        ?string $timezone = null
     ) {
+        $this->timezone = $timezone ?? StoreInterface::DEFAULT_TIMEZONE;
         parent::__construct($random, $conn, $dataCleaner, $table ?? 'easy_webhook_results');
     }
 
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
-        $now = Carbon::now('UTC');
+        $now = Carbon::now($this->timezone);
         $data = $this->getData($result, $now);
 
         // New result with no id
