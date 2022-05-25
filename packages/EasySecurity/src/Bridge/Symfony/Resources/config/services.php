@@ -49,10 +49,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$cache', service(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE))
         ->arg('$decorated', service('easy_security.core_authorization_matrix_factory'));
 
-    $services
-        ->set(AuthorizationMatrixInterface::class)
-        ->factory([service(AuthorizationMatrixFactoryInterface::class), 'create']);
-
     // DataCollector
     $services
         ->set(SecurityContextDataCollector::class)
