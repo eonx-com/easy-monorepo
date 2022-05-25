@@ -89,11 +89,6 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
         return $this->random->uuidV4();
     }
 
-    public function getTimezone(): ?string
-    {
-        return $this->timezone;
-    }
-
     public function store(WebhookInterface $webhook): WebhookInterface
     {
         $now = Carbon::now($this->timezone);

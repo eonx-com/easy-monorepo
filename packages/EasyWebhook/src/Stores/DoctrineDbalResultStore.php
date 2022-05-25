@@ -31,11 +31,6 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
         parent::__construct($random, $conn, $dataCleaner, $table ?? 'easy_webhook_results');
     }
 
-    public function getTimezone(): ?string
-    {
-        return $this->timezone;
-    }
-
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
         $now = Carbon::now($this->timezone);
