@@ -16,7 +16,6 @@ use EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFac
 use EonX\EasySecurity\Bridge\Symfony\Listeners\FromRequestSecurityContextConfiguratorListener;
 use EonX\EasySecurity\Bridge\Symfony\Security\SecurityContextAuthenticator;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
-use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\SecurityContextFactory;
