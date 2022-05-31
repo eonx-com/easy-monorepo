@@ -38,6 +38,7 @@ you can look [there][1].
 - [EasySchedule](https://github.com/eonx-com/easy-schedule): Provides the Command Scheduling logic of Laravel in a Symfony Console application
 - [EasySecurity](https://github.com/eonx-com/easy-security): Provides security features to be generic across applications
 - [EasySsm](https://github.com/eonx-com/easy-ssm): CLI tool to interact with AWS ParameterStore in a convenient way
+- [EasySwoole](https://github.com/eonx-com/easy-swoole): Ease running app with Open Swoole
 - [EasyTemplatingBlock](https://github.com/eonx-com/easy-templating-block): Allow to dynamically render blocks in templating engines
 - [EasyTest](https://github.com/eonx-com/easy-test): Makes testing easier
 - [EasyUtils](https://github.com/eonx-com/easy-utils): EonX packages utils
