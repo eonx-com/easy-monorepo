@@ -12,7 +12,7 @@
         "phpunit/phpunit": "^9.5",
         "firebase/php-jwt": "^5.0",
         "guzzlehttp/psr7": "^2.1",
-        "eonx-com/easy-utils": "^4.1.8",
+        "eonx-com/easy-utils": "^4.2",
         "auth0/auth0-php": "^8.0",
         "psr/container": "^1.0",
         "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
