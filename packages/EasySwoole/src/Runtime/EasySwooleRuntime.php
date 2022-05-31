@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Runtime;
 
+use EonX\EasyBugsnag\Interfaces\ValueOptionInterface as EasyBugsnagValueOptionInterface;
 use Swoole\Constant;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Runtime\RunnerInterface;
@@ -21,6 +22,11 @@ final class EasySwooleRuntime extends SymfonyRuntime
             $options['settings'] = \array_merge([
                 Constant::OPTION_WORKER_NUM => \swoole_cpu_num() * 2,
             ], $options['settings'] ?? []);
+
+            // Bridge for eonx-com/easy-bugsnag to resolve request in CLI
+            if (\interface_exists(EasyBugsnagValueOptionInterface::class)) {
+                $_SERVER[EasyBugsnagValueOptionInterface::RESOLVE_REQUEST_IN_CLI] = true;
+            }
 
             return new EasySwooleRunner($application, $options);
         }
