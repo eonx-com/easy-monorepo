@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Tests\Bridge\Symfony\Stubs;
 
-use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyAsync\Tests\Doctrine\Stubs\ManagerRegistryStub;
 use EonX\EasySwoole\Bridge\Symfony\EasySwooleSymfonyBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface

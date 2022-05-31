@@ -14,7 +14,13 @@ final class EasySwooleSymfonyBundleTest extends AbstractSymfonyTestCase
         $container = $this->getKernel([__DIR__ . '/Fixtures/config/default.yaml'])
             ->getContainer();
 
-        self::assertInstanceOf(ApplicationStateCheckListener::class, $container->get(ApplicationStateCheckListener::class));
-        self::assertInstanceOf(ApplicationStateResetListener::class, $container->get(ApplicationStateResetListener::class));
+        self::assertInstanceOf(
+            ApplicationStateCheckListener::class,
+            $container->get(ApplicationStateCheckListener::class)
+        );
+        self::assertInstanceOf(
+            ApplicationStateResetListener::class,
+            $container->get(ApplicationStateResetListener::class)
+        );
     }
 }
