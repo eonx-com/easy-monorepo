@@ -20,6 +20,10 @@ final class EasySwooleRuntime extends SymfonyRuntime
         if ($application instanceof HttpKernelInterface) {
             $options = $this->options;
             $options['settings'] = \array_merge([
+                // Static Handler
+                Constant::OPTION_ENABLE_STATIC_HANDLER => true,
+                Constant::OPTION_DOCUMENT_ROOT => '/var/www/public',
+                // Workers number
                 Constant::OPTION_WORKER_NUM => \swoole_cpu_num() * 2,
             ], $options['settings'] ?? []);
 
