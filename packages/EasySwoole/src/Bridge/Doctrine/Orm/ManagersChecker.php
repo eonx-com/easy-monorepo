@@ -6,11 +6,11 @@ namespace EonX\EasySwoole\Bridge\Doctrine\Orm;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasySwoole\AbstractApplicationStateChecker;
+use EonX\EasySwoole\AppStateCheckers\AbstractAppStateChecker;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-final class ManagersChecker extends AbstractApplicationStateChecker
+final class ManagersChecker extends AbstractAppStateChecker
 {
     public function __construct(
         private readonly ManagerRegistry $managerRegistry,

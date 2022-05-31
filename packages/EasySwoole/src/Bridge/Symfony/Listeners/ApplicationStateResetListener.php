@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\Symfony\Listeners;
 
 use EonX\EasySwoole\Helpers\EasySwooleEnabledHelper;
-use EonX\EasySwoole\Interfaces\ApplicationStateResetterInterface;
+use EonX\EasySwoole\Interfaces\AppStateResetterInterface;
 use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 
 final class ApplicationStateResetListener
 {
     /**
-     * @var \EonX\EasySwoole\Interfaces\ApplicationStateResetterInterface[]
+     * @var \EonX\EasySwoole\Interfaces\AppStateResetterInterface[]
      */
     private array $appStateResetters;
 
     public function __construct(iterable $appStateResetters)
     {
         $this->appStateResetters = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($appStateResetters, ApplicationStateResetterInterface::class)
+            CollectorHelper::filterByClass($appStateResetters, AppStateResetterInterface::class)
         );
     }
 

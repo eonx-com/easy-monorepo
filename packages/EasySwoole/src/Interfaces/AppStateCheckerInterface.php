@@ -6,7 +6,7 @@ namespace EonX\EasySwoole\Interfaces;
 
 use EonX\EasyUtils\Interfaces\HasPriorityInterface;
 
-interface ApplicationStateCheckerInterface extends HasPriorityInterface
+interface AppStateCheckerInterface extends HasPriorityInterface
 {
     public function isApplicationStateCompromised(): bool;
 }

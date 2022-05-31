@@ -11,13 +11,16 @@ use Symfony\Component\Runtime\SymfonyRuntime;
 
 final class EasySwooleRuntime extends SymfonyRuntime
 {
+    /**
+     * @throws \Exception
+     */
     public function getRunner(?object $application): RunnerInterface
     {
         if ($application instanceof HttpKernelInterface) {
             $options = $this->options;
-            $options['settings'] = $options['settings'] ?? [
+            $options['settings'] = \array_merge([
                 Constant::OPTION_WORKER_NUM => \swoole_cpu_num() * 2,
-            ];
+            ], $options['settings'] ?? []);
 
             return new EasySwooleRunner($application, $options);
         }

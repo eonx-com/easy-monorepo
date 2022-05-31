@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\Doctrine\Orm;
 
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasySwoole\AbstractApplicationStateResetter;
+use EonX\EasySwoole\AppStateResetters\AbstractAppStateResetter;
 
-final class ManagersResetter extends AbstractApplicationStateResetter
+final class ManagersResetter extends AbstractAppStateResetter
 {
     public function __construct(
         private readonly ManagerRegistry $managerRegistry,

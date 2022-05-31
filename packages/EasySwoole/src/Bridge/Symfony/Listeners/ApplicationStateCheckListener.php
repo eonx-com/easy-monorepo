@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\Symfony\Listeners;
 
 use EonX\EasySwoole\Helpers\EasySwooleEnabledHelper;
-use EonX\EasySwoole\Interfaces\ApplicationStateCheckerInterface;
+use EonX\EasySwoole\Interfaces\AppStateCheckerInterface;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
 use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
@@ -13,14 +13,14 @@ use Symfony\Component\HttpKernel\Event\TerminateEvent;
 final class ApplicationStateCheckListener
 {
     /**
-     * @var \EonX\EasySwoole\Interfaces\ApplicationStateCheckerInterface[]
+     * @var \EonX\EasySwoole\Interfaces\AppStateCheckerInterface[]
      */
     private array $appStateCheckers;
 
     public function __construct(iterable $appStateCheckers)
     {
         $this->appStateCheckers = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($appStateCheckers, ApplicationStateCheckerInterface::class)
+            CollectorHelper::filterByClass($appStateCheckers, AppStateCheckerInterface::class)
         );
     }
 
