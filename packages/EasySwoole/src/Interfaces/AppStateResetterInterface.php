@@ -6,7 +6,7 @@ namespace EonX\EasySwoole\Interfaces;
 
 use EonX\EasyUtils\Interfaces\HasPriorityInterface;
 
-interface ApplicationStateResetterInterface extends HasPriorityInterface
+interface AppStateResetterInterface extends HasPriorityInterface
 {
     public function resetState(): void;
 }

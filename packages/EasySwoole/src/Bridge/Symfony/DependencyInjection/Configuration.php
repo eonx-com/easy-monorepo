@@ -21,6 +21,14 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('enabled')->defaultTrue()->end()
                     ->end()
                 ->end()
+                ->arrayNode('request_limits')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->integerNode('min')->defaultValue(5000)->end()
+                        ->integerNode('max')->defaultValue(10000)->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

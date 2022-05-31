@@ -17,9 +17,9 @@ use Symfony\Component\Runtime\RunnerInterface;
 final class EasySwooleRunner implements RunnerInterface
 {
     private const DEFAULT_OPTIONS = [
-        'host' => '127.0.0.1',
+        'host' => '0.0.0.0',
         'port' => 8080,
-        'mode' => \SWOOLE_PROCESS,
+        'mode' => \SWOOLE_BASE,
         'sock_type' => \SWOOLE_SOCK_TCP,
         'settings' => [],
         'callbacks' => [],
@@ -59,6 +59,8 @@ final class EasySwooleRunner implements RunnerInterface
                 }
             }
         );
+
+        $server->start();
 
         return 0;
     }

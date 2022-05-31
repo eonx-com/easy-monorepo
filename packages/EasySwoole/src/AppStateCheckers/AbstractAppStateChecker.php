@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasySwoole;
+namespace EonX\EasySwoole\AppStateCheckers;
 
-use EonX\EasySwoole\Interfaces\ApplicationStateResetterInterface;
+use EonX\EasySwoole\Interfaces\AppStateCheckerInterface;
 use EonX\EasyUtils\Traits\HasPriorityTrait;
 
-abstract class AbstractApplicationStateResetter implements ApplicationStateResetterInterface
+abstract class AbstractAppStateChecker implements AppStateCheckerInterface
 {
     use HasPriorityTrait;
 
