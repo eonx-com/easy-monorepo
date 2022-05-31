@@ -78,7 +78,8 @@
         "symplify/phpstan-extensions": "^10.1",
         "tracy/tracy": "^2.7",
         "vlucas/phpdotenv": "^3.3 || ^5.2",
-        "symfony/amazon-sqs-messenger": "^5.4 || ^6.0"
+        "symfony/amazon-sqs-messenger": "^5.4 || ^6.0",
+        "symfony/runtime": "^6.1"
     },
     "autoload": {
         "psr-4": {
@@ -110,6 +111,7 @@
             "EonX\\EasySchedule\\": "packages/EasySchedule/src",
             "EonX\\EasySecurity\\": "packages/EasySecurity/src",
             "EonX\\EasySsm\\": "packages/EasySsm/src",
+            "EonX\\EasySwoole\\": "packages/EasySwoole/src",
             "EonX\\EasyTemplatingBlock\\": "packages/EasyTemplatingBlock/src",
             "EonX\\EasyTest\\": "packages/EasyTest/src",
             "EonX\\EasyUtils\\": "packages/EasyUtils/src",
@@ -145,6 +147,7 @@
             "EonX\\EasySchedule\\Tests\\": "packages/EasySchedule/tests",
             "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
             "EonX\\EasySsm\\Tests\\": "packages/EasySsm/tests",
+            "EonX\\EasySwoole\\Tests\\": "packages/EasySwoole/tests",
             "EonX\\EasyTemplatingBlock\\Tests\\": "packages/EasyTemplatingBlock/tests",
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests",
             "EonX\\EasyUtils\\Tests\\": "packages/EasyUtils/tests",
@@ -178,6 +181,7 @@
         "eonx-com/easy-schedule": "self.version",
         "eonx-com/easy-security": "self.version",
         "eonx-com/easy-ssm": "self.version",
+        "eonx-com/easy-swoole": "self.version",
         "eonx-com/easy-templating-block": "self.version",
         "eonx-com/easy-test": "self.version",
         "eonx-com/easy-utils": "self.version",
@@ -209,7 +213,10 @@
         ]
     },
     "config": {
-        "process-timeout": 0
+        "process-timeout": 0,
+        "allow-plugins": {
+            "symfony/runtime": true
+        }
     },
     "extra": {
         "eonx_docs": {
