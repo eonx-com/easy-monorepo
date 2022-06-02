@@ -9,7 +9,7 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const LOG_CHANNEL = 'http_client';
+    public const LOG_CHANNEL = 'easy_http_client';
 
     /**
      * @var string
