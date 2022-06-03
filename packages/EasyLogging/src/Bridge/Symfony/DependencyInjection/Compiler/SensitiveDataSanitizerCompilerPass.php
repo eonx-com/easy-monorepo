@@ -33,10 +33,11 @@ final class SensitiveDataSanitizerCompilerPass implements CompilerPassInterface
             );
         }
 
-        $def = new Definition(SensitiveDataSanitizerProcessor::class, [
+        $def = (new Definition(SensitiveDataSanitizerProcessor::class, [
             '$sensitiveDataSanitizer' => new Reference(SensitiveDataSanitizerInterface::class),
-        ]);
-        $def->setAutoconfigured(true);
+        ]))
+            ->addTag(BridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER)
+            ->setAutoconfigured(true);
 
         $container->setDefinition(SensitiveDataSanitizerProcessor::class, $def);
     }

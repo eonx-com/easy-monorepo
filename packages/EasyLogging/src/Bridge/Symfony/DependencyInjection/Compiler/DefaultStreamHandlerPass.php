@@ -29,6 +29,7 @@ final class DefaultStreamHandlerPass implements CompilerPassInterface
         }
 
         $def = (new Definition(StreamHandlerConfigProvider::class))
+            ->addTag(BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER)
             ->setAutoconfigured(true)
             ->setAutowired(true)
             ->setArgument('$level', '%' . BridgeConstantsInterface::PARAM_STREAM_HANDLER_LEVEL . '%');
