@@ -70,6 +70,13 @@ trait TranslatableExceptionTrait
         return $this;
     }
 
+    public function setMessage(string $message): self
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
     /**
      * Sets the exception message parameters.
      *

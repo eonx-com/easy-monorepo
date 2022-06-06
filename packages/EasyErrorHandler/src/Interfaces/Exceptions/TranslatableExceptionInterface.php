@@ -36,4 +36,6 @@ interface TranslatableExceptionInterface
      * @return mixed[]
      */
     public function getUserMessageParams(): array;
+
+    public function setMessage(string $message): self;
 }
