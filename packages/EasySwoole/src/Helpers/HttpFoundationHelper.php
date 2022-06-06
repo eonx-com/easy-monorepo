@@ -16,6 +16,8 @@ final class HttpFoundationHelper
 {
     public static function fromSwooleRequest(Request $request): HttpFoundationRequest
     {
+        $content = $request->rawContent();
+
         $hfRequest = new HttpFoundationRequest(
             $request->get ?? [],
             $request->post ?? [],
@@ -23,7 +25,7 @@ final class HttpFoundationHelper
             $request->cookie ?? [],
             $request->files ?? [],
             \array_change_key_case($request->server ?? [], \CASE_UPPER),
-            $request->rawContent()
+            \is_string($content) ? $content : null
         );
 
         $hfRequest->headers = new HeaderBag($request->header ?? []);

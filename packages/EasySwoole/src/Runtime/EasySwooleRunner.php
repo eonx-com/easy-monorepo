@@ -96,8 +96,11 @@ final class EasySwooleRunner implements RunnerInterface
     {
         $writeFn = static function (string $message): void {
             $stream = \fopen('php://stdout', 'w+');
-            \fwrite($stream, $message);
-            \fclose($stream);
+
+            if (\is_resource($stream)) {
+                \fwrite($stream, $message);
+                \fclose($stream);
+            }
         };
 
         $server->on(

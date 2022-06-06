@@ -15,6 +15,10 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasySwooleExtension extends Extension
 {
+    private const ACCESS_LOG_CONFIG = [
+        'timezone' => BridgeConstantsInterface::PARAM_ACCESS_LOG_TIMEZONE,
+    ];
+
     private const REQUEST_LIMITS_CONFIG = [
         'min' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MIN,
         'max' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MAX,
@@ -39,6 +43,14 @@ final class EasySwooleExtension extends Extension
         $container
             ->registerForAutoconfiguration(AppStateResetterInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_APP_STATE_RESETTER);
+
+        if ($config['access_log']['enabled'] ?? true) {
+            foreach (self::ACCESS_LOG_CONFIG as $configName => $param) {
+                $container->setParameter($param, $config['access_log'][$configName]);
+            }
+
+            $loader->load('access_log.php');
+        }
 
         if (($config['doctrine']['enabled'] ?? true) && \interface_exists(ManagerRegistry::class)) {
             $loader->load('doctrine.php');

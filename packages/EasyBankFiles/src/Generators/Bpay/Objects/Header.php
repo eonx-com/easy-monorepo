@@ -34,7 +34,7 @@ final class Header extends BaseObject
      *
      * @see http://php.net/manual/en/function.str-pad.php
      *
-     * @return mixed[][int]
+     * @return int[][]
      */
     protected function getAttributesPaddingRules(): array
     {
