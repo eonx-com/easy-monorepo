@@ -15,6 +15,13 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
+                ->arrayNode('access_log')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->scalarNode('timezone')->defaultValue('UTC')->end()
+                    ->end()
+                ->end()
                 ->arrayNode('doctrine')
                     ->addDefaultsIfNotSet()
                     ->children()

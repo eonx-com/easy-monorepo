@@ -20,6 +20,10 @@ final class EasySwooleRuntime extends SymfonyRuntime
         if ($application instanceof HttpKernelInterface) {
             $options = $this->options;
             $options['settings'] = \array_merge([
+                // Process
+                Constant::OPTION_DAEMONIZE => 1,
+                Constant::OPTION_GROUP => 'www-data',
+                Constant::OPTION_USER => 'www-data',
                 // Static Handler
                 Constant::OPTION_ENABLE_STATIC_HANDLER => true,
                 Constant::OPTION_DOCUMENT_ROOT => '/var/www/public',

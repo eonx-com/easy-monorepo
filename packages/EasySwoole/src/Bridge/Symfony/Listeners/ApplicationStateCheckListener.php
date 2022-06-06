@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony\Listeners;
 
-use EonX\EasySwoole\Helpers\EasySwooleEnabledHelper;
 use EonX\EasySwoole\Interfaces\AppStateCheckerInterface;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
 use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 
-final class ApplicationStateCheckListener
+final class ApplicationStateCheckListener extends AbstractTerminateEventListener
 {
     /**
      * @var \EonX\EasySwoole\Interfaces\AppStateCheckerInterface[]
@@ -24,13 +23,9 @@ final class ApplicationStateCheckListener
         );
     }
 
-    public function __invoke(TerminateEvent $event): void
+    protected function doInvoke(TerminateEvent $event): void
     {
         $request = $event->getRequest();
-
-        if (EasySwooleEnabledHelper::isNotEnabled($request)) {
-            return;
-        }
 
         foreach ($this->appStateCheckers as $appStateChecker) {
             if ($appStateChecker->isApplicationStateCompromised()) {
