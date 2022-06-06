@@ -13,12 +13,12 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
      */
     private array $keysToMask;
 
+    private string $maskPattern;
+
     /**
      * @var \EonX\EasyUtils\SensitiveData\ObjectTransformerInterface[]
      */
     private array $objectTransformers;
-
-    private string $maskPattern;
 
     /**
      * @var \EonX\EasyUtils\SensitiveData\StringSanitizerInterface[]
@@ -79,7 +79,7 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
     private function sanitizeArray(array $data): array
     {
         foreach ($data as $key => $value) {
-            $data[$key] = \in_array(\mb_strtolower($key), $this->keysToMask, true)
+            $data[$key] = \in_array(\mb_strtolower((string)$key), $this->keysToMask, true)
                 ? $this->maskPattern
                 : $this->sanitize($value);
         }
