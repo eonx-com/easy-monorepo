@@ -80,7 +80,7 @@
         "vlucas/phpdotenv": "^3.3 || ^5.2",
         "symfony/amazon-sqs-messenger": "^5.4 || ^6.0",
         "symfony/runtime": "^5.4 || ^6.0",
-        "swoole/ide-helper": "^4.8"
+        "eaglewu/swoole-ide-helper": "dev-master"
     },
     "autoload": {
         "psr-4": {
