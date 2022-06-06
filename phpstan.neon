@@ -201,6 +201,9 @@ parameters:
         - message: '#Parameter \#1 \$envKey of class Symfony\\Component\\Dotenv\\Dotenv constructor expects string, true given#'
           path: packages/EasySsm/src/Services/Dotenv/Loaders/DotenvLoader.php
 
+        # ---- EasySwoole ----
+        - '#Access to constant (.*) on an unknown class Swoole\\Constant#'
+
         # ---- EasyTest ----
         - message: '#Unsafe usage of new static\(\)#'
           path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
