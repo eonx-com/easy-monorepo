@@ -11,7 +11,8 @@
     "require-dev": {
         "monolog/monolog": "^1.22 || ^2.0",
         "phpunit/phpunit": "^9.5",
-        "symfony/symfony": "^5.4 || ^6.0"
+        "symfony/symfony": "^5.4 || ^6.0",
+        "swoole/ide-helper": "^4.8"
     },
     "autoload": {
         "psr-4": {
