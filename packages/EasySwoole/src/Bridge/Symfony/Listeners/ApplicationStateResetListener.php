@@ -15,6 +15,9 @@ final class ApplicationStateResetListener extends AbstractTerminateEventListener
      */
     private array $appStateResetters;
 
+    /**
+     * @param iterable<\EonX\EasySwoole\Interfaces\AppStateResetterInterface> $appStateResetters
+     */
     public function __construct(iterable $appStateResetters)
     {
         $this->appStateResetters = CollectorHelper::orderLowerPriorityFirstAsArray(

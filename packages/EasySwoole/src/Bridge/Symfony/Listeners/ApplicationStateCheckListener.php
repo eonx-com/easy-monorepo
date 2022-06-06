@@ -16,6 +16,9 @@ final class ApplicationStateCheckListener extends AbstractTerminateEventListener
      */
     private array $appStateCheckers;
 
+    /**
+     * @param iterable<\EonX\EasySwoole\Interfaces\AppStateCheckerInterface> $appStateCheckers
+     */
     public function __construct(iterable $appStateCheckers)
     {
         $this->appStateCheckers = CollectorHelper::orderLowerPriorityFirstAsArray(
