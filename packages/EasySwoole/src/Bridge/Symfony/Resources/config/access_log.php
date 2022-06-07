@@ -18,12 +18,12 @@ return static function (ContainerConfigurator $container): void {
         ->autowire();
 
     // Formatter
-    $services
-        ->set(HttpFoundationAccessLogFormatterInterface::class, HttpFoundationAccessLogFormatter::class)
-        ->arg('$timezone', param(BridgeConstantsInterface::PARAM_ACCESS_LOG_TIMEZONE));
+    $services->set(HttpFoundationAccessLogFormatterInterface::class, HttpFoundationAccessLogFormatter::class);
 
     // Logger
-    $services->set(MonologLoggerFactory::class);
+    $services
+        ->set(MonologLoggerFactory::class)
+        ->arg('$timezone', param(BridgeConstantsInterface::PARAM_ACCESS_LOG_TIMEZONE));
 
     $services
         ->set(BridgeConstantsInterface::SERVICE_ACCESS_LOG_LOGGER, LoggerInterface::class)
@@ -32,5 +32,6 @@ return static function (ContainerConfigurator $container): void {
     // Listener
     $services
         ->set(AccessLogListener::class)
-        ->arg('$logger', service(BridgeConstantsInterface::SERVICE_ACCESS_LOG_LOGGER));
+        ->arg('$logger', service(BridgeConstantsInterface::SERVICE_ACCESS_LOG_LOGGER))
+        ->tag('kernel.event_listener');
 };

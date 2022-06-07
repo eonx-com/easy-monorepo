@@ -21,7 +21,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
             $options = $this->options;
             $options['settings'] = \array_merge([
                 // Process
-                Constant::OPTION_DAEMONIZE => 1,
+                Constant::OPTION_DAEMONIZE => 0,
                 Constant::OPTION_GROUP => 'www-data',
                 Constant::OPTION_USER => 'www-data',
                 // Static Handler
