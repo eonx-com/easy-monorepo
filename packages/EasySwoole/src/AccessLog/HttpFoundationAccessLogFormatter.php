@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\AccessLog;
 
-use Carbon\Carbon;
 use EonX\EasySwoole\Interfaces\HttpFoundationAccessLogFormatterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
