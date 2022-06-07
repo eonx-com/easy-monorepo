@@ -9,7 +9,7 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\StatusCodeAwareExceptionInterfac
 use EonX\EasyErrorHandler\Interfaces\Exceptions\SubCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface;
-use EonX\EasyUtils\ErrorDetailsHelper;
+use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
 use Psr\Log\LoggerInterface;
 
 final class ErrorDetailsResolver implements ErrorDetailsResolverInterface

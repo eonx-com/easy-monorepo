@@ -6,8 +6,6 @@ namespace EonX\EasyErrorHandler\Builders;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerAwareInterface;
-use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
-use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Traits\ErrorHandlerAwareTrait;
 use Throwable;
 
@@ -31,22 +29,15 @@ final class ExtendedExceptionBuilder extends AbstractErrorResponseBuilder implem
     private $keys;
 
     /**
-     * @var \EonX\EasyErrorHandler\Interfaces\TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * @param null|string[] $keys
      */
     public function __construct(
         ErrorDetailsResolverInterface $errorDetailsResolver,
-        TranslatorInterface $translator,
         ?string $exceptionKey = null,
         ?array $keys = null,
         ?int $priority = null
     ) {
         $this->errorDetailsResolver = $errorDetailsResolver;
-        $this->translator = $translator;
         $this->exceptionKey = $exceptionKey ?? 'exception';
         $this->keys = $keys ?? [];
 
@@ -66,7 +57,7 @@ final class ExtendedExceptionBuilder extends AbstractErrorResponseBuilder implem
             $this->getKey('class') => $details['class'],
             $this->getKey('file') => $details['file'],
             $this->getKey('line') => $details['line'],
-            $this->getKey('message') => $this->getMessage($throwable),
+            $this->getKey('message') => $details['message'],
             $this->getKey('trace') => $details['trace'],
         ];
 
@@ -78,12 +69,5 @@ final class ExtendedExceptionBuilder extends AbstractErrorResponseBuilder implem
     private function getKey(string $name): string
     {
         return $this->keys[$name] ?? $name;
-    }
-
-    private function getMessage(Throwable $throwable): string
-    {
-        return $throwable instanceof TranslatableExceptionInterface
-            ? $this->translator->trans($throwable->getMessage(), $throwable->getMessageParams())
-            : $throwable->getMessage();
     }
 }

@@ -47,7 +47,6 @@ final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterf
         yield new CodeBuilder($this->getKey('code'));
         yield new ExtendedExceptionBuilder(
             $this->errorDetailsResolver,
-            $this->translator,
             $this->getKey('exception'),
             $this->keys['extended_exception_keys'] ?? []
         );
