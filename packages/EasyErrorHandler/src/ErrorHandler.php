@@ -13,7 +13,7 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
@@ -100,7 +100,7 @@ final class ErrorHandler implements ErrorHandlerInterface
     public function report(Throwable $throwable): void
     {
         // Symfony Messenger HandlerFailedException
-        if (\class_exists(HandlerFailedException::class) and $throwable instanceof HandlerFailedException) {
+        if (\class_exists(HandlerFailedException::class) && $throwable instanceof HandlerFailedException) {
             foreach ($throwable->getNestedExceptions() as $nestedThrowable) {
                 $this->report($nestedThrowable);
             }

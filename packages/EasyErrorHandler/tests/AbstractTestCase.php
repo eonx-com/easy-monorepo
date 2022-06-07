@@ -91,7 +91,6 @@ class AbstractTestCase extends TestCase
                 ]),
             static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
-                self::assertSame('Exception message with foo', $content['exception']['message']);
                 self::assertSame('User-friendly error message with bar', $content['message']);
             },
             [
@@ -100,7 +99,6 @@ class AbstractTestCase extends TestCase
                 ],
             ],
             [
-                'test.exception_message' => 'Exception message with :param',
                 'test.user_message' => 'User-friendly error message with :param',
             ],
         ];
