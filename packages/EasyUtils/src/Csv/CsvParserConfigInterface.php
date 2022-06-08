@@ -19,4 +19,6 @@ interface CsvParserConfigInterface
     public function hasGroupPrefixes(): bool;
 
     public function hasRequiredHeaders(): bool;
+
+    public function ignoreEmptyRecords(): bool;
 }

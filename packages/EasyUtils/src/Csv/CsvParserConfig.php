@@ -7,32 +7,26 @@ namespace EonX\EasyUtils\Csv;
 final class CsvParserConfig implements CsvParserConfigInterface
 {
     /**
-     * @var null|string[]
-     */
-    private ?array $groupPrefixes;
-
-    /**
-     * @var null|string[]
-     */
-    private ?array $requiredHeaders;
-
-    /**
      * @param null|string[] $requiredHeaders
      * @param null|string[] $groupPrefixes
      */
-    public function __construct(?array $requiredHeaders = null, ?array $groupPrefixes = null)
-    {
-        $this->requiredHeaders = $requiredHeaders;
-        $this->groupPrefixes = $groupPrefixes;
+    public function __construct(
+        private readonly ?array $requiredHeaders = null,
+        private readonly ?array $groupPrefixes = null,
+        private readonly ?bool $ignoreEmptyRecords = null
+    ) {
     }
 
     /**
      * @param null|string[] $requiredHeaders
      * @param null|string[] $groupPrefixes
      */
-    public static function create(?array $requiredHeaders = null, ?array $groupPrefixes = null): self
-    {
-        return new self($requiredHeaders, $groupPrefixes);
+    public static function create(
+        ?array $requiredHeaders = null,
+        ?array $groupPrefixes = null,
+        ?bool $ignoreEmptyRecords = null
+    ): self {
+        return new self($requiredHeaders, $groupPrefixes, $ignoreEmptyRecords);
     }
 
     /**
@@ -59,6 +53,11 @@ final class CsvParserConfig implements CsvParserConfigInterface
     public function hasRequiredHeaders(): bool
     {
         return $this->hasValuesInArray($this->getRequiredHeaders());
+    }
+
+    public function ignoreEmptyRecords(): bool
+    {
+        return $this->ignoreEmptyRecords ?? false;
     }
 
     /**
