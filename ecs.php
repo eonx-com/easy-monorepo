@@ -74,7 +74,8 @@ return static function (ECSConfig $ecsConfig): void {
             __DIR__ . '/packages/EasyCore/tests/Doctrine/DBAL/Types/DateTimeMicrosecondsTypeTest.php',
         ],
         AssignmentInConditionSniff::class => [
-            __DIR__ . '/packages/EasyCore/src/Csv\FromFileCsvContentsProvider.php',
+            __DIR__ . '/packages/EasyCore/src/Csv/FromFileCsvContentsProvider.php',
+            __DIR__ . '/packages/EasyUtils/src/Csv/FromFileCsvContentsProvider.php',
         ],
         MethodChainingIndentationFixer::class => ['*/Configuration.php'],
         NullTypeHintOnLastPositionSniff::class . '.NullTypeHintNotOnLastPosition',
