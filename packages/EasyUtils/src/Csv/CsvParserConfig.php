@@ -2,22 +2,19 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Csv;
+namespace EonX\EasyUtils\Csv;
 
-/**
- * @deprecated since 4.1, will be removed in 5.0. Use Eonx\EasyUtils\Csv\CsvParserConfig.
- */
 final class CsvParserConfig implements CsvParserConfigInterface
 {
     /**
      * @var null|string[]
      */
-    private $groupPrefixes;
+    private ?array $groupPrefixes;
 
     /**
      * @var null|string[]
      */
-    private $requiredHeaders;
+    private ?array $requiredHeaders;
 
     /**
      * @param null|string[] $requiredHeaders
@@ -52,5 +49,23 @@ final class CsvParserConfig implements CsvParserConfigInterface
     public function getRequiredHeaders(): ?array
     {
         return $this->requiredHeaders;
+    }
+
+    public function hasGroupPrefixes(): bool
+    {
+        return $this->hasValuesInArray($this->getGroupPrefixes());
+    }
+
+    public function hasRequiredHeaders(): bool
+    {
+        return $this->hasValuesInArray($this->getRequiredHeaders());
+    }
+
+    /**
+     * @param null|mixed[] $array
+     */
+    private function hasValuesInArray(?array $array = null): bool
+    {
+        return \is_array($array) && \count($array) > 0;
     }
 }
