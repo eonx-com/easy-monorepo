@@ -71,6 +71,21 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
                 ],
             ],
         ];
+
+        yield 'Empty records not ignored' => [
+            __DIR__ . '/fixtures/empty_records.csv',
+            CsvParserConfig::create(),
+            [
+                [],
+                [],
+            ],
+        ];
+
+        yield 'Empty records ignored' => [
+            __DIR__ . '/fixtures/empty_records.csv',
+            CsvParserConfig::create(null, null, true),
+            [],
+        ];
     }
 
     /**
