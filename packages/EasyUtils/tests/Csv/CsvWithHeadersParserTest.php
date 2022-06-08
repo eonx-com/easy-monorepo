@@ -28,6 +28,26 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
                     'header2' => 'value2',
                     'header4' => 'value4',
                     'header3' => 'value3',
+                    'integer' => 0,
+                ],
+            ],
+        ];
+
+        yield 'Simple file with transformer' => [
+            __DIR__ . '/fixtures/simple_file.csv',
+            CsvParserConfig::create(recordTransformers: [
+                static function (array $record): array {
+                    return \array_change_key_case($record, \CASE_UPPER);
+                },
+            ]),
+            [
+                [
+                    'AHEADER' => 'aValue',
+                    'HEADER1' => 'value1',
+                    'HEADER2' => 'value2',
+                    'HEADER4' => 'value4',
+                    'HEADER3' => 'value3',
+                    'INTEGER' => 0,
                 ],
             ],
         ];

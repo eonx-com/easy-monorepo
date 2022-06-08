@@ -9,24 +9,28 @@ final class CsvParserConfig implements CsvParserConfigInterface
     /**
      * @param null|string[] $requiredHeaders
      * @param null|string[] $groupPrefixes
+     * @param null|callable[] $recordTransformers
      */
     public function __construct(
         private readonly ?array $requiredHeaders = null,
         private readonly ?array $groupPrefixes = null,
-        private readonly ?bool $ignoreEmptyRecords = null
+        private readonly ?bool $ignoreEmptyRecords = null,
+        private readonly ?array $recordTransformers = null
     ) {
     }
 
     /**
      * @param null|string[] $requiredHeaders
      * @param null|string[] $groupPrefixes
+     * @param null|callable[] $recordTransformers
      */
     public static function create(
         ?array $requiredHeaders = null,
         ?array $groupPrefixes = null,
-        ?bool $ignoreEmptyRecords = null
+        ?bool $ignoreEmptyRecords = null,
+        ?array $recordTransformers = null
     ): self {
-        return new self($requiredHeaders, $groupPrefixes, $ignoreEmptyRecords);
+        return new self($requiredHeaders, $groupPrefixes, $ignoreEmptyRecords, $recordTransformers);
     }
 
     /**
@@ -35,6 +39,14 @@ final class CsvParserConfig implements CsvParserConfigInterface
     public function getGroupPrefixes(): ?array
     {
         return $this->groupPrefixes;
+    }
+
+    /**
+     * @return callable[]
+     */
+    public function getRecordTransformers(): array
+    {
+        return $this->recordTransformers ?? [];
     }
 
     /**

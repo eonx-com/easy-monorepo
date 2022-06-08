@@ -12,6 +12,11 @@ interface CsvParserConfigInterface
     public function getGroupPrefixes(): ?array;
 
     /**
+     * @return callable[]
+     */
+    public function getRecordTransformers(): array;
+
+    /**
      * @return null|string[]
      */
     public function getRequiredHeaders(): ?array;
