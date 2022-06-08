@@ -2,11 +2,8 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Csv;
+namespace EonX\EasyUtils\Csv;
 
-/**
- * @deprecated since 4.1, will be removed in 5.0. Use Eonx\EasyUtils\Csv\CsvContentsProviderInterface.
- */
 interface CsvContentsProviderInterface
 {
     /**

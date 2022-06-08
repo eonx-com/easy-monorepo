@@ -2,18 +2,15 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Tests\Csv;
+namespace EonX\EasyUtils\Tests\Csv;
 
-use EonX\EasyCore\Csv\CsvParserConfig;
-use EonX\EasyCore\Csv\CsvParserConfigInterface;
-use EonX\EasyCore\Csv\CsvWithHeadersParser;
-use EonX\EasyCore\Csv\Exceptions\MissingValueForRequiredHeadersException;
-use EonX\EasyCore\Csv\FromFileCsvContentsProvider;
-use EonX\EasyCore\Tests\AbstractTestCase;
+use EonX\EasyUtils\Csv\CsvParserConfig;
+use EonX\EasyUtils\Csv\CsvParserConfigInterface;
+use EonX\EasyUtils\Csv\CsvWithHeadersParser;
+use EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException;
+use EonX\EasyUtils\Csv\FromFileCsvContentsProvider;
+use EonX\EasyUtils\Tests\AbstractTestCase;
 
-/**
- * @deprecated since 4.1, will be removed in 5.0. Use Eonx\EasyUtils\Tests\Csv\CsvWithHeadersParserTest.
- */
 final class CsvWithHeadersParserTest extends AbstractTestCase
 {
     /**
@@ -93,14 +90,13 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
      *
      * @dataProvider providerTestFromFile
      *
-     * @throws \EonX\EasyCore\Csv\Exceptions\MissingRequiredHeadersException
-     * @throws \EonX\EasyCore\Csv\Exceptions\MissingValueForRequiredHeadersException
+     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
+     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
      */
     public function testFromFile(string $filename, CsvParserConfigInterface $config, array $expected): void
     {
-        $parser = new CsvWithHeadersParser($config);
-
-        $result = $parser->parse(new FromFileCsvContentsProvider($filename));
+        $parser = new CsvWithHeadersParser();
+        $result = $parser->parse(new FromFileCsvContentsProvider($filename), $config);
         $result = $result instanceof \Traversable ? \iterator_to_array($result) : $result;
 
         self::assertEquals($expected, $result);
@@ -111,8 +107,8 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
      *
      * @dataProvider providerTestFromFileForException
      *
-     * @throws \EonX\EasyCore\Csv\Exceptions\MissingRequiredHeadersException
-     * @throws \EonX\EasyCore\Csv\Exceptions\MissingValueForRequiredHeadersException
+     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
+     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
      */
     public function testFromFileForException(
         string $filename,
@@ -121,9 +117,9 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     ): void {
         $this->expectException($expectedException);
 
-        $parser = new CsvWithHeadersParser($config);
+        $parser = new CsvWithHeadersParser();
+        $result = $parser->parse(new FromFileCsvContentsProvider($filename), $config);
 
-        $result = $parser->parse(new FromFileCsvContentsProvider($filename));
         if ($result instanceof \Traversable) {
             \iterator_to_array($result);
         }

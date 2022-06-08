@@ -2,46 +2,23 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Csv;
+namespace EonX\EasyUtils\Csv;
 
-use EonX\EasyCore\Csv\Exceptions\MissingRequiredHeadersException;
-use EonX\EasyCore\Csv\Exceptions\MissingValueForRequiredHeadersException;
+use EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException;
+use EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException;
 
-/**
- * @deprecated since 4.1, will be removed in 5.0. Use Eonx\EasyUtils\Csv\CsvWithHeadersParser.
- */
 final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
 {
     /**
-     * @var \EonX\EasyCore\Csv\CsvParserConfigInterface
-     */
-    private $config;
-
-    /**
-     * @var bool
-     */
-    private $hasGroupPrefixes;
-
-    /**
-     * @var bool
-     */
-    private $hasRequiredHeaders;
-
-    public function __construct(CsvParserConfigInterface $config)
-    {
-        $this->config = $config;
-        $this->hasGroupPrefixes = $this->hasValuesInArray($config->getGroupPrefixes());
-        $this->hasRequiredHeaders = $this->hasValuesInArray($config->getRequiredHeaders());
-    }
-
-    /**
      * @return iterable<mixed>
      *
-     * @throws \EonX\EasyCore\Csv\Exceptions\MissingRequiredHeadersException
-     * @throws \EonX\EasyCore\Csv\Exceptions\MissingValueForRequiredHeadersException
+     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
+     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
      */
-    public function parse(CsvContentsProviderInterface $contentsProvider): iterable
-    {
+    public function parse(
+        CsvContentsProviderInterface $contentsProvider,
+        ?CsvParserConfigInterface $config = null
+    ): iterable {
         $index = 0;
         $headers = [];
 
@@ -51,7 +28,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
 
             // First line is headers
             if ($index === 1) {
-                $headers = $this->resolveHeaders($row);
+                $headers = $this->resolveHeaders($row, $config);
 
                 continue;
             }
@@ -64,9 +41,10 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
             }
 
             \ksort($record);
-            $this->validateMissingValues($record, $index);
 
-            yield $this->handlePrefixes($record);
+            $this->validateMissingValues($record, $index, $config);
+
+            yield $this->handlePrefixes($record, $config);
         }
     }
 
@@ -75,9 +53,9 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
      *
      * @return mixed[]
      */
-    private function handlePrefixes(array $record): array
+    private function handlePrefixes(array $record, ?CsvParserConfigInterface $config = null): array
     {
-        if ($this->hasGroupPrefixes === false) {
+        if ($config === null || $config->hasGroupPrefixes() === false) {
             return $record;
         }
 
@@ -88,7 +66,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
             $keyHadPrefix = false;
 
             // For each prefix
-            foreach ($this->config->getGroupPrefixes() ?? [] as $prefix) {
+            foreach ($config->getGroupPrefixes() ?? [] as $prefix) {
                 // User give prefix without dot, add it
                 $prefixWithDot = \sprintf('%s.', $prefix);
                 // Extract prefix from current key
@@ -125,33 +103,24 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
     }
 
     /**
-     * @param null|mixed[] $array
-     */
-    private function hasValuesInArray(?array $array = null): bool
-    {
-        return \is_array($array) && \count($array) > 0;
-    }
-
-    /**
      * @param mixed[] $headers
      *
      * @return mixed[]
      *
-     * @throws \EonX\EasyCore\Csv\Exceptions\MissingRequiredHeadersException
+     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
      */
-    private function resolveHeaders(array $headers): array
+    private function resolveHeaders(array $headers, ?CsvParserConfigInterface $config = null): array
     {
         // Sanitize given headers first
         $headers = \array_map(static function (string $header): string {
             $header = (string)\iconv('UTF-8', 'ISO-8859-1//IGNORE', $header);
             $header = (string)\iconv('ISO-8859-1', 'UTF-8', $header);
-            $header = \trim($header);
 
-            return $header;
+            return \trim($header);
         }, $headers);
 
-        if ($this->hasRequiredHeaders) {
-            $missingHeaders = \array_diff($this->config->getRequiredHeaders() ?? [], $headers);
+        if ($config !== null && $config->hasRequiredHeaders()) {
+            $missingHeaders = \array_diff($config->getRequiredHeaders() ?? [], $headers);
 
             if (\count($missingHeaders) > 0) {
                 throw new MissingRequiredHeadersException(\sprintf(
@@ -168,15 +137,15 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
     /**
      * @param mixed[] $record
      *
-     * @throws \EonX\EasyCore\Csv\Exceptions\MissingValueForRequiredHeadersException
+     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
      */
-    private function validateMissingValues(array $record, int $index): void
+    private function validateMissingValues(array $record, int $index, ?CsvParserConfigInterface $config = null): void
     {
-        if ($this->hasRequiredHeaders === false) {
+        if ($config === null || $config->hasRequiredHeaders() === false) {
             return;
         }
 
-        $missingValues = \array_diff($this->config->getRequiredHeaders() ?? [], \array_keys($record));
+        $missingValues = \array_diff($config->getRequiredHeaders() ?? [], \array_keys($record));
 
         if (\count($missingValues) > 0) {
             throw new MissingValueForRequiredHeadersException(\sprintf(

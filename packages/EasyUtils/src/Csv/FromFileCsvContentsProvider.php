@@ -2,29 +2,20 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Csv;
+namespace EonX\EasyUtils\Csv;
 
-use EonX\EasyCore\Csv\Exceptions\InvalidCsvFilenameException;
+use EonX\EasyUtils\Csv\Exceptions\InvalidCsvFilenameException;
 
-/**
- * @deprecated since 4.1, will be removed in 5.0. Use Eonx\EasyUtils\Csv\FromFileCsvContentsProvider.
- */
 final class FromFileCsvContentsProvider implements CsvContentsProviderInterface
 {
-    /**
-     * @var string
-     */
-    private $filename;
-
-    public function __construct(string $filename)
+    public function __construct(private readonly string $filename)
     {
-        $this->filename = $filename;
     }
 
     /**
      * @return iterable<mixed>
      *
-     * @throws \EonX\EasyCore\Csv\Exceptions\InvalidCsvFilenameException
+     * @throws \EonX\EasyUtils\Csv\Exceptions\InvalidCsvFilenameException
      */
     public function getContents(): iterable
     {
