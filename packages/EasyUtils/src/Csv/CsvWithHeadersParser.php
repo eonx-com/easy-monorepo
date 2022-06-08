@@ -45,7 +45,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
             $this->validateMissingValues($record, $index, $config);
 
             // Ignore empty records after validation so missing values are picked up
-            if ($config->ignoreEmptyRecords() && \count($record) < 1) {
+            if ($config !== null && $config->ignoreEmptyRecords() && \count($record) < 1) {
                 continue;
             }
 
