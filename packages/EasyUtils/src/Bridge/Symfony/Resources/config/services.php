@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyUtils\Bridge\BridgeConstantsInterface;
+use EonX\EasyUtils\Csv\CsvWithHeadersParser;
+use EonX\EasyUtils\Csv\CsvWithHeadersParserInterface;
 use EonX\EasyUtils\Interfaces\MathInterface;
 use EonX\EasyUtils\Math\Math;
 
@@ -13,6 +15,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->defaults()
         ->autowire()
         ->autoconfigure();
+
+    $services->set(CsvWithHeadersParserInterface::class, CsvWithHeadersParser::class);
 
     $services
         ->set(MathInterface::class, Math::class)

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Bridge\Laravel;
 
 use EonX\EasyUtils\Bridge\BridgeConstantsInterface;
+use EonX\EasyUtils\Csv\CsvWithHeadersParser;
+use EonX\EasyUtils\Csv\CsvWithHeadersParserInterface;
 use EonX\EasyUtils\Interfaces\MathInterface;
 use EonX\EasyUtils\Math\Math;
 use EonX\EasyUtils\SensitiveData\ObjectTransformers\DefaultObjectTransformer;
@@ -37,6 +39,13 @@ final class EasyUtilsServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-utils.php', 'easy-utils');
+
+        $this->app->singleton(
+            CsvWithHeadersParserInterface::class,
+            static function (): CsvWithHeadersParserInterface {
+                return new CsvWithHeadersParser();
+            }
+        );
 
         $this->app->singleton(MathInterface::class, static function (): MathInterface {
             return new Math(
