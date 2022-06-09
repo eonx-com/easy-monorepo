@@ -220,6 +220,19 @@ final class BatchObjectManager implements BatchObjectManagerInterface
         return $batch;
     }
 
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     */
+    public function restoreBatchState(int|string $batchId): BatchInterface
+    {
+        return $this->batchProcessor->restoreState(
+            $this,
+            $this->batchRepository->findOrFail($batchId)
+        );
+    }
+
     private function getCancelBatchItemClosure(): \Closure
     {
         return function (BatchItemInterface $batchItem): void {

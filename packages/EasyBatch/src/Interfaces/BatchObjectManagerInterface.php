@@ -13,4 +13,6 @@ interface BatchObjectManagerInterface
     public function cancel(BatchObjectInterface $batchObject): BatchObjectInterface;
 
     public function dispatchBatch(BatchInterface $batch, ?callable $beforeFirstDispatch = null): BatchInterface;
+
+    public function restoreBatchState(int|string $batchId): BatchInterface;
 }
