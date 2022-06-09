@@ -9,6 +9,7 @@ use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchAwareInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchItemAwareInterface;
+use EonX\EasyBatch\Interfaces\CurrentBatchObjectsAwareInterface;
 use EonX\EasyBatch\Processors\BatchItemProcessor;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockData;
@@ -56,12 +57,25 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
                         ->reset()
                         ->findOrFail($batchItem->getBatchId());
 
-                    if ($message instanceof CurrentBatchAwareInterface) {
-                        $message->setCurrentBatch($batch);
+                    if ($message instanceof CurrentBatchObjectsAwareInterface) {
+                        $message->setCurrentBatchObjects($batch, $batchItem);
                     }
 
-                    if ($message instanceof CurrentBatchItemAwareInterface) {
-                        $message->setCurrentBatchItem($batchItem);
+                    if ($message instanceof CurrentBatchAwareInterface
+                        || $message instanceof CurrentBatchItemAwareInterface) {
+                        @\trigger_error(\sprintf(
+                            'Using %s or %s is deprecated since 4.1, will be removed in 5.0. Use %s instead',
+                            CurrentBatchAwareInterface::class,
+                            CurrentBatchItemAwareInterface::class,
+                            CurrentBatchObjectsAwareInterface::class
+                        ), \E_USER_DEPRECATED);
+
+                        if ($message instanceof CurrentBatchAwareInterface) {
+                            $message->setCurrentBatch($batch);
+                        }
+                        if ($message instanceof CurrentBatchItemAwareInterface) {
+                            $message->setCurrentBatchItem($batchItem);
+                        }
                     }
 
                     return $this->batchItemProcessor->processBatchItem($batch, $batchItem, $func);
@@ -72,6 +86,10 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
             return $result === null ? $envelope : $result;
         } catch (\Throwable $throwable) {
             return $this->batchItemExceptionHandler->handleException($throwable, $envelope);
+        } finally {
+            if ($message instanceof CurrentBatchObjectsAwareInterface) {
+                $message->unsetCurrentBatchObjects();
+            }
         }
     }
 
