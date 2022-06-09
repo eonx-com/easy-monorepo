@@ -76,7 +76,7 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
             },
             static function (BatchInterface $batch, array $events): void {
                 self::assertEquals(BatchObjectInterface::STATUS_FAILED, $batch->getStatus());
-                self::assertInstanceOf(BatchCompletedEvent::class, \last($events));
+                self::assertInstanceOf(BatchCompletedEvent::class, \end($events));
             },
         ];
     }
