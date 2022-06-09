@@ -33,6 +33,11 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
     ) {
     }
 
+    public function reset(): void
+    {
+        $this->internalMessages = [];
+    }
+
     /**
      * @return mixed[]
      */
@@ -57,9 +62,14 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
             return $this->internalMessages[$errorIdentifier];
         }
 
-        $message = $this->translateInternalMessages && $throwable instanceof TranslatableExceptionInterface
-            ? $this->translator->trans($throwable->getMessage(), $throwable->getMessageParams(), $this->internalMessagesLocale)
-            : $throwable->getMessage();
+        $message = $throwable->getMessage();
+        if ($this->translateInternalMessages && $throwable instanceof TranslatableExceptionInterface) {
+            $message = $this->translator->trans(
+                $message,
+                $throwable->getMessageParams(),
+                $this->internalMessagesLocale
+            );
+        }
 
         return $this->internalMessages[$errorIdentifier] = $message;
     }

@@ -77,6 +77,9 @@ return static function (ECSConfig $ecsConfig): void {
             __DIR__ . '/packages/EasyCore/src/Csv/FromFileCsvContentsProvider.php',
             __DIR__ . '/packages/EasyUtils/src/Csv/FromFileCsvContentsProvider.php',
         ],
+        LineLengthSniff::class . '.MaxExceeded' => [
+            __DIR__ . '/packages/EasyErrorHandler/src/Bridge/BridgeConstantsInterface.php',
+        ],
         MethodChainingIndentationFixer::class => ['*/Configuration.php'],
         NullTypeHintOnLastPositionSniff::class . '.NullTypeHintNotOnLastPosition',
         ParameterTypeHintSniff::class . '.MissingAnyTypeHint',
