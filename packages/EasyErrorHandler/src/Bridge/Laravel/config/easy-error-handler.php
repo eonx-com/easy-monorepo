@@ -76,4 +76,12 @@ return [
         'time' => 'time',
         'violations' => 'violations',
     ],
+
+    /**
+     * Translate internal error messages.
+     */
+    'translate_internal_error_messages' => [
+        'enabled' => \env('EASY_ERROR_HANDLER_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED', false),
+        'locale' => \env('EASY_ERROR_HANDLER_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE', 'en'),
+    ],
 ];

@@ -9,7 +9,8 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\StatusCodeAwareExceptionInterfac
 use EonX\EasyErrorHandler\Interfaces\Exceptions\SubCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface;
-use EonX\EasyUtils\ErrorDetailsHelper;
+use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
+use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
 use Psr\Log\LoggerInterface;
 
 final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
@@ -17,16 +18,19 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
     /**
      * @var string[]
      */
-    private $chain;
+    private array $chain = [];
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var string[]
      */
-    private $logger;
+    private array $internalMessages = [];
 
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        private readonly LoggerInterface $logger,
+        private readonly TranslatorInterface $translator,
+        private readonly bool $translateInternalMessages = false,
+        private readonly string $internalMessagesLocale = 'en'
+    ) {
     }
 
     /**
@@ -45,6 +49,21 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         );
     }
 
+    public function resolveInternalMessage(\Throwable $throwable): string
+    {
+        $errorIdentifier = $this->resolveErrorIdentifier($throwable);
+
+        if (isset($this->internalMessages[$errorIdentifier])) {
+            return $this->internalMessages[$errorIdentifier];
+        }
+
+        $message = $this->translateInternalMessages && $throwable instanceof TranslatableExceptionInterface
+            ? $this->translator->trans($throwable->getMessage(), $throwable->getMessageParams(), $this->internalMessagesLocale)
+            : $throwable->getMessage();
+
+        return $this->internalMessages[$errorIdentifier] = $message;
+    }
+
     /**
      * @return mixed[]
      */
@@ -55,7 +74,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
 
     private function canResolvePrevious(\Throwable $previous, int $maxDepth, int $depth): bool
     {
-        if (\in_array(\spl_object_hash($previous), $this->chain, true)) {
+        if (\in_array($this->resolveErrorIdentifier($previous), $this->chain, true)) {
             $this->logger->info('Circular reference detected in throwable chain', [
                 'exception' => $this->resolveSimpleDetails($previous),
             ]);
@@ -108,7 +127,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         int $depth,
         int $maxDepth
     ): array {
-        $this->chain[] = \spl_object_hash($throwable);
+        $this->chain[] = $this->resolveErrorIdentifier($throwable);
 
         $previous = $throwable->getPrevious();
         if ($previous !== null && $this->canResolvePrevious($previous, $maxDepth, $depth)) {
@@ -118,5 +137,10 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         }
 
         return $previousDetails;
+    }
+
+    private function resolveErrorIdentifier(\Throwable $throwable): string
+    {
+        return \spl_object_hash($throwable);
     }
 }

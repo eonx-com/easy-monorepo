@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests;
 
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
+use EonX\EasyErrorHandler\Tests\Stubs\TranslatorStub;
 use Psr\Log\NullLogger;
 
 final class ErrorDetailsResolverTest extends AbstractTestCase
@@ -51,7 +52,8 @@ final class ErrorDetailsResolverTest extends AbstractTestCase
         ?callable $test = null,
         ?int $maxDepth = null
     ): void {
-        $details = (new ErrorDetailsResolver(new NullLogger()))->resolveExtendedDetails($throwable, $maxDepth);
+        $errorDetailsResolver = new ErrorDetailsResolver(new NullLogger(), new TranslatorStub());
+        $details = $errorDetailsResolver->resolveExtendedDetails($throwable, $maxDepth);
 
         self::assertEquals($throwable->getCode(), $details['code']);
         self::assertEquals(\get_class($throwable), $details['class']);

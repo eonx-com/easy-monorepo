@@ -29,19 +29,22 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     // ErrorDetailsResolver
-    $services->set(ErrorDetailsResolverInterface::class, ErrorDetailsResolver::class);
+    $services
+        ->set(ErrorDetailsResolverInterface::class, ErrorDetailsResolver::class)
+        ->arg('$translateInternalMessages', param(BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED))
+        ->arg('$internalMessagesLocale', param(BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE));
 
     // ErrorLogLevelResolver
     $services
         ->set(ErrorLogLevelResolverInterface::class, ErrorLogLevelResolver::class)
-        ->arg('$exceptionLogLevels', '%' . BridgeConstantsInterface::PARAM_LOGGER_EXCEPTION_LOG_LEVELS . '%');
+        ->arg('$exceptionLogLevels', param(BridgeConstantsInterface::PARAM_LOGGER_EXCEPTION_LOG_LEVELS));
 
     // ErrorHandler
     $services
         ->set(ErrorHandlerInterface::class, ErrorHandler::class)
         ->arg('$builderProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER))
         ->arg('$reporterProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER))
-        ->arg('$ignoredExceptionsForReport', '%' . BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS . '%');
+        ->arg('$ignoredExceptionsForReport', param(BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS));
 
     $services->set(ErrorHandlerDataCollector::class)
         ->tag('data_collector', [
@@ -70,11 +73,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Translator
     $services
         ->set(TranslatorInterface::class, Translator::class)
-        ->arg('$domain', '%' . BridgeConstantsInterface::PARAM_TRANSLATION_DOMAIN . '%');
+        ->arg('$domain', param(BridgeConstantsInterface::PARAM_TRANSLATION_DOMAIN));
 
     // Verbose
     $services
         ->set(VerboseStrategyInterface::class, ChainVerboseStrategy::class)
         ->arg('$drivers', tagged_iterator(BridgeConstantsInterface::TAG_VERBOSE_STRATEGY_DRIVER))
-        ->arg('$defaultIsVerbose', '%' . BridgeConstantsInterface::PARAM_IS_VERBOSE . '%');
+        ->arg('$defaultIsVerbose', param(BridgeConstantsInterface::PARAM_IS_VERBOSE));
 };
