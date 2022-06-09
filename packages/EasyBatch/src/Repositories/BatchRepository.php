@@ -115,7 +115,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
             $sql = \sprintf(
                 'SELECT * FROM %s WHERE id = :id %s',
                 $this->table,
-                ($this->conn?->getDatabasePlatform()->getForUpdateSQL()) ?? 'FOR UPDATE'
+                $this->conn->getDatabasePlatform()->getForUpdateSQL()
             );
             $data = $this->conn->fetchAssociative($sql, ['id' => $batch->getId()]);
             $freshBatch = \is_array($data) ? $this->factory->createFromArray($data) : null;
