@@ -18,6 +18,45 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
 {
     /**
      * @throws \Doctrine\DBAL\Exception
+     */
+    public function findCountsForBatch(int|string $batchId): BatchCountsDto
+    {
+        $queryBuilder = $this->conn->createQueryBuilder()
+            ->select(['status', 'count(id) as _count'])
+            ->from($this->table)
+            ->where('batch_id = :batchId')
+            ->setParameter('batchId', $batchId, \is_string($batchId) ? Types::STRING : Types::INTEGER)
+            ->groupBy('status');
+
+        $results = $this->conn->fetchAllAssociative(
+            $queryBuilder->getSQL(),
+            $queryBuilder->getParameters(),
+            $queryBuilder->getParameterTypes()
+        );
+
+        $completed = 0;
+        $total = 0;
+        $results = \array_column($results, '_count', 'status');
+
+        foreach ($results as $status => $count) {
+            if (\in_array($status, BatchObjectInterface::STATUSES_FOR_COMPLETED, true)) {
+                $completed += $count;
+            }
+
+            $total += $count;
+        }
+
+        return new BatchCountsDto(
+            $results[BatchObjectInterface::STATUS_CANCELLED] ?? 0,
+            $results[BatchObjectInterface::STATUS_FAILED] ?? 0,
+            $completed,
+            $results[BatchObjectInterface::STATUS_SUCCEEDED] ?? 0,
+            $total
+        );
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
      * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
      * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
      */

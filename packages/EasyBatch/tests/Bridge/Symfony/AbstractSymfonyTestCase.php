@@ -8,11 +8,18 @@ use Doctrine\DBAL\Connection;
 use EonX\EasyBatch\Bridge\Doctrine\DbalStatementsProvider;
 use EonX\EasyBatch\Tests\AbstractTestCase;
 use EonX\EasyBatch\Tests\Bridge\Symfony\Stubs\KernelStub;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractSymfonyTestCase extends AbstractTestCase
 {
     private ?KernelInterface $kernel = null;
+
+    protected function getContainer(): ContainerInterface
+    {
+        return $this->getKernel()
+            ->getContainer();
+    }
 
     protected function getKernel(): KernelInterface
     {

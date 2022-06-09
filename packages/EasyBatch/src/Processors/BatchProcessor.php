@@ -47,7 +47,7 @@ final class BatchProcessor
         }
         $this->cache[$batchItem->getIdOrFail()] = true;
 
-        $updateFunc = static function (BatchInterface $freshBatch) use ($batchItem, $updateFreshBatch): BatchInterface {
+        $updateFunc = function (BatchInterface $freshBatch) use ($batchItem, $updateFreshBatch): BatchInterface {
             if ($batchItem->isCompleted()) {
                 $freshBatch->setProcessed($freshBatch->countProcessed() + 1);
             }
@@ -64,43 +64,7 @@ final class BatchProcessor
                 $freshBatch->setSucceeded($freshBatch->countSucceeded() + 1);
             }
 
-            // Start the batch timer
-            if ($freshBatch->getStartedAt() === null) {
-                $freshBatch->setStartedAt(Carbon::now('UTC'));
-                $freshBatch->setStatus(BatchObjectInterface::STATUS_PROCESSING);
-            }
-
-            // Last item of the batch
-            if ($freshBatch->countTotal() === $freshBatch->countProcessed()) {
-                $freshBatch->setFinishedAt(Carbon::now('UTC'));
-
-                // All items are cancelled, cancel batch
-                if ($freshBatch->countCancelled() === $freshBatch->countTotal()) {
-                    $freshBatch
-                        ->setCancelledAt(Carbon::now('UTC'))
-                        ->setStatus(BatchObjectInterface::STATUS_CANCELLED);
-                }
-
-                // If batch not cancelled from statement above, set status
-                if ($freshBatch->isCancelled() === false) {
-                    // Batch failed if not all items succeeded
-                    $freshBatch->setStatus(
-                        $freshBatch->countSucceeded() < $freshBatch->countTotal()
-                            ? BatchObjectInterface::STATUS_FAILED
-                            : BatchObjectInterface::STATUS_SUCCEEDED
-                    );
-                }
-            }
-
-            // Handle previously completed batch
-            if ($freshBatch->isCompleted() === false && $freshBatch->countProcessed() > 0) {
-                $freshBatch->setStatus(BatchObjectInterface::STATUS_PROCESSING);
-            }
-
-            // Handle approval required
-            if ($freshBatch->isSucceeded() && $freshBatch->isApprovalRequired()) {
-                $freshBatch->setStatus(BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL);
-            }
+            $this->updateCommonBatchProperties($freshBatch);
 
             if ($updateFreshBatch !== null) {
                 \call_user_func($updateFreshBatch, $freshBatch);
@@ -119,11 +83,52 @@ final class BatchProcessor
         return $freshBatch;
     }
 
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     */
+    public function restoreState(BatchObjectManagerInterface $batchObjectManager, BatchInterface $batch): BatchInterface
+    {
+        $restoreFunc = function (BatchInterface $freshBatch): BatchInterface {
+            $counts = $this->batchItemRepository->findCountsForBatch($freshBatch->getIdOrFail());
+
+            $freshBatch
+                ->setCancelled($counts->countCancelled())
+                ->setFailed($counts->countFailed())
+                ->setProcessed($counts->countProcessed())
+                ->setSucceeded($counts->countSucceeded())
+                ->setTotal($counts->countTotal());
+
+            $this->updateCommonBatchProperties($freshBatch);
+
+            return $freshBatch;
+        };
+
+        $freshBatch = $this->batchRepository->updateAtomic($batch, $restoreFunc);
+
+        if ($this->areBatchesIdentical($batch, $freshBatch) === false) {
+            $this->handleParentBatchItem($batchObjectManager, $freshBatch);
+            $this->dispatchBatchEvent($freshBatch);
+        }
+
+        return $freshBatch;
+    }
+
     public function reset(): self
     {
         $this->cache = [];
 
         return $this;
+    }
+
+    private function areBatchesIdentical(BatchInterface $batch1, BatchInterface $batch2): bool
+    {
+        return $batch1->countCancelled() === $batch2->countCancelled()
+            && $batch1->countFailed() === $batch2->countFailed()
+            && $batch1->countProcessed() === $batch2->countProcessed()
+            && $batch1->countSucceeded() === $batch2->countSucceeded()
+            && $batch1->countTotal() === $batch2->countTotal()
+            && $batch1->getStatus() === $batch2->getStatus();
     }
 
     private function dispatchBatchEvent(BatchInterface $batch): void
@@ -192,6 +197,47 @@ final class BatchProcessor
 
         if ($batch->isCancelled() || $batch->isFailed()) {
             $batchObjectManager->cancel($this->batchItemRepository->findOrFail($batch->getParentBatchItemId()));
+        }
+    }
+
+    private function updateCommonBatchProperties(BatchInterface $freshBatch): void
+    {
+        // Start the batch timer
+        if ($freshBatch->getStartedAt() === null) {
+            $freshBatch->setStartedAt(Carbon::now('UTC'));
+            $freshBatch->setStatus(BatchObjectInterface::STATUS_PROCESSING);
+        }
+
+        // Last item of the batch
+        if ($freshBatch->countTotal() === $freshBatch->countProcessed()) {
+            $freshBatch->setFinishedAt($freshBatch->getFinishedAt() ?? Carbon::now('UTC'));
+
+            // All items are cancelled, cancel batch
+            if ($freshBatch->countCancelled() === $freshBatch->countTotal()) {
+                $freshBatch
+                    ->setCancelledAt($freshBatch->getCancelledAt() ?? Carbon::now('UTC'))
+                    ->setStatus(BatchObjectInterface::STATUS_CANCELLED);
+            }
+
+            // If batch not cancelled from statement above, set status
+            if ($freshBatch->isCancelled() === false) {
+                // Batch failed if not all items succeeded
+                $freshBatch->setStatus(
+                    $freshBatch->countSucceeded() < $freshBatch->countTotal()
+                        ? BatchObjectInterface::STATUS_FAILED
+                        : BatchObjectInterface::STATUS_SUCCEEDED
+                );
+            }
+        }
+
+        // Handle previously completed batch
+        if ($freshBatch->isCompleted() === false && $freshBatch->countProcessed() > 0) {
+            $freshBatch->setStatus(BatchObjectInterface::STATUS_PROCESSING);
+        }
+
+        // Handle approval required
+        if ($freshBatch->isSucceeded() && $freshBatch->isApprovalRequired()) {
+            $freshBatch->setStatus(BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace EonX\EasyBatch\Tests\Repositories;
 
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
+use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Repositories\BatchItemRepository;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Tests\AbstractRepositoriesTestCase;
@@ -63,6 +64,30 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
     }
 
     /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function testFindCountsForBatch(): void
+    {
+        $factory = $this->getBatchItemFactory();
+        $repo = $this->getBatchItemRepository($factory);
+
+        $batchItem1 = $factory->create('batch-id', new \stdClass());
+        $batchItem2 = $factory->create('batch-id', new \stdClass());
+        $batchItem2->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
+
+        $repo->save($batchItem1);
+        $repo->save($batchItem2);
+
+        $counts = $repo->findCountsForBatch('batch-id');
+
+        self::assertEquals(0, $counts->countCancelled());
+        self::assertEquals(0, $counts->countFailed());
+        self::assertEquals(1, $counts->countProcessed());
+        self::assertEquals(1, $counts->countSucceeded());
+        self::assertEquals(2, $counts->countTotal());
+    }
+
+    /**
      * @dataProvider providerTestFindForDispatch
      *
      * @throws \Doctrine\DBAL\Exception
@@ -70,19 +95,26 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
     public function testFindForDispatch(callable $setup, callable $test, ?string $dependsOnName = null): void
     {
         $factory = $this->getBatchItemFactory();
-
-        $repo = new BatchItemRepository(
-            $factory,
-            $this->getIdStrategy(),
-            new BatchItemTransformer(new MessageSerializer()),
-            $this->getDoctrineDbalConnection(),
-            BatchItemRepositoryInterface::DEFAULT_TABLE
-        );
+        $repo = $this->getBatchItemRepository($factory);
 
         \call_user_func($setup, $factory, $repo);
 
         $paginator = $repo->paginateItems(new Pagination(1, 15), 'batch-id', $dependsOnName);
 
         \call_user_func($test, $paginator);
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function getBatchItemRepository(BatchItemFactoryInterface $batchItemFactory): BatchItemRepositoryInterface
+    {
+        return new BatchItemRepository(
+            $batchItemFactory,
+            $this->getIdStrategy(),
+            new BatchItemTransformer(new MessageSerializer()),
+            $this->getDoctrineDbalConnection(),
+            BatchItemRepositoryInterface::DEFAULT_TABLE
+        );
     }
 }
