@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Bridge\Symfony;
 
+use EonX\EasyBatch\Events\BatchCompletedEvent;
 use EonX\EasyBatch\Interfaces\BatchInterface;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
@@ -75,7 +76,7 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
             },
             static function (BatchInterface $batch, array $events): void {
                 self::assertEquals(BatchObjectInterface::STATUS_FAILED, $batch->getStatus());
-                self::assertCount(6, $events);
+                self::assertInstanceOf(BatchCompletedEvent::class, \last($events));
             },
         ];
     }
