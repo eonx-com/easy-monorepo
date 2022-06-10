@@ -20,7 +20,7 @@ final class ErrorRendererCompilerPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        if ($container->hasDefinition(self::ERROR_RENDERER_ID) === false) {
+        if ($container->has(self::ERROR_RENDERER_ID) === false) {
             return;
         }
 
