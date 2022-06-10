@@ -26,9 +26,32 @@ final class DecimalValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'scalar');
         }
 
+        if (\is_object($value)) {
+            $value = (string) $value;
+        }
+
+        // get real string representation of float, type cast "(string)" cut precision, var_dump not
+        if (\is_float($value)) {
+            \ob_start();
+            \var_dump($value);
+            \preg_match('/float\((?P<float>[^\)]+)\)/', \ob_get_clean() ?: '', $matches);
+            $value = $matches['float'];
+        }
+
         $value = (string) $value;
 
-        $pattern = \sprintf('/^\d+(\.\d{%d,%d})?$/', $constraint->minPrecision, $constraint->maxPrecision);
+        // fix epsilon representation using sprintf
+        if (\str_contains($value, 'E') === true) {
+            \preg_match('/E\-(?P<precision>\d+)/', $value, $matches);
+            $value = \sprintf('%.' . ($matches['precision'] ?? 0) . 'f', $value);
+        }
+
+        // fix int value if required precision
+        if ($constraint->minPrecision > 1 && \str_contains($value, '.') === false) {
+            $value .= '.0';
+        }
+
+        $pattern = \sprintf('/^\-?\d+(\.\d{%d,%d}0*)?$/', $constraint->minPrecision, $constraint->maxPrecision);
 
         if (\preg_match($pattern, $value) === 0) {
             $this->context->buildViolation($constraint->message)
