@@ -64,6 +64,13 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('violations')->defaultValue('violations')->end()
                     ->end()
                 ->end()
+                ->arrayNode('translate_internal_error_messages')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
+                        ->scalarNode('locale')->defaultValue('en')->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

@@ -12,15 +12,10 @@ use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 
 final class ErrorDetailsClientConfigurator extends AbstractClientConfigurator
 {
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface
-     */
-    private $errorDetailsResolver;
-
-    public function __construct(ErrorDetailsResolverInterface $errorDetailsResolver, ?int $priority = null)
-    {
-        $this->errorDetailsResolver = $errorDetailsResolver;
-
+    public function __construct(
+        private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
+        ?int $priority = null
+    ) {
         parent::__construct($priority);
     }
 
@@ -35,6 +30,7 @@ final class ErrorDetailsClientConfigurator extends AbstractClientConfigurator
                     return;
                 }
 
+                $report->setMessage($this->errorDetailsResolver->resolveInternalMessage($throwable));
                 $report->addMetaData([
                     'error' => $this->errorDetailsResolver->resolveExtendedDetails($throwable),
                 ]);

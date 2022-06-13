@@ -54,6 +54,16 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED = 'easy_error_handler.translate_internal_error_messages_enabled';
+
+    /**
+     * @var string
+     */
+    public const PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE = 'easy_error_handler.translate_internal_error_messages_locale';
+
+    /**
+     * @var string
+     */
     public const PARAM_TRANSLATION_DOMAIN = 'easy_error_handler.param_translation_domain';
 
     /**
