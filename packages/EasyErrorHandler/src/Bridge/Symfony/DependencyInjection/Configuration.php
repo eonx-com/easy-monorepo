@@ -42,7 +42,7 @@ final class Configuration implements ConfigurationInterface
                 ->booleanNode('override_api_platform_listener')->defaultTrue()->end()
                 ->booleanNode('use_default_builders')->defaultTrue()->end()
                 ->booleanNode('use_default_reporters')->defaultTrue()->end()
-                ->scalarNode('translation_domain')->defaultValue('EasyErrorHandlerBundle')->end()
+                ->scalarNode('translation_domain')->defaultValue('messages')->end()
                 ->arrayNode('response')
                     ->addDefaultsIfNotSet()
                     ->children()
