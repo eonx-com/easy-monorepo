@@ -7,6 +7,7 @@ namespace EonX\EasyBatch\Repositories;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use EonX\EasyBatch\Exceptions\BatchObjectNotSavedException;
 use EonX\EasyBatch\Interfaces\BatchObjectFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
@@ -41,6 +42,7 @@ abstract class AbstractBatchObjectRepository
 
     /**
      * @throws \Doctrine\DBAL\Exception
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectNotSavedException
      */
     protected function doSave(BatchObjectInterface $batchObject): void
     {
@@ -56,9 +58,20 @@ abstract class AbstractBatchObjectRepository
             unset($data[$toRemove]);
         }
 
-        $this->has($batchObjectId) === false
+        $batchObjectExists = $this->has($batchObjectId);
+        $affectedRows = (int)($batchObjectExists === false
             ? $this->conn->insert($this->table, $data)
-            : $this->conn->update($this->table, $data, ['id' => $batchObjectId]);
+            : $this->conn->update($this->table, $data, ['id' => $batchObjectId]));
+
+        // This logic should affect only one row, otherwise something went wrong
+        if ($affectedRows !== 1) {
+            throw new BatchObjectNotSavedException(\sprintf(
+                '%s with id %s was not %s in database',
+                \get_class($batchObject),
+                $batchObjectId,
+                $batchObjectExists ? 'updated' : 'inserted'
+            ));
+        }
     }
 
     /**

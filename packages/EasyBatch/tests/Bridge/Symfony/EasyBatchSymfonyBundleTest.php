@@ -7,6 +7,7 @@ namespace EonX\EasyBatch\Tests\Bridge\Symfony;
 use EonX\EasyBatch\Events\BatchCompletedEvent;
 use EonX\EasyBatch\Interfaces\BatchInterface;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
+use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
@@ -16,6 +17,71 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
 {
+    /**
+     * @return iterable<mixed>
+     */
+    public function providerTestCoreLogic(): iterable
+    {
+        yield 'Manually approve single item within nested batch' => [
+            static function (EasyBatchTestContext $context): void {
+                $disbursementTransferItem = $context->getBatchItemFactory()
+                    ->create('dt-batch-id', new \stdClass());
+                $disbursementTransferItem->setId('to-approve');
+                $disbursementTransferItem->setApprovalRequired(true);
+                $disbursementTransferItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL);
+
+                $disbursementTransferParentItem = $context->getBatchItemFactory()
+                    ->create('dj-batch-id', new \stdClass());
+                $disbursementTransferParentItem->setStatus(BatchItemInterface::STATUS_BATCH_PENDING_APPROVAL);
+                $disbursementTransferParentItem->setType(BatchItemInterface::TYPE_NESTED_BATCH);
+                $disbursementTransferParentItem->setId('dt-parent-batch-item');
+
+                $disbursementTransferBatch = new Batch();
+                $disbursementTransferBatch->setId('dt-batch-id');
+                $disbursementTransferBatch->setTotal(1);
+                $disbursementTransferBatch->setStatus(BatchObjectInterface::STATUS_PROCESSING);
+                $disbursementTransferBatch->setParentBatchItemId('dt-parent-batch-item');
+
+                $disbursementJobBatch = new Batch();
+                $disbursementJobBatch->setId('dj-batch-id');
+                $disbursementJobBatch->setTotal(1);
+                $disbursementJobBatch->setStatus(BatchObjectInterface::STATUS_PENDING);
+                $disbursementJobBatch->setType('disbursement');
+
+                $context->getBatchItemRepository()
+                    ->save($disbursementTransferItem);
+                $context->getBatchItemRepository()
+                    ->save($disbursementTransferParentItem);
+                $context->getBatchRepository()
+                    ->save($disbursementTransferBatch);
+                $context->getBatchRepository()
+                    ->save($disbursementJobBatch);
+            },
+            static function (EasyBatchTestContext $context): void {
+                $disbursementTransferItem = $context->getBatchItemRepository()
+                    ->findOrFail('to-approve');
+
+                $context->getBatchObjectManager()
+                    ->approve($disbursementTransferItem);
+            },
+            static function (EasyBatchTestContext $context): void {
+                // All objects should be succeeded
+                $batches = $context->getConnection()
+                    ->fetchAllAssociative('select * from easy_batches');
+                $items = $context->getConnection()
+                    ->fetchAllAssociative('select * from easy_batch_items');
+
+                foreach ($batches as $batch) {
+                    self::assertEquals(BatchObjectInterface::STATUS_SUCCEEDED, $batch['status']);
+                }
+
+                foreach ($items as $item) {
+                    self::assertEquals(BatchObjectInterface::STATUS_SUCCEEDED, $item['status']);
+                }
+            },
+        ];
+    }
+
     /**
      * @return iterable<mixed>
      */
@@ -81,11 +147,16 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
         ];
     }
 
-    public function testSanity(): void
+    /**
+     * @dataProvider providerTestCoreLogic
+     */
+    public function testCoreLogic(callable $setup, callable $runTest, callable $assert): void
     {
-        $container = $this->getContainer();
+        $context = new EasyBatchTestContext($this->getContainer());
 
-        self::assertInstanceOf(BatchObjectManagerInterface::class, $container->get(BatchObjectManagerInterface::class));
+        \call_user_func($setup, $context);
+        \call_user_func($runTest, $context);
+        \call_user_func($assert, $context);
     }
 
     /**
@@ -107,5 +178,12 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
         $events = $eventDispatcher->getDispatchedEvents();
 
         \call_user_func($assert, $freshBatch, $events);
+    }
+
+    public function testSanity(): void
+    {
+        $container = $this->getContainer();
+
+        self::assertInstanceOf(BatchObjectManagerInterface::class, $container->get(BatchObjectManagerInterface::class));
     }
 }
