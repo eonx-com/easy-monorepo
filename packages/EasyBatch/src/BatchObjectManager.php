@@ -18,7 +18,6 @@ use EonX\EasyBatch\Iterator\BatchItemIterator;
 use EonX\EasyBatch\Iterator\IteratorConfig;
 use EonX\EasyBatch\Persisters\BatchPersister;
 use EonX\EasyBatch\Processors\BatchProcessor;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class BatchObjectManager implements BatchObjectManagerInterface
 {
@@ -28,8 +27,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
         private readonly BatchProcessor $batchProcessor,
         private readonly BatchItemDispatcher $batchItemDispatcher,
         private readonly BatchItemIterator $batchItemIterator,
-        private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly BatchItemRepositoryInterface $batchItemRepository
     ) {
     }
 
