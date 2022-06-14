@@ -72,8 +72,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(BatchItemIterator::class)
         ->set(BatchItemPersister::class)
         ->set(BatchPersister::class)
-        ->set(BatchItemProcessor::class)
-        ->set(BatchProcessor::class);
+        ->set(BatchItemProcessor::class);
+
+    $services->set(BatchProcessor::class)
+        ->tag('kernel.reset', ['method' => 'reset']);
 
     // Manager
     $services

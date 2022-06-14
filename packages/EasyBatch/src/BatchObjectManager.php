@@ -6,7 +6,6 @@ namespace EonX\EasyBatch;
 
 use Carbon\Carbon;
 use EonX\EasyBatch\Dispatchers\BatchItemDispatcher;
-use EonX\EasyBatch\Events\BatchCompletedEvent;
 use EonX\EasyBatch\Exceptions\BatchObjectInvalidException;
 use EonX\EasyBatch\Exceptions\BatchObjectNotSupportedException;
 use EonX\EasyBatch\Interfaces\BatchInterface;
@@ -72,10 +71,6 @@ final class BatchObjectManager implements BatchObjectManagerInterface
             if ($batchObject->getParentBatchItemId() !== null) {
                 $this->approve($this->batchItemRepository->findOrFail($batchObject->getParentBatchItemId()));
             }
-
-            // Approving a batch is possible only when all its batchItems succeeded and approval was required
-            // Which means there is nothing else to do to it, except dispatching its completed event
-            $this->eventDispatcher->dispatch(new BatchCompletedEvent($batchObject));
 
             return $batchObject;
         }
