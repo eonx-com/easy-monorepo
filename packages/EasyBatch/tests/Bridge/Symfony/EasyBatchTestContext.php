@@ -46,6 +46,9 @@ final class EasyBatchTestContext
 
     public function getEventDispatcher(): SymfonyEventDispatcherStub
     {
-        return $this->container->get(EventDispatcherInterface::class);
+        /** @var \EonX\EasyBatch\Tests\Bridge\Symfony\Stubs\SymfonyEventDispatcherStub $eventDispatcher */
+        $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
+
+        return $eventDispatcher;
     }
 }
