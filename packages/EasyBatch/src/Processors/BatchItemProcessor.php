@@ -92,6 +92,8 @@ final class BatchItemProcessor
 
                 // Otherwise, throw special exception to process batch for batchItem in separate process
                 throw new BatchItemSavedButBatchNotProcessedException($batchItem, $throwableProcessBatch);
+            } finally {
+                $this->batchProcessor->reset();
             }
         }
     }
