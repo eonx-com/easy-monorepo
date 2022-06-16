@@ -8,9 +8,6 @@ return [
         'bad_request' => 'Bad request.',
         'conflict' => 'Conflict.',
         'entity_not_valid' => 'Entity validation failed.',
-        'error_codes_provider' => [
-            'not_configured' => 'Please create a class that implements the ErrorCodesProviderInterface',
-        ],
         'forbidden' => 'Forbidden.',
         'not_found' => 'Not found.',
         'not_valid' => 'Validation failed.',
