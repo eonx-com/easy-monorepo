@@ -8,7 +8,7 @@ use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-trait HttpClientAssertTrait
+trait HttpClientAssertionTrait
 {
     public function assertAllHttpRequestsAreMade(string $httpClientName): void
     {
