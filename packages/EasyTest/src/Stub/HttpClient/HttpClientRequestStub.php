@@ -9,32 +9,17 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 
 final class HttpClientRequestStub
 {
-    private Closure $addResponseClosure;
-
     private ?string $hash = null;
-
-    private string $method;
-
-    /**
-     * @var mixed[]|null
-     */
-    private ?array $options = null;
-
-    private string $url;
 
     /**
      * @param mixed[]|null $options
      */
     public function __construct(
-        Closure $addResponseClosure,
-        string $method,
-        string $url,
-        ?array $options = null
+        private Closure $addResponseClosure,
+        private string $method,
+        private string $url,
+        private ?array $options = null
     ) {
-        $this->addResponseClosure = $addResponseClosure;
-        $this->method = $method;
-        $this->url = $url;
-        $this->options = $options;
     }
 
     /**

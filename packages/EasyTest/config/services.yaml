@@ -11,6 +11,7 @@ services:
     EonX\EasyTest\:
         resource: '../src'
         exclude:
+            - '../src/HttpClient/*'
             - '../src/HttpKernel/*'
             - '../src/InvalidDataMaker/*'
             - '../src/Coverage/DataTransferObjects/*'
