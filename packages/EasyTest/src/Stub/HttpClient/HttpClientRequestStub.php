@@ -15,6 +15,9 @@ final class HttpClientRequestStub
 
     private string $method;
 
+    /**
+     * @var mixed[]|null
+     */
     private ?array $options = null;
 
     private string $url;
