@@ -14,7 +14,7 @@ trait HttpClientAssertTrait
         Assert::assertFalse(
             $this->getHttpClientStub($httpClientName)
                 ->hasUnusedResponses(),
-            "Not all requests of the [$httpClientName] HTTP client were made."
+            "Not all requests of the [{$httpClientName}] HTTP client were made."
         );
     }
 
