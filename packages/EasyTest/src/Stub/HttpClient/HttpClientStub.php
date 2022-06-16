@@ -57,7 +57,7 @@ final class HttpClientStub extends MockHttpClient
                 }
             }
             if ($contentType === null) {
-                $options['headers'][] = "Content-Type: application/json";
+                $options['headers'][] = 'Content-Type: application/json';
             }
             $options['body'] = match ($contentType) {
                 'application/x-www-form-urlencoded' => \http_build_query($body),
@@ -106,12 +106,18 @@ final class HttpClientStub extends MockHttpClient
         $request = new HttpClientRequestStub(fn (): self => $this, $method, $url, $options);
 
         if (\count($this->responses[$request->getHash()] ?? []) > 0) {
-            return \array_shift($this->responses[$request->getHash()]);
+            /** @var \Symfony\Component\HttpClient\Response\MockResponse $response */
+            $response = \array_shift($this->responses[$request->getHash()]);
+
+            return $response;
         }
 
         $requestWithoutOptions = new HttpClientRequestStub(fn (): self => $this, $method, $url);
         if (\count($this->responses[$requestWithoutOptions->getHash()] ?? []) > 0) {
-            return \array_shift($this->responses[$requestWithoutOptions->getHash()]);
+            /** @var \Symfony\Component\HttpClient\Response\MockResponse $response */
+            $response = \array_shift($this->responses[$requestWithoutOptions->getHash()]);
+
+            return $response;
         }
 
         return $this->getDefaultResponse();
