@@ -26,13 +26,18 @@ final class HttpClientRequestStub
      * @param mixed[]|string $data
      * @param mixed[]|null $info
      */
-    public function addResponse(array|string $data, ?array $info = null): HttpClientStub
+    public function addResponse(array|string $data, ?array $info = null, ?int $count = null): HttpClientStub
     {
         $addResponseClosure = $this->addResponseClosure;
 
         $body = \is_array($data) ? (string)\json_encode($data) : $data;
 
-        return $addResponseClosure(new MockResponse($body, $info ?? []), $this->getHash());
+        $count = $count ?? 1;
+        do {
+            $httpClient = $addResponseClosure(new MockResponse($body, $info ?? []), $this->getHash());
+        } while ($count-- > 1);
+
+        return $httpClient;
     }
 
     public function getHash(): string
