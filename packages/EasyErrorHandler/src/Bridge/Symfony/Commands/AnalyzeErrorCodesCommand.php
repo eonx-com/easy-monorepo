@@ -9,29 +9,21 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(
+    name: 'easy-error-handler:error-codes:analyze',
+    description: 'Analyzes existing error codes'
+)]
 final class AnalyzeErrorCodesCommand extends Command
 {
     private const DEFAULT_CATEGORY_SIZE = 100;
-
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'easy-error-handler:error-codes:analyze';
 
     public function __construct(
         private ErrorCodesProviderInterface $errorCodesProvider,
         private int $categorySize = self::DEFAULT_CATEGORY_SIZE
     ) {
         parent::__construct();
-    }
-
-    /**
-     * @noinspection PhpMissingParentCallCommonInspection
-     */
-    protected function configure(): void
-    {
-        $this->setDescription('Analyzes existing error codes');
     }
 
     /**
