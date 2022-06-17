@@ -39,7 +39,6 @@ final class DecimalValidator extends ConstraintValidator
         $pattern = \sprintf('/^\-?\d+(\.\d{%d,%d})?$/', $constraint->minPrecision, $constraint->maxPrecision);
 
         if (\preg_match($pattern, $value) === 0) {
-            dump('build violation');
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ minPrecision }}', $this->formatValue($constraint->minPrecision))
                 ->setParameter('{{ maxPrecision }}', $this->formatValue($constraint->maxPrecision))
