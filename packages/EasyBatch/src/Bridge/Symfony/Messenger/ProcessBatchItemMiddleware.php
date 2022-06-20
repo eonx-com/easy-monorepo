@@ -11,6 +11,7 @@ use EonX\EasyBatch\Interfaces\CurrentBatchAwareInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchItemAwareInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchObjectsAwareInterface;
 use EonX\EasyBatch\Processors\BatchItemProcessor;
+use EonX\EasyBatch\Processors\BatchProcessor;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockData;
 use Symfony\Component\Messenger\Envelope;
@@ -25,6 +26,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         private readonly BatchItemExceptionHandler $batchItemExceptionHandler,
         private readonly BatchItemRepositoryInterface $batchItemRepository,
         private readonly BatchItemProcessor $batchItemProcessor,
+        private readonly BatchProcessor $batchProcessor,
         private readonly LockServiceInterface $lockService
     ) {
     }
@@ -81,6 +83,8 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
                     return $this->batchItemProcessor->processBatchItem($batch, $batchItem, $func);
                 }
             );
+
+            $this->batchProcessor->reset();
 
             // If lock not acquired, return envelope
             return $result === null ? $envelope : $result;
