@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class IntegerValidatorTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return string[][]
+     * @return mixed[]
      *
      * @see testValidateSucceedsAndDoesNothing
      */
@@ -32,7 +32,7 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @return string[][]
+     * @return mixed[]
      *
      * @see provideInvalidValues
      */
