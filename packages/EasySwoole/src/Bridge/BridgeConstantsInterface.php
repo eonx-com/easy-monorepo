@@ -24,6 +24,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_RESET_EASY_BATCH_PROCESSOR = 'easy_swoole.reset_easy_batch_processor';
+
+    /**
+     * @var string
+     */
     public const SERVICE_ACCESS_LOG_LOGGER = 'easy_swoole.access_log_logger';
 
     /**
