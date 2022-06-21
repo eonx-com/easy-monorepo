@@ -6,13 +6,14 @@ namespace EonX\EasyHttpClient\Implementations\Symfony;
 
 use Carbon\Carbon;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyHttpClient\Data\Config;
 use EonX\EasyHttpClient\Data\RequestData;
 use EonX\EasyHttpClient\Data\ResponseData;
 use EonX\EasyHttpClient\Events\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Interfaces\HttpOptionsInterface;
 use EonX\EasyHttpClient\Interfaces\RequestDataInterface;
 use EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpClient\AsyncDecoratorTrait;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\Response\AsyncContext;
@@ -74,26 +75,15 @@ final class WithEventsHttpClient implements HttpClientInterface
      */
     public function request(string $method, string $url, ?array $options = null): ResponseInterface
     {
-        $options = $options ?? [];
-        $extra = $options[HttpOptionsInterface::REQUEST_DATA_EXTRA] ?? null;
-        $modifiers = \array_merge($this->modifiers, $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS] ?? []);
-        $modifiersEnabled = $this->modifiersEnabled ??
-            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_ENABLED] ?? true;
-        $modifiersWhitelist = \array_merge(
-            $this->modifiersWhitelist,
-            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST] ?? []
-        );
-        unset(
-            $options[HttpOptionsInterface::REQUEST_DATA_EXTRA],
-            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS],
-            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_ENABLED],
-            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST]
-        );
+        $config = $this->resolveConfigFromHttpOptions($options ?? []);
+        $requestData = new RequestData($method, $config->getHttpClientOptions(), Carbon::now('UTC'), $url);
 
-        $requestData = new RequestData($method, $options, Carbon::now('UTC'), $url);
-
-        if ($modifiersEnabled) {
-            $requestData = $this->modifyRequestData($requestData, $modifiersWhitelist, $modifiers);
+        if ($config->isRequestDataModifiersEnabled()) {
+            $requestData = $this->modifyRequestData(
+                $requestData,
+                $config->getRequestDataModifiersWhitelist(),
+                $config->getRequestDataModifiers()
+            );
         }
 
         try {
@@ -102,27 +92,26 @@ final class WithEventsHttpClient implements HttpClientInterface
                 $requestData->getMethod(),
                 $requestData->getUrl(),
                 $requestData->getOptions(),
-                $this->getPassThruClosure($requestData, $extra)
+                $this->getPassThruClosure($requestData, $config)
             );
         } catch (\Throwable $throwable) {
-            $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
-                $requestData,
-                null,
-                $throwable,
-                Carbon::now('UTC'),
-                $extra
-            ));
+            if ($config->isEventsEnabled()) {
+                $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
+                    $requestData,
+                    null,
+                    $throwable,
+                    Carbon::now('UTC'),
+                    $config->getRequestDataExtra()
+                ));
+            }
 
             throw $throwable;
         }
     }
 
-    /**
-     * @param null|mixed[] $extra
-     */
-    private function getPassThruClosure(RequestDataInterface $requestData, ?array $extra = null): \Closure
+    private function getPassThruClosure(RequestDataInterface $requestData, Config $config): \Closure
     {
-        return function (ChunkInterface $chunk, AsyncContext $asyncContext) use ($requestData, $extra): iterable {
+        return function (ChunkInterface $chunk, AsyncContext $asyncContext) use ($requestData, $config): iterable {
             if ($chunk->getContent() !== '') {
                 $asyncContext->setInfo(
                     'temp_content',
@@ -138,13 +127,15 @@ final class WithEventsHttpClient implements HttpClientInterface
                     $asyncContext->getStatusCode()
                 );
 
-                $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
-                    $requestData,
-                    $responseData,
-                    null,
-                    null,
-                    $extra
-                ));
+                if ($config->isEventsEnabled()) {
+                    $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
+                        $requestData,
+                        $responseData,
+                        null,
+                        null,
+                        $config->getRequestDataExtra()
+                    ));
+                }
             }
 
             yield $chunk;
@@ -179,5 +170,41 @@ final class WithEventsHttpClient implements HttpClientInterface
         }
 
         return $data;
+    }
+
+    /**
+     * @param mixed[] $options
+     */
+    private function resolveConfigFromHttpOptions(array $options): Config
+    {
+        $extra = $options[HttpOptionsInterface::REQUEST_DATA_EXTRA] ?? null;
+        $modifiers = \array_merge($this->modifiers, $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS] ?? []);
+
+        $modifiersEnabled = $this->modifiersEnabled ??
+            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_ENABLED] ?? true;
+
+        $modifiersWhitelist = \array_merge(
+            $this->modifiersWhitelist,
+            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST] ?? []
+        );
+
+        $eventsEnabled = $options[HttpOptionsInterface::EVENTS_ENABLED] ?? true;
+
+        unset(
+            $options[HttpOptionsInterface::EVENTS_ENABLED],
+            $options[HttpOptionsInterface::REQUEST_DATA_EXTRA],
+            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS],
+            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_ENABLED],
+            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST]
+        );
+
+        return new Config(
+            $options,
+            $extra,
+            $modifiers,
+            $modifiersWhitelist,
+            (bool)$modifiersEnabled,
+            (bool)$eventsEnabled
+        );
     }
 }
