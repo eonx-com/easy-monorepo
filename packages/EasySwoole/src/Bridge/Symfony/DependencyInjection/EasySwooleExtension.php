@@ -20,6 +20,10 @@ final class EasySwooleExtension extends Extension
         'timezone' => BridgeConstantsInterface::PARAM_ACCESS_LOG_TIMEZONE,
     ];
 
+    private const EASY_BATCH_CONFIG = [
+        'reset_batch_processor' => BridgeConstantsInterface::PARAM_RESET_EASY_BATCH_PROCESSOR,
+    ];
+
     private const REQUEST_LIMITS_CONFIG = [
         'min' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MIN,
         'max' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MAX,
@@ -55,6 +59,12 @@ final class EasySwooleExtension extends Extension
 
         if (($config['doctrine']['enabled'] ?? true) && \interface_exists(ManagerRegistry::class)) {
             $loader->load('doctrine.php');
+        }
+
+        if ($config['easy_batch']['enabled'] ?? true) {
+            foreach (self::EASY_BATCH_CONFIG as $configName => $param) {
+                $container->setParameter($param, $config['easy_batch'][$configName]);
+            }
         }
 
         if ($config['request_limits']['enabled'] ?? true) {
