@@ -11,6 +11,7 @@ use EonX\EasyBatch\Interfaces\CurrentBatchAwareInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchItemAwareInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchObjectsAwareInterface;
 use EonX\EasyBatch\Processors\BatchItemProcessor;
+use EonX\EasyBatch\Processors\BatchProcessor;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockData;
 use Symfony\Component\Messenger\Envelope;
@@ -25,6 +26,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         private readonly BatchItemExceptionHandler $batchItemExceptionHandler,
         private readonly BatchItemRepositoryInterface $batchItemRepository,
         private readonly BatchItemProcessor $batchItemProcessor,
+        private readonly BatchProcessor $batchProcessor,
         private readonly LockServiceInterface $lockService
     ) {
     }
@@ -44,6 +46,9 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         if ($consumedByWorkerStamp === null || $batchItemStamp === null) {
             return $func();
         }
+
+        // Make sure to have a clean batch processor before processing item to prevent caching issues.
+        $this->batchProcessor->reset();
 
         try {
             // Since items can be dispatched multiple times to guarantee all items are dispatched
