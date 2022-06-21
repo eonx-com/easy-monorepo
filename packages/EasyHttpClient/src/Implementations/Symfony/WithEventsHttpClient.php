@@ -154,13 +154,16 @@ final class WithEventsHttpClient implements HttpClientInterface
     private function resolveConfigFromHttpOptions(array $options): Config
     {
         $extra = $options[HttpOptionsInterface::REQUEST_DATA_EXTRA] ?? null;
-        $modifiers = \array_merge($this->modifiers, $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS] ?? []);
+        $modifiers = \is_array($this->modifiers ?? [])
+            ? ($this->modifiers ?? [])
+            : \iterator_to_array($this->modifiers);
+        $modifiers = \array_merge($modifiers, $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS] ?? []);
 
         $modifiersEnabled = $this->modifiersEnabled ??
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_ENABLED] ?? true;
 
         $modifiersWhitelist = \array_merge(
-            $this->modifiersWhitelist,
+            $this->modifiersWhitelist ?? [],
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST] ?? []
         );
 
