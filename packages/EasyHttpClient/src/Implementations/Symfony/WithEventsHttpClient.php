@@ -27,41 +27,17 @@ final class WithEventsHttpClient implements HttpClientInterface
     use AsyncDecoratorTrait;
 
     /**
-     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var \EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface[]
-     */
-    private $modifiers;
-
-    /**
-     * @var null|bool
-     */
-    private $modifiersEnabled;
-
-    /**
-     * @var string[]
-     */
-    private $modifiersWhitelist;
-
-    /**
      * @param null|iterable<\EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface> $modifiers
      * @param null|string[] $modifiersWhitelist
      */
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
+        private readonly EventDispatcherInterface $eventDispatcher,
         ?HttpClientInterface $decorated = null,
-        ?iterable $modifiers = null,
-        ?bool $modifiersEnabled = null,
-        ?array $modifiersWhitelist = null
+        private readonly ?iterable $modifiers = [],
+        private readonly ?bool $modifiersEnabled = true,
+        private readonly ?array $modifiersWhitelist = []
     ) {
-        $this->eventDispatcher = $eventDispatcher;
         $this->client = $decorated ?? HttpClient::create();
-        $this->modifiers = CollectorHelper::filterByClassAsArray($modifiers ?? [], RequestDataModifierInterface::class);
-        $this->modifiersEnabled = $modifiersEnabled;
-        $this->modifiersWhitelist = $modifiersWhitelist ?? [];
     }
 
     /**
@@ -201,7 +177,7 @@ final class WithEventsHttpClient implements HttpClientInterface
         return new Config(
             $options,
             $extra,
-            $modifiers,
+            CollectorHelper::filterByClassAsArray($modifiers, RequestDataModifierInterface::class),
             $modifiersWhitelist,
             (bool)$modifiersEnabled,
             (bool)$eventsEnabled

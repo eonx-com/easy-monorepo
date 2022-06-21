@@ -6,6 +6,12 @@ namespace EonX\EasyHttpClient\Data;
 
 final class Config
 {
+    /**
+     * @param mixed[] $httpClientOptions
+     * @param mixed[]|null $requestDataExtra
+     * @param \EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface[]|null $requestDataModifiers
+     * @param string[]|null $requestDataModifiersWhitelist
+     */
     public function __construct(
         private readonly array $httpClientOptions,
         private readonly ?array $requestDataExtra = null,
@@ -24,16 +30,25 @@ final class Config
         return $this->httpClientOptions;
     }
 
+    /**
+     * @return mixed[]|null
+     */
     public function getRequestDataExtra(): ?array
     {
         return $this->requestDataExtra;
     }
 
+    /**
+     * @return \EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface[]
+     */
     public function getRequestDataModifiers(): array
     {
         return $this->requestDataModifiers ?? [];
     }
 
+    /**
+     * @return string[]
+     */
     public function getRequestDataModifiersWhitelist(): array
     {
         return $this->requestDataModifiersWhitelist ?? [];
