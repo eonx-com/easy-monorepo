@@ -12,6 +12,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Contracts\Service\ResetInterface;
 
 final class EasySwooleExtension extends Extension
 {
@@ -62,6 +63,10 @@ final class EasySwooleExtension extends Extension
             }
 
             $loader->load('request_limits.php');
+        }
+
+        if (($config['reset_services']['enabled'] ?? true) && \interface_exists(ResetInterface::class)) {
+            $loader->load('reset_services.php');
         }
     }
 }

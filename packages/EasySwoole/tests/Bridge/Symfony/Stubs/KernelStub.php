@@ -8,6 +8,7 @@ use EonX\EasySwoole\Bridge\Symfony\EasySwooleSymfonyBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
@@ -29,6 +30,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        $container->setDefinition('services_resetter', new Definition(ServicesResetterStub::class));
+
         foreach ($container->getAliases() as $alias) {
             $alias->setPublic(true);
         }

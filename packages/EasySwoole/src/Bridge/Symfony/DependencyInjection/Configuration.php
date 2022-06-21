@@ -36,6 +36,12 @@ final class Configuration implements ConfigurationInterface
                         ->integerNode('max')->defaultValue(10000)->end()
                     ->end()
                 ->end()
+                ->arrayNode('reset_services')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
