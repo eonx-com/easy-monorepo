@@ -17,6 +17,7 @@ use EonX\EasyActivity\Bridge\EasyDoctrine\EasyDoctrineEntityEventsSubscriber;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessage;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\ActivityLogEntryMessageHandler;
 use EonX\EasyActivity\Bridge\Symfony\Messenger\AsyncDispatcher;
+use EonX\EasyActivity\Bridge\Symfony\Uid\UuidFactory;
 use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Logger\AsyncActivityLogger;
@@ -29,12 +30,11 @@ use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
-use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
+use Symfony\Component\Uid\Factory\UuidFactory as SymfonyUuidFactory;
 
 final class EntityManagerStub extends EntityManager
 {
@@ -97,10 +97,9 @@ final class EntityManagerStub extends EntityManager
             $entityManager->getConnection()
                 ->executeQuery($migrateStatement);
         }
-        $randomGenerator = new RandomGenerator();
-        $randomGenerator->setUuidV4Generator(new SymfonyUidUuidV4Generator());
+        $uuidFactory = new UuidFactory(new SymfonyUuidFactory());
         $dbalStore = new DoctrineDbalStore(
-            $randomGenerator,
+            $uuidFactory,
             $entityManager->getConnection(),
             self::ACTIVITY_TABLE_NAME
         );
