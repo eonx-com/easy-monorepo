@@ -11,6 +11,7 @@ use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
+use EonX\EasyErrorHandler\Interfaces\FormatAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
 use EonX\EasyUtils\CollectorHelper;
@@ -20,7 +21,7 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Throwable;
 
-final class ErrorHandler implements ErrorHandlerInterface
+final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
 {
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface[]
@@ -131,6 +132,17 @@ final class ErrorHandler implements ErrorHandlerInterface
                 break;
             }
         }
+    }
+
+    public function supportsFormat(Request $request): bool
+    {
+        // Ultimately the response factory should make the decision
+        if ($this->responseFactory instanceof FormatAwareInterface) {
+            return $this->responseFactory->supportsFormat($request);
+        }
+
+        // Otherwise, assume it supports every format
+        return true;
     }
 
     /**
