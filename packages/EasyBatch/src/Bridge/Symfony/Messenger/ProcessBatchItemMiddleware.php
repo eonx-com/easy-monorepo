@@ -42,13 +42,13 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         $consumedByWorkerStamp = $envelope->last(ConsumedByWorkerStamp::class);
         $message = $envelope->getMessage();
 
+        // Make sure to ALWAYS have a clean batch processor to prevent any caching issue in worker
+        $this->batchProcessor->reset();
+
         // Proceed only if consumed by worker or current envelope is for a batchItem
         if ($consumedByWorkerStamp === null || $batchItemStamp === null) {
             return $func();
         }
-
-        // Make sure to have a clean batch processor before processing item to prevent caching issues.
-        $this->batchProcessor->reset();
 
         try {
             // Since items can be dispatched multiple times to guarantee all items are dispatched
