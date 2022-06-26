@@ -17,12 +17,13 @@ use Symfony\Component\Runtime\RunnerInterface;
 final class EasySwooleRunner implements RunnerInterface
 {
     private const DEFAULT_OPTIONS = [
-        'host' => '0.0.0.0',
-        'port' => 8080,
-        'mode' => \SWOOLE_BASE,
-        'sock_type' => \SWOOLE_SOCK_TCP,
-        'settings' => [],
         'callbacks' => [],
+        'host' => '0.0.0.0',
+        'mode' => \SWOOLE_BASE,
+        'port' => 8080,
+        'response_chunk_size' => 1048576,
+        'settings' => [],
+        'sock_type' => \SWOOLE_SOCK_TCP,
         'use_default_callbacks' => true,
     ];
 
@@ -39,15 +40,26 @@ final class EasySwooleRunner implements RunnerInterface
     {
         $app = $this->app;
         $server = $this->createSwooleHttpServer();
+        $responseChunkSize = (int)$this->getOption('response_chunk_size', 'SWOOLE_RESPONSE_CHUNK_SIZE');
 
         $server->on(
             Constant::EVENT_REQUEST,
-            static function (Request $request, Response $response) use ($app, $server): void {
+            static function (Request $request, Response $response) use ($app, $server, $responseChunkSize): void {
                 $hfRequest = HttpFoundationHelper::fromSwooleRequest($request);
                 $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_ENABLED, true);
 
+                // Surround handle with output buffering to support echo, var_dump, etc
+                \ob_start();
                 $hfResponse = $app->handle($hfRequest);
-                HttpFoundationHelper::reflectHttpFoundationResponse($hfResponse, $response);
+                $bufferedOutput = \ob_get_contents();
+                \ob_end_clean();
+
+                HttpFoundationHelper::reflectHttpFoundationResponse(
+                    $hfResponse,
+                    $response,
+                    $responseChunkSize,
+                    \is_string($bufferedOutput) && $bufferedOutput !== '' ? $bufferedOutput : null
+                );
 
                 if ($app instanceof TerminableInterface) {
                     $app->terminate($hfRequest, $hfResponse);
