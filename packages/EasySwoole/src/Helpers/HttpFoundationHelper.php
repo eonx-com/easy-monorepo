@@ -39,11 +39,26 @@ final class HttpFoundationHelper
         int $chunkSize,
         ?string $bufferedOutput = null
     ): void {
-        foreach ($hfResponse->headers->all() as $name => $values) {
-            $response->header((string)$name, $values);
+        $response->status($hfResponse->getStatusCode());
+
+        // Reflect headers, use swoole response methods for cookie
+        foreach ($hfResponse->headers->allPreserveCaseWithoutCookies() as $name => $values) {
+            foreach ($values as $value) {
+                $response->header((string)$name, $value);
+            }
         }
 
-        $response->status($hfResponse->getStatusCode());
+        foreach ($hfResponse->headers->getCookies() as $cookie) {
+            $response->{$cookie->isRaw() ? 'rawcookie' : 'cookie'}(
+                $cookie->getName(),
+                $cookie->getValue(),
+                $cookie->getExpiresTime(),
+                $cookie->getPath(),
+                $cookie->getDomain(),
+                $cookie->isSecure(),
+                $cookie->isHttpOnly()
+            );
+        }
 
         // Support streamed responses
         if (($hfResponse instanceof BinaryFileResponse && $hfResponse->headers->has('Content-Range'))
