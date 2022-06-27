@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Resolvers;
 
+use Doctrine\Common\Util\ClassUtils;
 use EonX\EasyActivity\ActivitySubject;
 use EonX\EasyActivity\Exceptions\UnableToResolveActivitySubjectException;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
@@ -33,7 +34,7 @@ final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInt
             return $object;
         }
 
-        $subjectClass = \get_class($object);
+        $subjectClass = ClassUtils::getRealClass(\get_class($object));
         $subjectConfig = $this->subjects[$subjectClass] ?? null;
         if ($subjectConfig === null) {
             return null;
