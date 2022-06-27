@@ -8,7 +8,7 @@
         "nesbot/carbon": "^2.22",
         "dragonmantank/cron-expression": "^2.3 || ^3.0",
         "symfony/console": "^5.4 || ^6.0",
-        "eonx-com/easy-lock": "^4.2"
+        "eonx-com/easy-lock": "^4.1.18"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
