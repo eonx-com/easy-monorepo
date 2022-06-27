@@ -51,12 +51,13 @@ final class HttpFoundationHelper
         foreach ($hfResponse->headers->getCookies() as $cookie) {
             $response->{$cookie->isRaw() ? 'rawcookie' : 'cookie'}(
                 $cookie->getName(),
-                $cookie->getValue(),
+                $cookie->getValue() ?? '',
                 $cookie->getExpiresTime(),
                 $cookie->getPath(),
-                $cookie->getDomain(),
+                $cookie->getDomain() ?? '',
                 $cookie->isSecure(),
-                $cookie->isHttpOnly()
+                $cookie->isHttpOnly(),
+                $cookie->getSameSite() ?? ''
             );
         }
 
