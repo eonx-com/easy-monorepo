@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Bridge\Symfony\Aws\Rds;
 
 use Aws\Credentials\CredentialProvider;
-use Aws\Credentials\Credentials;
 use Aws\Rds\AuthTokenGenerator;
 use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\Common\EventManager;
@@ -27,7 +26,7 @@ final class AuthTokenConnectionFactory
 
     /**
      * @param mixed[] $params
-     * @param mixed[]|null $mappingTypes
+     * @param string[]|null $mappingTypes
      *
      * @throws \Doctrine\DBAL\Exception
      * @throws \Psr\Cache\InvalidArgumentException
