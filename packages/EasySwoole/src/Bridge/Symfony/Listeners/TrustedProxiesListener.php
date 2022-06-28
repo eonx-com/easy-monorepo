@@ -23,6 +23,7 @@ final class TrustedProxiesListener extends AbstractRequestEventListener
         }
 
         $request = $event->getRequest();
+        /** @var string|string[] $trustedProxies */
         $trustedProxies = $this->container->getParameter('kernel.trusted_proxies');
         $trustedProxies = \array_map(static function (string $trustedProxy) use ($request): string {
             $trustedProxy = \trim($trustedProxy);
@@ -33,6 +34,9 @@ final class TrustedProxiesListener extends AbstractRequestEventListener
                 : $trustedProxy;
         }, \is_array($trustedProxies) ? $trustedProxies : \explode(',', (string)$trustedProxies));
 
-        Request::setTrustedProxies($trustedProxies, (int)$this->container->getParameter('kernel.trusted_headers'));
+        /** @var int $trustedHeaders */
+        $trustedHeaders = $this->container->getParameter('kernel.trusted_headers');
+
+        Request::setTrustedProxies($trustedProxies, $trustedHeaders);
     }
 }
