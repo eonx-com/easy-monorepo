@@ -31,8 +31,8 @@ final class TrustedProxiesListener extends AbstractRequestEventListener
             return $trustedProxy === 'REMOTE_ADDR'
                 ? (string)$request->server->get('REMOTE_ADDR', '')
                 : $trustedProxy;
-        }, \is_array($trustedProxies) ? $trustedProxies : \explode(',', $trustedProxies));
+        }, \is_array($trustedProxies) ? $trustedProxies : \explode(',', (string)$trustedProxies));
 
-        Request::setTrustedProxies($trustedProxies, $this->container->getParameter('kernel.trusted_headers'));
+        Request::setTrustedProxies($trustedProxies, (int)$this->container->getParameter('kernel.trusted_headers'));
     }
 }
