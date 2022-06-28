@@ -27,5 +27,6 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(TrustedProxiesListener::class)
+        ->arg('$container', service('service_container'))
         ->tag('kernel.event_listener', ['priority' => 20000]);
 };
