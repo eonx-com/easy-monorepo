@@ -26,7 +26,7 @@ final class AuthTokenConnectionFactory
 
     /**
      * @param mixed[] $params
-     * @param string[]|null $mappingTypes
+     * @param array<string, string>|null $mappingTypes
      *
      * @throws \Doctrine\DBAL\Exception
      * @throws \Psr\Cache\InvalidArgumentException
