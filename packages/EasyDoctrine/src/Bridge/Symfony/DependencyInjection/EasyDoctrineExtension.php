@@ -12,6 +12,12 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyDoctrineExtension extends Extension
 {
+    private const AWS_RDS_IAM_CONFIG = [
+        'aws_region' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_REGION,
+        'aws_username' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_USERNAME,
+        'cache_expiry_in_seconds' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_CACHE_EXPIRY_IN_SECONDS,
+    ];
+
     /**
      * @param mixed[] $configs
      *
@@ -34,6 +40,15 @@ final class EasyDoctrineExtension extends Extension
 
         if ($config['easy_error_handler_enabled'] && isset($bundles['EasyErrorHandlerSymfonyBundle']) === true) {
             $loader->load('easy-error-handler-listener.php');
+        }
+
+        // AWS RDS IAM
+        if ($config['aws_rds_iam']['enabled'] ?? false) {
+            foreach (self::AWS_RDS_IAM_CONFIG as $configName => $param) {
+                $container->setParameter($param, $config['aws_rds_iam'][$configName]);
+            }
+
+            $loader->load('aws_rds_iam.php');
         }
     }
 }
