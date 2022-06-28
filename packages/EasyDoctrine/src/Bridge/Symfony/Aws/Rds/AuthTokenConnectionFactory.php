@@ -39,7 +39,7 @@ final class AuthTokenConnectionFactory
     ): Connection {
         $params['password'] = $this->generatePassword($params);
 
-        return $this->factory->createConnection($params, $config, $eventManager, $mappingTypes);
+        return $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
     }
 
     /**
