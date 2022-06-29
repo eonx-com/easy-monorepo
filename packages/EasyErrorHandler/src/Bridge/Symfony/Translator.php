@@ -9,33 +9,23 @@ use Symfony\Contracts\Translation\TranslatorInterface as SymfonyTranslatorInterf
 
 final class Translator implements TranslatorInterface
 {
-    /**
-     * @var \Symfony\Contracts\Translation\TranslatorInterface
-     */
-    private $decorated;
-
-    /**
-     * @var null|string
-     */
-    private $domain;
-
-    public function __construct(SymfonyTranslatorInterface $decorated, ?string $domain = null)
-    {
-        $this->decorated = $decorated;
-        $this->domain = $domain;
+    public function __construct(
+        private readonly SymfonyTranslatorInterface $decorated,
+        private readonly ?string $domain = null
+    ) {
     }
 
     /**
      * @param mixed[] $parameters
      */
-    public function trans(string $message, array $parameters): string
+    public function trans(string $message, array $parameters, ?string $locale = null): string
     {
-        $translation = $this->decorated->trans($message, $parameters, $this->domain);
+        $translation = $this->decorated->trans($message, $parameters, $this->domain, $locale);
 
         if ($translation !== $message) {
             return $translation;
         }
 
-        return $this->decorated->trans($message, $parameters, 'EasyErrorHandlerBundle');
+        return $this->decorated->trans($message, $parameters, 'EasyErrorHandlerBundle', $locale);
     }
 }

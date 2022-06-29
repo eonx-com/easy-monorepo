@@ -6,6 +6,7 @@ namespace EonX\EasyDoctrine\Tests\Subscribers;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
 use EonX\EasyDoctrine\Events\EntityDeletedEvent;
@@ -13,6 +14,7 @@ use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Category;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
+use EonX\EasyDoctrine\Tests\Fixtures\Tag;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
 use EonX\EasyDoctrine\Tests\Stubs\EventDispatcherStub;
 
@@ -94,7 +96,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
     public function testEventsAreDispatchedAfterEnablingDispatcher(): void
     {
         $eventDispatcher = new EventDispatcherStub();
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
         $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
             $dispatcher,
             [Product::class],
@@ -295,7 +297,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
     public function testEventsAreNotDispatchedWhenDispatcherIsDisabled(): void
     {
         $eventDispatcher = new EventDispatcherStub();
-        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher);
+        $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
         $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
             $dispatcher,
             [Product::class],
@@ -425,7 +427,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Product::class],
-            [Product::class, Category::class]
+            [Product::class, Category::class, Tag::class]
         );
         $entityManager->getConnection()
             ->insert(
@@ -443,6 +445,24 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'name' => 'Keyboard',
                     'price' => '1000',
                     'category_id' => 1,
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 1,
+                    'name' => 'Tag 1',
+                    'product_id' => 1,
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 2,
+                    'name' => 'Tag 2',
+                    'product_id' => 1,
                 ]
             );
 
@@ -463,6 +483,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             'price' => ['1000', null],
             'category_id' => [1, null],
             'category' => [$product->getCategory(), null],
+            'tags' => [$product->getTags(), null],
         ]);
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $actualEvent->getEntity();
@@ -475,6 +496,14 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $category = $product->getCategory();
         self::assertSame(1, $category->getId());
         self::assertSame('Computer', $category->getName());
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag1 */
+        $tag1 = $product->getTags()[0];
+        self::assertSame(1, $tag1->getId());
+        self::assertSame('Tag 1', $tag1->getName());
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag2 */
+        $tag2 = $product->getTags()[1];
+        self::assertSame(2, $tag2->getId());
+        self::assertSame('Tag 2', $tag2->getName());
     }
 
     public function testOneEventIsDispatchedForMultipleUpdatedEntity(): void

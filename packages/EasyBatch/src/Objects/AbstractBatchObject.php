@@ -4,69 +4,42 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Objects;
 
+use EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 
 abstract class AbstractBatchObject implements BatchObjectInterface
 {
-    /**
-     * @var \DateTimeInterface
-     */
-    private $cancelledAt;
+    private bool $approvalRequired = false;
+
+    private ?\DateTimeInterface $cancelledAt = null;
+
+    private ?\DateTimeInterface $createdAt = null;
+
+    private ?\DateTimeInterface $finishedAt = null;
+
+    private int|string|null $id = null;
 
     /**
-     * @var \DateTimeInterface
+     * @var mixed[]|null
      */
-    private $createdAt;
+    private ?array $metadata = null;
+
+    private ?string $name = null;
+
+    private ?\DateTimeInterface $startedAt = null;
+
+    private string $status = self::STATUS_PENDING;
+
+    private ?\Throwable $throwable = null;
 
     /**
-     * @var \DateTimeInterface
+     * @var mixed[]|null
      */
-    private $finishedAt;
+    private ?array $throwableDetails = null;
 
-    /**
-     * @var int|string
-     */
-    private $id;
+    private ?string $type = null;
 
-    /**
-     * @var mixed[]
-     */
-    private $metadata;
-
-    /**
-     * @var null|string
-     */
-    private $name;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $startedAt;
-
-    /**
-     * @var string
-     */
-    private $status = self::STATUS_PENDING;
-
-    /**
-     * @var \Throwable
-     */
-    private $throwable;
-
-    /**
-     * @var mixed[]
-     */
-    private $throwableDetails;
-
-    /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $updatedAt;
+    private ?\DateTimeInterface $updatedAt = null;
 
     public function getCancelledAt(): ?\DateTimeInterface
     {
@@ -83,12 +56,21 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->finishedAt;
     }
 
-    /**
-     * @return null|int|string
-     */
-    public function getId()
+    public function getId(): int|string|null
     {
         return $this->id;
+    }
+
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     */
+    public function getIdOrFail(): int|string
+    {
+        if ($this->getId() !== null) {
+            return $this->getId();
+        }
+
+        throw new BatchObjectIdRequiredException(\sprintf('ID not set on batchObject "%s"', static::class));
     }
 
     /**
@@ -137,6 +119,11 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->updatedAt;
     }
 
+    public function isApprovalRequired(): bool
+    {
+        return $this->approvalRequired;
+    }
+
     public function isCancelled(): bool
     {
         return $this->getStatus() === self::STATUS_CANCELLED;
@@ -146,7 +133,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     {
         return \in_array(
             $this->getStatus(),
-            [self::STATUS_FAILED, self::STATUS_SUCCEEDED, self::STATUS_CANCELLED],
+            BatchObjectInterface::STATUSES_FOR_COMPLETED,
             true
         );
     }
@@ -156,9 +143,21 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->getStatus() === self::STATUS_FAILED;
     }
 
+    public function isPendingApproval(): bool
+    {
+        return $this->getStatus() === self::STATUS_SUCCEEDED_PENDING_APPROVAL;
+    }
+
     public function isSucceeded(): bool
     {
         return $this->getStatus() === self::STATUS_SUCCEEDED;
+    }
+
+    public function setApprovalRequired(?bool $approvalRequired = null): BatchObjectInterface
+    {
+        $this->approvalRequired = $approvalRequired ?? true;
+
+        return $this;
     }
 
     public function setCancelledAt(\DateTimeInterface $cancelledAt): BatchObjectInterface
@@ -182,10 +181,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    /**
-     * @param int|string $id
-     */
-    public function setId($id): BatchObjectInterface
+    public function setId(int|string $id): BatchObjectInterface
     {
         $this->id = $id;
 
@@ -267,6 +263,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
             'metadata' => $this->getMetadata(),
             'name' => $this->getName(),
             'finished_at' => $this->getFinishedAt(),
+            'requires_approval' => $this->isApprovalRequired() ? 1 : 0,
             'started_at' => $this->getStartedAt(),
             'status' => $this->getStatus(),
             'throwable' => $this->getThrowable(),

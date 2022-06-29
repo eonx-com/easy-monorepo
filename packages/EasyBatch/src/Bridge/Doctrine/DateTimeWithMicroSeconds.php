@@ -26,13 +26,10 @@ final class DateTimeWithMicroSeconds extends Type
      */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        switch ($platform->getName()) {
-            case 'mysql':
-                return 'DATETIME(6)';
-            case 'postgresql':
-                return 'TIMESTAMP(6) WITHOUT TIME ZONE';
-            default:
-                return $platform->getDateTimeTypeDeclarationSQL($column);
-        }
+        return match ($platform->getName()) {
+            'mysql' => 'DATETIME(6)',
+            'postgresql' => 'TIMESTAMP(6) WITHOUT TIME ZONE',
+            default => $platform->getDateTimeTypeDeclarationSQL($column),
+        };
     }
 }

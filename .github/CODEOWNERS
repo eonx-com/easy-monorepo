@@ -1,6 +1,5 @@
 /.github/ @eonx-com/quality-standards
-changelog-linker.yml @eonx-com/quality-standards
-ecs.yaml @eonx-com/quality-standards
+ecs.php @eonx-com/quality-standards
 license @eonx-com/quality-standards
-monorepo-builder.yml @eonx-com/quality-standards
+monorepo-builder.php @eonx-com/quality-standards
 phpstan.neon @eonx-com/quality-standards

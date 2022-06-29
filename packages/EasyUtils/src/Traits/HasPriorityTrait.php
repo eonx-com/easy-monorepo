@@ -8,13 +8,17 @@ use EonX\EasyUtils\Interfaces\HasPriorityInterface;
 
 trait HasPriorityTrait
 {
-    /**
-     * @var int
-     */
-    protected $priority = HasPriorityInterface::DEFAULT_PRIORITY;
+    protected int $priority = HasPriorityInterface::DEFAULT_PRIORITY;
 
     public function getPriority(): int
     {
         return $this->priority;
+    }
+
+    protected function doSetPriority(?int $priority = null): void
+    {
+        if ($priority !== null) {
+            $this->priority = $priority;
+        }
     }
 }

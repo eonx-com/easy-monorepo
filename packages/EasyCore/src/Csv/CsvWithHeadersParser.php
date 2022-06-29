@@ -7,6 +7,9 @@ namespace EonX\EasyCore\Csv;
 use EonX\EasyCore\Csv\Exceptions\MissingRequiredHeadersException;
 use EonX\EasyCore\Csv\Exceptions\MissingValueForRequiredHeadersException;
 
+/**
+ * @deprecated since 4.1, will be removed in 5.0. Use Eonx\EasyUtils\Csv\CsvWithHeadersParser.
+ */
 final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
 {
     /**

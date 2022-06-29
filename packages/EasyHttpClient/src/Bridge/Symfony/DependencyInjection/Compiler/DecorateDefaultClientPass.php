@@ -5,44 +5,23 @@ declare(strict_types=1);
 namespace EonX\EasyHttpClient\Bridge\Symfony\DependencyInjection\Compiler;
 
 use EonX\EasyHttpClient\Bridge\BridgeConstantsInterface;
-use EonX\EasyHttpClient\Implementations\Symfony\WithEventsHttpClient;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 
-final class DecorateDefaultClientPass implements CompilerPassInterface
+final class DecorateDefaultClientPass extends AbstractEasyHttpClientCompilerPass
 {
-    /**
-     * @var string
-     */
     private const DECORATION_SERVICE_ID = 'easy_http_client.decorate_default';
 
-    /**
-     * @var string
-     */
-    private const DEFAULT_CLIENT_ID = 'http_client';
-
-    public function process(ContainerBuilder $container): void
+    protected function doProcess(ContainerBuilder $container): void
     {
-        // Apply only if enabled and container has default client definition
-        if ($this->isEnabled($container) === false || $container->has(self::DEFAULT_CLIENT_ID) === false) {
+        if ($this->hasDefaultClient($container) === false) {
             return;
         }
 
-        $def = (new Definition(WithEventsHttpClient::class))
-            ->setAutowired(true)
-            ->setAutoconfigured(true)
-            ->setDecoratedService(self::DEFAULT_CLIENT_ID);
-
-        $container->setDefinition(self::DECORATION_SERVICE_ID, $def);
+        $this->decorateHttpClient($container, self::DEFAULT_CLIENT_ID, self::DECORATION_SERVICE_ID);
     }
 
-    private function isEnabled(ContainerBuilder $container): bool
+    protected function getEnableParamName(): string
     {
-        if ($container->hasParameter(BridgeConstantsInterface::PARAM_DECORATE_DEFAULT_CLIENT) === false) {
-            return false;
-        }
-
-        return (bool)$container->getParameter(BridgeConstantsInterface::PARAM_DECORATE_DEFAULT_CLIENT);
+        return BridgeConstantsInterface::PARAM_DECORATE_DEFAULT_CLIENT;
     }
 }

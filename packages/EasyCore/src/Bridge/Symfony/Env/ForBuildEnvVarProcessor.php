@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\Env;
 
+use Closure;
 use Symfony\Component\DependencyInjection\EnvVarProcessorInterface;
 use Symfony\Component\DependencyInjection\Exception\EnvNotFoundException;
 
 final class ForBuildEnvVarProcessor implements EnvVarProcessorInterface
 {
     /**
-     * @return string[] The PHP-types managed by getEnv(), keyed by prefixes
+     * @return array<string, string> The PHP-types managed by getEnv(), keyed by prefixes
      */
     public static function getProvidedTypes(): array
     {
@@ -19,16 +20,7 @@ final class ForBuildEnvVarProcessor implements EnvVarProcessorInterface
         ];
     }
 
-    /**
-     * Returns the value of the given variable as managed by the current instance.
-     *
-     * @param string $prefix The namespace of the variable
-     * @param string $name The name of the variable within the namespace
-     * @param \Closure $getEnv A closure that allows fetching more env vars
-     *
-     * @return mixed
-     */
-    public function getEnv($prefix, $name, \Closure $getEnv)
+    public function getEnv(string $prefix, string $name, Closure $getEnv): mixed
     {
         try {
             return $getEnv($name);

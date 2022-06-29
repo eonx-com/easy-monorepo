@@ -11,27 +11,20 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class FromHttpFoundationRequestResolver
 {
-    /**
-     * @var \EonX\EasyPagination\Interfaces\PaginationConfigInterface
-     */
-    private $config;
-
-    /**
-     * @var \Symfony\Component\HttpFoundation\Request
-     */
-    private $request;
-
-    public function __construct(PaginationConfigInterface $config, Request $request)
-    {
-        $this->config = $config;
-        $this->request = $request;
+    public function __construct(
+        private PaginationConfigInterface $config,
+        private Request $request
+    ) {
+        // No body needed.
     }
 
     public function __invoke(): PaginationInterface
     {
+        $query = $this->request->query;
+
         return Pagination::create(
-            $this->request->get($this->config->getPageAttribute(), $this->config->getPageDefault()),
-            $this->request->get($this->config->getPerPageAttribute(), $this->config->getPerPageDefault()),
+            (int)$query->get($this->config->getPageAttribute(), $this->config->getPageDefault()),
+            (int)$query->get($this->config->getPerPageAttribute(), $this->config->getPerPageDefault()),
             $this->config->getPageAttribute(),
             $this->config->getPerPageAttribute(),
             $this->request->getUri()

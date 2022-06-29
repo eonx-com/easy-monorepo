@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Exceptions;
 
-final class BatchCancelledException extends AbstractEasyBatchException
+use EonX\EasyBatch\Interfaces\EasyBatchPreventProcessExceptionInterface as PreventProcessInterface;
+
+final class BatchCancelledException extends AbstractEasyBatchException implements PreventProcessInterface
 {
     // No body needed.
 }

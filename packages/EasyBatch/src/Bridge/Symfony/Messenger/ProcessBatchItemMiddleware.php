@@ -5,66 +5,45 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
 
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemStamp;
-use EonX\EasyBatch\Interfaces\BatchInterface;
-use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Interfaces\BatchManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchAwareInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchItemAwareInterface;
-use EonX\EasyBatch\Interfaces\EasyBatchExceptionInterface;
+use EonX\EasyBatch\Interfaces\CurrentBatchObjectsAwareInterface;
+use EonX\EasyBatch\Processors\BatchItemProcessor;
+use EonX\EasyBatch\Processors\BatchProcessor;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockData;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Exception\HandlerFailedException;
-use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
 final class ProcessBatchItemMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface
-     */
-    private $batchItemRepository;
-
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchManagerInterface
-     */
-    private $batchManager;
-
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchRepositoryInterface
-     */
-    private $batchRepository;
-
-    /**
-     * @var \EonX\EasyLock\Interfaces\LockServiceInterface
-     */
-    private $lockService;
-
     public function __construct(
-        BatchRepositoryInterface $batchRepository,
-        BatchItemRepositoryInterface $batchItemRepository,
-        BatchManagerInterface $batchManager,
-        LockServiceInterface $lockService
+        private readonly BatchRepositoryInterface $batchRepository,
+        private readonly BatchItemExceptionHandler $batchItemExceptionHandler,
+        private readonly BatchItemRepositoryInterface $batchItemRepository,
+        private readonly BatchItemProcessor $batchItemProcessor,
+        private readonly BatchProcessor $batchProcessor,
+        private readonly LockServiceInterface $lockService
     ) {
-        $this->batchRepository = $batchRepository;
-        $this->batchItemRepository = $batchItemRepository;
-        $this->batchManager = $batchManager;
-        $this->lockService = $lockService;
     }
 
     /**
-     * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
-     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     * @throws \Symfony\Component\Messenger\Exception\ExceptionInterface
+     * @throws \Throwable
      */
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         $func = $this->getNextClosure($envelope, $stack);
         $batchItemStamp = $envelope->last(BatchItemStamp::class);
         $consumedByWorkerStamp = $envelope->last(ConsumedByWorkerStamp::class);
+        $message = $envelope->getMessage();
+
+        // Make sure to ALWAYS have a clean batch processor to prevent any caching issue in worker
+        $this->batchProcessor->reset();
 
         // Proceed only if consumed by worker or current envelope is for a batchItem
         if ($consumedByWorkerStamp === null || $batchItemStamp === null) {
@@ -72,62 +51,51 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         }
 
         try {
-            $message = $envelope->getMessage();
-
             // Since items can be dispatched multiple times to guarantee all items are dispatched
             // We must protect the processing logic with a lock to make sure the same item isn't processed
             // by multiple workers concurrently.
-            $lockData = LockData::create(\sprintf('easy_batch_item_%s', (string)$batchItemStamp->getBatchItemId()));
-
-            $result = $this->lockService->processWithLock(
-                $lockData,
+            $result = $this->processBatchItemWithLock(
+                $batchItemStamp->getBatchItemId(),
                 function () use ($batchItemStamp, $message, $func) {
-                    $batchItem = $this->findBatchItem($batchItemStamp->getBatchItemId());
-                    $batch = $this->findBatch($batchItem->getBatchId());
+                    $batchItem = $this->batchItemRepository->findForProcess($batchItemStamp->getBatchItemId());
+                    $batch = $this->batchRepository
+                        ->reset()
+                        ->findOrFail($batchItem->getBatchId());
 
-                    if ($message instanceof CurrentBatchAwareInterface) {
-                        $message->setCurrentBatch($batch);
+                    if ($message instanceof CurrentBatchObjectsAwareInterface) {
+                        $message->setCurrentBatchObjects($batch, $batchItem);
                     }
 
-                    if ($message instanceof CurrentBatchItemAwareInterface) {
-                        $message->setCurrentBatchItem($batchItem);
+                    if ($message instanceof CurrentBatchAwareInterface
+                        || $message instanceof CurrentBatchItemAwareInterface) {
+                        @\trigger_error(\sprintf(
+                            'Using %s or %s is deprecated since 4.1, will be removed in 5.0. Use %s instead',
+                            CurrentBatchAwareInterface::class,
+                            CurrentBatchItemAwareInterface::class,
+                            CurrentBatchObjectsAwareInterface::class
+                        ), \E_USER_DEPRECATED);
+
+                        if ($message instanceof CurrentBatchAwareInterface) {
+                            $message->setCurrentBatch($batch);
+                        }
+                        if ($message instanceof CurrentBatchItemAwareInterface) {
+                            $message->setCurrentBatchItem($batchItem);
+                        }
                     }
 
-                    return $this->batchManager->processItem($batch, $batchItem, $func);
+                    return $this->batchItemProcessor->processBatchItem($batch, $batchItem, $func);
                 }
             );
 
             // If lock not acquired, return envelope
             return $result === null ? $envelope : $result;
         } catch (\Throwable $throwable) {
-            // Do not retry if exception from package
-            if ($throwable instanceof EasyBatchExceptionInterface) {
-                throw new UnrecoverableMessageHandlingException($throwable->getMessage());
+            return $this->batchItemExceptionHandler->handleException($throwable, $envelope);
+        } finally {
+            if ($message instanceof CurrentBatchObjectsAwareInterface) {
+                $message->unsetCurrentBatchObjects();
             }
-
-            if (($throwable instanceof HandlerFailedException)
-                || ($throwable instanceof UnrecoverableMessageHandlingException)) {
-                throw $throwable;
-            }
-
-            throw new HandlerFailedException($envelope, [$throwable]);
         }
-    }
-
-    /**
-     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
-     */
-    private function findBatch(int|string $batchId): BatchInterface
-    {
-        return $this->batchRepository->findOrFail($batchId);
-    }
-
-    /**
-     * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
-     */
-    private function findBatchItem(int|string $batchItemId): BatchItemInterface
-    {
-        return $this->batchItemRepository->findOrFail($batchItemId);
     }
 
     private function getNextClosure(Envelope $envelope, StackInterface $stack): \Closure
@@ -137,5 +105,12 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
                 ->next()
                 ->handle($envelope, $stack);
         };
+    }
+
+    private function processBatchItemWithLock(int|string $batchItemId, \Closure $func): mixed
+    {
+        $lockData = LockData::create(\sprintf('easy_batch_item_%s', $batchItemId), null, true);
+
+        return $this->lockService->processWithLock($lockData, $func);
     }
 }

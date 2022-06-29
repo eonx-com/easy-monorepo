@@ -4,29 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils;
 
-final class ErrorDetailsHelper
+use EonX\EasyUtils\Helpers\ErrorDetailsHelper as BaseErrorDetailsHelper;
+
+/**
+ * @deprecated since 4.0, will be removed in 5.0. Use EonX\EasyUtils\Helpers\ErrorDetailsHelper instead.
+ */
+final class ErrorDetailsHelper extends BaseErrorDetailsHelper
 {
-    /**
-     * @return mixed[]
-     */
-    public static function resolveSimpleDetails(\Throwable $throwable, ?bool $withTrace = null): array
-    {
-        $details = [
-            'code' => $throwable->getCode(),
-            'class' => \get_class($throwable),
-            'file' => $throwable->getFile(),
-            'line' => $throwable->getLine(),
-            'message' => $throwable->getMessage(),
-        ];
-
-        if ($withTrace ?? true) {
-            $details['trace'] = \array_map(static function (array $trace): array {
-                unset($trace['args']);
-
-                return $trace;
-            }, $throwable->getTrace());
-        }
-
-        return $details;
-    }
 }

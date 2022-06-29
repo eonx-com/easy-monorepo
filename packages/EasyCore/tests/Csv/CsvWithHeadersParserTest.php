@@ -11,6 +11,9 @@ use EonX\EasyCore\Csv\Exceptions\MissingValueForRequiredHeadersException;
 use EonX\EasyCore\Csv\FromFileCsvContentsProvider;
 use EonX\EasyCore\Tests\AbstractTestCase;
 
+/**
+ * @deprecated since 4.1, will be removed in 5.0. Use Eonx\EasyUtils\Tests\Csv\CsvWithHeadersParserTest.
+ */
 final class CsvWithHeadersParserTest extends AbstractTestCase
 {
     /**

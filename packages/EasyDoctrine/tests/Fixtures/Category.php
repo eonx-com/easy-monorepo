@@ -5,35 +5,22 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Tests\Fixtures;
 
 use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Category
 {
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @var \DateTimeInterface|null
-     */
-    private $activeTill;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $activeTill;
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     *
-     * @var int
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=128)
-     *
-     * @var string
-     */
-    private $name;
+    #[ORM\Column(type: Types::STRING, length: 128)]
+    private string $name;
 
     public function getActiveTill(): ?DateTimeInterface
     {

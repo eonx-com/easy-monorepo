@@ -9,6 +9,11 @@ interface HttpOptionsInterface
     /**
      * @var string
      */
+    public const EVENTS_ENABLED = 'easy_http_client.events_enabled';
+
+    /**
+     * @var string
+     */
     public const REQUEST_DATA_EXTRA = 'easy_http_client.request_data_extra';
 
     /**

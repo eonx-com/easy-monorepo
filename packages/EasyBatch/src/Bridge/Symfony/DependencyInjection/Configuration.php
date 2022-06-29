@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Bridge\Symfony\DependencyInjection;
 
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Interfaces\BatchManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
+use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Objects\Batch;
 use EonX\EasyBatch\Objects\BatchItem;
@@ -27,7 +27,7 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('batch_item_class')->defaultValue(BatchItem::class)->end()
                 ->integerNode('batch_item_per_page')
-                    ->defaultValue(BatchManagerInterface::DEFAULT_BATCH_ITEMS_PER_PAGE)
+                    ->defaultValue(BatchObjectManagerInterface::DEFAULT_BATCH_ITEMS_PER_PAGE)
                 ->end()
                 ->scalarNode('batch_item_table')
                     ->defaultValue(BatchItemRepositoryInterface::DEFAULT_TABLE)

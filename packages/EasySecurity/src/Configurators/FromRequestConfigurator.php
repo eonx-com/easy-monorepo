@@ -6,27 +6,23 @@ namespace EonX\EasySecurity\Configurators;
 
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 final class FromRequestConfigurator
 {
     /**
-     * @var iterable<\EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface>
+     * @var \EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface[]
      */
-    private $configurators;
-
-    /**
-     * @var \Symfony\Component\HttpFoundation\Request
-     */
-    private $request;
+    private array $configurators;
 
     /**
      * @param iterable<\EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface> $configurators
      */
-    public function __construct(Request $request, iterable $configurators)
-    {
-        $this->request = $request;
+    public function __construct(
+        private readonly Request $request,
+        iterable $configurators
+    ) {
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class)
         );

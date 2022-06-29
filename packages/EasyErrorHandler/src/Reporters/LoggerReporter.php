@@ -12,41 +12,26 @@ use Throwable;
 final class LoggerReporter extends AbstractErrorReporter
 {
     /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface
-     */
-    private $errorDetailsResolver;
-
-    /**
      * @var string[]
      */
-    private $ignoreExceptions;
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private array $ignoreExceptions;
 
     /**
      * @param null|string[] $ignoreExceptions
      */
     public function __construct(
-        ErrorDetailsResolverInterface $errorDetailsResolver,
+        private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
-        LoggerInterface $logger,
+        private readonly LoggerInterface $logger,
         ?array $ignoreExceptions = null,
         ?int $priority = null
     ) {
-        $this->errorDetailsResolver = $errorDetailsResolver;
-        $this->logger = $logger;
         $this->ignoreExceptions = $ignoreExceptions ?? [];
 
         parent::__construct($errorLogLevelResolver, $priority);
     }
 
-    /**
-     * @return void|bool
-     */
-    public function report(Throwable $throwable)
+    public function report(Throwable $throwable): void
     {
         foreach ($this->ignoreExceptions as $exceptionClass) {
             if (\is_a($throwable, $exceptionClass)) {
@@ -56,7 +41,7 @@ final class LoggerReporter extends AbstractErrorReporter
 
         $this->logger->log(
             $this->errorLogLevelResolver->getLogLevel($throwable),
-            $throwable->getMessage(),
+            $this->errorDetailsResolver->resolveInternalMessage($throwable),
             [
                 'exception' => $this->errorDetailsResolver->resolveExtendedDetails($throwable),
             ]

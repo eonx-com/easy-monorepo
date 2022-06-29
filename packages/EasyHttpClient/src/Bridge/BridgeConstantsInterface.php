@@ -9,7 +9,7 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const LOG_CHANNEL = 'http_client';
+    public const LOG_CHANNEL = 'easy_http_client';
 
     /**
      * @var string
@@ -20,6 +20,11 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_DECORATE_EASY_WEBHOOK_CLIENT = 'easy_http_client.decorate_easy_webhook_client';
+
+    /**
+     * @var string
+     */
+    public const PARAM_DECORATE_MESSENGER_SQS_CLIENT = 'easy_http_client.decorate_messenger_sqs_client';
 
     /**
      * @var string

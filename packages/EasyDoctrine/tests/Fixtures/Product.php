@@ -4,42 +4,53 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Fixtures;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Product
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="EonX\EasyDoctrine\Tests\Fixtures\Category")
-     *
-     * @var \EonX\EasyDoctrine\Tests\Fixtures\Category|null
-     */
-    private $category;
+    #[ORM\ManyToOne(targetEntity: Category::class)]
+    private ?Category $category = null;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
+
+    #[ORM\Column(type: Types::STRING, length: 128)]
+    private string $name;
+
+    #[ORM\Column(type: Types::BIGINT)]
+    private string $price;
 
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     *
-     * @var int
+     * @var \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyDoctrine\Tests\Fixtures\Tag>
      */
-    private $id;
+    #[ORM\OneToMany(
+        mappedBy: 'product',
+        targetEntity: Tag::class,
+        cascade: ['persist'],
+        orphanRemoval: true
+    )]
+    private Collection $tags;
 
-    /**
-     * @ORM\Column(type="string", length=128)
-     *
-     * @var string
-     */
-    private $name;
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
-    /**
-     * @ORM\Column(type="bigint")
-     *
-     * @var string
-     */
-    private $price;
+    public function addTag(Tag $tag): self
+    {
+        if ($this->tags->contains($tag) === false) {
+            $this->tags->add($tag);
+            $tag->setProduct($this);
+        }
+
+        return $this;
+    }
 
     public function getCategory(): ?Category
     {
@@ -59,6 +70,14 @@ class Product
     public function getPrice(): string
     {
         return $this->price;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyDoctrine\Tests\Fixtures\Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
     }
 
     public function setCategory(?Category $category): self
@@ -85,6 +104,20 @@ class Product
     public function setPrice(string $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @param iterable<\EonX\EasyDoctrine\Tests\Fixtures\Tag> $tags
+     */
+    public function setTags(iterable $tags): self
+    {
+        $this->tags->clear();
+
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
 
         return $this;
     }

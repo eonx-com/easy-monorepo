@@ -6,6 +6,8 @@ namespace EonX\EasyBatch\Repositories;
 
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use EonX\EasyBatch\Exceptions\BatchObjectNotSavedException;
 use EonX\EasyBatch\Interfaces\BatchObjectFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
@@ -31,6 +33,17 @@ abstract class AbstractBatchObjectRepository
     /**
      * @throws \Doctrine\DBAL\Exception
      */
+    protected function doFind(int|string $id): ?BatchObjectInterface
+    {
+        $data = $this->fetchData($id);
+
+        return $data !== null ? $this->factory->createFromArray($data) : null;
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectNotSavedException
+     */
     protected function doSave(BatchObjectInterface $batchObject): void
     {
         $batchObjectId = $batchObject->getId() ?? $this->idStrategy->generateId();
@@ -45,41 +58,36 @@ abstract class AbstractBatchObjectRepository
             unset($data[$toRemove]);
         }
 
-        $this->has($batchObjectId) === false
+        $batchObjectExists = $this->has($batchObjectId);
+        $affectedRows = (int)($batchObjectExists === false
             ? $this->conn->insert($this->table, $data)
-            : $this->conn->update($this->table, $data, ['id' => $batchObjectId]);
+            : $this->conn->update($this->table, $data, ['id' => $batchObjectId]));
+
+        // This logic should affect only one row, otherwise something went wrong
+        if ($affectedRows !== 1) {
+            throw new BatchObjectNotSavedException(\sprintf(
+                '%s with id %s was not %s in database',
+                \get_class($batchObject),
+                $batchObjectId,
+                $batchObjectExists ? 'updated' : 'inserted'
+            ));
+        }
     }
 
     /**
-     * @param int|string $id
-     *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function doFind($id): ?BatchObjectInterface
-    {
-        $data = $this->fetchData($id);
-
-        return $data !== null ? $this->factory->createFromArray($data) : null;
-    }
-
-    /**
-     * @param int|string $id
-     *
-     * @throws \Doctrine\DBAL\Exception
-     */
-    protected function has($id): bool
+    protected function has(int|string $id): bool
     {
         return \is_array($this->fetchData($id));
     }
 
     /**
-     * @param int|string $id
-     *
      * @return null|mixed[]
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    private function fetchData($id): ?array
+    private function fetchData(int|string $id): ?array
     {
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->table);
         $result = $this->conn->fetchAssociative($sql, ['id' => $id]);
@@ -103,6 +111,19 @@ abstract class AbstractBatchObjectRepository
 
         $columns = $this->conn->fetchAllAssociative($sql);
 
-        return $this->tableColumns = \array_column($columns, 'name');
+        $nameColumnKey = 'name';
+
+        if (\is_a($this->conn->getDatabasePlatform(), PostgreSQLPlatform::class)) {
+            $nameColumnKey = 'field';
+        }
+
+        if (
+            \is_a($this->conn->getDatabasePlatform(), '\Doctrine\DBAL\Platforms\MySqlPlatform')
+            || \is_a($this->conn->getDatabasePlatform(), '\Doctrine\DBAL\Platforms\AbstractMySQLPlatform')
+        ) {
+            $nameColumnKey = 'Field';
+        }
+
+        return $this->tableColumns = \array_column($columns, $nameColumnKey);
     }
 }

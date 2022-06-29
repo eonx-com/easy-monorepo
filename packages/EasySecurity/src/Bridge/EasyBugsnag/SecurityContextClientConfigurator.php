@@ -14,20 +14,14 @@ use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
+use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
 
 final class SecurityContextClientConfigurator extends AbstractClientConfigurator
 {
-    /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
-     */
-    private $securityContextResolver;
-
     public function __construct(
-        SecurityContextResolverInterface $securityContextResolver,
+        private readonly SecurityContextResolverInterface $securityContextResolver,
         ?int $priority = null
     ) {
-        $this->securityContextResolver = $securityContextResolver;
-
         parent::__construct($priority);
     }
 
@@ -36,8 +30,20 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
         $bugsnag
             ->getPipeline()
             ->pipe(new CallbackBridge(function (Report $report): void {
+                try {
+                    $securityContext = $this->securityContextResolver->resolveContext();
+                } catch (\Throwable $throwable) {
+                    $report->setMetaData([
+                        'security' => [
+                            'message' => 'Error thrown during security context resolution',
+                            'error_details' => ErrorDetailsHelper::resolveSimpleDetails($throwable),
+                        ],
+                    ]);
+
+                    return;
+                }
+
                 $security = [];
-                $securityContext = $this->securityContextResolver->resolveContext();
 
                 $token = $securityContext->getToken();
                 if ($token !== null) {

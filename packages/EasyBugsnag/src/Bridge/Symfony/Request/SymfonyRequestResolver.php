@@ -24,7 +24,11 @@ final class SymfonyRequestResolver extends AbstractRequestResolver
 
     protected function doResolve(): RequestInterface
     {
-        $request = $this->requestStack->getMasterRequest();
+        $requestGetter = \method_exists($this->requestStack, 'getMainRequest')
+            ? 'getMainRequest'
+            : 'getMasterRequest';
+
+        $request = $this->requestStack->{$requestGetter}();
 
         return $request ? new HttpFoundationRequest($request) : new NullRequest();
     }

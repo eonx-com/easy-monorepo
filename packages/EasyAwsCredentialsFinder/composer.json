@@ -5,10 +5,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-utils": "^4.1",
+        "eonx-com/easy-utils": "^4.2",
         "symfony/process": "^5.4 || ^6.0",
-        "symplify/package-builder": "^8.3.41",
-        "symplify/autowire-array-parameter": "^8.3.41",
+        "symplify/package-builder": "^10.1",
+        "symplify/autowire-array-parameter": "^10.1",
         "aws/aws-sdk-php": "^3.134",
         "nesbot/carbon": "^2.22"
     },
@@ -29,7 +29,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.1-dev"
+            "dev-master": "4.2-dev"
         }
     }
 }

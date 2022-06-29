@@ -49,7 +49,7 @@ return [
         /**
          * URL used to fetch AWS ECS Fargate task metadata.
          */
-        'meta_url' => \sprintf('%s/task', \env('ECS_CONTAINER_METADATA_URI_V4')),
+        'meta_url' => null,
 
         /**
          * Filename to cache AWS ECS Fargate task metadata into.
@@ -61,6 +61,13 @@ return [
      * Enable Doctrine SQL Queries Breadcrumbs.
      */
     'doctrine_orm' => true,
+
+    'sensitive_data_sanitizer' => [
+        /**
+         * Enable sensitive data sanitization.
+         */
+        'enabled' => true,
+    ],
 
     'session_tracking' => [
         /**

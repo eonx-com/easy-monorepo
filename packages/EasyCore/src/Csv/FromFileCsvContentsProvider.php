@@ -6,6 +6,9 @@ namespace EonX\EasyCore\Csv;
 
 use EonX\EasyCore\Csv\Exceptions\InvalidCsvFilenameException;
 
+/**
+ * @deprecated since 4.1, will be removed in 5.0. Use Eonx\EasyUtils\Csv\FromFileCsvContentsProvider.
+ */
 final class FromFileCsvContentsProvider implements CsvContentsProviderInterface
 {
     /**

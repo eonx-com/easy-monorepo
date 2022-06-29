@@ -54,7 +54,7 @@ final class Configuration implements ConfigurationInterface
                     ->children()
                         ->booleanNode('enabled')->defaultFalse()->end()
                         ->scalarNode('meta_url')
-                            ->defaultValue('%env(ECS_CONTAINER_METADATA_URI_V4)%/task')
+                            ->defaultNull()
                             ->info('URL used to fetch AWS ECS Fargate task metadata')
                         ->end()
                         ->scalarNode('meta_storage_filename')
@@ -80,6 +80,13 @@ final class Configuration implements ConfigurationInterface
                             ->defaultValue(['default'])
                             ->scalarPrototype()->end()
                         ->end()
+                    ->end()
+                ->end()
+                // Sensitive Data
+                ->arrayNode('sensitive_data_sanitizer')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
                     ->end()
                 ->end()
                 // Session Tracking

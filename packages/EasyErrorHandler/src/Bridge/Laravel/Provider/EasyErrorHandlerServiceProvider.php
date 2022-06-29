@@ -43,6 +43,9 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         SeverityClientConfigurator::class,
     ];
 
+    /**
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function boot(): void
     {
         $this->loadTranslationsFrom(__DIR__ . '/../translations', BridgeConstantsInterface::TRANSLATION_NAMESPACE);
@@ -62,7 +65,17 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/easy-error-handler.php', 'easy-error-handler');
 
-        $this->app->singleton(ErrorDetailsResolverInterface::class, ErrorDetailsResolver::class);
+        $this->app->singleton(
+            ErrorDetailsResolverInterface::class,
+            static function (Container $app): ErrorDetailsResolverInterface {
+                return new ErrorDetailsResolver(
+                    $app->make(LoggerInterface::class),
+                    $app->make(TranslatorInterface::class),
+                    (bool)\config('easy-error-handler.translate_internal_error_messages.enabled', false),
+                    (string)\config('easy-error-handler.translate_internal_error_messages.locale', 'en')
+                );
+            }
+        );
 
         $this->app->singleton(
             ErrorLogLevelResolverInterface::class,

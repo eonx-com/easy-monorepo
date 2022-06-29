@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyBatch\BatchManager;
+use EonX\EasyBatch\BatchObjectManager;
 use EonX\EasyBatch\Bridge\BridgeConstantsInterface;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\AsyncDispatcher;
+use EonX\EasyBatch\Bridge\Symfony\Messenger\BatchItemExceptionHandler;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\DispatchBatchMiddleware;
+use EonX\EasyBatch\Bridge\Symfony\Messenger\Emergency\ProcessBatchForBatchItemHandler;
+use EonX\EasyBatch\Bridge\Symfony\Messenger\Emergency\UpdateBatchItemHandler;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\ProcessBatchItemMiddleware;
 use EonX\EasyBatch\Bridge\Symfony\Serializers\MessageSerializerDecorator;
+use EonX\EasyBatch\Dispatchers\BatchItemDispatcher;
 use EonX\EasyBatch\Factories\BatchFactory;
 use EonX\EasyBatch\Factories\BatchItemFactory;
 use EonX\EasyBatch\IdStrategies\UuidV4Strategy;
@@ -19,8 +24,14 @@ use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
+use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Interfaces\MessageSerializerInterface;
+use EonX\EasyBatch\Iterator\BatchItemIterator;
+use EonX\EasyBatch\Persisters\BatchItemPersister;
+use EonX\EasyBatch\Persisters\BatchPersister;
+use EonX\EasyBatch\Processors\BatchItemProcessor;
+use EonX\EasyBatch\Processors\BatchProcessor;
 use EonX\EasyBatch\Repositories\BatchItemRepository;
 use EonX\EasyBatch\Repositories\BatchRepository;
 use EonX\EasyBatch\Serializers\MessageSerializer;
@@ -33,7 +44,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->defaults()
         ->autowire()
         ->autoconfigure()
-        ->bind('$datetimeFormat', '%' . BridgeConstantsInterface::PARAM_DATE_TIME_FORMAT . '%')
+        ->bind('$batchItemsPerPage', param(BridgeConstantsInterface::PARAM_BATCH_ITEM_PER_PAGE))
+        ->bind('$datetimeFormat', param(BridgeConstantsInterface::PARAM_DATE_TIME_FORMAT))
         ->bind('$eventDispatcher', service(EventDispatcherInterface::class));
 
     // AsyncDispatcher
@@ -54,19 +66,31 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(BridgeConstantsInterface::SERVICE_BATCH_ID_STRATEGY, BatchObjectIdStrategyInterface::class)
         ->alias(BridgeConstantsInterface::SERVICE_BATCH_ITEM_ID_STRATEGY, BatchObjectIdStrategyInterface::class);
 
-    // Listeners
-    foreach (BridgeConstantsInterface::LISTENERS as $listener) {
-        $services
-            ->set($listener)
-            ->tag('kernel.event_listener');
-    }
+    // Internals
+    $services
+        ->set(BatchItemDispatcher::class)
+        ->set(BatchItemIterator::class)
+        ->set(BatchItemPersister::class)
+        ->set(BatchPersister::class)
+        ->set(BatchItemProcessor::class)
+        ->set(BatchProcessor::class);
 
     // Manager
-    $services->set(BatchManagerInterface::class, BatchManager::class);
+    $services
+        ->set(BatchObjectManagerInterface::class, BatchObjectManager::class)
+        ->set(BatchManagerInterface::class, BatchManager::class);
 
-    // Middleware
-    $services->set(DispatchBatchMiddleware::class);
-    $services->set(ProcessBatchItemMiddleware::class);
+    // Messenger
+    $services
+        ->set(BatchItemExceptionHandler::class)
+        ->arg('$batchItemTransformer', service(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER))
+        ->arg('$container', service('service_container'));
+
+    $services
+        ->set(DispatchBatchMiddleware::class)
+        ->set(ProcessBatchItemMiddleware::class)
+        ->set(ProcessBatchForBatchItemHandler::class)
+        ->set(UpdateBatchItemHandler::class);
 
     // Repositories
     $services

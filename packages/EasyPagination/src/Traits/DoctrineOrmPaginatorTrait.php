@@ -4,21 +4,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 
 trait DoctrineOrmPaginatorTrait
 {
     use DoctrineCommonPaginatorTrait;
 
-    /**
-     * @var null|string
-     */
-    private $indexBy;
+    private ?string $indexBy = null;
 
-    /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    private $manager;
+    private EntityManagerInterface $manager;
 
     private function createQueryBuilder(): QueryBuilder
     {
@@ -28,8 +23,6 @@ trait DoctrineOrmPaginatorTrait
 
     /**
      * @return mixed[]
-     *
-     * @throws \Doctrine\DBAL\Exception
      */
     private function fetchResults(QueryBuilder $queryBuilder): array
     {
@@ -37,10 +30,7 @@ trait DoctrineOrmPaginatorTrait
             ->getResult();
     }
 
-    /**
-     * @return mixed
-     */
-    private function resolveSelect()
+    private function resolveSelect(): mixed
     {
         // If select is "*" simply return fromAlias so orm selects everything
         if ($this->select !== null && $this->select !== '*') {

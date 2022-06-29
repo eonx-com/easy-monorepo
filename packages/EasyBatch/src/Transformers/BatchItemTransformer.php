@@ -16,7 +16,7 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
     private ?EncryptorInterface $encryptor = null;
 
     public function __construct(
-        private MessageSerializerInterface $messageSerializer,
+        private readonly MessageSerializerInterface $messageSerializer,
         ?string $class = null,
         ?string $datetimeFormat = null
     ) {
@@ -62,9 +62,9 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
     protected function hydrateBatchObject(BatchObjectInterface $batchObject, array $data): void
     {
         $batchObject
-            ->setApprovalRequired((bool)($data['requires_approval'] ?? 0))
             ->setAttempts((int)($data['attempts'] ?? 0))
             ->setBatchId((string)$data['batch_id'])
+            ->setEncrypted((bool)($data['encrypted'] ?? 0))
             ->setMaxAttempts((int)($data['max_attempts'] ?? 1));
 
         if (isset($data['type']) === false) {

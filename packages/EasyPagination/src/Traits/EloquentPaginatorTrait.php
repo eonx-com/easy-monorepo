@@ -88,13 +88,14 @@ trait EloquentPaginatorTrait
         $this->applyGetItemsCriteria($primaryKeyQueryBuilder);
         $this->applyPagination($primaryKeyQueryBuilder);
 
+        $primaryKeyIndex = $this->getPrimaryKeyIndexWithDefault();
         // Prefix primaryKey with table to avoid ambiguous conflicts
-        $prefixedPrimaryKey = \sprintf('%s.%s', $this->model->getTable(), $this->primaryKeyIndex);
+        $prefixedPrimaryKey = \sprintf('%s.%s', $this->model->getTable(), $primaryKeyIndex);
         // Override select to fetch only primary key
         $primaryKeyQueryBuilder->select($prefixedPrimaryKey);
 
         $primaryKeys = $primaryKeyQueryBuilder->get()
-            ->pluck($this->primaryKeyIndex)
+            ->pluck($primaryKeyIndex)
             ->all();
 
         // If no primary keys, no items for current pagination

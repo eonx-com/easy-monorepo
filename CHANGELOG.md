@@ -1,5 +1,3 @@
-<!-- changelog-linker -->
-
 ## [4.0.4] - 2022-03-21
 
 - [#877] [EasyBatch] Fix BachItem::encrypted in toArray to be integer

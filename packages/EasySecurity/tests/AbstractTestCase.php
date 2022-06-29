@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -13,6 +14,8 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var string
      */

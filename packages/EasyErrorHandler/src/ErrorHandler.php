@@ -11,15 +11,17 @@ use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
+use EonX\EasyErrorHandler\Interfaces\FormatAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
 use EonX\EasyUtils\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Throwable;
 
-final class ErrorHandler implements ErrorHandlerInterface
+final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
 {
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface[]
@@ -107,6 +109,15 @@ final class ErrorHandler implements ErrorHandlerInterface
             return;
         }
 
+        // Symfony Messenger UnrecoverableMessageHandlingException
+        if (\class_exists(UnrecoverableMessageHandlingException::class)
+            && $throwable instanceof UnrecoverableMessageHandlingException
+            && $throwable->getPrevious() instanceof Throwable) {
+            $this->report($throwable->getPrevious());
+
+            return;
+        }
+
         foreach ($this->ignoredExceptionsForReport as $class) {
             if (\is_a($throwable, $class)) {
                 return;
@@ -121,6 +132,17 @@ final class ErrorHandler implements ErrorHandlerInterface
                 break;
             }
         }
+    }
+
+    public function supportsFormat(Request $request): bool
+    {
+        // Ultimately the response factory should make the decision
+        if ($this->responseFactory instanceof FormatAwareInterface) {
+            return $this->responseFactory->supportsFormat($request);
+        }
+
+        // Otherwise, assume it supports every format
+        return true;
     }
 
     /**

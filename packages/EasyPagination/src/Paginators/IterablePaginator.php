@@ -5,22 +5,17 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginators;
 
 use EonX\EasyPagination\Interfaces\PaginationInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class IterablePaginator extends AbstractPaginator
 {
     /**
-     * @var iterable<mixed>
-     */
-    private $iterable;
-
-    /**
      * @param iterable<mixed> $iterable
      */
-    public function __construct(PaginationInterface $pagination, iterable $iterable)
-    {
-        $this->iterable = $iterable;
-
+    public function __construct(
+        PaginationInterface $pagination,
+        private readonly iterable $iterable
+    ) {
         parent::__construct($pagination);
     }
 

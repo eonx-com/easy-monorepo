@@ -34,29 +34,26 @@ use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFi
 use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
 use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
-use Symplify\EasyCodingStandard\ValueObject\Option;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $parameters = $containerConfigurator->parameters();
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->sets([
+        SetList::ARRAY,
+        SetList::CLEAN_CODE,
+        SetList::COMMON,
+        SetList::PSR_12,
+    ]);
 
-    $containerConfigurator->import(SetList::ARRAY);
-    $containerConfigurator->import(SetList::CLEAN_CODE);
-    $containerConfigurator->import(SetList::COMMON);
-    $containerConfigurator->import(SetList::PSR_12);
+    $ecsConfig->parallel();
 
-    $parameters->set(Option::PARALLEL, true);
-    $parameters->set(Option::PARALLEL_JOB_SIZE, 1);
-    $parameters->set(Option::PARALLEL_MAX_NUMBER_OF_PROCESSES, 2);
-
-    $parameters->set(Option::PATHS, [
-        __DIR__ . '/changelog-linker.php',
+    $ecsConfig->paths([
         __DIR__ . '/ecs.php',
         __DIR__ . '/monorepo-builder.php',
         __DIR__ . '/packages',
     ]);
 
-    $parameters->set(Option::SKIP, [
+    $ecsConfig->skip([
         'packages/*/var/*php',
         '*/vendor/*.php',
         __DIR__ . '/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php',
@@ -77,7 +74,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/packages/EasyCore/tests/Doctrine/DBAL/Types/DateTimeMicrosecondsTypeTest.php',
         ],
         AssignmentInConditionSniff::class => [
-            __DIR__ . '/packages/EasyCore/src/Csv\FromFileCsvContentsProvider.php',
+            __DIR__ . '/packages/EasyCore/src/Csv/FromFileCsvContentsProvider.php',
+            __DIR__ . '/packages/EasyUtils/src/Csv/FromFileCsvContentsProvider.php',
+        ],
+        LineLengthSniff::class . '.MaxExceeded' => [
+            __DIR__ . '/packages/EasyErrorHandler/src/Bridge/BridgeConstantsInterface.php',
         ],
         MethodChainingIndentationFixer::class => ['*/Configuration.php'],
         NullTypeHintOnLastPositionSniff::class . '.NullTypeHintNotOnLastPosition',
@@ -163,48 +164,43 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ],
     ]);
 
-    $services = $containerConfigurator->services();
-    $services->set(FileHeaderSniff::class);
+    $ecsConfig->rule(FileHeaderSniff::class);
 
-    $services->set(MethodChainingNewlineFixer::class);
+    $ecsConfig->rule(MethodChainingNewlineFixer::class);
 
-    $services->set(YodaStyleFixer::class)
-        ->call('configure', [
-            [
-                'equal' => false,
-                'identical' => false,
-                'less_and_greater' => false,
-            ],
-        ]);
+    $ecsConfig->ruleWithConfiguration(YodaStyleFixer::class, [
+        'equal' => false,
+        'identical' => false,
+        'less_and_greater' => false,
+    ]);
 
-    $services->set(NoNotOperatorSniff::class);
-    $services->set(Psr4Sniff::class);
+    $ecsConfig->rule(NoNotOperatorSniff::class);
+
+    $ecsConfig->rule(Psr4Sniff::class);
 
     // symplify rules - see https://github.com/symplify/coding-standard/blob/master/docs/phpcs_fixer_fixers.md
     // arrays
-    $services->set(StandaloneLineInMultilineArrayFixer::class);
+    $ecsConfig->rule(StandaloneLineInMultilineArrayFixer::class);
 
     // annotations
-    $services->set(ParamReturnAndVarTagMalformsFixer::class);
+    $ecsConfig->rule(ParamReturnAndVarTagMalformsFixer::class);
 
     // extra spaces
-    $services->set(PhpdocTrimConsecutiveBlankLineSeparationFixer::class);
-    $services->set(BinaryOperatorSpacesFixer::class);
+    $ecsConfig->rule(PhpdocTrimConsecutiveBlankLineSeparationFixer::class);
+    $ecsConfig->rule(BinaryOperatorSpacesFixer::class);
 
-    $services->set(VisibilityRequiredFixer::class);
+    $ecsConfig->rule(VisibilityRequiredFixer::class);
 
-    $services->set(ClassAttributesSeparationFixer::class)
-        ->call('configure', [
-            [
-                'elements' => [
-                    'const' => 'one',
-                    'method' => 'one',
-                    'property' => 'one',
-                ],
-            ],
-        ]);
+    $ecsConfig->ruleWithConfiguration(ClassAttributesSeparationFixer::class, [
+        'elements' => [
+            'const' => 'one',
+            'method' => 'one',
+            'property' => 'one',
+        ],
+    ]);
 
-    $services->set(LineLengthSniff::class)
-        ->property('absoluteLineLimit', 120)
-        ->property('ignoreComments', true);
+    $ecsConfig->ruleWithConfiguration(LineLengthSniff::class, [
+        'absoluteLineLimit' => 120,
+        'ignoreComments' => true,
+    ]);
 };

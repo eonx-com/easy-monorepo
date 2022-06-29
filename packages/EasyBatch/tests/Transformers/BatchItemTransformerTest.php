@@ -34,6 +34,7 @@ final class BatchItemTransformerTest extends AbstractTestCase
 
         $batchItem = $this->getBatchItemFactory()
             ->create('batchId', $message);
+        $batchItem->setId('my-id');
         $batchItem->setEncrypted($encrypted);
 
         $transformer = new BatchItemTransformer(new MessageSerializer());
@@ -47,6 +48,7 @@ final class BatchItemTransformerTest extends AbstractTestCase
         $expectedEncryptionKeyName = $encrypted ? EncryptorInterface::DEFAULT_KEY_NAME : null;
 
         self::assertEquals($encrypted, $array['encrypted']);
+        self::assertEquals($encrypted, $newBatchItem->isEncrypted());
         self::assertEquals($expectedEncryptionKeyName, $newBatchItem->getEncryptionKeyName());
         self::assertInstanceOf(\stdClass::class, $newBatchItem->getMessage());
     }

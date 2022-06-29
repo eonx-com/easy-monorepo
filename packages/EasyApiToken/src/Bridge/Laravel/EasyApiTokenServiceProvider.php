@@ -8,6 +8,8 @@ use EonX\EasyApiToken\Bridge\BridgeConstantsInterface;
 use EonX\EasyApiToken\Factories\ApiTokenDecoderFactory;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface as DecoderFactoryInterface;
+use EonX\EasyApiToken\Interfaces\Tokens\HashedApiKeyDriverInterface;
+use EonX\EasyApiToken\Tokens\HashedApiKeyDriver;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +26,8 @@ final class EasyApiTokenServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-api-token.php', 'easy-api-token');
 
+        $this->app->singleton(HashedApiKeyDriverInterface::class, static fn () => new HashedApiKeyDriver());
+
         $this->app->singleton(
             ApiTokenDecoderInterface::class,
             static function (Container $app): ApiTokenDecoderInterface {
@@ -34,7 +38,10 @@ final class EasyApiTokenServiceProvider extends ServiceProvider
         $this->app->singleton(
             DecoderFactoryInterface::class,
             static function (Container $app): DecoderFactoryInterface {
-                return new ApiTokenDecoderFactory($app->tagged(BridgeConstantsInterface::TAG_DECODER_PROVIDER));
+                return new ApiTokenDecoderFactory(
+                    $app->tagged(BridgeConstantsInterface::TAG_DECODER_PROVIDER),
+                    $app->make(HashedApiKeyDriverInterface::class)
+                );
             }
         );
     }

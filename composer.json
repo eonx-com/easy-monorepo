@@ -24,7 +24,7 @@
         "nesbot/carbon": "^2.22",
         "nette/utils": "^3.1",
         "nyholm/psr7": "^1.1",
-        "paragonie/halite": "^4.8",
+        "paragonie/halite": "^4.8 || ^5.0",
         "psr/event-dispatcher": "^1.0",
         "ramsey/uuid": "^3.9 || ^4.0",
         "symfony/cache": "^5.4 || ^6.0",
@@ -43,8 +43,10 @@
         "symfony/uid": "^5.4 || ^6.0",
         "symfony/validator": "^5.4 || ^6.0",
         "symfony/var-dumper": "^5.4 || ^6.0",
-        "symplify/autowire-array-parameter": "^8.3.41",
-        "symplify/package-builder": "^8.3.41"
+        "symfony/yaml": "^5.4 || ^6.0",
+        "symplify/autowire-array-parameter": "^10.1",
+        "symplify/package-builder": "^10.1",
+        "myclabs/deep-copy": "^1.11"
     },
     "require-dev": {
         "api-platform/core": "^2.6",
@@ -53,13 +55,13 @@
         "dg/bypass-finals": "^1.2",
         "doctrine/annotations": "^1.13",
         "doctrine/dbal": "^2.6",
+        "doctrine/doctrine-bundle": "^2.6",
         "firebase/php-jwt": "^5.0",
         "guzzlehttp/psr7": "^2.1",
         "illuminate/database": "^5.8 || ^6.0 || ^8.0",
         "laravel-doctrine/orm": "^1.4",
         "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
         "league/flysystem": "^1.1",
-        "migrify/vendor-patches": "^0.3.48",
         "mikey179/vfsstream": "^1.0",
         "mockery/mockery": "^1.4",
         "phpseclib/phpseclib": "^3.0",
@@ -73,12 +75,12 @@
         "symfony/maker-bundle": "^1.15",
         "symfony/monolog-bundle": "^3.5",
         "symfony/symfony": "^5.4 || ^6.0",
-        "symfony/yaml": "^5.4 || ^6.0",
-        "symplify/changelog-linker": "^8.3.41",
-        "symplify/monorepo-builder": "^8.3.41",
-        "symplify/phpstan-extensions": "^8.3.41",
+        "symplify/monorepo-builder": "^10.1",
+        "symplify/phpstan-extensions": "^10.1",
         "tracy/tracy": "^2.7",
-        "vlucas/phpdotenv": "^3.3 || ^5.2"
+        "vlucas/phpdotenv": "^3.3 || ^5.2",
+        "symfony/amazon-sqs-messenger": "^5.4 || ^6.0",
+        "symfony/runtime": "^5.4 || ^6.0"
     },
     "autoload": {
         "psr-4": {
@@ -110,6 +112,7 @@
             "EonX\\EasySchedule\\": "packages/EasySchedule/src",
             "EonX\\EasySecurity\\": "packages/EasySecurity/src",
             "EonX\\EasySsm\\": "packages/EasySsm/src",
+            "EonX\\EasySwoole\\": "packages/EasySwoole/src",
             "EonX\\EasyTemplatingBlock\\": "packages/EasyTemplatingBlock/src",
             "EonX\\EasyTest\\": "packages/EasyTest/src",
             "EonX\\EasyUtils\\": "packages/EasyUtils/src",
@@ -145,6 +148,7 @@
             "EonX\\EasySchedule\\Tests\\": "packages/EasySchedule/tests",
             "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
             "EonX\\EasySsm\\Tests\\": "packages/EasySsm/tests",
+            "EonX\\EasySwoole\\Tests\\": "packages/EasySwoole/tests",
             "EonX\\EasyTemplatingBlock\\Tests\\": "packages/EasyTemplatingBlock/tests",
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests",
             "EonX\\EasyUtils\\Tests\\": "packages/EasyUtils/tests",
@@ -178,6 +182,7 @@
         "eonx-com/easy-schedule": "self.version",
         "eonx-com/easy-security": "self.version",
         "eonx-com/easy-ssm": "self.version",
+        "eonx-com/easy-swoole": "self.version",
         "eonx-com/easy-templating-block": "self.version",
         "eonx-com/easy-test": "self.version",
         "eonx-com/easy-utils": "self.version",
@@ -195,11 +200,6 @@
         "check-phpstan": ".quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=1000M",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
         "check-rector": ".quality/vendor/bin/rector process --ansi --config rector-ci.php --dry-run",
-        "changelog": [
-            "vendor/bin/changelog-linker dump-merges --since-id 491 --ansi",
-            "vendor/bin/changelog-linker link --ansi",
-            "vendor/bin/changelog-linker cleanup --ansi"
-        ],
         "fix-ecs": ".quality/vendor/bin/ecs check --fix --ansi",
         "fix-rector": ".quality/vendor/bin/rector process --ansi --config rector-ci.php",
         "merge": "vendor/bin/monorepo-builder merge --ansi",
@@ -214,10 +214,10 @@
         ]
     },
     "config": {
+        "process-timeout": 0,
         "allow-plugins": {
-            "cweagans/composer-patches": true
-        },
-        "process-timeout": 0
+            "symfony/runtime": true
+        }
     },
     "extra": {
         "eonx_docs": {

@@ -17,17 +17,11 @@ final class EasyAsyncExtension extends Extension
     /**
      * @var mixed[]
      */
-    private $config;
+    private array $config;
 
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
-    private $container;
+    private ContainerBuilder $container;
 
-    /**
-     * @var \Symfony\Component\DependencyInjection\Loader\PhpFileLoader
-     */
-    private $loader;
+    private PhpFileLoader $loader;
 
     /**
      * @param mixed[] $configs
@@ -51,6 +45,12 @@ final class EasyAsyncExtension extends Extension
         if (\class_exists(MessengerPass::class) === false) {
             return;
         }
+
+        // Messenger Middleware auto register
+        $this->container->setParameter(
+            BridgeConstantsInterface::PARAM_MESSENGER_MIDDLEWARE_AUTO_REGISTER,
+            $this->config['messenger_middleware_auto_register'] ?? true
+        );
 
         $this->loader->load('messenger.php');
 

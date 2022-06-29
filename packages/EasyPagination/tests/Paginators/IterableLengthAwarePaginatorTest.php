@@ -17,7 +17,12 @@ final class IterableLengthAwarePaginatorTest extends AbstractTestCase
      */
     public function providerTestUrls(): iterable
     {
-        yield 'Prev: no, Next: yes' => [10, new Pagination(1, 5), null, '/?page=2&perPage=5'];
+        yield 'Prev: no, Next: yes' => [
+            10,
+            new Pagination(1, 5),
+            '/?page=1&perPage=5',
+            '/?page=2&perPage=5',
+        ];
 
         yield 'Prev: yes, Next: yes' => [10, new Pagination(2, 2), '/?page=1&perPage=2', '/?page=3&perPage=2'];
 

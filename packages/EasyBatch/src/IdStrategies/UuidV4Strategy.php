@@ -9,14 +9,8 @@ use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 
 final class UuidV4Strategy implements BatchObjectIdStrategyInterface
 {
-    /**
-     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
-     */
-    private $randomGenerator;
-
-    public function __construct(RandomGeneratorInterface $randomGenerator)
+    public function __construct(private readonly RandomGeneratorInterface $randomGenerator)
     {
-        $this->randomGenerator = $randomGenerator;
     }
 
     public function generateId(): string

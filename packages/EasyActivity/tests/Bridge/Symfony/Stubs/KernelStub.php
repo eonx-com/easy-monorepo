@@ -12,14 +12,14 @@ use EonX\EasyActivity\Bridge\Symfony\EasyActivitySymfonyBundle;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonyActivitySubjectDataSerializer;
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface;
 use EonX\EasyDoctrine\Bridge\BridgeConstantsInterface;
+use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Bridge\Symfony\EasyDoctrineSymfonyBundle;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
+use EonX\EasyDoctrine\Utils\ObjectCopier;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyWebhook\Tests\Bridge\Symfony\Stubs\MessageBusStub;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -36,8 +36,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface as SymfonyNormal
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use Symfony\Component\Uid\Factory\UuidFactory;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
@@ -68,9 +67,11 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         );
         $deferredEntityDefinition = new Definition(DeferredEntityEventDispatcher::class, [
             new Definition(EventDispatcher::class, [new Definition(SymfonyEventDispatcher::class)]),
+            (new Definition(ObjectCopier::class))
+                ->setFactory([ObjectCopierFactory::class, 'create']),
         ]);
         $container->setDefinition(DeferredEntityEventDispatcherInterface::class, $deferredEntityDefinition);
-        $container->setDefinition(RandomGeneratorInterface::class, new Definition(RandomGenerator::class));
+        $container->setDefinition(UuidFactory::class, new Definition(UuidFactory::class));
         $container->setDefinition(LoggerInterface::class, new Definition(NullLogger::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
         $container->setDefinition(

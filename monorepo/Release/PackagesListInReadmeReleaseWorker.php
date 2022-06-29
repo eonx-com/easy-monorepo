@@ -12,24 +12,12 @@ use Symplify\SmartFileSystem\Finder\FinderSanitizer;
 
 final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
 {
-    /**
-     * @var string
-     */
     private const GITHUB_URL = 'https://github.com/';
 
-    /**
-     * @var \Symfony\Component\Filesystem\Filesystem
-     */
-    private $filesystem;
+    private Filesystem $filesystem;
 
-    /**
-     * @var \Symplify\SmartFileSystem\Finder\FinderSanitizer
-     */
-    private $finderSanitizer;
-
-    public function __construct(FinderSanitizer $finderSanitizer)
+    public function __construct(private FinderSanitizer $finderSanitizer)
     {
-        $this->finderSanitizer = $finderSanitizer;
         $this->filesystem = new Filesystem();
     }
 

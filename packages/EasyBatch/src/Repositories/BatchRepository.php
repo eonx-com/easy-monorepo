@@ -17,30 +17,36 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     private const SAVEPOINT = 'easy_batch_conn_savepoint';
 
     /**
-     * @var bool
+     * @var \EonX\EasyBatch\Interfaces\BatchInterface[]
      */
-    private $savepointActive = false;
+    private array $cache = [];
+
+    private bool $savepointActive = false;
 
     /**
-     * @param int|string $id
-     *
      * @throws \Doctrine\DBAL\Exception
      */
-    public function find($id): ?BatchInterface
+    public function find(int|string $id): ?BatchInterface
     {
+        if (isset($this->cache[$id])) {
+            return $this->cache[$id];
+        }
+
         /** @var null|\EonX\EasyBatch\Interfaces\BatchInterface $batch */
         $batch = $this->doFind($id);
+
+        if ($batch !== null) {
+            $this->cache[$id] = $batch;
+        }
 
         return $batch;
     }
 
     /**
-     * @param int|string $id
-     *
      * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
      * @throws \Doctrine\DBAL\Exception
      */
-    public function findOrFail($id): BatchInterface
+    public function findOrFail(int|string $id): BatchInterface
     {
         $batch = $this->find($id);
 
@@ -52,12 +58,10 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     }
 
     /**
-     * @param int|string $parentBatchItemId
-     *
      * @throws \Doctrine\DBAL\Exception
      * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
      */
-    public function findNestedOrFail($parentBatchItemId): BatchInterface
+    public function findNestedOrFail(int|string $parentBatchItemId): BatchInterface
     {
         $sql = \sprintf('SELECT * FROM %s WHERE parent_batch_item_id = :id', $this->table);
         $data = $this->conn->fetchAssociative($sql, ['id' => $parentBatchItemId]);
@@ -73,6 +77,13 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
             'Batch for parent_batch_item_id "%s" not found',
             $parentBatchItemId
         ));
+    }
+
+    public function reset(): BatchRepositoryInterface
+    {
+        $this->cache = [];
+
+        return $this;
     }
 
     /**
@@ -101,7 +112,12 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         $this->beginTransaction();
 
         try {
-            $sql = \sprintf('SELECT * FROM %s WHERE id = :id FOR UPDATE', $this->table);
+            $sql = \sprintf(
+                'SELECT * FROM %s WHERE id = :id %s',
+                $this->table,
+                $this->conn->getDatabasePlatform()
+                    ->getForUpdateSQL()
+            );
             $data = $this->conn->fetchAssociative($sql, ['id' => $batch->getId()]);
             $freshBatch = \is_array($data) ? $this->factory->createFromArray($data) : null;
 
@@ -135,7 +151,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
             return;
         }
 
-        // Otherwise create transaction
+        // Otherwise, create transaction
         $this->savepointActive = false;
         $this->conn->beginTransaction();
     }
