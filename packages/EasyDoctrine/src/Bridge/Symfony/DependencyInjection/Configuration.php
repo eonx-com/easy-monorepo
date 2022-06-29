@@ -22,6 +22,7 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('aws_region')->defaultValue('ap-southeast-2')->end()
                         ->scalarNode('aws_username')->defaultValue('username')->end()
                         ->integerNode('cache_expiry_in_seconds')->defaultValue(600)->end()
+                        ->scalarNode('disabled_username')->defaultValue('disabled')->end()
                     ->end()
                 ->end()
                 ->arrayNode('deferred_dispatcher_entities')
