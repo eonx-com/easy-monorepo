@@ -37,7 +37,9 @@ final class AuthTokenConnectionFactory
         ?EventManager $eventManager = null,
         ?array $mappingTypes = null
     ): Connection {
-        $params['password'] = $this->generatePassword($params);
+        if ($this->isEnabled()) {
+            $params['password'] = $this->generatePassword($params);
+        }
 
         return $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
     }
@@ -59,5 +61,12 @@ final class AuthTokenConnectionFactory
 
             return $tokenGenerator->createToken($endpoint, $this->awsRegion, $this->awsUsername);
         });
+    }
+
+    private function isEnabled(): bool
+    {
+        $key = 'EASY_DOCTRINE_AWS_RDS_IAM_ENABLED';
+
+        return ($_SERVER[$key] ?? $_ENV[$key] ?? 'enabled') === 'enabled';
     }
 }
