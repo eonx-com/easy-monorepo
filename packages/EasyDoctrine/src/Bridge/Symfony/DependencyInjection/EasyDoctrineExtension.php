@@ -43,8 +43,7 @@ final class EasyDoctrineExtension extends Extension
         }
 
         // AWS RDS IAM
-        if (($config['aws_rds_iam']['enabled'] ?? false)
-            && $config['aws_rds_iam']['aws_username'] !== $config['aws_rds_iam']['disabled_username']) {
+        if ($config['aws_rds_iam']['enabled'] ?? false) {
             foreach (self::AWS_RDS_IAM_CONFIG as $configName => $param) {
                 $container->setParameter($param, $config['aws_rds_iam'][$configName]);
             }
