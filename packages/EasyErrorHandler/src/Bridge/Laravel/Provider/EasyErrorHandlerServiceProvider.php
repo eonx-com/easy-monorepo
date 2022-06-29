@@ -163,7 +163,8 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                         $app->make(Client::class),
                         $app->make(ErrorLogLevelResolverInterface::class),
                         \config('easy-error-handler.bugsnag_threshold'),
-                        \config('easy-error-handler.bugsnag_ignored_exceptions')
+                        \config('easy-error-handler.bugsnag_ignored_exceptions'),
+                        \config('easy-error-handler.bugsnag_ignored_exceptions_resolver')
                     );
                 }
             );

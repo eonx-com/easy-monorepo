@@ -216,7 +216,8 @@
     "config": {
         "process-timeout": 0,
         "allow-plugins": {
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "cweagans/composer-patches": true
         }
     },
     "extra": {

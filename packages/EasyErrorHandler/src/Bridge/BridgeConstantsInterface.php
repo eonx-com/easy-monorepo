@@ -19,6 +19,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_BUGSNAG_IGNORED_EXCEPTIONS_RESOLVER = 'easy_error_handler.param_bugsang_ignored_exceptions_resolver';
+
+    /**
+     * @var string
+     */
     public const PARAM_BUGSNAG_THRESHOLD = 'easy_error_handler.param_bugsnag_threshold';
 
     /**

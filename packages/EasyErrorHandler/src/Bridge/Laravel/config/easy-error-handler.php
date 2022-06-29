@@ -39,6 +39,11 @@ return [
     'bugsnag_ignored_exceptions' => null,
 
     /**
+     * Ignored Exceptions Resolver FQCN that'll decide exception will be reported to bugsnag or not.
+     */
+    'bugsnag_ignored_exceptions_resolver' => null,
+
+    /**
      * List of Ignored Exceptions that'll not be reported to any reporter.
      */
     'ignored_exceptions' => null,

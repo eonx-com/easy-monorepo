@@ -36,6 +36,10 @@ final class EasyErrorHandlerExtension extends Extension
             BridgeConstantsInterface::PARAM_BUGSNAG_IGNORED_EXCEPTIONS,
             \count($config['bugsnag_ignored_exceptions']) > 0 ? $config['bugsnag_ignored_exceptions'] : null
         );
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_BUGSNAG_IGNORED_EXCEPTIONS_RESOLVER,
+            $config['bugsnag_ignored_exceptions_resolver'] ?? null
+        );
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS,
