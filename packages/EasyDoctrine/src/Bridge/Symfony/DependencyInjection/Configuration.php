@@ -20,7 +20,7 @@ final class Configuration implements ConfigurationInterface
                     ->children()
                         ->booleanNode('enabled')->defaultFalse()->end()
                         ->scalarNode('aws_region')->defaultValue('ap-southeast-2')->end()
-                        ->scalarNode('aws_username')->defaultValue('username')->end()
+                        ->scalarNode('aws_username')->defaultValue('disabled')->end()
                         ->integerNode('cache_expiry_in_seconds')->defaultValue(600)->end()
                         ->scalarNode('disabled_username')->defaultValue('disabled')->end()
                     ->end()
