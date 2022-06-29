@@ -10,17 +10,25 @@ use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
 final class AuthTokenConnectionFactory
 {
+    private const RDS_COMBINED_CERT_FILENAME_PATTERN = '%s/rds-combined-ca-bundle.pem';
+
+    private const RDS_COMBINED_CERT_URL = 'https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem';
+
     public function __construct(
         private readonly ConnectionFactory $factory,
         private readonly CacheInterface $cache,
         private readonly string $awsRegion,
         private readonly string $awsUsername,
-        private readonly int $cacheExpiryInSeconds
+        private readonly int $cacheExpiryInSeconds,
+        private readonly bool $sslEnabled,
+        private readonly string $sslMode,
+        private readonly string $sslCertDir
     ) {
     }
 
@@ -39,6 +47,11 @@ final class AuthTokenConnectionFactory
     ): Connection {
         if ($this->isEnabled()) {
             $params['password'] = $this->generatePassword($params);
+
+            if ($this->sslEnabled) {
+                $params['sslmode'] = $this->sslMode;
+                $params['sslrootcert'] = $this->resolveSslCertPath();
+            }
         }
 
         return $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
@@ -68,5 +81,23 @@ final class AuthTokenConnectionFactory
         $key = 'EASY_DOCTRINE_AWS_RDS_IAM_ENABLED';
 
         return ($_SERVER[$key] ?? $_ENV[$key] ?? 'enabled') === 'enabled';
+    }
+
+    private function resolveSslCertPath(): string
+    {
+        $filesystem = new Filesystem();
+        $filename = \sprintf(self::RDS_COMBINED_CERT_FILENAME_PATTERN, $this->sslCertDir);
+
+        if ($filesystem->exists($filename) === false) {
+            $certContents = \file_get_contents(self::RDS_COMBINED_CERT_URL);
+
+            if (\is_string($certContents) === false) {
+                throw new \RuntimeException('Could not download RDS Combined Cert');
+            }
+
+            $filesystem->dumpFile($filename, $certContents);
+        }
+
+        return $filename;
     }
 }

@@ -16,6 +16,9 @@ final class EasyDoctrineExtension extends Extension
         'aws_region' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_REGION,
         'aws_username' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_USERNAME,
         'cache_expiry_in_seconds' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_CACHE_EXPIRY_IN_SECONDS,
+        'ssl_cert_dir' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_SSL_CERT_DIR,
+        'ssl_enabled' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_SSL_ENABLED,
+        'ssl_mode' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_SSL_MODE,
     ];
 
     /**
