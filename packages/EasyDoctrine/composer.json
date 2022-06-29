@@ -11,7 +11,9 @@
         "myclabs/deep-copy": "^1.11"
     },
     "require-dev": {
+        "aws/aws-sdk-php": "^3.134",
         "doctrine/annotations": "^1.13",
+        "doctrine/doctrine-bundle": "^2.6",
         "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
         "eonx-com/easy-error-handler": "^4.2",
