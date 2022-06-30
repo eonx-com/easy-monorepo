@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\DBAL\Types;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Types\ConversionException;
@@ -26,13 +28,16 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
      */
     public function provideConvertToDatabaseValues(): iterable
     {
-        $datetime = new DateTimeImmutable();
-
         yield 'null value' => [null, null];
 
         yield 'datetime value' => [
-            $datetime,
-            $datetime->format(CarbonImmutableDateTimeMicrosecondsType::FORMAT_PHP_DATETIME),
+            new DateTimeImmutable('2022-01-01T10:00:00+00:00'),
+            '2022-01-01 10:00:00.000000',
+        ];
+
+        yield 'datetime value with timezone' => [
+            new CarbonImmutable('2022-01-01T10:00:00+09:00'),
+            '2022-01-01 01:00:00.000000',
         ];
     }
 
@@ -43,21 +48,26 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
      */
     public function provideConvertToPHPValues(): iterable
     {
-        $datetime = new DateTimeImmutable();
-        $milliseconds = $datetime->format('u');
-
         yield 'null value' => [null, null];
 
-        yield 'DateTimeInterface object' => [$datetime, $datetime];
+        yield 'DateTimeInterface object' => [
+            new DateTimeImmutable('2022-01-01 10:00:00.12345'),
+            new DateTimeImmutable('2022-01-01 10:00:00.12345'),
+        ];
 
         yield 'datetime string with milliseconds' => [
-            $datetime->format(CarbonImmutableDateTimeMicrosecondsType::FORMAT_PHP_DATETIME),
-            $datetime,
+            '2022-01-01 10:00:00.12345',
+            new DateTimeImmutable('2022-01-01 10:00:00.12345', new DateTimeZone('UTC')),
         ];
 
         yield 'datetime string' => [
-            $datetime->format('Y-m-d H:i:s'),
-            $datetime->modify("-{$milliseconds} microsecond"),
+            '2022-01-01 10:00:00',
+            new DateTimeImmutable('2022-01-01 10:00:00', new DateTimeZone('UTC')),
+        ];
+
+        yield 'datetime string with timezone' => [
+            '2022-01-01T10:00:00+09:00',
+            new DateTimeImmutable('2022-01-01 01:00:00.000000', new DateTimeZone('UTC')),
         ];
     }
 
