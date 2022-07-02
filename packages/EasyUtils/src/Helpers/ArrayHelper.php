@@ -18,7 +18,7 @@ final class ArrayHelper
         foreach ($array as $key => $value) {
             // If value is an array, recurse
             if (\is_array($value) && \count($value)) {
-                $flattened[] = ArrayHelper::flatten($value, \sprintf('%s%s/', $prepend, $key));
+                $flattened[] = self::flatten($value, \sprintf('%s%s/', $prepend, $key));
 
                 continue;
             }
@@ -59,15 +59,21 @@ final class ArrayHelper
         $array[\array_shift($keys)] = $value;
     }
 
+    /**
+     * @param mixed[] $array
+     * @param mixed[] ...$replacements
+     *
+     * @return mixed[]
+     */
     public static function smartReplace(array $array, array ...$replacements): array
     {
-        $flattenArray = ArrayHelper::flatten($array);
+        $flattenArray = self::flatten($array);
 
         foreach ($replacements as $replacement) {
-            $flattenArray = \array_merge($flattenArray, ArrayHelper::flatten($replacement));
+            $flattenArray = \array_merge($flattenArray, self::flatten($replacement));
         }
 
-        return ArrayHelper::unflatten($flattenArray);
+        return self::unflatten($flattenArray);
     }
 
     /**
@@ -81,7 +87,7 @@ final class ArrayHelper
 
         // set() recurses the array and unflattens dot notations correctly, so just pass-through
         foreach ($array as $key => $value) {
-            ArrayHelper::set($unpacked, (string)$key, $value);
+            self::set($unpacked, (string)$key, $value);
         }
 
         return $unpacked;

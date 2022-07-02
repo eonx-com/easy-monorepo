@@ -12,6 +12,10 @@ use function Symfony\Component\String\u;
 
 final class StaticPhpFileListener extends AbstractRequestEventListener
 {
+    /**
+     * @param string[] $allowedDirs
+     * @param string[] $allowedFilenames
+     */
     public function __construct(
         private readonly Filesystem $filesystem,
         private readonly array $allowedDirs,
@@ -21,7 +25,8 @@ final class StaticPhpFileListener extends AbstractRequestEventListener
 
     protected function doInvoke(RequestEvent $event): void
     {
-        $pathInfo = $event->getRequest()->getPathInfo();
+        $pathInfo = $event->getRequest()
+            ->getPathInfo();
 
         if (u($pathInfo)->endsWith('.php') === false
             || \in_array($pathInfo, $this->allowedFilenames, true) === false) {
