@@ -14,9 +14,9 @@ final class ErrorCodesProvider implements ErrorCodesProviderInterface
     private const ERROR_CODE_NAME_PREFIX = 'ERROR_';
 
     /**
-     * @param class-string $errorCodesInterface
+     * @param class-string|null $errorCodesInterface
      */
-    public function __construct(private string $errorCodesInterface)
+    public function __construct(private ?string $errorCodesInterface = null)
     {
     }
 
@@ -25,6 +25,10 @@ final class ErrorCodesProvider implements ErrorCodesProviderInterface
      */
     public function provide(): array
     {
+        if ($this->errorCodesInterface = null) {
+            return [];
+        }
+
         try {
             $reflection = new ReflectionClass($this->errorCodesInterface);
         } catch (ReflectionException $exception) {
