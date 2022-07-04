@@ -25,7 +25,7 @@ final class ErrorCodesProvider implements ErrorCodesProviderInterface
      */
     public function provide(): array
     {
-        if ($this->errorCodesInterface = null) {
+        if ($this->errorCodesInterface === null) {
             return [];
         }
 
