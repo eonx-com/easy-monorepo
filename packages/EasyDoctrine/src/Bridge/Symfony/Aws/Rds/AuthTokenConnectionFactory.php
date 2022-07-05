@@ -46,6 +46,7 @@ final class AuthTokenConnectionFactory
         ?array $mappingTypes = null
     ): Connection {
         if ($this->isEnabled()) {
+            $params['user'] = $this->awsUsername;
             $params['password'] = $this->generatePassword($params);
 
             if ($this->sslEnabled) {
