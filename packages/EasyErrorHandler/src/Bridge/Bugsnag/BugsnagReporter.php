@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag;
 
 use Bugsnag\Client;
-use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
+use EonX\EasyErrorHandler\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Reporters\AbstractErrorReporter;
 use Monolog\Logger;
@@ -19,9 +19,9 @@ final class BugsnagReporter extends AbstractErrorReporter
     /**
      * @var string[]
      */
-    private ?array $ignoreExceptions;
+    private array $ignoreExceptions;
 
-    private ?string $ignoreExceptionsResolver;
+    private BugsnagIgnoreExceptionsResolverInterface $ignoreExceptionsResolver;
 
     private ?int $threshold;
 
@@ -30,10 +30,10 @@ final class BugsnagReporter extends AbstractErrorReporter
      */
     public function __construct(
         Client $bugsnag,
+        BugsnagIgnoreExceptionsResolverInterface $ignoreExceptionsResolver,
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
         ?int $threshold = null,
         ?array $ignoreExceptions = null,
-        ?string $ignoreExceptionsResolver = null,
         ?int $priority = null
     ) {
         $this->bugsnag = $bugsnag;
@@ -51,17 +51,13 @@ final class BugsnagReporter extends AbstractErrorReporter
     public function report(Throwable $throwable)
     {
         $exceptionClass = \get_class($throwable);
-        if (\is_array($this->ignoreExceptions) === true) {
-            foreach ($this->ignoreExceptions as $ignoreClass) {
-                if (\is_a($exceptionClass, $ignoreClass, true)) {
-                    return;
-                }
+        foreach ($this->ignoreExceptions as $ignoreClass) {
+            if (\is_a($exceptionClass, $ignoreClass, true)) {
+                return;
             }
         }
 
-        if ($this->ignoreExceptionsResolver !== null
-            && \is_a($this->ignoreExceptionsResolver, BugsnagIgnoreExceptionsResolverInterface::class, true) === true
-            && $this->ignoreExceptionsResolver::shouldIgnore($throwable) === true) {
+        if ($this->ignoreExceptionsResolver->shouldIgnore($throwable) === true) {
             return;
         }
 

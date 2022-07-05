@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests\Bridge\Bugsnag;
 
 use EonX\EasyErrorHandler\Bridge\Bugsnag\BugsnagReporter;
-use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
+use EonX\EasyErrorHandler\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
+use EonX\EasyErrorHandler\Resolvers\BugsnagIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stubs\BugsnagClientStub;
@@ -77,8 +78,13 @@ final class BugsnagReporterTest extends AbstractTestCase
         ?array $ignoredExceptions = null
     ): void {
         $stub = new BugsnagClientStub();
-        $logLevelResolver = new ErrorLogLevelResolver();
-        $reporter = new BugsnagReporter($stub, $logLevelResolver, $threshold, $ignoredExceptions);
+        $reporter = new BugsnagReporter(
+            $stub,
+            new BugsnagIgnoreExceptionsResolver(),
+            new ErrorLogLevelResolver(),
+            $threshold,
+            $ignoredExceptions
+        );
 
         $reporter->report($throwable);
 
@@ -91,21 +97,20 @@ final class BugsnagReporterTest extends AbstractTestCase
      */
     public function testReportWithIgnoredExceptionsResolver(bool $shouldIgnore, Throwable $throwable): void
     {
-        $exceptionsResolver = new class() implements BugsnagIgnoreExceptionsResolverInterface {
-            public static function shouldIgnore(Throwable $throwable): bool
+        $ignoreExceptionsResolver = new class() implements BugsnagIgnoreExceptionsResolverInterface {
+            public function shouldIgnore(Throwable $throwable): bool
             {
                 /** @var \EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub $throwable */
                 return $throwable->getSubCode() === 2;
             }
         };
         $stub = new BugsnagClientStub();
-        $logLevelResolver = new ErrorLogLevelResolver();
         $reporter = new BugsnagReporter(
             $stub,
-            $logLevelResolver,
+            $ignoreExceptionsResolver,
+            new ErrorLogLevelResolver(),
             null,
-            [],
-            \get_class($exceptionsResolver)
+            []
         );
 
         $reporter->report($throwable);

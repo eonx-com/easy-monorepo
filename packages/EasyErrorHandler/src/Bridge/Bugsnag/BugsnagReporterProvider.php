@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag;
 
 use Bugsnag\Client;
+use EonX\EasyErrorHandler\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 
@@ -15,10 +16,10 @@ final class BugsnagReporterProvider implements ErrorReporterProviderInterface
      */
     public function __construct(
         private Client $bugsnag,
+        private BugsnagIgnoreExceptionsResolverInterface $bugsnagIgnoreExceptionsResolver,
         private ErrorLogLevelResolverInterface $errorLogLevelResolver,
         private ?int $threshold = null,
-        private ?array $ignoredExceptions = null,
-        private ?string $ignoredExceptionsResolver = null
+        private ?array $ignoredExceptions = null
     ) {
     }
 
@@ -29,10 +30,10 @@ final class BugsnagReporterProvider implements ErrorReporterProviderInterface
     {
         yield new BugsnagReporter(
             $this->bugsnag,
+            $this->bugsnagIgnoreExceptionsResolver,
             $this->errorLogLevelResolver,
             $this->threshold,
-            $this->ignoredExceptions,
-            $this->ignoredExceptionsResolver,
+            $this->ignoredExceptions
         );
     }
 }

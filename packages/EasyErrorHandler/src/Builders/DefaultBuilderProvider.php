@@ -60,8 +60,6 @@ final class DefaultBuilderProvider implements ErrorResponseBuilderProviderInterf
         if (\interface_exists(HttpExceptionInterface::class)) {
             yield new HttpExceptionBuilder($this->keys);
         }
-
-        yield new ValidationErrorResponseBuilder();
     }
 
     private function getKey(string $name): string
