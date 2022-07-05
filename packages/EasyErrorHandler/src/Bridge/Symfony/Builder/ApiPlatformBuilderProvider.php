@@ -35,7 +35,7 @@ final class ApiPlatformBuilderProvider implements ErrorResponseBuilderProviderIn
     public function getBuilders(): iterable
     {
         if (\class_exists(ValidationException::class)) {
-            yield new ApiPlatformValidationExceptionBuilder($this->translator, $this->keys);
+            yield new ApiPlatformErrorResponseBuilder($this->translator, $this->keys);
         }
     }
 }
