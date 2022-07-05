@@ -101,11 +101,12 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
         return self::FORMAT_DB_DATETIME;
     }
 
-    private static function getUtc(): \DateTimeZone
+    private static function getUtc(): DateTimeZone
     {
         if (self::$utc === null) {
-            self::$utc = new \DateTimeZone('UTC');
+            self::$utc = new DateTimeZone('UTC');
         }
+
         return self::$utc;
     }
 }
