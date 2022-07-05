@@ -18,6 +18,7 @@ use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
+use EonX\EasyErrorHandler\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
@@ -25,6 +26,7 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
+use EonX\EasyErrorHandler\Resolvers\BugsnagIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
@@ -155,16 +157,18 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             $this->app->tag(DefaultReporterProvider::class, [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER]);
         }
 
+        $this->app->singleton(BugsnagIgnoreExceptionsResolverInterface::class, BugsnagIgnoreExceptionsResolver::class);
+
         if ((bool)\config('easy-error-handler.bugsnag_enabled', true) && \class_exists(Client::class)) {
             $this->app->singleton(
                 BugsnagReporterProvider::class,
                 static function (Container $app): BugsnagReporterProvider {
                     return new BugsnagReporterProvider(
                         $app->make(Client::class),
+                        $app->make(BugsnagIgnoreExceptionsResolverInterface::class),
                         $app->make(ErrorLogLevelResolverInterface::class),
                         \config('easy-error-handler.bugsnag_threshold'),
-                        \config('easy-error-handler.bugsnag_ignored_exceptions'),
-                        \config('easy-error-handler.bugsnag_ignored_exceptions_resolver')
+                        \config('easy-error-handler.bugsnag_ignored_exceptions')
                     );
                 }
             );

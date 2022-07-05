@@ -29,7 +29,22 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_STATIC_PHP_FILES_ALLOWED_DIRS = 'easy_swoole.static_php_files_allowed_dirs';
+
+    /**
+     * @var string
+     */
+    public const PARAM_STATIC_PHP_FILES_ALLOWED_FILENAMES = 'easy_swoole.static_php_files_allowed_filenames';
+
+    /**
+     * @var string
+     */
     public const SERVICE_ACCESS_LOG_LOGGER = 'easy_swoole.access_log_logger';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_FILESYSTEM = 'easy_swoole.filesystem';
 
     /**
      * @var string

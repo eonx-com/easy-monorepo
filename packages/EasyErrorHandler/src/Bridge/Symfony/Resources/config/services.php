@@ -13,12 +13,14 @@ use EonX\EasyErrorHandler\Bridge\Symfony\Translator;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
+use EonX\EasyErrorHandler\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
+use EonX\EasyErrorHandler\Resolvers\BugsnagIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 
@@ -55,6 +57,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'id' => 'error_handler.error_handler_collector',
             'template' => '@EasyErrorHandlerSymfony/Collector/error_handler_collector.html.twig',
         ]);
+
+    // BugsnagIgnoreExceptionsResolver
+    $services->set(BugsnagIgnoreExceptionsResolverInterface::class, BugsnagIgnoreExceptionsResolver::class);
 
     // Console EventListener
     $services

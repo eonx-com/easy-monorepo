@@ -26,7 +26,6 @@ final class Configuration implements ConfigurationInterface
                     ->beforeNormalization()->castToArray()->end()
                     ->scalarPrototype()->end()
                 ->end()
-                ->scalarNode('bugsnag_ignored_exceptions_resolver')->defaultNull()->end()
                 ->arrayNode('logger_exception_log_levels')
                     ->beforeNormalization()->castToArray()->end()
                     ->integerPrototype()->end()

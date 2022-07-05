@@ -29,6 +29,11 @@ final class EasySwooleExtension extends Extension
         'max' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MAX,
     ];
 
+    private const STATIC_PHP_FILES_CONFIG = [
+        'allowed_dirs' => BridgeConstantsInterface::PARAM_STATIC_PHP_FILES_ALLOWED_DIRS,
+        'allowed_filenames' => BridgeConstantsInterface::PARAM_STATIC_PHP_FILES_ALLOWED_FILENAMES,
+    ];
+
     /**
      * @param mixed[] $configs
      *
@@ -77,6 +82,14 @@ final class EasySwooleExtension extends Extension
 
         if (($config['reset_services']['enabled'] ?? true) && \interface_exists(ResetInterface::class)) {
             $loader->load('reset_services.php');
+        }
+
+        if ($config['static_php_files']['enabled'] ?? false) {
+            foreach (self::STATIC_PHP_FILES_CONFIG as $configName => $param) {
+                $container->setParameter($param, $config['static_php_files'][$configName]);
+            }
+
+            $loader->load('static_php_files.php');
         }
     }
 }
