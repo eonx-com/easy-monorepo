@@ -24,6 +24,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_ERROR_CODES_INTERFACE = 'easy_error_handler.param_error_codes_interface';
+
+    /**
+     * @var string
+     */
     public const PARAM_IGNORED_EXCEPTIONS = 'easy_error_handler.param_ignored_exceptions';
 
     /**

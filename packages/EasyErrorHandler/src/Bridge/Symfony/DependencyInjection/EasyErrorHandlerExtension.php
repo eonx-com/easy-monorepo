@@ -59,6 +59,10 @@ final class EasyErrorHandlerExtension extends Extension
         );
         $container->setParameter(BridgeConstantsInterface::PARAM_RESPONSE_KEYS, $config['response']);
         $container->setParameter(BridgeConstantsInterface::PARAM_TRANSLATION_DOMAIN, $config['translation_domain']);
+        $container->setParameter(
+            BridgeConstantsInterface::PARAM_ERROR_CODES_INTERFACE,
+            ['error_codes_interface']
+        );
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED,

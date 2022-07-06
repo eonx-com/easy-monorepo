@@ -89,7 +89,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$defaultIsVerbose', param(BridgeConstantsInterface::PARAM_IS_VERBOSE));
 
     // Error codes provider
-    $services->set(ErrorCodesProviderInterface::class, ErrorCodesProvider::class);
+    $services->set(ErrorCodesProviderInterface::class, ErrorCodesProvider::class)
+        ->arg('$errorCodesInterface', param(BridgeConstantsInterface::PARAM_ERROR_CODES_INTERFACE));
 
     // Console command
     $services

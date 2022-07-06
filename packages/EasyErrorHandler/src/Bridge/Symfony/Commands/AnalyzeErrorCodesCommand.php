@@ -71,7 +71,9 @@ final class AnalyzeErrorCodesCommand extends Command
             ->setRows($nextErrorCodeForCategory);
         $table->render();
 
-        $output->writeln(\sprintf('\n<info>The error code for the new group is %s.</info>\n', $nextCategoryToUse));
+        $output->writeln('');
+        $output->writeln(\sprintf('<info>The error code for the new group is %s.</info>', $nextCategoryToUse));
+        $output->writeln('');
 
         return self::SUCCESS;
     }
