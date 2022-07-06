@@ -105,7 +105,8 @@ final class ApiPlatformDataPersistersPass implements CompilerPassInterface
             ->setAutowired(true)
             ->setArgument('$container', new Reference('service_container'))
             ->setArgument('$simplePersisters', $this->getSimplePersisters($container))
-            ->setArgument('$persisters', new TaggedIteratorArgument(self::ORIGINAL_PERSISTER_TAG));
+            ->setArgument('$persisters', new TaggedIteratorArgument(self::ORIGINAL_PERSISTER_TAG))
+            ->addTag('kernel.reset', ['method' => 'reset']);
 
         // If not debug, simply set data persister to chain simple one.
         if ($debug === false) {
@@ -118,7 +119,8 @@ final class ApiPlatformDataPersistersPass implements CompilerPassInterface
         $container->setDefinition(self::CHAIN_SIMPLE_PERSISTER_ID, $chainSimplePersisterDef);
 
         $traceablePersisterDef = (new Definition(TraceableChainSimpleDataPersister::class))
-            ->setArgument('$decorated', new Reference(self::CHAIN_SIMPLE_PERSISTER_ID));
+            ->setArgument('$decorated', new Reference(self::CHAIN_SIMPLE_PERSISTER_ID))
+            ->addTag('kernel.reset', ['method' => 'reset']);
 
         $container->setDefinition(self::ORIGINAL_PERSISTER_ID, $traceablePersisterDef);
         $container->setDefinition(self::ORIGINAL_DEBUG_PERSISTER_ID, $traceablePersisterDef);
