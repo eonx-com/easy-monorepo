@@ -27,7 +27,8 @@ final class EasySwooleRuntime extends SymfonyRuntime
                 // Static Handler
                 Constant::OPTION_ENABLE_STATIC_HANDLER => true,
                 Constant::OPTION_DOCUMENT_ROOT => '/var/www/public',
-                // Workers number
+                // Processes number
+                Constant::OPTION_REACTOR_NUM => \swoole_cpu_num() * 2,
                 Constant::OPTION_WORKER_NUM => \swoole_cpu_num() * 2,
             ], $options['settings'] ?? []);
 
