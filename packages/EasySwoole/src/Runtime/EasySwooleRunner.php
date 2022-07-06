@@ -110,7 +110,7 @@ final class EasySwooleRunner implements RunnerInterface
             $stream = \fopen('php://stdout', 'w+');
 
             if (\is_resource($stream)) {
-                \fwrite($stream, $message);
+                \fwrite($stream, \sprintf('[php.swoole] %s', $message));
                 \fclose($stream);
             }
         };
