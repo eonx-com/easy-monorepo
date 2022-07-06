@@ -53,6 +53,11 @@ return [
      */
     'logger_ignored_exceptions' => null,
 
+    /**
+     * Interface that provided error codes.
+     */
+    'error_codes_interface' => null,
+
     /*
     |--------------------------------------------------------------------------
     | Error response
