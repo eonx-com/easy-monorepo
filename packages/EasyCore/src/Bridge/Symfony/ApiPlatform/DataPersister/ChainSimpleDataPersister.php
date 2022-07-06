@@ -9,8 +9,9 @@ use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Event\DataPersisterResolvedEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\ResetInterface;
 
-final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterface
+final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterface, ResetInterface
 {
     /**
      * @var \ApiPlatform\Core\DataPersister\DataPersisterInterface
@@ -103,6 +104,11 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
         $persister instanceof ContextAwareDataPersisterInterface
             ? $persister->remove($data, $context ?? [])
             : $persister->remove($data);
+    }
+
+    public function reset(): void
+    {
+        $this->cached = null;
     }
 
     /**
