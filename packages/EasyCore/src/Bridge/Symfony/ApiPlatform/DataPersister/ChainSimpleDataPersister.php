@@ -14,7 +14,7 @@ use Symfony\Contracts\Service\ResetInterface;
 final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterface, ResetInterface
 {
     /**
-     * @var \ApiPlatform\Core\DataPersister\DataPersisterInterface
+     * @var null|\ApiPlatform\Core\DataPersister\DataPersisterInterface
      */
     private $cached;
 
