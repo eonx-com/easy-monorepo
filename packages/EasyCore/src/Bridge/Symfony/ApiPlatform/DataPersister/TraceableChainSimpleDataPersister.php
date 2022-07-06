@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
+use Symfony\Contracts\Service\ResetInterface;
 
-final class TraceableChainSimpleDataPersister implements ContextAwareDataPersisterInterface
+final class TraceableChainSimpleDataPersister implements ContextAwareDataPersisterInterface, ResetInterface
 {
     /**
      * @var \ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface
@@ -49,6 +50,15 @@ final class TraceableChainSimpleDataPersister implements ContextAwareDataPersist
     public function remove($data, ?array $context = null): void
     {
         $this->decorated->remove($data, $context ?? []);
+    }
+
+    public function reset(): void
+    {
+        $this->persisterResponse = [];
+
+        if ($this->decorated instanceof ResetInterface) {
+            $this->decorated->reset();
+        }
     }
 
     /**
