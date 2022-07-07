@@ -81,7 +81,7 @@ final class ErrorCodesProvider implements ErrorCodesProviderInterface
     }
 
     /**
-     * @param string[] $errorCodeNames
+     * @param mixed[] $errorCodeNames
      */
     private function determineCategoryName(array $errorCodeNames): string
     {

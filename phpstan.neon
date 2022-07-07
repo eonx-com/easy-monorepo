@@ -101,7 +101,7 @@ parameters:
 
         # ---- EasyErrorHandler ----
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
-          path: packages/EasyErrorHandler/src/Bridge/Symfony/Providers/ErrorCodesProvider.php
+          path: packages/EasyErrorHandler/src/Providers/ErrorCodesProvider.php
 
         # ---- EasyHttpClient ----
         - message: '#Method EonX\\EasyHttpClient\\Bridge\\EasyBugsnag\\HttpRequestSentBreadcrumbListener\:\:getCarbon\(\) should return Carbon\\Carbon but returns Carbon\\Carbon\|false#'
