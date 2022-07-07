@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Commands;
 
-use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ErrorCodes\ErrorCodesProviderInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -31,36 +31,11 @@ final class AnalyzeErrorCodesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $errorCodes = $this->errorCodesProvider->provide();
-        $groupedErrorCodes = [];
-
-        foreach ($errorCodes as $errorCodeName => $errorCodeValue) {
-            $errorCodeCategory = $errorCodeValue - ($errorCodeValue % $this->categorySize);
-            $groupedErrorCodes[$errorCodeCategory] = $groupedErrorCodes[$errorCodeCategory] ?? [];
-            $groupedErrorCodes[$errorCodeCategory][$errorCodeName] = $errorCodeValue;
-        }
-
-        if (\count($groupedErrorCodes) === 0) {
+        if ($this->errorCodesProvider->setCategorySize($this->categorySize)->process() === false) {
             $output->writeln('<info>No error code found.</info>');
 
             return self::SUCCESS;
         }
-
-        \ksort($groupedErrorCodes);
-        $nextCategoryToUse = \max(\array_keys($groupedErrorCodes)) + $this->categorySize;
-
-        $nextErrorCodeForCategory = [];
-
-        foreach ($groupedErrorCodes as $errorCodes) {
-            $nextErrorCodeForCategory[] = [
-                'categoryName' => $this->determineCategoryName(\array_keys($errorCodes)),
-                'nextErrorCodeToUse' => \max(\array_values($errorCodes)) + 1,
-            ];
-        }
-
-        \usort($nextErrorCodeForCategory, static function (array $errorCategory1, array $errorCategory2) {
-            return $errorCategory1['categoryName'] <=> $errorCategory2['categoryName'];
-        });
 
         $table = new Table($output);
         $table
@@ -68,45 +43,16 @@ final class AnalyzeErrorCodesCommand extends Command
                 'categoryName' => 'Error code group',
                 'nextErrorCodeToUse' => 'Next error code to use',
             ])
-            ->setRows($nextErrorCodeForCategory);
+            ->setRows($this->errorCodesProvider->getNextErrorCodeForCategory());
         $table->render();
 
         $output->writeln('');
-        $output->writeln(\sprintf('<info>The error code for the new group is %s.</info>', $nextCategoryToUse));
+        $output->writeln(\sprintf(
+            '<info>The error code for the new group is %s.</info>',
+            $this->errorCodesProvider->getNextCategoryToUse()
+        ));
         $output->writeln('');
 
         return self::SUCCESS;
-    }
-
-    /**
-     * @param string[] $errorCodeNames
-     */
-    private function determineCategoryName(array $errorCodeNames): string
-    {
-        $explodedErrorCodeNames = \array_map(
-            static function ($errorCodeName): array {
-                return \explode('_', $errorCodeName);
-            },
-            $errorCodeNames
-        );
-        $errorCodeNamesCount = \count($explodedErrorCodeNames);
-        $categoryNameParts = [];
-
-        do {
-            $errorCodeNameParts = [];
-
-            for ($index = 0; $index < $errorCodeNamesCount; $index++) {
-                $errorCodeNamePart = \array_shift($explodedErrorCodeNames[$index]);
-                $errorCodeNameParts[$errorCodeNamePart] = $errorCodeNamePart;
-            }
-
-            $partIsMatched = \count($errorCodeNameParts) === 1 && \current($errorCodeNameParts) !== null;
-
-            if ($partIsMatched) {
-                $categoryNameParts[] = \current($errorCodeNameParts);
-            }
-        } while ($partIsMatched);
-
-        return \implode('_', $categoryNameParts) . '_*';
     }
 }
