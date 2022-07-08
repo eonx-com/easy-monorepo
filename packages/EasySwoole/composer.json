@@ -27,6 +27,12 @@
             "EonX\\EasySwoole\\Tests\\": "tests"
         }
     },
+    "config": {
+        "process-timeout": 0,
+        "allow-plugins": {
+            "symfony/runtime": true
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "4.2-dev"
