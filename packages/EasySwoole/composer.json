@@ -17,11 +17,20 @@
         "psr-4": {
             "EonX\\EasySwoole\\": "src",
             "EonX\\EasySwoole\\Bridge\\Symfony\\": "src/Bridge/Symfony"
-        }
+        },
+        "files": [
+            "src/Resources/functions/dump.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasySwoole\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "process-timeout": 0,
+        "allow-plugins": {
+            "symfony/runtime": true
         }
     },
     "extra": {
