@@ -40,7 +40,7 @@ final class VarDumpHelper
         }
 
         // Fallback if symfony/var-dumper not installed
-        self::$dumper = static function (mixed $var): ?string {
+        self::$dumper = static function (mixed $var): string {
             return \print_r($var, true);
         };
     }
