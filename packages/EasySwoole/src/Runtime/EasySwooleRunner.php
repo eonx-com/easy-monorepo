@@ -170,6 +170,12 @@ final class EasySwooleRunner implements RunnerInterface
             return \is_string($realpath) ? $realpath : null;
         }, $dirs));
 
+        OutputHelper::writeln('HotReload enabled');
+        OutputHelper::writeln(\sprintf(
+            'Monitoring changes in following dirs: %s',
+            \implode(', ', $dirs)
+        ));
+
         $server->addProcess(new SwooleProcess(static function () use ($dirs, $extensions, $server): void {
             $cmd = [
                 'fswatch',
@@ -208,7 +214,7 @@ final class EasySwooleRunner implements RunnerInterface
         $server->on(
             Constant::EVENT_WORKER_STOP,
             static function (Server $server, int $workerId): void {
-                OutputHelper::writeln(\sprintf('Stopping worker %d' . \PHP_EOL, $workerId));
+                OutputHelper::writeln(\sprintf('Stopping worker %d', $workerId));
             }
         );
     }

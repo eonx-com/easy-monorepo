@@ -14,7 +14,7 @@ final class SimpleFormatter implements FormatterInterface
 
     public function format(array $record): string
     {
-        return \sprintf('%s %s', $this->prefix, $record['message']);
+        return \sprintf('%s %s' . \PHP_EOL, $this->prefix, $record['message']);
     }
 
     public function formatBatch(array $records): string
