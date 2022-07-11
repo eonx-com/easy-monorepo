@@ -32,7 +32,7 @@ final class OutputHelper
     {
         if (\class_exists(Logger::class)) {
             $logger = new Logger(self::PREFIX, [
-                (new StreamHandler(self::STREAM))->setFormatter(new SimpleFormatter(self::PREFIX))
+                (new StreamHandler(self::STREAM))->setFormatter(new SimpleFormatter(self::PREFIX)),
             ]);
 
             self::$writer = static function (string $message) use ($logger): void {
