@@ -5,20 +5,40 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Runtime;
 
 use EonX\EasySwoole\Helpers\HttpFoundationHelper;
+use EonX\EasySwoole\Helpers\OutputHelper;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
 use Swoole\Constant;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
+use Swoole\Process as SwooleProcess;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
+use Symfony\Component\Process\Process as SymfonyProcess;
 use Symfony\Component\Runtime\RunnerInterface;
+
+use function Symfony\Component\String\u;
 
 final class EasySwooleRunner implements RunnerInterface
 {
+    private const DEFAULT_PUBLIC_DIR = __DIR__ . '/../../../../../';
+
     private const DEFAULT_OPTIONS = [
         'callbacks' => [],
         'host' => '0.0.0.0',
+        'hot_reload_dirs' => [
+            self::DEFAULT_PUBLIC_DIR . 'config',
+            self::DEFAULT_PUBLIC_DIR . 'public',
+            self::DEFAULT_PUBLIC_DIR . 'src',
+            self::DEFAULT_PUBLIC_DIR . 'translations',
+            self::DEFAULT_PUBLIC_DIR . 'vendor',
+        ],
+        'hot_reload_enabled' => false,
+        'hot_reload_extensions' => [
+            '.php',
+            '.yaml',
+            '.xml',
+        ],
         'mode' => \SWOOLE_BASE,
         'port' => 8080,
         'response_chunk_size' => 1048576,
@@ -96,6 +116,14 @@ final class EasySwooleRunner implements RunnerInterface
             $server->on($event, $fn);
         }
 
+        if ($this->getOptionAsBoolean('hot_reload_enabled', 'SWOOLE_HOT_RELOAD_ENABLED')) {
+            $this->hotReload(
+                $server,
+                $this->getOptionAsArray('hot_reload_dirs', 'SWOOLE_HOT_RELOAD_DIRS'),
+                $this->getOptionAsArray('hot_reload_extensions', 'SWOOLE_HOT_RELOAD_EXTENSIONS')
+            );
+        }
+
         return $server;
     }
 
@@ -104,28 +132,83 @@ final class EasySwooleRunner implements RunnerInterface
         return $this->options[$option] ?? $_SERVER[$env] ?? $_ENV[$env] ?? self::DEFAULT_OPTIONS[$option];
     }
 
+    /**
+     * @return mixed[]
+     */
+    private function getOptionAsArray(string $option, string $env): array
+    {
+        $value = $this->getOption($option, $env);
+
+        if (\is_string($value)) {
+            return \explode(',', $value);
+        }
+
+        return \array_filter(\is_array($value) ? $value : [$value]);
+    }
+
+    private function getOptionAsBoolean(string $option, string $env): bool
+    {
+        $value = $this->getOption($option, $env);
+
+        if (\is_string($value)) {
+            return \in_array($value, ['false', '0'], true) === false;
+        }
+
+        return (bool)$value;
+    }
+
+    /**
+     * @param string[] $dirs
+     * @param string[] $extensions
+     */
+    private function hotReload(Server $server, array $dirs, array $extensions): void
+    {
+        // Format and filter dirs
+        $dirs = \array_filter(\array_map(static function (string $dir): ?string {
+            $realpath = \realpath($dir);
+
+            return \is_string($realpath) ? $realpath : null;
+        }, $dirs));
+
+        $server->addProcess(new SwooleProcess(static function () use ($dirs, $extensions, $server): void {
+            $cmd = [
+                'fswatch',
+                '--monitor=poll_monitor',
+                '-r',
+            ];
+
+            \array_push($cmd, ...$dirs);
+
+            (new SymfonyProcess($cmd))
+                ->setTimeout(null)
+                ->run(static function ($type, $buffer) use ($extensions, $server): void {
+                    foreach (\explode(\PHP_EOL, (string)$buffer) as $line) {
+                        if (u($line)->endsWith($extensions)) {
+                            OutputHelper::writeln(\sprintf('File %s updated', $line));
+                            OutputHelper::writeln('Reloading server...');
+
+                            $server->reload();
+
+                            break;
+                        }
+                    }
+                });
+        }));
+    }
+
     private function registerDefaultCallbacks(Server $server): void
     {
-        $writeFn = static function (string $message): void {
-            $stream = \fopen('php://stdout', 'w+');
-
-            if (\is_resource($stream)) {
-                \fwrite($stream, \sprintf('[php.swoole] %s', $message));
-                \fclose($stream);
-            }
-        };
-
         $server->on(
             Constant::EVENT_WORKER_START,
-            static function (Server $server, int $workerId) use ($writeFn): void {
-                $writeFn(\sprintf('Starting worker %d' . \PHP_EOL, $workerId));
+            static function (Server $server, int $workerId): void {
+                OutputHelper::writeln(\sprintf('Starting worker %d', $workerId));
             }
         );
 
         $server->on(
             Constant::EVENT_WORKER_STOP,
-            static function (Server $server, int $workerId) use ($writeFn): void {
-                $writeFn(\sprintf('Stopping worker %d' . \PHP_EOL, $workerId));
+            static function (Server $server, int $workerId): void {
+                OutputHelper::writeln(\sprintf('Stopping worker %d' . \PHP_EOL, $workerId));
             }
         );
     }
