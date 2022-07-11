@@ -30,6 +30,17 @@ final class HttpFoundationHelper
 
         $hfRequest->headers = new HeaderBag($request->header ?? []);
 
+        // Replicate PHP Basic Auth logic
+        $authorization = $hfRequest->headers->get('Authorization');
+        if (\is_string($authorization) && \str_starts_with(\strtolower($authorization), 'basic ')) {
+            $auth = \explode(':', \base64_decode(\substr($authorization, 6), true) ?: '');
+
+            if (isset($auth[0])) {
+                $hfRequest->headers->set('PHP_AUTH_USER', $auth[0]);
+                $hfRequest->headers->set('PHP_AUTH_PW', $auth[1] ?? '');
+            }
+        }
+
         return $hfRequest;
     }
 
