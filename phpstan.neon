@@ -205,6 +205,9 @@ parameters:
         - '#Access to constant (.*) on an unknown class Swoole\\Constant#'
 
         - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
+          path: packages/EasySwoole/src/Helpers/OutputHelper.php
+
+        - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
           path: packages/EasySwoole/src/Helpers/VarDumpHelper.php
 
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
