@@ -12,18 +12,23 @@ use EonX\EasyErrorHandler\Bridge\Bugsnag\ErrorDetailsClientConfigurator;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\SeverityClientConfigurator;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\UnhandledClientConfigurator;
 use EonX\EasyErrorHandler\Bridge\EasyWebhook\WebhookFinalFailedListener;
+use EonX\EasyErrorHandler\Bridge\Laravel\Console\Commands\Lumen\AnalyzeErrorCodesCommand;
 use EonX\EasyErrorHandler\Bridge\Laravel\ExceptionHandler;
 use EonX\EasyErrorHandler\Bridge\Laravel\Translator;
 use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
+use EonX\EasyErrorHandler\Interfaces\ErrorCodesGroupProcessorInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
+use EonX\EasyErrorHandler\Processors\ErrorCodesGroupProcessor;
+use EonX\EasyErrorHandler\Providers\ErrorCodesProvider;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
@@ -178,5 +183,29 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                 return new UnhandledClientConfigurator(\config('easy-error-handler.bugsnag_handled_exceptions'));
             });
         }
+
+        $this->app->singleton(
+            ErrorCodesProviderInterface::class,
+            static function (): ErrorCodesProviderInterface {
+                return new ErrorCodesProvider(\config('easy-error-handler.error_codes_interface'));
+            }
+        );
+
+        $this->app->singleton(
+            ErrorCodesGroupProcessorInterface::class,
+            static function (Container $app): ErrorCodesGroupProcessorInterface {
+                return new ErrorCodesGroupProcessor(
+                    \config('easy-error-handler.error_codes_category_size'),
+                    $app->make(ErrorCodesProviderInterface::class)
+                );
+            }
+        );
+
+        $this->registerCommands();
+    }
+
+    private function registerCommands(): void
+    {
+        $this->commands([AnalyzeErrorCodesCommand::class]);
     }
 }

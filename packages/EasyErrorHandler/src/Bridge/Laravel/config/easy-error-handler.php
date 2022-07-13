@@ -53,6 +53,16 @@ return [
      */
     'logger_ignored_exceptions' => null,
 
+    /**
+     * Interface to fetch error codes from that will be used in the `easy-error-handler:error-codes:analyze` command.
+     */
+    'error_codes_interface' => null,
+
+    /**
+     * The number of error codes in error category.
+     */
+    'error_codes_category_size' => 100,
+
     /*
     |--------------------------------------------------------------------------
     | Error response

@@ -33,6 +33,11 @@
             "symfony/runtime": true
         }
     },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "4.2-dev"
