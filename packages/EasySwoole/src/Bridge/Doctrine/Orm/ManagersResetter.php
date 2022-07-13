@@ -23,7 +23,8 @@ final class ManagersResetter extends AbstractAppStateResetter
             $manager->clear();
 
             if ($manager instanceof EntityManagerInterface) {
-                $manager->getConnection()->close();
+                $manager->getConnection()
+                    ->close();
             }
         }
     }

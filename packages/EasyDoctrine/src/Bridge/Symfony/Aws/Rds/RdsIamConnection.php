@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Bridge\Symfony\Aws\Rds;
 
-use Doctrine\DBAL\Driver\Exception as DriverException;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Exception as DriverException;
 
 final class RdsIamConnection extends Connection
 {
@@ -19,7 +19,7 @@ final class RdsIamConnection extends Connection
         $params['password'] = \call_user_func($params['passwordGenerator'], $params);
 
         // DBAL v2
-        if (\method_exists($this, 'convertException') === false) {
+        if (\method_exists(Connection::class, 'convertException') === false) {
             $driverOptions = $params['driverOptions'] ?? [];
             $user = $params['user'] ?? null;
             $password = $params['password'] ?? null;
@@ -28,7 +28,7 @@ final class RdsIamConnection extends Connection
         }
 
         // DBAL v3
-        if (\method_exists($this, 'convertException')) {
+        if (\method_exists(Connection::class, 'convertException')) {
             try {
                 $this->_conn = $this->_driver->connect($params);
             } catch (DriverException $driverException) {
