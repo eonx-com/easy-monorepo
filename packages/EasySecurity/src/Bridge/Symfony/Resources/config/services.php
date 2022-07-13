@@ -29,7 +29,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    // ApiTokenDecoder
+    // ApiTokenDecoder (Deprecated since 4.1, will be removed in 5.0. Use ApiTokenDecoderFactoryInterface instead)
     $services
         ->set(BridgeConstantsInterface::SERVICE_API_TOKEN_DECODER, ApiTokenDecoderInterface::class)
         ->factory([service(ApiTokenDecoderFactoryInterface::class), 'build'])

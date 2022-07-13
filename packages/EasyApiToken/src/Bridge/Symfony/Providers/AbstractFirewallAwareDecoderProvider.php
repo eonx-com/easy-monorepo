@@ -33,6 +33,11 @@ abstract class AbstractFirewallAwareDecoderProvider implements ApiTokenDecoderPr
         return $this->doGetDefaultDecoder($this->resolveFirewall());
     }
 
+    public function reset(): void
+    {
+        $this->firewall = null;
+    }
+
     #[Required]
     public function setFirewallMap(FirewallMapInterface $firewallMap): void
     {
