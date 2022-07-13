@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Doctrine\Orm;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasySwoole\AppStateResetters\AbstractAppStateResetter;
 
@@ -20,6 +21,11 @@ final class ManagersResetter extends AbstractAppStateResetter
     {
         foreach ($this->managerRegistry->getManagers() as $manager) {
             $manager->clear();
+
+            if ($manager instanceof EntityManagerInterface) {
+                $manager->getConnection()
+                    ->close();
+            }
         }
     }
 }

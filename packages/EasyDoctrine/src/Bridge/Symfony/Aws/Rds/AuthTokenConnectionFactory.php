@@ -37,7 +37,6 @@ final class AuthTokenConnectionFactory
      * @param array<string, string>|null $mappingTypes
      *
      * @throws \Doctrine\DBAL\Exception
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function createConnection(
         array $params,
@@ -47,7 +46,8 @@ final class AuthTokenConnectionFactory
     ): Connection {
         if ($this->isEnabled()) {
             $params['user'] = $this->awsUsername;
-            $params['password'] = $this->generatePassword($params);
+            $params['passwordGenerator'] = $this->getGeneratePasswordClosure();
+            $params['wrapperClass'] = RdsIamConnection::class;
 
             if ($this->sslEnabled) {
                 $params['sslmode'] = $this->sslMode;
@@ -58,23 +58,20 @@ final class AuthTokenConnectionFactory
         return $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
     }
 
-    /**
-     * @param mixed[] $params
-     *
-     * @throws \Psr\Cache\InvalidArgumentException
-     */
-    private function generatePassword(array $params): string
+    private function getGeneratePasswordClosure(): \Closure
     {
-        $key = \sprintf('easy-doctrine-pwd-%s', $this->awsUsername);
+        return function (array $params): string {
+            $key = \sprintf('easy-doctrine-pwd-%s', $this->awsUsername);
 
-        return $this->cache->get($key, function (ItemInterface $item) use ($params): string {
-            $item->expiresAfter($this->cacheExpiryInSeconds);
+            return $this->cache->get($key, function (ItemInterface $item) use ($params): string {
+                $item->expiresAfter($this->cacheExpiryInSeconds);
 
-            $endpoint = \sprintf('%s:%s', $params['host'], $params['port']);
-            $tokenGenerator = new AuthTokenGenerator(CredentialProvider::defaultProvider());
+                $endpoint = \sprintf('%s:%s', $params['host'], $params['port']);
+                $tokenGenerator = new AuthTokenGenerator(CredentialProvider::defaultProvider());
 
-            return $tokenGenerator->createToken($endpoint, $this->awsRegion, $this->awsUsername);
-        });
+                return $tokenGenerator->createToken($endpoint, $this->awsRegion, $this->awsUsername);
+            });
+        };
     }
 
     private function isEnabled(): bool

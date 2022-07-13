@@ -95,6 +95,9 @@ parameters:
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDoctrine/src/ORM/Decorators/EntityManagerDecorator.php
 
+        - message: '#Call to an undefined method EonX\\EasyDoctrine\\Bridge\\Symfony\\Aws\\Rds\\RdsIamConnection\:\:convertException\(\)#'
+          path: packages/EasyDoctrine/src/Bridge/Symfony/Aws/Rds/RdsIamConnection.php
+
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
           path: packages/EasyEncryption/src/Encryptor.php
