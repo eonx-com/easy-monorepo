@@ -13,6 +13,7 @@ use EonX\EasyHttpClient\Events\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Interfaces\HttpOptionsInterface;
 use EonX\EasyHttpClient\Interfaces\RequestDataInterface;
 use EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface;
+use EonX\EasyHttpClient\Interfaces\ResponseDataInterface;
 use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpClient\AsyncDecoratorTrait;
 use Symfony\Component\HttpClient\HttpClient;
@@ -71,24 +72,42 @@ final class WithEventsHttpClient implements HttpClientInterface
                 $this->getPassThruClosure($requestData, $config)
             );
         } catch (\Throwable $throwable) {
-            if ($config->isEventsEnabled()) {
-                $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
-                    $requestData,
-                    null,
-                    $throwable,
-                    Carbon::now('UTC'),
-                    $config->getRequestDataExtra()
-                ));
-            }
+            $this->dispatchEvent($config, $requestData, throwable: $throwable);
 
             throw $throwable;
+        }
+    }
+
+    private function dispatchEvent(
+        Config $config,
+        RequestDataInterface $requestData,
+        ?ResponseDataInterface $responseData = null,
+        ?\Throwable $throwable = null
+    ): void {
+        if ($config->isEventsEnabled()) {
+            $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
+                $requestData,
+                $responseData,
+                $throwable,
+                $throwable !== null ? Carbon::now('UTC') : null,
+                $config->getRequestDataExtra()
+            ));
         }
     }
 
     private function getPassThruClosure(RequestDataInterface $requestData, Config $config): \Closure
     {
         return function (ChunkInterface $chunk, AsyncContext $asyncContext) use ($requestData, $config): iterable {
-            if ($chunk->getContent() !== '') {
+            // Get chunk content here, so we can handle transport/timeout exceptions
+            try {
+                $chunkContent = $chunk->getContent();
+            } catch (\Throwable $throwable) {
+                $this->dispatchEvent($config, $requestData, throwable: $throwable);
+
+                throw $throwable;
+            }
+
+            if ($chunkContent !== '') {
                 $asyncContext->setInfo(
                     'temp_content',
                     ($asyncContext->getInfo('temp_content') ?? '') . $chunk->getContent()
@@ -96,22 +115,12 @@ final class WithEventsHttpClient implements HttpClientInterface
             }
 
             if ($chunk->isLast()) {
-                $responseData = new ResponseData(
+                $this->dispatchEvent($config, $requestData, new ResponseData(
                     (string)($asyncContext->getInfo('temp_content') ?? ''),
                     $asyncContext->getHeaders(),
                     Carbon::now('UTC'),
                     $asyncContext->getStatusCode()
-                );
-
-                if ($config->isEventsEnabled()) {
-                    $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
-                        $requestData,
-                        $responseData,
-                        null,
-                        null,
-                        $config->getRequestDataExtra()
-                    ));
-                }
+                ));
             }
 
             yield $chunk;
