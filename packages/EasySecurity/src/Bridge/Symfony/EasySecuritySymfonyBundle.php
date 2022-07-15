@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Bridge\Symfony;
 
 use EonX\EasySecurity\Bridge\Symfony\DependencyInjection\Compiler\RegisterPermissionExpressionFunctionPass;
+use EonX\EasySecurity\Bridge\Symfony\DependencyInjection\Compiler\RegisterRoleExpressionFunctionPass;
 use EonX\EasySecurity\Bridge\Symfony\DependencyInjection\Compiler\RegisterSecurityContextPass;
 use EonX\EasySecurity\Bridge\Symfony\DependencyInjection\EasySecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,6 +19,7 @@ final class EasySecuritySymfonyBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new RegisterPermissionExpressionFunctionPass());
+        $container->addCompilerPass(new RegisterRoleExpressionFunctionPass());
         $container->addCompilerPass(new RegisterSecurityContextPass());
     }
 
