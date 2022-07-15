@@ -7,7 +7,7 @@ namespace EonX\EasyErrorHandler\DataTransferObjects;
 final class ErrorCodesDto
 {
     /**
-     * @param mixed[] $nextGroupedErrorCodes
+     * @param \EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeCategoryDto[] $nextGroupedErrorCodes
      */
     public function __construct(
         private int $nextGroupErrorCode = 0,
@@ -23,9 +23,12 @@ final class ErrorCodesDto
     /**
      * @return mixed[]
      */
-    public function getNextGroupedErrorCodes(): array
+    public function getNextGroupedErrorCodesAsArray(): array
     {
-        return $this->nextGroupedErrorCodes;
+        return \array_map(
+            static fn (ErrorCodeCategoryDto $errorCodeCategoryDto) => $errorCodeCategoryDto->asArray(),
+            $this->nextGroupedErrorCodes
+        );
     }
 
     public function hasErrorCodes(): bool

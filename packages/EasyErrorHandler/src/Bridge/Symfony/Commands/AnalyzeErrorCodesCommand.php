@@ -42,7 +42,7 @@ final class AnalyzeErrorCodesCommand extends Command
                 'categoryName' => 'Error code group',
                 'nextErrorCodeToUse' => 'Next error code to use',
             ])
-            ->setRows($errorCodesDto->getNextGroupedErrorCodes());
+            ->setRows($errorCodesDto->getNextGroupedErrorCodesAsArray());
         $table->render();
 
         $output->writeln('');

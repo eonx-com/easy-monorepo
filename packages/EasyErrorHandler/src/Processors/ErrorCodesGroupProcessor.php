@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Processors;
 
+use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeCategoryDto;
 use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodesDto;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesGroupProcessorInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
@@ -36,15 +37,19 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
         $nextGroupedErrorCodes = [];
 
         foreach ($groupedErrorCodes as $errorCodes) {
-            $nextGroupedErrorCodes[] = [
-                'categoryName' => $this->determineCategoryName(\array_keys($errorCodes)),
-                'nextErrorCodeToUse' => \max(\array_values($errorCodes)) + 1,
-            ];
+            $nextGroupedErrorCodes[] = new ErrorCodeCategoryDto(
+                categoryName: $this->determineCategoryName(\array_keys($errorCodes)),
+                nextErrorCodeToUse: \max(\array_values($errorCodes)) + 1
+            );
         }
 
-        \usort($nextGroupedErrorCodes, static function (array $errorCategory1, array $errorCategory2) {
-            return $errorCategory1['categoryName'] <=> $errorCategory2['categoryName'];
-        });
+        \usort(
+            $nextGroupedErrorCodes,
+            static fn (
+                ErrorCodeCategoryDto $errorCategory1,
+                ErrorCodeCategoryDto $errorCategory2
+            ) => $errorCategory1->getCategoryName() <=> $errorCategory2->getCategoryName()
+        );
 
         return new ErrorCodesDto(
             nextGroupErrorCode: $nextGroupErrorCode,

@@ -29,7 +29,7 @@ final class AnalyzeErrorCodesCommand extends Command
 
         $this->table(
             ['Error code group', 'Next error code to use'],
-            $errorCodesDto->getNextGroupedErrorCodes()
+            $errorCodesDto->getNextGroupedErrorCodesAsArray()
         );
 
         $this->newLine();
