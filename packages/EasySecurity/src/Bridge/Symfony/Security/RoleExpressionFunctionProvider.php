@@ -13,7 +13,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 final class RoleExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
     /**
-     * @var mixed[]
+     * @var string[]
      */
     private array $cached = [];
 
@@ -27,7 +27,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
     }
 
     /**
-     * @return ExpressionFunction[]
+     * @return \Symfony\Component\ExpressionLanguage\ExpressionFunction[]
      */
     public function getFunctions(): array
     {
@@ -45,8 +45,9 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
                         $constant = \sprintf('%s::%s', $location, $role);
 
                         try {
-                            return \constant($constant);
-                        } catch (\Throwable $throwable) {
+                            $this->cached[$role] = \constant($constant);
+                            return $this->cached[$role];
+                        } catch (\Throwable) {
                             $this->logger->info(\sprintf('Constant "%s" not found', $constant));
                         }
                     }
