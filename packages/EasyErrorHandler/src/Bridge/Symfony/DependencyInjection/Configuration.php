@@ -71,6 +71,8 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('locale')->defaultValue('en')->end()
                     ->end()
                 ->end()
+                ->scalarNode('error_codes_interface')->defaultValue(null)->end()
+                ->scalarNode('error_codes_category_size')->defaultValue(100)->end()
             ->end();
 
         return $treeBuilder;
