@@ -24,6 +24,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_ROLES_LOCATIONS = 'easy_security.roles_locations';
+
+    /**
+     * @var string
+     */
     public const PARAM_TOKEN_DECODER = 'easy_security.token_decoder';
 
     /**

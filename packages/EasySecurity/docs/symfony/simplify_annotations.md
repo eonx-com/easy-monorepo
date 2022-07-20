@@ -35,7 +35,7 @@ public function index()
 ```
 
 It works fine, but it requires you to write the fully qualified name of the constant each time and when used as part
-of annotations (e.g. on an ApiResource from ApiPlatform) it can break your coding standards because the line is too long...  
+of annotations (e.g. on an ApiResource from ApiPlatform) it can break your coding standards because the line is too long...
 
 <br>
 
@@ -43,7 +43,7 @@ To simplify all that, this package provides an expression function to help us to
 
 ### Define your permissions locations
 
-In the config, define your permissions locations by providing a list of the classes/interfaces where your permissions 
+In the config, define your permissions locations by providing a list of the classes/interfaces where your permissions
 are defined:
 
 ```yaml
@@ -52,6 +52,8 @@ are defined:
 easy_security:
     permissions_locations:
         - App\Security\Interfaces\PermissionsInterface
+    roles_locations:
+        - App\Security\Interfaces\RolesInterface
 ```
 
 The package will now know where to look for your permissions.

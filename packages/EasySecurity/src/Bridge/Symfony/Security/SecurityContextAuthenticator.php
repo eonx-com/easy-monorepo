@@ -53,8 +53,8 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
 
         // From here we know we have a user, simply fake it in symfony
         return new SelfValidatingPassport(
-            new UserBadge((string)$user->getUniqueId(), static function (): UserInterface {
-                return new FakeUser();
+            new UserBadge((string)$user->getUniqueId(), function () use ($user): UserInterface {
+                return $user instanceof UserInterface ? $user : new FakeUser();
             })
         );
     }
