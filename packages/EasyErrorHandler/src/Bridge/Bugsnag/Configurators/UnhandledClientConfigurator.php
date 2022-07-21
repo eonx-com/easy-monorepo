@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge\Bugsnag;
+namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators;
 
 use Bugsnag\Client;
 use Bugsnag\Report;
 use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\UnhandledCallbackBridge;
 use EonX\EasyErrorHandler\Exceptions\BaseException;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\LogLevelAwareExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\SeverityAwareExceptionInterface;

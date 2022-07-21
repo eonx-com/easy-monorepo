@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Interfaces;
+namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces;
 
 use Throwable;
 

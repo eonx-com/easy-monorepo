@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge\Bugsnag;
+namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Providers;
 
 use Bugsnag\Client;
-use EonX\EasyErrorHandler\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Reporters\BugsnagReporter;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 

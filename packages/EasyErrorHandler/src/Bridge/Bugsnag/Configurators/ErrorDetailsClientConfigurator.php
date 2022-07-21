@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge\Bugsnag;
+namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators;
 
 use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;

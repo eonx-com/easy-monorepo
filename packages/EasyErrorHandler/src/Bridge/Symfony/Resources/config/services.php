@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers\DefaultBugsnagIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\Bridge\Symfony\DataCollector\ErrorHandlerDataCollector;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ConsoleErrorEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ExceptionEventListener;
@@ -13,14 +15,12 @@ use EonX\EasyErrorHandler\Bridge\Symfony\Translator;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
-use EonX\EasyErrorHandler\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
-use EonX\EasyErrorHandler\Resolvers\BugsnagIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 
@@ -59,7 +59,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ]);
 
     // BugsnagIgnoreExceptionsResolver
-    $services->set(BugsnagIgnoreExceptionsResolverInterface::class, BugsnagIgnoreExceptionsResolver::class);
+    $services->set(BugsnagIgnoreExceptionsResolverInterface::class, DefaultBugsnagIgnoreExceptionsResolver::class);
 
     // Console EventListener
     $services

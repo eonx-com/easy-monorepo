@@ -7,10 +7,12 @@ namespace EonX\EasyErrorHandler\Bridge\Laravel\Provider;
 use Bugsnag\Client;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\BugsnagReporterProvider;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\ErrorDetailsClientConfigurator;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\SeverityClientConfigurator;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\UnhandledClientConfigurator;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators\ErrorDetailsClientConfigurator;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators\SeverityClientConfigurator;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators\UnhandledClientConfigurator;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Providers\BugsnagReporterProvider;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers\DefaultBugsnagIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\Bridge\EasyWebhook\WebhookFinalFailedListener;
 use EonX\EasyErrorHandler\Bridge\Laravel\ExceptionHandler;
 use EonX\EasyErrorHandler\Bridge\Laravel\Translator;
@@ -18,7 +20,6 @@ use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
-use EonX\EasyErrorHandler\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
@@ -26,7 +27,6 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
-use EonX\EasyErrorHandler\Resolvers\BugsnagIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
@@ -157,7 +157,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             $this->app->tag(DefaultReporterProvider::class, [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER]);
         }
 
-        $this->app->singleton(BugsnagIgnoreExceptionsResolverInterface::class, BugsnagIgnoreExceptionsResolver::class);
+        $this->app->singleton(BugsnagIgnoreExceptionsResolverInterface::class, DefaultBugsnagIgnoreExceptionsResolver::class);
 
         if ((bool)\config('easy-error-handler.bugsnag_enabled', true) && \class_exists(Client::class)) {
             $this->app->singleton(
