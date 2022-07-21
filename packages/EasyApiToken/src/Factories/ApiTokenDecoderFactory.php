@@ -11,7 +11,7 @@ use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderProviderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\HashedApiKeyDriverInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
 {
@@ -21,9 +21,9 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
     private ?array $decoders = null;
 
     /**
-     * @var iterable<mixed>
+     * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderProviderInterface[]
      */
-    private iterable $decoderProviders;
+    private array $decoderProviders;
 
     private ?string $defaultDecoder = null;
 
@@ -32,9 +32,9 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
      */
     public function __construct(
         iterable $decoderProviders,
-        private HashedApiKeyDriverInterface $hashedApiKeyDriver
+        private readonly HashedApiKeyDriverInterface $hashedApiKeyDriver
     ) {
-        $this->decoderProviders = $decoderProviders;
+        $this->decoderProviders = $this->filter($decoderProviders, ApiTokenDecoderProviderInterface::class);
     }
 
     /**
@@ -43,11 +43,11 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
      */
     public function build(?string $decoder = null): ApiTokenDecoderInterface
     {
-        $this->initDecoders();
-
         if ($decoder === null) {
             return $this->buildDefault();
         }
+
+        $this->initDecoders();
 
         if (isset($this->decoders[$decoder])) {
             return $this->decoders[$decoder];
@@ -71,6 +71,17 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
         throw new InvalidDefaultDecoderException('No default decoder set');
     }
 
+    public function reset(): void
+    {
+        $this->decoders = null;
+
+        foreach ($this->decoderProviders as $provider) {
+            if (\method_exists($provider, 'reset')) {
+                $provider->reset();
+            }
+        }
+    }
+
     /**
      * @param iterable<mixed> $collection
      *
@@ -84,18 +95,15 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
     private function initDecoders(): void
     {
         if ($this->decoders === null) {
-            $this->setDecoders($this->decoderProviders);
+            $this->setDecoders();
         }
     }
 
-    /**
-     * @param iterable<mixed> $providers
-     */
-    private function setDecoders(iterable $providers): void
+    private function setDecoders(): void
     {
         $decoders = [];
 
-        foreach ($this->filter($providers, ApiTokenDecoderProviderInterface::class) as $provider) {
+        foreach ($this->decoderProviders as $provider) {
             foreach ($this->filter($provider->getDecoders(), ApiTokenDecoderInterface::class) as $decoder) {
                 if ($decoder instanceof ApiKeyDecoder) {
                     $decoder->setHashedApiKeyDriver($this->hashedApiKeyDriver);

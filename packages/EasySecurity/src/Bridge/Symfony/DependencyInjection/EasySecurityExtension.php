@@ -52,8 +52,10 @@ final class EasySecurityExtension extends Extension
 
         $contextServiceId = $config['context_service_id'];
         $permissionsLocations = $config['permissions_locations'] ?? [];
+        $rolesLocations = $config['roles_locations'] ?? [];
 
         $container->setParameter(BridgeConstantsInterface::PARAM_PERMISSIONS_LOCATIONS, $permissionsLocations);
+        $container->setParameter(BridgeConstantsInterface::PARAM_ROLES_LOCATIONS, $rolesLocations);
         $container->setParameter(BridgeConstantsInterface::PARAM_CONTEXT_SERVICE_ID, $contextServiceId);
         $container->setParameter(BridgeConstantsInterface::PARAM_TOKEN_DECODER, $config['token_decoder'] ?? null);
 

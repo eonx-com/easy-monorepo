@@ -62,6 +62,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
     private function registerApiTokenDecoder(): void
     {
+        // Deprecated since 4.1, will be removed in 5.0. Use the ApiTokenDecoderFactoryInterface instead.
         $this->app->singleton(
             BridgeConstantsInterface::SERVICE_API_TOKEN_DECODER,
             static function (Container $app): ApiTokenDecoderInterface {
@@ -105,7 +106,8 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $this->app->singleton(ApiTokenConfigurator::class, static function (Container $app): ApiTokenConfigurator {
             return new ApiTokenConfigurator(
-                $app->make(BridgeConstantsInterface::SERVICE_API_TOKEN_DECODER),
+                $app->make(ApiTokenDecoderFactoryInterface::class),
+                \config('easy-security.token_decoder'),
                 SecurityContextConfiguratorInterface::SYSTEM_PRIORITY
             );
         });

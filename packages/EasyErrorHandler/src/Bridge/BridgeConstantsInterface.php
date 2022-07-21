@@ -24,6 +24,16 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_ERROR_CODES_INTERFACE = 'easy_error_handler.param_error_codes_interface';
+
+    /**
+     * @var string
+     */
+    public const PARAM_ERROR_CODES_CATEGORY_SIZE = 'easy_error_handler.param_error_codes_category_size';
+
+    /**
+     * @var string
+     */
     public const PARAM_IGNORED_EXCEPTIONS = 'easy_error_handler.param_ignored_exceptions';
 
     /**

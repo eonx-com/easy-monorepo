@@ -7,6 +7,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers\DefaultBugsnagIgnoreExceptionsResolver;
+use EonX\EasyErrorHandler\Bridge\Symfony\Commands\AnalyzeErrorCodesCommand;
 use EonX\EasyErrorHandler\Bridge\Symfony\DataCollector\ErrorHandlerDataCollector;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ConsoleErrorEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ExceptionEventListener;
@@ -15,12 +16,16 @@ use EonX\EasyErrorHandler\Bridge\Symfony\Translator;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
+use EonX\EasyErrorHandler\Interfaces\ErrorCodesGroupProcessorInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
+use EonX\EasyErrorHandler\Processors\ErrorCodesGroupProcessor;
+use EonX\EasyErrorHandler\Providers\ErrorCodesProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 
@@ -89,4 +94,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(VerboseStrategyInterface::class, ChainVerboseStrategy::class)
         ->arg('$drivers', tagged_iterator(BridgeConstantsInterface::TAG_VERBOSE_STRATEGY_DRIVER))
         ->arg('$defaultIsVerbose', param(BridgeConstantsInterface::PARAM_IS_VERBOSE));
+
+    // Error codes provider
+    $services->set(ErrorCodesProviderInterface::class, ErrorCodesProvider::class)
+        ->arg('$errorCodesInterface', param(BridgeConstantsInterface::PARAM_ERROR_CODES_INTERFACE));
+
+    // Error codes group processor
+    $services->set(ErrorCodesGroupProcessorInterface::class, ErrorCodesGroupProcessor::class)
+        ->arg('$categorySize', param(BridgeConstantsInterface::PARAM_ERROR_CODES_CATEGORY_SIZE));
+
+    // Console command
+    $services
+        ->set(AnalyzeErrorCodesCommand::class)
+        ->tag('console.command');
 };

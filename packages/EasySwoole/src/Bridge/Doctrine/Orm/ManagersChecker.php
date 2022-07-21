@@ -37,6 +37,10 @@ final class ManagersChecker extends AbstractAppStateChecker
             return true;
         }
 
+        if ($entityManager->getConnection()->isConnected() === false) {
+            return false;
+        }
+
         try {
             $conn = $entityManager->getConnection();
             $conn->fetchAllAssociative($conn->getDatabasePlatform()->getDummySelectSQL());

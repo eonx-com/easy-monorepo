@@ -21,7 +21,8 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(ApiTokenDecoderFactoryInterface::class, ApiTokenDecoderFactory::class)
-        ->arg('$decoderProviders', tagged_iterator(BridgeConstantsInterface::TAG_DECODER_PROVIDER));
+        ->arg('$decoderProviders', tagged_iterator(BridgeConstantsInterface::TAG_DECODER_PROVIDER))
+        ->tag('kernel.reset', ['method' => 'reset']);
 
     $services
         ->set(ApiTokenDecoderInterface::class)

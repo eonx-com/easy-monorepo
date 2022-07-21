@@ -11,4 +11,6 @@ interface ApiTokenDecoderFactoryInterface
     public function build(?string $decoder = null): ApiTokenDecoderInterface;
 
     public function buildDefault(): ApiTokenDecoderInterface;
+
+    public function reset(): void;
 }

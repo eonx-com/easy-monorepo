@@ -95,11 +95,17 @@ parameters:
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
           path: packages/EasyDoctrine/src/ORM/Decorators/EntityManagerDecorator.php
 
+        - message: '#Call to an undefined method EonX\\EasyDoctrine\\Bridge\\Symfony\\Aws\\Rds\\RdsIamConnection\:\:convertException\(\)#'
+          path: packages/EasyDoctrine/src/Bridge/Symfony/Aws/Rds/RdsIamConnection.php
+
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
           path: packages/EasyEncryption/src/Encryptor.php
 
         # ---- EasyErrorHandler ----
+        - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
+          path: packages/EasyErrorHandler/src/Providers/ErrorCodesProvider.php
+
         # ---- EasyHttpClient ----
         - message: '#Method EonX\\EasyHttpClient\\Bridge\\EasyBugsnag\\HttpRequestSentBreadcrumbListener\:\:getCarbon\(\) should return Carbon\\Carbon but returns Carbon\\Carbon\|false#'
           path: packages/EasyHttpClient/src/Bridge/EasyBugsnag/HttpRequestSentBreadcrumbListener.php
@@ -203,6 +209,15 @@ parameters:
 
         # ---- EasySwoole ----
         - '#Access to constant (.*) on an unknown class Swoole\\Constant#'
+
+        - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
+          path: packages/EasySwoole/src/Helpers/OutputHelper.php
+
+        - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
+          path: packages/EasySwoole/src/Helpers/VarDumpHelper.php
+
+        - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
+          path: packages/EasySwoole/src/Resources/functions/dump.php
 
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
