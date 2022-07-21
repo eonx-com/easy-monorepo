@@ -162,7 +162,10 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             $this->app->tag(DefaultReporterProvider::class, [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER]);
         }
 
-        $this->app->singleton(BugsnagIgnoreExceptionsResolverInterface::class, DefaultBugsnagIgnoreExceptionsResolver::class);
+        $this->app->singleton(
+            BugsnagIgnoreExceptionsResolverInterface::class,
+            DefaultBugsnagIgnoreExceptionsResolver::class
+        );
 
         if ((bool)\config('easy-error-handler.bugsnag_enabled', true) && \class_exists(Client::class)) {
             $this->app->singleton(

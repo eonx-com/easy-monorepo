@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
+use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use App\Common\Exception\ErrorCodesInterface;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
