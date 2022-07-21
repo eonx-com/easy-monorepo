@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-utils": "^4.2",
+        "eonx-com/easy-utils": "^4.1.35",
         "symfony/runtime": "^5.4 || ^6.0"
     },
     "require-dev": {
@@ -25,12 +25,6 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasySwoole\\Tests\\": "tests"
-        }
-    },
-    "config": {
-        "process-timeout": 0,
-        "allow-plugins": {
-            "symfony/runtime": true
         }
     },
     "config": {
