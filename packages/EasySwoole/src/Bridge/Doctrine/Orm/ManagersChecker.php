@@ -33,8 +33,12 @@ final class ManagersChecker extends AbstractAppStateChecker
 
     private function isEntityManagerCompromised(EntityManagerInterface $entityManager): bool
     {
-        if ($entityManager->isOpen() === false || $entityManager->getConnection()->isConnected() === false) {
+        if ($entityManager->isOpen() === false) {
             return true;
+        }
+
+        if ($entityManager->getConnection()->isConnected() === false) {
+            return false;
         }
 
         try {
