@@ -39,7 +39,8 @@ final class RegisterSecurityContextPass implements CompilerPassInterface
             ->setDeprecated(
                 'eonx-com/easy-security',
                 '4.1.37',
-                'The "%service_id%" service autowiring is deprecated and will be removed in 5.0. Use SecurityContextResolverInterface::resolveContext instead.'
+                'The "%service_id%" service autowiring is deprecated and will be removed in 5.0.'.
+                ' Use SecurityContextResolverInterface::resolveContext instead.'
             );
 
         if ($contextServiceId !== SecurityContextInterface::class) {
