@@ -10,27 +10,26 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_BUGSNAG_HANDLED_EXCEPTIONS = 'easy_error_handler.param_bugsnag_handled_exceptions';
-
     /**
      * @var string
      */
     public const PARAM_BUGSNAG_IGNORED_EXCEPTIONS = 'easy_error_handler.param_bugsnag_ignored_exceptions';
-
+    /**
+     * @var string
+     */
+    public const PARAM_BUGSNAG_IGNORE_VALIDATION_ERRORS = 'easy_error_handler.param_bugsnag_ignore_validation_errors';
     /**
      * @var string
      */
     public const PARAM_BUGSNAG_THRESHOLD = 'easy_error_handler.param_bugsnag_threshold';
-
-    /**
-     * @var string
-     */
-    public const PARAM_ERROR_CODES_INTERFACE = 'easy_error_handler.param_error_codes_interface';
-
     /**
      * @var string
      */
     public const PARAM_ERROR_CODES_CATEGORY_SIZE = 'easy_error_handler.param_error_codes_category_size';
-
+    /**
+     * @var string
+     */
+    public const PARAM_ERROR_CODES_INTERFACE = 'easy_error_handler.param_error_codes_interface';
     /**
      * @var string
      */
@@ -60,6 +59,11 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_RESPONSE_KEYS = 'easy_error_handler.param_response_keys';
+
+    /**
+     * @var string
+     */
+    public const PARAM_TRANSFORM_VALIDATION_ERRORS = 'easy_error_handler.param_transform_validation_errors';
 
     /**
      * @var string

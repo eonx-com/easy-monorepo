@@ -13,20 +13,23 @@ final class ApiPlatformBuilderProvider implements ErrorResponseBuilderProviderIn
     /**
      * @var mixed[]
      */
-    private $keys;
+    private array $keys;
 
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\TranslatorInterface
-     */
-    private $translator;
+    private bool $transformValidationErrors;
+
+    private TranslatorInterface $translator;
 
     /**
      * @param null|mixed[] $keys
      */
-    public function __construct(TranslatorInterface $translator, ?array $keys = null)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        ?array $keys = null,
+        ?bool $transformValidationErrors = null
+    ) {
         $this->translator = $translator;
         $this->keys = $keys ?? [];
+        $this->transformValidationErrors = $transformValidationErrors ?? true;
     }
 
     /**
@@ -36,7 +39,9 @@ final class ApiPlatformBuilderProvider implements ErrorResponseBuilderProviderIn
     {
         if (\class_exists(ValidationException::class)) {
             yield new ApiPlatformValidationExceptionResponseBuilder($this->translator, $this->keys);
-            yield new ApiPlatformValidationErrorResponseBuilder();
+            if($this->transformValidationErrors) {
+                yield new ApiPlatformValidationErrorResponseBuilder();
+            }
         }
     }
 }

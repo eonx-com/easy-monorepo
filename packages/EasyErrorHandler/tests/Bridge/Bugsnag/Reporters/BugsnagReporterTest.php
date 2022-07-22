@@ -80,10 +80,9 @@ final class BugsnagReporterTest extends AbstractTestCase
         $stub = new BugsnagClientStub();
         $reporter = new \EonX\EasyErrorHandler\Bridge\Bugsnag\Reporters\BugsnagReporter(
             $stub,
-            new DefaultBugsnagIgnoreExceptionsResolver(),
+            new DefaultBugsnagIgnoreExceptionsResolver($ignoredExceptions),
             new ErrorLogLevelResolver(),
-            $threshold,
-            $ignoredExceptions
+            $threshold
         );
 
         $reporter->report($throwable);
@@ -109,8 +108,7 @@ final class BugsnagReporterTest extends AbstractTestCase
             $stub,
             $ignoreExceptionsResolver,
             new ErrorLogLevelResolver(),
-            null,
-            []
+            null
         );
 
         $reporter->report($throwable);

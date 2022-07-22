@@ -164,7 +164,12 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             BugsnagIgnoreExceptionsResolverInterface::class,
-            DefaultBugsnagIgnoreExceptionsResolver::class
+            static function (): BugsnagIgnoreExceptionsResolverInterface {
+                return new DefaultBugsnagIgnoreExceptionsResolver(
+                    \config('easy-error-handler.bugsnag_ignored_exceptions'),
+                    false
+                );
+            }
         );
 
         if ((bool)\config('easy-error-handler.bugsnag_enabled', true) && \class_exists(Client::class)) {
@@ -175,8 +180,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                         $app->make(Client::class),
                         $app->make(BugsnagIgnoreExceptionsResolverInterface::class),
                         $app->make(ErrorLogLevelResolverInterface::class),
-                        \config('easy-error-handler.bugsnag_threshold'),
-                        \config('easy-error-handler.bugsnag_ignored_exceptions')
+                        \config('easy-error-handler.bugsnag_threshold')
                     );
                 }
             );

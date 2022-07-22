@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
-use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +41,6 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                 \preg_match(self::MESSAGE_PATTERN_INVALID_IRI, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NESTED_DOCUMENTS_NOT_ALLOWED, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NOT_IRI, $message) === 1,
-            ValidationException::class => true,
             default => false
         };
     }
