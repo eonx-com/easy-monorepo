@@ -51,7 +51,7 @@ Symfony has the following additional configuration options:
 |------------------------------------|------------|----------------------------------------------------------------------------------------------------------|
 | `bugsnag_ignore_validation_errors` | `true`     | Ignore validation errors based on ApiPlatformValidationErrorsResponseBuilder                             |
 | `override_api_platform_listener`   | `true`     | If using [API Platform][1], override its inbuilt exception handling to use the EasyErrorHandler package. |
-| `transform_validation_errors`      | `true`     | Transform valiadtion errors structure based on ApiPlatformValidationErrrorResponseBuilder. |
+| `transform_validation_errors`      | `true`     | Transform validation errors response structure based on ApiPlatformValidationErrrorResponseBuilder.      |
 | `translation_domain`               | `messages` | Symfony translation domain.                                                                              |
 | `verbose`                          | `false`    | Use extended error response containing exception message, trace, etc.                                    |
 
