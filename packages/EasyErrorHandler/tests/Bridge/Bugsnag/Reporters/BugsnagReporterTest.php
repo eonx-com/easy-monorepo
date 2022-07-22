@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Tests\Bridge\Bugsnag;
+namespace EonX\EasyErrorHandler\Tests\Bridge\Bugsnag\Reporters;
 
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Reporters\BugsnagReporter;

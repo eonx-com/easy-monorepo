@@ -21,10 +21,7 @@ final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExcep
     /**
      * @param string[]|null $ignoredExceptions
      */
-    public function __construct(
-        ?array $ignoredExceptions = null,
-        bool $ignoreValidationErrors = null
-    )
+    public function __construct(?array $ignoredExceptions = null, bool $ignoreValidationErrors = null)
     {
         $this->ignoredExceptions = $ignoredExceptions ?? [HttpExceptionInterface::class];
         $this->ignoreValidationErrors = $ignoreValidationErrors ?? true;
@@ -39,8 +36,8 @@ final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExcep
             }
         }
 
-        if($this->ignoreValidationErrors){
-           return ApiPlatformValidationErrorResponseBuilder::supports($throwable);
+        if ($this->ignoreValidationErrors) {
+            return ApiPlatformValidationErrorResponseBuilder::supports($throwable);
         }
 
         return false;

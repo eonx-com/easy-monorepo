@@ -17,5 +17,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(ApiPlatformBuilderProvider::class)
         ->arg('$keys', '%' . BridgeConstantsInterface::PARAM_RESPONSE_KEYS . '%')
         ->arg('$transformValidationErrors', '%' . BridgeConstantsInterface::PARAM_TRANSFORM_VALIDATION_ERRORS . '%');
-
 };

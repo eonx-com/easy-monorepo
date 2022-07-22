@@ -39,7 +39,7 @@ final class ApiPlatformBuilderProvider implements ErrorResponseBuilderProviderIn
     {
         if (\class_exists(ValidationException::class)) {
             yield new ApiPlatformValidationExceptionResponseBuilder($this->translator, $this->keys);
-            if($this->transformValidationErrors) {
+            if ($this->transformValidationErrors) {
                 yield new ApiPlatformValidationErrorResponseBuilder();
             }
         }
