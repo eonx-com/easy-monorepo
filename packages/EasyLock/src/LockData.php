@@ -8,25 +8,13 @@ use EonX\EasyLock\Interfaces\LockDataInterface;
 
 final class LockData implements LockDataInterface
 {
-    /**
-     * @var string
-     */
-    private $resource;
+    private bool $retry;
 
-    /**
-     * @var bool
-     */
-    private $retry;
-
-    /**
-     * @var null|float
-     */
-    private $ttl;
-
-    public function __construct(string $resource, ?float $ttl = null, ?bool $retry = null)
-    {
-        $this->resource = $resource;
-        $this->ttl = $ttl;
+    public function __construct(
+        private string $resource,
+        private ?float $ttl = null,
+        ?bool $retry = null
+    ) {
         $this->retry = $retry ?? false;
     }
 
@@ -48,5 +36,14 @@ final class LockData implements LockDataInterface
     public function shouldRetry(): bool
     {
         return $this->retry;
+    }
+
+    public function update(?string $resource = null, ?float $ttl = null, ?bool $shouldRetry = null): LockDataInterface
+    {
+        $this->resource = $resource ?? $this->resource;
+        $this->ttl = $ttl ?? $this->ttl;
+        $this->retry = $shouldRetry ?? $this->retry;
+
+        return $this;
     }
 }

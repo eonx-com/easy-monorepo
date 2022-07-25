@@ -11,4 +11,6 @@ interface LockDataInterface
     public function getTtl(): ?float;
 
     public function shouldRetry(): bool;
+
+    public function update(?string $resource = null, ?float $ttl = null, ?bool $shouldRetry = null): self;
 }
