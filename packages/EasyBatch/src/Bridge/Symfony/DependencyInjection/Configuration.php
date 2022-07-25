@@ -33,6 +33,7 @@ final class Configuration implements ConfigurationInterface
                     ->defaultValue(BatchItemRepositoryInterface::DEFAULT_TABLE)
                 ->end()
                 ->scalarNode('date_time_format')->defaultValue(BatchObjectInterface::DATETIME_FORMAT)->end()
+                ->floatNode('lock_ttl')->defaultNull()->end()
             ->end();
 
         return $treeBuilder;

@@ -39,6 +39,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_LOCK_TTL = 'easy_batch.lock.ttl';
+
+    /**
+     * @var string
+     */
     public const SERVICE_BATCH_ID_STRATEGY = 'easy_batch.batch.id_strategy';
 
     /**
