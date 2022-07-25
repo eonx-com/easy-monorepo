@@ -26,6 +26,8 @@ final class Configuration implements ConfigurationInterface
                     ->beforeNormalization()->castToArray()->end()
                     ->scalarPrototype()->end()
                 ->end()
+                ->booleanNode('bugsnag_ignore_validation_errors')->defaultTrue()->end()
+                ->booleanNode('transform_validation_errors')->defaultTrue()->end()
                 ->arrayNode('logger_exception_log_levels')
                     ->beforeNormalization()->castToArray()->end()
                     ->integerPrototype()->end()

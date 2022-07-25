@@ -9,7 +9,7 @@ use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Throwable;
 
-final class ApiPlatformValidationExceptionBuilder extends AbstractErrorResponseBuilder
+final class ApiPlatformValidationExceptionResponseBuilder extends AbstractErrorResponseBuilder
 {
     /**
      * @var string[]
