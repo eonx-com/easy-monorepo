@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
 
+use EonX\EasyBatch\Bridge\Symfony\Messenger\Lock\BatchItemLockFactoryInterface;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemStamp;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
@@ -13,7 +14,6 @@ use EonX\EasyBatch\Interfaces\CurrentBatchObjectsAwareInterface;
 use EonX\EasyBatch\Processors\BatchItemProcessor;
 use EonX\EasyBatch\Processors\BatchProcessor;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
-use EonX\EasyLock\LockData;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
@@ -26,6 +26,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         private readonly BatchItemExceptionHandler $batchItemExceptionHandler,
         private readonly BatchItemRepositoryInterface $batchItemRepository,
         private readonly BatchItemProcessor $batchItemProcessor,
+        private readonly BatchItemLockFactoryInterface $batchItemLockFactory,
         private readonly BatchProcessor $batchProcessor,
         private readonly LockServiceInterface $lockService
     ) {
@@ -54,8 +55,8 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
             // Since items can be dispatched multiple times to guarantee all items are dispatched
             // We must protect the processing logic with a lock to make sure the same item isn't processed
             // by multiple workers concurrently.
-            $result = $this->processBatchItemWithLock(
-                $batchItemStamp->getBatchItemId(),
+            $result = $this->lockService->processWithLock(
+                $this->batchItemLockFactory->createFromEnvelope($envelope),
                 function () use ($batchItemStamp, $message, $func) {
                     $batchItem = $this->batchItemRepository->findForProcess($batchItemStamp->getBatchItemId());
                     $batch = $this->batchRepository
@@ -105,12 +106,5 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
                 ->next()
                 ->handle($envelope, $stack);
         };
-    }
-
-    private function processBatchItemWithLock(int|string $batchItemId, \Closure $func): mixed
-    {
-        $lockData = LockData::create(\sprintf('easy_batch_item_%s', $batchItemId), null, true);
-
-        return $this->lockService->processWithLock($lockData, $func);
     }
 }

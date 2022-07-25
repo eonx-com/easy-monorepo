@@ -22,6 +22,7 @@ final class EasyBatchExtension extends Extension
         'batch_item_per_page' => BridgeConstantsInterface::PARAM_BATCH_ITEM_PER_PAGE,
         'batch_item_table' => BridgeConstantsInterface::PARAM_BATCH_ITEM_TABLE,
         'date_time_format' => BridgeConstantsInterface::PARAM_DATE_TIME_FORMAT,
+        'lock_ttl' => BridgeConstantsInterface::PARAM_LOCK_TTL,
     ];
 
     /**

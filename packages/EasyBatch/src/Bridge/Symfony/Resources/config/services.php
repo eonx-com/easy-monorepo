@@ -12,6 +12,8 @@ use EonX\EasyBatch\Bridge\Symfony\Messenger\BatchItemExceptionHandler;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\DispatchBatchMiddleware;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Emergency\ProcessBatchForBatchItemHandler;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Emergency\UpdateBatchItemHandler;
+use EonX\EasyBatch\Bridge\Symfony\Messenger\Lock\BatchItemLockFactory;
+use EonX\EasyBatch\Bridge\Symfony\Messenger\Lock\BatchItemLockFactoryInterface;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\ProcessBatchItemMiddleware;
 use EonX\EasyBatch\Bridge\Symfony\Serializers\MessageSerializerDecorator;
 use EonX\EasyBatch\Dispatchers\BatchItemDispatcher;
@@ -85,6 +87,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(BatchItemExceptionHandler::class)
         ->arg('$batchItemTransformer', service(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER))
         ->arg('$container', service('service_container'));
+
+    $services
+        ->set(BatchItemLockFactoryInterface::class, BatchItemLockFactory::class)
+        ->arg('$ttl', param(BridgeConstantsInterface::PARAM_LOCK_TTL));
 
     $services
         ->set(DispatchBatchMiddleware::class)
