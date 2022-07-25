@@ -82,6 +82,9 @@ final class HttpFoundationHelper
                 return '';
             }, 4096);
 
+            // Send buffered output to buffer (echo, var_dump, etc)
+            echo $bufferedOutput;
+
             // Send streamed content to buffer
             $hfResponse->sendContent();
 
@@ -90,6 +93,8 @@ final class HttpFoundationHelper
 
             // End swoole response
             $response->end();
+
+            return;
         }
 
         // Support "simple" binary file response
