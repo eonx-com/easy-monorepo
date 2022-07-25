@@ -38,18 +38,12 @@ final class LockData implements LockDataInterface
         return $this->retry;
     }
 
-    public function update(?string $resource = null, ?float $ttl = null, ?bool $shouldRetry = null): void
+    public function update(?string $resource = null, ?float $ttl = null, ?bool $shouldRetry = null): LockDataInterface
     {
-        if ($resource !== null) {
-            $this->resource = $resource;
-        }
+        $this->resource = $resource ?? $this->resource;
+        $this->ttl = $ttl ?? $this->ttl;
+        $this->retry = $shouldRetry ?? $this->retry;
 
-        if ($ttl !== null) {
-            $this->ttl = $ttl;
-        }
-
-        if ($shouldRetry !== null) {
-            $this->retry = $shouldRetry;
-        }
+        return $this;
     }
 }
