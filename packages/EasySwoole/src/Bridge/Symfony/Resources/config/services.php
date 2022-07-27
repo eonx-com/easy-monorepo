@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Bridge\Symfony\Listeners\ApplicationStateCheckListener;
+use EonX\EasySwoole\Bridge\Symfony\Listeners\ApplicationStateInitListener;
 use EonX\EasySwoole\Bridge\Symfony\Listeners\ApplicationStateResetListener;
 use EonX\EasySwoole\Bridge\Symfony\Listeners\SwooleDdListener;
 use EonX\EasySwoole\Bridge\Symfony\Listeners\TrustedProxiesListener;
@@ -15,6 +16,11 @@ return static function (ContainerConfigurator $container): void {
     $services->defaults()
         ->autoconfigure()
         ->autowire();
+
+    $services
+        ->set(ApplicationStateInitListener::class)
+        ->arg('$appStateInitializers', tagged_iterator(BridgeConstantsInterface::TAG_APP_STATE_INITIALIZER))
+        ->tag('kernel.event_listener', ['priority' => 50000]);
 
     $services
         ->set(ApplicationStateResetListener::class)

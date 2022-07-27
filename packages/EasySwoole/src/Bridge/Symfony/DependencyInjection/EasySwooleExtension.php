@@ -7,6 +7,7 @@ namespace EonX\EasySwoole\Bridge\Symfony\DependencyInjection;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Interfaces\AppStateCheckerInterface;
+use EonX\EasySwoole\Interfaces\AppStateInitializerInterface;
 use EonX\EasySwoole\Interfaces\AppStateResetterInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -53,6 +54,10 @@ final class EasySwooleExtension extends Extension
         $container
             ->registerForAutoconfiguration(AppStateCheckerInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_APP_STATE_CHECKER);
+
+        $container
+            ->registerForAutoconfiguration(AppStateInitializerInterface::class)
+            ->addTag(BridgeConstantsInterface::TAG_APP_STATE_INITIALIZER);
 
         $container
             ->registerForAutoconfiguration(AppStateResetterInterface::class)
