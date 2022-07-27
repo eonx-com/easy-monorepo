@@ -12,6 +12,7 @@ final class ManagersResetter extends AbstractAppStateResetter
 {
     public function __construct(
         private readonly ManagerRegistry $managerRegistry,
+        private readonly bool $resetDbalConnections,
         ?int $priority = null
     ) {
         parent::__construct($priority);
@@ -22,7 +23,7 @@ final class ManagersResetter extends AbstractAppStateResetter
         foreach ($this->managerRegistry->getManagers() as $manager) {
             $manager->clear();
 
-            if ($manager instanceof EntityManagerInterface) {
+            if ($this->resetDbalConnections && $manager instanceof EntityManagerInterface) {
                 $manager->getConnection()
                     ->close();
             }
