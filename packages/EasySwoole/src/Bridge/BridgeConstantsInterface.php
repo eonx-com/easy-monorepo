@@ -29,6 +29,11 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const PARAM_RESET_DOCTRINE_DBAL_CONNECTIONS = 'easy_swoole.reset_doctrine_dbal_connections';
+
+    /**
+     * @var string
+     */
     public const PARAM_STATIC_PHP_FILES_ALLOWED_DIRS = 'easy_swoole.static_php_files_allowed_dirs';
 
     /**

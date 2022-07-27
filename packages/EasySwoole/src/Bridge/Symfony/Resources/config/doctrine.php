@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Bridge\Doctrine\Orm\ManagersChecker;
 use EonX\EasySwoole\Bridge\Doctrine\Orm\ManagersResetter;
 
@@ -13,7 +14,9 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure()
         ->autowire();
 
+    $services->set(ManagersChecker::class);
+
     $services
-        ->set(ManagersChecker::class)
-        ->set(ManagersResetter::class);
+        ->set(ManagersResetter::class)
+        ->arg('$resetDbalConnections', param(BridgeConstantsInterface::PARAM_RESET_DOCTRINE_DBAL_CONNECTIONS));
 };

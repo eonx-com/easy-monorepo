@@ -17,6 +17,7 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
         ],
         'doctrine' => [
             'enabled' => true,
+            'reset_dbal_connections' => true,
         ],
         'easy_batch' => [
             'enabled' => true,

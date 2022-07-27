@@ -24,6 +24,10 @@ final class EasySwooleExtension extends Extension
         'reset_batch_processor' => BridgeConstantsInterface::PARAM_RESET_EASY_BATCH_PROCESSOR,
     ];
 
+    private const DOCTRINE_CONFIG = [
+        'reset_dbal_connections' => BridgeConstantsInterface::PARAM_RESET_DOCTRINE_DBAL_CONNECTIONS,
+    ];
+
     private const REQUEST_LIMITS_CONFIG = [
         'min' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MIN,
         'max' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MAX,
@@ -63,6 +67,10 @@ final class EasySwooleExtension extends Extension
         }
 
         if (($config['doctrine']['enabled'] ?? true) && \interface_exists(ManagerRegistry::class)) {
+            foreach (self::DOCTRINE_CONFIG as $configName => $param) {
+                $container->setParameter($param, $config['doctrine'][$configName]);
+            }
+
             $loader->load('doctrine.php');
         }
 

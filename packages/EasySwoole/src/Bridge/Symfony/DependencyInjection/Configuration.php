@@ -28,6 +28,7 @@ final class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('enabled')->defaultTrue()->end()
+                        ->booleanNode('reset_dbal_connections')->defaultTrue()->end()
                     ->end()
                 ->end()
                 ->arrayNode('easy_batch')
