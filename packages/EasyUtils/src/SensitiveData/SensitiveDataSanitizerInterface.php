@@ -12,6 +12,7 @@ interface SensitiveDataSanitizerInterface
         'access_token',
         'apikey',
         'auth_basic',
+        'auth_bearer',
         'authorization',
         'card_number',
         'cert',
