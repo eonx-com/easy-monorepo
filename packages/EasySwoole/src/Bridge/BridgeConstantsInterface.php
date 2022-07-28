@@ -59,5 +59,10 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
+    public const TAG_APP_STATE_INITIALIZER = 'easy_swoole.app_state_initializer';
+
+    /**
+     * @var string
+     */
     public const TAG_APP_STATE_RESETTER = 'easy_swoole.app_state_resetter';
 }
