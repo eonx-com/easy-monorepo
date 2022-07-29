@@ -28,8 +28,13 @@ abstract class AbstractInputDataTransformer implements DataTransformerInterface
      */
     public function supportsTransformation(mixed $data, string $to, ?array $context = null): bool
     {
-        return $to === $this->getApiResourceClass()
-            && ($context['input']['class'] ?? null) === $this->getInputDtoClass();
+        $apiResourceClass = $this->getApiResourceClass();
+
+        if ($data instanceof $apiResourceClass) {
+            return false;
+        }
+
+        return $to === $apiResourceClass && ($context['input']['class'] ?? null) === $this->getInputDtoClass();
     }
 
     /**
@@ -38,7 +43,7 @@ abstract class AbstractInputDataTransformer implements DataTransformerInterface
      */
     public function transform(mixed $object, string $to, ?array $context = null): object
     {
-        $this->validator->validate($object);
+        $this->doValidate($object);
 
         return $this->doTransform($object, $context);
     }
@@ -51,4 +56,12 @@ abstract class AbstractInputDataTransformer implements DataTransformerInterface
     abstract protected function getApiResourceClass(): string;
 
     abstract protected function getInputDtoClass(): string;
+
+    /**
+     * @param object $object
+     */
+    protected function doValidate(mixed $object): void
+    {
+        $this->validator->validate($object);
+    }
 }
