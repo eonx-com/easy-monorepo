@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-core": "^4.1.40",
-        "eonx-com/easy-utils": "^4.1.40",
+        "eonx-com/easy-core": "^4.2",
+        "eonx-com/easy-utils": "^4.2",
         "symfony/console": "^5.4 || ^6.0",
         "nesbot/carbon": "^2.22",
         "nette/utils": "^3.1",
