@@ -163,6 +163,16 @@ final class EasySwooleRunner implements RunnerInterface
      */
     private function hotReload(Server $server, array $dirs, array $extensions): void
     {
+        $fswatchCheckProcess = new SymfonyProcess(['which', 'fswatch']);
+        $fswatchCheckProcess->run();
+        $fswatchPath = $fswatchCheckProcess->getOutput();
+
+        if ($fswatchPath === '') {
+            OutputHelper::writeln('fswatch not found, hot reload disabled');
+
+            return;
+        }
+
         // Format and filter dirs
         $dirs = \array_filter(\array_map(static function (string $dir): ?string {
             $realpath = \realpath($dir);
@@ -170,11 +180,20 @@ final class EasySwooleRunner implements RunnerInterface
             return \is_string($realpath) ? $realpath : null;
         }, $dirs));
 
+        if (\count($dirs) < 1) {
+            OutputHelper::writeln('No directories to watch, hot reload disabled');
+
+            return;
+        }
+
+        if (\count($extensions) < 1) {
+            OutputHelper::writeln('No extensions to watch, hot reload disabled');
+
+            return;
+        }
+
         OutputHelper::writeln('HotReload enabled');
-        OutputHelper::writeln(\sprintf(
-            'Monitoring changes in following dirs: %s',
-            \implode(', ', $dirs)
-        ));
+        OutputHelper::writeln(\sprintf('Monitoring changes in following dirs: %s', \implode(', ', $dirs)));
 
         $server->addProcess(new SwooleProcess(static function () use ($dirs, $extensions, $server): void {
             $cmd = [
