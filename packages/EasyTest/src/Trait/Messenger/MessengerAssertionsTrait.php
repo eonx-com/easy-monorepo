@@ -158,7 +158,7 @@ trait MessengerAssertionsTrait
     public static function getMessagesSentToTransport(string $transportName, ?string $messageClass = null): array
     {
         /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $transport */
-        $transport = KernelTestCase::getContainer()->get("messenger.transport.$transportName");
+        $transport = KernelTestCase::getContainer()->get("messenger.transport.${transportName}");
 
         $messages = [];
         foreach ($transport->getSent() as $envelope) {
@@ -175,13 +175,13 @@ trait MessengerAssertionsTrait
     private static function runMessengerWorker(string $transportName, string $busName): void
     {
         /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $asyncTransport */
-        $asyncTransport = KernelTestCase::getContainer()->get("messenger.transport.$transportName");
+        $asyncTransport = KernelTestCase::getContainer()->get("messenger.transport.${transportName}");
 
         /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
         $eventDispatcher = KernelTestCase::getContainer()->get(EventDispatcherInterface::class);
 
         /** @var \Symfony\Component\Messenger\MessageBusInterface $messageBus */
-        $messageBus = KernelTestCase::getContainer()->get("messenger.bus.$busName");
+        $messageBus = KernelTestCase::getContainer()->get("messenger.bus.${busName}");
 
         $tries = 0;
         $messageLimitListener = null;
