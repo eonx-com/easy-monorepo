@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyTest\Trait\Messenger;
+namespace EonX\EasyTest\Traits;
 
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
