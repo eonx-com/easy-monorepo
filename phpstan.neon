@@ -219,6 +219,9 @@ parameters:
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
           path: packages/EasySwoole/src/Resources/functions/dump.php
 
+        - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
+          path: packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+
         # ---- EasyTest ----
         - message: '#Unsafe usage of new static\(\)#'
           path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
