@@ -35,7 +35,13 @@ final class RegisterSecurityContextPass implements CompilerPassInterface
         $container
             ->setDefinition($contextServiceId, new Definition(SecurityContextInterface::class))
             ->setFactory([new Reference(SecurityContextResolverInterface::class), 'resolveContext'])
-            ->setPublic(true);
+            ->setPublic(true)
+            ->setDeprecated(
+                'eonx-com/easy-security',
+                '4.1.37',
+                'The "%service_id%" service autowiring is deprecated and will be removed in 5.0.' .
+                ' Use SecurityContextResolverInterface::resolveContext instead.'
+            );
 
         if ($contextServiceId !== SecurityContextInterface::class) {
             $container->setAlias(SecurityContextInterface::class, $contextServiceId);
