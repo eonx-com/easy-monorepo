@@ -15,14 +15,14 @@ use EonX\EasyHttpClient\Tests\AbstractTestCase;
 use Exception;
 use Mockery\MockInterface;
 
-class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
+final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
 {
     /**
      * @param array<string, mixed> $expectedMetadata
      *
      * @dataProvider provideEvents
      */
-    public function testItSucceeds(HttpRequestSentEvent $event, array $expectedMetadata): void
+    public function testPrepareMetadataSucceeds(HttpRequestSentEvent $event, array $expectedMetadata): void
     {
         $bugsnagClient = $this->mockBugsnagClient($expectedMetadata);
         $sut = new HttpRequestSentBreadcrumbListener($bugsnagClient);

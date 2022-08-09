@@ -82,7 +82,7 @@ final class HttpRequestSentBreadcrumbListener
         $this->client->leaveBreadcrumb(
             self::BREADCRUMB_NAME,
             Breadcrumb::REQUEST_TYPE,
-            $this->filterMetadata($metadata)
+            $this->prepareMetadata($metadata)
         );
     }
 
@@ -96,28 +96,6 @@ final class HttpRequestSentBreadcrumbListener
         $breadcrumbData['metaData'] = $metadata;
 
         return \strlen((string)\json_encode($breadcrumbData));
-    }
-
-    /**
-     * @param array<string, mixed> $metadata
-     *
-     * @return array<string, mixed>
-     */
-    private function filterMetadata(array $metadata): array
-    {
-        $metadataAttributes = self::METADATA_ATTRIBUTES_PRIORITY_LIST;
-
-        while (
-            $this->calculateBreadcrumbSize($metadata) > Breadcrumb::MAX_SIZE &&
-            \count($metadataAttributes) !== 0 &&
-            \count($metadata) !== 0
-        ) {
-            $attributeToRemove = \array_shift($metadataAttributes);
-
-            unset($metadata[$attributeToRemove]);
-        }
-
-        return $metadata;
     }
 
     private function getCarbonInstance(DateTimeInterface $dateTime): Carbon
@@ -144,5 +122,27 @@ final class HttpRequestSentBreadcrumbListener
             $receivedAt->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
             $receivedAt->diffForHumans($sentAt, null, true)
         );
+    }
+
+    /**
+     * @param array<string, mixed> $metadata
+     *
+     * @return array<string, mixed>
+     */
+    private function prepareMetadata(array $metadata): array
+    {
+        $metadataAttributes = self::METADATA_ATTRIBUTES_PRIORITY_LIST;
+
+        while (
+            $this->calculateBreadcrumbSize($metadata) > Breadcrumb::MAX_SIZE &&
+            \count($metadataAttributes) !== 0 &&
+            \count($metadata) !== 0
+        ) {
+            $attributeToRemove = \array_shift($metadataAttributes);
+
+            unset($metadata[$attributeToRemove]);
+        }
+
+        return $metadata;
     }
 }
