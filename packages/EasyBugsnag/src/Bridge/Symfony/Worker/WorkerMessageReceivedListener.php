@@ -67,7 +67,7 @@ final class WorkerMessageReceivedListener
                 'worker' => [
                     'Message' => $this->dump($envelope->getMessage()),
                     'Receiver Name' => $this->event->getReceiverName(),
-                    'Received At' => $this->receivedAt->format('Y-m-d H:m:i.u'),
+                    'Received At' => $this->receivedAt->format('Y-m-d H:i:s.u'),
                     'Stamps' => $this->dump($envelope->all()),
                 ],
             ]);
