@@ -107,9 +107,6 @@ parameters:
           path: packages/EasyErrorHandler/src/Providers/ErrorCodesProvider.php
 
         # ---- EasyHttpClient ----
-        - message: '#Method EonX\\EasyHttpClient\\Bridge\\EasyBugsnag\\HttpRequestSentBreadcrumbListener\:\:getCarbon\(\) should return Carbon\\Carbon but returns Carbon\\Carbon\|false#'
-          path: packages/EasyHttpClient/src/Bridge/EasyBugsnag/HttpRequestSentBreadcrumbListener.php
-
         # ---- EasyLock ----
         # ---- EasyLogging ----DoctrineDbalLengthAwarePaginator
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Tests;
 
+use Mockery;
+use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -13,6 +15,21 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    /**
+     * @param class-string $target
+     */
+    protected function mock(string $target, ?callable $expectations = null): MockInterface
+    {
+        /** @var \Mockery\MockInterface $mock */
+        $mock = Mockery::mock($target);
+
+        if ($expectations !== null) {
+            $expectations($mock);
+        }
+
+        return $mock;
+    }
+
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -21,6 +38,10 @@ abstract class AbstractTestCase extends TestCase
         if ($fs->exists($var)) {
             $fs->remove($var);
         }
+
+        $this->addToAssertionCount(Mockery::getContainer()->mockery_getExpectationCount());
+
+        Mockery::close();
 
         parent::tearDown();
     }

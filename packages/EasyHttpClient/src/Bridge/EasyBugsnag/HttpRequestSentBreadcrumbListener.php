@@ -7,79 +7,114 @@ namespace EonX\EasyHttpClient\Bridge\EasyBugsnag;
 use Bugsnag\Breadcrumbs\Breadcrumb;
 use Bugsnag\Client;
 use Carbon\Carbon;
+use DateTimeInterface;
 use EonX\EasyHttpClient\Events\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Interfaces\EasyHttpClientConstantsInterface;
 
 final class HttpRequestSentBreadcrumbListener
 {
-    /**
-     * @var \Bugsnag\Client
-     */
-    private $client;
+    public const BREADCRUMB_NAME = 'HTTP Request Sent';
 
-    public function __construct(Client $client)
+    public const DEFAULT_TIMING_MESSAGE = 'No timing available';
+
+    // The metadata attributes priority list (low to high).
+    private const METADATA_ATTRIBUTES_PRIORITY_LIST = [
+        self::METADATA_ATTRIBUTE_RESPONSE_HEADERS,
+        self::METADATA_ATTRIBUTE_REQUEST_OPTIONS,
+        self::METADATA_ATTRIBUTE_RESPONSE_CONTENT,
+        self::METADATA_ATTRIBUTE_THROWABLE_CLASS,
+        self::METADATA_ATTRIBUTE_THROWABLE_MESSAGE,
+        self::METADATA_ATTRIBUTE_TIMING,
+        self::METADATA_ATTRIBUTE_RESPONSE_STATUS_CODE,
+        self::METADATA_ATTRIBUTE_REQUEST,
+    ];
+
+    private const METADATA_ATTRIBUTE_REQUEST = 'Request';
+
+    private const METADATA_ATTRIBUTE_REQUEST_OPTIONS = 'Request Options';
+
+    private const METADATA_ATTRIBUTE_RESPONSE_CONTENT = 'Response Content';
+
+    private const METADATA_ATTRIBUTE_RESPONSE_HEADERS = 'Response Headers';
+
+    private const METADATA_ATTRIBUTE_RESPONSE_STATUS_CODE = 'Response Status Code';
+
+    private const METADATA_ATTRIBUTE_THROWABLE_CLASS = 'Throwable Class';
+
+    private const METADATA_ATTRIBUTE_THROWABLE_MESSAGE = 'Throwable Message';
+
+    private const METADATA_ATTRIBUTE_TIMING = 'Timing';
+
+    public function __construct(private Client $client)
     {
-        $this->client = $client;
+        // The body is not required
     }
 
     public function __invoke(HttpRequestSentEvent $event): void
-    {
-        $this->handle($event);
-    }
-
-    public function handle(HttpRequestSentEvent $event): void
     {
         $receivedAt = null;
         $request = $event->getRequestData();
         $response = $event->getResponseData();
         $throwable = $event->getThrowable();
 
-        $metaData = [
-            'Request' => \sprintf('%s - %s', $request->getMethod(), $request->getUrl()),
-            'Request Options' => \json_encode($request->getOptions()),
+        $metadata = [
+            self::METADATA_ATTRIBUTE_REQUEST => \sprintf('%s - %s', $request->getMethod(), $request->getUrl()),
+            self::METADATA_ATTRIBUTE_REQUEST_OPTIONS => \json_encode($request->getOptions()),
         ];
 
         if ($response !== null) {
-            $metaData['Response Status Code'] = $response->getStatusCode();
-            $metaData['Response Content'] = $response->getContent();
-            $metaData['Response Headers'] = \json_encode($response->getHeaders());
+            $metadata[self::METADATA_ATTRIBUTE_RESPONSE_STATUS_CODE] = $response->getStatusCode();
+            $metadata[self::METADATA_ATTRIBUTE_RESPONSE_CONTENT] = $response->getContent();
+            $metadata[self::METADATA_ATTRIBUTE_RESPONSE_HEADERS] = \json_encode($response->getHeaders());
 
             $receivedAt = $response->getReceivedAt();
         }
 
         if ($throwable !== null) {
-            $metaData['Throwable Class'] = \get_class($throwable);
-            $metaData['Throwable Message'] = $throwable->getMessage();
+            $metadata[self::METADATA_ATTRIBUTE_THROWABLE_CLASS] = $throwable::class;
+            $metadata[self::METADATA_ATTRIBUTE_THROWABLE_MESSAGE] = $throwable->getMessage();
 
             $receivedAt = $event->getThrowableThrownAt();
         }
 
-        $metaData['Timing'] = $this->getTimingMessage($request->getSentAt(), $receivedAt);
+        $metadata[self::METADATA_ATTRIBUTE_TIMING] = $this->getTimingMessage($request->getSentAt(), $receivedAt);
 
-        $this->client->leaveBreadcrumb('HTTP Request Sent', Breadcrumb::REQUEST_TYPE, $metaData);
+        $this->client->leaveBreadcrumb(
+            self::BREADCRUMB_NAME,
+            Breadcrumb::REQUEST_TYPE,
+            $this->prepareMetadata($metadata)
+        );
     }
 
-    private function getCarbon(\DateTimeInterface $dateTime): Carbon
+    /**
+     * @param array<string, mixed> $metadata
+     */
+    private function calculateBreadcrumbSize(array $metadata): int
+    {
+        $breadcrumb = new Breadcrumb(self::BREADCRUMB_NAME, Breadcrumb::REQUEST_TYPE, $metadata);
+        $breadcrumbData = $breadcrumb->toArray();
+        $breadcrumbData['metaData'] = $metadata;
+
+        return \strlen((string)\json_encode($breadcrumbData));
+    }
+
+    private function getCarbonInstance(DateTimeInterface $dateTime): Carbon
     {
         if ($dateTime instanceof Carbon) {
             return $dateTime;
         }
 
-        return Carbon::createFromFormat(
-            EasyHttpClientConstantsInterface::DATE_TIME_FORMAT,
-            $dateTime->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
-            $dateTime->getTimezone()
-        );
+        return Carbon::instance($dateTime);
     }
 
-    private function getTimingMessage(\DateTimeInterface $sentAt, ?\DateTimeInterface $receivedAt = null): string
+    private function getTimingMessage(DateTimeInterface $sentAt, ?DateTimeInterface $receivedAt = null): string
     {
         if ($receivedAt === null) {
-            return 'No timing available';
+            return self::DEFAULT_TIMING_MESSAGE;
         }
 
-        $sentAt = $this->getCarbon($sentAt);
-        $receivedAt = $this->getCarbon($receivedAt);
+        $sentAt = $this->getCarbonInstance($sentAt);
+        $receivedAt = $this->getCarbonInstance($receivedAt);
 
         return \sprintf(
             '%s - %s | %s',
@@ -87,5 +122,27 @@ final class HttpRequestSentBreadcrumbListener
             $receivedAt->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
             $receivedAt->diffForHumans($sentAt, null, true)
         );
+    }
+
+    /**
+     * @param array<string, mixed> $metadata
+     *
+     * @return array<string, mixed>
+     */
+    private function prepareMetadata(array $metadata): array
+    {
+        $metadataAttributes = self::METADATA_ATTRIBUTES_PRIORITY_LIST;
+
+        while (
+            $this->calculateBreadcrumbSize($metadata) > Breadcrumb::MAX_SIZE &&
+            \count($metadataAttributes) !== 0 &&
+            \count($metadata) !== 0
+        ) {
+            $attributeToRemove = \array_shift($metadataAttributes);
+
+            unset($metadata[$attributeToRemove]);
+        }
+
+        return $metadata;
     }
 }
