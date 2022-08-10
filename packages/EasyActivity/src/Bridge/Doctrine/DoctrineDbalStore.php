@@ -40,8 +40,10 @@ final class DoctrineDbalStore implements StoreInterface
     {
         $data = [
             'id' => $this->idFactory->create(),
-            'created_at' => $logEntry->getCreatedAt(),
-            'updated_at' => $logEntry->getUpdatedAt(),
+            'created_at' => $logEntry->getCreatedAt()
+                ->format('Y-m-d H:i:s.u'),
+            'updated_at' => $logEntry->getUpdatedAt()
+                ->format('Y-m-d H:i:s.u'),
             'actor_type' => $logEntry->getActorType(),
             'actor_id' => $logEntry->getActorId(),
             'actor_name' => $logEntry->getActorName(),
