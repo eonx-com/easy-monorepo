@@ -87,7 +87,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
 
     public function testLoggerSucceedsForDeletedSubjects(): void
     {
-        Carbon::setTestNow('2021-10-10 10:00:00');
+        Carbon::setTestNow('2021-10-10 10:00:00.001001');
         $entityManager = EntityManagerStub::createFromEasyActivityConfig(
             [
                 'subjects' => [
@@ -131,14 +131,14 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                 'comments' => [],
                 'id' => 1,
             ]),
-            'created_at' => '2021-10-10 10:00:00',
-            'updated_at' => '2021-10-10 10:00:00',
+            'created_at' => '2021-10-10 10:00:00.001001',
+            'updated_at' => '2021-10-10 10:00:00.001001',
         ], $logEntries[1]);
     }
 
     public function testLoggerSucceedsForUpdatedSubjects(): void
     {
-        Carbon::setTestNow('2021-10-10 10:00:00');
+        Carbon::setTestNow('2021-10-10 10:00:00.899933');
         $entityManager = EntityManagerStub::createFromEasyActivityConfig(
             [
                 'subjects' => [
@@ -175,8 +175,8 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                 'title' => 'Title 1',
             ]),
             'subject_old_data' => null,
-            'created_at' => '2021-10-10 10:00:00',
-            'updated_at' => '2021-10-10 10:00:00',
+            'created_at' => '2021-10-10 10:00:00.899933',
+            'updated_at' => '2021-10-10 10:00:00.899933',
         ], $logEntries[0]);
         self::assertEquals([
             'actor_type' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
@@ -191,8 +191,8 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'subject_old_data' => \json_encode([
                 'title' => 'Title 1',
             ]),
-            'created_at' => '2021-10-10 10:00:00',
-            'updated_at' => '2021-10-10 10:00:00',
+            'created_at' => '2021-10-10 10:00:00.899933',
+            'updated_at' => '2021-10-10 10:00:00.899933',
         ], $logEntries[1]);
     }
 
