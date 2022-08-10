@@ -51,7 +51,7 @@ abstract class AbstractInputDataTransformer implements DataTransformerInterface
     /**
      * @param array<string, mixed>|null $context
      */
-    abstract protected function doTransform(object $dto, ?array $context = null): object;
+    abstract protected function doTransform(object $object, ?array $context = null): object;
 
     abstract protected function getApiResourceClass(): string;
 
