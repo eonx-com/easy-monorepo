@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyLock\Bridge\Symfony\SchemaListener;
+namespace EonX\EasyLock\Bridge\Symfony\Subscribers;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;

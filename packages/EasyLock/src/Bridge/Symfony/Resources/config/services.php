@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyLock\Bridge\BridgeConstantsInterface;
-use EonX\EasyLock\Bridge\Symfony\SchemaListener\EasyLockDoctrineSchemaSubscriber;
+use EonX\EasyLock\Bridge\Symfony\Subscribers\EasyLockDoctrineSchemaSubscriber;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockService;
 
