@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\DBAL\Types;
 
+use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
 use Doctrine\DBAL\Types\ConversionException;
@@ -13,6 +15,8 @@ use Doctrine\DBAL\Types\DateTimeImmutableType;
 
 final class DateTimeImmutableMicrosecondsType extends DateTimeImmutableType
 {
+    private static ?DateTimeZone $utc = null;
+
     /**
      * @var string
      */
@@ -49,8 +53,8 @@ final class DateTimeImmutableMicrosecondsType extends DateTimeImmutableType
             return $value;
         }
 
-        if ($value instanceof DateTimeInterface) {
-            return $value->format(self::FORMAT_PHP_DATETIME);
+        if ($value instanceof DateTimeImmutable || $value instanceof DateTime) {
+            return $value->setTimezone(self::getUtc())->format(self::FORMAT_PHP_DATETIME);
         }
 
         throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateTimeImmutable']);
@@ -67,8 +71,8 @@ final class DateTimeImmutableMicrosecondsType extends DateTimeImmutableType
             return $value;
         }
 
-        $val = DateTimeImmutable::createFromFormat(self::FORMAT_PHP_DATETIME, $value)
-            ?: \date_create_immutable($value);
+        $val = DateTimeImmutable::createFromFormat(self::FORMAT_PHP_DATETIME, $value, self::getUtc())
+            ?: \date_create_immutable($value, self::getUtc());
 
         if ($val !== false) {
             return $val;
@@ -100,5 +104,14 @@ final class DateTimeImmutableMicrosecondsType extends DateTimeImmutableType
         }
 
         return self::FORMAT_DB_DATETIME;
+    }
+
+    private static function getUtc(): DateTimeZone
+    {
+        if (self::$utc === null) {
+            self::$utc = new DateTimeZone('UTC');
+        }
+
+        return self::$utc;
     }
 }

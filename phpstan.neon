@@ -106,11 +106,6 @@ parameters:
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
           path: packages/EasyErrorHandler/src/Providers/ErrorCodesProvider.php
 
-        # ---- EasyHttpClient ----
-        - message: '#Method EonX\\EasyHttpClient\\Bridge\\EasyBugsnag\\HttpRequestSentBreadcrumbListener\:\:getCarbon\(\) should return Carbon\\Carbon but returns Carbon\\Carbon\|false#'
-          path: packages/EasyHttpClient/src/Bridge/EasyBugsnag/HttpRequestSentBreadcrumbListener.php
-
-        # ---- EasyLock ----
         # ---- EasyLogging ----DoctrineDbalLengthAwarePaginator
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
@@ -218,6 +213,9 @@ parameters:
 
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
           path: packages/EasySwoole/src/Resources/functions/dump.php
+
+        - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
+          path: packages/EasySwoole/src/Runtime/EasySwooleRunner.php
 
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
