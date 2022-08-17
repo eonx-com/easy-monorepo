@@ -7,7 +7,6 @@ namespace EonX\EasyUtils\CreditCard;
 final class CreditCardNumberValidator
 {
     private const CARD_TYPES = [
-
         // Debit cards must come first, since they have more specific patterns than their credit-card equivalents.
         'visaelectron' => [
             'type' => 'visaelectron',
@@ -84,6 +83,10 @@ final class CreditCardNumberValidator
         // Strip non-numeric characters
         $number = preg_replace('/\D/', '', $number);
 
+        if (!is_string($number)) {
+            return false;
+        }
+
         $type = $this->getCreditCardType($number);
 
         return array_key_exists($type, self::CARD_TYPES) && $this->validateCard($number, $type);
@@ -137,17 +140,17 @@ final class CreditCardNumberValidator
         $checksum = 0;
         $numberLength = strlen($number);
 
-        for ($i = (2-($numberLength % 2)); $i <= $numberLength; $i+=2) {
-            $checksum += (int) ($number[$i-1]);
+        for ($i = (2 - ($numberLength % 2)); $i <= $numberLength; $i += 2) {
+            $checksum += (int) ($number[$i - 1]);
         }
 
         // Analyze odd digits in even length strings or even digits in odd length strings.
         for ($i = ($numberLength % 2) + 1; $i < $numberLength; $i += 2) {
-            $digit = (int) ($number[$i-1]) * 2;
+            $digit = (int) ($number[$i - 1]) * 2;
             if ($digit < 10) {
                 $checksum += $digit;
             } else {
-                $checksum += ($digit-9);
+                $checksum += ($digit - 9);
             }
         }
 
