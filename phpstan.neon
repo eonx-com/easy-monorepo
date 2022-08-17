@@ -219,10 +219,6 @@ parameters:
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
           path: packages/EasySwoole/src/Resources/functions/dump.php
 
-        # ---- EasyTest ----
-        - message: '#Unsafe usage of new static\(\)#'
-          path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
-
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
           path: packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
