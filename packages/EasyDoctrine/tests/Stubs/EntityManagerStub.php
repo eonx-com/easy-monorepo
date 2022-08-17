@@ -17,7 +17,7 @@ use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 
-final class EntityManagerStub extends EntityManager
+final class EntityManagerStub
 {
     /**
      * @param \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher $dispatcher
@@ -67,7 +67,7 @@ final class EntityManagerStub extends EntityManager
 
         $config->setMetadataDriverImpl(new AttributeDriver([]));
 
-        $entityManager = parent::create($conn, $config, $eventManager);
+        $entityManager = EntityManager::create($conn, $config, $eventManager);
         $schema = \array_map(function ($class) use ($entityManager) {
             return $entityManager->getClassMetadata($class);
         }, $fixtures);
