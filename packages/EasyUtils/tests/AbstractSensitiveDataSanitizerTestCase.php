@@ -149,6 +149,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'inJsonWithBothSpacesAndEscaping' => '{\"card\" : \"4005 5500 0000 0001\"}',
                 'inJsonWithDoubleSpacesAndEscaping' => '{\"card\"  :  \"4005 5500 0000 0001\"}',
                 'inUrl' => 'https://eonx.com/page?card=4005 5500 0000 0001',
+                'nonCardNumber' => '1234567890123456',
             ],
             'expectedOutput' => [
                 'withSpace' => '512345*REDACTED*2346',
@@ -172,6 +173,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'inJsonWithBothSpacesAndEscaping' => '{\"card\" : \"400555*REDACTED*0001\"}',
                 'inJsonWithDoubleSpacesAndEscaping' => '{\"card\"  :  \"400555*REDACTED*0001\"}',
                 'inUrl' => 'https://eonx.com/page?card=400555*REDACTED*0001',
+                'nonCardNumber' => '1234567890123456',
             ],
         ];
     }

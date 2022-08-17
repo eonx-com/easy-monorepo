@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\SensitiveData\StringSanitizers;
 
+use EonX\EasyUtils\CreditCard\CreditCardNumberValidator;
+
 final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
 {
     /**
@@ -17,8 +19,15 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
             return $string;
         }
 
+        $creditCardNumberValidator = new CreditCardNumberValidator();
+
         // Mask potentially unmasked credit card numbers anywhere else
         foreach ($matches as $match) {
+
+            if ($creditCardNumberValidator->isCreditCardNumberValid($match[0]) === false) {
+                continue;
+            }
+
             $lastSymbol = \str_ends_with($match[0], '\\') ? '\\' : '';
 
             $replace = \preg_replace(
