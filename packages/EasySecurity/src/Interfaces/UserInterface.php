@@ -6,8 +6,7 @@ namespace EonX\EasySecurity\Interfaces;
 
 interface UserInterface
 {
-    /**
-     * @return null|int|string
-     */
-    public function getUniqueId();
+    public function getUniqueId(): string;
+
+    public function getFullName(): string;
 }

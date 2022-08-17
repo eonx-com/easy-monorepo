@@ -55,4 +55,9 @@ final class FakeUser implements UserInterface, SymfonyUserInterface
     {
         return self::ID_USERNAME;
     }
+
+    public function getFullName(): string
+    {
+        return self::ID_USERNAME;
+    }
 }
