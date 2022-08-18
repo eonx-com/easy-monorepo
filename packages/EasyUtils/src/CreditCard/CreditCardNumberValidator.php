@@ -72,7 +72,7 @@ final class CreditCardNumberValidator
         // Strip non-numeric characters
         $number = preg_replace('/\D/', '', $number);
 
-        if (!is_string($number)) {
+        if (is_string($number) === false) {
             return false;
         }
 
