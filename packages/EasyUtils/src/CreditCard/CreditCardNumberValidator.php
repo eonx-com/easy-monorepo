@@ -9,69 +9,58 @@ final class CreditCardNumberValidator
     private const CARD_TYPES = [
         // Debit cards must come first, since they have more specific patterns than their credit-card equivalents.
         'visaelectron' => [
-            'type' => 'visaelectron',
             'pattern' => '/^4(026|17500|405|508|844|91[37])/',
             'length' => [16],
             'luhn' => true,
         ],
         'maestro' => [
-            'type' => 'maestro',
             'pattern' => '/^(5(018|0[23]|[68])|6(39|7))/',
             'length' => [12, 13, 14, 15, 16, 17, 18, 19],
             'luhn' => true,
         ],
         'forbrugsforeningen' => [
-            'type' => 'forbrugsforeningen',
             'pattern' => '/^600/',
             'length' => [16],
             'luhn' => true,
         ],
         'dankort' => [
-            'type' => 'dankort',
             'pattern' => '/^5019/',
             'length' => [16],
             'luhn' => true,
         ],
         // Credit cards
         'visa' => [
-            'type' => 'visa',
             'pattern' => '/^4/',
             'length' => [13, 16],
             'luhn' => true,
         ],
         'mastercard' => [
-            'type' => 'mastercard',
             'pattern' => '/^(5[0-5]|2[2-7])/',
             'length' => [16],
             'luhn' => true,
         ],
         'amex' => [
-            'type' => 'amex',
             'pattern' => '/^3[47]/',
             'format' => '/(\d{1,4})(\d{1,6})?(\d{1,5})?/',
             'length' => [15],
             'luhn' => true,
         ],
         'dinersclub' => [
-            'type' => 'dinersclub',
             'pattern' => '/^3[0689]/',
             'length' => [14],
             'luhn' => true,
         ],
         'discover' => [
-            'type' => 'discover',
             'pattern' => '/^6([045]|22)/',
             'length' => [16],
             'luhn' => true,
         ],
         'unionpay' => [
-            'type' => 'unionpay',
             'pattern' => '/^(62|88)/',
             'length' => [16, 17, 18, 19],
             'luhn' => false,
         ],
         'jcb' => [
-            'type' => 'jcb',
             'pattern' => '/^35/',
             'length' => [16],
             'luhn' => true,
