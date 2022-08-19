@@ -36,7 +36,7 @@ use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Uid\Factory\UuidFactory as SymfonyUuidFactory;
 
-final class EntityManagerStub extends EntityManager
+final class EntityManagerStub
 {
     public const ACTIVITY_TABLE_NAME = 'test_easy_activity_logs';
 
@@ -148,7 +148,7 @@ final class EntityManagerStub extends EntityManager
 
         $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
 
-        $entityManager = parent::create($conn, $config, $eventManager);
+        $entityManager = EntityManager::create($conn, $config, $eventManager);
         $schema = \array_map(function ($class) use ($entityManager) {
             return $entityManager->getClassMetadata($class);
         }, $fixtures);

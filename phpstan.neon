@@ -106,8 +106,6 @@ parameters:
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
           path: packages/EasyErrorHandler/src/Providers/ErrorCodesProvider.php
 
-        # ---- EasyHttpClient ----
-        # ---- EasyLock ----
         # ---- EasyLogging ----DoctrineDbalLengthAwarePaginator
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
@@ -218,10 +216,6 @@ parameters:
 
         - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
           path: packages/EasySwoole/src/Runtime/EasySwooleRunner.php
-
-        # ---- EasyTest ----
-        - message: '#Unsafe usage of new static\(\)#'
-          path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
 
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
