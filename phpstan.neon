@@ -204,6 +204,7 @@ parameters:
 
         # ---- EasySwoole ----
         - '#Access to constant (.*) on an unknown class Swoole\\Constant#'
+        - '#Class Swoole\\Constant not found#'
 
         - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
           path: packages/EasySwoole/src/Helpers/OutputHelper.php
