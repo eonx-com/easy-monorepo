@@ -44,15 +44,15 @@ final class AuthTokenConnectionFactory
         ?EventManager $eventManager = null,
         ?array $mappingTypes = null
     ): Connection {
-        if ($this->isEnabled()) {
+        if ($this->isEnabled('EASY_DOCTRINE_AWS_RDS_IAM_ENABLED')) {
             $params['user'] = $this->awsUsername;
             $params['passwordGenerator'] = $this->getGeneratePasswordClosure();
             $params['wrapperClass'] = RdsIamConnection::class;
+        }
 
-            if ($this->sslEnabled) {
-                $params['sslmode'] = $this->sslMode;
-                $params['sslrootcert'] = $this->resolveSslCertPath();
-            }
+        if ($this->sslEnabled && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_SSL_ENABLED')) {
+            $params['sslmode'] = $this->sslMode;
+            $params['sslrootcert'] = $this->resolveSslCertPath();
         }
 
         return $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
@@ -74,11 +74,9 @@ final class AuthTokenConnectionFactory
         };
     }
 
-    private function isEnabled(): bool
+    private function isEnabled(string $feature): bool
     {
-        $key = 'EASY_DOCTRINE_AWS_RDS_IAM_ENABLED';
-
-        return ($_SERVER[$key] ?? $_ENV[$key] ?? 'enabled') === 'enabled';
+        return ($_SERVER[$feature] ?? $_ENV[$feature] ?? 'enabled') === 'enabled';
     }
 
     private function resolveSslCertPath(): string
