@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests;
 
 use EonX\EasyErrorHandler\ErrorHandler;
-use EonX\EasyErrorHandler\Reporters\FromIterableReporterProvider;
+use EonX\EasyErrorHandler\Providers\FromIterableErrorReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Tests\Stubs\ErrorReporterStub;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
@@ -49,14 +49,14 @@ final class ErrorHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @param null|string[] $ignoredExceptions
+     * @param class-string[] $ignoredExceptions
      *
      * @dataProvider providerTestReport
      */
-    public function testReport(\Throwable $throwable, callable $test, ?array $ignoredExceptions = null): void
+    public function testReport(\Throwable $throwable, callable $test, array $ignoredExceptions): void
     {
         $reporter = new ErrorReporterStub();
-        $reporterProviders = [new FromIterableReporterProvider([$reporter])];
+        $reporterProviders = [new FromIterableErrorReporterProvider([$reporter])];
         $verboseStrategy = new ChainVerboseStrategy([], false);
         $errorHandler = new ErrorHandler(
             new ErrorResponseFactory(),

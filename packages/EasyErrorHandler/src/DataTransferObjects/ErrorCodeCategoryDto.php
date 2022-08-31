@@ -7,14 +7,9 @@ namespace EonX\EasyErrorHandler\DataTransferObjects;
 final class ErrorCodeCategoryDto
 {
     public function __construct(
-        private string $categoryName,
-        private int $nextErrorCodeToUse
+        private readonly string $categoryName,
+        private readonly int $nextErrorCodeToUse
     ) {
-    }
-
-    public function getCategoryName(): string
-    {
-        return $this->categoryName;
     }
 
     /**
@@ -26,5 +21,10 @@ final class ErrorCodeCategoryDto
             'categoryName' => $this->categoryName,
             'nextErrorCodeToUse' => $this->nextErrorCodeToUse,
         ];
+    }
+
+    public function getCategoryName(): string
+    {
+        return $this->categoryName;
     }
 }

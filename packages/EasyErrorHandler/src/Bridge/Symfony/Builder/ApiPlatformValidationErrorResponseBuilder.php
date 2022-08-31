@@ -6,7 +6,7 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
-use Symfony\Component\HttpFoundation\Response;
+use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -14,6 +14,12 @@ use Throwable;
 
 final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorResponseBuilder
 {
+    private const KEY_MESSAGE = 'message';
+
+    private const KEY_VIOLATIONS = 'violations';
+
+    private const MESSAGE_NOT_VALID = 'exceptions.not_valid';
+
     private const MESSAGE_PATTERN_INVALID_DATE = '/This value is not a valid date\/time\./';
 
     private const MESSAGE_PATTERN_INVALID_IRI = '/Invalid IRI "(.+)"/';
@@ -27,6 +33,30 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     ' data because its constructor requires parameter "(\w+)" to be present/';
 
     private const MESSAGE_PATTERN_TYPE_ERROR = '/The type of the "(\w+)" attribute must be "(\w+)", "(\w+)" given/';
+
+    private const STATUS_CODE_BAD_REQUEST = 400;
+
+    private const VALUE_NULL = 'NULL';
+
+    private const VIOLATION_PATTERN_TYPE_ERROR = 'The type of the value should be "%s", "%s" given.';
+
+    private const VIOLATION_VALUE_SHOULD_BE_IRI = 'This value should be an IRI.';
+
+    private const VIOLATION_VALUE_SHOULD_BE_IRI_OR_NESTED_DOCUMENT = 'This value should be an IRI ' .
+    'or a nested document.';
+
+    private const VIOLATION_VALUE_SHOULD_BE_PRESENT = 'This value should be present.';
+
+    /**
+     * @param mixed[] $keys
+     */
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly array $keys = [],
+        ?int $priority = null
+    ) {
+        parent::__construct($priority);
+    }
 
     public static function supports(Throwable $throwable): bool
     {
@@ -58,16 +88,19 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             return parent::buildData($throwable, $data);
         }
 
-        $data['message'] = 'Validation failed.';
+        $messageKey = $this->getKey(self::KEY_MESSAGE);
+        $violationsKey = $this->getKey(self::KEY_VIOLATIONS);
+
+        $data[$messageKey] = $this->translator->trans(self::MESSAGE_NOT_VALID, []);
 
         if ($throwable instanceof InvalidArgumentException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches);
-            $data['violations'] = [
+            $data[$violationsKey] = [
                 $matches[1] => [
-                    $matches[3] === 'NULL'
+                    $matches[3] === self::VALUE_NULL
                         ? (new NotNull())->message
-                        : \sprintf('The type of the value should be "%s", "%s" given.', $matches[2], $matches[3]),
+                        : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[2], $matches[3]),
                 ],
             ];
         }
@@ -75,8 +108,8 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         if ($throwable instanceof MissingConstructorArgumentsException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $throwable->getMessage(), $matches);
-            $data['violations'] = [
-                $matches[2] => ['This value should be present.'],
+            $data[$violationsKey] = [
+                $matches[2] => [self::VIOLATION_VALUE_SHOULD_BE_PRESENT],
             ];
         }
 
@@ -87,21 +120,21 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             switch (1) {
                 case \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1:
                 case \preg_match(self::MESSAGE_PATTERN_INVALID_IRI, $message) === 1:
-                    $data['violations'] = [$message];
+                    $data[$violationsKey] = [$message];
 
                     break;
                 case \preg_match(self::MESSAGE_PATTERN_NESTED_DOCUMENTS_NOT_ALLOWED, $message, $matches) === 1:
-                    $data['violations'] = [
-                        $matches[1] => ['This value should be an IRI.'],
+                    $data[$violationsKey] = [
+                        $matches[1] => [self::VIOLATION_VALUE_SHOULD_BE_IRI],
                     ];
 
                     break;
                 case \preg_match(self::MESSAGE_PATTERN_NOT_IRI, $message, $matches) === 1:
-                    $data['violations'] = [
+                    $data[$violationsKey] = [
                         $matches[1] => [
-                            $matches[2] === 'NULL'
+                            $matches[2] === self::VALUE_NULL
                                 ? (new NotNull())->message
-                                : 'This value should be an IRI or a nested document.',
+                                : self::VIOLATION_VALUE_SHOULD_BE_IRI_OR_NESTED_DOCUMENT,
                         ],
                     ];
 
@@ -118,6 +151,11 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             return parent::buildStatusCode($throwable, $statusCode);
         }
 
-        return Response::HTTP_BAD_REQUEST;
+        return self::STATUS_CODE_BAD_REQUEST;
+    }
+
+    private function getKey(string $name): string
+    {
+        return $this->keys[$name] ?? $name;
     }
 }

@@ -11,8 +11,5 @@ abstract class ValidationException extends BadRequestException implements Valida
 {
     use ValidationExceptionTrait;
 
-    /**
-     * @var string
-     */
-    protected $userMessage = 'exceptions.not_valid';
+    protected ?string $userMessage = 'exceptions.not_valid';
 }

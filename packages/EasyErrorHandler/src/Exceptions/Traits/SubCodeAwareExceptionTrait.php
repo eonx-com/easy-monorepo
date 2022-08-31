@@ -6,14 +6,8 @@ namespace EonX\EasyErrorHandler\Exceptions\Traits;
 
 trait SubCodeAwareExceptionTrait
 {
-    /**
-     * @var int
-     */
-    protected $subCode = 0;
+    protected int $subCode = 0;
 
-    /**
-     * {@inheritDoc}
-     */
     public function getSubCode(): int
     {
         return $this->subCode;

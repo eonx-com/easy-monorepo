@@ -41,14 +41,14 @@ final class ErrorLogLevelResolverTest extends AbstractTestCase
     }
 
     /**
-     * @param null|int[] $exceptionLogLevels
+     * @param int[] $exceptionLogLevels
      *
      * @dataProvider providerTestGetErrorLogLevel
      */
     public function testGetErrorLogLevel(
         \Throwable $throwable,
         int $expectedLogLevel,
-        ?array $exceptionLogLevels = null
+        array $exceptionLogLevels
     ): void {
         $resolver = new ErrorLogLevelResolver($exceptionLogLevels);
 

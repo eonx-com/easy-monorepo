@@ -48,7 +48,7 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @param null|mixed[] $errorFormats
+     * @param mixed[] $errorFormats
      *
      * @dataProvider providerTestCreate
      */
@@ -57,7 +57,7 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
         ErrorResponseDataInterface $data,
         string $content,
         ?SerializerInterface $serializer = null,
-        ?array $errorFormats = null
+        array $errorFormats
     ): void {
         $serializer = $serializer ?? new Serializer([], [new JsonEncoder()]);
         $responseFactory = new SymfonySerializerResponseFactory($serializer, $errorFormats);

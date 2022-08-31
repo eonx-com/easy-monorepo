@@ -7,14 +7,14 @@ namespace EonX\EasyErrorHandler\Builders;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\SubCodeAwareExceptionInterface;
 use Throwable;
 
-final class SubCodeBuilder extends AbstractSingleKeyErrorResponseBuilder
+final class SubCodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
+    public const DEFAULT_KEY = 'sub_code';
+
     /**
      * @param mixed[] $data
-     *
-     * @return null|int
      */
-    protected function doBuildValue(Throwable $throwable, array $data)
+    protected function doBuildValue(Throwable $throwable, array $data): ?int
     {
         if (($throwable instanceof SubCodeAwareExceptionInterface) === false) {
             return null;
@@ -25,6 +25,6 @@ final class SubCodeBuilder extends AbstractSingleKeyErrorResponseBuilder
 
     protected function getDefaultKey(): string
     {
-        return 'sub_code';
+        return self::DEFAULT_KEY;
     }
 }

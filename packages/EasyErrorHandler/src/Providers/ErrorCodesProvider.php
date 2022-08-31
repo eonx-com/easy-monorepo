@@ -16,7 +16,7 @@ final class ErrorCodesProvider implements ErrorCodesProviderInterface
     /**
      * @param class-string|null $errorCodesInterface
      */
-    public function __construct(private ?string $errorCodesInterface = null)
+    public function __construct(private readonly ?string $errorCodesInterface = null)
     {
     }
 

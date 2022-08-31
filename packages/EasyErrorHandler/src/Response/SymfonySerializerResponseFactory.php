@@ -14,22 +14,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInterface
 {
     /**
-     * @var mixed[]
+     * @param mixed[] $errorFormats
      */
-    private $errorFormats;
-
-    /**
-     * @var \Symfony\Component\Serializer\SerializerInterface
-     */
-    private $serializer;
-
-    /**
-     * @param null|mixed[] $errorFormats
-     */
-    public function __construct(SerializerInterface $serializer, ?array $errorFormats = null)
-    {
-        $this->serializer = $serializer;
-        $this->errorFormats = $errorFormats ?? [];
+    public function __construct(
+        private readonly SerializerInterface $serializer,
+        private readonly array $errorFormats = []
+    ) {
     }
 
     public function create(Request $request, ErrorResponseDataInterface $data): Response
@@ -41,15 +31,15 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
         $headers['X-Content-Type-Options'] = 'nosniff';
         $headers['X-Frame-Options'] = 'deny';
 
+        $statusCode = $data->getStatusCode();
+
         $content = $this->serializer->serialize(
             $data->getRawData(),
             $format->getKey(),
-            [
-                'statusCode' => $data->getStatusCode(),
-            ]
+            ['statusCode' => $statusCode]
         );
 
-        return new Response($content, $data->getStatusCode(), $headers);
+        return new Response($content, $statusCode, $headers);
     }
 
     private function getFormat(Request $request): ErrorResponseFormat
@@ -64,7 +54,7 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
         $errorFormat = null;
 
         foreach ($this->errorFormats as $format => $errorMimeTypes) {
-            if (\array_intersect($requestMimeTypes, $errorMimeTypes) || $errorFormat === null) {
+            if ($errorFormat === null || \array_intersect($requestMimeTypes, $errorMimeTypes)) {
                 $errorFormat = ErrorResponseFormat::create($format, $errorMimeTypes[0]);
             }
         }

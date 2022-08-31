@@ -13,16 +13,11 @@ use Throwable;
 final class ErrorLogLevelResolver implements ErrorLogLevelResolverInterface
 {
     /**
-     * @var int[]
+     * @param int[] $exceptionLogLevels
      */
-    private $exceptionLogLevels;
-
-    /**
-     * @param null|int[] $exceptionLogLevels
-     */
-    public function __construct(?array $exceptionLogLevels = null)
-    {
-        $this->exceptionLogLevels = $exceptionLogLevels ?? [HttpExceptionInterface::class => Logger::DEBUG];
+    public function __construct(
+        private readonly array $exceptionLogLevels = [HttpExceptionInterface::class => Logger::DEBUG]
+    ) {
     }
 
     public function getLogLevel(Throwable $throwable): int

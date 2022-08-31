@@ -14,7 +14,7 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\FormatAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
@@ -29,36 +29,24 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     private array $builders;
 
     /**
-     * @var string[]
-     */
-    private array $ignoredExceptionsForReport;
-
-    /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
      */
     private array $reporters;
 
-    private ErrorResponseFactoryInterface $responseFactory;
-
-    private VerboseStrategyInterface $verboseStrategy;
-
     /**
      * @param iterable<mixed> $builderProviders
      * @param iterable<mixed> $reporterProviders
-     * @param null|string[] $ignoredExceptionsForReport
+     * @param class-string[] $ignoredExceptionsForReport
      */
     public function __construct(
-        ErrorResponseFactoryInterface $errorResponseFactory,
+        private readonly ErrorResponseFactoryInterface $responseFactory,
         iterable $builderProviders,
         iterable $reporterProviders,
-        VerboseStrategyInterface $verboseStrategy,
-        ?array $ignoredExceptionsForReport = null
+        private readonly VerboseStrategyInterface $verboseStrategy,
+        private readonly array $ignoredExceptionsForReport = []
     ) {
-        $this->responseFactory = $errorResponseFactory;
-        $this->verboseStrategy = $verboseStrategy;
         $this->setBuilders($builderProviders);
         $this->setReporters($reporterProviders);
-        $this->ignoredExceptionsForReport = $ignoredExceptionsForReport ?? [];
     }
 
     /**
@@ -101,7 +89,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     public function report(Throwable $throwable): void
     {
         // Symfony Messenger HandlerFailedException
-        if (\class_exists(HandlerFailedException::class) and $throwable instanceof HandlerFailedException) {
+        if (\class_exists(HandlerFailedException::class) && $throwable instanceof HandlerFailedException) {
             foreach ($throwable->getNestedExceptions() as $nestedThrowable) {
                 $this->report($nestedThrowable);
             }
@@ -112,7 +100,8 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         // Symfony Messenger UnrecoverableMessageHandlingException
         if (\class_exists(UnrecoverableMessageHandlingException::class)
             && $throwable instanceof UnrecoverableMessageHandlingException
-            && $throwable->getPrevious() instanceof Throwable) {
+            && $throwable->getPrevious() instanceof Throwable
+        ) {
             $this->report($throwable->getPrevious());
 
             return;
@@ -127,10 +116,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         $this->verboseStrategy->setThrowable($throwable);
 
         foreach ($this->reporters as $reporter) {
-            // Stop reporting if reporter returns false
-            if ($reporter->report($throwable) === false) {
-                break;
-            }
+            $reporter->report($throwable);
         }
     }
 
@@ -174,9 +160,9 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         $builders = [];
 
         foreach ($providers as $provider) {
-            $tmpBuilders = $this->filterIterable($provider->getBuilders(), ErrorResponseBuilderInterface::class);
+            $providerBuilders = $this->filterIterable($provider->getBuilders(), ErrorResponseBuilderInterface::class);
 
-            foreach ($tmpBuilders as $builder) {
+            foreach ($providerBuilders as $builder) {
                 $builders[] = $builder;
             }
         }
@@ -194,9 +180,9 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         $reporters = [];
 
         foreach ($providers as $provider) {
-            $tmpReporters = $this->filterIterable($provider->getReporters(), ErrorReporterInterface::class);
+            $providerReporters = $this->filterIterable($provider->getReporters(), ErrorReporterInterface::class);
 
-            foreach ($tmpReporters as $reporter) {
+            foreach ($providerReporters as $reporter) {
                 $reporters[] = $reporter;
             }
         }

@@ -9,25 +9,18 @@ use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-final class LoggerReporter extends AbstractErrorReporter
+final class LoggerErrorReporter extends AbstractErrorReporter
 {
     /**
-     * @var string[]
-     */
-    private array $ignoreExceptions;
-
-    /**
-     * @param null|string[] $ignoreExceptions
+     * @param string[] $ignoreExceptions
      */
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
         private readonly LoggerInterface $logger,
-        ?array $ignoreExceptions = null,
+        private readonly array $ignoreExceptions = [],
         ?int $priority = null
     ) {
-        $this->ignoreExceptions = $ignoreExceptions ?? [];
-
         parent::__construct($errorLogLevelResolver, $priority);
     }
 
@@ -42,9 +35,7 @@ final class LoggerReporter extends AbstractErrorReporter
         $this->logger->log(
             $this->errorLogLevelResolver->getLogLevel($throwable),
             $this->errorDetailsResolver->resolveInternalMessage($throwable),
-            [
-                'exception' => $this->errorDetailsResolver->resolveExtendedDetails($throwable),
-            ]
+            ['exception' => $this->errorDetailsResolver->resolveExtendedDetails($throwable)]
         );
     }
 }

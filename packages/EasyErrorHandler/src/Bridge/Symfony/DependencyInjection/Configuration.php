@@ -9,6 +9,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
+    private const DEFAULT_ERROR_CODES_CATEGORY_SIZE = 100;
+
+    private const DEFAULT_LOCALE = 'en';
+
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('easy_error_handler');
@@ -70,11 +74,11 @@ final class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('enabled')->defaultFalse()->end()
-                        ->scalarNode('locale')->defaultValue('en')->end()
+                        ->scalarNode('locale')->defaultValue(self::DEFAULT_LOCALE)->end()
                     ->end()
                 ->end()
                 ->scalarNode('error_codes_interface')->defaultValue(null)->end()
-                ->scalarNode('error_codes_category_size')->defaultValue(100)->end()
+                ->scalarNode('error_codes_category_size')->defaultValue(self::DEFAULT_ERROR_CODES_CATEGORY_SIZE)->end()
             ->end();
 
         return $treeBuilder;

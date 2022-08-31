@@ -9,26 +9,32 @@ use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Throwable;
 
-final class ApiPlatformValidationExceptionResponseBuilder extends AbstractErrorResponseBuilder
+final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractErrorResponseBuilder
 {
-    /**
-     * @var string[]
-     */
-    private $keys;
+    private const KEY_EXCEPTION = 'exception';
+
+    private const KEY_EXCEPTION_MESSAGE = 'extended_exception_keys.message';
+
+    private const KEY_MESSAGE = 'message';
+
+    private const KEY_NAME_SEPARATOR = '.';
+
+    private const KEY_VIOLATIONS = 'violations';
+
+    private const MESSAGE_ENTITY_NOT_VALID = 'exceptions.entity_not_valid';
+
+    private const MESSAGE_NOT_VALID = 'exceptions.not_valid';
+
+    private const STATUS_CODE_BAD_REQUEST = 400;
 
     /**
-     * @var \EonX\EasyErrorHandler\Interfaces\TranslatorInterface
+     * @param mixed[] $keys
      */
-    private $translator;
-
-    /**
-     * @param null|mixed[] $keys
-     */
-    public function __construct(TranslatorInterface $translator, ?array $keys = null, ?int $priority = null)
-    {
-        $this->translator = $translator;
-        $this->keys = $keys ?? [];
-
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly array $keys = [],
+        ?int $priority = null
+    ) {
         parent::__construct($priority);
     }
 
@@ -52,18 +58,18 @@ final class ApiPlatformValidationExceptionResponseBuilder extends AbstractErrorR
                 $violations[$propertyPath][] = $violation->getMessage();
             }
 
-            $exceptionKey = $this->getKey('exception');
-            $exceptionMessageKey = $this->getKey('extended_exception_keys.message');
+            $exceptionKey = $this->getKey(self::KEY_EXCEPTION);
+            $exceptionMessageKey = $this->getKey(self::KEY_EXCEPTION_MESSAGE);
 
             if (\is_array($data[$exceptionKey] ?? null)) {
                 $data[$exceptionKey][$exceptionMessageKey] = $this->translator->trans(
-                    'exceptions.entity_not_valid',
+                    self::MESSAGE_ENTITY_NOT_VALID,
                     []
                 );
             }
 
-            $data[$this->getKey('message')] = $this->translator->trans('exceptions.not_valid', []);
-            $data[$this->getKey('violations')] = $violations;
+            $data[$this->getKey(self::KEY_MESSAGE)] = $this->translator->trans(self::MESSAGE_NOT_VALID, []);
+            $data[$this->getKey(self::KEY_VIOLATIONS)] = $violations;
         }
 
         return parent::buildData($throwable, $data);
@@ -72,7 +78,7 @@ final class ApiPlatformValidationExceptionResponseBuilder extends AbstractErrorR
     public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int
     {
         if ($throwable instanceof ValidationException) {
-            $statusCode = 400;
+            $statusCode = self::STATUS_CODE_BAD_REQUEST;
         }
 
         return parent::buildStatusCode($throwable, $statusCode);
@@ -84,7 +90,7 @@ final class ApiPlatformValidationExceptionResponseBuilder extends AbstractErrorR
     private function getKey(string $name, ?array $keys = null): string
     {
         $keys = $keys ?? $this->keys;
-        $nameParts = \explode('.', $name);
+        $nameParts = \explode(self::KEY_NAME_SEPARATOR, $name);
 
         if (\count($nameParts) <= 1) {
             return $keys[$name] ?? $name;
@@ -96,6 +102,6 @@ final class ApiPlatformValidationExceptionResponseBuilder extends AbstractErrorR
             return $name;
         }
 
-        return $this->getKey(\implode('.', $nameParts), $keys[$firstPartOfName]);
+        return $this->getKey(\implode(self::KEY_NAME_SEPARATOR, $nameParts), $keys[$firstPartOfName]);
     }
 }

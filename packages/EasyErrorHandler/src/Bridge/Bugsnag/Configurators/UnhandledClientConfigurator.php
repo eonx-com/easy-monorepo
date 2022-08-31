@@ -16,19 +16,22 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\SubCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Throwable;
 
 final class UnhandledClientConfigurator extends AbstractClientConfigurator
 {
     /**
-     * @var string[]
+     * @var class-string[]
      */
-    private $handledExceptionClasses;
+    private readonly array $handledExceptionClasses;
 
     /**
-     * @param null|string[] $handledExceptionClasses
+     * @param class-string[] $handledExceptionClasses
      */
-    public function __construct(?array $handledExceptionClasses = null, ?int $priority = null)
-    {
+    public function __construct(
+        ?array $handledExceptionClasses = null,
+        ?int $priority = null
+    ) {
         $this->handledExceptionClasses = \array_merge($handledExceptionClasses ?? [], [
             // Base exception class
             BaseException::class,
@@ -51,7 +54,7 @@ final class UnhandledClientConfigurator extends AbstractClientConfigurator
         $func = function (Report $report): void {
             $throwable = $report->getOriginalError();
 
-            if ($throwable instanceof \Throwable === false) {
+            if ($throwable instanceof Throwable === false) {
                 return;
             }
 
@@ -60,7 +63,7 @@ final class UnhandledClientConfigurator extends AbstractClientConfigurator
 
             // Use configuration
             foreach ($this->handledExceptionClasses as $exceptionClass) {
-                if (\is_a($throwable, $exceptionClass, true)) {
+                if (\is_a($throwable, $exceptionClass)) {
                     $report->setUnhandled(false);
 
                     break;

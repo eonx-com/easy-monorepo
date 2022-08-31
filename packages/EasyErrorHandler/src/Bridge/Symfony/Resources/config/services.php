@@ -5,11 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
-use EonX\EasyErrorHandler\Bridge\Symfony\Commands\AnalyzeErrorCodesCommand;
 use EonX\EasyErrorHandler\Bridge\Symfony\DataCollector\ErrorHandlerDataCollector;
-use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ConsoleErrorEventListener;
-use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ExceptionEventListener;
-use EonX\EasyErrorHandler\Bridge\Symfony\Messenger\ReportErrorEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Translator;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
@@ -36,12 +32,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // ErrorDetailsResolver
     $services
         ->set(ErrorDetailsResolverInterface::class, ErrorDetailsResolver::class)
-        ->arg('$translateInternalMessages', param(
-            BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED
-        ))
-        ->arg('$internalMessagesLocale', param(
-            BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE
-        ));
+        ->arg(
+            '$translateInternalMessages',
+            param(BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED)
+        )
+        ->arg(
+            '$internalMessagesLocale',
+            param(BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE)
+        );
 
     // ErrorLogLevelResolver
     $services
@@ -60,21 +58,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'id' => 'error_handler.error_handler_collector',
             'template' => '@EasyErrorHandlerSymfony/Collector/error_handler_collector.html.twig',
         ]);
-
-    // Console EventListener
-    $services
-        ->set(ConsoleErrorEventListener::class)
-        ->tag('kernel.event_listener');
-
-    // EventListener
-    $services
-        ->set(ExceptionEventListener::class)
-        ->tag('kernel.event_listener');
-
-    // Messenger EventListener
-    $services
-        ->set(ReportErrorEventListener::class)
-        ->tag('kernel.event_listener');
 
     // ResponseFactory
     $services->set(ErrorResponseFactoryInterface::class, ErrorResponseFactory::class);
@@ -97,9 +80,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Error codes group processor
     $services->set(ErrorCodesGroupProcessorInterface::class, ErrorCodesGroupProcessor::class)
         ->arg('$categorySize', param(BridgeConstantsInterface::PARAM_ERROR_CODES_CATEGORY_SIZE));
-
-    // Console command
-    $services
-        ->set(AnalyzeErrorCodesCommand::class)
-        ->tag('console.command');
 };

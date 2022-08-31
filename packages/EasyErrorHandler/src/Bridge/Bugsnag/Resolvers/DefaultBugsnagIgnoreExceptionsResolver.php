@@ -11,27 +11,19 @@ use Throwable;
 
 final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExceptionsResolverInterface
 {
-    private bool $ignoreValidationErrors;
-
     /**
-     * @var string[]
+     * @param class-string[] $ignoredExceptions
      */
-    private array $ignoredExceptions;
-
-    /**
-     * @param string[]|null $ignoredExceptions
-     */
-    public function __construct(?array $ignoredExceptions = null, bool $ignoreValidationErrors = null)
-    {
-        $this->ignoredExceptions = $ignoredExceptions ?? [HttpExceptionInterface::class];
-        $this->ignoreValidationErrors = $ignoreValidationErrors ?? true;
+    public function __construct(
+        private readonly array $ignoredExceptions = [HttpExceptionInterface::class],
+        private readonly bool $ignoreValidationErrors = true
+    ) {
     }
 
     public function shouldIgnore(Throwable $throwable): bool
     {
-        $exceptionClass = \get_class($throwable);
         foreach ($this->ignoredExceptions as $ignoreClass) {
-            if (\is_a($exceptionClass, $ignoreClass, true)) {
+            if (\is_a($throwable, $ignoreClass)) {
                 return true;
             }
         }

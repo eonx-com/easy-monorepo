@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
-use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformBuilderProvider;
+use EonX\EasyErrorHandler\Bridge\Symfony\Provider\ApiPlatformErrorResponseBuilderProvider;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -13,8 +13,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services
-        ->set(ApiPlatformBuilderProvider::class)
-        ->arg('$keys', '%' . BridgeConstantsInterface::PARAM_RESPONSE_KEYS . '%')
-        ->arg('$transformValidationErrors', '%' . BridgeConstantsInterface::PARAM_TRANSFORM_VALIDATION_ERRORS . '%');
+    $services->set(ApiPlatformErrorResponseBuilderProvider::class)
+        ->arg('$keys', param(BridgeConstantsInterface::PARAM_RESPONSE_KEYS))
+        ->arg('$transformValidationErrors', param(BridgeConstantsInterface::PARAM_TRANSFORM_VALIDATION_ERRORS));
 };

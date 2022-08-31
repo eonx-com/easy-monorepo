@@ -7,20 +7,15 @@ namespace EonX\EasyErrorHandler\Builders;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\StatusCodeAwareExceptionInterface;
 use Throwable;
 
-final class StatusCodeBuilder extends AbstractErrorResponseBuilder
+final class StatusCodeErrorResponseBuilder extends AbstractErrorResponseBuilder
 {
     /**
-     * @var int[]
+     * @param int[] $exceptionToStatusCode
      */
-    private $exceptionToStatusCode;
-
-    /**
-     * @param null|int[] $exceptionToStatusCode
-     */
-    public function __construct(?array $exceptionToStatusCode = null, ?int $priority = null)
-    {
-        $this->exceptionToStatusCode = $exceptionToStatusCode ?? [];
-
+    public function __construct(
+        private readonly array $exceptionToStatusCode = [],
+        ?int $priority = null
+    ) {
         parent::__construct($priority);
     }
 
@@ -30,10 +25,8 @@ final class StatusCodeBuilder extends AbstractErrorResponseBuilder
             $statusCode = $throwable->getStatusCode();
         }
 
-        $exceptionClass = \get_class($throwable);
-
         foreach ($this->exceptionToStatusCode as $class => $setStatusCode) {
-            if (\is_a($exceptionClass, $class, true)) {
+            if (\is_a($throwable, $class)) {
                 $statusCode = $setStatusCode;
 
                 break;

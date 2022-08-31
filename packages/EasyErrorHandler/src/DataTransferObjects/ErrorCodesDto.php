@@ -10,8 +10,8 @@ final class ErrorCodesDto
      * @param \EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeCategoryDto[] $nextGroupedErrorCodes
      */
     public function __construct(
-        private int $nextGroupErrorCode = 0,
-        private array $nextGroupedErrorCodes = []
+        private readonly int $nextGroupErrorCode = 0,
+        private readonly array $nextGroupedErrorCodes = []
     ) {
     }
 

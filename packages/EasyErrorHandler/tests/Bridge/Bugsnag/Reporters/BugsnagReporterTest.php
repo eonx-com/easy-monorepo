@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests\Bridge\Bugsnag\Reporters;
 
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\Reporters\BugsnagReporter;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Reporters\BugsnagErrorReporter;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers\DefaultBugsnagIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stubs\BugsnagClientStub;
+use Exception;
 use Monolog\Logger;
 use Throwable;
 
@@ -41,7 +42,7 @@ final class BugsnagReporterTest extends AbstractTestCase
      */
     public function providerTestReport(): iterable
     {
-        yield 'Report unexpected exception with no log level' => [true, new \Exception()];
+        yield 'Report unexpected exception with no log level' => [true, new Exception()];
 
         yield 'Report same log level as threshold' => [
             true,
@@ -69,16 +70,16 @@ final class BugsnagReporterTest extends AbstractTestCase
     /**
      * @dataProvider providerTestReport
      *
-     * @param null|string[] $ignoredExceptions
+     * @param class-string[] $ignoredExceptions
      */
     public function testReport(
         bool $shouldReport,
         Throwable $throwable,
-        ?int $threshold = null,
-        ?array $ignoredExceptions = null
+        int $threshold,
+        array $ignoredExceptions
     ): void {
         $stub = new BugsnagClientStub();
-        $reporter = new \EonX\EasyErrorHandler\Bridge\Bugsnag\Reporters\BugsnagReporter(
+        $reporter = new BugsnagErrorReporter(
             $stub,
             new DefaultBugsnagIgnoreExceptionsResolver($ignoredExceptions),
             new ErrorLogLevelResolver(),
@@ -104,11 +105,11 @@ final class BugsnagReporterTest extends AbstractTestCase
             }
         };
         $stub = new BugsnagClientStub();
-        $reporter = new BugsnagReporter(
+        $reporter = new BugsnagErrorReporter(
             $stub,
             $ignoreExceptionsResolver,
             new ErrorLogLevelResolver(),
-            null
+            Logger::ERROR
         );
 
         $reporter->report($throwable);

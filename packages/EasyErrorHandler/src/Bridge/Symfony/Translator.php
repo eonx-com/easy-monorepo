@@ -9,6 +9,8 @@ use Symfony\Contracts\Translation\TranslatorInterface as SymfonyTranslatorInterf
 
 final class Translator implements TranslatorInterface
 {
+    private const DEFAULT_DOMAIN = 'EasyErrorHandlerBundle';
+
     public function __construct(
         private readonly SymfonyTranslatorInterface $decorated,
         private readonly ?string $domain = null
@@ -26,6 +28,6 @@ final class Translator implements TranslatorInterface
             return $translation;
         }
 
-        return $this->decorated->trans($message, $parameters, 'EasyErrorHandlerBundle', $locale);
+        return $this->decorated->trans($message, $parameters, self::DEFAULT_DOMAIN, $locale);
     }
 }

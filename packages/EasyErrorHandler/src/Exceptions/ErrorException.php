@@ -8,5 +8,5 @@ use Monolog\Logger;
 
 abstract class ErrorException extends BaseException
 {
-    protected $logLevel = Logger::ERROR;
+    protected int $logLevel = Logger::ERROR;
 }

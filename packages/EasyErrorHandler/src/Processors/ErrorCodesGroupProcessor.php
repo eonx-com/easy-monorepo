@@ -12,8 +12,8 @@ use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
 final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterface
 {
     public function __construct(
-        private int $categorySize,
-        private ErrorCodesProviderInterface $errorCodesProvider
+        private readonly int $categorySize,
+        private readonly ErrorCodesProviderInterface $errorCodesProvider
     ) {
     }
 

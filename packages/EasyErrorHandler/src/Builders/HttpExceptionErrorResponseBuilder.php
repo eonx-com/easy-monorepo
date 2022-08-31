@@ -7,20 +7,17 @@ namespace EonX\EasyErrorHandler\Builders;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
-final class HttpExceptionBuilder extends AbstractErrorResponseBuilder
+final class HttpExceptionErrorResponseBuilder extends AbstractErrorResponseBuilder
 {
-    /**
-     * @var mixed[]
-     */
-    private $keys;
+    private const KEY_MESSAGE = 'message';
 
     /**
-     * @param null|mixed[] $keys
+     * @param mixed[] $keys
      */
-    public function __construct(?array $keys = null, ?int $priority = null)
-    {
-        $this->keys = $keys ?? [];
-
+    public function __construct(
+        private readonly array $keys = [],
+        ?int $priority = null
+    ) {
         parent::__construct($priority);
     }
 
@@ -32,7 +29,8 @@ final class HttpExceptionBuilder extends AbstractErrorResponseBuilder
     public function buildData(Throwable $throwable, array $data): array
     {
         if ($throwable instanceof HttpExceptionInterface) {
-            $data[$this->getKey('message')] = $throwable->getMessage();
+            $key = $this->keys[self::KEY_MESSAGE] ?? self::KEY_MESSAGE;
+            $data[$key] = $throwable->getMessage();
         }
 
         return parent::buildData($throwable, $data);
@@ -45,10 +43,5 @@ final class HttpExceptionBuilder extends AbstractErrorResponseBuilder
         }
 
         return parent::buildStatusCode($throwable, $statusCode);
-    }
-
-    private function getKey(string $name): string
-    {
-        return $this->keys[$name] ?? $name;
     }
 }

@@ -6,13 +6,7 @@ namespace EonX\EasyErrorHandler\Exceptions;
 
 abstract class ConflictException extends BaseException
 {
-    /**
-     * @var int
-     */
-    protected $statusCode = 409;
+    protected int $statusCode = 409;
 
-    /**
-     * @var string
-     */
-    protected $userMessage = 'exceptions.conflict';
+    protected ?string $userMessage = 'exceptions.conflict';
 }

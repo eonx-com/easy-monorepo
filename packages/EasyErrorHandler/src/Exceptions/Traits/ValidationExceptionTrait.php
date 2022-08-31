@@ -9,11 +9,8 @@ trait ValidationExceptionTrait
     /**
      * @var mixed[]
      */
-    protected $errors = [];
+    protected array $errors = [];
 
-    /**
-     * {@inheritDoc}
-     */
     public function getErrors(): array
     {
         return $this->errors;
