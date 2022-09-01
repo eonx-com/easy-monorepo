@@ -39,12 +39,14 @@ final class HttpClientStub extends MockHttpClient
     /**
      * @param mixed[] $headers
      * @param mixed[] $body
+     * @param mixed[] $queryParams
      */
     public function forRequest(
         string $method,
         string $url,
         ?array $headers = null,
-        ?array $body = null
+        ?array $body = null,
+        ?array $queryParams = null
     ): HttpClientRequestStub {
         $options = [];
         $options['headers'] = \array_unique(\array_merge($headers ?? [], self::DEFAULT_REQUEST_HEADERS));
@@ -65,6 +67,10 @@ final class HttpClientStub extends MockHttpClient
                 default => self::jsonEncode($body),
             };
             $options['headers'][] = 'Content-Length: ' . \strlen($options['body']);
+        }
+
+        if ($queryParams !== null) {
+            $url = \sprintf('%s?%s', $url, \http_build_query($queryParams));
         }
 
         return new HttpClientRequestStub(
