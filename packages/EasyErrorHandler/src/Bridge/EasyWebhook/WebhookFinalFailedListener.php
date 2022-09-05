@@ -6,9 +6,7 @@ namespace EonX\EasyErrorHandler\Bridge\EasyWebhook;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener(event: FinalFailedWebhookEvent::class)]
 final class WebhookFinalFailedListener
 {
     public function __construct(private readonly ErrorHandlerInterface $errorHandler)

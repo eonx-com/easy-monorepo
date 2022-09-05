@@ -6,10 +6,8 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\Messenger;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
 
-#[AsEventListener(event: WorkerMessageFailedEvent::class)]
 final class ReportErrorEventListener
 {
     public function __construct(

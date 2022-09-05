@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Listener;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
-use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleErrorEvent;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener(event: ConsoleEvents::ERROR)]
 final class ConsoleErrorEventListener
 {
     /**
