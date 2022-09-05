@@ -26,7 +26,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface[]
      */
-    private readonly array $builders;
+    private array $builders;
 
     /**
      * @var class-string[]
@@ -36,7 +36,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
      */
-    private readonly array $reporters;
+    private array $reporters;
 
     /**
      * @param iterable<mixed> $builderProviders
@@ -44,7 +44,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
      * @param null|class-string[] $ignoredExceptionsForReport
      */
     public function __construct(
-        private readonly ErrorResponseFactoryInterface $responseFactory,
+        private readonly ErrorResponseFactoryInterface $errorResponseFactory,
         iterable $builderProviders,
         iterable $reporterProviders,
         private readonly VerboseStrategyInterface $verboseStrategy,
@@ -86,7 +86,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
             $statusCode = $builder->buildStatusCode($throwable, $statusCode ?? null);
         }
 
-        return $this->responseFactory->create(
+        return $this->errorResponseFactory->create(
             $request,
             ErrorResponseData::create($this->sortRecursive($data ?? []), $statusCode ?? null, $headers ?? null)
         );
@@ -129,8 +129,8 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     public function supportsFormat(Request $request): bool
     {
         // Ultimately the response factory should make the decision
-        if ($this->responseFactory instanceof FormatAwareInterface) {
-            return $this->responseFactory->supportsFormat($request);
+        if ($this->errorResponseFactory instanceof FormatAwareInterface) {
+            return $this->errorResponseFactory->supportsFormat($request);
         }
 
         // Otherwise, assume it supports every format

@@ -15,45 +15,52 @@ final class ErrorLogLevelResolverTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetErrorLogLevel
      */
     public function providerTestGetErrorLogLevel(): iterable
     {
         yield 'Error because default' => [
             'throwable' => new InvalidArgumentException(),
             'expectedLogLevel' => Logger::ERROR,
+            'exceptionLogLevels' => null,
         ];
 
         yield 'Debug default Symfony HTTP exception' => [
             'throwable' => new NotFoundHttpException(),
             'expectedLogLevel' => Logger::DEBUG,
+            'exceptionLogLevels' => null,
+        ];
+
+        yield 'Info from log levels mapping' => [
+            'throwable' => new InvalidArgumentException(),
+            'expectedLogLevel' => Logger::INFO,
+            'exceptionLogLevels' => [
+                InvalidArgumentException::class => Logger::INFO,
+            ],
         ];
 
         yield 'Critical from exception log level aware' => [
             'throwable' => (new BaseExceptionStub())->setCriticalLogLevel(),
             'expectedLogLevel' => Logger::CRITICAL,
+            'exceptionLogLevels' => null,
         ];
     }
 
     /**
+     * @param array<class-string, int> $exceptionLogLevels
+     *
      * @dataProvider providerTestGetErrorLogLevel
      */
     public function testGetErrorLogLevel(
         Throwable $throwable,
-        int $expectedLogLevel
+        int $expectedLogLevel,
+        ?array $exceptionLogLevels = null
     ): void {
-        $resolver = new ErrorLogLevelResolver();
+        $resolver = new ErrorLogLevelResolver($exceptionLogLevels);
 
         $logLevel = $resolver->getLogLevel($throwable);
 
         self::assertSame($expectedLogLevel, $logLevel);
-    }
-
-    public function testGetErrorLogLevelToGetInfoFromLogLevelsMapping(): void
-    {
-        $resolver = new ErrorLogLevelResolver([InvalidArgumentException::class => Logger::INFO]);
-
-        $logLevel = $resolver->getLogLevel(new InvalidArgumentException());
-
-        self::assertSame(Logger::INFO, $logLevel);
     }
 }

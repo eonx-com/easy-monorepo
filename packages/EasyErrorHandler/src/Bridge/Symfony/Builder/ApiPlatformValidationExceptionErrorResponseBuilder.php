@@ -40,7 +40,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
         ?array $keys = null,
         ?int $priority = null
     ) {
-        $this->keys = $keys ?? null;
+        $this->keys = $keys ?? [];
 
         parent::__construct($priority);
     }

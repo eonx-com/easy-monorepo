@@ -8,17 +8,22 @@ use Bugsnag\Client;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Reporters\AbstractErrorReporter;
+use Monolog\Logger;
 use Throwable;
 
 final class BugsnagErrorReporter extends AbstractErrorReporter
 {
+    private readonly int $threshold;
+
     public function __construct(
         private readonly Client $bugsnag,
         private readonly BugsnagIgnoreExceptionsResolverInterface $ignoreExceptionsResolver,
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
-        private readonly int $threshold,
+        ?int $threshold = null,
         ?int $priority = null
     ) {
+        $this->threshold = $threshold ?? Logger::ERROR;
+
         parent::__construct($errorLogLevelResolver, $priority);
     }
 

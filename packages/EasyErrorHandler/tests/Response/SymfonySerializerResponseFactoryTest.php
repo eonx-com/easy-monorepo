@@ -27,8 +27,8 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
             'request' => new Request(),
             'errorResponseData' => ErrorResponseData::create(['message' => 'yeah']),
             'serializer' => new Serializer([], [new JsonEncoder()]),
-            'errorFormats' => [],
             'expectedContent' => '{"message":"yeah"}',
+            'errorFormats' => null,
         ];
 
         $request = new Request();
@@ -38,10 +38,10 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
             'request' => $request,
             'errorResponseData' => ErrorResponseData::create(['message' => 'yeah']),
             'serializer' => new Serializer([], [new XmlEncoder()]),
+            'expectedContent' => "<?xml version=\"1.0\"?>\n<response><message>yeah</message></response>\n",
             'errorFormats' => [
                 'xml' => ['application/nathan+xml'],
             ],
-            'expectedContent' => "<?xml version=\"1.0\"?>\n<response><message>yeah</message></response>\n",
         ];
     }
 
@@ -54,8 +54,8 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
         Request $request,
         ErrorResponseDataInterface $errorResponseData,
         SerializerInterface $serializer,
-        array $errorFormats,
-        string $expectedContent
+        string $expectedContent,
+        ?array $errorFormats = null,
     ): void {
         $responseFactory = new SymfonySerializerResponseFactory($serializer, $errorFormats);
 

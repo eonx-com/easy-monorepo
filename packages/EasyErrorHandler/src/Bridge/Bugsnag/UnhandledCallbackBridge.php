@@ -9,7 +9,7 @@ use Closure;
 
 final class UnhandledCallbackBridge
 {
-    private Closure $callback;
+    private readonly Closure $callback;
 
     public function __construct(callable $callback)
     {

@@ -197,7 +197,7 @@
         "check-ecs": ".quality/vendor/bin/ecs check --ansi",
         "check-monorepo": "vendor/bin/monorepo-builder validate --ansi",
         "check-composer": "@composer validate --strict",
-        "check-phpstan": ".quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=1000M",
+        "check-phpstan": ".quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=2000M",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
         "check-rector": ".quality/vendor/bin/rector process --ansi --config rector-ci.php --dry-run",
         "fix-ecs": ".quality/vendor/bin/ecs check --fix --ansi",

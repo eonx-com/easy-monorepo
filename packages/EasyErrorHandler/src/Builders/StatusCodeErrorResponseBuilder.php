@@ -9,10 +9,13 @@ use Throwable;
 
 final class StatusCodeErrorResponseBuilder extends AbstractErrorResponseBuilder
 {
+    /**
+     * @var array<class-string, int>
+     */
     private readonly array $exceptionToStatusCode;
 
     /**
-     * @param null|int[] $exceptionToStatusCode
+     * @param null|array<class-string, int> $exceptionToStatusCode
      */
     public function __construct(
         ?array $exceptionToStatusCode = null,

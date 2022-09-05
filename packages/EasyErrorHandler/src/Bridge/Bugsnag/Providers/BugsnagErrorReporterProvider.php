@@ -9,7 +9,6 @@ use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResol
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Reporters\BugsnagErrorReporter;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
-use Monolog\Logger;
 
 final class BugsnagErrorReporterProvider implements ErrorReporterProviderInterface
 {
@@ -17,7 +16,7 @@ final class BugsnagErrorReporterProvider implements ErrorReporterProviderInterfa
         private readonly Client $bugsnag,
         private readonly BugsnagIgnoreExceptionsResolverInterface $bugsnagIgnoreExceptionsResolver,
         private readonly ErrorLogLevelResolverInterface $errorLogLevelResolver,
-        private readonly int $threshold = Logger::ERROR
+        private readonly ?int $threshold = null
     ) {
     }
 

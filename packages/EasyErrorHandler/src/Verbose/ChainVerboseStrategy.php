@@ -15,7 +15,7 @@ final class ChainVerboseStrategy implements VerboseStrategyInterface
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\VerboseStrategyDriverInterface[]
      */
-    private array $drivers;
+    private readonly array $drivers;
 
     private bool $verbose;
 
