@@ -55,7 +55,8 @@ jobs:
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: none
+                    tools: symfony-cli
 
             -   uses: eonx-com/actions-composer-install@v1
 
-            -   uses: eonx-com/actions-security-checker@v2
+            -   run: symfony security:check
