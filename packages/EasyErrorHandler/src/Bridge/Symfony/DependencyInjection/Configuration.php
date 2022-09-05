@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection;
 
+use Monolog\Logger;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -21,7 +22,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 //Bugsnag
                 ->booleanNode('bugsnag_enabled')->defaultTrue()->end()
-                ->integerNode('bugsnag_threshold')->defaultNull()->end()
+                ->integerNode('bugsnag_threshold')->defaultValue(Logger::ERROR)->end()
                 ->arrayNode('bugsnag_handled_exceptions')
                     ->beforeNormalization()->castToArray()->end()
                     ->scalarPrototype()->end()
@@ -77,7 +78,7 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('locale')->defaultValue(self::DEFAULT_LOCALE)->end()
                     ->end()
                 ->end()
-                ->scalarNode('error_codes_interface')->defaultValue(null)->end()
+                ->scalarNode('error_codes_interface')->defaultNull()->end()
                 ->scalarNode('error_codes_category_size')->defaultValue(self::DEFAULT_ERROR_CODES_CATEGORY_SIZE)->end()
             ->end();
 

@@ -26,11 +26,11 @@ The following set of error response builders are provided to the ErrorHandler by
 
 - **CodeBuilder**: Adds the exception code to the response body.
 - **ExtendedExceptionBuilder**: Adds extended exception information to the response body, including the following:
-  - class
-  - file
-  - line
-  - message
-  - trace
+    - class
+    - file
+    - line
+    - message
+    - trace
 - **StatusCodeBuilder**: Sets the HTTP response status code to the exception's `$statusCode` property. For example, it
   would set the status code to 404 for a NotFoundException.
 - **SubCodeBuilder**: Adds the exception sub-code to the response body.
@@ -63,7 +63,7 @@ provider implementing `EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProv
 
 namespace App\Exception\Response;
 
-use EonX\EasyErrorHandler\Builders\StatusCodeBuilder;
+use EonX\EasyErrorHandler\Builders\StatusCodeErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 
 final class MyStatusCodeBuilderProvider implements ErrorResponseBuilderProviderInterface
@@ -74,7 +74,7 @@ final class MyStatusCodeBuilderProvider implements ErrorResponseBuilderProviderI
      public function getBuilders(): iterable
     {
         // Return the built-in status code builder, but don't hesitate to create your own!
-        yield new StatusCodeBuilder();
+        yield new StatusCodeErrorResponseBuilder();
     }
 }
 ```

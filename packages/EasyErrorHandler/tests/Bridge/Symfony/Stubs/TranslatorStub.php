@@ -11,14 +11,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class TranslatorStub implements TranslatorInterface
 {
     /**
-     * @var mixed[]
+     * @var null|mixed[]
      */
-    private $translations;
+    private ?array $translations = null;
 
-    /**
-     * @var \Symfony\Component\Translation\Translator
-     */
-    private $translator;
+    private ?Translator $translator = null;
 
     /**
      * @param mixed[] $translations
@@ -29,10 +26,7 @@ final class TranslatorStub implements TranslatorInterface
     }
 
     /**
-     * @param string $id
      * @param null|mixed[] $parameters
-     * @param null|string $domain
-     * @param null|string $locale
      */
     public function trans($id, ?array $parameters = null, $domain = null, $locale = null): string
     {
@@ -60,6 +54,8 @@ final class TranslatorStub implements TranslatorInterface
             $translator->addResource('array', $this->translations, 'en', 'EasyErrorHandlerBundle');
         }
 
-        return $this->translator = $translator;
+        $this->translator = $translator;
+
+        return $this->translator;
     }
 }

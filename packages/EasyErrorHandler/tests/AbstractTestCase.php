@@ -6,9 +6,10 @@ namespace EonX\EasyErrorHandler\Tests;
 
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stubs\ValidationExceptionStub;
+use Exception;
 use Illuminate\Http\Request;
+use LogicException;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use ReflectionProperty;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,60 +29,64 @@ class AbstractTestCase extends TestCase
     public function providerTestRenderWithDefaultBuilders(): iterable
     {
         yield 'Returns default user message' => [
-            new Request(),
-            new \Exception(),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => new Exception(),
+            'assertResponse' => static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
                 self::assertSame('exceptions.default_user_message', $content['message']);
             },
+            'config' => null,
+            'translations' => null,
         ];
 
         yield 'Returns default user message translated' => [
-            new Request(),
-            new \Exception(),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => new Exception(),
+            'assertResponse' => static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
                 self::assertSame('Default message', $content['message']);
             },
-            null,
-            [
+            'config' => null,
+            'translations' => [
                 'exceptions.default_user_message' => 'Default message',
             ],
         ];
 
         yield 'Returns extended response on debug' => [
-            new Request(),
-            new \Exception(),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => new Exception(),
+            'assertResponse' => static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
                 self::assertSame(['code', 'exception', 'message', 'time'], \array_keys($content));
                 self::assertSame(['class', 'file', 'line', 'message', 'trace'], \array_keys($content['exception']));
             },
-            [
+            'config' => [
                 'easy-error-handler' => [
                     'use_extended_response' => true,
                 ],
             ],
+            'translations' => null,
         ];
 
         yield 'Returns messages as is if translations are absent' => [
-            new Request(),
-            (new BaseExceptionStub('Exception message'))->setUserMessage('User-friendly error message'),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => (new BaseExceptionStub('Exception message'))->setUserMessage('User-friendly error message'),
+            'assertResponse' => static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
                 self::assertSame('User-friendly error message', $content['message']);
                 self::assertSame('Exception message', $content['exception']['message']);
             },
-            [
+            'config' => [
                 'easy-error-handler' => [
                     'use_extended_response' => true,
                 ],
             ],
+            'translations' => null,
         ];
 
         yield 'Returns message with params' => [
-            new Request(),
-            (new BaseExceptionStub('test.exception_message'))
+            'request' => new Request(),
+            'exception' => (new BaseExceptionStub('test.exception_message'))
                 ->setMessageParams([
                     'param' => 'foo',
                 ])
@@ -89,132 +94,141 @@ class AbstractTestCase extends TestCase
                 ->setUserMessageParams([
                     'param' => 'bar',
                 ]),
-            static function (Response $response): void {
+            'assertResponse' => static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
                 self::assertSame('Exception message with foo', $content['exception']['message']);
                 self::assertSame('User-friendly error message with bar', $content['message']);
             },
-            [
+            'config' => [
                 'easy-error-handler' => [
                     'use_extended_response' => true,
                 ],
             ],
-            [
+            'translations' => [
                 'test.exception_message' => 'Exception message with :param',
                 'test.user_message' => 'User-friendly error message with :param',
             ],
         ];
 
         yield 'Response with 500 status code by default' => [
-            new Request(),
-            new \Exception(),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => new Exception(),
+            'assertResponse' => static function (Response $response): void {
                 self::assertSame(500, $response->getStatusCode());
             },
+            'config' => null,
+            'translations' => null,
         ];
 
         yield 'Response with status code of code aware exception interface' => [
-            new Request(),
-            (new BaseExceptionStub())->setStatusCode(123),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => (new BaseExceptionStub())->setStatusCode(123),
+            'assertResponse' => static function (Response $response): void {
                 self::assertSame(123, $response->getStatusCode());
             },
+            'config' => null,
+            'translations' => null,
         ];
 
         yield 'Response with sub_code' => [
-            new Request(),
-            (new BaseExceptionStub())->setSubCode(123456),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => (new BaseExceptionStub())->setSubCode(123456),
+            'assertResponse' => static function (Response $response): void {
                 $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertArrayHasKey('sub_code', $content);
                 self::assertSame(123456, $content['sub_code']);
             },
+            'config' => null,
+            'translations' => null,
         ];
 
         yield 'Response with time in zulu format' => [
-            new Request(),
-            new \Exception(),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => new Exception(),
+            'assertResponse' => static function (Response $response): void {
                 $content = \json_decode((string)$response->getContent(), true);
                 self::assertMatchesRegularExpression(
                     '/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/',
                     $content['time']
                 );
             },
+            'config' => null,
+            'translations' => null,
         ];
 
         yield 'Response with validation errors' => [
-            new Request(),
-            (new ValidationExceptionStub())->setErrors(['foo' => 'bar']),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => (new ValidationExceptionStub())->setErrors(['foo' => 'bar']),
+            'assertResponse' => static function (Response $response): void {
                 $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertArrayHasKey('violations', $content);
                 self::assertSame(['foo' => 'bar'], $content['violations']);
             },
+            'config' => null,
+            'translations' => null,
         ];
 
         yield 'Short response' => [
-            new Request(),
-            new \Exception(),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => new Exception(),
+            'assertResponse' => static function (Response $response): void {
                 $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertSame(['code', 'message', 'time'], \array_keys($content));
             },
+            'config' => null,
+            'translations' => null,
         ];
 
         yield 'Short response with sub_code' => [
-            new Request(),
-            (new BaseExceptionStub())->setSubCode(123),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => (new BaseExceptionStub())->setSubCode(123),
+            'assertResponse' => static function (Response $response): void {
                 $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertArrayHasKey('sub_code', $content);
                 self::assertSame(123, $content['sub_code']);
             },
+            'config' => null,
+            'translations' => null,
         ];
 
         yield 'Short response with violations' => [
-            new Request(),
-            (new ValidationExceptionStub())->setErrors(['foo' => ['bar']]),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => (new ValidationExceptionStub())->setErrors(['foo' => ['bar']]),
+            'assertResponse' => static function (Response $response): void {
                 $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertArrayHasKey('violations', $content);
                 self::assertSame(['foo' => ['bar']], $content['violations']);
             },
+            'config' => null,
+            'translations' => null,
         ];
 
         yield 'HttpException statusCode and message' => [
-            new Request(),
-            new NotFoundHttpException('my-message'),
-            static function (Response $response): void {
+            'request' => new Request(),
+            'exception' => new NotFoundHttpException('my-message'),
+            'assertResponse' => static function (Response $response): void {
                 $content = (array)\json_decode((string)$response->getContent(), true);
                 self::assertSame(404, $response->getStatusCode());
                 self::assertSame('my-message', $content['message']);
             },
+            'config' => null,
+            'translations' => null,
         ];
     }
 
-    /**
-     * Returns object's private property value.
-     */
-    protected function getPrivatePropertyValue(object $object, string $property): mixed
+    protected function getPrivatePropertyValue(object $object, string $propertyName): mixed
     {
-        return (function ($property) {
-            return $this->{$property};
-        })->call($object, $property);
+        $propertyReflection = $this->resolvePropertyReflection($object, $propertyName);
+        $propertyReflection->setAccessible(true);
+
+        return $propertyReflection->getValue($object);
     }
 
-    /**
-     * @param class-string|object $className
-     *
-     * @throws \ReflectionException
-     */
-    protected function getPropertyAsPublic(string|object $className, string $propertyName): ReflectionProperty
+    protected function setPrivatePropertyValue(object $object, string $propertyName, mixed $value): void
     {
-        $class = new ReflectionClass($className);
-        $property = $class->getProperty($propertyName);
-        $property->setAccessible(true);
-
-        return $property;
+        $propertyReflection = $this->resolvePropertyReflection($object, $propertyName);
+        $propertyReflection->setAccessible(true);
+        $propertyReflection->setValue($object, $value);
     }
 
     protected function tearDown(): void
@@ -229,5 +243,18 @@ class AbstractTestCase extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    private function resolvePropertyReflection(object $object, string $propertyName): ReflectionProperty
+    {
+        while (\property_exists($object, $propertyName) === false) {
+            $object = \get_parent_class($object);
+
+            if ($object === false) {
+                throw new LogicException(\sprintf('The $%s property does not exist.', $propertyName));
+            }
+        }
+
+        return new ReflectionProperty($object, $propertyName);
     }
 }

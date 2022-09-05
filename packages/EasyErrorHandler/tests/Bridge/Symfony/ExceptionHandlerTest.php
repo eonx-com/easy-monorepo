@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Throwable;
 
 final class ExceptionHandlerTest extends AbstractSymfonyTestCase
 {
@@ -20,7 +21,7 @@ final class ExceptionHandlerTest extends AbstractSymfonyTestCase
      */
     public function testRenderWithDefaultBuilders(
         Request $request,
-        \Throwable $exception,
+        Throwable $exception,
         callable $assertResponse,
         ?array $config = null,
         ?array $translations = null

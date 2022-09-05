@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Monolog\Logger;
+
 return [
     /**
      * Use extended error response with exception message, trace, etc.
@@ -26,7 +28,7 @@ return [
     /**
      * Log level threshold to notify bugsnag.
      */
-    'bugsnag_threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', null),
+    'bugsnag_threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_THRESHOLD', Logger::ERROR),
 
     /**
      * List of handled exceptions that will set the bugsnag report as handled.
@@ -36,22 +38,22 @@ return [
     /**
      * List of Ignored Exceptions that'll not be reported to bugsnag.
      */
-    'bugsnag_ignored_exceptions' => null,
+    'bugsnag_ignored_exceptions' => [],
 
     /**
      * List of Ignored Exceptions that'll not be reported to any reporter.
      */
-    'ignored_exceptions' => null,
+    'ignored_exceptions' => [],
 
     /**
      * List of Exceptions and their associated log levels.
      */
-    'logger_exception_log_levels' => null,
+    'logger_exception_log_levels' => [],
 
     /**
      * List of Ignored Exceptions that'll not be reported to logger.
      */
-    'logger_ignored_exceptions' => null,
+    'logger_ignored_exceptions' => [],
 
     /**
      * Interface to fetch error codes from that will be used in the `easy-error-handler:error-codes:analyze` command.

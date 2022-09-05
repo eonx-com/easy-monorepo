@@ -19,17 +19,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
     /**
-     * @var string[]
+     * @param mixed[] $configs
      */
-    private $configs;
-
-    /**
-     * @param null|mixed[] $configs
-     */
-    public function __construct(?array $configs = null)
+    public function __construct(private readonly array $configs = [])
     {
-        $this->configs = $configs ?? [];
-
         parent::__construct('test', true);
     }
 

@@ -11,7 +11,6 @@ use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stubs\BugsnagClientStub;
-use Exception;
 use Monolog\Logger;
 use Throwable;
 
@@ -25,13 +24,13 @@ final class BugsnagReporterTest extends AbstractTestCase
     public function provideDataForReportWithIgnoredExceptionsResolver(): iterable
     {
         yield 'Reported' => [
-            false,
-            (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL)->setSubCode(1),
+            'shouldIgnore' => false,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL)->setSubCode(1),
         ];
 
         yield 'Ignored' => [
-            true,
-            (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL)->setSubCode(2),
+            'shouldIgnore' => true,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL)->setSubCode(2),
         ];
     }
 
@@ -42,28 +41,32 @@ final class BugsnagReporterTest extends AbstractTestCase
      */
     public function providerTestReport(): iterable
     {
-        yield 'Report unexpected exception with no log level' => [true, new Exception()];
-
         yield 'Report same log level as threshold' => [
-            true,
-            (new BaseExceptionStub())->setLogLevel(Logger::ERROR),
+            'shouldReport' => true,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::ERROR),
+            'threshold' => Logger::ERROR,
+            'ignoredExceptions' => [],
         ];
 
         yield 'Report higher log level as threshold' => [
-            true,
-            (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL),
+            'shouldReport' => true,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL),
+            'threshold' => Logger::ERROR,
+            'ignoredExceptions' => [],
         ];
 
         yield 'Do not report lower log level than threshold' => [
-            false,
-            (new BaseExceptionStub())->setLogLevel(Logger::INFO),
+            'shouldReport' => false,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL),
+            'threshold' => Logger::EMERGENCY,
+            'ignoredExceptions' => [],
         ];
 
         yield 'Do not report ignored exceptions' => [
-            false,
-            (new BaseExceptionStub())->setLogLevel(Logger::ERROR),
-            null,
-            [BaseExceptionStub::class],
+            'shouldReport' => false,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::ERROR),
+            'threshold' => Logger::ERROR,
+            'ignoredExceptions' => [BaseExceptionStub::class],
         ];
     }
 
