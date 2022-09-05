@@ -14,12 +14,18 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInterface
 {
     /**
-     * @param mixed[] $errorFormats
+     * @var mixed[]
+     */
+    private readonly array $errorFormats;
+
+    /**
+     * @param null|mixed[] $errorFormats
      */
     public function __construct(
         private readonly SerializerInterface $serializer,
-        private readonly array $errorFormats = []
+        ?array $errorFormats = null
     ) {
+        $this->errorFormats = $errorFormats ?? [];
     }
 
     public function create(Request $request, ErrorResponseDataInterface $data): Response

@@ -28,13 +28,20 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
     private const STATUS_CODE_BAD_REQUEST = 400;
 
     /**
-     * @param mixed[] $keys
+     * @var mixed[]
+     */
+    private readonly array $keys;
+
+    /**
+     * @param null|mixed[] $keys
      */
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly array $keys = [],
+        ?array $keys = null,
         ?int $priority = null
     ) {
+        $this->keys = $keys ?? null;
+
         parent::__construct($priority);
     }
 

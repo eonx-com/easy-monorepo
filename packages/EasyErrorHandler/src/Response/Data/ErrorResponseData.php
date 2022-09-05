@@ -9,14 +9,23 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseDataInterface;
 final class ErrorResponseData implements ErrorResponseDataInterface
 {
     /**
+     * @var mixed[]
+     */
+    private readonly array $headers;
+
+    private readonly int $statusCode;
+
+    /**
      * @param mixed[] $rawData
-     * @param mixed[] $headers
+     * @param null|mixed[] $headers
      */
     public function __construct(
         private readonly array $rawData,
-        private readonly int $statusCode = 500,
-        private readonly array $headers = []
+        ?int $statusCode = null,
+        ?array $headers = null
     ) {
+        $this->statusCode = $statusCode ?? 500;
+        $this->headers = $headers ?? [];
     }
 
     /**
@@ -25,7 +34,7 @@ final class ErrorResponseData implements ErrorResponseDataInterface
      */
     public static function create(array $rawData, ?int $statusCode = null, ?array $headers = null): self
     {
-        return new self($rawData, $statusCode ?? 500, $headers ?? []);
+        return new self($rawData, $statusCode, $headers);
     }
 
     /**

@@ -13,14 +13,20 @@ use Psr\Log\LoggerInterface;
 final class DefaultErrorReporterProvider implements ErrorReporterProviderInterface
 {
     /**
-     * @param string[] $ignoredExceptions
+     * @var class-string[]
+     */
+    private readonly array $ignoredExceptions;
+
+    /**
+     * @param null|class-string[] $ignoredExceptions
      */
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
         private readonly ErrorLogLevelResolverInterface $errorLogLevelResolver,
         private readonly LoggerInterface $logger,
-        private readonly array $ignoredExceptions = []
+        ?array $ignoredExceptions = null
     ) {
+        $this->ignoredExceptions = $ignoredExceptions ?? [];
     }
 
     /**

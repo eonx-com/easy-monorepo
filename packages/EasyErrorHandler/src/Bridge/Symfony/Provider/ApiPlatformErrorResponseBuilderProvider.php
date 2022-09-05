@@ -13,13 +13,22 @@ use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 final class ApiPlatformErrorResponseBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
     /**
-     * @param mixed[] $keys
+     * @var mixed[]
+     */
+    private readonly array $keys;
+
+    private readonly bool $transformValidationErrors;
+
+    /**
+     * @param null|mixed[] $keys
      */
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly array $keys = [],
-        private readonly bool $transformValidationErrors = true
+        ?array $keys = null,
+        ?bool $transformValidationErrors = null
     ) {
+        $this->keys = $keys ?? [];
+        $this->transformValidationErrors = $transformValidationErrors ?? true;
     }
 
     /**

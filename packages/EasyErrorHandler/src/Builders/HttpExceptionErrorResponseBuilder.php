@@ -12,12 +12,19 @@ final class HttpExceptionErrorResponseBuilder extends AbstractErrorResponseBuild
     private const KEY_MESSAGE = 'message';
 
     /**
-     * @param mixed[] $keys
+     * @var mixed[]
+     */
+    private readonly array $keys;
+
+    /**
+     * @param null|mixed[] $keys
      */
     public function __construct(
-        private readonly array $keys = [],
+        ?array $keys = null,
         ?int $priority = null
     ) {
+        $this->keys = $keys ?? [];
+
         parent::__construct($priority);
     }
 

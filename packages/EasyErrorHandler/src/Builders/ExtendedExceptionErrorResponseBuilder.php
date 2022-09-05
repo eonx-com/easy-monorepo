@@ -29,15 +29,22 @@ final class ExtendedExceptionErrorResponseBuilder extends AbstractSingleKeyError
     private const EXCEPTION_KEY_TRACE = 'trace';
 
     /**
-     * @param string[] $exceptionKeys
+     * @var string[]
+     */
+    private readonly array $exceptionKeys;
+
+    /**
+     * @param null|string[] $exceptionKeys
      */
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
         private readonly TranslatorInterface $translator,
-        private readonly array $exceptionKeys = [],
+        ?array $exceptionKeys = null,
         ?string $key = null,
         ?int $priority = null
     ) {
+        $this->exceptionKeys = $exceptionKeys ?? [];
+
         parent::__construct($key, $priority);
     }
 

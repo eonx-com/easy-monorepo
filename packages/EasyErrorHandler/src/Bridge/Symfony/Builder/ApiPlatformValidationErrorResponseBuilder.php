@@ -48,13 +48,20 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     private const VIOLATION_VALUE_SHOULD_BE_PRESENT = 'This value should be present.';
 
     /**
-     * @param mixed[] $keys
+     * @var mixed[]
+     */
+    private readonly array $keys;
+
+    /**
+     * @param null|mixed[] $keys
      */
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly array $keys = [],
+        ?array $keys = null,
         ?int $priority = null
     ) {
+        $this->keys = $keys ?? [];
+
         parent::__construct($priority);
     }
 

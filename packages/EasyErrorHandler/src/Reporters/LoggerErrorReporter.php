@@ -12,15 +12,22 @@ use Throwable;
 final class LoggerErrorReporter extends AbstractErrorReporter
 {
     /**
-     * @param string[] $ignoreExceptions
+     * @var class-string[]
+     */
+    private readonly array $ignoreExceptions;
+
+    /**
+     * @param null|class-string[] $ignoreExceptions
      */
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
         private readonly LoggerInterface $logger,
-        private readonly array $ignoreExceptions = [],
+        ?array $ignoreExceptions = null,
         ?int $priority = null
     ) {
+        $this->ignoreExceptions = $ignoreExceptions ?? [];
+
         parent::__construct($errorLogLevelResolver, $priority);
     }
 

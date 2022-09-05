@@ -18,9 +18,4 @@ abstract class AbstractErrorReporter implements ErrorReporterInterface
     ) {
         $this->doSetPriority($priority);
     }
-
-    public function getPriority(): int
-    {
-        return $this->priority;
-    }
 }

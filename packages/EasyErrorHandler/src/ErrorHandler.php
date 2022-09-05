@@ -26,27 +26,33 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface[]
      */
-    private array $builders;
+    private readonly array $builders;
+
+    /**
+     * @var class-string[]
+     */
+    private readonly array $ignoredExceptionsForReport;
 
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
      */
-    private array $reporters;
+    private readonly array $reporters;
 
     /**
      * @param iterable<mixed> $builderProviders
      * @param iterable<mixed> $reporterProviders
-     * @param class-string[] $ignoredExceptionsForReport
+     * @param null|class-string[] $ignoredExceptionsForReport
      */
     public function __construct(
         private readonly ErrorResponseFactoryInterface $responseFactory,
         iterable $builderProviders,
         iterable $reporterProviders,
         private readonly VerboseStrategyInterface $verboseStrategy,
-        private readonly array $ignoredExceptionsForReport = []
+        ?array $ignoredExceptionsForReport = null
     ) {
         $this->setBuilders($builderProviders);
         $this->setReporters($reporterProviders);
+        $this->ignoredExceptionsForReport = $ignoredExceptionsForReport ?? [];
     }
 
     /**

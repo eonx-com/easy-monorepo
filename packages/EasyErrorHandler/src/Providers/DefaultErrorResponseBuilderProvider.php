@@ -22,13 +22,19 @@ final class DefaultErrorResponseBuilderProvider implements ErrorResponseBuilderP
     private const KEY_EXTENDED_EXCEPTION_KEYS = 'extended_exception_keys';
 
     /**
+     * @var mixed[]
+     */
+    private readonly array $keys;
+
+    /**
      * @param mixed[] $keys
      */
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
         private readonly TranslatorInterface $translator,
-        private readonly array $keys = []
+        ?array $keys = null
     ) {
+        $this->keys = $keys ?? [];
     }
 
     /**
