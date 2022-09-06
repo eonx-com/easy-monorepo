@@ -21,17 +21,17 @@ class EnvVarSubstitutionHelper
 
     private static int $maxAttempts = 100;
 
+    private static int $unresolved = 0;
+
     /**
      * @var string[]
      */
     private static array $values = [];
 
-    private static int $unresolved = 0;
-
     /**
-     * @param string[] $envs
+     * @param array<string, mixed> $envs
      *
-     * @return string[]
+     * @return array<string, mixed>
      */
     public static function resolveVariables(array $envs): array
     {
