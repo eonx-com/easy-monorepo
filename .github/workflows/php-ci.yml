@@ -14,7 +14,7 @@ jobs:
                     - { name: ecs, coverage: none, run: composer check-ecs }
                     - { name: monorepo, coverage: none, run: composer check-monorepo }
                     - { name: composer, coverage: none, run: composer check-composer }
-                    - { name: phpstan, coverage: none, run: cat packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php && composer check-phpstan }
+                    - { name: phpstan, coverage: none, run: composer check-phpstan }
                     # - { name: rector, coverage: none, run: composer check-rector }
 
 #                    -   name: tests
