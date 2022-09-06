@@ -9,7 +9,7 @@
         "symfony/psr-http-message-bridge": "^1.1 || ^2.0"
     },
     "require-dev": {
-        "guzzlehttp/psr7": "^2.1"
+        "guzzlehttp/psr7": "^2.1",
         "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
         "phpunit/phpunit": "^9.5",
         "symfony/symfony": "^5.4 || ^6.0",
