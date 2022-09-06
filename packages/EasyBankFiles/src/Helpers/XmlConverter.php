@@ -208,6 +208,7 @@ final class XmlConverter
      */
     private function domElementToArray(DOMElement $element): array
     {
+        /** @var array<string, mixed> $array */
         $array = [];
 
         /** @var \DOMElement $childElement */

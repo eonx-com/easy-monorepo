@@ -79,6 +79,6 @@ final class AbnValidator extends ConstraintValidator
             return Abn::INVALID_CHARACTERS_ERROR;
         }
 
-        return (int)$abn[0] === 0 ? Abn::LEADING_ZERO_ERROR : null;
+        return \str_starts_with($abn, '0') ? Abn::LEADING_ZERO_ERROR : null;
     }
 }
