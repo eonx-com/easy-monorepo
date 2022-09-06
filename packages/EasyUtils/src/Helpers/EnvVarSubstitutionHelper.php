@@ -44,7 +44,7 @@ class EnvVarSubstitutionHelper
             self::$unresolved = 0;
 
             foreach ($envs as $name => $value) {
-                self::$values[$name] = self::doResolveVariables($value);
+                self::$values[$name] = \is_string($value) ? self::doResolveVariables($value) : $value;
             }
 
             $currentAttempt++;
