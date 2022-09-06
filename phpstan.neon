@@ -225,6 +225,9 @@ parameters:
         - message: '#Result of && is always false#'
           path: packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
 
+        - message: '#Else branch is unreachable because ternary operator condition is always true#'
+          path: packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
+
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: packages/EasyWebhook/src/AbstractWebhook.php
