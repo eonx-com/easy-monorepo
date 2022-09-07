@@ -68,7 +68,6 @@ final class EasySwooleRunner implements RunnerInterface
                 $hfRequest = HttpFoundationHelper::fromSwooleRequest($request);
                 $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_ENABLED, true);
 
-                // Surround handle with output buffering to support echo, var_dump, etc
                 $hfResponse = $app->handle($hfRequest);
 
                 HttpFoundationHelper::reflectHttpFoundationResponse(
