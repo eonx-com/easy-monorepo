@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ErrorResponseFactory implements ErrorResponseFactoryInterface, FormatAwareInterface
 {
-    private const PREFERRED_FORMAT = 'json';
+    private const SUPPORTED_FORMAT = 'json';
 
     public function create(Request $request, ErrorResponseDataInterface $data): Response
     {
@@ -22,6 +22,6 @@ final class ErrorResponseFactory implements ErrorResponseFactoryInterface, Forma
 
     public function supportsFormat(Request $request): bool
     {
-        return $request->getPreferredFormat() === self::PREFERRED_FORMAT;
+        return $request->getPreferredFormat() === self::SUPPORTED_FORMAT;
     }
 }
