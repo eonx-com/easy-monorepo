@@ -1,6 +1,10 @@
 {
+    "name": "eonx-com/quality-tools",
+    "description": "Necessary quality tools for the project",
+    "type": "project",
+    "license": "proprietary",
     "require": {
-        "eonx-com/easy-quality": "^2.0"
+        "eonx-com/easy-quality": "^3.0"
     },
     "config": {
         "allow-plugins": {
