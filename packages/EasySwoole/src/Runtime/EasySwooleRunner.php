@@ -69,16 +69,12 @@ final class EasySwooleRunner implements RunnerInterface
                 $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_ENABLED, true);
 
                 // Surround handle with output buffering to support echo, var_dump, etc
-                \ob_start();
                 $hfResponse = $app->handle($hfRequest);
-                $bufferedOutput = \ob_get_contents();
-                \ob_end_clean();
 
                 HttpFoundationHelper::reflectHttpFoundationResponse(
                     $hfResponse,
                     $response,
-                    $responseChunkSize,
-                    \is_string($bufferedOutput) && $bufferedOutput !== '' ? $bufferedOutput : null
+                    $responseChunkSize
                 );
 
                 if ($app instanceof TerminableInterface) {

@@ -52,8 +52,7 @@ final class HttpFoundationHelper
     public static function reflectHttpFoundationResponse(
         HttpFoundationResponse $hfResponse,
         Response $response,
-        int $chunkSize,
-        ?string $bufferedOutput = null
+        int $chunkSize
     ): void {
         $response->status($hfResponse->getStatusCode());
 
@@ -87,9 +86,6 @@ final class HttpFoundationHelper
                 return '';
             }, 4096);
 
-            // Send buffered output to buffer (echo, var_dump, etc)
-            echo $bufferedOutput;
-
             // Send streamed content to buffer
             $hfResponse->sendContent();
 
@@ -110,8 +106,7 @@ final class HttpFoundationHelper
         }
 
         // From here we have a normal response, simply return the content
-        // Prepend buffered output to response content (echo, var_dump, etc)
-        $content = $bufferedOutput . $hfResponse->getContent();
+        $content = (string)$hfResponse->getContent();
         $length = \mb_strlen($content);
 
         // Do not chunk response if not needed
