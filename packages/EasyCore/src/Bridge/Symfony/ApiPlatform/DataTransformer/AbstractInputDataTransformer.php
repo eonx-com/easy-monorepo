@@ -34,7 +34,8 @@ abstract class AbstractInputDataTransformer implements DataTransformerInterface
             return false;
         }
 
-        return $to === $apiResourceClass && ($context['input']['class'] ?? null) === $this->getInputClass();
+        return is_a($to, $apiResourceClass, true) === true &&
+            is_a($context['input']['class'] ?? null, $this->getInputClass(), true) === true;
     }
 
     /**
