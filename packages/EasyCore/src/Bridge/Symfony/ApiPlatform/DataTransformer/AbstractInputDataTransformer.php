@@ -29,13 +29,23 @@ abstract class AbstractInputDataTransformer implements DataTransformerInterface
     public function supportsTransformation(mixed $data, string $to, ?array $context = null): bool
     {
         $apiResourceClass = $this->getApiResourceClass();
-
-        if ($data instanceof $apiResourceClass) {
-            return false;
+        if (is_string($apiResourceClass)) {
+            $apiResourceClass = [$apiResourceClass];
         }
 
-        return is_a($to, $apiResourceClass, true) &&
-            is_a($context['input']['class'] ?? null, $this->getInputClass(), true);
+        foreach ($apiResourceClass as $class) {
+            if ($data instanceof $class) {
+                return false;
+            }
+        }
+
+        $inputClass = $this->getInputClass();
+        if (is_string($inputClass)) {
+            $inputClass = [$inputClass];
+        }
+
+        return in_array($to, $apiResourceClass, true) &&
+            in_array($context['input']['class'] ?? null, $inputClass, true);
     }
 
     /**
@@ -44,7 +54,9 @@ abstract class AbstractInputDataTransformer implements DataTransformerInterface
      */
     public function transform(mixed $object, string $to, ?array $context = null): object
     {
-        $this->doValidate($object);
+        if ($this->isValidationNeeded()) {
+            $this->doValidate($object);
+        }
 
         return $this->doTransform($object, $context);
     }
@@ -54,9 +66,14 @@ abstract class AbstractInputDataTransformer implements DataTransformerInterface
      */
     abstract protected function doTransform(object $object, ?array $context = null): object;
 
-    abstract protected function getApiResourceClass(): string;
+    abstract protected function getApiResourceClass(): array|string;
 
-    abstract protected function getInputClass(): string;
+    abstract protected function getInputClass(): array|string;
+
+    protected function isValidationNeeded(): bool
+    {
+        return true;
+    }
 
     /**
      * @param object $object
