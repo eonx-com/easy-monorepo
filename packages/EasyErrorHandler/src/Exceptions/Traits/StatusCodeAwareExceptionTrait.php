@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 trait StatusCodeAwareExceptionTrait
 {
-    protected int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
+    protected int $statusCode = 500;
 
     public function getStatusCode(): int
     {
