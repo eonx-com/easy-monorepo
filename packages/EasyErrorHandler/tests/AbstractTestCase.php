@@ -114,7 +114,7 @@ class AbstractTestCase extends TestCase
             'request' => new Request(),
             'exception' => new Exception(),
             'assertResponse' => static function (Response $response): void {
-                self::assertSame(500, $response->getStatusCode());
+                self::assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
             },
             'config' => null,
             'translations' => null,
@@ -208,7 +208,7 @@ class AbstractTestCase extends TestCase
             'exception' => new NotFoundHttpException('my-message'),
             'assertResponse' => static function (Response $response): void {
                 $content = (array)\json_decode((string)$response->getContent(), true);
-                self::assertSame(404, $response->getStatusCode());
+                self::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
                 self::assertSame('my-message', $content['message']);
             },
             'config' => null,

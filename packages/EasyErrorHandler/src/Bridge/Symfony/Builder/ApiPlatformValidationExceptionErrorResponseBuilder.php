@@ -7,6 +7,7 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractErrorResponseBuilder
@@ -24,8 +25,6 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
     private const MESSAGE_ENTITY_NOT_VALID = 'exceptions.entity_not_valid';
 
     private const MESSAGE_NOT_VALID = 'exceptions.not_valid';
-
-    private const STATUS_CODE_BAD_REQUEST = 400;
 
     /**
      * @var mixed[]
@@ -85,7 +84,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
     public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int
     {
         if ($throwable instanceof ValidationException) {
-            $statusCode = self::STATUS_CODE_BAD_REQUEST;
+            $statusCode = Response::HTTP_BAD_REQUEST;
         }
 
         return parent::buildStatusCode($throwable, $statusCode);

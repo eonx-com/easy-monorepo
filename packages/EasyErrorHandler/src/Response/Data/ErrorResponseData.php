@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Response\Data;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseDataInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 final class ErrorResponseData implements ErrorResponseDataInterface
 {
@@ -24,7 +25,7 @@ final class ErrorResponseData implements ErrorResponseDataInterface
         ?int $statusCode = null,
         ?array $headers = null
     ) {
-        $this->statusCode = $statusCode ?? 500;
+        $this->statusCode = $statusCode ?? Response::HTTP_INTERNAL_SERVER_ERROR;
         $this->headers = $headers ?? [];
     }
 

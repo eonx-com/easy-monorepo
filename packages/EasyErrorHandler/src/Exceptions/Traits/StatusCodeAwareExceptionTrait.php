@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions\Traits;
 
+use Symfony\Component\HttpFoundation\Response;
+
 trait StatusCodeAwareExceptionTrait
 {
-    protected int $statusCode = 500;
+    protected int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
 
     public function getStatusCode(): int
     {

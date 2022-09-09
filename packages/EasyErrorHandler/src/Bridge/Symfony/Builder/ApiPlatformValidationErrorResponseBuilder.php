@@ -7,6 +7,7 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -33,8 +34,6 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     ' data because its constructor requires parameter "(\w+)" to be present/';
 
     private const MESSAGE_PATTERN_TYPE_ERROR = '/The type of the "(\w+)" attribute must be "(\w+)", "(\w+)" given/';
-
-    private const STATUS_CODE_BAD_REQUEST = 400;
 
     private const VALUE_NULL = 'NULL';
 
@@ -158,7 +157,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             return parent::buildStatusCode($throwable, $statusCode);
         }
 
-        return self::STATUS_CODE_BAD_REQUEST;
+        return Response::HTTP_BAD_REQUEST;
     }
 
     private function getKey(string $name): string

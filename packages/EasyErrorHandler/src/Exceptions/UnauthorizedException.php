@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions;
 
+use Symfony\Component\HttpFoundation\Response;
+
 abstract class UnauthorizedException extends BaseException
 {
-    protected int $statusCode = 401;
+    protected int $statusCode = Response::HTTP_UNAUTHORIZED;
 
     protected ?string $userMessage = 'exceptions.unauthorized';
 }
