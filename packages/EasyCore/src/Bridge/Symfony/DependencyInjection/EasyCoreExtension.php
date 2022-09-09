@@ -62,6 +62,42 @@ final class EasyCoreExtension extends Extension
             }
         }
 
+        if ($config['api_platform']['open_api_normalizer']['enabled'] ?? false) {
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_OPEN_API_NORMALIZER_BASE_URI,
+                $config['api_platform']['open_api_normalizer']['base_uri']
+            );
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_OPEN_API_NORMALIZER_DEFAULT_PROCESSORS_ENABLED,
+                $config['api_platform']['open_api_normalizer']['default_processors_enabled']
+            );
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_OPEN_API_NORMALIZER_PROCESSORS,
+                $config['api_platform']['open_api_normalizer']['processors']
+            );
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_OPEN_API_NORMALIZER_CONTEXTS_FILE,
+                $config['api_platform']['open_api_normalizer']['contexts_file']
+            );
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_OPEN_API_NORMALIZER_DOC_PATH_PROCESSOR_ENDPOINTS_REMOVE_PARAMS,
+                $config['api_platform']['open_api_normalizer']['doc_path_processor']['endpoints_remove_params']
+            );
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_OPEN_API_NORMALIZER_DOC_PATH_PROCESSOR_ENDPOINTS_REMOVE_BODY,
+                $config['api_platform']['open_api_normalizer']['doc_path_processor']['endpoints_remove_body']
+            );
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_OPEN_API_NORMALIZER_DOC_PATH_PROCESSOR_ENDPOINTS_REMOVE_RESPONSE,
+                $config['api_platform']['open_api_normalizer']['doc_path_processor']['endpoints_remove_response']
+            );
+            $container->setParameter(
+                BridgeConstantsInterface::PARAM_OPEN_API_NORMALIZER_DOC_PATH_PROCESSOR_SKIP_METHOD_NAMES,
+                $config['api_platform']['open_api_normalizer']['doc_path_processor']['skip_method_names']
+            );
+            $this->loadIfBundlesExist('api_platform/open_api_normalizer.php', [ApiPlatformBundle::class]);
+        }
+
         // Search
         if ($config['search']['enabled'] ?? false) {
             $container->setParameter(
