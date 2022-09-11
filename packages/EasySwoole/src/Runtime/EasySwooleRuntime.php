@@ -32,7 +32,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
             }
         }
 
-        parent::__construct($options);
+        parent::__construct($options ?? []);
     }
 
     /**
