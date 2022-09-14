@@ -88,13 +88,14 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
         ];
         yield 'Mask keys in URL' => [
             'input' => [
-                'maskToken' => 'tcp://my-name@yeah?token=token-to-be-masked',
+                'maskToken' => 'tcp://my-name@yeah?token=token-to-be-masked&PhoneNumber=61000000001&test=1',
             ],
             'expectedOutput' => [
-                'maskToken' => 'tcp://my-name@yeah?token=*REDACTED*',
+                'maskToken' => 'tcp://my-name@yeah?token=*REDACTED*&PhoneNumber=*REDACTED*&test=1',
             ],
             'maskKeys' => [
                 'token',
+                'phonenumber',
             ],
         ];
         yield 'Mask keys in JSON' => [
@@ -109,6 +110,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'maskTokenSpaceAfterKeyAndEscaping' => '{\"token\" :\"token-to-be-masked\"}',
                 'maskTokenWithBothSpacesAndEscaping' => '{\"token\" : \"token-to-be-masked\"}',
                 'maskTokenWithDoubleSpacesAndEscaping' => '{\"token\"  :  \"token-to-be-masked\"}',
+                'maskPhoneNumber' => '{"phoneNumber":"token-to-be-masked"}',
             ],
             'expectedOutput' => [
                 'maskToken' => '{"token":"*REDACTED*"}',
@@ -121,9 +123,11 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'maskTokenSpaceAfterKeyAndEscaping' => '{\"token\" :\"*REDACTED*\"}',
                 'maskTokenWithBothSpacesAndEscaping' => '{\"token\" : \"*REDACTED*\"}',
                 'maskTokenWithDoubleSpacesAndEscaping' => '{\"token\"  :  \"*REDACTED*\"}',
+                'maskPhoneNumber' => '{"phoneNumber":"*REDACTED*"}',
             ],
             'maskKeys' => [
                 'token',
+                'phonenumber',
             ],
         ];
         yield 'Mask card numbers' => [
