@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\Command;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
+use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle as LegacyApiPlatformBundle;
+use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
@@ -54,7 +55,12 @@ final class ApiResourceAndSimpleDataPersisterMaker extends AbstractMaker
 
     public function configureDependencies(DependencyBuilder $dependencies): void
     {
-        $dependencies->addClassDependency(ApiPlatformBundle::class, 'api_platform');
+        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
+        $bundleClass = \class_exists(ApiPlatformBundle::class)
+            ? ApiPlatformBundle::class
+            : LegacyApiPlatformBundle::class;
+
+        $dependencies->addClassDependency($bundleClass, 'api_platform');
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void

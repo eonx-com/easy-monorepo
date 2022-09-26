@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
-use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
+use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException as LegacyValidationException;
+use ApiPlatform\Symfony\Validator\Exception\ValidationException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +52,17 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
      */
     public function buildData(Throwable $throwable, array $data): array
     {
-        if ($throwable instanceof ValidationException) {
+        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
+        if (\class_exists(ValidationException::class)) {
+            $isValidationException = $throwable instanceof ValidationException
+                || $throwable instanceof LegacyValidationException;
+        }
+
+        if (\class_exists(ValidationException::class) === false) {
+            $isValidationException = $throwable instanceof LegacyValidationException;
+        }
+
+        if ($isValidationException) {
             $violations = [];
 
             foreach ($throwable->getConstraintViolationList() as $violation) {
@@ -83,7 +94,17 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
 
     public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int
     {
-        if ($throwable instanceof ValidationException) {
+        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
+        if (\class_exists(ValidationException::class)) {
+            $isValidationException = $throwable instanceof ValidationException
+                || $throwable instanceof LegacyValidationException;
+        }
+
+        if (\class_exists(ValidationException::class) === false) {
+            $isValidationException = $throwable instanceof LegacyValidationException;
+        }
+
+        if ($isValidationException) {
             $statusCode = Response::HTTP_BAD_REQUEST;
         }
 

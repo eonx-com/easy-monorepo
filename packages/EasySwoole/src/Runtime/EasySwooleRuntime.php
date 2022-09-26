@@ -16,6 +16,26 @@ use function Symfony\Component\String\u;
 final class EasySwooleRuntime extends SymfonyRuntime
 {
     /**
+     * @param mixed[]|null $options
+     */
+    public function __construct(?array $options = null)
+    {
+        // If dotenv_path is not set, set it to "envs/$env.env" if file exists
+        if (isset($options['dotenv_path']) === false && isset($options['project_dir'])) {
+            $envKey = $options['env_var_name'] ??= 'APP_ENV';
+            $env = $options['env'] ??= $_SERVER[$envKey] ?? $_ENV[$envKey] ?? 'local';
+            $envPath = \sprintf('envs/%s.env', \strtolower($env));
+            $fullEnvPath = \sprintf('%s/%s', $options['project_dir'], $envPath);
+
+            if (\is_file($fullEnvPath) && \is_readable($fullEnvPath)) {
+                $options['dotenv_path'] = $envPath;
+            }
+        }
+
+        parent::__construct($options ?? []);
+    }
+
+    /**
      * @throws \Exception
      */
     public function getRunner(?object $application): RunnerInterface

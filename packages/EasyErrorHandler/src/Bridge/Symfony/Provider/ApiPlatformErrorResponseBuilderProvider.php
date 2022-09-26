@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Provider;
 
-use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
+use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException as LegacyValidationException;
+use ApiPlatform\Symfony\Validator\Exception\ValidationException;
 use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformValidationErrorResponseBuilder;
 use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformValidationExceptionErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
@@ -36,7 +37,8 @@ final class ApiPlatformErrorResponseBuilderProvider implements ErrorResponseBuil
      */
     public function getBuilders(): iterable
     {
-        if (\class_exists(ValidationException::class)) {
+        // TODO: refactor in 5.0. Check the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
+        if (\class_exists(LegacyValidationException::class) || \class_exists(ValidationException::class)) {
             yield new ApiPlatformValidationExceptionErrorResponseBuilder($this->translator, $this->keys);
 
             if ($this->transformValidationErrors) {
