@@ -52,20 +52,8 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
      */
     public function buildData(Throwable $throwable, array $data): array
     {
-        $isValidationException = false;
-
-        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Validator\Exception\ValidationException class only.
-        if (\class_exists(ValidationException::class)) {
-            $isValidationException = $throwable instanceof ValidationException
-                || $throwable instanceof LegacyValidationException;
-        }
-
-        if (\class_exists(ValidationException::class) === false) {
-            $isValidationException = $throwable instanceof LegacyValidationException;
-        }
-
-        if ($isValidationException) {
-            /** @var \ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException $throwable */
+        if ($this->isValidationException($throwable)) {
+            /** @var \ApiPlatform\Symfony\Validator\Exception\ValidationException $throwable */
             $violations = [];
 
             foreach ($throwable->getConstraintViolationList() as $violation) {
@@ -97,19 +85,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
 
     public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int
     {
-        $isValidationException = false;
-
-        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
-        if (\class_exists(ValidationException::class)) {
-            $isValidationException = $throwable instanceof ValidationException
-                || $throwable instanceof LegacyValidationException;
-        }
-
-        if (\class_exists(ValidationException::class) === false) {
-            $isValidationException = $throwable instanceof LegacyValidationException;
-        }
-
-        if ($isValidationException) {
+        if ($this->isValidationException($throwable)) {
             $statusCode = Response::HTTP_BAD_REQUEST;
         }
 
@@ -135,5 +111,19 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
         }
 
         return $this->getKey(\implode(self::KEY_NAME_SEPARATOR, $nameParts), $keys[$firstPartOfName]);
+    }
+
+    private function isValidationException(Throwable $throwable): bool
+    {
+        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Validator\Exception\ValidationException class only.
+        if ($throwable instanceof LegacyValidationException) {
+            return true;
+        }
+
+        if (\class_exists(ValidationException::class)) {
+            return $throwable instanceof ValidationException;
+        }
+
+        return false;
     }
 }
