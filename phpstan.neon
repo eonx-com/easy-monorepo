@@ -36,6 +36,8 @@ parameters:
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
 
+        # ---- EasyActivity ----
+        # ---- EasyApiPlatform ----
         # ---- EasyApiToken ----
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'

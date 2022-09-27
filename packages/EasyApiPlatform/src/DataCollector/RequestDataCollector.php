@@ -2,53 +2,40 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector;
+namespace EonX\EasyApiPlatform\DataCollector;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\DataCollector\RequestDataCollector as BaseRequestDataCollector;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector as DecoratedRequestDataCollector;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\TraceableChainSimpleDataPersister;
+use ReflectionProperty;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Throwable;
 
-/**
- * @deprecated since 4.2.8, will be removed in 5.0. Use EonX\EasyApiPlatform\DataCollector\RequestDataCollector instead.
- */
 final class RequestDataCollector extends DataCollector
 {
-    /**
-     * @var TraceableChainSimpleDataPersister|DataPersisterInterface
-     */
-    private $dataPersister;
-
-    /**
-     * @var \ApiPlatform\Core\Bridge\Symfony\Bundle\DataCollector\RequestDataCollector
-     */
-    private $decorated;
-
-    public function __construct(BaseRequestDataCollector $decorated, DataPersisterInterface $dataPersister)
-    {
-        $this->decorated = $decorated;
-        $this->dataPersister = $dataPersister;
+    public function __construct(
+        private DecoratedRequestDataCollector $decorated,
+        private DataPersisterInterface $dataPersister
+    ) {
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
         $this->decorated->collect($request, $response, $exception);
 
         // Use Reflection to get data from decorated collector...
-        $reflection = new \ReflectionProperty(\get_class($this->decorated), 'data');
+        $reflection = new ReflectionProperty($this->decorated::class, 'data');
         $reflection->setAccessible(true);
 
         $this->data = $reflection->getValue($this->decorated);
 
-        $this->data['dataPersisters'] = [
-            'responses' => $this->dataPersister->getPersistersResponse() ?? [],
-        ];
+        if ($this->dataPersister instanceof TraceableChainSimpleDataPersister) {
+            $this->data['dataPersisters'] = ['responses' => $this->dataPersister->getPersistersResponse()];
+        }
 
-        $this->data['version'] = \method_exists($this->decorated, 'getVersion')
-            ? $this->decorated->getVersion()
-            : null;
+        $this->data['version'] = $this->decorated->getVersion();
     }
 
     /**
@@ -120,17 +107,17 @@ final class RequestDataCollector extends DataCollector
         return $this->data['request_attributes'] ?? [];
     }
 
+    /**
+     * @return class-string|null
+     */
     public function getResourceClass(): ?string
     {
         return $this->data['resource_class'] ?? null;
     }
 
-    /**
-     * @return null|mixed
-     */
-    public function getResourceMetadata()
+    public function getResourceMetadataCollection(): mixed
     {
-        return $this->data['resource_metadata'] ?? null;
+        return $this->data['resource_metadata_collection'] ?? null;
     }
 
     /**
