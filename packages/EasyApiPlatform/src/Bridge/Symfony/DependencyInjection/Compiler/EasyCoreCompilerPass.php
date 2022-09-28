@@ -14,7 +14,8 @@ final class EasyCoreCompilerPass implements CompilerPassInterface
 {
     private const SERVICE_ID_IRI_CONVERTER = 'EonX\EasyCore\Bridge\Symfony\ApiPlatform\Routing\IriConverter';
 
-    private const SERVICE_ID_REQUEST_DATA_COLLECTOR = 'EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector\RequestDataCollector';
+    private const SERVICE_ID_REQUEST_DATA_COLLECTOR =
+        'EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector\RequestDataCollector';
 
     public function process(ContainerBuilder $container): void
     {
