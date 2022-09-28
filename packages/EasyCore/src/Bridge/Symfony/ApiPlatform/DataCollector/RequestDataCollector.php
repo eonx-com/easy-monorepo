@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 /**
- * @deprecated since 4.2.8, will be removed in 5.0. Use EonX\EasyApiPlatform\DataCollector\RequestDataCollector instead.
+ * @deprecated since 4.2.8, will be removed in 5.0.
  */
 final class RequestDataCollector extends DataCollector
 {
