@@ -33,10 +33,11 @@ abstract class AbstractTestCase extends TestCase
     }
 
     /**
-     * @param class-string $target
+     * @param class-string|object $target
      */
-    protected function mock(string $target, ?callable $expectations = null): MockInterface
+    protected function mock(string|object $target, ?callable $expectations = null): MockInterface
     {
+        /** @var \Mockery\MockInterface $mock */
         $mock = Mockery::mock($target);
 
         if ($expectations !== null) {

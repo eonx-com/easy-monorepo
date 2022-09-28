@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyApiPlatform\Tests\DataCollector;
 
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
 use ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector as DecoratedRequestDataCollector;
 use EonX\EasyApiPlatform\DataCollector\RequestDataCollector;
 use EonX\EasyApiPlatform\Tests\AbstractTestCase;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\TraceableChainSimpleDataPersister;
 use Mockery\MockInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -276,7 +278,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
         $response = new Response();
         /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
         $decoratedRequestDataCollector = $this->mock(
-            DecoratedRequestDataCollector::class,
+            $this->arrangeDecoratedRequestDataCollector(),
             static function (MockInterface $mock) use ($request, $response): void {
                 $mock->expects('collect')
                     ->with($request, $response, null);
@@ -311,7 +313,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
         $response = new Response();
         /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
         $decoratedRequestDataCollector = $this->mock(
-            DecoratedRequestDataCollector::class,
+            $this->arrangeDecoratedRequestDataCollector(),
             static function (MockInterface $mock) use ($request, $response): void {
                 $mock->expects('collect')
                     ->with($request, $response, null);
@@ -341,8 +343,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', $data);
 
@@ -361,8 +362,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', $data);
 
@@ -381,8 +381,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', $data);
 
@@ -401,8 +400,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', $data);
 
@@ -421,8 +419,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', $data);
 
@@ -441,8 +438,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', $data);
 
@@ -455,8 +451,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
 
         $result = $requestDataCollector->getName();
@@ -474,8 +469,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', $data);
 
@@ -493,8 +487,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', $data);
 
@@ -514,8 +507,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     ): void {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', $data);
 
@@ -534,8 +526,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', $data);
 
@@ -553,8 +544,7 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', $data);
 
@@ -567,13 +557,22 @@ final class RequestDataCollectorTest extends AbstractTestCase
     {
         /** @var \ApiPlatform\Core\DataPersister\DataPersisterInterface $dataPersister */
         $dataPersister = $this->mock(DataPersisterInterface::class);
-        /** @var \ApiPlatform\Symfony\Bundle\DataCollector\RequestDataCollector $decoratedRequestDataCollector */
-        $decoratedRequestDataCollector = $this->mock(DecoratedRequestDataCollector::class);
+        $decoratedRequestDataCollector = $this->arrangeDecoratedRequestDataCollector();
         $requestDataCollector = new RequestDataCollector($decoratedRequestDataCollector, $dataPersister);
         $this->setPrivatePropertyValue($requestDataCollector, 'data', ['foo' => 'bar']);
 
         $requestDataCollector->reset();
 
         self::assertSame([], $this->getPrivatePropertyValue($requestDataCollector, 'data'));
+    }
+
+    private function arrangeDecoratedRequestDataCollector(): DecoratedRequestDataCollector
+    {
+        /** @var \ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface $metadataFactory */
+        $metadataFactory = $this->mock(ResourceMetadataCollectionFactoryInterface::class);
+        /** @var \Psr\Container\ContainerInterface $filterLocator */
+        $filterLocator = $this->mock(ContainerInterface::class);
+
+        return new DecoratedRequestDataCollector($metadataFactory, $filterLocator);
     }
 }
