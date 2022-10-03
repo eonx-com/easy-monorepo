@@ -9,6 +9,9 @@ use ApiPlatform\Core\Api\UrlGeneratorInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\NoIriItemInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SelfProvidedIriItemInterface;
 
+/**
+ * @deprecated since 4.2.8, will be removed in 5.0. Use EonX\EasyApiPlatform\Routing\IriConverter instead.
+ */
 final class IriConverter implements IriConverterInterface
 {
     /**
