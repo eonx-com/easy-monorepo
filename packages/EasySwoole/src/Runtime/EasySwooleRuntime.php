@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Runtime;
 
 use EonX\EasyBugsnag\Interfaces\ValueOptionInterface as EasyBugsnagValueOptionInterface;
-use EonX\EasyUtils\Helpers\EnvVarSubstitutionHelper;
+use EonX\EasySwoole\Helpers\EnvVarHelper;
 use Swoole\Constant;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Runtime\RunnerInterface;
@@ -40,14 +40,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
      */
     public function getRunner(?object $application): RunnerInterface
     {
-        // Handle env var substitution
-        foreach (EnvVarSubstitutionHelper::resolveVariables($_SERVER) as $name => $value) {
-            $_SERVER[$name] = $value;
-        }
-
-        foreach (EnvVarSubstitutionHelper::resolveVariables($_ENV) as $name => $value) {
-            $_ENV[$name] = $value;
-        }
+        EnvVarHelper::loadEnvVars($this->options['json_secrets'] ?? null);
 
         if ($application instanceof HttpKernelInterface) {
             $options = $this->options;
