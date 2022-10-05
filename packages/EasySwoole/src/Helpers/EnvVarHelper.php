@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Helpers;
@@ -9,6 +10,9 @@ final class EnvVarHelper
 {
     private const DEFAULT_JSON_SECRETS = 'JSON_SECRETS';
 
+    /**
+     * @param string[]|null $jsonSecrets
+     */
     public static function loadEnvVars(?array $jsonSecrets = null): void
     {
         foreach ($jsonSecrets ?? [self::DEFAULT_JSON_SECRETS] as $jsonSecret) {

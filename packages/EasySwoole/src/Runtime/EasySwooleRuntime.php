@@ -6,7 +6,6 @@ namespace EonX\EasySwoole\Runtime;
 
 use EonX\EasyBugsnag\Interfaces\ValueOptionInterface as EasyBugsnagValueOptionInterface;
 use EonX\EasySwoole\Helpers\EnvVarHelper;
-use EonX\EasyUtils\Helpers\EnvVarSubstitutionHelper;
 use Swoole\Constant;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Runtime\RunnerInterface;
