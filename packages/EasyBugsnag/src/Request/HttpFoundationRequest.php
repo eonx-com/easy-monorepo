@@ -72,6 +72,10 @@ final class HttpFoundationRequest implements RequestInterface
             return [];
         }
 
+        if ($this->request->attributes->get('_stateless') === true) {
+            return [];
+        }
+
         return $this->request->getSession()
             ->all();
     }
