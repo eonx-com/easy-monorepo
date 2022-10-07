@@ -93,7 +93,11 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                         $matches[1] => [
                             $matches[3] === 'NULL'
                                 ? (new NotNull())->message
-                                : \sprintf('The type of the value should be "%s", "%s" given.', $matches[2], $matches[3]),
+                                : \sprintf(
+                                    'The type of the value should be "%s", "%s" given.',
+                                    $matches[2],
+                                    $matches[3]
+                                ),
                         ],
                     ];
 
