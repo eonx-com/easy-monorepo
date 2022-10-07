@@ -7,6 +7,7 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 use ApiPlatform\Core\Exception\InvalidArgumentException as LagacyInvalidArgumentException;
 use ApiPlatform\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
+use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
@@ -33,8 +34,14 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     {
         $message = $throwable->getMessage();
 
+        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
+        $invalidArgumentExceptionClass = stdClass::class;
+        if (\class_exists(InvalidArgumentException::class)) {
+            $invalidArgumentExceptionClass = InvalidArgumentException::class;
+        }
+
         return match ($throwable::class) {
-            InvalidArgumentException::class, LagacyInvalidArgumentException::class =>
+            $invalidArgumentExceptionClass, LagacyInvalidArgumentException::class =>
                 \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1,
             MissingConstructorArgumentsException::class =>
                 \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $message) === 1,
@@ -63,7 +70,17 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
         $data['message'] = 'Validation failed.';
 
-        if ($throwable instanceof InvalidArgumentException || $throwable instanceof LagacyInvalidArgumentException) {
+        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
+        if (\class_exists(InvalidArgumentException::class)) {
+            $isInvalidArgumentException = $throwable instanceof InvalidArgumentException
+                || $throwable instanceof LagacyInvalidArgumentException;
+        }
+
+        if (\class_exists(InvalidArgumentException::class) === false) {
+            $isInvalidArgumentException = $throwable instanceof LagacyInvalidArgumentException;
+        }
+
+        if ($isInvalidArgumentException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches);
             $data['violations'] = [
