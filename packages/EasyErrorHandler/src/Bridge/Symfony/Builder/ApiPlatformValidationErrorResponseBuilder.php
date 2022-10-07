@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException as LagacyInvalidArgumentException;
+use ApiPlatform\Core\Exception\InvalidArgumentException as LegacyInvalidArgumentException;
 use ApiPlatform\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use stdClass;
@@ -41,7 +41,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         }
 
         return match ($throwable::class) {
-            $invalidArgumentExceptionClass, LagacyInvalidArgumentException::class =>
+            $invalidArgumentExceptionClass, LegacyInvalidArgumentException::class =>
                 \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1,
             MissingConstructorArgumentsException::class =>
                 \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $message) === 1,
@@ -73,11 +73,11 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
         if (\class_exists(InvalidArgumentException::class)) {
             $isInvalidArgumentException = $throwable instanceof InvalidArgumentException
-                || $throwable instanceof LagacyInvalidArgumentException;
+                || $throwable instanceof LegacyInvalidArgumentException;
         }
 
         if (\class_exists(InvalidArgumentException::class) === false) {
-            $isInvalidArgumentException = $throwable instanceof LagacyInvalidArgumentException;
+            $isInvalidArgumentException = $throwable instanceof LegacyInvalidArgumentException;
         }
 
         if ($isInvalidArgumentException) {
