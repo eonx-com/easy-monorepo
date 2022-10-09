@@ -42,7 +42,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
     {
         $batchItemStamp = $envelope->last(BatchItemStamp::class);
         $consumedByWorkerStamp = $envelope->last(ConsumedByWorkerStamp::class);
-        $func = $this->getNextClosure($envelope, $stack, $batchItemStamp);
+        $func = $this->getNextClosure($envelope, $stack, $batchItemStamp, $consumedByWorkerStamp);
         $message = $envelope->getMessage();
 
         // Make sure to ALWAYS have a clean batch processor to prevent any caching issue in worker
@@ -104,14 +104,17 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
     private function getNextClosure(
         Envelope $envelope,
         StackInterface $stack,
-        ?BatchItemStamp $batchItemStamp = null
+        ?BatchItemStamp $batchItemStamp = null,
+        ?ConsumedByWorkerStamp $consumedByWorkerStamp = null
     ): \Closure {
-        return static function () use ($envelope, $stack, $batchItemStamp): Envelope {
+        return static function () use ($envelope, $stack, $batchItemStamp, $consumedByWorkerStamp): Envelope {
             $newEnvelope = $stack
                 ->next()
                 ->handle($envelope, $stack);
 
-            if ($batchItemStamp !== null && $newEnvelope->last(HandledStamp::class) === null) {
+            if ($batchItemStamp !== null
+                && $consumedByWorkerStamp !== null
+                && $newEnvelope->last(HandledStamp::class) === null) {
                 throw new BatchItemNotHandledException(\sprintf(
                     'Batch item "%s" was not handled by any handler.',
                     $batchItemStamp->getBatchItemId()
