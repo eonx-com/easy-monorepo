@@ -6,5 +6,5 @@ namespace EonX\EasyBatch\Interfaces;
 
 interface EasyBatchExceptionInterface
 {
-    // Marker for all exceptions of this package.
+    public function shouldRetry(): bool;
 }

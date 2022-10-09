@@ -8,5 +8,8 @@ use EonX\EasyBatch\Interfaces\EasyBatchExceptionInterface;
 
 abstract class AbstractEasyBatchException extends \Exception implements EasyBatchExceptionInterface
 {
-    // No body needed.
+    public function shouldRetry(): bool
+    {
+        return false;
+    }
 }

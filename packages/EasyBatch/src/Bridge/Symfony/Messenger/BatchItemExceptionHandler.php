@@ -49,7 +49,7 @@ final class BatchItemExceptionHandler
         }
 
         // Do not retry if exception from package
-        if ($throwable instanceof EasyBatchExceptionInterface) {
+        if ($throwable instanceof EasyBatchExceptionInterface && $throwable->shouldRetry() === false) {
             throw new UnrecoverableMessageHandlingException(
                 $throwable->getMessage(),
                 $throwable->getCode(),
