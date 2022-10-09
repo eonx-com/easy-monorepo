@@ -107,18 +107,18 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         ?BatchItemStamp $batchItemStamp = null
     ): \Closure {
         return static function () use ($envelope, $stack, $batchItemStamp): Envelope {
-            $envelope = $stack
+            $newEnvelope = $stack
                 ->next()
                 ->handle($envelope, $stack);
 
-            if ($batchItemStamp !== null && $envelope->last(HandledStamp::class) === null) {
+            if ($batchItemStamp !== null && $newEnvelope->last(HandledStamp::class) === null) {
                 throw new BatchItemNotHandledException(\sprintf(
                     'Batch item "%s" was not handled by any handler.',
                     $batchItemStamp->getBatchItemId()
                 ));
             }
 
-            return $envelope;
+            return $newEnvelope;
         };
     }
 }
