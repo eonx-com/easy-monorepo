@@ -30,12 +30,14 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     private const MESSAGE_PATTERN_TYPE_ERROR = '/The type of the "(\w+)" attribute must be "(\w+)", "(\w+)" given/';
 
+    private const MESSAGE_TEMPLATE_TYPE_ERROR = 'The type of the value should be "%s", "%s" given.';
+
     public static function supports(Throwable $throwable): bool
     {
         $message = $throwable->getMessage();
 
         // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
-        $invalidArgumentExceptionClass = stdClass::class;
+        $invalidArgumentExceptionClass = null;
         if (\class_exists(InvalidArgumentException::class)) {
             $invalidArgumentExceptionClass = InvalidArgumentException::class;
         }
@@ -87,7 +89,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                 $matches[1] => [
                     $matches[3] === 'NULL'
                         ? (new NotNull())->message
-                        : \sprintf('The type of the value should be "%s", "%s" given.', $matches[2], $matches[3]),
+                        : \sprintf(self::MESSAGE_TEMPLATE_TYPE_ERROR, $matches[2], $matches[3]),
                 ],
             ];
         }
@@ -110,11 +112,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                         $matches[1] => [
                             $matches[3] === 'NULL'
                                 ? (new NotNull())->message
-                                : \sprintf(
-                                    'The type of the value should be "%s", "%s" given.',
-                                    $matches[2],
-                                    $matches[3]
-                                ),
+                                : \sprintf(self::MESSAGE_TEMPLATE_TYPE_ERROR, $matches[2], $matches[3]),
                         ],
                     ];
 
