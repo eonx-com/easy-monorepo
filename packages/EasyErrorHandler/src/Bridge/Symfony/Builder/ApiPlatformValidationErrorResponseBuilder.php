@@ -7,7 +7,6 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 use ApiPlatform\Core\Exception\InvalidArgumentException as LegacyInvalidArgumentException;
 use ApiPlatform\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
-use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
