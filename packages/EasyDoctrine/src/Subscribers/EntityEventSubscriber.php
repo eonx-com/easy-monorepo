@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\PersistentCollection;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
 
@@ -117,7 +118,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
      */
     private function getClearedChangeSet(array $changeSet): array
     {
-        return \array_filter($changeSet, static function (array $changeSetItem) {
+        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem) {
             if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
                 ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
                 return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
