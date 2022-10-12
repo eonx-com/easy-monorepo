@@ -47,7 +47,6 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             MissingConstructorArgumentsException::class =>
                 \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $message) === 1,
             UnexpectedValueException::class =>
-                \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_IRI, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NESTED_DOCUMENTS_NOT_ALLOWED, $message) === 1 ||
