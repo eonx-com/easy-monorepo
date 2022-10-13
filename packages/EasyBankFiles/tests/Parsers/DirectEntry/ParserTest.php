@@ -159,7 +159,7 @@ final class ParserTest extends TestCase
 
         $batches = $parser->getBatches();
         self::assertCount(1, $batches);
-        $header = $parser->getBatches()[0]->getHeader();
+        $header = $batches[0]->getHeader();
         self::assertSame('070905', $header->getDateProcessed());
         self::assertSame('DE Returns', $header->getDescription());
         self::assertSame('01', $header->getReelSequenceNumber());
