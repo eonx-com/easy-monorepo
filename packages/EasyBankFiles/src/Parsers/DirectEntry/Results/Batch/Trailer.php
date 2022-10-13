@@ -1,8 +1,7 @@
 <?php
-
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Parsers\DirectEntry\Results;
+namespace EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch;
 
 use EonX\EasyBankFiles\Parsers\BaseResult;
 
@@ -22,6 +21,6 @@ final class Trailer extends BaseResult
      */
     protected function initAttributes(): array
     {
-        return ['bsb', 'numberPayments', 'totalNetAmount', 'totalCreditAmount', 'totalDebitAmount'];
+        return ['bsb', 'numberPayments', 'totalCreditAmount', 'totalDebitAmount', 'totalNetAmount'];
     }
 }

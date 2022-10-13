@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntry\Results;
+namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntry\Results\Batch;
 
 use DateTime;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Header;
+use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\Header;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 
 /**
