@@ -18,8 +18,14 @@ use EonX\EasyBankFiles\Parsers\Error;
  */
 final class Parser extends AbstractLineByLineParser
 {
+    /**
+     * @var string
+     */
     private const FINAL_LINE = 'End-Of-File';
 
+    /**
+     * @var array<mixed>
+     */
     private const MIN_RECORD_LENGTH = [
         self::RECORD_TYPE_HEADER => 80,
         self::RECORD_TYPE_TRAILER => 80,
@@ -28,18 +34,33 @@ final class Parser extends AbstractLineByLineParser
         self::RECORD_TYPE_TRANSACTION_3 => 120,
     ];
 
+    /**
+     * @var string
+     */
     private const RECORD_TYPE_HEADER = '0';
 
+    /**
+     * @var string
+     */
     private const RECORD_TYPE_TRAILER = '7';
 
+    /**
+     * @var string
+     */
     private const RECORD_TYPE_TRANSACTION_1 = '1';
 
+    /**
+     * @var string
+     */
     private const RECORD_TYPE_TRANSACTION_2 = '2';
 
+    /**
+     * @var string
+     */
     private const RECORD_TYPE_TRANSACTION_3 = '3';
 
     /**
-     * @var \App\Infrastructure\EasyBankFiles\Parser\Nde\Result\Batch[]
+     * @var \EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch[]
      */
     private array $batches = [];
 
@@ -51,7 +72,7 @@ final class Parser extends AbstractLineByLineParser
     private array $errors = [];
 
     /**
-     * @return \App\Infrastructure\EasyBankFiles\Parser\Nde\Result\Batch[]
+     * @return \EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch[]
      */
     public function getBatches(): array
     {
@@ -68,11 +89,11 @@ final class Parser extends AbstractLineByLineParser
 
     protected function process(): void
     {
-        $contents = \preg_split("/[\r\n]/", $this->contents);
+        $contents = (array)\preg_split("/[\r\n]/", $this->contents);
         $lineNumber = 1;
 
         foreach ($contents as $line) {
-            $line = \trim($line);
+            $line = \trim((string)$line);
 
             if ($line === '') {
                 continue;

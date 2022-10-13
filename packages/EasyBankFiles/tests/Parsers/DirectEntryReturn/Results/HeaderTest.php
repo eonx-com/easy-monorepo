@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntryReturn\Results;
 
 use DateTime;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Header;
+use EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Header;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 
 /**
