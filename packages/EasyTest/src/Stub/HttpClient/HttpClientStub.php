@@ -11,7 +11,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 
-final class HttpClientStub extends MockHttpClient
+class HttpClientStub extends MockHttpClient
 {
     use HttpClientTrait;
 
