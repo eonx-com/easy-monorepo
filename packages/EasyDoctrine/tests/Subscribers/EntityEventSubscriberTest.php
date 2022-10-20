@@ -259,6 +259,61 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         );
     }
 
+    public function testEventsAreDispatchedWithFlushInEmbeddedEventHandler(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Category::class, Product::class],
+            [Category::class, Product::class]
+        );
+        $eventDispatcher->addDispatchCallback(
+            class: EntityCreatedEvent::class,
+            callback: static function (EntityCreatedEvent $event) use ($entityManager) {
+                if ($event->getEntity() instanceof Category === false) {
+                    return;
+                }
+                $product = new Product();
+                $product->setName('Keyboard');
+                $product->setPrice('100');
+
+                $entityManager->persist($product);
+                $entityManager->flush();
+            }
+        );
+        $category = new Category();
+        $category->setName('Computer');
+        $entityManager->persist($category);
+
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(2, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityCreatedEvent(
+                $category,
+                [
+                    'activeTill' => [null, null],
+                    'name' => [null, 'Computer'],
+                ]
+            ),
+            $events[0]
+        );
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->findOneBy(['name' => 'Keyboard']);
+        self::assertEqualsCanonicalizing(
+            new EntityCreatedEvent(
+                $product,
+                [
+                    'name' => [null, 'Keyboard'],
+                    'price' => [null, '100'],
+                    'category' => [null, null],
+                ]
+            ),
+            $events[1]
+        );
+    }
+
     public function testEventsAreDispatchedWithRelatedEntityInChangeSet(): void
     {
         $eventDispatcher = new EventDispatcherStub();
