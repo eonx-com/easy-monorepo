@@ -19,6 +19,30 @@ final class ParserTest extends TestCase
     /**
      * @return iterable<mixed>
      *
+     * @see testProcessSucceeds
+     */
+    public function provideCorrectFile(): iterable
+    {
+        yield 'Nines, empty line, End-of-File' => [
+            'fileName' => 'correct.one-batch.nde',
+        ];
+
+        yield 'Nines, End-of-File' => [
+            'fileName' => 'correct.one-batch2.nde',
+        ];
+
+        yield 'Empty line, End-of-File (without nines)' => [
+            'fileName' => 'correct.one-batch3.nde',
+        ];
+
+        yield 'End-of-File (without nines and empty line)' => [
+            'fileName' => 'correct.one-batch4.nde',
+        ];
+    }
+
+    /**
+     * @return iterable<mixed>
+     *
      * @see testProcessReturnsErrors
      */
     public function provideFileWithErrors(): iterable
@@ -86,9 +110,12 @@ final class ParserTest extends TestCase
         self::assertSame($invalidLine, $firstError->getLine());
     }
 
-    public function testProcessSucceeds(): void
+    /**
+     * @dataProvider provideCorrectFile
+     */
+    public function testProcessSucceeds(string $fileName): void
     {
-        $parser = new Parser($this->getSampleFileContents('correct.one-batch.nde'));
+        $parser = new Parser($this->getSampleFileContents($fileName));
 
         $batches = $parser->getBatches();
         self::assertCount(1, $batches);
