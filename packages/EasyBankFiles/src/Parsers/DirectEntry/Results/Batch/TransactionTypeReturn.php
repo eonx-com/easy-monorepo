@@ -21,7 +21,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
  * @method string|null getTraceBsb()
  * @method string|null getTxnCode()
  */
-final class TransactionType2 extends BaseResult
+final class TransactionTypeReturn extends BaseResult
 {
     /**
      * Return object attributes.

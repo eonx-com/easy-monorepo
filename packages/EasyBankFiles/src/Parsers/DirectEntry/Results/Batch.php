@@ -6,9 +6,9 @@ namespace EonX\EasyBankFiles\Parsers\DirectEntry\Results;
 
 use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\Header;
 use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\Trailer;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionType1;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionType2;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionType3;
+use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypePayment;
+use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypeRefusal;
+use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypeReturn;
 
 final class Batch
 {
@@ -21,8 +21,9 @@ final class Batch
      */
     private array $transactions = [];
 
-    public function addTransaction(TransactionType1|TransactionType2|TransactionType3 $transaction): self
-    {
+    public function addTransaction(
+        TransactionTypePayment|TransactionTypeReturn|TransactionTypeRefusal $transaction
+    ): self {
         $this->transactions[] = $transaction;
 
         return $this;

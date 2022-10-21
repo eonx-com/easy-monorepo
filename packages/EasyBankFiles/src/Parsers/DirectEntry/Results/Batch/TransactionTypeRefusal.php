@@ -13,14 +13,15 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
  * @method string|null getBsb()
  * @method string getIndicator()
  * @method string|null getLodgmentReference()
+ * @method string|null getOriginalDayOfReturn()
+ * @method string|null getOriginalUserIdNumber()
  * @method string getRecordType()
  * @method string|null getRemitterName()
  * @method string|null getTraceAccountNumber()
  * @method string|null getTraceBsb()
  * @method string|null getTxnCode()
- * @method string|null getWithholdingTax()
  */
-final class TransactionType1 extends BaseResult
+final class TransactionTypeRefusal extends BaseResult
 {
     /**
      * Return object attributes.
@@ -36,12 +37,13 @@ final class TransactionType1 extends BaseResult
             'bsb',
             'indicator',
             'lodgmentReference',
+            'originalDayOfReturn',
+            'originalUserIdNumber',
             'recordType',
             'remitterName',
             'traceAccountNumber',
             'traceBsb',
             'txnCode',
-            'withholdingTax',
         ];
     }
 }

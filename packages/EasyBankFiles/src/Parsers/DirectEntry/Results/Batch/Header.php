@@ -22,6 +22,9 @@ final class Header extends BaseResult
      */
     private const DATE_STRING_PATTERN = 'dmy';
 
+    /**
+     * Return processed date as a DateTime object.
+     */
     public function getDateProcessedObject(): ?DateTimeImmutable
     {
         if (\is_string($this->data['dateProcessed'])) {
@@ -35,6 +38,8 @@ final class Header extends BaseResult
     }
 
     /**
+     * Return object attributes.
+     *
      * @return string[]
      */
     protected function initAttributes(): array
