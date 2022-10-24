@@ -7,7 +7,7 @@ namespace EonX\EasyTest\Stub\HttpClient;
 use EonX\EasyTest\Traits\HttpClientAssertionTrait as BaseTrait;
 
 /**
- * @deprecated since 4.3.5, will be removed in 4.3.6. Use EonX\EasyTest\Traits\HttpClientAssertionTrait instead.
+ * @deprecated since 4.3.5, will be removed in 5.0.0. Use EonX\EasyTest\Traits\HttpClientAssertionTrait instead.
  */
 trait HttpClientAssertionTrait
 {
