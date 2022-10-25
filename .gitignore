@@ -16,3 +16,15 @@ coverage_output.txt
 
 # Symfony
 /var
+
+# PhpStorm shared settings
+**/.idea/*
+**/.idea/dictionaries/*.xml
+## Do NOT exclude JetBrains IDE files for shared settings
+!/.idea/codeStyles
+!/.idea/inspectionProfiles
+!/.idea/dictionaries
+!/.idea/dictionaries/payments.xml
+!/.idea/scopes
+!/.idea/php-test-framework.xml
+!/.idea/php.xml
