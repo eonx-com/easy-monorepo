@@ -1,7 +1,6 @@
 # Composer
 composer.lock
 /vendor
-/.idea
 .phpunit.result.cache
 coverage_output.txt
 
@@ -17,14 +16,12 @@ coverage_output.txt
 # Symfony
 /var
 
-# PhpStorm shared settings
+# Exclude PhpStorm IDE files
 **/.idea/*
 **/.idea/dictionaries/*.xml
-## Do NOT exclude JetBrains IDE files for shared settings
+## Do NOT exclude PhpStorm IDE files for shared settings
 !/.idea/codeStyles
 !/.idea/inspectionProfiles
 !/.idea/dictionaries
-!/.idea/dictionaries/payments.xml
+!/.idea/dictionaries/easy_monorepo.xml
 !/.idea/scopes
-!/.idea/php-test-framework.xml
-!/.idea/php.xml
