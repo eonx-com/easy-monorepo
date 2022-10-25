@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyTest\Traits;
 
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Constraint\IsEqual;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMessageLimitListener;
@@ -102,7 +103,8 @@ trait MessengerAssertionsTrait
                 foreach ($expectedProperties ?? [] as $property => $expectedValue) {
                     $actualValue = $propertyAccessor->getValue($message, $property);
 
-                    if ($actualValue !== $expectedValue) {
+                    $isEqualConstraint = new IsEqual($expectedValue);
+                    if ($isEqualConstraint->evaluate($actualValue, '', true) === false) {
                         return false;
                     }
                 }
