@@ -81,7 +81,7 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
      * @throws \Doctrine\ORM\ORMException
      * @throws \Throwable
      */
-    public function wrapInTransaction(callable $func)
+    public function wrapInTransaction(callable $func): mixed
     {
         $this->beginTransaction();
 
