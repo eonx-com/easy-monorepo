@@ -12,6 +12,7 @@
     "require-dev": {
         "doctrine/dbal": "^2.6",
         "doctrine/doctrine-bundle": "^2.6",
+        "doctrine/orm": "^2.6",
         "mockery/mockery": "^1.4",
         "phpunit/phpunit": "^9.5",
         "symfony/filesystem": "^5.4 || ^6.0",
