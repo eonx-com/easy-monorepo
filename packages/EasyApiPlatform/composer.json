@@ -12,7 +12,9 @@
     "require-dev": {
         "mockery/mockery": "^1.4",
         "phpunit/phpunit": "^9.5",
-        "symfony/filesystem": "^5.4 || ^6.0"
+        "symfony/filesystem": "^5.4 || ^6.0",
+        "symfony/config": "^5.4 || ^6.0",
+        "symfony/symfony": "^5.4 || ^6.0"
     },
     "autoload": {
         "psr-4": {
