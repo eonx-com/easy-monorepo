@@ -34,13 +34,6 @@ abstract class AbstractFilterTestCase extends KernelTestCase
 
     protected function setUp(): void
     {
-        // @todo Remove this when we drop support for ApiPlatform 2.6
-        if (class_exists('\ApiPlatform\Doctrine\Orm\Filter\AbstractFilter') === false) {
-            $this->markTestSkipped(
-                'The ApiPlatform >= 2.7 is not installed.'
-            );
-        }
-
         self::bootKernel();
 
         /** @var \Doctrine\Bundle\DoctrineBundle\Registry $managerRegistry */
