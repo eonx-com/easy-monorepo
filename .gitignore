@@ -15,4 +15,4 @@ coverage_output.txt
 .DS_Store
 
 # Symfony
-/var
+**/var
