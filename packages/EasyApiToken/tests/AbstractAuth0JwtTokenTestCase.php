@@ -45,7 +45,7 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
         ?string $audienceForEncode = null,
         ?array $allowedAlgos = null
     ): JwtDriverInterface {
-        $auth0Driver = new Auth0JwtDriver(
+        return new Auth0JwtDriver(
             $validAudiences ?? static::$validAudiences,
             $authorizedIss ?? static::$authorizedIss,
             'localhost',
@@ -53,12 +53,10 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
             $audienceForEncode,
             $allowedAlgos
         );
-
-        return $auth0Driver;
     }
 
     protected function createToken(): string
     {
-        return $this->createAuth0JwtDriver(null, null, static::$key)->encode([]);
+        return $this->createAuth0JwtDriver(static::$validAudiences, static::$authorizedIss, static::$key)->encode([]);
     }
 }
