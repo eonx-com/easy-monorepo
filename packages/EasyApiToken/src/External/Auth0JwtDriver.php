@@ -106,6 +106,8 @@ final class Auth0JwtDriver implements JwtDriverInterface
         $config = new Auth0V8SdkConfiguration([
             'domain' => $this->domain,
             'clientId' => 'client_id',
+            'strategy' => Auth0V8SdkConfiguration::STRATEGY_API,
+            'audience' => [$this->audienceForEncode],
         ]);
         $verifier = new Auth0V8Token($config, $token, Auth0V8Token::TYPE_TOKEN);
         $exceptions = [];

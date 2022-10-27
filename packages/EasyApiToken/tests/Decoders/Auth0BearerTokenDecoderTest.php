@@ -17,6 +17,7 @@ final class Auth0BearerTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
         /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtInterface $token */
         $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken(),
+            'SERVER_NAME' => 'example.com',
         ]));
 
         $payload = $token->getPayload();
