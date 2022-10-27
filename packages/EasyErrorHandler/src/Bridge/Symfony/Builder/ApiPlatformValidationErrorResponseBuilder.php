@@ -71,10 +71,11 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
         $data['message'] = 'Validation failed.';
 
+        $isInvalidArgumentException = null;
+
         // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
         if (\class_exists(InvalidArgumentException::class)) {
-            $isInvalidArgumentException = $throwable instanceof InvalidArgumentException
-                || $throwable instanceof LegacyInvalidArgumentException;
+            $isInvalidArgumentException = $throwable instanceof InvalidArgumentException;
         }
 
         if (\class_exists(InvalidArgumentException::class) === false) {

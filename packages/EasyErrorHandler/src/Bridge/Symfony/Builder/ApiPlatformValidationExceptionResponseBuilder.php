@@ -34,16 +34,18 @@ final class ApiPlatformValidationExceptionResponseBuilder extends AbstractErrorR
     }
 
     /**
+     * @param \ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException $throwable
      * @param mixed[] $data
      *
      * @return mixed[]
      */
     public function buildData(Throwable $throwable, array $data): array
     {
+        $isValidationException = null;
+
         // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
         if (\class_exists(ValidationException::class)) {
-            $isValidationException = $throwable instanceof ValidationException
-                || $throwable instanceof LegacyValidationException;
+            $isValidationException = $throwable instanceof ValidationException;
         }
 
         if (\class_exists(ValidationException::class) === false) {
@@ -82,10 +84,11 @@ final class ApiPlatformValidationExceptionResponseBuilder extends AbstractErrorR
 
     public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int
     {
+        $isValidationException = null;
+
         // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
         if (\class_exists(ValidationException::class)) {
-            $isValidationException = $throwable instanceof ValidationException
-                || $throwable instanceof LegacyValidationException;
+            $isValidationException = $throwable instanceof ValidationException;
         }
 
         if (\class_exists(ValidationException::class) === false) {
