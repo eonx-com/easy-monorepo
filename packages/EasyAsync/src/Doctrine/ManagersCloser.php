@@ -19,9 +19,6 @@ final class ManagersCloser
 
     /**
      * @param string[]|null $managers
-     *
-     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException
-     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException
      */
     public function close(?array $managers = null): void
     {
