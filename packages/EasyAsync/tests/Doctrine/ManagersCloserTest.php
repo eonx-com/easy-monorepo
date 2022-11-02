@@ -10,7 +10,6 @@ use EonX\EasyAsync\Tests\AbstractStoreTestCase;
 use EonX\EasyAsync\Tests\Doctrine\Stubs\EntityManagerForSanityStub;
 use EonX\EasyAsync\Tests\Doctrine\Stubs\ManagerRegistryStub;
 use Mockery\LegacyMockInterface;
-use Mockery\MockInterface;
 use Psr\Log\LoggerInterface;
 
 final class ManagersCloserTest extends AbstractStoreTestCase
@@ -39,7 +38,7 @@ final class ManagersCloserTest extends AbstractStoreTestCase
         /** @var \Psr\Log\LoggerInterface $logger */
         $logger = $this->mock(LoggerInterface::class, function (LegacyMockInterface $logger): void {
             $logger->shouldReceive('warning')
-            ->once();
+                ->once();
         });
 
         (new ManagersCloser($registry, $logger))->close();
