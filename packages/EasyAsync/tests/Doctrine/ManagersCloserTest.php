@@ -30,6 +30,7 @@ final class ManagersCloserTest extends AbstractStoreTestCase
 
     public function testCloseSuccessful(): void
     {
+        /** @var \Doctrine\Persistence\ObjectManager $notEmInstance */
         $notEmInstance = $this->mock(ObjectManager::class);
         $registry = new ManagerRegistryStub([
             'default' => $notEmInstance,

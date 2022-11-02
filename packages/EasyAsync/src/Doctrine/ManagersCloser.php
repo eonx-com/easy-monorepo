@@ -13,7 +13,7 @@ final class ManagersCloser
 {
     public function __construct(
         private readonly ManagerRegistry $registry,
-        private readonly ?LoggerInterface $logger = new NullLogger()
+        private readonly LoggerInterface $logger = new NullLogger()
     ) {
     }
 
@@ -28,8 +28,7 @@ final class ManagersCloser
         foreach ($managers as $managerName) {
             $manager = $this->registry->getManager($managerName);
             if ($manager instanceof EntityManagerInterface) {
-                $this->registry->getManager($managerName)
-                    ->getConnection()
+                $manager->getConnection()
                     ->close();
 
                 continue;
