@@ -183,6 +183,6 @@ class HttpClientStub extends MockHttpClient
             return $url;
         }
 
-        return $this->baseUri . '/' . \ltrim($url, '/');
+        return \rtrim($this->baseUri, '/') . '/' . \ltrim($url, '/');
     }
 }
