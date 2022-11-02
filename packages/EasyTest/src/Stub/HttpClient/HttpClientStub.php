@@ -179,7 +179,7 @@ class HttpClientStub extends MockHttpClient
     {
         $urlInfo = \parse_url($url);
 
-        if (isset($urlInfo['host'])) {
+        if (\is_array($urlInfo) && isset($urlInfo['host'])) {
             return $url;
         }
 
