@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Listener;
 
-use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\TraceableErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\FormatAwareInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -18,14 +17,10 @@ final class ExceptionEventListener
     public function __invoke(ExceptionEvent $event): void
     {
         $this->errorHandler->report($event->getThrowable());
-        $request = $event->getRequest();
 
-        $isNotDebugAndSupportedFormat = $this->errorHandler instanceof FormatAwareInterface
-            && $this->errorHandler->supportsFormat($request) === false;
-        $isDebugAndHtmlFormat = $this->errorHandler instanceof TraceableErrorHandlerInterface
-            && $request->getPreferredFormat() === 'html';
-
-        if ($isNotDebugAndSupportedFormat || $isDebugAndHtmlFormat) {
+        // Skip if format not supported
+        if ($this->errorHandler instanceof FormatAwareInterface
+            && $this->errorHandler->supportsFormat($event->getRequest()) === false) {
             return;
         }
 
