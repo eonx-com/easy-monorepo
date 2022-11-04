@@ -64,6 +64,8 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
      * @return mixed
      *
      * @throws \Throwable
+     *
+     * @deprecated
      */
     public function transactional($func)
     {
@@ -71,6 +73,16 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
             throw new InvalidArgumentException('Expected argument of type "callable", got "' . \gettype($func) . '"');
         }
 
+        return $this->wrapInTransaction($func);
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Throwable
+     */
+    public function wrapInTransaction(callable $func): mixed
+    {
         $this->beginTransaction();
 
         try {
