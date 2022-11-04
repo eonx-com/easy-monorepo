@@ -17,11 +17,15 @@ use Symfony\Contracts\Cache\ItemInterface;
 final class AuthTokenConnectionFactory
 {
     public const OPTION_AWS_RDS_IAM_ENABLED = 'easy_doctrine_aws_rds_iam_enabled';
+
     public const OPTION_AWS_RDS_IAM_USERNAME = 'easy_doctrine_aws_rds_iam_username';
+
     public const OPTION_AWS_RDS_SSL_ENABLED = 'easy_doctrine_aws_rds_ssl_enabled';
+
     public const OPTION_AWS_RDS_SSL_MODE = 'easy_doctrine_aws_rds_ssl_mode';
 
     private const RDS_COMBINED_CERT_FILENAME_PATTERN = '%s/rds-combined-ca-bundle.pem';
+
     private const RDS_COMBINED_CERT_URL = 'https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem';
 
     public function __construct(
