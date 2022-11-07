@@ -285,6 +285,31 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             $filterFactory,
         ];
 
+        yield 'partial (multiple almost same values; case insensitive)' => [
+            [
+                'id' => null,
+                'name' => 'ipartial',
+            ],
+            [
+                'name' => [
+                    'blue car',
+                    'Blue Car',
+                ],
+            ],
+            sprintf(
+                'SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_0, \'%%\'))' .
+                ' OR LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_1, \'%%\'))',
+
+                $this->alias,
+                Dummy::class
+            ),
+            [
+                'name_p1_0' => 'blue car',
+                'name_p1_1' => 'blue car',
+            ],
+            $filterFactory,
+        ];
+
         yield 'start' => [
             [
                 'id' => null,
