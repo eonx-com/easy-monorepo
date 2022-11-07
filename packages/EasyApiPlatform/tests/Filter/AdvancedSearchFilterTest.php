@@ -299,7 +299,6 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             sprintf(
                 'SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_0, \'%%\'))' .
                 ' OR LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_1, \'%%\'))',
-
                 $this->alias,
                 Dummy::class
             ),
