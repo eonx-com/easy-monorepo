@@ -53,7 +53,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             $filterFactory,
         ];
 
-        yield 'multiple strategies (two strategy)' => [
+        yield 'multiple strategies (two strategies)' => [
             [
                 'id' => null,
                 'name[start]' => [
