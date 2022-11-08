@@ -19,7 +19,7 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
     {
         yield 'Cannot rerun exception' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_STATUS => WebhookInterface::STATUS_SUCCESS,
+                WebhookInterface::OPTION_STATUS => 'some-status',
             ]),
             null,
             null,
@@ -28,7 +28,7 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
 
         yield 'Can rerun, reset status and current attempt' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_STATUS => WebhookInterface::STATUS_SUCCESS,
+                WebhookInterface::OPTION_STATUS => 'some-status',
             ])->allowRerun(),
             WebhookInterface::STATUS_PENDING,
             WebhookInterface::DEFAULT_CURRENT_ATTEMPT,
@@ -39,8 +39,8 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
                 WebhookInterface::OPTION_CURRENT_ATTEMPT => 4,
                 WebhookInterface::OPTION_STATUS => WebhookInterface::STATUS_FAILED_PENDING_RETRY,
             ])->allowRerun(),
-            WebhookInterface::STATUS_FAILED_PENDING_RETRY,
-            4,
+            WebhookInterface::STATUS_PENDING,
+            0,
         ];
     }
 

@@ -18,7 +18,7 @@ final class RerunMiddleware extends AbstractMiddleware
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        if (\in_array($webhook->getStatus(), self::SHOULD_NOT_RERUN, true)) {
+        if (\in_array($webhook->getStatus(), self::SHOULD_NOT_RERUN, true) === false) {
             if ($webhook->isRerunAllowed() === false) {
                 throw new CannotRerunWebhookException(\sprintf(
                     'Cannot re-run webhook "%s"',
