@@ -41,6 +41,12 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/config/easy-bugsnag.php' => \base_path('config/easy-bugsnag.php'),
         ]);
+
+        // Make sure client is shutdown in worker
+        $this->app->make('queue')
+            ->looping(function (): void {
+                $this->app->make(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY)->shutdown();
+            });
     }
 
     /**
@@ -241,11 +247,5 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     private function registerShutdownStrategy(): void
     {
         $this->app->singleton(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY, ShutdownStrategy::class);
-
-        // Make sure client is shutdown in worker
-        $this->app->make('queue')
-            ->looping(function (): void {
-                $this->app->make(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY)->shutdown();
-            });
     }
 }
