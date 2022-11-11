@@ -36,6 +36,8 @@ parameters:
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
 
+        # ---- EasyActivity ----
+        # ---- EasyApiPlatform ----
         # ---- EasyApiToken ----
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'
@@ -106,8 +108,6 @@ parameters:
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
           path: packages/EasyErrorHandler/src/Providers/ErrorCodesProvider.php
 
-        # ---- EasyHttpClient ----
-        # ---- EasyLock ----
         # ---- EasyLogging ----DoctrineDbalLengthAwarePaginator
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
@@ -206,6 +206,7 @@ parameters:
 
         # ---- EasySwoole ----
         - '#Access to constant (.*) on an unknown class Swoole\\Constant#'
+        - '#Class Swoole\\Constant not found#'
 
         - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
           path: packages/EasySwoole/src/Helpers/OutputHelper.php
@@ -218,10 +219,6 @@ parameters:
 
         - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
           path: packages/EasySwoole/src/Runtime/EasySwooleRunner.php
-
-        # ---- EasyTest ----
-        - message: '#Unsafe usage of new static\(\)#'
-          path: packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
 
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'

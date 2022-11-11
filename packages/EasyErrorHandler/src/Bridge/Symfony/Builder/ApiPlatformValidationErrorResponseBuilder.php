@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Core\Exception\InvalidArgumentException as LegacyInvalidArgumentException;
+use ApiPlatform\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
@@ -28,15 +29,25 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     private const MESSAGE_PATTERN_TYPE_ERROR = '/The type of the "(\w+)" attribute must be "(\w+)", "(\w+)" given/';
 
+    private const MESSAGE_TEMPLATE_TYPE_ERROR = 'The type of the value should be "%s", "%s" given.';
+
     public static function supports(Throwable $throwable): bool
     {
         $message = $throwable->getMessage();
 
+        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
+        $invalidArgumentExceptionClass = null;
+        if (\class_exists(InvalidArgumentException::class)) {
+            $invalidArgumentExceptionClass = InvalidArgumentException::class;
+        }
+
         return match ($throwable::class) {
-            InvalidArgumentException::class => \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1,
+            $invalidArgumentExceptionClass, LegacyInvalidArgumentException::class =>
+                \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1,
             MissingConstructorArgumentsException::class =>
                 \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $message) === 1,
             UnexpectedValueException::class =>
+                \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_IRI, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NESTED_DOCUMENTS_NOT_ALLOWED, $message) === 1 ||
@@ -60,14 +71,25 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
         $data['message'] = 'Validation failed.';
 
-        if ($throwable instanceof InvalidArgumentException) {
+        $isInvalidArgumentException = null;
+
+        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
+        if (\class_exists(InvalidArgumentException::class)) {
+            $isInvalidArgumentException = $throwable instanceof InvalidArgumentException;
+        }
+
+        if (\class_exists(InvalidArgumentException::class) === false) {
+            $isInvalidArgumentException = $throwable instanceof LegacyInvalidArgumentException;
+        }
+
+        if ($isInvalidArgumentException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches);
             $data['violations'] = [
                 $matches[1] => [
                     $matches[3] === 'NULL'
                         ? (new NotNull())->message
-                        : \sprintf('The type of the value should be "%s", "%s" given.', $matches[2], $matches[3]),
+                        : \sprintf(self::MESSAGE_TEMPLATE_TYPE_ERROR, $matches[2], $matches[3]),
                 ],
             ];
         }
@@ -85,6 +107,16 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             $matches = [];
 
             switch (1) {
+                case \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches) === 1:
+                    $data['violations'] = [
+                        $matches[1] => [
+                            $matches[3] === 'NULL'
+                                ? (new NotNull())->message
+                                : \sprintf(self::MESSAGE_TEMPLATE_TYPE_ERROR, $matches[2], $matches[3]),
+                        ],
+                    ];
+
+                    break;
                 case \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1:
                 case \preg_match(self::MESSAGE_PATTERN_INVALID_IRI, $message) === 1:
                     $data['violations'] = [$message];

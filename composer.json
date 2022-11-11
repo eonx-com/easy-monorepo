@@ -49,7 +49,7 @@
         "myclabs/deep-copy": "^1.11"
     },
     "require-dev": {
-        "api-platform/core": "^2.6",
+        "api-platform/core": "^2.6 || ^2.7",
         "auth0/auth0-php": "^8.0",
         "bugsnag/bugsnag-laravel": "^2.17",
         "dg/bypass-finals": "^1.2",
@@ -85,6 +85,7 @@
     "autoload": {
         "psr-4": {
             "EonX\\EasyActivity\\": "packages/EasyActivity/src",
+            "EonX\\EasyApiPlatform\\": "packages/EasyApiPlatform/src",
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
             "EonX\\EasyAsync\\": "packages/EasyAsync/src",
             "EonX\\EasyAwsCredentialsFinder\\": "packages/EasyAwsCredentialsFinder/src",
@@ -122,6 +123,7 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyActivity\\Tests\\": "packages/EasyActivity/tests",
+            "EonX\\EasyApiPlatform\\Tests\\": "packages/EasyApiPlatform/tests",
             "EonX\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
             "EonX\\EasyAsync\\Tests\\": "packages/EasyAsync/tests",
             "EonX\\EasyAwsCredentialsFinder\\Tests\\": "packages/EasyAwsCredentialsFinder/tests",
@@ -157,6 +159,7 @@
     },
     "replace": {
         "eonx-com/easy-activity": "self.version",
+        "eonx-com/easy-api-platform": "self.version",
         "eonx-com/easy-api-token": "self.version",
         "eonx-com/easy-async": "self.version",
         "eonx-com/easy-aws-credentials-finder": "self.version",
@@ -197,7 +200,7 @@
         "check-ecs": ".quality/vendor/bin/ecs check --ansi",
         "check-monorepo": "vendor/bin/monorepo-builder validate --ansi",
         "check-composer": "@composer validate --strict",
-        "check-phpstan": ".quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=1000M",
+        "check-phpstan": ".quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=2000M",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
         "check-rector": ".quality/vendor/bin/rector process --ansi --config rector-ci.php --dry-run",
         "fix-ecs": ".quality/vendor/bin/ecs check --fix --ansi",

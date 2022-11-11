@@ -73,7 +73,7 @@ final class ScheduleDataCollector extends DataCollector
      */
     public function getEvents(): array
     {
-        return $this->data['events'];
+        return $this->data['events'] ?? [];
     }
 
     public function getName(): string
@@ -86,7 +86,7 @@ final class ScheduleDataCollector extends DataCollector
      */
     public function getProviders(): array
     {
-        return $this->data['providers'];
+        return $this->data['providers'] ?? [];
     }
 
     public function reset(): void

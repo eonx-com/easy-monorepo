@@ -134,6 +134,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             return;
         }
 
+        $events = [];
         try {
             $mergedEntityChangeSets = [];
             foreach ($this->entityChangeSets as $levelChangeSets) {
@@ -148,10 +149,14 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             foreach ($mergedEntityChangeSets as $oid => $entityChangeSet) {
                 $event = $this->createEntityEvent($oid, $entityChangeSet);
 
-                $this->eventDispatcher->dispatch($event);
+                $events[] = $event;
             }
         } finally {
             $this->clear();
+        }
+
+        foreach ($events as $event) {
+            $this->eventDispatcher->dispatch($event);
         }
     }
 

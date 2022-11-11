@@ -16,6 +16,14 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 final class AuthTokenConnectionFactory
 {
+    public const OPTION_AWS_RDS_IAM_ENABLED = 'easy_doctrine_aws_rds_iam_enabled';
+
+    public const OPTION_AWS_RDS_IAM_USERNAME = 'easy_doctrine_aws_rds_iam_username';
+
+    public const OPTION_AWS_RDS_SSL_ENABLED = 'easy_doctrine_aws_rds_ssl_enabled';
+
+    public const OPTION_AWS_RDS_SSL_MODE = 'easy_doctrine_aws_rds_ssl_mode';
+
     private const RDS_COMBINED_CERT_FILENAME_PATTERN = '%s/rds-combined-ca-bundle.pem';
 
     private const RDS_COMBINED_CERT_URL = 'https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem';
@@ -44,16 +52,27 @@ final class AuthTokenConnectionFactory
         ?EventManager $eventManager = null,
         ?array $mappingTypes = null
     ): Connection {
-        if ($this->isEnabled()) {
-            $params['user'] = $this->awsUsername;
+        $driverOptions = $params['driverOptions'] ?? [];
+        $rdsIamEnabled = $driverOptions[self::OPTION_AWS_RDS_IAM_ENABLED] ?? true;
+        $rdsSslEnabled = $driverOptions[self::OPTION_AWS_RDS_SSL_ENABLED] ?? $this->sslEnabled;
+
+        if ($rdsIamEnabled && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_IAM_ENABLED')) {
+            $params['user'] = $driverOptions[self::OPTION_AWS_RDS_IAM_USERNAME] ?? $this->awsUsername;
             $params['passwordGenerator'] = $this->getGeneratePasswordClosure();
             $params['wrapperClass'] = RdsIamConnection::class;
-
-            if ($this->sslEnabled) {
-                $params['sslmode'] = $this->sslMode;
-                $params['sslrootcert'] = $this->resolveSslCertPath();
-            }
         }
+
+        if ($rdsSslEnabled && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_SSL_ENABLED')) {
+            $params['sslmode'] = $driverOptions[self::OPTION_AWS_RDS_SSL_MODE] ?? $this->sslMode;
+            $params['sslrootcert'] = $this->resolveSslCertPath();
+        }
+
+        unset(
+            $params['driverOptions'][self::OPTION_AWS_RDS_IAM_ENABLED],
+            $params['driverOptions'][self::OPTION_AWS_RDS_IAM_USERNAME],
+            $params['driverOptions'][self::OPTION_AWS_RDS_SSL_ENABLED],
+            $params['driverOptions'][self::OPTION_AWS_RDS_SSL_MODE]
+        );
 
         return $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
     }
@@ -74,11 +93,9 @@ final class AuthTokenConnectionFactory
         };
     }
 
-    private function isEnabled(): bool
+    private function isEnabled(string $feature): bool
     {
-        $key = 'EASY_DOCTRINE_AWS_RDS_IAM_ENABLED';
-
-        return ($_SERVER[$key] ?? $_ENV[$key] ?? 'enabled') === 'enabled';
+        return ($_SERVER[$feature] ?? $_ENV[$feature] ?? 'enabled') === 'enabled';
     }
 
     private function resolveSslCertPath(): string
