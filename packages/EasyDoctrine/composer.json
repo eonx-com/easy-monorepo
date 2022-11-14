@@ -7,14 +7,14 @@
     "require": {
         "php": "^7.2 || ^8.0",
         "ext-json": "*",
-        "eonx-com/easy-event-dispatcher": "^3.4.29",
+        "eonx-com/easy-event-dispatcher": "^3.5",
         "nesbot/carbon": "^1.39 || ^2.22"
     },
     "require-dev": {
         "doctrine/annotations": "^1.13",
         "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
-        "eonx-com/easy-error-handler": "^3.4.29",
+        "eonx-com/easy-error-handler": "^3.5",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^8.4 || ^9.5",
         "symfony/symfony": "^4.4 || ^5.1.5"
