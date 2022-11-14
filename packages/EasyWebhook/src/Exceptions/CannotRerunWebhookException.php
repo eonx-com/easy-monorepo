@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Exceptions;
 
-use Symfony\Component\Messenger\Exception\UnrecoverableExceptionInterface;
-
-final class CannotRerunWebhookException extends AbstractDoNotHandleMeException implements
-    UnrecoverableExceptionInterface
+final class CannotRerunWebhookException extends AbstractDoNotHandleMeException
 {
     // No body needed.
 }

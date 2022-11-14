@@ -9,7 +9,6 @@ use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Middleware\RerunMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
-use Symfony\Component\Messenger\Exception\UnrecoverableExceptionInterface;
 
 final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -25,15 +24,6 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
             null,
             null,
             CannotRerunWebhookException::class,
-        ];
-
-        yield 'Do not resend Symfony message exception' => [
-            Webhook::fromArray([
-                WebhookInterface::OPTION_STATUS => WebhookInterface::STATUS_SUCCESS,
-            ]),
-            null,
-            null,
-            UnrecoverableExceptionInterface::class,
         ];
 
         yield 'Can rerun, reset status and current attempt' => [
