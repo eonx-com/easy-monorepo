@@ -207,7 +207,10 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-        "process-timeout": 0
+        "process-timeout": 0,
+        "allow-plugins": {
+            "symfony/runtime": true
+        }
     },
     "extra": {
         "eonx_docs": {
