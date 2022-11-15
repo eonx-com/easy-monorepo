@@ -209,6 +209,7 @@
     "config": {
         "process-timeout": 0,
         "allow-plugins": {
+            "cweagans/composer-patches": true,
             "symfony/runtime": true
         }
     },
