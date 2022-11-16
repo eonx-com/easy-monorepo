@@ -45,16 +45,14 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
         ?string $audienceForEncode = null,
         ?array $allowedAlgos = null
     ): JwtDriverInterface {
-        $auth0Driver = new Auth0JwtDriver(
+        return new Auth0JwtDriver(
             $validAudiences ?? static::$validAudiences,
             $authorizedIss ?? static::$authorizedIss,
-            'localhost',
+            'example.com',
             $key ?? static::$key,
             $audienceForEncode,
             $allowedAlgos
         );
-
-        return $auth0Driver;
     }
 
     protected function createToken(): string

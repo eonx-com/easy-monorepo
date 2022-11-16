@@ -17,24 +17,18 @@ jobs:
                     - { name: phpstan, coverage: none, run: composer check-phpstan }
                     # - { name: rector, coverage: none, run: composer check-rector }
 
-#                    -   name: tests
-#                        coverage: pcov
-#                        run: |
-#                            composer check-tests | tee coverage_output.txt
-#                            packages/EasyTest/bin/easy-test check-coverage -c 70 coverage_output.txt
-
         name: ${{ matrix.actions.name}} (${{ matrix.php }})
 
         steps:
-            -   uses: eonx-com/actions-checkout@v2
+            -   uses: actions/checkout@v3
 
-            -   uses: eonx-com/actions-setup-php@v2
+            -   uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: ${{ matrix.actions.coverage }}
                     extensions: pdo_sqlite
 
-            -   uses: eonx-com/actions-composer-install@v1
+            -   uses: ramsey/composer-install@v2
 
             -   run: composer install --working-dir=.quality
 
@@ -49,14 +43,14 @@ jobs:
                 php: [ '8.1' ]
         name: security-checker (${{ matrix.php }})
         steps:
-            -   uses: eonx-com/actions-checkout@v2
+            -   uses: actions/checkout@v3
 
-            -   uses: eonx-com/actions-setup-php@v2
+            -   uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: none
                     tools: symfony-cli
 
-            -   uses: eonx-com/actions-composer-install@v1
+            -   uses: ramsey/composer-install@v2
 
             -   run: symfony security:check

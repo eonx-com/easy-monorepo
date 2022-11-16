@@ -8,14 +8,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -
-                uses: eonx-com/actions-checkout@v2
+                uses: actions/checkout@v3
             -
-                uses: eonx-com/actions-setup-php@v2
+                uses: shivammathur/setup-php@v2
                 with:
                     php-version: 8.1
                     coverage: none
             -
-                uses: eonx-com/actions-composer-install@v1
+                uses: ramsey/composer-install@v2
             -
                 id: output_data
                 run: 'echo "::set-output name=matrix::$(bin/monorepo export-packages)"'
@@ -29,14 +29,14 @@ jobs:
             matrix:
                 mapping: '${{ fromJson(needs.provide_packages_json.outputs.matrix) }}'
                 tag:
-                    - 4.3.5
+                    - 4.3.6
         name: 'Split ${{ matrix.mapping.dir }}'
         env:
             DIR: 'packages/${{ matrix.mapping.dir }}'
             TAG: '${{ matrix.tag }}'
         steps:
             -
-                uses: eonx-com/actions-checkout@v2
+                uses: actions/checkout@v3
             -
                 run: 'git fetch --prune --unshallow'
             -

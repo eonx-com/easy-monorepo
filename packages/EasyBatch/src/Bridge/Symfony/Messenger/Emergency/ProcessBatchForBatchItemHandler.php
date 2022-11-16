@@ -33,6 +33,11 @@ final class ProcessBatchForBatchItemHandler implements MessageHandlerInterface
         $batchItem = $this->batchItemRepository->findOrFail($message->getBatchItemId());
         $batch = $this->batchRepository->findOrFail($batchItem->getBatchId());
 
+        // Prevent running logic on already completed batch
+        if ($batch->isCompleted()) {
+            return;
+        }
+
         // Update batch metadata to reflect emergency flow triggered
         $updateFreshBatch = static function (BatchInterface $freshBatch) use ($message): void {
             $metadata = $freshBatch->getMetadata() ?? [];
