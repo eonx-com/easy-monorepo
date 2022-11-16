@@ -22,7 +22,7 @@ jobs:
         steps:
             -   uses: actions/checkout@v3
 
-            -   uses: eonx-com/actions-setup-php@v2
+            -   uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: ${{ matrix.actions.coverage }}
@@ -45,7 +45,7 @@ jobs:
         steps:
             -   uses: actions/checkout@v3
 
-            -   uses: eonx-com/actions-setup-php@v2
+            -   uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: none
