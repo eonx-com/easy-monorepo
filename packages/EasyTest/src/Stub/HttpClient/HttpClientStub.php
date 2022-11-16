@@ -26,7 +26,7 @@ class HttpClientStub extends MockHttpClient
 
     private ?Throwable $expectedException = null;
 
-    public function __construct(?string $baseUri = null)
+    public function __construct(protected string $baseUri = 'https://example.com')
     {
         parent::__construct(
             function ($method, $url, $options): ResponseInterface {
@@ -48,6 +48,7 @@ class HttpClientStub extends MockHttpClient
         ?array $body = null,
         ?array $queryParams = null
     ): HttpClientRequestStub {
+        $url = $this->normalizeUrl($url);
         $options = [];
         $options['headers'] = \array_unique(\array_merge($headers ?? [], self::DEFAULT_REQUEST_HEADERS));
         if ($body !== null) {
@@ -88,6 +89,8 @@ class HttpClientStub extends MockHttpClient
 
     public function forRequestWithAnyOptions(string $method, string $url): HttpClientRequestStub
     {
+        $url = $this->normalizeUrl($url);
+
         return new HttpClientRequestStub(
             function (MockResponse $response, string $requestHash): self {
                 $this->responses[$requestHash] ??= [];
@@ -110,6 +113,7 @@ class HttpClientStub extends MockHttpClient
      */
     public function getResponse(string $method, string $url, ?array $options = null): MockResponse
     {
+        $url = $this->normalizeUrl($url);
         $request = new HttpClientRequestStub(fn (): self => $this, $method, $url, $options);
 
         if (\count($this->responses[$request->getHash()] ?? []) > 0) {
@@ -150,6 +154,8 @@ class HttpClientStub extends MockHttpClient
             throw $this->expectedException;
         }
 
+        $url = $this->normalizeUrl($url);
+
         return parent::request($method, $url, $options ?? []);
     }
 
@@ -167,5 +173,16 @@ class HttpClientStub extends MockHttpClient
             ?? new TransportException('This is an expected exception.');
 
         return $this;
+    }
+
+    protected function normalizeUrl(string $url): string
+    {
+        $urlInfo = \parse_url($url);
+
+        if (\is_array($urlInfo) && isset($urlInfo['host'])) {
+            return $url;
+        }
+
+        return \rtrim($this->baseUri, '/') . '/' . \ltrim($url, '/');
     }
 }
