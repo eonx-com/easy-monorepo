@@ -8,24 +8,20 @@ use EonX\EasySecurity\Interfaces\UserInterface;
 
 final class UserInterfaceStub implements UserInterface
 {
-    /**
-     * @var null|int|string
-     */
-    private $uniqueId;
-
-    /**
-     * @param null|int|string $uniqueId
-     */
-    public function __construct($uniqueId)
+    public function __construct(private string $userIdentifier)
     {
-        $this->uniqueId = $uniqueId;
     }
 
     /**
-     * @return null|int|string
+     * @deprecated Will be removed in 5.0.0
      */
-    public function getUniqueId()
+    public function getUniqueId(): null|int|string
     {
-        return $this->uniqueId;
+        return $this->userIdentifier;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->userIdentifier;
     }
 }
