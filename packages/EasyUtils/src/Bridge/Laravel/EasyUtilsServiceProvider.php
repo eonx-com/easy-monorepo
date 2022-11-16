@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Bridge\Laravel;
 
 use EonX\EasyUtils\Bridge\BridgeConstantsInterface;
+use EonX\EasyUtils\CreditCard\CreditCardNumberValidator;
 use EonX\EasyUtils\CreditCard\CreditCardNumberValidatorInterface;
 use EonX\EasyUtils\Csv\CsvWithHeadersParser;
 use EonX\EasyUtils\Csv\CsvWithHeadersParserInterface;
@@ -52,6 +53,13 @@ final class EasyUtilsServiceProvider extends ServiceProvider
                 \config('easy-utils.format-thousands-separator')
             );
         });
+
+        $this->app->singleton(
+            CreditCardNumberValidatorInterface::class,
+            static function (): CreditCardNumberValidatorInterface {
+                return new CreditCardNumberValidator();
+            }
+        );
 
         if (\config('easy-utils.sensitive_data.enabled', true)) {
             if (\config('easy-utils.sensitive_data.use_default_object_transformers', true)) {
