@@ -4,10 +4,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\SensitiveData\StringSanitizers;
 
-use EonX\EasyUtils\CreditCard\CreditCardNumberValidator;
+use EonX\EasyUtils\CreditCard\CreditCardNumberValidatorInterface;
 
 final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
 {
+    private CreditCardNumberValidatorInterface $creditCardNumberValidator;
+
+    public function __construct(CreditCardNumberValidatorInterface $creditCardNumberValidator, ?int $priority = null)
+    {
+        $this->creditCardNumberValidator = $creditCardNumberValidator;
+        parent::__construct($priority);
+    }
+
     /**
      * @param mixed[] $keysToMask
      */
@@ -19,11 +27,9 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
             return $string;
         }
 
-        $creditCardNumberValidator = new CreditCardNumberValidator();
-
         // Mask potentially unmasked credit card numbers anywhere else
         foreach ($matches as $match) {
-            if ($creditCardNumberValidator->isCreditCardNumberValid($match[0]) === false) {
+            if ($this->creditCardNumberValidator->isCreditCardNumberValid($match[0]) === false) {
                 continue;
             }
 

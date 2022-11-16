@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Bridge\Laravel;
 
 use EonX\EasyUtils\Bridge\BridgeConstantsInterface;
+use EonX\EasyUtils\CreditCard\CreditCardNumberValidatorInterface;
 use EonX\EasyUtils\Csv\CsvWithHeadersParser;
 use EonX\EasyUtils\Csv\CsvWithHeadersParserInterface;
 use EonX\EasyUtils\Interfaces\MathInterface;
@@ -22,12 +23,7 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyUtilsServiceProvider extends ServiceProvider
 {
-    private const DEFAULT_STRING_SANITIZERS = [
-        AuthorizationStringSanitizer::class,
-        CreditCardNumberStringSanitizer::class,
-        JsonStringSanitizer::class,
-        UrlStringSanitizer::class,
-    ];
+    private const STRING_SANITIZER_DEFAULT_PRIORITY = 1000;
 
     public function boot(): void
     {
@@ -72,15 +68,48 @@ final class EasyUtilsServiceProvider extends ServiceProvider
             }
 
             if (\config('easy-utils.sensitive_data.use_default_string_sanitizers', true)) {
-                foreach (self::DEFAULT_STRING_SANITIZERS as $stringSanitizer) {
-                    $this->app->singleton(
-                        $stringSanitizer,
-                        static function () use ($stringSanitizer): StringSanitizerInterface {
-                            return new $stringSanitizer(10000);
-                        }
-                    );
-                    $this->app->tag($stringSanitizer, [BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER]);
-                }
+                $this->app->singleton(
+                    AuthorizationStringSanitizer::class,
+                    static function (): StringSanitizerInterface {
+                        return new AuthorizationStringSanitizer(self::STRING_SANITIZER_DEFAULT_PRIORITY);
+                    }
+                );
+                $this->app->tag(AuthorizationStringSanitizer::class, [
+                    BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
+                ]);
+
+                $this->app->singleton(
+                    CreditCardNumberStringSanitizer::class,
+                    static function (Container $app): StringSanitizerInterface {
+                        return new CreditCardNumberStringSanitizer(
+                            $app->make(CreditCardNumberValidatorInterface::class),
+                            self::STRING_SANITIZER_DEFAULT_PRIORITY
+                        );
+                    }
+                );
+                $this->app->tag(CreditCardNumberStringSanitizer::class, [
+                    BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
+                ]);
+
+                $this->app->singleton(
+                    JsonStringSanitizer::class,
+                    static function (): StringSanitizerInterface {
+                        return new JsonStringSanitizer(self::STRING_SANITIZER_DEFAULT_PRIORITY);
+                    }
+                );
+                $this->app->tag(JsonStringSanitizer::class, [
+                    BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
+                ]);
+
+                $this->app->singleton(
+                    UrlStringSanitizer::class,
+                    static function (): StringSanitizerInterface {
+                        return new UrlStringSanitizer(self::STRING_SANITIZER_DEFAULT_PRIORITY);
+                    }
+                );
+                $this->app->tag(UrlStringSanitizer::class, [
+                    BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
+                ]);
             }
 
             $this->app->singleton(

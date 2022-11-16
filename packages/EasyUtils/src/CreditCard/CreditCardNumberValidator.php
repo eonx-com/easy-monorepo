@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\CreditCard;
 
-final class CreditCardNumberValidator
+final class CreditCardNumberValidator implements CreditCardNumberValidatorInterface
 {
     private const CARD_TYPES = [
         // Debit cards must come first, since they have more specific patterns than their credit-card equivalents.
