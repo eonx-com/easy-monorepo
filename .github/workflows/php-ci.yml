@@ -17,12 +17,6 @@ jobs:
                     - { name: phpstan, coverage: none, run: composer check-phpstan }
                     # - { name: rector, coverage: none, run: composer check-rector }
 
-#                    -   name: tests
-#                        coverage: pcov
-#                        run: |
-#                            composer check-tests | tee coverage_output.txt
-#                            packages/EasyTest/bin/easy-test check-coverage -c 70 coverage_output.txt
-
         name: ${{ matrix.actions.name}} (${{ matrix.php }})
 
         steps:
