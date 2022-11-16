@@ -13,7 +13,7 @@ jobs:
                     php-version: 8.1
                     coverage: none
 
-            -   uses: eonx-com/actions-composer-install@v1
+            -   uses: ramsey/composer-install@v2
 
             -   id: output_data
                 run: echo "::set-output name=matrix::$(bin/monorepo export-packages)"
@@ -41,7 +41,7 @@ jobs:
                     coverage: none
                     extensions: pdo_sqlite
 
-            -   uses: eonx-com/actions-composer-install@v1
+            -   uses: ramsey/composer-install@v2
 
             -   run: bin/monorepo localize-monorepo-packages
             -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi

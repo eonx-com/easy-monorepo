@@ -28,7 +28,7 @@ jobs:
                     coverage: ${{ matrix.actions.coverage }}
                     extensions: pdo_sqlite
 
-            -   uses: eonx-com/actions-composer-install@v1
+            -   uses: ramsey/composer-install@v2
 
             -   run: composer install --working-dir=.quality
 
@@ -51,6 +51,6 @@ jobs:
                     coverage: none
                     tools: symfony-cli
 
-            -   uses: eonx-com/actions-composer-install@v1
+            -   uses: ramsey/composer-install@v2
 
             -   run: symfony security:check
