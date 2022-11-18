@@ -14,7 +14,6 @@ use EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\Dummy;
 use EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\RelatedDummy;
 use EonX\EasyApiPlatform\Tests\Stubs\App\Serializer\NameConverter\CustomConverter;
 use Prophecy\Argument;
-use function EonX\EasyApiPlatform\Tests\Filter\str_contains;
 
 final class AdvancedSearchFilterTest extends AbstractFilterTestCase
 {
