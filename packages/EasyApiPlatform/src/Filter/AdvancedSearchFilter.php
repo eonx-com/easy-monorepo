@@ -6,7 +6,7 @@ namespace EonX\EasyApiPlatform\Filter;
 
 use ApiPlatform\Api\IriConverterInterface;
 use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
-use ApiPlatform\Doctrine\Common\PropertyHelperTrait;
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterTrait;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryBuilderHelper;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
@@ -27,6 +27,14 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  * Filter the collection by given properties.
  * This filter allows to define multiple search strategy for the same property on a single resource.
  *
+ * This class was created by copying of base ApiPlatform SearchFilter with the following changes:
+ *   - Allow to configure multiple strategies for the same property
+ *
+ * @see \ApiPlatform\Doctrine\Orm\Filter\SearchFilter
+ *
+ * For API Platform <= 2.6.0 use VirtualSearchFilter
+ * @see \EonX\EasyCore\Bridge\Symfony\ApiPlatform\Filter\VirtualSearchFilter
+ *
  * #[ApiFilter(
  *     AdvancedSearchFilter::class,
  *     properties: [
@@ -38,18 +46,17 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  */
 final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterInterface
 {
-    use PropertyHelperTrait;
+    use SearchFilterTrait;
 
-    public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
-
-    private PropertyAccessorInterface $propertyAccessor;
+    private const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
 
     /**
+     * @param \ApiPlatform\Api\IriConverterInterface $iriConverter
      * @param mixed[] $properties
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
-        private readonly IriConverterInterface $iriConverter,
+        $iriConverter,
         PropertyAccessorInterface $propertyAccessor = null,
         LoggerInterface $logger = null,
         array $properties = null,
@@ -57,13 +64,12 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     ) {
         parent::__construct($managerRegistry, $logger, $properties, $nameConverter);
 
+        $this->iriConverter = $iriConverter;
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
     }
 
     /**
      * @return mixed[]
-     *
-     * {@inheritDoc}
      */
     public function getDescription(string $resourceClass): array
     {
@@ -386,24 +392,6 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         );
     }
 
-    /**
-     * Gets the ID from an IRI or a raw ID.
-     */
-    protected function getIdFromValue(string $value): int|string
-    {
-        try {
-            $iriConverter = $this->getIriConverter();
-            $item = $iriConverter->getResourceFromIri($value, ['fetch_data' => false]);
-
-            return $this->getPropertyAccessor()
-                ->getValue($item, 'id');
-        } catch (InvalidArgumentException) {
-            // Do nothing, return the raw value
-        }
-
-        return $value;
-    }
-
     protected function getIriConverter(): IriConverterInterface
     {
         return $this->iriConverter;
@@ -412,54 +400,6 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     protected function getPropertyAccessor(): PropertyAccessorInterface
     {
         return $this->propertyAccessor;
-    }
-
-    /**
-     * When the field should be an integer, check that the given value is a valid one.
-     *
-     * @param mixed[] $values
-     */
-    protected function hasValidValues(array $values, mixed $type = null): bool
-    {
-        foreach ($values as $value) {
-            if ($value !== null && in_array($type, (array)self::DOCTRINE_INTEGER_TYPE, true)
-                && filter_var($value, FILTER_VALIDATE_INT) === false) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Normalize the values array.
-     *
-     * @param mixed[] $values
-     *
-     * @return mixed[]|null
-     */
-    protected function normalizeValues(array $values, string $property): ?array
-    {
-        foreach ($values as $key => $value) {
-            if (is_int($key) === false || (is_string($value) || is_int($value)) === false) {
-                unset($values[$key]);
-            }
-        }
-
-        if (empty($values)) {
-            $this->getLogger()
-                ->notice('Invalid filter ignored', [
-                    'exception' => new InvalidArgumentException(sprintf(
-                        'At least one value is required, multiple values should be in' .
-                        ' "%1$s[]=firstvalue&%1$s[]=secondvalue" format',
-                        $property
-                    )),
-                ]);
-
-            return null;
-        }
-
-        return array_values($values);
     }
 
     private function getType(?string $doctrineType = null): string

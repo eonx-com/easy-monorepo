@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Filter;
+namespace EonX\EasyApiPlatform\Tests\Filters;
 
 use ApiPlatform\Api\IriConverterInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
@@ -14,6 +14,7 @@ use EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\Dummy;
 use EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\RelatedDummy;
 use EonX\EasyApiPlatform\Tests\Stubs\App\Serializer\NameConverter\CustomConverter;
 use Prophecy\Argument;
+use function EonX\EasyApiPlatform\Tests\Filter\str_contains;
 
 final class AdvancedSearchFilterTest extends AbstractFilterTestCase
 {
