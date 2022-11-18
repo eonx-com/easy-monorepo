@@ -1252,7 +1252,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
         $iriConverterProphecy->getResourceFromIri(Argument::type('string'), ['fetch_data' => false])->will(function (
             $args
         ) use ($relatedDummyProphecy) {
-            if (str_contains($args[0], '/related_dummies')) {
+            if (\str_contains($args[0], '/related_dummies')) {
                 $relatedDummyProphecy->getId()
                     ->shouldBeCalled()
                     ->willReturn(1);
