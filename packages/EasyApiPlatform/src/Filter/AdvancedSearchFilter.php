@@ -48,7 +48,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 {
     use SearchFilterTrait;
 
-    private const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
+    public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
 
     /**
      * @param \ApiPlatform\Api\IriConverterInterface $iriConverter
