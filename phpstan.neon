@@ -1,5 +1,5 @@
 includes:
-    - .quality/vendor/symplify/phpstan-extensions/config/config.neon
+    - quality/vendor/symplify/phpstan-extensions/config/config.neon
 
 services:
     - class: EonX\EasyMonorepo\PHPStan\SymfonyMessengerEnvelopeLastReturnType
