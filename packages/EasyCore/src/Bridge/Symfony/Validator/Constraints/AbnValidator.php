@@ -41,7 +41,7 @@ final class AbnValidator extends ConstraintValidator
             return;
         }
 
-        if (\is_string($value) === false && (\is_object($value) && method_exists($value, '__toString')) === false) {
+        if (\is_string($value) === false && (\is_object($value) && \method_exists($value, '__toString')) === false) {
             throw new UnexpectedValueException($value, 'string');
         }
 

@@ -71,7 +71,7 @@ final class CheckCoverageCommand extends Command
 
             if ($coverageReport->hasViolations()) {
                 $style->error(
-                    \sprintf('Violations: %s', implode(PHP_EOL, $coverageReport->getViolations()))
+                    \sprintf('Violations: %s', \implode(\PHP_EOL, $coverageReport->getViolations()))
                 );
             }
 

@@ -59,7 +59,7 @@ final class TrimStrings
     }
 
     /**
-     * @param ParameterBag<string, mixed> $bag
+     * @param \Symfony\Component\HttpFoundation\ParameterBag<string, mixed> $bag
      */
     private function cleanParameterBag(ParameterBag $bag): void
     {

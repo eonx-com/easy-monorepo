@@ -98,7 +98,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
 
         $platformClassNameDbal2 = '\Doctrine\DBAL\Platforms\PostgreSQL94Platform';
         $platformClassNameDbal3 = '\Doctrine\DBAL\Platforms\PostgreSQLPlatform';
-        $platformClassName = class_exists($platformClassNameDbal2) ? $platformClassNameDbal2 : $platformClassNameDbal3;
+        $platformClassName = \class_exists($platformClassNameDbal2) ? $platformClassNameDbal2 : $platformClassNameDbal3;
 
         yield 'postgresql' => [
             $platformClassName,

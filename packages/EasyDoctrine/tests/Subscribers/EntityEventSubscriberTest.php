@@ -41,7 +41,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'activeTill' => '2022-12-20 16:23:52',
                 ]
             );
-        /** @var Category $category */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $entityManager->getRepository(Category::class)->find(1);
         /** @var \DateTime $activeTill */
         $activeTill = $category->getActiveTill();
@@ -82,7 +82,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'activeTill' => $activeTill,
                 ]
             );
-        /** @var Category $category */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $entityManager->getRepository(Category::class)->find(1);
         $category->setActiveTill(new DateTimeImmutable($activeTill));
 
@@ -226,9 +226,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'price' => '1000',
                 ]
             );
-        /** @var Category $category */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $entityManager->getRepository(Category::class)->find(1);
-        /** @var Product $product */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
         $category->setName('Computer Peripherals');
         $product->setPrice('2000');
@@ -446,9 +446,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 ]
             );
 
-        /** @var Product $product */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
-        /** @var Category $category */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $product->getCategory();
         $category->setName('Computer Peripherals');
 
@@ -578,7 +578,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'price' => '1000',
                 ]
             );
-        /** @var Product $product */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
 
         $entityManager->transactional(function () use ($entityManager, $product) {

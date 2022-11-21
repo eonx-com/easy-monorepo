@@ -37,7 +37,7 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
     }
 
     /**
-     * @return ExpressionFunction[]
+     * @return \Symfony\Component\ExpressionLanguage\ExpressionFunction[]
      */
     public function getFunctions(): array
     {

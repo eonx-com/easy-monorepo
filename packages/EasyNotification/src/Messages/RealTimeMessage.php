@@ -101,7 +101,7 @@ final class RealTimeMessage extends AbstractMessage
             throw new InvalidRealTimeMessageTypeException(\sprintf(
                 'Given type "%s" invalid. Valid types: ["%s"]',
                 $type,
-                implode('", "', self::REAL_TIME_TYPES)
+                \implode('", "', self::REAL_TIME_TYPES)
             ));
         }
 

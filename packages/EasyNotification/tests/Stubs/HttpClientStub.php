@@ -60,8 +60,8 @@ final class HttpClientStub implements HttpClientInterface
     /**
      * Yields responses chunk by chunk as they complete.
      *
-     * @param ResponseInterface|ResponseInterface[]|iterable $responses One or more responses created by the current
-     *     HTTP client
+     * @param \Symfony\Contracts\HttpClient\ResponseInterface|\Symfony\Contracts\HttpClient\ResponseInterface[]|iterable $responses One or more responses created by the current
+     * HTTP client
      * @param float|null $timeout The idle timeout before yielding timeout chunks
      */
     public function stream($responses, ?float $timeout = null): ResponseStreamInterface

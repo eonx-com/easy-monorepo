@@ -97,7 +97,7 @@ final class ManagerRegistryStub implements ManagerRegistry
     }
 
     /**
-     * @return ObjectManager[]
+     * @return \Doctrine\Persistence\ObjectManager[]
      */
     public function getManagers(): array
     {

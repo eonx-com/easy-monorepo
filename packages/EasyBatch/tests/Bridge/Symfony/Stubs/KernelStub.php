@@ -15,7 +15,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -44,7 +43,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     }
 
     /**
-     * @return iterable<BundleInterface>
+     * @return iterable<\Symfony\Component\HttpKernel\Bundle\BundleInterface>
      */
     public function registerBundles(): iterable
     {

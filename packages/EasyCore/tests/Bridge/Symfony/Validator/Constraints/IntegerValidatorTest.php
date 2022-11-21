@@ -128,7 +128,7 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
 
     private function mockConstraintViolationBuilder(string $code): ConstraintViolationBuilderInterface
     {
-        /** @var ConstraintViolationBuilderInterface $violationBuilder */
+        /** @var \Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface $violationBuilder */
         $violationBuilder = $this->mock(
             ConstraintViolationBuilderInterface::class,
             static function (MockInterface $mock) use ($code): void {
@@ -151,7 +151,7 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
         string $message,
         ConstraintViolationBuilderInterface $violationBuilder
     ): ExecutionContextInterface {
-        /** @var ExecutionContextInterface $context */
+        /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
             $violationBuilder
@@ -167,7 +167,7 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
 
     private function mockExecutionContextWithoutCalls(): ExecutionContextInterface
     {
-        /** @var ExecutionContextInterface $context */
+        /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('buildViolation')
                 ->never();
