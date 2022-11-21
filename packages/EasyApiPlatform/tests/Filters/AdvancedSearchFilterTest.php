@@ -9,7 +9,7 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
 use ApiPlatform\Exception\InvalidArgumentException;
 use ApiPlatform\Metadata\Get;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyApiPlatform\Filter\AdvancedSearchFilter;
+use EonX\EasyApiPlatform\Filters\AdvancedSearchFilter;
 use EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\Dummy;
 use EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\RelatedDummy;
 use EonX\EasyApiPlatform\Tests\Stubs\App\Serializer\NameConverter\CustomConverter;

@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
  *
  * For API Platform >= 2.7.0 use AdvancedSearchFilter
  *
- * @see \EonX\EasyApiPlatform\Filter\AdvancedSearchFilter
+ * @see \EonX\EasyApiPlatform\Filters\AdvancedSearchFilter
  *
  * The default behaviour of SearchFilter is preserved + ability to define "virtual properties" mapped to real ones:
  *

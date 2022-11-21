@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyApiPlatform\Filter\AdvancedSearchFilter;
+use EonX\EasyApiPlatform\Filters\AdvancedSearchFilter;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
