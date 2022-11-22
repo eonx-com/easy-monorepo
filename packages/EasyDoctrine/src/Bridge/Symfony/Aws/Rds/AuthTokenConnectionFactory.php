@@ -80,7 +80,7 @@ final class AuthTokenConnectionFactory
     private function getGeneratePasswordClosure(): \Closure
     {
         return function (array $params): string {
-            $key = \sprintf('easy-doctrine-pwd-%s', $this->awsUsername);
+            $key = \sprintf('easy-doctrine-pwd-%s', $params['user'] ?? $this->awsUsername);
 
             return $this->cache->get($key, function (ItemInterface $item) use ($params): string {
                 $item->expiresAfter($this->cacheExpiryInSeconds);
@@ -88,7 +88,11 @@ final class AuthTokenConnectionFactory
                 $endpoint = \sprintf('%s:%s', $params['host'], $params['port']);
                 $tokenGenerator = new AuthTokenGenerator(CredentialProvider::defaultProvider());
 
-                return $tokenGenerator->createToken($endpoint, $this->awsRegion, $this->awsUsername);
+                return $tokenGenerator->createToken(
+                    $endpoint,
+                    $this->awsRegion,
+                    $params['user'] ?? $this->awsUsername
+                );
             });
         };
     }
