@@ -30,7 +30,7 @@ jobs:
 
             -   uses: ramsey/composer-install@v2
 
-            -   run: composer install --working-dir=.quality
+            -   run: composer install --working-dir=quality
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
