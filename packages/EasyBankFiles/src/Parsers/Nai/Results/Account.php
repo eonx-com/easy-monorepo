@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Nai\Results;
 
-use EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Identifier;
-use EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Trailer;
-
 /**
- * @method Identifier getIdentifier()
- * @method Trailer getTrailer()
+ * @method \EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Identifier getIdentifier()
+ * @method \EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Trailer getTrailer()
  */
 final class Account extends AbstractNaiResult
 {

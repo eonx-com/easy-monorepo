@@ -12,7 +12,6 @@ use Rector\DeadCode\Rector\Stmt\RemoveUnreachableStatementRector;
 use Rector\Set\ValueObject\SetList;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-
     // get parameters
     $parameters = $containerConfigurator->parameters();
 

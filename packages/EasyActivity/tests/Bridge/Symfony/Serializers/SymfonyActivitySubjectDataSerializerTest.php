@@ -225,7 +225,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
     {
         $container = $this->getKernel()
             ->getContainer();
-        /** @var SerializerInterface $symfonySerializer */
+        /** @var \Symfony\Component\Serializer\SerializerInterface $symfonySerializer */
         $symfonySerializer = $container->get(SerializerInterface::class);
 
         return $symfonySerializer;

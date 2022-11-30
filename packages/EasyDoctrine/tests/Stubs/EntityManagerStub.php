@@ -83,7 +83,7 @@ final class EntityManagerStub
     }
 
     /**
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcher
      * @param string[] $subscribedEntities
      * @param string[] $fixtures
      *

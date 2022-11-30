@@ -22,7 +22,7 @@ final class EventDispatcherStub implements EventDispatcherInterface
     }
 
     /**
-     * @return object[]|EasyAsyncEventInterface[]
+     * @return object[]|\EonX\EasyAsync\Interfaces\EasyAsyncEventInterface[]
      */
     public function getDispatchedEvents(): array
     {
