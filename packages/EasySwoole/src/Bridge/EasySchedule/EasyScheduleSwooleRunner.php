@@ -6,8 +6,8 @@ namespace EonX\EasySwoole\Bridge\EasySchedule;
 
 use Carbon\Carbon;
 use Swoole\Constant;
-use Swoole\Process;
 use Swoole\Http\Server;
+use Swoole\Process;
 use Swoole\Table;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
