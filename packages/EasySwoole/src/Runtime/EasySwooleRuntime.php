@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Runtime;
 
 use EonX\EasyBugsnag\Interfaces\ValueOptionInterface as EasyBugsnagValueOptionInterface;
+use EonX\EasySwoole\Bridge\EasySchedule\EasyScheduleSwooleRunner;
 use EonX\EasySwoole\Helpers\EnvVarHelper;
 use Swoole\Constant;
+use Symfony\Component\Console\Application;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Runtime\RunnerInterface;
 use Symfony\Component\Runtime\SymfonyRuntime;
@@ -41,6 +43,10 @@ final class EasySwooleRuntime extends SymfonyRuntime
     public function getRunner(?object $application): RunnerInterface
     {
         EnvVarHelper::loadEnvVars($this->options['json_secrets'] ?? null);
+
+        if ($application instanceof Application && isset($this->options[EasyScheduleSwooleRunner::ENABLED])) {
+            return new EasyScheduleSwooleRunner($application);
+        }
 
         if ($application instanceof HttpKernelInterface) {
             $options = $this->options;
