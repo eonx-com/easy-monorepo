@@ -22,7 +22,8 @@ final class EasyScheduleSwooleRunner implements RunnerInterface
     {
         $app = $this->application;
         $server = new Server('0.0.0.0', 8080, \SWOOLE_BASE, \SWOOLE_SOCK_TCP);
-        $server->on(Constant::EVENT_REQUEST, static function (): void {});
+        $server->on(Constant::EVENT_REQUEST, static function (): void {
+        });
 
         $server->addProcess(new Process(static function () use ($app): void {
             $app->run(new ArrayInput([
