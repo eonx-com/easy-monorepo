@@ -75,7 +75,7 @@ class Dummy
     private ?string $nameConverted;
 
     /**
-     * @var Collection<int, RelatedDummy> Several dummies
+     * @var \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\RelatedDummy> Several dummies
      */
     #[ORM\ManyToMany(targetEntity: RelatedDummy::class)]
     private Collection $relatedDummies;
@@ -180,7 +180,7 @@ class Dummy
     }
 
     /**
-     * @return Collection<int, RelatedDummy>
+     * @return \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\RelatedDummy>
      */
     public function getRelatedDummies(): Collection
     {

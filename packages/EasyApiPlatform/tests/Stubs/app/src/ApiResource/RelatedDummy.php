@@ -96,7 +96,7 @@ class RelatedDummy extends ParentDummy
     }
 
     /**
-     * @return Collection<int, RelatedToDummyFriend>
+     * @return \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\RelatedToDummyFriend>
      */
     public function getRelatedToDummyFriend(): Collection
     {

@@ -105,14 +105,14 @@ abstract class AbstractFilterTestCase extends KernelTestCase
             $queryParameter = $queryBuilder->getQuery()
                 ->getParameter($parameterName);
 
-            $this->assertNotNull($queryParameter, sprintf('Expected query parameter "%s" to be set', $parameterName));
+            $this->assertNotNull($queryParameter, \sprintf('Expected query parameter "%s" to be set', $parameterName));
             $this->assertEquals(
                 $expectedParameterValue,
                 $queryParameter->getValue(),
-                sprintf(
+                \sprintf(
                     'Expected query parameter "%s" to be "%s"',
                     $parameterName,
-                    var_export($expectedParameterValue, true)
+                    \var_export($expectedParameterValue, true)
                 )
             );
         }

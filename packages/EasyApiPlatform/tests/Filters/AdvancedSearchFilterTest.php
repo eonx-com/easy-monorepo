@@ -35,7 +35,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'name' => 'exact',
             ],
-            sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1', $this->alias, Dummy::class),
             ['name_p1' => 'exact'],
             $filterFactory,
         ];
@@ -48,7 +48,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 ],
             ],
             ['name[exact]' => 'exact'],
-            sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1', $this->alias, Dummy::class),
             ['name_p1' => 'exact'],
             $filterFactory,
         ];
@@ -67,7 +67,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'name[start]' => 'start with',
                 'name[end]' => 'end with',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE' .
                 ' %1$s.name LIKE CONCAT(:name_p1_0, \'%%\') AND %1$s.name LIKE CONCAT(\'%%\', :name_p2_0)',
                 $this->alias,
@@ -88,7 +88,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'name' => 'exact',
             ],
-            sprintf('SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) = LOWER(:name_p1)', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) = LOWER(:name_p1)', $this->alias, Dummy::class),
             ['name_p1' => 'exact'],
             $filterFactory,
         ];
@@ -101,7 +101,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'name' => 'exact (special)',
             ],
-            sprintf('SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) = LOWER(:name_p1)', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) = LOWER(:name_p1)', $this->alias, Dummy::class),
             ['name_p1' => 'exact (special)'],
             $filterFactory,
         ];
@@ -117,7 +117,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     'SENSitive',
                 ],
             ],
-            sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name IN(:name_p1)', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name IN(:name_p1)', $this->alias, Dummy::class),
             [
                 'name_p1' => [
                     'CaSE',
@@ -142,7 +142,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     ],
                 ],
             ],
-            sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name IN(:name_p1)', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name IN(:name_p1)', $this->alias, Dummy::class),
             [
                 'name_p1' => [
                     'CaSE',
@@ -163,7 +163,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     'inSENSitive',
                 ],
             ],
-            sprintf('SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) IN(:name_p1)', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) IN(:name_p1)', $this->alias, Dummy::class),
             [
                 'name_p1' => [
                     'case',
@@ -181,7 +181,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'foo' => 'exact',
             ],
-            sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
             [],
             $filterFactory,
         ];
@@ -198,7 +198,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'relatedDummy' => ['foo'],
                 'relatedDummies' => [['foo']],
             ],
-            sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1', $this->alias, Dummy::class),
             [],
             $filterFactory,
         ];
@@ -211,7 +211,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'name' => 'partial',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE %1$s.name LIKE CONCAT(\'%%\', :name_p1_0, \'%%\')',
                 $this->alias,
                 Dummy::class
@@ -228,7 +228,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'name' => 'partial',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_0, \'%%\'))',
                 $this->alias,
                 Dummy::class
@@ -248,7 +248,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     'SENSitive',
                 ],
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE %1$s.name' .
                 ' LIKE CONCAT(\'%%\', :name_p1_0, \'%%\') OR %1$s.name LIKE CONCAT(\'%%\', :name_p1_1, \'%%\')',
                 $this->alias,
@@ -272,7 +272,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     'inSENSitive',
                 ],
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_0, \'%%\'))' .
                 ' OR LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_1, \'%%\'))',
                 $this->alias,
@@ -296,7 +296,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     'Blue Car',
                 ],
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_0, \'%%\'))' .
                 ' OR LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_1, \'%%\'))',
                 $this->alias,
@@ -317,7 +317,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'name' => 'partial',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE %1$s.name LIKE CONCAT(:name_p1_0, \'%%\')',
                 $this->alias,
                 Dummy::class
@@ -334,7 +334,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'name' => 'partial',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) LIKE LOWER(CONCAT(:name_p1_0, \'%%\'))',
                 $this->alias,
                 Dummy::class
@@ -354,7 +354,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     'SENSitive',
                 ],
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE' .
                 ' %1$s.name LIKE CONCAT(:name_p1_0, \'%%\') OR %1$s.name LIKE CONCAT(:name_p1_1, \'%%\')',
                 $this->alias,
@@ -378,7 +378,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     'inSENSitive',
                 ],
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) LIKE LOWER(CONCAT(:name_p1_0, \'%%\'))' .
                 ' OR LOWER(%1$s.name) LIKE LOWER(CONCAT(:name_p1_1, \'%%\'))',
                 $this->alias,
@@ -399,7 +399,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'name' => 'partial',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE %1$s.name LIKE CONCAT(\'%%\', :name_p1_0)',
                 $this->alias,
                 Dummy::class
@@ -416,7 +416,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'name' => 'partial',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_0))',
                 $this->alias,
                 Dummy::class
@@ -436,7 +436,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     'SENSitive',
                 ],
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE %1$s.name LIKE CONCAT(\'%%\', :name_p1_0)' .
                 ' OR %1$s.name LIKE CONCAT(\'%%\', :name_p1_1)',
                 $this->alias,
@@ -460,7 +460,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     'inSENSitive',
                 ],
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_0))' .
                 ' OR LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%%\', :name_p1_1))',
                 $this->alias,
@@ -481,7 +481,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'name' => 'partial',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE %1$s.name LIKE CONCAT(:name_p1_0, \'%%\')' .
                 ' OR %1$s.name LIKE CONCAT(\'%% \', :name_p1_0, \'%%\')',
                 $this->alias,
@@ -499,7 +499,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'name' => 'partial',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE LOWER(%1$s.name) LIKE LOWER(CONCAT(:name_p1_0, \'%%\'))' .
                 ' OR LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%% \', :name_p1_0, \'%%\'))',
                 $this->alias,
@@ -520,7 +520,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     'SENSitive',
                 ],
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE (%1$s.name LIKE CONCAT(:name_p1_0, \'%%\')' .
                 ' OR %1$s.name LIKE CONCAT(\'%% \', :name_p1_0, \'%%\'))' .
                 ' OR (%1$s.name LIKE CONCAT(:name_p1_1, \'%%\')' .
@@ -546,7 +546,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                     'inSENSitive',
                 ],
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE (LOWER(%1$s.name) LIKE LOWER(CONCAT(:name_p1_0, \'%%\'))' .
                 ' OR LOWER(%1$s.name) LIKE LOWER(CONCAT(\'%% \', :name_p1_0, \'%%\')))' .
                 ' OR (LOWER(%1$s.name) LIKE LOWER(CONCAT(:name_p1_1, \'%%\'))' .
@@ -570,7 +570,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'relatedDummy' => 'exact',
             ],
-            sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
             [],
             $filterFactory,
         ];
@@ -584,7 +584,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'relatedDummy' => '/related_dummie/1',
             ],
-            sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
             [],
             $filterFactory,
         ];
@@ -598,7 +598,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'relatedDummy.id' => '/related_dummies/1',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s INNER JOIN %1$s.relatedDummy relatedDummy_a1' .
                 ' WHERE relatedDummy_a1.id = :id_p1',
                 $this->alias,
@@ -619,7 +619,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'relatedDummy' => ['/related_dummies/1', '2'],
                 'relatedDummies' => '1',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s INNER JOIN %1$s.relatedDummies relatedDummies_a1' .
                 ' WHERE %1$s.relatedDummy IN(:relatedDummy_p1) AND relatedDummies_a1.id = :id_p2',
                 $this->alias,
@@ -642,7 +642,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'name' => 'exact',
                 'relatedDummy.symfony' => 'exact',
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s INNER JOIN %1$s.relatedDummy relatedDummy_a1' .
                 ' WHERE %1$s.name = :name_p1 AND relatedDummy_a1.symfony = :symfony_p2',
                 $this->alias,
@@ -662,7 +662,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'relatedDummy.symfony' => [],
             ],
-            sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
             [],
             $filterFactory,
         ];
@@ -674,7 +674,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'age' => 46,
             ],
-            sprintf('SELECT %s FROM %s %1$s WHERE %1$s.age = :age_p1', $this->alias, RelatedDummy::class),
+            \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.age = :age_p1', $this->alias, RelatedDummy::class),
             ['age_p1' => 46],
             $filterFactory,
             RelatedDummy::class,
@@ -688,7 +688,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'relatedOwnedDummy' => 1,
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s INNER JOIN %1$s.relatedOwnedDummy relatedOwnedDummy_a1' .
                 ' WHERE relatedOwnedDummy_a1.id = :id_p1',
                 $this->alias,
@@ -707,7 +707,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'relatedOwningDummy' => 1,
             ],
-            sprintf(
+            \sprintf(
                 'SELECT %s FROM %s %1$s WHERE %1$s.relatedOwningDummy = :relatedOwningDummy_p1',
                 $this->alias,
                 Dummy::class
@@ -736,7 +736,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             ['filters' => $filters]
         );
 
-        $expectedDql = sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1', 'somealias', Dummy::class);
+        $expectedDql = \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1', 'somealias', Dummy::class);
         $this->assertEquals($expectedDql, $queryBuilder->getQuery()->getDQL());
     }
 
@@ -747,7 +747,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
         $queryBuilder = $this->repository->createQueryBuilder($this->alias);
         $filter = $this->buildAdvancedSearchFilter($this->managerRegistry, ['relatedDummy.symfony' => null]);
 
-        $queryBuilder->innerJoin(sprintf('%s.relatedDummy', $this->alias), 'relateddummy_a1');
+        $queryBuilder->innerJoin(\sprintf('%s.relatedDummy', $this->alias), 'relateddummy_a1');
         $filter->apply(
             $queryBuilder,
             new QueryNameGenerator(),
@@ -756,8 +756,8 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             ['filters' => $filters]
         );
 
-        $actual = strtolower((string)$queryBuilder->getQuery()->getDQL());
-        $expected = strtolower(sprintf(
+        $actual = \strtolower((string)$queryBuilder->getQuery()->getDQL());
+        $expected = \strtolower(\sprintf(
             'SELECT %s FROM %s %1$s inner join %1$s.relatedDummy relateddummy_a1' .
             ' WHERE relateddummy_a1.symfony = :symfony_p1',
             $this->alias,
@@ -1174,7 +1174,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
         ];
 
         $queryBuilder = $this->repository->createQueryBuilder($this->alias);
-        $queryBuilder->leftJoin(sprintf('%s.relatedDummy', $this->alias), 'relateddummy_a1');
+        $queryBuilder->leftJoin(\sprintf('%s.relatedDummy', $this->alias), 'relateddummy_a1');
 
         $filter = $this->buildAdvancedSearchFilter(
             $this->managerRegistry,
@@ -1191,8 +1191,8 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             ['filters' => $filters]
         );
 
-        $actual = strtolower((string)$queryBuilder->getQuery()->getDQL());
-        $expected = strtolower(sprintf(
+        $actual = \strtolower((string)$queryBuilder->getQuery()->getDQL());
+        $expected = \strtolower(\sprintf(
             'SELECT %s FROM %s %1$s LEFT JOIN %1$s.relatedDummy relateddummy_a1' .
             ' LEFT JOIN relateddummy_a1.thirdLevel thirdLevel_a1' .
             ' WHERE relateddummy_a1.symfony = :symfony_p1 AND thirdLevel_a1.level = :level_p2',
@@ -1218,7 +1218,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             ]
         );
 
-        $queryBuilder->innerJoin(sprintf('%s.relatedDummy', $this->alias), 'relateddummy_a1');
+        $queryBuilder->innerJoin(\sprintf('%s.relatedDummy', $this->alias), 'relateddummy_a1');
         $queryBuilder->innerJoin('relateddummy_a1.thirdLevel', 'thirdLevel_a1');
 
         $filter->apply(
@@ -1228,8 +1228,8 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             new Get(),
             ['filters' => $filters]
         );
-        $actual = strtolower((string)$queryBuilder->getQuery()->getDQL());
-        $expected = strtolower(sprintf(
+        $actual = \strtolower((string)$queryBuilder->getQuery()->getDQL());
+        $expected = \strtolower(\sprintf(
             'SELECT %s FROM %s %1$s INNER JOIN %1$s.relatedDummy relateddummy_a1' .
             ' INNER JOIN relateddummy_a1.thirdLevel thirdLevel_a1' .
             ' WHERE relateddummy_a1.symfony = :symfony_p1 AND thirdLevel_a1.level = :level_p2',

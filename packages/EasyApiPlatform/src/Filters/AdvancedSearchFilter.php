@@ -84,7 +84,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             $filterParameter = $property;
 
             if (\is_array($strategy)) {
-                $property = array_keys($strategy)[0];
+                $property = \array_keys($strategy)[0];
                 $strategy = $strategy[$property];
             }
 
@@ -145,7 +145,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     /**
      * Adds where clause according to the strategy.
      *
-     * @throws InvalidArgumentException If strategy does not exist
+     * @throws \ApiPlatform\Exception\InvalidArgumentException If strategy does not exist
      */
     protected function addWhereByStrategy(
         string $strategy,
@@ -156,13 +156,13 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         mixed $values,
         bool $caseSensitive
     ): void {
-        if (is_array($values) === false) {
+        if (\is_array($values) === false) {
             $values = [$values];
         }
 
         $wrapCase = $this->createWrapCase($caseSensitive);
         $valueParameter = ':' . $queryNameGenerator->generateParameterName($field);
-        $aliasedField = sprintf('%s.%s', $alias, $field);
+        $aliasedField = \sprintf('%s.%s', $alias, $field);
 
         if ($strategy === '' || $strategy === self::STRATEGY_EXACT) {
             if (\count($values) === 1) {
@@ -175,7 +175,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
             $queryBuilder
                 ->andWhere($queryBuilder->expr()->in($wrapCase($aliasedField), $valueParameter))
-                ->setParameter($valueParameter, $caseSensitive ? $values : array_map('strtolower', $values));
+                ->setParameter($valueParameter, $caseSensitive ? $values : \array_map('strtolower', $values));
 
             return;
         }
@@ -183,8 +183,8 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $ors = [];
         $parameters = [];
         foreach ($values as $key => $value) {
-            $keyValueParameter = sprintf('%s_%s', $valueParameter, $key);
-            $parameters[] = [$caseSensitive ? $value : strtolower($value), $keyValueParameter];
+            $keyValueParameter = \sprintf('%s_%s', $valueParameter, $key);
+            $parameters[] = [$caseSensitive ? $value : \strtolower($value), $keyValueParameter];
 
             $ors[] = match ($strategy) {
                 self::STRATEGY_PARTIAL => $queryBuilder->expr()->like(
@@ -211,7 +211,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                             $wrapCase((string)$queryBuilder->expr()->concat("'% '", $keyValueParameter, "'%'"))
                         )
                 ),
-                default => throw new InvalidArgumentException(sprintf('strategy %s does not exist.', $strategy)),
+                default => throw new InvalidArgumentException(\sprintf('strategy %s does not exist.', $strategy)),
             };
         }
 
@@ -235,7 +235,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 return $expr;
             }
 
-            return sprintf('LOWER(%s)', $expr);
+            return \sprintf('LOWER(%s)', $expr);
         };
     }
 
@@ -254,13 +254,13 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         array $context = []
     ): void {
         $filterParameter = $property;
-        if (isset($this->properties[$filterParameter]) && is_array($this->properties[$filterParameter])) {
-            $property = (string)array_keys($this->properties[$filterParameter])[0];
-            $strategy = array_values($this->properties[$filterParameter])[0];
+        if (isset($this->properties[$filterParameter]) && \is_array($this->properties[$filterParameter])) {
+            $property = (string)\array_keys($this->properties[$filterParameter])[0];
+            $strategy = \array_values($this->properties[$filterParameter])[0];
         }
 
         if (\is_array($value) && \count($value) > 0) {
-            $valueKey = array_keys($value)[0];
+            $valueKey = \array_keys($value)[0];
             $possibleFilterParameter = $filterParameter . '[' . $valueKey . ']';
 
             if (
@@ -309,7 +309,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
         // prefixing the strategy with i makes it case-insensitive
         if (\str_starts_with($strategy, 'i')) {
-            $strategy = substr($strategy, 1);
+            $strategy = \substr($strategy, 1);
             $caseSensitive = false;
         }
 
@@ -322,7 +322,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
             if ($this->hasValidValues($values, $this->getDoctrineFieldType($property, $resourceClass)) === false) {
                 $this->logger->notice('Invalid filter ignored', [
-                    'exception' => new InvalidArgumentException(sprintf(
+                    'exception' => new InvalidArgumentException(\sprintf(
                         'Values for field "%s" are not valid according to the doctrine type.',
                         $field
                     )),
@@ -349,7 +349,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             return;
         }
 
-        $values = array_map([$this, 'getIdFromValue'], $values);
+        $values = \array_map([$this, 'getIdFromValue'], $values);
 
         $associationResourceClass = (string)$metadata->getAssociationTargetClass($field);
         $associationFieldIdentifier = $metadata->getIdentifierFieldNames()[0];
@@ -357,7 +357,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
         if ($this->hasValidValues($values, $doctrineTypeField) === false) {
             $this->logger->notice('Invalid filter ignored', [
-                'exception' => new InvalidArgumentException(sprintf(
+                'exception' => new InvalidArgumentException(\sprintf(
                     'Values for field "%s" are not valid according to the doctrine type.',
                     $field
                 )),
