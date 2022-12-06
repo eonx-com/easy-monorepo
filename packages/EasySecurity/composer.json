@@ -6,12 +6,12 @@
     "require": {
         "php": "^8.1",
         "nette/utils": "^3.1",
-        "eonx-com/easy-api-token": "^4.3.10",
-        "eonx-com/easy-utils": "^4.3.10"
+        "eonx-com/easy-api-token": "^4.4",
+        "eonx-com/easy-utils": "^4.4"
     },
     "require-dev": {
-        "eonx-com/easy-bugsnag": "^4.3.10",
-        "eonx-com/easy-logging": "^4.3.10",
+        "eonx-com/easy-bugsnag": "^4.4",
+        "eonx-com/easy-logging": "^4.4",
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
