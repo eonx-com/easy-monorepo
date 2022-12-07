@@ -18,15 +18,16 @@ use Symfony\Contracts\Service\ResetInterface;
 final class EasySwooleExtension extends Extension
 {
     private const ACCESS_LOG_CONFIG = [
+        'do_not_log_paths' => BridgeConstantsInterface::PARAM_ACCESS_LOG_DO_NOT_LOG_PATHS,
         'timezone' => BridgeConstantsInterface::PARAM_ACCESS_LOG_TIMEZONE,
-    ];
-
-    private const EASY_BATCH_CONFIG = [
-        'reset_batch_processor' => BridgeConstantsInterface::PARAM_RESET_EASY_BATCH_PROCESSOR,
     ];
 
     private const DOCTRINE_CONFIG = [
         'reset_dbal_connections' => BridgeConstantsInterface::PARAM_RESET_DOCTRINE_DBAL_CONNECTIONS,
+    ];
+
+    private const EASY_BATCH_CONFIG = [
+        'reset_batch_processor' => BridgeConstantsInterface::PARAM_RESET_EASY_BATCH_PROCESSOR,
     ];
 
     private const REQUEST_LIMITS_CONFIG = [

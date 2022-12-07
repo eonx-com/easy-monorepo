@@ -33,5 +33,6 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(AccessLogListener::class)
         ->arg('$logger', service(BridgeConstantsInterface::SERVICE_ACCESS_LOG_LOGGER))
+        ->arg('$doNotLogPaths', param(BridgeConstantsInterface::PARAM_ACCESS_LOG_DO_NOT_LOG_PATHS))
         ->tag('kernel.event_listener');
 };
