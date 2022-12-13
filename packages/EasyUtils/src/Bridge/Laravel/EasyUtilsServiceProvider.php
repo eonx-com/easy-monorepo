@@ -24,7 +24,7 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyUtilsServiceProvider extends ServiceProvider
 {
-    private const STRING_SANITIZER_DEFAULT_PRIORITY = 1000;
+    private const STRING_SANITIZER_DEFAULT_PRIORITY = 10000;
 
     public function boot(): void
     {

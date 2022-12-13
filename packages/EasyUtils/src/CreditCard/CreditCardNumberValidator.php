@@ -70,21 +70,21 @@ final class CreditCardNumberValidator implements CreditCardNumberValidatorInterf
     public function isCreditCardNumberValid(string $number): bool
     {
         // Strip non-numeric characters
-        $number = preg_replace('/\D/', '', $number);
+        $number = \preg_replace('/\D/', '', $number);
 
-        if (is_string($number) === false) {
+        if (\is_string($number) === false) {
             return false;
         }
 
         $type = $this->getCreditCardType($number);
 
-        return array_key_exists($type, self::CARD_TYPES) && $this->validateCard($number, $type);
+        return \array_key_exists($type, self::CARD_TYPES) && $this->validateCard($number, $type);
     }
 
     private function getCreditCardType(string $number): string
     {
         foreach (self::CARD_TYPES as $type => $card) {
-            if (preg_match($card['pattern'], $number)) {
+            if (\preg_match($card['pattern'], $number)) {
                 return $type;
             }
         }
@@ -101,13 +101,13 @@ final class CreditCardNumberValidator implements CreditCardNumberValidatorInterf
 
     private function validatePattern(string $number, string $type): bool
     {
-        return preg_match(self::CARD_TYPES[$type]['pattern'], $number) === 1;
+        return \preg_match(self::CARD_TYPES[$type]['pattern'], $number) === 1;
     }
 
     private function validateLength(string $number, string $type): bool
     {
         foreach (self::CARD_TYPES[$type]['length'] as $length) {
-            if (strlen($number) === $length) {
+            if (\strlen($number) === $length) {
                 return true;
             }
         }
@@ -127,7 +127,7 @@ final class CreditCardNumberValidator implements CreditCardNumberValidatorInterf
     private function luhnCheck(string $number): bool
     {
         $checksum = 0;
-        $numberLength = strlen($number);
+        $numberLength = \strlen($number);
 
         for ($i = (2 - ($numberLength % 2)); $i <= $numberLength; $i += 2) {
             $checksum += (int) ($number[$i - 1]);
