@@ -30,7 +30,7 @@ final class ProcessWithAsyncTransportTest extends AbstractSymfonyTestCase
         self::assertSame(1, self::getContainer()->get(AsyncMessageHandler::class)->getInvokeCount());
         $batchRepository = self::getContainer()->get(BatchRepositoryInterface::class);
         $batchRepository->reset();
-        $batch = $batchRepository->findOrFail($batch->getId());
+        $batch = $batchRepository->findOrFail((string)$batch->getId());
         self::assertSame('succeeded', $batch->getStatus());
     }
 }

@@ -13,6 +13,7 @@
         "nesbot/carbon": "^2.22"
     },
     "require-dev": {
+        "doctrine/doctrine-bundle": "^2.6",
         "eonx-com/easy-encryption": "^4.4",
         "eonx-com/easy-test": "^4.4",
         "ramsey/uuid": "^3.9 || ^4.0",
