@@ -24,7 +24,7 @@ parameters:
         - packages/*/var/*
         - packages/*/vendor/*
         - packages/*/config/*
-        - packages/EasyApiPlatform/tests/Stubs/app/src/Kernel/TestKernel.php
+        - packages/EasyApiPlatform/tests/Fixtures/app/src/Kernel/TestKernel.php
         - packages/EasyApiToken/src/Interfaces/*
         - packages/EasyApiToken/tests/Bridge/Symfony/*
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
