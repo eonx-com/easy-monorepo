@@ -13,9 +13,7 @@ final class MessageSerializerDecoratorTest extends AbstractSymfonyTestCase
     public function testMessageSerializerDecoratedSucceeds(): void
     {
         /** @var \EonX\EasyBatch\Interfaces\MessageSerializerInterface $messageSerializer */
-        $messageSerializer = $this->getKernel()
-            ->getContainer()
-            ->get(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER);
+        $messageSerializer = self::getContainer()->get(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER);
 
         self::assertSame(MessageSerializerDecorator::class, \get_class($messageSerializer));
     }

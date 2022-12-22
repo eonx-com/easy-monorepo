@@ -129,6 +129,7 @@
             "EonX\\EasyAwsCredentialsFinder\\Tests\\": "packages/EasyAwsCredentialsFinder/tests",
             "EonX\\EasyBankFiles\\Tests\\": "packages/EasyBankFiles/tests",
             "EonX\\EasyBatch\\Tests\\": "packages/EasyBatch/tests",
+            "EonX\\EasyBatch\\Tests\\Bridge\\Symfony\\Fixtures\\App\\": "packages/EasyBatch/tests/Bridge/Symfony/Fixtures/app/src",
             "EonX\\EasyBugsnag\\Tests\\": "packages/EasyBugsnag/tests",
             "EonX\\EasyCore\\Tests\\": "packages/EasyCore/tests",
             "EonX\\EasyDecision\\Expressions\\Tests\\": "packages/EasyDecision/packages/expressions/tests",

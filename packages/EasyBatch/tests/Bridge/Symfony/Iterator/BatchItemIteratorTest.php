@@ -136,13 +136,10 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
         ?string $batchId = null,
         ?int $batchItemPerPage = null
     ): void {
-        $container = $this->getKernel()
-            ->getContainer();
+        $batchItemFactory = self::getContainer()->get(BatchItemFactoryInterface::class);
+        $batchItemRepo = self::getContainer()->get(BatchItemRepositoryInterface::class);
 
-        $batchItemFactory = $container->get(BatchItemFactoryInterface::class);
-        $batchItemRepo = $container->get(BatchItemRepositoryInterface::class);
-
-        \call_user_func($setup, $batchItemFactory, $batchItemRepo);
+        $setup($batchItemFactory, $batchItemRepo);
 
         $iteratorConfig = (IteratorConfig::create($batchId ?? 'batch-id', $iterateFunc))
             ->setBatchItemsPerPage($batchItemPerPage ?? 2)
@@ -152,9 +149,9 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
             $iteratorConfig->setCurrentPageCallback($getCurrentPageCallback($batchItemRepo));
         }
 
-        $container->get(BatchItemIterator::class)->iterateThroughItems($iteratorConfig);
+        self::getContainer()->get(BatchItemIterator::class)->iterateThroughItems($iteratorConfig);
 
-        \call_user_func($assert);
+        $assert();
     }
 
     private static function assertIterateFuncCalls(int $calls): void

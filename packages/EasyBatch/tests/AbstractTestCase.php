@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests;
 
-use EonX\EasyBatch\Factories\BatchFactory;
 use EonX\EasyBatch\Factories\BatchItemFactory;
 use EonX\EasyBatch\IdStrategies\UuidV4Strategy;
-use EonX\EasyBatch\Interfaces\BatchFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
-use EonX\EasyBatch\Transformers\BatchTransformer;
 use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use PHPUnit\Framework\TestCase;
@@ -20,25 +17,20 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchFactoryInterface|null
-     */
-    private $batchFactory = null;
+    private ?BatchItemFactoryInterface $batchItemFactory = null;
 
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchItemFactoryInterface|null
-     */
-    private $batchItemFactory = null;
+    private ?BatchObjectIdStrategyInterface $batchObjectIdStrategy = null;
 
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface
-     */
-    private $batchObjectIdStrategy;
-
-    protected function getBatchFactory(): BatchFactoryInterface
+    protected function tearDown(): void
     {
-        return $this->batchFactory = $this->batchFactory ??
-            new BatchFactory(new BatchTransformer());
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
     }
 
     protected function getBatchItemFactory(): BatchItemFactoryInterface
@@ -59,17 +51,5 @@ abstract class AbstractTestCase extends TestCase
             ->setUuidV4Generator(new RamseyUuidV4Generator()));
 
         return $this->batchObjectIdStrategy = $strategy;
-    }
-
-    protected function tearDown(): void
-    {
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../var';
-
-        if ($fs->exists($var)) {
-            $fs->remove($var);
-        }
-
-        parent::tearDown();
     }
 }

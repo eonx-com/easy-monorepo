@@ -9,7 +9,7 @@ use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
-use EonX\EasyBatch\Tests\Bridge\Symfony\Stubs\SymfonyEventDispatcherStub;
+use EonX\EasyBatch\Tests\Bridge\Symfony\Fixtures\App\EventDispatcher\EventDispatcherStub;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -29,14 +29,14 @@ final class EasyBatchTestContext
         return $this->container->get(BatchItemRepositoryInterface::class);
     }
 
-    public function getBatchRepository(): BatchRepositoryInterface
-    {
-        return $this->container->get(BatchRepositoryInterface::class);
-    }
-
     public function getBatchObjectManager(): BatchObjectManagerInterface
     {
         return $this->container->get(BatchObjectManagerInterface::class);
+    }
+
+    public function getBatchRepository(): BatchRepositoryInterface
+    {
+        return $this->container->get(BatchRepositoryInterface::class);
     }
 
     public function getConnection(): Connection
@@ -44,9 +44,9 @@ final class EasyBatchTestContext
         return $this->container->get(Connection::class);
     }
 
-    public function getEventDispatcher(): SymfonyEventDispatcherStub
+    public function getEventDispatcher(): EventDispatcherStub
     {
-        /** @var \EonX\EasyBatch\Tests\Bridge\Symfony\Stubs\SymfonyEventDispatcherStub $eventDispatcher */
+        /** @var \EonX\EasyBatch\Tests\Bridge\Symfony\Fixtures\App\EventDispatcher\EventDispatcherStub $eventDispatcher */
         $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
 
         return $eventDispatcher;
