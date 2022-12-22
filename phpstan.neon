@@ -23,8 +23,10 @@ parameters:
     excludePaths:
         - packages/*/var/*
         - packages/*/vendor/*
+        - packages/*/config/*
         - packages/EasyApiToken/src/Interfaces/*
         - packages/EasyApiToken/tests/Bridge/Symfony/*
+        - packages/EasyBatch/tests/Bridge/Symfony/Fixtures/app/src/Kernel/ApplicationKernel.php
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
         - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
         - packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
