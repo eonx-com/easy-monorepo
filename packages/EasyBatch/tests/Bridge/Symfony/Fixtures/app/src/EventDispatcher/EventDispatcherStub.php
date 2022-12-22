@@ -2,16 +2,21 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBatch\Tests\Bridge\Symfony\Stubs;
+namespace EonX\EasyBatch\Tests\Bridge\Symfony\Fixtures\App\EventDispatcher;
 
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\ResetInterface;
 
-final class SymfonyEventDispatcherStub implements EventDispatcherInterface
+final class EventDispatcherStub implements EventDispatcherInterface, ResetInterface
 {
     /**
      * @var object[]
      */
     private array $dispatched = [];
+
+    public function __construct(private EventDispatcherInterface $decorated)
+    {
+    }
 
     /**
      * @param object $event The event to pass to the event handlers/listeners
@@ -22,7 +27,7 @@ final class SymfonyEventDispatcherStub implements EventDispatcherInterface
     {
         $this->dispatched[] = $event;
 
-        return $event;
+        return $this->decorated->dispatch($event, $eventName);
     }
 
     /**
@@ -31,5 +36,10 @@ final class SymfonyEventDispatcherStub implements EventDispatcherInterface
     public function getDispatchedEvents(): array
     {
         return $this->dispatched;
+    }
+
+    public function reset(): void
+    {
+        $this->dispatched = [];
     }
 }

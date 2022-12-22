@@ -152,11 +152,11 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
      */
     public function testCoreLogic(callable $setup, callable $runTest, callable $assert): void
     {
-        $context = new EasyBatchTestContext($this->getContainer());
+        $context = new EasyBatchTestContext(self::getContainer());
 
-        \call_user_func($setup, $context);
-        \call_user_func($runTest, $context);
-        \call_user_func($assert, $context);
+        $setup($context);
+        $runTest($context);
+        $assert($context);
     }
 
     /**
@@ -164,25 +164,25 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
      */
     public function testRestoreBatchState(callable $setupFunc, callable $assert, ?string $batchId = null): void
     {
-        $container = $this->getContainer();
+        $container = self::getContainer();
         $batchItemFactory = $container->get(BatchItemFactoryInterface::class);
         $batchItemRepo = $container->get(BatchItemRepositoryInterface::class);
         $batchRepo = $container->get(BatchRepositoryInterface::class);
         $batchObjectManager = $container->get(BatchObjectManagerInterface::class);
-        /** @var \EonX\EasyBatch\Tests\Bridge\Symfony\Stubs\SymfonyEventDispatcherStub $eventDispatcher */
+        /** @var \EonX\EasyBatch\Tests\Bridge\Symfony\Fixtures\App\EventDispatcher\EventDispatcherStub $eventDispatcher */
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
 
-        \call_user_func($setupFunc, $batchItemFactory, $batchItemRepo, $batchRepo);
+        $setupFunc($batchItemFactory, $batchItemRepo, $batchRepo);
 
         $freshBatch = $batchObjectManager->restoreBatchState($batchId ?? 'batch-id');
         $events = $eventDispatcher->getDispatchedEvents();
 
-        \call_user_func($assert, $freshBatch, $events);
+        $assert($freshBatch, $events);
     }
 
     public function testSanity(): void
     {
-        $container = $this->getContainer();
+        $container = self::getContainer();
 
         self::assertInstanceOf(BatchObjectManagerInterface::class, $container->get(BatchObjectManagerInterface::class));
     }

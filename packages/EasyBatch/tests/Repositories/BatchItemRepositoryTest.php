@@ -97,11 +97,11 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
         $factory = $this->getBatchItemFactory();
         $repo = $this->getBatchItemRepository($factory);
 
-        \call_user_func($setup, $factory, $repo);
+        $setup($factory, $repo);
 
         $paginator = $repo->paginateItems(new Pagination(1, 15), 'batch-id', $dependsOnName);
 
-        \call_user_func($test, $paginator);
+        $test($paginator);
     }
 
     /**

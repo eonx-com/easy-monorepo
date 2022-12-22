@@ -14,6 +14,7 @@
     },
     "require-dev": {
         "eonx-com/easy-encryption": "^4.4",
+        "eonx-com/easy-test": "^4.4",
         "ramsey/uuid": "^3.9 || ^4.0",
         "doctrine/orm": "^2.6",
         "phpunit/phpunit": "^9.5",
@@ -27,7 +28,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyBatch\\Tests\\": "tests"
+            "EonX\\EasyBatch\\Tests\\": "tests",
+            "EonX\\EasyBatch\\Tests\\Bridge\\Symfony\\Fixtures\\App\\": "tests/Bridge/Symfony/Fixtures/app/src"
         }
     },
     "extra": {
