@@ -24,6 +24,6 @@ return static function (DoctrineConfig $doctrineConfig, ContainerConfigurator $c
         ->alias('AppApiResource')
         ->dir(param('kernel.project_dir') . '/src/ApiResource')
         ->isBundle(false)
-        ->prefix('EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource')
+        ->prefix('EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource')
         ->type('attribute');
 };

@@ -48,7 +48,7 @@ class RelatedDummy extends ParentDummy
     private ?string $name;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\RelatedToDummyFriend>
+     * @var \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\RelatedToDummyFriend>
      */
     #[ORM\OneToMany(mappedBy: 'relatedDummy', targetEntity: RelatedToDummyFriend::class, cascade: ['persist'])]
     #[Groups(['fakemanytomany', 'friends'])]
@@ -96,7 +96,7 @@ class RelatedDummy extends ParentDummy
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\RelatedToDummyFriend>
+     * @return \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\RelatedToDummyFriend>
      */
     public function getRelatedToDummyFriend(): Collection
     {
