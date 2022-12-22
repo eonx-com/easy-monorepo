@@ -10,7 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
-use EonX\EasyApiPlatform\Tests\Fixtures\App\Kernel\TestKernel;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\Kernel\ApplicationKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -123,6 +123,6 @@ abstract class AbstractFilterTestCase extends KernelTestCase
      */
     protected static function createKernel(array $options = []): KernelInterface
     {
-        return new TestKernel('test', true);
+        return new ApplicationKernel('test', false);
     }
 }

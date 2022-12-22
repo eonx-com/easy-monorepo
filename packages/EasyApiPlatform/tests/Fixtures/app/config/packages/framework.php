@@ -12,4 +12,7 @@ return static function (FrameworkConfig $frameworkConfig): void {
 
     $frameworkConfig->validation()
         ->enabled(true);
+
+    $frameworkConfig
+        ->test(true);
 };

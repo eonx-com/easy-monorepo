@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
-final class TestKernel extends BaseKernel
+final class ApplicationKernel extends BaseKernel
 {
     use MicroKernelTrait;
 
