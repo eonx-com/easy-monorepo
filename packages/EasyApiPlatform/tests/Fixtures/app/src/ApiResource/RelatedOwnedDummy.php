@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource;
+namespace EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\DBAL\Types\Types;
@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource(types: ['https://schema.org/Product'])]
 #[ORM\Entity]
-class RelatedOwningDummy
+class RelatedOwnedDummy
 {
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]
@@ -20,8 +20,9 @@ class RelatedOwningDummy
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $name;
 
-    #[ORM\OneToOne(mappedBy: 'relatedOwningDummy', targetEntity: Dummy::class, cascade: ['persist'])]
-    private ?Dummy $ownedDummy;
+    #[ORM\OneToOne(inversedBy: 'relatedOwnedDummy', targetEntity: Dummy::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Dummy $owningDummy;
 
     public function getId(): int
     {
@@ -33,9 +34,12 @@ class RelatedOwningDummy
         return $this->name;
     }
 
-    public function getOwnedDummy(): ?Dummy
+    /**
+     * Get owning dummy.
+     */
+    public function getOwningDummy(): ?Dummy
     {
-        return $this->ownedDummy;
+        return $this->owningDummy;
     }
 
     public function setId(int $id): void
@@ -48,12 +52,8 @@ class RelatedOwningDummy
         $this->name = $name;
     }
 
-    public function setOwnedDummy(?Dummy $ownedDummy): void
+    public function setOwningDummy(Dummy $owningDummy): void
     {
-        $this->ownedDummy = $ownedDummy;
-
-        if ($this->ownedDummy !== null && $this !== $this->ownedDummy->getRelatedOwningDummy()) {
-            $this->ownedDummy->setRelatedOwningDummy($this);
-        }
+        $this->owningDummy = $owningDummy;
     }
 }

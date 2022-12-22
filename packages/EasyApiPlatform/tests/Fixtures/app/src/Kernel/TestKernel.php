@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Stubs\App\Kernel;
+namespace EonX\EasyApiPlatform\Tests\Fixtures\App\Kernel;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;

@@ -10,9 +10,9 @@ use ApiPlatform\Exception\InvalidArgumentException;
 use ApiPlatform\Metadata\Get;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyApiPlatform\Filters\AdvancedSearchFilter;
-use EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\Dummy;
-use EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\RelatedDummy;
-use EonX\EasyApiPlatform\Tests\Stubs\App\Serializer\NameConverter\CustomConverter;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\RelatedDummy;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\Serializer\NameConverter\CustomConverter;
 use Prophecy\Argument;
 
 final class AdvancedSearchFilterTest extends AbstractFilterTestCase

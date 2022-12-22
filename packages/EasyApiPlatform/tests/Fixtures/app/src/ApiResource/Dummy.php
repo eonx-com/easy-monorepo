@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource;
+namespace EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;

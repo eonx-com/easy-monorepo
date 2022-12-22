@@ -31,7 +31,7 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyApiPlatform\\Tests\\": "tests",
-            "EonX\\EasyApiPlatform\\Tests\\Stubs\\App\\": "tests/Stubs/app/src"
+            "EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\": "tests/Fixtures/app/src"
         }
     },
     "conflict": {

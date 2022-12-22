@@ -9,8 +9,8 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource\Dummy;
-use EonX\EasyApiPlatform\Tests\Stubs\App\Kernel\TestKernel;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\Kernel\TestKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 

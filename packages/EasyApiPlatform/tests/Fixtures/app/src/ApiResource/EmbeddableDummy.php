@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Stubs\App\ApiResource;
+namespace EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource;
 
 use Carbon\CarbonImmutable;
 use Doctrine\DBAL\Types\Types;
