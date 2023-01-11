@@ -19,7 +19,7 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
-use Symfony\Component\Messenger\Stamp\ReceivedStamp;
+use Symfony\Component\Messenger\Stamp\SentStamp;
 
 final class ProcessBatchItemMiddleware implements MiddlewareInterface
 {
@@ -41,15 +41,15 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         $batchItemStamp = $envelope->last(BatchItemStamp::class);
-        $receivedStamp = $envelope->last(ReceivedStamp::class);
-        $func = $this->getNextClosure($envelope, $stack, $batchItemStamp, $receivedStamp);
+        $sentStamp = $envelope->last(SentStamp::class);
+        $func = $this->getNextClosure($envelope, $stack, $batchItemStamp, $sentStamp);
         $message = $envelope->getMessage();
 
         // Make sure to ALWAYS have a clean batch processor to prevent any caching issue in worker
         $this->batchProcessor->reset();
 
-        // Proceed only if consumed by worker or current envelope is for a batchItem
-        if ($receivedStamp === null || $batchItemStamp === null) {
+        // Proceed only if message was sent to transport or current envelope is for a batchItem
+        if ($sentStamp === null || $batchItemStamp === null) {
             return $func();
         }
 
@@ -105,15 +105,15 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         Envelope $envelope,
         StackInterface $stack,
         ?BatchItemStamp $batchItemStamp = null,
-        ?ReceivedStamp $receivedStamp = null
+        ?SentStamp $sentStamp = null
     ): \Closure {
-        return static function () use ($envelope, $stack, $batchItemStamp, $receivedStamp): Envelope {
+        return static function () use ($envelope, $stack, $batchItemStamp, $sentStamp): Envelope {
             $newEnvelope = $stack
                 ->next()
                 ->handle($envelope, $stack);
 
             if ($batchItemStamp !== null
-                && $receivedStamp !== null
+                && $sentStamp !== null
                 && $newEnvelope->last(HandledStamp::class) === null) {
                 throw new BatchItemNotHandledException(\sprintf(
                     'Batch item "%s" was not handled by any handler.',

@@ -9,7 +9,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
-use Symfony\Component\Messenger\Stamp\ReceivedStamp;
+use Symfony\Component\Messenger\Stamp\SentStamp;
 
 final class DispatchBatchMiddleware implements MiddlewareInterface
 {
@@ -19,10 +19,10 @@ final class DispatchBatchMiddleware implements MiddlewareInterface
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
-        $receivedStamp = $envelope->last(ReceivedStamp::class);
+        $sentStamp = $envelope->last(SentStamp::class);
         $message = $envelope->getMessage();
 
-        if ($receivedStamp === null && $message instanceof BatchInterface) {
+        if ($sentStamp === null && $message instanceof BatchInterface) {
             $this->batchObjectManager->dispatchBatch($message);
 
             return $envelope;
