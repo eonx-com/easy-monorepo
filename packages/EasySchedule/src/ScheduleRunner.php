@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySchedule;
 
+use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasySchedule\Interfaces\ScheduleInterface;
 use EonX\EasySchedule\Interfaces\ScheduleRunnerInterface;
@@ -11,19 +12,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class ScheduleRunner implements ScheduleRunnerInterface
 {
-    /**
-     * @var \EonX\EasyLock\Interfaces\LockServiceInterface
-     */
-    private $lockService;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var bool
-     */
-    private $ran = false;
+    private LockServiceInterface $lockService;
 
-    public function __construct(LockServiceInterface $lockService)
+    private bool $ran = false;
+
+    public function __construct(LockServiceInterface $lockService, EntityManagerInterface $entityManager)
     {
         $this->lockService = $lockService;
+        $this->entityManager = $entityManager;
     }
 
     public function run(ScheduleInterface $schedule, OutputInterface $output): void
@@ -49,6 +47,7 @@ final class ScheduleRunner implements ScheduleRunnerInterface
             try {
                 $event->run($schedule->getApplication());
             } finally {
+                $this->entityManager->flush();
                 $lock->release();
             }
         }
