@@ -14,7 +14,7 @@ use Symfony\Component\Lock\LockInterface;
 
 final class ScheduleRunnerTest extends AbstractTestCase
 {
-    public function testRunSucceedsAndFlushEntityManager(): void
+    public function testRunSucceedsAndClearsEntityManager(): void
     {
         $app = new Application();
         $schedule = (new Schedule())->setApplication($app);
@@ -33,7 +33,7 @@ final class ScheduleRunnerTest extends AbstractTestCase
         /** @var \EonX\EasyLock\Interfaces\LockServiceInterface $lockService */
         $lockService = $lockServiceProphecy->reveal();
         $entityManagerProphecy = $this->prophesize(EntityManagerInterface::class);
-        $entityManagerProphecy->flush()
+        $entityManagerProphecy->clear()
             ->shouldBeCalledTimes(2);
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
         $entityManager = $entityManagerProphecy->reveal();

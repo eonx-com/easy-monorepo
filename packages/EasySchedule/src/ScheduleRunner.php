@@ -47,7 +47,7 @@ final class ScheduleRunner implements ScheduleRunnerInterface
             try {
                 $event->run($schedule->getApplication());
             } finally {
-                $this->entityManager->flush();
+                $this->entityManager->clear();
                 $lock->release();
             }
         }
