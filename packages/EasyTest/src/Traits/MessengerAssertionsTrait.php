@@ -183,6 +183,22 @@ trait MessengerAssertionsTrait
         return $messages;
     }
 
+    private static function printExceptionDetails(ErrorDetailsStamp $errorDetailsStamp): void
+    {
+        echo "\n";
+        echo "\033[31mAn unexpected exception occurred while processing the message.\033[0m\n";
+        echo "\n";
+        echo 'Exception class: ' . $errorDetailsStamp->getExceptionClass() . "\n";
+        echo 'Exception code: ' . $errorDetailsStamp->getExceptionCode() . "\n";
+        echo 'Exception message: ' . $errorDetailsStamp->getExceptionMessage() . "\n";
+        echo "Stack trace:\n";
+        echo $errorDetailsStamp->getFlattenException()
+            ? $errorDetailsStamp->getFlattenException()
+                ->getTraceAsString()
+            : 'No stack trace available.';
+        echo "\n";
+    }
+
     /**
      * @param array<int, array<class-string<\Throwable>, int|string>> $expectedExceptions
      */
@@ -225,7 +241,7 @@ trait MessengerAssertionsTrait
         }
 
         if (\count((array)$transport->get()) > 0) {
-            throw new \RuntimeException('Unable to consume all messages from async transport.');
+            throw new RuntimeException('Unable to consume all messages from async transport.');
         }
 
         foreach ($transport->getRejected() as $envelope) {
@@ -245,18 +261,7 @@ trait MessengerAssertionsTrait
                     }
                 }
 
-                echo "\n";
-                echo "\033[31mAn unexpected exception occurred while processing the message.\033[0m\n";
-                echo "\n";
-                echo 'Exception class: ' . $errorDetailsStamp->getExceptionClass() . "\n";
-                echo 'Exception code: ' . $errorDetailsStamp->getExceptionCode() . "\n";
-                echo 'Exception message: ' . $errorDetailsStamp->getExceptionMessage() . "\n";
-                echo "Stack trace:\n";
-                echo $errorDetailsStamp->getFlattenException()
-                    ? $errorDetailsStamp->getFlattenException()
-                        ->getTraceAsString()
-                    : 'No stack trace available.';
-                echo "\n";
+                static::printExceptionDetails($errorDetailsStamp);
 
                 throw new RuntimeException('Check the logs above for more details.');
             }
