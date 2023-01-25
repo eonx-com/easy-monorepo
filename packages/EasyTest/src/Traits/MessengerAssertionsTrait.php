@@ -263,7 +263,7 @@ trait MessengerAssertionsTrait
 
                 static::printExceptionDetails($errorDetailsStamp);
 
-                throw new RuntimeException('Check the logs above for more details.');
+                throw new RuntimeException('Exception was thrown during async messages processing.');
             }
         }
 
