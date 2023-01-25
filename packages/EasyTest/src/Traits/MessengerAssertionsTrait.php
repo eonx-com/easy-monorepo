@@ -120,6 +120,15 @@ trait MessengerAssertionsTrait
      */
     public static function consumeAsyncMessages(array $expectedExceptions = []): void
     {
+        /**
+         * If some exception occurs during message handling, it will be caught by Symfony Messenger Worker,
+         * and the message will be sent to failed transport.
+         *
+         * After consuming messages we do some checks that can throw `Runtime` exceptions.
+         *
+         * If some exception is thrown, it will be caught by safeCall() method, and the test will be marked as passed,
+         * but it should be marked as failed.
+         */
         if (isset(self::$isInsideSafeCall) && self::$isInsideSafeCall) {
             throw new RuntimeException(
                 "You can't use MessengerAssertionsTrait::consumeAsyncMessages() in ExceptionTrait::safeCall()"
@@ -240,10 +249,18 @@ trait MessengerAssertionsTrait
             $worker->run();
         }
 
+        // Message handler may dispatch new messages to async transport and this can happen multiple times.
+        // We need to consume all messages from async transport to make sure that all messages were processed.
+        // By default, we try to consume messages from async transport 10 times, and this is enough for most cases.
+        // If we don't do this, we may get false positive results.
         if (\count((array)$transport->get()) > 0) {
             throw new RuntimeException('Unable to consume all messages from async transport.');
         }
 
+        // Symfony Messenger does not throw exceptions when message handler throws an exception.
+        // Instead, it stores exception details in ErrorDetailsStamp and we need to check it manually.
+        // We can't throw this exception, because it stored as \Symfony\Component\ErrorHandler\Exception\FlattenException
+        // and we can't get original exception.
         foreach ($transport->getRejected() as $envelope) {
             /** @var \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp $errorDetailsStamp */
             foreach ($envelope->all(ErrorDetailsStamp::class) as $errorDetailsStamp) {

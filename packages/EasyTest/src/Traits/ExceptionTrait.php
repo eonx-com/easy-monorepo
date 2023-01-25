@@ -65,6 +65,12 @@ trait ExceptionTrait
         self::$isInsideSafeCall = false;
     }
 
+    /**
+     * This check is needed to make sure that the developer is not forgetting to assert the thrown exception,
+     * when using safeCall().
+     *
+     * This check should be called in the tearDown() method of the test class.
+     */
     private function checkThrownExceptionAsserted(): void
     {
         if ($this->isNeedToAssertThrownException) {
