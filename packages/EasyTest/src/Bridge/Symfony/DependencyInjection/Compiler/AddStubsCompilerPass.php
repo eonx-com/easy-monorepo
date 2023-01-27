@@ -14,8 +14,7 @@ final class AddStubsCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         if (
-            $container->getParameter(BridgeConstantsInterface::PARAM_ENABLE_MESSAGE_LOGGER_LISTENER_STUB)
-            && $container->hasDefinition('mailer.message_logger_listener')
+            $container->getParameter(BridgeConstantsInterface::PARAM_MAILER_MESSAGE_LOGGER_LISTENER_STUB_ENABLED)
         ) {
             $container->getDefinition('mailer.message_logger_listener')
                 ->setClass(MessageLoggerListenerStub::class)

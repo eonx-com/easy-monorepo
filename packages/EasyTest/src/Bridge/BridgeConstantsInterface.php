@@ -9,5 +9,6 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_ENABLE_MESSAGE_LOGGER_LISTENER_STUB = 'easy_test.enable_message_logger_listener_stub';
+    public const PARAM_MAILER_MESSAGE_LOGGER_LISTENER_STUB_ENABLED =
+        'easy_test.mailer.message_logger_listener_stub_enabled';
 }
