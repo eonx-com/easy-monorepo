@@ -10,14 +10,14 @@ available tools.
 
 ## Symfony Mailer assertions
 
-When using `\EonX\EasyTest\Traits\MessengerAssertionsTrait::consumeAsyncMessages`, it impossible to use
+When using `\EonX\EasyTest\Traits\MessengerAssertionsTrait::consumeAsyncMessages`, it is impossible to use
 Symfony Mailer assertions. This is because the `\Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait`
 uses the `\Symfony\Component\Mailer\EventListener\MessageLoggerListener` to get sent messages.
 
 After consuming async messages, the `\Symfony\Component\Mailer\EventListener\MessageLoggerListener` is reset and
 sent messages are lost.
 
-To solve this issue, it is possible to use the `\EonX\EasyTest\Bridge\Symfony\Mailer\EventListener\MessageLoggerListenerStub`.
+To solve this issue use the `\EonX\EasyTest\Bridge\Symfony\Mailer\EventListener\MessageLoggerListenerStub`.
 
 ### Configuration
 
@@ -65,7 +65,7 @@ Register the `MessageLoggerListenerStub` in the `config/services_test.php` file:
 
 Reset the `MessageLoggerListenerStub` in a test case.
 
-We need to reset stabs exactly in the setUp method because when some test fails,
+We need to reset stubs exactly in the setUp method because when some test fails,
 the stubs will continue holding stubbed values, and the next test will fail.
 
 As a result, we will have many failed tests, and it may be complicated to find the wrong test,
