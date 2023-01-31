@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyTest\Bridge\PhpUnit;
+namespace EonX\EasyTest\Bridge\PhpUnit\Extension;
 
 use EonX\EasyTest\Bridge\Symfony\Mailer\EventListener\MessageLoggerListenerStub;
 use PHPUnit\Runner\AfterTestHook;
 
-class PHPUnitExtension implements AfterTestHook
+final class MessageLoggerListenerPHPUnitExtension implements AfterTestHook
 {
     public function executeAfterTest(string $test, float $time): void
     {
