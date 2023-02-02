@@ -14,7 +14,7 @@ trait ExceptionTrait
 
     protected ?Throwable $thrownException = null;
 
-    private bool $isNeedToAssertThrownException = false;
+    private bool $isThrownExceptionAssertionNeeded = false;
 
     /**
      * @param class-string<\Throwable>|null $previousException
@@ -24,7 +24,7 @@ trait ExceptionTrait
         ?int $code = null,
         ?string $previousException = null
     ): void {
-        $this->isNeedToAssertThrownException = false;
+        $this->isThrownExceptionAssertionNeeded = false;
 
         self::assertNotNull($this->thrownException);
 
@@ -56,7 +56,7 @@ trait ExceptionTrait
         self::$isInsideSafeCall = true;
 
         try {
-            $this->isNeedToAssertThrownException = true;
+            $this->isThrownExceptionAssertionNeeded = true;
             $func();
         } catch (Throwable $exception) {
             $this->thrownException = $exception;
@@ -73,7 +73,7 @@ trait ExceptionTrait
      */
     private function checkThrownExceptionAsserted(): void
     {
-        if ($this->isNeedToAssertThrownException) {
+        if ($this->isThrownExceptionAssertionNeeded) {
             throw new RuntimeException(
                 'ExceptionTrait::safeCall() must be followed by ExceptionTrait::assertThrownException()'
             );
