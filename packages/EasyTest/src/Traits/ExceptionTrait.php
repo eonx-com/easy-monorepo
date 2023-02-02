@@ -71,7 +71,7 @@ trait ExceptionTrait
      *
      * This check should be called in the tearDown() method of the test class.
      */
-    private function checkThrownExceptionAsserted(): void
+    private function checkThrownExceptionAssertion(): void
     {
         if ($this->isThrownExceptionAssertionNeeded) {
             throw new RuntimeException(
