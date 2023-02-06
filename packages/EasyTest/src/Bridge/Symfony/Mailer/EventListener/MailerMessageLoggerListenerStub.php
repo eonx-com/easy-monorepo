@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mailer\Event\MessageEvents;
 
-final class MessageLoggerListenerStub implements EventSubscriberInterface
+final class MailerMessageLoggerListenerStub implements EventSubscriberInterface
 {
     private static MessageEvents $events;
 

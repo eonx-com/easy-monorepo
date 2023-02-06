@@ -17,7 +17,7 @@ uses the `\Symfony\Component\Mailer\EventListener\MessageLoggerListener` to get 
 After consuming async messages, the `\Symfony\Component\Mailer\EventListener\MessageLoggerListener` is reset and
 sent messages are lost.
 
-To solve this issue use the `\EonX\EasyTest\Bridge\Symfony\Mailer\EventListener\MessageLoggerListenerStub`.
+To solve this issue use the `\EonX\EasyTest\Bridge\Symfony\Mailer\EventListener\MailerMessageLoggerListenerStub`.
 
 ### Configuration
 
@@ -32,11 +32,11 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Symfony\Config\EasyTestConfig;
 
 return static function (EasyTestConfig $easyTestConfig): void {
-    $easyTestConfig->messageLoggerListenerStubEnabled(true);
+    $easyTestConfig->mailerMessageLoggerListenerStubEnabled(true);
 };
 ```
 
-Update the PHPUnit configuration file to use `MessageLoggerListenerPHPUnitExtension`:
+Update the PHPUnit configuration file to use `MailerMessageLoggerListenerPHPUnitExtension`:
 
 ```xml
 
@@ -44,26 +44,26 @@ Update the PHPUnit configuration file to use `MessageLoggerListenerPHPUnitExtens
     <!-- ... -->
     <extensions>
         <!-- ... -->
-        <extension class="EonX\EasyTest\Bridge\PhpUnit\Extension\MessageLoggerListenerPHPUnitExtension"/>
+        <extension class="EonX\EasyTest\Bridge\PhpUnit\Extension\MailerMessageLoggerListenerPHPUnitExtension"/>
     </extensions>
 </phpunit>
 ```
 
 #### Manual configuration
 
-It is also possible to configure the `MessageLoggerListenerStub` manually.
+It is also possible to configure the `MailerMessageLoggerListenerStub` manually.
 
 We don't need the `kernel.reset` tag, which is added by default, because we don't need to reset the service.
 So we override the service instead of decorating.
 
-Register the `MessageLoggerListenerStub` in the `config/services_test.php` file:
+Register the `MailerMessageLoggerListenerStub` in the `config/services_test.php` file:
 
 ```php
-    $services->set('mailer.message_logger_listener', MessageLoggerListenerStub::class)
+    $services->set('mailer.message_logger_listener', MailerMessageLoggerListenerStub::class)
         ->tag('kernel.event_subscriber');
 ```
 
-Reset the `MessageLoggerListenerStub` in a test case.
+Reset the `MailerMessageLoggerListenerStub` in a test case.
 
 We need to reset stubs exactly in the setUp method because when some test fails,
 the stubs will continue holding stubbed values, and the next test will fail.
@@ -78,7 +78,7 @@ declare(strict_types=1);
 namespace Test;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use EonX\EasyTest\Bridge\Symfony\Mailer\EventListener\MessageLoggerListenerStub;
+use EonX\EasyTest\Bridge\Symfony\Mailer\EventListener\MailerMessageLoggerListenerStub;
 
 abstract class AbstractTestCase extends KernelTestCase
 {
@@ -87,7 +87,7 @@ abstract class AbstractTestCase extends KernelTestCase
     {
         parent::setUp();
 
-        MessageLoggerListenerStub::reset();
+        MailerMessageLoggerListenerStub::reset();
     }
 
     ...

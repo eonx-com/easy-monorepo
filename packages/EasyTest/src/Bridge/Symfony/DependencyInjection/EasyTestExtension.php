@@ -14,7 +14,7 @@ final class EasyTestExtension extends Extension
      * @var string[]
      */
     private const CONFIGS_TO_PARAMS = [
-        'message_logger_listener_stub_enabled' =>
+        'mailer_message_logger_listener_stub_enabled' =>
             BridgeConstantsInterface::PARAM_MAILER_MESSAGE_LOGGER_LISTENER_STUB_ENABLED,
     ];
 
