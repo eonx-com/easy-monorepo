@@ -8,6 +8,9 @@ use Closure;
 use RuntimeException;
 use Throwable;
 
+/**
+ * @mixin \PHPUnit\Framework\TestCase
+ */
 trait ExceptionTrait
 {
     protected static bool $isInsideSafeCall = false;
@@ -17,6 +20,7 @@ trait ExceptionTrait
     private bool $isThrownExceptionAssertionNeeded = false;
 
     /**
+     * @param class-string<\Throwable> $expectedException
      * @param class-string<\Throwable>|null $previousException
      */
     protected function assertThrownException(

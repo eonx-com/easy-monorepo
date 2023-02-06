@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Traits;
 
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\IsEqual;
 use RuntimeException;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMessageLimitListener;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
@@ -15,6 +13,10 @@ use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
 use Symfony\Component\Messenger\Worker;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
+/**
+ * @mixin \EonX\EasyTest\Traits\ExceptionTrait
+ * @mixin \Symfony\Bundle\FrameworkBundle\Test\KernelTestCase
+ */
 trait MessengerAssertionsTrait
 {
     /**
@@ -24,7 +26,7 @@ trait MessengerAssertionsTrait
      */
     public static function assertCountOfMessagesSentToAsyncTransport(int $count, ?string $messageClass = null): void
     {
-        Assert::assertCount($count, self::getMessagesSentToAsyncTransport($messageClass));
+        self::assertCount($count, self::getMessagesSentToAsyncTransport($messageClass));
     }
 
     /**
@@ -34,7 +36,7 @@ trait MessengerAssertionsTrait
      */
     public static function assertCountOfMessagesSentToFailedTransport(int $count, ?string $messageClass = null): void
     {
-        Assert::assertCount($count, self::getMessagesSentToFailedTransport($messageClass));
+        self::assertCount($count, self::getMessagesSentToFailedTransport($messageClass));
     }
 
     /**
@@ -47,7 +49,7 @@ trait MessengerAssertionsTrait
         string $transportName,
         ?string $messageClass = null
     ): void {
-        Assert::assertCount($count, self::getMessagesSentToTransport($transportName, $messageClass));
+        self::assertCount($count, self::getMessagesSentToTransport($transportName, $messageClass));
     }
 
     /**
@@ -61,7 +63,7 @@ trait MessengerAssertionsTrait
         array $expectedProperties = [],
         int $messagesCount = 1
     ): void {
-        static::assertMessageSentToTransport($messageClass, 'async', $expectedProperties, $messagesCount);
+        self::assertMessageSentToTransport($messageClass, 'async', $expectedProperties, $messagesCount);
     }
 
     /**
@@ -75,7 +77,7 @@ trait MessengerAssertionsTrait
         array $expectedProperties = [],
         int $messagesCount = 1
     ): void {
-        static::assertMessageSentToTransport($messageClass, 'failed', $expectedProperties, $messagesCount);
+        self::assertMessageSentToTransport($messageClass, 'failed', $expectedProperties, $messagesCount);
     }
 
     /**
@@ -112,7 +114,7 @@ trait MessengerAssertionsTrait
             }
         );
 
-        Assert::assertCount($messagesCount, $envelopes);
+        self::assertCount($messagesCount, $envelopes);
     }
 
     /**
@@ -149,7 +151,7 @@ trait MessengerAssertionsTrait
      */
     public static function getMessagesSentToAsyncTransport(?string $messageClass = null): array
     {
-        return static::getMessagesSentToTransport('async', $messageClass);
+        return self::getMessagesSentToTransport('async', $messageClass);
     }
 
     /**
@@ -163,7 +165,7 @@ trait MessengerAssertionsTrait
      */
     public static function getMessagesSentToFailedTransport(?string $messageClass = null): array
     {
-        return static::getMessagesSentToTransport('failed', $messageClass);
+        return self::getMessagesSentToTransport('failed', $messageClass);
     }
 
     /**
@@ -178,7 +180,7 @@ trait MessengerAssertionsTrait
     public static function getMessagesSentToTransport(string $transportName, ?string $messageClass = null): array
     {
         /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $transport */
-        $transport = KernelTestCase::getContainer()->get('messenger.transport.' . $transportName);
+        $transport = self::getContainer()->get('messenger.transport.' . $transportName);
 
         $messages = [];
         foreach ($transport->getSent() as $envelope) {
@@ -217,19 +219,19 @@ trait MessengerAssertionsTrait
         array $expectedExceptions = []
     ): void {
         /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $transport */
-        $transport = KernelTestCase::getContainer()->get('messenger.transport.' . $transportName);
+        $transport = self::getContainer()->get('messenger.transport.' . $transportName);
 
         /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
-        $eventDispatcher = KernelTestCase::getContainer()->get(EventDispatcherInterface::class);
+        $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
 
         /** @var \Symfony\Component\Messenger\MessageBusInterface $messageBus */
-        $messageBus = KernelTestCase::getContainer()->get('messenger.bus.' . $busName);
+        $messageBus = self::getContainer()->get('messenger.bus.' . $busName);
 
         $tries = 0;
         $messageLimitListener = null;
         $eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener(2));
         /** @var \Symfony\Component\Messenger\EventListener\ResetServicesListener $resetServicesListener */
-        $resetServicesListener = KernelTestCase::getContainer()->get('messenger.listener.reset_services');
+        $resetServicesListener = self::getContainer()->get('messenger.listener.reset_services');
         $eventDispatcher->addSubscriber($resetServicesListener);
         while (++$tries < 10) {
             $messagesCount = \count((array)$transport->get());
@@ -258,8 +260,8 @@ trait MessengerAssertionsTrait
         }
 
         // Symfony Messenger does not throw exceptions when message handler throws an exception.
-        // Instead, it stores exception details in ErrorDetailsStamp and we need to check it manually.
-        // We can't throw this exception, because it stored as \Symfony\Component\ErrorHandler\Exception\FlattenException
+        // Instead, it stores exception details in ErrorDetailsStamp, and we need to check it manually.
+        // We can't throw this exception, because it stored as \Symfony\Component\ErrorHandler\Exception\FlattenException,
         // and we can't get original exception.
         foreach ($transport->getRejected() as $envelope) {
             /** @var \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp $errorDetailsStamp */
@@ -278,7 +280,7 @@ trait MessengerAssertionsTrait
                     }
                 }
 
-                static::printExceptionDetails($errorDetailsStamp);
+                self::printExceptionDetails($errorDetailsStamp);
 
                 throw new RuntimeException('Exception was thrown during async messages processing.');
             }
