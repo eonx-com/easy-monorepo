@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntry\Results\Batch;
+namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntryBatch\Results\Batch;
 
 use DateTime;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\Header;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\Header;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 
 /**
- * @covers \EonX\EasyBankFiles\Parsers\DirectEntry\Results\Header
+ * @covers \EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Header
  */
 final class HeaderTest extends TestCase
 {

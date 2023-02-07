@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Parsers\DirectEntry\Results;
+namespace EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results;
 
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\Header;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\Trailer;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypePayment;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypeRefusal;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypeReturn;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\Header;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\Trailer;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypePayment;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeRefusal;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeReturn;
 
 final class Batch
 {

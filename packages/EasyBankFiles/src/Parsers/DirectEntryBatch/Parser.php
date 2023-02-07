@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Parsers\DirectEntry;
+namespace EonX\EasyBankFiles\Parsers\DirectEntryBatch;
 
 use EonX\EasyBankFiles\Parsers\AbstractLineByLineParser;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\Header;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\Trailer;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypePayment;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypeRefusal;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypeReturn;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\Header;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\Trailer;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypePayment;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeRefusal;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeReturn;
 use EonX\EasyBankFiles\Parsers\Error;
 
 /**
@@ -60,7 +60,7 @@ final class Parser extends AbstractLineByLineParser
     private const RECORD_TYPE_TRANSACTION_RETURN = '2';
 
     /**
-     * @var \EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch[]
+     * @var \EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch[]
      */
     private array $batches = [];
 
@@ -72,7 +72,7 @@ final class Parser extends AbstractLineByLineParser
     private array $errors = [];
 
     /**
-     * @return \EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch[]
+     * @return \EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch[]
      */
     public function getBatches(): array
     {

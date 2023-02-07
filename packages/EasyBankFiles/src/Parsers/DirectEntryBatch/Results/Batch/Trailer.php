@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch;
+namespace EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch;
 
 use EonX\EasyBankFiles\Parsers\BaseResult;
 

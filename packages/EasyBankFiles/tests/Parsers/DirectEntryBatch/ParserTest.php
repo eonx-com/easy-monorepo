@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntry;
+namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntryBatch;
 
 use DateTime;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Parser;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypePayment;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypeRefusal;
-use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch\TransactionTypeReturn;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Parser;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypePayment;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeRefusal;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeReturn;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 
 /**
- * @covers \EonX\EasyBankFiles\Parsers\DirectEntry\Parser
+ * @covers \EonX\EasyBankFiles\Parsers\DirectEntryBatch\Parser
  */
 final class ParserTest extends TestCase
 {

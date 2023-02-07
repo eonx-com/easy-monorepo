@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Parsers\DirectEntry\Results\Batch;
+namespace EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch;
 
 use DateTimeImmutable;
 use EonX\EasyBankFiles\Parsers\BaseResult;
@@ -23,12 +23,17 @@ final class Header extends BaseResult
     private const DATE_STRING_PATTERN = 'dmy';
 
     /**
-     * Return processed date as a DateTime object.
+     * Return processed date as a DateTimeImmutable object.
      */
     public function getDateProcessedObject(): ?DateTimeImmutable
     {
-        if (\is_string($this->data['dateProcessed'])) {
-            $dateTime = DateTimeImmutable::createFromFormat(self::DATE_STRING_PATTERN, $this->data['dateProcessed']);
+        $value = $this->data['dateProcessed'];
+
+        if (\is_string($value) === true &&
+            \strlen($value) === 6 &&
+            \ctype_digit($value) === true
+        ) {
+            $dateTime = DateTimeImmutable::createFromFormat(self::DATE_STRING_PATTERN, $value);
             if ($dateTime !== false) {
                 return $dateTime->setTime(0, 0);
             }
