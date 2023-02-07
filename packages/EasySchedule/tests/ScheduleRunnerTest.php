@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace EonX\EasySchedule\Tests;
 
 use Doctrine\ORM\EntityManagerInterface;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
+use EonX\EasySchedule\Event\CommandExecutedEvent;
 use EonX\EasySchedule\Schedule;
 use EonX\EasySchedule\ScheduleRunner;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Lock\LockInterface;
 
 final class ScheduleRunnerTest extends AbstractTestCase
 {
-    public function testRunSucceedsAndClearsEntityManager(): void
+    use ProphecyTrait;
+
+    public function testRunSucceedsAndDispatchesEvent(): void
     {
         $app = new Application();
         $schedule = (new Schedule())->setApplication($app);
@@ -32,14 +37,14 @@ final class ScheduleRunnerTest extends AbstractTestCase
             ->willReturn($lockProphecy);
         /** @var \EonX\EasyLock\Interfaces\LockServiceInterface $lockService */
         $lockService = $lockServiceProphecy->reveal();
-        $entityManagerProphecy = $this->prophesize(EntityManagerInterface::class);
-        $entityManagerProphecy->clear()
-            ->shouldBeCalledTimes(2);
-        /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
-        $entityManager = $entityManagerProphecy->reveal();
+        $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcherProphecy->dispatch(new CommandExecutedEvent($event1))->shouldBeCalled();
+        $eventDispatcherProphecy->dispatch(new CommandExecutedEvent($event2))->shouldBeCalled();
+        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcher */
+        $eventDispatcher = $eventDispatcherProphecy->reveal();
         /** @var \Symfony\Component\Console\Output\OutputInterface $output */
         $output = $this->prophesize(OutputInterface::class)->reveal();
-        $scheduleRunner = new ScheduleRunner($lockService, $entityManager);
+        $scheduleRunner = new ScheduleRunner($eventDispatcher, $lockService);
 
         $scheduleRunner->run($schedule, $output);
 
