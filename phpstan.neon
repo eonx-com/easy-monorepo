@@ -30,6 +30,7 @@ parameters:
         - packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
         - packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
         - packages/EasySecurity/src/Bridge/Symfony/Security/SecurityContextAuthenticator.php
+        - packages/EasySwoole/src/Helpers/FunctionHelper.php
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
