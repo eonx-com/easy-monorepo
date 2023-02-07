@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Helpers;
@@ -13,7 +14,7 @@ final class FunctionHelper
             return \swoole_cpu_num();
         }
 
-        if (class_exists(Util::class) && method_exists(Util::class, 'getCPUNum')) {
+        if (\class_exists(Util::class) && \method_exists(Util::class, 'getCPUNum')) {
             return Util::getCPUNum();
         }
 
