@@ -220,7 +220,7 @@ parameters:
         - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
           path: packages/EasySwoole/src/Runtime/EasySwooleRunner.php
 
-        - message: "#Call to function method_exists\\(\\) with 'OpenSwoole\\\\Util' and 'getCPUNum' will always evaluate to false#"
+        - message: '#Call to function method_exists\(\) with "OpenSwoole\\\\Util" and "getCPUNum" will always evaluate to false#'
           path: packages/EasySwoole/src/Helpers/FunctionHelper.php
 
         # ---- EasyUtils ----
