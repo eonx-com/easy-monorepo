@@ -15,7 +15,7 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->booleanNode('clear_entity_manager_on_command')->defaultTrue()->end()
+                ->booleanNode('clear_entity_manager_on_command_execution')->defaultFalse()->end()
             ->end();
 
         return $treeBuilder;

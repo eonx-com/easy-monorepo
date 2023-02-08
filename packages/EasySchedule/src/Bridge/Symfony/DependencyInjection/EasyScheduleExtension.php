@@ -25,7 +25,8 @@ final class EasyScheduleExtension extends Extension
 
         $loader->load('services.php');
 
-        if (($config['clear_entity_manager_on_command'] ?? true) && \interface_exists(EntityManagerInterface::class)) {
+        if ($config['clear_entity_manager_on_command_execution'] &&
+            \interface_exists(EntityManagerInterface::class)) {
             $loader->load('doctrine.php');
         }
 
