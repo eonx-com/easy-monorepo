@@ -23,12 +23,14 @@ use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesGroupProcessorInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderLocatorInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
+use EonX\EasyErrorHandler\Locators\ErrorCodesProviderLocator;
 use EonX\EasyErrorHandler\Processors\ErrorCodesGroupProcessor;
 use EonX\EasyErrorHandler\Providers\ErrorCodesProvider;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
@@ -204,11 +206,22 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
+            ErrorCodesProviderLocatorInterface::class,
+            static function (Container $app): ErrorCodesProviderLocatorInterface {
+                return new ErrorCodesProviderLocator([
+                    ErrorCodesProviderLocatorInterface::SOURCE_INTERFACE =>
+                        $app->make(ErrorCodesProviderInterface::class),
+                ]);
+            }
+        );
+
+        $this->app->singleton(
             ErrorCodesGroupProcessorInterface::class,
             static function (Container $app): ErrorCodesGroupProcessorInterface {
                 return new ErrorCodesGroupProcessor(
                     \config('easy-error-handler.error_codes_category_size'),
-                    $app->make(ErrorCodesProviderInterface::class)
+                    ErrorCodesProviderLocatorInterface::SOURCE_INTERFACE,
+                    $app->make(ErrorCodesProviderLocatorInterface::class)
                 );
             }
         );

@@ -7,13 +7,14 @@ namespace EonX\EasyErrorHandler\Processors;
 use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeCategoryDto;
 use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodesDto;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesGroupProcessorInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderLocatorInterface;
 
 final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterface
 {
     public function __construct(
-        private int $categorySize,
-        private ErrorCodesProviderInterface $errorCodesProvider
+        private readonly int $categorySize,
+        private readonly string $errorCodesSource,
+        private readonly ErrorCodesProviderLocatorInterface $errorCodesProviderLocator,
     ) {
     }
 
@@ -21,7 +22,9 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
     {
         $groupedErrorCodes = [];
 
-        foreach ($this->errorCodesProvider->provide() as $errorCodeName => $errorCodeValue) {
+        $errorCodesProvider = $this->errorCodesProviderLocator->locate($this->errorCodesSource);
+
+        foreach ($errorCodesProvider->provide() as $errorCodeName => $errorCodeValue) {
             $errorCodeCategory = $errorCodeValue - ($errorCodeValue % $this->categorySize);
             $groupedErrorCodes[$errorCodeCategory] = $groupedErrorCodes[$errorCodeCategory] ?? [];
             $groupedErrorCodes[$errorCodeCategory][$errorCodeName] = $errorCodeValue;
@@ -36,9 +39,10 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
         $nextGroupErrorCode = (int)\max(\array_keys($groupedErrorCodes)) + $this->categorySize;
         $nextGroupedErrorCodes = [];
 
+        $isEnum = $this->errorCodesSource === ErrorCodesProviderLocatorInterface::SOURCE_ENUM;
         foreach ($groupedErrorCodes as $errorCodes) {
             $nextGroupedErrorCodes[] = new ErrorCodeCategoryDto(
-                categoryName: $this->determineCategoryName(\array_keys($errorCodes)),
+                categoryName: $this->determineCategoryName(\array_keys($errorCodes), $isEnum),
                 nextErrorCodeToUse: \max(\array_values($errorCodes)) + 1
             );
         }
@@ -60,10 +64,13 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
     /**
      * @param mixed[] $errorCodeNames
      */
-    private function determineCategoryName(array $errorCodeNames): string
+    private function determineCategoryName(array $errorCodeNames, bool $isEnum): string
     {
         $explodedErrorCodeNames = \array_map(
-            static function ($errorCodeName): array {
+            static function ($errorCodeName) use ($isEnum): array {
+                if ($isEnum === true) {
+                    $errorCodeName = \preg_replace('/([a-z])([A-Z])/u', '$1_$2', $errorCodeName);
+                }
                 return \explode('_', $errorCodeName);
             },
             $errorCodeNames
@@ -86,6 +93,8 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
             }
         } while ($partIsMatched);
 
-        return \implode('_', $categoryNameParts) . '_*';
+        return $isEnum === true
+            ? \implode('', $categoryNameParts) . '*'
+            : \implode('_', $categoryNameParts) . '_*';
     }
 }
