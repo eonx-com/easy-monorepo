@@ -39,10 +39,9 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
         $nextGroupErrorCode = (int)\max(\array_keys($groupedErrorCodes)) + $this->categorySize;
         $nextGroupedErrorCodes = [];
 
-        $isEnum = $this->errorCodesSource === ErrorCodesProviderLocatorInterface::SOURCE_ENUM;
         foreach ($groupedErrorCodes as $errorCodes) {
             $nextGroupedErrorCodes[] = new ErrorCodeCategoryDto(
-                categoryName: $this->determineCategoryName(\array_keys($errorCodes), $isEnum),
+                categoryName: $this->determineCategoryName(\array_keys($errorCodes)),
                 nextErrorCodeToUse: \max(\array_values($errorCodes)) + 1
             );
         }
@@ -64,12 +63,13 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
     /**
      * @param mixed[] $errorCodeNames
      */
-    private function determineCategoryName(array $errorCodeNames, bool $isEnum): string
+    private function determineCategoryName(array $errorCodeNames): string
     {
+        $isEnum = $this->errorCodesSource === ErrorCodesProviderLocatorInterface::SOURCE_ENUM;
         $explodedErrorCodeNames = \array_map(
             static function ($errorCodeName) use ($isEnum): array {
                 if ($isEnum === true) {
-                    $errorCodeName = \preg_replace('/([a-z])([A-Z])/u', '$1_$2', $errorCodeName);
+                    $errorCodeName = \preg_replace('/([^A-Z])([A-Z])/u', '$1_$2', $errorCodeName);
                 }
                 return \explode('_', $errorCodeName);
             },

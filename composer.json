@@ -219,7 +219,6 @@
     "config": {
         "process-timeout": 0,
         "allow-plugins": {
-            "php-http/discovery": false,
             "symfony/runtime": true
         }
     },

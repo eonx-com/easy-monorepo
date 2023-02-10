@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Providers;
 
+use EonX\EasyErrorHandler\Annotations\AsErrorCodes;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
 use PhpParser\Error;
 use PhpParser\Node\Stmt\Enum_;
@@ -14,8 +15,6 @@ use ReflectionClass;
 
 final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
 {
-    private const ERROR_CODE_ATTRIBUTE = 'AsErrorCodes';
-
     public function __construct(private string $projectDir)
     {
     }
@@ -42,7 +41,7 @@ final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
     /**
      * @return array<mixed>
      */
-    private function locateErrorCodesEnums(): array
+    private function locateErrorCodesEnums()
     {
         $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
 
@@ -51,12 +50,10 @@ final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
         $regex = new \RegexIterator($iterator, '/Enum\/.*Enum\.php$/');
 
         $enums = [];
+
         foreach ($regex as $file) {
             $fqcn = (string)$this->extractFqcn($parser, $file->getRealPath());
-            $namespace = \explode('\\', $fqcn);
-            \array_pop($namespace);
-            $attributeFqn = \implode('\\', $namespace) . '\\' . self::ERROR_CODE_ATTRIBUTE;
-            if (\class_exists($fqcn) && \count((new ReflectionClass($fqcn))->getAttributes($attributeFqn)) > 0) {
+            if (\class_exists($fqcn) && \count((new ReflectionClass($fqcn))->getAttributes(AsErrorCodes::class)) > 0) {
                 $enums[] = $fqcn;
             }
         }
