@@ -28,7 +28,6 @@ final class ErrorCodesByInterfaceProvider implements ErrorCodesProviderInterface
 
         try {
             $reflection = new ReflectionClass($this->errorCodesInterface);
-            // @phpstan-ignore-next-line
         } catch (ReflectionException $exception) {
             throw new ClassNotFoundError($exception->getMessage(), $exception);
         }

@@ -107,7 +107,7 @@ parameters:
 
         # ---- EasyErrorHandler ----
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
-          path: packages/EasyErrorHandler/src/Providers/ErrorCodesProvider.php
+          path: packages/EasyErrorHandler/src/Providers/ErrorCodesByInterfaceProvider.php
 
         # ---- EasyLogging ----DoctrineDbalLengthAwarePaginator
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
