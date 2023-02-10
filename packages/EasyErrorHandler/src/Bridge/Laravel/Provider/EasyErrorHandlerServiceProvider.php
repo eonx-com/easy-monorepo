@@ -32,7 +32,7 @@ use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Locators\ErrorCodesProviderLocator;
 use EonX\EasyErrorHandler\Processors\ErrorCodesGroupProcessor;
-use EonX\EasyErrorHandler\Providers\ErrorCodesProvider;
+use EonX\EasyErrorHandler\Providers\ErrorCodesByInterfaceProvider;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
@@ -201,7 +201,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         $this->app->singleton(
             ErrorCodesProviderInterface::class,
             static function (): ErrorCodesProviderInterface {
-                return new ErrorCodesProvider(\config('easy-error-handler.error_codes_interface'));
+                return new ErrorCodesByInterfaceProvider(\config('easy-error-handler.error_codes_interface'));
             }
         );
 

@@ -6,14 +6,17 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\Providers;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesEnumInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
-use ReflectionClass;
-use Symfony\Component\Finder\Finder;
+use PhpParser\Error;
+use PhpParser\Node\Stmt\Enum_;
+use PhpParser\Node\Stmt\Namespace_;
+use PhpParser\Node\Stmt\Use_;
+use PhpParser\Node\Stmt\UseUse;
+use PhpParser\Parser;
+use PhpParser\ParserFactory;
 
 final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
 {
-    private const ERROR_CODE_NAME_PREFIX = 'Error';
-
-    public function __construct(private readonly string $projectDir)
+    public function __construct(private string $projectDir)
     {
     }
 
@@ -29,9 +32,7 @@ final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
         foreach ($enums as $enum) {
             $cases = $enum::cases();
             foreach ($cases as $case) {
-                if (\str_starts_with($case->name, self::ERROR_CODE_NAME_PREFIX) === true) {
-                    $errorCodes[$case->name] = $case->value;
-                }
+                $errorCodes[$case->name] = $case->value;
             }
         }
 
@@ -43,56 +44,57 @@ final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
      */
     private function locateErrorCodesEnums(): array
     {
-        $files = (new Finder())
-            ->in($this->projectDir . '/src')
-            ->path('/Enum/')
-            ->name('*Enum.php')
-            ->files();
+        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+
+        $directory = new \RecursiveDirectoryIterator($this->projectDir . '/src');
+        $iterator = new \RecursiveIteratorIterator($directory);
+        $regex = new \RegexIterator($iterator, '/Enum\/.*Enum\.php$/');
+
         $enums = [];
-        foreach ($files as $file) {
-            $class = $this->extractNamespace($file->getRealPath());
-            if (\class_exists($class) &&
-                (new ReflectionClass($class))->implementsInterface(ErrorCodesEnumInterface::class) === true) {
+        foreach ($regex as $file) {
+            $class = $this->extractNamespace($parser, $file->getRealPath());
+            if ($class !== null) {
                 $enums[] = $class;
             }
         }
+
         return $enums;
     }
 
-    private function extractNamespace(string $file): string
+    private function extractNamespace(Parser $parser, string $file): ?string
     {
-        $contents = \file_get_contents($file);
-        $class = '';
-        $namespace = '';
-        $gettingClass = false;
-        $gettingNamespace = false;
-
-        foreach (\token_get_all((string)$contents) as $token) {
-            if (\is_array($token) && $token[0] === \T_NAMESPACE) {
-                $gettingNamespace = true;
-            }
-
-            if (\is_array($token) && $token[0] === \T_ENUM) {
-                $gettingClass = true;
-            }
-
-            if ($gettingNamespace === true) {
-                if (\is_array($token) && \in_array($token[0], [\T_STRING, \T_NS_SEPARATOR, \T_NAME_QUALIFIED], true)) {
-                    $namespace .= $token[1];
-                }
-                if ($token === ';') {
-                    $gettingNamespace = false;
-                }
-            }
-
-            if ($gettingClass === true) {
-                if (\is_array($token) && $token[0] === \T_STRING) {
-                    $class = $token[1];
-                    break;
+        try {
+            $code = \file_get_contents($file);
+            $stmts = $parser->parse((string)$code);
+            $interfaceFound = false;
+            foreach ((array)$stmts as $stmt) {
+                if ($stmt instanceof Namespace_) {
+                    $namespace = (string)$stmt->name;
+                    foreach ($stmt->stmts as $namespaceStmt) {
+                        if ($namespaceStmt instanceof Use_) {
+                            $errorCodeEnumInterface = \array_filter(
+                                $namespaceStmt->uses,
+                                fn (UseUse $useUse) => (string)$useUse->name === ErrorCodesEnumInterface::class
+                            );
+                            if (\count($errorCodeEnumInterface) > 0) {
+                                $interfaceFound = true;
+                            }
+                        }
+                        if ($interfaceFound && $namespaceStmt instanceof Enum_) {
+                            $implements = $namespaceStmt->implements;
+                            foreach ($implements as $impl) {
+                                if (\str_ends_with($impl->toString(), 'ErrorCodesEnumInterface')) {
+                                    return $namespace . '\\' . $namespaceStmt->name;
+                                }
+                            }
+                        }
+                    }
                 }
             }
+        } catch(Error $e) {
+            // ignore
         }
 
-        return $namespace ? $namespace . '\\' . $class : $class;
+        return null;
     }
 }

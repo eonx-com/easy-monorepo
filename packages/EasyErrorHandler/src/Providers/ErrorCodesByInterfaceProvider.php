@@ -9,7 +9,7 @@ use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 
-final class ErrorCodesProvider implements ErrorCodesProviderInterface
+final class ErrorCodesByInterfaceProvider implements ErrorCodesProviderInterface
 {
     private const ERROR_CODE_NAME_PREFIX = 'ERROR_';
 

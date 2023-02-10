@@ -25,7 +25,7 @@ use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Locators\ErrorCodesProviderLocator;
 use EonX\EasyErrorHandler\Processors\ErrorCodesGroupProcessor;
-use EonX\EasyErrorHandler\Providers\ErrorCodesProvider;
+use EonX\EasyErrorHandler\Providers\ErrorCodesByInterfaceProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 
@@ -93,7 +93,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$defaultIsVerbose', param(BridgeConstantsInterface::PARAM_IS_VERBOSE));
 
     // Error codes provider
-    $services->set('error_codes_provider.by_interface', ErrorCodesProvider::class)
+    $services->set('error_codes_provider.by_interface', ErrorCodesByInterfaceProvider::class)
         ->arg('$errorCodesInterface', param(BridgeConstantsInterface::PARAM_ERROR_CODES_INTERFACE));
 
     $services->set('error_codes_provider.by_enum', ErrorCodesByEnumProvider::class)
