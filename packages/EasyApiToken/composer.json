@@ -40,6 +40,11 @@
         "firebase/php-jwt": "To use the Amazon Cognito or the Firebase JWT driver to decode/encode tokens",
         "phpseclib/phpseclib": "To use the Amazon Cognito JWT driver to decode/encode tokens"
     },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "4.4-dev"

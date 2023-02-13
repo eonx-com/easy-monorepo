@@ -15,8 +15,11 @@ use ReflectionClass;
 
 final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
 {
+    private Parser $parser;
+
     public function __construct(private string $projectDir)
     {
+        $this->parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
     }
 
     public function provide(): array
@@ -43,8 +46,6 @@ final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
      */
     private function locateErrorCodesEnums()
     {
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
-
         $directory = new \RecursiveDirectoryIterator($this->projectDir . '/src');
         $iterator = new \RecursiveIteratorIterator($directory);
         $regex = new \RegexIterator($iterator, '/Enum\/.*Enum\.php$/');
@@ -52,7 +53,7 @@ final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
         $enums = [];
 
         foreach ($regex as $file) {
-            $fqcn = (string)$this->extractFqcn($parser, $file->getRealPath());
+            $fqcn = (string)$this->extractFqcn($file->getRealPath());
             if (\class_exists($fqcn) && \count((new ReflectionClass($fqcn))->getAttributes(AsErrorCodes::class)) > 0) {
                 $enums[] = $fqcn;
             }
@@ -61,11 +62,11 @@ final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
         return $enums;
     }
 
-    private function extractFqcn(Parser $parser, string $file): ?string
+    private function extractFqcn(string $file): ?string
     {
         try {
             $code = \file_get_contents($file);
-            $stmts = $parser->parse((string)$code);
+            $stmts = $this->parser->parse((string)$code);
             foreach ((array)$stmts as $stmt) {
                 if ($stmt instanceof Namespace_) {
                     $namespace = (string)$stmt->name;
