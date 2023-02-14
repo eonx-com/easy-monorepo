@@ -7,24 +7,31 @@ namespace EonX\EasyErrorHandler\Processors;
 use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeCategoryDto;
 use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodesDto;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesGroupProcessorInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderLocatorInterface;
 
 final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterface
 {
+    /**
+     * @param array<\EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface> $errorCodesProviders
+     */
     public function __construct(
         private readonly int $categorySize,
-        private readonly string $errorCodesSource,
-        private readonly ErrorCodesProviderLocatorInterface $errorCodesProviderLocator,
+        private readonly array $errorCodesProviders
     ) {
     }
 
     public function process(): ErrorCodesDto
     {
         $groupedErrorCodes = [];
+        $providedErrorCodes = [];
 
-        $errorCodesProvider = $this->errorCodesProviderLocator->locate($this->errorCodesSource);
+        foreach ($this->errorCodesProviders as $errorCodesProvider) {
+            $providedErrorCodes = $errorCodesProvider->provide();
+            if (\count($providedErrorCodes) > 0) {
+                break;
+            }
+        }
 
-        foreach ($errorCodesProvider->provide() as $errorCodeName => $errorCodeValue) {
+        foreach ($providedErrorCodes as $errorCodeName => $errorCodeValue) {
             $errorCodeCategory = $errorCodeValue - ($errorCodeValue % $this->categorySize);
             $groupedErrorCodes[$errorCodeCategory] = $groupedErrorCodes[$errorCodeCategory] ?? [];
             $groupedErrorCodes[$errorCodeCategory][$errorCodeName] = $errorCodeValue;
@@ -65,13 +72,14 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
      */
     private function determineCategoryName(array $errorCodeNames): string
     {
-        $isEnum = $this->errorCodesSource === ErrorCodesProviderLocatorInterface::SOURCE_ENUM;
         $explodedErrorCodeNames = \array_map(
-            static function ($errorCodeName) use ($isEnum): array {
-                if ($isEnum === true) {
-                    $errorCodeName = \preg_replace('/([^A-Z])([A-Z])/u', '$1_$2', $errorCodeName);
-                }
-                return \explode('_', $errorCodeName);
+            static function ($errorCodeName): array {
+                $splittedErrorCodeName = \preg_split(
+                    pattern: '/([A-Z\d]+(?=_)|[A-Z\d][a-z]+(?=[A-Z\d]))/u',
+                    subject: $errorCodeName,
+                    flags: \PREG_SPLIT_DELIM_CAPTURE
+                );
+                return \array_filter((array)$splittedErrorCodeName, static fn ($value) => $value !== '');
             },
             $errorCodeNames
         );
@@ -93,8 +101,6 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
             }
         } while ($partIsMatched);
 
-        return $isEnum === true
-            ? \implode('', $categoryNameParts) . '*'
-            : \implode('_', $categoryNameParts) . '_*';
+        return \implode('', $categoryNameParts) . '*';
     }
 }

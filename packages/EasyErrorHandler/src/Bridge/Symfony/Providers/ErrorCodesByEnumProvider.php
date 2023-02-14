@@ -44,14 +44,13 @@ final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
     /**
      * @return array<mixed>
      */
-    private function locateErrorCodesEnums()
+    public function locateErrorCodesEnums()
     {
         $directory = new \RecursiveDirectoryIterator($this->projectDir . '/src');
         $iterator = new \RecursiveIteratorIterator($directory);
-        $regex = new \RegexIterator($iterator, '/Enum\/.*Enum\.php$/');
+        $regex = new \RegexIterator($iterator, '/\.php$/');
 
         $enums = [];
-
         foreach ($regex as $file) {
             $fqcn = (string)$this->extractFqcn($file->getRealPath());
             if (\class_exists($fqcn) && \count((new ReflectionClass($fqcn))->getAttributes(AsErrorCodes::class)) > 0) {
@@ -65,8 +64,11 @@ final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
     private function extractFqcn(string $file): ?string
     {
         try {
-            $code = \file_get_contents($file);
-            $stmts = $this->parser->parse((string)$code);
+            $code = (string)\file_get_contents($file);
+            if (\str_contains($code, AsErrorCodes::class) === false) {
+                return null;
+            }
+            $stmts = $this->parser->parse($code);
             foreach ((array)$stmts as $stmt) {
                 if ($stmt instanceof Namespace_) {
                     $namespace = (string)$stmt->name;

@@ -6,7 +6,6 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection;
 
 use Bugsnag\Client;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderLocatorInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyDriverInterface;
@@ -78,13 +77,6 @@ final class EasyErrorHandlerExtension extends Extension
             BridgeConstantsInterface::PARAM_ERROR_CODES_CATEGORY_SIZE,
             $config['error_codes_category_size']
         );
-        $container->setParameter(
-            BridgeConstantsInterface::PARAM_ERROR_CODES_SOURCE,
-            $config['error_codes_enums_auto_discovery'] === true
-                ? ErrorCodesProviderLocatorInterface::SOURCE_ENUM
-                : ErrorCodesProviderLocatorInterface::SOURCE_INTERFACE
-        );
-
         $container->setParameter(
             BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED,
             $config['translate_internal_error_messages']['enabled'] ?? false

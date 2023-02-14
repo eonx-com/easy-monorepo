@@ -16,14 +16,12 @@ use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesGroupProcessorInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderLocatorInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
-use EonX\EasyErrorHandler\Locators\ErrorCodesProviderLocator;
 use EonX\EasyErrorHandler\Processors\ErrorCodesGroupProcessor;
 use EonX\EasyErrorHandler\Providers\ErrorCodesByInterfaceProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
@@ -99,16 +97,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set('error_codes_provider.by_enum', ErrorCodesByEnumProvider::class)
         ->arg('$projectDir', param('kernel.project_dir'));
 
-    $services->set(ErrorCodesProviderLocatorInterface::class, ErrorCodesProviderLocator::class)
-        ->arg('$errorCodesProviders', [
-            ErrorCodesProviderLocatorInterface::SOURCE_INTERFACE => service('error_codes_provider.by_interface'),
-            ErrorCodesProviderLocatorInterface::SOURCE_ENUM => service('error_codes_provider.by_enum'),
-        ]);
-
     // Error codes group processor
     $services->set(ErrorCodesGroupProcessorInterface::class, ErrorCodesGroupProcessor::class)
         ->arg('$categorySize', param(BridgeConstantsInterface::PARAM_ERROR_CODES_CATEGORY_SIZE))
-        ->arg('$errorCodesSource', param(BridgeConstantsInterface::PARAM_ERROR_CODES_SOURCE));
+        ->arg('$errorCodesProviders', [
+            service('error_codes_provider.by_interface'),
+            service('error_codes_provider.by_enum'),
+        ]);
 
     // Console command
     $services
