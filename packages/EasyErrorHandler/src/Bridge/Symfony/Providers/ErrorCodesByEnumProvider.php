@@ -17,7 +17,7 @@ final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
 {
     private Parser $parser;
 
-    public function __construct(private string $projectDir)
+    public function __construct(private readonly string $projectDir)
     {
         $this->parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
     }

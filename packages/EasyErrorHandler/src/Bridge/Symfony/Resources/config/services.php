@@ -92,18 +92,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // Error codes provider
     $services->set('error_codes_provider.by_interface', ErrorCodesByInterfaceProvider::class)
-        ->arg('$errorCodesInterface', param(BridgeConstantsInterface::PARAM_ERROR_CODES_INTERFACE));
+        ->arg('$errorCodesInterface', param(BridgeConstantsInterface::PARAM_ERROR_CODES_INTERFACE))
+        ->tag(BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER);
 
     $services->set('error_codes_provider.by_enum', ErrorCodesByEnumProvider::class)
-        ->arg('$projectDir', param('kernel.project_dir'));
+        ->arg('$projectDir', param('kernel.project_dir'))
+        ->tag(BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER);
 
     // Error codes group processor
     $services->set(ErrorCodesGroupProcessorInterface::class, ErrorCodesGroupProcessor::class)
         ->arg('$categorySize', param(BridgeConstantsInterface::PARAM_ERROR_CODES_CATEGORY_SIZE))
-        ->arg('$errorCodesProviders', [
-            service('error_codes_provider.by_interface'),
-            service('error_codes_provider.by_enum'),
-        ]);
+        ->arg('$errorCodesProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER));
 
     // Console command
     $services

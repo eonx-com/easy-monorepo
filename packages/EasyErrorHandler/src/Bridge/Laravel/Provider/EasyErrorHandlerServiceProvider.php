@@ -202,15 +202,14 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                 return new ErrorCodesByInterfaceProvider(\config('easy-error-handler.error_codes_interface'));
             }
         );
+        $this->app->tag(ErrorCodesProviderInterface::class, [BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER]);
 
         $this->app->singleton(
             ErrorCodesGroupProcessorInterface::class,
             static function (Container $app): ErrorCodesGroupProcessorInterface {
                 return new ErrorCodesGroupProcessor(
                     \config('easy-error-handler.error_codes_category_size'),
-                    [
-                        $app->make(ErrorCodesProviderInterface::class),
-                    ]
+                    $app->tagged(BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER),
                 );
             }
         );
