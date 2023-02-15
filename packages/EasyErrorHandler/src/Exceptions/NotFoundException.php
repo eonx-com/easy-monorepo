@@ -6,7 +6,13 @@ namespace EonX\EasyErrorHandler\Exceptions;
 
 abstract class NotFoundException extends BaseException
 {
-    protected int $statusCode = 404;
+    /**
+     * @var int
+     */
+    protected $statusCode = 404;
 
-    protected ?string $userMessage = 'exceptions.not_found';
+    /**
+     * @var null|string
+     */
+    protected $userMessage = 'exceptions.not_found';
 }

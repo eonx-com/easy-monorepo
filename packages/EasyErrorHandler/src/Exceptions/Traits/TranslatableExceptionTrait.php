@@ -8,19 +8,25 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 
 trait TranslatableExceptionTrait
 {
-    protected ?string $domain;
+    /**
+     * @var null|string
+     */
+    protected $domain;
 
     /**
      * @var mixed[]
      */
-    protected array $messageParams = [];
+    protected $messageParams = [];
 
-    protected ?string $userMessage = TranslatableExceptionInterface::DEFAULT_USER_MESSAGE;
+    /**
+     * @var null|string
+     */
+    protected $userMessage = TranslatableExceptionInterface::DEFAULT_USER_MESSAGE;
 
     /**
      * @var mixed[]
      */
-    protected array $userMessageParams = [];
+    protected $userMessageParams = [];
 
     public function getDomain(): ?string
     {

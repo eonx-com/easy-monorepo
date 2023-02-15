@@ -6,7 +6,13 @@ namespace EonX\EasyErrorHandler\Exceptions;
 
 abstract class UnauthorizedException extends BaseException
 {
-    protected int $statusCode = 401;
+    /**
+     * @var int
+     */
+    protected $statusCode = 401;
 
-    protected ?string $userMessage = 'exceptions.unauthorized';
+    /**
+     * @var null|string
+     */
+    protected $userMessage = 'exceptions.unauthorized';
 }

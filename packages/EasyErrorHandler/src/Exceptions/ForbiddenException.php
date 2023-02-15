@@ -6,7 +6,13 @@ namespace EonX\EasyErrorHandler\Exceptions;
 
 abstract class ForbiddenException extends BaseException
 {
-    protected int $statusCode = 403;
+    /**
+     * @var int
+     */
+    protected $statusCode = 403;
 
-    protected ?string $userMessage = 'exceptions.forbidden';
+    /**
+     * @var null|string
+     */
+    protected $userMessage = 'exceptions.forbidden';
 }

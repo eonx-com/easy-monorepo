@@ -6,7 +6,10 @@ namespace EonX\EasyErrorHandler\Exceptions\Traits;
 
 trait SubCodeAwareExceptionTrait
 {
-    protected int $subCode = 0;
+    /**
+     * @var int
+     */
+    protected $subCode = 0;
 
     public function getSubCode(): int
     {

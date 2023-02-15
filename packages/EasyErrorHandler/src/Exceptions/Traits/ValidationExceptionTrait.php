@@ -9,7 +9,7 @@ trait ValidationExceptionTrait
     /**
      * @var mixed[]
      */
-    protected array $errors = [];
+    protected $errors = [];
 
     public function getErrors(): array
     {
