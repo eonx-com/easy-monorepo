@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySchedule\Bridge\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use EonX\EasySchedule\Event\CommandExecutedEvent;
+use EonX\EasySchedule\Events\CommandExecutedEvent;
 
 final class CommandExecutedEventListener
 {

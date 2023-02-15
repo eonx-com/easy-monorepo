@@ -6,7 +6,7 @@ namespace EonX\EasySchedule\Tests;
 
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
-use EonX\EasySchedule\Event\CommandExecutedEvent;
+use EonX\EasySchedule\Events\CommandExecutedEvent;
 use EonX\EasySchedule\Schedule;
 use EonX\EasySchedule\ScheduleRunner;
 use Prophecy\PhpUnit\ProphecyTrait;
