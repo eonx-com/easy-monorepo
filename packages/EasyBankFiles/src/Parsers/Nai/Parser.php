@@ -348,9 +348,6 @@ final class Parser extends AbstractLineByLineParser
         }
 
         $this->accounts[$this->currentAccount][$index]['line'] .= $line;
-
-//        \var_dump('__continue account__');
-//        \var_dump($this->accounts);
     }
 
     /**
