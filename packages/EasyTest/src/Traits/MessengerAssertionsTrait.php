@@ -4,92 +4,93 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Traits;
 
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\IsEqual;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMessageLimitListener;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
+use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
 use Symfony\Component\Messenger\Worker;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
+/**
+ * @mixin \EonX\EasyTest\Traits\ExceptionTrait
+ * @mixin \Symfony\Bundle\FrameworkBundle\Test\KernelTestCase
+ */
 trait MessengerAssertionsTrait
 {
     /**
      * Asserts that the given count of messages was sent to async transport.
      *
-     * @phpstan-param class-string|null $messageClass
+     * @param class-string|null $messageClass
      */
     public static function assertCountOfMessagesSentToAsyncTransport(int $count, ?string $messageClass = null): void
     {
-        Assert::assertCount($count, self::getMessagesSentToAsyncTransport($messageClass));
+        self::assertCount($count, self::getMessagesSentToAsyncTransport($messageClass));
     }
 
     /**
      * Asserts that the given count of messages was sent to failed transport.
      *
-     * @phpstan-param class-string|null $messageClass
+     * @param class-string|null $messageClass
      */
     public static function assertCountOfMessagesSentToFailedTransport(int $count, ?string $messageClass = null): void
     {
-        Assert::assertCount($count, self::getMessagesSentToFailedTransport($messageClass));
+        self::assertCount($count, self::getMessagesSentToFailedTransport($messageClass));
     }
 
     /**
      * Asserts that the given count of messages was sent to transport.
      *
-     * @phpstan-param class-string|null $messageClass
+     * @param class-string|null $messageClass
      */
     public static function assertCountOfMessagesSentToTransport(
         int $count,
         string $transportName,
         ?string $messageClass = null
     ): void {
-        Assert::assertCount($count, self::getMessagesSentToTransport($transportName, $messageClass));
+        self::assertCount($count, self::getMessagesSentToTransport($transportName, $messageClass));
     }
 
     /**
      * Asserts that the given message class was dispatched by the message bus to async transport.
      *
-     * @param mixed[] $expectedProperties
-     *
-     * @phpstan-param class-string $messageClass
+     * @param class-string $messageClass
+     * @param array<string, mixed> $expectedProperties
      */
     public static function assertMessageSentToAsyncTransport(
         string $messageClass,
-        ?array $expectedProperties = null,
-        ?int $messagesCount = null
+        array $expectedProperties = [],
+        int $messagesCount = 1
     ): void {
-        static::assertMessageSentToTransport($messageClass, 'async', $expectedProperties, $messagesCount);
+        self::assertMessageSentToTransport($messageClass, 'async', $expectedProperties, $messagesCount);
     }
 
     /**
      * Asserts that the given message class was dispatched by the message bus to failed transport.
      *
-     * @param mixed[] $expectedProperties
-     *
-     * @phpstan-param class-string $messageClass
+     * @param class-string $messageClass
+     * @param array<string, mixed> $expectedProperties
      */
     public static function assertMessageSentToFailedTransport(
         string $messageClass,
-        ?array $expectedProperties = null,
-        ?int $messagesCount = null
+        array $expectedProperties = [],
+        int $messagesCount = 1
     ): void {
-        static::assertMessageSentToTransport($messageClass, 'failed', $expectedProperties, $messagesCount);
+        self::assertMessageSentToTransport($messageClass, 'failed', $expectedProperties, $messagesCount);
     }
 
     /**
      * Asserts that the given message class was dispatched by the message bus.
      *
-     * @param mixed[] $expectedProperties
-     *
-     * @phpstan-param class-string $messageClass
+     * @param class-string $messageClass
+     * @param array<string, mixed> $expectedProperties
      */
     public static function assertMessageSentToTransport(
         string $messageClass,
         string $transportName,
-        ?array $expectedProperties = null,
-        ?int $messagesCount = null
+        array $expectedProperties = [],
+        int $messagesCount = 1
     ): void {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -100,7 +101,7 @@ trait MessengerAssertionsTrait
                     return false;
                 }
 
-                foreach ($expectedProperties ?? [] as $property => $expectedValue) {
+                foreach ($expectedProperties as $property => $expectedValue) {
                     $actualValue = $propertyAccessor->getValue($message, $property);
 
                     $isEqualConstraint = new IsEqual($expectedValue);
@@ -113,55 +114,73 @@ trait MessengerAssertionsTrait
             }
         );
 
-        Assert::assertCount($messagesCount ?? 1, $envelopes);
+        self::assertCount($messagesCount, $envelopes);
     }
 
-    public static function consumeAsyncMessages(): void
+    /**
+     * @param array<int, array<class-string<\Throwable>, int|string>> $expectedExceptions
+     */
+    public static function consumeAsyncMessages(array $expectedExceptions = []): void
     {
-        self::runMessengerWorker('async', 'default');
+        /**
+         * If some exception occurs during message handling, it will be caught by Symfony Messenger Worker,
+         * and the message will be sent to failed transport.
+         *
+         * After consuming messages we do some checks that can throw `Runtime` exceptions.
+         *
+         * If some exception is thrown, it will be caught by safeCall() method, and the test will be marked as passed,
+         * but it should be marked as failed.
+         */
+        if (isset(self::$isInsideSafeCall) && self::$isInsideSafeCall) {
+            throw new RuntimeException(
+                "You can't use MessengerAssertionsTrait::consumeAsyncMessages() in ExceptionTrait::safeCall()"
+            );
+        }
+
+        self::runMessengerWorker('async', 'default', $expectedExceptions);
     }
 
     /**
      * Returns dispatched messages by the message bus to async transport.
      *
-     * @phpstan-param class-string<TMessageClass>|null $messageClass
+     * @param class-string<TMessageClass>|null $messageClass
      *
-     * @phpstan-return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
+     * @return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
      *
-     * @phpstan-template TMessageClass
+     * @template TMessageClass
      */
     public static function getMessagesSentToAsyncTransport(?string $messageClass = null): array
     {
-        return static::getMessagesSentToTransport('async', $messageClass);
+        return self::getMessagesSentToTransport('async', $messageClass);
     }
 
     /**
      * Returns dispatched messages by the message bus to failed transport.
      *
-     * @phpstan-param class-string<TMessageClass>|null $messageClass
+     * @param class-string<TMessageClass>|null $messageClass
      *
-     * @phpstan-return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
+     * @return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
      *
-     * @phpstan-template TMessageClass
+     * @template TMessageClass
      */
     public static function getMessagesSentToFailedTransport(?string $messageClass = null): array
     {
-        return static::getMessagesSentToTransport('failed', $messageClass);
+        return self::getMessagesSentToTransport('failed', $messageClass);
     }
 
     /**
      * Returns dispatched messages by the message bus to async transport.
      *
-     * @phpstan-param class-string<TMessageClass>|null $messageClass
+     * @param class-string<TMessageClass>|null $messageClass
      *
-     * @phpstan-return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
+     * @return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
      *
-     * @phpstan-template TMessageClass
+     * @template TMessageClass
      */
     public static function getMessagesSentToTransport(string $transportName, ?string $messageClass = null): array
     {
         /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $transport */
-        $transport = KernelTestCase::getContainer()->get("messenger.transport.${transportName}");
+        $transport = self::getContainer()->get('messenger.transport.' . $transportName);
 
         $messages = [];
         foreach ($transport->getSent() as $envelope) {
@@ -175,25 +194,47 @@ trait MessengerAssertionsTrait
         return $messages;
     }
 
-    private static function runMessengerWorker(string $transportName, string $busName): void
+    private static function printExceptionDetails(ErrorDetailsStamp $errorDetailsStamp): void
     {
-        /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $asyncTransport */
-        $asyncTransport = KernelTestCase::getContainer()->get("messenger.transport.${transportName}");
+        echo "\n";
+        echo "\033[31mAn unexpected exception occurred while processing the message.\033[0m\n";
+        echo "\n";
+        echo 'Exception class: ' . $errorDetailsStamp->getExceptionClass() . "\n";
+        echo 'Exception code: ' . $errorDetailsStamp->getExceptionCode() . "\n";
+        echo 'Exception message: ' . $errorDetailsStamp->getExceptionMessage() . "\n";
+        echo "Stack trace:\n";
+        echo $errorDetailsStamp->getFlattenException()
+            ? $errorDetailsStamp->getFlattenException()
+                ->getTraceAsString()
+            : 'No stack trace available.';
+        echo "\n";
+    }
+
+    /**
+     * @param array<int, array<class-string<\Throwable>, int|string>> $expectedExceptions
+     */
+    private static function runMessengerWorker(
+        string $transportName,
+        string $busName,
+        array $expectedExceptions = []
+    ): void {
+        /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $transport */
+        $transport = self::getContainer()->get('messenger.transport.' . $transportName);
 
         /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
-        $eventDispatcher = KernelTestCase::getContainer()->get(EventDispatcherInterface::class);
+        $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
 
         /** @var \Symfony\Component\Messenger\MessageBusInterface $messageBus */
-        $messageBus = KernelTestCase::getContainer()->get("messenger.bus.${busName}");
+        $messageBus = self::getContainer()->get('messenger.bus.' . $busName);
 
         $tries = 0;
         $messageLimitListener = null;
         $eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener(2));
         /** @var \Symfony\Component\Messenger\EventListener\ResetServicesListener $resetServicesListener */
-        $resetServicesListener = KernelTestCase::getContainer()->get('messenger.listener.reset_services');
+        $resetServicesListener = self::getContainer()->get('messenger.listener.reset_services');
         $eventDispatcher->addSubscriber($resetServicesListener);
         while (++$tries < 10) {
-            $messagesCount = \count((array)$asyncTransport->get());
+            $messagesCount = \count((array)$transport->get());
 
             if ($messagesCount === 0) {
                 break;
@@ -206,8 +247,55 @@ trait MessengerAssertionsTrait
             $messageLimitListener = new StopWorkerOnMessageLimitListener($messagesCount);
             $eventDispatcher->addSubscriber($messageLimitListener);
 
-            $worker = new Worker(['async' => $asyncTransport], $messageBus, $eventDispatcher);
+            $worker = new Worker(['async' => $transport], $messageBus, $eventDispatcher);
             $worker->run();
+        }
+
+        // Message handler may dispatch new messages to async transport and this can happen multiple times.
+        // We need to consume all messages from async transport to make sure that all messages were processed.
+        // By default, we try to consume messages from async transport 10 times, and this is enough for most cases.
+        // If we don't do this, we may get false positive results.
+        if (\count((array)$transport->get()) > 0) {
+            throw new RuntimeException('Unable to consume all messages from async transport.');
+        }
+
+        // Symfony Messenger does not throw exceptions when message handler throws an exception.
+        // Instead, it stores exception details in ErrorDetailsStamp, and we need to check it manually.
+        // We can't throw this exception, because it stored as \Symfony\Component\ErrorHandler\Exception\FlattenException,
+        // and we can't get original exception.
+        foreach ($transport->getRejected() as $envelope) {
+            /** @var \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp $errorDetailsStamp */
+            foreach ($envelope->all(ErrorDetailsStamp::class) as $errorDetailsStamp) {
+                foreach ($expectedExceptions as $key => $expectedExceptionPair) {
+                    if (
+                        isset($expectedExceptionPair[$errorDetailsStamp->getExceptionClass()])
+                        && (
+                            $expectedExceptionPair[$errorDetailsStamp->getExceptionClass()]
+                            === $errorDetailsStamp->getExceptionCode()
+                        )
+                    ) {
+                        unset($expectedExceptions[$key]);
+
+                        continue 2;
+                    }
+                }
+
+                self::printExceptionDetails($errorDetailsStamp);
+
+                throw new RuntimeException('Exception was thrown during async messages processing.');
+            }
+        }
+
+        if (\count($expectedExceptions) > 0) {
+            $exceptions = \array_map(
+                static fn (array $expectedExceptionPair): string => \key($expectedExceptionPair),
+                $expectedExceptions
+            );
+
+            throw new RuntimeException(
+                "The following exceptions were expected but not thrown: \n - "
+                . \implode("\n - ", $exceptions)
+            );
         }
     }
 }
