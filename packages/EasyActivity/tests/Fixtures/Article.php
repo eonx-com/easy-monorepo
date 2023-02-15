@@ -39,7 +39,7 @@ class Article
     /**
      * @ORM\Column(type="datetimetz")
      *
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
     private $createdAt;
 

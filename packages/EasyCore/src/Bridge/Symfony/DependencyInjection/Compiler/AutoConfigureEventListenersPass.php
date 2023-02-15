@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection\Compiler;
 
-use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,7 +17,7 @@ final class AutoConfigureEventListenersPass implements CompilerPassInterface
         foreach ($listeners as $listener) {
             $def = $container->getDefinition($listener);
 
-            /** @var EventListenerInterface $instance */
+            /** @var \EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface $instance */
             $instance = $container->getReflectionClass($def->getClass())
                 ->newInstanceWithoutConstructor();
 

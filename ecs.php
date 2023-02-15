@@ -25,6 +25,9 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer;
 use PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
 use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
+use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedClassNameInAnnotationSniff;
+use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalConstantsSniff;
+use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalFunctionsSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
@@ -50,6 +53,7 @@ return static function (ECSConfig $ecsConfig): void {
 
     $ecsConfig->paths([
         __DIR__ . '/ecs.php',
+        __DIR__ . '/rector-ci.php',
         __DIR__ . '/monorepo-builder.php',
         __DIR__ . '/packages',
     ]);
@@ -68,6 +72,11 @@ return static function (ECSConfig $ecsConfig): void {
         BlankLineAfterOpeningTagFixer::class,
         ArrayOpenerAndCloserNewlineFixer::class,
         RemoveUselessDefaultCommentFixer::class,
+
+        FullyQualifiedGlobalFunctionsSniff::class => [
+            'config/*',
+            'src/*/Config/*',
+        ],
 
         MethodChainingNewlineFixer::class => [
             // bug, to be fixed in symplify
@@ -167,6 +176,10 @@ return static function (ECSConfig $ecsConfig): void {
     ]);
 
     $ecsConfig->rule(FileHeaderSniff::class);
+
+    $ecsConfig->rule(FullyQualifiedClassNameInAnnotationSniff::class);
+    $ecsConfig->rule(FullyQualifiedGlobalConstantsSniff::class);
+    $ecsConfig->rule(FullyQualifiedGlobalFunctionsSniff::class);
 
     $ecsConfig->rule(MethodChainingNewlineFixer::class);
 

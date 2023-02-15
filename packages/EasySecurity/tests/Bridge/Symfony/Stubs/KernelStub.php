@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
@@ -63,7 +62,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     }
 
     /**
-     * @return iterable<BundleInterface>
+     * @return iterable<\Symfony\Component\HttpKernel\Bundle\BundleInterface>
      */
     public function registerBundles(): iterable
     {

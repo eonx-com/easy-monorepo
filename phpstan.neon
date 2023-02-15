@@ -1,5 +1,5 @@
 includes:
-    - .quality/vendor/symplify/phpstan-extensions/config/config.neon
+    - quality/vendor/symplify/phpstan-extensions/config/config.neon
 
 services:
     - class: EonX\EasyMonorepo\PHPStan\SymfonyMessengerEnvelopeLastReturnType
@@ -30,12 +30,15 @@ parameters:
         - packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
         - packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
         - packages/EasySecurity/src/Bridge/Symfony/Security/SecurityContextAuthenticator.php
+        - packages/EasySwoole/src/Helpers/FunctionHelper.php
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
 
+        # ---- EasyActivity ----
+        # ---- EasyApiPlatform ----
         # ---- EasyApiToken ----
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'

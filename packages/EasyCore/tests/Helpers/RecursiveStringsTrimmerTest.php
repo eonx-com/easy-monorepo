@@ -26,7 +26,7 @@ final class RecursiveStringsTrimmerTest extends AbstractTestCase
 
         return [
             'data is a string' => [
-                'data' => " \t\n\r\0\x0B" . '123' . PHP_EOL,
+                'data' => " \t\n\r\0\x0B" . '123' . \PHP_EOL,
                 'except' => [],
                 'expectedResult' => '123',
             ],

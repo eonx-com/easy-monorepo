@@ -131,7 +131,7 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
     {
         return [
             'class' => \get_class($user),
-            'id' => $user->getUniqueId(),
+            'id' => $user->getUserIdentifier(),
         ];
     }
 }

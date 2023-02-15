@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Runtime;
 
 use EonX\EasyBugsnag\Interfaces\ValueOptionInterface as EasyBugsnagValueOptionInterface;
-use EonX\EasyUtils\Helpers\EnvVarSubstitutionHelper;
+use EonX\EasySwoole\Bridge\EasySchedule\EasyScheduleSwooleRunner;
+use EonX\EasySwoole\Helpers\EnvVarHelper;
+use EonX\EasySwoole\Helpers\FunctionHelper;
 use Swoole\Constant;
+use Symfony\Component\Console\Application;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Runtime\RunnerInterface;
 use Symfony\Component\Runtime\SymfonyRuntime;
@@ -40,13 +43,10 @@ final class EasySwooleRuntime extends SymfonyRuntime
      */
     public function getRunner(?object $application): RunnerInterface
     {
-        // Handle env var substitution
-        foreach (EnvVarSubstitutionHelper::resolveVariables($_SERVER) as $name => $value) {
-            $_SERVER[$name] = $value;
-        }
+        EnvVarHelper::loadEnvVars($this->options['json_secrets'] ?? null);
 
-        foreach (EnvVarSubstitutionHelper::resolveVariables($_ENV) as $name => $value) {
-            $_ENV[$name] = $value;
+        if ($application instanceof Application && isset($this->options[EasyScheduleSwooleRunner::ENABLED])) {
+            return new EasyScheduleSwooleRunner($application);
         }
 
         if ($application instanceof HttpKernelInterface) {
@@ -60,8 +60,8 @@ final class EasySwooleRuntime extends SymfonyRuntime
                 Constant::OPTION_ENABLE_STATIC_HANDLER => true,
                 Constant::OPTION_DOCUMENT_ROOT => '/var/www/public',
                 // Processes number
-                Constant::OPTION_REACTOR_NUM => \swoole_cpu_num() * 2,
-                Constant::OPTION_WORKER_NUM => \swoole_cpu_num() * 2,
+                Constant::OPTION_REACTOR_NUM => FunctionHelper::countCpu() * 2,
+                Constant::OPTION_WORKER_NUM => FunctionHelper::countCpu() * 2,
             ], $options['settings'] ?? []));
 
             // Bridge for eonx-com/easy-bugsnag to resolve request in CLI

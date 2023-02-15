@@ -26,12 +26,12 @@ final class FirebaseJwtDriver implements JwtDriverInterface
     private $leeway;
 
     /**
-     * @var OpenSSLAsymmetricKey|string
+     * @var \OpenSSLAsymmetricKey|string
      */
     private $privateKey;
 
     /**
-     * @var OpenSSLAsymmetricKey|string
+     * @var \OpenSSLAsymmetricKey|string
      */
     private $publicKey;
 

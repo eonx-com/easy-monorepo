@@ -6,7 +6,6 @@ namespace EonX\EasyHttpClient\Tests\Bridge\Symfony\Stubs;
 
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\StampInterface;
 
 final class MessageBusStub implements MessageBusInterface
 {
@@ -16,8 +15,8 @@ final class MessageBusStub implements MessageBusInterface
     private $envelopes = [];
 
     /**
-     * @param object|Envelope $message The message or the message pre-wrapped in an envelope
-     * @param StampInterface[] $stamps
+     * @param object|\Symfony\Component\Messenger\Envelope $message The message or the message pre-wrapped in an envelope
+     * @param \Symfony\Component\Messenger\Stamp\StampInterface[] $stamps
      */
     public function dispatch($message, ?array $stamps = null): Envelope
     {

@@ -23,6 +23,9 @@ final class FakeUser implements UserInterface, SymfonyUserInterface
         // Do nothing.
     }
 
+    /**
+     * @deprecated Will be removed after drop Symfony 5.4 support
+     */
     public function getPassword(): ?string
     {
         return null;
@@ -36,11 +39,17 @@ final class FakeUser implements UserInterface, SymfonyUserInterface
         return [];
     }
 
+    /**
+     * @deprecated Will be removed after drop Symfony 5.4 support
+     */
     public function getSalt(): ?string
     {
         return null;
     }
 
+    /**
+     * @deprecated Will be removed in 5.0.0
+     */
     public function getUniqueId(): string
     {
         return self::ID_USERNAME;
@@ -51,6 +60,9 @@ final class FakeUser implements UserInterface, SymfonyUserInterface
         return self::ID_USERNAME;
     }
 
+    /**
+     * @deprecated Will be removed after drop Symfony 5.4 support
+     */
     public function getUsername(): string
     {
         return self::ID_USERNAME;

@@ -28,6 +28,7 @@ final class ExceptionEventListener
             return;
         }
 
+        $event->allowCustomResponseCode();
         $event->setResponse($this->errorHandler->render($request, $throwable));
     }
 }

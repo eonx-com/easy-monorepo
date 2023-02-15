@@ -9,7 +9,7 @@ use Throwable;
 final class TransactionalExceptionEvent
 {
     /**
-     * @var Throwable
+     * @var \Throwable
      */
     private $throwable;
 

@@ -192,7 +192,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         int $minPrecision,
         int $maxPrecision
     ): ConstraintViolationBuilderInterface {
-        /** @var ConstraintViolationBuilderInterface $violationBuilder */
+        /** @var \Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface $violationBuilder */
         $violationBuilder = $this->mock(
             ConstraintViolationBuilderInterface::class,
             static function (MockInterface $mock) use ($code, $minPrecision, $maxPrecision): void {
@@ -225,7 +225,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         string $message,
         ConstraintViolationBuilderInterface $violationBuilder
     ): ExecutionContextInterface {
-        /** @var ExecutionContextInterface $context */
+        /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
             $violationBuilder
@@ -241,7 +241,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
 
     private function mockExecutionContextWithoutCalls(): ExecutionContextInterface
     {
-        /** @var ExecutionContextInterface $context */
+        /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('buildViolation')
                 ->never();

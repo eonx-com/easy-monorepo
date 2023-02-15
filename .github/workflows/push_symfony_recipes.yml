@@ -14,7 +14,7 @@ jobs:
         name: Push Symfony Recipes
         runs-on: ubuntu-latest
         steps:
-            -   uses: eonx-com/actions-checkout@v2
+            -   uses: actions/checkout@v3
             -   run: git fetch --prune --unshallow
 
             -   name: Remove Git Extra Header

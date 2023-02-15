@@ -6,15 +6,17 @@ namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataCollector;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\DataCollector\RequestDataCollector as BaseRequestDataCollector;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\TraceableChainSimpleDataPersister;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
+/**
+ * @deprecated since 4.2.8, will be removed in 5.0.
+ */
 final class RequestDataCollector extends DataCollector
 {
     /**
-     * @var TraceableChainSimpleDataPersister|DataPersisterInterface
+     * @var \EonX\EasyCore\Bridge\Symfony\ApiPlatform\DataPersister\TraceableChainSimpleDataPersister|\ApiPlatform\Core\DataPersister\DataPersisterInterface
      */
     private $dataPersister;
 

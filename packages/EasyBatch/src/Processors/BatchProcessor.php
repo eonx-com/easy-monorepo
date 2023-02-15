@@ -48,20 +48,23 @@ final class BatchProcessor
         $this->cache[$batchItem->getIdOrFail()] = true;
 
         $updateFunc = function (BatchInterface $freshBatch) use ($batchItem, $updateFreshBatch): BatchInterface {
-            if ($batchItem->isCompleted()) {
-                $freshBatch->setProcessed($freshBatch->countProcessed() + 1);
-            }
+            // Update counts only when processed not matching total
+            if ($freshBatch->countProcessed() < $freshBatch->countTotal()) {
+                if ($batchItem->isCompleted()) {
+                    $freshBatch->setProcessed($freshBatch->countProcessed() + 1);
+                }
 
-            if ($batchItem->isCancelled()) {
-                $freshBatch->setCancelled($freshBatch->countCancelled() + 1);
-            }
+                if ($batchItem->isCancelled()) {
+                    $freshBatch->setCancelled($freshBatch->countCancelled() + 1);
+                }
 
-            if ($batchItem->isFailed()) {
-                $freshBatch->setFailed($freshBatch->countFailed() + 1);
-            }
+                if ($batchItem->isFailed()) {
+                    $freshBatch->setFailed($freshBatch->countFailed() + 1);
+                }
 
-            if ($batchItem->isSucceeded()) {
-                $freshBatch->setSucceeded($freshBatch->countSucceeded() + 1);
+                if ($batchItem->isSucceeded()) {
+                    $freshBatch->setSucceeded($freshBatch->countSucceeded() + 1);
+                }
             }
 
             $this->updateCommonBatchProperties($freshBatch);

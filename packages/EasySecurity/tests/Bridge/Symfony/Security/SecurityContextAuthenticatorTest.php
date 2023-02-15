@@ -31,7 +31,7 @@ final class SecurityContextAuthenticatorTest extends AbstractTestCase
         $securityContextResolver = $this->prophesize(SecurityContextResolverInterface::class);
         $securityContextResolver->resolveContext()
             ->willThrow($thrownException);
-        /** @var SecurityContextResolverInterface $securityContextResolverReveal */
+        /** @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface $securityContextResolverReveal */
         $securityContextResolverReveal = $securityContextResolver->reveal();
         $authenticator = new SecurityContextAuthenticator(
             $securityContextResolverReveal,

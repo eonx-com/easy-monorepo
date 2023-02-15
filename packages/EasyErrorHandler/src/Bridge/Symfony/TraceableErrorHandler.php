@@ -6,11 +6,12 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony;
 
 use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\TraceableErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyErrorHandler\Interfaces\FormatAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-final class TraceableErrorHandler implements TraceableErrorHandlerInterface
+final class TraceableErrorHandler implements TraceableErrorHandlerInterface, FormatAwareInterface
 {
     /**
      * @var \Symfony\Component\HttpFoundation\Response[]
@@ -65,5 +66,14 @@ final class TraceableErrorHandler implements TraceableErrorHandlerInterface
         $this->reportedErrors[] = $throwable;
 
         $this->decorated->report($throwable);
+    }
+
+    public function supportsFormat(Request $request): bool
+    {
+        if ($this->decorated instanceof FormatAwareInterface) {
+            return $this->decorated->supportsFormat($request);
+        }
+
+        return false;
     }
 }

@@ -127,7 +127,7 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
     public function testValidEasyActivityConfig(string $configName, array $subjects): void
     {
         $container = $this->getKernel([__DIR__ . '/Fixtures/' . $configName])->getContainer();
-        /** @var ActivitySubjectResolverInterface $subjectResolver */
+        /** @var \EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface $subjectResolver */
         $subjectResolver = $container->get(ActivitySubjectResolverInterface::class);
 
         self::assertInstanceOf(

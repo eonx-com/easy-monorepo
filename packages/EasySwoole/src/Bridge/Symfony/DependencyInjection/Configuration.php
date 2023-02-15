@@ -21,6 +21,22 @@ final class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('enabled')->defaultTrue()->end()
+                        ->arrayNode('do_not_log_paths')
+                            ->beforeNormalization()
+                                ->always(static function ($value): array {
+                                    if ($value === null) {
+                                        $value = [];
+                                    }
+
+                                    return \array_map(static function ($mapValue): string {
+                                        return u((string)$mapValue)
+                                            ->ensureStart('/')
+                                            ->toString();
+                                    }, \is_array($value) ? $value : [$value]);
+                                })
+                            ->end()
+                            ->scalarPrototype()->end()
+                        ->end()
                         ->scalarNode('timezone')->defaultValue('UTC')->end()
                     ->end()
                 ->end()

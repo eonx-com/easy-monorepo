@@ -12,7 +12,7 @@
         "phpunit/phpunit": "^9.5",
         "firebase/php-jwt": "^5.0",
         "guzzlehttp/psr7": "^2.1",
-        "eonx-com/easy-utils": "^4.3",
+        "eonx-com/easy-utils": "^4.4",
         "auth0/auth0-php": "^8.0",
         "psr/container": "^1.0",
         "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
@@ -40,17 +40,16 @@
         "firebase/php-jwt": "To use the Amazon Cognito or the Firebase JWT driver to decode/encode tokens",
         "phpseclib/phpseclib": "To use the Amazon Cognito JWT driver to decode/encode tokens"
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "4.3-dev"
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../packages/EasyUtils"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.4-dev"
         }
-    ],
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }

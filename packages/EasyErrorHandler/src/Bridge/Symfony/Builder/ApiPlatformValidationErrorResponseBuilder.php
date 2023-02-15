@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Core\Exception\InvalidArgumentException as LegacyInvalidArgumentException;
+use ApiPlatform\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,11 +69,19 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     {
         $message = $throwable->getMessage();
 
+        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
+        $invalidArgumentExceptionClass = null;
+        if (\class_exists(InvalidArgumentException::class)) {
+            $invalidArgumentExceptionClass = InvalidArgumentException::class;
+        }
+
         return match ($throwable::class) {
-            InvalidArgumentException::class => \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1,
+            $invalidArgumentExceptionClass, LegacyInvalidArgumentException::class =>
+                \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1,
             MissingConstructorArgumentsException::class =>
                 \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $message) === 1,
             UnexpectedValueException::class =>
+                \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_IRI, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NESTED_DOCUMENTS_NOT_ALLOWED, $message) === 1 ||
@@ -99,7 +108,18 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
         $data[$messageKey] = $this->translator->trans(self::MESSAGE_NOT_VALID, []);
 
-        if ($throwable instanceof InvalidArgumentException) {
+        $isInvalidArgumentException = null;
+
+        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
+        if (\class_exists(InvalidArgumentException::class)) {
+            $isInvalidArgumentException = $throwable instanceof InvalidArgumentException;
+        }
+
+        if (\class_exists(InvalidArgumentException::class) === false) {
+            $isInvalidArgumentException = $throwable instanceof LegacyInvalidArgumentException;
+        }
+
+        if ($isInvalidArgumentException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches);
             $data[$violationsKey] = [
@@ -124,6 +144,16 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             $matches = [];
 
             switch (1) {
+                case \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches) === 1:
+                    $data[$violationsKey] = [
+                        $matches[1] => [
+                            $matches[3] === self::VALUE_NULL
+                                ? (new NotNull())->message
+                                : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[2], $matches[3]),
+                        ],
+                    ];
+
+                    break;
                 case \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1:
                 case \preg_match(self::MESSAGE_PATTERN_INVALID_IRI, $message) === 1:
                     $data[$violationsKey] = [$message];

@@ -31,6 +31,10 @@ final class FromRequestSecurityContextConfiguratorListener
 
     public function __invoke(RequestEvent $event): void
     {
+        if ($event->isMainRequest() === false) {
+            return;
+        }
+
         $this->securityContextResolver->setConfigurator(new FromRequestConfigurator(
             $event->getRequest(),
             $this->configurators

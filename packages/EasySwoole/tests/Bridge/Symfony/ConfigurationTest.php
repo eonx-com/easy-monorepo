@@ -13,6 +13,7 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
     private const DEFAULT_CONFIG = [
         'access_log' => [
             'enabled' => true,
+            'do_not_log_paths' => [],
             'timezone' => 'UTC',
         ],
         'doctrine' => [
@@ -39,110 +40,6 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
     ];
 
     /**
-     * @return iterable<mixed>
-     */
-    public function providerTestConfiguration(): iterable
-    {
-        yield 'No configuration set' => [
-            [],
-            self::DEFAULT_CONFIG,
-        ];
-
-        yield 'Disable access_log' => [
-            [
-                [
-                    'access_log' => [
-                        'enabled' => false,
-                    ],
-                ],
-            ],
-            ArrayHelper::smartReplace(self::DEFAULT_CONFIG, ['access_log' => ['enabled' => false]]),
-        ];
-
-        yield 'Normalize allowed static php files' => [
-            [
-                [
-                    'static_php_files' => [
-                        'allowed_filenames' => 'hash.php',
-                    ],
-                ],
-            ],
-            ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
-                'static_php_files' => [
-                    'allowed_filenames' => ['/hash.php'],
-                ],
-            ]),
-        ];
-
-        yield 'Normalize allowed static php files - 1' => [
-            [
-                [
-                    'static_php_files' => [
-                        'allowed_filenames' => '/hash.php',
-                    ],
-                ],
-            ],
-            ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
-                'static_php_files' => [
-                    'allowed_filenames' => ['/hash.php'],
-                ],
-            ]),
-        ];
-
-        yield 'Normalize allowed static php files - support null' => [
-            [
-                [
-                    'static_php_files' => [
-                        'allowed_filenames' => null,
-                    ],
-                ],
-            ],
-            self::DEFAULT_CONFIG,
-        ];
-
-        yield 'Normalize allowed static php dirs - support null' => [
-            [
-                [
-                    'static_php_files' => [
-                        'allowed_dirs' => null,
-                    ],
-                ],
-            ],
-            self::DEFAULT_CONFIG,
-        ];
-
-        yield 'Normalize allowed static php dirs - filter empty strings' => [
-            [
-                [
-                    'static_php_files' => [
-                        'allowed_dirs' => '/',
-                    ],
-                ],
-            ],
-            ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
-                'static_php_files' => [
-                    'allowed_dirs' => ['%kernel.project_dir%/public'],
-                ],
-            ]),
-        ];
-
-        yield 'Normalize allowed static php dirs - trim trailing slash' => [
-            [
-                [
-                    'static_php_files' => [
-                        'allowed_dirs' => '/path/to/dir/',
-                    ],
-                ],
-            ],
-            ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
-                'static_php_files' => [
-                    'allowed_dirs' => ['/path/to/dir'],
-                ],
-            ]),
-        ];
-    }
-
-    /**
      * @param mixed[] $configs
      * @param mixed[] $expectedConfig
      *
@@ -153,5 +50,152 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
         $config = (new Processor())->processConfiguration(new Configuration(), $configs);
 
         self::assertEquals($expectedConfig, $config);
+    }
+
+    /**
+     * @return iterable<mixed>
+     *
+     * @see testConfiguration
+     */
+    protected function providerTestConfiguration(): iterable
+    {
+        yield 'No configuration set' => [
+            'configs' => [],
+            'expectedConfig' => self::DEFAULT_CONFIG,
+        ];
+
+        yield 'Disable access_log' => [
+            'configs' => [
+                [
+                    'access_log' => [
+                        'enabled' => false,
+                    ],
+                ],
+            ],
+            'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, ['access_log' => ['enabled' => false]]),
+        ];
+
+        yield 'Normalize do not log paths' => [
+            'configs' => [
+                [
+                    'access_log' => [
+                        'do_not_log_paths' => 'hash.php',
+                    ],
+                ],
+            ],
+            'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
+                'access_log' => [
+                    'do_not_log_paths' => ['/hash.php'],
+                ],
+            ]),
+        ];
+
+        yield 'Normalize do not log paths - 1' => [
+            'configs' => [
+                [
+                    'access_log' => [
+                        'do_not_log_paths' => '/hash.php',
+                    ],
+                ],
+            ],
+            'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
+                'access_log' => [
+                    'do_not_log_paths' => ['/hash.php'],
+                ],
+            ]),
+        ];
+
+        yield 'Normalize do not log paths - support null' => [
+            'configs' => [
+                [
+                    'access_log' => [
+                        'do_not_log_paths' => null,
+                    ],
+                ],
+            ],
+            'expectedConfig' => self::DEFAULT_CONFIG,
+        ];
+
+        yield 'Normalize allowed static php files' => [
+            'configs' => [
+                [
+                    'static_php_files' => [
+                        'allowed_filenames' => 'hash.php',
+                    ],
+                ],
+            ],
+            'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
+                'static_php_files' => [
+                    'allowed_filenames' => ['/hash.php'],
+                ],
+            ]),
+        ];
+
+        yield 'Normalize allowed static php files - 1' => [
+            'configs' => [
+                [
+                    'static_php_files' => [
+                        'allowed_filenames' => '/hash.php',
+                    ],
+                ],
+            ],
+            'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
+                'static_php_files' => [
+                    'allowed_filenames' => ['/hash.php'],
+                ],
+            ]),
+        ];
+
+        yield 'Normalize allowed static php files - support null' => [
+            'configs' => [
+                [
+                    'static_php_files' => [
+                        'allowed_filenames' => null,
+                    ],
+                ],
+            ],
+            'expectedConfig' => self::DEFAULT_CONFIG,
+        ];
+
+        yield 'Normalize allowed static php dirs - support null' => [
+            'configs' => [
+                [
+                    'static_php_files' => [
+                        'allowed_dirs' => null,
+                    ],
+                ],
+            ],
+            'expectedConfig' => self::DEFAULT_CONFIG,
+        ];
+
+        yield 'Normalize allowed static php dirs - filter empty strings' => [
+            'configs' => [
+                [
+                    'static_php_files' => [
+                        'allowed_dirs' => '/',
+                    ],
+                ],
+            ],
+            'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
+                'static_php_files' => [
+                    'allowed_dirs' => ['%kernel.project_dir%/public'],
+                ],
+            ]),
+        ];
+
+        yield 'Normalize allowed static php dirs - trim trailing slash' => [
+            'configs' => [
+                [
+                    'static_php_files' => [
+                        'allowed_dirs' => '/path/to/dir/',
+                    ],
+                ],
+            ],
+            'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
+                'static_php_files' => [
+                    'allowed_dirs' => ['/path/to/dir'],
+                ],
+            ]),
+        ];
     }
 }
