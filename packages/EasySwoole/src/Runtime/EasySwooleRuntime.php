@@ -7,6 +7,7 @@ namespace EonX\EasySwoole\Runtime;
 use EonX\EasyBugsnag\Interfaces\ValueOptionInterface as EasyBugsnagValueOptionInterface;
 use EonX\EasySwoole\Bridge\EasySchedule\EasyScheduleSwooleRunner;
 use EonX\EasySwoole\Helpers\EnvVarHelper;
+use EonX\EasySwoole\Helpers\FunctionHelper;
 use Swoole\Constant;
 use Symfony\Component\Console\Application;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -59,8 +60,8 @@ final class EasySwooleRuntime extends SymfonyRuntime
                 Constant::OPTION_ENABLE_STATIC_HANDLER => true,
                 Constant::OPTION_DOCUMENT_ROOT => '/var/www/public',
                 // Processes number
-                Constant::OPTION_REACTOR_NUM => \swoole_cpu_num() * 2,
-                Constant::OPTION_WORKER_NUM => \swoole_cpu_num() * 2,
+                Constant::OPTION_REACTOR_NUM => FunctionHelper::countCpu() * 2,
+                Constant::OPTION_WORKER_NUM => FunctionHelper::countCpu() * 2,
             ], $options['settings'] ?? []));
 
             // Bridge for eonx-com/easy-bugsnag to resolve request in CLI
