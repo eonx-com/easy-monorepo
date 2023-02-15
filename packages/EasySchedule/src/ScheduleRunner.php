@@ -44,8 +44,8 @@ final class ScheduleRunner implements ScheduleRunnerInterface
             try {
                 $event->run($schedule->getApplication());
             } finally {
-                $lock->release();
                 $this->eventDispatcher->dispatch(new CommandExecutedEvent($event));
+                $lock->release();
             }
         }
 
