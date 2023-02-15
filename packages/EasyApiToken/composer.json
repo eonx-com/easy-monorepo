@@ -45,12 +45,6 @@
             "dev-master": "4.4-dev"
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../packages/EasyUtils"
-        }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true
 }
