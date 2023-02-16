@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge\Symfony\Providers;
+namespace EonX\EasyErrorHandler\Providers;
 
 use EonX\EasyErrorHandler\Annotations\AsErrorCodes;
+use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeDto;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
 use PhpParser\Error;
 use PhpParser\Node\Stmt\Enum_;
@@ -13,7 +14,7 @@ use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use ReflectionClass;
 
-final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
+final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
 {
     private Parser $parser;
 
@@ -34,7 +35,18 @@ final class ErrorCodesByEnumProvider implements ErrorCodesProviderInterface
         foreach ($enums as $enum) {
             $cases = $enum::cases();
             foreach ($cases as $case) {
-                $errorCodes[$case->name] = $case->value;
+                $splittedName = \preg_split(
+                    pattern: '/([A-Z\d][a-z\d]+)/u',
+                    subject: $case->name,
+                    flags: \PREG_SPLIT_DELIM_CAPTURE
+                );
+                if (\is_array($splittedName)) {
+                    $errorCodes[] = new ErrorCodeDto(
+                        originalName: $case->name,
+                        errorCode: $case->value,
+                        splittedName: \array_filter($splittedName, static fn ($value) => $value !== '')
+                    );
+                }
             }
         }
 

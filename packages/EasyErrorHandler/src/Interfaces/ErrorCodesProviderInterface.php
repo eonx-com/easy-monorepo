@@ -7,7 +7,7 @@ namespace EonX\EasyErrorHandler\Interfaces;
 interface ErrorCodesProviderInterface
 {
     /**
-     * @return mixed[]
+     * @return array<\EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeDto>
      */
     public function provide(): array;
 }

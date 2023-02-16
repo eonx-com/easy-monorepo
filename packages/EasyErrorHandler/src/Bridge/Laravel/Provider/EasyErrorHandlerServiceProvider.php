@@ -30,7 +30,8 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Processors\ErrorCodesGroupProcessor;
-use EonX\EasyErrorHandler\Providers\ErrorCodesByInterfaceProvider;
+use EonX\EasyErrorHandler\Providers\ErrorCodesFromEnumProvider;
+use EonX\EasyErrorHandler\Providers\ErrorCodesFromInterfaceProvider;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
@@ -197,12 +198,20 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         }
 
         $this->app->singleton(
-            ErrorCodesProviderInterface::class,
+            ErrorCodesFromInterfaceProvider::class,
             static function (): ErrorCodesProviderInterface {
-                return new ErrorCodesByInterfaceProvider(\config('easy-error-handler.error_codes_interface'));
+                return new ErrorCodesFromInterfaceProvider(\config('easy-error-handler.error_codes_interface'));
             }
         );
-        $this->app->tag(ErrorCodesProviderInterface::class, [BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER]);
+        $this->app->tag(ErrorCodesFromInterfaceProvider::class, [BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER]);
+
+        $this->app->singleton(
+            ErrorCodesFromEnumProvider::class,
+            function (): ErrorCodesProviderInterface {
+                return new ErrorCodesFromEnumProvider($this->app->basePath());
+            }
+        );
+        $this->app->tag(ErrorCodesFromEnumProvider::class, [BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER]);
 
         $this->app->singleton(
             ErrorCodesGroupProcessorInterface::class,

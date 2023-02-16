@@ -31,10 +31,10 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
             }
         }
 
-        foreach ($providedErrorCodes as $errorCodeName => $errorCodeValue) {
-            $errorCodeCategory = $errorCodeValue - ($errorCodeValue % $this->categorySize);
+        foreach ($providedErrorCodes as $errorCodeDto) {
+            $errorCodeCategory = $errorCodeDto->getErrorCode() - ($errorCodeDto->getErrorCode() % $this->categorySize);
             $groupedErrorCodes[$errorCodeCategory] = $groupedErrorCodes[$errorCodeCategory] ?? [];
-            $groupedErrorCodes[$errorCodeCategory][$errorCodeName] = $errorCodeValue;
+            $groupedErrorCodes[$errorCodeCategory][] = $errorCodeDto;
         }
 
         \ksort($groupedErrorCodes);
@@ -48,8 +48,8 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
 
         foreach ($groupedErrorCodes as $errorCodes) {
             $nextGroupedErrorCodes[] = new ErrorCodeCategoryDto(
-                categoryName: $this->determineCategoryName(\array_keys($errorCodes)),
-                nextErrorCodeToUse: \max(\array_values($errorCodes)) + 1
+                categoryName: $this->determineCategoryName($errorCodes),
+                nextErrorCodeToUse: $this->calculateMaxCategoryCode($errorCodes) + 1
             );
         }
 
@@ -68,21 +68,28 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
     }
 
     /**
-     * @param mixed[] $errorCodeNames
+     * @param array<\EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeDto> $errorCodes
      */
-    private function determineCategoryName(array $errorCodeNames): string
+    private function calculateMaxCategoryCode(array $errorCodes): int
     {
-        $explodedErrorCodeNames = \array_map(
-            static function ($errorCodeName): array {
-                $splittedErrorCodeName = \preg_split(
-                    pattern: '/([A-Z\d]+(?=_)|[A-Z\d][a-z]+(?=[A-Z\d]))/u',
-                    subject: $errorCodeName,
-                    flags: \PREG_SPLIT_DELIM_CAPTURE
-                );
-                return \array_filter((array)$splittedErrorCodeName, static fn ($value) => $value !== '');
-            },
-            $errorCodeNames
-        );
+        $maxCode = 0;
+        foreach ($errorCodes as $errorCodeDto) {
+            $maxCode = \max($maxCode, $errorCodeDto->getErrorCode());
+        }
+        return $maxCode;
+    }
+
+    /**
+     * @param array<\EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeDto> $errorCodes
+     */
+    private function determineCategoryName(array $errorCodes): string
+    {
+        $explodedErrorCodeNames = [];
+        $groupSeparator = $errorCodes[0]->getGroupSeparator();
+        foreach ($errorCodes as $errorCodeDto) {
+            $explodedErrorCodeNames[] = $errorCodeDto->getSplittedName();
+        }
+
         $errorCodeNamesCount = \count($explodedErrorCodeNames);
         $categoryNameParts = [];
 
@@ -101,6 +108,6 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
             }
         } while ($partIsMatched);
 
-        return \implode('', $categoryNameParts) . '*';
+        return \sprintf('%s%s*', \implode($groupSeparator, $categoryNameParts), $groupSeparator);
     }
 }

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Providers;
 
+use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeDto;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 
-final class ErrorCodesByInterfaceProvider implements ErrorCodesProviderInterface
+final class ErrorCodesFromInterfaceProvider implements ErrorCodesProviderInterface
 {
     private const ERROR_CODE_NAME_PREFIX = 'ERROR_';
 
@@ -32,10 +33,20 @@ final class ErrorCodesByInterfaceProvider implements ErrorCodesProviderInterface
             throw new ClassNotFoundError($exception->getMessage(), $exception);
         }
 
-        return \array_filter(
-            $reflection->getConstants(),
-            static fn ($name) => \str_starts_with($name, self::ERROR_CODE_NAME_PREFIX),
-            \ARRAY_FILTER_USE_KEY
-        );
+        $constants = $reflection->getConstants();
+        $errorCodes = [];
+        foreach ($constants as $name => $code) {
+            if (\str_starts_with($name, self::ERROR_CODE_NAME_PREFIX) === false) {
+                continue;
+            }
+            $errorCodes[] = new ErrorCodeDto(
+                originalName: $name,
+                errorCode: $code,
+                splittedName: \explode('_', $name),
+                groupSeparator: '_'
+            );
+        }
+
+        return $errorCodes;
     }
 }

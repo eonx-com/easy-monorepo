@@ -10,7 +10,6 @@ use EonX\EasyErrorHandler\Bridge\Symfony\DataCollector\ErrorHandlerDataCollector
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ConsoleErrorEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ExceptionEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Messenger\ReportErrorEventListener;
-use EonX\EasyErrorHandler\Bridge\Symfony\Providers\ErrorCodesByEnumProvider;
 use EonX\EasyErrorHandler\Bridge\Symfony\Translator;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
@@ -23,7 +22,8 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Processors\ErrorCodesGroupProcessor;
-use EonX\EasyErrorHandler\Providers\ErrorCodesByInterfaceProvider;
+use EonX\EasyErrorHandler\Providers\ErrorCodesFromEnumProvider;
+use EonX\EasyErrorHandler\Providers\ErrorCodesFromInterfaceProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 
@@ -90,12 +90,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$drivers', tagged_iterator(BridgeConstantsInterface::TAG_VERBOSE_STRATEGY_DRIVER))
         ->arg('$defaultIsVerbose', param(BridgeConstantsInterface::PARAM_IS_VERBOSE));
 
-    // Error codes provider
-    $services->set('error_codes_provider.by_interface', ErrorCodesByInterfaceProvider::class)
+    // Error codes providers
+    $services->set('error_codes_provider.from_interface', ErrorCodesFromInterfaceProvider::class)
         ->arg('$errorCodesInterface', param(BridgeConstantsInterface::PARAM_ERROR_CODES_INTERFACE))
         ->tag(BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER);
 
-    $services->set('error_codes_provider.by_enum', ErrorCodesByEnumProvider::class)
+    $services->set('error_codes_provider.from_enum', ErrorCodesFromEnumProvider::class)
         ->arg('$projectDir', param('kernel.project_dir'))
         ->tag(BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER);
 
