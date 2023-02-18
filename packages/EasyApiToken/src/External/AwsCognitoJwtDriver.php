@@ -18,24 +18,14 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
 
     private const TOKEN_TYPE_ID = 'id';
 
-    /**
-     * @var string[]
-     */
-    private array $allowedAlgos;
-
     private JwkFetcherInterface $jwkFetcher;
 
-    /**
-     * @param null|string[] $allowedAlgos
-     */
     public function __construct(
-        private UserPoolConfigInterface $userPoolConfig,
+        private readonly UserPoolConfigInterface $userPoolConfig,
         ?JwkFetcherInterface $jwkFetcher = null,
-        ?array $allowedAlgos = null,
-        private ?int $leeway = null
+        private readonly ?int $leeway = null
     ) {
         $this->jwkFetcher = $jwkFetcher ?? new JwkFetcher();
-        $this->allowedAlgos = $allowedAlgos ?? [];
     }
 
     /**
@@ -48,8 +38,7 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
             JWT::$leeway = $this->leeway;
         }
 
-        /** @var \stdClass $decodedToken */
-        $decodedToken = JWT::decode($token, $this->jwkFetcher->getJwks($this->userPoolConfig), $this->allowedAlgos);
+        $decodedToken = JWT::decode($token, $this->jwkFetcher->getJwks($this->userPoolConfig));
         $tokenType = $decodedToken->token_use ?? null;
 
         // Validate audience

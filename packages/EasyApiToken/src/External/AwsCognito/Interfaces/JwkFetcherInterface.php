@@ -7,7 +7,7 @@ namespace EonX\EasyApiToken\External\AwsCognito\Interfaces;
 interface JwkFetcherInterface
 {
     /**
-     * @return mixed[]
+     * @return array<string,\Firebase\JWT\Key>
      */
     public function getJwks(UserPoolConfigInterface $userPoolConfig): array;
 }

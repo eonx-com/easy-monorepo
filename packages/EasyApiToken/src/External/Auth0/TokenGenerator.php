@@ -76,6 +76,6 @@ final class TokenGenerator implements TokenGeneratorInterface
             true
         ) : $this->secret;
 
-        return JWT::encode($payload, (string)$secret);
+        return JWT::encode($payload, (string)$secret, 'HS256');
     }
 }

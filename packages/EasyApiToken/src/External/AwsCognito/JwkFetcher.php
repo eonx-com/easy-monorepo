@@ -7,6 +7,7 @@ namespace EonX\EasyApiToken\External\AwsCognito;
 use EonX\EasyApiToken\External\AwsCognito\Interfaces\JwkFetcherInterface;
 use EonX\EasyApiToken\External\AwsCognito\Interfaces\UserPoolConfigInterface;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Math\BigInteger;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -17,38 +18,18 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class JwkFetcher implements JwkFetcherInterface
 {
-    /**
-     * @var int
-     */
-    private const CACHE_EXPIRY = 3600;
-
-    /**
-     * @var \Symfony\Contracts\Cache\CacheInterface
-     */
-    private $cache;
-
-    /**
-     * @var int
-     */
-    private $cacheExpiry;
-
-    /**
-     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
-     */
-    private $httpClient;
+    private HttpClientInterface $httpClient;
 
     public function __construct(
-        ?CacheInterface $cache = null,
-        ?int $cacheExpiry = null,
+        private readonly CacheInterface $cache = new ArrayAdapter(),
+        private readonly int $cacheExpiry = 3600,
         ?HttpClientInterface $httpClient = null
     ) {
-        $this->cache = $cache ?? new ArrayAdapter();
-        $this->cacheExpiry = $cacheExpiry ?? self::CACHE_EXPIRY;
         $this->httpClient = $httpClient ?? HttpClient::create();
     }
 
     /**
-     * @return mixed[]
+     * @return array<string,\Firebase\JWT\Key>
      *
      * @throws \Psr\Cache\InvalidArgumentException
      */
@@ -76,7 +57,7 @@ final class JwkFetcher implements JwkFetcherInterface
     }
 
     /**
-     * @return mixed[]
+     * @return array<string,\Firebase\JWT\Key>
      *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
@@ -93,7 +74,7 @@ final class JwkFetcher implements JwkFetcherInterface
         $keys = [];
 
         foreach ($response['keys'] as $jwk) {
-            $keys[$jwk['kid']] = $this->convertJwkToPem($jwk);
+            $keys[(string)$jwk['kid']] = new Key($this->convertJwkToPem($jwk), $jwk['alg'] ?? 'HS256');
         }
 
         return $keys;
