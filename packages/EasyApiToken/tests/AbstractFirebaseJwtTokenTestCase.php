@@ -44,7 +44,6 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
         OpenSSLAsymmetricKey|string|null $privateKey = null,
         ?array $allowedAlgos = null,
         ?int $leeway = null,
-
     ): JwtDriverInterface {
         return new FirebaseJwtDriver(
             $algo ?? static::$defaultAlgo,
