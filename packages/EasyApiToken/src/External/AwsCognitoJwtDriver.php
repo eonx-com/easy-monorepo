@@ -17,6 +17,8 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
 {
     use JwtTrait;
 
+    private const DEFAULT_JWK_ALGO = 'RS256';
+
     private const TOKEN_TYPE_ACCESS = 'access';
 
     private const TOKEN_TYPE_ID = 'id';
@@ -38,7 +40,7 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
         ?JwkFetcherInterface $jwkFetcher = null,
         ?array $allowedAlgos = null,
         private readonly ?int $leeway = null,
-        private readonly string $defaultJwkAlgo = 'HS256'
+        private readonly string $defaultJwkAlgo = self::DEFAULT_JWK_ALGO
     ) {
         $this->jwkFetcher = $jwkFetcher ?? new JwkFetcher();
         $this->allowedAlgos = $allowedAlgos ?? [];
@@ -58,7 +60,7 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
 
         if (self::isFirebaseJwtV5() === false) {
             foreach ($jwks as $keyId => $key) {
-                $jwks[$keyId] = new Key($key, $this->defaultJwkAlgo ?? 'HS256');
+                $jwks[$keyId] = new Key($key, $this->defaultJwkAlgo);
             }
         }
 
