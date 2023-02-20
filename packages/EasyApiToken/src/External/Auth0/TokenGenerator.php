@@ -9,30 +9,18 @@ use Firebase\JWT\JWT;
 
 final class TokenGenerator implements TokenGeneratorInterface
 {
-    /**
-     * Audience for the ID token.
-     *
-     * @var string|null
-     */
-    private $audience;
+    private const DEFAULT_ALG = 'HS256';
 
     /**
-     * @var null|string
+     * @param null|string $audience Audience for the ID token.
+     * @param null|string $secret Secret used to encode the token.
+     * @param null|string $issuer
      */
-    private $issuer;
-
-    /**
-     * Secret used to encode the token.
-     *
-     * @var string|null
-     */
-    private $secret;
-
-    public function __construct(?string $audience = null, ?string $secret = null, ?string $issuer = null)
-    {
-        $this->audience = $audience;
-        $this->secret = $secret;
-        $this->issuer = $issuer;
+    public function __construct(
+        private readonly ?string $audience = null,
+        private readonly ?string $secret = null,
+        private readonly ?string $issuer = null
+    ) {
     }
 
     /**
@@ -76,6 +64,6 @@ final class TokenGenerator implements TokenGeneratorInterface
             true
         ) : $this->secret;
 
-        return JWT::encode($payload, (string)$secret, 'HS256');
+        return JWT::encode($payload, (string)$secret, self::DEFAULT_ALG);
     }
 }

@@ -7,7 +7,6 @@ namespace EonX\EasyApiToken\External\AwsCognito;
 use EonX\EasyApiToken\External\AwsCognito\Interfaces\JwkFetcherInterface;
 use EonX\EasyApiToken\External\AwsCognito\Interfaces\UserPoolConfigInterface;
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Math\BigInteger;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -29,7 +28,7 @@ final class JwkFetcher implements JwkFetcherInterface
     }
 
     /**
-     * @return array<string,\Firebase\JWT\Key>
+     * @return mixed[]
      *
      * @throws \Psr\Cache\InvalidArgumentException
      */
@@ -57,7 +56,7 @@ final class JwkFetcher implements JwkFetcherInterface
     }
 
     /**
-     * @return array<string,\Firebase\JWT\Key>
+     * @return mixed[]
      *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
@@ -74,7 +73,7 @@ final class JwkFetcher implements JwkFetcherInterface
         $keys = [];
 
         foreach ($response['keys'] as $jwk) {
-            $keys[(string)$jwk['kid']] = new Key($this->convertJwkToPem($jwk), $jwk['alg'] ?? 'HS256');
+            $keys[$jwk['kid']] = $this->convertJwkToPem($jwk);
         }
 
         return $keys;

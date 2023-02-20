@@ -12,7 +12,7 @@ interface JwtDriverInterface
     public function decode(string $token): mixed;
 
     /**
-     * @param mixed[] $input
+     * @param mixed[]|object $input
      */
-    public function encode(array $input): string;
+    public function encode(array|object $input): string;
 }

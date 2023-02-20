@@ -11,21 +11,34 @@ use EonX\EasyApiToken\External\AwsCognito\Interfaces\UserPoolConfigInterface;
 use EonX\EasyApiToken\External\AwsCognito\JwkFetcher;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 final class AwsCognitoJwtDriver implements JwtDriverInterface
 {
+    use JwtTrait;
+
     private const TOKEN_TYPE_ACCESS = 'access';
 
     private const TOKEN_TYPE_ID = 'id';
 
-    private JwkFetcherInterface $jwkFetcher;
+    /**
+     * @var string[]
+     *
+     * @deprecated will be removed in 5.0
+     */
+    private array $allowedAlgos;
 
+    /**
+     * @param null|string[] $allowedAlgos
+     */
     public function __construct(
         private readonly UserPoolConfigInterface $userPoolConfig,
-        ?JwkFetcherInterface $jwkFetcher = null,
-        private readonly ?int $leeway = null
+        private JwkFetcherInterface $jwkFetcher = new JwkFetcher(),
+        ?array $allowedAlgos = null,
+        private readonly ?int $leeway = null,
+        private readonly string $defaultJwkAlgo = 'HS256'
     ) {
-        $this->jwkFetcher = $jwkFetcher ?? new JwkFetcher();
+        $this->allowedAlgos = $allowedAlgos ?? [];
     }
 
     /**
@@ -38,7 +51,16 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
             JWT::$leeway = $this->leeway;
         }
 
-        $decodedToken = JWT::decode($token, $this->jwkFetcher->getJwks($this->userPoolConfig));
+        $jwks = $this->jwkFetcher->getJwks($this->userPoolConfig);
+
+        if (self::isFirebaseJwtV5() === false) {
+            foreach ($jwks as $keyId => $key) {
+                $jwks[$key] = new Key($key, $this->defaultJwkAlgo ?? 'HS256');
+            }
+        }
+
+        $decodedToken = JWT::decode($token, $jwks, $this->allowedAlgos);
+
         $tokenType = $decodedToken->token_use ?? null;
 
         // Validate audience
