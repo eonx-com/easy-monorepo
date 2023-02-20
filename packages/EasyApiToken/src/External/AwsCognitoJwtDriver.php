@@ -55,7 +55,7 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
 
         if (self::isFirebaseJwtV5() === false) {
             foreach ($jwks as $keyId => $key) {
-                $jwks[$key] = new Key($key, $this->defaultJwkAlgo ?? 'HS256');
+                $jwks[$keyId] = new Key($key, $this->defaultJwkAlgo ?? 'HS256');
             }
         }
 
