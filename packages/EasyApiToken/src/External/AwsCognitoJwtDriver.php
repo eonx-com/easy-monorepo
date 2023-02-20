@@ -28,16 +28,19 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
      */
     private array $allowedAlgos;
 
+    private JwkFetcherInterface $jwkFetcher;
+
     /**
      * @param null|string[] $allowedAlgos
      */
     public function __construct(
         private readonly UserPoolConfigInterface $userPoolConfig,
-        private JwkFetcherInterface $jwkFetcher = new JwkFetcher(),
+        ?JwkFetcherInterface $jwkFetcher = null,
         ?array $allowedAlgos = null,
         private readonly ?int $leeway = null,
         private readonly string $defaultJwkAlgo = 'HS256'
     ) {
+        $this->jwkFetcher = $jwkFetcher ?? new JwkFetcher();
         $this->allowedAlgos = $allowedAlgos ?? [];
     }
 
