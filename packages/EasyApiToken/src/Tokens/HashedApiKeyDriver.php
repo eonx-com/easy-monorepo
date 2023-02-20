@@ -6,7 +6,7 @@ namespace EonX\EasyApiToken\Tokens;
 
 use EonX\EasyApiToken\Interfaces\Tokens\HashedApiKeyDriverInterface;
 use EonX\EasyApiToken\Interfaces\Tokens\HashedApiKeyInterface;
-use EonX\EasyUtils\UrlHelper;
+use EonX\EasyUtils\Helpers\UrlHelper;
 
 final class HashedApiKeyDriver implements HashedApiKeyDriverInterface
 {
@@ -33,9 +33,9 @@ final class HashedApiKeyDriver implements HashedApiKeyDriverInterface
     public function encode(int|string $id, string $secret, ?string $version = null): string
     {
         $payload = [
-            'id' => $id,
-            'secret' => $secret,
-            'version' => $version ?? HashedApiKeyInterface::DEFAULT_VERSION,
+            HashedApiKeyInterface::KEY_ID => $id,
+            HashedApiKeyInterface::KEY_SECRET => $secret,
+            HashedApiKeyInterface::KEY_VERSION => $version ?? HashedApiKeyInterface::DEFAULT_VERSION,
         ];
 
         return UrlHelper::urlSafeBase64Encode(\json_encode($payload) ?: '');
