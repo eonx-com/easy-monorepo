@@ -208,7 +208,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         $this->app->singleton(
             ErrorCodesFromEnumProvider::class,
             function (): ErrorCodesProviderInterface {
-                return new ErrorCodesFromEnumProvider($this->app->basePath());
+                return new ErrorCodesFromEnumProvider($this->app->basePath() . '/app');
             }
         );
         $this->app->tag(ErrorCodesFromEnumProvider::class, [BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER]);

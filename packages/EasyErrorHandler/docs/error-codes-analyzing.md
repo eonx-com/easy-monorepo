@@ -48,11 +48,11 @@ Example:
 #[AsErrorCodes]
 enum ErrorCodesEnum: int {
 
-    case ErrorSomeErrorOne = 100;
+    case SomeErrorOne = 100;
 
-    case ErrorSomeErrorTwo = 101;
+    case SomeErrorTwo = 101;
 
-    case ErrorSomeOtherError = 200;
+    case SomeOtherError = 200;
 }
 ```
 Example output:
@@ -60,8 +60,8 @@ Example output:
 +------------------------+------------------------+
 | Error code group       | Next error code to use |
 +------------------------+------------------------+
-| ErrorSomeError*        | 102                    |
-| ErrorSomeOtherError*   | 201                    |
+| SomeError*        | 102                    |
+| SomeOtherError*   | 201                    |
 +------------------------+------------------------+
 
 The error code for the new group is 300.

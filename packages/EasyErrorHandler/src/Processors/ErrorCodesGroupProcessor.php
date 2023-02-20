@@ -87,7 +87,7 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
         $explodedErrorCodeNames = [];
         $groupSeparator = $errorCodes[0]->getGroupSeparator();
         foreach ($errorCodes as $errorCodeDto) {
-            $explodedErrorCodeNames[] = $errorCodeDto->getSplittedName();
+            $explodedErrorCodeNames[] = $errorCodeDto->getSplitName();
         }
 
         $errorCodeNamesCount = \count($explodedErrorCodeNames);

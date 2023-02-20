@@ -44,7 +44,7 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
                     $errorCodes[] = new ErrorCodeDto(
                         originalName: $case->name,
                         errorCode: $case->value,
-                        splittedName: \array_filter($splittedName, static fn ($value) => $value !== '')
+                        splitName: \array_filter($splittedName, static fn ($value) => $value !== '')
                     );
                 }
             }
@@ -58,7 +58,7 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
      */
     public function locateErrorCodesEnums()
     {
-        $directory = new \RecursiveDirectoryIterator($this->projectDir . '/src');
+        $directory = new \RecursiveDirectoryIterator($this->projectDir);
         $iterator = new \RecursiveIteratorIterator($directory);
         $regex = new \RegexIterator($iterator, '/\.php$/');
 

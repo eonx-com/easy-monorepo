@@ -42,7 +42,7 @@ final class ErrorCodesFromInterfaceProvider implements ErrorCodesProviderInterfa
             $errorCodes[] = new ErrorCodeDto(
                 originalName: $name,
                 errorCode: $code,
-                splittedName: \explode('_', $name),
+                splitName: \explode('_', $name),
                 groupSeparator: '_'
             );
         }

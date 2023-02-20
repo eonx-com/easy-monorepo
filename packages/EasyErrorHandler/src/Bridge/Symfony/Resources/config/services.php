@@ -96,7 +96,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag(BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER);
 
     $services->set('error_codes_provider.from_enum', ErrorCodesFromEnumProvider::class)
-        ->arg('$projectDir', param('kernel.project_dir'))
+        ->arg('$projectDir', param('kernel.project_dir') . '/src')
         ->tag(BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER);
 
     // Error codes group processor

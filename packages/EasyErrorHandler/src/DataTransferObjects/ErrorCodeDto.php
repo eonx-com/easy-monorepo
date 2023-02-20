@@ -7,12 +7,12 @@ namespace EonX\EasyErrorHandler\DataTransferObjects;
 final class ErrorCodeDto
 {
     /**
-     * @param array<int, string> $splittedName
+     * @param array<int, string> $splitName
      */
     public function __construct(
         private string $originalName,
         private int $errorCode,
-        private array $splittedName,
+        private array $splitName,
         private ?string $groupSeparator = null
     ) {
     }
@@ -20,9 +20,9 @@ final class ErrorCodeDto
     /**
      * @return array<int, string>
      */
-    public function getSplittedName(): array
+    public function getSplitName(): array
     {
-        return $this->splittedName;
+        return $this->splitName;
     }
 
     public function getOriginalName(): string
