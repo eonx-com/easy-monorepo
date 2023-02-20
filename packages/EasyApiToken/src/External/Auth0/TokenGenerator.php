@@ -9,7 +9,7 @@ use Firebase\JWT\JWT;
 
 final class TokenGenerator implements TokenGeneratorInterface
 {
-    private const DEFAULT_ALG = 'HS256';
+    private const DEFAULT_ALGO = 'HS256';
 
     /**
      * @param null|string $audience Audience for the ID token.
@@ -64,6 +64,6 @@ final class TokenGenerator implements TokenGeneratorInterface
             true
         ) : $this->secret;
 
-        return JWT::encode($payload, (string)$secret, self::DEFAULT_ALG);
+        return JWT::encode($payload, (string)$secret, self::DEFAULT_ALGO);
     }
 }
