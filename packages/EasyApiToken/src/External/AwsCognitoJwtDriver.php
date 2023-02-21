@@ -15,7 +15,7 @@ use Firebase\JWT\Key;
 
 final class AwsCognitoJwtDriver implements JwtDriverInterface
 {
-    use JwtTrait;
+    use FirebaseJwtVersionTrait;
 
     private const DEFAULT_JWK_ALGO = 'RS256';
 
@@ -58,7 +58,7 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
 
         $jwks = $this->jwkFetcher->getJwks($this->userPoolConfig);
 
-        if (self::isFirebaseJwtV5() === false) {
+        if (self::isFirebaseJwtV6()) {
             foreach ($jwks as $keyId => $key) {
                 $jwks[$keyId] = new Key($key, $this->defaultJwkAlgo);
             }

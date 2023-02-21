@@ -11,7 +11,7 @@ use OpenSSLAsymmetricKey;
 
 final class FirebaseJwtDriver implements JwtDriverInterface
 {
-    use JwtTrait;
+    use FirebaseJwtVersionTrait;
 
     /**
      * @var string[]
@@ -46,14 +46,14 @@ final class FirebaseJwtDriver implements JwtDriverInterface
             JWT::$leeway = $this->leeway;
         }
 
-        if (self::isFirebaseJwtV5()) {
-            /** @var mixed[]|string $publicKey */
-            $publicKey = $this->publicKey;
-
-            return JWT::decode($token, $publicKey, $this->allowedAlgos);
+        if (self::isFirebaseJwtV6()) {
+            return JWT::decode($token, new Key($this->publicKey, $this->algo));
         }
 
-        return JWT::decode($token, new Key($this->publicKey, $this->algo));
+        /** @var mixed[]|string $publicKey */
+        $publicKey = $this->publicKey;
+
+        return JWT::decode($token, $publicKey, $this->allowedAlgos);
     }
 
     public function encode(array|object $input): string

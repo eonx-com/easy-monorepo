@@ -17,11 +17,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class JwkFetcher implements JwkFetcherInterface
 {
+    private const DEFAULT_CACHE_EXPIRY = 3600;
+
     private HttpClientInterface $httpClient;
 
     public function __construct(
         private readonly CacheInterface $cache = new ArrayAdapter(),
-        private readonly int $cacheExpiry = 3600,
+        private readonly int $cacheExpiry = self::DEFAULT_CACHE_EXPIRY,
         ?HttpClientInterface $httpClient = null
     ) {
         $this->httpClient = $httpClient ?? HttpClient::create();
