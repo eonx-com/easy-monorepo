@@ -14,8 +14,7 @@ final class EasyTestSymfonyBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {
-        $container
-            ->addCompilerPass(new AddStubsCompilerPass());
+        $container->addCompilerPass(new AddStubsCompilerPass());
     }
 
     public function getContainerExtension(): ExtensionInterface

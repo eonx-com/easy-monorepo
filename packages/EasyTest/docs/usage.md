@@ -32,11 +32,12 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Symfony\Config\EasyTestConfig;
 
 return static function (EasyTestConfig $easyTestConfig): void {
-    $easyTestConfig->mailerMessageLoggerListenerStubEnabled(true);
+    $easyTestConfig->mailerMessageLoggerListenerStub()
+        ->enabled(true);
 };
 ```
 
-Update the PHPUnit configuration file to use `MailerMessageLoggerListenerPHPUnitExtension`:
+Update the PHPUnit configuration file to use `MailerMessageLoggerListenerPhpUnitExtension`:
 
 ```xml
 
@@ -44,7 +45,7 @@ Update the PHPUnit configuration file to use `MailerMessageLoggerListenerPHPUnit
     <!-- ... -->
     <extensions>
         <!-- ... -->
-        <extension class="EonX\EasyTest\Bridge\PhpUnit\Extension\MailerMessageLoggerListenerPHPUnitExtension"/>
+        <extension class="EonX\EasyTest\Bridge\PhpUnit\Extension\MailerMessageLoggerListenerPhpUnitExtension"/>
     </extensions>
 </phpunit>
 ```

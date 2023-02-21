@@ -15,9 +15,11 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->booleanNode('mailer_message_logger_listener_stub_enabled')
-                    ->defaultFalse()
+                ->arrayNode('mailer_message_logger_listener_stub')
+                    ->addDefaultsIfNotSet()
                     ->info('Setup MailerMessageLoggerListenerStub service for Symfony Mailer')
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
                 ->end()
             ->end();
 
