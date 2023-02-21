@@ -16,8 +16,8 @@ final class ScheduleRunner implements ScheduleRunnerInterface
     private bool $ran = false;
 
     public function __construct(
-        private EventDispatcherInterface $eventDispatcher,
-        private LockServiceInterface $lockService
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly LockServiceInterface $lockService
     ) {
     }
 
