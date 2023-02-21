@@ -10,9 +10,6 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 final class EasyTestExtension extends Extension
 {
-    /**
-     * @var array<string, array<string, string>|string>
-     */
     private const CONFIGS_TO_PARAMS = [
         'mailer_message_logger_listener_stub' => [
             'enabled' => BridgeConstantsInterface::PARAM_MAILER_MESSAGE_LOGGER_LISTENER_STUB_ENABLED,
@@ -28,16 +25,17 @@ final class EasyTestExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        foreach (self::CONFIGS_TO_PARAMS as $name => $param) {
+        /** @var string[]|string $param */
+        foreach (self::CONFIGS_TO_PARAMS as $configKey => $param) {
             if (\is_array($param)) {
-                foreach ($param as $paramName => $paramValue) {
-                    $container->setParameter($paramValue, $config[$name][$paramName]);
+                foreach ($param as $subConfigKey => $paramName) {
+                    $container->setParameter($paramName, $config[$configKey][$subConfigKey]);
                 }
-
-                continue;
             }
 
-            $container->setParameter($param, $config[$name]);
+            if (\is_array($param) === false) {
+                $container->setParameter($param, $config[$configKey]);
+            }
         }
     }
 }
