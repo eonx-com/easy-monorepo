@@ -39,6 +39,7 @@ use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application;
 use Psr\Log\LoggerInterface;
 
 final class EasyErrorHandlerServiceProvider extends ServiceProvider
@@ -203,22 +204,23 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                 return new ErrorCodesFromInterfaceProvider(\config('easy-error-handler.error_codes_interface'));
             }
         );
-        $this->app->tag(ErrorCodesFromInterfaceProvider::class, [BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER]);
 
         $this->app->singleton(
             ErrorCodesFromEnumProvider::class,
-            function (): ErrorCodesProviderInterface {
-                return new ErrorCodesFromEnumProvider($this->app->basePath() . '/app');
+            static function (Application $app): ErrorCodesProviderInterface {
+                return new ErrorCodesFromEnumProvider($app->basePath('app'));
             }
         );
-        $this->app->tag(ErrorCodesFromEnumProvider::class, [BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER]);
 
         $this->app->singleton(
             ErrorCodesGroupProcessorInterface::class,
             static function (Container $app): ErrorCodesGroupProcessorInterface {
                 return new ErrorCodesGroupProcessor(
                     \config('easy-error-handler.error_codes_category_size'),
-                    $app->tagged(BridgeConstantsInterface::TAG_ERROR_CODES_PROVIDER),
+                    [
+                        $app->make(ErrorCodesFromInterfaceProvider::class),
+                        $app->make(ErrorCodesFromEnumProvider::class),
+                    ],
                 );
             }
         );

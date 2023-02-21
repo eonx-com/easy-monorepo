@@ -89,11 +89,6 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const TAG_ERROR_CODES_PROVIDER = 'easy_error_handler.error_codes_provider';
-
-    /**
-     * @var string
-     */
     public const TAG_ERROR_REPORTER_PROVIDER = 'easy_error_handler.error_reporter_provider';
 
     /**

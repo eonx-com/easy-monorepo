@@ -15,7 +15,7 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
      */
     public function __construct(
         private readonly int $categorySize,
-        private readonly iterable $errorCodesProviders
+        private readonly array $errorCodesProviders
     ) {
     }
 

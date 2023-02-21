@@ -13,6 +13,7 @@ use PhpParser\Node\Stmt\Namespace_;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use ReflectionClass;
+use Symfony\Component\Finder\Finder;
 
 final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
 {
@@ -58,12 +59,13 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
      */
     public function locateErrorCodesEnums()
     {
-        $directory = new \RecursiveDirectoryIterator($this->projectDir);
-        $iterator = new \RecursiveIteratorIterator($directory);
-        $regex = new \RegexIterator($iterator, '/\.php$/');
+        $files = (new Finder())
+            ->in($this->projectDir)
+            ->name('*.php')
+            ->files();
 
         $enums = [];
-        foreach ($regex as $file) {
+        foreach ($files as $file) {
             $fqcn = (string)$this->extractFqcn($file->getRealPath());
             if (\class_exists($fqcn) && \count((new ReflectionClass($fqcn))->getAttributes(AsErrorCodes::class)) > 0) {
                 $enums[] = $fqcn;
