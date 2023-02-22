@@ -7,24 +7,34 @@ namespace EonX\EasyErrorHandler\Processors;
 use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeCategoryDto;
 use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodesDto;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesGroupProcessorInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
 
 final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterface
 {
+    /**
+     * @param array<\EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface> $errorCodesProviders
+     */
     public function __construct(
         private readonly int $categorySize,
-        private readonly ErrorCodesProviderInterface $errorCodesProvider
+        private readonly array $errorCodesProviders
     ) {
     }
 
     public function process(): ErrorCodesDto
     {
         $groupedErrorCodes = [];
+        $providedErrorCodes = [];
 
-        foreach ($this->errorCodesProvider->provide() as $errorCodeName => $errorCodeValue) {
-            $errorCodeCategory = $errorCodeValue - ($errorCodeValue % $this->categorySize);
+        foreach ($this->errorCodesProviders as $errorCodesProvider) {
+            $providedErrorCodes = $errorCodesProvider->provide();
+            if (\count($providedErrorCodes) > 0) {
+                break;
+            }
+        }
+
+        foreach ($providedErrorCodes as $errorCodeDto) {
+            $errorCodeCategory = $errorCodeDto->getErrorCode() - ($errorCodeDto->getErrorCode() % $this->categorySize);
             $groupedErrorCodes[$errorCodeCategory] = $groupedErrorCodes[$errorCodeCategory] ?? [];
-            $groupedErrorCodes[$errorCodeCategory][$errorCodeName] = $errorCodeValue;
+            $groupedErrorCodes[$errorCodeCategory][] = $errorCodeDto;
         }
 
         \ksort($groupedErrorCodes);
@@ -38,8 +48,8 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
 
         foreach ($groupedErrorCodes as $errorCodes) {
             $nextGroupedErrorCodes[] = new ErrorCodeCategoryDto(
-                categoryName: $this->determineCategoryName(\array_keys($errorCodes)),
-                nextErrorCodeToUse: \max(\array_values($errorCodes)) + 1
+                categoryName: $this->determineCategoryName($errorCodes),
+                nextErrorCodeToUse: $this->calculateMaxCategoryCode($errorCodes) + 1
             );
         }
 
@@ -58,16 +68,28 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
     }
 
     /**
-     * @param mixed[] $errorCodeNames
+     * @param array<\EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeDto> $errorCodes
      */
-    private function determineCategoryName(array $errorCodeNames): string
+    private function calculateMaxCategoryCode(array $errorCodes): int
     {
-        $explodedErrorCodeNames = \array_map(
-            static function ($errorCodeName): array {
-                return \explode('_', $errorCodeName);
-            },
-            $errorCodeNames
-        );
+        $maxCode = 0;
+        foreach ($errorCodes as $errorCodeDto) {
+            $maxCode = \max($maxCode, $errorCodeDto->getErrorCode());
+        }
+        return $maxCode;
+    }
+
+    /**
+     * @param array<\EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeDto> $errorCodes
+     */
+    private function determineCategoryName(array $errorCodes): string
+    {
+        $explodedErrorCodeNames = [];
+        $groupSeparator = $errorCodes[0]->getGroupSeparator();
+        foreach ($errorCodes as $errorCodeDto) {
+            $explodedErrorCodeNames[] = $errorCodeDto->getSplitName();
+        }
+
         $errorCodeNamesCount = \count($explodedErrorCodeNames);
         $categoryNameParts = [];
 
@@ -86,6 +108,6 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
             }
         } while ($partIsMatched);
 
-        return \implode('_', $categoryNameParts) . '_*';
+        return \sprintf('%s%s*', \implode($groupSeparator, $categoryNameParts), $groupSeparator);
     }
 }

@@ -18,8 +18,6 @@ abstract class AbstractFromApiKeyConfigurator extends AbstractSecurityContextCon
             return;
         }
 
-        /** @var \EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface $token */
-
         $this->doConfigure($context, $request, $token);
     }
 
