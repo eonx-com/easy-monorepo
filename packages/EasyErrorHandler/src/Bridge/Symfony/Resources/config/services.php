@@ -15,7 +15,6 @@ use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesGroupProcessorInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
@@ -23,7 +22,8 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Processors\ErrorCodesGroupProcessor;
-use EonX\EasyErrorHandler\Providers\ErrorCodesProvider;
+use EonX\EasyErrorHandler\Providers\ErrorCodesFromEnumProvider;
+use EonX\EasyErrorHandler\Providers\ErrorCodesFromInterfaceProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 
@@ -90,13 +90,20 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$drivers', tagged_iterator(BridgeConstantsInterface::TAG_VERBOSE_STRATEGY_DRIVER))
         ->arg('$defaultIsVerbose', param(BridgeConstantsInterface::PARAM_IS_VERBOSE));
 
-    // Error codes provider
-    $services->set(ErrorCodesProviderInterface::class, ErrorCodesProvider::class)
+    // Error codes providers
+    $services->set('error_codes_provider.from_interface', ErrorCodesFromInterfaceProvider::class)
         ->arg('$errorCodesInterface', param(BridgeConstantsInterface::PARAM_ERROR_CODES_INTERFACE));
+
+    $services->set('error_codes_provider.from_enum', ErrorCodesFromEnumProvider::class)
+        ->arg('$projectDir', param('kernel.project_dir') . '/src');
 
     // Error codes group processor
     $services->set(ErrorCodesGroupProcessorInterface::class, ErrorCodesGroupProcessor::class)
-        ->arg('$categorySize', param(BridgeConstantsInterface::PARAM_ERROR_CODES_CATEGORY_SIZE));
+        ->arg('$categorySize', param(BridgeConstantsInterface::PARAM_ERROR_CODES_CATEGORY_SIZE))
+        ->arg('$errorCodesProviders', [
+            service('error_codes_provider.from_interface'),
+            service('error_codes_provider.from_enum'),
+        ]);
 
     // Console command
     $services

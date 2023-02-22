@@ -30,7 +30,8 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Processors\ErrorCodesGroupProcessor;
-use EonX\EasyErrorHandler\Providers\ErrorCodesProvider;
+use EonX\EasyErrorHandler\Providers\ErrorCodesFromEnumProvider;
+use EonX\EasyErrorHandler\Providers\ErrorCodesFromInterfaceProvider;
 use EonX\EasyErrorHandler\Reporters\DefaultReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
@@ -38,6 +39,7 @@ use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application;
 use Psr\Log\LoggerInterface;
 
 final class EasyErrorHandlerServiceProvider extends ServiceProvider
@@ -197,9 +199,16 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         }
 
         $this->app->singleton(
-            ErrorCodesProviderInterface::class,
+            ErrorCodesFromInterfaceProvider::class,
             static function (): ErrorCodesProviderInterface {
-                return new ErrorCodesProvider(\config('easy-error-handler.error_codes_interface'));
+                return new ErrorCodesFromInterfaceProvider(\config('easy-error-handler.error_codes_interface'));
+            }
+        );
+
+        $this->app->singleton(
+            ErrorCodesFromEnumProvider::class,
+            static function (Application $app): ErrorCodesProviderInterface {
+                return new ErrorCodesFromEnumProvider($app->basePath('app'));
             }
         );
 
@@ -208,7 +217,10 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             static function (Container $app): ErrorCodesGroupProcessorInterface {
                 return new ErrorCodesGroupProcessor(
                     \config('easy-error-handler.error_codes_category_size'),
-                    $app->make(ErrorCodesProviderInterface::class)
+                    [
+                        $app->make(ErrorCodesFromInterfaceProvider::class),
+                        $app->make(ErrorCodesFromEnumProvider::class),
+                    ],
                 );
             }
         );

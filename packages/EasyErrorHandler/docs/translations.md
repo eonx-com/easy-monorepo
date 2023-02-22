@@ -1,6 +1,6 @@
 ---eonx_docs---
 title: Translations
-weight: 1008
+weight: 1009
 ---eonx_docs---
 
 # Translations
