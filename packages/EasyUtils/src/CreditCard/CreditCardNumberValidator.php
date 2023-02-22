@@ -7,16 +7,27 @@ namespace EonX\EasyUtils\CreditCard;
 final class CreditCardNumberValidator implements CreditCardNumberValidatorInterface
 {
     private const AMEX = 'AMEX';
+
     private const CHINA_UNIONPAY = 'CHINA_UNIONPAY';
+
     private const DINERS = 'DINERS';
+
     private const DISCOVER = 'DISCOVER';
+
     private const INSTAPAYMENT = 'INSTAPAYMENT';
+
     private const JCB = 'JCB';
+
     private const LASER = 'LASER';
+
     private const MAESTRO = 'MAESTRO';
+
     private const MASTERCARD = 'MASTERCARD';
+
     private const MIR = 'MIR';
+
     private const UATP = 'UATP';
+
     private const VISA = 'VISA';
 
     private const SCHEMES = [
