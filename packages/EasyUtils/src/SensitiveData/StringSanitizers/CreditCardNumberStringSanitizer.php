@@ -21,7 +21,7 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
      */
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
-        $matched = \preg_match_all('/(\d[^A-Za-z&="\'<]*){13,}/', $string, $matches);
+        $matched = \preg_match_all('/(\d[^A-Za-z&="\'<]*){12,}/', $string, $matches);
 
         if ($matched === 0 || $matched === false) {
             return $string;

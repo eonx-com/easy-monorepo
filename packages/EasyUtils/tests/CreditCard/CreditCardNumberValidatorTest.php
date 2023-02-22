@@ -26,18 +26,8 @@ final class CreditCardNumberValidatorTest extends AbstractTestCase
      */
     public function provideCardNumbers(): iterable
     {
-        yield 'visaelectron' => [
-            'number' => '4001 0200 0000 0009',
-            'expectedResult' => true,
-        ];
-
         yield 'maestro' => [
             'number' => '6771 7980 2100 0008',
-            'expectedResult' => true,
-        ];
-
-        yield 'dankort' => [
-            'number' => '5019 5555 4444 5555',
             'expectedResult' => true,
         ];
 
@@ -73,6 +63,26 @@ final class CreditCardNumberValidatorTest extends AbstractTestCase
 
         yield 'jcb' => [
             'number' => '3569 9900 1009 5841',
+            'expectedResult' => true,
+        ];
+
+        yield 'laser' => [
+            'number' => '6304 9001 7740 2924 41',
+            'expectedResult' => true,
+        ];
+
+        yield 'instapayment' => [
+            'number' => '6397 1249 5702 0072',
+            'expectedResult' => true,
+        ];
+
+        yield 'mir' => [
+            'number' => '2201 6186 3771 7440',
+            'expectedResult' => true,
+        ];
+
+        yield 'uatp' => [
+            'number' => '1354 1001 4004 955',
             'expectedResult' => true,
         ];
 
