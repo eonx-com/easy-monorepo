@@ -192,20 +192,21 @@ final class Parser extends AbstractLineByLineParser
             return;
         }
 
+        // Sanitize full lines
+        $currentLineIsFull = $this->checkFullLine($line);
+        $line = $this->sanitizeFullLine($line);
+
         // If continuation, update previous and skip to next line
         if ($code === self::CONTINUATION) {
             $this->continuePrevious($line);
-            // Handle continuation line with trailing slash
-            $this->checkFullLine($line);
+            $this->previousFull = $currentLineIsFull;
 
             return;
         }
 
-        // Check if line fits in only one line, remove trailing sash if one
-        $line = $this->checkFullLine($line);
-
         // Current code becomes then previous one for next continuation
         $this->previousCode = $code;
+        $this->previousFull = $currentLineIsFull;
 
         switch ($code) {
             case self::ACCOUNT_IDENTIFIER:
@@ -222,8 +223,6 @@ final class Parser extends AbstractLineByLineParser
                 $this->file['trailer'] = $this->setItem($line);
                 break;
             case self::GROUP_HEADER:
-                // Reset current account for new group
-                $this->currentAccount = null;
                 $this->currentGroup = \count($this->groups) + 1;
                 $this->addGroupHeader($this->currentGroup, $line);
                 break;
@@ -329,23 +328,12 @@ final class Parser extends AbstractLineByLineParser
 
     /**
      * Check if this line has full contents in it. If the line ends with a /
-     * it means its a full line.
+     * it means it's a full line.
      */
-    private function checkFullLine(string $line): string
+    private function checkFullLine(string $line): bool
     {
-        $this->previousFull = false;
-
-        if (Strings::endsWith($line, '/')) {
-            // Prevent logic to add extra coma on continuation logic if already there
-            if (Strings::endsWith($line, ',/') === false) {
-                $this->previousFull = true;
-            }
-
-            // Remove trailing slash
-            $line = \substr($line, 0, -1);
-        }
-
-        return $line;
+        // Prevent logic to add extra coma on continuation logic if already there
+        return Strings::endsWith($line, '/') && Strings::endsWith($line, ',/') === false;
     }
 
     /**
@@ -391,6 +379,7 @@ final class Parser extends AbstractLineByLineParser
     {
         // Remove 88, from the current line
         $line = \substr($line, 3);
+
         // Add coma at the start of the line if previous record fits completely on the line
         if ($this->previousFull) {
             $line = ',' . $line;
@@ -452,6 +441,16 @@ final class Parser extends AbstractLineByLineParser
         ];
 
         return \in_array($code, $codes, true);
+    }
+
+    private function sanitizeFullLine(string $line): string
+    {
+        // Remove trailing slash
+        if (Strings::endsWith($line, '/')) {
+            $line = \substr($line, 0, -1);
+        }
+
+        return $line;
     }
 
     /**

@@ -220,6 +220,7 @@
     "config": {
         "process-timeout": 0,
         "allow-plugins": {
+            "php-http/discovery": true,
             "symfony/runtime": true
         }
     },

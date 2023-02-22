@@ -32,6 +32,7 @@ parameters:
         - packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
         - packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
         - packages/EasySecurity/src/Bridge/Symfony/Security/SecurityContextAuthenticator.php
+        - packages/EasySwoole/src/Helpers/FunctionHelper.php
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
@@ -108,7 +109,7 @@ parameters:
 
         # ---- EasyErrorHandler ----
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
-          path: packages/EasyErrorHandler/src/Providers/ErrorCodesProvider.php
+          path: packages/EasyErrorHandler/src/Providers/ErrorCodesFromInterfaceProvider.php
 
         # ---- EasyLogging ----DoctrineDbalLengthAwarePaginator
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
