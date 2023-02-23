@@ -17,33 +17,15 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class JwkFetcher implements JwkFetcherInterface
 {
-    /**
-     * @var int
-     */
-    private const CACHE_EXPIRY = 3600;
+    private const DEFAULT_CACHE_EXPIRY = 3600;
 
-    /**
-     * @var \Symfony\Contracts\Cache\CacheInterface
-     */
-    private $cache;
-
-    /**
-     * @var int
-     */
-    private $cacheExpiry;
-
-    /**
-     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
-     */
-    private $httpClient;
+    private HttpClientInterface $httpClient;
 
     public function __construct(
-        ?CacheInterface $cache = null,
-        ?int $cacheExpiry = null,
+        private readonly CacheInterface $cache = new ArrayAdapter(),
+        private readonly int $cacheExpiry = self::DEFAULT_CACHE_EXPIRY,
         ?HttpClientInterface $httpClient = null
     ) {
-        $this->cache = $cache ?? new ArrayAdapter();
-        $this->cacheExpiry = $cacheExpiry ?? self::CACHE_EXPIRY;
         $this->httpClient = $httpClient ?? HttpClient::create();
     }
 
