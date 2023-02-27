@@ -20,7 +20,7 @@ final class FirebaseBearerTokenDecoderTest extends AbstractFirebaseJwtTokenTestC
                 $key = $key === false ? null : $key;
             }
 
-            $jwtDriver = $this->createFirebaseJwtDriver(null, $key, null, [$algo]);
+            $jwtDriver = $this->createFirebaseJwtDriver($algo, $key, null, [$algo]);
 
             /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtInterface $token */
             $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createRequest([
