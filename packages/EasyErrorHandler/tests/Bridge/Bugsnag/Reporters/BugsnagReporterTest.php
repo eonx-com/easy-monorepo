@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests\Bridge\Bugsnag\Reporters;
 
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\Reporters\BugsnagReporter;
+use EonX\EasyErrorHandler\Bridge\Bugsnag\Reporters\BugsnagErrorReporter;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers\DefaultBugsnagIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stubs\BugsnagClientStub;
+use Exception;
 use Monolog\Logger;
 use Throwable;
 
@@ -24,13 +25,13 @@ final class BugsnagReporterTest extends AbstractTestCase
     public function provideDataForReportWithIgnoredExceptionsResolver(): iterable
     {
         yield 'Reported' => [
-            false,
-            (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL)->setSubCode(1),
+            'shouldIgnore' => false,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL)->setSubCode(1),
         ];
 
         yield 'Ignored' => [
-            true,
-            (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL)->setSubCode(2),
+            'shouldIgnore' => true,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL)->setSubCode(2),
         ];
     }
 
@@ -41,35 +42,46 @@ final class BugsnagReporterTest extends AbstractTestCase
      */
     public function providerTestReport(): iterable
     {
-        yield 'Report unexpected exception with no log level' => [true, new \Exception()];
+        yield 'Report unexpected exception with no log level' => [
+            'shouldReport' => true,
+            'throwable' => new Exception(),
+            'threshold' => null,
+            'ignoredExceptions' => null,
+        ];
 
         yield 'Report same log level as threshold' => [
-            true,
-            (new BaseExceptionStub())->setLogLevel(Logger::ERROR),
+            'shouldReport' => true,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::ERROR),
+            'threshold' => Logger::ERROR,
+            'ignoredExceptions' => null,
         ];
 
         yield 'Report higher log level as threshold' => [
-            true,
-            (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL),
+            'shouldReport' => true,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL),
+            'threshold' => Logger::ERROR,
+            'ignoredExceptions' => null,
         ];
 
         yield 'Do not report lower log level than threshold' => [
-            false,
-            (new BaseExceptionStub())->setLogLevel(Logger::INFO),
+            'shouldReport' => false,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::CRITICAL),
+            'threshold' => Logger::EMERGENCY,
+            'ignoredExceptions' => null,
         ];
 
         yield 'Do not report ignored exceptions' => [
-            false,
-            (new BaseExceptionStub())->setLogLevel(Logger::ERROR),
-            null,
-            [BaseExceptionStub::class],
+            'shouldReport' => false,
+            'throwable' => (new BaseExceptionStub())->setLogLevel(Logger::ERROR),
+            'threshold' => Logger::ERROR,
+            'ignoredExceptions' => [BaseExceptionStub::class],
         ];
     }
 
     /**
      * @dataProvider providerTestReport
      *
-     * @param null|string[] $ignoredExceptions
+     * @param null|class-string[] $ignoredExceptions
      */
     public function testReport(
         bool $shouldReport,
@@ -78,7 +90,7 @@ final class BugsnagReporterTest extends AbstractTestCase
         ?array $ignoredExceptions = null
     ): void {
         $stub = new BugsnagClientStub();
-        $reporter = new \EonX\EasyErrorHandler\Bridge\Bugsnag\Reporters\BugsnagReporter(
+        $reporter = new BugsnagErrorReporter(
             $stub,
             new DefaultBugsnagIgnoreExceptionsResolver($ignoredExceptions),
             new ErrorLogLevelResolver(),
@@ -104,7 +116,7 @@ final class BugsnagReporterTest extends AbstractTestCase
             }
         };
         $stub = new BugsnagClientStub();
-        $reporter = new BugsnagReporter(
+        $reporter = new BugsnagErrorReporter(
             $stub,
             $ignoreExceptionsResolver,
             new ErrorLogLevelResolver(),

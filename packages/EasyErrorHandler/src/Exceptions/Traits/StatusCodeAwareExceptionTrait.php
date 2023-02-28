@@ -11,9 +11,6 @@ trait StatusCodeAwareExceptionTrait
      */
     protected $statusCode = 500;
 
-    /**
-     * {@inheritDoc}
-     */
     public function getStatusCode(): int
     {
         return $this->statusCode;

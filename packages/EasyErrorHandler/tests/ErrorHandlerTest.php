@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests;
 
 use EonX\EasyErrorHandler\ErrorHandler;
-use EonX\EasyErrorHandler\Reporters\FromIterableReporterProvider;
+use EonX\EasyErrorHandler\Providers\FromIterableErrorReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Tests\Stubs\ErrorReporterStub;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
+use Exception;
+use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Throwable;
 
 final class ErrorHandlerTest extends AbstractTestCase
 {
@@ -20,54 +23,51 @@ final class ErrorHandlerTest extends AbstractTestCase
     public function providerTestReport(): iterable
     {
         yield 'Simple report' => [
-            new \Exception('message'),
-            static function (ErrorReporterStub $reporter): void {
+            'throwable' => new Exception('message'),
+            'assertions' => static function (ErrorReporterStub $reporter): void {
                 self::assertCount(1, $reporter->getReportedErrors());
-                self::assertInstanceOf(\Exception::class, $reporter->getReportedErrors()[0]);
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[0]);
             },
         ];
 
         yield 'Symfony Messenger HandlerFailedException' => [
-            new HandlerFailedException(Envelope::wrap(new \stdClass()), [new \Exception('message')]),
-            static function (ErrorReporterStub $reporter): void {
+            'throwable' => new HandlerFailedException(Envelope::wrap(new stdClass()), [new Exception('message')]),
+            'assertions' => static function (ErrorReporterStub $reporter): void {
                 self::assertCount(1, $reporter->getReportedErrors());
-                self::assertInstanceOf(\Exception::class, $reporter->getReportedErrors()[0]);
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[0]);
             },
         ];
 
         yield 'Symfony Messenger HandlerFailedException More Than 1' => [
-            new HandlerFailedException(Envelope::wrap(new \stdClass()), [
-                new \Exception('message'),
-                new \Exception('message'),
+            'throwable' => new HandlerFailedException(Envelope::wrap(new stdClass()), [
+                new Exception('message'),
+                new Exception('message'),
             ]),
-            static function (ErrorReporterStub $reporter): void {
+            'assertions' => static function (ErrorReporterStub $reporter): void {
                 self::assertCount(2, $reporter->getReportedErrors());
-                self::assertInstanceOf(\Exception::class, $reporter->getReportedErrors()[0]);
-                self::assertInstanceOf(\Exception::class, $reporter->getReportedErrors()[1]);
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[0]);
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[1]);
             },
         ];
     }
 
     /**
-     * @param null|string[] $ignoredExceptions
-     *
      * @dataProvider providerTestReport
      */
-    public function testReport(\Throwable $throwable, callable $test, ?array $ignoredExceptions = null): void
+    public function testReport(Throwable $throwable, callable $assertions): void
     {
         $reporter = new ErrorReporterStub();
-        $reporterProviders = [new FromIterableReporterProvider([$reporter])];
+        $reporterProviders = [new FromIterableErrorReporterProvider([$reporter])];
         $verboseStrategy = new ChainVerboseStrategy([], false);
         $errorHandler = new ErrorHandler(
             new ErrorResponseFactory(),
             [],
             $reporterProviders,
-            $verboseStrategy,
-            $ignoredExceptions
+            $verboseStrategy
         );
 
         $errorHandler->report($throwable);
 
-        $test($reporter);
+        $assertions($reporter);
     }
 }

@@ -6,20 +6,20 @@ namespace EonX\EasyErrorHandler\Builders;
 
 use Throwable;
 
-final class CodeBuilder extends AbstractSingleKeyErrorResponseBuilder
+final class CodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
+    public const DEFAULT_KEY = 'code';
+
     /**
      * @param mixed[] $data
-     *
-     * @return int
      */
-    protected function doBuildValue(Throwable $throwable, array $data)
+    protected function doBuildValue(Throwable $throwable, array $data): int
     {
         return $throwable->getCode();
     }
 
     protected function getDefaultKey(): string
     {
-        return 'code';
+        return self::DEFAULT_KEY;
     }
 }

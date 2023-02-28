@@ -12,10 +12,7 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     /**
      * @param null|mixed[] $config
@@ -35,6 +32,8 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
         $app->register(EasyErrorHandlerServiceProvider::class);
         $app->instance(Client::class, new BugsnagClientStub());
 
-        return $this->app = $app;
+        $this->app = $app;
+
+        return $this->app;
     }
 }

@@ -12,26 +12,46 @@ final class BaseExceptionTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testLogLevelConvenientMethods
      */
     public function providerTestLogLevelConvenientMethods(): iterable
     {
-        yield 'critical' => ['setCriticalLogLevel', Logger::CRITICAL];
+        yield 'critical' => [
+            'method' => 'setCriticalLogLevel',
+            'expectedLogLevel' => Logger::CRITICAL,
+        ];
 
-        yield 'debug' => ['setDebugLogLevel', Logger::DEBUG];
+        yield 'debug' => [
+            'method' => 'setDebugLogLevel',
+            'expectedLogLevel' => Logger::DEBUG,
+        ];
 
-        yield 'error' => ['setErrorLogLevel', Logger::ERROR];
+        yield 'error' => [
+            'method' => 'setErrorLogLevel',
+            'expectedLogLevel' => Logger::ERROR,
+        ];
 
-        yield 'info' => ['setInfoLogLevel', Logger::INFO];
+        yield 'info' => [
+            'method' => 'setInfoLogLevel',
+            'expectedLogLevel' => Logger::INFO,
+        ];
 
-        yield 'warning' => ['setWarningLogLevel', Logger::WARNING];
+        yield 'warning' => [
+            'method' => 'setWarningLogLevel',
+            'expectedLogLevel' => Logger::WARNING,
+        ];
     }
 
     public function testGetLogLevel(): void
     {
         $logLevel = Logger::CRITICAL;
-        $exception = (new BaseExceptionStub())->setLogLevel($logLevel);
+        $exception = new BaseExceptionStub();
+        $this->setPrivatePropertyValue($exception, 'logLevel', $logLevel);
 
-        self::assertSame($logLevel, $exception->getLogLevel());
+        $result = $exception->getLogLevel();
+
+        self::assertSame($logLevel, $result);
     }
 
     public function testGetMessageParams(): void
@@ -39,33 +59,45 @@ final class BaseExceptionTest extends AbstractTestCase
         $messageParams = [
             'foo' => 'bar',
         ];
-        $exception = (new BaseExceptionStub())->setMessageParams($messageParams);
+        $exception = new BaseExceptionStub();
+        $this->setPrivatePropertyValue($exception, 'messageParams', $messageParams);
 
-        self::assertSame($messageParams, $exception->getMessageParams());
+        $result = $exception->getMessageParams();
+
+        self::assertSame($messageParams, $result);
     }
 
     public function testGetStatusCode(): void
     {
         $statusCode = 123;
-        $exception = (new BaseExceptionStub())->setStatusCode($statusCode);
+        $exception = new BaseExceptionStub();
+        $this->setPrivatePropertyValue($exception, 'statusCode', $statusCode);
 
-        self::assertSame($statusCode, $exception->getStatusCode());
+        $result = $exception->getStatusCode();
+
+        self::assertSame($statusCode, $result);
     }
 
     public function testGetSubCode(): void
     {
         $subCode = 123;
-        $exception = (new BaseExceptionStub())->setSubCode($subCode);
+        $exception = new BaseExceptionStub();
+        $this->setPrivatePropertyValue($exception, 'subCode', $subCode);
 
-        self::assertSame($subCode, $exception->getSubCode());
+        $result = $exception->getSubCode();
+
+        self::assertSame($subCode, $result);
     }
 
     public function testGetUserMessage(): void
     {
         $userMessage = 'User message';
-        $exception = (new BaseExceptionStub())->setUserMessage($userMessage);
+        $exception = new BaseExceptionStub();
+        $this->setPrivatePropertyValue($exception, 'userMessage', $userMessage);
 
-        self::assertSame($userMessage, $exception->getUserMessage());
+        $result = $exception->getUserMessage();
+
+        self::assertSame($userMessage, $result);
     }
 
     public function testGetUserMessageParams(): void
@@ -73,29 +105,36 @@ final class BaseExceptionTest extends AbstractTestCase
         $userMessageParams = [
             'foo' => 'bar',
         ];
-        $exception = (new BaseExceptionStub())->setUserMessageParams($userMessageParams);
+        $exception = new BaseExceptionStub();
+        $this->setPrivatePropertyValue($exception, 'userMessageParams', $userMessageParams);
 
-        self::assertSame($userMessageParams, $exception->getUserMessageParams());
+        $result = $exception->getUserMessageParams();
+
+        self::assertSame($userMessageParams, $result);
     }
 
     /**
      * @dataProvider providerTestLogLevelConvenientMethods
      */
-    public function testLogLevelConvenientMethods(string $method, int $logLevel): void
+    public function testLogLevelConvenientMethods(string $method, int $expectedLogLevel): void
     {
-        $exception = (new BaseExceptionStub())->{$method}();
+        $exception = new BaseExceptionStub();
 
-        self::assertEquals($logLevel, $exception->getLogLevel());
+        $result = $exception->{$method}();
+
+        self::assertSame($exception, $result);
+        self::assertSame($expectedLogLevel, $this->getPrivatePropertyValue($result, 'logLevel'));
     }
 
     public function testSetLogLevel(): void
     {
         $logLevel = Logger::CRITICAL;
+        $exception = new BaseExceptionStub();
 
-        $exception = (new BaseExceptionStub())->setLogLevel($logLevel);
+        $result = $exception->setLogLevel($logLevel);
 
-        $property = $this->getPropertyAsPublic(BaseExceptionStub::class, 'logLevel');
-        self::assertSame($logLevel, $property->getValue($exception));
+        self::assertSame($exception, $result);
+        self::assertSame($logLevel, $this->getPrivatePropertyValue($result, 'logLevel'));
     }
 
     public function testSetMessageParams(): void
@@ -103,41 +142,45 @@ final class BaseExceptionTest extends AbstractTestCase
         $messageParams = [
             'foo' => 'bar',
         ];
+        $exception = new BaseExceptionStub();
 
-        $exception = (new BaseExceptionStub())->setMessageParams($messageParams);
+        $result = $exception->setMessageParams($messageParams);
 
-        $property = $this->getPropertyAsPublic(BaseExceptionStub::class, 'messageParams');
-        self::assertSame($messageParams, $property->getValue($exception));
+        self::assertSame($exception, $result);
+        self::assertSame($messageParams, $this->getPrivatePropertyValue($result, 'messageParams'));
     }
 
     public function testSetStatusCode(): void
     {
         $statusCode = 123;
+        $exception = new BaseExceptionStub();
 
-        $exception = (new BaseExceptionStub())->setStatusCode($statusCode);
+        $result = $exception->setStatusCode($statusCode);
 
-        $property = $this->getPropertyAsPublic(BaseExceptionStub::class, 'statusCode');
-        self::assertSame($statusCode, $property->getValue($exception));
+        self::assertSame($exception, $result);
+        self::assertSame($statusCode, $this->getPrivatePropertyValue($result, 'statusCode'));
     }
 
     public function testSetSubCode(): void
     {
         $subCode = 123;
+        $exception = new BaseExceptionStub();
 
-        $exception = (new BaseExceptionStub())->setSubCode($subCode);
+        $result = $exception->setSubCode($subCode);
 
-        $property = $this->getPropertyAsPublic(BaseExceptionStub::class, 'subCode');
-        self::assertSame($subCode, $property->getValue($exception));
+        self::assertSame($exception, $result);
+        self::assertSame($subCode, $this->getPrivatePropertyValue($result, 'subCode'));
     }
 
     public function testSetUserMessage(): void
     {
         $userMessage = 'User message';
+        $exception = new BaseExceptionStub();
 
-        $exception = (new BaseExceptionStub())->setUserMessage($userMessage);
+        $result = $exception->setUserMessage($userMessage);
 
-        $property = $this->getPropertyAsPublic(BaseExceptionStub::class, 'userMessage');
-        self::assertSame($userMessage, $property->getValue($exception));
+        self::assertSame($exception, $result);
+        self::assertSame($userMessage, $this->getPrivatePropertyValue($result, 'userMessage'));
     }
 
     public function testSetUserMessageParams(): void
@@ -145,10 +188,11 @@ final class BaseExceptionTest extends AbstractTestCase
         $userMessageParams = [
             'foo' => 'bar',
         ];
+        $exception = new BaseExceptionStub();
 
-        $exception = (new BaseExceptionStub())->setUserMessageParams($userMessageParams);
+        $result = $exception->setUserMessageParams($userMessageParams);
 
-        $property = $this->getPropertyAsPublic(BaseExceptionStub::class, 'userMessageParams');
-        self::assertSame($userMessageParams, $property->getValue($exception));
+        self::assertSame($exception, $result);
+        self::assertSame($userMessageParams, $this->getPrivatePropertyValue($result, 'userMessageParams'));
     }
 }

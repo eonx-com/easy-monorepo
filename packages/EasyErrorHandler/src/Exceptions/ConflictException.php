@@ -12,7 +12,7 @@ abstract class ConflictException extends BaseException
     protected $statusCode = 409;
 
     /**
-     * @var string
+     * @var null|string
      */
     protected $userMessage = 'exceptions.conflict';
 }

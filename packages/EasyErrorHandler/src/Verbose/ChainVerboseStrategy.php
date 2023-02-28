@@ -6,15 +6,16 @@ namespace EonX\EasyErrorHandler\Verbose;
 
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyDriverInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
+use Throwable;
 
 final class ChainVerboseStrategy implements VerboseStrategyInterface
 {
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\VerboseStrategyDriverInterface[]
      */
-    private array $drivers;
+    private readonly array $drivers;
 
     private bool $verbose;
 
@@ -29,7 +30,12 @@ final class ChainVerboseStrategy implements VerboseStrategyInterface
         $this->verbose = $defaultIsVerbose ?? false;
     }
 
-    public function setThrowable(\Throwable $throwable, ?Request $request = null): VerboseStrategyInterface
+    public function isVerbose(): bool
+    {
+        return $this->verbose;
+    }
+
+    public function setThrowable(Throwable $throwable, ?Request $request = null): VerboseStrategyInterface
     {
         foreach ($this->drivers as $driver) {
             $isVerbose = $driver->isVerbose($throwable, $request);
@@ -42,10 +48,5 @@ final class ChainVerboseStrategy implements VerboseStrategyInterface
         }
 
         return $this;
-    }
-
-    public function isVerbose(): bool
-    {
-        return $this->verbose;
     }
 }

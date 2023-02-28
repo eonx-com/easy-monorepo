@@ -7,14 +7,16 @@ namespace EonX\EasyErrorHandler\Builders;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface;
 use Throwable;
 
-final class ViolationsBuilder extends AbstractSingleKeyErrorResponseBuilder
+final class ViolationsErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
+    public const DEFAULT_KEY = 'violations';
+
     /**
      * @param mixed[] $data
      *
      * @return null|mixed[]
      */
-    protected function doBuildValue(Throwable $throwable, array $data)
+    protected function doBuildValue(Throwable $throwable, array $data): ?array
     {
         if (($throwable instanceof ValidationExceptionInterface) === false) {
             return null;
@@ -25,6 +27,6 @@ final class ViolationsBuilder extends AbstractSingleKeyErrorResponseBuilder
 
     protected function getDefaultKey(): string
     {
-        return 'violations';
+        return self::DEFAULT_KEY;
     }
 }

@@ -8,26 +8,22 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Throwable;
 
-final class UserMessageBuilder extends AbstractSingleKeyErrorResponseBuilder
+final class UserMessageErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\TranslatorInterface
-     */
-    private $translator;
+    public const DEFAULT_KEY = 'message';
 
-    public function __construct(TranslatorInterface $translator, ?string $key = null, ?int $priority = null)
-    {
-        $this->translator = $translator;
-
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        ?string $key = null,
+        ?int $priority = null
+    ) {
         parent::__construct($key, $priority);
     }
 
     /**
      * @param mixed[] $data
-     *
-     * @return string
      */
-    protected function doBuildValue(Throwable $throwable, array $data)
+    protected function doBuildValue(Throwable $throwable, array $data): string
     {
         $message = null;
         $parameters = [];
@@ -45,6 +41,6 @@ final class UserMessageBuilder extends AbstractSingleKeyErrorResponseBuilder
 
     protected function getDefaultKey(): string
     {
-        return 'message';
+        return self::DEFAULT_KEY;
     }
 }

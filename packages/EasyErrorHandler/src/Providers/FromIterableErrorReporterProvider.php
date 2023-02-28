@@ -2,23 +2,17 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Reporters;
+namespace EonX\EasyErrorHandler\Providers;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 
-final class FromIterableReporterProvider implements ErrorReporterProviderInterface
+final class FromIterableErrorReporterProvider implements ErrorReporterProviderInterface
 {
-    /**
-     * @var iterable<\EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface>
-     */
-    private $reporters;
-
     /**
      * @param iterable<\EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface> $reporters
      */
-    public function __construct(iterable $reporters)
+    public function __construct(private readonly iterable $reporters)
     {
-        $this->reporters = $reporters;
     }
 
     /**

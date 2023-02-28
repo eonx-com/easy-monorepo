@@ -14,23 +14,17 @@ use Throwable;
 final class TraceableErrorHandler implements TraceableErrorHandlerInterface, FormatAwareInterface
 {
     /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface
-     */
-    private $decorated;
-
-    /**
      * @var \Symfony\Component\HttpFoundation\Response[]
      */
-    private $renderedErrors = [];
+    private array $renderedErrors = [];
 
     /**
      * @var \Throwable[]
      */
-    private $reportedErrors = [];
+    private array $reportedErrors = [];
 
-    public function __construct(ErrorHandlerInterface $decorated)
+    public function __construct(private readonly ErrorHandlerInterface $decorated)
     {
-        $this->decorated = $decorated;
     }
 
     public function getBuilders(): array

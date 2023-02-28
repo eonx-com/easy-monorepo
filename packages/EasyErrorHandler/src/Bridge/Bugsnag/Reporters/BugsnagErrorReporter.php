@@ -11,33 +11,23 @@ use EonX\EasyErrorHandler\Reporters\AbstractErrorReporter;
 use Monolog\Logger;
 use Throwable;
 
-final class BugsnagReporter extends AbstractErrorReporter
+final class BugsnagErrorReporter extends AbstractErrorReporter
 {
-    private Client $bugsnag;
-
-    private BugsnagIgnoreExceptionsResolverInterface $ignoreExceptionsResolver;
-
-    private ?int $threshold;
+    private readonly int $threshold;
 
     public function __construct(
-        Client $bugsnag,
-        BugsnagIgnoreExceptionsResolverInterface $ignoreExceptionsResolver,
+        private readonly Client $bugsnag,
+        private readonly BugsnagIgnoreExceptionsResolverInterface $ignoreExceptionsResolver,
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
         ?int $threshold = null,
         ?int $priority = null
     ) {
-        $this->bugsnag = $bugsnag;
         $this->threshold = $threshold ?? Logger::ERROR;
-
-        $this->ignoreExceptionsResolver = $ignoreExceptionsResolver;
 
         parent::__construct($errorLogLevelResolver, $priority);
     }
 
-    /**
-     * @return void|bool
-     */
-    public function report(Throwable $throwable)
+    public function report(Throwable $throwable): void
     {
         if ($this->ignoreExceptionsResolver->shouldIgnore($throwable) === true) {
             return;

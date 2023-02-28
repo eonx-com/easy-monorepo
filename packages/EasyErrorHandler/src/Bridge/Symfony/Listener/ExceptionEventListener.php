@@ -16,15 +16,19 @@ final class ExceptionEventListener
 
     public function __invoke(ExceptionEvent $event): void
     {
-        $this->errorHandler->report($event->getThrowable());
+        $request = $event->getRequest();
+        $throwable = $event->getThrowable();
+
+        $this->errorHandler->report($throwable);
 
         // Skip if format not supported
-        if ($this->errorHandler instanceof FormatAwareInterface
-            && $this->errorHandler->supportsFormat($event->getRequest()) === false) {
+        if ($this->errorHandler instanceof FormatAwareInterface &&
+            $this->errorHandler->supportsFormat($request) === false
+        ) {
             return;
         }
 
         $event->allowCustomResponseCode();
-        $event->setResponse($this->errorHandler->render($event->getRequest(), $event->getThrowable()));
+        $event->setResponse($this->errorHandler->render($request, $throwable));
     }
 }

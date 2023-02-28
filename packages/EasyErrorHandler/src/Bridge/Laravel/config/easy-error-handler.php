@@ -26,7 +26,7 @@ return [
     /**
      * Log level threshold to notify bugsnag.
      */
-    'bugsnag_threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', null),
+    'bugsnag_threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_THRESHOLD', null),
 
     /**
      * List of handled exceptions that will set the bugsnag report as handled.

@@ -13,8 +13,6 @@ abstract class AbstractVerboseStrategyDriver implements VerboseStrategyDriverInt
 
     public function __construct(?int $priority = null)
     {
-        if ($priority !== null) {
-            $this->priority = $priority;
-        }
+        $this->doSetPriority($priority);
     }
 }

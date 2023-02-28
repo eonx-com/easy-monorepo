@@ -16,19 +16,15 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
     /**
      * @var mixed[]
      */
-    private $errorFormats;
-
-    /**
-     * @var \Symfony\Component\Serializer\SerializerInterface
-     */
-    private $serializer;
+    private readonly array $errorFormats;
 
     /**
      * @param null|mixed[] $errorFormats
      */
-    public function __construct(SerializerInterface $serializer, ?array $errorFormats = null)
-    {
-        $this->serializer = $serializer;
+    public function __construct(
+        private readonly SerializerInterface $serializer,
+        ?array $errorFormats = null
+    ) {
         $this->errorFormats = $errorFormats ?? [];
     }
 
@@ -41,15 +37,15 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
         $headers['X-Content-Type-Options'] = 'nosniff';
         $headers['X-Frame-Options'] = 'deny';
 
+        $statusCode = $data->getStatusCode();
+
         $content = $this->serializer->serialize(
             $data->getRawData(),
             $format->getKey(),
-            [
-                'statusCode' => $data->getStatusCode(),
-            ]
+            ['statusCode' => $statusCode]
         );
 
-        return new Response($content, $data->getStatusCode(), $headers);
+        return new Response($content, $statusCode, $headers);
     }
 
     private function getFormat(Request $request): ErrorResponseFormat
@@ -64,7 +60,7 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
         $errorFormat = null;
 
         foreach ($this->errorFormats as $format => $errorMimeTypes) {
-            if (\array_intersect($requestMimeTypes, $errorMimeTypes) || $errorFormat === null) {
+            if ($errorFormat === null || \array_intersect($requestMimeTypes, $errorMimeTypes)) {
                 $errorFormat = ErrorResponseFormat::create($format, $errorMimeTypes[0]);
             }
         }

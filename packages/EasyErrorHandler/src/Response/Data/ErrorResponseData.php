@@ -5,32 +5,27 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Response\Data;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseDataInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 final class ErrorResponseData implements ErrorResponseDataInterface
 {
     /**
      * @var mixed[]
      */
-    private $headers;
+    private readonly array $headers;
 
-    /**
-     * @var mixed[]
-     */
-    private $rawData;
-
-    /**
-     * @var int
-     */
-    private $statusCode;
+    private readonly int $statusCode;
 
     /**
      * @param mixed[] $rawData
      * @param null|mixed[] $headers
      */
-    public function __construct(array $rawData, ?int $statusCode = null, ?array $headers = null)
-    {
-        $this->rawData = $rawData;
-        $this->statusCode = $statusCode ?? 500;
+    public function __construct(
+        private readonly array $rawData,
+        ?int $statusCode = null,
+        ?array $headers = null
+    ) {
+        $this->statusCode = $statusCode ?? Response::HTTP_INTERNAL_SERVER_ERROR;
         $this->headers = $headers ?? [];
     }
 
