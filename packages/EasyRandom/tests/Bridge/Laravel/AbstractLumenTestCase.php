@@ -10,20 +10,25 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
-    protected function getApp(): Application
+    /**
+     * @param array<string, mixed>|null $config
+     */
+    protected function getApplication(?array $config = null): Application
     {
         if ($this->app !== null) {
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
-        $app->register(EasyRandomServiceProvider::class);
+        $this->app = new Application(__DIR__);
 
-        return $this->app = $app;
+        if ($config !== null) {
+            \config($config);
+        }
+
+        $this->app->register(EasyRandomServiceProvider::class);
+
+        return $this->app;
     }
 }

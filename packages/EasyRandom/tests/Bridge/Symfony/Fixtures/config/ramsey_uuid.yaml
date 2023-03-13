@@ -1,5 +1,7 @@
 easy_random:
     uuid_v4_generator: EonX\EasyRandom\UuidV4\RamseyUuidV4Generator
+    uuid_v6_generator: EonX\EasyRandom\UuidV6\RamseyUuidV6Generator
 
 services:
     EonX\EasyRandom\UuidV4\RamseyUuidV4Generator: ~
+    EonX\EasyRandom\UuidV6\RamseyUuidV6Generator: ~

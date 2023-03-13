@@ -10,13 +10,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractSymfonyTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Symfony\Component\HttpKernel\KernelInterface
-     */
-    private $kernel;
+    private ?KernelInterface $kernel = null;
 
     /**
-     * @param null|string[] $configs
+     * @param null|array<string, mixed> $configs
      */
     protected function getKernel(?array $configs = null): KernelInterface
     {

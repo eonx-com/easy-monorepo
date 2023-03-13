@@ -145,9 +145,6 @@ parameters:
 
         # ---- EasyPsr7Factory ----
         # ---- EasyRandom ----
-        - message: '#Access to an undefined property EonX\\EasyRandom\\Interfaces\\RandomGeneratorInterface\:\:\$uuidV4Generator#'
-          path: packages/EasyRandom/tests/Bridge/Symfony/EasyRandomBundleTest.php
-
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
           path: packages/EasyRepository/src/Implementations/Illuminate
