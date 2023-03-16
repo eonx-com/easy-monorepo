@@ -62,6 +62,7 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
         $files = (new Finder())
             ->in($this->projectDir)
             ->name('*.php')
+            ->exclude(['vendor', 'var', 'tests'])
             ->files();
 
         $enums = [];
