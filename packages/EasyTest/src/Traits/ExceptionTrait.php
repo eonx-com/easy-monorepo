@@ -36,6 +36,14 @@ trait ExceptionTrait
             throw $this->thrownException;
         }
 
+        if (
+            $code === null
+            && $this->thrownException->getCode() !== 0
+            && \str_starts_with($expectedException, 'App\\')
+        ) {
+            self::assertNotNull($code, "Didn't you forget to define the error code?");
+        }
+
         if ($code !== null) {
             self::assertSame($code, $this->thrownException->getCode());
         }
