@@ -118,7 +118,7 @@ trait MessengerAssertionsTrait
     }
 
     /**
-     * @param array<int, class-string, array<class-string<\Throwable>, int|string>> $expectedExceptions
+     * @param array<int, class-string<\Throwable>|array<class-string<\Throwable>, int|string>> $expectedExceptions
      */
     public static function consumeAsyncMessages(array $expectedExceptions = []): void
     {
