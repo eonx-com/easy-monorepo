@@ -44,6 +44,9 @@ abstract class AbstractEncryptor implements EncryptorInterface
         );
     }
 
+    /**
+     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
+     */
     public function decryptRaw(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null
@@ -65,6 +68,9 @@ abstract class AbstractEncryptor implements EncryptorInterface
         });
     }
 
+    /**
+     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
+     */
     public function encryptRaw(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null
@@ -74,12 +80,18 @@ abstract class AbstractEncryptor implements EncryptorInterface
         });
     }
 
+    /**
+     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
+     */
     abstract protected function doDecrypt(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
         bool $raw
     ): string;
 
+    /**
+     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
+     */
     abstract protected function doEncrypt(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
