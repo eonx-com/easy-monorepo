@@ -224,7 +224,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         $this->session->login(\Pkcs11\CKU_USER, $this->userPin);
     }
 
-    private function isNonEmptyString(?string $string = null): bool
+    private function isNonEmptyString(mixed $string): bool
     {
         return \is_string($string) && $string !== '';
     }
