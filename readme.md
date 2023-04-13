@@ -1,5 +1,5 @@
 ---eonx_docs---
-title: Documentation
+title: Monorepo Documentation
 weight: 0
 ---eonx_docs---
 
