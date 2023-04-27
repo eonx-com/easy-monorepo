@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Bridge\Symfony\Validator\Constraints;
+namespace EonX\EasyUtils\Validator\Constraints;
 
-use EonX\EasyDoctrine\ValueObject\Number as NumberValueObject;
+use EonX\EasyUtils\ValueObject\Number as NumberValueObject;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

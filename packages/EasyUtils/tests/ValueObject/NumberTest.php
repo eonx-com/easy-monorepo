@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Tests\ValueObject;
+namespace EonX\EasyUtils\Tests\ValueObject;
 
-use EonX\EasyDoctrine\ValueObject\Number;
+use EonX\EasyUtils\ValueObject\Number;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 use UnexpectedValueException;
@@ -54,7 +54,7 @@ final class NumberTest extends TestCase
     }
 
     /**
-     * @param \EonX\EasyDoctrine\ValueObject\Number[] $values
+     * @param \EonX\EasyUtils\ValueObject\Number[] $values
      *
      * @dataProvider provideMaxData
      */
@@ -66,7 +66,7 @@ final class NumberTest extends TestCase
     }
 
     /**
-     * @param \EonX\EasyDoctrine\ValueObject\Number[] $values
+     * @param \EonX\EasyUtils\ValueObject\Number[] $values
      *
      * @dataProvider provideMinData
      */

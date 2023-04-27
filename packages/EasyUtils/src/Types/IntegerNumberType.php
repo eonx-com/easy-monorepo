@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\DBAL\Types;
+namespace EonX\EasyUtils\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\BigIntType as DoctrineBigIntType;
 use Doctrine\DBAL\Types\ConversionException;
-use EonX\EasyDoctrine\ValueObject\Number;
+use EonX\EasyUtils\ValueObject\Number;
 
 final class IntegerNumberType extends DoctrineBigIntType
 {
