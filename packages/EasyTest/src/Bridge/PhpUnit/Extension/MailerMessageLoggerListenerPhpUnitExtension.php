@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace EonX\EasyTest\Bridge\PhpUnit\Extension;
 
 use EonX\EasyTest\Bridge\Symfony\Mailer\EventListener\MailerMessageLoggerListenerStub;
-use PHPUnit\Runner\AfterTestHook;
-use PHPUnit\Event\TestRunner\Started as TestRunnerStartedEvent;
-use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Event\Test\Finished as TestFinishedEvent;
+use PHPUnit\Event\Test\FinishedSubscriber as TestFinishedSubscriber;
+use PHPUnit\Event\TestRunner\Started as TestRunnerStartedEvent;
+use PHPUnit\Runner\AfterTestHook;
+use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration;
-use PHPUnit\Event\Test\FinishedSubscriber as TestFinishedSubscriber;
 
 if (class_exists(TestRunnerStartedEvent::class)) {
     /**
