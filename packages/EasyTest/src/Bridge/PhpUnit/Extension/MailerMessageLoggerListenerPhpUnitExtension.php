@@ -14,7 +14,7 @@ use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration;
 
-if (class_exists(TestRunnerStartedEvent::class)) {
+if (\class_exists(TestRunnerStartedEvent::class)) {
     /**
      * PHPUnit >= 10.
      */
