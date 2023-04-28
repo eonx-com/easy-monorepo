@@ -15,7 +15,7 @@
     "require-dev": {
         "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^9.5 || ^10.0",
         "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
         "symfony/symfony": "^5.4 || ^6.0"
     },

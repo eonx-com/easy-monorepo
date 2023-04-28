@@ -9,7 +9,7 @@
     },
     "require-dev": {
         "ramsey/uuid": "^3.9 || ^4.0",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^9.5 || ^10.0",
         "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
         "symfony/symfony": "^5.4 || ^6.0",
         "symfony/uid": "^5.4 || ^6.0"
