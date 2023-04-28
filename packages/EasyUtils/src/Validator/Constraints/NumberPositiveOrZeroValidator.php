@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Validator\Constraints;
 
-use EonX\EasyUtils\ValueObject\Number as NumberValueObject;
+use EonX\EasyUtils\ValueObjects\Number as NumberValueObject;
 use Symfony\Component\Validator\Constraints\AbstractComparisonValidator;
 
 final class NumberPositiveOrZeroValidator extends AbstractComparisonValidator
 {
     /**
-     * @param \EonX\EasyUtils\ValueObject\Number|null $value1
-     * @param \EonX\EasyUtils\ValueObject\Number|null $value2
+     * @param \EonX\EasyUtils\ValueObjects\Number|null $value1
+     * @param \EonX\EasyUtils\ValueObjects\Number|null $value2
      */
     protected function compareValues(mixed $value1, mixed $value2): bool
     {
@@ -19,7 +19,7 @@ final class NumberPositiveOrZeroValidator extends AbstractComparisonValidator
     }
 
     /**
-     * @param \EonX\EasyUtils\ValueObject\Number|int|string $value
+     * @param \EonX\EasyUtils\ValueObjects\Number|int|string $value
      */
     protected function formatValue(mixed $value, ?int $format = null): string
     {

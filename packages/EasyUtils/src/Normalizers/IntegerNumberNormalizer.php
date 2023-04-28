@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyUtils\Serializer;
+namespace EonX\EasyUtils\Normalizers;
 
-use EonX\EasyUtils\ValueObject\Number;
+use EonX\EasyUtils\ValueObjects\Number;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -34,7 +34,7 @@ final class IntegerNumberNormalizer implements
     }
 
     /**
-     * @param \EonX\EasyUtils\ValueObject\Number|null $object
+     * @param \EonX\EasyUtils\ValueObjects\Number|null $object
      * @param array<string, mixed>|null $context
      */
     public function normalize(mixed $object, ?string $format = null, ?array $context = null): string

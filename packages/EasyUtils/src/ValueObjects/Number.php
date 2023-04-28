@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyUtils\ValueObject;
+namespace EonX\EasyUtils\ValueObjects;
 
 use Stringable;
 use UnexpectedValueException;

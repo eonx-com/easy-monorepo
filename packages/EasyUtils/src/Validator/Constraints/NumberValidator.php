@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Validator\Constraints;
 
-use EonX\EasyUtils\ValueObject\Number as NumberValueObject;
+use EonX\EasyUtils\ValueObjects\Number as NumberValueObject;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

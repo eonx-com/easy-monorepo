@@ -7,8 +7,8 @@ namespace EonX\EasyUtils\Validator\Constraints;
 final class NumberLessOrEqualValidator extends AbstractNumberComparisonValidator
 {
     /**
-     * @param \EonX\EasyUtils\ValueObject\Number|null $value1
-     * @param \EonX\EasyUtils\ValueObject\Number|null $value2
+     * @param \EonX\EasyUtils\ValueObjects\Number|null $value1
+     * @param \EonX\EasyUtils\ValueObjects\Number|null $value2
      */
     protected function compareValues(mixed $value1, mixed $value2): bool
     {
