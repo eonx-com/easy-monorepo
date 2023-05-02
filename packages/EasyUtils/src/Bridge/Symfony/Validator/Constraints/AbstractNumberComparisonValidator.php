@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyUtils\Validator\Constraints;
+namespace EonX\EasyUtils\Bridge\Symfony\Validator\Constraints;
 
 use EonX\EasyUtils\ValueObjects\Number as NumberValueObject;
 use Symfony\Component\Validator\Constraint;
@@ -14,7 +14,7 @@ abstract class AbstractNumberComparisonValidator extends AbstractComparisonValid
 
     public function validate(mixed $value, Constraint $constraint): void
     {
-        /** @var \EonX\EasyUtils\Validator\Constraints\AbstractNumberComparison $abstractNumberConstraint */
+        /** @var \EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\AbstractNumberComparison $abstractNumberConstraint */
         $abstractNumberConstraint = $constraint;
         $this->constraint = $abstractNumberConstraint;
 

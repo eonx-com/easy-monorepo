@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyUtils\Normalizers;
+namespace EonX\EasyUtils\Bridge\Symfony\Normalizers;
 
 use EonX\EasyUtils\ValueObjects\Number;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;

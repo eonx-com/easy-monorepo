@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyUtils\Validator\Constraints;
+namespace EonX\EasyUtils\Bridge\Symfony\Validator\Constraints;
 
 final class NumberLessOrEqualValidator extends AbstractNumberComparisonValidator
 {
