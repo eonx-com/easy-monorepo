@@ -16,7 +16,7 @@
         "eonx-com/easy-webhook": "^4.4",
         "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
         "mockery/mockery": "^1.4",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^9.5 || ^10.0",
         "symfony/amazon-sqs-messenger": "^5.4 || ^6.0",
         "symfony/symfony": "^5.4 || ^6.0"
     },
