@@ -18,7 +18,7 @@ jobs:
                 uses: ramsey/composer-install@v2
             -
                 id: output_data
-                run: 'echo "::set-output name=matrix::$(bin/monorepo export-packages)"'
+                run: 'echo "matrix=$(bin/monorepo export-packages)" >> $GITHUB_OUTPUT'
         outputs:
             matrix: '${{ steps.output_data.outputs.matrix }}'
     split_packages:

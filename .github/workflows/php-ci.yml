@@ -3,7 +3,6 @@ name: PHP-CI
 on: [ push, pull_request ]
 
 jobs:
-    # 2nd run with cache + parallel
     coding_standards:
         runs-on: ubuntu-latest
         strategy:
