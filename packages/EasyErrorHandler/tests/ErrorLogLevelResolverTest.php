@@ -6,52 +6,61 @@ namespace EonX\EasyErrorHandler\Tests;
 
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
+use InvalidArgumentException;
 use Monolog\Logger;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 final class ErrorLogLevelResolverTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetErrorLogLevel
      */
     public function providerTestGetErrorLogLevel(): iterable
     {
         yield 'Error because default' => [
-            new \InvalidArgumentException(),
-            Logger::ERROR,
+            'throwable' => new InvalidArgumentException(),
+            'expectedLogLevel' => Logger::ERROR,
+            'exceptionLogLevels' => null,
         ];
 
         yield 'Debug default Symfony HTTP exception' => [
-            new NotFoundHttpException(),
-            Logger::DEBUG,
+            'throwable' => new NotFoundHttpException(),
+            'expectedLogLevel' => Logger::DEBUG,
+            'exceptionLogLevels' => null,
         ];
 
         yield 'Info from log levels mapping' => [
-            new \InvalidArgumentException(),
-            Logger::INFO,
-            [
-                \InvalidArgumentException::class => Logger::INFO,
+            'throwable' => new InvalidArgumentException(),
+            'expectedLogLevel' => Logger::INFO,
+            'exceptionLogLevels' => [
+                InvalidArgumentException::class => Logger::INFO,
             ],
         ];
 
         yield 'Critical from exception log level aware' => [
-            (new BaseExceptionStub())->setCriticalLogLevel(),
-            Logger::CRITICAL,
+            'throwable' => (new BaseExceptionStub())->setCriticalLogLevel(),
+            'expectedLogLevel' => Logger::CRITICAL,
+            'exceptionLogLevels' => null,
         ];
     }
 
     /**
-     * @param null|int[] $exceptionLogLevels
+     * @param array<class-string, int> $exceptionLogLevels
      *
      * @dataProvider providerTestGetErrorLogLevel
      */
     public function testGetErrorLogLevel(
-        \Throwable $throwable,
+        Throwable $throwable,
         int $expectedLogLevel,
         ?array $exceptionLogLevels = null
     ): void {
         $resolver = new ErrorLogLevelResolver($exceptionLogLevels);
 
-        self::assertEquals($expectedLogLevel, $resolver->getLogLevel($throwable));
+        $logLevel = $resolver->getLogLevel($throwable);
+
+        self::assertSame($expectedLogLevel, $logLevel);
     }
 }

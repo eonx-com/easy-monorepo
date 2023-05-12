@@ -12,7 +12,7 @@ abstract class NotFoundException extends BaseException
     protected $statusCode = 404;
 
     /**
-     * @var string
+     * @var null|string
      */
     protected $userMessage = 'exceptions.not_found';
 }

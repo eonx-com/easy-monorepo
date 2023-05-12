@@ -29,10 +29,12 @@ parameters:
         - packages/EasyApiToken/tests/Bridge/Symfony/*
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
         - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
+        - packages/EasyEncryption/src/AwsPkcs11Encryptor.php
         - packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
         - packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
         - packages/EasySecurity/src/Bridge/Symfony/Security/SecurityContextAuthenticator.php
         - packages/EasySwoole/src/Helpers/FunctionHelper.php
+        - packages/EasyTest/src/Bridge/PhpUnit/Extension/MailerMessageLoggerListenerPhpUnitExtension.php
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
@@ -42,6 +44,17 @@ parameters:
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
         # ---- EasyApiToken ----
+        - message: '#Static method Firebase\\JWT\\JWT\:\:decode\(\) invoked with 3 parameters, 2 required#'
+          path: packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
+
+        - message: '#Parameter \#2 \$keyOrKeyArray of static method Firebase\\JWT\\JWT\:\:decode\(\) expects array<string, Firebase\\JWT\\Key>\|Firebase\\JWT\\Key, array\|string given#'
+          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
+
+        - message: '#Static method Firebase\\JWT\\JWT\:\:decode\(\) invoked with 3 parameters, 2 required#'
+          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
+
+        - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
+          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'
           path: packages/EasyAsync/tests

@@ -17,6 +17,8 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyErrorHandlerExtension extends Extension
 {
+    private const DEFAULT_LOCALE = 'en';
+
     /**
      * @param mixed[] $configs
      *
@@ -83,7 +85,7 @@ final class EasyErrorHandlerExtension extends Extension
         );
         $container->setParameter(
             BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE,
-            $config['translate_internal_error_messages']['locale'] ?? 'en'
+            $config['translate_internal_error_messages']['locale'] ?? self::DEFAULT_LOCALE
         );
 
         $container

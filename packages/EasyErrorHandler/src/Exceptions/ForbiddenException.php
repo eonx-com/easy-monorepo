@@ -12,7 +12,7 @@ abstract class ForbiddenException extends BaseException
     protected $statusCode = 403;
 
     /**
-     * @var string
+     * @var null|string
      */
     protected $userMessage = 'exceptions.forbidden';
 }

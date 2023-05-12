@@ -27,9 +27,12 @@ interface EncryptorInterface
     public function decrypt(string $text): DecryptedStringInterface;
 
     /**
-     * @param null|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key
+     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
      */
-    public function decryptRaw(string $text, $key = null): string;
+    public function decryptRaw(
+        string $text,
+        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null
+    ): string;
 
     /**
      * Returns a base64 encoded json string containing the key name, and the encrypted string.
@@ -37,7 +40,10 @@ interface EncryptorInterface
     public function encrypt(string $text, ?string $keyName = null): string;
 
     /**
-     * @param null|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key
+     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
      */
-    public function encryptRaw(string $text, $key = null): string;
+    public function encryptRaw(
+        string $text,
+        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null
+    ): string;
 }

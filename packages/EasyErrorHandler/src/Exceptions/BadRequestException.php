@@ -12,7 +12,7 @@ abstract class BadRequestException extends BaseException
     protected $statusCode = 400;
 
     /**
-     * @var string
+     * @var null|string
      */
     protected $userMessage = 'exceptions.bad_request';
 }

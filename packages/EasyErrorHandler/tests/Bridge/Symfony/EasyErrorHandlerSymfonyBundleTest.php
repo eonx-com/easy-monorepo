@@ -12,6 +12,8 @@ final class EasyErrorHandlerSymfonyBundleTest extends AbstractSymfonyTestCase
     {
         $container = $this->getKernel([__DIR__ . '/Fixtures/config/exception_log_levels.yaml'])->getContainer();
 
-        self::assertInstanceOf(ErrorHandlerInterface::class, $container->get(ErrorHandlerInterface::class));
+        $result = $container->get(ErrorHandlerInterface::class);
+
+        self::assertInstanceOf(ErrorHandlerInterface::class, $result);
     }
 }

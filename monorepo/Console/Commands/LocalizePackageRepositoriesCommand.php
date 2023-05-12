@@ -43,7 +43,7 @@ final class LocalizePackageRepositoriesCommand extends Command
 
             // Replace monorepo packages version with dev one
             foreach (['require', 'require-dev'] as $section) {
-                foreach (\array_keys($composerJsonFileContents[$section]) as $package) {
+                foreach (\array_keys($composerJsonFileContents[$section] ?? []) as $package) {
                     if (\in_array($package, $monorepoPackageNames, true)) {
                         $composerJsonFileContents[$section][$package] = $devVersion;
                     }

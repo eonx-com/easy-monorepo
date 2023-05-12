@@ -12,7 +12,7 @@ abstract class UnauthorizedException extends BaseException
     protected $statusCode = 401;
 
     /**
-     * @var string
+     * @var null|string
      */
     protected $userMessage = 'exceptions.unauthorized';
 }

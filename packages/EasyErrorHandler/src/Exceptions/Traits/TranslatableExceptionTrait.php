@@ -19,7 +19,7 @@ trait TranslatableExceptionTrait
     protected $messageParams = [];
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $userMessage = TranslatableExceptionInterface::DEFAULT_USER_MESSAGE;
 
@@ -28,33 +28,21 @@ trait TranslatableExceptionTrait
      */
     protected $userMessageParams = [];
 
-    /**
-     * {@inheritDoc}
-     */
     public function getDomain(): ?string
     {
         return $this->domain;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getMessageParams(): array
     {
         return $this->messageParams;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getUserMessage(): ?string
     {
         return $this->userMessage;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getUserMessageParams(): array
     {
         return $this->userMessageParams;

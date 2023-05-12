@@ -88,6 +88,8 @@ return static function (ECSConfig $ecsConfig): void {
             __DIR__ . '/packages/EasyUtils/src/Csv/FromFileCsvContentsProvider.php',
         ],
         LineLengthSniff::class . '.MaxExceeded' => [
+            __DIR__ . '/packages/EasyEncryption/src/Bridge/BridgeConstantsInterface.php',
+            __DIR__ . '/packages/EasyEncryption/src/Bridge/Symfony/Resources/config/aws_pkcs11_encryptor.php',
             __DIR__ . '/packages/EasyErrorHandler/src/Bridge/BridgeConstantsInterface.php',
         ],
         MethodChainingIndentationFixer::class => ['*/Configuration.php'],

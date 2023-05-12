@@ -11,9 +11,6 @@ trait SubCodeAwareExceptionTrait
      */
     protected $subCode = 0;
 
-    /**
-     * {@inheritDoc}
-     */
     public function getSubCode(): int
     {
         return $this->subCode;

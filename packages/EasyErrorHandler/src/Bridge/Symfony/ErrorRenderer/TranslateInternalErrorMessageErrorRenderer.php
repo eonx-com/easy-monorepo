@@ -7,12 +7,10 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony\ErrorRenderer;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
+use Throwable;
 
 final class TranslateInternalErrorMessageErrorRenderer implements ErrorRendererInterface
 {
-    /**
-     * @var string[]
-     */
     private const PATTERNS = [
         '<title>%s',
         '%s</h1>',
@@ -24,7 +22,7 @@ final class TranslateInternalErrorMessageErrorRenderer implements ErrorRendererI
     ) {
     }
 
-    public function render(\Throwable $exception): FlattenException
+    public function render(Throwable $exception): FlattenException
     {
         $flattenException = $this->decorated->render($exception);
 
@@ -42,8 +40,9 @@ final class TranslateInternalErrorMessageErrorRenderer implements ErrorRendererI
      */
     private function resolvePatterns(string $value): array
     {
-        return \array_map(static function (string $pattern) use ($value): string {
-            return \sprintf($pattern, $value);
-        }, self::PATTERNS);
+        return \array_map(
+            static fn (string $pattern): string => \sprintf($pattern, $value),
+            self::PATTERNS
+        );
     }
 }

@@ -6,50 +6,31 @@ namespace EonX\EasyApiToken\External;
 
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use OpenSSLAsymmetricKey;
 
 final class FirebaseJwtDriver implements JwtDriverInterface
 {
-    /**
-     * @var string
-     */
-    private $algo;
+    use FirebaseJwtVersionTrait;
 
     /**
      * @var string[]
+     *
+     * @deprecated will be removed in 5.0
      */
-    private $allowedAlgos;
+    private array $allowedAlgos;
 
     /**
-     * @var null|int
-     */
-    private $leeway;
-
-    /**
-     * @var \OpenSSLAsymmetricKey|string
-     */
-    private $privateKey;
-
-    /**
-     * @var \OpenSSLAsymmetricKey|string
-     */
-    private $publicKey;
-
-    /**
-     * @param null|mixed[] $allowedAlgos
+     * @param null|string[] $allowedAlgos
      */
     public function __construct(
-        string $algo,
-        OpenSSLAsymmetricKey|string $publicKey,
-        OpenSSLAsymmetricKey|string $privateKey,
+        private readonly string $algo,
+        private readonly OpenSSLAsymmetricKey|string $publicKey,
+        private readonly OpenSSLAsymmetricKey|string $privateKey,
         ?array $allowedAlgos = null,
-        ?int $leeway = null
+        private readonly ?int $leeway = null
     ) {
-        $this->algo = $algo;
-        $this->publicKey = $publicKey;
-        $this->privateKey = $privateKey;
         $this->allowedAlgos = $allowedAlgos ?? [];
-        $this->leeway = $leeway;
     }
 
     public function decode(string $token): object
@@ -63,6 +44,10 @@ final class FirebaseJwtDriver implements JwtDriverInterface
          */
         if ($this->leeway !== null) {
             JWT::$leeway = $this->leeway;
+        }
+
+        if (self::isFirebaseJwtV6()) {
+            return JWT::decode($token, new Key($this->publicKey, $this->algo));
         }
 
         /** @var mixed[]|string $publicKey */

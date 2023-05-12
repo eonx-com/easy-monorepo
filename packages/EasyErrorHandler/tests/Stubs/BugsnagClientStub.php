@@ -12,7 +12,7 @@ final class BugsnagClientStub extends Client
     /**
      * @var mixed[]
      */
-    private $calls = [];
+    private array $calls = [];
 
     public function __construct()
     {
@@ -27,7 +27,7 @@ final class BugsnagClientStub extends Client
         return $this->calls;
     }
 
-    public function notifyException($throwable, ?callable $callback = null): void
+    public function notifyException(mixed $throwable, ?callable $callback = null): void
     {
         $this->calls[] = [$throwable, $callback];
     }

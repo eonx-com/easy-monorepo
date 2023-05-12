@@ -11,9 +11,6 @@ trait ValidationExceptionTrait
      */
     protected $errors = [];
 
-    /**
-     * {@inheritDoc}
-     */
     public function getErrors(): array
     {
         return $this->errors;

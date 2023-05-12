@@ -118,7 +118,7 @@ trait MessengerAssertionsTrait
     }
 
     /**
-     * @param array<int, array<class-string<\Throwable>, int|string>> $expectedExceptions
+     * @param array<int, class-string<\Throwable>|array<class-string<\Throwable>, int|string>> $expectedExceptions
      */
     public static function consumeAsyncMessages(array $expectedExceptions = []): void
     {
@@ -211,7 +211,7 @@ trait MessengerAssertionsTrait
     }
 
     /**
-     * @param array<int, array<class-string<\Throwable>, int|string>> $expectedExceptions
+     * @param array<int, class-string<\Throwable>|array<class-string<\Throwable>, int|string>> $expectedExceptions
      */
     private static function runMessengerWorker(
         string $transportName,
@@ -266,11 +266,20 @@ trait MessengerAssertionsTrait
         foreach ($transport->getRejected() as $envelope) {
             /** @var \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp $errorDetailsStamp */
             foreach ($envelope->all(ErrorDetailsStamp::class) as $errorDetailsStamp) {
-                foreach ($expectedExceptions as $key => $expectedExceptionPair) {
+                foreach ($expectedExceptions as $key => $expectedExceptionPairOrClass) {
+                    // if $expectedExceptionPairOrClass is a string = exceptionClass
+                    if ($expectedExceptionPairOrClass === $errorDetailsStamp->getExceptionClass() &&
+                        $errorDetailsStamp->getExceptionCode() === 0
+                    ) {
+                        unset($expectedExceptions[$key]);
+
+                        continue 2;
+                    }
+                    // if $expectedExceptionPairOrClass is an array{exceptionClass => exceptionCode}
                     if (
-                        isset($expectedExceptionPair[$errorDetailsStamp->getExceptionClass()])
+                        isset($expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()])
                         && (
-                            $expectedExceptionPair[$errorDetailsStamp->getExceptionClass()]
+                            $expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()]
                             === $errorDetailsStamp->getExceptionCode()
                         )
                     ) {
