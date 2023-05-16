@@ -22,7 +22,8 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyHttpClient\\": "src"
+            "EonX\\EasyHttpClient\\": "src",
+            "EonX\\EasyHttpClient\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {
