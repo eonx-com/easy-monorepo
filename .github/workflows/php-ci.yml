@@ -16,7 +16,7 @@ jobs:
                     - { name: phpstan, coverage: none, run: composer check-phpstan }
                     # - { name: rector, coverage: none, run: composer check-rector }
 
-        name: ${{ matrix.actions.name}} (${{ matrix.php }})
+        name: ${{ matrix.actions.name }} (${{ matrix.php }})
 
         steps:
             -   uses: actions/checkout@v3
@@ -28,8 +28,9 @@ jobs:
                     extensions: pdo_sqlite
 
             -   uses: ramsey/composer-install@v2
-
-            -   run: composer install --working-dir=quality
+            -   uses: ramsey/composer-install@v2
+                with:
+                    working-directory: quality
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}

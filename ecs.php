@@ -50,6 +50,7 @@ return static function (ECSConfig $ecsConfig): void {
     ]);
 
     $ecsConfig->parallel();
+    $ecsConfig->cacheDirectory(__DIR__ . '/quality/cache/ecs');
 
     $ecsConfig->paths([
         __DIR__ . '/ecs.php',
