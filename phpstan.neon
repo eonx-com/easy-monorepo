@@ -6,7 +6,7 @@ services:
       tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 parameters:
-    tmpDir: quality/cache/phpstan
+    tmpDir: %currentWorkingDirectory%/quality/cache/phpstan
     parallel:
         jobSize: 20
         maximumNumberOfProcesses: 32

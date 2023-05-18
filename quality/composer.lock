@@ -220,17 +220,23 @@
         },
         {
             "name": "eonx-com/easy-quality",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eonx-com/easy-quality.git",
-                "reference": "7030e0e645f646b74bfae5cf5f18e165d70bdbc5"
+                "reference": "4e97d8acd93ec16bae25ea2956299348ea37c749"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eonx-com/easy-quality/zipball/7030e0e645f646b74bfae5cf5f18e165d70bdbc5",
-                "reference": "7030e0e645f646b74bfae5cf5f18e165d70bdbc5",
-                "shasum": ""
+                "url": "https://api.github.com/repos/eonx-com/easy-quality/zipball/4e97d8acd93ec16bae25ea2956299348ea37c749",
+                "reference": "4e97d8acd93ec16bae25ea2956299348ea37c749",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://repo.packagist.com/eonx-com/dists/%package%/%version%/r%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "jangregor/phpstan-prophecy": "^1.0",
@@ -254,16 +260,21 @@
                     "EonX\\EasyQuality\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "EonX\\EasyQuality\\Tests\\": "tests"
+                }
+            },
+            "notification-url": "https://repo.packagist.com/eonx-com/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Makes using of code quality tools for PHP projects of EonX easier",
             "support": {
-                "issues": "https://github.com/eonx-com/easy-quality/issues",
-                "source": "https://github.com/eonx-com/easy-quality/tree/3.0.3"
+                "source": "https://github.com/eonx-com/easy-quality/tree/3.0.4",
+                "issues": "https://github.com/eonx-com/easy-quality/issues"
             },
-            "time": "2022-06-22T12:38:56+00:00"
+            "time": "2022-09-07T05:56:18+00:00"
         },
         {
             "name": "jangregor/phpstan-prophecy",
