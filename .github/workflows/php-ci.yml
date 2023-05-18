@@ -40,7 +40,7 @@ jobs:
                     key: ${{ runner.os }}-${{ matrix.php }}-quality-${{ matrix.actions.name }}-${{ github.sha }}
                     restore-keys: ${{ runner.os }}-${{ matrix.php }}-quality-${{ matrix.actions.name }}-
 
-            -   if: steps.cache-quality-tools.outputs.cache-hit == false
+            -   if: matrix.actions.cache && steps.cache-quality-tools.outputs.cache-hit == false
                 run: mkdir -p ${{ matrix.actions.cache }}
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
