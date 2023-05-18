@@ -10,10 +10,10 @@ jobs:
             matrix:
                 php: [ '8.1' ]
                 actions:
-                    - { name: ecs, coverage: none, run: composer check-ecs }
+                    - { name: ecs, coverage: none, run: composer check-ecs, cache: quantity/cache/ecs }
                     - { name: monorepo, coverage: none, run: composer check-monorepo }
                     - { name: composer, coverage: none, run: composer check-composer }
-                    - { name: phpstan, coverage: none, run: composer check-phpstan }
+                    - { name: phpstan, coverage: none, run: composer check-phpstan, cache: quantity/cache/phpstan }
                     # - { name: rector, coverage: none, run: composer check-rector }
 
         name: ${{ matrix.actions.name }} (${{ matrix.php }})
@@ -31,6 +31,13 @@ jobs:
             -   uses: ramsey/composer-install@v2
                 with:
                     working-directory: quality
+
+            -   if: matrix.actions.cache
+                uses: actions/cache@v3
+                with:
+                    path: ${{ matrix.actions.cache }}
+                    key: ${{ runner.os }}-${{ matrix.php }}-quality-${{ matrix.actions.name }}-${{ github.sha }}
+                    restore-keys: ${{ runner.os }}-${{ matrix.php }}-quality-${{ matrix.actions.name }}-
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
