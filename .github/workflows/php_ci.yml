@@ -14,7 +14,7 @@ jobs:
                     - { name: monorepo, coverage: none, run: composer check-monorepo }
                     - { name: composer, coverage: none, run: composer check-composer }
                     - { name: phpstan, coverage: none, run: composer check-phpstan, cache: quality/cache/phpstan }
-                    # - { name: rector, coverage: none, run: composer check-rector }
+                    - { name: rector, coverage: none, run: composer check-rector }
 
         name: ${{ matrix.actions.name }} (${{ matrix.php }})
 
