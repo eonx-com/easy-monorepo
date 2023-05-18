@@ -10,13 +10,13 @@ jobs:
             matrix:
                 php: [ '8.1' ]
                 actions:
-                    - { name: ecs, coverage: none, run: composer check-ecs }
+                    - { name: ecs, coverage: none, run: composer check-ecs, cache: quality/cache/ecs }
                     - { name: monorepo, coverage: none, run: composer check-monorepo }
                     - { name: composer, coverage: none, run: composer check-composer }
-                    - { name: phpstan, coverage: none, run: composer check-phpstan }
-                    # - { name: rector, coverage: none, run: composer check-rector }
+                    - { name: phpstan, coverage: none, run: composer check-phpstan, cache: quality/cache/phpstan }
+                    #- { name: rector, coverage: none, run: composer check-rector }
 
-        name: ${{ matrix.actions.name}} (${{ matrix.php }})
+        name: ${{ matrix.actions.name }} (${{ matrix.php }})
 
         steps:
             -   uses: actions/checkout@v3
@@ -28,8 +28,20 @@ jobs:
                     extensions: pdo_sqlite
 
             -   uses: ramsey/composer-install@v2
+            -   uses: ramsey/composer-install@v2
+                with:
+                    working-directory: quality
 
-            -   run: composer install --working-dir=quality
+            -   if: matrix.actions.cache
+                id: cache-quality-tools
+                uses: actions/cache@v3
+                with:
+                    path: ${{ matrix.actions.cache }}
+                    key: ${{ runner.os }}-${{ matrix.php }}-quality-${{ matrix.actions.name }}-${{ github.sha }}
+                    restore-keys: ${{ runner.os }}-${{ matrix.php }}-quality-${{ matrix.actions.name }}-
+
+            -   if: matrix.actions.cache && steps.cache-quality-tools.outputs.cache-hit == false
+                run: mkdir -p ${{ matrix.actions.cache }}
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
