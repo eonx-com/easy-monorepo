@@ -10,10 +10,11 @@ jobs:
             matrix:
                 php: [ '8.1' ]
                 actions:
-                    - { name: ecs, coverage: none, run: composer check-ecs, cache: quality/cache/ecs }
-                    - { name: monorepo, coverage: none, run: composer check-monorepo }
-                    - { name: composer, coverage: none, run: composer check-composer }
-                    - { name: phpstan, coverage: none, run: composer check-phpstan, cache: quality/cache/phpstan }
+                    - { name: ecs, run: composer check-ecs, cache: quality/cache/ecs }
+                    - { name: monorepo, run: composer check-monorepo }
+                    - { name: composer, run: composer check-composer }
+                    - { name: phpstan, run: composer check-phpstan, cache: quality/cache/phpstan }
+                    - { name: security-checker, run: 'symfony security:check' }
                     #- { name: rector, coverage: none, run: composer check-rector }
 
         name: ${{ matrix.actions.name }} (${{ matrix.php }})
@@ -24,8 +25,9 @@ jobs:
             -   uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
-                    coverage: ${{ matrix.actions.coverage }}
+                    coverage: ${{ matrix.actions.coverage || 'none' }}
                     extensions: pdo_sqlite
+                    tools: symfony-cli
 
             -   uses: ramsey/composer-install@v2
             -   uses: ramsey/composer-install@v2
@@ -46,22 +48,3 @@ jobs:
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
                 shell: bash
-
-    security-checker:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                php: [ '8.1' ]
-        name: security-checker (${{ matrix.php }})
-        steps:
-            -   uses: actions/checkout@v3
-
-            -   uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{ matrix.php }}
-                    coverage: none
-                    tools: symfony-cli
-
-            -   uses: ramsey/composer-install@v2
-
-            -   run: symfony security:check
