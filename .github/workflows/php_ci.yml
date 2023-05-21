@@ -14,6 +14,7 @@ jobs:
                     - { name: monorepo, coverage: none, run: composer check-monorepo }
                     - { name: composer, coverage: none, run: composer check-composer }
                     - { name: phpstan, coverage: none, run: composer check-phpstan, cache: quality/cache/phpstan }
+                    - { name: security-checker, coverage: none, run: symfony security:check }
                     #- { name: rector, coverage: none, run: composer check-rector }
 
         name: ${{ matrix.actions.name }} (${{ matrix.php }})
@@ -26,6 +27,7 @@ jobs:
                     php-version: ${{ matrix.php }}
                     coverage: ${{ matrix.actions.coverage }}
                     extensions: pdo_sqlite
+                    tools: symfony-cli
 
             -   uses: ramsey/composer-install@v2
             -   uses: ramsey/composer-install@v2
@@ -46,22 +48,3 @@ jobs:
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
                 shell: bash
-
-    security-checker:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                php: [ '8.1' ]
-        name: security-checker (${{ matrix.php }})
-        steps:
-            -   uses: actions/checkout@v3
-
-            -   uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{ matrix.php }}
-                    coverage: none
-                    tools: symfony-cli
-
-            -   uses: ramsey/composer-install@v2
-
-            -   run: symfony security:check
