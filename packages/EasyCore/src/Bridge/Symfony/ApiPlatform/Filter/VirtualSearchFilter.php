@@ -10,6 +10,10 @@ use Doctrine\ORM\QueryBuilder;
 /**
  * This class allows us to define multiple search strategy for the same property on a single resource.
  *
+ * For API Platform >= 2.7.0 use AdvancedSearchFilter
+ *
+ * @see \EonX\EasyApiPlatform\Filters\AdvancedSearchFilter
+ *
  * The default behaviour of SearchFilter is preserved + ability to define "virtual properties" mapped to real ones:
  *
  * ApiFilter(

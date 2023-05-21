@@ -24,6 +24,8 @@ parameters:
     excludePaths:
         - packages/*/var/*
         - packages/*/vendor/*
+        - packages/*/config/*
+        - packages/EasyApiPlatform/tests/Fixtures/app/src/Kernel/ApplicationKernel.php
         - packages/EasyApiToken/src/Interfaces/*
         - packages/EasyApiToken/tests/Bridge/Symfony/*
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
