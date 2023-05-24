@@ -23,7 +23,9 @@ final class RdsIamConnection extends Connection
         $this->authTokenGenerator ??= $params['authTokenGenerator'] ?? null;
         unset($params['authTokenGenerator']);
 
-        $params['password'] = \call_user_func($params['passwordGenerator'], $this->authTokenGenerator, $params);
+        if ($this->authTokenGenerator !== null) {
+            $params['password'] = \call_user_func($params['passwordGenerator'], $this->authTokenGenerator, $params);
+        }
 
         // DBAL v2
         if (\method_exists(Connection::class, 'convertException') === false) {
