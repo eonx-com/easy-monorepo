@@ -1,13 +1,20 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony\AppStateResetters;
 
 use EonX\EasySwoole\AppStateResetters\AbstractAppStateResetter;
+
 use function Symfony\Component\String\u;
 
 abstract class AbstractSymfonyServicesAppStateResetter extends AbstractAppStateResetter
 {
+    /**
+     * @param \Traversable<mixed> $resettableServices
+     * @param string[] $resetMethods
+     * @param int|null $priority
+     */
     public function __construct(
         private readonly \Traversable $resettableServices,
         private readonly array $resetMethods,
