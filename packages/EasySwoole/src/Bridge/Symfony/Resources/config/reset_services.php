@@ -12,7 +12,5 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure()
         ->autowire();
 
-    $services
-        ->set(SymfonyServicesAppStateResetter::class)
-        ->arg('$servicesResetter', service('services_resetter'));
+    $services->set(SymfonyServicesAppStateResetter::class);
 };
