@@ -57,6 +57,7 @@ final class AuthTokenConnectionFactory
         $rdsSslEnabled = $driverOptions[self::OPTION_AWS_RDS_SSL_ENABLED] ?? $this->sslEnabled;
 
         if ($rdsIamEnabled && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_IAM_ENABLED')) {
+            $params['authTokenGenerator'] = new AuthTokenGenerator(CredentialProvider::defaultProvider());
             $params['user'] = $driverOptions[self::OPTION_AWS_RDS_IAM_USERNAME] ?? $this->awsUsername;
             $params['passwordGenerator'] = $this->getGeneratePasswordClosure();
             $params['wrapperClass'] = RdsIamConnection::class;
@@ -79,17 +80,14 @@ final class AuthTokenConnectionFactory
 
     private function getGeneratePasswordClosure(): \Closure
     {
-        return function (array $params): string {
+        return function (AuthTokenGenerator $tokenGenerator, array $params): string {
             $key = \sprintf('easy-doctrine-pwd-%s', $params['user'] ?? $this->awsUsername);
 
-            return $this->cache->get($key, function (ItemInterface $item) use ($params): string {
+            return $this->cache->get($key, function (ItemInterface $item) use ($tokenGenerator, $params): string {
                 $item->expiresAfter($this->cacheExpiryInSeconds);
 
-                $endpoint = \sprintf('%s:%s', $params['host'], $params['port']);
-                $tokenGenerator = new AuthTokenGenerator(CredentialProvider::defaultProvider());
-
                 return $tokenGenerator->createToken(
-                    $endpoint,
+                    \sprintf('%s:%s', $params['host'], $params['port']),
                     $this->awsRegion,
                     $params['user'] ?? $this->awsUsername
                 );
