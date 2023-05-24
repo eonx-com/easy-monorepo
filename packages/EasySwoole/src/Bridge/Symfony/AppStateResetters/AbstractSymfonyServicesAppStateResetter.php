@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\Symfony\AppStateResetters;
 
 use EonX\EasySwoole\AppStateResetters\AbstractAppStateResetter;
+use function Symfony\Component\String\u;
 
 abstract class AbstractSymfonyServicesAppStateResetter extends AbstractAppStateResetter
 {
@@ -19,13 +20,18 @@ abstract class AbstractSymfonyServicesAppStateResetter extends AbstractAppStateR
     {
         foreach ($this->resettableServices as $id => $service) {
             foreach ((array)$this->resetMethods[$id] as $resetMethod) {
-                if ($resetMethod[0] === '?'
-                    && \method_exists($service, $resetMethod = \substr($resetMethod, 1)) === false) {
-                    continue;
+                $resetMethod = u($resetMethod);
+
+                if ($resetMethod->startsWith('?')) {
+                    $resetMethod = $resetMethod->trimStart('?');
+
+                    if (\method_exists($service, (string)$resetMethod) === false) {
+                        continue;
+                    }
                 }
 
                 if ($this->shouldReset($id)) {
-                    $service->$resetMethod();
+                    $service->{(string)$resetMethod}();
                 }
             }
         }
