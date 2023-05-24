@@ -4,20 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony\AppStateResetters;
 
-use EonX\EasySwoole\AppStateResetters\AbstractAppStateResetter;
-use Symfony\Contracts\Service\ResetInterface;
+use function Symfony\Component\String\u;
 
-final class SymfonyServicesAppStateResetter extends AbstractAppStateResetter
+final class SymfonyServicesAppStateResetter extends AbstractSymfonyServicesAppStateResetter
 {
-    public function __construct(
-        private readonly ResetInterface $servicesResetter,
-        ?int $priority = null
-    ) {
-        parent::__construct($priority);
-    }
-
-    public function resetState(): void
+    protected function shouldReset(string $service): bool
     {
-        $this->servicesResetter->reset();
+        return u($service)->containsAny('cache') === false;
     }
 }
