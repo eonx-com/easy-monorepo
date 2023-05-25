@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use ArrayIterator;
 use EonX\EasySwoole\Bridge\Symfony\AppStateResetters\SymfonyServicesAppStateResetter;
 
 return static function (ContainerConfigurator $container): void {
@@ -12,5 +13,7 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure()
         ->autowire();
 
-    $services->set(SymfonyServicesAppStateResetter::class);
+    $services->set(SymfonyServicesAppStateResetter::class)
+        ->arg('$resettableServices', new ArrayIterator())
+        ->arg('$resetMethods', []);
 };
