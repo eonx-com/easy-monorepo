@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Helpers;
@@ -32,8 +33,14 @@ final class OptionHelper
         'use_default_callbacks' => true,
     ];
 
+    /**
+     * @var mixed[]
+     */
     private static array $options = [];
 
+    /**
+     * @param mixed[] $options
+     */
     public static function setOptions(array $options): void
     {
         self::$options = $options;

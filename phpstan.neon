@@ -34,6 +34,8 @@ parameters:
         - packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
         - packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
         - packages/EasySecurity/src/Bridge/Symfony/Security/SecurityContextAuthenticator.php
+        - packages/EasySwoole/src/Bridge/Symfony/Cache/SwooleTableAdapter.php
+        - packages/EasySwoole/src/Helpers/CacheTableHelper.php
         - packages/EasySwoole/src/Helpers/FunctionHelper.php
         - packages/EasyTest/src/Bridge/PhpUnit/Extension/MailerMessageLoggerListenerPhpUnitExtension.php
 

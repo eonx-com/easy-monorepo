@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Helpers;
@@ -32,6 +33,9 @@ final class CacheTableHelper
 
     private static ?string $tableClass = null;
 
+    /**
+     * @param mixed[] $config
+     */
     public static function createCacheTables(array $config): void
     {
         $tableClass = self::getTableClass();

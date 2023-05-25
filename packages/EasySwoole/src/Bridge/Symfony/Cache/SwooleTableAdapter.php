@@ -1,15 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony\Cache;
 
 use EonX\EasySwoole\Helpers\CacheTableHelper;
 use OpenSwoole\Table as OpenSwooleTable;
+use Swoole\Table as SwooleTable;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Exception\CacheException;
 use Symfony\Component\Cache\Marshaller\DefaultMarshaller;
 use Symfony\Component\Cache\Marshaller\MarshallerInterface;
-use Swoole\Table as SwooleTable;
 
 final class SwooleTableAdapter extends AbstractAdapter
 {
@@ -66,7 +67,8 @@ final class SwooleTableAdapter extends AbstractAdapter
 
     protected function doHave(string $id): bool
     {
-        return $this->getSwooleTable()->exists($id);
+        return $this->getSwooleTable()
+            ->exists($id);
     }
 
     protected function doClear(string $namespace): bool
