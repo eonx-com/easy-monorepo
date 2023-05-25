@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\Symfony\AppStateResetters;
 
 use EonX\EasySwoole\AppStateResetters\AbstractAppStateResetter;
-
+use Symfony\Contracts\Service\ResetInterface;
 use function Symfony\Component\String\u;
 
-abstract class AbstractSymfonyServicesAppStateResetter extends AbstractAppStateResetter
+abstract class AbstractSymfonyServicesAppStateResetter extends AbstractAppStateResetter implements ResetInterface
 {
     /**
      * @param \Traversable<mixed> $resettableServices
@@ -21,6 +21,11 @@ abstract class AbstractSymfonyServicesAppStateResetter extends AbstractAppStateR
         ?int $priority = null
     ) {
         parent::__construct($priority);
+    }
+
+    public function reset(): void
+    {
+        $this->resetState();
     }
 
     public function resetState(): void
