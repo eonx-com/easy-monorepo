@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler;
 
 use EonX\EasySwoole\Bridge\Symfony\AppStateResetters\SymfonyServicesAppStateResetter;
+use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -14,12 +15,21 @@ final class SymfonyServicesResetPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        if ($container->hasDefinition(self::SERVICES_RESETTER)) {
-            $originDef = $container->getDefinition(self::SERVICES_RESETTER);
+        $symfonyServicesAppStateResetter = $container->getDefinition(SymfonyServicesAppStateResetter::class);
 
-            $def = $container->getDefinition(SymfonyServicesAppStateResetter::class);
-            $def->setArgument('$resettableServices', $originDef->getArgument(0));
-            $def->setArgument('$resetMethods', $originDef->getArgument(1));
+        if ($container->hasDefinition(self::SERVICES_RESETTER)) {
+            $servicesResetter = $container->getDefinition(self::SERVICES_RESETTER);
+
+            $symfonyServicesAppStateResetter->setArgument('$resettableServices', $servicesResetter->getArgument(0));
+            $symfonyServicesAppStateResetter->setArgument('$resetMethods', $servicesResetter->getArgument(1));
+
+            $container->setDefinition(self::SERVICES_RESETTER, $symfonyServicesAppStateResetter);
+            $container->removeDefinition(SymfonyServicesAppStateResetter::class);
+        }
+
+        if ($container->hasDefinition(self::SERVICES_RESETTER) === false) {
+            $symfonyServicesAppStateResetter->setArgument('$resettableServices', new IteratorArgument([]));
+            $symfonyServicesAppStateResetter->setArgument('$resetMethods', []);
         }
     }
 }
