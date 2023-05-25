@@ -22,6 +22,7 @@ final class SymfonyServicesResetPass implements CompilerPassInterface
             $def->setArgument('$resetMethods', $originDef->getArgument(1));
 
             $container->setDefinition(self::SERVICES_RESETTER, $def);
+            $container->removeDefinition(SymfonyServicesAppStateResetter::class);
         }
     }
 }
