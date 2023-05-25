@@ -10,10 +10,10 @@
     },
     "require-dev": {
         "guzzlehttp/psr7": "^2.1",
-        "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
+        "laravel/lumen-framework": "^9.0",
         "phpunit/phpunit": "^9.5",
-        "symfony/symfony": "^5.4 || ^6.0",
-        "vlucas/phpdotenv": "^3.3 || ^5.2"
+        "symfony/symfony": "^6.2",
+        "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {

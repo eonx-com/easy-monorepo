@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination;
 
-use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
+use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class SerializerContextBuilder implements SerializerContextBuilderInterface
 {
     /**
-     * @var \ApiPlatform\Core\Serializer\SerializerContextBuilderInterface
+     * @var \ApiPlatform\Serializer\SerializerContextBuilderInterface
      */
     private $decorated;
 

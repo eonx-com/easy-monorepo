@@ -16,8 +16,8 @@
         "eonx-com/easy-lock": "^4.4",
         "phpunit/phpunit": "^9.5",
         "ramsey/uuid": "^3.9 || ^4.0",
-        "symfony/symfony": "^5.4 || ^6.0",
-        "symfony/uid": "^5.4 || ^6.0"
+        "symfony/symfony": "^6.2",
+        "symfony/uid": "^6.2"
     },
     "autoload": {
         "psr-4": {

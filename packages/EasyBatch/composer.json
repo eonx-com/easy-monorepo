@@ -17,7 +17,7 @@
         "ramsey/uuid": "^3.9 || ^4.0",
         "doctrine/orm": "^2.6",
         "phpunit/phpunit": "^9.5",
-        "symfony/symfony": "^5.4 || ^6.0"
+        "symfony/symfony": "^6.2"
     },
     "autoload": {
         "psr-4": {

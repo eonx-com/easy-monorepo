@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
+use ApiPlatform\Doctrine\Orm\Paginator;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 
 final class CustomPaginationListener

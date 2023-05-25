@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "symfony/lock": "^5.4 || ^6.0"
+        "symfony/lock": "^6.2"
     },
     "conflict": {
         "dama/doctrine-test-bundle": "<7.1.1"
@@ -13,8 +13,8 @@
     "require-dev": {
         "doctrine/orm": "^2.6",
         "phpunit/phpunit": "^9.5",
-        "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
-        "symfony/symfony": "^5.4 || ^6.0"
+        "laravel/lumen-framework": "^9.0",
+        "symfony/symfony": "^6.2"
     },
     "autoload": {
         "psr-4": {
