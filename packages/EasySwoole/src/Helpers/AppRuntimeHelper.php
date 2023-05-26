@@ -15,6 +15,9 @@ final class AppRuntimeHelper
         $_SERVER[self::APP_RUNTIME] = $runtime;
     }
 
+    /**
+     * @param mixed[] $options
+     */
     public static function addOptions(array $options): void
     {
         $_SERVER[self::APP_RUNTIME_OPTIONS] = \array_merge(
