@@ -6,6 +6,7 @@ namespace EonX\EasySwoole\Helpers;
 
 use OpenSwoole\Table as OpenSwooleTable;
 use Swoole\Table as SwooleTable;
+use UnexpectedValueException;
 
 final class CacheTableHelper
 {
@@ -25,11 +26,11 @@ final class CacheTableHelper
 
     private const REQUEST_COUNT_COLUMN = '_count';
 
-    private const SERVER_TABLE_NAME_PATTERN = 'easy_swoole_cache_table_%s';
+    private const SERVER_REQUEST_COUNT_TABLE_NAME = 'easy_swoole_request_count_table';
 
     private const SERVER_TABLE_NAMES = 'easy_swoole_cache_table_names';
 
-    private const SERVER_REQUEST_COUNT_TABLE_NAME = 'easy_swoole_request_count_table';
+    private const SERVER_TABLE_NAME_PATTERN = 'easy_swoole_cache_table_%s';
 
     private static ?string $tableClass = null;
 
@@ -49,7 +50,7 @@ final class CacheTableHelper
             }
 
             if (\is_array($sizes) === false) {
-                throw new \InvalidArgumentException(\sprintf(
+                throw new UnexpectedValueException(\sprintf(
                     'Cache table "%s" sizes must be an array, "%s" given',
                     $name,
                     \gettype($sizes)
@@ -57,7 +58,7 @@ final class CacheTableHelper
             }
 
             if (\in_array($name, $tables, true)) {
-                throw new \InvalidArgumentException(\sprintf('Cache table "%s" already exists', $name));
+                throw new UnexpectedValueException(\sprintf('Cache table "%s" already exists', $name));
             }
 
             $table = new $tableClass($sizes[0] ?? $sizes[self::KEY_TABLE_SIZE] ?? self::DEFAULT_TABLE_SIZE);
@@ -104,7 +105,7 @@ final class CacheTableHelper
         $table = $table instanceof $tableClass ? $table : null;
 
         if (($throwOnNull ?? false) && $table === null) {
-            throw new \InvalidArgumentException(\sprintf('Cache table "%s" does not exist', $name));
+            throw new UnexpectedValueException(\sprintf('Cache table "%s" does not exist', $name));
         }
 
         return $table;
@@ -116,23 +117,27 @@ final class CacheTableHelper
         $countTable = $_SERVER[self::SERVER_REQUEST_COUNT_TABLE_NAME] ?? null;
         $tableClass = self::getTableClass();
 
-        if ($countTable instanceof $tableClass) {
-            $countTable->incr(self::REQUEST_COUNT_COLUMN, self::REQUEST_COUNT_COLUMN);
+        if ($countTable instanceof $tableClass === false) {
+            return;
+        }
 
-            $requestCount = $countTable->get(self::REQUEST_COUNT_COLUMN, self::REQUEST_COUNT_COLUMN);
+        $countTable->incr(self::REQUEST_COUNT_COLUMN, self::REQUEST_COUNT_COLUMN);
 
-            if ($requestCount >= self::DEFAULT_REQUEST_COUNT_FLUSH) {
-                $now = \time();
+        $requestCount = $countTable->get(self::REQUEST_COUNT_COLUMN, self::REQUEST_COUNT_COLUMN);
 
-                foreach ($_SERVER[self::SERVER_TABLE_NAMES] ?? [] as $name) {
-                    $table = $_SERVER[self::getServerTableName($name)] ?? null;
+        if ($requestCount >= self::DEFAULT_REQUEST_COUNT_FLUSH) {
+            $now = \time();
 
-                    if ($table instanceof $tableClass) {
-                        foreach ($table as $key => $row) {
-                            if ($now >= $row[self::COLUMN_EXPIRY]) {
-                                $table->del($key);
-                            }
-                        }
+            foreach ($_SERVER[self::SERVER_TABLE_NAMES] ?? [] as $name) {
+                $table = $_SERVER[self::getServerTableName($name)] ?? null;
+
+                if ($table instanceof $tableClass === false) {
+                    continue;
+                }
+
+                foreach ($table as $key => $row) {
+                    if ($now >= $row[self::COLUMN_EXPIRY]) {
+                        $table->del($key);
                     }
                 }
             }
@@ -141,15 +146,15 @@ final class CacheTableHelper
         $countTable->set(self::REQUEST_COUNT_COLUMN, [self::REQUEST_COUNT_COLUMN => 0]);
     }
 
+    private static function getServerTableName(string $name): string
+    {
+        return \sprintf(self::SERVER_TABLE_NAME_PATTERN, $name);
+    }
+
     private static function getTableClass(): string
     {
         return self::$tableClass ??= \class_exists(OpenSwooleTable::class)
             ? OpenSwooleTable::class
             : SwooleTable::class;
-    }
-
-    private static function getServerTableName(string $name): string
-    {
-        return \sprintf(self::SERVER_TABLE_NAME_PATTERN, $name);
     }
 }
