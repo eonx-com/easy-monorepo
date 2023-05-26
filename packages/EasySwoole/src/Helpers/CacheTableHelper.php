@@ -81,6 +81,15 @@ final class CacheTableHelper
 
         $_SERVER[self::SERVER_REQUEST_COUNT_TABLE_NAME] = $countTable;
         $_SERVER[self::SERVER_TABLE_NAMES] = $tables;
+
+        OutputHelper::writeln('Create following cache tables:');
+        foreach ($tables as $table) {
+            OutputHelper::writeln(\sprintf('- %s', $table));
+        }
+        OutputHelper::writeln(\sprintf(
+            'Will automatically remove expired records after %d requests',
+            self::DEFAULT_REQUEST_COUNT_FLUSH
+        ));
     }
 
     public static function exists(string $name): bool
