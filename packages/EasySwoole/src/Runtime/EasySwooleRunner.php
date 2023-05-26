@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Runtime;
 
+use EonX\EasySwoole\Helpers\CacheTableHelper;
 use EonX\EasySwoole\Helpers\HttpFoundationHelper;
+use EonX\EasySwoole\Helpers\OptionHelper;
 use EonX\EasySwoole\Helpers\OutputHelper;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
 use Swoole\Constant;
@@ -21,46 +23,23 @@ use function Symfony\Component\String\u;
 
 final class EasySwooleRunner implements RunnerInterface
 {
-    private const DEFAULT_PUBLIC_DIR = __DIR__ . '/../../../../../';
-
-    private const DEFAULT_OPTIONS = [
-        'callbacks' => [],
-        'host' => '0.0.0.0',
-        'hot_reload_dirs' => [
-            self::DEFAULT_PUBLIC_DIR . 'config',
-            self::DEFAULT_PUBLIC_DIR . 'public',
-            self::DEFAULT_PUBLIC_DIR . 'src',
-            self::DEFAULT_PUBLIC_DIR . 'translations',
-            self::DEFAULT_PUBLIC_DIR . 'vendor',
-        ],
-        'hot_reload_enabled' => false,
-        'hot_reload_extensions' => [
-            '.php',
-            '.yaml',
-            '.xml',
-        ],
-        'mode' => \SWOOLE_BASE,
-        'port' => 8080,
-        'response_chunk_size' => 1048576,
-        'settings' => [],
-        'sock_type' => \SWOOLE_SOCK_TCP,
-        'use_default_callbacks' => true,
-    ];
-
     /**
      * @param mixed[] $options
      */
     public function __construct(
         private readonly HttpKernelInterface $app,
-        private readonly array $options
+        array $options
     ) {
+        OptionHelper::setOptions($options);
     }
 
     public function run(): int
     {
         $app = $this->app;
         $server = $this->createSwooleHttpServer();
-        $responseChunkSize = (int)$this->getOption('response_chunk_size', 'SWOOLE_RESPONSE_CHUNK_SIZE');
+        $responseChunkSize = OptionHelper::getInteger('response_chunk_size', 'SWOOLE_RESPONSE_CHUNK_SIZE');
+
+        CacheTableHelper::createCacheTables(OptionHelper::getArray('cache_tables', 'SWOOLE_CACHE_TABLES'));
 
         $server->on(
             Constant::EVENT_REQUEST,
@@ -89,6 +68,8 @@ final class EasySwooleRunner implements RunnerInterface
                 if ($hfRequest->attributes->get(RequestAttributesInterface::EASY_SWOOLE_APP_STATE_COMPROMISED, false)) {
                     $server->stop($server->getWorkerId(), true);
                 }
+
+                CacheTableHelper::onRequest();
             }
         );
 
@@ -100,61 +81,31 @@ final class EasySwooleRunner implements RunnerInterface
     private function createSwooleHttpServer(): Server
     {
         $server = new Server(
-            $this->getOption('host', 'SWOOLE_HOST'),
-            (int)$this->getOption('port', 'SWOOLE_PORT'),
-            (int)$this->getOption('mode', 'SWOOLE_MODE'),
-            (int)$this->getOption('sock_type', 'SWOOLE_SOCK_TYPE')
+            OptionHelper::getString('host', 'SWOOLE_HOST'),
+            OptionHelper::getInteger('port', 'SWOOLE_PORT'),
+            OptionHelper::getInteger('mode', 'SWOOLE_MODE'),
+            OptionHelper::getInteger('sock_type', 'SWOOLE_SOCK_TYPE')
         );
 
-        $server->set($this->getOption('settings', 'SWOOLE_SETTINGS'));
+        $server->set(OptionHelper::getArray('settings', 'SWOOLE_SETTINGS'));
 
-        if ($this->getOption('use_default_callbacks', 'SWOOLE_USE_DEFAULT_CALLBACKS')) {
+        if (OptionHelper::getBoolean('use_default_callbacks', 'SWOOLE_USE_DEFAULT_CALLBACKS')) {
             $this->registerDefaultCallbacks($server);
         }
 
-        foreach ($this->getOption('callbacks', 'SWOOLE_CALLBACKS') as $event => $fn) {
+        foreach (OptionHelper::getArray('callbacks', 'SWOOLE_CALLBACKS') as $event => $fn) {
             $server->on($event, $fn);
         }
 
-        if ($this->getOptionAsBoolean('hot_reload_enabled', 'SWOOLE_HOT_RELOAD_ENABLED')) {
+        if (OptionHelper::getBoolean('hot_reload_enabled', 'SWOOLE_HOT_RELOAD_ENABLED')) {
             $this->hotReload(
                 $server,
-                $this->getOptionAsArray('hot_reload_dirs', 'SWOOLE_HOT_RELOAD_DIRS'),
-                $this->getOptionAsArray('hot_reload_extensions', 'SWOOLE_HOT_RELOAD_EXTENSIONS')
+                OptionHelper::getArray('hot_reload_dirs', 'SWOOLE_HOT_RELOAD_DIRS'),
+                OptionHelper::getArray('hot_reload_extensions', 'SWOOLE_HOT_RELOAD_EXTENSIONS')
             );
         }
 
         return $server;
-    }
-
-    private function getOption(string $option, string $env): mixed
-    {
-        return $this->options[$option] ?? $_SERVER[$env] ?? $_ENV[$env] ?? self::DEFAULT_OPTIONS[$option];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    private function getOptionAsArray(string $option, string $env): array
-    {
-        $value = $this->getOption($option, $env);
-
-        if (\is_string($value)) {
-            return \explode(',', $value);
-        }
-
-        return \array_filter(\is_array($value) ? $value : [$value]);
-    }
-
-    private function getOptionAsBoolean(string $option, string $env): bool
-    {
-        $value = $this->getOption($option, $env);
-
-        if (\is_string($value)) {
-            return \in_array($value, ['false', '0'], true) === false;
-        }
-
-        return (bool)$value;
     }
 
     /**
