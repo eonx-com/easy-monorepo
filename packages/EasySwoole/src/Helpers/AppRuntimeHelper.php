@@ -26,11 +26,17 @@ final class AppRuntimeHelper
         return $_SERVER[self::APP_RUNTIME_OPTIONS][$name] ?? $default;
     }
 
+    /**
+     * @param mixed[] $cacheTables
+     */
     public static function setCacheTables(array $cacheTables): void
     {
         self::addOptions(['cache_tables' => $cacheTables]);
     }
 
+    /**
+     * @param callable[] $callbacks
+     */
     public static function setCallbacks(array $callbacks): void
     {
         self::addOptions(['callbacks' => $callbacks]);
@@ -41,6 +47,9 @@ final class AppRuntimeHelper
         self::addOptions(['host' => $host]);
     }
 
+    /**
+     * @param string[] $hotReloadDirs
+     */
     public static function setHotReloadDirs(array $hotReloadDirs): void
     {
         self::addOptions(['hot_reload_dirs' => $hotReloadDirs]);
@@ -51,6 +60,9 @@ final class AppRuntimeHelper
         self::addOptions(['hot_reload_enabled' => $hotReloadEnabled]);
     }
 
+    /**
+     * @param string[] $hotReloadExtensions
+     */
     public static function setHotReloadExtensions(array $hotReloadExtensions): void
     {
         self::addOptions(['hot_reload_extensions' => $hotReloadExtensions]);
@@ -71,6 +83,9 @@ final class AppRuntimeHelper
         self::addOptions(['response_chunk_size' => $responseChunkSize]);
     }
 
+    /**
+     * @param mixed[] $settings
+     */
     public static function setSettings(array $settings): void
     {
         self::addOptions(['settings' => $settings]);
