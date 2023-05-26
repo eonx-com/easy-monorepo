@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\Symfony\Cache;
 
 use EonX\EasySwoole\Helpers\CacheTableHelper;
+use InvalidArgumentException;
 use OpenSwoole\Table as OpenSwooleTable;
 use Swoole\Table as SwooleTable;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Exception\CacheException;
 use Symfony\Component\Cache\Marshaller\DefaultMarshaller;
 use Symfony\Component\Cache\Marshaller\MarshallerInterface;
+use Throwable;
 
 final class SwooleTableAdapter extends AbstractAdapter
 {
@@ -24,13 +26,37 @@ final class SwooleTableAdapter extends AbstractAdapter
         $this->marshaller = $marshaller ?? new DefaultMarshaller();
 
         if (CacheTableHelper::exists($this->tableName) === false) {
-            throw new \InvalidArgumentException(\sprintf(
+            throw new InvalidArgumentException(\sprintf(
                 'SwooleTable "%s" does not exist, make sure you have set it in your easy_swoole config',
                 $this->tableName
             ));
         }
 
         parent::__construct('', $defaultLifetime ?? 0);
+    }
+
+    protected function doClear(string $namespace): bool
+    {
+        $table = $this->getSwooleTable();
+
+        foreach ($table as $id => $value) {
+            $table->del($id);
+        }
+
+        return true;
+    }
+
+    protected function doDelete(array $ids): bool
+    {
+        $table = $this->getSwooleTable();
+
+        foreach ($ids as $id) {
+            if ($table->exists($id)) {
+                $table->del($id);
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -71,30 +97,6 @@ final class SwooleTableAdapter extends AbstractAdapter
             ->exists($id);
     }
 
-    protected function doClear(string $namespace): bool
-    {
-        $table = $this->getSwooleTable();
-
-        foreach ($table as $id => $value) {
-            $table->delete($id);
-        }
-
-        return true;
-    }
-
-    protected function doDelete(array $ids): bool
-    {
-        $table = $this->getSwooleTable();
-
-        foreach ($ids as $id) {
-            if ($table->exists($id)) {
-                $table->delete($id);
-            }
-        }
-
-        return true;
-    }
-
     protected function doSave(array $values, int $lifetime): array|bool
     {
         $table = $this->getSwooleTable();
@@ -107,12 +109,12 @@ final class SwooleTableAdapter extends AbstractAdapter
                     CacheTableHelper::COLUMN_EXPIRY => $expiresAt,
                     CacheTableHelper::COLUMN_VALUE => $value,
                 ]);
-            } catch (\Throwable $throwable) {
+            } catch (Throwable) {
                 $failed[] = $id;
             }
         }
 
-        if ($failed) {
+        if (\count($failed) > 0) {
             throw new CacheException(\sprintf('Could not save ids %s', \implode(', ', $failed)));
         }
 
