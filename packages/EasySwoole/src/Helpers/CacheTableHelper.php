@@ -19,7 +19,7 @@ final class CacheTableHelper
 
     private const DEFAULT_REQUEST_COUNT_FLUSH = 10000;
 
-    private const DEFAULT_TABLE_SIZE = 1000;
+    private const DEFAULT_TABLE_SIZE = 50;
 
     private const DEFAULT_VALUE_COLUMN_SIZE = 10000;
 
