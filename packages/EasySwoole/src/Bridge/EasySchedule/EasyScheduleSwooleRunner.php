@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\EasySchedule;
 
 use Carbon\Carbon;
+use EonX\EasySwoole\Helpers\CacheTableHelper;
+use EonX\EasySwoole\Helpers\OptionHelper;
 use Swoole\Constant;
 use Swoole\Http\Server;
 use Swoole\Process;
@@ -27,6 +29,9 @@ final class EasyScheduleSwooleRunner implements RunnerInterface
     {
         $app = $this->application;
         $server = new Server('0.0.0.0', 8080, \SWOOLE_BASE, \SWOOLE_SOCK_TCP);
+
+        CacheTableHelper::createCacheTables(OptionHelper::getArray('cache_tables', 'SWOOLE_CACHE_TABLES'));
+
         $server->on(Constant::EVENT_REQUEST, static function (): void {
         });
 
