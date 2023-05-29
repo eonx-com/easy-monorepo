@@ -47,17 +47,6 @@ parameters:
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
         # ---- EasyApiToken ----
-        - message: '#Static method Firebase\\JWT\\JWT\:\:decode\(\) invoked with 3 parameters, 2 required#'
-          path: packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
-
-        - message: '#Parameter \#2 \$keyOrKeyArray of static method Firebase\\JWT\\JWT\:\:decode\(\) expects array<string, Firebase\\JWT\\Key>\|ArrayAccess<string, Firebase\\JWT\\Key>\|Firebase\\JWT\\Key, array\|string given#'
-          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
-
-        - message: '#Static method Firebase\\JWT\\JWT\:\:decode\(\) invoked with 3 parameters, 2 required#'
-          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
-
-        - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
-          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'
           path: packages/EasyAsync/tests
@@ -136,8 +125,7 @@ parameters:
 
         # ---- EasyPagination ----
         - '#Parameter \#2 \$alias of method Doctrine\\ORM\\QueryBuilder\:\:from\(\) expects string, string\|null given#'
-        - '#Access to an undefined property EonX\\EasyPagination\\Tests\\Stubs\\Model\\Item\:\:\$title#'
-        - '#Access to an undefined property EonX\\EasyPagination\\Tests\\Stubs\\Model\\Item\:\:\$id#'
+        - '#Access to an undefined property EonX\\EasyPagination\\Tests\\Stubs\\Model\\.*\:\:\$.*#'
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineOrmLengthAwarePaginator\:\:fetchResults\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineOrmPaginator\:\:fetchResults\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalLengthAwarePaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
@@ -154,6 +142,9 @@ parameters:
         # ---- EasyRandom ----
         - message: '#Access to an undefined property EonX\\EasyRandom\\Interfaces\\RandomGeneratorInterface\:\:\$uuidV4Generator#'
           path: packages/EasyRandom/tests/Bridge/Symfony/EasyRandomBundleTest.php
+
+        - message: '#Access to an undefined property object\:\:\$uuidV4Generator#'
+          path: packages/EasyRandom/tests/Bridge/Laravel/EasyRandomServiceProviderTest.php
 
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'

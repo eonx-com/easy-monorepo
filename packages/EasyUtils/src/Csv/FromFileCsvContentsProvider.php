@@ -8,8 +8,9 @@ use EonX\EasyUtils\Csv\Exceptions\InvalidCsvFilenameException;
 
 final class FromFileCsvContentsProvider implements CsvContentsProviderInterface
 {
-    public function __construct(private readonly string $filename)
-    {
+    public function __construct(
+        private readonly string $filename
+    ) {
     }
 
     /**

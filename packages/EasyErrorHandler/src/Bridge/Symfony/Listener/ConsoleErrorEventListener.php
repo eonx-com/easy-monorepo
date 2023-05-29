@@ -9,8 +9,9 @@ use Symfony\Component\Console\Event\ConsoleErrorEvent;
 
 final class ConsoleErrorEventListener
 {
-    public function __construct(private readonly ErrorHandlerInterface $errorHandler)
-    {
+    public function __construct(
+        private readonly ErrorHandlerInterface $errorHandler
+    ) {
     }
 
     public function __invoke(ConsoleErrorEvent $event): void

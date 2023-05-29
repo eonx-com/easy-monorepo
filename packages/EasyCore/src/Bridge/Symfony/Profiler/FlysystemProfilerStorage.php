@@ -59,10 +59,10 @@ final class FlysystemProfilerStorage implements ProfilerStorageInterface
             [$csvToken, $csvIp, $csvMethod, $csvUrl, $csvTime, $csvParent, $csvStatusCode] = $values;
             $csvTime = (int)$csvTime;
 
-            if ($ip && \strpos($csvIp, $ip) === false
-                || $url && \strpos($csvUrl, $url) === false
-                || $method && \strpos($csvMethod, $method) === false
-                || $statusCode && \strpos($csvStatusCode, $statusCode) === false) {
+            if (($ip && \str_contains((string)$csvIp, $ip) === false)
+                || ($url && \str_contains((string)$csvUrl, $url) === false)
+                || ($method && \str_contains((string)$csvMethod, $method) === false)
+                || ($statusCode && \str_contains((string)$csvStatusCode, $statusCode) === false)) {
                 continue;
             }
 

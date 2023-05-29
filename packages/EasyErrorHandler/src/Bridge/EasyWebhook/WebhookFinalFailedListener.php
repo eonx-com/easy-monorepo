@@ -9,8 +9,9 @@ use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
 
 final class WebhookFinalFailedListener
 {
-    public function __construct(private readonly ErrorHandlerInterface $errorHandler)
-    {
+    public function __construct(
+        private readonly ErrorHandlerInterface $errorHandler
+    ) {
     }
 
     public function __invoke(FinalFailedWebhookEvent $event): void

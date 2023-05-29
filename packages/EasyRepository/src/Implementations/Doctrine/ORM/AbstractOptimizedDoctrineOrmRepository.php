@@ -27,8 +27,9 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
 
     private ?EntityRepository $repository = null;
 
-    public function __construct(protected ManagerRegistry $registry)
-    {
+    public function __construct(
+        protected ManagerRegistry $registry
+    ) {
     }
 
     /**

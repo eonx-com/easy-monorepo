@@ -29,8 +29,9 @@ abstract class AbstractPaginator implements PaginatorInterface
      */
     private array $urls = [];
 
-    public function __construct(protected PaginationInterface $pagination)
-    {
+    public function __construct(
+        protected PaginationInterface $pagination
+    ) {
         // No body needed.
     }
 

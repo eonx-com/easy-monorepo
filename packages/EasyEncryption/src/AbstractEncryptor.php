@@ -15,8 +15,9 @@ use Throwable;
 
 abstract class AbstractEncryptor implements EncryptorInterface
 {
-    public function __construct(private readonly ?string $defaultKeyName = null)
-    {
+    public function __construct(
+        private readonly ?string $defaultKeyName = null
+    ) {
     }
 
     public function decrypt(string $text): DecryptedStringInterface

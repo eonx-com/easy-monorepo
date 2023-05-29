@@ -10,8 +10,9 @@ use Illuminate\Queue\Events\WorkerStopping;
 
 final class WorkerStoppingListener
 {
-    public function __construct(private readonly ErrorHandlerInterface $errorHandler)
-    {
+    public function __construct(
+        private readonly ErrorHandlerInterface $errorHandler
+    ) {
     }
 
     public function handle(WorkerStopping $event): void

@@ -10,8 +10,9 @@ use ApiPlatform\Metadata\Operation;
 
 final class IriConverter implements IriConverterInterface
 {
-    public function __construct(private IriConverterInterface $decorated)
-    {
+    public function __construct(
+        private IriConverterInterface $decorated
+    ) {
     }
 
     /**
