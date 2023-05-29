@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\Process\Process as SymfonyProcess;
 use Symfony\Component\Runtime\RunnerInterface;
-
 use function Symfony\Component\String\u;
 
 final class EasySwooleRunner implements RunnerInterface
@@ -38,8 +37,6 @@ final class EasySwooleRunner implements RunnerInterface
         $app = $this->app;
         $server = $this->createSwooleHttpServer();
         $responseChunkSize = OptionHelper::getInteger('response_chunk_size', 'SWOOLE_RESPONSE_CHUNK_SIZE');
-
-        CacheTableHelper::createCacheTables(OptionHelper::getArray('cache_tables', 'SWOOLE_CACHE_TABLES'));
 
         $server->on(
             Constant::EVENT_REQUEST,
