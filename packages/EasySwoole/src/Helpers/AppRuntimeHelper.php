@@ -83,6 +83,11 @@ final class AppRuntimeHelper
         self::addOptions(['response_chunk_size' => $responseChunkSize]);
     }
 
+    public static function setRuntime(string $runtime): void
+    {
+        $_SERVER[self::APP_RUNTIME] = $runtime;
+    }
+
     /**
      * @param mixed[] $settings
      */
@@ -99,10 +104,5 @@ final class AppRuntimeHelper
     public static function setUseDefaultCallbacks(bool $useDefaultCallbacks): void
     {
         self::addOptions(['use_default_callbacks' => $useDefaultCallbacks]);
-    }
-
-    public static function setRuntime(string $runtime): void
-    {
-        $_SERVER[self::APP_RUNTIME] = $runtime;
     }
 }

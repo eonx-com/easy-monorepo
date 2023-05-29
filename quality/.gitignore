@@ -1,3 +1,4 @@
 # Composer
+/cache
 /vendor
 !/composer.lock
