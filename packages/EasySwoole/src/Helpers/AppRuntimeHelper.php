@@ -27,6 +27,14 @@ final class AppRuntimeHelper
     }
 
     /**
+     * @param mixed[] $cacheTables
+     */
+    public static function setCacheTables(array $cacheTables): void
+    {
+        self::addOptions(['cache_tables' => $cacheTables]);
+    }
+
+    /**
      * @param callable[] $callbacks
      */
     public static function setCallbacks(array $callbacks): void

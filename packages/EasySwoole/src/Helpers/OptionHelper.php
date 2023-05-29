@@ -7,6 +7,7 @@ namespace EonX\EasySwoole\Helpers;
 final class OptionHelper
 {
     private const DEFAULT_OPTIONS = [
+        'cache_tables' => [],
         'callbacks' => [],
         'host' => '0.0.0.0',
         'hot_reload_dirs' => [
