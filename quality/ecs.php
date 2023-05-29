@@ -50,11 +50,11 @@ return static function (ECSConfig $ecsConfig): void {
     ]);
 
     $ecsConfig->parallel();
-    $ecsConfig->cacheDirectory(__DIR__ . '/quality/cache/ecs');
+    $ecsConfig->cacheDirectory(__DIR__ . '/var/cache/ecs');
 
     $ecsConfig->paths([
         __DIR__ . '/ecs.php',
-        __DIR__ . '/rector-ci.php',
+        __DIR__ . '/rector.php',
         __DIR__ . '/../monorepo-builder.php',
         __DIR__ . '/../packages',
     ]);

@@ -1,19 +1,19 @@
 includes:
-    - quality/vendor/symplify/phpstan-extensions/config/config.neon
+    - vendor/symplify/phpstan-extensions/config/config.neon
 
 services:
     - class: EonX\EasyMonorepo\PHPStan\SymfonyMessengerEnvelopeLastReturnType
       tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 parameters:
-    tmpDir: %currentWorkingDirectory%/quality/cache/phpstan
+    tmpDir: var/cache/phpstan
     parallel:
         jobSize: 20
         maximumNumberOfProcesses: 32
         minimumNumberOfJobsPerProcess: 2
 
     paths:
-        - packages
+        - %currentWorkingDirectory%/packages
 
     level: 8
 
@@ -22,22 +22,22 @@ parameters:
         - %currentWorkingDirectory%/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Loader/Configurator/ContainerConfigurator.php
 
     excludePaths:
-        - packages/*/var/*
-        - packages/*/vendor/*
-        - packages/*/config/*
-        - packages/EasyApiPlatform/tests/Fixtures/app/src/Kernel/ApplicationKernel.php
-        - packages/EasyApiToken/src/Interfaces/*
-        - packages/EasyApiToken/tests/Bridge/Symfony/*
-        - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
-        - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
-        - packages/EasyEncryption/src/AwsPkcs11Encryptor.php
-        - packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
-        - packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
-        - packages/EasySecurity/src/Bridge/Symfony/Security/SecurityContextAuthenticator.php
-        - packages/EasySwoole/src/Bridge/Symfony/Cache/SwooleTableAdapter.php
-        - packages/EasySwoole/src/Helpers/CacheTableHelper.php
-        - packages/EasySwoole/src/Helpers/FunctionHelper.php
-        - packages/EasyTest/src/Bridge/PhpUnit/Extension/MailerMessageLoggerListenerPhpUnitExtension.php
+        - %currentWorkingDirectory%/packages/*/var/*
+        - %currentWorkingDirectory%/packages/*/vendor/*
+        - %currentWorkingDirectory%/packages/*/config/*
+        - %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Fixtures/app/src/Kernel/ApplicationKernel.php
+        - %currentWorkingDirectory%/packages/EasyApiToken/src/Interfaces/*
+        - %currentWorkingDirectory%/packages/EasyApiToken/tests/Bridge/Symfony/*
+        - %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
+        - %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
+        - %currentWorkingDirectory%/packages/EasyEncryption/src/AwsPkcs11Encryptor.php
+        - %currentWorkingDirectory%/packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
+        - %currentWorkingDirectory%/packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
+        - %currentWorkingDirectory%/packages/EasySecurity/src/Bridge/Symfony/Security/SecurityContextAuthenticator.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Symfony/Cache/SwooleTableAdapter.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/CacheTableHelper.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/FunctionHelper.php
+        - %currentWorkingDirectory%/packages/EasyTest/src/Bridge/PhpUnit/Extension/MailerMessageLoggerListenerPhpUnitExtension.php
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
@@ -48,91 +48,91 @@ parameters:
         # ---- EasyApiPlatform ----
         # ---- EasyApiToken ----
         - message: '#Static method Firebase\\JWT\\JWT\:\:decode\(\) invoked with 3 parameters, 2 required#'
-          path: packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
+          path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
 
         - message: '#Parameter \#2 \$keyOrKeyArray of static method Firebase\\JWT\\JWT\:\:decode\(\) expects array<string, Firebase\\JWT\\Key>\|ArrayAccess<string, Firebase\\JWT\\Key>\|Firebase\\JWT\\Key, array\|string given#'
-          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
+          path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
 
         - message: '#Static method Firebase\\JWT\\JWT\:\:decode\(\) invoked with 3 parameters, 2 required#'
-          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
+          path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
 
         - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
-          path: packages/EasyApiToken/src/External/FirebaseJwtDriver.php
+          path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'
-          path: packages/EasyAsync/tests
+          path: %currentWorkingDirectory%/packages/EasyAsync/tests
 
         - message: '#Method EonX\\EasyAsync\\Tests\\Stubs\\EventDispatcherStub\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
-          path: packages/EasyAsync/tests/Stubs/EventDispatcherStub.php
+          path: %currentWorkingDirectory%/packages/EasyAsync/tests/Stubs/EventDispatcherStub.php
 
         # ---- EasyBankFiles ----
         - message: '#Call to an undefined method object\:\:getTransactionCodeDetails\(\)#'
-          path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
+          path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
 
         - message: '#Method EonX\\EasyBankFiles\\Tests\\Parsers\\Nai\\ParserTest\:\:getTransactionsForAccounts\(\) is unused#'
-          path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
+          path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
 
         - message: '#Unreachable statement \- code above always terminates#'
-          path: packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
+          path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
 
         # ---- EasyBatch ----
         - message: '#Parameter \#1 \$callback of function array_map expects \(callable\(int\|string\)\: mixed\)\|null, Closure\(string\)\: string given#'
-          path: packages/EasyBatch/src/Repositories/BatchItemRepository.php
+          path: %currentWorkingDirectory%/packages/EasyBatch/src/Repositories/BatchItemRepository.php
 
         # ---- EasyBugsnag ----
         - message: '#Return type \(void\) of method EonX\\EasyBugsnag\\Tests\\Bridge\\Symfony\\Stubs\\ConnectionStub\:\:(query|prepare)\(\) should be compatible with return type \(Doctrine\\DBAL\\Driver\\Statement\) of method Doctrine\\DBAL\\Driver\\Connection\:\:(query|prepare)\(\)#'
-          path: packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/ConnectionStub.php
+          path: %currentWorkingDirectory%/packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/ConnectionStub.php
 
         # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'
-          path: packages/EasyCore/tests/Bridge/Laravel/Middleware/SetContentLengthTest.php
+          path: %currentWorkingDirectory%/packages/EasyCore/tests/Bridge/Laravel/Middleware/SetContentLengthTest.php
 
         - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\Providers\\CachedConfigServiceProvider::\$loadedConfigurations.#'
-          path: packages/EasyCore/src/Bridge/Laravel/Providers
+          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Laravel/Providers
 
         - message: '#Method EonX\\EasyCore\\Tests\\AbstractTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
-          path: packages/EasyCore/tests/AbstractTestCase.php
+          path: %currentWorkingDirectory%/packages/EasyCore/tests/AbstractTestCase.php
 
         - message: '#Cannot call method newInstanceWithoutConstructor\(\) on ReflectionClass\|null#'
-          path: packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Compiler/AutoConfigureEventListenersPass.php
+          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Compiler/AutoConfigureEventListenersPass.php
 
         - message: '#PHPDoc tag @var for variable \$dataPersister has invalid type EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Traits\\RequestAttributesAwareTrait#'
-          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
+          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
 
         - message: '#Call to method setRequestAttributes\(\) on an unknown class EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Traits\\RequestAttributesAwareTrait#'
-          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
+          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
 
         - message: '#Call to an undefined method ApiPlatform\\Core\\DataPersister\\DataPersisterInterface\:\:getPersistersResponse\(\)#'
-          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataCollector/RequestDataCollector.php
+          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataCollector/RequestDataCollector.php
 
         - message: '#Call to an undefined method ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\:\:(getSimpleDataPersisters|getDataPersisters)\(\)#'
-          path: packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/TraceableChainSimpleDataPersister.php
+          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/TraceableChainSimpleDataPersister.php
 
         - message: '#Property Symfony\\Component\\HttpFoundation\\Request\:\:\$request \(Symfony\\Component\\HttpFoundation\\InputBag\) does not accept Symfony\\Component\\HttpFoundation\\ParameterBag#'
-          path: packages/EasyCore/src/Bridge/Laravel/ApiFormats/Middleware/ReplaceApiFormatsMiddleware.php
+          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Laravel/ApiFormats/Middleware/ReplaceApiFormatsMiddleware.php
 
         # ---- EasyDecision ----
         # ---- EasyDoctrine ----
         - message: '#Strict comparison using === between true and false will always evaluate to false.#'
-          path: packages/EasyDoctrine/src/ORM/Decorators/EntityManagerDecorator.php
+          path: %currentWorkingDirectory%/packages/EasyDoctrine/src/ORM/Decorators/EntityManagerDecorator.php
 
         - message: '#Call to an undefined method EonX\\EasyDoctrine\\Bridge\\Symfony\\Aws\\Rds\\RdsIamConnection\:\:convertException\(\)#'
-          path: packages/EasyDoctrine/src/Bridge/Symfony/Aws/Rds/RdsIamConnection.php
+          path: %currentWorkingDirectory%/packages/EasyDoctrine/src/Bridge/Symfony/Aws/Rds/RdsIamConnection.php
 
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
-          path: packages/EasyEncryption/src/Encryptor.php
+          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptor.php
 
         # ---- EasyErrorHandler ----
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
-          path: packages/EasyErrorHandler/src/Providers/ErrorCodesFromInterfaceProvider.php
+          path: %currentWorkingDirectory%/packages/EasyErrorHandler/src/Providers/ErrorCodesFromInterfaceProvider.php
 
         # ---- EasyLogging ----DoctrineDbalLengthAwarePaginator
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-          path: packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
+          path: %currentWorkingDirectory%/packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
 
         - message: '#Parameter \#2 \$level of class Monolog\\Handler\\StreamHandler constructor expects (.*?), int given#'
-          path: packages/EasyLogging/src/Config/StreamHandlerConfigProvider.php
+          path: %currentWorkingDirectory%/packages/EasyLogging/src/Config/StreamHandlerConfigProvider.php
 
         # ---- EasyPagination ----
         - '#Parameter \#2 \$alias of method Doctrine\\ORM\\QueryBuilder\:\:from\(\) expects string, string\|null given#'
@@ -144,110 +144,110 @@ parameters:
 
         # ---- EasyPipeline ----
         - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
-          path: packages/EasyPipeline/src/Bridge/Laravel
+          path: %currentWorkingDirectory%/packages/EasyPipeline/src/Bridge/Laravel
 
         - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
-          path: packages/EasyPipeline/tests
+          path: %currentWorkingDirectory%/packages/EasyPipeline/tests
 
         # ---- EasyPsr7Factory ----
         # ---- EasyRandom ----
         - message: '#Access to an undefined property EonX\\EasyRandom\\Interfaces\\RandomGeneratorInterface\:\:\$uuidV4Generator#'
-          path: packages/EasyRandom/tests/Bridge/Symfony/EasyRandomBundleTest.php
+          path: %currentWorkingDirectory%/packages/EasyRandom/tests/Bridge/Symfony/EasyRandomBundleTest.php
 
         - message: '#Access to an undefined property object\:\:\$uuidV4Generator#'
-          path: packages/EasyRandom/tests/Bridge/Laravel/EasyRandomServiceProviderTest.php
+          path: %currentWorkingDirectory%/packages/EasyRandom/tests/Bridge/Laravel/EasyRandomServiceProviderTest.php
 
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
-          path: packages/EasyRepository/src/Implementations/Illuminate
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Illuminate
 
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$repository \(Doctrine\\ORM\\EntityRepository\) does not accept Doctrine\\Persistence\\ObjectRepository.#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM
 
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$manager \(Doctrine\\ORM\\EntityManagerInterface\) does not accept Doctrine\\Persistence\\ObjectManager\|null.#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM
 
         - message: '#Method EonX\\EasyRepository\\Tests\\Implementation\\Illuminate\\EloquentRepositoryStub::getModel\(\) should return Illuminate\\Database\\Eloquent\\Model but returns Mockery\\LegacyMockInterface.#'
-          path: packages/EasyRepository/tests/Implementation/Illuminate
+          path: %currentWorkingDirectory%/packages/EasyRepository/tests/Implementation/Illuminate
 
         - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
-          path: packages/EasyRepository/tests
+          path: %currentWorkingDirectory%/packages/EasyRepository/tests
 
         - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
-          path: packages/EasyRepository/tests
+          path: %currentWorkingDirectory%/packages/EasyRepository/tests
 
         - message: '#Cannot call method getRepository\(\) on Doctrine\\Persistence\\ObjectManager\|null#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractDoctrineOrmRepository.php
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractDoctrineOrmRepository.php
 
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
 
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
 
         - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
 
         - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
 
         - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getManager\(\) should return Doctrine\\ORM\\EntityManagerInterface but returns Doctrine\\Persistence\\ObjectManager\|null#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
 
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:\$manager \(Doctrine\\ORM\\EntityManagerInterface\|null\) does not accept Doctrine\\Persistence\\ObjectManager\|null#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
 
         - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getRepository\(\) return type with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
-          path: packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
 
         # ---- EasyRequestId ----
         # ---- EasySchedule ----
         - message: '#Parameter \#1 \$app of method EonX\\EasySchedule\\Interfaces\\ScheduleInterface\:\:setApplication\(\) expects Symfony\\Component\\Console\\Application, Symfony\\Component\\Console\\Application\|null given#'
-          path: packages/EasySchedule/src/Command/ScheduleRunCommand.php
+          path: %currentWorkingDirectory%/packages/EasySchedule/src/Command/ScheduleRunCommand.php
 
         - message: '#Cannot cast Symfony\\Component\\Console\\Input\\InputInterface to string#'
-          path: packages/EasySchedule/src/Event.php
+          path: %currentWorkingDirectory%/packages/EasySchedule/src/Event.php
 
         # ---- EasySecurity ----
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
-          path: packages/EasySecurity/tests/Authorization/RoleTest.php
+          path: %currentWorkingDirectory%/packages/EasySecurity/tests/Authorization/RoleTest.php
 
         - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Security\\FakeKernel\:\:handle\(\) should return Symfony\\Component\\HttpFoundation\\Response but return statement is missing#'
-          path: packages/EasySecurity/src/Bridge/Symfony/Security/FakeKernel.php
+          path: %currentWorkingDirectory%/packages/EasySecurity/src/Bridge/Symfony/Security/FakeKernel.php
 
         # ---- EasySsm ----
         - message: '#Parameter \#1 \$stream of class Symfony\\Component\\Console\\Output\\StreamOutput constructor expects resource, resource\|false given#'
-          path: packages/EasySsm/tests/Services/Dotenv/Loaders/ConsoleOutputLoaderTest.php
+          path: %currentWorkingDirectory%/packages/EasySsm/tests/Services/Dotenv/Loaders/ConsoleOutputLoaderTest.php
 
         - message: '#Return type \(array\) of method EonX\\EasySsm\\Tests\\Stubs\\BaseSsmClientStub\:\:getPaginator\(\) should be compatible with return type \(Aws\\ResultPaginator\) of method Aws\\Aws(Client|ClientInterface)\:\:getPaginator\(\)#'
-          path: packages/EasySsm/tests/Stubs/BaseSsmClientStub.php
+          path: %currentWorkingDirectory%/packages/EasySsm/tests/Stubs/BaseSsmClientStub.php
 
         - message: '#Parameter \#1 \$envKey of class Symfony\\Component\\Dotenv\\Dotenv constructor expects string, true given#'
-          path: packages/EasySsm/src/Services/Dotenv/Loaders/DotenvLoader.php
+          path: %currentWorkingDirectory%/packages/EasySsm/src/Services/Dotenv/Loaders/DotenvLoader.php
 
         # ---- EasySwoole ----
         - '#Access to constant (.*) on an unknown class Swoole\\Constant#'
         - '#Class Swoole\\Constant not found#'
 
         - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
-          path: packages/EasySwoole/src/Helpers/OutputHelper.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/OutputHelper.php
 
         - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
-          path: packages/EasySwoole/src/Helpers/VarDumpHelper.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/VarDumpHelper.php
 
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
-          path: packages/EasySwoole/src/Resources/functions/dump.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Resources/functions/dump.php
 
         - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
-          path: packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
 
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
-          path: packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
+          path: %currentWorkingDirectory%/packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
 
         - message: '#Result of && is always false#'
-          path: packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
+          path: %currentWorkingDirectory%/packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
 
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
-          path: packages/EasyWebhook/src/AbstractWebhook.php
+          path: %currentWorkingDirectory%/packages/EasyWebhook/src/AbstractWebhook.php
