@@ -6,8 +6,12 @@ namespace EonX\EasySwoole\Helpers;
 
 final class OptionHelper
 {
+    private const DEFAULT_CACHE_CLEAR_EXPIRED_COUNT = 10000;
+
     private const DEFAULT_OPTIONS = [
         'cache_tables' => [],
+        'cache_clear_expired_requests_count' => self::DEFAULT_CACHE_CLEAR_EXPIRED_COUNT,
+        'cache_clear_expired_commands_count' => self::DEFAULT_CACHE_CLEAR_EXPIRED_COUNT,
         'callbacks' => [],
         'host' => '0.0.0.0',
         'hot_reload_dirs' => [
