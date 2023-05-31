@@ -26,6 +26,11 @@ final class AppRuntimeHelper
         return $_SERVER[self::APP_RUNTIME_OPTIONS][$name] ?? $default;
     }
 
+    public static function setCacheClearAfterTickCount(int $cacheClearAfterTickCount): void
+    {
+        self::addOptions(['cache_clear_after_tick_count' => $cacheClearAfterTickCount]);
+    }
+
     /**
      * @param mixed[] $cacheTables
      */

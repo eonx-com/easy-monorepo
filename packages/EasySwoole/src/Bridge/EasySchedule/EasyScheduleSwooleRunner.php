@@ -34,7 +34,7 @@ final class EasyScheduleSwooleRunner implements RunnerInterface
 
         CacheTableHelper::createCacheTables(
             OptionHelper::getArray('cache_tables', 'SWOOLE_CACHE_TABLES'),
-            OptionHelper::getInteger('cache_clear_expired_commands_count', 'SWOOLE_CACHE_CLEAR_EXPIRED_COMMANDS_COUNT'),
+            OptionHelper::getInteger('cache_clear_after_tick_count', 'SWOOLE_CACHE_CLEAR_AFTER_TICK_COUNT'),
         );
 
         $server->on(Constant::EVENT_REQUEST, static function (): void {
