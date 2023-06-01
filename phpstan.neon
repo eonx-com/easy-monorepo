@@ -225,6 +225,7 @@ parameters:
 
         # ---- EasySwoole ----
         - '#Access to constant (.*) on an unknown class Swoole\\Constant#'
+        - '#Call to method (.*) on an unknown class OpenSwoole\\Table#'
         - '#Class Swoole\\Constant not found#'
 
         - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
@@ -238,6 +239,15 @@ parameters:
 
         - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
           path: packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+
+        - message: '#Method EonX\\EasySwoole\\Helpers\\SwooleTableHelper\:\:create\(\) has invalid return type OpenSwoole\\Table#'
+          path: packages/EasySwoole/src/Helpers/SwooleTableHelper.php
+
+        - message: '#PHPDoc tag @var for variable \$table contains unknown class OpenSwoole\\Table#'
+          path: packages/EasySwoole/src/Helpers/SwooleTableHelper.php
+
+        - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
+          path: packages/EasySwoole/src/Helpers/SwooleTableHelper.php
 
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'

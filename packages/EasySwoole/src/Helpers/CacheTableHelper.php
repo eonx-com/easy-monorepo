@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Helpers;
 
+use EonX\EasySwoole\Enums\SwooleTableColumnType;
+use EonX\EasySwoole\ValueObjects\SwooleTableColumnDefinition;
 use OpenSwoole\Table as OpenSwooleTable;
 use Swoole\Table as SwooleTable;
 use UnexpectedValueException;
@@ -18,28 +20,25 @@ final class CacheTableHelper
 
     public const KEY_TABLE_SIZE = 'table_size';
 
-    private const DEFAULT_REQUEST_COUNT_FLUSH = 10000;
-
     private const DEFAULT_TABLE_SIZE = 50;
 
     private const DEFAULT_VALUE_COLUMN_SIZE = 10000;
-
-    private const REQUEST_COUNT_COLUMN = '_count';
-
-    private const SERVER_REQUEST_COUNT_TABLE_NAME = 'easy_swoole_request_count_table';
 
     private const SERVER_TABLE_NAMES = 'easy_swoole_cache_table_names';
 
     private const SERVER_TABLE_NAME_PATTERN = 'easy_swoole_cache_table_%s';
 
-    private static ?string $tableClass = null;
+    private const SERVER_TICK_COUNT_TABLE_NAME = 'easy_swoole_tick_count_table';
+
+    private const TICK_COUNT_COLUMN_CURRENT = 'current';
+
+    private const TICK_COUNT_COLUMN_MAXIMUM = 'maximum';
 
     /**
      * @param mixed[] $config
      */
-    public static function createCacheTables(array $config): void
+    public static function createCacheTables(array $config, int $cacheClearAfterTickCount): void
     {
-        $tableClass = self::getTableClass();
         $tables = [];
 
         foreach ($config as $name => $sizes) {
@@ -61,35 +60,44 @@ final class CacheTableHelper
                 throw new UnexpectedValueException(\sprintf('Cache table "%s" already exists', $name));
             }
 
-            $table = new $tableClass($sizes[0] ?? $sizes[self::KEY_TABLE_SIZE] ?? self::DEFAULT_TABLE_SIZE);
-            $table->column(self::COLUMN_EXPIRY, $tableClass::TYPE_INT);
-            $table->column(
-                self::COLUMN_VALUE,
-                $tableClass::TYPE_STRING,
-                $sizes[1] ?? $sizes[self::KEY_COLUMN_SIZE] ?? self::DEFAULT_VALUE_COLUMN_SIZE
+            $table = SwooleTableHelper::create(
+                size: $sizes[0] ?? $sizes[self::KEY_TABLE_SIZE] ?? self::DEFAULT_TABLE_SIZE,
+                columnDefinitions: [
+                    new SwooleTableColumnDefinition(self::COLUMN_EXPIRY, SwooleTableColumnType::Int),
+                    new SwooleTableColumnDefinition(
+                        self::COLUMN_VALUE,
+                        SwooleTableColumnType::String,
+                        $sizes[1] ?? $sizes[self::KEY_COLUMN_SIZE] ?? self::DEFAULT_VALUE_COLUMN_SIZE
+                    ),
+                ]
             );
-            $table->create();
 
             $tables[] = $name;
             $_SERVER[self::getServerTableName($name)] = $table;
         }
 
-        // Create table to count requests
-        $countTable = new $tableClass(1);
-        $countTable->column(self::REQUEST_COUNT_COLUMN, $tableClass::TYPE_INT);
-        $countTable->create();
-        $countTable->set(self::REQUEST_COUNT_COLUMN, [self::REQUEST_COUNT_COLUMN => 0]);
+        // Create table to count ticks
+        $tickCountTable = SwooleTableHelper::create(
+            size: 2,
+            columnDefinitions: [
+                new SwooleTableColumnDefinition(self::COLUMN_VALUE, SwooleTableColumnType::Int),
+            ]
+        );
+        $tickCountTable->set(self::TICK_COUNT_COLUMN_CURRENT, [self::COLUMN_VALUE => 0]);
+        $tickCountTable->set(self::TICK_COUNT_COLUMN_MAXIMUM, [self::COLUMN_VALUE => $cacheClearAfterTickCount]);
 
-        $_SERVER[self::SERVER_REQUEST_COUNT_TABLE_NAME] = $countTable;
+        $_SERVER[self::SERVER_TICK_COUNT_TABLE_NAME] = $tickCountTable;
         $_SERVER[self::SERVER_TABLE_NAMES] = $tables;
 
         OutputHelper::writeln('Create following cache tables:');
+
         foreach ($tables as $table) {
             OutputHelper::writeln(\sprintf('- %s', $table));
         }
+
         OutputHelper::writeln(\sprintf(
             'Will automatically remove expired records after %d requests',
-            self::DEFAULT_REQUEST_COUNT_FLUSH
+            $cacheClearAfterTickCount
         ));
     }
 
@@ -100,7 +108,7 @@ final class CacheTableHelper
 
     public static function get(string $name, ?bool $throwOnNull = null): SwooleTable|OpenSwooleTable|null
     {
-        $tableClass = self::getTableClass();
+        $tableClass = SwooleTableHelper::getTableClass();
         $table = $_SERVER[self::getServerTableName($name)] ?? null;
         $table = $table instanceof $tableClass ? $table : null;
 
@@ -111,27 +119,29 @@ final class CacheTableHelper
         return $table;
     }
 
-    public static function onRequest(): void
+    public static function tick(): void
     {
         // Remove expired rows to prevent memory leaks
-        $countTable = $_SERVER[self::SERVER_REQUEST_COUNT_TABLE_NAME] ?? null;
-        $tableClass = self::getTableClass();
+        $tableClass = SwooleTableHelper::getTableClass();
+        /** @var \OpenSwoole\Table|\Swoole\Table|null $tickCountTable */
+        $tickCountTable = $_SERVER[self::SERVER_TICK_COUNT_TABLE_NAME] ?? null;
 
-        if ($countTable instanceof $tableClass === false) {
+        if ($tickCountTable instanceof $tableClass === false) {
             return;
         }
 
-        $countTable->incr(self::REQUEST_COUNT_COLUMN, self::REQUEST_COUNT_COLUMN);
+        $tickCountTable->incr(self::TICK_COUNT_COLUMN_CURRENT, self::COLUMN_VALUE);
 
-        $requestCount = $countTable->get(self::REQUEST_COUNT_COLUMN, self::REQUEST_COUNT_COLUMN);
+        $currentTickCount = $tickCountTable->get(self::TICK_COUNT_COLUMN_CURRENT, self::COLUMN_VALUE);
+        $maximumTickCount = $tickCountTable->get(self::TICK_COUNT_COLUMN_MAXIMUM, self::COLUMN_VALUE);
 
-        if ($requestCount >= self::DEFAULT_REQUEST_COUNT_FLUSH) {
+        if ($currentTickCount >= $maximumTickCount) {
             $now = \time();
 
-            foreach ($_SERVER[self::SERVER_TABLE_NAMES] ?? [] as $name) {
-                $table = $_SERVER[self::getServerTableName($name)] ?? null;
+            foreach (($_SERVER[self::SERVER_TABLE_NAMES] ?? []) as $name) {
+                $table = self::get($name);
 
-                if ($table instanceof $tableClass === false) {
+                if ($table === null) {
                     continue;
                 }
 
@@ -143,18 +153,11 @@ final class CacheTableHelper
             }
         }
 
-        $countTable->set(self::REQUEST_COUNT_COLUMN, [self::REQUEST_COUNT_COLUMN => 0]);
+        $tickCountTable->set(self::TICK_COUNT_COLUMN_CURRENT, [self::COLUMN_VALUE => 0]);
     }
 
     private static function getServerTableName(string $name): string
     {
         return \sprintf(self::SERVER_TABLE_NAME_PATTERN, $name);
-    }
-
-    private static function getTableClass(): string
-    {
-        return self::$tableClass ??= \class_exists(OpenSwooleTable::class)
-            ? OpenSwooleTable::class
-            : SwooleTable::class;
     }
 }

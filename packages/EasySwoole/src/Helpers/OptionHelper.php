@@ -6,8 +6,11 @@ namespace EonX\EasySwoole\Helpers;
 
 final class OptionHelper
 {
+    private const DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT = 10000;
+
     private const DEFAULT_OPTIONS = [
         'cache_tables' => [],
+        'cache_clear_after_tick_count' => self::DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT,
         'callbacks' => [],
         'host' => '0.0.0.0',
         'hot_reload_dirs' => [
