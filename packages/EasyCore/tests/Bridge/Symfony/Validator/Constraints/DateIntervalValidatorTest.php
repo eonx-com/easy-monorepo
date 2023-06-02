@@ -141,7 +141,7 @@ final class DateIntervalValidatorTest extends AbstractSymfonyTestCase
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
-            $violationBuilder
+            $violationBuilder,
         ): void {
             $mock->shouldReceive('buildViolation')
                 ->once()

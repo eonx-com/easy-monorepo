@@ -231,7 +231,6 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInCallSniff::class, [
         'onlySingleLine' => true,
     ]);
-    //    $ecsConfig->rule(RequireTrailingCommaInCallSniff::class);
     $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInClosureUseSniff::class, [
         'onlySingleLine' => true,
     ]);
