@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
+use EonX\EasySwoole\Bridge\Symfony\Cache\SwooleTableAdapterFactory;
 use EonX\EasySwoole\Bridge\Symfony\Listeners\ApplicationStateCheckListener;
 use EonX\EasySwoole\Bridge\Symfony\Listeners\ApplicationStateInitListener;
 use EonX\EasySwoole\Bridge\Symfony\Listeners\ApplicationStateResetListener;
@@ -40,4 +41,7 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(SwooleDdListener::class)
         ->tag('kernel.event_listener', ['priority' => 30000]);
+
+    $services
+        ->set(SwooleTableAdapterFactory::class);
 };

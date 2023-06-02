@@ -39,7 +39,10 @@ final class EasySwooleRunner implements RunnerInterface
         $server = $this->createSwooleHttpServer();
         $responseChunkSize = OptionHelper::getInteger('response_chunk_size', 'SWOOLE_RESPONSE_CHUNK_SIZE');
 
-        CacheTableHelper::createCacheTables(OptionHelper::getArray('cache_tables', 'SWOOLE_CACHE_TABLES'));
+        CacheTableHelper::createCacheTables(
+            OptionHelper::getArray('cache_tables', 'SWOOLE_CACHE_TABLES'),
+            OptionHelper::getInteger('cache_clear_after_tick_count', 'SWOOLE_CACHE_CLEAR_AFTER_TICK_COUNT'),
+        );
 
         $server->on(
             Constant::EVENT_REQUEST,
@@ -69,7 +72,7 @@ final class EasySwooleRunner implements RunnerInterface
                     $server->stop($server->getWorkerId(), true);
                 }
 
-                CacheTableHelper::onRequest();
+                CacheTableHelper::tick();
             }
         );
 

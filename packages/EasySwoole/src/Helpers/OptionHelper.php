@@ -6,10 +6,11 @@ namespace EonX\EasySwoole\Helpers;
 
 final class OptionHelper
 {
-    private const DEFAULT_PUBLIC_DIR = __DIR__ . '/../../../../../';
+    private const DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT = 10000;
 
     private const DEFAULT_OPTIONS = [
         'cache_tables' => [],
+        'cache_clear_after_tick_count' => self::DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT,
         'callbacks' => [],
         'host' => '0.0.0.0',
         'hot_reload_dirs' => [
@@ -33,18 +34,12 @@ final class OptionHelper
         'use_default_callbacks' => true,
     ];
 
+    private const DEFAULT_PUBLIC_DIR = __DIR__ . '/../../../../../';
+
     /**
      * @var mixed[]
      */
     private static array $options = [];
-
-    /**
-     * @param mixed[] $options
-     */
-    public static function setOptions(array $options): void
-    {
-        self::$options = $options;
-    }
 
     /**
      * @return mixed[]
@@ -79,6 +74,14 @@ final class OptionHelper
     public static function getString(string $option, string $env): string
     {
         return (string)self::getOption($option, $env);
+    }
+
+    /**
+     * @param mixed[] $options
+     */
+    public static function setOptions(array $options): void
+    {
+        self::$options = $options;
     }
 
     private static function getOption(string $option, string $env): mixed

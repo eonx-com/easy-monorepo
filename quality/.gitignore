@@ -1,4 +1,5 @@
 # Composer
+/cache
 /vendor
 
 # Cache
