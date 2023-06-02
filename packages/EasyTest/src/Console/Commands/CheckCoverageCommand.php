@@ -32,7 +32,7 @@ final class CheckCoverageCommand extends Command
 
     public function __construct(
         CoverageLoaderInterface $coverageLoader,
-        CoverageResolverLocatorInterface $coverageResolverLocator
+        CoverageResolverLocatorInterface $coverageResolverLocator,
     ) {
         $this->coverageLoader = $coverageLoader;
         $this->coverageResolverLocator = $coverageResolverLocator;

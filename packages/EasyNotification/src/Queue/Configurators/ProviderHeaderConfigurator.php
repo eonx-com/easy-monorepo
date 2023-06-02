@@ -13,7 +13,7 @@ final class ProviderHeaderConfigurator extends AbstractQueueMessageConfigurator
     public function configure(
         ConfigInterface $config,
         QueueMessageInterface $queueMessage,
-        MessageInterface $message
+        MessageInterface $message,
     ): QueueMessageInterface {
         return $queueMessage->addHeader(QueueMessageInterface::HEADER_PROVIDER, $config->getProviderExternalId());
     }

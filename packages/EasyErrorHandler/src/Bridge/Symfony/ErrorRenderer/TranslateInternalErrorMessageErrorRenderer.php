@@ -18,7 +18,7 @@ final class TranslateInternalErrorMessageErrorRenderer implements ErrorRendererI
 
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
-        private readonly ErrorRendererInterface $decorated
+        private readonly ErrorRendererInterface $decorated,
     ) {
     }
 

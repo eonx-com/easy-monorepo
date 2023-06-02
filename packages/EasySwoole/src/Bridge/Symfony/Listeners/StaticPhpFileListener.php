@@ -19,7 +19,7 @@ final class StaticPhpFileListener extends AbstractRequestEventListener
     public function __construct(
         private readonly Filesystem $filesystem,
         private readonly array $allowedDirs,
-        private readonly array $allowedFilenames
+        private readonly array $allowedFilenames,
     ) {
     }
 

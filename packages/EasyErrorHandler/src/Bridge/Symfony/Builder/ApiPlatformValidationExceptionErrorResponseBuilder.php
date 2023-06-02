@@ -38,7 +38,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
     public function __construct(
         private readonly TranslatorInterface $translator,
         ?array $keys = null,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         $this->keys = $keys ?? [];
 

@@ -1244,13 +1244,13 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
      */
     protected function buildAdvancedSearchFilter(
         ManagerRegistry $managerRegistry,
-        ?array $properties = null
+        ?array $properties = null,
     ): AdvancedSearchFilter {
         $relatedDummyProphecy = $this->prophesize(RelatedDummy::class);
         $iriConverterProphecy = $this->prophesize(IriConverterInterface::class);
 
         $iriConverterProphecy->getResourceFromIri(Argument::type('string'), ['fetch_data' => false])->will(function (
-            $args
+            $args,
         ) use ($relatedDummyProphecy) {
             if (\str_contains($args[0], '/related_dummies')) {
                 $relatedDummyProphecy->getId()

@@ -15,6 +15,6 @@ interface ExpressionLanguageRuleFactoryInterface
         string $expression,
         ?int $priority = null,
         ?string $name = null,
-        ?array $extra = null
+        ?array $extra = null,
     ): ExpressionLanguageRule;
 }

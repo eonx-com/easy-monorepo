@@ -26,7 +26,7 @@ trait ExceptionTrait
     protected function assertThrownException(
         string $expectedException,
         ?int $code = null,
-        ?string $previousException = null
+        ?string $previousException = null,
     ): void {
         $this->isThrownExceptionAssertionNeeded = false;
 

@@ -52,7 +52,7 @@ final class EntityManagerStub
     public static function createFromDeferredEntityEventDispatcher(
         DeferredEntityEventDispatcher $dispatcher,
         array $subscribedEntities = [],
-        array $fixtures = []
+        array $fixtures = [],
     ) {
         $eventSubscriber = new EntityEventSubscriber($dispatcher, $subscribedEntities);
         $eventManager = new EventManager();
@@ -78,7 +78,7 @@ final class EntityManagerStub
         array $easyActivityConfig,
         ?ActorResolverInterface $actorResolver = null,
         ?ActivitySubjectResolverInterface $subjectResolver = null,
-        ?array $fixtures = null
+        ?array $fixtures = null,
     ): EntityManagerInterface {
         $symfonyEventDispatcher = new SymfonyEventDispatcher();
         $eventDispatcher = new EventDispatcher($symfonyEventDispatcher);
@@ -173,7 +173,7 @@ final class EntityManagerStub
     public static function createFromSymfonyEventDispatcher(
         EventDispatcherInterface $eventDispatcher,
         array $subscribedEntities = [],
-        array $fixtures = []
+        array $fixtures = [],
     ) {
         $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
 

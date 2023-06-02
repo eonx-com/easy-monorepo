@@ -25,6 +25,10 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer;
 use PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
 use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
+use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInCallSniff;
+use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInClosureUseSniff;
+use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInDeclarationSniff;
+use SlevomatCodingStandard\Sniffs\Functions\RequireTrailingCommaInDeclarationSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedClassNameInAnnotationSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalConstantsSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalFunctionsSniff;
@@ -221,4 +225,18 @@ return static function (ECSConfig $ecsConfig): void {
         'absoluteLineLimit' => 120,
         'ignoreComments' => true,
     ]);
+
+    // trailing commas
+    $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInCallSniff::class, [
+        'onlySingleLine' => true,
+    ]);
+    //    $ecsConfig->rule(RequireTrailingCommaInCallSniff::class);
+    $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInClosureUseSniff::class, [
+        'onlySingleLine' => true,
+    ]);
+    //    $ecsConfig->rule(RequireTrailingCommaInClosureUseSniff::class);
+    $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInDeclarationSniff::class, [
+        'onlySingleLine' => true,
+    ]);
+    $ecsConfig->rule(RequireTrailingCommaInDeclarationSniff::class);
 };

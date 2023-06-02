@@ -21,7 +21,7 @@ final class SwooleTableAdapter extends AbstractAdapter
     public function __construct(
         private readonly string $tableName,
         ?int $defaultLifetime = null,
-        ?MarshallerInterface $marshaller = null
+        ?MarshallerInterface $marshaller = null,
     ) {
         $this->marshaller = $marshaller ?? new DefaultMarshaller();
 

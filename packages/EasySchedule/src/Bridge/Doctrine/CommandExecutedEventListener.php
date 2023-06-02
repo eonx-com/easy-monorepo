@@ -10,7 +10,7 @@ use EonX\EasySchedule\Events\CommandExecutedEvent;
 final class CommandExecutedEventListener
 {
     public function __construct(
-        private readonly ManagerRegistry $managerRegistry
+        private readonly ManagerRegistry $managerRegistry,
     ) {
     }
 

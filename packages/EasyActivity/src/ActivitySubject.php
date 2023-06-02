@@ -43,7 +43,7 @@ final class ActivitySubject implements ActivitySubjectInterface
         string $type,
         array $disallowedProperties,
         array $nestedObjectAllowedProperties,
-        ?array $allowedProperties = null
+        ?array $allowedProperties = null,
     ) {
         $this->id = $id;
         $this->type = $type;

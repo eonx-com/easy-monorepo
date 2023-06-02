@@ -13,7 +13,7 @@ final class FromHttpFoundationRequestResolver
 {
     public function __construct(
         private PaginationConfigInterface $config,
-        private Request $request
+        private Request $request,
     ) {
         // No body needed.
     }

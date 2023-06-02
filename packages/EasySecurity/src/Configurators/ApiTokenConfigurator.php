@@ -13,7 +13,7 @@ final class ApiTokenConfigurator extends AbstractSecurityContextConfigurator
     public function __construct(
         private readonly ApiTokenDecoderFactoryInterface $apiTokenDecoderFactory,
         private readonly ?string $apiTokenDecoder = null,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         parent::__construct($priority);
     }

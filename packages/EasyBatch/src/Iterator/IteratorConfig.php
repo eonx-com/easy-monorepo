@@ -30,7 +30,7 @@ final class IteratorConfig
     public function __construct(
         private readonly int|string $batchId,
         callable $func,
-        private readonly ?string $dependsOnName = null
+        private readonly ?string $dependsOnName = null,
     ) {
         $this->func = $func;
     }

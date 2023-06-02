@@ -91,7 +91,7 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
             static function (
                 BatchItemFactoryInterface $batchItemFactory,
                 BatchItemRepositoryInterface $batchItemRepo,
-                BatchRepositoryInterface $batchRepo
+                BatchRepositoryInterface $batchRepo,
             ): void {
                 // batch items
                 $batchItemCreated = $batchItemFactory->create('batch-id', new \stdClass());
@@ -122,7 +122,7 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
             static function (
                 BatchItemFactoryInterface $batchItemFactory,
                 BatchItemRepositoryInterface $batchItemRepo,
-                BatchRepositoryInterface $batchRepo
+                BatchRepositoryInterface $batchRepo,
             ): void {
                 // batch items
                 $batchItemCompleted = $batchItemFactory->create('batch-id', new \stdClass());

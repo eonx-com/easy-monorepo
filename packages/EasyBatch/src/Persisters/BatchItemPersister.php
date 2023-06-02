@@ -13,14 +13,14 @@ final class BatchItemPersister
 {
     public function __construct(
         private readonly BatchItemFactoryInterface $batchItemFactory,
-        private readonly BatchItemRepositoryInterface $batchItemRepository
+        private readonly BatchItemRepositoryInterface $batchItemRepository,
     ) {
     }
 
     public function persistBatchItem(
         int|string $batchId,
         MessageDecorator $item,
-        ?object $message = null
+        ?object $message = null,
     ): BatchItemInterface {
         $batchItem = $this->batchItemFactory->create($batchId, $message, $item->getClass());
 

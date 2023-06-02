@@ -26,7 +26,7 @@ final class ApiPlatformErrorResponseBuilderProvider implements ErrorResponseBuil
     public function __construct(
         private readonly TranslatorInterface $translator,
         ?array $keys = null,
-        ?bool $transformValidationErrors = null
+        ?bool $transformValidationErrors = null,
     ) {
         $this->keys = $keys ?? [];
         $this->transformValidationErrors = $transformValidationErrors ?? true;

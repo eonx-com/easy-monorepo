@@ -24,7 +24,7 @@ final class EasyScheduleSwooleRunner implements RunnerInterface
     private const LAST_RUN = 'last_run';
 
     public function __construct(
-        private readonly Application $application
+        private readonly Application $application,
     ) {
     }
 

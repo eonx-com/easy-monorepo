@@ -149,7 +149,7 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
 
     private function mockExecutionContextWithBuildViolation(
         string $message,
-        ConstraintViolationBuilderInterface $violationBuilder
+        ConstraintViolationBuilderInterface $violationBuilder,
     ): ExecutionContextInterface {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (

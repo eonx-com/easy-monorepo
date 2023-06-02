@@ -207,7 +207,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         array $data,
         ActivitySubjectInterface $subject,
         ?array $disallowedProperties,
-        ?string $expectedResult
+        ?string $expectedResult,
     ): void {
         $symfonySerializer = $this->arrangeSymfonySerializer();
         $serializer = new SymfonyActivitySubjectDataSerializer(

@@ -32,7 +32,7 @@ final class DoctrineManagersClearListener
     public function __construct(
         ManagersClearer $managersClearer,
         ?array $managers = null,
-        ?LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ) {
         $this->managersClearer = $managersClearer;
         $this->managers = $managers;

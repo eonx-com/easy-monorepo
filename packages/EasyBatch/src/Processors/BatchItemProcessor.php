@@ -21,7 +21,7 @@ final class BatchItemProcessor
     public function __construct(
         private readonly BatchProcessor $batchProcessor,
         private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly BatchObjectManagerInterface $batchObjectManager
+        private readonly BatchObjectManagerInterface $batchObjectManager,
     ) {
     }
 

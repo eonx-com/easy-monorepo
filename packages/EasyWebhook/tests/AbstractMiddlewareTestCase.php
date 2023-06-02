@@ -18,7 +18,7 @@ abstract class AbstractMiddlewareTestCase extends AbstractTestCase
         MiddlewareInterface $middleware,
         WebhookInterface $webhook,
         ?WebhookResultInterface $webhookResult = null,
-        ?StackInterface $stack = null
+        ?StackInterface $stack = null,
     ): WebhookResultInterface {
         return $middleware->process($webhook, $stack ?? new Stack([new MiddlewareStub($webhookResult)]));
     }
@@ -26,7 +26,7 @@ abstract class AbstractMiddlewareTestCase extends AbstractTestCase
     protected function processWithThrowable(
         MiddlewareInterface $middleware,
         WebhookInterface $webhook,
-        \Throwable $throwable
+        \Throwable $throwable,
     ): WebhookResultInterface {
         return $middleware->process($webhook, new StackThrowStub($throwable));
     }

@@ -25,7 +25,7 @@ abstract class AbstractBatchObjectRepository
         protected BatchObjectIdStrategyInterface $idStrategy,
         protected BatchObjectTransformerInterface $transformer,
         protected Connection $conn,
-        protected string $table
+        protected string $table,
     ) {
         // No body needed.
     }

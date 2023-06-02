@@ -14,7 +14,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
 final class BatchManager implements BatchManagerInterface
 {
     public function __construct(
-        private readonly BatchObjectManagerInterface $batchObjectManager
+        private readonly BatchObjectManagerInterface $batchObjectManager,
     ) {
     }
 

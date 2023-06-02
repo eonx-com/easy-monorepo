@@ -38,7 +38,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
-        private ObjectCopierInterface $objectCopier
+        private ObjectCopierInterface $objectCopier,
     ) {
         $this->enabled = true;
     }

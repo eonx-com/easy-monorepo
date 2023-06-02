@@ -29,7 +29,7 @@ final class DoctrineDbalStore implements StoreInterface
     public function __construct(
         IdFactoryInterface $idFactory,
         Connection $connection,
-        string $table
+        string $table,
     ) {
         $this->connection = $connection;
         $this->idFactory = $idFactory;

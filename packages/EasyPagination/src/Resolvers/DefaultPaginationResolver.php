@@ -11,7 +11,7 @@ use EonX\EasyPagination\Pagination;
 final class DefaultPaginationResolver
 {
     public function __construct(
-        private PaginationConfigInterface $config
+        private PaginationConfigInterface $config,
     ) {
         // No body needed.
     }

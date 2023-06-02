@@ -53,7 +53,7 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
         WebhookInterface $webhook,
         ?string $expectedStatus = null,
         ?int $expectedCurrentAttempt = null,
-        ?string $exceptedException = null
+        ?string $exceptedException = null,
     ): void {
         if ($exceptedException !== null) {
             $this->expectException($exceptedException);

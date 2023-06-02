@@ -44,7 +44,7 @@ final class AbstractFirewallAwareDecoderProviderTest extends AbstractSymfonyTest
         ?string $expectedFirewall,
         ?array $configs = null,
         ?array $firewallMap = null,
-        ?Request $request = null
+        ?Request $request = null,
     ): void {
         $kernel = $this->getKernel($configs);
         $container = $kernel->getContainer();

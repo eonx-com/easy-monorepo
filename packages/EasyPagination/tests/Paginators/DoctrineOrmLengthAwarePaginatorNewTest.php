@@ -239,7 +239,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
         string $fromAlias,
         ?string $indexBy,
         callable $setup,
-        callable $assert
+        callable $assert,
     ): void {
         $entityManager = $this->getEntityManager();
         $paginator = new DoctrineOrmLengthAwarePaginator($pagination, $entityManager, $from, $fromAlias, $indexBy);

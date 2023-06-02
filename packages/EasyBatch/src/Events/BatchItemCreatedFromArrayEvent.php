@@ -13,7 +13,7 @@ final class BatchItemCreatedFromArrayEvent extends AbstractBatchItemEvent
      */
     public function __construct(
         BatchItemInterface $batchItem,
-        private readonly array $array
+        private readonly array $array,
     ) {
         parent::__construct($batchItem);
     }

@@ -11,7 +11,7 @@ use Illuminate\Queue\Events\WorkerStopping;
 final class WorkerStoppingListener
 {
     public function __construct(
-        private readonly ErrorHandlerInterface $errorHandler
+        private readonly ErrorHandlerInterface $errorHandler,
     ) {
     }
 

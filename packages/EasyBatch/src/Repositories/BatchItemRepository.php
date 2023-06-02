@@ -90,7 +90,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
     public function paginateItems(
         PaginationInterface $pagination,
         int|string $batchId,
-        ?string $dependsOnName = null
+        ?string $dependsOnName = null,
     ): LengthAwarePaginatorInterface {
         $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->conn, $this->table);
 

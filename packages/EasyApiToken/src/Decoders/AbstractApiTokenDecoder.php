@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class AbstractApiTokenDecoder implements ApiTokenDecoderInterface
 {
     public function __construct(
-        private ?string $name = null
+        private ?string $name = null,
     ) {
         // No body needed.
     }

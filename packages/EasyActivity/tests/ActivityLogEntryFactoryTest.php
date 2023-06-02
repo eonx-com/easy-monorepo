@@ -231,7 +231,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         array $globalDisallowedProperties,
         ?array $allowedProperties,
         array $disallowedProperties,
-        ?array $expectedDataProperties = null
+        ?array $expectedDataProperties = null,
     ): void {
         $factory = new ActivityLogFactoryStub([
             Article::class => [

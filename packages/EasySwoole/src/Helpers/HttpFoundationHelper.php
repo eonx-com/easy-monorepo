@@ -53,7 +53,7 @@ final class HttpFoundationHelper
         HttpFoundationResponse $hfResponse,
         Response $response,
         int $chunkSize,
-        ?string $bufferedOutput = null
+        ?string $bufferedOutput = null,
     ): void {
         $response->status($hfResponse->getStatusCode());
 

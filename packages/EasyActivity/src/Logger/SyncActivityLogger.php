@@ -22,7 +22,7 @@ final class SyncActivityLogger implements ActivityLoggerInterface
 
     public function __construct(
         ActivityLogEntryFactoryInterface $activityLogEntryFactory,
-        StoreInterface $store
+        StoreInterface $store,
     ) {
         $this->activityLogEntryFactory = $activityLogEntryFactory;
         $this->store = $store;

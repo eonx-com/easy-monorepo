@@ -19,7 +19,7 @@ final class Encryptor extends AbstractEncryptor
     public function __construct(
         private readonly EncryptionKeyFactoryInterface $keyFactory,
         private readonly EncryptionKeyProviderInterface $keyProvider,
-        ?string $defaultKeyName = null
+        ?string $defaultKeyName = null,
     ) {
         parent::__construct($defaultKeyName);
     }
@@ -38,7 +38,7 @@ final class Encryptor extends AbstractEncryptor
     protected function doDecrypt(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
-        bool $raw
+        bool $raw,
     ): string {
         $key = $this->getKey($key, $raw === false);
 
@@ -71,7 +71,7 @@ final class Encryptor extends AbstractEncryptor
     protected function doEncrypt(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
-        bool $raw
+        bool $raw,
     ): string {
         $key = $this->getKey($key, $raw === false);
         $text = \class_exists(NewHiddenString::class) ? new NewHiddenString($text) : new OldHiddenString($text);
@@ -97,7 +97,7 @@ final class Encryptor extends AbstractEncryptor
      */
     private function getKey(
         null|array|string|EncryptionKey|EncryptionKeyPair $key = null,
-        ?bool $forceKeyName = null
+        ?bool $forceKeyName = null,
     ): EncryptionKey|EncryptionKeyPair {
         if (($key === null || \is_string($key)) && $this->keyProvider->hasKey($this->getKeyName($key))) {
             return $this->keyProvider->getKey($this->getKeyName($key));

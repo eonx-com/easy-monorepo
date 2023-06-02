@@ -40,7 +40,7 @@ final class Decimal extends Constraint
         int $minPrecision = null,
         int $maxPrecision = null,
         array $groups = null,
-        $payload = null
+        $payload = null,
     ) {
         $minPrecision = (int)($minPrecision ?? $options['minPrecision'] ?? null);
         $maxPrecision = (int)($maxPrecision ?? $options['maxPrecision'] ?? null);

@@ -32,7 +32,7 @@ final class DefaultErrorResponseBuilderProvider implements ErrorResponseBuilderP
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
         private readonly TranslatorInterface $translator,
-        ?array $keys = null
+        ?array $keys = null,
     ) {
         $this->keys = $keys ?? [];
     }

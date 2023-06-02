@@ -10,7 +10,7 @@ use EonX\EasyDoctrine\Interfaces\ObjectCopierInterface;
 final class ObjectCopier implements ObjectCopierInterface
 {
     public function __construct(
-        private DeepCopy $deepCopy
+        private DeepCopy $deepCopy,
     ) {
     }
 
